@@ -1,0 +1,556 @@
+<Group id="group-2.2">
+<title>File Permissions and Masks</title>
+<description>Traditional Unix security relies heavily on file and
+directory permissions to prevent unauthorized users from reading or
+modifying files to which they should not have access. Adhere to the
+principle of least privilege — configure each file, directory, and
+filesystem to allow only the access needed in order for that file
+to serve its purpose.
+<br />
+<br />However, Linux systems contain a large number of files, so it
+is often prohibitively time-consuming to ensure that every file on
+a machine has exactly the permissions needed. This section
+introduces several permission restrictions which are almost always
+appropriate for system security, and which are easy to test and
+correct.
+<br />
+<br />Note: Several of the commands in this section search
+filesystems for files or directories with certain characteristics,
+and are intended to be run on every local ext2 or ext3 partition on
+a given machine. When the variable
+<em>PART</em>appears in one of the commands below, it means that
+the command is intended to be run repeatedly, with the name of each
+local partition substituted for
+<em>PART</em>in turn.
+<br />
+<br />The following command prints a list of ext2 and ext3
+partitions on a given machine:
+<br />
+<br />
+<code>$ mount -t ext2,ext3 | awk '{print $3}'
+<br /></code>
+<br />If your site uses a local filesystem type other than ext2 or
+ext3, you will need to modify this command.</description>
+<Group id="group-2.2.1">
+<title>Restrict Partition Mount Options</title>
+<description>System partitions can be mounted with certain options
+which limit what files on those partitions can do. These options
+are set in the file /etc/fstab, and can be used to make certain
+types of malicious behavior more difficult.</description>
+<Rule id="rule-2.2.1.1.a">
+<title>CCE-4249-9:Add nodev Option to Non-Root Local
+Partitions</title>
+<description>The nodev option prevents users from mounting
+unauthorized devices on any partition which is known not to contain
+any authorized devices. The root partition typically contains the
+/dev partition, which is the primary location for authorized
+devices, so this option should not be set on /.</description>
+<ident cce="4249-9" />
+<oval id="20016" />
+</Rule>
+<Rule id="rule-2.2.1.2.a">
+<title>CCE-3522-0:Add nodev Option to Removable Media
+Partitions</title>
+<description>Users should not be allowed to introduce arbitrary
+devices or setuid programs to a system. These options are used to
+prevent that. In addition, while users are usually allowed to add
+executable programs to a system, the noexec option prevents code
+from being executed directly from the media itself, and may
+therefore provide a line of defense against certain types of worms
+or malicious code.</description>
+<ident cce="3522-0" />
+<oval id="20017" />
+</Rule>
+
+<Rule id="rule-2.2.1.2.b">
+<title>CCE-4275-4:Add noexec Option to Removable Media
+Partitions</title>
+<description>Users should not be allowed to introduce arbitrary
+devices or setuid programs to a system. These options are used to
+prevent that. In addition, while users are usually allowed to add
+executable programs to a system, the noexec option prevents code
+from being executed directly from the media itself, and may
+therefore provide a line of defense against certain types of worms
+or malicious code.</description>
+<ident cce="4275-4" />
+<oval id="20018" />
+</Rule>
+<Rule id="rule-2.2.1.2.c">
+<title>CCE-4042-8:Add nosuid Option to Removable Media
+Partitions</title>
+<description>Users should not be allowed to introduce arbitrary
+devices or setuid programs to a system. These options are used to
+prevent that. In addition, while users are usually allowed to add
+executable programs to a system, the noexec option prevents code
+from being executed directly from the media itself, and may
+therefore provide a line of defense against certain types of worms
+or malicious code.</description>
+<ident cce="4042-8" />
+<oval id="20019" />
+</Rule>
+</Group>
+<Group id="group-2.2.2">
+<title>Restrict Dynamic Mounting and Unmounting of
+Filesystems</title>
+<description>Linux includes a number of facilities for the
+automated addition and removal of filesystems on a running system.
+These facilities may increase convenience, but they all bring some
+risk, whether direct risk from allowing unprivileged users to
+introduce arbitrary filesystems to a machine, or risk that software
+flaws in the automated mount facility itself will allow an attacker
+to compromise the system.
+<br />
+<br />Use caution when enabling any such facility, and find out
+whether better configuration management or user education might
+solve the same problem with less risk.</description>
+<Rule id="rule-2.2.2.5.a">
+<title>CCE-14089-7:Disable Mounting of cramfs</title>
+<description>Using the install command inside /etc/modprobe.conf
+instructs the kernel module loading system to run the command
+speciﬁed (here, /bin/true) instead of inserting the module in the
+kernel as normal. This effectively prevents usage of these uncommon
+ﬁlesystems.</description>
+<ident cce="14089-7" />
+<oval id="20027" />
+</Rule>
+<Rule id="rule-2.2.2.5.b">
+<title>CCE-14457-6:Disable Mounting of freevxfs</title>
+<description>Using the install command inside /etc/modprobe.conf
+instructs the kernel module loading system to run the command
+speciﬁed (here, /bin/true) instead of inserting the module in the
+kernel as normal. This effectively prevents usage of these uncommon
+ﬁlesystems.</description>
+<ident cce="14457-6" />
+<oval id="20028" />
+</Rule>
+<Rule id="rule-2.2.2.5.c">
+<title>CCE-14853-6:Disable Mounting of jffs2</title>
+<description>Using the install command inside /etc/modprobe.conf
+instructs the kernel module loading system to run the command
+speciﬁed (here, /bin/true) instead of inserting the module in the
+kernel as normal. This effectively prevents usage of these uncommon
+ﬁlesystems.</description>
+<ident cce="14853-6" />
+<oval id="20029" />
+</Rule>
+
+<Rule id="rule-2.2.2.5.d">
+<title>CCE-15087-0:Disable Mounting of hfs</title>
+<description>Using the install command inside /etc/modprobe.conf
+instructs the kernel module loading system to run the command
+speciﬁed (here, /bin/true) instead of inserting the module in the
+kernel as normal. This effectively prevents usage of these uncommon
+ﬁlesystems.</description>
+<ident cce="15087-0" />
+<oval id="20030" />
+</Rule>
+<Rule id="rule-2.2.2.5.e">
+<title>CCE-14093-9:Disable Mounting of hfsplus</title>
+<description>Using the install command inside /etc/modprobe.conf
+instructs the kernel module loading system to run the command
+speciﬁed (here, /bin/true) instead of inserting the module in the
+kernel as normal. This effectively prevents usage of these uncommon
+ﬁlesystems.</description>
+<ident cce="14093-9" />
+<oval id="20031" />
+</Rule>
+<Rule id="rule-2.2.2.5.f">
+<title>CCE-14118-4:Disable Mounting of squashfs</title>
+<description>Using the install command inside /etc/modprobe.conf
+instructs the kernel module loading system to run the command
+speciﬁed (here, /bin/true) instead of inserting the module in the
+kernel as normal. This effectively prevents usage of these uncommon
+ﬁlesystems.</description>
+<ident cce="14118-4" />
+<oval id="20032" />
+</Rule>
+<Rule id="rule-2.2.2.5.g">
+<title>CCE-14871-8:Disable Mounting of udf</title>
+<description>Using the install command inside /etc/modprobe.conf
+instructs the kernel module loading system to run the command
+speciﬁed (here, /bin/true) instead of inserting the module in the
+kernel as normal. This effectively prevents usage of these uncommon
+ﬁlesystems.</description>
+<ident cce="14871-8" />
+<oval id="20033" />
+</Rule>
+</Group>
+<Group id="group-2.2.3">
+<title>Verify Permissions on Important Files and
+Directories</title>
+<description>Permissions for many files on a system should be set
+to conform to system policy. This section discusses important
+permission restrictions gshadow which should be checked on a
+regular basis to ensure that no harmful discrepancies have
+arisen.</description>
+<Group id="group-2.2.3.1">
+<title>Verify Permissions on passwd, shadow, group and gshadow
+Files</title>
+<description>These are the default permissions for these files.
+Many utilities need read access to the passwd file in order to
+function properly, but read access to the shadow file allows
+malicious attacks against system passwords, and should never be
+enabled.</description>
+<Rule id="rule-2.2.3.1.a">
+<title>CCE-3918-0:Verify user who owns 'shadow' file</title>
+<description>The /etc/shadow file should be owned by
+root.</description>
+<ident cce="3918-0" />
+<oval id="20034" />
+</Rule>
+
+<Rule id="rule-2.2.3.1.b">
+<title>CCE-3988-3:Verify group who owns 'shadow' file</title>
+<description>The /etc/shadow file should be owned by
+root.</description>
+<ident cce="3988-3" />
+<oval id="20035" />
+</Rule>
+<Rule id="rule-2.2.3.1.c">
+<title>CCE-3276-3:Verify user who owns 'group' file</title>
+<description>The /etc/group file should be owned by
+root.</description>
+<ident cce="3276-3" />
+<oval id="20036" />
+</Rule>
+<Rule id="rule-2.2.3.1.d">
+<title>CCE-3883-6:Verify group who owns 'group' file</title>
+<description>The /etc/group file should be owned by
+root.</description>
+<ident cce="3883-6" />
+<oval id="20037" />
+</Rule>
+<Rule id="rule-2.2.3.1.e">
+<title>CCE-4210-1:Verify user who owns 'gshadow' file</title>
+<description>The /etc/gshadow file should be owned by
+root.</description>
+<ident cce="4210-1" />
+<oval id="20038" />
+</Rule>
+<Rule id="rule-2.2.3.1.f">
+<title>CCE-4064-2:Verify group who owns 'gshadow' file</title>
+<description>The /etc/gshadow file should be owned by
+root.</description>
+<ident cce="4064-2" />
+<oval id="20039" />
+</Rule>
+<Rule id="rule-2.2.3.1.g">
+<title>CCE-3958-6:Verify user who owns 'passwd' file</title>
+<description>The /etc/passwd file should be owned by
+root.</description>
+<ident cce="3958-6" />
+<oval id="20040" />
+</Rule>
+<Rule id="rule-2.2.3.1.h">
+<title>CCE-3495-9:Verify group who owns 'passwd' file</title>
+<description>The /etc/passwd file should be owned by
+root.</description>
+<ident cce="3495-9" />
+<oval id="20041" />
+</Rule>
+<Rule id="rule-2.2.3.1.i">
+<title>CCE-4130-1:Verify permissions on 'shadow' file</title>
+<description>File permissions for /etc/shadow should be set
+correctly.</description>
+<ident cce="4130-1" />
+<oval id="20042" />
+</Rule>
+<Rule id="rule-2.2.3.1.j">
+<title>CCE-3967-7:Verify permissions on 'group' file</title>
+<description>File permissions for /etc/group should be set
+correctly.</description>
+<ident cce="3967-7" />
+<oval id="20043" />
+</Rule>
+<Rule id="rule-2.2.3.1.k">
+<title>CCE-3932-1:Verify permissions on 'gshadow' file</title>
+<description>File permissions for /etc/gshadow should be set
+correctly.</description>
+<ident cce="3932-1" />
+<oval id="20044" />
+</Rule>
+
+
+<Rule id="rule-2.2.3.1.l">
+<title>CCE-3566-7:Verify permissions on 'passwd' file</title>
+<description>File permissions for /etc/passwd should be set
+correctly.</description>
+<ident cce="3566-7" />
+<oval id="20045" />
+</Rule>
+</Group>
+<Rule id="rule-2.2.3.2.a">
+<title>CCE-3399-3:Verify that All World-Writable Directories Have
+Sticky Bits Set</title>
+<description>When the so-called 'sticky bit' is set on a directory,
+only the owner of a given file may remove that file from the
+directory. Without the sticky bit, any user with write access to a
+directory may remove any file in the directory. Setting the sticky
+bit prevents users from removing each other's files. In cases where
+there is no reason for a directory to be world-writable, a better
+solution is to remove that permission rather than to set the sticky
+bit. However, if a directory is used by a particular application,
+consult that application's documentation instead of blindly
+changing modes.</description>
+<ident cce="3399-3" />
+<oval id="20046" />
+</Rule>
+<Rule id="rule-2.2.3.3.a">
+<title>CCE-3795-2:Find Unauthorized World-Writable Files</title>
+<description>Data in world-writable files can be modified by any
+user on the system. In almost all circumstances, files can be
+configured using a combination of user and group permissions to
+support whatever legitimate access is needed without the risk
+caused by world-writable files.
+<br />
+<br />It is generally a good idea to remove global (other) write
+access to a file when it is discovered. However, check with
+documentation for specific applications before making changes.
+Also, monitor for recurring world-writable files, as these may be
+symptoms of a misconfigured application or user
+account.</description>
+<ident cce="3795-2" />
+<oval id="20047" />
+</Rule>
+<Rule id="rule-2.2.3.4.a">
+<title>CCE-14970-8:Find Unauthorized SGID System
+Executables</title>
+<description>The sgid bit should not be set for all
+files.</description>
+<ident cce="14970-8" />
+<oval id="20048" />
+</Rule>
+<Rule id="rule-2.2.3.4.b">
+<title>CCE-14340-4:Find Unauthorized SUID System
+Executables</title>
+<description>The suid bit should not be set for all
+files.</description>
+<ident cce="14340-4" />
+<oval id="20049" />
+</Rule>
+
+
+<Rule id="rule-2.2.3.5.a">
+<title>CCE-4223-4:Find files unowned by a user</title>
+<description>The following command will discover and print any
+files on local partitions which do not belong to a valid user and a
+valid group. Run it once for each local partition PART:
+<code># find PART -xdev \( -nouser -o -nogroup \) -print</code>If
+this command prints any results, investigate each reported file and
+either assign it to an appropriate user and group or remove it.
+Unowned files are not directly exploitable, but they are generally
+a sign that something is wrong with some system process. They may
+be caused by an intruder, by incorrect software installation or
+draft software removal, or by failure to remove all files belonging
+to a deleted account. The files should be repaired so that they
+will not cause problems when accounts are created in the future,
+and the problem which led to unowned files should be discovered and
+addressed.</description>
+<ident cce="4223-4" />
+<oval id="20050" />
+</Rule>
+<Rule id="rule-2.2.3.5.b">
+<title>CCE-3573-3:Find files unowned by a group</title>
+<description>The following command will discover and print any
+files on local partitions which do not belong to a valid user and a
+valid group. Run it once for each local partition PART:
+<code># find PART -xdev \( -nouser -o -nogroup \) -print</code>If
+this command prints any results, investigate each reported file and
+either assign it to an appropriate user and group or remove it.
+Unowned files are not directly exploitable, but they are generally
+a sign that something is wrong with some system process. They may
+be caused by an intruder, by incorrect software installation or
+draft software removal, or by failure to remove all files belonging
+to a deleted account. The files should be repaired so that they
+will not cause problems when accounts are created in the future,
+and the problem which led to unowned files should be discovered and
+addressed.</description>
+<ident cce="3573-3" />
+<oval id="20051" />
+</Rule>
+<Rule id="rule-2.2.3.6.a">
+<title>CCE-14794-2:Find world writable directories not owned by a
+system account</title>
+<description>Locate any directories in local partitions which are
+world-writable and ensure that they are owned by root or another
+system account. The following command will discover and print these
+(assuming only system accounts have a uid lower than 500). Run it
+once for each local partition PART:
+<br />
+<br />
+<code># find PART -xdev -type d -perm -0002 -uid +500 -print
+<br /></code>
+<br />If this command produces any output, investigate why the
+current owner is not root or another system account.
+<br />
+<br />Allowing a user account to own a world-writeable directory is
+undesirable because it allows the owner of that directory to remove
+or replace any ﬁles that may be placed in the directory by other
+users.</description>
+<ident cce="14794-2" />
+<oval id="20052" />
+</Rule>
+</Group>
+
+
+<Group id="group-2.2.4">
+<title>Restrict Programs from Dangerous Execution Patterns</title>
+<description>The recommendations in this section provide broad
+protection against information disclosure or other misbehavior.
+These protections are applied at the system initialization or
+kernel level, and defend against certain types of badly-configured
+or compromised programs.</description>
+<Group id="group-2.2.4.1">
+<title>Set Daemon umask</title>
+<description>The settings file /etc/sysconfig/init contains
+settings which apply to all processes started at boot time. The
+system umask must be set to at least 022, or daemon processes may
+create world-writable files. The more restrictive setting 027
+protects files, including temporary files and log files, from
+unauthorized reading by unprivileged users on the system.
+<br />
+<br />If a particular daemon needs a less restrictive umask,
+consider editing the startup script or sysconfig file of that
+daemon to make a specific exception.</description>
+<Value id="var-2.2.4.1.a" type="string"
+operator="equals" interactive="0">
+<title>daemon umask</title>
+<description>Enter umask for daemons</description>
+<value selector="">027</value>
+<value selector="022">022</value>
+<value selector="027">027</value>
+</Value>
+<Rule id="rule-2.2.4.1.a">
+<title>CCE-4220-0:Set Daemon umask</title>
+<description>The daemon umask should be set as
+appropriate</description>
+<ident cce="4220-0" />
+<oval id="20053" />
+</Rule>
+</Group>
+<Group id="group-2.2.4.2">
+<title>Disable Core Dumps</title>
+<description>A core dump file is the memory image of an executable
+program when it was terminated by the operating system due to
+errant behavior. In most cases, only software developers would
+legitimately need to access these files. The core dump files may
+also contain sensitive information, or unnecessarily occupy large
+amounts of disk space.
+<br />
+<br />By default, the system sets a soft limit to stop the creation
+of core dump files for all users. This is accomplished in
+/etc/profile with the line: ulimit -S -c 0 &gt; /dev/null
+2$gt;&amp;1 However, compliance with this limit is voluntary; it is
+a default intended only to protect users from the annoyance of
+generating unwanted core files. Users can increase the allowed core
+file size up to the hard limit, which is unlimited by default.
+<br />
+<br />Once a hard limit is set in /etc/security/limits.conf, the
+user cannot increase that limit within his own session. If access
+to core dumps is required, consider restricting them to only
+certain users or groups. See the limits.conf man page for more
+information.
+<br />
+<br />The core dumps of setuid programs are further protected. The
+sysctl variable fs.suid_dumpable controls whether the kernel allows
+core dumps from these programs at all. The default value of 0 is
+recommended.</description>
+<Rule id="rule-2.2.4.2.a">
+<title>CCE-4225-9:Disable Core Dumps for all users</title>
+<description>Core dumps for all users should be
+disabled</description>
+<ident cce="4225-9" />
+<oval id="20055" />
+</Rule>
+
+
+<Rule id="rule-2.2.4.2.b">
+<title>CCE-4247-3:Disable Core Dumps for SUID programs</title>
+<description>Core dumps for setuid programs should be
+disabled</description>
+<ident cce="4247-3" />
+<oval id="20056" />
+</Rule>
+</Group>
+<Group id="group-2.2.4.3">
+<title>Enable ExecShield</title>
+<description>ExecShield comprises a number of kernel features to
+provide protection against buffer overflows. These features include
+random placement of the stack and other memory regions, prevention
+of execution in memory that should only hold data, and special
+handling of text buffers. This protection is enabled by default,
+but the sysctl variables kernel.exec-shield and kernel.randomize va
+space should be checked to ensure that it has not been disabled.
+<br />
+<br />ExecShield uses the segmentation feature on all x86 systems
+to prevent execution in memory higher than a certain address. It
+writes an address as a limit in the code segment descriptor, to
+control where code can be executed, on a per-process basis. When
+the kernel places a process's memory regions such as the stack and
+heap higher than this address, the hardware prevents execution
+there. However, this cannot always be done for all memory regions
+in which execution should not occur, so follow guidance in Section
+2.2.4.4 to further protect the system.</description>
+<Rule id="rule-2.2.4.3.a">
+<title>CCE-4168-1:Enable ExecShield</title>
+<description>ExecShield should be enabled</description>
+<ident cce="4168-1" />
+<oval id="20057" />
+</Rule>
+<Rule id="rule-2.2.4.3.b">
+<title>CCE-4146-7:Enable ExecShield randomized placement of virtual
+memory regions</title>
+<description>ExecShield randomized placement of virtual memory
+regions should be enabled</description>
+<ident cce="4146-7" />
+<oval id="20058" />
+</Rule>
+</Group>
+
+
+
+<Group id="group-2.2.4.4">
+<title>Enable Execute Disable (XD) or No Execute (NX) Support on
+x86 Systems</title>
+<description>Recent processors in the x86 family support the
+ability to prevent code execution on a per memory page basis.
+Generically and on AMD processors, this ability is called No
+Execute (NX), while on Intel processors it is called Execute
+Disable (XD). This ability can help prevent exploitation of buffer
+overflow vulnerabilities and should be activated whenever possible.
+Extra steps must be taken to ensure that this protection is
+enabled, particularly on 32-bit x86 systems. Other processors, such
+as Itanium and POWER, have included such support since inception
+and the standard kernel for those platforms supports the
+feature.</description>
+<Group id="group-2.2.4.4.2">
+<title>Install New Kernel on Supported x86 Systems</title>
+<description>Systems that are using the 64-bit x86 kernel package
+do not need to install the kernel-PAE package because the 64-bit
+x86 kernel already includes this support. However, if the system is
+running 32-bit kernel package supports PAE and NX features as
+determined in the previous section, the kernel-PAE package should
+be installed to enable XD or NX support:
+<br />
+<br />
+<code># yum install kernel-PAE</code>
+<br />
+<br />The installation process should also have conﬁgured the
+bootloader to load the new kernel at boot. Verify this at reboot
+and modify /etc/grub.conf if necessary.</description>
+<warning category="hardware">The kernel-PAE package should not be
+installed on older systems that do not support the XD or NX bit, as
+this may prevent them from booting.</warning>
+<Rule id="rule-2.2.4.4.2.a">
+<title>CCE-4172-3:Install New Kernel on Supported x86
+Systems</title>
+<description>Kernel support for the XD/NX processor feature should
+be enabled</description>
+<ident cce="4172-3" />
+<oval id="20059" />
+</Rule>
+</Group>
+</Group>
+</Group>
+</Group>
+

@@ -1,0 +1,59 @@
+<Group id="group-3.9">
+<title>DHCP</title>
+<description>The Dynamic Host Configuration Protocol (DHCP) allows
+systems to request and obtain an IP address and many other
+parameters from a server.
+<br />
+<br />In general, sites use DHCP either to allow a large pool of
+mobile or unknown machines to share a limited number of IP
+addresses, or to standardize installations by avoiding static,
+individual IP address configuration on hosts. It is recommended
+that sites avoid DHCP as much as possible. Since DHCP
+authentication is not well-supported, DHCP clients are open to
+attacks from rogue DHCP servers. Such servers can give clients
+incorrect information (e.g. malicious DNS server addresses) which
+could lead to their compromise.
+<br />
+<br />If a machine must act as a DHCP client or server, configure
+it defensively using the guidance in this section. This guide
+recommends configuring networking on clients by manually editing
+the appropriate files under /etc/sysconfig. It is also possible to
+use the graphical front-end programs system-config-network and
+system-config-network-tui, but these programs rewrite configuration
+files from scratch based on their defaults – destroying any manual
+changes – and should therefore be used with caution.</description>
+<Group id="group-3.9.3">
+<title>Disable DHCP Server if possible</title>
+<description>If the dhcp package has been installed on a machine
+which does not need to operate as a DHCP server, disable the
+daemon:
+<br />
+<br />
+<code># chkconfig dhcpd off
+<br /></code>
+<br />If possible, remove the software as well:
+<br />
+<br />
+<code># yum erase dhcp
+<br /></code>
+<br />The DHCP server dhcpd is not installed or activated by
+default. If the software was installed and activated, but the
+system does not need to act as a DHCP server, it should be disabled
+and removed. Unmanaged DHCP servers will provide faulty information
+to clients, interfering with the operation of a legitimate site
+DHCP server if there is one, or causing misconfigured machines to
+exhibit unpredictable behavior if there is not.</description>
+<Rule id="rule-3.9.3.a">
+<title>CCE-4336-4:Disable DHCP Server if possible</title>
+<description>The dhcpd service should be disabled.</description>
+<ident cce="4336-4" />
+<oval id="20268" />
+</Rule>
+<Rule id="rule-3.9.3.b">
+<title>CCE-4464-4:Uninstall DHCP Server if possible</title>
+<description>The dhcp package should be uninstalled.</description>
+<ident cce="4464-4" />
+<oval id="20269" />
+</Rule>
+</Group>
+</Group>

@@ -1,0 +1,100 @@
+<Group id="group-3.10">
+<title>Network Time Protocol</title>
+<description>The Network Time Protocol is used to manage the system
+clock over a network. Computer clocks are not very accurate, so
+time will drift unpredictably on unmanaged systems. Central time
+protocols can be used both to ensure that time is consistent among
+a network of machines, and that their time is consistent with the
+outside world.
+<br />
+<br />Local time synchronization is recommended for all networks.
+If every machine on your network reliably reports the same time as
+every other machine, then it is much easier to correlate log
+messages in case of an attack. In addition, a number of
+cryptographic protocols (such as Kerberos) use timestamps to
+prevent certain types of attacks. If your network does not have
+synchronized time, these protocols may be unreliable or even
+unusable.
+<br />
+<br />Depending on the specifics of the network, global time
+accuracy may be just as important as local synchronization, or not
+very important at all. If your network is connected to the
+Internet, it is recommended that you make use of a public
+timeserver, since globally accurate timestamps may be necessary if
+you need to investigate or respond to an attack which originated
+outside of your network.
+<br />
+<br />Whether or not you use an outside timeserver, configure the
+network to have a small number of machines operating as NTP
+servers, and the remainder obtaining time information from those
+internal servers.</description>
+<Group id="group-3.10.2">
+<title>Configure Reference NTP if Appropriate</title>
+<description>The ntp RPM implements the reference NTP
+server.</description>
+<Group id="group-3.10.2.2">
+<title>Configure an NTP Server</title>
+<description>The site’s NTP server contacts a central NTP server,
+probably either one provided by your ISP or a public time server,
+to obtain accurate time data. The server then allows other machines
+on your network to request the time data.
+<br />
+<br />The NTP server conﬁguration ﬁle is located at
+/etc/ntp.conf.</description>
+<Group id="group-3.10.2.2.1">
+<title>Enable the NTP Daemon</title>
+<description>If this machine is an NTP server, ensure that ntpd is
+enabled at boot time:
+<br />
+<br />
+<code># chkconfig ntpd on</code></description>
+<Rule id="rule-3.10.2.2.1.a">
+<title>CCE-4376-0:Enable the NTP Daemon</title>
+<description>The ntpd service should be enabled.</description>
+<ident cce="4376-0" />
+<oval id="20281" />
+</Rule>
+</Group>
+<Group id="group-3.10.2.2.3">
+<title>Specify a Remote NTP Server for Time Data</title>
+<description>Find the IP address, server-ip , of an appropriate
+remote NTP server. Edit the file /etc/ntp.conf, and add or correct
+the following lines:
+<br />
+<br />restrict server-ip mask 255.255.255.255 nomodify notrap
+noquery
+<br />server server-ip
+<br />
+<br />If your site does not require time data to be accurate, but
+merely to be synchronized among local machines, this step can be
+omitted, and the NTP server will default to providing time data
+from the local clock. However, it is a good idea to periodically
+synchronize the clock to some source of accurate time, even if it
+is not appropriate to do so automatically.
+<br />
+<br />The previous step disabled all remote access to this NTP
+server's state data. This NTP server must contact a remote server
+to obtain accurate data, so NTP's configuration must allow that
+remote data to be used to modify the system clock. The restrict
+line changes the default access permissions for that remote server.
+The server line specifies the remote server as the preferred NTP
+server for time data. If you intend to synchronize to more than one
+server, specify restrict and server lines for each server.
+<br />
+<br />Note: It would be possible to specify a hostname, rather than
+an IP address, for the server field. However, the restrict setting
+applies only to network blocks of IP addresses, so it is considered
+more maintainable to use the IP address in both
+fields.</description>
+<Rule id="rule-3.10.2.2.3.a">
+<title>CCE-4385-1:Specify a Remote NTP Server for Time Data</title>
+<description>A remote NTP Server for time synchronization should be
+specified</description>
+<ident cce="4385-1" />
+<oval id="20283" />
+</Rule>
+</Group>
+</Group>
+</Group>
+</Group>
+

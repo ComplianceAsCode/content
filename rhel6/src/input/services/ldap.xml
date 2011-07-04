@@ -1,0 +1,94 @@
+<Group id="group-3.12">
+<title>LDAP</title>
+<description>LDAP is a popular directory service, that is, a
+standardized way of looking up information from a central database.
+It is relatively simple to configure a RHEL5 machine to obtain
+authentication information from an LDAP server. If your network
+uses LDAP for authentication, be sure to configure both clients and
+servers securely.</description>
+<Group id="group-3.12.2">
+<title>Configure OpenLDAP Clients</title>
+<description>This guide recommends configuring OpenLDAP clients by
+manually editing the appropriate configuration files. RHEL5
+provides an automated configuration tool called authconfig and a
+graphical wrapper for authconfig called
+system-config-authentication. However, these tools do not give
+sufficient flexibility over configuration. The authconfig tools do
+not allow you to specify locations of SSL certificate files, which
+is useful when trying to use SSL cleanly across several protocols.
+They are also overly aggressive in placing services such as
+netgroups and automounter maps under LDAP control, where it is
+safer to use LDAP only for services to which it is relevant in your
+environment.</description>
+<warning category="general">Before configuring any machine to be an
+LDAP client, ensure that a working LDAP server is present on the
+network. See Section 3.12.3 for instructions on configuring an LDAP
+server.</warning>
+<Group id="group-3.12.2.2">
+<title>Configure LDAP to Use TLS for All Transactions</title>
+<description>
+<ol>
+<li>Ensure a copy of the site's CA certificate has been placed in
+the file /etc/pki/tls/CA/cacert.pem.</li>
+<li>Configure LDAP to enforce TLS use and to trust certificates
+signed by the site's CA. First, edit the file /etc/ldap.conf, and
+add or correct the following lines:
+<br />
+<br />ssl start_tls
+<br />tls_checkpeer yes
+<br />tls_cacertdir /etc/pki/tls/CA
+<br />tls_cacertfile /etc/pki/tls/CA/cacert.pem
+<br />
+<br />Then edit /etc/openldap/ldap.conf, and add or correct the
+following lines:
+<br />
+<br />TLS_CACERTDIR /etc/pki/tls/CA
+<br />TLS_CACERT /etc/pki/tls/CA/cacert.pem</li>
+</ol>
+<br />
+<br />Section 2.5.6 describes the system-wide configuration of SSL
+for your enterprise. It is possible to place your certificate
+information under some directory other than /etc/pki/tls, but using
+a consistent directory structure across all SSL services at your
+site is recommended. The LDAP server must be configured with a
+certificate signed by the CA certificate named here.</description>
+<Rule id="rule-3.12.2.2.a">
+<title>CCE-14894-0:Configure LDAP to Use TLS for All
+Transactions</title>
+<description>Clients require LDAP servers to provide valid
+certificates for SSL communications.</description>
+<ident cce="14894-0" />
+<oval id="202885" />
+</Rule>
+</Group>
+</Group>
+
+<Group id="group-3.12.3">
+<title>Configure OpenLDAP Server</title>
+<description>This section contains guidance on how to configure an
+OpenLDAP server to securely provide information for use in a
+centralized authentication service. This is not a comprehensive
+guide to maintaining an OpenLDAP server, but may be helpful in
+transitioning to an OpenLDAP infrastructure
+nonetheless.</description>
+<Group id="group-3.12.3.1">
+<title>Install OpenLDAP Server RPM</title>
+<description>Is this machine the OpenLDAP server? If so:
+<br />
+<br />
+<code># yum install openldap-servers
+<br /># chkconfig ldap on
+<br /></code>
+<br />The openldap-servers RPM is not installed by default on RHEL5
+machines. It is needed only by the OpenLDAP server, not by the
+clients which use LDAP for authentication.</description>
+<Rule id="rule-3.12.3.1.a">
+<title>CCE-3501-4:Disable OpenLDAP service</title>
+<description>The ldap service should be disabled.</description>
+<ident cce="3501-4" />
+<oval id="20289" />
+</Rule>
+</Group>
+</Group>
+</Group>
+

@@ -1,0 +1,165 @@
+<Group id="group-3.3">
+<title>BaseServices</title>
+<description>This section addresses the base services that are
+configured to start up on boot in a RHEL5 default installation.
+Some of these services listen on the network and should be treated
+with particular discretion. The other services are local system
+utilities that may or may not be extraneous. Each of these services
+should be disabled if not required.</description>
+<Group id="group-3.3.4">
+<title>ISDN Support (isdn)</title>
+<description>The ISDN service facilitates Internet connectivity in
+the presence of an ISDN modem. If an ISDN modem is not being used,
+disable this service:
+<br />
+<br />
+<code># chkconfig isdn off</code></description>
+<Rule id="rule-3.3.4.a">
+<title>CCE-4286-1:ISDN Support (isdn)</title>
+<description>The isdn service should be disabled.</description>
+<ident cce="4286-1" />
+<oval id="20186" />
+</Rule>
+</Group>
+<Group id="group-3.3.5">
+<title>Kdump Kernel Crash Analyzer (kdump)</title>
+<description>Kdump is a new kernel crash dump analyzer. It uses
+kexec to boot a secondary kernel ('capture' kernel) following a
+system crash. The kernel dump from the system crash is loaded into
+the capture kernel for analysis.
+<br />
+<br />Unless the system is used for kernel development or testing,
+disable the service:
+<br />
+<br />
+<code># chkconfig kdump off</code></description>
+<Rule id="rule-3.3.5.a">
+<title>CCE-3425-6:Kdump Kernel Crash Analyzer (kdump)</title>
+<description>The kdump service should be disabled.</description>
+<ident cce="3425-6" />
+<oval id="20187" />
+</Rule>
+</Group>
+<Group id="group-3.3.9">
+<title>Network Service (network)</title>
+<description>The network service allows associated network
+interfaces to access the network. This section contains general
+guidance for controlling the operation of the service. For kernel
+parameters which affect networking, see Section</description>
+<Group id="group-3.3.9.3">
+<title>Disable Zeroconf Networking</title>
+<description>Zeroconf networking allows the system to assign itself
+an IP address and engage in IP communication without a
+statically-assigned address or even a DHCP server. Automatic
+address assignment via Zeroconf (or DHCP) is not recommended.
+<br />
+<br />To disable Zeroconf automatic route assignment in the
+169.245.0.0 subnet, add or correct the following line in
+/etc/sysconfig/network:
+<br />
+<br />NOZEROCONF=yes
+<br />
+<br />Zeroconf addresses are in the network 169.254.0.0. The
+networking scripts add entries to the system's routing table for
+these addresses. Zeroconf address assignment commonly occurs when
+the system is configured to use DHCP but fails to receive an
+address assignment from the DHCP server.</description>
+<Rule id="rule-3.3.9.3.a">
+<title>CCE-14054-1:Disable Zeroconf Networking</title>
+<description>Disable Zeroconf automatic route assignment in the
+169.245.0.0 subnet.</description>
+<ident cce="14054-1" />
+<oval id="20193" />
+</Rule>
+</Group>
+</Group>
+
+<Group id="group-3.3.12">
+<title>Boot Caching (readahead early/readahead later)</title>
+<description>The following services provide one-time caching of
+files belonging to some boot services, with the goal of allowing
+the system to boot faster.
+<br />
+<br />It is recommended that this service be disabled on most
+machines:
+<br />
+<br />
+<code># chkconfig readahead_early off
+<br /># chkconfig readahead_later off
+<br /></code>
+<br />The readahead services do not substantially increase a
+system's risk exposure, but they also do not provide great benefit.
+Unless the system is running a specialized application for which
+the file caching substantially improves system boot time, this
+guide recommends disabling the services.</description>
+<Rule id="rule-3.3.12.a">
+<title>CCE-4421-4:Boot Caching (readahead early/readahead
+later)</title>
+<description>The readahead_early service should be
+disabled.</description>
+<ident cce="4421-4" />
+<oval id="20196" />
+</Rule>
+<Rule id="rule-3.3.12.b">
+<title>CCE-4302-6:Boot Caching (readahead early/readahead
+later)</title>
+<description>The readahead_later service should be
+disabled.</description>
+<ident cce="4302-6" />
+<oval id="20197" />
+</Rule>
+</Group>
+<Group id="group-3.3.14">
+<title>Bluetooth Support</title>
+<description>Bluetooth provides a way to transfer information
+between devices such as mobile phones, laptops, PCs, printers,
+digital cameras, and video game consoles over a short-range
+wireless link. Any wireless communication presents a serious
+security risk to sensitive or classified systems. Section 2.5.2
+contains information on the related topic of wireless networking.
+<br />
+<br />Removal of hardware is the only way to ensure that the
+Bluetooth wireless capability remains disabled. If it is completely
+impractical to remove the Bluetooth hardware module, and site
+policy still allows the device to enter sensitive spaces, every
+effort to disable the capability via software should be made. In
+general, acquisition policy should include provisions to prevent
+the purchase of equipment that will be used in sensitive spaces and
+includes Bluetooth capabilities.</description>
+<Group id="group-3.3.14.1">
+<title>Bluetooth Host Controller Interface Daemon
+(bluetooth)</title>
+<description>The bluetooth service enables the system to use
+Bluetooth devices. If the system requires no Bluetooth devices,
+disable this service:
+<br />
+<code># chkconfig bluetooth off</code></description>
+<Rule id="rule-3.3.14.1.a">
+<title>CCE-4355-4:Bluetooth Host Controller Interface Daemon
+(bluetooth)</title>
+<description>The bluetooth service should be
+disabled.</description>
+<ident cce="4355-4" />
+<oval id="20200" />
+</Rule>
+</Group>
+
+
+<Group id="group-3.3.14.2">
+<title>Bluetooth Input Devices (hidd)</title>
+<description>The hidd service provides support for Bluetooth input
+devices. If the system has no Bluetooth input devices (e.g.
+keyboard or mouse), disable this service:
+<br />
+<br />
+<code># chkconfig hidd off</code></description>
+<Rule id="rule-3.3.14.2.a">
+<title>CCE-4377-8:Bluetooth Input Devices (hidd)</title>
+<description>The hidd service should be disabled.</description>
+<ident cce="4377-8" />
+<oval id="20201" />
+</Rule>
+</Group>
+</Group>
+</Group>
+

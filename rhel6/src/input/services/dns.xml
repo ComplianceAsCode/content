@@ -1,0 +1,37 @@
+<Group id="group-3.14">
+<title>DNS Server</title>
+<description>Most organizations have an operational need to run at
+least one nameserver. However, there are many common attacks
+involving DNS, be configured defensively.</description>
+<Group id="group-3.14.1">
+<title>Disable DNS Server if Possible</title>
+<description>Is there an operational need for this machine to act
+as a DNS server for this site?
+<br />
+<br />If not, disable the software and remove it from the system:
+<br />
+<br />
+<code># chkconfig named off
+<br /># yum erase bind
+<br /></code>
+<br />DNS software should be disabled on any machine which does not
+need to be a nameserver. Note that the BIND DNS server software is
+not installed on RHEL5 by default. The remainder of this section
+discusses secure configuration of machines which must be
+nameservers.</description>
+<Rule id="rule-3.14.1.a">
+<title>CCE-3578-2:Disable DNS Server if Possible</title>
+<description>The named service should be disabled.</description>
+<ident cce="3578-2" />
+<oval id="20311" />
+</Rule>
+<Rule id="rule-3.14.1.b">
+<title>CCE-4219-2:Uninstall bind if Possible</title>
+<description>The bind package should be uninstalled.</description>
+<ident cce="4219-2" />
+<oval id="20312" />
+</Rule>
+</Group>
+</Group>
+
+

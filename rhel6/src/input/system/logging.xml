@@ -1,0 +1,189 @@
+<Group id="group-2.6.1">
+<title>Configure Syslog</title>
+<description>Syslog has been the default Unix logging mechanism for
+many years. It has a number of downsides, including inconsistent
+log format, lack of authentication for received messages, and lack
+of authentication, encryption, or reliable transport for messages
+sent over a network. However, due to its long history, syslog is an
+accepted standard which is supported by almost all Unix
+applications. This section discusses how to configure syslog for
+best effect, and how to use tools provided with the system to
+maintain and monitor your logs.</description>
+<Rule id="rule-2.6.1.0">
+<title>CCE-17742-8:The rsyslog package should be installed or
+uninstalled as appropriate.</title>
+<description>The rsyslog package should be installed or uninstalled
+as appropriate.</description>
+<ident cce="17742-8" />
+<oval id="201480" />
+</Rule>
+<Rule id="rule-2.6.1.a">
+<title>CCE-17698-2:Configure Syslog</title>
+<description>The rsyslog service should be enabled or disabled as
+appropriate.</description>
+<ident cce="17698-2" />
+<oval id="20148" />
+</Rule>
+<Group id="group-2.6.1.2">
+<title>Confirm Existence and Permissions of System Log
+Files</title>
+<description>For each log file LOGFILE referenced in
+/etc/rsyslog.conf, run the commands:
+<br />
+<br />
+<code># touch LOGFILE
+<br /># chown root:root LOGFILE
+<br /># chmod 0600 LOGFILE
+<br /></code>
+<br />Rsyslog will refuse to log to a file which does not exist.
+All messages intended for that file will be silently discarded, so
+it is important to verify that all log files exist. Some logs may
+contain sensitive information, so it is better to restrict
+permissions so that only administrative users can read or write
+logfiles.</description>
+<Value id="var-2.6.1.2.a" type="string"
+operator="equals" interactive="0">
+<title>User who owns log files</title>
+<description>Specify user owner of all logfiles specified in
+/etc/rsyslog.conf.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-2.6.1.2.b" type="string"
+operator="equals" interactive="0">
+<title>group who owns log files</title>
+<description>Specify group owner of all logfiles specified in
+/etc/rsyslog.conf.</description>
+<value selector="root">root</value>
+</Value>
+<Rule id="rule-2.6.1.2.a">
+<title>CCE-17857-4:All rsyslog log files should be owned by the
+appropriate user.</title>
+<description>All rsyslog log files should be owned by the
+appropriate user.</description>
+<ident cce="17857-4" />
+<oval id="20149" />
+</Rule>
+<Rule id="rule-2.6.1.2.b">
+<title>CCE-18240-2:All rsyslog log files should be owned by the
+appropriate group.</title>
+<description>All rsyslog log files should be owned by the
+appropriate group.</description>
+<ident cce="18240-2" />
+<oval id="20150" />
+</Rule>
+
+
+<Rule id="rule-2.6.1.2.c">
+<title>CCE-18095-0:File permissions for all rsyslog log files
+should be set correctly.</title>
+<description>File permissions for all rsyslog log files should be
+set correctly.</description>
+<ident cce="18095-0" />
+<oval id="20151" />
+</Rule>
+</Group>
+<Group id="group-2.6.1.3">
+<title>Rsyslog logs should be sent to a remote loghost</title>
+<description>Edit /etc/rsyslog.conf. Add or correct the line:
+<br />
+<br />*.* @loghost.example.com
+<br />
+<br />where loghost.example.com is the name of your central log
+server.
+<br />
+<br />If system logs are to be useful in detecting malicious
+activities, it is necessary to send logs to a remote server. An
+intruder who has compromised the root account on a machine may
+delete the log entries which indicate that the system was attacked
+before they are seen by an administrator.
+<br />
+<br />However, it is recommended that logs be stored on the local
+host in addition to being sent to the loghost, because syslog uses
+the UDP protocol to send messages over a network. UDP does not
+guarantee reliable delivery, and moderately busy sites will lose
+log messages occasionally, especially in periods of high traffic
+which may be the result of an attack. In addition, remote syslog
+messages are not authenticated in any way, so it is easy for an
+attacker to introduce spurious messages to the central log server.
+Also, some problems cause loss of network connectivity, which will
+prevent the sending of messages to the central server. For all of
+these reasons, it is better to store log messages both centrally
+and on each host, so that they can be correlated if
+necessary.</description>
+<Rule id="rule-2.6.1.3.a">
+<title>CCE-17248-6:Rsyslog logs should be sent to a remote loghost
+or not as appropriate</title>
+<description>Rsyslog logs should be sent to a remote loghost or not
+as appropriate</description>
+<ident cce="17248-6" />
+<oval id="20152" />
+</Rule>
+</Group>
+<Group id="group-2.6.1.4">
+<title>Enable rsyslogd to Accept Remote Messages on Loghosts
+Only</title>
+<description>Is this machine the central log server for your
+organization? If so, edit the file /etc/sysconfig/rsyslog. Add or
+correct the following line:
+<br />
+<br />SYSLOGD_OPTIONS="-m 0 -r -s example.com "
+<br />
+<br />where example.com is the name of your domain.
+<br />
+<br />If the machine is not a log server, edit
+/etc/sysconfig/syslog, and instead add or correct the line:
+<br />
+<br />SYSLOGD_OPTIONS="-m 0"
+<br />
+<br />By default, RHEL5's syslog does not listen over the network
+for log messages. The -r flag enables syslogd to listen over a
+network, and should be used only if necessary. The -s example.com
+flag strips the domain name example.com from each sending machine's
+hostname before logging messages from that host, to reduce the
+amount of redundant information placed in log files. See the
+syslogd(8) man page for further information.</description>
+
+<Rule id="rule-2.6.1.4.a">
+<title>CCE-17639-6:Rsyslog should accept remote messages or not as
+appropriate</title>
+<description>Rsyslog should accept remote messages or not as
+appropriate</description>
+<ident cce="17639-6" />
+<oval id="20153" />
+</Rule>
+</Group>
+<Group id="group-2.6.1.5">
+<title>Ensure All Logs are Rotated by logrotate</title>
+<description>Edit the file /etc/logrotate.d/syslog. Find the first
+line, which should look like this (wrapped for clarity):
+<br />
+<br />/var/log/messages /var/log/secure /var/log/maillog
+/var/log/spooler \ /var/log/boot.log /var/log/cron {
+<br />
+<br />Edit this line so that it contains a one-space-separated
+listing of each log file referenced in /etc/syslog.conf.
+<br />All logs in use on a system must be rotated regularly, or the
+log files will consume disk space over time, eventually interfering
+with system operation. The file /etc/logrotate.d/syslog is the
+configuration file used by the logrotate program to maintain all
+log files written by syslog. By default, it rotates logs weekly and
+stores four archival copies of each log. These settings can be
+modified by editing /etc/logrotate.conf, but the defaults are
+sufficient for purposes of this guide.
+<br />
+<br />Note that logrotate is run nightly by the cron job
+/etc/cron.daily/logrotate. If particularly active logs need to be
+rotated more often than once a day, some other mechanism must be
+used.</description>
+<Rule id="rule-2.6.1.5.a">
+<title>CCE-4182-2:Ensure All Logs are Rotated by logrotate</title>
+<description>The logrotate (syslog rotater) service should be
+enabled.</description>
+<ident cce="4182-2" />
+<oval id="20154" />
+</Rule>
+</Group>
+</Group>
+
+
+

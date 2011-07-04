@@ -1,0 +1,274 @@
+<Group id="group-3.4">
+<title>Cron and At Daemons</title>
+<description>The cron and at services are used to allow commands to
+be executed at a later time. The cron service is required by almost
+all systems to perform necessary maintenance tasks, while at may or
+may not be required on a given system. Both daemons should be
+configured defensively.</description>
+<Rule id="rule-3.4.a">
+<title>CCE-4324-0:Enable cron Daemon</title>
+<description>The crond service should be enabled.</description>
+<ident cce="4324-0" />
+<oval id="20205" />
+</Rule>
+<Group id="group-3.4.2">
+<title>Restrict Permissions on Files Used by cron</title>
+<description>
+<ol>
+<li>Restrict the permissions on the primary system crontab file:
+<br />
+<br />
+<code># chown root:root /etc/crontab
+<br /># chmod 600 /etc/crontab</code></li>
+<li>If anacron has not been removed, restrict the permissions on
+its primary configuration file:
+<br />
+<br />
+<code># chown root:root /etc/anacrontab
+<br /># chmod 600 /etc/anacrontab</code></li>
+<li>Restrict the permission on all system crontab directories:
+<br />
+<br />
+<code># cd /etc
+<br /># chown -R root:root cron.hourly cron.daily cron.weekly
+cron.monthly cron.d
+<br /># chmod -R go-rwx cron.hourly cron.daily cron.weekly
+cron.monthly cron.d</code></li>
+<li>Restrict the permissions on the spool directory for user
+crontab files:
+<br />
+<br />
+<code># chown root:root /var/spool/cron
+<br /># chmod -R go-rwx /var/spool/cron</code></li>
+</ol>
+<br />
+<br />Cron and anacron make use of a number of configuration files
+and directories. The system crontabs need only be edited by root,
+and user crontabs are edited using the setuid root crontab command.
+If unprivileged users can modify system cron configuration files,
+they may be able to gain elevated privileges, so all unnecessary
+access to these files should be disabled.</description>
+<Value id="var-3.4.2.system.crontab.primary.group"
+type="string" operator="equals" interactive="0">
+<title>group owner of /etc/crontab</title>
+<description>Specify group owner of /etc/crontab.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-3.4.2.system.crontab.primary.user"
+type="string" operator="equals" interactive="0">
+<title>user owner of /etc/crontab</title>
+<description>Specify user owner of /etc/crontab.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-3.4.2.system.anacrontab.group"
+type="string" operator="equals" interactive="0">
+<title>group owner of /etc/anacrontab</title>
+<description>Specify group owner of /etc/ancrontab.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-3.4.2.system.anacrontab.user"
+type="string" operator="equals" interactive="0">
+<title>user owner of /etc/anacrontab</title>
+<description>Specify user owner of /etc/anacrontab.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-3.4.2.system.crontab.directories.group"
+type="string" operator="equals" interactive="0">
+<title>group owner of cron.hourly cron.daily cron.weekly
+cron.monthly cron.d</title>
+<description>Specify group owner of /etc/cron.* files and
+directories.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-3.4.2.system.crontab.directories.user"
+type="string" operator="equals" interactive="0">
+<title>user owner of cron.hourly cron.daily cron.weekly
+cron.monthly cron.d</title>
+<description>Specify user owner of /etc/cron.* files and
+directories.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-3.4.2.spool.directory.group"
+type="string" operator="equals" interactive="0">
+<title>group owner of /var/spool/cron</title>
+<description>Specify group owner of /var/spool/cron.</description>
+<value selector="root">root</value>
+</Value>
+<Value id="var-3.4.2.spool.directory.user"
+type="string" operator="equals" interactive="0">
+<title>user owner of /var/spool/cron</title>
+<description>Specify user owner of /var/spool/cron.</description>
+<value selector="root">root</value>
+</Value>
+<Rule id="rule-3.4.2.1.a">
+<title>CCE-3626-9:Set group owner on /etc/crontab</title>
+<description>The /etc/crontab file should be owned by the
+appropriate group.</description>
+<ident cce="3626-9" />
+<oval id="20208" />
+</Rule>
+<Rule id="rule-3.4.2.1.b">
+<title>CCE-3851-3:Set user owner on /etc/crontab</title>
+<description>The /etc/crontab file should be owned by the
+appropriate user.</description>
+<ident cce="3851-3" />
+<oval id="20209" />
+</Rule>
+<Rule id="rule-3.4.2.1.c">
+<title>CCE-4388-5:Set Permissions on /etc/crontab</title>
+<title>Restrict Permissions on Files Used by cron</title>
+<description>File permissions for /etc/crontab should be set
+correctly.</description>
+<ident cce="4388-5" />
+<oval id="20210" />
+</Rule>
+<Rule id="rule-3.4.2.2.a">
+<title>CCE-3604-6:Set group owner on /etc/anacrontab</title>
+<description>The /etc/anacrontab file should be owned by the
+appropriate group.</description>
+<ident cce="3604-6" />
+<oval id="20211" />
+</Rule>
+<Rule id="rule-3.4.2.2.b">
+<title>CCE-4379-4:Set user owner on /etc/anacrontab</title>
+<description>The /etc/anacrontab file should be owned by the
+appropriate user.</description>
+<ident cce="4379-4" />
+<oval id="20212" />
+</Rule>
+
+<Rule id="rule-3.4.2.2.c">
+<title>CCE-4304-2:Set Permissions on /etc/anacrontab</title>
+<description>File permissions for /etc/anacrontab should be set
+correctly.</description>
+<ident cce="4304-2" />
+<oval id="20213" />
+</Rule>
+<Rule id="rule-3.4.2.3.a">
+<title>CCE-4054-3:Set group owner on /etc/cron.hourly</title>
+<description>The /etc/cron.hourly file should be owned by the
+appropriate group.</description>
+<ident cce="4054-3" />
+<oval id="20214" />
+</Rule>
+<Rule id="rule-3.4.2.3.b">
+<title>CCE-3481-9:Set group owner on /etc/cron.daily</title>
+<description>The /etc/cron.daily file should be owned by the
+appropriate group.</description>
+<ident cce="3481-9" />
+<oval id="20215" />
+</Rule>
+<Rule id="rule-3.4.2.3.c">
+<title>CCE-4331-5:Set group owner on /etc/cron.weekly</title>
+<description>The /etc/cron.weekly file should be owned by the
+appropriate group.</description>
+<ident cce="4331-5" />
+<oval id="20216" />
+</Rule>
+<Rule id="rule-3.4.2.3.d">
+<title>CCE-4322-4:Set group owner on /etc/cron.monthly</title>
+<description>The /etc/cron.monthly file should be owned by the
+appropriate group.</description>
+<ident cce="4322-4" />
+<oval id="20217" />
+</Rule>
+<Rule id="rule-3.4.2.3.e">
+<title>CCE-4212-7:Set group owner on /etc/cron.d</title>
+<description>The /etc/cron.d file should be owned by the
+appropriate group.</description>
+<ident cce="4212-7" />
+<oval id="20218" />
+</Rule>
+<Rule id="rule-3.4.2.3.f">
+<title>CCE-3983-4:Set user owner on /etc/cron.hourly</title>
+<description>The /etc/cron.hourly file should be owned by the
+appropriate user.</description>
+<ident cce="3983-4" />
+<oval id="20219" />
+</Rule>
+<Rule id="rule-3.4.2.3.g">
+<title>CCE-4022-0:Set user owner on /etc/cron.daily</title>
+<description>The /etc/cron.daily file should be owned by the
+appropriate user.</description>
+<ident cce="4022-0" />
+<oval id="20220" />
+</Rule>
+<Rule id="rule-3.4.2.3.h">
+<title>CCE-3833-1:Set user owner on /etc/cron.weekly</title>
+<description>The /etc/cron.weekly file should be owned by the
+appropriate user.</description>
+<ident cce="3833-1" />
+<oval id="20221" />
+</Rule>
+
+
+<Rule id="rule-3.4.2.3.i">
+<title>CCE-4441-2:Set user owner on /etc/cron.monthly</title>
+<description>The /etc/cron.monthly file should be owned by the
+appropriate user.</description>
+<ident cce="4441-2" />
+<oval id="20222" />
+</Rule>
+<Rule id="rule-3.4.2.3.j">
+<title>CCE-4380-2:Set user owner on /etc/cron.d</title>
+<description>The /etc/cron.d file should be owned by the
+appropriate user.</description>
+<ident cce="4380-2" />
+<oval id="20223" />
+</Rule>
+<Rule id="rule-3.4.2.3.k">
+<title>CCE-4106-1:Set permissions on /etc/cron.hourly</title>
+<description>File permissions for /etc/cron.hourly should be set
+correctly.</description>
+<ident cce="4106-1" />
+<oval id="20224" />
+</Rule>
+<Rule id="rule-3.4.2.3.l">
+<title>CCE-4450-3:Set permissions on /etc/cron.daily</title>
+<description>File permissions for /etc/cron.daily should be set
+correctly.</description>
+<ident cce="4450-3" />
+<oval id="20225" />
+</Rule>
+<Rule id="rule-3.4.2.3.m">
+<title>CCE-4203-6:Set permissions on /etc/cron.weekly</title>
+<description>File permissions for /etc/cron.weekly should be set
+correctly.</description>
+<ident cce="4203-6" />
+<oval id="20226" />
+</Rule>
+<Rule id="rule-3.4.2.3.n">
+<title>CCE-4251-5:Set permissions on /etc/cron.monthly</title>
+<description>File permissions for /etc/cron.monthly should be set
+correctly.</description>
+<ident cce="4251-5" />
+<oval id="20227" />
+</Rule>
+<Rule id="rule-3.4.2.3.o">
+<title>CCE-4250-7:Set permissions on /etc/cron.d</title>
+<description>File permissions for /etc/cron.d should be set
+correctly.</description>
+<ident cce="4250-7" />
+<oval id="20228" />
+</Rule>
+</Group>
+<Group id="group-3.4.3">
+<title>Disable at if Possible</title>
+<description>Unless the at daemon is required, disable it with the
+following command:
+<br />
+<br />
+<code># chkconfig atd off
+<br /></code>
+<br />Many of the periodic or delayed execution features of the at
+daemon can be provided through the cron daemon
+instead.</description>
+<Rule id="rule-3.4.3.a">
+<title>CCE-14466-7:The 'at' daemon should be disabled</title>
+<description>The atd service should be disabled.</description>
+<ident cce="14466-7" />
+<oval id="202052" />
+</Rule>
+</Group>
+</Group>
+

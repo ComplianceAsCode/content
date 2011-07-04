@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <xsl:template match="Benchmark">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('intro/intro.xml')" />
+      <xsl:apply-templates select="document('system/system.xml')" />
+      <xsl:apply-templates select="document('services/services.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='system']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/software.xml')" />
+      <xsl:apply-templates select="document('system/permissions.xml')" />
+      <xsl:apply-templates select="document('system/aaa.xml')" />
+      <xsl:apply-templates select="document('system/selinux.xml')" />
+      <xsl:apply-templates select="document('system/network.xml')" />
+      <xsl:apply-templates select="document('system/logging.xml')" />
+      <xsl:apply-templates select="document('system/auditing.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='services']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('services/obsolete.xml')" />
+      <xsl:apply-templates select="document('services/base.xml')" />
+      <xsl:apply-templates select="document('services/cron.xml')" />
+      <xsl:apply-templates select="document('services/ssh.xml')" />
+      <xsl:apply-templates select="document('services/xorg.xml')" />
+      <xsl:apply-templates select="document('services/avahi.xml')" />
+      <xsl:apply-templates select="document('services/printing.xml')" />
+      <xsl:apply-templates select="document('services/dhcp.xml')" />
+      <xsl:apply-templates select="document('services/ntp.xml')" />
+      <xsl:apply-templates select="document('services/mail.xml')" />
+      <xsl:apply-templates select="document('services/ldap.xml')" />
+      <xsl:apply-templates select="document('services/nfs.xml')" />
+      <xsl:apply-templates select="document('services/dns.xml')" />
+      <xsl:apply-templates select="document('services/ftp.xml')" />
+      <xsl:apply-templates select="document('services/http.xml')" />
+      <xsl:apply-templates select="document('services/imap.xml')" />
+      <xsl:apply-templates select="document('services/smb.xml')" />
+      <xsl:apply-templates select="document('services/squid.xml')" />
+      <xsl:apply-templates select="document('services/snmp.xml')" />
+    </xsl:copy>
+  </xsl:template>
+  <!-- copy everything else through to final output -->
+  <xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+  </xsl:template>
+</xsl:stylesheet>

@@ -1,0 +1,98 @@
+<Group id="group-3.18">
+<title>Samba(SMB) Microsoft Windows File Sharing Server</title>
+<description>When properly configured, the Samba service allows
+Linux machines to provide file and print sharing to Microsoft
+Windows machines. There are two software packages that provide
+Samba support. The first, samba-client, provides a series of
+command line tools that enable a client machine to access Samba
+shares. The second, simply labeled samba, provides the Samba
+service. It is this second package that allows a Linux machine to
+act as an Active Directory server, a domain controller, or as a
+domain member. Only the samba-client package is installed by
+default.</description>
+<Group id="group-3.18.1">
+<title>Disable Samba if Possible</title>
+<description>If the Samba service has been enabled and will not be
+used, disable it:
+<br />
+<br />
+<code># chkconfig smb off
+<br /></code>
+<br />Even after the Samba server package has been installed, it
+will remain disabled. Do not enable this service unless it is
+absolutely necessary to provide Microsoft Windows file and print
+sharing functionality.</description>
+<Rule id="rule-3.18.1.a">
+<title>CCE-4551-8:Disable Samba if Possible</title>
+<description>The smb service should be disabled.</description>
+<ident cce="4551-8" />
+<oval id="20340" />
+</Rule>
+</Group>
+<Group id="group-3.18.2">
+<title>Configure Samba if Necessary</title>
+<description>All settings for the Samba daemon can be found in
+/etc/samba/smb.conf. Settings are divided between a [global]
+configuration section and a series of user created share definition
+sections meant to describe file or print shares on the system. By
+default, Samba will operate in user mode and allow client machines
+to access local home directories and printers. It is recommended
+that these settings be changed or that additional limitations be
+set in place.</description>
+<Group id="group-3.18.2.10">
+<title>Require Client SMB Packet Signing, if using
+smbclient</title>
+<description>To require samba clients running smbclient to use
+packet signing, add the following to the [global] section of the
+Samba conﬁguration ﬁle:
+<br />
+<br />client signing = mandatory
+<br />
+<br />A Samba client should only communicate with servers who can
+support SMB packet signing. Packet signing can prevent
+man-in-the-middle attacks which modify SMB packets in
+transit.</description>
+<Rule id="rule-3.18.2.10.a">
+<title>CCE-14075-6:Require Client SMB Packet Signing, if using
+smbclient</title>
+<description>Require samba clients running smbclient to use packet
+signing. A Samba client should only communicate with servers who
+can support SMB packet signing. Packet signing can prevent
+man-in-the-middle attacks which modify SMB packets in
+transit.</description>
+<ident cce="14075-6" />
+<oval id="2034010" />
+</Rule>
+</Group>
+
+<Group id="group-3.18.2.11">
+<title>Require Client SMB Packet Signing, if using
+mount.cifs</title>
+<description>Require packet signing of clients who mount Samba
+shares using the mount.cifs program (e.g., those who specify shares
+in /etc/fstab). To do so, ensure that signing options (either
+sec=krb5i or sec=ntlmv2i) are used.
+<br />
+<br />See the mount.cifs(8) man page for more information. A Samba
+client should only communicate with servers who can support SMB
+packet signing. Packet signing can prevent man-in-the-middle
+attacks which modify SMB packets in transit.</description>
+<Rule id="rule-3.18.2.11.a">
+<title>CCE-15029-2:Require Client SMB Packet Signing, if using
+mount.cifs</title>
+<description>Require packet signing of clients who mount Samba
+shares using the mount.cifs program (e.g., those who specify shares
+in /etc/fstab). To do so, ensure that signing options (either
+sec=krb5i or sec=ntlmv2i) are used.
+<br />
+<br />See the mount.cifs(8) man page for more information. A Samba
+client should only communicate with servers who can support SMB
+packet signing. Packet signing can prevent man-in-the-middle
+attacks which modify SMB packets in transit.</description>
+<ident cce="15029-2" />
+<oval id="2034011" />
+</Rule>
+</Group>
+</Group>
+</Group>
+
