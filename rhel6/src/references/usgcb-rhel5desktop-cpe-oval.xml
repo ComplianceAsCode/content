@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions
+		xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" 
+		xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
+        xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" 
+		xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"  
+		xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix 
+									  unix-definitions-schema.xsd
+									  http://oval.mitre.org/XMLSchema/oval-definitions-5#independent 
+									  independent-definitions-schema.xsd
+									  http://oval.mitre.org/XMLSchema/oval-definitions-5#linux 
+									  linux-definitions-schema.xsd
+									  http://oval.mitre.org/XMLSchema/oval-definitions-5 
+									  oval-definitions-schema.xsd
+									  http://oval.mitre.org/XMLSchema/oval-common-5 
+									  oval-common-schema.xsd
+									  ">
+      
+      <generator>
+            <oval:product_name>A mixture of Notepad++, Oxygen, and Visual Studio</oval:product_name>
+            <oval:schema_version>5.3</oval:schema_version>
+            <oval:timestamp>2010-06-08T12:00:00-04:00</oval:timestamp>
+      </generator>
+      <definitions>
+            <!--====================================================================================================-->
+            <!--=====================================  EXTENDED DEFINITIONS  =========================================-->
+            <!--====================================================================================================-->
+            <definition class="inventory" id="oval:gov.nist.usgcb.rhel:def:10000" version="1">
+                  <metadata>
+                        <title>Red Hat Enterprise Linux 5</title>
+                        <affected family="unix">
+                              <platform>Red Hat Enterprise Linux 5</platform>
+                        </affected>
+                        <reference ref_id="cpe:/o:redhat:enterprise_linux:5" source="CPE"/>
+                        <description>The operating system installed on the system is Red Hat Enterprise Linux 5</description>
+                  </metadata>
+                  <criteria>
+                        <criterion comment="Installed operating system is part of the unix family" test_ref="oval:gov.nist.usgcb.rhel:tst:20001"/>
+                        <criterion comment="Red Hat Enterprise Linux 5 is installed" test_ref="oval:gov.nist.usgcb.rhel:tst:10000"/>
+                  </criteria>
+            </definition>
+            <definition class="inventory" id="oval:gov.nist.usgcb.rhel:def:30000" version="1">
+                  <metadata>
+                        <title>Red Hat Enterprise Linux Desktop (v.5 client)</title>
+                        <affected family="unix">
+                              <platform>Red Hat Enterprise Linux Desktop (v.5 client)</platform>
+                        </affected>
+                        <reference ref_id="cpe:/o:redhat:enterprise_linux:5::client" source="CPE"/>
+                        <description>The operating system installed on the system is Red Hat Enterprise Linux Desktop (v.5 client)</description>
+                  </metadata>
+                  <criteria>
+                        <criterion comment="Installed operating system is part of the unix family" test_ref="oval:gov.nist.usgcb.rhel:tst:20001"/>
+                        <criterion comment="Red Hat Enterprise Linux Desktop (v.5 client) is installed" test_ref="oval:gov.nist.usgcb.rhel:tst:30000"/>
+                  </criteria>
+            </definition>
+            <!--<definition class="inventory" id="oval:gov.nist.usgcb.rhel:def:40000" version="1">
+                  <metadata>
+                        <title>Red Hat Enterprise Linux Desktop Workstation (v.5 client)</title>
+                        <affected family="unix">
+                              <platform>Red Hat Enterprise Linux Desktop (v.5 client)</platform>
+                        </affected>
+                        <reference ref_id="cpe:/o:redhat:enterprise_linux:5::client_workstation" source="CPE"/>
+                        <description>The operating system installed on the system is Red Hat Enterprise Linux Desktop Workstation (v.5 client)</description>
+                  </metadata>
+                  <criteria>
+                        <criterion comment="Installed operating system is part of the unix family" test_ref="oval:gov.nist.usgcb.rhel:tst:20001"/>
+                        <criterion comment="Red Hat Enterprise Linux Desktop Workstation (v.5 client) is installed" test_ref="oval:gov.nist.usgcb.rhel:tst:40000"/>
+                  </criteria>
+            </definition>-->
+           
+      </definitions>
+      <!-- ==================================================================================================== -->
+      <!-- ============================================  TESTS  =============================================== -->
+      <!-- ==================================================================================================== -->
+      <tests>
+            <family_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:20001" version="1" check="only one" 
+                  comment="installed operating system is part of the Unix family" 
+                  xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:20001"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:20001"/>
+            </family_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:10000" version="1" check="at least one" comment="redhat-release is version 5"
+                  xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:10000"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:10001" version="1" check="at least one" comment="redhat-release is version 5.1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:10001"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:10002" version="1" check="at least one" comment="redhat-release is version 5.2" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:10002"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:10003" version="1" check="at least one" comment="redhat-release is version 5.3" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:10003"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:10004" version="1" check="at least one" comment="redhat-release is version 5.4" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:10004"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:10005" version="1" check="at least one" comment="redhat-release is version 5.5" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:10005"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:10006" version="1" check="at least one" comment="redhat-release is version 5.6" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:10006"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:30000" version="1" check="at least one" comment="redhat-release is version 5Desktop" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:30000"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:40000" version="1" check="at least one" comment="redhat-release is version 5Workstation" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:40000"/>
+            </rpminfo_test>
+            <rpminfo_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:50000" version="1" check="at least one" comment="redhat-release is version 5Server" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
+                  <state state_ref="oval:gov.nist.usgcb.rhel:ste:50000"/>
+            </rpminfo_test>
+      </tests>
+      <!-- ==================================================================================================== -->
+      <!-- ============================================  OBJECTS  ============================================= -->
+      <!-- ==================================================================================================== -->
+      <objects>
+            <rpminfo_object id="oval:gov.nist.usgcb.rhel:obj:10000" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <name>redhat-release</name>
+            </rpminfo_object>
+            <family_object id="oval:gov.nist.usgcb.rhel:obj:20001" version="1"  xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"/>
+      </objects>
+      <!-- ==================================================================================================== -->
+      <!-- =============================================  STATES  ============================================= -->
+      <!-- ==================================================================================================== -->
+      <states>
+            <family_state id="oval:gov.nist.usgcb.rhel:ste:20001" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent">
+                  <family>unix</family>
+            </family_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:10000" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <version operation="pattern match">^5[^\d]</version>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:10001" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <release operation="pattern match">^5\.[1-9]</release>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:10002" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <release operation="pattern match">^5\.[2-9]</release>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:10003" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <release operation="pattern match">^5\.[3-9]</release>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:10004" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <release operation="pattern match">^5\.[4-9]</release>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:10005" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <release operation="pattern match">^5\.[5-9]</release>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:10006" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <release operation="pattern match">^5\.[6-9]</release>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:30000" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <version operation="pattern match">^5Desktop</version>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:40000" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <version operation="pattern match">^5Workstation</version>
+            </rpminfo_state>
+            <rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:50000" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+                  <version operation="pattern match">^5Server</version>
+            </rpminfo_state>
+      </states>
+      <!-- ==================================================================================================== -->
+      <!-- ==================================================================================================== -->
+      <!-- ==================================================================================================== -->
+</oval_definitions>
