@@ -1,4 +1,4 @@
-<Group id="group-3.2">
+<Group id="obsolete">
 <title>Obsolete Services</title>
 <description>This section discusses a number of network-visible
 services which have historically caused problems for system
@@ -17,7 +17,7 @@ firewall software (see Section 2.5.5) to restrict access to the
 vulnerable service to only those remote hosts which have a known
 need to use it.</description>
 
-<Group id="group-3.2.1">
+<Group id="inetd_and_xinetd">
 <title>Inetd and Xinetd</title>
 <description>Is there an operational need to run the deprecated
 inetd or xinetd software packages? If not, ensure that they are
@@ -34,29 +34,29 @@ of network listeners is better handled using a granular model such
 as SELinux than using xinetd's limited security
 options.</description>
 
-<Rule id="rule-3.2.1.a">
-<title>CCE-4234-1:Disable Inetd</title>
+<Rule id="disable_inetd">
+<title>Disable Inetd</title>
 <description>The inetd service should be disabled.</description>
 <ident cce="4234-1" />
 <oval id="20170" />
 </Rule>
 
-<Rule id="rule-3.2.1.b">
-<title>CCE-4252-3:Disable Xinetd</title>
+<Rule id="disable_xinetd">
+<title>Disable Xinetd</title>
 <description>The xinetd service should be disabled.</description>
 <ident cce="4252-3" />
 <oval id="20171" />
 </Rule>
 
-<Rule id="rule-3.2.1.c">
-<title>CCE-4023-8:Uninstall Inetd</title>
+<Rule id="uninstall_inetd">
+<title>Uninstall Inetd</title>
 <description>The inetd package should be uninstalled.</description>
 <ident cce="4023-8" />
 <oval id="20172" />
 </Rule>
 
-<Rule id="rule-3.2.1.d">
-<title>CCE-4164-0:Uninstall Xinetd</title>
+<Rule id="uninstall_xinetd">
+<title>Uninstall Xinetd</title>
 <description>The xinetd package should be
 uninstalled.</description>
 <ident cce="4164-0" />
@@ -64,7 +64,7 @@ uninstalled.</description>
 </Rule>
 
 </Group>
-<Group id="group-3.2.2">
+<Group id="telnet">
 <title>Telnet</title>
 <description>Is there a mission-critical reason for users to access
 the system via the insecure telnet protocol, rather than the more
@@ -85,16 +85,16 @@ working to migrate to a more secure protocol.
 <br />See Section 3.5 for information about the SSH
 service.</description>
 
-<Rule id="rule-3.2.2.a">
-<title>CCE-4330-7:Uninstall Telnet server</title>
+<Rule id="uninstall_telnet_server">
+<title>Uninstall Telnet server</title>
 <description>The telnet-server package should be
 uninstalled.</description>
 <ident cce="4330-7" />
 <oval id="20174" />
 </Rule>
 
-<Rule id="rule-3.2.2.b">
-<title>CCE-3390-2:Disable telnet service</title>
+<Rule id="disable_telnet_service">
+<title>Disable telnet service</title>
 <description>telnet service should be disabled.</description>
 <ident cce="3390-2" />
 <oval id="201745" />
@@ -102,14 +102,14 @@ uninstalled.</description>
 </Group>
 
 
-<Group id="group-3.2.3">
+<Group id="r_services">
 <title>Rlogin, Rsh, and Rcp</title>
 <description>The Berkeley r-commands are legacy services which
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="rule-3.2.3.1.a">
-<title>CCE-4308-3:Remove the Rsh Server Commands from the
+<Rule id="uninstall_rsh-server">
+<title>Remove the Rsh Server Commands from the
 System</title>
 <description>The rsh-server package should be
 uninstalled.</description>
@@ -117,29 +117,29 @@ uninstalled.</description>
 <oval id="20177" />
 </Rule>
 
-<Rule id="rule-3.2.3.1.b">
-<title>CCE-3974-3:disable rcp</title>
+<Rule id="disable_rcp">
+<title>Disable rcp</title>
 <description>The rcp service should be disabled.</description>
 <ident cce="3974-3" />
 <oval id="201774" />
 </Rule>
 
-<Rule id="rule-3.2.3.1.c">
-<title>CCE-4141-8:disable rsh</title>
+<Rule id="disable_rsh">
+<title>Disable rsh</title>
 <description>The rsh service should be disabled.</description>
 <ident cce="4141-8" />
 <oval id="201775" />
 </Rule>
 
-<Rule id="rule-3.2.3.1.d">
-<title>CCE-3537-8:disable rlogin</title>
+<Rule id="disable_rlogin">
+<title>Disable rlogin</title>
 <description>The rlogin service should be disabled.</description>
 <ident cce="3537-8" />
 <oval id="201776" />
 </Rule>
 
 </Group>
-<Group id="group-3.2.4">
+<Group id="nis">
 <title>NIS</title>
 <description>The NIS client service ypbind is not activated by
 default. In the event that it was activated at some point, disable
@@ -162,23 +162,23 @@ services. NIS should not be used because it suffers from security
 problems inherent in its design, such as inadequate protection of
 important authentication information.</description>
 
-<Rule id="rule-3.2.4.a">
-<title>CCE-4348-9:Uninstall NIS</title>
+<Rule id="uninstall_ypserv">
+<title>Uninstall NIS</title>
 <description>The ypserv package should be
 uninstalled.</description>
 <ident cce="4348-9" />
 <oval id="20180" />
 </Rule>
 
-<Rule id="rule-3.2.4.b">
-<title>CCE-3705-1:Disable NIS</title>
+<Rule id="disable_ypbind">
+<title>Disable NIS</title>
 <description>The ypbind service should be disabled.</description>
 <ident cce="3705-1" />
 <oval id="20181" />
 </Rule>
 </Group>
 
-<Group id="group-3.2.5">
+<Group id="tftp">
 <title>TFTP Server</title>
 <description>Is there an operational need to run the deprecated
 TFTP server software? If not, ensure that it is removed from the
@@ -195,16 +195,16 @@ more secure protocols. A TFTP server should be run only if no more
 secure method of supporting existing equipment can be
 found.</description>
 
-<Rule id="rule-3.2.5.a">
-<title>CCE-3916-4:Uninstall TFTP Server</title>
+<Rule id="uninstall_tftp-server">
+<title>Uninstall TFTP Server</title>
 <description>The tftp-server package should be
 uninstalled.</description>
 <ident cce="3916-4" />
 <oval id="20182" />
 </Rule>
 
-<Rule id="rule-3.2.5.b">
-<title>CCE-4273-9:Disable TFTP Server</title>
+<Rule id="disable_tftp">
+<title>Disable TFTP Server</title>
 <description>The tftp service should be disabled.</description>
 <ident cce="4273-9" />
 <oval id="201825" />

@@ -1,0 +1,114 @@
+<Group id="network-ipv6">
+<title>IPv6</title>
+<description>The system includes support for Internet Protocol
+version 6. A major and often-mentioned improvement over IPv4 is its
+enormous increase in the number of available addresses. Another
+important feature is its support for automatic configuration of
+many network settings.</description>
+<Group id="disabling_ipv6">
+<title>Disable Support for IPv6 unless Needed</title>
+<description>Because the IPv6 networking code is relatively new and
+complex, it is particularly important that it be disabled unless
+needed. Despite configuration that suggests support for IPv6 has
+been disabled, link-local IPv6 address autoconfiguration occurs
+even when only an IPv4 address is assigned. The only way to
+effectively prevent execution of the IPv6 networking stack is to
+prevent the kernel from loading the IPv6 kernel
+module.</description>
+<Group id="disabling_ipv6_module">
+<title>Disable Automatic Loading of IPv6 Kernel Module</title>
+<description>To prevent the IPv6 kernel module (ipv6) from being
+loaded, add the following line to /etc/modprobe.conf:
+<br />
+<br />install ipv6 /bin/true
+<br />
+<br />When the kernel requests the ipv6 module, this line will
+direct the system to run the program /bin/true
+instead.</description>
+<Rule id="disable_ipv6_module_loading">
+<title>Disable Automatic Loading of IPv6 Kernel
+Module</title>
+<description>Automatic loading of the IPv6 kernel module should be
+disabled.</description>
+<ident cce="3562-6" />
+<oval id="20130" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+</Group>
+</Group>
+<Group id="configuring_ipv6">
+<title>Configure IPv6 Settings if Necessary</title>
+<description>A major feature of IPv6 is the extent to which systems
+implementing it can automatically configure their networking
+devices using information from the network. From a security
+perspective, manually configuring important configuration
+information is always preferable to accepting it from the network
+in an unauthenticated fashion.</description>
+<Group id="disabling_ipv6_autoconfig">
+<title>Disable Automatic Configuration</title>
+<description>Disable the system's acceptance of router
+advertisements and redirects by adding or correcting the following
+line in /etc/sysconfig/network (note that this does not disable
+sending router solicitations):
+<br />
+<br />IPV6_AUTOCONF=no</description>
+<Value id="var-2.5.3.2.1.a" type="string"
+operator="equals" interactive="0">
+<title>IPV6_AUTOCONF</title>
+<description>Toggle global IPv6 autoconfiguration (only, if global
+forwarding is disabled)</description>
+<value selector="">disabled</value>
+<value selector="enabled">enabled</value>
+<value selector="disabled">disabled</value>
+</Value>
+<Value id="var-2.5.3.2.1.b" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.default.accept_ra</title>
+<description>accept default router advertisements</description>
+<value selector="">no</value>
+<value selector="enabled">yes</value>
+<value selector="disabled">no</value>
+</Value>
+
+
+<Value id="var-2.5.3.2.1.c" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.default.accept_redirects</title>
+<description>Toggle ICMP Redirect Acceptance</description>
+<value selector="">disabled</value>
+<value selector="enabled">enabled</value>
+<value selector="disabled">disabled</value>
+</Value>
+<Value id="var-2.5.3.2.1.d" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.all.accept_redirects</title>
+<description>Toggle ICMP Redirect Acceptance</description>
+<value selector="">disabled</value>
+<value selector="enabled">enabled</value>
+<value selector="disabled">disabled</value>
+</Value>
+<Rule id="set_sysctl_ipv6_default_accept_ra">
+<title>Disable accepting IPv6 router advertisements
+(net.ipv6.conf.default.accept_ra)</title>
+<description>The default setting for accepting IPv6 router
+advertisements should be:
+<sub idref="var-2.5.3.2.b" />for all
+interfaces.</description>
+<ident cce="4269-7" />
+<oval id="20135" />
+<ref nist="CM-7" />
+</Rule>
+<Rule id="set_sysctl_ipv6_default_accept_redirects">
+<title>Disable accepting redirects from IPv6 routers
+(net.ipv6.conf.default.accept_redirects)</title>
+<description>Accepting redirects from IPv6 routers should be:
+<sub idref="var-2.5.3.2.c" />for all
+interfaces.</description>
+<ident cce="4313-3" />
+<oval id="20136" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+</Group>
+</Group>
+
+</Group>

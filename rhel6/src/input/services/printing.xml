@@ -1,4 +1,4 @@
-<Group id="group-3.8">
+<Group id="printing">
 <title>Print Support</title>
 <description>The Common Unix Printing System (CUPS) service
 provides both local and network printing support. A system running
@@ -15,7 +15,7 @@ features that HP printers provide that CUPS may not necessarily
 support. It relies upon the CUPS service.</description>
 <reference href="http://www.cups.org">CUPS is the standards-based,
 open source printing system</reference>
-<Group id="group-3.8.4">
+<Group id="hplip_service">
 <title>The HP Linux Imaging and Printing (HPLIP) Toolkit</title>
 <description>The HPLIP package is an HP printing support utility
 that is installed and enabled in a default installation. The HPLIP
@@ -26,7 +26,7 @@ higher level printing support (such as bi-directional I/O,
 scanning, photo card, and toolbox functionality). HPIJS is a lower
 level basic printing driver that provides basic support for
 non-PostScript HP printers.</description>
-<Group id="group-3.8.4.1">
+<Group id="disabling_hplip_service">
 <title>Disable HPLIP Service if Possible</title>
 <description>Since the HPIJS driver will still function without the
 added HPLIP service, HPLIP should be disabled unless the specific
@@ -41,8 +41,8 @@ be noted that HPIJS can be installed directly without HPLIP. Please
 see the FAQ at the HPLIP web site at
 http://hplip.sourceforge.net/faqs.html for more information on how
 to do this.</description>
-<Rule id="rule-3.8.4.1.a">
-<title>CCE-4425-5:Disable HPLIP Service if Possible</title>
+<Rule id="disable_hplip_service">
+<title>Disable HPLIP Service if Possible</title>
 <description>The hplip service should be disabled.</description>
 <ident cce="4425-5" />
 <oval id="20266" />

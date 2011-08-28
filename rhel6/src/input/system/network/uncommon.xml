@@ -1,0 +1,93 @@
+<Group id="network-uncommon">
+<title>Uncommon Network Protocols</title>
+<description>The system includes support for several network
+protocols which are not commonly used. Although security vul-
+nerabilities in kernel networking code are not frequently
+discovered, the consequences can be dramatic. Ensuring uncommon
+network protocols are disabled reduces the system’s risk to attacks
+targeted at its implementation of those protocols.</description>
+
+<Group id="group-2.5.7.1">
+<title>Disable Support for DCCP</title>
+<description>To prevent the DCCP kernel module from being loaded,
+add the following line to /etc/modprobe.conf:
+<br />
+<br />
+<code>install dccp /bin/true
+<br /></code>
+<br />The Datagram Congestion Control Protocol (DCCP) is a
+relatively new transport layer protocol, designed to support
+streaming media and telephony.</description>
+<Rule id="rule-2.5.7.1.a">
+<title>Disable Support for DCCP</title>
+<description>Support for DCCP should be disabled.</description>
+<ident cce="14268-7" />
+<oval id="201476" />
+</Rule>
+</Group>
+
+<Group id="group-2.5.7.2">
+<title>Disable Support for SCTP</title>
+<description>To prevent the SCTP kernel module from being loaded,
+add the following line to /etc/modprobe.conf:
+<br />
+<br />
+<code>install sctp /bin/true
+<br /></code>
+<br />The Stream Control Transmission Protocol (SCTP) is a
+transport layer protocol, designed to support the idea of
+message-oriented communication, with several streams of messages
+within one connection.</description>
+<Rule id="rule-2.5.7.2.a">
+<title>Disable Support for SCTP</title>
+<description>Support for SCTP should be disabled.</description>
+<ident cce="14132-5" />
+<oval id="201477" />
+</Rule>
+</Group>
+
+<Group id="group-2.5.7.3">
+<title>Disable Support for RDS</title>
+<description>To prevent the RDS kernel module from being loaded,
+add the following line to /etc/modprobe.conf:
+<br />
+<br />
+<code>install rds /bin/true
+<br /></code>
+<br />The Reliable Datagram Sockets (RDS) protocol is a transport
+layer protocol designed to provide reliable high- bandwidth,
+low-latency communications between nodes in a
+cluster.</description>
+<Rule id="rule-2.5.7.3.a">
+<title>Disable Support for RDS</title>
+<description>Support for RDS should be disabled.</description>
+<ident cce="14027-7" />
+<oval id="201478" />
+</Rule>
+</Group>
+
+<Group id="group-2.5.7.4">
+<title>Disable Support for TIPC</title>
+<description>To prevent the TIPC kernel module from being loaded,
+add the following line to /etc/modprobe.conf:
+<br />
+<br />
+<code>install rds /bin/true
+<br /></code>
+<br />The Transparent Inter-Process Communication (TIPC) protocol
+is designed to provide communications between nodes in a
+cluster..</description>
+<Rule id="rule-2.5.7.4.a">
+<title>Disable Support for TIPC</title>
+<description>Support for TIPC should be disabled.</description>
+<ident cce="14911-2" />
+<oval id="201479" />
+</Rule>
+</Group>
+
+</Group>
+
+
+
+
+

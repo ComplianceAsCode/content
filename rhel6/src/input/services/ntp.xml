@@ -1,4 +1,4 @@
-<Group id="group-3.10">
+<Group id="ntp">
 <title>Network Time Protocol</title>
 <description>The Network Time Protocol is used to manage the system
 clock over a network. Computer clocks are not very accurate, so
@@ -28,11 +28,8 @@ outside of your network.
 network to have a small number of machines operating as NTP
 servers, and the remainder obtaining time information from those
 internal servers.</description>
-<Group id="group-3.10.2">
-<title>Configure Reference NTP if Appropriate</title>
-<description>The ntp RPM implements the reference NTP
-server.</description>
-<Group id="group-3.10.2.2">
+
+<Group id="configuring_ntpd">
 <title>Configure an NTP Server</title>
 <description>The site’s NTP server contacts a central NTP server,
 probably either one provided by your ISP or a public time server,
@@ -41,21 +38,21 @@ on your network to request the time data.
 <br />
 <br />The NTP server conﬁguration ﬁle is located at
 /etc/ntp.conf.</description>
-<Group id="group-3.10.2.2.1">
+<Group id="enabling_ntpd">
 <title>Enable the NTP Daemon</title>
 <description>If this machine is an NTP server, ensure that ntpd is
 enabled at boot time:
 <br />
 <br />
 <code># chkconfig ntpd on</code></description>
-<Rule id="rule-3.10.2.2.1.a">
-<title>CCE-4376-0:Enable the NTP Daemon</title>
+<Rule id="enable_ntpd">
+<title>Enable the NTP Daemon</title>
 <description>The ntpd service should be enabled.</description>
 <ident cce="4376-0" />
 <oval id="20281" />
 </Rule>
 </Group>
-<Group id="group-3.10.2.2.3">
+<Group id="configuring_ntpd_client">
 <title>Specify a Remote NTP Server for Time Data</title>
 <description>Find the IP address, server-ip , of an appropriate
 remote NTP server. Edit the file /etc/ntp.conf, and add or correct
@@ -86,14 +83,13 @@ an IP address, for the server field. However, the restrict setting
 applies only to network blocks of IP addresses, so it is considered
 more maintainable to use the IP address in both
 fields.</description>
-<Rule id="rule-3.10.2.2.3.a">
-<title>CCE-4385-1:Specify a Remote NTP Server for Time Data</title>
+<Rule id="ntpd_specify_remote_server">
+<title>Specify a Remote NTP Server for Time Data</title>
 <description>A remote NTP Server for time synchronization should be
 specified</description>
 <ident cce="4385-1" />
 <oval id="20283" />
 </Rule>
-</Group>
 </Group>
 </Group>
 </Group>

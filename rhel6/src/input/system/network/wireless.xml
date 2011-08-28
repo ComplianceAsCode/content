@@ -1,0 +1,70 @@
+<Group id="network-wireless">
+<title>Wireless Networking</title>
+<description>Wireless networking (sometimes referred to as 802.11
+or Wi-Fi) presents a serious security risk to sensitive or
+classified systems and networks. Wireless networking hardware is
+much more likely to be included in laptop or portable systems than
+desktops or servers. See Section 3.3.14 for information on
+Bluetooth wireless support. Bluetooth serves a different purpose
+and possesses a much shorter range, but it still presents serious
+security risks.
+<br />
+<br />Removal of hardware is the only way to absolutely ensure that
+the wireless capability remains disabled. If it is completely
+impractical to remove the wireless hardware, and site policy still
+allows the device to enter sensitive spaces, every effort to
+disable the capability via software should be made. In general,
+acquisition policy should include provisions to prevent the
+purchase of equipment that will be used in sensitive spaces and
+includes wireless capabilities.</description>
+<Group id="wireless_software">
+<title>Disable Wireless Through Software Configuration</title>
+<description>If it is impossible to remove the wireless hardware
+from the device in question, disable as much of it as possible
+through software. The following methods can disable software
+support for wireless networking, but note that these methods do not
+prevent malicious software or careless users from re-activating the
+devices.</description>
+<Group id="wireless_interface_deactivation">
+<title>Deactivate Wireless Interfaces</title>
+<description>Deactivating the wireless interfaces should prevent
+normal usage of the wireless capability.
+<br />
+<br />First, identify the interfaces available with the command:
+<br />
+<br />
+<code># ifconfig -a
+<br /></code>
+<br />Additionally,the following command may also be used to
+determine whether wireless support ('extensions') is included for a
+particular interface, though this may not always be a clear
+indicator:
+<br />
+<br />
+<code># iwconfig
+<br /></code>
+<br />After identifying any wireless interfaces (which may have
+names like wlan0, ath0, wifi0, or eth0), deactivate the interface
+with the command:
+<br />
+<br />
+<code># ifdown interface
+<br /></code>
+<br />These changes will only last until the next reboot. To
+disable the interface for future boots, remove the appropriate
+interface file from /etc/sysconfig/network-scripts:
+<br />
+<br />
+<code># rm
+/etc/sysconfig/network-scripts/ifcfg-interface</code></description>
+<Rule id="deactivate_wireless_interfaces">
+<title>Deactivate Wireless Interfaces</title>
+<description>All wireless interfaces should be
+disabled.</description>
+<ident cce="4276-2" />
+<oval id="20128" />
+<ref nist="CM-7" />
+</Rule>
+</Group>
+</Group>
+</Group>

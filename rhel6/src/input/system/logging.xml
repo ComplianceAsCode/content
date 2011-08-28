@@ -1,4 +1,4 @@
-<Group id="group-2.6.1">
+<Group id="logging">
 <title>Configure Syslog</title>
 <description>Syslog has been the default Unix logging mechanism for
 many years. It has a number of downsides, including inconsistent
@@ -9,22 +9,27 @@ accepted standard which is supported by almost all Unix
 applications. This section discusses how to configure syslog for
 best effect, and how to use tools provided with the system to
 maintain and monitor your logs.</description>
-<Rule id="rule-2.6.1.0">
-<title>CCE-17742-8:The rsyslog package should be installed or
+
+<Rule id="install_rsyslog">
+<title>The rsyslog package should be installed or
 uninstalled as appropriate.</title>
 <description>The rsyslog package should be installed or uninstalled
 as appropriate.</description>
 <ident cce="17742-8" />
 <oval id="201480" />
+<ref nist="AU-2, AU-9, CM-6" />
 </Rule>
-<Rule id="rule-2.6.1.a">
-<title>CCE-17698-2:Configure Syslog</title>
+
+<Rule id="enable_rsyslog">
+<title>Configure Syslog</title>
 <description>The rsyslog service should be enabled or disabled as
 appropriate.</description>
 <ident cce="17698-2" />
 <oval id="20148" />
+<ref nist="AU-2" />
 </Rule>
-<Group id="group-2.6.1.2">
+
+<Group id="log_file_permissions">
 <title>Confirm Existence and Permissions of System Log
 Files</title>
 <description>For each log file LOGFILE referenced in
@@ -55,34 +60,39 @@ operator="equals" interactive="0">
 /etc/rsyslog.conf.</description>
 <value selector="root">root</value>
 </Value>
-<Rule id="rule-2.6.1.2.a">
-<title>CCE-17857-4:All rsyslog log files should be owned by the
+
+<Rule id="userowner_rsyslog_files">
+<title>All rsyslog log files should be owned by the
 appropriate user.</title>
 <description>All rsyslog log files should be owned by the
 appropriate user.</description>
 <ident cce="17857-4" />
 <oval id="20149" />
+<ref nist="AC-3, CM-6" />
 </Rule>
-<Rule id="rule-2.6.1.2.b">
-<title>CCE-18240-2:All rsyslog log files should be owned by the
+
+<Rule id="groupowner_rsyslog_files">
+<title>All rsyslog log files should be owned by the
 appropriate group.</title>
 <description>All rsyslog log files should be owned by the
 appropriate group.</description>
 <ident cce="18240-2" />
 <oval id="20150" />
+<ref nist="AC-3, CM-6" />
 </Rule>
 
-
-<Rule id="rule-2.6.1.2.c">
-<title>CCE-18095-0:File permissions for all rsyslog log files
+<Rule id="rsyslog_file_permissions">
+<title>File permissions for all rsyslog log files
 should be set correctly.</title>
 <description>File permissions for all rsyslog log files should be
 set correctly.</description>
 <ident cce="18095-0" />
 <oval id="20151" />
+<ref nist="AC-3, CM-6" />
 </Rule>
 </Group>
-<Group id="group-2.6.1.3">
+
+<Group id="rsyslog_sending_messages">
 <title>Rsyslog logs should be sent to a remote loghost</title>
 <description>Edit /etc/rsyslog.conf. Add or correct the line:
 <br />
@@ -110,16 +120,17 @@ prevent the sending of messages to the central server. For all of
 these reasons, it is better to store log messages both centrally
 and on each host, so that they can be correlated if
 necessary.</description>
-<Rule id="rule-2.6.1.3.a">
-<title>CCE-17248-6:Rsyslog logs should be sent to a remote loghost
+<Rule id="rsyslog_send_messages_to_logserver">
+<title>Rsyslog logs should be sent to a remote loghost
 or not as appropriate</title>
 <description>Rsyslog logs should be sent to a remote loghost or not
 as appropriate</description>
 <ident cce="17248-6" />
 <oval id="20152" />
+<ref nist="AU-2, AU-9" />
 </Rule>
 </Group>
-<Group id="group-2.6.1.4">
+<Group id="rsyslog_accepting_remote_messages">
 <title>Enable rsyslogd to Accept Remote Messages on Loghosts
 Only</title>
 <description>Is this machine the central log server for your
@@ -143,16 +154,18 @@ hostname before logging messages from that host, to reduce the
 amount of redundant information placed in log files. See the
 syslogd(8) man page for further information.</description>
 
-<Rule id="rule-2.6.1.4.a">
-<title>CCE-17639-6:Rsyslog should accept remote messages or not as
+<Rule id="rsyslog_accept_remote_messages">
+<title>Rsyslog should accept remote messages or not as
 appropriate</title>
 <description>Rsyslog should accept remote messages or not as
 appropriate</description>
 <ident cce="17639-6" />
 <oval id="20153" />
+<ref nist="AU-2, AU-9" />
 </Rule>
 </Group>
-<Group id="group-2.6.1.5">
+
+<Group id="log_rotation">
 <title>Ensure All Logs are Rotated by logrotate</title>
 <description>Edit the file /etc/logrotate.d/syslog. Find the first
 line, which should look like this (wrapped for clarity):
@@ -175,12 +188,13 @@ sufficient for purposes of this guide.
 /etc/cron.daily/logrotate. If particularly active logs need to be
 rotated more often than once a day, some other mechanism must be
 used.</description>
-<Rule id="rule-2.6.1.5.a">
-<title>CCE-4182-2:Ensure All Logs are Rotated by logrotate</title>
+<Rule id="ensure_logrotate_activated">
+<title>Ensure All Logs are Rotated by logrotate</title>
 <description>The logrotate (syslog rotater) service should be
 enabled.</description>
 <ident cce="4182-2" />
 <oval id="20154" />
+<ref nist="AU-2, AU-9, CM-6" />
 </Rule>
 </Group>
 </Group>

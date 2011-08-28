@@ -1,0 +1,92 @@
+<Group id="accounts-banners">
+<title>Warning Banners for System Accesses</title>
+<description>Each system should expose as little information about
+itself as possible.
+<br />
+<br />System banners, which are typically displayed just before a
+login prompt, give out information about the service or the host's
+operating system. This might include the distribution name and the
+system kernel version, and the particular version of a network
+service. This information can assist intruders in gaining access to
+the system as it can reveal whether the system is running
+vulnerable software. Most network services can be configured to
+limit what information is displayed.
+<br />
+<br />Many organizations implement security policies that require a
+system banner provide notice of the system's ownership, provide
+warning to unauthorized users, and remind authorized users of their
+consent to monitoring.</description>
+<Value id="var-2.3.7" type="string"
+operator="equals" interactive="0">
+<title>login banner verbiage</title>
+<description>Enter an appropriate login banner for your
+organization</description>
+<value selector="any_text">.+</value>
+</Value>
+
+
+<Group id="system_login_banner">
+<title>Modify the System Login Banner</title>
+<description>The contents of the file /etc/issue are displayed on
+the screen just above the login prompt for users logging directly
+into a terminal. Remote login programs such as SSH or FTP can be
+configured to display /etc/issue as well. Instructions for
+configuring each server daemon to show this file can be found in
+the relevant sections of Chapter 3.
+<br />
+<br />By default, the system will display the version of the OS,
+the kernel version, and the host name.
+<br />
+<br />Edit /etc/issue. Replace the default text with a message
+compliant with the local site policy or a legal
+disclaimer.</description>
+<Rule id="set_system_login_banner">
+<title>Modify the System Login Banner</title>
+<description>The system login banner text should be:
+<sub idref="var-2.3.7" /></description>
+<ident cce="4060-0" />
+<oval id="20102" />
+<ref nist="AC-3, CM-6, AC-8" />
+</Rule>
+</Group>
+
+
+<Group id="gui_login_banner">
+<title>Implement a GUI Warning Banner</title>
+<description>In the default graphical environment, users logging
+directly into the system are greeted with a login screen provided
+by the GNOME display manager. The warning banner should be
+displayed in this graphical environment for these users.
+<br />
+<br />The files for the default RHEL theme can be found in
+/usr/share/gdm/themes/RHEL. Add the following sample block of XML
+to /usr/share/gdm/themes/RHEL/RHEL.xml after the first two "pixmap"
+entries:
+<br />
+<pre>
+ &lt;item type="rect"&gt; &lt;pos anchor="n" x="50%" y="10"
+width="box" weight="box"/&gt; &lt;box&gt; &lt;item type="label"&gt; &lt;normal
+font="Sans 14" color="#ffffff"/&gt; &lt;text&gt;
+Insert the text of your warning banner here.&lt;/text&gt; &lt;/item&gt;
+&lt;/box&gt; &lt;/item&gt;
+</pre>
+<br />The full syntax that GDM theme files expect is documented
+elsewhere, but the above XML will create a text box centered at the
+top of the screen. The font, text color, and exact positioning can
+all be easily modified by editing the appropriate values. The
+latest current GDM theme manual can be found at
+http://www.gnome.org/
+projects/gdm/docs/thememanual.html.</description>
+
+<Rule id="set_gui_login_banner">
+<title>Implement a GUI Warning Banner</title>
+<description>The direct gnome login warning banner text should be
+set appropriately</description>
+<ident cce="4188-9" />
+<oval id="20103" />
+<ref nist="AC-3, CM-6, AC-8" />
+</Rule>
+</Group>
+
+</Group>
+

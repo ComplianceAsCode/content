@@ -1,4 +1,4 @@
-<Group id="group-3.20">
+<Group id="snmp">
 <title>SNMP Server</title>
 <description>The Simple Network Management Protocol allows
 administrators to monitor the state of network devices, including
@@ -6,7 +6,7 @@ computers. Older versions of SNMP were well-known for weak
 security, such as plaintext transmission of the community string
 (used for authentication) and also usage of easily-guessable
 choices for community string.</description>
-<Group id="group-3.20.1">
+<Group id="disabling_snmp_service">
 <title>Disable SNMP Server if Possible</title>
 <description>The system includes an SNMP daemon that allows for its
 remote monitoring, though it not installed by default. If it was
@@ -20,14 +20,14 @@ remove SNMP as follows:
 <br />
 <code># chkconfig snmpd off
 <br /># yum erase net-snmpd</code></description>
-<Rule id="rule-3.20.1.a">
-<title>CCE-3765-5:Disable snmpd if Possible</title>
+<Rule id="disable_snmpd">
+<title>Disable snmpd if Possible</title>
 <description>The snmpd service should be disabled.</description>
 <ident cce="3765-5" />
 <oval id="20365" />
 </Rule>
-<Rule id="rule-3.20.1.b">
-<title>CCE-14081-4:Uninstall net-snmp if Possible</title>
+<Rule id="uninstall_net-snmp">
+<title>Uninstall net-snmp if Possible</title>
 <description>The net-snmp package should be
 uninstalled.</description>
 <ident cce="14081-4" />

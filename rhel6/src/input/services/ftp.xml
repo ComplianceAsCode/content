@@ -1,4 +1,4 @@
-<Group id="group-3.15">
+<Group id="ftp">
 <title>FTPServer</title>
 <description>FTP is a common method for allowing remote access to
 files. Like telnet, the FTP protocol is unencrypted, which means
@@ -10,7 +10,7 @@ Therefore, running the FTP server software is not recommended.
 be appropriate for some environments, particularly those which
 allow only read-only anonymous access as a means of downloading
 data available to the public.</description>
-<Group id="group-3.15.1">
+<Group id="disabling_vsftpd">
 <title>Disable vsftpd if Possible</title>
 <description>Is there a mission-critical reason for the machine to
 act as an FTP server? If not, disable vsftpd if it has been
@@ -18,18 +18,21 @@ installed:
 <br />
 <br />
 <code># chkconfig vsftpd off</code></description>
-<Rule id="rule-3.15.1.a">
-<title>CCE-3919-8:Disable vsftpd if Possible</title>
+<Rule id="disable_vsftpd">
+<title>Disable vsftpd if Possible</title>
 <description>The vsftpd service should be disabled.</description>
 <ident cce="3919-8" />
 <oval id="20317" />
+<ref nist="CM-6, CM-7" />
+
 </Rule>
-<Rule id="rule-3.15.1.b">
-<title>CCE-14881-7:Uninstall vsftpd if Possible</title>
+<Rule id="uninstall_vsftpd">
+<title>Uninstall vsftpd if Possible</title>
 <description>The vsftpd service should be
 uninstalled.</description>
 <ident cce="14881-7" />
 <oval id="203175" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
 </Group>

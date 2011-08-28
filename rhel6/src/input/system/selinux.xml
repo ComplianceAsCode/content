@@ -1,4 +1,4 @@
-<Group id="group-2.4">
+<Group id="selinux">
 <title>SELinux</title>
 <description>SELinux is a feature of the Linux kernel which can be
 used to guard against misconfigured or compromised programs.
@@ -20,7 +20,8 @@ so forth.
 default (targeted) policy on every Red Hat system, unless that
 system has requirements which make a stronger policy
 appropriate.</description>
-<Group id="group-2.4.2">
+
+<Group id="enabling_selinux">
 <title>Enable SELinux</title>
 <description>Edit the file /etc/selinux/config. Add or correct the
 following lines:
@@ -44,7 +45,7 @@ the mode back to enforcing after debugging, set the filesystems to
 be relabelled for consistency using the command touch
 /.autorelabel, and reboot.
 <br />
-<br />However, the RHEL5 default SELinux configuration should be
+<br />However, the RHEL6 default SELinux configuration should be
 sufficiently reasonable that most systems will boot without serious
 problems. Some applications that require deep or unusual system
 privileges, such as virtual machine software, may not be compatible
@@ -54,14 +55,14 @@ In other cases, SELinux may reveal unusual or insecure program
 behavior by design.
 <br />
 <br />The directive SELINUXTYPE=targeted configures SELinux to use
-the default targeted policy. See Section 2.4.6 if a stricter policy
-is appropriate for your site.
+the default targeted policy. 
 <br />
 <br />The SELinux boot mode specified in /etc/selinux/config can be
 overridden by command-line arguments passed to the kernel. It is
 necessary to check grub.conf to ensure that this has not been done
-and to protect the bootloader as described in Section
-2.3.5.2.</description>
+and to protect the boot process.
+</description>
+
 <Value id="var-2.4.2.c" type="string"
 operator="equals" interactive="0">
 <title>SELinux state</title>
@@ -85,29 +86,36 @@ operator="equals" interactive="0">
 <value selector="strict">strict</value>
 <value selector="mls">mls</value>
 </Value>
-<Rule id="rule-2.4.2.a">
-<title>CCE-3977-6:Enable SELinux in /etc/grub.conf</title>
+
+<Rule id="enable_selinux_bootloader">
+<title>Ensure SELinux Not Disabled in /etc/grub.conf</title>
 <description>SELinux should NOT be disabled in /etc/grub.conf.
 Check that selinux=0 is not found</description>
 <ident cce="3977-6" />
 <oval id="20104" />
+<ref nist="AC-3, CM-6" />
 </Rule>
-<Rule id="rule-2.4.2.c">
-<title>CCE-3999-0:Set the SELinux state</title>
+
+<Rule id="set_selinux_state">
+<title>Set the SELinux state</title>
 <description>The SELinux state should be set
 appropriately</description>
 <ident cce="3999-0" />
 <oval id="20106" />
+<ref nist="CM-6, CM-7" />
 </Rule>
-<Rule id="rule-2.4.2.d">
-<title>CCE-3624-4:Set the SELinux policy</title>
+
+<Rule id="set_selinux_policy">
+<title>Set the SELinux policy</title>
 <description>The SELinux policy should be set
 appropriately.</description>
 <ident cce="3624-4" />
 <oval id="20107" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
-<Group id="group-2.4.3">
+
+<Group id="selinux_daemons">
 <title>Disable Unnecessary SELinux Daemons</title>
 <description>Several daemons are installed by default as part of
 the RHEL5 SELinux support mechanism. These daemons may improve the
@@ -134,20 +142,21 @@ with special requirements. Therefore, it should be disabled in
 order to reduce the amount of potentially vulnerable code running
 on the system. See Section 2.4.6 for more information about systems
 which use category labelling.</description>
-<Rule id="rule-2.4.3.2.a">
-<title>CCE-3668-1:Disable MCS Translation Service (mcstrans) if
+<Rule id="disable_mcstransd">
+<title>Disable MCS Translation Service (mcstrans) if
 Possible</title>
 <description>The mcstrans service should be disabled.</description>
 <ident cce="3668-1" />
 <oval id="20110" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
 </Group>
 
 
-<Group id="group-2.4.5">
+<Group id="selinux_confinement_of_daemons">
 <title>Check for Unconfined Daemons</title>
-<description>Device ﬁles are used for communication with important
+<description>Device files are used for communication with important
 system resources. SELinux contexts should exist for these. If a
 device ﬁle is not labeled, then misconﬁguration is likely.
 <br />
@@ -158,15 +167,14 @@ command:
 <br /></code>
 <br />It should produce no output in a well-conﬁgured
 system.</description>
-<Rule id="rule-2.4.5.a">
-<title>CCE-14991-4:Check for Unconfined Daemons</title>
-<description>Check for device ﬁle that is not
+<Rule id="selinux_unlabeled_device_files">
+<title>Check for Unlabeled Device Files</title>
+<description>Check for device file that is not
 labeled.</description>
 <ident cce="14991-4" />
 <oval id="201115" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
 </Group>
-
-
 

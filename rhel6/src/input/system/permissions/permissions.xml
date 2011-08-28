@@ -1,0 +1,28 @@
+<Group id="aaa-permissions">
+<title>File Permissions and Masks</title>
+<description>Traditional Unix security relies heavily on file and
+directory permissions to prevent unauthorized users from reading or
+modifying files to which they should not have access. Adhere to the
+principle of least privilege — configure each file, directory, and
+filesystem to allow only the access needed in order for that file
+to serve its purpose.
+<br />
+<br />Note: Several of the commands in this section search
+filesystems for files or directories with certain characteristics,
+and are intended to be run on every local ext2 or ext3 partition on
+a given machine. When the variable
+<em>PART</em>appears in one of the commands below, it means that
+the command is intended to be run repeatedly, with the name of each
+local partition substituted for
+<em>PART</em>in turn.
+<br />
+<br />The following command prints a list of ext2 and ext3
+partitions on a given machine:
+<br />
+<br />
+<code>$ mount -t ext2,ext3 | awk '{print $3}'
+<br /></code>
+<br />If your site uses a local filesystem type other than ext2 or
+ext3, you will need to modify this command.</description>
+
+</Group>

@@ -4,6 +4,7 @@
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('profiles/desktop.xml')" />
       <xsl:apply-templates select="document('intro/intro.xml')" />
       <xsl:apply-templates select="document('system/system.xml')" />
       <xsl:apply-templates select="document('services/services.xml')" />
@@ -14,14 +15,51 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/software.xml')" />
-      <xsl:apply-templates select="document('system/permissions.xml')" />
-      <xsl:apply-templates select="document('system/aaa.xml')" />
+      <xsl:apply-templates select="document('system/permissions/permissions.xml')" />
       <xsl:apply-templates select="document('system/selinux.xml')" />
-      <xsl:apply-templates select="document('system/network.xml')" />
+      <xsl:apply-templates select="document('system/accounts/accounts.xml')" />
+      <xsl:apply-templates select="document('system/network/network.xml')" />
       <xsl:apply-templates select="document('system/logging.xml')" />
       <xsl:apply-templates select="document('system/auditing.xml')" />
     </xsl:copy>
   </xsl:template>
+
+  <xsl:template match="Group[@id='accounts']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/accounts/restrictions.xml')" />
+      <xsl:apply-templates select="document('system/accounts/pam.xml')" />
+      <xsl:apply-templates select="document('system/accounts/session.xml')" />
+      <xsl:apply-templates select="document('system/accounts/physical.xml')" />
+      <xsl:apply-templates select="document('system/accounts/banners.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='permissions']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/permissions/partitions.xml')" />
+      <xsl:apply-templates select="document('system/permissions/mounting.xml')" />
+      <xsl:apply-templates select="document('system/permissions/files.xml')" />
+      <xsl:apply-templates select="document('system/permissions/execution.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+
+  <xsl:template match="Group[@id='network']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/network/kernel.xml')" />
+      <xsl:apply-templates select="document('system/network/wireless.xml')" />
+      <xsl:apply-templates select="document('system/network/ipv6.xml')" />
+      <xsl:apply-templates select="document('system/network/iptables.xml')" />
+      <xsl:apply-templates select="document('system/network/ssl.xml')" />
+      <xsl:apply-templates select="document('system/network/uncommon.xml')" />
+      <xsl:apply-templates select="document('system/network/ipsec.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+
 
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
@@ -47,6 +85,7 @@
       <xsl:apply-templates select="document('services/snmp.xml')" />
     </xsl:copy>
   </xsl:template>
+
   <!-- copy everything else through to final output -->
   <xsl:template match="@*|node()">
     <xsl:copy>

@@ -1,4 +1,4 @@
-<Group id="group-3.5">
+<Group id="ssh">
 <title>SSH Server</title>
 <description>The SSH protocol is recommended for remote login and
 remote file transfer. SSH provides confidentiality and integrity
@@ -8,14 +8,14 @@ implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called sshd and
 provided by the RPM package openssh-server.</description>
-<Group id="group-3.5.2">
+<Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
 <description>If the system needs to act as an SSH server, then
 certain changes should be made to the OpenSSH daemon configuration
 file /etc/ssh/sshd config. The following recommendations can be
 applied to this file. See the sshd config(5) man page for more
 detailed information.</description>
-<Group id="group-3.5.2.1">
+<Group id="sshd_allowing_only_protocol2">
 <title>Ensure Only Protocol 2 Connections Allowed</title>
 <description>Only SSH protocol version 2 connections should be
 permitted. Version 1 of the protocol contains security
@@ -25,8 +25,8 @@ file is correct, but it is important enough to check.
 <br />Verify that the following line appears:
 <br />
 <br />Protocol 2</description>
-<Rule id="rule-3.5.2.1.a">
-<title>CCE-4325-7:Ensure Only Protocol 2 Connections
+<Rule id="sshd_allow_only_protocol2">
+<title>Ensure Only Protocol 2 Connections
 Allowed</title>
 <description>SSH version 1 protocol support should be
 disabled.</description>
@@ -61,16 +61,18 @@ operator="equals" interactive="0">
 <value selector="5_minutes">300</value>
 <value selector="10_minutes">600</value>
 </Value>
-<Rule id="rule-3.5.2.3.a">
-<title>CCE-3845-5:The SSH idle timout interval should be set to an
+
+<Rule id="sshd_set_idle_timeout">
+<title>The SSH idle timout interval should be set to an
 appropriate value</title>
 <description>The SSH idle timout interval should be set to an
 appropriate value</description>
 <ident cce="3845-5" />
 <oval id="20239" />
 </Rule>
-<Rule id="rule-3.5.2.3.b">
-<title>CCE-14061-6:The SSh 'keep alive' message count should be set
+
+<Rule id="sshd_set_keepalive">
+<title>The SSH 'keep alive' message count should be set
 to an appropriate value</title>
 <description>The ClientAliveCountMax should be set to an
 appropriate value</description>
@@ -78,7 +80,8 @@ appropriate value</description>
 <oval id="20240" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.4">
+
+<Group id="sshd_disabling_rhosts">
 <title>Disable .rhosts Files</title>
 <description>SSH can emulate the behavior of the obsolete rsh
 command in allowing users to enable insecure access to their
@@ -88,15 +91,16 @@ accounts via .rhosts files.
 following line:
 <br />
 <br />IgnoreRhosts yes</description>
-<Rule id="rule-3.5.2.4.a">
-<title>CCE-4475-0:Disable .rhosts Files</title>
+<Rule id="sshd_disable_rhosts">
+<title>Disable .rhosts Files</title>
 <description>Emulation of the rsh command through the ssh server
 should be disabled</description>
 <ident cce="4475-0" />
 <oval id="20241" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.5">
+
+<Group id="disabling_host_auth">
 <title>Disable Host-Based Authentication</title>
 <description>SSH's cryptographic host-based authentication is
 slightly more secure than .rhosts authentication, since hosts are
@@ -108,15 +112,15 @@ organization.
 following line:
 <br />
 <br />HostbasedAuthentication no</description>
-<Rule id="rule-3.5.2.5.a">
-<title>CCE-4370-3:Disable Host-Based Authentication</title>
+<Rule id="disable_host_auth">
+<title>Disable Host-Based Authentication</title>
 <description>SSH host-based authentication should be
 disabled</description>
 <ident cce="4370-3" />
 <oval id="20242" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.6">
+<Group id="sshd_disabling_root_login">
 <title>Disable root Login via SSH</title>
 <description>The root user should never be allowed to login
 directly over a network, as this both reduces auditable information
@@ -129,14 +133,14 @@ line:
 <br />PermitRootLogin no</description>
 
 
-<Rule id="rule-3.5.2.6.a">
-<title>CCE-4387-7:Disable root Login via SSH</title>
+<Rule id="sshd_disable_root_login">
+<title>Disable root Login via SSH</title>
 <description>Root login via SSH should be disabled</description>
 <ident cce="4387-7" />
 <oval id="20243" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.7">
+<Group id="sshd_disabling_empty_passwords">
 <title>Disable Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
 empty passwords, add or correct the following line:
@@ -146,15 +150,16 @@ empty passwords, add or correct the following line:
 <br />Measures should also be taken to disable accounts with empty
 passwords system-wide, as described in Section
 2.3.1.5.</description>
-<Rule id="rule-3.5.2.7.a">
-<title>CCE-3660-8:Disable Empty Passwords</title>
+
+<Rule id="sshd_disable_empty_passwords">
+<title>Disable Empty Passwords</title>
 <description>Remote connections from accounts with empty passwords
 should be disabled</description>
 <ident cce="3660-8" />
 <oval id="20244" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.8">
+<Group id="sshd_enabling_warning_banner">
 <title>Enable a Warning Banner</title>
 <description>Section 2.3.7 contains information on how to create an
 appropriate warning banner.
@@ -163,29 +168,29 @@ appropriate warning banner.
 line:
 <br />
 <br />Banner /etc/issue</description>
-<Rule id="rule-3.5.2.8.a">
-<title>CCE-4431-3:Enable a Warning Banner</title>
+<Rule id="sshd_enable_warning_banner">
+<title>Enable a Warning Banner</title>
 <description>SSH warning banner should be enabled</description>
 <ident cce="4431-3" />
 <oval id="20245" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.9">
+<Group id="sshd_permitting_user_env">
 <title>Do Not Allow Users to Set Environment Options</title>
 <description>To prevent users from being able to present
 environment options to the SSH daemon and potentially bypass some
 access restrictions, add or correct the following line:
 <br />
 <br />PermitUserEnvironment no</description>
-<Rule id="rule-3.5.2.9.a">
-<title>CCE-4422-2:Do Not Allow Users to Set Environment
+<Rule id="sshd_do_not_permit_user_env">
+<title>Do Not Allow Users to Set Environment
 Options</title>
 <description>PermitUserEnvironment should be disabled</description>
 <ident cce="4422-2" />
 <oval id="202455" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.10">
+<Group id="sshd_using_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
 <description>Limit the ciphers to those which are FIPS-approved and
 only use ciphers in counter (CTR) mode. The following line
@@ -197,8 +202,8 @@ demonstrates use of FIPS-approved ciphers in CTR mode:
 supported for the current release of the SSH daemon.</description>
 
 
-<Rule id="rule-3.5.2.10.a">
-<title>CCE-14491-5:Use Only Approved Ciphers</title>
+<Rule id="sshd_use_approved_ciphers">
+<title>Use Only Approved Ciphers</title>
 <description>Use only FIPS approved ciphers not in CBC
 mode</description>
 <ident cce="14491-5" />

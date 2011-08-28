@@ -1,5 +1,4 @@
-
-<Group id="group-3.7">
+<Group id="avahi">
 <title>Avahi Server</title>
 <description>The Avahi daemon implements the DNS Service Discovery
 and Multicast DNS protocols, which provide service and host
@@ -7,25 +6,25 @@ discovery on a network. It allows a system to automatically
 identify resources on the network, such as printers or web servers.
 This capability is also known as mDNSresponder and is a major part
 of Zeroconf networking. By default, it is enabled.</description>
-<Group id="group-3.7.1">
+<Group id="disabling_avahi">
 <title>Disable Avahi Server if Possible</title>
 <description>Because the Avahi daemon service keeps an open network
 port, it is subject to network attacks. Disabling it is
 particularly important to reduce the system's vulnerability to such
-attacks.</description>
-<Group id="group-3.7.1.1">
+attacks.
+<br />
+Issue the command:
+<br />
+<br />
+<code># chkconfig avahi-daemon off</code>
+</description>
+<Rule id="disable_avahi">
 <title>Disable Avahi Server Software</title>
-<description>Issue the command:
-<br />
-<br />
-<code># chkconfig avahi-daemon off</code></description>
-<Rule id="rule-3.7.1.1.a">
-<title>CCE-4365-3:Disable Avahi Server Software</title>
 <description>The avahi-daemon service should be
 disabled.</description>
 <ident cce="4365-3" />
 <oval id="20250" />
+<ref nist="CM-6, CM-7" />
 </Rule>
-</Group>
 </Group>
 </Group>

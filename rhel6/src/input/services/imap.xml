@@ -1,10 +1,10 @@
-<Group id="group-3.17">
+<Group id="imap">
 <title>IMAP and POP3 Server</title>
 <description>Dovecot provides IMAP and POP3 services. It is not
 installed by default. The project page at http://www.dovecot.org
 contains more detailed information about Dovecot
 configuration.</description>
-<Group id="group-3.17.1">
+<Group id="disabling_dovecot">
 <title>Disable Dovecot if Possible</title>
 <description>If the system does not need to operate as an IMAP or
 POP3 server, disable and remove Dovecot if it was installed:
@@ -12,14 +12,14 @@ POP3 server, disable and remove Dovecot if it was installed:
 <br />
 <code># chkconfig dovecot off
 <br /># yum erase dovecot</code></description>
-<Rule id="rule-3.17.1.a">
-<title>CCE-3847-1:Disable Dovecot if Possible</title>
+<Rule id="disable_dovecot">
+<title>Disable Dovecot if Possible</title>
 <description>The dovecot service should be disabled.</description>
 <ident cce="3847-1" />
 <oval id="20331" />
 </Rule>
-<Rule id="rule-3.17.1.b">
-<title>CCE-4239-0:Uninstall Dovecot if Possible</title>
+<Rule id="uninstall_dovecot">
+<title>Uninstall Dovecot if Possible</title>
 <description>The dovecot package should be
 uninstalled.</description>
 <ident cce="4239-0" />

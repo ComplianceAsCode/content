@@ -1,4 +1,4 @@
-<Group id="group-3.12">
+<Group id="ldap">
 <title>LDAP</title>
 <description>LDAP is a popular directory service, that is, a
 standardized way of looking up information from a central database.
@@ -6,7 +6,7 @@ It is relatively simple to configure a RHEL5 machine to obtain
 authentication information from an LDAP server. If your network
 uses LDAP for authentication, be sure to configure both clients and
 servers securely.</description>
-<Group id="group-3.12.2">
+<Group id="openldap_client">
 <title>Configure OpenLDAP Clients</title>
 <description>This guide recommends configuring OpenLDAP clients by
 manually editing the appropriate configuration files. RHEL5
@@ -24,7 +24,7 @@ environment.</description>
 LDAP client, ensure that a working LDAP server is present on the
 network. See Section 3.12.3 for instructions on configuring an LDAP
 server.</warning>
-<Group id="group-3.12.2.2">
+<Group id="openldap_tls">
 <title>Configure LDAP to Use TLS for All Transactions</title>
 <description>
 <ol>
@@ -52,8 +52,8 @@ information under some directory other than /etc/pki/tls, but using
 a consistent directory structure across all SSL services at your
 site is recommended. The LDAP server must be configured with a
 certificate signed by the CA certificate named here.</description>
-<Rule id="rule-3.12.2.2.a">
-<title>CCE-14894-0:Configure LDAP to Use TLS for All
+<Rule id="ldap_require_tls">
+<title>Configure LDAP to Use TLS for All
 Transactions</title>
 <description>Clients require LDAP servers to provide valid
 certificates for SSL communications.</description>
@@ -63,7 +63,7 @@ certificates for SSL communications.</description>
 </Group>
 </Group>
 
-<Group id="group-3.12.3">
+<Group id="openldap_server">
 <title>Configure OpenLDAP Server</title>
 <description>This section contains guidance on how to configure an
 OpenLDAP server to securely provide information for use in a
@@ -71,7 +71,7 @@ centralized authentication service. This is not a comprehensive
 guide to maintaining an OpenLDAP server, but may be helpful in
 transitioning to an OpenLDAP infrastructure
 nonetheless.</description>
-<Group id="group-3.12.3.1">
+<Group id="enabling_openldap_service">
 <title>Install OpenLDAP Server RPM</title>
 <description>Is this machine the OpenLDAP server? If so:
 <br />
@@ -82,8 +82,8 @@ nonetheless.</description>
 <br />The openldap-servers RPM is not installed by default on RHEL5
 machines. It is needed only by the OpenLDAP server, not by the
 clients which use LDAP for authentication.</description>
-<Rule id="rule-3.12.3.1.a">
-<title>CCE-3501-4:Disable OpenLDAP service</title>
+<Rule id="disable_openldap_service">
+<title>Disable OpenLDAP service</title>
 <description>The ldap service should be disabled.</description>
 <ident cce="3501-4" />
 <oval id="20289" />

@@ -1,9 +1,9 @@
-<Group id="group-3.14">
+<Group id="dns">
 <title>DNS Server</title>
 <description>Most organizations have an operational need to run at
 least one nameserver. However, there are many common attacks
 involving DNS, be configured defensively.</description>
-<Group id="group-3.14.1">
+<Group id="disabling_dns_server">
 <title>Disable DNS Server if Possible</title>
 <description>Is there an operational need for this machine to act
 as a DNS server for this site?
@@ -19,17 +19,20 @@ need to be a nameserver. Note that the BIND DNS server software is
 not installed on RHEL5 by default. The remainder of this section
 discusses secure configuration of machines which must be
 nameservers.</description>
-<Rule id="rule-3.14.1.a">
-<title>CCE-3578-2:Disable DNS Server if Possible</title>
+<Rule id="disable_dns_server">
+<title>Disable DNS Server if Possible</title>
 <description>The named service should be disabled.</description>
 <ident cce="3578-2" />
 <oval id="20311" />
+<ref nist="CM-6, CM-7" />
 </Rule>
-<Rule id="rule-3.14.1.b">
-<title>CCE-4219-2:Uninstall bind if Possible</title>
+
+<Rule id="uninstall_bind">
+<title>Uninstall bind if Possible</title>
 <description>The bind package should be uninstalled.</description>
 <ident cce="4219-2" />
 <oval id="20312" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
 </Group>

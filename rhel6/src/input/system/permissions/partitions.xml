@@ -1,0 +1,64 @@
+<Group id="partitions">
+<title>Restrict Partition Mount Options</title>
+<description>System partitions can be mounted with certain options
+which limit what files on those partitions can do. These options
+are set in the file /etc/fstab, and can be used to make certain
+types of malicious behavior more difficult.</description>
+
+<Rule id="mountopt_nodev_on_nonroot_partitions">
+<title>Add nodev Option to Non-Root Local
+Partitions</title>
+<description>The nodev option prevents users from mounting
+unauthorized devices on any partition which is known not to contain
+any authorized devices. The root partition typically contains the
+/dev partition, which is the primary location for authorized
+devices, so this option should not be set on /.</description>
+<ident cce="4249-9" />
+<oval id="20016" />
+<ref nist="CM-6, CM-7, AC-6"/>
+</Rule>
+
+<Rule id="mountopt_nodev_on_removable_partitions">
+<title>Add nodev Option to Removable Media
+Partitions</title>
+<description>Users should not be allowed to introduce arbitrary
+devices or setuid programs to a system. These options are used to
+prevent that. In addition, while users are usually allowed to add
+executable programs to a system, the noexec option prevents code
+from being executed directly from the media itself, and may
+therefore provide a line of defense against certain types of worms
+or malicious code.</description>
+<ident cce="3522-0" />
+<oval id="20017" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mountopt_noexec_on_removable_partitions">
+<title>Add noexec Option to Removable Media Partitions</title>
+<description>Users should not be allowed to introduce arbitrary
+devices or setuid programs to a system. These options are used to
+prevent that. In addition, while users are usually allowed to add
+executable programs to a system, the noexec option prevents code
+from being executed directly from the media itself, and may
+therefore provide a line of defense against certain types of worms
+or malicious code.</description>
+<ident cce="4275-4" />
+<oval id="20018" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mountopt_nosuid_on_removable_partitions">
+<title>Add nosuid Option to Removable Media Partitions</title>
+<description>Users should not be allowed to introduce arbitrary
+devices or setuid programs to a system. These options are used to
+prevent that. In addition, while users are usually allowed to add
+executable programs to a system, the noexec option prevents code
+from being executed directly from the media itself, and may
+therefore provide a line of defense against certain types of worms
+or malicious code.</description>
+<ident cce="4042-8" />
+<oval id="20019" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+</Group>
+

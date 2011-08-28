@@ -1,0 +1,254 @@
+<Group id="files">
+<title>Verify Permissions on Important Files and
+Directories</title>
+<description>Permissions for many files on a system should be set
+to conform to system policy. This section discusses important
+permission restrictions gshadow which should be checked on a
+regular basis to ensure that no harmful discrepancies have
+arisen.</description>
+
+<Group id="permissions_important_account_files">
+<title>Verify Permissions on passwd, shadow, group and gshadow
+Files</title>
+<description>These are the default permissions for these files.
+Many utilities need read access to the passwd file in order to
+function properly, but read access to the shadow file allows
+malicious attacks against system passwords, and should never be
+enabled.</description>
+
+<Rule id="userowner_shadow_file">
+<title>Verify user who owns 'shadow' file</title>
+<description>The /etc/shadow file should be owned by
+root.</description>
+<ident cce="3918-0" />
+<oval id="20034" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="groupowner_shadow_file">
+<title>Verify group who owns 'shadow' file</title>
+<description>The /etc/shadow file should be owned by
+root.</description>
+<ident cce="3988-3" />
+<oval id="20035" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="userowner_group_file">
+<title>Verify user who owns 'group' file</title>
+<description>The /etc/group file should be owned by
+root.</description>
+<ident cce="3276-3" />
+<oval id="20036" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="groupowner_group_file">
+<title>Verify group who owns 'group' file</title>
+<description>The /etc/group file should be owned by
+root.</description>
+<ident cce="3883-6" />
+<oval id="20037" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="userowner_gshadow_file">
+<title>Verify user who owns 'gshadow' file</title>
+<description>The /etc/gshadow file should be owned by
+root.</description>
+<ident cce="4210-1" />
+<oval id="20038" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="groupowner_gshadow_file">
+<title>Verify group who owns 'gshadow' file</title>
+<description>The /etc/gshadow file should be owned by
+root.</description>
+<ident cce="4064-2" />
+<oval id="20039" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="userowner_passwd_file">
+<title>Verify user who owns 'passwd' file</title>
+<description>The /etc/passwd file should be owned by
+root.</description>
+<ident cce="3958-6" />
+<oval id="20040" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="groupowner_passwd_file">
+<title>Verify group who owns 'passwd' file</title>
+<description>The /etc/passwd file should be owned by
+root.</description>
+<ident cce="3495-9" />
+<oval id="20041" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="perms_shadow_file">
+<title>Verify permissions on 'shadow' file</title>
+<description>File permissions for /etc/shadow should be set
+correctly.</description>
+<ident cce="4130-1" />
+<oval id="20042" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="perms_group_file">
+<title>Verify permissions on 'group' file</title>
+<description>File permissions for /etc/group should be set
+correctly.</description>
+<ident cce="3967-7" />
+<oval id="20043" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="perms_gshadow_file">
+<title>Verify permissions on 'gshadow' file</title>
+<description>File permissions for /etc/gshadow should be set
+correctly.</description>
+<ident cce="3932-1" />
+<oval id="20044" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="perms_passwd_file">
+<title>Verify permissions on 'passwd' file</title>
+<description>File permissions for /etc/passwd should be set
+correctly.</description>
+<ident cce="3566-7" />
+<oval id="20045" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+</Group>
+
+<Rule id="sticky_world_writable_dirs">
+<title>Verify that All World-Writable Directories Have
+Sticky Bits Set</title>
+<description>When the so-called 'sticky bit' is set on a directory,
+only the owner of a given file may remove that file from the
+directory. Without the sticky bit, any user with write access to a
+directory may remove any file in the directory. Setting the sticky
+bit prevents users from removing each other's files. In cases where
+there is no reason for a directory to be world-writable, a better
+solution is to remove that permission rather than to set the sticky
+bit. However, if a directory is used by a particular application,
+consult that application's documentation instead of blindly
+changing modes.</description>
+<ident cce="3399-3" />
+<oval id="20046" />
+<ref nist="CM-6"/>
+</Rule>
+
+<Rule id="world_writeable_files">
+<title>Find Unauthorized World-Writable Files</title>
+<description>Data in world-writable files can be modified by any
+user on the system. In almost all circumstances, files can be
+configured using a combination of user and group permissions to
+support whatever legitimate access is needed without the risk
+caused by world-writable files.
+<br />
+<br />It is generally a good idea to remove global (other) write
+access to a file when it is discovered. However, check with
+documentation for specific applications before making changes.
+Also, monitor for recurring world-writable files, as these may be
+symptoms of a misconfigured application or user
+account.</description>
+<ident cce="3795-2" />
+<oval id="20047" />
+<ref nist="CM-6"/>
+</Rule>
+
+<Rule id="no_unpackaged_sgid_files">
+<title>Find Unauthorized SGID System
+Executables</title>
+<description>The sgid bit should not be set for all
+files.</description>
+<ident cce="14970-8" />
+<oval id="20048" />
+<ref nist="CM-6"/>
+</Rule>
+
+<Rule id="no_unpackaged_suid_files">
+<title>Find Unauthorized SUID System
+Executables</title>
+<description>The suid bit should not be set for all
+files.</description>
+<ident cce="14340-4" />
+<oval id="20049" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+
+<Rule id="no_files_unowned_by_user">
+<title>Find files unowned by a user</title>
+<description>The following command will discover and print any
+files on local partitions which do not belong to a valid user and a
+valid group. Run it once for each local partition PART:
+<code># find PART -xdev \( -nouser -o -nogroup \) -print</code>If
+this command prints any results, investigate each reported file and
+either assign it to an appropriate user and group or remove it.
+Unowned files are not directly exploitable, but they are generally
+a sign that something is wrong with some system process. They may
+be caused by an intruder, by incorrect software installation or
+draft software removal, or by failure to remove all files belonging
+to a deleted account. The files should be repaired so that they
+will not cause problems when accounts are created in the future,
+and the problem which led to unowned files should be discovered and
+addressed.</description>
+<ident cce="4223-4" />
+<oval id="20050" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="no_files_unowned_by_group">
+<title>Find files unowned by a group</title>
+<description>The following command will discover and print any
+files on local partitions which do not belong to a valid user and a
+valid group. Run it once for each local partition PART:
+<code># find PART -xdev \( -nouser -o -nogroup \) -print</code>If
+this command prints any results, investigate each reported file and
+either assign it to an appropriate user and group or remove it.
+Unowned files are not directly exploitable, but they are generally
+a sign that something is wrong with some system process. They may
+be caused by an intruder, by incorrect software installation or
+draft software removal, or by failure to remove all files belonging
+to a deleted account. The files should be repaired so that they
+will not cause problems when accounts are created in the future,
+and the problem which led to unowned files should be discovered and
+addressed.</description>
+<ident cce="3573-3" />
+<oval id="20051" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="world_writable_files_system_ownership">
+<title>Find world writable directories not owned by a
+system account</title>
+<description>Locate any directories in local partitions which are
+world-writable and ensure that they are owned by root or another
+system account. The following command will discover and print these
+(assuming only system accounts have a uid lower than 500). Run it
+once for each local partition PART:
+<br />
+<br />
+<code># find PART -xdev -type d -perm -0002 -uid +500 -print
+<br /></code>
+<br />If this command produces any output, investigate why the
+current owner is not root or another system account.
+<br />
+<br />Allowing a user account to own a world-writeable directory is
+undesirable because it allows the owner of that directory to remove
+or replace any ﬁles that may be placed in the directory by other
+users.</description>
+<ident cce="14794-2" />
+<oval id="20052" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+</Group>
+
+

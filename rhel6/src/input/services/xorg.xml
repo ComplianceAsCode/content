@@ -1,16 +1,16 @@
-<Group id="group-3.6">
+<Group id="xwindows">
 <title>X Window System</title>
 <description>The X Window System implementation included with the
 system is called X.org.</description>
 
-<Group id="group-3.6.1">
+<Group id="disabling_xwindows">
 <title>Disable X Windows if Possible</title>
 <description>Unless there is a mission-critical reason for the
 machine to run a GUI login screen, prevent X from starting
 automatically at boot. There is usually no reason to run X Windows
 on a dedicated server machine, since administrators can login via
 SSH or on the text console.</description>
-<Group id="group-3.6.1.3">
+<Group id="xwindows_startx">
 <title>Lock Down X Windows startx Configuration if
 Necessary</title>
 <description>If X is not to be started at boot time but the
@@ -19,7 +19,7 @@ manually using the startx command. In some cases, this runs X with
 a configuration which is less safe than the default. Follow these
 instructions to mitigate risk from this
 configuration.</description>
-<Group id="group-3.6.1.3.2">
+<Group id="xwindows_no_listen">
 <title>Disable X Window System Listening</title>
 <description>To prevent X.org from listening for remote
 connections, create the file /etc/X11/xinit/xserverrc and fill it
@@ -37,8 +37,8 @@ X's default port, 6000.
 <br />
 <br />See the xinit(1), startx(1), and Xserver(1) man pages for
 more information.</description>
-<Rule id="rule-3.6.1.3.2.a">
-<title>CCE-4074-1:Disable X Window System Listening</title>
+<Rule id="disable_xwindows_listening">
+<title>Disable X Window System Listening</title>
 <description>Disable the ability to provide remote graphical
 display</description>
 <ident cce="4074-1" />
@@ -48,12 +48,12 @@ display</description>
 </Group>
 </Group>
 
-<Group id="group-3.6.2">
+<Group id="xwindows_configuration">
 <title>Configure X Windows if Necessary</title>
 <description>If there is a mission-critical reason for this machine
 to run a GUI, improve the security of the default X configuration
 by following the guidance in this section.</description>
-<Group id="group-3.6.2.1">
+<Group id="xwindows_banner">
 <title>Create Warning Banners for GUI Login Users</title>
 <description>Edit the file /etc/gdm/custom.conf. Locate the
 [greeter] section, and correct that section to contain the lines:
@@ -68,8 +68,8 @@ inappropriate, it can be changed by specifying the InfoMsgFont
 directive as well, for instance:
 <br />
 <br />InfoMsgFont=Sans 12</description>
-<Rule id="rule-3.6.2.1.a">
-<title>CCE-3717-6:Create Warning Banners for GUI Login
+<Rule id="set_gui_login_banner">
+<title>Create Warning Banners for GUI Login
 Users</title>
 <description>Enable warning banner for GUI login</description>
 <ident cce="3717-6" />

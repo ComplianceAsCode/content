@@ -1,4 +1,4 @@
-<Group id="group-3.18">
+<Group id="smb">
 <title>Samba(SMB) Microsoft Windows File Sharing Server</title>
 <description>When properly configured, the Samba service allows
 Linux machines to provide file and print sharing to Microsoft
@@ -10,7 +10,7 @@ service. It is this second package that allows a Linux machine to
 act as an Active Directory server, a domain controller, or as a
 domain member. Only the samba-client package is installed by
 default.</description>
-<Group id="group-3.18.1">
+<Group id="disabling_samba">
 <title>Disable Samba if Possible</title>
 <description>If the Samba service has been enabled and will not be
 used, disable it:
@@ -22,14 +22,14 @@ used, disable it:
 will remain disabled. Do not enable this service unless it is
 absolutely necessary to provide Microsoft Windows file and print
 sharing functionality.</description>
-<Rule id="rule-3.18.1.a">
-<title>CCE-4551-8:Disable Samba if Possible</title>
+<Rule id="disable_smb_server">
+<title>Disable Samba if Possible</title>
 <description>The smb service should be disabled.</description>
 <ident cce="4551-8" />
 <oval id="20340" />
 </Rule>
 </Group>
-<Group id="group-3.18.2">
+<Group id="configuring_samba">
 <title>Configure Samba if Necessary</title>
 <description>All settings for the Samba daemon can be found in
 /etc/samba/smb.conf. Settings are divided between a [global]
@@ -39,7 +39,7 @@ default, Samba will operate in user mode and allow client machines
 to access local home directories and printers. It is recommended
 that these settings be changed or that additional limitations be
 set in place.</description>
-<Group id="group-3.18.2.10">
+<Group id="smb_client_signing">
 <title>Require Client SMB Packet Signing, if using
 smbclient</title>
 <description>To require samba clients running smbclient to use
@@ -52,8 +52,8 @@ Samba conﬁguration ﬁle:
 support SMB packet signing. Packet signing can prevent
 man-in-the-middle attacks which modify SMB packets in
 transit.</description>
-<Rule id="rule-3.18.2.10.a">
-<title>CCE-14075-6:Require Client SMB Packet Signing, if using
+<Rule id="require_smb_client_signing">
+<title>Require Client SMB Packet Signing, if using
 smbclient</title>
 <description>Require samba clients running smbclient to use packet
 signing. A Samba client should only communicate with servers who
@@ -65,7 +65,7 @@ transit.</description>
 </Rule>
 </Group>
 
-<Group id="group-3.18.2.11">
+<Group id="smb_client_signing_mount.cifs">
 <title>Require Client SMB Packet Signing, if using
 mount.cifs</title>
 <description>Require packet signing of clients who mount Samba
@@ -77,8 +77,8 @@ sec=krb5i or sec=ntlmv2i) are used.
 client should only communicate with servers who can support SMB
 packet signing. Packet signing can prevent man-in-the-middle
 attacks which modify SMB packets in transit.</description>
-<Rule id="rule-3.18.2.11.a">
-<title>CCE-15029-2:Require Client SMB Packet Signing, if using
+<Rule id="require_smb_client_signing_mount.cifs">
+<title>Require Client SMB Packet Signing, if using
 mount.cifs</title>
 <description>Require packet signing of clients who mount Samba
 shares using the mount.cifs program (e.g., those who specify shares
