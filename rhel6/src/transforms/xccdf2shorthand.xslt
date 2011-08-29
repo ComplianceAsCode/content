@@ -5,9 +5,9 @@
 
 <!--identity template to pass through any tags not explicitly matched elsewhere -->
 <xsl:template match="node()|@*">
-<xsl:copy>
-<xsl:apply-templates select="node()|@*"/>
-</xsl:copy>
+	<xsl:copy>
+		<xsl:apply-templates select="node()|@*"/>
+	</xsl:copy>
 </xsl:template>
 
 
@@ -32,32 +32,32 @@
 <xsl:template match="@severity" />
 
 <xsl:template match="xccdf:ident[@system='http://cce.mitre.org']">
-<ident xmlns="http://checklists.nist.gov/xccdf/1.1">
-<xsl:attribute name="cce">
-<xsl:value-of select="substring-after(node(),'CCE-')"/> 
-</xsl:attribute>
-</ident>
+	<ident xmlns="http://checklists.nist.gov/xccdf/1.1">
+		<xsl:attribute name="cce">
+			<xsl:value-of select="substring-after(node(),'CCE-')"/> 
+		</xsl:attribute>
+	</ident>
 </xsl:template>
 
 <!-- abuse of namespaces, pretending xhtml is in xccdf -->
 <xsl:template match="xhtml:*">
 	<xsl:element name="{local-name()}" xmlns="http://checklists.nist.gov/xccdf/1.1">
-	<!--it's a lie.  we are intentionally abusing namespaces here.-->
-	<xsl:apply-templates select="@* | node()"/>
+		<!--it's a lie.  we are intentionally abusing namespaces here.-->
+		<xsl:apply-templates select="@* | node()"/>
 	</xsl:element>
 </xsl:template>
 
 <!--get rid of everything else from the check, it's all oval anyway-->
 <xsl:template match="xccdf:check">
-<xsl:apply-templates select="xccdf:check-content-ref"/>
+	<xsl:apply-templates select="xccdf:check-content-ref"/>
 </xsl:template>
 
 <xsl:template match="xccdf:check-content-ref">
 <oval xmlns="http://checklists.nist.gov/xccdf/1.1">
-<xsl:variable name="ovalid" select="@name"/>
-<xsl:attribute name="id">
-<xsl:value-of select="substring-after($ovalid,'oval:gov.nist.usgcb.rhel:def:')"/> 
-</xsl:attribute>
+	<xsl:variable name="ovalid" select="@name"/>
+	<xsl:attribute name="id">
+		<xsl:value-of select="substring-after($ovalid,'oval:gov.nist.usgcb.rhel:def:')"/> 
+	</xsl:attribute>
 </oval>
 </xsl:template>
 
