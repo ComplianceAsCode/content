@@ -18,6 +18,9 @@ shorthand2xccdf:
 spreadsheet:
 	xsltproc -o ${OUTDIR}/rhel6-spreadsheet.html ${OUTDIR}/xccdf2spreadsheet.xslt ${OUTDIR}/rhel6-xccdf.xml
 
+checks:
+	scc -i ${INDIR}/checks/id.ini ${INDIR}/checks/*.sc -o ${OUTDIR}/rhel6-oval.xml
+
 validate:
 	oscap xccdf validate-xml output/rhel6-xccdf.xml
 
