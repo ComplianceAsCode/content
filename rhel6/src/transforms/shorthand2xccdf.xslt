@@ -13,9 +13,7 @@ exclude-result-prefixes="xccdf">
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:attribute name="xmlns">
-        <xsl:text>
-http://checklists.nist.gov/xccdf/1.1
-</xsl:text>
+        <xsl:text>http://checklists.nist.gov/xccdf/1.1</xsl:text>
       </xsl:attribute>
       <xsl:apply-templates select="@*|node()" />
     </xsl:copy>
