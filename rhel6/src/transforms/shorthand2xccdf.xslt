@@ -82,12 +82,28 @@ http://checklists.nist.gov/xccdf/1.1
     </xhtml:li>
   </xsl:template>
 
+  <xsl:template match="tt">
+    <xhtml:code>
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()" />
+      </xsl:copy>
+    </xhtml:code>
+  </xsl:template>
+
   <xsl:template match="code">
     <xhtml:code>
       <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
       </xsl:copy>
     </xhtml:code>
+  </xsl:template>
+
+  <xsl:template match="strong">
+    <xhtml:strong>
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()" />
+      </xsl:copy>
+    </xhtml:strong>
   </xsl:template>
 
   <xsl:template match="b">
@@ -104,6 +120,14 @@ http://checklists.nist.gov/xccdf/1.1
         <xsl:apply-templates select="@*|node()" />
       </xsl:copy>
     </xhtml:em>
+  </xsl:template>
+
+  <xsl:template match="i">
+    <xhtml:i>
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()" />
+      </xsl:copy>
+    </xhtml:i>
   </xsl:template>
 
   <xsl:template match="ol">

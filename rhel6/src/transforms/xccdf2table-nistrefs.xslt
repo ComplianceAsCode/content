@@ -10,13 +10,10 @@
 
 			<body>
 				<br/>
-                <p align="center">
-			        <b>
-				    <font size="5"><xsl:copy-of select="$profilename" /></font>
-			        </b>
-			        <br/>
-			        <br/>
-		        </p>
+				<br/>
+				<div style="text-align: center; font-size: x-large; font-weight:bold"><xsl:copy-of select="$profilename" /></div>
+				<br/>
+				<br/>
 				<xsl:apply-templates select="cdf:Benchmark"/>
 			</body>
 		</html>
