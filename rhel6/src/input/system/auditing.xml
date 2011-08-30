@@ -1,19 +1,19 @@
 <Group id="auditing">
-<title>System Accounting with auditd</title>
+<title>System Accounting with <tt>auditd</tt></title>
 <description>The audit service is the current Linux recommendation
 for kernel-level auditing. By default, the service audits about
 SELinux AVC denials and certain types of security-relevant events
 such as system logins, account modifications, and authentication
 events performed by programs such as sudo.
 <br /><br />
-Under its default configuration, auditd has modest disk space
+Under its default configuration, <tt>auditd</tt> has modest disk space
 requirements, and should not noticeably impact system performance.
 The audit service, in its default configuration, is strongly
 recommended for all sites, regardless of whether they are running
 SELinux.
 <br /><br />
 DoD or federal networks often have substantial auditing
-requirements and auditd can be configured to meet these
+requirements and <tt>auditd</tt> can be configured to meet these
 requirements.
 <br /><br />
 Typical requirements include:
@@ -48,27 +48,30 @@ more restrictive.</li>
 </ul></description>
 
 <Group id="auditd_service">
-<title>Enable the auditd Service</title>
-<description>Ensure that the auditd service is enabled (this is the
+<title>Enable the <tt>auditd</tt> Service</title>
+<description>Ensure that the <tt>auditd</tt> service is enabled (this is the
 default):
-<br /><br />
-<code># chkconfig auditd on</code>
 <br />
-By default, auditd logs only SELinux denials, which are
+<pre>
+# chkconfig auditd on
+
+</pre>
+By default, <tt>auditd</tt> logs only SELinux denials, which are
 helpful for debugging SELinux and discovering intrusion attempts,
 and certain types of security events, such as modifications to user
-accounts (useradd, passwd, etc), login events, and calls to sudo.
+accounts (<tt>useradd</tt>, <tt>passwd</tt>, etc), login events, and
+calls to <tt>sudo</tt>.
 <br /><br />
-Data is stored in /var/log/audit/audit.log. By default,
-auditd rotates 4 logs by size (5MB), retaining a maximum of 20MB of
+Data is stored in <tt>/var/log/audit/audit.log</tt>. By default,
+<tt>auditd</tt> rotates 4 logs by size (5MB), retaining a maximum of 20MB of
 data in total, and refuses to write entries when the disk is too
 full. This minimizes the risk of audit data filling its partition
 and impacting other services. However, it is possible to lose audit
 data if the system is busy.
 </description>
 <Rule id="enable_auditd_service">
-<title>Enable the auditd Service</title>
-<description>The auditd service should be enabled.</description>
+<title>Enable the <tt>auditd</tt> Service</title>
+<description>The <tt>auditd</tt> service should be enabled.</description>
 <ident cce="4292-9" />
 <oval id="20156" />
 <ref nist="CM-6, CM-7" />
@@ -79,14 +82,14 @@ data if the system is busy.
 <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
 <description>To ensure that all processes can be audited, even
 those which start prior to the audit daemon, add the argument
-audit=1 to the kernel line in /etc/grub.conf, in the manner below:
-<br /><br />
-<code>
+<tt>audit=1</tt> to the kernel line in <tt>/etc/grub.conf</tt>, in the manner below:
+<br />
+<pre>
 kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1
-</code>
-<br /><br />
+
+</pre>
 Each process on the system carries an ”auditable” ﬂag which
-indicates whether its activities can be audited. Although auditd
+indicates whether its activities can be audited. Although <tt>auditd</tt>
 takes care of enabling this for all processes which launch after it
 does, adding the kernel argument ensures that it is set for every
 process during boot.</description>
@@ -95,11 +98,12 @@ process during boot.</description>
 to the Audit Daemon</title>
 <description>To ensure that all processes can be audited, even
 those which start prior to the audit daemon, add the argument
-audit=1 to the kernel line in /etc/grub.conf, in the manner below:
-<br /><br />
-<code>
+<tt>audit=1</tt> to the kernel line in <tt>/etc/grub.conf</tt>, in the manner below:
+<br />
+<pre>
 kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1
-</code>
+
+</pre>
 </description>
 <ident cce="15026-8" />
 <oval id="20157" />
@@ -108,8 +112,8 @@ kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audi
 </Group>
 
 <Group id="auditd_configure_rules">
-<title>Conﬁgure auditd Rules for Comprehensive Auditing</title>
-<description>The auditd program can perform comprehensive
+<title>Conﬁgure <tt>auditd</tt> Rules for Comprehensive Auditing</title>
+<description>The <tt>auditd</tt> program can perform comprehensive
 monitoring of system activity. This section describes rec- ommended
 conﬁguration settings for comprehensive auditing, but a full
 description of the auditing system’s capabilities is beyond the
@@ -131,15 +135,17 @@ Auditing rules are controlled in the ﬁle <tt>/etc/audit/audit.rules</tt>.
 Add rules to it to meet the auditing requirements for your organization.
 Each line in <tt>/etc/audit/audit.rules</tt> represents a series of arguments
 that can be passed to <tt>auditctl</tt> and can be individually tested
-as such. See documentation in <tt>/usr/share/doc/audit-version</tt> and
-in the related <tt>man</tt> pages for more details.
+as such. See documentation in <tt>/usr/share/doc/audit-VERSION</tt> and
+in the related man pages for more details.
 <br /><br />
 Recommended audit rules are provided in
-<tt>/usr/share/doc/audit-version/stig.rules</tt>. In order to activate
+<tt>/usr/share/doc/audit-VERSION/stig.rules</tt>. In order to activate
 those rules:
-<br /><br />
-<tt># cp /usr/share/doc/audit-version/stig.rules /etc/audit/audit.rules</tt>
-<br /><br />
+<br />
+<pre>
+# cp /usr/share/doc/audit-VERSION/stig.rules /etc/audit/audit.rules
+
+</pre>
 and then edit <tt>/etc/audit/audit.rules</tt> and comment out the
 lines containing <tt>arch=</tt> which are not appropriate for your system’s
 architecture. Then review and understand the following rules,
@@ -148,18 +154,20 @@ architecture.
 <br /><br />
 After reviewing all the rules, reading the following sections, and
 editing as needed, activate the new rules:
-<br /><br />
-<tt># service auditd restart</tt>
+<br />
+<pre>
+# service auditd restart</pre>
 </description>
 
 <Group id="audit_time_modifications">
 <title>Records Events that Modify Date and Time Information</title>
-<description>Add the following to /etc/audit/audit.rules, setting
+<description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
-<br /><br />
-<tt>-a always,exit -F arch=ARCH -S adjtimex -S settimeofday -S stime -k time-change</tt><br />
-<tt>-a always,exit -F arch=ARCH -S clock_settime -k time-change</tt><br />
-<tt>-w /etc/localtime -p wa -k time-change</tt><br />
+<br />
+<pre>
+-a always,exit -F arch=ARCH -S adjtimex -S settimeofday -S stime -k time-change
+-a always,exit -F arch=ARCH -S clock_settime -k time-change
+-w /etc/localtime -p wa -k time-change</pre>
 </description>
 <Rule id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
@@ -172,14 +180,15 @@ ARCH to either b32 or b64 as appropriate for your system:
 
 <Group id="auditing_account_changes">
 <title>Record Events that Modify User/Group Information</title>
-<description>Add the following to /etc/audit/audit.rules, in order
+<description>Add the following to <tt>/etc/audit/audit.rules</tt>, in order
 to capture events that modify account changes:
-<br /><br />
-<tt>-w /etc/group -p wa -k identity</tt><br />
-<tt>-w /etc/passwd -p wa -k identity</tt><br />
-<tt>-w /etc/gshadow -p wa -k identity</tt><br />
-<tt>-w /etc/shadow -p wa -k identity</tt><br />
-<tt>-w /etc/security/opasswd -p wa -k identity</tt><br />
+<br />
+<pre>
+-w /etc/group -p wa -k identity
+-w /etc/passwd -p wa -k identity
+-w /etc/gshadow -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/security/opasswd -p wa -k identity</pre>
 </description>
 <Rule id="audit_account_changes">
 <title>Record Events that Modify User/Group
@@ -193,14 +202,16 @@ Information</title>
 
 <Group id="auditing_network_modifications">
 <title>Record Events that Modify the System’s Network Environment</title>
-<description>Add the following to /etc/audit/audit.rules, setting
+<description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
-<br /><br />
-<tt>-a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale</tt><br />
-<tt>-w /etc/issue -p wa -k system-locale</tt><br />
-<tt>-w /etc/issue.net -p wa -k system-locale</tt><br />
-<tt>-w /etc/hosts -p wa -k system-locale</tt><br />
-<tt>-w /etc/sysconfig/network -p wa -k system-locale</tt><br />
+<br />
+<pre>
+-a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale
+-w /etc/issue -p wa -k system-locale
+-w /etc/issue.net -p wa -k system-locale
+-w /etc/hosts -p wa -k system-locale
+-w /etc/sysconfig/network -p wa -k system-locale
+</pre>
 </description>
 <Rule id="audit_network_modifications">
 <title>Record Events that Modify the System’s Network
@@ -217,9 +228,10 @@ Environment</description>
 <Group id="auditing_mac_changes">
 <title>Record Events that Modify the System’s Mandatory Access
 Controls</title>
-<description>Add the following to /etc/audit/audit.rules:
-<br /><br />
-<tt>-w /etc/selinux/ -p wa -k MAC-policy</tt>
+<description>Add the following to <tt>/etc/audit/audit.rules</tt>:
+<br />
+<pre>
+-w /etc/selinux/ -p wa -k MAC-policy</pre>
 </description>
 <Rule id="audit_mac_changes">
 <title>Record Events that Modify the System’s Mandatory
@@ -230,20 +242,23 @@ Access Controls</title>
 <ref nist="AU-2" />
 </Rule>
 </Group>
+
+
 <Group id="auditing_dac_actions">
-<title>Ensure auditd Collects Discretionary Access Control
+<title>Ensure <tt>auditd</tt> Collects Discretionary Access Control
 Permission Modification Events</title>
 <description>At a minimum the audit system should collect ﬁle
 permission changes for all users and root. Add the following to
-/etc/audit/audit.rules, setting ARCH to either b32 or b64 as
+<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br /><br />
-<tt>-a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</tt><br />
-<tt>-a always,exit -F arch=ARCH -S chown -S fchown -S fchownat -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</tt><br />
-<tt>-a always,exit -F arch=ARCH -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</tt><br />
+<br />
+<pre>
+-a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=ARCH -S chown -S fchown -S fchownat -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=ARCH -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <Rule id="audit_dac_actions">
-<title>Ensure auditd Collects Discretionary Access
+<title>Ensure <tt>auditd</tt> Collects Discretionary Access
 Control Permission Modiﬁcation Events</title>
 <description>Audit rules about the Discretionary Access Control
 Permission Modiﬁcation Events</description>
@@ -254,17 +269,18 @@ Permission Modiﬁcation Events</description>
 </Group>
 
 <Group id="auditing_file_access">
-<title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
+<title>Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
 <description>At a minimum the audit system should collect
 unauthorized ﬁle accesses for all users and root. Add the following
-to /etc/audit/audit.rules, setting ARCH to either b32 or b64 as
+to <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br /><br />
-<tt>-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access</tt><br />
-<tt>-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</tt><br />
+<br />
+<pre>
+-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
+-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
 </description>
 <Rule id="audit_file_access">
-<title>Ensure auditd Collects Unauthorized Access
+<title>Ensure <tt>auditd</tt> Collects Unauthorized Access
 Attempts to Files (unsuccessful)</title>
 <description>Audit rules about the Unauthorized Access Attempts to
 Files (unsuccessful)</description>
@@ -275,15 +291,16 @@ Files (unsuccessful)</description>
 </Group>
 
 <Group id="auditing_privileged_commands">
-<title>Ensure auditd Collects Information on the Use of Privileged Commands</title>
+<title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum the audit system should collect the
 execution of privileged commands for all users and root. Add the
-following to /etc/audit/audit.rules:
-<br /><br />
-<tt>-a always,exit -F path=/bin/ping -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</tt><br />
+following to <tt>/etc/audit/audit.rules</tt>:
+<br />
+<pre>
+-a always,exit -F path=/bin/ping -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
 </description>
 <Rule id="audit_privileged_commands">
-<title>Ensure auditd Collects Information on the Use of
+<title>Ensure <tt>auditd</tt> Collects Information on the Use of
 Privileged Commands</title>
 <description>Audit rules about the Information on the Use of
 Privileged Commands</description>
@@ -294,17 +311,18 @@ Privileged Commands</description>
 </Group>
 
 <Group id="auditing_media_exporting">
-<title>Ensure auditd Collects Information on Exporting to Media
+<title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media
 (successful)</title>
 <description>At a minimum the audit system should collect media
 exportation events for all users and root. Add the following to
-/etc/audit/audit.rules, setting ARCH to either b32 or b64 as
+<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br /><br />
-<tt>-a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export</tt><br />
+<br />
+<pre>
+-a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export</pre>
 </description>
 <Rule id="audit_media_exports">
-<title>Ensure auditd Collects Information on Exporting
+<title>Ensure <tt>auditd</tt> Collects Information on Exporting
 to Media (successful)</title>
 <description>Audit rules about the Information on Exporting to
 Media (successful)</description>
@@ -315,17 +333,18 @@ Media (successful)</description>
 </Group>
 
 <Group id="auditing_file_deletions">
-<title>Ensure auditd Collects Files Deletion Events by User
+<title>Ensure <tt>auditd</tt> Collects Files Deletion Events by User
 (successful and unsuccessful)</title>
 <description>At a minimum the audit system should collect ﬁle
 deletion events for all users and root. Add the following to
-/etc/audit/audit.rules, setting ARCH to either b32 or b64 as
+<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br /><br />
-<tt>-a always,exit -F arch=ARCH -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=500 -F auid!=4294967295 -k delete</tt><br />
+<br />
+<pre>
+-a always,exit -F arch=ARCH -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=500 -F auid!=4294967295 -k delete</pre>
 </description>
 <Rule id="audit_file_deletions">
-<title>Ensure auditd Collects Files Deletion Events by
+<title>Ensure <tt>auditd</tt> Collects Files Deletion Events by
 User (successful and unsuccessful)</title>
 <description>Audit rules about the Files Deletion Events by User
 (successful and unsuccessful)</description>
@@ -336,15 +355,16 @@ User (successful and unsuccessful)</title>
 </Group>
 
 <Group id="auditing_sysadmin_actions">
-<title>Ensure auditd Collects System Administrator Actions</title>
+<title>Ensure <tt>auditd</tt> Collects System Administrator Actions</title>
 <description>At a minimum the audit system should collect
 administrator actions for all users and root. Add the following to
-/etc/audit/audit.rules:
-<br /><br />
-<tt>-w /etc/sudoers -p wa -k actions</tt><br />
+<tt>/etc/audit/audit.rules</tt>:
+<br />
+<pre>
+-w /etc/sudoers -p wa -k actions</pre>
 </description>
 <Rule id="audit_sysadmin_actions">
-<title>Ensure auditd Collects System Administrator
+<title>Ensure <tt>auditd</tt> Collects System Administrator
 Actions</title>
 <description>Audit rules about the System Administrator
 Actions</description>
@@ -355,18 +375,19 @@ Actions</description>
 </Group>
 
 <Group id="auditing_kernel_module_loading">
-<title>Ensure auditd Collects Information on Kernel Module Loading
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading
 and Unloading</title>
-<description>Add the following to /etc/audit/audit.rules in order
+<description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to capture kernel module loading and unloading events:
-<br /><br />
-<tt>-w /sbin/insmod -p x -k modules</tt><br />
-<tt>-w /sbin/rmmod -p x -k modules</tt><br />
-<tt>-w /sbin/modprobe -p x -k modules</tt><br />
-<tt>-a always,exit -S init_module -S delete_module -k modules</tt><br />
+<br />
+<pre>
+-w /sbin/insmod -p x -k modules
+-w /sbin/rmmod -p x -k modules
+-w /sbin/modprobe -p x -k modules
+-a always,exit -S init_module -S delete_module -k modules</pre>
 </description>
 <Rule id="audit_kernel_module_loading">
-<title>Ensure auditd Collects Information on Kernel
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel
 Module Loading and Unloading</title>
 <description>Audit rules about the Information on Kernel Module
 Loading and Unloading</description>
@@ -377,15 +398,18 @@ Loading and Unloading</description>
 </Group>
 
 <Group id="auditing_config_immutable">
-<title>Make the auditd Conﬁguration Immutable</title>
-<description>Add the following to /etc/audit/audit.rules in order
+<title>Make the <tt>auditd</tt> Conﬁguration Immutable</title>
+<description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to make the conﬁguration immutable:
-<br /><br />
-<tt>-e 2</tt><br />
+<br />
+<pre>
+-e 2
+
+</pre>
 With this setting, a reboot will be required to change any
 audit rules.</description>
 <Rule id="audit_config_immutable">
-<title>Make the auditd Conﬁguration Immutable</title>
+<title>Make the <tt>auditd</tt> Conﬁguration Immutable</title>
 <description>Force a reboot to change audit rules</description>
 <ident cce="14692-8" />
 <oval id="20169" />

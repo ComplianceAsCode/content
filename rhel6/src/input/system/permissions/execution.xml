@@ -8,14 +8,14 @@ or compromised programs.</description>
 
 <Group id="daemon_umask">
 <title>Set Daemon umask</title>
-<description>The settings file /etc/sysconfig/init contains
+<description>The settings file <tt>/etc/sysconfig/init</tt> contains
 settings which apply to all processes started at boot time. The
 system umask must be set to at least 022, or daemon processes may
 create world-writable files. The more restrictive setting 027
 protects files, including temporary files and log files, from
 unauthorized reading by unprivileged users on the system.
-<br />
-<br />If a particular daemon needs a less restrictive umask,
+<br /><br />
+If a particular daemon needs a less restrictive umask,
 consider editing the startup script or sysconfig file of that
 daemon to make a specific exception.</description>
 <Value id="var-2.2.4.1.a" type="string"
@@ -45,25 +45,25 @@ errant behavior. In most cases, only software developers would
 legitimately need to access these files. The core dump files may
 also contain sensitive information, or unnecessarily occupy large
 amounts of disk space.
-<br />
-<br />By default, the system sets a soft limit to stop the creation
+<br /><br />
+By default, the system sets a soft limit to stop the creation
 of core dump files for all users. This is accomplished in
-/etc/profile with the line: ulimit -S -c 0 &gt; /dev/null
-2$gt;&amp;1 However, compliance with this limit is voluntary; it is
+<tt>/etc/profile</tt> with the line: <tt>ulimit -S -c 0 &gt; /dev/null
+2$gt;&amp;1</tt>. However, compliance with this limit is voluntary; it is
 a default intended only to protect users from the annoyance of
 generating unwanted core files. Users can increase the allowed core
 file size up to the hard limit, which is unlimited by default.
-<br />
-<br />Once a hard limit is set in /etc/security/limits.conf, the
+<br /><br />
+Once a hard limit is set in <tt>/etc/security/limits.conf</tt>, the
 user cannot increase that limit within his own session. If access
 to core dumps is required, consider restricting them to only
-certain users or groups. See the limits.conf man page for more
+certain users or groups. See the <tt>limits.conf</tt> man page for more
 information.
-<br />
-<br />The core dumps of setuid programs are further protected. The
-sysctl variable fs.suid_dumpable controls whether the kernel allows
-core dumps from these programs at all. The default value of 0 is
-recommended.</description>
+<br /><br />
+The core dumps of setuid programs are further protected. The
+<tt>sysctl</tt> variable <tt>fs.suid_dumpable</tt> controls whether
+the kernel allows core dumps from these programs at all. The default
+value of 0 is recommended.</description>
 
 <Rule id="disable_users_coredumps">
 <title>Disable Core Dumps for all users</title>
@@ -94,8 +94,8 @@ of execution in memory that should only hold data, and special
 handling of text buffers. This protection is enabled by default,
 but the sysctl variables kernel.exec-shield and kernel.randomize va
 space should be checked to ensure that it has not been disabled.
-<br />
-<br />ExecShield uses the segmentation feature on all x86 systems
+<br /><br />
+ExecShield uses the segmentation feature on all x86 systems
 to prevent execution in memory higher than a certain address. It
 writes an address as a limit in the code segment descriptor, to
 control where code can be executed, on a per-process basis. When
@@ -156,18 +156,18 @@ running 32-bit kernel package supports PAE and NX features as
 determined in the previous section, the kernel-PAE package should
 be installed to enable XD or NX support:
 <br />
-<br />
-<code># yum install kernel-PAE</code>
-<br />
-<br />The installation process should also have conﬁgured the
+<pre>
+# yum install kernel-PAE
+
+</pre>
+The installation process should also have conﬁgured the
 bootloader to load the new kernel at boot. Verify this at reboot
-and modify /etc/grub.conf if necessary.</description>
+and modify <tt>/etc/grub.conf</tt> if necessary.</description>
 <warning category="hardware">The kernel-PAE package should not be
 installed on older systems that do not support the XD or NX bit, as
 this may prevent them from booting.</warning>
 <Rule id="install_PAE_kernel_on_x86-32">
-<title>Install New Kernel on Supported x86
-Systems</title>
+<title>Install New Kernel on Supported x86 Systems</title>
 <description>Kernel support for the XD/NX processor feature should
 be enabled</description>
 <ident cce="4172-3" />
@@ -177,4 +177,3 @@ be enabled</description>
 </Group>
 </Group>
 </Group>
-

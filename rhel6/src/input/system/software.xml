@@ -10,14 +10,16 @@ updates.</description>
 <description>Some system directories should be placed on their own
 partitions (or logical volumes). This allows for better separation
 and protection of data.
-<br />The installer’s default partitioning scheme creates separate
-partitions (or logical volumes) for /, /boot, and swap.
+<br />
+The installer’s default partitioning scheme creates separate
+partitions (or logical volumes) for <tt>/</tt>, <tt>/boot</tt>, and
+<tt>swap</tt>.
 <br />
 <ul>
 <li>If starting with any of the default layouts, check the box to
-“Review and modify partitioning.” This allows for the easy creation
+"Review and modify partitioning." This allows for the easy creation
 of additional logical volumes inside the volume group already
-created, though it may require making /’s logical volume smaller to
+created, though it may require making <tt>/</tt>'s logical volume smaller to
 create space. In general, using logical volumes is preferable to
 using partitions because they can be more easily adjusted
 later.</li>
@@ -25,7 +27,8 @@ later.</li>
 the previous paragraph (which the installer will require anyway),
 as well as separate ones described in the following sections.</li>
 </ul>
-<br />If a system has already been installed, and the default
+<br />
+If a system has already been installed, and the default
 partitioning scheme was used, it is possible but nontrivial to
 modify it to create separate logical volumes for the directories
 listed above. The Logical Volume Manager (LVM) makes this possible.
@@ -33,12 +36,12 @@ See the LVM HOWTO at http://tldp.org/HOWTO/LVM-HOWTO/ for more
 detailed information on LVM.</description>
 
 <Rule id="partition_for_tmp">
-<title>Ensure that /tmp has its own partition or logical volume</title>
-<description>The /tmp directory is a world-writable directory used
+<title>Ensure that <tt>/tmp</tt> has its own partition or logical volume</title>
+<description>The <tt>/tmp</tt> directory is a world-writable directory used
 for temporary ﬁle storage. Ensure that it has its own partition or
 logical volume.</description>
 <rationale>
-Placing /tmp in its own partition enables the setting of more restrictive 
+Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive 
 mount options, which is used as temporary storage
 by many programs (sometimes insecurely).
 </rationale>
@@ -48,18 +51,17 @@ by many programs (sometimes insecurely).
 </Rule>
 
 <Rule id="partition_for_var">
-<title>Ensure that /var has its own partition or logical volume</title>
-<description>The /var directory is used by daemons and other system
+<title>Ensure that <tt>/var</tt> has its own partition or logical volume</title>
+<description>The <tt>/var</tt> directory is used by daemons and other system
 services to store frequently-changing data. 
-Ensure that /var has its own partition
+Ensure that <tt>/var</tt> has its own partition
 or logical volume.</description>
 <rationale>
-Ensuring that /var is mounted on its own partition enables the setting of more restrictive 
-mount options, which is used as temporary storage
-by many program, particularly system services such as daemons.
-It is not uncommon for
-the /var directory to contain world-writable directories, installed
-by other software packages. 
+Ensuring that <tt>/var</tt> is mounted on its own partition enables the
+setting of more restrictive mount options, which is used as temporary
+storage by many program, particularly system services such as daemons.
+It is not uncommon for the <tt>/var</tt> directory to contain
+world-writable directories, installed by other software packages. 
 </rationale>
 <ident cce="14777-7" />
 <oval id="20002" />
@@ -67,9 +69,9 @@ by other software packages.
 </Rule>
 
 <Rule id="partition_for_var_log">
-<title>Ensure that /var/log has its own partition or
+<title>Ensure that <tt>/var/log</tt> has its own partition or
 logical volume</title>
-<description>System logs are stored in the /var/log directory.
+<description>System logs are stored in the <tt>/var/log</tt> directory.
 Ensure that it has its own partition or logical
 volume.</description>
 <ident cce="14011-1" />
@@ -78,9 +80,9 @@ volume.</description>
 </Rule>
 
 <Rule id="partition_for_var_log_audit">
-<title>Ensure that /var/log/audit has its own partition
+<title>Ensure that <tt>/var/log/audit</tt> has its own partition
 or logical volume</title>
-<description>Audit logs are stored in the /var/log/audit directory.
+<description>Audit logs are stored in the <tt>/var/log/audit</tt> directory.
 Ensure that it has its own partition or logical volume. Make
 absolutely certain that it is large enough to store all audit logs
 that will be created by the auditing daemon.</description>
@@ -90,10 +92,10 @@ that will be created by the auditing daemon.</description>
 </Rule>
 
 <Rule id="partition_for_home">
-<title>Ensure that /home has its own partition or
+<title>Ensure that <tt>/home</tt> has its own partition or
 logical volume</title>
 <description>If user home directories will be stored locally,
-create a separate partition for /home. If /home will be mounted
+create a separate partition for /home. If <tt>/home</tt> will be mounted
 from another system such as an NFS server, then creating a separate
 partition is not necessary at this time, and the mountpoint can
 instead be conﬁgured later.</description>
@@ -105,18 +107,17 @@ instead be conﬁgured later.</description>
 
 <Group id="updating_software">
 <title>Updating Software</title>
-<description>The yum command line tool is used to install and
-update software packages. Yum replaces the up2date utility used in
+<description>The <tt>yum</tt> command line tool is used to install and
+update software packages. Yum replaces the <tt>up2date</tt> utility used in
 previous system releases. The system also provides two graphical
-package managers, pirut and pup. The pirut tool is a graphical
-front-end for yum that allows users to install and update packages
-while pup is a simple update tool for packages that are already
-installed. In the
-<b>Applications</b> menu, pirut is labeled
-<b>Add/Remove Software</b> and pup is labeled
+package managers, <tt>pirut</tt> and <tt>pup</tt>. The <tt>pirut</tt>
+tool is a graphical front-end for <tt>yum</tt> that allows users to install
+and update packages while <tt>pup</tt> is a simple update tool for packages
+that are already installed. In the <b>Applications</b> menu, <tt>pirut</tt>
+is labeled <b>Add/Remove Software</b> and pup is labeled
 <b>Software Updater</b>.
-<br />
-<br />It is recommended that these tools be used to keep systems up
+<br /><br />
+It is recommended that these tools be used to keep systems up
 to date with the latest security patches.</description>
 <Rule id="ensure_redhat_gpgkey_installed">
 <title>Ensure Red Hat GPG Key is Installed</title>
@@ -132,7 +133,7 @@ are from Red Hat.
 
 <Rule id="disable_rhnsd">
 <title>Disable the rhnsd Daemon</title>
-<description>The rhnsd daemon polls the Red Hat Network web site
+<description>The <tt>rhnsd</tt> daemon polls the Red Hat Network web site
 for scheduled actions. Unless it is actually necessary to schedule
 updates remotely through the RHN website, it is recommended that
 the service be disabled.</description>
@@ -146,39 +147,43 @@ the service be disabled.</description>
 <description>The following command prints a list of packages that
 need to be updated:
 <br />
+<pre>
+# yum check-update
+
+</pre>
+To actually install these updates, run:
 <br />
-<code># yum check-update</code>
-<br />
-<br />To actually install these updates, run:
-<br />
-<br />
-<code># yum update</code></description>
+<pre>
+# yum update</pre>
+</description>
 <ref nist="SI-2"/>
 <oval id="" />
 </Rule>
 
 <Rule id="disable_yum-updatesd">
-<title>The yum-updatesd service should be disabled</title>
-<description>The yum-updatesd service is not mature enough for an
-enterprise environment, and the service may introduce unnecessary
-overhead. When possible, replace this service with a cron job that
-calls yum directly.</description>
+<title>The <tt>yum-updatesd</tt> service should be disabled</title>
+<description>The <tt>yum-updatesd</tt> service is not mature enough for
+an enterprise environment, and the service may introduce unnecessary
+overhead. When possible, replace this service with a <tt>cron</tt> job
+that calls <tt>yum</tt> directly.</description>
 <ident cce="4218-4" />
 <oval id="20008" />
 <ref nist="CM-6, CM-7, SI-2"/>
 </Rule>
 
 <Rule id="ensure_gpgcheck_globally_activated">
-<title>Ensure gpgcheck is Globally Activated</title>
-<description>The gpgcheck option should be used to ensure that
+<title>Ensure <tt>gpgcheck</tt> is Globally Activated</title>
+<description>The <tt>gpgcheck</tt> option should be used to ensure that
 checking of an RPM package’s signature always occurs prior to its
 installation.
-<br />
-<br />To force yum to check package signatures before installing
-them, ensure that the following line appears in /etc/yum.conf in
-the [main] section:
-<br />
-<br />gpgcheck=1</description>
+<br /><br />
+To force yum to check package signatures before installing
+them, ensure that the following line appears in <tt>/etc/yum.conf</tt> in
+the <tt>[main]</tt> section:
+<br /><br />
+<pre>
+gpgcheck=1</pre>
+</description>
 <ident cce="14914-6" />
 <oval id="20010" />
 <ref nist="SI-2"/>
@@ -189,14 +194,15 @@ the [main] section:
 Disabled For Any Repos</title>
 <description>To ensure that signature checking is not disabled for
 any repos, ensure that the following line DOES NOT appear in any
-repo conﬁguration ﬁles in /etc/yum.repos.d or elsewhere:
+repo conﬁguration ﬁles in <tt>/etc/yum.repos.d</tt> or elsewhere:
 <br />
-<br />gpgcheck=0</description>
+<pre>
+gpgcheck=0</pre>
+</description>
 <ident cce="14813-0" />
 <oval id="20011" />
 <ref nist="SI-2"/>
 </Rule>
-
 </Group>
 
 <Group id="software_integrity">
@@ -207,8 +213,8 @@ checking. It is designed to be a replacement for the well-known
 Tripwire integrity checker. Integrity checking cannot
 <i>prevent</i>intrusions into your system, but can detect that
 they have occurred.
-<br />
-<br />Any integrity checking software should be configured before
+<br /><br />
+Any integrity checking software should be configured before
 the system is deployed and able to provides services to users.
 Ideally, the integrity checking database would be built before the
 system is connected to any network, though this may prove
@@ -223,7 +229,7 @@ implementing integrity checking is provided, but precise
 recommendations (such as to check a particular file) cannot be.
 Documentation for AIDE, including the quick-start on which this
 advice is based, is available in
-/usr/share/doc/aide-0.12.</description>
+<tt>/usr/share/doc/aide-VERSION</tt></description>
 <ident cce="4209-3" />
 <oval id="20014" />
 <ref nist="CM-6, CM-7"/>
@@ -243,7 +249,4 @@ modiﬁcation of important ﬁles.</description>
 <ref nist="SI-7"/>
 </Rule>
 </Group>
-
 </Group>
-
-
