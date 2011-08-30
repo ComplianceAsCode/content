@@ -3,8 +3,7 @@
 <description>The web server is responsible for providing access to
 content via the HTTP protocol. Web servers represent a significant
 security risk because:
-<br />
-<br />
+<br /><br />
 <ul>
 <li>The HTTP port is commonly probed by malicious sources</li>
 <li>Web server software is very complex, and includes a long
@@ -12,8 +11,8 @@ history of vulnerabilities</li>
 <li>The HTTP protocol is unencrypted and vulnerable to passive
 monitoring</li>
 </ul>
-<br />
-<br />The system's default web server software is Apache 2 and is
+<br /><br />
+The system's default web server software is Apache 2 and is
 provided in the RPM package httpd.</description>
 <Group id="disabling_httpd">
 <title>Disable Apache if Possible</title>
@@ -21,9 +20,10 @@ provided in the RPM package httpd.</description>
 does not need to act as a web server, then it should be disabled
 and removed from the system:
 <br />
-<br />
-<code># chkconfig httpd off
-<br /># yum erase httpd</code></description>
+<pre>
+# chkconfig httpd off
+# yum erase httpd</pre>
+</description>
 <Rule id="disable_httpd">
 <title>Disable Apache if Possible</title>
 <description>The httpd service should be disabled.</description>

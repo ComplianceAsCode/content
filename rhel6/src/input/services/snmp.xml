@@ -12,23 +12,24 @@ choices for community string.</description>
 remote monitoring, though it not installed by default. If it was
 installed and activated, it is important that the software be
 disabled and removed.
-<br />
-<br />If there is not a mission-critical need for hosts at this
+<br /><br />
+If there is not a mission-critical need for hosts at this
 site to be remotely monitored by a SNMP tool, then disable and
 remove SNMP as follows:
 <br />
-<br />
-<code># chkconfig snmpd off
-<br /># yum erase net-snmpd</code></description>
+<pre>
+# chkconfig snmpd off
+# yum erase net-snmpd</pre>
+</description>
 <Rule id="disable_snmpd">
-<title>Disable snmpd if Possible</title>
-<description>The snmpd service should be disabled.</description>
+<title>Disable <tt>snmpd</tt> if Possible</title>
+<description>The <tt>snmpd</tt> service should be disabled.</description>
 <ident cce="3765-5" />
 <oval id="20365" />
 </Rule>
 <Rule id="uninstall_net-snmp">
-<title>Uninstall net-snmp if Possible</title>
-<description>The net-snmp package should be
+<title>Uninstall <tt>net-snmp</tt> if Possible</title>
+<description>The <tt>net-snmp</tt> package should be
 uninstalled.</description>
 <ident cce="14081-4" />
 <oval id="20366" />

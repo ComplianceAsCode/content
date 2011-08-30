@@ -7,14 +7,15 @@ involving DNS, be configured defensively.</description>
 <title>Disable DNS Server if Possible</title>
 <description>Is there an operational need for this machine to act
 as a DNS server for this site?
+<br /><br />
+If not, disable the software and remove it from the system:
 <br />
-<br />If not, disable the software and remove it from the system:
-<br />
-<br />
-<code># chkconfig named off
-<br /># yum erase bind
-<br /></code>
-<br />DNS software should be disabled on any machine which does not
+<pre>
+# chkconfig named off
+# yum erase bind
+
+</pre>
+DNS software should be disabled on any machine which does not
 need to be a nameserver. Note that the BIND DNS server software is
 not installed on RHEL5 by default. The remainder of this section
 discusses secure configuration of machines which must be
@@ -36,5 +37,3 @@ nameservers.</description>
 </Rule>
 </Group>
 </Group>
-
-

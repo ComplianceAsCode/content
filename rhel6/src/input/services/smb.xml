@@ -15,10 +15,11 @@ default.</description>
 <description>If the Samba service has been enabled and will not be
 used, disable it:
 <br />
-<br />
-<code># chkconfig smb off
-<br /></code>
-<br />Even after the Samba server package has been installed, it
+<pre>
+# chkconfig smb off
+
+</pre>
+Even after the Samba server package has been installed, it
 will remain disabled. Do not enable this service unless it is
 absolutely necessary to provide Microsoft Windows file and print
 sharing functionality.</description>
@@ -32,23 +33,25 @@ sharing functionality.</description>
 <Group id="configuring_samba">
 <title>Configure Samba if Necessary</title>
 <description>All settings for the Samba daemon can be found in
-/etc/samba/smb.conf. Settings are divided between a [global]
-configuration section and a series of user created share definition
-sections meant to describe file or print shares on the system. By
-default, Samba will operate in user mode and allow client machines
-to access local home directories and printers. It is recommended
-that these settings be changed or that additional limitations be
-set in place.</description>
+<tt>/etc/samba/smb.conf</tt>. Settings are divided between a
+<tt>[global]</tt> configuration section and a series of user
+created share definition sections meant to describe file or print
+shares on the system. By default, Samba will operate in user mode
+and allow client machines to access local home directories and
+printers. It is recommended that these settings be changed or that
+additional limitations be set in place.</description>
 <Group id="smb_client_signing">
 <title>Require Client SMB Packet Signing, if using
 smbclient</title>
 <description>To require samba clients running smbclient to use
-packet signing, add the following to the [global] section of the
-Samba conﬁguration ﬁle:
+packet signing, add the following to the <tt>[global]</tt> section
+of the Samba conﬁguration ﬁle:
 <br />
-<br />client signing = mandatory
-<br />
-<br />A Samba client should only communicate with servers who can
+<pre>
+client signing = mandatory
+
+</pre>
+A Samba client should only communicate with servers who can
 support SMB packet signing. Packet signing can prevent
 man-in-the-middle attacks which modify SMB packets in
 transit.</description>
@@ -67,13 +70,13 @@ transit.</description>
 
 <Group id="smb_client_signing_mount.cifs">
 <title>Require Client SMB Packet Signing, if using
-mount.cifs</title>
+<tt>mount.cifs</tt></title>
 <description>Require packet signing of clients who mount Samba
-shares using the mount.cifs program (e.g., those who specify shares
-in /etc/fstab). To do so, ensure that signing options (either
-sec=krb5i or sec=ntlmv2i) are used.
-<br />
-<br />See the mount.cifs(8) man page for more information. A Samba
+shares using the <tt>mount.cifs</tt> program (e.g., those who specify shares
+in <tt>/etc/fstab</tt>). To do so, ensure that signing options (either
+<tt>sec=krb5i</tt> or <tt>sec=ntlmv2i</tt>) are used.
+<br /><br />
+See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
 client should only communicate with servers who can support SMB
 packet signing. Packet signing can prevent man-in-the-middle
 attacks which modify SMB packets in transit.</description>
@@ -81,11 +84,11 @@ attacks which modify SMB packets in transit.</description>
 <title>Require Client SMB Packet Signing, if using
 mount.cifs</title>
 <description>Require packet signing of clients who mount Samba
-shares using the mount.cifs program (e.g., those who specify shares
-in /etc/fstab). To do so, ensure that signing options (either
-sec=krb5i or sec=ntlmv2i) are used.
-<br />
-<br />See the mount.cifs(8) man page for more information. A Samba
+shares using the <tt>mount.cifs</tt> program (e.g., those who specify shares
+in <tt>/etc/fstab</tt>). To do so, ensure that signing options (either
+<tt>sec=krb5i</tt> or <tt>sec=ntlmv2i</tt>) are used.
+<br /><br />
+See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
 client should only communicate with servers who can support SMB
 packet signing. Packet signing can prevent man-in-the-middle
 attacks which modify SMB packets in transit.</description>

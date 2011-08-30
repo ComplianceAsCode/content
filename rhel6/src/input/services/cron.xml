@@ -6,45 +6,53 @@ all systems to perform necessary maintenance tasks, while at may or
 may not be required on a given system. Both daemons should be
 configured defensively.</description>
 <Rule id="enable_cron">
-<title>Enable cron Daemon</title>
-<description>The crond service should be enabled.</description>
+<title>Enable <tt>cron</tt> Daemon</title>
+<description>The <tt>crond</tt> service should be enabled.</description>
 <ident cce="4324-0" />
 <oval id="20205" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Group id="cron_file_perms">
-<title>Restrict Permissions on Files Used by cron</title>
+<title>Restrict Permissions on Files Used by <tt>cron</tt></title>
 <description>
 <ol>
 <li>Restrict the permissions on the primary system crontab file:
 <br />
-<br />
-<code># chown root:root /etc/crontab
-<br /># chmod 600 /etc/crontab</code></li>
-<li>If anacron has not been removed, restrict the permissions on
+<pre>
+# chown root:root /etc/crontab
+# chmod 600 /etc/crontab
+
+</pre>
+</li>
+<li>If <tt>anacron</tt> has not been removed, restrict the permissions on
 its primary configuration file:
 <br />
-<br />
-<code># chown root:root /etc/anacrontab
-<br /># chmod 600 /etc/anacrontab</code></li>
+<pre>
+# chown root:root /etc/anacrontab
+# chmod 600 /etc/anacrontab
+
+</pre>
+</li>
 <li>Restrict the permission on all system crontab directories:
 <br />
-<br />
-<code># cd /etc
-<br /># chown -R root:root cron.hourly cron.daily cron.weekly
-cron.monthly cron.d
-<br /># chmod -R go-rwx cron.hourly cron.daily cron.weekly
-cron.monthly cron.d</code></li>
+<pre>
+# cd /etc
+# chown -R root:root cron.hourly cron.daily cron.weekly cron.monthly cron.d
+# chmod -R go-rwx cron.hourly cron.daily cron.weekly cron.monthly cron.d
+
+</pre></li>
 <li>Restrict the permissions on the spool directory for user
 crontab files:
 <br />
-<br />
-<code># chown root:root /var/spool/cron
-<br /># chmod -R go-rwx /var/spool/cron</code></li>
+<pre>
+# chown root:root /var/spool/cron
+# chmod -R go-rwx /var/spool/cron
+
+</pre></li>
 </ol>
-<br />
-<br />Cron and anacron make use of a number of configuration files
+<br /><br />
+Cron and anacron make use of a number of configuration files
 and directories. The system crontabs need only be edited by root,
 and user crontabs are edited using the setuid root crontab command.
 If unprivileged users can modify system cron configuration files,

@@ -5,8 +5,8 @@ files. Like telnet, the FTP protocol is unencrypted, which means
 that passwords and other data transmitted during the session can be
 captured and that the session is vulnerable to hijacking.
 Therefore, running the FTP server software is not recommended.
-<br />
-<br />However, there are some FTP server configurations which may
+<br /><br />
+However, there are some FTP server configurations which may
 be appropriate for some environments, particularly those which
 allow only read-only anonymous access as a means of downloading
 data available to the public.</description>
@@ -16,8 +16,9 @@ data available to the public.</description>
 act as an FTP server? If not, disable vsftpd if it has been
 installed:
 <br />
-<br />
-<code># chkconfig vsftpd off</code></description>
+<pre>
+# chkconfig vsftpd off</pre>
+</description>
 <Rule id="disable_vsftpd">
 <title>Disable vsftpd if Possible</title>
 <description>The vsftpd service should be disabled.</description>
@@ -36,4 +37,3 @@ uninstalled.</description>
 </Rule>
 </Group>
 </Group>
-

@@ -2,17 +2,17 @@
 <title>LDAP</title>
 <description>LDAP is a popular directory service, that is, a
 standardized way of looking up information from a central database.
-It is relatively simple to configure a RHEL5 machine to obtain
+It is relatively simple to configure a RHEL6 machine to obtain
 authentication information from an LDAP server. If your network
 uses LDAP for authentication, be sure to configure both clients and
 servers securely.</description>
 <Group id="openldap_client">
 <title>Configure OpenLDAP Clients</title>
 <description>This guide recommends configuring OpenLDAP clients by
-manually editing the appropriate configuration files. RHEL5
+manually editing the appropriate configuration files. RHEL6
 provides an automated configuration tool called authconfig and a
 graphical wrapper for authconfig called
-system-config-authentication. However, these tools do not give
+<tt>system-config-authentication</tt>. However, these tools do not give
 sufficient flexibility over configuration. The authconfig tools do
 not allow you to specify locations of SSL certificate files, which
 is useful when trying to use SSL cleanly across several protocols.
@@ -29,32 +29,37 @@ server.</warning>
 <description>
 <ol>
 <li>Ensure a copy of the site's CA certificate has been placed in
-the file /etc/pki/tls/CA/cacert.pem.</li>
+the file <tt>/etc/pki/tls/CA/cacert.pem</tt>.</li>
 <li>Configure LDAP to enforce TLS use and to trust certificates
-signed by the site's CA. First, edit the file /etc/ldap.conf, and
-add or correct the following lines:
+signed by the site's CA. First, edit the file <tt>/etc/pam_ldap.conf</tt>,
+and add or correct the following lines:
 <br />
-<br />ssl start_tls
-<br />tls_checkpeer yes
-<br />tls_cacertdir /etc/pki/tls/CA
-<br />tls_cacertfile /etc/pki/tls/CA/cacert.pem
-<br />
-<br />Then edit /etc/openldap/ldap.conf, and add or correct the
+<pre>
+ssl start_tls
+tls_checkpeer yes
+tls_cacertdir /etc/pki/tls/CA
+tls_cacertfile /etc/pki/tls/CA/cacert.pem
+
+</pre>
+Then edit <tt>/etc/openldap/ldap.conf</tt>, and add or correct the
 following lines:
 <br />
-<br />TLS_CACERTDIR /etc/pki/tls/CA
-<br />TLS_CACERT /etc/pki/tls/CA/cacert.pem</li>
+<pre>
+TLS_CACERTDIR /etc/pki/tls/CA
+TLS_CACERT /etc/pki/tls/CA/cacert.pem
+
+</pre>
+</li>
 </ol>
-<br />
-<br />Section 2.5.6 describes the system-wide configuration of SSL
+<br /><br />
+Section 2.5.6 describes the system-wide configuration of SSL
 for your enterprise. It is possible to place your certificate
-information under some directory other than /etc/pki/tls, but using
-a consistent directory structure across all SSL services at your
-site is recommended. The LDAP server must be configured with a
-certificate signed by the CA certificate named here.</description>
+information under some directory other than <tt>/etc/pki/tls</tt>,
+but using a consistent directory structure across all SSL services
+at your site is recommended. The LDAP server must be configured
+with a certificate signed by the CA certificate named here.</description>
 <Rule id="ldap_require_tls">
-<title>Configure LDAP to Use TLS for All
-Transactions</title>
+<title>Configure LDAP to Use TLS for All Transactions</title>
 <description>Clients require LDAP servers to provide valid
 certificates for SSL communications.</description>
 <ident cce="14894-0" />
@@ -75,16 +80,17 @@ nonetheless.</description>
 <title>Install OpenLDAP Server RPM</title>
 <description>Is this machine the OpenLDAP server? If so:
 <br />
-<br />
-<code># yum install openldap-servers
-<br /># chkconfig ldap on
-<br /></code>
-<br />The openldap-servers RPM is not installed by default on RHEL5
+<pre>
+# yum install openldap-servers
+# chkconfig ldap on
+
+</pre>
+The openldap-servers RPM is not installed by default on RHEL6
 machines. It is needed only by the OpenLDAP server, not by the
 clients which use LDAP for authentication.</description>
 <Rule id="disable_openldap_service">
 <title>Disable OpenLDAP service</title>
-<description>The ldap service should be disabled.</description>
+<description>The <tt>ldap</tt> service should be disabled.</description>
 <ident cce="3501-4" />
 <oval id="20289" />
 </Rule>

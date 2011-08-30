@@ -9,19 +9,19 @@ configuration.</description>
 <description>If the system does not need to operate as an IMAP or
 POP3 server, disable and remove Dovecot if it was installed:
 <br />
-<br />
-<code># chkconfig dovecot off
-<br /># yum erase dovecot</code></description>
+<pre>
+# chkconfig dovecot off
+# yum erase dovecot</pre>
+</description>
 <Rule id="disable_dovecot">
 <title>Disable Dovecot if Possible</title>
-<description>The dovecot service should be disabled.</description>
+<description>The <tt>dovecot</tt> service should be disabled.</description>
 <ident cce="3847-1" />
 <oval id="20331" />
 </Rule>
 <Rule id="uninstall_dovecot">
 <title>Uninstall Dovecot if Possible</title>
-<description>The dovecot package should be
-uninstalled.</description>
+<description>The <tt>dovecot</tt> package should be uninstalled.</description>
 <ident cce="4239-0" />
 <oval id="20332" />
 </Rule>

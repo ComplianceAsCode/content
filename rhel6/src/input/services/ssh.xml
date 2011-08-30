@@ -6,14 +6,14 @@ for data exchanged between two systems, as well as server
 authentication, through the use of public key cryptography. The
 implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
-http://www.openssh.org. Its server program is called sshd and
-provided by the RPM package openssh-server.</description>
+http://www.openssh.org. Its server program is called <tt>sshd</tt> and
+provided by the RPM package <tt>openssh-server</tt>.</description>
 <Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
 <description>If the system needs to act as an SSH server, then
 certain changes should be made to the OpenSSH daemon configuration
-file /etc/ssh/sshd config. The following recommendations can be
-applied to this file. See the sshd config(5) man page for more
+file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
+applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
 <Group id="sshd_allowing_only_protocol2">
 <title>Ensure Only Protocol 2 Connections Allowed</title>
@@ -21,13 +21,14 @@ detailed information.</description>
 permitted. Version 1 of the protocol contains security
 vulnerabilities. The default setting shipped in the configuration
 file is correct, but it is important enough to check.
+<br /><br />
+Verify that the following line appears:
 <br />
-<br />Verify that the following line appears:
-<br />
-<br />Protocol 2</description>
+<pre>
+Protocol 2</pre>
+</description>
 <Rule id="sshd_allow_only_protocol2">
-<title>Ensure Only Protocol 2 Connections
-Allowed</title>
+<title>Ensure Only Protocol 2 Connections Allowed</title>
 <description>SSH version 1 protocol support should be
 disabled.</description>
 <ident cce="4325-7" />
@@ -39,17 +40,19 @@ disabled.</description>
 <description>SSH allows administrators to set an idle timeout
 interval. After this interval has passed, the idle user will be
 automatically logged out.
-<br />
-<br />Find and edit the following lines in /etc/ssh/sshd config as
+<br /><br />
+Find and edit the following lines in <tt>/etc/ssh/sshd_config</tt> as
 follows:
 <br />
-<br />ClientAliveInterval interval
-<br />ClientAliveCountMax 0
-<br />
-<br />The timeout interval is given in seconds. To have a timeout
-of 5 minutes, set interval to 300.
-<br />
-<br />If a shorter timeout has already been set for the login
+<pre>
+ClientAliveInterval <b>interval</b>
+ClientAliveCountMax 0
+
+</pre>
+The timeout <b>interval</b> is given in seconds. To have a timeout
+of 5 minutes, set <b>interval</b> to 300.
+<br /><br />
+If a shorter timeout has already been set for the login
 shell, as in Section 2.3.5.5, that value will preempt any SSH
 setting made here. Keep in mind that some processes may stop SSH
 from correctly detecting that the user is idle.</description>
@@ -74,7 +77,7 @@ appropriate value</description>
 <Rule id="sshd_set_keepalive">
 <title>The SSH 'keep alive' message count should be set
 to an appropriate value</title>
-<description>The ClientAliveCountMax should be set to an
+<description>The <tt>ClientAliveCountMax</tt> should be set to an
 appropriate value</description>
 <ident cce="14061-6" />
 <oval id="20240" />
@@ -85,12 +88,14 @@ appropriate value</description>
 <title>Disable .rhosts Files</title>
 <description>SSH can emulate the behavior of the obsolete rsh
 command in allowing users to enable insecure access to their
-accounts via .rhosts files.
-<br />
-<br />To ensure that this behavior is disabled, add or correct the
+accounts via <tt>.rhosts</tt> files.
+<br /><br />
+To ensure that this behavior is disabled, add or correct the
 following line:
 <br />
-<br />IgnoreRhosts yes</description>
+<pre>
+IgnoreRhosts yes</pre>
+</description>
 <Rule id="sshd_disable_rhosts">
 <title>Disable .rhosts Files</title>
 <description>Emulation of the rsh command through the ssh server
@@ -103,15 +108,17 @@ should be disabled</description>
 <Group id="disabling_host_auth">
 <title>Disable Host-Based Authentication</title>
 <description>SSH's cryptographic host-based authentication is
-slightly more secure than .rhosts authentication, since hosts are
-cryptographically authenticated. However, it is not recommended
-that hosts unilaterally trust one another, even within an
-organization.
-<br />
-<br />To disable host-based authentication, add or correct the
+slightly more secure than <tt>.rhosts</tt> authentication,
+since hosts are cryptographically authenticated. However, it is
+not recommended that hosts unilaterally trust one another, even
+within an organization.
+<br /><br />
+To disable host-based authentication, add or correct the
 following line:
 <br />
-<br />HostbasedAuthentication no</description>
+<pre>
+HostbasedAuthentication no</pre>
+</description>
 <Rule id="disable_host_auth">
 <title>Disable Host-Based Authentication</title>
 <description>SSH host-based authentication should be
@@ -126,12 +133,12 @@ disabled</description>
 directly over a network, as this both reduces auditable information
 about who ran privileged commands on the system and allows direct
 attack attempts on root's password.
+<br /><br />
+To disable root login via SSH, add or correct the following line:
 <br />
-<br />To disable root login via SSH, add or correct the following
-line:
-<br />
-<br />PermitRootLogin no</description>
-
+<pre>
+PermitRootLogin no</pre>
+</description>
 
 <Rule id="sshd_disable_root_login">
 <title>Disable root Login via SSH</title>
@@ -145,11 +152,12 @@ line:
 <description>To explicitly disallow remote login from accounts with
 empty passwords, add or correct the following line:
 <br />
-<br />PermitEmptyPasswords no
-<br />
-<br />Measures should also be taken to disable accounts with empty
-passwords system-wide, as described in Section
-2.3.1.5.</description>
+<pre>
+PermitEmptyPasswords no
+
+</pre>
+Measures should also be taken to disable accounts with empty
+passwords system-wide, as described in Section 2.3.1.5.</description>
 
 <Rule id="sshd_disable_empty_passwords">
 <title>Disable Empty Passwords</title>
@@ -163,11 +171,12 @@ should be disabled</description>
 <title>Enable a Warning Banner</title>
 <description>Section 2.3.7 contains information on how to create an
 appropriate warning banner.
+<br /><br />
+To enable a warning banner, add or correct the following line:
 <br />
-<br />To enable a warning banner, add or correct the following
-line:
-<br />
-<br />Banner /etc/issue</description>
+<pre>
+Banner /etc/issue</pre>
+</description>
 <Rule id="sshd_enable_warning_banner">
 <title>Enable a Warning Banner</title>
 <description>SSH warning banner should be enabled</description>
@@ -181,11 +190,12 @@ line:
 environment options to the SSH daemon and potentially bypass some
 access restrictions, add or correct the following line:
 <br />
-<br />PermitUserEnvironment no</description>
+<pre>
+PermitUserEnvironment no</pre>
+</description>
 <Rule id="sshd_do_not_permit_user_env">
-<title>Do Not Allow Users to Set Environment
-Options</title>
-<description>PermitUserEnvironment should be disabled</description>
+<title>Do Not Allow Users to Set Environment Options</title>
+<description><tt>PermitUserEnvironment</tt> should be disabled</description>
 <ident cce="4422-2" />
 <oval id="202455" />
 </Rule>
@@ -196,9 +206,11 @@ Options</title>
 only use ciphers in counter (CTR) mode. The following line
 demonstrates use of FIPS-approved ciphers in CTR mode:
 <br />
-<br />Ciphers aes128-ctr,aes192-ctr,aes256-ctr
-<br />
-<br />The man page sshd_config(5) contains a list of the ciphers
+<pre>
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr
+
+</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of the ciphers
 supported for the current release of the SSH daemon.</description>
 
 

@@ -11,8 +11,7 @@ automatically at boot. There is usually no reason to run X Windows
 on a dedicated server machine, since administrators can login via
 SSH or on the text console.</description>
 <Group id="xwindows_startx">
-<title>Lock Down X Windows startx Configuration if
-Necessary</title>
+<title>Lock Down X Windows startx Configuration if Necessary</title>
 <description>If X is not to be started at boot time but the
 software must remain installed, users will be able to run X
 manually using the startx command. In some cases, this runs X with
@@ -25,18 +24,20 @@ configuration.</description>
 connections, create the file /etc/X11/xinit/xserverrc and fill it
 with the following line:
 <br />
-<br />exec X :0 -nolisten tcp $@
-<br />
-<br />One of X.org's features is the ability to provide remote
+<pre>
+exec X :0 -nolisten tcp $@
+
+</pre>
+One of X.org's features is the ability to provide remote
 graphical display. This feature should be disabled unless it is
 required. If the system uses runlevel 5, which is the default, the
 GDM display manager starts X safely, with remote listening
 disabled. However, if X is started from the command line with the
 startx command, then the server will listen for new connections on
 X's default port, 6000.
-<br />
-<br />See the xinit(1), startx(1), and Xserver(1) man pages for
-more information.</description>
+<br /><br />
+See the <tt>xinit(1)</tt>, <tt>startx(1)</tt>, and <tt>Xserver(1)</tt>
+ man pages for more information.</description>
 <Rule id="disable_xwindows_listening">
 <title>Disable X Window System Listening</title>
 <description>Disable the ability to provide remote graphical
@@ -55,19 +56,23 @@ to run a GUI, improve the security of the default X configuration
 by following the guidance in this section.</description>
 <Group id="xwindows_banner">
 <title>Create Warning Banners for GUI Login Users</title>
-<description>Edit the file /etc/gdm/custom.conf. Locate the
-[greeter] section, and correct that section to contain the lines:
+<description>Edit the file <tt>/etc/gdm/custom.conf</tt>. Locate the
+<tt>[greeter]</tt> section, and correct that section to contain the lines:
 <br />
-<br />[greeter]
-<br />InfoMsgFile=/etc/issue
-<br />
-<br />See Section 2.3.7 for an explanation of banner file use. This
+<pre>
+[greeter]
+InfoMsgFile=/etc/issue
+
+</pre>
+See Section 2.3.7 for an explanation of banner file use. This
 setting will cause the system greeting banner to be displayed in a
 box prior to GUI login. If the default banner font is
-inappropriate, it can be changed by specifying the InfoMsgFont
+inappropriate, it can be changed by specifying the <tt>InfoMsgFont</tt>
 directive as well, for instance:
 <br />
-<br />InfoMsgFont=Sans 12</description>
+<pre>
+InfoMsgFont=Sans 12</pre>
+</description>
 <Rule id="set_gui_login_banner">
 <title>Create Warning Banners for GUI Login
 Users</title>

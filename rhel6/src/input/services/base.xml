@@ -1,7 +1,7 @@
 <Group id="base">
 <title>Base Services</title>
 <description>This section addresses the base services that are
-configured to start up on boot in a RHEL5 default installation.
+configured to start up on boot in a RHEL6 default installation.
 Some of these services listen on the network and should be treated
 with particular discretion. The other services are local system
 utilities that may or may not be extraneous. Each of these services
@@ -11,9 +11,9 @@ should be disabled if not required.</description>
 <description>The ISDN service facilitates Internet connectivity in
 the presence of an ISDN modem. If an ISDN modem is not being used,
 disable this service:
-<br />
-<br />
-<code># chkconfig isdn off</code></description>
+<br /><br />
+<code># chkconfig isdn off</code>
+</description>
 <Rule id="disable_isdn">
 <title>ISDN Support (isdn)</title>
 <description>The isdn service should be disabled.</description>
@@ -22,19 +22,19 @@ disable this service:
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
+
 <Group id="kdump">
 <title>Kdump Kernel Crash Analyzer (kdump)</title>
 <description>Kdump is a new kernel crash dump analyzer. It uses
 kexec to boot a secondary kernel ('capture' kernel) following a
 system crash. The kernel dump from the system crash is loaded into
 the capture kernel for analysis.
-<br />
-<br />Unless the system is used for kernel development or testing,
+<br /><br />
+Unless the system is used for kernel development or testing,
 disable the service:
-<br />
-<br />
-<code># chkconfig kdump off</code></description>
-
+<br /><br />
+<code># chkconfig kdump off</code>
+</description>
 <Rule id="disable_kdump">
 <title>Kdump Kernel Crash Analyzer (kdump)</title>
 <description>The kdump service should be disabled.</description>
@@ -43,6 +43,7 @@ disable the service:
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
+
 <Group id="network_service">
 <title>Network Service (network)</title>
 <description>The network service allows associated network
@@ -55,14 +56,16 @@ parameters which affect networking, see Section</description>
 an IP address and engage in IP communication without a
 statically-assigned address or even a DHCP server. Automatic
 address assignment via Zeroconf (or DHCP) is not recommended.
-<br />
-<br />To disable Zeroconf automatic route assignment in the
+<br /><br />
+To disable Zeroconf automatic route assignment in the
 169.245.0.0 subnet, add or correct the following line in
-/etc/sysconfig/network:
+<tt>/etc/sysconfig/network</tt>:
 <br />
-<br />NOZEROCONF=yes
-<br />
-<br />Zeroconf addresses are in the network 169.254.0.0. The
+<pre>
+NOZEROCONF=yes
+
+</pre>
+Zeroconf addresses are in the network 169.254.0.0. The
 networking scripts add entries to the system's routing table for
 these addresses. Zeroconf address assignment commonly occurs when
 the system is configured to use DHCP but fails to receive an
@@ -83,15 +86,16 @@ address assignment from the DHCP server.</description>
 <description>The following services provide one-time caching of
 files belonging to some boot services, with the goal of allowing
 the system to boot faster.
-<br />
-<br />It is recommended that this service be disabled on most
+<br /><br />
+It is recommended that this service be disabled on most
 machines:
-<br />
-<br />
-<code># chkconfig readahead_early off
-<br /># chkconfig readahead_later off
-<br /></code>
-<br />The readahead services do not substantially increase a
+<br /><br />
+<pre>
+# chkconfig readahead_early off
+# chkconfig readahead_later off
+
+</pre>
+The readahead services do not substantially increase a
 system's risk exposure, but they also do not provide great benefit.
 Unless the system is running a specialized application for which
 the file caching substantially improves system boot time, this
@@ -108,8 +112,7 @@ disabled.</description>
 </Rule>
 
 <Rule id="disable_readahead_later">
-<title>Boot Caching (readahead early/readahead
-later)</title>
+<title>Boot Caching (readahead early/readahead later)</title>
 <description>The readahead_later service should be
 disabled.</description>
 <ident cce="4302-6" />
@@ -125,8 +128,8 @@ digital cameras, and video game consoles over a short-range
 wireless link. Any wireless communication presents a serious
 security risk to sensitive or classified systems. Section 2.5.2
 contains information on the related topic of wireless networking.
-<br />
-<br />Removal of hardware is the only way to ensure that the
+<br /><br />
+Removal of hardware is the only way to ensure that the
 Bluetooth wireless capability remains disabled. If it is completely
 impractical to remove the Bluetooth hardware module, and site
 policy still allows the device to enter sensitive spaces, every
@@ -135,13 +138,14 @@ general, acquisition policy should include provisions to prevent
 the purchase of equipment that will be used in sensitive spaces and
 includes Bluetooth capabilities.</description>
 <Group id="bluetooth_service">
-<title>Bluetooth Host Controller Interface Daemon
-(bluetooth)</title>
+<title>Bluetooth Host Controller Interface Daemon (bluetooth)</title>
 <description>The bluetooth service enables the system to use
 Bluetooth devices. If the system requires no Bluetooth devices,
 disable this service:
 <br />
-<code># chkconfig bluetooth off</code></description>
+<pre>
+# chkconfig bluetooth off</pre>
+</description>
 <Rule id="disable_bluetooth_service">
 <title>Bluetooth Host Controller Interface Daemon
 (bluetooth)</title>
@@ -160,8 +164,9 @@ disabled.</description>
 devices. If the system has no Bluetooth input devices (e.g.
 keyboard or mouse), disable this service:
 <br />
-<br />
-<code># chkconfig hidd off</code></description>
+<pre>
+# chkconfig hidd off</pre>
+</description>
 <Rule id="disable_bluetooth_hidd">
 <title>Bluetooth Input Devices (hidd)</title>
 <description>The hidd service should be disabled.</description>
@@ -172,4 +177,3 @@ keyboard or mouse), disable this service:
 </Group>
 </Group>
 </Group>
-
