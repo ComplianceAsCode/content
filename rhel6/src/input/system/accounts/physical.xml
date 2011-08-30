@@ -17,48 +17,55 @@ provides root access without any authentication, and the ability to
 disable SELinux. To prevent local users from modifying the boot
 parameters and endangering security, the boot loader configuration
 should be protected with a password.
-<br />
-<br />The default RHEL boot loader for x86 systems is called GRUB.
+<br /><br />
+The default RHEL boot loader for x86 systems is called GRUB.
 To protect its configuration:
 <br />
-
 <ol>
 <li>Select a password and then generate a hash from it by running:
 <br />
+<pre>
+# grub-md5-crypt
+
+</pre>
+</li>
+<li>Insert the following line into <tt>/etc/grub.conf</tt> immediately
+after the header comments. (Use the output from <tt>grub-md5-crypt</tt> as the
+value of <b>password-hash</b>):
 <br />
-<code># grub-md5-crypt</code></li>
-<li>Insert the following line into /etc/grub.conf immediately after
-the header comments. (Use the output from grub-md5-crypt as the
-value of password-hash ):
+<pre>
+password --md5 <b>password-hash</b>
+
+</pre>
+</li>
+<li>Verify the permissions on <tt>/etc/grub.conf</tt> (which is a symlink to
+<tt>../boot/grub/grub.conf</tt>):
 <br />
-<br />
-<code>password --md5 password-hash</code></li>
-<li>Verify the permissions on /etc/grub.conf (which is a symlink to
-../boot/grub/grub.conf):
-<br />
-<br />
-<code># chown root:root /etc/grub.conf
-<br /># chmod 600 /etc/grub.conf</code></li>
+<pre>
+# chown root:root /etc/grub.conf
+# chmod 600 /etc/grub.conf
+
+</pre></li>
 </ol>Boot loaders for other platforms should offer a similar
 password protection feature.</description>
 <Value id="var-2.3.5.2.a" type="string"
 operator="equals" interactive="0">
-<title>User that owns /etc/grub.conf</title>
+<title>User that owns <tt>/etc/grub.conf</tt></title>
 <description>Choose user that should own
-/etc/grub.conf</description>
+<tt>/etc/grub.conf</tt></description>
 <value selector="root">root</value>
 </Value>
 <Value id="var-2.3.5.2.b" type="string"
 operator="equals" interactive="0">
-<title>Group that owns /etc/grub.conf</title>
+<title>Group that owns <tt>/etc/grub.conf</tt></title>
 <description>Choose group that should own
-/etc/grub.conf</description>
+<tt>/etc/grub.conf</tt></description>
 <value selector="root">root</value>
 </Value>
 
 <Rule id="userowner_grub.conf">
 <title>Set Boot Loader user owner</title>
-<description>The /etc/grub.conf file should be owned by
+<description>The <tt>/etc/grub.conf</tt> file should be owned by
 root.</description>
 <ident cce="4144-2" />
 <oval id="20092" />
@@ -67,7 +74,7 @@ root.</description>
 
 <Rule id="groupowner_grub.conf">
 <title>Set Boot Loader group owner</title>
-<description>The /etc/grub.conf file should be owned by group
+<description>The <tt>/etc/grub.conf</tt> file should be owned by group
 root.</description>
 <ident cce="4197-0" />
 <oval id="20093" />
@@ -75,8 +82,8 @@ root.</description>
 </Rule>
 
 <Rule id="perms_grub.conf">
-<title>Set permission on /etc/grub.conf</title>
-<description>File permissions for /etc/grub.conf should be set
+<title>Set permission on <tt>/etc/grub.conf</tt></title>
+<description>File permissions for <tt>/etc/grub.conf</tt> should be set
 correctly.</description>
 <ident cce="3923-0" />
 <oval id="20094" />
@@ -101,16 +108,17 @@ providing a boot option at startup. By default, no authentication
 is performed if single-user mode is selected. This provides a
 trivial mechanism of bypassing security on the machine and gaining
 root access.
-<br />
-<br />To require entry of the root password even if the system is
+<br /><br />
+To require entry of the root password even if the system is
 started in single-user mode, add the following line to the
-/etc/inittab file:
+<tt>/etc/inittab</tt> file:
 <br />
-<br />~~:S:wait:/sbin/sulogin</description>
+<pre>
+~~:S:wait:/sbin/sulogin</pre>
+</description>
 
 <Rule id="require_singleuser_auth">
-<title>Require Authentication for Single-User
-Mode</title>
+<title>Require Authentication for Single-User Mode</title>
 <description>The requirement for a password to boot into
 single-user mode should be enabled.</description>
 <ident cce="4241-6" />
@@ -121,11 +129,14 @@ single-user mode should be enabled.</description>
 
 <Group id="interactive_boot">
 <title>Disable Interactive Boot</title>
-<description>Edit the file /etc/sysconfig/init. Add or correct the
+<description>Edit the file <tt>/etc/sysconfig/init</tt>. Add or correct the
 setting:
 <br />
-<br />PROMPT=no
-<br />The PROMPT option allows the console user to perform an
+<pre>
+PROMPT=no
+
+</pre>
+The <tt>PROMPT</tt> option allows the console user to perform an
 interactive system startup, in which it is possible to select the
 set of services which are started on boot. Using interactive boot,
 the console user could disable auditing, firewalls, or other
@@ -146,8 +157,8 @@ should be disabled.</description>
 logged-in, screen locking should be employed to prevent passersby
 from abusing the account. User education and training is
 particularly important for screen locking to be effective.
-<br />
-<br />A policy should be implemented that trains all users to lock
+<br /><br />
+A policy should be implemented that trains all users to lock
 the screen when they plan to temporarily step away from a logged-in
 account. Automatic screen locking is only meant as a safeguard for
 those cases where a user forgot to lock the screen.</description>
@@ -155,64 +166,56 @@ those cases where a user forgot to lock the screen.</description>
 <title>Configure GUI Screen Locking</title>
 <description>In the default GNOME desktop, the screen can be locked
 by choosing Lock Screen from the System menu.
-<br />
-<br />The gconftool-2 program can be used to enforce mandatory
+<br /><br />
+The <tt>gconftool-2</tt> program can be used to enforce mandatory
 screen locking settings for the default GNOME environment. Run the
 following commands to enforce idle activation of the screen saver,
 screen locking, a blank-screen screensaver, and 15-minute idle
 activation time:
 <br />
-<br />
 <pre>
-
-
-<code> # gconftool-2 --direct \ --config-source
-
-    xml:readwrite:/etc/gconf/gconf.xml.mandatory \ --type bool \
-
-    --set /apps/gnome-screensaver/idle_activation_enabled true #
-
-    gconftool-2 --direct \ --config-source
-
-    xml:readwrite:/etc/gconf/gconf.xml.mandatory \ --type bool \
-
-    --set /apps/gnome-screensaver/lock_enabled true # gconftool-2
-
-    --direct \ --config-source
-
-    xml:readwrite:/etc/gconf/gconf.xml.mandatory \ --type string \
-
-    --set /apps/gnome-screensaver/mode blank-only # gconftool-2
-
-    --direct \ --config-source
-
-    xml:readwrite:/etc/gconf/gconf.xml.mandatory \ --type int \
-
-    --set /apps/gnome-screensaver/idle_delay 15 </code>
+# gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/idle_activation_enabled true
+# gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/lock_enabled true
+# gconftool-2
+  --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type string \
+  --set /apps/gnome-screensaver/mode blank-only
+# gconftool-2
+  --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type int \
+  --set /apps/gnome-screensaver/idle_delay 15
 
 </pre>
-<br />The default setting of 15 minutes for idle activation is
+The default setting of 15 minutes for idle activation is
 reasonable for many office environments, but the setting should
 conform to whatever policy is defined. The screensaver mode
 blank-only is selected to conceal the contents of the display from
 passersby.
-<br />
-<br />Because users should be trained to lock the screen when they
+<br /><br />
+Because users should be trained to lock the screen when they
 step away from the computer, the automatic locking feature is only
 meant as a backup. The Lock Screen icon from the System menu can
 also be dragged to the taskbar in order to facilitate even more
 convenient screen-locking.
-<br />
-<br />The root account cannot be screen-locked, but this should
+<br /><br />
+The root account cannot be screen-locked, but this should
 have no practical effect as the root account should never be used
 to log into an X Windows environment, and should only be used to
 for direct login via console in emergency circumstances.
-<br />
-<br />For more information about configuring GNOME screensaver, see
+<br /><br />
+For more information about configuring GNOME screensaver, see
 http://live.gnome.org/GnomeScreensaver. For more information about
 enforcing preferences in the GNOME environment using the GConf
 configuration system, see http://www.gnome.org/projects/gconf and
-the man page gconftool-2(1).</description>
+the man page <tt>gconftool-2(1)</tt>.</description>
 <Value id="var-2.3.5.5" type="string"
 operator="equals">
 <title>Inactivity timout</title>
@@ -269,15 +272,18 @@ enabled</description>
 vlock package, which is not installed by default. If the ability to
 lock console screens is necessary, install the vlock package:
 <br />
-<br />
-<code># yum install vlock
-<br /></code>
-<br />Instruct users to invoke the program when necessary, in order
+<pre>
+# yum install vlock
+
+</pre>
+Instruct users to invoke the program when necessary, in order
 to prevent passersby from abusing their login:
 <br />
-<code>$ vlock
-<br /></code>
-<br />The -a option can be used to prevent switching to other
+<pre>
+$ vlock
+
+</pre>
+The <tt>-a</tt> option can be used to prevent switching to other
 virtual consoles.</description>
 
 <Rule id="install_vlock_package">
@@ -290,8 +296,3 @@ virtual consoles.</description>
 </Group>
 </Group>
 </Group>
-
-
-
-
-

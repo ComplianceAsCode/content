@@ -14,7 +14,7 @@ SSH or on the text console.</description>
 <title>Lock Down X Windows startx Configuration if Necessary</title>
 <description>If X is not to be started at boot time but the
 software must remain installed, users will be able to run X
-manually using the startx command. In some cases, this runs X with
+manually using the <tt>startx</tt> command. In some cases, this runs X with
 a configuration which is less safe than the default. Follow these
 instructions to mitigate risk from this
 configuration.</description>
@@ -30,11 +30,11 @@ exec X :0 -nolisten tcp $@
 </pre>
 One of X.org's features is the ability to provide remote
 graphical display. This feature should be disabled unless it is
-required. If the system uses runlevel 5, which is the default, the
-GDM display manager starts X safely, with remote listening
+required. If the system uses <tt>runlevel 5</tt>, which is the default,
+the GDM display manager starts X safely, with remote listening
 disabled. However, if X is started from the command line with the
-startx command, then the server will listen for new connections on
-X's default port, 6000.
+<tt>startx</tt> command, then the server will listen for new connections
+on X's default port, 6000.
 <br /><br />
 See the <tt>xinit(1)</tt>, <tt>startx(1)</tt>, and <tt>Xserver(1)</tt>
  man pages for more information.</description>

@@ -12,36 +12,38 @@ correct configuration file permissions for interactive accounts,
 particularly those of privileged users such as root or system
 administrators.</description>
 <Group id="root_paths">
-<title>Ensure that No Dangerous Directories Exist in Roots Path
-'</title>
+<title>Ensure that No Dangerous Directories Exist in Roots Path</title>
 <description>The active path of the root account can be obtained by
 starting a new root shell and running:
 <br />
-<br />
-<code># echo $PATH
-<br /></code>This will produce a colon-separated list of
+<pre>
+# echo $PATH
+
+</pre>
+This will produce a colon-separated list of
 directories in the path. For each directory DIR in the path, ensure
 that DIR is not equal to a single . character. Also ensure that
 there are no 'empty' elements in the path, such as in these
 examples:
 <br />
+<pre>
+PATH=:/bin
+PATH=/bin:
+PATH=/bin::/sbin
+
+</pre>
+These empty elements have the same effect as a single . character.
+<br /><br />
+For each element in the path, run:
 <br />
-<code>PATH=:/bin
-<br />PATH=/bin:
-<br />PATH=/bin::/sbin
-<br /></code>
-<br />These empty elements have the same effect as a single .
-character.
-<br />
-<br />For each element in the path, run:
-<br />
-<br />
-<code># ls -ld DIR
-<br /></code>
-<br />and ensure that write permissions are disabled for group and
+<pre>
+# ls -ld DIR
+
+</pre>
+and ensure that write permissions are disabled for group and
 other.
-<br />
-<br />It is important to prevent root from executing unknown or
+<br /><br />
+It is important to prevent root from executing unknown or
 untrusted programs, since such programs could contain malicious
 code. Therefore, root should not run programs installed by
 unprivileged users. Since root may often be working inside
@@ -49,8 +51,8 @@ untrusted directories, the . character, which represents the
 current directory, should never be in the root path, nor should any
 directory which can be written to by an unprivileged or
 semi-privileged (system) user.
-<br />
-<br />It is a good practice for administrators to always execute
+<br /><br />
+It is a good practice for administrators to always execute
 privileged commands by typing the full path to the
 command.</description>
 <Rule id="root_path_no_dot">
@@ -79,17 +81,19 @@ World-Readable</title>
 <description>For each human user USER of the system, view the
 permissions of the user's home directory:
 <br />
-<br />
-<code># ls -ld /home/USER
-<br /></code>
-<br />Ensure that the directory is not group-writable and that it
+<pre>
+# ls -ld /home/USER
+
+</pre>
+Ensure that the directory is not group-writable and that it
 is not world-readable. If necessary, repair the permissions:
 <br />
-<br />
-<code># chmod g-w /home/USER
-<br /># chmod o-rwx /home/USER
-<br /></code>
-<br />User home directories contain many configuration files which
+<pre>
+# chmod g-w /home/USER
+# chmod o-rwx /home/USER
+
+</pre>
+User home directories contain many configuration files which
 affect the behavior of a user's account. No user should ever have
 write permission to another user's home directory. Group shared
 directories can be configured in subdirectories or elsewhere in the
@@ -117,14 +121,20 @@ directories for all user accounts.</description>
 <title>Ensure that Users Have Sensible Umask Values</title>
 <description>
 <ol>
-<li>Edit the global configuration files /etc/profile, /etc/bashrc,
-and /etc/csh.cshrc. Add or correct the line:
+<li>Edit the global configuration files <tt>/etc/profile</tt>,
+<tt>/etc/bashrc</tt>, and <tt>/etc/csh.cshrc</tt>. Add or correct the line:
 <br />
-<br />umask 077</li>
+<pre>
+umask 077
+
+</pre></li>
 <li>Edit the user definitions file /etc/login.defs. Add or correct
 the line:
 <br />
-<br />UMASK 077</li>
+<pre>
+UMASK 077
+
+</pre></li>
 <li>View the additional configuration files /etc/csh.login and
 /etc/profile.d/*, and ensure that none of these files redefine the
 umask to a more permissive value unless there is a good reason for
@@ -133,21 +143,24 @@ it.</li>
 /root/.bash profile, /root/.cshrc, and /root/.tcshrc. Add or
 correct the line:
 <br />
-<br />umask 077</li>
-</ol>With a default umask setting of 077, files and directories
+<pre>
+umask 077
+
+</pre></li>
+</ol>With a default <tt>umask</tt> setting of 077, files and directories
 created by users will not be readable by any other user on the
 system. Users who wish to make specific files group- or
 world-readable can accomplish this using the chmod command.
 Additionally, users can make all their files readable to their
-group by default by setting a umask of 027 in their shell
+group by default by setting a <tt>umask</tt> of 027 in their shell
 configuration files. If default per-user groups exist (that is, if
 every user has a default group whose name is the same as that
 user's username and whose only member is the user), then it may
-even be safe for users to select a umask of 007, making it very
+even be safe for users to select a <tt>umask</tt> of 007, making it very
 easy to intentionally share files with group s of which the user is
 a member.
-<br />
-<br />In addition, it may be necessary to change root's umask
+<br /><br />
+In addition, it may be necessary to change root's <tt>umask</tt>
 temporarily in order to install software or files which must be
 readable by other users, or to change the default umasks of certain
 service accounts such as the FTP user. However, setting a
@@ -166,9 +179,9 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="user_umask_bashrc">
-<title>The default umask for all users is set correctly
-in /etc/bashrc</title>
-<description>The default umask for all users for the bash shell
+<title>The default <tt>umask</tt> for all users is set correctly
+in <tt>/etc/bashrc</tt></title>
+<description>The default <tt>umask</tt> for all users for the bash shell
 should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="3844-8" />
@@ -177,9 +190,9 @@ should be set to:
 </Rule>
 
 <Rule id="user_umask_cshrc">
-<title>The default umask for all users is set correctly
+<title>The default <tt>umask</tt> for all users is set correctly
 in /etc/csh.cshrc</title>
-<description>The default umask for all users for the csh shell
+<description>The default <tt>umask</tt> for all users for the csh shell
 should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="4227-5" />
@@ -188,9 +201,9 @@ should be set to:
 </Rule>
 
 <Rule id="user_umask_logindefs">
-<title>The default umask for all users is set correctly
-in /etc/login.defs</title>
-<description>The default umask for all users should be set to:
+<title>The default <tt>umask</tt> for all users is set correctly
+in <tt>/etc/login.defs</tt></title>
+<description>The default <tt>umask</tt> for all users should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="14107-7" />
 <oval id="20089" />
@@ -198,9 +211,9 @@ in /etc/login.defs</title>
 </Rule>
 
 <Rule id="user_umask_profile">
-<title>The default umask for all users is set correctly
-in /etc/profile</title>
-<description>The default umask for all users should be set to:
+<title>The default <tt>umask</tt> for all users is set correctly
+in <tt>/etc/profile</tt></title>
+<description>The default <tt>umask</tt> for all users should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="14847-8" />
 <oval id="20090" />

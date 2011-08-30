@@ -2,44 +2,61 @@
 <title>Protect Accounts by Restricting Password-Based Login</title>
 <description>Conventionally, Unix shell accounts are accessed by
 providing a username and password to a login program, which tests
-these values for correctness using the /etc/passwd and /etc/shadow
-files. Password-based login is vulnerable to guessing of weak
-passwords, and to sniffing and man-in-the-middle attacks against
-passwords entered over a network or at an insecure console.
-Therefore, mechanisms for accessing accounts by entering usernames
-and passwords should be restricted to those which are operationally
-necessary.</description>
+these values for correctness using the <tt>/etc/passwd</tt> and
+<tt>/etc/shadow</tt> files. Password-based login is vulnerable to
+guessing of weak passwords, and to sniffing and man-in-the-middle
+attacks against passwords entered over a network or at an insecure
+console. Therefore, mechanisms for accessing accounts by entering
+usernames and passwords should be restricted to those which are
+operationally necessary.</description>
 
 <Group id="root_logins">
 <title>Restrict Root Logins to System Console</title>
-<description>Edit the file /etc/securetty. Ensure that the file
+<description>Edit the file <tt>/etc/securetty</tt>. Ensure that the file
 contains only the following lines:
 <br />
 <ul>
 <li>The primary system console device:
-<br />console</li>
+<br />
+<pre>
+console
+
+</pre></li>
 <li>The virtual console devices:
-<br />tty1 tty2 tty3 tty4 tty5 tty6 ...</li>
+<br />
+<pre>
+tty1 tty2 tty3 tty4 tty5 tty6 ...
+
+</pre></li>
 <li>If required by your organization, the deprecated virtual
 console interface may be retained for backwards compatibility:
-<br />vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...</li>
+<br />
+<pre>
+vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...
+
+</pre></li>
 <li>If required by your organization, the serial consoles may be
 added:
-<br />ttyS0 ttyS1</li>
-</ul>Direct root logins should be allowed only for emergency use.
+<br />
+<pre>
+ttyS0 ttyS1
+
+</pre></li>
+</ul>
+Direct root logins should be allowed only for emergency use.
 In normal situations, the administrator should access the system
 via a unique unprivileged account, and use su or sudo to execute
 privileged commands. Discouraging administrators from accessing the
 root account directly ensures an audit trail in organizations with
 multiple administrators. Locking down the channels through which
 root can connect directly reduces opportunities for
-password-guessing against the root account. The login program uses
-the file /etc/securetty to determine which interfaces should allow
-root logins. The virtual devices /dev/console and /dev/tty*
-represent the system consoles (accessible via the Ctrl-Alt-F1
-through Ctrl-Alt-F6 keyboard sequences on a default installation).
-The default securetty file also contains /dev/vc/*. These are
-likely to be deprecated in most environments, but may be retained
+password-guessing against the root account. The <tt>login</tt> program
+uses the file <tt>/etc/securetty</tt> to determine which interfaces
+should allow root logins. The virtual devices <tt>/dev/console</tt>
+and <tt>/dev/tty*</tt> represent the system consoles (accessible via
+the Ctrl-Alt-F1 through Ctrl-Alt-F6 keyboard sequences on a default
+installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
+These are likely to be deprecated in most environments, but may be retained
 for compatibility. Root should also be prohibited from connecting
 via network protocols. See Section 3.5 for instructions on
 preventing root from logging in via SSH.</description>
@@ -67,30 +84,35 @@ disabled.</description>
 <title>The wheel group should exist</title>
 <description>
 <ol>
-<li>Ensure that the group wheel exists, and that the usernames of
+<li>Ensure that the group <tt>wheel</tt> exists, and that the usernames of
 all administrators who should be allowed to execute commands as
 root are members of that group.
 <br />
-<br />
-<code># grep ^wheel /etc/group</code></li>
-<li>Edit the file /etc/pam.d/su. Add, uncomment, or correct the
+<pre>
+# grep ^wheel /etc/group
+
+</pre></li>
+<li>Edit the file <tt>/etc/pam.d/su</tt>. Add, uncomment, or correct the
 line:
 <br />
-<code>auth required pam_wheel.so use_uid</code></li>
-</ol>The su command allows a user to gain the privileges of another
+<pre>
+auth required pam_wheel.so use_uid
+
+</pre></li>
+</ol>The <tt>su</tt> command allows a user to gain the privileges of another
 user by entering the password for that user's account. It is
 desirable to restrict the root user so that only known
 administrators are ever allowed to access the root account. This
 restricts password-guessing against the root account by
 unauthorized users or by accounts which have been compromised.
-<br />
-<br />By convention, the group wheel contains all users who are
-allowed to run privileged commands. The PAM module pam_wheel.so is
+<br /><br />
+By convention, the group <tt>wheel</tt> contains all users who are
+allowed to run privileged commands. The PAM module <tt>pam_wheel.so</tt> is
 used to restrict root access to this set of users.</description>
 <Rule id="limit_su_to_wheel">
-<title>Limit su Access to the wheel group</title>
+<title>Limit <tt>su</tt> Access to the wheel group</title>
 <description>Command access to the root account should be
-restricted to the wheel group.</description>
+restricted to the <tt>wheel</tt> group.</description>
 <ident cce="15047-4" />
 <oval id="20066" />
 <ref nist="AC-3, CM-6" />
@@ -99,38 +121,40 @@ restricted to the wheel group.</description>
 <Group id="systemaccount_shells">
 <title>Block Shell and Login Access for Non-Root System
 Accounts</title>
-<description>Using /etc/passwd, obtain a listing of all users,
+<description>Using <tt>/etc/passwd</tt>, obtain a listing of all users,
 their UIDs, and their shells, for instance by running:
 <br />
-<br />
-<code># awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd
-<br /></code>
-<br />Identify the system accounts from this listing. These will
+<pre>
+# awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd
+
+</pre>
+Identify the system accounts from this listing. These will
 primarily be the accounts with UID numbers less than 500, other
 than root.
+<br /><br />
+For each identified system account SYSACCT, lock the account:
 <br />
-<br />For each identified system account SYSACCT , lock the
-account:
+<pre>
+# usermod -L SYSACCT
+
+</pre>
+and disable its shell:
 <br />
-<br />
-<code># usermod -L SYSACCT
-<br /></code>and disable its shell:
-<br />
-<br />
-<code># usermod -s /sbin/nologin SYSACCT
-<br /></code>
-<br />These are the accounts which are not associated with a human
+<pre>
+# usermod -s /sbin/nologin SYSACCT
+
+</pre>
+These are the accounts which are not associated with a human
 user of the system, but which exist to perform some administrative
 function. Make it more difficult for an attacker to use these
 accounts by locking their passwords and by setting their shells to
-some non-valid shell. The RHEL5 default non-valid shell is
-/sbin/nologin, but any command which will exit with a failure
+some non-valid shell. The RHEL6 default non-valid shell is
+<tt>/sbin/nologin</tt>, but any command which will exit with a failure
 status and disallow execution of any further commands, such as
-/bin/false or /dev/null, will work.</description>
+<tt>/bin/false</tt> or <tt>/dev/null</tt>, will work.</description>
 <warning category="functionality">Do not perform the steps in this
 section on the root account. Doing so might cause the system to
 become inaccessible.</warning>
-
 
 <Rule id="no_shelllogin_for_systemaccounts">
 <title>Block Shell and Login Access for Non-Root System
@@ -152,20 +176,20 @@ Hashes</title>
 <title>Verify that No Accounts Have Empty Password Fields</title>
 <description>Run the command:
 <br />
-<br />
-<code># awk -F: '($2 == "") {print}' /etc/shadow
-<br /></code>
-<br />If this produces any output, fix the problem by locking each
+<pre>
+# awk -F: '($2 == "") {print}' /etc/shadow
+
+</pre>
+If this produces any output, fix the problem by locking each
 account (see Section 2.3.1.4 above) or by setting a password.
-<br />
-<br />If an account has an empty password, anybody may log in and
+<br /><br />
+If an account has an empty password, anybody may log in and
 run commands with the privileges of that account. Accounts with
 empty passwords should never be used in operational
 environments.</description>
 
 <Rule id="no_empty_passwords">
-<title>Verify that No Accounts Have Empty Password
-Fields</title>
+<title>Verify that No Accounts Have Empty Password Fields</title>
 <description>Login access to accounts without passwords should be
 disabled</description>
 <ident cce="4238-2" />
@@ -177,14 +201,15 @@ disabled</description>
 <Group id="password_hashes_in_shadow">
 <title>Verify that All Account Password Hashes are Shadowed</title>
 <description>To ensure that no password hashes are stored in
-/etc/passwd, the following command should have no output:
+<tt>/etc/passwd</tt>, the following command should have no output:
 <br />
-<br />
-<code># awk -F: '($2 != "x") {print}' /etc/passwd
-<br /></code>
-<br />The hashes for all user account passwords should be stored in
-the ﬁle /etc/shadow and never in /etc/passwd, which is readable by
-all users.</description>
+<pre>
+# awk -F: '($2 != "x") {print}' /etc/passwd
+
+</pre>
+The hashes for all user account passwords should be stored in
+the ﬁle <tt>/etc/shadow</tt> and never in <tt>/etc/passwd</tt>,
+which is readable by all users.</description>
 <Rule id="no_hashes_outside_shadow">
 <title>Verify that All Account Password Hashes are
 Shadowed</title>
@@ -203,14 +228,15 @@ Shadowed</title>
 <description>This command will print all password file entries for
 accounts with UID 0:
 <br />
-<br />
-<code># awk -F: '($3 == "0") {print}' /etc/passwd
-<br /></code>
-<br />This should print only one line, for the user root. If any
+<pre>
+# awk -F: '($3 == "0") {print}' /etc/passwd
+
+</pre>
+This should print only one line, for the user root. If any
 other lines appear, ensure that these additional UID-0 accounts are
 authorized, and that there is a good reason for them to exist.
-<br />
-<br />In general, the best practice solution for auditing use of
+<br /><br />
+In general, the best practice solution for auditing use of
 the root account is to restrict the set of cases in which root must
 be accessed anonymously by requiring use of su or sudo in almost
 all cases. Some sites choose to have more than one account with UID
@@ -233,33 +259,37 @@ recommended.</description>
 expiration settings for new accounts. Add or correct the following
 lines:
 <br />
-<br />
-<code>PASS_MAX_DAYS=180
-<br />PASS_MIN_DAYS=7
-<br />PASS_MIN_LEN=8
-<br />PASS_WARN_AGE=7
-<br /></code>
-<br />For each existing human user USER , modify the current
+<pre>
+PASS_MAX_DAYS=180
+PASS_MIN_DAYS=7
+PASS_MIN_LEN=8
+PASS_WARN_AGE=7
+
+</pre>
+For each existing human user USER , modify the current
 expiration settings to match these:
 <br />
-<code># chage -M 180 -m 7 -W 7 USER
-<br /></code>
-<br />Users should be forced to change their passwords, in order to
+<pre>
+# chage -M 180 -m 7 -W 7 USER
+
+</pre>
+Users should be forced to change their passwords, in order to
 decrease the utility of compromised passwords. However, the need to
 change passwords often should be balanced against the risk that
 users will reuse or write down passwords if forced to change them
 too often. Forcing password changes every 90-360 days, depending on
 the environment, is recommended. Set the appropriate value as
-PASS_MAX_DAYS and apply it to existing accounts with the -M flag.
-<br />
-<br />The PASS_MIN_DAYS (-m) setting prevents password changes for
-7 days after the first change, to discourage password cycling. If
-you use this setting, train users to contact an administrator for
-an emergency password change in case a new password becomes
-compromised. The PASS_WARN_AGE (-W) setting gives users 7 days of
-warnings at login time that their passwords are about to expire.
-<br />
-<br />The PASS_MIN_LEN setting, which controls minimum password
+<tt>PASS_MAX_DAYS</tt> and apply it to existing accounts with the
+<tt>-M</tt> flag.
+<br /><br />
+The <tt>PASS_MIN_DAYS</tt> (<tt>-m</tt>) setting prevents password
+changes for 7 days after the first change, to discourage password
+cycling. If you use this setting, train users to contact an administrator
+for an emergency password change in case a new password becomes
+compromised. The <tt>PASS_WARN_AGE</tt> (<tt>-W</tt>) setting gives
+users 7 days of warnings at login time that their passwords are about to expire.
+<br /><br />
+The <tt>PASS_MIN_LEN</tt> setting, which controls minimum password
 length, should be set to whatever is required by your site or
 organization security policy. The example value of 8 provided here
 may be inadequate for many environments. See Section 2.3.3 for
@@ -269,8 +299,7 @@ password length and quality</description>
 operator="equals" interactive="0">
 <title>minimum password length</title>
 <description>Minimum number of characters in password</description>
-<warning category="general">This will only check new
-passwords</warning>
+<warning category="general">This will only check new passwords</warning>
 <value selector="">14</value>
 <value selector="6">6</value>
 
@@ -323,36 +352,37 @@ appropriately</description>
 <title>Remove Legacy + Entries from Password Files</title>
 <description>The command:
 <br />
-<br />
-<code># grep "^+:" /etc/passwd /etc/shadow /etc/group
-<br /></code>
-<br />should produce no output.
-<br />
-<br />The + symbol was used by systems to include data from NIS
+<pre>
+# grep "^+:" /etc/passwd /etc/shadow /etc/group
+
+</pre>
+should produce no output.
+<br /><br />
+The + symbol was used by systems to include data from NIS
 maps into existing files. However, a certain configuration error in
-which a NIS inclusion line appears in /etc/passwd, but NIS is not
-running, could lead to anyone being able to access the system with
+which a NIS inclusion line appears in <tt>/etc/passwd</tt>, but NIS
+is not running, could lead to anyone being able to access the system with
 the username + and no password. Therefore, it is important to
 verify that no such line appears in any of the relevant system
 files.
-<br />
-<br />The correct way to tell the local system to consult network
+<br /><br />
+The correct way to tell the local system to consult network
 databases such as LDAP or NIS for user information is to make
-appropriate modifications to /etc/nsswitch.conf.</description>
+appropriate modifications to <tt>/etc/nsswitch.conf</tt>.</description>
 
 <Rule id="no_nis_inclusions_shadow">
-<title>Remove Legacy + Entries from /etc/shadow</title>
+<title>Remove Legacy + Entries from <tt>/etc/shadow</tt></title>
 <description>NIS file inclusions should be set appropriately in the
-/etc/shadow file</description>
+<tt>/etc/shadow</tt> file</description>
 <ident cce="14071-5" />
 <oval id="20075" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="no_nis_inclusions_group">
-<title>Remove Legacy + Entries from /etc/group</title>
+<title>Remove Legacy + Entries from <tt>/etc/group</tt></title>
 <description>NIS file inclusions should be set appropriately in the
-/etc/group file</description>
+<tt>/etc/group</tt> file</description>
 <ident cce="14675-3" />
 <oval id="20076" />
 <ref nist="CM-6, CM-7" />
@@ -367,5 +397,4 @@ appropriate modifications to /etc/nsswitch.conf.</description>
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
-
 </Group>

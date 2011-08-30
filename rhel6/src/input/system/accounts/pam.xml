@@ -8,8 +8,8 @@ system's exposure to unnecessary risk. This section contains
 guidance on how to accomplish that, and how to ensure that the
 modules used by your PAM configuration do what they are supposed to
 do.
-<br />
-<br />PAM is implemented as a set of shared objects which are
+<br /><br />
+PAM is implemented as a set of shared objects which are
 loaded and invoked whenever an application wishes to authenticate a
 user. Typically, the application must be running as root in order
 to take advantage of PAM. Traditional privileged network listeners
@@ -17,68 +17,70 @@ to take advantage of PAM. Traditional privileged network listeners
 requirement. An SUID root application, userhelper, is provided so
 that programs which are not SUID or privileged themselves can still
 take advantage of PAM.
-<br />
-<br />PAM looks in the directory /etc/pam.d for
+<br /><br />
+PAM looks in the directory <tt>/etc/pam.d</tt> for
 application-specific configuration information. For instance, if
 the program login attempts to authenticate a user, then PAM's
-libraries follow the instructions in the file /etc/ pam.d/login to
-determine what actions should be taken.
-<br />
-<br />One very important file in /etc/pam.d is
-/etc/pam.d/system-auth. This file, which is included by many other
-PAM configuration files, defines 'default' system authentication
+libraries follow the instructions in the file <tt>/etc/pam.d/login</tt>
+to determine what actions should be taken.
+<br /><br />
+One very important file in <tt>/etc/pam.d</tt> is
+<tt>/etc/pam.d/system-auth</tt>. This file, which is included by
+many other PAM configuration files, defines 'default' system authentication
 measures. Modifying this file is a good way to make far-reaching
 authentication changes, for instance when implementing a
 centralized authentication service.</description>
 <warning category="general">Be careful when making changes to PAM's
 configuration files. The syntax for these files is complex, and
-modifications can have unexpected consequences.1 The default
+modifications can have unexpected consequences. The default
 configurations shipped with applications should be sufficient for
 most users.</warning>
-<warning category="general">Running authconfig or
-system-config-authentication will re-write the PAM configuration
+<warning category="general">Running <tt>authconfig</tt> or
+<tt>system-config-authentication</tt> will re-write the PAM configuration
 files, destroying any manually made changes and replacing them with
-a series of system defaults. 1One reference to the configuration
+a series of system defaults. One reference to the configuration
 file syntax can be found at
 http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/
 sag-configuration-file.html.</warning>
 
 <Group id="password_quality">
 <title>Set Password Quality Requirements</title>
-<description>The default pam_cracklib PAM module provides strength
+<description>The default <tt>pam_cracklib</tt> PAM module provides strength
 checking for passwords. It performs a number of checks, such as
 making sure passwords are not similar to dictionary words, are of
 at least a certain length, are not the previous password reversed,
 and are not simply a change of case from the previous password. It
 can also require passwords to be in certain character classes.
-<br />
-<br />The pam_passwdqc PAM module provides the ability to enforce
+<br /><br />
+The <tt>pam_passwdqc</tt> PAM module provides the ability to enforce
 even more stringent password strength requirements. It is provided
 in an RPM of the same name.
-<br />
-<br />The man pages pam_cracklib(8) and pam_passwdqc(8) provide
-information on the capabilities and configuration of
+<br /><br />
+The man pages <tt>pam_cracklib(8)</tt> and <tt>pam_passwdqc(8)</tt>
+provide information on the capabilities and configuration of
 each.</description>
-
 
 <Group id="password_quality_pamcracklib">
 <title>Set Password Quality Requirements, if using
 pam_cracklib</title>
-<description>The pam_cracklib PAM module can be conﬁgured to meet
+<description>The <tt>pam_cracklib</tt> PAM module can be conﬁgured to meet
 recommendations for DoD systems as stated in [12].
-<br />
-<br />To conﬁgure pam_cracklib to require at least one uppercase
+<br /><br />
+To conﬁgure <tt>pam_cracklib</tt> to require at least one uppercase
 character, lowercase character, digit, and other (special)
-character, locate the following line in /etc/pam.d/system-auth:
+character, locate the following line in <tt>/etc/pam.d/system-auth</tt>:
 <br />
-<br />password requisite pam_cracklib.so try_first_pass retry=3
+<pre>
+password requisite pam_cracklib.so try_first_pass retry=3
+
+</pre>
+and then alter it to read:
 <br />
-<br />and then alter it to read:
-<br />
-<br />password required pam_cracklib.so try_first_pass retry=3
-minlen=14 dcredit=-1 / ucredit=-1 ocredit=-1 lcredit=0
-<br />
-<br />If necessary, modify the arguments to ensure compliance with
+<pre>
+password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=0
+
+</pre>
+If necessary, modify the arguments to ensure compliance with
 your organization’s security policy.</description>
 <warning category="general">Note that the password quality
 requirements are not enforced for the root account for some
@@ -223,49 +225,59 @@ requirements</description>
 <description>The pam_tally2 PAM module provides the capability to
 lock out user accounts after a number of failed login attempts. Its
 documentation is available in
-/usr/share/doc/pam-version/txts/README.pam_tally2.
-<br />
-<br />If locking out accounts after a number of incorrect login
+<tt>/usr/share/doc/pam-VERSION/txts/README.pam_tally2</tt>.
+<br /><br />
+If locking out accounts after a number of incorrect login
 attempts is required by your security policy, implement use of
-pam_tally2.so for the relevant PAM-aware programs such as login,
-sshd, and vsftpd.
+<tt>pam_tally2.so</tt> for the relevant PAM-aware programs such as
+<tt>login</tt>, <tt>sshd</tt>, and <tt>vsftpd</tt>.
+<br /><br />
+Find the following line in /etc/pam.d/system-auth:
 <br />
-<br />Find the following line in /etc/pam.d/system-auth:
+<pre>
+auth sufficient pam_unix.so nullok try_first_pass
+
+</pre>
+and then change it so that it reads as follows:
 <br />
-<br />auth sufficient pam_unix.so nullok try_first_pass
+<pre>
+auth required pam_unix.so nullok try_first_pass
+
+</pre>
+In the same file, comment out or delete the lines:
 <br />
-<br />and then change it so that it reads as follows:
-<br />
-<br />auth required pam_unix.so nullok try_first_pass
-<br />
-<br />In the same file, comment out or delete the lines:
-<br />
-<br />auth requisite pam_succeed_if.so uid &gt;= 500 quiet
-<br />auth required pam_deny.so
-<br />
-<br />To enforce password lockout, add the following to the
-individual programs' configuration files in /etc/pam.d. First, add
+<pre>
+auth requisite pam_succeed_if.so uid &gt;= 500 quiet
+auth required pam_deny.so
+
+</pre>
+To enforce password lockout, add the following to the
+individual programs' configuration files in <tt>/etc/pam.d</tt>. First, add
 to end of the auth lines:
 <br />
-<br />auth required pam_tally2.so deny=5 onerr=fail
+<pre>
+auth required pam_tally2.so deny=5 onerr=fail
+
+</pre>
+Second, add to the end of the account lines:
 <br />
-<br />Second, add to the end of the account lines:
-<br />
-<br />account required pam_tally2.so
-<br />
-<br />Adjust the deny argument to conform to your system security
-policy. The pam_tally2 utility can be used to unlock user accounts
+<pre>
+account required pam_tally2.so
+
+</pre>
+Adjust the deny argument to conform to your system security
+policy. The <tt>pam_tally2</tt> utility can be used to unlock user accounts
 as follows:
 <br />
-<br />
-<code># /sbin/pam_tally2 --user username --reset
-<br /></code></description>
+<pre>
+# /sbin/pam_tally2 --user username --reset</pre>
+</description>
 <warning category="general">Locking out user accounts presents the
 risk of a denial-of-service attack. The security policy regarding
 system lockout must weigh whether the risk of such a
 denial-of-service attack outweighs the benefits of thwarting
-password guessing attacks. The pam_tally2 utility can be run from a
-cron job on a hourly or daily basis to try and offset this
+password guessing attacks. The <tt>pam_tally2</tt> utility can be run
+from a cron job on a hourly or daily basis to try and offset this
 risk.</warning>
 
 <Rule id="deny_password_attempts">
@@ -281,22 +293,22 @@ requirements.</description>
 <Group id="password_hashing_algorithm">
 <title>Upgrade Password Hashing Algorithm to SHA-512</title>
 <description>The default algorithm for storing password hashes in
-/etc/shadow is MD5. In release 5.2 (and for those systems fully
+<tt>/etc/shadow</tt> is MD5. In release 5.2 (and for those systems fully
 updated since its release), the algorithms SHA-256 and SHA-512 are
 available.
-<br />
-<br />In order to conﬁgure the system to use the SHA-512 algorithm,
+<br /><br />
+In order to conﬁgure the system to use the SHA-512 algorithm,
 issue the command:
 <br />
-<br />
-<code># /usr/sbin/authconfig --passalgo=sha512 --update
-<br /></code>
-<br />When users changes their passwords, hashes for the new
+<pre>
+# /usr/sbin/authconfig --passalgo=sha512 --update
+
+</pre>
+When users changes their passwords, hashes for the new
 passwords will be generated using the SHA-512 algorithm.
-<br />
-<br />The release notes available at
-http://www.redhat.com/docs/en-US/Red_Hat_
-Enterprise_Linux/5.2/html/Release_Notes/singles/relnotesU2-x86.html
+<br /><br />
+The release notes available at
+http://www.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/5.2/html/Release_Notes/singles/relnotesU2-x86.html
 document this change. As noted there, only kickstart-installed
 systems can be conﬁgured to begin operation with this algorithm.
 Other systems will need to have this command issued and then all
@@ -305,7 +317,7 @@ the stored hashes to the stronger algorithm.</description>
 <Value id="var-2.3.3.5.a" type="string"
 operator="equals" interactive="0">
 <title>Password hashing algorithm</title>
-<description>Enter /etc/shadow password hashing
+<description>Enter <tt>/etc/shadow</tt> password hashing
 algorithm</description>
 <value selector="">sha512</value>
 <value selector="MD5">md5</value>
@@ -325,20 +337,22 @@ SHA-512</description>
 <Group id="limiting_password_reuse">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
-be accomplished by using the remember option for the pam_unix PAM
+be accomplished by using the remember option for the <tt>pam_unix</tt> PAM
 module. In order to prevent a user from re-using any of his or her
-last 5 passwords, append remember=5 to the password line which uses
-the pam_unix module in the ﬁle /etc/pam.d/system-auth, as shown:
+last 5 passwords, append <tt>remember=5</tt> to the password line which uses
+the <tt>pam_unix</tt> module in the ﬁle <tt>/etc/pam.d/system-auth</tt>, as shown:
 <br />
-<br />password sufficient pam_unix.so existing_options remember=5
-<br />
-<br />Old (and thus no longer valid) passwords are stored in the
-ﬁle /etc/security/opasswd.</description>
+<pre>
+password sufficient pam_unix.so existing_options remember=5
+
+</pre>
+Old (and thus no longer valid) passwords are stored in the
+ﬁle <tt>/etc/security/opasswd</tt>.</description>
 <Value id="var-2.3.3.6.a" type="number"
 operator="equals" interactive="0">
 <title>remember</title>
 <description>The last n passwords for each user are saved in
-/etc/security/opasswd in order to force password change history and
+<tt>/etc/security/opasswd</tt> in order to force password change history and
 keep the user from alternating between the same password too
 frequently.</description>
 <value selector="">5</value>
