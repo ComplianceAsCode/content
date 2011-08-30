@@ -208,7 +208,7 @@ disabled</description>
 
 </pre>
 The hashes for all user account passwords should be stored in
-the ﬁle <tt>/etc/shadow</tt> and never in <tt>/etc/passwd</tt>,
+the file <tt>/etc/shadow</tt> and never in <tt>/etc/passwd</tt>,
 which is readable by all users.</description>
 <Rule id="no_hashes_outside_shadow">
 <title>Verify that All Account Password Hashes are
@@ -255,7 +255,7 @@ recommended.</description>
 
 <Group id="password_expiration">
 <title>Set Password Expiration Parameters</title>
-<description>Edit the file /etc/login.defs to specify password
+<description>Edit the file <tt>/etc/login.defs</tt> to specify password
 expiration settings for new accounts. Add or correct the following
 lines:
 <br />
@@ -389,9 +389,9 @@ appropriate modifications to <tt>/etc/nsswitch.conf</tt>.</description>
 </Rule>
 
 <Rule id="no_nis_inclusions_passwd">
-<title>Remove Legacy + Entries from /etc/passwd</title>
+<title>Remove Legacy + Entries from <tt>/etc/passwd</tt></title>
 <description>NIS file inclusions should be set appropriately in the
-/etc/passwd file</description>
+<tt>/etc/passwd</tt> file</description>
 <ident cce="4114-5" />
 <oval id="20077" />
 <ref nist="CM-6, CM-7" />

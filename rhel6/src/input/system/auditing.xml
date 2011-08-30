@@ -37,13 +37,13 @@ for object deletion events, the name of the object, and in MLS systems,
 the objects security level.</li>
 </ul>
 </li>
-<li>Ensure ﬁles are backed up no less than weekly onto a different
+<li>Ensure files are backed up no less than weekly onto a different
 system than the system being audited or backup media.</li>
 <li>Ensure old logs are closed out and new audit logs are started
 daily</li>
-<li>Ensure the conﬁguration is immutable. With the <tt>-e 2</tt> setting a
+<li>Ensure the configuration is immutable. With the <tt>-e 2</tt> setting a
 reboot will be required to change any audit rules.</li>
-<li>Ensure that the audit data ﬁles have permissions of 640, or
+<li>Ensure that the audit data files have permissions of 640, or
 more restrictive.</li>
 </ul></description>
 
@@ -112,10 +112,10 @@ kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audi
 </Group>
 
 <Group id="auditd_configure_rules">
-<title>Conﬁgure <tt>auditd</tt> Rules for Comprehensive Auditing</title>
+<title>Configure <tt>auditd</tt> Rules for Comprehensive Auditing</title>
 <description>The <tt>auditd</tt> program can perform comprehensive
 monitoring of system activity. This section describes rec- ommended
-conﬁguration settings for comprehensive auditing, but a full
+configuration settings for comprehensive auditing, but a full
 description of the auditing system’s capabilities is beyond the
 scope of this guide. The mailing list linux-audit@redhat.com may be
 a good source of further information.
@@ -123,15 +123,15 @@ a good source of further information.
 The audit subsystem supports extensive collection of events, including:
 <br />
 <ul>
-<li>Tracing of arbitrary system calls (identiﬁed by name or number)
+<li>Tracing of arbitrary system calls (identified by name or number)
 on entry or exit.</li>
 <li>Filtering by PID, UID, call success, system call argument (with
 some limitations), etc.</li>
-<li>Monitoring of speciﬁc ﬁles for modiﬁcations to the ﬁle’s
+<li>Monitoring of specific files for modifications to the file’s
 contents or metadata.</li>
 </ul>
 <br />
-Auditing rules are controlled in the ﬁle <tt>/etc/audit/audit.rules</tt>.
+Auditing rules are controlled in the file <tt>/etc/audit/audit.rules</tt>.
 Add rules to it to meet the auditing requirements for your organization.
 Each line in <tt>/etc/audit/audit.rules</tt> represents a series of arguments
 that can be passed to <tt>auditctl</tt> and can be individually tested
@@ -247,7 +247,7 @@ Access Controls</title>
 <Group id="auditing_dac_actions">
 <title>Ensure <tt>auditd</tt> Collects Discretionary Access Control
 Permission Modification Events</title>
-<description>At a minimum the audit system should collect ﬁle
+<description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
@@ -259,9 +259,9 @@ appropriate for your system:
 </description>
 <Rule id="audit_dac_actions">
 <title>Ensure <tt>auditd</tt> Collects Discretionary Access
-Control Permission Modiﬁcation Events</title>
+Control Permission Modification Events</title>
 <description>Audit rules about the Discretionary Access Control
-Permission Modiﬁcation Events</description>
+Permission Modification Events</description>
 <ident cce="14058-2" />
 <oval id="20163" />
 <ref nist="AU-2" />
@@ -271,7 +271,7 @@ Permission Modiﬁcation Events</description>
 <Group id="auditing_file_access">
 <title>Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
 <description>At a minimum the audit system should collect
-unauthorized ﬁle accesses for all users and root. Add the following
+unauthorized file accesses for all users and root. Add the following
 to <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
 <br />
@@ -335,7 +335,7 @@ Media (successful)</description>
 <Group id="auditing_file_deletions">
 <title>Ensure <tt>auditd</tt> Collects Files Deletion Events by User
 (successful and unsuccessful)</title>
-<description>At a minimum the audit system should collect ﬁle
+<description>At a minimum the audit system should collect file
 deletion events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
@@ -398,9 +398,9 @@ Loading and Unloading</description>
 </Group>
 
 <Group id="auditing_config_immutable">
-<title>Make the <tt>auditd</tt> Conﬁguration Immutable</title>
+<title>Make the <tt>auditd</tt> Configuration Immutable</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
-to make the conﬁguration immutable:
+to make the configuration immutable:
 <br />
 <pre>
 -e 2
@@ -409,7 +409,7 @@ to make the conﬁguration immutable:
 With this setting, a reboot will be required to change any
 audit rules.</description>
 <Rule id="audit_config_immutable">
-<title>Make the <tt>auditd</tt> Conﬁguration Immutable</title>
+<title>Make the <tt>auditd</tt> Configuration Immutable</title>
 <description>Force a reboot to change audit rules</description>
 <ident cce="14692-8" />
 <oval id="20169" />

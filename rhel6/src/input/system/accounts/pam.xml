@@ -63,10 +63,10 @@ each.</description>
 <Group id="password_quality_pamcracklib">
 <title>Set Password Quality Requirements, if using
 pam_cracklib</title>
-<description>The <tt>pam_cracklib</tt> PAM module can be conﬁgured to meet
+<description>The <tt>pam_cracklib</tt> PAM module can be configured to meet
 recommendations for DoD systems as stated in [12].
 <br /><br />
-To conﬁgure <tt>pam_cracklib</tt> to require at least one uppercase
+To configure <tt>pam_cracklib</tt> to require at least one uppercase
 character, lowercase character, digit, and other (special)
 character, locate the following line in <tt>/etc/pam.d/system-auth</tt>:
 <br />
@@ -232,7 +232,7 @@ attempts is required by your security policy, implement use of
 <tt>pam_tally2.so</tt> for the relevant PAM-aware programs such as
 <tt>login</tt>, <tt>sshd</tt>, and <tt>vsftpd</tt>.
 <br /><br />
-Find the following line in /etc/pam.d/system-auth:
+Find the following line in <tt>/etc/pam.d/system-auth</tt>:
 <br />
 <pre>
 auth sufficient pam_unix.so nullok try_first_pass
@@ -297,7 +297,7 @@ requirements.</description>
 updated since its release), the algorithms SHA-256 and SHA-512 are
 available.
 <br /><br />
-In order to conﬁgure the system to use the SHA-512 algorithm,
+In order to configure the system to use the SHA-512 algorithm,
 issue the command:
 <br />
 <pre>
@@ -310,7 +310,7 @@ passwords will be generated using the SHA-512 algorithm.
 The release notes available at
 http://www.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/5.2/html/Release_Notes/singles/relnotesU2-x86.html
 document this change. As noted there, only kickstart-installed
-systems can be conﬁgured to begin operation with this algorithm.
+systems can be configured to begin operation with this algorithm.
 Other systems will need to have this command issued and then all
 accounts will need to perform a password change in order to upgrade
 the stored hashes to the stronger algorithm.</description>
@@ -340,14 +340,14 @@ SHA-512</description>
 be accomplished by using the remember option for the <tt>pam_unix</tt> PAM
 module. In order to prevent a user from re-using any of his or her
 last 5 passwords, append <tt>remember=5</tt> to the password line which uses
-the <tt>pam_unix</tt> module in the ﬁle <tt>/etc/pam.d/system-auth</tt>, as shown:
+the <tt>pam_unix</tt> module in the file <tt>/etc/pam.d/system-auth</tt>, as shown:
 <br />
 <pre>
 password sufficient pam_unix.so existing_options remember=5
 
 </pre>
 Old (and thus no longer valid) passwords are stored in the
-ﬁle <tt>/etc/security/opasswd</tt>.</description>
+file <tt>/etc/security/opasswd</tt>.</description>
 <Value id="var-2.3.3.6.a" type="number"
 operator="equals" interactive="0">
 <title>remember</title>

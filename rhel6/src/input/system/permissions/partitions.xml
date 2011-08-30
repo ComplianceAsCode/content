@@ -2,7 +2,7 @@
 <title>Restrict Partition Mount Options</title>
 <description>System partitions can be mounted with certain options
 which limit what files on those partitions can do. These options
-are set in the file /etc/fstab, and can be used to make certain
+are set in the file <tt>/etc/fstab</tt>, and can be used to make certain
 types of malicious behavior more difficult.</description>
 
 <Rule id="mountopt_nodev_on_nonroot_partitions">
@@ -11,8 +11,8 @@ Partitions</title>
 <description>The nodev option prevents users from mounting
 unauthorized devices on any partition which is known not to contain
 any authorized devices. The root partition typically contains the
-/dev partition, which is the primary location for authorized
-devices, so this option should not be set on /.</description>
+<tt>/dev</tt> partition, which is the primary location for authorized
+devices, so this option should not be set on <tt>/</tt>.</description>
 <ident cce="4249-9" />
 <oval id="20016" />
 <ref nist="CM-6, CM-7, AC-6"/>

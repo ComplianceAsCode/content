@@ -14,15 +14,15 @@ SSH or on the text console.</description>
 <title>Lock Down X Windows startx Configuration if Necessary</title>
 <description>If X is not to be started at boot time but the
 software must remain installed, users will be able to run X
-manually using the <tt>startx</tt> command. In some cases, this runs X with
-a configuration which is less safe than the default. Follow these
+manually using the <tt>startx</tt> command. In some cases, this runs
+X with a configuration which is less safe than the default. Follow these
 instructions to mitigate risk from this
 configuration.</description>
 <Group id="xwindows_no_listen">
 <title>Disable X Window System Listening</title>
 <description>To prevent X.org from listening for remote
-connections, create the file /etc/X11/xinit/xserverrc and fill it
-with the following line:
+connections, create the file <tt>/etc/X11/xinit/xserverrc</tt> and
+fill it with the following line:
 <br />
 <pre>
 exec X :0 -nolisten tcp $@

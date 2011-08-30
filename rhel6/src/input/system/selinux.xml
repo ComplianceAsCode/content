@@ -162,16 +162,15 @@ Possible</title>
 <title>Check for Unconfined Daemons</title>
 <description>Device files are used for communication with important
 system resources. SELinux contexts should exist for these. If a
-device ﬁle is not labeled, then misconﬁguration is likely.
+device file is not labeled, then misconfiguration is likely.
 <br /><br />
-To check for unlabeled device ﬁles, run the following command:
+To check for unlabeled device files, run the following command:
 <br />
 <pre>
 # ls -Z | grep unlabeled_t
 
 </pre>
-It should produce no output in a well-conﬁgured
-system.</description>
+It should produce no output in a well-configured system.</description>
 <Rule id="selinux_unlabeled_device_files">
 <title>Check for Unlabeled Device Files</title>
 <description>Check for device file that is not labeled.</description>

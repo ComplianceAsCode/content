@@ -128,19 +128,19 @@ directories for all user accounts.</description>
 umask 077
 
 </pre></li>
-<li>Edit the user definitions file /etc/login.defs. Add or correct
+<li>Edit the user definitions file <tt>/etc/login.defs</tt>. Add or correct
 the line:
 <br />
 <pre>
 UMASK 077
 
 </pre></li>
-<li>View the additional configuration files /etc/csh.login and
-/etc/profile.d/*, and ensure that none of these files redefine the
+<li>View the additional configuration files <tt>/etc/csh.login</tt> and
+<tt>/etc/profile.d/*</tt>, and ensure that none of these files redefine the
 umask to a more permissive value unless there is a good reason for
 it.</li>
-<li>Edit the root shell configuration files /root/.bashrc,
-/root/.bash profile, /root/.cshrc, and /root/.tcshrc. Add or
+<li>Edit the root shell configuration files <tt>/root/.bashrc</tt>,
+<tt>/root/.bash profile</tt>, <tt>/root/.cshrc</tt>, and <tt>/root/.tcshrc</tt>. Add or
 correct the line:
 <br />
 <pre>
@@ -181,7 +181,7 @@ operator="equals" interactive="0">
 <Rule id="user_umask_bashrc">
 <title>The default <tt>umask</tt> for all users is set correctly
 in <tt>/etc/bashrc</tt></title>
-<description>The default <tt>umask</tt> for all users for the bash shell
+<description>The default <tt>umask</tt> for all users for the <tt>bash</tt> shell
 should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="3844-8" />
@@ -191,8 +191,8 @@ should be set to:
 
 <Rule id="user_umask_cshrc">
 <title>The default <tt>umask</tt> for all users is set correctly
-in /etc/csh.cshrc</title>
-<description>The default <tt>umask</tt> for all users for the csh shell
+in <tt>/etc/csh.cshrc</tt></title>
+<description>The default <tt>umask</tt> for all users for the <tt>csh</tt> shell
 should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="4227-5" />

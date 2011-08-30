@@ -8,8 +8,8 @@ desktops or servers. See Section 3.3.14 for information on
 Bluetooth wireless support. Bluetooth serves a different purpose
 and possesses a much shorter range, but it still presents serious
 security risks.
-<br />
-<br />Removal of hardware is the only way to absolutely ensure that
+<br /><br />
+Removal of hardware is the only way to absolutely ensure that
 the wireless capability remains disabled. If it is completely
 impractical to remove the wireless hardware, and site policy still
 allows the device to enter sensitive spaces, every effort to
@@ -29,34 +29,37 @@ devices.</description>
 <title>Deactivate Wireless Interfaces</title>
 <description>Deactivating the wireless interfaces should prevent
 normal usage of the wireless capability.
+<br /><br />
+First, identify the interfaces available with the command:
 <br />
-<br />First, identify the interfaces available with the command:
-<br />
-<br />
-<code># ifconfig -a
-<br /></code>
-<br />Additionally,the following command may also be used to
+<pre>
+# ifconfig -a
+
+</pre>
+>Additionally,the following command may also be used to
 determine whether wireless support ('extensions') is included for a
 particular interface, though this may not always be a clear
 indicator:
 <br />
+<pre>
+# iwconfig
+
+</pre>
+After identifying any wireless interfaces (which may have
+names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
+<tt>eth0</tt>), deactivate the interface with the command:
 <br />
-<code># iwconfig
-<br /></code>
-<br />After identifying any wireless interfaces (which may have
-names like wlan0, ath0, wifi0, or eth0), deactivate the interface
-with the command:
-<br />
-<br />
-<code># ifdown interface
-<br /></code>
-<br />These changes will only last until the next reboot. To
+<pre>
+# ifdown interface
+
+</pre>
+These changes will only last until the next reboot. To
 disable the interface for future boots, remove the appropriate
-interface file from /etc/sysconfig/network-scripts:
+interface file from <tt>/etc/sysconfig/network-scripts</tt>:
 <br />
-<br />
-<code># rm
-/etc/sysconfig/network-scripts/ifcfg-interface</code></description>
+<pre>
+# rm /etc/sysconfig/network-scripts/ifcfg-interface</pre>
+</description>
 <Rule id="deactivate_wireless_interfaces">
 <title>Deactivate Wireless Interfaces</title>
 <description>All wireless interfaces should be

@@ -6,14 +6,14 @@ activated by default. This firewall is controlled by the program
 iptables, and the entire capability is frequently referred to by
 this name. An analogous program called ip6tables handles filtering
 for IPv6.
-<br />
-<br />Unlike TCP Wrappers, which depends on the network server
+<br /><br />
+Unlike TCP Wrappers, which depends on the network server
 program to support and respect the rules written, Netfilter
 filtering occurs at the kernel level, before a program can even
 process the data from the network packet. As such, any program on
 the system is affected by the rules written.
-<br />
-<br />This section provides basic information about strengthening
+<br /><br />
+This section provides basic information about strengthening
 the iptables and ip6tables configurations included with the system.
 For more complete information that may allow the construction of a
 sophisticated ruleset tailored to your environment, please consult
@@ -23,67 +23,68 @@ the references at the end of this section.</description>
 <description>View the currently-enforced iptables rules by running
 the command:
 <br />
-<br />
-<code># iptables -nL --line-numbers
+<pre>
+# iptables -nL --line-numbers
 
-<br /></code>
-<br />The command is analogous for the ip6tables program.
-<br />
-<br />If the firewall does not appear to be active (i.e., no rules
+</pre>
+The command is analogous for the ip6tables program.
+<br /><br />
+If the firewall does not appear to be active (i.e., no rules
 appear), activate it and ensure that it starts at boot by issuing
 the following commands (and analogously for ip6tables):
 <br />
-<br />
-<code># service iptables restart
-<br /># chkconfig iptables on
-<br /></code>
-<br />The default iptables rules are:
-<br />
-<br />Chain INPUT (policy ACCEPT)
-<br />num target prot opt source destination
-<br />1 RH-Firewall-1-INPUT all -- 0.0.0.0/0 0.0.0.0/0
-<br />
-<br />Chain FORWARD (policy ACCEPT)
-<br />num target prot opt source destination
-<br />1 RH-Firewall-1-INPUT all -- 0.0.0.0/0 0.0.0.0/0
-<br />
-<br />Chain OUTPUT (policy ACCEPT)
-<br />num target prot opt source destination
-<br />
-<br />Chain RH-Firewall-1-INPUT (2 references)
-<br />num target prot opt source destination
-<br />1 ACCEPT all -- 0.0.0.0/0 0.0.0.0/0
-<br />2 ACCEPT icmp -- 0.0.0.0/0 0.0.0.0/0 icmp type 255
-<br />3 ACCEPT esp -- 0.0.0.0/0 0.0.0.0/0
-<br />4 ACCEPT ah -- 0.0.0.0/0 0.0.0.0/0
-<br />5 ACCEPT udp -- 0.0.0.0/0 224.0.0.251 udp dpt:5353
-<br />6 ACCEPT udp -- 0.0.0.0/0 0.0.0.0/0 udp dpt:631
-<br />7 ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:631
-<br />8 ACCEPT all -- 0.0.0.0/0 0.0.0.0/0 state RELATED,ESTABLISHED
+<pre>
+# service iptables restart
+# chkconfig iptables on
 
-<br />9 ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 state NEW tcp dpt:22
-<br />10 REJECT all -- 0.0.0.0/0 0.0.0.0/0 reject-with
-icmp-host-prohibited
+</pre>
+The default iptables rules are:
 <br />
-<br />The ip6tables default rules are similar, with its rules 2 and
+<pre>
+Chain INPUT (policy ACCEPT)
+num target prot opt source destination
+1 RH-Firewall-1-INPUT all -- 0.0.0.0/0 0.0.0.0/0
+
+Chain FORWARD (policy ACCEPT)
+num target prot opt source destination
+1 RH-Firewall-1-INPUT all -- 0.0.0.0/0 0.0.0.0/0
+
+Chain OUTPUT (policy ACCEPT)
+num target prot opt source destination
+
+Chain RH-Firewall-1-INPUT (2 references)
+num target prot opt source destination
+1 ACCEPT all -- 0.0.0.0/0 0.0.0.0/0
+2 ACCEPT icmp -- 0.0.0.0/0 0.0.0.0/0 icmp type 255
+3 ACCEPT esp -- 0.0.0.0/0 0.0.0.0/0
+4 ACCEPT ah -- 0.0.0.0/0 0.0.0.0/0
+5 ACCEPT udp -- 0.0.0.0/0 224.0.0.251 udp dpt:5353
+6 ACCEPT udp -- 0.0.0.0/0 0.0.0.0/0 udp dpt:631
+7 ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:631
+8 ACCEPT all -- 0.0.0.0/0 0.0.0.0/0 state RELATED,ESTABLISHED
+9 ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 state NEW tcp dpt:22
+10 REJECT all -- 0.0.0.0/0 0.0.0.0/0 reject-with
+icmp-host-prohibited
+
+</pre>
+The <tt>ip6tables</tt> default rules are similar, with its rules 2 and
 10 reflecting protocol naming and addressing differences. Instead
-of rule 8, however, ip6tables includes two rules that accept all
+of rule 8, however, <tt>ip6tables</tt> includes two rules that accept all
 incoming udp and tcp packets with a particular destination port
 range. This is because the current Netfilter implementation for
-IPv6 lacks reliable connection-tracking
-functionality.</description>
+IPv6 lacks reliable connection-tracking functionality.</description>
 
 <Rule id="enable_ip6tables">
-<title>Verify ip6tables is enabled</title>
-<description>The ip6tables service should be enabled.</description>
+<title>Verify <tt>ip6tables</tt> is enabled</title>
+<description>The <tt>ip6tables</tt> service should be enabled.</description>
 <ident cce="4167-3" />
 <oval id="20146" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="enable_iptables">
-<title>Verify iptables is enabled</title>
-<description>The iptables service should be enabled.</description>
+<title>Verify <tt>iptables</tt> is enabled</title>
+<description>The <tt>iptables</tt> service should be enabled.</description>
 <ident cce="4189-7" />
 <oval id="20147" />
 <ref nist="CM-6, CM-7" />
@@ -95,26 +96,27 @@ functionality.</description>
 <description>The default rules can be strengthened. The system
 scripts that activate the firewall rules expect them to be defined
 in the configuration files iptables and ip6tables in the directory
-/etc/sysconfig. Many of the lines in these files are similar to the
-command line arguments that would be provided to the programs
-/sbin/iptables or /sbin/ip6tables – but some are quite different.
-<br />
-<br />The following recommendations describe how to strengthen the
+<tt>/etc/sysconfig</tt>. Many of the lines in these files are similar
+to the command line arguments that would be provided to the programs
+<tt>/sbin/iptables</tt> or <tt>/sbin/ip6tables</tt> – but some are quite
+different.
+<br /><br />
+The following recommendations describe how to strengthen the
 default ruleset configuration file. An alternative to editing this
 configuration file is to create a shell script that makes calls to
 the iptables program to load in rules, and then invokes service
 iptables save to write those loaded rules to
-/etc/sysconfig/iptables.
-<br />
-<br />The following alterations can be made directly to
-/etc/sysconfig/iptables and /etc/sysconfig/ip6tables. Instructions
-apply to both unless otherwise noted. Language and address
+<tt>/etc/sysconfig/iptables.</tt>
+<br /><br />
+The following alterations can be made directly to
+<tt>/etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>.
+Instructions apply to both unless otherwise noted. Language and address
 conventions for regular iptables are used throughout this section;
 configuration for ip6tables will be either analogous or explicitly
 covered.</description>
-<warning category="general">The program system-config-securitylevel
+<warning category="general">The program <tt>system-config-securitylevel</tt>
 allows additional services to penetrate the default firewall rules
-and automatically adjusts /etc/sysconfig/iptables . This program
+and automatically adjusts <tt>/etc/sysconfig/iptables</tt>. This program
 is only useful if the default ruleset meets your security
 requirements. Otherwise, this program should not be used to make
 changes to the firewall configuration because it re-writes the
@@ -124,11 +126,13 @@ saved configuration file.</warning>
 <description>Change the default policy to DROP (from ACCEPT) for
 the INPUT and FORWARD built-in chains:
 <br />
-<br />*filter
-<br />:INPUT DROP [0:0]
-<br />:FORWARD DROP [0:0]
-<br />
-<br />Changing the default policy in this way implements proper
+<pre>
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+
+</pre>
+Changing the default policy in this way implements proper
 design for a firewall, i.e. any packets which are not explicitly
 permitted should not be accepted.</description>
 <Rule id="set_iptables_default_rule">

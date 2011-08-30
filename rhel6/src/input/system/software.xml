@@ -38,7 +38,7 @@ detailed information on LVM.</description>
 <Rule id="partition_for_tmp">
 <title>Ensure that <tt>/tmp</tt> has its own partition or logical volume</title>
 <description>The <tt>/tmp</tt> directory is a world-writable directory used
-for temporary ﬁle storage. Ensure that it has its own partition or
+for temporary file storage. Ensure that it has its own partition or
 logical volume.</description>
 <rationale>
 Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive 
@@ -98,7 +98,7 @@ logical volume</title>
 create a separate partition for /home. If <tt>/home</tt> will be mounted
 from another system such as an NFS server, then creating a separate
 partition is not necessary at this time, and the mountpoint can
-instead be conﬁgured later.</description>
+instead be configured later.</description>
 <ident cce="14559-9" />
 <oval id="20006" />
 <ref nist="CM-6"/>
@@ -194,7 +194,7 @@ gpgcheck=1</pre>
 Disabled For Any Repos</title>
 <description>To ensure that signature checking is not disabled for
 any repos, ensure that the following line DOES NOT appear in any
-repo conﬁguration ﬁles in <tt>/etc/yum.repos.d</tt> or elsewhere:
+repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:
 <br />
 <pre>
 gpgcheck=0</pre>
@@ -239,11 +239,11 @@ advice is based, is available in
 <title>erify Package Integrity Using RPM</title>
 <description>The RPM package management system includes the ability
 to verify the integrity of installed packages by comparing the
-installed ﬁles with information about the ﬁles taken from the
+installed files with information about the files taken from the
 package metadata stored in the RPM database. Although an attacker
 could corrupt the RPM database (analogous to attacking the AIDE
 database as described above), this check can still reveal
-modiﬁcation of important ﬁles.</description>
+modification of important files.</description>
 <ident cce="14931-0" />
 <oval id="200155" />
 <ref nist="SI-7"/>

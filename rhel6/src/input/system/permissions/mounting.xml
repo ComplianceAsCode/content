@@ -8,94 +8,92 @@ risk, whether direct risk from allowing unprivileged users to
 introduce arbitrary filesystems to a machine, or risk that software
 flaws in the automated mount facility itself will allow an attacker
 to compromise the system.
-<br />
-<br />Use caution when enabling any such facility, and find out
+<br /><br />
+Use caution when enabling any such facility, and find out
 whether better configuration management or user education might
 solve the same problem with less risk.</description>
 
 <Rule id="disable_module_cramfs">
-<title>Disable Mounting of cramfs</title>
-<description>Using the install command inside /etc/modprobe.conf
+<title>Disable Mounting of <tt>cramfs</tt></title>
+<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
 instructs the kernel module loading system to run the command
-speciﬁed (here, /bin/true) instead of inserting the module in the
+specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
-ﬁlesystems.</description>
+filesystems.</description>
 <ident cce="14089-7" />
 <oval id="20027" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="disable_module_freevxfs">
-<title>Disable Mounting of freevxfs</title>
-<description>Using the install command inside /etc/modprobe.conf
+<title>Disable Mounting of <tt>freevxfs</tt></title>
+<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
 instructs the kernel module loading system to run the command
-speciﬁed (here, /bin/true) instead of inserting the module in the
+specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
-ﬁlesystems.</description>
+filesystems.</description>
 <ident cce="14457-6" />
 <oval id="20028" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="disable_module_jffs2">
-<title>Disable Mounting of jffs2</title>
-<description>Using the install command inside /etc/modprobe.conf
+<title>Disable Mounting of <tt>jffs2</tt></title>
+<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
 instructs the kernel module loading system to run the command
-speciﬁed (here, /bin/true) instead of inserting the module in the
+specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
-ﬁlesystems.</description>
+filesystems.</description>
 <ident cce="14853-6" />
 <oval id="20029" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="disable_module_hfs">
-<title>Disable Mounting of hfs</title>
-<description>Using the install command inside /etc/modprobe.conf
+<title>Disable Mounting of <tt>hfs</tt></title>
+<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
 instructs the kernel module loading system to run the command
-speciﬁed (here, /bin/true) instead of inserting the module in the
+specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
-ﬁlesystems.</description>
+filesystems.</description>
 <ident cce="15087-0" />
 <oval id="20030" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="disable_module_hfsplus">
-<title>Disable Mounting of hfsplus</title>
-<description>Using the install command inside /etc/modprobe.conf
+<title>Disable Mounting of <tt>hfsplus</tt></title>
+<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
 instructs the kernel module loading system to run the command
-speciﬁed (here, /bin/true) instead of inserting the module in the
+specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
-ﬁlesystems.</description>
+filesystems.</description>
 <ident cce="14093-9" />
 <oval id="20031" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="disable_module_squashfs">
-<title>Disable Mounting of squashfs</title>
-<description>Using the install command inside /etc/modprobe.conf
+<title>Disable Mounting of <tt>squashfs</tt></title>
+<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
 instructs the kernel module loading system to run the command
-speciﬁed (here, /bin/true) instead of inserting the module in the
+specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
-ﬁlesystems.</description>
+filesystems.</description>
 <ident cce="14118-4" />
 <oval id="20032" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="disable_module_udf">
-<title>Disable Mounting of udf</title>
-<description>Using the install command inside /etc/modprobe.conf
+<title>Disable Mounting of <tt>udf</tt></title>
+<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
 instructs the kernel module loading system to run the command
-speciﬁed (here, /bin/true) instead of inserting the module in the
+specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
-ﬁlesystems.</description>
+filesystems.</description>
 <ident cce="14871-8" />
 <oval id="20033" />
 <ref nist="CM-6, CM-7" />
 </Rule>
-
 </Group>
-

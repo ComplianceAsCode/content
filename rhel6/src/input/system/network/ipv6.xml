@@ -17,17 +17,17 @@ prevent the kernel from loading the IPv6 kernel
 module.</description>
 <Group id="disabling_ipv6_module">
 <title>Disable Automatic Loading of IPv6 Kernel Module</title>
-<description>To prevent the IPv6 kernel module (ipv6) from being
-loaded, add the following line to /etc/modprobe.conf:
+<description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from being
+loaded, add the following line to <tt>/etc/modprobe.conf</tt>:
 <br />
-<br />install ipv6 /bin/true
-<br />
-<br />When the kernel requests the ipv6 module, this line will
-direct the system to run the program /bin/true
-instead.</description>
+<pre>
+install ipv6 /bin/true
+
+</pre>
+When the kernel requests the ipv6 module, this line will direct the
+system to run the program <tt>/bin/true</tt> instead.</description>
 <Rule id="disable_ipv6_module_loading">
-<title>Disable Automatic Loading of IPv6 Kernel
-Module</title>
+<title>Disable Automatic Loading of IPv6 Kernel Module</title>
 <description>Automatic loading of the IPv6 kernel module should be
 disabled.</description>
 <ident cce="3562-6" />
@@ -36,6 +36,7 @@ disabled.</description>
 </Rule>
 </Group>
 </Group>
+
 <Group id="configuring_ipv6">
 <title>Configure IPv6 Settings if Necessary</title>
 <description>A major feature of IPv6 is the extent to which systems
@@ -48,10 +49,12 @@ in an unauthenticated fashion.</description>
 <title>Disable Automatic Configuration</title>
 <description>Disable the system's acceptance of router
 advertisements and redirects by adding or correcting the following
-line in /etc/sysconfig/network (note that this does not disable
+line in <tt>/etc/sysconfig/network</tt> (note that this does not disable
 sending router solicitations):
 <br />
-<br />IPV6_AUTOCONF=no</description>
+<pre>
+IPV6_AUTOCONF=no</pre>
+</description>
 <Value id="var-2.5.3.2.1.a" type="string"
 operator="equals" interactive="0">
 <title>IPV6_AUTOCONF</title>
@@ -89,7 +92,7 @@ operator="equals" interactive="0">
 </Value>
 <Rule id="set_sysctl_ipv6_default_accept_ra">
 <title>Disable accepting IPv6 router advertisements
-(net.ipv6.conf.default.accept_ra)</title>
+(<tt>net.ipv6.conf.default.accept_ra</tt>)</title>
 <description>The default setting for accepting IPv6 router
 advertisements should be:
 <sub idref="var-2.5.3.2.b" />for all
@@ -100,7 +103,7 @@ interfaces.</description>
 </Rule>
 <Rule id="set_sysctl_ipv6_default_accept_redirects">
 <title>Disable accepting redirects from IPv6 routers
-(net.ipv6.conf.default.accept_redirects)</title>
+(<tt>net.ipv6.conf.default.accept_redirects</tt>)</title>
 <description>Accepting redirects from IPv6 routers should be:
 <sub idref="var-2.5.3.2.c" />for all
 interfaces.</description>
@@ -110,5 +113,4 @@ interfaces.</description>
 </Rule>
 </Group>
 </Group>
-
 </Group>

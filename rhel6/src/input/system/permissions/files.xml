@@ -3,22 +3,22 @@
 Directories</title>
 <description>Permissions for many files on a system should be set
 to conform to system policy. This section discusses important
-permission restrictions gshadow which should be checked on a
+permission restrictions which should be checked on a
 regular basis to ensure that no harmful discrepancies have
 arisen.</description>
 
 <Group id="permissions_important_account_files">
-<title>Verify Permissions on passwd, shadow, group and gshadow
-Files</title>
+<title>Verify Permissions on <tt>passwd</tt>, <tt>shadow</tt>,
+<tt>group</tt> and <tt>gshadow</tt> Files</title>
 <description>These are the default permissions for these files.
-Many utilities need read access to the passwd file in order to
-function properly, but read access to the shadow file allows
+Many utilities need read access to the <tt>passwd</tt> file in order to
+function properly, but read access to the <tt>shadow</tt> file allows
 malicious attacks against system passwords, and should never be
 enabled.</description>
 
 <Rule id="userowner_shadow_file">
-<title>Verify user who owns 'shadow' file</title>
-<description>The /etc/shadow file should be owned by
+<title>Verify user who owns <tt>shadow</tt> file</title>
+<description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
 <ident cce="3918-0" />
 <oval id="20034" />
@@ -26,8 +26,8 @@ root.</description>
 </Rule>
 
 <Rule id="groupowner_shadow_file">
-<title>Verify group who owns 'shadow' file</title>
-<description>The /etc/shadow file should be owned by
+<title>Verify group who owns <tt>shadow</tt> file</title>
+<description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
 <ident cce="3988-3" />
 <oval id="20035" />
@@ -35,8 +35,8 @@ root.</description>
 </Rule>
 
 <Rule id="userowner_group_file">
-<title>Verify user who owns 'group' file</title>
-<description>The /etc/group file should be owned by
+<title>Verify user who owns <tt>group</tt> file</title>
+<description>The <tt>/etc/group</tt> file should be owned by
 root.</description>
 <ident cce="3276-3" />
 <oval id="20036" />
@@ -44,8 +44,8 @@ root.</description>
 </Rule>
 
 <Rule id="groupowner_group_file">
-<title>Verify group who owns 'group' file</title>
-<description>The /etc/group file should be owned by
+<title>Verify group who owns <tt>group</tt> file</title>
+<description>The <tt>/etc/group</tt> file should be owned by
 root.</description>
 <ident cce="3883-6" />
 <oval id="20037" />
@@ -53,8 +53,8 @@ root.</description>
 </Rule>
 
 <Rule id="userowner_gshadow_file">
-<title>Verify user who owns 'gshadow' file</title>
-<description>The /etc/gshadow file should be owned by
+<title>Verify user who owns <tt>gshadow</tt> file</title>
+<description>The <tt>/etc/gshadow</tt> file should be owned by
 root.</description>
 <ident cce="4210-1" />
 <oval id="20038" />
@@ -62,8 +62,8 @@ root.</description>
 </Rule>
 
 <Rule id="groupowner_gshadow_file">
-<title>Verify group who owns 'gshadow' file</title>
-<description>The /etc/gshadow file should be owned by
+<title>Verify group who owns <tt>gshadow</tt> file</title>
+<description>The <tt>/etc/gshadow</tt> file should be owned by
 root.</description>
 <ident cce="4064-2" />
 <oval id="20039" />
@@ -71,8 +71,8 @@ root.</description>
 </Rule>
 
 <Rule id="userowner_passwd_file">
-<title>Verify user who owns 'passwd' file</title>
-<description>The /etc/passwd file should be owned by
+<title>Verify user who owns <tt>passwd</tt> file</title>
+<description>The <tt>/etc/passwd</tt> file should be owned by
 root.</description>
 <ident cce="3958-6" />
 <oval id="20040" />
@@ -80,8 +80,8 @@ root.</description>
 </Rule>
 
 <Rule id="groupowner_passwd_file">
-<title>Verify group who owns 'passwd' file</title>
-<description>The /etc/passwd file should be owned by
+<title>Verify group who owns <tt>passwd</tt> file</title>
+<description>The <tt>/etc/passwd</tt> file should be owned by
 root.</description>
 <ident cce="3495-9" />
 <oval id="20041" />
@@ -89,8 +89,8 @@ root.</description>
 </Rule>
 
 <Rule id="perms_shadow_file">
-<title>Verify permissions on 'shadow' file</title>
-<description>File permissions for /etc/shadow should be set
+<title>Verify permissions on <tt>shadow</tt> file</title>
+<description>File permissions for <tt>/etc/shadow</tt> should be set
 correctly.</description>
 <ident cce="4130-1" />
 <oval id="20042" />
@@ -98,8 +98,8 @@ correctly.</description>
 </Rule>
 
 <Rule id="perms_group_file">
-<title>Verify permissions on 'group' file</title>
-<description>File permissions for /etc/group should be set
+<title>Verify permissions on <tt>group</tt> file</title>
+<description>File permissions for <tt>/etc/group</tt> should be set
 correctly.</description>
 <ident cce="3967-7" />
 <oval id="20043" />
@@ -107,8 +107,8 @@ correctly.</description>
 </Rule>
 
 <Rule id="perms_gshadow_file">
-<title>Verify permissions on 'gshadow' file</title>
-<description>File permissions for /etc/gshadow should be set
+<title>Verify permissions on <tt>gshadow</tt> file</title>
+<description>File permissions for <tt>/etc/gshadow</tt> should be set
 correctly.</description>
 <ident cce="3932-1" />
 <oval id="20044" />
@@ -116,8 +116,8 @@ correctly.</description>
 </Rule>
 
 <Rule id="perms_passwd_file">
-<title>Verify permissions on 'passwd' file</title>
-<description>File permissions for /etc/passwd should be set
+<title>Verify permissions on <tt>passwd</tt> file</title>
+<description>File permissions for <tt>/etc/passwd</tt> should be set
 correctly.</description>
 <ident cce="3566-7" />
 <oval id="20045" />
@@ -150,8 +150,8 @@ user on the system. In almost all circumstances, files can be
 configured using a combination of user and group permissions to
 support whatever legitimate access is needed without the risk
 caused by world-writable files.
-<br />
-<br />It is generally a good idea to remove global (other) write
+<br /><br />
+It is generally a good idea to remove global (other) write
 access to a file when it is discovered. However, check with
 documentation for specific applications before making changes.
 Also, monitor for recurring world-writable files, as these may be
@@ -163,20 +163,16 @@ account.</description>
 </Rule>
 
 <Rule id="no_unpackaged_sgid_files">
-<title>Find Unauthorized SGID System
-Executables</title>
-<description>The sgid bit should not be set for all
-files.</description>
+<title>Find Unauthorized SGID System Executables</title>
+<description>The sgid bit should not be set for all files.</description>
 <ident cce="14970-8" />
 <oval id="20048" />
 <ref nist="CM-6"/>
 </Rule>
 
 <Rule id="no_unpackaged_suid_files">
-<title>Find Unauthorized SUID System
-Executables</title>
-<description>The suid bit should not be set for all
-files.</description>
+<title>Find Unauthorized SUID System Executables</title>
+<description>The suid bit should not be set for all files.</description>
 <ident cce="14340-4" />
 <oval id="20049" />
 <ref nist="AC-3, CM-6"/>
@@ -188,8 +184,12 @@ files.</description>
 <description>The following command will discover and print any
 files on local partitions which do not belong to a valid user and a
 valid group. Run it once for each local partition PART:
-<code># find PART -xdev \( -nouser -o -nogroup \) -print</code>If
-this command prints any results, investigate each reported file and
+<br />
+<pre>
+# find PART -xdev \( -nouser -o -nogroup \) -print
+
+</pre>
+If this command prints any results, investigate each reported file and
 either assign it to an appropriate user and group or remove it.
 Unowned files are not directly exploitable, but they are generally
 a sign that something is wrong with some system process. They may
@@ -209,8 +209,12 @@ addressed.</description>
 <description>The following command will discover and print any
 files on local partitions which do not belong to a valid user and a
 valid group. Run it once for each local partition PART:
-<code># find PART -xdev \( -nouser -o -nogroup \) -print</code>If
-this command prints any results, investigate each reported file and
+<br />
+<pre>
+# find PART -xdev \( -nouser -o -nogroup \) -print
+
+</pre>
+If this command prints any results, investigate each reported file and
 either assign it to an appropriate user and group or remove it.
 Unowned files are not directly exploitable, but they are generally
 a sign that something is wrong with some system process. They may
@@ -234,21 +238,19 @@ system account. The following command will discover and print these
 (assuming only system accounts have a uid lower than 500). Run it
 once for each local partition PART:
 <br />
-<br />
-<code># find PART -xdev -type d -perm -0002 -uid +500 -print
-<br /></code>
-<br />If this command produces any output, investigate why the
+<pre>
+# find PART -xdev -type d -perm -0002 -uid +500 -print
+
+</pre>
+If this command produces any output, investigate why the
 current owner is not root or another system account.
-<br />
-<br />Allowing a user account to own a world-writeable directory is
+<br /><br />
+Allowing a user account to own a world-writeable directory is
 undesirable because it allows the owner of that directory to remove
-or replace any ﬁles that may be placed in the directory by other
+or replace any files that may be placed in the directory by other
 users.</description>
 <ident cce="14794-2" />
 <oval id="20052" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
-
 </Group>
-
-
