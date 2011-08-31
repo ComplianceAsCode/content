@@ -110,11 +110,11 @@ trivial mechanism of bypassing security on the machine and gaining
 root access.
 <br /><br />
 To require entry of the root password even if the system is
-started in single-user mode, add the following line to the
-<tt>/etc/inittab</tt> file:
+started in single-user mode, add or correct the following line in the
+file <tt>/etc/sysconfig/init</tt>:
 <br />
 <pre>
-~~:S:wait:/sbin/sulogin</pre>
+SINGLE=/sbin/sulogin</pre>
 </description>
 
 <Rule id="require_singleuser_auth">
