@@ -293,9 +293,9 @@ requirements.</description>
 <Group id="password_hashing_algorithm">
 <title>Upgrade Password Hashing Algorithm to SHA-512</title>
 <description>The default algorithm for storing password hashes in
-<tt>/etc/shadow</tt> is MD5. In release 5.2 (and for those systems fully
-updated since its release), the algorithms SHA-256 and SHA-512 are
-available.
+<tt>/etc/shadow</tt> is SHA-512. If for some reason this has been
+set to a less secure setting, such as SHA-256 or MD5, this should
+be changed.
 <br /><br />
 In order to configure the system to use the SHA-512 algorithm,
 issue the command:
@@ -304,16 +304,10 @@ issue the command:
 # /usr/sbin/authconfig --passalgo=sha512 --update
 
 </pre>
-When users changes their passwords, hashes for the new
-passwords will be generated using the SHA-512 algorithm.
-<br /><br />
-The release notes available at
-http://www.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/5.2/html/Release_Notes/singles/relnotesU2-x86.html
-document this change. As noted there, only kickstart-installed
-systems can be configured to begin operation with this algorithm.
-Other systems will need to have this command issued and then all
-accounts will need to perform a password change in order to upgrade
-the stored hashes to the stronger algorithm.</description>
+When users change their passwords, hashes for the new passwords
+will be generated using the SHA-512 algorithm. All accounts will
+need to perform a password change in order to upgrade the stored
+hashes to the stronger algorithm.</description>
 <Value id="var-2.3.3.5.a" type="string"
 operator="equals" interactive="0">
 <title>Password hashing algorithm</title>
