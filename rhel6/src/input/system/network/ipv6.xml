@@ -13,22 +13,23 @@ needed. Despite configuration that suggests support for IPv6 has
 been disabled, link-local IPv6 address autoconfiguration occurs
 even when only an IPv4 address is assigned. The only way to
 effectively prevent execution of the IPv6 networking stack is to
-prevent the kernel from loading the IPv6 kernel
-module.</description>
+instruct the IPv6 kernel module not to load it.</description>
 <Group id="disabling_ipv6_module">
-<title>Disable Automatic Loading of IPv6 Kernel Module</title>
-<description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from being
-loaded, add the following line to <tt>/etc/modprobe.conf</tt>:
+<title>Disable Automatic Loading of IPv6 Networking Support</title>
+<description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from
+loading the IPv6 networking stack, add the following line to
+<tt>/etc/modprobe.d/disabled.conf</tt> (or another file in
+<tt>/etc/modprobe.d</tt>):
 <br />
 <pre>
-install ipv6 /bin/true
+options ipv6 disable=1
 
 </pre>
-When the kernel requests the ipv6 module, this line will direct the
-system to run the program <tt>/bin/true</tt> instead.</description>
+The IPv6 module cannot be disabled completely, but it can be
+configured to disable IPv6 networking support.</description>
 <Rule id="disable_ipv6_module_loading">
-<title>Disable Automatic Loading of IPv6 Kernel Module</title>
-<description>Automatic loading of the IPv6 kernel module should be
+<title>Disable Automatic Loading of IPv6 Networking Support</title>
+<description>Automatic loading of IPv6 networking support should be
 disabled.</description>
 <ident cce="3562-6" />
 <oval id="20130" />
