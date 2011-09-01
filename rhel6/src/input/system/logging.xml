@@ -6,9 +6,10 @@ log format, lack of authentication for received messages, and lack
 of authentication, encryption, or reliable transport for messages
 sent over a network. However, due to its long history, <tt>syslog</tt> is an
 accepted standard which is supported by almost all Unix
-applications. This section discusses how to configure <tt>syslog</tt> for
-best effect, and how to use tools provided with the system to
-maintain and monitor your logs.</description>
+applications. In RHEL 6, <tt>rsyslog</tt> has replaced <tt>syslog</tt> as the
+<tt>syslog</tt> daemon of choice. This section discusses how to configure
+<tt>rsyslog</tt> for best effect, and how to use tools provided with the
+system to maintain and monitor your logs.</description>
 
 <Rule id="install_rsyslog">
 <title>The <tt>rsyslog</tt> package should be installed or
@@ -21,7 +22,7 @@ as appropriate.</description>
 </Rule>
 
 <Rule id="enable_rsyslog">
-<title>Configure Syslog</title>
+<title>Configure Rsyslog</title>
 <description>The <tt>rsyslog</tt> service should be enabled or disabled
 as appropriate.</description>
 <ident cce="17698-2" />
@@ -109,18 +110,18 @@ delete the log entries which indicate that the system was attacked
 before they are seen by an administrator.
 <br /><br />
 However, it is recommended that logs be stored on the local
-host in addition to being sent to the loghost, because <tt>syslog</tt> uses
-the UDP protocol to send messages over a network. UDP does not
-guarantee reliable delivery, and moderately busy sites will lose
-log messages occasionally, especially in periods of high traffic
-which may be the result of an attack. In addition, remote <tt>syslog</tt>
-messages are not authenticated in any way, so it is easy for an
-attacker to introduce spurious messages to the central log server.
-Also, some problems cause loss of network connectivity, which will
-prevent the sending of messages to the central server. For all of
-these reasons, it is better to store log messages both centrally
-and on each host, so that they can be correlated if
-necessary.</description>
+host in addition to being sent to the loghost, especially if
+<tt>rsyslog</tt> has been configured to use the UDP protocol to send
+messages over a network. UDP does not guarantee reliable delivery,
+and moderately busy sites will lose log messages occasionally,
+especially in periods of high traffic which may be the result of an
+attack. In addition, remote <tt>rsyslog</tt> messages are not
+authenticated in any way by default, so it is easy for an attacker to
+introduce spurious messages to the central log server. Also, some
+problems cause loss of network connectivity, which will prevent the
+sending of messages to the central server. For all of these reasons, it is
+better to store log messages both centrally and on each host, so
+that they can be correlated if necessary.</description>
 <Rule id="rsyslog_send_messages_to_logserver">
 <title>Rsyslog logs should be sent to a remote loghost
 or not as appropriate</title>
@@ -131,10 +132,28 @@ as appropriate</description>
 <ref nist="AU-2, AU-9" />
 </Rule>
 </Group>
+
 <Group id="rsyslog_accepting_remote_messages">
 <title>Enable <tt>rsyslogd</tt> to Accept Remote Messages on Loghosts
 Only</title>
 <description>Is this machine the central log server for your
+organization? If so, edit the file <tt>/etc/rsyslog.conf</tt>. Add or
+correct the following lines:
+<br />
+<pre>
+$ModLoad imtcp.so
+$InputTCPServerRun 514
+
+</pre>
+If the machine is not a log server, ensure that those two lines are
+commented out.
+<br /><br />
+By default, RHEL6's <tt>rsyslog</tt> does not listen over the network
+for log messages. The options <tt>$ModLoad imtcp.so</tt> and
+<tt>$InputTCPServerRun 514</tt> enable <tt>rsyslogd</tt> to listen over
+TCP port 514, and should be used only if necessary.
+</description>
+<!--<description>Is this machine the central log server for your
 organization? If so, edit the file <tt>/etc/sysconfig/rsyslog</tt>. Add
 or correct the following line:
 <br />
@@ -151,14 +170,14 @@ and instead add or correct the line:
 SYSLOGD_OPTIONS="-m 0"
 
 </pre>
-By default, RHEL6's <tt>syslog</tt> does not listen over the network
-for log messages. The <tt>-r</tt> flag enables <tt>syslogd</tt> to listen over a
+By default, RHEL6's <tt>rsyslog</tt> does not listen over the network
+for log messages. The <tt>-r</tt> flag enables <tt>rsyslogd</tt> to listen over a
 network, and should be used only if necessary. The <tt>-s example.com</tt>
 flag strips the domain name <tt>example.com</tt> from each sending machine's
 hostname before logging messages from that host, to reduce the
 amount of redundant information placed in log files. See the
-<tt>syslogd(8)</tt> man page for further information.</description>
-
+<tt>rsyslogd(8)</tt> man page for further information.</description>
+-->
 <Rule id="rsyslog_accept_remote_messages">
 <title><tt>rsyslog</tt> should accept remote messages or not as
 appropriate</title>
@@ -169,7 +188,7 @@ appropriate</description>
 <ref nist="AU-2, AU-9" />
 </Rule>
 </Group>
-
+-->
 <Group id="log_rotation">
 <title>Ensure All Logs are Rotated by <tt>logrotate</tt></title>
 <description>Edit the file <tt>/etc/logrotate.d/syslog</tt>. Find the first
