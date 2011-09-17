@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance"
+  id="package_rsyslog_installed" version="1">
+    <metadata>
+      <title>The rsyslog package should be installed or uninstalled
+      as appropriate.</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-17742-8" source="CCE" />
+      <description>TThe rsyslog package should be installed or
+      uninstalled as appropriate.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check to see if rsylog is installed"
+      test_ref="test_201480" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  comment="check to see if syslog is installed"
+  id="test_201480" version="1">
+    <linux:object object_ref="obj_201480" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_201480"
+  version="1">
+    <linux:name>rsyslog</linux:name>
+  </linux:rpminfo_object>
+</def-group>

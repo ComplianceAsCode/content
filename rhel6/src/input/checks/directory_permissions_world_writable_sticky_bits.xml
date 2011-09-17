@@ -1,0 +1,60 @@
+<def-group>
+  <definition class="compliance"
+  id="directory_permissions_world_writable_sticky_bits" version="1">
+    <metadata>
+      <title>Verify that All World-Writable Directories Have Sticky
+      Bits Set</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3399-3" source="CCE" />
+      <description>The sticky bit should be set for all
+      world-writable directories.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Check all directories are world writable and they have the sticky bit set"
+      test_ref="test_200461" />
+      <criterion comment="Check all directories are not world writable"
+      test_ref="test_200462" />
+    </criteria>
+  </definition>
+  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+  check="all" check_existence="all_exist"
+  comment="sticky bit on all world writable directories"
+  id="test_200461" version="1">
+    <notes>
+      <note>This will enumerate all directories on local
+      partitions</note>
+    </notes>
+    <unix:object object_ref="obj_20046" />
+    <unix:state state_ref="state_20046" />
+  </unix:file_test>
+  <unix:file_state id="state_20046"
+  version="1">
+    <unix:sticky datatype="boolean">1</unix:sticky>
+    <unix:owrite datatype="boolean">1</unix:owrite>
+  </unix:file_state>
+  <unix:file_object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  comment="all local directories"
+  id="obj_20046" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+    recurse_file_system="local" />
+    <unix:path operation="pattern match">.*</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+  check="all" check_existence="all_exist"
+  comment="all directories not world writable"
+  id="test_200462" version="1">
+    <notes>
+      <note>This will enumerate all directories on local
+      partitions</note>
+    </notes>
+    <unix:object object_ref="obj_20046" />
+    <unix:state state_ref="state_200462" />
+  </unix:file_test>
+  <unix:file_state id="state_200462"
+  version="1">
+    <unix:owrite datatype="boolean">0</unix:owrite>
+  </unix:file_state>
+</def-group>

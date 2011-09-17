@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_hplip_disabled" version="1">
+    <metadata>
+      <title>Disable HPLIP Service if Possible</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4425-5" source="CCE" />
+      <description>The hplip service should be
+      disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20266" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202661" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202662" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202663" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202664" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202665" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202666" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20266"
+  version="2">
+    <unix:object object_ref="obj_20266" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20266"
+  version="1">
+    <unix:service_name>hplip</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202661"
+  version="2">
+    <unix:object object_ref="obj_202661" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202661"
+  version="1">
+    <unix:service_name>hplip</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202662"
+  version="2">
+    <unix:object object_ref="obj_202662" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202662"
+  version="1">
+    <unix:service_name>hplip</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202663"
+  version="2">
+    <unix:object object_ref="obj_202663" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202663"
+  version="1">
+    <unix:service_name>hplip</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202664"
+  version="2">
+    <unix:object object_ref="obj_202664" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202664"
+  version="1">
+    <unix:service_name>hplip</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202665"
+  version="2">
+    <unix:object object_ref="obj_202665" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202665"
+  version="1">
+    <unix:service_name>hplip</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202666"
+  version="2">
+    <unix:object object_ref="obj_202666" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202666"
+  version="1">
+    <unix:service_name>hplip</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

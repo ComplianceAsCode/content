@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance"
+  id="accounts_no_uid_except_zero" version="1">
+    <metadata>
+      <title>Verify that No Non-Root Accounts Have UID 0</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4009-7" source="CCE" />
+      <description>Anonymous root logins are disabled</description>
+    </metadata>
+    <criteria>
+      <criterion comment="conditions are satisfied"
+      test_ref="test_20070" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist"
+  comment="Tests the value of the ^[^r][^o][^o][^t].*:0:setting in the /etc/passwd file"
+  id="test_20070" version="1">
+    <ind:object object_ref="obj_20070" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20070"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>passwd</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^(?!root:)[^:]*:[^:]:0</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

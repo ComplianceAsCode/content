@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="compliance"
+  id="mount_var_log_audit_own_partition" version="1">
+    <metadata>
+      <title>Ensure that /var/log/audit has its own partition or
+      logical volume</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14171-3" source="CCE" />
+      <description>Audit logs are stored in the /var/log/audit
+      directory. Ensure that it has its own partition or logical
+      volume. Make absolutely certain that it is large enough to
+      store all audit logs that will be created by the auditing
+      daemon.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check in /etc/fstab for a /var/log/audit mount point"
+      test_ref="test_20005" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="look for /var/log/audit partition or logical volume in /etc/fstab"
+  id="test_20005" version="1">
+    <ind:object object_ref="obj_20000" />
+    <ind:state state_ref="state_20005" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state comment="/var/log/audit mount point is defined"
+  id="state_20005" version="2">
+    <ind:instance datatype="int">1</ind:instance>
+    <ind:subexpression datatype="string"
+    entity_check="at least one" operation="equals">
+    /var/log/audit</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/fstab"
+  id="obj_20000" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>fstab</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^[\s]*[\S]+[\s]+([\S]+)[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">
+    1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

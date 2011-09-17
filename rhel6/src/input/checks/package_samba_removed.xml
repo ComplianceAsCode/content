@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance"
+  id="package_samba_removed" version="1">
+    <metadata>
+      <title>Uninstall samba</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4076-6" source="CCE" />
+      <description>The samba package should be
+      uninstalled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_203401" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="The samba package should be installed or not as appropriate"
+  id="test_203401" version="1">
+    <linux:object object_ref="obj_203401" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_203401"
+  version="1">
+    <linux:name>samba</linux:name>
+  </linux:rpminfo_object>
+</def-group>

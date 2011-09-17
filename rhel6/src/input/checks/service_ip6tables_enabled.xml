@@ -1,0 +1,121 @@
+<def-group>
+  <definition class="compliance"
+  id="service_ip6tables_enabled" version="1">
+    <metadata>
+      <title>Verify ip6tables is enabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4167-3" source="CCE" />
+      <description>The ip6tables service should be
+      enabled.</description>
+    </metadata>
+    <criteria comment="Either IPv6 is disabled or this feature should be"
+    operator="OR">
+      <extend_definition comment="The default setting for IPv6 configuration should be disabled for network interfaces"
+      definition_ref="NEEDSFIXUP_20131" />
+      <extend_definition comment="Global IPv6 initialization should be disabled"
+      definition_ref="NEEDSFIXUP_20132" />
+      <extend_definition comment="IPv6 configuration should be disabled for all interfaces"
+      definition_ref="NEEDSFIXUP_20133" />
+      <criteria operator="AND">
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_20146" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201461" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201462" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201463" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201464" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201465" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201466" />
+      </criteria>
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20146"
+  version="2">
+    <unix:object object_ref="obj_20146" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is running and not stopping"
+  id="state_20008" version="1">
+    <unix:start datatype="boolean">true</unix:start>
+    <unix:kill datatype="boolean">false</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20146"
+  version="1">
+    <unix:service_name>ip6tables</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201461"
+  version="2">
+    <unix:object object_ref="obj_201461" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201461"
+  version="1">
+    <unix:service_name>ip6tables</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201462"
+  version="2">
+    <unix:object object_ref="obj_201462" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201462"
+  version="1">
+    <unix:service_name>ip6tables</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201463"
+  version="2">
+    <unix:object object_ref="obj_201463" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201463"
+  version="1">
+    <unix:service_name>ip6tables</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201464"
+  version="2">
+    <unix:object object_ref="obj_201464" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201464"
+  version="1">
+    <unix:service_name>ip6tables</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201465"
+  version="2">
+    <unix:object object_ref="obj_201465" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201465"
+  version="1">
+    <unix:service_name>ip6tables</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201466"
+  version="2">
+    <unix:object object_ref="obj_201466" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201466"
+  version="1">
+    <unix:service_name>ip6tables</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

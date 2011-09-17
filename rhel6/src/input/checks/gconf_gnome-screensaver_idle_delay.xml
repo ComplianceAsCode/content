@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance"
+  id="gconf_gnome-screensaver_idle_delay" version="1">
+    <metadata>
+      <title>Configure GUI Screen Locking</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3315-9" source="CCE" />
+      <description>The allowed period of inactivity gnome desktop
+      lockout should be configured correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check value of idle_delay in GCONF"
+      test_ref="test_20100" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_delay']/local_schema[1]/default[1]/@value"
+  id="test_20100" version="1">
+    <ind:object object_ref="obj_20100" />
+    <ind:state state_ref="state_20100" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_state comment="idle_delay (time before activation in minutes)"
+  id="state_20100" version="1">
+    <ind:value_of datatype="string" operation="equals"
+    var_check="all" var_ref="var_20098" />
+  </ind:xmlfilecontent_state>
+  <external_variable comment="External variable for definitions 20098 20100 Inactivity timout"
+  datatype="string" id="var_20098"
+  version="1" />
+  <ind:xmlfilecontent_object id="obj_20100"
+  version="1">
+    <ind:path>/etc/gconf/gconf.xml.defaults</ind:path>
+    <ind:filename>%gconf-tree.xml</ind:filename>
+    <ind:xpath datatype="string" operation="equals">
+    /gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_delay']/local_schema[1]/default[1]/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+</def-group>

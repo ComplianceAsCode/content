@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_avahi-daemon_disabled" version="1">
+    <metadata>
+      <title>Disable Avahi Server Software</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4365-3" source="CCE" />
+      <description>The avahi-daemon service should be
+      disabled.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20250" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202501" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202502" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202503" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202504" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202505" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202506" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20250"
+  version="2">
+    <unix:object object_ref="obj_20250" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20250"
+  version="1">
+    <unix:service_name>avahi-daemon</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202501"
+  version="2">
+    <unix:object object_ref="obj_202501" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202501"
+  version="1">
+    <unix:service_name>avahi-daemon</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202502"
+  version="2">
+    <unix:object object_ref="obj_202502" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202502"
+  version="1">
+    <unix:service_name>avahi-daemon</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202503"
+  version="2">
+    <unix:object object_ref="obj_202503" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202503"
+  version="1">
+    <unix:service_name>avahi-daemon</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202504"
+  version="2">
+    <unix:object object_ref="obj_202504" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202504"
+  version="1">
+    <unix:service_name>avahi-daemon</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202505"
+  version="2">
+    <unix:object object_ref="obj_202505" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202505"
+  version="1">
+    <unix:service_name>avahi-daemon</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202506"
+  version="2">
+    <unix:object object_ref="obj_202506" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202506"
+  version="1">
+    <unix:service_name>avahi-daemon</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

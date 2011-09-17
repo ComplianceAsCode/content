@@ -1,0 +1,117 @@
+<def-group>
+  <definition class="compliance"
+  id="service_ftpd_disabled" version="1">
+    <metadata>
+      <title>Disable TFTP Server</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4273-9" source="CCE" />
+      <description>The tftp service should be
+      disabled.</description>
+    </metadata>
+    <criteria comment="tftp-server is not installed or conditions are met"
+    operator="OR">
+      <extend_definition comment="tftp-server is not installed"
+      definition_ref="NEEDSFIXUP_20182" />
+      <criteria operator="AND">
+        <criterion comment="The tftp service is not running"
+        test_ref="test_201825" />
+        <criterion comment="The tftp service is not running"
+        test_ref="test_2018251" />
+        <criterion comment="The tftp service is not running"
+        test_ref="test_2018252" />
+        <criterion comment="The tftp service is not running"
+        test_ref="test_2018253" />
+        <criterion comment="The tftp service is not running"
+        test_ref="test_2018254" />
+        <criterion comment="The tftp service is not running"
+        test_ref="test_2018255" />
+        <criterion comment="The tftp service is not running"
+        test_ref="test_2018256" />
+      </criteria>
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201825"
+  version="2">
+    <unix:object object_ref="obj_201825" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_201825"
+  version="1">
+    <unix:service_name>tftp</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2018251"
+  version="2">
+    <unix:object object_ref="obj_2018251" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2018251"
+  version="1">
+    <unix:service_name>tftp</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2018252"
+  version="2">
+    <unix:object object_ref="obj_2018252" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2018252"
+  version="1">
+    <unix:service_name>tftp</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2018253"
+  version="2">
+    <unix:object object_ref="obj_2018253" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2018253"
+  version="1">
+    <unix:service_name>tftp</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2018254"
+  version="2">
+    <unix:object object_ref="obj_2018254" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2018254"
+  version="1">
+    <unix:service_name>tftp</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2018255"
+  version="2">
+    <unix:object object_ref="obj_2018255" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2018255"
+  version="1">
+    <unix:service_name>tftp</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2018256"
+  version="2">
+    <unix:object object_ref="obj_2018256" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2018256"
+  version="1">
+    <unix:service_name>tftp</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

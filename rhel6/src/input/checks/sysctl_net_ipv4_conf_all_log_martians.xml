@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance"
+  id="sysctl_net_ipv4_conf_all_log_martians" version="1">
+    <metadata>
+      <title>Network Parameters for Hosts and Routers</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4320-8" source="CCE" />
+      <description>Logging of "martian" packets (those with
+      impossible addresses) should be enabled or disabled for all
+      interfaces as appropriate.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_20118" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist"
+  comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.log_martians[\s]*=([\s]*) expression in the /etc/sysctl.conf file"
+  id="test_20118" version="1">
+    <ind:object object_ref="obj_20118" />
+    <ind:state state_ref="state_20118" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state id="state_20118"
+  version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_20118" />
+  </ind:textfilecontent54_state>
+  <external_variable comment="External variable for definition 20118"
+  datatype="string" id="var_20118"
+  version="1" />
+  <ind:textfilecontent54_object id="obj_20118"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>sysctl.conf</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^[\s]*net\.ipv4\.conf\.all\.log_martians[\s]*=([\s]*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

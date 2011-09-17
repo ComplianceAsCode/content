@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance"
+  id="package_rhn_gpgkey_installed" version="1">
+    <metadata>
+      <title>Ensure that GPG Key for Red Hat Network is
+      installed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14440-2" source="CCE" />
+      <description>The GPG key should be installed.</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="Red Hat Enterprise Linux 5 is installed"
+      definition_ref="NEEDSFIXUP_10000" />
+      <criterion comment="check gpg signature"
+      test_ref="test_200065" />
+    </criteria>
+  </definition>
+  <ind:unknown_test check="all" comment="place holder"
+  id="test_200065" version="1" />
+</def-group>

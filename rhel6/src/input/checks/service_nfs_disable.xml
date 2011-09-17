@@ -1,0 +1,111 @@
+<def-group>
+  <definition class="compliance"
+  id="service_nfs_disable" version="1">
+    <metadata>
+      <title>Disable NFS Server Daemons</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4473-5" source="CCE" />
+      <description>The nfs service should be disabled</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20303" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_203031" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_203032" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_203033" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_203034" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_203035" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_203036" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20303"
+  version="2">
+    <unix:object object_ref="obj_20303" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20303"
+  version="1">
+    <unix:service_name>nfs</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_203031"
+  version="2">
+    <unix:object object_ref="obj_203031" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_203031"
+  version="1">
+    <unix:service_name>nfs</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_203032"
+  version="2">
+    <unix:object object_ref="obj_203032" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_203032"
+  version="1">
+    <unix:service_name>nfs</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_203033"
+  version="2">
+    <unix:object object_ref="obj_203033" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_203033"
+  version="1">
+    <unix:service_name>nfs</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_203034"
+  version="2">
+    <unix:object object_ref="obj_203034" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_203034"
+  version="1">
+    <unix:service_name>nfs</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_203035"
+  version="2">
+    <unix:object object_ref="obj_203035" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_203035"
+  version="1">
+    <unix:service_name>nfs</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_203036"
+  version="2">
+    <unix:object object_ref="obj_203036" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_203036"
+  version="1">
+    <unix:service_name>nfs</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

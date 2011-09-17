@@ -68,7 +68,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14161-4" source="CCE"/>
-				<description>The /tmp directory is a world-writable directory used for temporary ﬁle storage. Verify that it has its own partition or logical volume.</description>
+				<description>The /tmp directory is a world-writable directory used for temporary file storage. Verify that it has its own partition or logical volume.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20000" comment="Check in /etc/fstab for a /tmp mount point"/>
@@ -129,7 +129,7 @@
 				<description>If user home directories will be stored locally, create a separate 
                               partition for /home. If /home will be mounted from another system such as an NFS server, then 
                               creating a separate partition is not necessary at this time, and the mountpoint can 
-                              instead be conﬁgured later.</description>
+                              instead be configured later.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20006" comment="Check in /etc/fstab for a /home mount point"/>
@@ -210,7 +210,7 @@
 				</affected>
 				<reference ref_id="CCE-14813-0" source="CCE"/>
 				<description>To ensure that signature checking is not disabled for any repos, ensure that the following line DOES NOT
-                              appear in any repo conﬁguration ﬁles in /etc/yum.repos.d or elsewhere</description>
+                              appear in any repo configuration files in /etc/yum.repos.d or elsewhere</description>
 			</metadata>
 			<criteria>
 				<criterion comment="check value of gpgcheck=0 in /etc/yum.repos.d/*" test_ref="oval:gov.nist.usgcb.rhel:tst:20011" negate="true"/>
@@ -236,8 +236,8 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14931-0" source="CCE"/>
-				<description>>Verify the integrity of installed packages by comparing the installed ﬁles with 
-                              information about the ﬁles taken from the package metadata stored in the RPM
+				<description>>Verify the integrity of installed packages by comparing the installed files with 
+                              information about the files taken from the package metadata stored in the RPM
                               database.</description>
 			</metadata>
 			<criteria>
@@ -308,7 +308,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14089-7" source="CCE"/>
-				<description>prevents usage of this uncommon ﬁlesystems.</description>
+				<description>prevents usage of this uncommon filesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20027" comment="check for cramfs"/>
@@ -322,7 +322,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14457-6" source="CCE"/>
-				<description>prevents usage of this uncommon ﬁlesystems.</description>
+				<description>prevents usage of this uncommon filesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20028" comment="check for freevxfs"/>
@@ -336,7 +336,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14853-6" source="CCE"/>
-				<description>prevents usage of this uncommon ﬁlesystems.</description>
+				<description>prevents usage of this uncommon filesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20029" comment="check for jffs2"/>
@@ -350,7 +350,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-15087-0" source="CCE"/>
-				<description>prevents usage of this uncommon ﬁlesystems.</description>
+				<description>prevents usage of this uncommon filesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20030" comment="check for hfs"/>
@@ -364,7 +364,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14093-9" source="CCE"/>
-				<description>prevents usage of this uncommon ﬁlesystems.</description>
+				<description>prevents usage of this uncommon filesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20031" comment="check for hfsplus"/>
@@ -378,7 +378,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14118-4" source="CCE"/>
-				<description>prevents usage of this uncommon ﬁlesystems.</description>
+				<description>prevents usage of this uncommon filesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20032" comment="check for squashfs"/>
@@ -392,7 +392,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14871-8" source="CCE"/>
-				<description>prevents usage of this uncommon ﬁlesystems.</description>
+				<description>prevents usage of this uncommon filesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20033" comment="check for udf"/>
@@ -1410,7 +1410,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14991-4" source="CCE"/>
-				<description>Check for device ﬁle that is not labeled.</description>
+				<description>Check for device file that is not labeled.</description>
 			</metadata>
 			<criteria>
 				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:22"/>
@@ -2074,12 +2074,12 @@
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20163" version="1">
 			<metadata>
-				<title>Ensure auditd Collects Discretionary Access Control Permission Modiﬁcation Events</title>
+				<title>Ensure auditd Collects Discretionary Access Control Permission Modification Events</title>
 				<affected family="unix">
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14058-2" source="CCE"/>
-				<description>Audit rules about the Discretionary Access Control Permission Modiﬁcation Events are enabled</description>
+				<description>Audit rules about the Discretionary Access Control Permission Modification Events are enabled</description>
 			</metadata>
 			<criteria operator="OR" comment="Architecture is 32 bit or 64 bit">
 				<criteria comment="32bit arch">
@@ -2202,7 +2202,7 @@
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20169" version="1">
 			<metadata>
-				<title>Make the auditd Conﬁguration Immutable</title>
+				<title>Make the auditd Configuration Immutable</title>
 				<affected family="unix">
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>

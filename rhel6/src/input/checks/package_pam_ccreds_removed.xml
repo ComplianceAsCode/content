@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance"
+  id="package_pam_ccreds_removed" version="1">
+    <metadata>
+      <title>The pam_ccreds package should be installed or
+      uninstalled as appropriate.</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-17250-2" source="CCE" />
+      <description>The pam_ccreds package should be installed or
+      uninstalled as appropriate.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="CCE-17250-2"
+      test_ref="test_573895" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="CCE-17250-2" id="test_573895"
+  version="1">
+    <linux:object object_ref="obj_573895" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object comment="CCE-17250-2"
+  id="obj_573895" version="1">
+    <linux:name>pam_ccreds</linux:name>
+  </linux:rpminfo_object>
+</def-group>

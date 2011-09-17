@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance"
+  id="service_rcp_disabled" version="1">
+    <metadata>
+      <title>disable rcp</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3974-3" source="CCE" />
+      <description>The rcp service should be
+      disabled.</description>
+    </metadata>
+    <criteria comment="telnet-server is not installed or conditions are met"
+    operator="OR">
+      <extend_definition comment="telnet-server is not installed"
+      definition_ref="NEEDSFIXUP_20177" />
+      <criterion comment="Unknown test stub"
+      test_ref="test_22" />
+    </criteria>
+  </definition>
+  <ind:unknown_test check="all"
+  comment="Test implementation is unknown, unavailable, or impossible"
+  id="test_22" version="1" />
+</def-group>

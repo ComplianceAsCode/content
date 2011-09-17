@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_yum-updatesd_disable" version="1">
+    <metadata>
+      <title>yum-updatesd service should be disabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4218-4" source="CCE" />
+      <description>The yum-updatesd service should be
+      disabled</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="check that yum-updatesd service is disabled"
+      test_ref="test_20008" />
+      <criterion comment="check that yum-updatesd service is disabled"
+      test_ref="test_200081" />
+      <criterion comment="check that yum-updatesd service is disabled"
+      test_ref="test_200082" />
+      <criterion comment="check that yum-updatesd service is disabled"
+      test_ref="test_200083" />
+      <criterion comment="check that yum-updatesd service is disabled"
+      test_ref="test_200084" />
+      <criterion comment="check that yum-updatesd service is disabled"
+      test_ref="test_200085" />
+      <criterion comment="check that yum-updatesd service is disabled"
+      test_ref="test_200086" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20008"
+  version="2">
+    <unix:object object_ref="obj_20008" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20008"
+  version="1">
+    <unix:service_name>yum-updatesd</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_200081"
+  version="2">
+    <unix:object object_ref="obj_200081" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_200081"
+  version="1">
+    <unix:service_name>yum-updatesd</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_200082"
+  version="2">
+    <unix:object object_ref="obj_200082" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_200082"
+  version="1">
+    <unix:service_name>yum-updatesd</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_200083"
+  version="2">
+    <unix:object object_ref="obj_200083" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_200083"
+  version="1">
+    <unix:service_name>yum-updatesd</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_200084"
+  version="2">
+    <unix:object object_ref="obj_200084" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_200084"
+  version="1">
+    <unix:service_name>yum-updatesd</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_200085"
+  version="2">
+    <unix:object object_ref="obj_200085" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_200085"
+  version="1">
+    <unix:service_name>yum-updatesd</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_200086"
+  version="2">
+    <unix:object object_ref="obj_200086" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_200086"
+  version="1">
+    <unix:service_name>yum-updatesd</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance"
+  id="file_permissions_owner_grub_conf" version="1">
+    <metadata>
+      <title>Set Boot Loader Password</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4144-2" source="CCE" />
+      <description>The /etc/grub.conf file should be owned by the
+      appropriate user.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_20092" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="Testing user ownership"
+  id="test_20092" version="1">
+    <unix:object object_ref="obj_20092" />
+    <unix:state state_ref="state_20092" />
+  </unix:file_test>
+  <unix:file_state id="state_20092"
+  version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+  <unix:file_object comment="/etc/grub.conf"
+  id="obj_20092" version="1">
+    <unix:path>/etc</unix:path>
+    <unix:filename>grub.conf</unix:filename>
+  </unix:file_object>
+</def-group>

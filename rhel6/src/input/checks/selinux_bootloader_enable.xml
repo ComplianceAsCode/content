@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance"
+  id="selinux_bootloader_enable" version="1">
+    <metadata>
+      <title>Enable SELinux</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3977-6" source="CCE" />
+      <description>SELinux should be enabled</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_20104" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist"
+  comment="Tests the value of the ^[\s]*enforcing[\s]*=[\s]*([^#]*) expression in the /etc/grub.conf file"
+  id="test_20104" version="1">
+    <ind:object object_ref="obj_20104" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20104"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>grub.conf</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\s*kernel\s+[-=\\/\w\s]*(?:(?:selinux)|(?:enforcing))=0\s*[-=\\/\w\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

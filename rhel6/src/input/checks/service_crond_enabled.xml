@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_crond_enabled" version="1">
+    <metadata>
+      <title>Cron Daemon running state</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4324-0" source="CCE" />
+      <description>The crond service should be
+      enabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_2020005" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20200051" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20200052" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20200053" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20200054" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20200055" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20200056" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="all_exist"
+  comment="Runlevel test" id="test_2020005"
+  version="2">
+    <unix:object object_ref="obj_2020005" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is running and not stopping"
+  id="state_20008" version="1">
+    <unix:start datatype="boolean">true</unix:start>
+    <unix:kill datatype="boolean">false</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_2020005"
+  version="1">
+    <unix:service_name>crond</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="all_exist"
+  comment="Runlevel test"
+  id="test_20200051" version="2">
+    <unix:object object_ref="obj_20200051" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_20200051"
+  version="1">
+    <unix:service_name>crond</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="all_exist"
+  comment="Runlevel test"
+  id="test_20200052" version="2">
+    <unix:object object_ref="obj_20200052" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_20200052"
+  version="1">
+    <unix:service_name>crond</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="all_exist"
+  comment="Runlevel test"
+  id="test_20200053" version="2">
+    <unix:object object_ref="obj_20200053" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_20200053"
+  version="1">
+    <unix:service_name>crond</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="all_exist"
+  comment="Runlevel test"
+  id="test_20200054" version="2">
+    <unix:object object_ref="obj_20200054" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_20200054"
+  version="1">
+    <unix:service_name>crond</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="all_exist"
+  comment="Runlevel test"
+  id="test_20200055" version="2">
+    <unix:object object_ref="obj_20200055" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_20200055"
+  version="1">
+    <unix:service_name>crond</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="all_exist"
+  comment="Runlevel test"
+  id="test_20200056" version="2">
+    <unix:object object_ref="obj_20200056" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_20200056"
+  version="1">
+    <unix:service_name>crond</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

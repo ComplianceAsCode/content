@@ -1,0 +1,117 @@
+<def-group>
+  <definition class="compliance"
+  id="service_inetd_disabled" version="1">
+    <metadata>
+      <title>Inetd and Xinetd</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4234-1" source="CCE" />
+      <description>The inetd service should be
+      disabled.</description>
+    </metadata>
+    <criteria comment="inetd is not installed or conditions are met"
+    operator="OR">
+      <extend_definition comment="inetd is not installed"
+      definition_ref="NEEDSFIXUP_20172" />
+      <criteria operator="AND">
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_20170" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201701" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201702" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201703" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201704" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201705" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201706" />
+      </criteria>
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20170"
+  version="2">
+    <unix:object object_ref="obj_20170" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20170"
+  version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201701"
+  version="2">
+    <unix:object object_ref="obj_201701" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201701"
+  version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201702"
+  version="2">
+    <unix:object object_ref="obj_201702" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201702"
+  version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201703"
+  version="2">
+    <unix:object object_ref="obj_201703" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201703"
+  version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201704"
+  version="2">
+    <unix:object object_ref="obj_201704" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201704"
+  version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201705"
+  version="2">
+    <unix:object object_ref="obj_201705" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201705"
+  version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201706"
+  version="2">
+    <unix:object object_ref="obj_201706" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201706"
+  version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

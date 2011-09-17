@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance"
+  id="package_xinetd_removed" version="1">
+    <metadata>
+      <title>Inetd and Xinetd</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4164-0" source="CCE" />
+      <description>The xinetd package should be
+      uninstalled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20173" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="The xinetd package should be installed or not as appropriate"
+  id="test_20173" version="1">
+    <linux:object object_ref="obj_20173" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_20173"
+  version="1">
+    <linux:name>xinetd</linux:name>
+  </linux:rpminfo_object>
+</def-group>

@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance"
+  id="accounts_no_nis_inclusions_etc_passwd" version="1">
+    <metadata>
+      <title>Remove Legacy + Entries from Password Files</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4114-5" source="CCE" />
+      <description>NIS file inclusions should be set appropriately
+      in the /etc/passwd file</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20077" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist"
+  comment="Tests the value of the ^+: setting in the /etc/passwd file"
+  id="test_20077" version="1">
+    <ind:object object_ref="obj_20077" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20077"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>passwd</ind:filename>
+    <ind:pattern operation="pattern match">^\+</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

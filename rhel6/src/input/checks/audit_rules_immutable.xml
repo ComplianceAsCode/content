@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance"
+  id="audit_rules_immutable" version="1">
+    <metadata>
+      <title>Make the auditd Configuration Immutable</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14692-8" source="CCE" />
+      <description>Force a reboot to change audit rules is
+      enabled</description>
+    </metadata>
+    <criteria>
+      <criterion comment="look in /etc/audit/audit.rules for -e 2"
+      test_ref="test_20169" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="look in /etc/audit/audit.rules for -e 2"
+  id="test_20169" version="1">
+    <ind:object object_ref="obj_20169" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20169"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">^\-e\s2</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

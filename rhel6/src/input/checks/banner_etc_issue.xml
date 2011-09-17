@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance"
+  id="banner_etc_issue" version="1">
+    <metadata>
+      <title>Modify the System Login Banner</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4060-0" source="CCE" />
+      <description>The system login banner text should be set
+      correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="/etc/issue is set appropriately"
+      test_ref="test_20102" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist"
+  comment="Tests the value of the (.*) setting in the /etc/issue file"
+  id="test_20102" version="1">
+    <ind:object object_ref="obj_20102" />
+    <ind:state state_ref="state_20102" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state id="state_20102"
+  version="1">
+    <ind:subexpression var_check="all"
+    var_ref="var_20102" />
+  </ind:textfilecontent54_state>
+  <external_variable comment="External variable for definitions 200102 20103 Warning Banner"
+  datatype="string" id="var_20102"
+  version="1" />
+  <ind:textfilecontent54_object id="obj_20102"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>issue</ind:filename>
+    <ind:pattern operation="pattern match">(.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

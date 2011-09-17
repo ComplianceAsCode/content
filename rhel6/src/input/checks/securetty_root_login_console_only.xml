@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance"
+  id="securetty_root_login_console_only" version="1">
+    <metadata>
+      <title>Restrict Root Logins to System Console</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3485-0" source="CCE" />
+      <description>Logins through the primary console device should
+      be disabled</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_34850" />
+    </criteria>
+  </definition>
+  <ind:unknown_test check="all"
+  comment="Test implementation is unknown, unavailable, or impossible"
+  id="test_34850" version="1" />
+</def-group>

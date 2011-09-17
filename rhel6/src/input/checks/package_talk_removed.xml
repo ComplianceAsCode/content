@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance"
+  id="package_talk_removed" version="1">
+    <metadata>
+      <title>The talk package should be installed or uninstalled as
+      appropriate.</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-18200-6" source="CCE" />
+      <description>The talk package should be installed or
+      uninstalled as appropriate.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="CCE-18200-6"
+      test_ref="test_573897" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="CCE-18200-6" id="test_573897"
+  version="1">
+    <linux:object object_ref="obj_573897" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object comment="CCE-18200-6"
+  id="obj_573897" version="1">
+    <linux:name>talk</linux:name>
+  </linux:rpminfo_object>
+</def-group>

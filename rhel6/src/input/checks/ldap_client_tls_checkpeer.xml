@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance"
+  id="ldap_client_tls_checkpeer" version="1">
+    <metadata>
+      <title>Configure LDAP to Use TLS for All Transactions</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14894-0" source="CCE" />
+      <description>Clients require LDAP servers to provide valid
+      certificates for SSL communications.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="look for tls_checkpeer yess in /etc/ldap.conf"
+      test_ref="test_202885" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="Tests the value of the tls_checkpeer[\s]+yes setting in the /etc/ldap.conf file"
+  id="test_202885" version="1">
+    <ind:object object_ref="obj_202885" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_202885"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>ldap.conf</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^[\s]*tls_checkpeer[\s]+yes</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

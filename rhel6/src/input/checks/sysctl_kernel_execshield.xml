@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance"
+  id="sysctl_kernel_execshield" version="1">
+    <metadata>
+      <title>Enable ExecShield</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4168-1" source="CCE" />
+      <description>ExecShield should be enabled</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Is execshield enabled"
+      test_ref="test_20057" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist"
+  comment="Tests the value of the ^[\s]*kernel\.exec-shield[\s]*=([\s]*) expression in the /etc/sysctl.conf file"
+  id="test_20057" version="1">
+    <ind:object object_ref="obj_20057" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20057"
+  version="1">
+    <ind:path>/proc/sys/kernel</ind:path>
+    <ind:filename>exec-shield</ind:filename>
+    <ind:pattern operation="pattern match">^1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

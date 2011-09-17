@@ -1,0 +1,116 @@
+<def-group>
+  <definition class="compliance"
+  id="service_smb_disabled" version="1">
+    <metadata>
+      <title>Disable Samba if Possible</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4551-8" source="CCE" />
+      <description>The smb service should be
+      disabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="samba is not installed"
+      definition_ref="NEEDSFIXUP_203401" />
+      <criteria operator="AND">
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_203400" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_2034001" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_2034002" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_2034003" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_2034004" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_2034005" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_2034006" />
+      </criteria>
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_203400"
+  version="2">
+    <unix:object object_ref="obj_203400" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_203400"
+  version="1">
+    <unix:service_name>smb</unix:service_name>
+    <unix:runlevel operation="equals">on</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2034001"
+  version="2">
+    <unix:object object_ref="obj_2034001" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2034001"
+  version="1">
+    <unix:service_name>smb</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2034002"
+  version="2">
+    <unix:object object_ref="obj_2034002" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2034002"
+  version="1">
+    <unix:service_name>smb</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2034003"
+  version="2">
+    <unix:object object_ref="obj_2034003" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2034003"
+  version="1">
+    <unix:service_name>smb</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2034004"
+  version="2">
+    <unix:object object_ref="obj_2034004" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2034004"
+  version="1">
+    <unix:service_name>smb</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2034005"
+  version="2">
+    <unix:object object_ref="obj_2034005" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2034005"
+  version="1">
+    <unix:service_name>smb</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2034006"
+  version="2">
+    <unix:object object_ref="obj_2034006" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2034006"
+  version="1">
+    <unix:service_name>smb</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance"
+  id="rsyslog_files_permissions" version="1">
+    <metadata>
+      <title>Confirm Existence and Permissions of System Log
+      Files</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-18095-0" source="CCE" />
+      <description>File permissions for all syslog log files should
+      be set correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check permissions of all syslog log files"
+      test_ref="test_20151" />
+    </criteria>
+  </definition>
+  <ind:unknown_test check="all"
+  comment="use extended content to evaluated this test"
+  id="test_20151" version="1" />
+</def-group>

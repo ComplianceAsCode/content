@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance"
+  id="selinux_enabled" version="1">
+    <metadata>
+      <title>Ensure SELinux is Properly Enabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Check output of /usr/sbin/sestatus or check if
+      /selinux exists.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="/selinux exists"
+      test_ref="test_201035" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="at_least_one_exists"
+  comment="/selinux exists"
+  id="test_201035" version="1">
+    <unix:object object_ref="obj_201035" />
+  </unix:file_test>
+  <unix:file_object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  comment="/selinux" id="obj_201035"
+  version="1">
+    <unix:path>/selinux</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+</def-group>

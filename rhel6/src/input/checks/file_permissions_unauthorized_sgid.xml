@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance"
+  id="file_permissions_unauthorized_sgid" version="1">
+    <metadata>
+      <title>Find Unauthorized SGID System Executables</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14970-8" source="CCE" />
+      <description>The sgid bit should be not set for all
+      executable files.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all files and make sure they do not have sgid set"
+      negate="true"
+      test_ref="test_20048" />
+    </criteria>
+  </definition>
+  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+  check="all" comment="executable files with sgid set"
+  id="test_20048" version="1">
+    <notes>
+      <note>This will enumerate all files on local
+      partitions</note>
+    </notes>
+    <unix:object object_ref="obj_20047" />
+    <unix:state state_ref="state_20048" />
+  </unix:file_test>
+  <unix:file_state id="state_20048"
+  version="1">
+    <unix:sgid datatype="boolean">1</unix:sgid>
+    <unix:uexec datatype="boolean">1</unix:uexec>
+  </unix:file_state>
+  <unix:file_object comment="all local files"
+  id="obj_20047" version="1">
+    <unix:behaviors recurse="files" recurse_file_system="local" />
+    <unix:path operation="pattern match">.*</unix:path>
+    <unix:filename operation="pattern match">.*</unix:filename>
+  </unix:file_object>
+</def-group>

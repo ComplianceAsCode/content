@@ -1,0 +1,116 @@
+<def-group>
+  <definition class="compliance"
+  id="service_xinetd_disabled" version="1">
+    <metadata>
+      <title>Inetd and Xinetd</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4252-3" source="CCE" />
+      <description>The xinetd service should be
+      disabled.</description>
+    </metadata>
+    <criteria comment="xinetd is not installed or conditions are met"
+    operator="OR">
+      <extend_definition comment="xinetd is not installed"
+      definition_ref="NEEDSFIXUP_20173" />
+      <criteria operator="AND">
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_20171" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201711" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201712" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201713" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201714" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201715" />
+        <criterion comment="Conditions are satisfied"
+        test_ref="test_201716" />
+      </criteria>
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20171"
+  version="2">
+    <unix:object object_ref="obj_20171" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20171"
+  version="1">
+    <unix:service_name>xinetd</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201711"
+  version="2">
+    <unix:object object_ref="obj_201711" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201711"
+  version="1">
+    <unix:service_name>xinetd</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201712"
+  version="2">
+    <unix:object object_ref="obj_201712" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201712"
+  version="1">
+    <unix:service_name>xinetd</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201713"
+  version="2">
+    <unix:object object_ref="obj_201713" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201713"
+  version="1">
+    <unix:service_name>xinetd</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201714"
+  version="2">
+    <unix:object object_ref="obj_201714" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201714"
+  version="1">
+    <unix:service_name>xinetd</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201715"
+  version="2">
+    <unix:object object_ref="obj_201715" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201715"
+  version="1">
+    <unix:service_name>xinetd</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201716"
+  version="2">
+    <unix:object object_ref="obj_201716" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201716"
+  version="1">
+    <unix:service_name>xinetd</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance"
+  id="file_permissions_unauthorized_suid" version="1">
+    <metadata>
+      <title>Find Unauthorized SUID System Executables</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14340-4" source="CCE" />
+      <description>The suid bit should be not set for all
+      files.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all files and make sure they do not have suid set"
+      negate="true"
+      test_ref="test_20049" />
+    </criteria>
+  </definition>
+  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+  check="all" comment="executable files with suid set"
+  id="test_20049" version="1">
+    <notes>
+      <note>This will enumerate all files on local
+      partitions</note>
+    </notes>
+    <unix:object object_ref="obj_20047" />
+    <unix:state state_ref="state_20049" />
+  </unix:file_test>
+  <unix:file_state comment="Executables with suid set"
+  id="state_20049" version="1">
+    <unix:suid datatype="boolean">1</unix:suid>
+    <unix:uexec datatype="boolean">1</unix:uexec>
+  </unix:file_state>
+  <unix:file_object comment="all local files"
+  id="obj_20047" version="1">
+    <unix:behaviors recurse="files" recurse_file_system="local" />
+    <unix:path operation="pattern match">.*</unix:path>
+    <unix:filename operation="pattern match">.*</unix:filename>
+  </unix:file_object>
+</def-group>

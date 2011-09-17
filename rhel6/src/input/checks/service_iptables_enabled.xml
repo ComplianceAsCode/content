@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_iptables_enabled" version="1">
+    <metadata>
+      <title>Inspect and Activate Default Rules</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4189-7" source="CCE" />
+      <description>The iptables service should be
+      enabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201470" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_2014701" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_2014702" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_2014703" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_2014704" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_2014705" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_2014706" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201470"
+  version="2">
+    <unix:object object_ref="obj_201470" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is running and not stopping"
+  id="state_20008" version="1">
+    <unix:start datatype="boolean">true</unix:start>
+    <unix:kill datatype="boolean">false</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_201470"
+  version="1">
+    <unix:service_name>iptables</unix:service_name>
+    <unix:runlevel operation="equals" />
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2014701"
+  version="2">
+    <unix:object object_ref="obj_2014701" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2014701"
+  version="1">
+    <unix:service_name>iptables</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2014702"
+  version="2">
+    <unix:object object_ref="obj_2014702" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2014702"
+  version="1">
+    <unix:service_name>iptables</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2014703"
+  version="2">
+    <unix:object object_ref="obj_2014703" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2014703"
+  version="1">
+    <unix:service_name>iptables</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2014704"
+  version="2">
+    <unix:object object_ref="obj_2014704" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2014704"
+  version="1">
+    <unix:service_name>iptables</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2014705"
+  version="2">
+    <unix:object object_ref="obj_2014705" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2014705"
+  version="1">
+    <unix:service_name>iptables</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_2014706"
+  version="2">
+    <unix:object object_ref="obj_2014706" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_2014706"
+  version="1">
+    <unix:service_name>iptables</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

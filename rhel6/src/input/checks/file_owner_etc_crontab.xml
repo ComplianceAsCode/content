@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance"
+  id="file_owner_etc_crontab2" version="1">
+    <metadata>
+      <title>Restrict Permissions on Files Used by cron</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3851-3" source="CCE" />
+      <description>The /etc/crontab file should be owned by the
+      appropriate user.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_20209" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="Testing user ownership"
+  id="test_20209" version="1">
+    <unix:object object_ref="obj_20209" />
+    <unix:state state_ref="state_20209" />
+  </unix:file_test>
+  <unix:file_state id="state_20209"
+  version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+  <unix:file_object comment="/etc/crontab"
+  id="obj_20209" version="1">
+    <unix:path>/etc</unix:path>
+    <unix:filename>crontab</unix:filename>
+  </unix:file_object>
+</def-group>

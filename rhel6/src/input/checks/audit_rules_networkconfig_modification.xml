@@ -1,0 +1,148 @@
+<def-group>
+  <definition class="compliance"
+  id="audit_rules_networkconfig_modification" version="1">
+    <metadata>
+      <title>Record Events that Modify the System’s Network
+      Environment</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14816-3" source="CCE" />
+      <description>Audit rules about the System’s Network
+      Environment are enabled</description>
+    </metadata>
+    <criteria>
+      <criteria comment="Architecture is 32 bit or 64 bit"
+      operator="OR">
+        <criteria comment="32bit arch">
+          <criterion comment="check that arch is i386 or i686"
+          test_ref="test_201670" />
+          <criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale"
+          test_ref="test_201590" />
+        </criteria>
+        <criteria comment="62bit arch">
+          <criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x"
+          test_ref="test_201672" />
+          <criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale"
+          test_ref="test_201591" />
+        </criteria>
+      </criteria>
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/issue -p wa -k system-locale"
+      test_ref="test_201592" />
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/issue.net -p wa -k system-locale"
+      test_ref="test_201593" />
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/hosts -p wa -k system-locale"
+      test_ref="test_201594" />
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/sysconfig/network -p wa -k system-locale"
+      test_ref="test_201595" />
+    </criteria>
+  </definition>
+  <unix:uname_test check="all"
+  comment="check architecture is 32 bit"
+  id="test_201670" version="1">
+    <unix:object object_ref="obj_201670" />
+    <unix:state state_ref="state_201670" />
+  </unix:uname_test>
+  <unix:uname_state id="state_201670"
+  version="1">
+    <unix:processor_type operation="pattern match">
+    ^i386$|^i686$</unix:processor_type>
+  </unix:uname_state>
+  <unix:uname_object id="obj_201670"
+  version="1" />
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -a exit,always -F arch=b32 -S sethostname -S setdomainname -k system-locale"
+  id="test_201590" version="1">
+    <ind:object object_ref="obj_201590" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201590"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-a\sexit,always\s\-F\sarch=b32\s\-S\ssethostname\s\-S\ssetdomainname\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <unix:uname_test check="all"
+  comment="check architecture is 64 bit"
+  id="test_201672" version="1">
+    <unix:object object_ref="obj_201670" />
+    <unix:state state_ref="state_201672" />
+  </unix:uname_test>
+  <unix:uname_state id="state_201672"
+  version="1">
+    <unix:processor_type operation="pattern match">
+    ^x86_64$|^ia64$|</unix:processor_type>
+  </unix:uname_state>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -a exit,always -F arch=b64 -S sethostname -S setdomainname -k system-locale"
+  id="test_201591" version="1">
+    <ind:object object_ref="obj_201591" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201591"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-a\sexit,always\s\-F\sarch=b64\s\-S\ssethostname\s\-S\ssetdomainname\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/issue -p wa -k system-locale"
+  id="test_201592" version="1">
+    <ind:object object_ref="obj_201592" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201592"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/issue\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/issue.net -p wa -k system-locale"
+  id="test_201593" version="1">
+    <ind:object object_ref="obj_201593" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201593"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/issue\.net\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/hosts -p wa -k system-locale"
+  id="test_201594" version="1">
+    <ind:object object_ref="obj_201594" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201594"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/hosts\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/sysconfig/network -p wa -k system-locale"
+  id="test_201595" version="1">
+    <ind:object object_ref="obj_201595" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201595"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/sysconfig/network\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

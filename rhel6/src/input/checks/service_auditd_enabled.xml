@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_auditd_enabled" version="1">
+    <metadata>
+      <title>Enable the auditd Service</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4292-9" source="CCE" />
+      <description>The auditd service should be
+      enabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20156" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201561" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201562" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201563" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201564" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201565" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201566" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20156"
+  version="2">
+    <unix:object object_ref="obj_20156" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is running and not stopping"
+  id="state_20008" version="1">
+    <unix:start datatype="boolean">true</unix:start>
+    <unix:kill datatype="boolean">false</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20156"
+  version="1">
+    <unix:service_name>auditd</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201561"
+  version="2">
+    <unix:object object_ref="obj_201561" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201561"
+  version="1">
+    <unix:service_name>auditd</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201562"
+  version="2">
+    <unix:object object_ref="obj_201562" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201562"
+  version="1">
+    <unix:service_name>auditd</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201563"
+  version="2">
+    <unix:object object_ref="obj_201563" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201563"
+  version="1">
+    <unix:service_name>auditd</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201564"
+  version="2">
+    <unix:object object_ref="obj_201564" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201564"
+  version="1">
+    <unix:service_name>auditd</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201565"
+  version="2">
+    <unix:object object_ref="obj_201565" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201565"
+  version="1">
+    <unix:service_name>auditd</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201566"
+  version="2">
+    <unix:object object_ref="obj_201566" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201566"
+  version="1">
+    <unix:service_name>auditd</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

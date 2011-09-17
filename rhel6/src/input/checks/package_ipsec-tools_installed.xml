@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance"
+  id="package_ipsec-tools_installed" version="1">
+    <metadata>
+      <title>The ipsec-tools package should be installed or
+      uninstalled as appropriate.</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-18031-5" source="CCE" />
+      <description>The ipsec-tools package should be installed or
+      uninstalled as appropriate.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="CCE-18031-5"
+      test_ref="test_573894" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="CCE-18031-5" id="test_573894"
+  version="1">
+    <linux:object object_ref="obj_573894" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object comment="CCE-18031-5"
+  id="obj_573894" version="1">
+    <linux:name>ipsec-tools</linux:name>
+  </linux:rpminfo_object>
+</def-group>

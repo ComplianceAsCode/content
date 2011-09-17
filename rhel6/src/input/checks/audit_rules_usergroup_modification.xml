@@ -1,0 +1,97 @@
+<def-group>
+  <definition class="compliance"
+  id="audit_rules_usergroup_modification" version="1">
+    <metadata>
+      <title>Record Events that Modify User/Group
+      Information</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14829-6" source="CCE" />
+      <description>Audit rules about User/Group Information are
+      enabled</description>
+    </metadata>
+    <criteria>
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/group -p wa -k identity"
+      test_ref="test_201580" />
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/passwd -p wa -k identity"
+      test_ref="test_201581" />
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/gshadow -p wa -k identity"
+      test_ref="test_201582" />
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/shadow -p wa -k identity"
+      test_ref="test_201583" />
+      <criterion comment="/etc/audit/audit.rules contains -w /etc/security/opasswd -p wa -k identity"
+      test_ref="test_201584" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/group -p wa -k identity"
+  id="test_201580" version="1">
+    <ind:object object_ref="obj_201580" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201580"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/group\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/passwd -p wa -k identity"
+  id="test_201581" version="1">
+    <ind:object object_ref="obj_201581" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201581"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/passwd\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/gshadow -p wa -k identity"
+  id="test_201582" version="1">
+    <ind:object object_ref="obj_201582" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201582"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/gshadow\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/shadow -p wa -k identity"
+  id="test_201583" version="1">
+    <ind:object object_ref="obj_201583" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201583"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/shadow\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="/etc/audit/audit.rules contains -w /etc/security/opasswd -p wa -k identity"
+  id="test_201584" version="1">
+    <ind:object object_ref="obj_201584" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201584"
+  version="1">
+    <ind:path>/etc/audit</ind:path>
+    <ind:filename>audit.rules</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^\-w\s/etc/security/opasswd\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

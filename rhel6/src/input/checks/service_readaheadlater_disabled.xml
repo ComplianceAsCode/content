@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_readaheadlater_disabled" version="1">
+    <metadata>
+      <title>Boot Caching (readahead early/readahead later)</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4302-6" source="CCE" />
+      <description>The readahead_later service should be
+      disabled.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20197" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201971" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201972" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201973" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201974" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201975" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_201976" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20197"
+  version="2">
+    <unix:object object_ref="obj_20197" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20197"
+  version="1">
+    <unix:service_name>readahead_later</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201971"
+  version="2">
+    <unix:object object_ref="obj_201971" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201971"
+  version="1">
+    <unix:service_name>readahead_later</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201972"
+  version="2">
+    <unix:object object_ref="obj_201972" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201972"
+  version="1">
+    <unix:service_name>readahead_later</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201973"
+  version="2">
+    <unix:object object_ref="obj_201973" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201973"
+  version="1">
+    <unix:service_name>readahead_later</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201974"
+  version="2">
+    <unix:object object_ref="obj_201974" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201974"
+  version="1">
+    <unix:service_name>readahead_later</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201975"
+  version="2">
+    <unix:object object_ref="obj_201975" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201975"
+  version="1">
+    <unix:service_name>readahead_later</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_201976"
+  version="2">
+    <unix:object object_ref="obj_201976" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_201976"
+  version="1">
+    <unix:service_name>readahead_later</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

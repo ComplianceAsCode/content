@@ -1,0 +1,58 @@
+<def-group>
+  <definition class="compliance"
+  id="mount_remote_filesystems_nodev" version="1">
+    <metadata>
+      <title>Mount Remote Filesystems with nodev</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4368-7" source="CCE" />
+      <description>The nodev option should be enabled for all NFS
+      mounts</description>
+    </metadata>
+    <criteria>
+      <criterion comment="if type is nfs[4] in /etc/fstab options should contain nodev"
+      test_ref="test_203051" />
+      <criterion comment="if type is nfs[4] in /etc/mtab options should contain nodev"
+      test_ref="test_203052" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="any_exist"
+  comment="if type is nfs[4] in /etc/fstab options should contain nodev"
+  id="test_203051" version="1">
+    <ind:object object_ref="obj_20016" />
+    <ind:state state_ref="state_200163" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state comment="Check for the nodev option"
+  id="state_200163" version="1">
+    <ind:instance datatype="int">1</ind:instance>
+    <ind:subexpression datatype="string" entity_check="all"
+    operation="pattern match">.*,nodev.*</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_object comment="ext[2-3] file systems mounted not on / defined in /etc/fstab"
+  id="obj_20016" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>fstab</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^[\w/\d=\-]+[\s]+/[\w/\d]+[\s]+nfs[4]?[\s]+([\w,]+)$|[\s]+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">
+    0</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all"
+  check_existence="any_exist"
+  comment="if type is nfs[4] in /etc/mtab options should contain nodev"
+  id="test_203052" version="1">
+    <ind:object object_ref="obj_200162" />
+    <ind:state state_ref="state_200163" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="ext[2-3] file systems mounted not on / defined in /etc/mtab"
+  id="obj_200162" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>mtab</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^[\w/\d=\-]+[\s]+/[\w/\d]+[\s]+nfs[4]?[\s]+([\w,]+)$|[\s]+</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">
+    0</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

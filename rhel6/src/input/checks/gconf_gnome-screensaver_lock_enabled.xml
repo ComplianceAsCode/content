@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance"
+  id="gconf_gnome-screensaver_lock_enabled" version="1">
+    <metadata>
+      <title>Implement idle activation of screen lock</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14023-6" source="CCE" />
+      <description>Idle activation of the screen lock should be
+      enabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check value of lock_enabled in GCONF"
+      test_ref="test_201006" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='lock_enabled']/local_schema[1]/default[1]/@value"
+  id="test_201006" version="1">
+    <ind:object object_ref="obj_201006" />
+    <ind:state state_ref="state_201006" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_state comment="lock_enabled (lock on Activation)"
+  id="state_201006" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+  <ind:xmlfilecontent_object id="obj_201006"
+  version="1">
+    <ind:path>/etc/gconf/gconf.xml.defaults</ind:path>
+    <ind:filename>%gconf-tree.xml</ind:filename>
+    <ind:xpath>
+    /gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='lock_enabled']/local_schema[1]/default[1]/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+</def-group>

@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance"
+  id="sysctl_ipv6_router_ra" version="1">
+    <metadata>
+      <title>Disable Automatic Configuration</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4269-7" source="CCE" />
+      <description>The default setting for accepting IPv6 router
+      advertisements should be disabled for network interfaces.
+      (and dependencies are met)</description>
+    </metadata>
+    <criteria comment="Either IPv6 kernel module is not loaded or this feature should be disabled"
+    operator="OR">
+      <extend_definition comment="Automatic loading of the IPv6 kernel module should be disabled"
+      definition_ref="NEEDSFIXUP_20130" />
+      <criterion comment="Unknown test stub"
+      test_ref="test_22" />
+    </criteria>
+  </definition>
+  <ind:unknown_test check="all"
+  comment="Test implementation is unknown, unavailable, or impossible"
+  id="test_22" version="1" />
+</def-group>

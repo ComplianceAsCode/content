@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance"
+  id="package_vlock_installed" version="1">
+    <metadata>
+      <title>Configure GUI Screen Locking</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3910-7" source="CCE" />
+      <description>The vlock package should be
+      installed</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20101" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  comment="The vlock package should be installed or not as appropriate"
+  id="test_20101" version="1">
+    <linux:object object_ref="obj_20101" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_20101"
+  version="1">
+    <linux:name>vlock</linux:name>
+  </linux:rpminfo_object>
+</def-group>

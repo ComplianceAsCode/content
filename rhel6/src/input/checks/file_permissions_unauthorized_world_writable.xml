@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance"
+  id="file_permissions_unauthorized_world_writable" version="1">
+    <metadata>
+      <title>Find Unauthorized World-Writable Files</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3795-2" source="CCE" />
+      <description>The world-write permission should be disabled
+      for all files.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all files and make sure they are not world writable"
+      negate="true"
+      test_ref="test_20047" />
+    </criteria>
+  </definition>
+  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+  check="all" comment="world writable files"
+  id="test_20047" version="1">
+    <notes>
+      <note>This will enumerate all files on local
+      partitions</note>
+    </notes>
+    <unix:object object_ref="obj_20047" />
+    <unix:state state_ref="state_20047" />
+  </unix:file_test>
+  <unix:file_state id="state_20047"
+  version="1">
+    <unix:owrite datatype="boolean">1</unix:owrite>
+  </unix:file_state>
+  <unix:file_object comment="all local files"
+  id="obj_20047" version="1">
+    <unix:behaviors recurse="files" recurse_file_system="local" />
+    <unix:path operation="pattern match">.*</unix:path>
+    <unix:filename operation="pattern match">.*</unix:filename>
+  </unix:file_object>
+</def-group>

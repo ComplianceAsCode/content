@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance"
+  id="file_permissions_etc_gshadow" version="1">
+    <metadata>
+      <title>Verify permissions on 'gshadow' file</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3932-1" source="CCE" />
+      <description>File permissions for /etc/gshadow should be set
+      correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_20044" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="Testing gshadow permissions"
+  id="test_20044" version="1">
+    <unix:object object_ref="obj_20038" />
+    <unix:state state_ref="state_1000400" />
+  </unix:file_test>
+  <unix:file_state id="state_1000400"
+  version="1">
+    <unix:uread datatype="boolean">true</unix:uread>
+    <unix:uwrite datatype="boolean">false</unix:uwrite>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+  <unix:file_object comment="/etc/gshadow"
+  id="obj_20038" version="1">
+    <unix:path>/etc</unix:path>
+    <unix:filename>gshadow</unix:filename>
+  </unix:file_object>
+</def-group>

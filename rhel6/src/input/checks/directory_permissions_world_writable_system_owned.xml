@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="compliance"
+  id="directory_permissions_world_writable_system_owned" version="1">
+    <metadata>
+      <title>Find world writable directories not owned by a system
+      account</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14794-2" source="CCE" />
+      <description>All world writable directories should be owned
+      by a system user</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all directories are not world writable or owned by a user with uid less than 500"
+      negate="true"
+      test_ref="test_20052" />
+    </criteria>
+  </definition>
+  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+  check="all"
+  comment="world writable directories have a uid greater than or equal to 500"
+  id="test_20052" version="1">
+    <notes>
+      <note>This will enumerate all directories on local
+      partitions</note>
+    </notes>
+    <unix:object object_ref="obj_20046" />
+    <unix:state state_ref="state_20052" />
+  </unix:file_test>
+  <unix:file_state comment="uid not less than 500"
+  id="state_20052" version="1">
+    <unix:group_id datatype="int" operation="equals">
+    500</unix:group_id>
+    <unix:owrite datatype="boolean">1</unix:owrite>
+  </unix:file_state>
+  <unix:file_object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  comment="all local directories"
+  id="obj_20046" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+    recurse_file_system="local" />
+    <unix:path operation="pattern match">.*</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+</def-group>

@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance"
+  id="kernel_module_tipc_disabled" version="2">
+    <metadata>
+      <title>Disable Support for TIPC</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14911-2" source="CCE" />
+      <description>Support for TIPC should be
+      disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check for TIPC in /etc/modprobe.conf"
+      test_ref="test_201479" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="Check /etc/modprobe.conf for line install TIPC /bin/true"
+  id="test_201479" version="1">
+    <ind:object object_ref="obj_201479" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_201479"
+  version="2">
+    <ind:path>/etc/modprobe.d</ind:path>
+    <ind:filename>usgcb-blacklist</ind:filename>
+    <ind:pattern operation="pattern match">
+    ^[\s]*install[\s]+ticp[\s]+/bin/true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

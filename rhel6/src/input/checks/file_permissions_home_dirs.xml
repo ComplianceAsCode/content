@@ -1,0 +1,58 @@
+<def-group>
+  <definition class="compliance"
+  id="file_permissions_home_dirs" version="1">
+    <metadata>
+      <title>Ensure that User Home Directories are not
+      Group-Writable or World-Readable</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4090-7" source="CCE" />
+      <description>File permissions should be set correctly for the
+      home directories for all user accounts.</description>
+    </metadata>
+    <criteria comment="Both criterion are negated to get desired result">
+
+      <criterion comment="Home directories are group writable"
+      test_ref="test_200861" />
+      <criterion comment="Home directories are world readable"
+      test_ref="test_200862" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="any_exist"
+  comment="home directories are group writeable"
+  id="test_200861" version="1">
+    <unix:object object_ref="obj_20086" />
+    <unix:state state_ref="state_1000701" />
+  </unix:file_test>
+  <unix:file_state id="state_1000701"
+  version="1">
+    <unix:uread datatype="boolean">true</unix:uread>
+    <unix:uwrite datatype="boolean">true</unix:uwrite>
+    <unix:uexec datatype="boolean">true</unix:uexec>
+    <unix:gread datatype="boolean">true</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+  <unix:file_object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  comment="/home/*" id="obj_20086"
+  version="1">
+    <unix:behaviors max_depth="1"
+    recurse="symlinks and directories" />
+    <unix:path operation="pattern match">/home/.*</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+  <unix:file_test check="all" check_existence="any_exist"
+  comment="home directories are world readable"
+  id="test_200862" version="1">
+    <unix:object object_ref="obj_20086" />
+    <unix:state state_ref="state_200862" />
+  </unix:file_test>
+  <unix:file_state id="state_200862"
+  version="1">
+    <unix:oread datatype="boolean">1</unix:oread>
+  </unix:file_state>
+</def-group>

@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance"
+  id="umask_for_daemons" version="1">
+    <metadata>
+      <title>Set Daemon umask</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4220-0" source="CCE" />
+      <description>The daemon umask should be set as
+      appropriate</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_20053" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist"
+  comment="Tests the value of the umask[\s]+(.*) expression in the /etc/sysconfig/init file"
+  id="test_20053" version="1">
+    <ind:object object_ref="obj_20053" />
+    <ind:state state_ref="state_20053" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state id="state_20053"
+  version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_20053" />
+  </ind:textfilecontent54_state>
+  <external_variable comment="External variable for definition 20053"
+  datatype="string" id="var_20053"
+  version="1" />
+  <ind:textfilecontent54_object id="obj_20053"
+  version="1">
+    <ind:path>/etc/sysconfig</ind:path>
+    <ind:filename>init</ind:filename>
+    <ind:pattern operation="pattern match">
+    umask[\s]+(.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

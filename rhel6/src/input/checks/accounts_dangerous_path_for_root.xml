@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance"
+  id="accounts_dangerous_path_for_root" version="1">
+    <metadata>
+      <title>Ensure that No Dangerous Directories Exist in Root's
+      Path</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3301-9" source="CCE" />
+      <description>The PATH variable should be set correctly for
+      user root</description>
+    </metadata>
+    <criteria comment="PATH starts with ':' or '.', path contains '::' or ':.:' or path ends with ':' or '.'"
+    negate="true" operator="AND">
+      <criterion comment="PATH starts with ':' or '.', path contains '::' or ':.:' or path ends with ':' or '.'"
+      test_ref="test_20085" />
+    </criteria>
+  </definition>
+  <ind:environmentvariable_test check="all"
+  comment="PATH starts with : or ."
+  id="test_20085" version="1">
+    <ind:object object_ref="obj_20085" />
+    <ind:state state_ref="state_20085" />
+  </ind:environmentvariable_test>
+  <ind:environmentvariable_state comment="starts with . or :"
+  id="state_20085" version="1">
+    <ind:name operation="pattern match">
+    (?:^[:.])|(?:::)|(?::\.:)|(?:[:.]$)</ind:name>
+  </ind:environmentvariable_state>
+  <ind:environmentvariable_object id="obj_20085"
+  version="1">
+    <ind:name>PATH</ind:name>
+  </ind:environmentvariable_object>
+</def-group>

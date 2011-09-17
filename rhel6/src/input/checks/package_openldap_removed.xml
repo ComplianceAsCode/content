@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="package_openldap_removed" version="1">
+    <metadata>
+      <title>Install OpenLDAP Server RPM</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3501-4" source="CCE" />
+      <description>The ldap service should be
+      disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20289" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202891" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202892" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202893" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202894" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202895" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202896" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20289"
+  version="3">
+    <unix:object object_ref="obj_20289" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20289"
+  version="1">
+    <unix:service_name>ldap</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202891"
+  version="3">
+    <unix:object object_ref="obj_202891" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202891"
+  version="1">
+    <unix:service_name>ldap</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202892"
+  version="3">
+    <unix:object object_ref="obj_202892" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202892"
+  version="1">
+    <unix:service_name>ldap</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202893"
+  version="3">
+    <unix:object object_ref="obj_202893" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202893"
+  version="1">
+    <unix:service_name>ldap</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202894"
+  version="3">
+    <unix:object object_ref="obj_202894" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202894"
+  version="1">
+    <unix:service_name>ldap</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202895"
+  version="3">
+    <unix:object object_ref="obj_202895" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202895"
+  version="1">
+    <unix:service_name>ldap</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202896"
+  version="3">
+    <unix:object object_ref="obj_202896" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202896"
+  version="1">
+    <unix:service_name>ldap</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>

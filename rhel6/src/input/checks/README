@@ -1,3 +1,18 @@
-Checks here may be defined in the SC language and compiled into OVAL using the scc tool.
-More information, including the software itself, is available at: 
-http://oss.tresys.com/projects/scc
+OVAL checks here are currently defined in individual files of 
+well-formed XML, each of which contains the elements 
+necessary to conduct the check.  Each file consists of one 
+definition and the tests, states,
+ojects and variables upon which it depends.  
+
+Each of these XML files is concatenated and reordered to create a 
+valid OVAL document.  See the Makefile for more details.
+
+Interrogatory checks (which cannot be automated) may be defined 
+in the OCIL language and stored here.
+
+As soon as it supports newer OVAL versions, checks may also be 
+defined in (or replaced by translations of) the SC language and 
+compiled into OVAL using the scc tool.
+More information is available at: http://oss.tresys.com/projects/scc
+
+

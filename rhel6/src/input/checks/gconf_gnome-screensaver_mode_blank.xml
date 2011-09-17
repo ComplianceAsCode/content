@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance"
+  id="gconf_gnome-screensaver_mode_blank" version="1">
+    <metadata>
+      <title>Implement blank screen saver</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-14735-5" source="CCE" />
+      <description>The screen saver should be blank.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Unknown test stub"
+      test_ref="test_201007" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all"
+  comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='mode']/local_schema[1]/default[1]/@value"
+  id="test_201007" version="1">
+    <ind:object object_ref="obj_201007" />
+    <ind:state state_ref="state_201007" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_state comment="mode (Screensaver theme selection mode)"
+  id="state_201007" version="1">
+    <ind:value_of datatype="string">blank-only</ind:value_of>
+  </ind:xmlfilecontent_state>
+  <ind:xmlfilecontent_object id="obj_201007"
+  version="1">
+    <ind:path>/etc/gconf/gconf.xml.defaults</ind:path>
+    <ind:filename>%gconf-tree.xml</ind:filename>
+    <ind:xpath>
+    /gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='mode']/local_schema[1]/default[1]/stringvalue[1]</ind:xpath>
+  </ind:xmlfilecontent_object>
+</def-group>

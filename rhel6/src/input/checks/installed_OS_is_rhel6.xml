@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_rhel6" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux 6</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:enterprise_linux:6"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 6</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_20001" />
+      <criterion comment="Red Hat Enterprise Linux 5 is installed"
+      test_ref="test_10000" />
+    </criteria>
+  </definition>
+  <ind:family_test check="only one"
+  check_existence="at_least_one_exists"
+  comment="installed operating system is part of the Unix family"
+  id="test_20001" version="1">
+    <ind:object object_ref="obj_20001" />
+    <ind:state state_ref="state_20001" />
+  </ind:family_test>
+  <ind:family_state id="state_20001"
+  version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_20001"
+  version="1" />
+  <linux:rpminfo_test check="at least one"
+  check_existence="at_least_one_exists"
+  comment="redhat-release is version 5"
+  id="test_10000" version="1">
+    <linux:object object_ref="obj_10000" />
+    <linux:state state_ref="state_10000" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_10000"
+  version="1">
+    <linux:version operation="pattern match">
+    ^5[^\d]</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_10000"
+  version="1">
+    <linux:name>redhat-release</linux:name>
+  </linux:rpminfo_object>
+</def-group>

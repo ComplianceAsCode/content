@@ -1,0 +1,112 @@
+<def-group>
+  <definition class="compliance"
+  id="service_sendmail_disabled" version="1">
+    <metadata>
+      <title>Mail Transfer Agent</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-4416-4" source="CCE" />
+      <description>The sendmail service should be
+      disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20287" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202871" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202872" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202873" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202874" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202875" />
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_202876" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_20287"
+  version="2">
+    <unix:object object_ref="obj_20287" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_state comment="daemon is not running or is stopping"
+  id="state_20007" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+  <unix:runlevel_object id="obj_20287"
+  version="1">
+    <unix:service_name>sendmail</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202871"
+  version="2">
+    <unix:object object_ref="obj_202871" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202871"
+  version="1">
+    <unix:service_name>sendmail</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202872"
+  version="2">
+    <unix:object object_ref="obj_202872" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202872"
+  version="1">
+    <unix:service_name>sendmail</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202873"
+  version="2">
+    <unix:object object_ref="obj_202873" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202873"
+  version="1">
+    <unix:service_name>sendmail</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202874"
+  version="2">
+    <unix:object object_ref="obj_202874" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202874"
+  version="1">
+    <unix:service_name>sendmail</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202875"
+  version="2">
+    <unix:object object_ref="obj_202875" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202875"
+  version="1">
+    <unix:service_name>sendmail</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_202876"
+  version="2">
+    <unix:object object_ref="obj_202876" />
+    <unix:state state_ref="state_20007" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_202876"
+  version="1">
+    <unix:service_name>sendmail</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+</def-group>
