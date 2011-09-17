@@ -91,7 +91,7 @@ def main():
         gather_ids_for_elements(tree)
         gather_refs_for_defs(tree)
         output_checks(options.out_dname)
-        sys.exit(1)
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()

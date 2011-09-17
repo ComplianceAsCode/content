@@ -19,7 +19,11 @@ spreadsheet:
 	xsltproc -o ${OUTDIR}/rhel6-spreadsheet.html ${OUTDIR}/xccdf2spreadsheet.xslt ${OUTDIR}/rhel6-xccdf.xml
 
 checks:
-	# scc -i ${INDIR}/checks/id.ini ${INDIR}/checks/*.sc -o ${OUTDIR}/rhel6-oval.xml
+	xmlwf ${INDIR}/checks/*.xml
+	./transforms/combinechecks.py ${INDIR}/checks > ${OUTDIR}/rhel6-oval.xml
+	xmllint --format --output ${OUTDIR}/rhel6-oval.xml ${OUTDIR}/rhel6-oval.xml 
+# SCC WILL RETURN, when it is ready
+# scc -i ${INDIR}/checks/id.ini ${INDIR}/checks/*.sc -o ${OUTDIR}/rhel6-scc-oval.xml
 
 validate:
 	oscap xccdf validate-xml output/rhel6-xccdf.xml
