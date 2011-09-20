@@ -40,4 +40,4 @@ xccdf2table-nistrefs:
 
 
 clean:
-	rm ${OUTPUTDIR}/*
+	rm ${OUTDIR}/*
