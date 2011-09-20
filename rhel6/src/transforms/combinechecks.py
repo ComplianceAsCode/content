@@ -5,26 +5,20 @@ import sys, os
 import lxml.etree as ET
 
 header = '''<?xml version="1.0" encoding="UTF-8"?>
-<oval_definitions	xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-					xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
-					xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
-					xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
-					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix 
-						unix-definitions-schema.xsd
-						http://oval.mitre.org/XMLSchema/oval-definitions-5#independent 
-						independent-definitions-schema.xsd
-						http://oval.mitre.org/XMLSchema/oval-definitions-5#linux 
-						linux-definitions-schema.xsd
-						http://oval.mitre.org/XMLSchema/oval-definitions-5 
-						oval-definitions-schema.xsd
-						http://oval.mitre.org/XMLSchema/oval-common-5 
-						oval-common-schema.xsd
-						">'''
+<oval_definitions
+	xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+	xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
+	xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
+	xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
+		http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
+		http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd
+		http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
+		http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">'''
 footer = '</oval_definitions>'
 
 xmlns = {
-	#"" : "http://oval.mitre.org/XMLSchema/oval-definitions-5",
 	"xsi" : "http://www.w3.org/2001/XMLSchema-instance",
 	"oval" : "http://oval.mitre.org/XMLSchema/oval-common-5",
 	"unix" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix",
@@ -46,11 +40,11 @@ def main():
    
 	# parse new file(string) as an ElementTree, so we can reorder elements appropriately 
 	tree = ET.fromstring(header + body + footer)
-	definitions = ET.Element("definitions", xmlns)
-	tests = ET.Element("tests", xmlns)
-	objects = ET.Element("objects", xmlns)
-	states = ET.Element("states", xmlns)
-	variables = ET.Element("variables", xmlns)
+	definitions = ET.Element("definitions")
+	tests = ET.Element("tests")
+	objects = ET.Element("objects")
+	states = ET.Element("states")
+	variables = ET.Element("variables")
 
 	for childnode in tree.findall("./def-group/*"):
 		if childnode.tag == ("definition"): definitions.append(childnode)
