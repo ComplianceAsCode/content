@@ -1,10 +1,8 @@
 #!/usr/bin/python
 
 import sys, os 
-try:
-    import xml.etree.ElementTree as ET
-except Exception, e:
-    import elementtree.ElementTree as ET
+
+import lxml.etree as ET
 
 header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix 
@@ -21,7 +19,7 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
 footer = '</oval_definitions>'
 
 xmlns = {
-    "" : "http://oval.mitre.org/XMLSchema/oval-definitions-5",
+#    "" : "http://oval.mitre.org/XMLSchema/oval-definitions-5",
     "xsi" : "http://www.w3.org/2001/XMLSchema-instance",
     "oval" : "http://oval.mitre.org/XMLSchema/oval-common-5",
     "unix" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix",

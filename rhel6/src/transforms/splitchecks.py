@@ -3,13 +3,10 @@
 import sys, os, errno, string, re
 from optparse import OptionParser
 
-try:
-    import xml.etree.ElementTree as ET
-except Exception, e:
-    import elementtree.ElementTree as ET
+import lxml.etree as ET
 
 xmlns = {
-    "" : "http://oval.mitre.org/XMLSchema/oval-definitions-5",
+    "o" : "http://oval.mitre.org/XMLSchema/oval-definitions-5",
     "xsi" : "http://www.w3.org/2001/XMLSchema-instance",
     "oval" : "http://oval.mitre.org/XMLSchema/oval-common-5",
     "unix" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix",
@@ -44,7 +41,7 @@ def gather_refs(element, defn):
                 gather_refs(referenced_item, defn)
 
 def gather_refs_for_defs(tree):
-    defn_elements = tree.getiterator("{" + xmlns[""] + "}definition")
+    defn_elements = tree.getiterator("{" + xmlns["o"] + "}definition")
     # initialize dictionary, which maps definitions to a list of those things it references
     for defn in defn_elements:
         def_reflist_map[defn] = []
