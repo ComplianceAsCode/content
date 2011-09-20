@@ -40,4 +40,4 @@ xccdf2table-nistrefs:
 
 
 clean:
-	rm ${OUTDIR}/*
+	rm ${OUTDIR}/*.xml ${OUTDIR}/*.html ${OUTDIR}/*.pdf

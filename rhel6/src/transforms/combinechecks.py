@@ -26,14 +26,14 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
 
 footer = '</oval_definitions>'
 
-xmlns = {
-	None : "http://oval.mitre.org/XMLSchema/oval-common-5",
-	"oval" : "http://oval.mitre.org/XMLSchema/oval-common-5",
-	"ind" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#independent",
-	"unix" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix",
-	"linux" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux",
-	"xsi" : "http://www.w3.org/2001/XMLSchema-instance",
-}
+#xmlns = {
+#	None : "http://oval.mitre.org/XMLSchema/oval-common-5",
+#	"oval" : "http://oval.mitre.org/XMLSchema/oval-common-5",
+#	"ind" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#independent",
+#	"unix" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix",
+#	"linux" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux",
+#	"xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+#}
 
 def main():
 	if len(sys.argv) < 2:
@@ -68,6 +68,19 @@ def main():
 	tree.append(objects)
 	tree.append(states)
 	tree.append(variables)
+
+def assign_id(element, ids):
+    if element.tag in id_keywords:
+        element.set("id", ids.assign_id(element.tag, element.get("id")))
+        print "assigned element : " + element.get("id")
+    elif element.tag == refElem:
+        element.set(refID,
+                    ids.assign_id(element.get(elemType), element.get(refID)))
+        print "assigned refID element : " + element.get(refID)
+
+
+
+# fixup the IDs
 	ET.dump(tree) 
 	sys.exit(0)
 
