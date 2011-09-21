@@ -6,6 +6,7 @@ import lxml.etree as ET
 
 header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
+	xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
 	xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
 	xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
 	xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
@@ -15,7 +16,15 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
 		http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
 		http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd
 		http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
-		http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">'''
+		http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+
+	<generator>
+		<oval:product_name>python</oval:product_name>
+		<oval:product_version>2.6.6</oval:product_version>
+		<oval:schema_version>5.10</oval:schema_version>
+		<oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
+	</generator>
+'''
 footer = '</oval_definitions>'
 
 xmlns = {
