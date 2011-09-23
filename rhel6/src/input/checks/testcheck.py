@@ -6,6 +6,7 @@ import lxml.etree as ET
 
 header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
+	xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
     xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
     xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
     xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
@@ -45,8 +46,8 @@ def main():
     states = ET.Element("states")
     variables = ET.Element("variables")
 
-    for childnode in tree.findall("./def-group/*"):
-        if childnode.tag == ("definition"): 
+    for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
+        if childnode.tag == ("{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition"): 
             definitions.append(childnode)
             defname = childnode.get("id")
         if childnode.tag.endswith("_test"): tests.append(childnode)
