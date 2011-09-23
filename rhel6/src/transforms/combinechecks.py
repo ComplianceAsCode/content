@@ -69,6 +69,10 @@ def main():
 	tree.append(states)
 	tree.append(variables)
 
+	# fixup the IDs
+	ET.dump(tree) 
+	sys.exit(0)
+
 def assign_id(element, ids):
     if element.tag in id_keywords:
         element.set("id", ids.assign_id(element.tag, element.get("id")))
@@ -78,11 +82,6 @@ def assign_id(element, ids):
                     ids.assign_id(element.get(elemType), element.get(refID)))
         print "assigned refID element : " + element.get(refID)
 
-
-
-# fixup the IDs
-	ET.dump(tree) 
-	sys.exit(0)
 
 if __name__ == "__main__":
     main()
