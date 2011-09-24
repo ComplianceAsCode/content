@@ -1,11 +1,12 @@
 import ConfigParser
+import lxml.etree as ET 
 
 # This class is designed to handle the mapping of human-readable names to
-# OVAL-style IDs.  This is intentionally designed to be compatible with 
-# Tresys SCC, for future integration.
+# OVAL-style IDs.  This is intentionally similar to code in  
+# Tresys SCC, to enable future integration.
 
 
-tag_to_abbrev = {
+keyword_to_abbrev = {
     'definition' : 'def',
     'criteria' : 'crit',
     'test' : 'tst',
@@ -14,20 +15,26 @@ tag_to_abbrev = {
     'variable' : 'var',
 }
 
+refattr_to_keyword = {
+    "definition_ref" : "definition",
+    "test_ref" : "test",
+    "object_ref" : "object",
+    "state_ref" : "state",
+    "var_ref" : "variable",
+}
 
 def tagname_to_abbrev(tag):
     tag = tag.split("}")[-1]
     if tag == "extend_definition":
         return tag
     tag = tag.rsplit("_", 1)[-1]
-    return tag_to_abbrev[tag]
+    return keyword_to_abbrev[tag]
 
-class idtranslate:
+class idtranslator:
     def __init__(self, fname, prefix):
         self.fname = fname 
         self.prefix = prefix
         self.config = ConfigParser.ConfigParser()
-        print "creating new file perhaps " + fname
         f = self.config.read(fname)
         if len(f) == 0:
             self.__setup()
@@ -48,8 +55,6 @@ class idtranslate:
         self.config.set("general", "next_id", "100")
         self.config.add_section("assigned")
 
-
-
     def assign_id(self, tagname, name):
         i = None
         try:
@@ -60,6 +65,16 @@ class idtranslate:
 
         pre = self.config.get("general", "id_prefix")
         str_id = "%s:%s:%d" % (pre, tagname_to_abbrev(tagname), i)
-
         return str_id
 
+    def translate(self, tree):
+        for element in tree.getiterator():
+            if element.get("id"):
+                element.set("id", self.assign_id(element.tag, element.get("id")))
+                continue
+            for attr in element.keys():
+                if attr in refattr_to_keyword.keys():
+                    element.set(attr, self.assign_id(refattr_to_keyword[attr], element.get(attr)))
+        self.save()
+        # note: the ini file is not tracked by git, see .gitignore
+        return tree

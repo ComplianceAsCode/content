@@ -16,28 +16,16 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd
         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">'''
+        http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+       <generator>
+        <oval:product_name>testcheck.py</oval:product_name>
+        <oval:product_version>0.0.1</oval:product_version>
+        <oval:schema_version>5.10</oval:schema_version>
+        <oval:timestamp>2011-09-23T13:44:00</oval:timestamp>
+    </generator>'''
 footer = '</oval_definitions>'
 
-id_keywords = (
-    "definition",
-    "test",
-    "object",
-    "state",
-    "variable",
-)
-
-def strip_namespace(tag):
-    return tag.split("}")[-1]
-
-def main():
-    if len(sys.argv) < 2:
-        print "Provide the name of an XML file, which contains the definition (and dependencies) to test."
-        sys.exit(1)
-
-    with open( sys.argv[1], 'r') as f:
-        body = f.read()
-
+def create_oval_file(body):
     # parse new file(string) as an etree, so we can arrange elements appropriately 
     tree = ET.fromstring(header + body + footer)
     definitions = ET.Element("definitions")
@@ -47,39 +35,44 @@ def main():
     variables = ET.Element("variables")
 
     for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
-        if childnode.tag == ("{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition"): 
+        if childnode.tag == ("{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition"):
             definitions.append(childnode)
-            defname = childnode.get("id")
+            testname = childnode.get("id")
         if childnode.tag.endswith("_test"): tests.append(childnode)
         if childnode.tag.endswith("_object"): objects.append(childnode)
         if childnode.tag.endswith("_state"): states.append(childnode)
         if childnode.tag.endswith("_variable"): variables.append(childnode)
 
     tree = ET.fromstring(header + footer)
-    tree.append(definitions)
-    tree.append(tests)
-    tree.append(objects)
-    tree.append(states)
-    tree.append(variables)
+    # append each major element type, if it has subelements
+    for element in [definitions, tests, objects, states, variables]:
+        if element.getchildren():
+            tree.append(element)
+    return tree, testname
 
-    idmapping = idtranslate.idtranslate("testing.ini", "oval:scap-security-guide.testing")
-    # this needs to be refactored to idtranslate 
-    for element in tree.getiterator():
-        if element.get("id"):
-            element.set("id", idmapping.assign_id(element.tag, element.get("id")))
-    # needs to handle all _ref attributes, too
+def main():
+    if len(sys.argv) < 2:
+        print "Provide the name of an XML file, which contains the definition (and dependencies) to test."
+        sys.exit(1)
 
-    # the ini file is not tracked by git, see .gitignore
-    idmapping.save()
+    for testfile in sys.argv[1:]:
+        with open( testfile, 'r') as f:
+            body = f.read()
 
-    (ovalfile, fname) = tempfile.mkstemp(prefix=defname)
-    os.write(ovalfile, ET.tostring(tree))
-#    oscap oval eval --id "defname" --results somefile  generatedINPUTfile.xml
-# delete tempfile?
+        tree, testname = create_oval_file(body)
+        # re-map all the element ids from meaningful names to meaningless numbers
+        testtranslator = idtranslate.idtranslator("testing.ini", "oval:scap-security-guide.testing")
+        tree = testtranslator.translate(tree)
+        (ovalfile, fname) = tempfile.mkstemp(prefix=testname,suffix=".xml")
+        os.write(ovalfile, ET.tostring(tree))
+        os.close(ovalfile)
+        print "fname is " + fname
+        subprocess.call("ls -l " + fname, shell=True)
+        subprocess.call("/usr/bin/oscap oval eval --results "+ fname + "-results " + fname, shell=True)
+        # perhaps delete tempfile?
 
     sys.exit(0)
 
 if __name__ == "__main__":
     main()
-
 
