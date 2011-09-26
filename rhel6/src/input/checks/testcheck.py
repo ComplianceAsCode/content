@@ -25,30 +25,41 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
     </generator>'''
 footer = '</oval_definitions>'
 
-def create_oval_file(body):
-    # parse new file(string) as an etree, so we can arrange elements appropriately 
-    tree = ET.fromstring(header + body + footer)
-    definitions = ET.Element("definitions")
-    tests = ET.Element("tests")
-    objects = ET.Element("objects")
-    states = ET.Element("states")
-    variables = ET.Element("variables")
+ovalns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 
-    for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
-        if childnode.tag == ("{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition"):
+# globals, to make recursion easier in case we encounter extend_definition
+definitions = ET.Element("definitions")
+tests = ET.Element("tests")
+objects = ET.Element("objects")
+states = ET.Element("states")
+variables = ET.Element("variables")
+
+# add oval elements to the global Elements defined above
+def add_oval_elements(body):
+    tree = ET.fromstring(header + body + footer)
+    # parse new file(string) as an etree, so we can arrange elements appropriately 
+    for childnode in tree.findall("./{" + ovalns + "}def-group/*"):
+        print "tag: " + childnode.tag
+        if childnode.tag == ("{" + ovalns + "}definition"):
             definitions.append(childnode)
-            testname = childnode.get("id")
+            defname = childnode.get("id")
+            #for testchild in childnode.getchildren():
+            #    print "testchild is " + testchild.tag
+            for defchild in childnode.findall(".//{" + ovalns + "}extend_definition"):
+                defid = defchild.get("definition_ref")            
+                print "got extended defid " + defid
+                includedbody = read_ovaldefgroup_file(defid+".xml")
+                add_oval_elements(includedbody)
         if childnode.tag.endswith("_test"): tests.append(childnode)
         if childnode.tag.endswith("_object"): objects.append(childnode)
         if childnode.tag.endswith("_state"): states.append(childnode)
         if childnode.tag.endswith("_variable"): variables.append(childnode)
+    return defname
 
-    tree = ET.fromstring(header + footer)
-    # append each major element type, if it has subelements
-    for element in [definitions, tests, objects, states, variables]:
-        if element.getchildren():
-            tree.append(element)
-    return tree, testname
+def read_ovaldefgroup_file(testfile):
+    with open( testfile, 'r') as f:
+        body = f.read()
+    return body
 
 def main():
     if len(sys.argv) < 2:
@@ -56,15 +67,18 @@ def main():
         sys.exit(1)
 
     for testfile in sys.argv[1:]:
-        with open( testfile, 'r') as f:
-            body = f.read()
-
-        tree, testname = create_oval_file(body)
+        body = read_ovaldefgroup_file(testfile)
+        defname = add_oval_elements(body)
+        ovaltree = ET.fromstring(header + footer)
+        # append each major element type, if it has subelements
+        for element in [definitions, tests, objects, states, variables]:
+            if element.getchildren():
+                ovaltree.append(element)
         # re-map all the element ids from meaningful names to meaningless numbers
         testtranslator = idtranslate.idtranslator("testing.ini", "oval:scap-security-guide.testing")
-        tree = testtranslator.translate(tree)
-        (ovalfile, fname) = tempfile.mkstemp(prefix=testname,suffix=".xml")
-        os.write(ovalfile, ET.tostring(tree))
+        ovaltree = testtranslator.translate(ovaltree)
+        (ovalfile, fname) = tempfile.mkstemp(prefix=defname,suffix=".xml")
+        os.write(ovalfile, ET.tostring(ovaltree))
         os.close(ovalfile)
         print "fname is " + fname
         subprocess.call("ls -l " + fname, shell=True)

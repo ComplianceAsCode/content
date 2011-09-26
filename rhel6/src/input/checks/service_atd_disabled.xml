@@ -10,10 +10,6 @@
       <description>The atd service should be
       disabled.</description>
     </metadata>
-    <criteria comment="at is not installed or conditions are met"
-    operator="OR">
-      <extend_definition comment="at is not installed"
-      definition_ref="NEEDSFIXUP_20180" />
       <criteria operator="AND">
         <criterion comment="Conditions are satisfied"
         test_ref="test_202052" />
@@ -30,7 +26,6 @@
         <criterion comment="Conditions are satisfied"
         test_ref="test_2020526" />
       </criteria>
-    </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
   comment="Runlevel test" id="test_202052"
