@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, os, tempfile, subprocess
+import sys, os, tempfile, subprocess, platform
 import idtranslate
 import lxml.etree as ET
 
@@ -82,7 +82,12 @@ def main():
         os.close(ovalfile)
         print "fname is " + fname
         subprocess.call("ls -l " + fname, shell=True)
-        subprocess.call("/usr/bin/oscap oval eval --results "+ fname + "-results " + fname, shell=True)
+		# temporary workaround for fedora/redhat oscap version differences
+        (distname, distversion, distcodename) = platform.linux_distribution(full_distribution_name=0)
+        if distname == 'redhat':
+            subprocess.call("/usr/bin/oscap oval eval --result-file "+ fname + "-results " + fname, shell=True)
+        else:
+            subprocess.call("/usr/bin/oscap oval eval --results "+ fname + "-results " + fname, shell=True)
         # perhaps delete tempfile?
 
     sys.exit(0)
