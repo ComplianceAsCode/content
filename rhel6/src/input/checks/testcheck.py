@@ -39,16 +39,14 @@ def add_oval_elements(body):
     tree = ET.fromstring(header + body + footer)
     # parse new file(string) as an etree, so we can arrange elements appropriately 
     for childnode in tree.findall("./{" + ovalns + "}def-group/*"):
-        print "tag: " + childnode.tag
         if childnode.tag == ("{" + ovalns + "}definition"):
             definitions.append(childnode)
             defname = childnode.get("id")
-            #for testchild in childnode.getchildren():
-            #    print "testchild is " + testchild.tag
+            # extend_definition is a special case: must include a whole other definition
             for defchild in childnode.findall(".//{" + ovalns + "}extend_definition"):
                 defid = defchild.get("definition_ref")            
-                print "got extended defid " + defid
                 includedbody = read_ovaldefgroup_file(defid+".xml")
+                # recursively add the elements in the other file
                 add_oval_elements(includedbody)
         if childnode.tag.endswith("_test"): tests.append(childnode)
         if childnode.tag.endswith("_object"): objects.append(childnode)
@@ -80,7 +78,7 @@ def main():
         (ovalfile, fname) = tempfile.mkstemp(prefix=defname,suffix=".xml")
         os.write(ovalfile, ET.tostring(ovaltree))
         os.close(ovalfile)
-        print "fname is " + fname
+        print "Evaluating with tempfile : " + fname
         subprocess.call("ls -l " + fname, shell=True)
 		# temporary workaround for fedora/redhat oscap version differences
         (distname, distversion, distcodename) = platform.linux_distribution(full_distribution_name=0)
