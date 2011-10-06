@@ -95,7 +95,7 @@ operator="equals" interactive="0">
 <description>SELinux should NOT be disabled in <tt>/etc/grub.conf</tt>.
 Check that <tt>selinux=0</tt> is not found</description>
 <ident cce="3977-6" />
-<oval id="20104" />
+<oval id="selinux_bootloader_notdisabled" />
 <ref nist="AC-3, CM-6" />
 </Rule>
 
@@ -104,7 +104,7 @@ Check that <tt>selinux=0</tt> is not found</description>
 <description>The SELinux state should be set
 appropriately</description>
 <ident cce="3999-0" />
-<oval id="20106" />
+<oval id="selinux_mode" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
@@ -113,7 +113,7 @@ appropriately</description>
 <description>The SELinux policy should be set
 appropriately.</description>
 <ident cce="3624-4" />
-<oval id="20107" />
+<oval id="selinux_policytype" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
@@ -151,7 +151,7 @@ which use category labelling.</description>
 Possible</title>
 <description>The mcstrans service should be disabled.</description>
 <ident cce="3668-1" />
-<oval id="20110" />
+<oval id="service_mcstrans_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
@@ -175,7 +175,7 @@ It should produce no output in a well-configured system.</description>
 <title>Check for Unlabeled Device Files</title>
 <description>Check for device file that is not labeled.</description>
 <ident cce="14991-4" />
-<oval id="201115" />
+<oval id="selinux_all_devicefiles_labeled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>

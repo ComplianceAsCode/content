@@ -20,16 +20,17 @@ spreadsheet:
 
 checks:
 	xmlwf ${INDIR}/checks/*.xml
-	./transforms/combinechecks.py ${INDIR}/checks > ${OUTDIR}/rhel6-oval.xml
+	${TRANSDIR}/combinechecks.py ${INDIR}/checks > ${OUTDIR}/rhel6-oval.xml
 	xmllint --format --output ${OUTDIR}/rhel6-oval.xml ${OUTDIR}/rhel6-oval.xml 
-# SCC WILL RETURN, when it is ready
-# scc -i ${INDIR}/checks/id.ini ${INDIR}/checks/*.sc -o ${OUTDIR}/rhel6-scc-oval.xml
+#       SCC WILL RETURN, when it is ready
+#       scc -i ${INDIR}/checks/id.ini ${INDIR}/checks/*.sc -o ${OUTDIR}/rhel6-scc-oval.xml
 
 validate:
 	oscap xccdf validate-xml output/rhel6-xccdf.xml
 
-guide: shorthand-guide shorthand2xccdf
-	oscap xccdf generate guide ${OUTDIR}/rhel6-xccdf.xml > ${OUTDIR}/rhel6-guide.html
+guide: shorthand-guide shorthand2xccdf 
+	oscap xccdf generate guide --profile allrules ${OUTDIR}/rhel6-xccdf.xml > ${OUTDIR}/rhel6-guide.html
+#       specifying a nonexistent profile, "allrules," to make oscap print all Rules
 
 xccdf2shorthand:
 	xsltproc -o ${OUTDIR}/rhel5-shorthand.xml ${TRANSDIR}/xccdf2shorthand.xslt ${REFS}/usgcb-rhel5desktop-xccdf.xml
@@ -38,6 +39,9 @@ xccdf2shorthand:
 xccdf2table-nistrefs:
 	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
 
+content: guide checks
+	${TRANSDIR}/relabelids.py rhel6-xccdf.xml scap-security-guide 
+# 	the script chdirs to ./output, so refer to files from there
 
 clean:
 	rm ${OUTDIR}/*.xml ${OUTDIR}/*.html ${OUTDIR}/*.pdf

@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance"
+  id="package_openswan_installed" version="1">
+    <metadata>
+      <title>Ensure OpenSWAN Package is Installed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="CCE-3910-7" source="CCE" />
+      <description>The openswan package should be
+      installed</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_openswan_installed" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  comment="The openswan package should be installed or not as appropriate"
+  id="test_openswan_installed" version="1">
+    <linux:object object_ref="object_openswan_package" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="object_openswan_package"
+  version="1">
+    <linux:name>openswan</linux:name>
+  </linux:rpminfo_object>
+</def-group>

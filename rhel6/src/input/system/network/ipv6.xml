@@ -32,7 +32,7 @@ configured to disable IPv6 networking support.</description>
 <description>Automatic loading of IPv6 networking support should be
 disabled.</description>
 <ident cce="3562-6" />
-<oval id="20130" />
+<oval id="kernel_module_ipv6_disable" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
@@ -99,7 +99,7 @@ advertisements should be:
 <sub idref="var-2.5.3.2.b" />for all
 interfaces.</description>
 <ident cce="4269-7" />
-<oval id="20135" />
+<oval id="sysctl_ipv6_router_ra" />
 <ref nist="CM-7" />
 </Rule>
 <Rule id="set_sysctl_ipv6_default_accept_redirects">
@@ -109,7 +109,7 @@ interfaces.</description>
 <sub idref="var-2.5.3.2.c" />for all
 interfaces.</description>
 <ident cce="4313-3" />
-<oval id="20136" />
+<oval id="sysctl_net_ipv6_conf_default_accept_redirects" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>

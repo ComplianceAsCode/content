@@ -1,14 +1,14 @@
 <def-group>
   <definition class="compliance"
-  id="selinux_device_files_unlabeled" version="1">
+  id="mount_option_dev_shm_noexec" version="1">
     <metadata>
-      <title>Check for Unconfined Daemons</title>
+      <title>Add noexec Option to /dev/shm Partition</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 5</platform>
       </affected>
-      <reference ref_id="CCE-14991-4" source="CCE" />
-      <description>Check for device file that is not
-      labeled.</description>
+      <reference ref_id="CCE-14703-3" source="CCE" />
+      <description>Add noexec Option to /dev/shm
+      Partition</description>
     </metadata>
     <criteria>
       <criterion comment="Unknown test stub"

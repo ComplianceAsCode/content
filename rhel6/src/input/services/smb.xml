@@ -27,7 +27,7 @@ sharing functionality.</description>
 <title>Disable Samba if Possible</title>
 <description>The <tt>smb</tt> service should be disabled.</description>
 <ident cce="4551-8" />
-<oval id="20340" />
+<oval id="service_smb_disabled" />
 </Rule>
 </Group>
 <Group id="configuring_samba">
@@ -64,7 +64,7 @@ can support SMB packet signing. Packet signing can prevent
 man-in-the-middle attacks which modify SMB packets in
 transit.</description>
 <ident cce="14075-6" />
-<oval id="2034010" />
+<oval id="smb_client_signing_smb_conf" />
 </Rule>
 </Group>
 
@@ -93,7 +93,7 @@ client should only communicate with servers who can support SMB
 packet signing. Packet signing can prevent man-in-the-middle
 attacks which modify SMB packets in transit.</description>
 <ident cce="15029-2" />
-<oval id="2034011" />
+<oval id="mount_option_smb_client_signing" />
 </Rule>
 </Group>
 </Group>

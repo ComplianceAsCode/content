@@ -61,7 +61,7 @@ user root</title>
 <description>The PATH variable should be set correctly for user
 root</description>
 <ident cce="3301-9" />
-<oval id="20085" />
+<oval id="accounts_dangerous_path_for_root" />
 <ref nist="CM6, CM-7"/>
 </Rule>
 <Rule id="root_path_no_groupother_writable">
@@ -70,7 +70,7 @@ world-writable or group-writable directories</title>
 <description>Check each directory in root's path and make use it
 does not grant write permission to group and other</description>
 <ident cce="14957-5" />
-<oval id="200855" />
+<oval id="accounts_root_path_dirs_no_write" />
 <ref nist="CM6, CM-7"/>
 </Rule>
 </Group>
@@ -112,7 +112,7 @@ Group-Writable or World-Readable</title>
 <description>File permissions should be set correctly for the home
 directories for all user accounts.</description>
 <ident cce="4090-7" />
-<oval id="20086" />
+<oval id="file_permissions_home_dirs" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 </Group>
@@ -185,7 +185,7 @@ in <tt>/etc/bashrc</tt></title>
 should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="3844-8" />
-<oval id="20087" />
+<oval id="accounts_umask_bash_users" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -196,7 +196,7 @@ in <tt>/etc/csh.cshrc</tt></title>
 should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="4227-5" />
-<oval id="20088" />
+<oval id="accounts_umask_csh" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -206,7 +206,7 @@ in <tt>/etc/login.defs</tt></title>
 <description>The default <tt>umask</tt> for all users should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="14107-7" />
-<oval id="20089" />
+<oval id="accounts_umask_login_defs" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -216,7 +216,7 @@ in <tt>/etc/profile</tt></title>
 <description>The default <tt>umask</tt> for all users should be set to:
 <sub idref="var-2.3.4.4" /></description>
 <ident cce="14847-8" />
-<oval id="20090" />
+<oval id="accounts_umask_etc_profile" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 </Group>

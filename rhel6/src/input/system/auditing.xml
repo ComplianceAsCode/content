@@ -73,7 +73,7 @@ data if the system is busy.
 <title>Enable the <tt>auditd</tt> Service</title>
 <description>The <tt>auditd</tt> service should be enabled.</description>
 <ident cce="4292-9" />
-<oval id="20156" />
+<oval id="service_auditd_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
@@ -106,7 +106,7 @@ kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audi
 </pre>
 </description>
 <ident cce="15026-8" />
-<oval id="20157" />
+<oval id="bootloader_audit_argument" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -173,7 +173,7 @@ ARCH to either b32 or b64 as appropriate for your system:
 <title>Records Events that Modify Date and Time Information</title>
 <description>Audit rules about time</description>
 <ident cce="14051-7" />
-<oval id="201575" />
+<oval id="audit_rules_record_timechange" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -195,7 +195,7 @@ to capture events that modify account changes:
 Information</title>
 <description>Audit rules about User/Group Information</description>
 <ident cce="14829-6" />
-<oval id="20158" />
+<oval id="audit_rules_usergroup_modification" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -219,7 +219,7 @@ Environment</title>
 <description>Audit rules about the System’s Network
 Environment</description>
 <ident cce="14816-3" />
-<oval id="20159" />
+<oval id="audit_rules_networkconfig_modification" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -238,7 +238,7 @@ Controls</title>
 Access Controls</title>
 <description>Audit rules about the System’s Mandatory Access Controls</description>
 <ident cce="14821-3" />
-<oval id="20160" />
+<oval id="audit_rules_mac_modification" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -263,7 +263,7 @@ Control Permission Modification Events</title>
 <description>Audit rules about the Discretionary Access Control
 Permission Modification Events</description>
 <ident cce="14058-2" />
-<oval id="20163" />
+<oval id="audit_rules_dac_modification" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -285,7 +285,7 @@ Attempts to Files (unsuccessful)</title>
 <description>Audit rules about the Unauthorized Access Attempts to
 Files (unsuccessful)</description>
 <ident cce="14917-9" />
-<oval id="20164" />
+<oval id="audit_rules_unsuccessful_file_modification" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -305,7 +305,7 @@ Privileged Commands</title>
 <description>Audit rules about the Information on the Use of
 Privileged Commands</description>
 <ident cce="14296-8" />
-<oval id="20165" />
+<oval id="audit_rules_privileged_commands" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -327,7 +327,7 @@ to Media (successful)</title>
 <description>Audit rules about the Information on Exporting to
 Media (successful)</description>
 <ident cce="14569-8" />
-<oval id="20166" />
+<oval id="audit_rules_media_export" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -349,7 +349,7 @@ User (successful and unsuccessful)</title>
 <description>Audit rules about the Files Deletion Events by User
 (successful and unsuccessful)</description>
 <ident cce="14820-5" />
-<oval id="20167" />
+<oval id="audit_rules_file_deletion_events" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -369,7 +369,7 @@ Actions</title>
 <description>Audit rules about the System Administrator
 Actions</description>
 <ident cce="14824-7" />
-<oval id="20168" />
+<oval id="audit_rules_sysadmin_actions" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -392,7 +392,7 @@ Module Loading and Unloading</title>
 <description>Audit rules about the Information on Kernel Module
 Loading and Unloading</description>
 <ident cce="14688-6" />
-<oval id="201685" />
+<oval id="audit_rules_kernel_module_loading" />
 <ref nist="AU-2" />
 </Rule>
 </Group>
@@ -412,7 +412,7 @@ audit rules.</description>
 <title>Make the <tt>auditd</tt> Configuration Immutable</title>
 <description>Force a reboot to change audit rules</description>
 <ident cce="14692-8" />
-<oval id="20169" />
+<oval id="audit_rules_immutable" />
 <ref nist="AU-2" />
 </Rule>
 </Group>

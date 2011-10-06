@@ -9,7 +9,7 @@ configured defensively.</description>
 <title>Enable <tt>cron</tt> Daemon</title>
 <description>The <tt>crond</tt> service should be enabled.</description>
 <ident cce="4324-0" />
-<oval id="20205" />
+<oval id="service_crond_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
@@ -92,231 +92,9 @@ and user crontabs are edited using the setuid root crontab command.
 If unprivileged users can modify system cron configuration files,
 they may be able to gain elevated privileges, so all unnecessary
 access to these files should be disabled.</description>
-<Value id="var-3.4.2.system.crontab.primary.group"
-type="string" operator="equals" interactive="0">
-<title>group owner of <tt>/etc/crontab</tt></title>
-<description>Specify group owner of <tt>/etc/crontab</tt>.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="var-3.4.2.system.crontab.primary.user"
-type="string" operator="equals" interactive="0">
-<title>user owner of <tt>/etc/crontab</tt></title>
-<description>Specify user owner of <tt>/etc/crontab</tt>.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="var-3.4.2.system.anacrontab.group"
-type="string" operator="equals" interactive="0">
-<title>group owner of <tt>/etc/anacrontab</tt></title>
-<description>Specify group owner of <tt>/etc/ancrontab</tt>.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="var-3.4.2.system.anacrontab.user"
-type="string" operator="equals" interactive="0">
-<title>user owner of <tt>/etc/anacrontab</tt></title>
-<description>Specify user owner of <tt>/etc/anacrontab</tt>.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="var-3.4.2.system.crontab.directories.group"
-type="string" operator="equals" interactive="0">
-<title>group owner of <tt>cron.hourly</tt> <tt>cron.daily</tt>
-<tt>cron.weekly</tt> <tt>cron.monthly</tt> <tt>cron.d</tt></title>
-<description>Specify group owner of <tt>/etc/cron.*</tt> files and
-directories.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="var-3.4.2.system.crontab.directories.user"
-type="string" operator="equals" interactive="0">
-<title>user owner of <tt>cron.hourly</tt> <tt>cron.daily</tt>
-<tt>cron.weekly</tt> <tt>cron.monthly</tt> <tt>cron.d</tt></title>
-<description>Specify user owner of <tt>/etc/cron.*</tt> files and
-directories.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="var-3.4.2.spool.directory.group"
-type="string" operator="equals" interactive="0">
-<title>group owner of <tt>/var/spool/cron</tt></title>
-<description>Specify group owner of <tt>/var/spool/cron</tt>.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="var-3.4.2.spool.directory.user"
-type="string" operator="equals" interactive="0">
-<title>user owner of <tt>/var/spool/cron</tt></title>
-<description>Specify user owner of <tt>/var/spool/cron</tt>.</description>
-<value selector="root">root</value>
-</Value>
-<Rule id="groupowner_crontab">
-<title>Set group owner on <tt>/etc/crontab</tt></title>
-<description>The <tt>/etc/crontab</tt> file should be owned by the
-appropriate group.</description>
-<ident cce="3626-9" />
-<oval id="20208" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="userowner_crontab">
-<title>Set user owner on <tt>/etc/crontab</tt></title>
-<description>The <tt>/etc/crontab</tt> file should be owned by the
-appropriate user.</description>
-<ident cce="3851-3" />
-<oval id="20209" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="permissions_crontab">
-<title>Set Permissions on <tt>/etc/crontab</tt></title>
-<title>Restrict Permissions on Files Used by <tt>cron</tt></title>
-<description>File permissions for <tt>/etc/crontab</tt> should be set
-correctly.</description>
-<ident cce="4388-5" />
-<oval id="20210" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="groupowner_anacrontab">
-<title>Set group owner on <tt>/etc/anacrontab</tt></title>
-<description>The <tt>/etc/anacrontab</tt> file should be owned by the
-appropriate group.</description>
-<ident cce="3604-6" />
-<oval id="20211" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="userowner_anacrontab">
-<title>Set user owner on <tt>/etc/anacrontab</tt></title>
-<description>The <tt>/etc/anacrontab</tt> file should be owned by the
-appropriate user.</description>
-<ident cce="4379-4" />
-<oval id="20212" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-
-<Rule id="permissions_anacrontab">
-<title>Set Permissions on <tt>/etc/anacrontab</tt></title>
-<description>File permissions for <tt>/etc/anacrontab</tt> should be set
-correctly.</description>
-<ident cce="4304-2" />
-<oval id="20213" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="groupowner_cron.hourly">
-<title>Set group owner on <tt>/etc/cron.hourly</tt></title>
-<description>The <tt>/etc/cron.hourly</tt> file should be owned by the
-appropriate group.</description>
-<ident cce="4054-3" />
-<oval id="20214" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="groupowner_cron.daily">
-<title>Set group owner on <tt>/etc/cron.daily</tt></title>
-<description>The <tt>/etc/cron.daily</tt> file should be owned by the
-appropriate group.</description>
-<ident cce="3481-9" />
-<oval id="20215" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="groupowner_cron.weekly">
-<title>Set group owner on <tt>/etc/cron.weekly</tt></title>
-<description>The <tt>/etc/cron.weekly</tt> file should be owned by the
-appropriate group.</description>
-<ident cce="4331-5" />
-<oval id="20216" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="groupowner_cron.monthly">
-<title>Set group owner on <tt>/etc/cron.monthly</tt></title>
-<description>The <tt>/etc/cron.monthly</tt> file should be owned by the
-appropriate group.</description>
-<ident cce="4322-4" />
-<oval id="20217" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="groupowner_cron.d">
-<title>Set group owner on <tt>/etc/cron.d</tt></title>
-<description>The <tt>/etc/cron.d</tt> file should be owned by the
-appropriate group.</description>
-<ident cce="4212-7" />
-<oval id="20218" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="userowner_cron.hourly">
-<title>Set user owner on <tt>/etc/cron.hourly</tt></title>
-<description>The <tt>/etc/cron.hourly</tt> file should be owned by the
-appropriate user.</description>
-<ident cce="3983-4" />
-<oval id="20219" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="userowner_cron.daily">
-<title>Set user owner on <tt>/etc/cron.daily</tt></title>
-<description>The <tt>/etc/cron.daily</tt> file should be owned by the
-appropriate user.</description>
-<ident cce="4022-0" />
-<oval id="20220" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="userowner_cron.weekly">
-<title>Set user owner on <tt>/etc/cron.weekly</tt></title>
-<description>The <tt>/etc/cron.weekly</tt> file should be owned by the
-appropriate user.</description>
-<ident cce="3833-1" />
-<oval id="20221" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-
-
-<Rule id="userowner_cron.monthly">
-<title>Set user owner on <tt>/etc/cron.monthly</tt></title>
-<description>The <tt>/etc/cron.monthly</tt> file should be owned by the
-appropriate user.</description>
-<ident cce="4441-2" />
-<oval id="20222" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="userowner_cron.d">
-<title>Set user owner on <tt>/etc/cron.d</tt></title>
-<description>The <tt>/etc/cron.d</tt> file should be owned by the
-appropriate user.</description>
-<ident cce="4380-2" />
-<oval id="20223" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="permissions_cron.hourly">
-<title>Set permissions on <tt>/etc/cron.hourly</tt></title>
-<description>File permissions for <tt>/etc/cron.hourly</tt> should be set
-correctly.</description>
-<ident cce="4106-1" />
-<oval id="20224" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="permissions_cron.daily">
-<title>Set permissions on <tt>/etc/cron.daily</tt></title>
-<description>File permissions for <tt>/etc/cron.daily</tt> should be set
-correctly.</description>
-<ident cce="4450-3" />
-<oval id="20225" />
-<ref nist="CM-6, CM-7" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="permissions_cron.weekly">
-<title>Set permissions on <tt>/etc/cron.weekly</tt></title>
-<description>File permissions for <tt>/etc/cron.weekly</tt> should be set
-correctly.</description>
-<ident cce="4203-6" />
-<oval id="20226" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="permissions_cron.monthly">
-<title>Set permissions on <tt>/etc/cron.monthly</tt></title>
-<description>File permissions for <tt>/etc/cron.monthly</tt> should be set
-correctly.</description>
-<ident cce="4251-5" />
-<oval id="20227" />
-<ref nist="AC-3, CM-6" />
-</Rule>
-<Rule id="permissions_cron.d">
-<title>Set permissions on <tt>/etc/cron.d</tt></title>
-<description>File permissions for <tt>/etc/cron.d</tt> should be set
-correctly.</description>
-<ident cce="4250-7" />
-<oval id="20228" />
-<ref nist="AC-3, CM-6" />
-</Rule>
+<!--
+     The crontab files are now covered by the package manager's file check.
+-->
 </Group>
 <Group id="at_service">
 <title>Disable at if Possible</title>
@@ -334,7 +112,7 @@ instead.</description>
 <title>The 'at' daemon should be disabled</title>
 <description>The atd service should be disabled.</description>
 <ident cce="14466-7" />
-<oval id="202052" />
+<oval id="service_atd_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>

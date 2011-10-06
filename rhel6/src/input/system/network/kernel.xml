@@ -26,7 +26,7 @@ Hosts Only</title>
 <description>The default setting for sending ICMP redirects should
 be disabled for network interfaces.</description>
 <ident cce="4151-7" />
-<oval id="20112" />
+<oval id="sysctl_net_ipv4_conf_default_send_redirects" />
 <ref nist="AC-4, SC-5, SC-7" />
 </Rule>
 <Rule id="disable_sysctl_ipv4_all_send_redirects">
@@ -35,7 +35,7 @@ Hosts Only</title>
 <description>Sending ICMP redirects should be disabled for all
 interfaces.</description>
 <ident cce="4155-8" />
-<oval id="20113" />
+<oval id="sysctl_net_ipv4_conf_all_send_redirects" />
 <ref nist="CM-6" />
 </Rule>
 <Rule id="disable_sysctl_ipv4_ip_forward">
@@ -43,7 +43,7 @@ interfaces.</description>
 Only</title>
 <description>IP forwarding should be disabled.</description>
 <ident cce="3561-8" />
-<oval id="20114" />
+<oval id="sysctl_net_ipv4_ip_forward" />
 <ref nist="AC-3, CM-6, CM-7, SC-5" />
 </Rule>
 </Group>
@@ -215,7 +215,7 @@ Hosts and Routers</title>
 <sub idref="var-2.5.1.2.a" />for all interfaces
 as appropriate.</description>
 <ident cce="4236-6" />
-<oval id="20115" />
+<oval id="sysctl_net_ipv4_conf_all_accept_source_route" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -226,7 +226,7 @@ and Routers</title>
 <sub idref="var-2.5.1.2.b" />for all interfaces
 as appropriate.</description>
 <ident cce="4217-6" />
-<oval id="20116" />
+<oval id="sysctl_net_ipv4_conf_all_accept_redirects" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -238,7 +238,7 @@ listed in the default gateways list) should be:
 <sub idref="var-2.5.1.2.c" />for all interfaces
 as appropriate.</description>
 <ident cce="3472-8" />
-<oval id="20117" />
+<oval id="sysctl_net_ipv4_conf_all_secure_redirects" />
 <ref nist="CM-7, AC-4" />
 </Rule>
 
@@ -250,7 +250,7 @@ addresses) should be:
 <sub idref="var-2.5.1.2.d" />for all interfaces
 as appropriate.</description>
 <ident cce="4320-8" />
-<oval id="20118" />
+<oval id="sysctl_net_ipv4_conf_all_log_martians" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -262,7 +262,7 @@ packets should be:
 <sub idref="var-2.5.1.2.e" />for all interfaces
 as appropriate.</description>
 <ident cce="4091-5" />
-<oval id="20119" />
+<oval id="sysctl_net_ipv4_conf_all_accept_source_route" />
 <ref nist="AC-4, SC-5, SC-7" />
 </Rule>
 
@@ -274,7 +274,7 @@ should be:
 <sub idref="var-2.5.1.2.f" />for all interfaces
 as appropriate.</description>
 <ident cce="4186-3" />
-<oval id="20120" />
+<oval id="sysctl_net_ipv4_conf_default_accept_redirects" />
 <ref nist="AC-4, SC-5, SC-7" />
 </Rule>
 
@@ -287,7 +287,7 @@ should be:
 <sub idref="var-2.5.1.2.g" />for all interfaces
 as appropriate.</description>
 <ident cce="3339-9" />
-<oval id="20121" />
+<oval id="sysctl_net_ipv4_conf_default_secure_redirects" />
 <ref nist="AC-4, SC-5, SC-7" />
 </Rule>
 
@@ -299,7 +299,7 @@ Hosts and Routers</title>
 <sub idref="var-2.5.1.2.h" />for all interfaces
 as appropriate.</description>
 <ident cce="3644-2" />
-<oval id="20122" />
+<oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" />
 <ref nist="AC-3, CM-6, CM-7, SC-5" />
 </Rule>
 
@@ -311,7 +311,7 @@ Hosts and Routers</title>
 <sub idref="var-2.5.1.2.i" />for all interfaces
 as appropriate.</description>
 <ident cce="4133-5" />
-<oval id="20123" />
+<oval id="sysctl_net_ipv4_icmp_ignore_bogus_error_messages" />
 <ref nist="AC-3, CM-6, CM-7, SC-5" />
 </Rule>
 
@@ -322,7 +322,7 @@ Routers</title>
 <sub idref="var-2.5.1.2.j" />for all interfaces
 as appropriate.</description>
 <ident cce="4265-5" />
-<oval id="20124" />
+<oval id="sysctl_net_ipv4_tcp_syncookies" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
@@ -334,7 +334,7 @@ be:
 <sub idref="var-2.5.1.2.k" />for all interfaces
 as appropriate.</description>
 <ident cce="4080-8" />
-<oval id="20125" />
+<oval id="sysctl_net_ipv4_conf_all_rp_filter" />
 <ref nist="AC-4, SC-5, SC-7" />
 </Rule>
 
@@ -346,7 +346,7 @@ by reverse path should be:
 <sub idref="var-2.5.1.2.l" />for all interfaces
 as appropriate.</description>
 <ident cce="3840-6" />
-<oval id="20126" />
+<oval id="sysctl_net_ipv4_conf_default_rp_filter" />
 <ref nist="AC-4, SC-5, SC-7" />
 </Rule>
 </Group>

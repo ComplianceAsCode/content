@@ -78,7 +78,7 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 <title>Verify <tt>ip6tables</tt> is enabled</title>
 <description>The <tt>ip6tables</tt> service should be enabled.</description>
 <ident cce="4167-3" />
-<oval id="20146" />
+<oval id="service_ip6tables_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
@@ -86,7 +86,7 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 <title>Verify <tt>iptables</tt> is enabled</title>
 <description>The <tt>iptables</tt> service should be enabled.</description>
 <ident cce="4189-7" />
-<oval id="20147" />
+<oval id="service_iptables_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
@@ -141,7 +141,7 @@ should be set appropriately</title>
 <description>Change the default policy to DROP (from ACCEPT) for
 the INPUT built-in chain.</description>
 <ident cce="14264-6" />
-<oval id="201474" />
+<oval id="iptables_default_policy_drop" />
 <ref nist="AC-4, CM-6" />
 </Rule>
 </Group>

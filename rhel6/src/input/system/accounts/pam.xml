@@ -163,7 +163,7 @@ passwords</warning>
 <description>The password retry should meet minimum
 requirements</description>
 <ident cce="15054-0" />
-<oval id="200781" />
+<oval id="accounts_password_pam_cracklib_retry" />
 <ref nist="IA-5" />
 </Rule>
 
@@ -173,17 +173,17 @@ a minimum number of digits</title>
 <description>The password dcredit should meet minimum
 requirements</description>
 <ident cce="14113-5" />
-<oval id="141130" />
+<oval id="accounts_password_pam_cracklib_dcredit" />
 <ref nist="IA-5" />
 </Rule>
 
-<Rule id="password_require_digits">
+<Rule id="password_require_uppercases">
 <title>The password strength parameters should require
 a minimum number of uppercase characters</title>
 <description>The password ucredit should meet minimum
 requirements</description>
 <ident cce="14672-0" />
-<oval id="200784" />
+<oval id="accounts_password_pam_cracklib_ucredit" />
 <ref nist="IA-5" />
 </Rule>
 
@@ -193,7 +193,7 @@ a minimum number of special characters</title>
 <description>The password strenght parameters should require a
 minimum number of special characters</description>
 <ident cce="14122-6" />
-<oval id="200785" />
+<oval id="accounts_password_pam_cracklib_ocredit" />
 <ref nist="IA-5" />
 </Rule>
 
@@ -202,7 +202,7 @@ minimum number of special characters</description>
 <description>The password strenght parameters should require a
 minimum number of lowercase characters</description>
 <ident cce="14712-4" />
-<oval id="200786" />
+<oval id="accounts_password_pam_cracklib_lcredit" />
 <ref nist="IA-5" />
 </Rule>
 
@@ -213,7 +213,7 @@ characters</title>
 <description>The password difok should meet minimum
 requirements</description>
 <ident cce="14701-7" />
-<oval id="200787" />
+<oval id="accounts_password_pam_cracklib_difok" />
 <ref nist="IA-5" />
 </Rule>
 </Group>
@@ -284,7 +284,7 @@ risk.</warning>
 <description>The deny policy should meet minimum
 requirements.</description>
 <ident cce="3410-8" />
-<oval id="200801" />
+<oval id="accounts_passwords_pam_tally2_deny" />
 <ref nist="AC-7, CM-6" />
 </Rule>
 </Group>
@@ -322,7 +322,7 @@ algorithm</description>
 <description>The password hashing algorithm should be set to
 SHA-512</description>
 <ident cce="14063-2" />
-<oval id="20083" />
+<oval id="accounts_password_hashing_algorithm" />
 <ref nist="IA-5" />
 </Rule>
 </Group>
@@ -359,7 +359,7 @@ frequently.</description>
 <description>The passwords to remember should be set to:
 <sub idref="var-2.3.3.6.a" /></description>
 <ident cce="14939-3" />
-<oval id="20084" />
+<oval id="accounts_password_reuse_limit" />
 <ref nist="IA-5" />
 </Rule>
 </Group>

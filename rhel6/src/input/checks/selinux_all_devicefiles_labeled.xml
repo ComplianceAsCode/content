@@ -1,14 +1,14 @@
 <def-group>
   <definition class="compliance"
-  id="mount_options_var_tmp_bind_var" version="1">
+  id="selinux_all_devicefiles_labeled" version="1">
     <metadata>
-      <title>Bind mount the /var/tmp directory to /var</title>
+      <title>Check for Unconfined Daemons</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 5</platform>
       </affected>
-      <reference ref_id="CCE-14584-7" source="CCE" />
-      <description>Bind mount the /var/tmp directory to
-      /var</description>
+      <reference ref_id="CCE-14991-4" source="CCE" />
+      <description>Check for device file that is not
+      labeled.</description>
     </metadata>
     <criteria>
       <criterion comment="Unknown test stub"

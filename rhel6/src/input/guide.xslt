@@ -4,7 +4,7 @@
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('profiles/desktop.xml')" />
+      <!--<xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
       <xsl:apply-templates select="document('intro/intro.xml')" />
       <xsl:apply-templates select="document('system/system.xml')" />
       <xsl:apply-templates select="document('services/services.xml')" />

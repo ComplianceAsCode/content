@@ -32,7 +32,7 @@ operator="equals" interactive="0">
 <description>The daemon umask should be set as
 appropriate</description>
 <ident cce="4220-0" />
-<oval id="20053" />
+<oval id="umask_for_daemons" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 </Group>
@@ -70,7 +70,7 @@ value of 0 is recommended.</description>
 <description>Core dumps for all users should be
 disabled</description>
 <ident cce="4225-9" />
-<oval id="20055" />
+<oval id="core_dumps_limitsconf" />
 <ref nist="SC-5" />
 </Rule>
 
@@ -80,7 +80,7 @@ disabled</description>
 <description>Core dumps for setuid programs should be
 disabled</description>
 <ident cce="4247-3" />
-<oval id="20056" />
+<oval id="core_dump_suid_progs_limitsconf" />
 <ref nist="SI-11" />
 </Rule>
 </Group>
@@ -110,7 +110,7 @@ in which execution should not occur, so follow guidance in Section
 <title>Enable ExecShield</title>
 <description>ExecShield should be enabled</description>
 <ident cce="4168-1" />
-<oval id="20057" />
+<oval id="sysctl_kernel_execshield" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -126,7 +126,7 @@ more difficult for an attacker to know the
 location of existing code in order to re-purpose it via ROP.
 </rationale>
 <ident cce="4146-7" />
-<oval id="20058" />
+<oval id="sysctl_kernel_randomize_va_space" />
 <ref nist="AC-3, CM-6" />
 </Rule>
 </Group>
@@ -172,7 +172,6 @@ this may prevent them from booting.</warning>
 <description>Kernel support for the XD/NX processor feature should
 be enabled</description>
 <ident cce="4172-3" />
-<oval id="20059" />
 <ref nist="CM-7" />
 </Rule>
 </Group>

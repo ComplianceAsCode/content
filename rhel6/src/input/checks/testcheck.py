@@ -73,14 +73,13 @@ def main():
             if element.getchildren():
                 ovaltree.append(element)
         # re-map all the element ids from meaningful names to meaningless numbers
-        testtranslator = idtranslate.idtranslator("testing.ini", "oval:scap-security-guide.testing")
+        testtranslator = idtranslate.idtranslator("testids.ini", "oval:scap-security-guide.testing")
         ovaltree = testtranslator.translate(ovaltree)
         (ovalfile, fname) = tempfile.mkstemp(prefix=defname,suffix=".xml")
         os.write(ovalfile, ET.tostring(ovaltree))
         os.close(ovalfile)
-        print "Evaluating with tempfile : " + fname
-        subprocess.call("ls -l " + fname, shell=True)
-		# temporary workaround for fedora/redhat oscap version differences
+        print "Evaluating with OVAL tempfile : " + fname
+	# temporary workaround for fedora/redhat oscap version differences
         (distname, distversion, distcodename) = platform.linux_distribution(full_distribution_name=0)
         if distname == 'redhat':
             subprocess.call("/usr/bin/oscap oval eval --result-file "+ fname + "-results " + fname, shell=True)

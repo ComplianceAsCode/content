@@ -46,7 +46,7 @@ mount options, which is used as temporary storage
 by many programs (sometimes insecurely).
 </rationale>
 <ident cce="14161-4" />
-<oval id="20000" />
+<oval id="mount_tmp_own_partition" />
 <ref nist="CM-6"/>
 </Rule>
 
@@ -64,7 +64,7 @@ It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories, installed by other software packages. 
 </rationale>
 <ident cce="14777-7" />
-<oval id="20002" />
+<oval id="mount_var_own_partition" />
 <ref nist="CM-6"/>
 </Rule>
 
@@ -75,7 +75,7 @@ logical volume</title>
 Ensure that it has its own partition or logical
 volume.</description>
 <ident cce="14011-1" />
-<oval id="20004" />
+<oval id="mount_var_log_own_partition" />
 <ref nist="CM-6, AU-9"/>
 </Rule>
 
@@ -87,7 +87,7 @@ Ensure that it has its own partition or logical volume. Make
 absolutely certain that it is large enough to store all audit logs
 that will be created by the auditing daemon.</description>
 <ident cce="14171-3" />
-<oval id="20005" />
+<oval id="mount_var_log_audit_own_partition" />
 <ref nist="CM-6, AU-9"/>
 </Rule>
 
@@ -100,7 +100,7 @@ from another system such as an NFS server, then creating a separate
 partition is not necessary at this time, and the mountpoint can
 instead be configured later.</description>
 <ident cce="14559-9" />
-<oval id="20006" />
+<oval id="mount_home_own_partition" />
 <ref nist="CM-6"/>
 </Rule>
 </Group>
@@ -127,7 +127,7 @@ This key is necessary to cryptographically verify that packages
 are from Red Hat.
 </rationale>
 <ident cce="14440-2"/>
-<oval id="200065" />
+<oval id="package_rhn_gpgkey_installed" />
 <ref nist="SI-2, SI-7, SC-13"/>
 </Rule>
 
@@ -138,7 +138,7 @@ for scheduled actions. Unless it is actually necessary to schedule
 updates remotely through the RHN website, it is recommended that
 the service be disabled.</description>
 <ident cce="3416-5" />
-<oval id="20007" />
+<oval id="service_rhnsd_disabled" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -157,7 +157,6 @@ To actually install these updates, run:
 # yum update</pre>
 </description>
 <ref nist="SI-2"/>
-<oval id="" />
 </Rule>
 
 <Rule id="disable_yum-updatesd">
@@ -167,7 +166,7 @@ an enterprise environment, and the service may introduce unnecessary
 overhead. When possible, replace this service with a <tt>cron</tt> job
 that calls <tt>yum</tt> directly.</description>
 <ident cce="4218-4" />
-<oval id="20008" />
+<oval id="service_yum-updatesd_disabled" />
 <ref nist="CM-6, CM-7, SI-2"/>
 </Rule>
 
@@ -185,7 +184,7 @@ the <tt>[main]</tt> section:
 gpgcheck=1</pre>
 </description>
 <ident cce="14914-6" />
-<oval id="20010" />
+<oval id="yum_gpgcheck_global_activation" />
 <ref nist="SI-2"/>
 </Rule>
 
@@ -200,7 +199,7 @@ repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:
 gpgcheck=0</pre>
 </description>
 <ident cce="14813-0" />
-<oval id="20011" />
+<oval id="yum_gpgcheck_never_disabled" />
 <ref nist="SI-2"/>
 </Rule>
 </Group>
@@ -231,7 +230,7 @@ Documentation for AIDE, including the quick-start on which this
 advice is based, is available in
 <tt>/usr/share/doc/aide-VERSION</tt></description>
 <ident cce="4209-3" />
-<oval id="20014" />
+<oval id="package_aide_installed" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -245,7 +244,7 @@ could corrupt the RPM database (analogous to attacking the AIDE
 database as described above), this check can still reveal
 modification of important files.</description>
 <ident cce="14931-0" />
-<oval id="200155" />
+<oval id="rpm_verify" />
 <ref nist="SI-7"/>
 </Rule>
 </Group>

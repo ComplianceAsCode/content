@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import sys, os 
-
 import lxml.etree as ET
 
 header = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -72,16 +71,6 @@ def main():
 	# fixup the IDs
 	ET.dump(tree) 
 	sys.exit(0)
-
-def assign_id(element, ids):
-    if element.tag in id_keywords:
-        element.set("id", ids.assign_id(element.tag, element.get("id")))
-        print "assigned element : " + element.get("id")
-    elif element.tag == refElem:
-        element.set(refID,
-                    ids.assign_id(element.get(elemType), element.get(refID)))
-        print "assigned refID element : " + element.get(refID)
-
 
 if __name__ == "__main__":
     main()

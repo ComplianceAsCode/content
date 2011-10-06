@@ -17,7 +17,7 @@ uninstalled as appropriate.</title>
 <description>The <tt>rsyslog</tt> package should be installed or uninstalled
 as appropriate.</description>
 <ident cce="17742-8" />
-<oval id="201480" />
+<oval id="package_rsyslog_installed" />
 <ref nist="AU-2, AU-9, CM-6" />
 </Rule>
 
@@ -26,7 +26,7 @@ as appropriate.</description>
 <description>The <tt>rsyslog</tt> service should be enabled or disabled
 as appropriate.</description>
 <ident cce="17698-2" />
-<oval id="20148" />
+<oval id="service_rsyslog_enabled" />
 <ref nist="AU-2" />
 </Rule>
 
@@ -68,7 +68,7 @@ appropriate user.</title>
 <description>All <tt>rsyslog</tt> log files should be owned by the
 appropriate user.</description>
 <ident cce="17857-4" />
-<oval id="20149" />
+<oval id="rsyslog_files_ownership" />
 <ref nist="AC-3, CM-6" />
 </Rule>
 
@@ -78,7 +78,7 @@ appropriate group.</title>
 <description>All <tt>rsyslog</tt> log files should be owned by the
 appropriate group.</description>
 <ident cce="18240-2" />
-<oval id="20150" />
+<oval id="rsyslog_files_groupownership" />
 <ref nist="AC-3, CM-6" />
 </Rule>
 
@@ -88,7 +88,7 @@ should be set correctly.</title>
 <description>File permissions for all <tt>rsyslog</tt> log files should be
 set correctly.</description>
 <ident cce="18095-0" />
-<oval id="20151" />
+<oval id="rsyslog_files_permissions" />
 <ref nist="AC-3, CM-6" />
 </Rule>
 </Group>
@@ -128,7 +128,7 @@ or not as appropriate</title>
 <description>Rsyslog logs should be sent to a remote loghost or not
 as appropriate</description>
 <ident cce="17248-6" />
-<oval id="20152" />
+<oval id="rsyslog_remote_loghost" />
 <ref nist="AU-2, AU-9" />
 </Rule>
 </Group>
@@ -184,7 +184,7 @@ appropriate</title>
 <description><tt>rsyslog</tt> should accept remote messages or not as
 appropriate</description>
 <ident cce="17639-6" />
-<oval id="20153" />
+<oval id="rsyslog_nolisten" />
 <ref nist="AU-2, AU-9" />
 </Rule>
 </Group>
@@ -220,7 +220,7 @@ used.</description>
 <description>The <tt>logrotate</tt> (<tt>rsyslog</tt> rotater) service should be
 enabled.</description>
 <ident cce="4182-2" />
-<oval id="20154" />
+<oval id="logrotate_rotate_all_files" />
 <ref nist="AU-2, AU-9, CM-6" />
 </Rule>
 </Group>

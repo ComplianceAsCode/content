@@ -21,7 +21,7 @@ enabled.</description>
 <description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
 <ident cce="3918-0" />
-<oval id="20034" />
+<oval id="file_owner_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -30,7 +30,7 @@ root.</description>
 <description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
 <ident cce="3988-3" />
-<oval id="20035" />
+<oval id="file_groupowner_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -39,7 +39,7 @@ root.</description>
 <description>The <tt>/etc/group</tt> file should be owned by
 root.</description>
 <ident cce="3276-3" />
-<oval id="20036" />
+<oval id="file_owner_etc_group" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -48,7 +48,7 @@ root.</description>
 <description>The <tt>/etc/group</tt> file should be owned by
 root.</description>
 <ident cce="3883-6" />
-<oval id="20037" />
+<oval id="file_groupowner_etc_group" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -57,7 +57,7 @@ root.</description>
 <description>The <tt>/etc/gshadow</tt> file should be owned by
 root.</description>
 <ident cce="4210-1" />
-<oval id="20038" />
+<oval id="file_owner_etc_gshadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -66,7 +66,7 @@ root.</description>
 <description>The <tt>/etc/gshadow</tt> file should be owned by
 root.</description>
 <ident cce="4064-2" />
-<oval id="20039" />
+<oval id="file_groupowner_etc_gshadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -75,7 +75,7 @@ root.</description>
 <description>The <tt>/etc/passwd</tt> file should be owned by
 root.</description>
 <ident cce="3958-6" />
-<oval id="20040" />
+<oval id="file_owner_etc_passwd" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -84,7 +84,7 @@ root.</description>
 <description>The <tt>/etc/passwd</tt> file should be owned by
 root.</description>
 <ident cce="3495-9" />
-<oval id="20041" />
+<oval id="file_groupowner_etc_passwd" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -93,7 +93,7 @@ root.</description>
 <description>File permissions for <tt>/etc/shadow</tt> should be set
 correctly.</description>
 <ident cce="4130-1" />
-<oval id="20042" />
+<oval id="file_permissions_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -102,7 +102,7 @@ correctly.</description>
 <description>File permissions for <tt>/etc/group</tt> should be set
 correctly.</description>
 <ident cce="3967-7" />
-<oval id="20043" />
+<oval id="file_permissions_etc_group" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -111,7 +111,7 @@ correctly.</description>
 <description>File permissions for <tt>/etc/gshadow</tt> should be set
 correctly.</description>
 <ident cce="3932-1" />
-<oval id="20044" />
+<oval id="file_owner_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -120,7 +120,7 @@ correctly.</description>
 <description>File permissions for <tt>/etc/passwd</tt> should be set
 correctly.</description>
 <ident cce="3566-7" />
-<oval id="20045" />
+<oval id="file_permission_etc_passwd" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 </Group>
@@ -139,7 +139,7 @@ bit. However, if a directory is used by a particular application,
 consult that application's documentation instead of blindly
 changing modes.</description>
 <ident cce="3399-3" />
-<oval id="20046" />
+<oval id="dir_perms_world_writable_sticky_bits" />
 <ref nist="CM-6"/>
 </Rule>
 
@@ -158,7 +158,7 @@ Also, monitor for recurring world-writable files, as these may be
 symptoms of a misconfigured application or user
 account.</description>
 <ident cce="3795-2" />
-<oval id="20047" />
+<oval id="dir_perms_world_writable_system_owned" />
 <ref nist="CM-6"/>
 </Rule>
 
@@ -166,7 +166,7 @@ account.</description>
 <title>Find Unauthorized SGID System Executables</title>
 <description>The sgid bit should not be set for all files.</description>
 <ident cce="14970-8" />
-<oval id="20048" />
+<oval id="file_permissions_unauthorized_sgid" />
 <ref nist="CM-6"/>
 </Rule>
 
@@ -174,7 +174,7 @@ account.</description>
 <title>Find Unauthorized SUID System Executables</title>
 <description>The suid bit should not be set for all files.</description>
 <ident cce="14340-4" />
-<oval id="20049" />
+<oval id="file_permissions_unauthorized_suid" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -200,7 +200,7 @@ will not cause problems when accounts are created in the future,
 and the problem which led to unowned files should be discovered and
 addressed.</description>
 <ident cce="4223-4" />
-<oval id="20050" />
+<oval id="file_permissions_unowned" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -225,7 +225,7 @@ will not cause problems when accounts are created in the future,
 and the problem which led to unowned files should be discovered and
 addressed.</description>
 <ident cce="3573-3" />
-<oval id="20051" />
+<oval id="file_permissions_ungroupowned" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -250,7 +250,7 @@ undesirable because it allows the owner of that directory to remove
 or replace any files that may be placed in the directory by other
 users.</description>
 <ident cce="14794-2" />
-<oval id="20052" />
+<oval id="dir_perms_world_writable_system_owned" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 </Group>

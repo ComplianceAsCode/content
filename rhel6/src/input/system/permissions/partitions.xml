@@ -14,7 +14,7 @@ any authorized devices. The root partition typically contains the
 <tt>/dev</tt> partition, which is the primary location for authorized
 devices, so this option should not be set on <tt>/</tt>.</description>
 <ident cce="4249-9" />
-<oval id="20016" />
+<oval id="mount_options_nodev_nonroot_local_partitions" />
 <ref nist="CM-6, CM-7, AC-6"/>
 </Rule>
 
@@ -29,7 +29,7 @@ from being executed directly from the media itself, and may
 therefore provide a line of defense against certain types of worms
 or malicious code.</description>
 <ident cce="3522-0" />
-<oval id="20017" />
+<oval id="mount_option_nodev_removable_partitions" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
 
@@ -43,7 +43,7 @@ from being executed directly from the media itself, and may
 therefore provide a line of defense against certain types of worms
 or malicious code.</description>
 <ident cce="4275-4" />
-<oval id="20018" />
+<oval id="mount_option_noexec_removable_partitions" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
 
@@ -57,7 +57,7 @@ from being executed directly from the media itself, and may
 therefore provide a line of defense against certain types of worms
 or malicious code.</description>
 <ident cce="4042-8" />
-<oval id="20019" />
+<oval id="mount_option_nosuid_removable_partitions" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
 </Group>

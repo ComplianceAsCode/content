@@ -5,8 +5,8 @@ xmlns:xhtml="http://www.w3.org/1999/xhtml"
 exclude-result-prefixes="xccdf">
 
   <xsl:variable name="cceuri">http://cce.mitre.org</xsl:variable>
-  <xsl:variable name="ovaluri"> http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
-  <xsl:variable name="ovalpath"> oval:org.scap-security-guide.rhel:def:</xsl:variable>
+  <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
+  <xsl:variable name="ovalpath">oval:org.scap-security-guide.rhel:def:</xsl:variable>
   <xsl:variable name="ovalfile">rhel6-oval.xml</xsl:variable>
 
   <!-- Content:template -->
@@ -46,7 +46,7 @@ exclude-result-prefixes="xccdf">
           <xsl:value-of select="$ovalfile" />
         </xsl:attribute>
         <xsl:attribute name="name">
-          <xsl:value-of select="$ovalpath" />
+          <xsl:value-of select="@id" />
         </xsl:attribute>
       </check-content-ref>
     </check>

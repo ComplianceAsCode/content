@@ -51,14 +51,14 @@ be disabled to improve system security posture.</description>
 <title>Disable nfslock</title>
 <description>The nfslock service should be disabled.</description>
 <ident cce="4396-8" />
-<oval id="20292" />
+<oval id="service_nfslock_disabled" />
 </Rule>
 
 <Rule id="disable_rpcgssc">
 <title>Disable rpcgssd</title>
 <description>The rpcgssd service should be disabled.</description>
 <ident cce="3535-2" />
-<oval id="20293" />
+<oval id="service_rpcgssd_disabled" />
 </Rule>
 
 <Rule id="disable_rpcidmapd">
@@ -66,7 +66,7 @@ be disabled to improve system security posture.</description>
 <description>The rpcidmapd service should be
 disabled.</description>
 <ident cce="3568-3" />
-<oval id="20294" />
+<oval id="service_rpcidmapd_disabled" />
 </Rule>
 </Group>
 
@@ -96,7 +96,7 @@ flaws in the netfs script itself.</description>
 <title>Disable netfs if Possible</title>
 <description>The netfs service should be disabled.</description>
 <ident cce="4533-6" />
-<oval id="20295" />
+<oval id="service_netfs_disabled" />
 </Rule>
 </Group>
 <Group id="disabling_portmap">
@@ -147,7 +147,7 @@ disable them if possible.</description>
 <title>Disable RPC Portmapper if Possible</title>
 <description>The portmap service should be disabled.</description>
 <ident cce="4550-0" />
-<oval id="20296" />
+<oval id="service_portmap_disabled" />
 </Rule>
 </Group>
 </Group>
@@ -171,14 +171,14 @@ clients.</description>
 <title>Disable nfs service</title>
 <description>The nfs service should be disabled</description>
 <ident cce="4473-5" />
-<oval id="20303" />
+<oval id="service_nfs_disabled" />
 </Rule>
 <Rule id="disable_rpcsvcgssd">
 <title>Disable rpcsvcgssd service</title>
 <description>The rpcsvcgssd service should be
 disabled</description>
 <ident cce="4491-7" />
-<oval id="20304" />
+<oval id="service_rpcsvcgssd_disabled" />
 </Rule>
 </Group>
 <Group id="mounting_remote_filesystems">
@@ -200,14 +200,14 @@ extend root-level trust to the NFS server.</description>
 <description>The <tt>nodev</tt> option should be enabled for all NFS
 mounts</description>
 <ident cce="4368-7" />
-<oval id="43680" />
+<oval id="mount_remote_filesystems_nodev" />
 </Rule>
 <Rule id="use_nosuid_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nosuid</title>
 <description>The <tt>nosuid</tt> option should be enabled for all NFS
 mounts</description>
 <ident cce="4024-6" />
-<oval id="20306" />
+<oval id="mount_remote_filesystems_nosuid" />
 </Rule>
 </Group>
 </Group>

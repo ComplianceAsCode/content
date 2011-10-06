@@ -32,7 +32,7 @@ Protocol 2</pre>
 <description>SSH version 1 protocol support should be
 disabled.</description>
 <ident cce="4325-7" />
-<oval id="20238" />
+<oval id="sshd_protocol_2" />
 </Rule>
 </Group>
 <Group id="group-3.5.2.3">
@@ -71,7 +71,7 @@ appropriate value</title>
 <description>The SSH idle timout interval should be set to an
 appropriate value</description>
 <ident cce="3845-5" />
-<oval id="20239" />
+<oval id="sshd_idle_timeout" />
 </Rule>
 
 <Rule id="sshd_set_keepalive">
@@ -80,7 +80,7 @@ to an appropriate value</title>
 <description>The <tt>ClientAliveCountMax</tt> should be set to an
 appropriate value</description>
 <ident cce="14061-6" />
-<oval id="20240" />
+<oval id="sshd_clientalivecountmax" />
 </Rule>
 </Group>
 
@@ -101,7 +101,7 @@ IgnoreRhosts yes</pre>
 <description>Emulation of the rsh command through the ssh server
 should be disabled</description>
 <ident cce="4475-0" />
-<oval id="20241" />
+<oval id="sshd_rsh_emulation_disabled" />
 </Rule>
 </Group>
 
@@ -124,7 +124,7 @@ HostbasedAuthentication no</pre>
 <description>SSH host-based authentication should be
 disabled</description>
 <ident cce="4370-3" />
-<oval id="20242" />
+<oval id="sshd_hostbased_authentication" />
 </Rule>
 </Group>
 <Group id="sshd_disabling_root_login">
@@ -144,7 +144,7 @@ PermitRootLogin no</pre>
 <title>Disable root Login via SSH</title>
 <description>Root login via SSH should be disabled</description>
 <ident cce="4387-7" />
-<oval id="20243" />
+<oval id="sshd_permitrootlogin_no" />
 </Rule>
 </Group>
 <Group id="sshd_disabling_empty_passwords">
@@ -164,7 +164,7 @@ passwords system-wide, as described in Section 2.3.1.5.</description>
 <description>Remote connections from accounts with empty passwords
 should be disabled</description>
 <ident cce="3660-8" />
-<oval id="20244" />
+<oval id="sshd_permitemptypasswords_no" />
 </Rule>
 </Group>
 <Group id="sshd_enabling_warning_banner">
@@ -181,7 +181,7 @@ Banner /etc/issue</pre>
 <title>Enable a Warning Banner</title>
 <description>SSH warning banner should be enabled</description>
 <ident cce="4431-3" />
-<oval id="20245" />
+<oval id="sshd_banner_set" />
 </Rule>
 </Group>
 <Group id="sshd_permitting_user_env">
@@ -197,7 +197,7 @@ PermitUserEnvironment no</pre>
 <title>Do Not Allow Users to Set Environment Options</title>
 <description><tt>PermitUserEnvironment</tt> should be disabled</description>
 <ident cce="4422-2" />
-<oval id="202455" />
+<oval id="sshd_no_user_envset" />
 </Rule>
 </Group>
 <Group id="sshd_using_approved_ciphers">
@@ -213,14 +213,15 @@ Ciphers aes128-ctr,aes192-ctr,aes256-ctr
 The man page <tt>sshd_config(5)</tt> contains a list of the ciphers
 supported for the current release of the SSH daemon.</description>
 
-
+<!--
 <Rule id="sshd_use_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
 <description>Use only FIPS approved ciphers not in CBC
 mode</description>
 <ident cce="14491-5" />
-<oval id="202456" />
+<oval id="sshd_undefined" />
 </Rule>
+-->
 </Group>
 </Group>
 </Group>

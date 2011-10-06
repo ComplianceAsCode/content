@@ -19,11 +19,11 @@ install dccp /bin/true
 The Datagram Congestion Control Protocol (DCCP) is a
 relatively new transport layer protocol, designed to support
 streaming media and telephony.</description>
-<Rule id="rule-2.5.7.1.a">
+<Rule id="disable_network_protocol_dccp">
 <title>Disable Support for DCCP</title>
 <description>Support for DCCP should be disabled.</description>
 <ident cce="14268-7" />
-<oval id="201476" />
+<oval id="kernel_module_dccp_disabled" />
 </Rule>
 </Group>
 
@@ -44,7 +44,7 @@ within one connection.</description>
 <title>Disable Support for SCTP</title>
 <description>Support for SCTP should be disabled.</description>
 <ident cce="14132-5" />
-<oval id="201477" />
+<oval id="kernel_module_sctp_disabled" />
 </Rule>
 </Group>
 
@@ -60,15 +60,15 @@ install rds /bin/true
 The Reliable Datagram Sockets (RDS) protocol is a transport
 layer protocol designed to provide reliable high- bandwidth,
 low-latency communications between nodes in a cluster.</description>
-<Rule id="rule-2.5.7.3.a">
+<Rule id="disable_network_protocol_rds">
 <title>Disable Support for RDS</title>
 <description>Support for RDS should be disabled.</description>
 <ident cce="14027-7" />
-<oval id="201478" />
+<oval id="kernel_module_rds_disabled" />
 </Rule>
 </Group>
 
-<Group id="group-2.5.7.4">
+<Group id="disable_network_protocol_tipc_group">
 <title>Disable Support for TIPC</title>
 <description>To prevent the TIPC kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
@@ -80,11 +80,11 @@ install rds /bin/true
 The Transparent Inter-Process Communication (TIPC) protocol
 is designed to provide communications between nodes in a
 cluster.</description>
-<Rule id="rule-2.5.7.4.a">
+<Rule id="disable_network_protocol_tipc">
 <title>Disable Support for TIPC</title>
 <description>Support for TIPC should be disabled.</description>
 <ident cce="14911-2" />
-<oval id="201479" />
+<oval id="kernel_module_tipc_disabled" />
 </Rule>
 </Group>
 </Group>
