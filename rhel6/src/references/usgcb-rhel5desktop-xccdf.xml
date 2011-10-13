@@ -32,7 +32,9 @@
 		<dc:contributor>Rob Hollis</dc:contributor>
 		<dc:contributor>Matthew Kerr</dc:contributor>
 		<dc:contributor>Murugiah Souppaya</dc:contributor>
+		<dc:contributor>Miloslav Trmac</dc:contributor>
 		<dc:contributor>Stephen Quinn</dc:contributor>
+		<dc:contributor>Peter Vrabec</dc:contributor>
 		<dc:source>http://usgcb.nist.gov</dc:source>
 	</metadata>
 	<model system="urn:xccdf:scoring:default"/>
@@ -115,6 +117,7 @@
 		<select idref="usgcb-rhel5desktop-rule-2.3.1.8.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.3.1.8.b" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.3.1.8.c" selected="true"/>
+		<select idref="usgcb-rhel5desktop-rule-2.3.1.9.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.3.3.1.1.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.3.3.1.1.c" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.3.3.1.1.d" selected="true"/>
@@ -145,7 +148,6 @@
 		<select idref="usgcb-rhel5desktop-rule-2.3.7.1.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.3.7.2.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.4.2.a" selected="true"/>
-		<select idref="usgcb-rhel5desktop-rule-2.4.2.b" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.4.2.c" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.4.2.d" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-2.4.3.2.a" selected="true"/>
@@ -213,7 +215,6 @@
 		<select idref="usgcb-rhel5desktop-rule-3.2.5.b" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-3.3.4.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-3.3.5.a" selected="true"/>
-		<select idref="usgcb-rhel5desktop-rule-3.3.7.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-3.3.9.3.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-3.3.12.a" selected="true"/>
 		<select idref="usgcb-rhel5desktop-rule-3.3.12.b" selected="true"/>
@@ -312,7 +313,7 @@
 		<!-- Permissions for passwd -->
 		<refine-value idref="usgcb-rhel5desktop-var-2.2.4.1.a" selector="027"/>
 		<!-- daemon umask -->
-		<refine-value idref="usgcb-rhel5desktop-var-2.3.1.7.a" selector="14"/>
+		<refine-value idref="usgcb-rhel5desktop-var-2.3.1.7.a" selector="12"/>
 		<!-- password minimum length -->
 		<!-- maximum password age -->
 		<!-- password warn age -->
@@ -322,11 +323,11 @@
 		<!-- Minimum number of characters in password -->
 		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.dcredit" selector="1"/>
 		<!-- Mininum number of digits in password -->
-		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.ucredit" selector="2"/>
+		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.ucredit" selector="1"/>
 		<!-- Mininum number of upper case in password -->
-		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.ocredit" selector="2"/>
+		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.ocredit" selector="1"/>
 		<!-- Mininum number of other (special characters) in password< -->
-		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.lcredit" selector="2"/>
+		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.lcredit" selector="1"/>
 		<!-- Mininum number of lower case in password -->
 		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.1.1.difok" selector="3"/>
 		<!-- Mininum number of characters not present in old password -->
@@ -335,7 +336,7 @@
 		<!-- userhelper file permissions -->
 		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.5.a" selector="SHA-512"/>
 		<!-- Password hashing algorithm -->
-		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.6.a" selector="5"/>
+		<refine-value idref="usgcb-rhel5desktop-var-2.3.3.6.a" selector="24"/>
 		<!-- Passwords to remember -->
 		<refine-value idref="usgcb-rhel5desktop-var-2.3.4.4" selector="077"/>
 		<!-- Sensible umask -->
@@ -345,7 +346,7 @@
 		<!-- permissions on /etc/hrub.conf -->
 		<refine-value idref="usgcb-rhel5desktop-var-2.3.5.5" selector="15_minutes"/>
 		<!-- Inactivity timout -->
-		<refine-value idref="usgcb-rhel5desktop-var-2.3.7" selector="ANY_text"/>
+		<refine-value idref="usgcb-rhel5desktop-var-2.3.7" selector="usgcb_default"/>
 		<!-- login banner verbiage -->
 		<refine-value idref="usgcb-rhel5desktop-var-2.4.2.c" selector="enforcing"/>
 		<!-- SELinux state -->
@@ -395,7 +396,7 @@
 		<!-- group owner of cron.hourly cron.daily cron.weekly cron.monthly cron.d -->
 		<refine-value idref="usgcb-rhel5desktop-var-3.4.2.system.crontab.directories.user" selector="root"/>
 		<!-- permissions on cron.hourly cron.daily cron.weekly cron.monthly cron.d -->
-		<refine-value idref="usgcb-rhel5desktop-var-3.5.2.3.a" selector="5_minutes"/>
+		<refine-value idref="usgcb-rhel5desktop-var-3.5.2.3.a" selector="15_minutes"/>
 	</Profile>
 	<!-- ==================================================================================================== -->
 	<!-- ========================================  SECURITY GUIDANCE  ======================================= -->
@@ -1468,6 +1469,7 @@
 						<!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
 						<value selector="8">8</value>
 						<value selector="10">10</value>
+						<value selector="12">12</value>
 						<value selector="14">14</value>
 					</Value>
 					<Rule id="usgcb-rhel5desktop-rule-2.3.1.7.a" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
@@ -1545,8 +1547,8 @@
 						<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" selector="">
 							<check-content-ref href="usgcb-rhel5desktop-oval.xml" name="oval:gov.nist.usgcb.rhel:def:20076"/>
 						</check>
-					</Rule>
-					<Rule id="usgcb-rhel5desktop-rule-2.3.1.8.c" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
+					</Rule>	
+				<Rule id="usgcb-rhel5desktop-rule-2.3.1.8.c" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
 						<status date="2010-07-01">accepted</status>
 						<version update="1"/>
 						<title override="0">CCE-4114-5:Remove Legacy + Entries from /etc/passwd</title>
@@ -1558,6 +1560,19 @@
 						</check>
 					</Rule>
 				</Group>
+			</Group>
+			<Group id="usgcb-rhel5desktop-group-2.3.1.9" hidden="false" prohibitChanges="false" abstract="false" selected="true" weight="1.0">
+				<title xml:lang="en-US" override="0">Set Accounts to Disable After Password Expiration</title>
+				<description xml:lang="en-US" override="0">The /etc/default/useradd file contains the INACTIVE configuration option. For example, when INACTIVE = 30 and the password is on the verge of expiration, then 30 days remain before the account will become automatically disabled.</description>
+				<Rule id="usgcb-rhel5desktop-rule-2.3.1.9.a" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
+					<version update="1"/>
+					<title override="0">User accounts may or may not be inactivated a specified number of days after account expiration.</title>
+					<description override="0">/etc/default/useradd shouls set INACTIVE=30</description>
+					<ident system="http://cce.mitre.org">CCE-18412-7</ident>
+					<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" selector="">
+						<check-content-ref href="usgcb-rhel5desktop-oval.xml" name="oval:gov.nist.usgcb.rhel:def:99900"/>
+					</check>
+				</Rule>
 			</Group>
 			<Group id="usgcb-rhel5desktop-group-2.3.3" hidden="false" prohibitChanges="false" abstract="false" selected="true" weight="1.0">
 				<title xml:lang="en-US" override="0">Protect Accounts by Configuring PAM</title>
@@ -1837,6 +1852,7 @@
 						<value selector="0">0</value>
 						<value selector="5">5</value>
 						<value selector="10">10</value>
+						<value selector="24">24</value>
 					</Value>
 					<Rule id="usgcb-rhel5desktop-rule-2.3.3.6.a" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
 						<status date="2010-07-01">draft</status>
@@ -2278,6 +2294,18 @@
 					<description xml:lang="en-US" override="0">Enter an appropriate login banner for your
 					organization</description>
 					<value selector="any_text">.+</value>
+					<value selector="usgcb_default">
+-- WARNING --
+This system is for the use of authorized users only. Individuals
+using this computer system without authority or in excess of their
+authority are subject to having all their activities on this system
+monitored and recorded by system personnel. Anyone using this
+system expressly consents to such monitoring and is advised that
+if such monitoring reveals possible evidence of criminal activity
+system personal may provide the evidence of such monitoring to law
+enforcement officials.
+
+</value>
 				</Value>
 				<Group id="usgcb-rhel5desktop-group-2.3.7.1" hidden="false" prohibitChanges="false" abstract="false" selected="true" weight="1.0">
 					<title xml:lang="en-US" override="0">Modify the System Login Banner</title>
@@ -2872,26 +2900,15 @@
 					support for automatic configuration of many network settings.</description>
 				<Group id="usgcb-rhel5desktop-group-2.5.3.1" hidden="false" prohibitChanges="false" abstract="false" selected="true" weight="1.0">
 					<title xml:lang="en-US" override="0">Disable Support for IPv6 unless Needed</title>
-					<description xml:lang="en-US" override="0"> Because the IPv6 networking code is relatively
-						new and complex, it is particularly important that it be disabled unless
-						needed. Despite configuration that suggests support for IPv6 has been
-						disabled, link-local IPv6 address autoconfiguration occurs even when only an
-						IPv4 address is assigned. The only way to effectively prevent execution of
-						the IPv6 networking stack is to prevent the kernel from loading the IPv6
-						kernel module.</description>
-					<Group id="usgcb-rhel5desktop-group-2.5.3.1.1" hidden="false" prohibitChanges="false" abstract="false" selected="true" weight="1.0">
-						<title xml:lang="en-US" override="0">Disable Automatic Loading of IPv6 Kernel
-							Module</title>
-						<description xml:lang="en-US" override="0"> To prevent the IPv6 kernel module (ipv6) from
-							being loaded, add the following line to /etc/modprobe.conf: <xhtml:br/><xhtml:br/> install ipv6 /bin/true <xhtml:br/><xhtml:br/> When the kernel requests the ipv6 module, this line will
-							direct the system to run the program /bin/true instead.</description>
+					<description xml:lang="en-US" override="0">As with any networking protocol, IPv6 should be disabled unless needed.</description>
+					<Group id="usgcb-rhel5desktop-group-2.5.3.1.3" hidden="false" prohibitChanges="false" abstract="false" selected="true" weight="1.0">
+						<title xml:lang="en-US" override="0">Disable Functionality of IPv6 Kernel Module Through Option</title>
+						<description xml:lang="en-US" override="0">To prevent activation of IPv6 addresses, add the following line to /etc/modprobe.conf: <xhtml:br/><xhtml:br/> options ipv6 disable=1</description>
 						<Rule id="usgcb-rhel5desktop-rule-2.5.3.1.1.a" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
-							<status date="2010-07-01">accepted</status>
 							<version update="1"/>
-							<title override="0">CCE-3562-6:Disable Automatic Loading of IPv6 Kernel Module</title>
-							<description override="0">Automatic loading of the IPv6 kernel module should be
-								disabled.</description>
-							<ident system="http://cce.mitre.org">CCE-3562-6</ident>
+							<title override="0">The IPv6 protocol should be enabled or disabled as appropriate.</title>
+							<description override="0">The IPv6 protocol should be enabled or disabled as appropriate.</description>
+							<ident system="http://cce.mitre.org">CCE-18455-6</ident>
 							<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" selector="">
 								<check-content-ref href="usgcb-rhel5desktop-oval.xml" name="oval:gov.nist.usgcb.rhel:def:20130"/>
 							</check>
@@ -3463,7 +3480,7 @@
 						<description xml:lang="en-US" override="0"> Add the following to /etc/audit/audit.rules,
 							setting ARCH to either b32 or b64 as appropriate for your system:<xhtml:br/><xhtml:br/> -a always,exit -F arch=ARCH -S adjtimex -S settimeofday -S
 							stime -k time-change<xhtml:br/> -a always,exit -F arch=ARCH -S
-							clock_settime -k time-change<xhtml:br/> -w /etc/localtime -p wa -k
+							clock_settime -F a0=0 -k time-change<xhtml:br/> -w /etc/localtime -p wa -k
 							time-change </description>
 						<Rule id="usgcb-rhel5desktop-rule-2.6.2.4.1.a" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
 							<status date="2010-07-01">draft</status>
@@ -4457,6 +4474,7 @@
 						<value selector="">300</value>
 						<value selector="5_minutes">300</value>
 						<value selector="10_minutes">600</value>
+						<value selector="15_minutes">900</value>
 					</Value>
 					<Rule id="usgcb-rhel5desktop-rule-3.5.2.3.a" selected="false" weight="10.0" prohibitChanges="false" abstract="false" hidden="false" role="full" severity="unknown">
 						<status date="2010-07-01">accepted</status>

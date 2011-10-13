@@ -68,7 +68,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14161-4" source="CCE"/>
-				<description>The /tmp directory is a world-writable directory used for temporary file storage. Verify that it has its own partition or logical volume.</description>
+				<description>The /tmp directory is a world-writable directory used for temporary ﬁle storage. Verify that it has its own partition or logical volume.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20000" comment="Check in /etc/fstab for a /tmp mount point"/>
@@ -92,7 +92,7 @@
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20004" version="1">
 			<metadata>
-				<title>Ensure that /var/log has its own partition or logical volum</title>
+				<title>Ensure that /var/log has its own partition or logical volume</title>
 				<affected family="unix">
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
@@ -129,7 +129,7 @@
 				<description>If user home directories will be stored locally, create a separate 
                               partition for /home. If /home will be mounted from another system such as an NFS server, then 
                               creating a separate partition is not necessary at this time, and the mountpoint can 
-                              instead be configured later.</description>
+                              instead be conﬁgured later.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20006" comment="Check in /etc/fstab for a /home mount point"/>
@@ -210,7 +210,7 @@
 				</affected>
 				<reference ref_id="CCE-14813-0" source="CCE"/>
 				<description>To ensure that signature checking is not disabled for any repos, ensure that the following line DOES NOT
-                              appear in any repo configuration files in /etc/yum.repos.d or elsewhere</description>
+                              appear in any repo conﬁguration ﬁles in /etc/yum.repos.d or elsewhere</description>
 			</metadata>
 			<criteria>
 				<criterion comment="check value of gpgcheck=0 in /etc/yum.repos.d/*" test_ref="oval:gov.nist.usgcb.rhel:tst:20011" negate="true"/>
@@ -236,8 +236,8 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14931-0" source="CCE"/>
-				<description>>Verify the integrity of installed packages by comparing the installed files with 
-                              information about the files taken from the package metadata stored in the RPM
+				<description>>Verify the integrity of installed packages by comparing the installed ﬁles with 
+                              information about the ﬁles taken from the package metadata stored in the RPM
                               database.</description>
 			</metadata>
 			<criteria>
@@ -254,8 +254,7 @@
 				<description>The nodev option should be enabled for all non-root partitions.</description>
 			</metadata>
 			<criteria>
-				<!--<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20016" comment="Check options for nodev in /etc/fstab for all non-root partitions"/>
-				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:200162" comment="Check options for nodev in /etc/mtab for all non-root partitions"/>-->
+				<!--<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:200162" comment="Check options for nodev in /etc/mtab for all non-root partitions"/>-->
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:42490" comment="unknown test stub"/>
 			</criteria>
 		</definition>
@@ -308,7 +307,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14089-7" source="CCE"/>
-				<description>prevents usage of this uncommon filesystems.</description>
+				<description>prevents usage of this uncommon ﬁlesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20027" comment="check for cramfs"/>
@@ -322,7 +321,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14457-6" source="CCE"/>
-				<description>prevents usage of this uncommon filesystems.</description>
+				<description>prevents usage of this uncommon ﬁlesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20028" comment="check for freevxfs"/>
@@ -336,7 +335,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14853-6" source="CCE"/>
-				<description>prevents usage of this uncommon filesystems.</description>
+				<description>prevents usage of this uncommon ﬁlesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20029" comment="check for jffs2"/>
@@ -350,7 +349,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-15087-0" source="CCE"/>
-				<description>prevents usage of this uncommon filesystems.</description>
+				<description>prevents usage of this uncommon ﬁlesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20030" comment="check for hfs"/>
@@ -364,7 +363,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14093-9" source="CCE"/>
-				<description>prevents usage of this uncommon filesystems.</description>
+				<description>prevents usage of this uncommon ﬁlesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20031" comment="check for hfsplus"/>
@@ -378,7 +377,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14118-4" source="CCE"/>
-				<description>prevents usage of this uncommon filesystems.</description>
+				<description>prevents usage of this uncommon ﬁlesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20032" comment="check for squashfs"/>
@@ -392,7 +391,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14871-8" source="CCE"/>
-				<description>prevents usage of this uncommon filesystems.</description>
+				<description>prevents usage of this uncommon ﬁlesystems.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20033" comment="check for udf"/>
@@ -564,9 +563,8 @@
 				<reference ref_id="CCE-3399-3" source="CCE"/>
 				<description>The sticky bit should be set for all world-writable directories.</description>
 			</metadata>
-			<criteria operator="OR">
-				<criterion comment="Check all directories are world writable and they have the sticky bit set" test_ref="oval:gov.nist.usgcb.rhel:tst:200461"/>
-				<criterion comment="Check all directories are not world writable" test_ref="oval:gov.nist.usgcb.rhel:tst:200462"/>
+			<criteria>
+				<criterion comment="Check all directories and make sure they are either not world writable or if they are they have the sticky bit set" test_ref="oval:gov.nist.usgcb.rhel:tst:20046"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20047" version="1">
@@ -579,8 +577,8 @@
 				<description>The world-write permission should be disabled for all files.</description>
 			</metadata>
 			<criteria>
-				<!-- Need a way to add exceptions to a list somehow -->
-				<criterion comment="Check all files and make sure they are not world writable" test_ref="oval:gov.nist.usgcb.rhel:tst:20047" negate="true"/>
+				<!-- Need a way to add exceptions to a list somehow (can add another filter to obj:20047, depending on a variable) -->
+				<criterion comment="Check all (regular) files and make sure they are not world writable" test_ref="oval:gov.nist.usgcb.rhel:tst:20047"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20048" version="1">
@@ -590,10 +588,10 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14970-8" source="CCE"/>
-				<description>The sgid bit should be not set for all executable files.</description>
+				<description>The sgid bit should be set only for specified files.</description>
 			</metadata>
 			<criteria>
-				<criterion comment="Check all files and make sure they do not have sgid set" test_ref="oval:gov.nist.usgcb.rhel:tst:20048" negate="true"/>
+				<criterion comment="Check all files and make sure only authorized files have sgid set" test_ref="oval:gov.nist.usgcb.rhel:tst:20048"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20049" version="1">
@@ -603,10 +601,10 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14340-4" source="CCE"/>
-				<description>The suid bit should be not set for all files.</description>
+				<description>The suid bit should be set only for specified files.</description>
 			</metadata>
 			<criteria>
-				<criterion comment="Check all files and make sure they do not have suid set" test_ref="oval:gov.nist.usgcb.rhel:tst:20049" negate="true"/>
+				<criterion comment="Check all files and make sure only authorized files have suid set" test_ref="oval:gov.nist.usgcb.rhel:tst:20049"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20050" version="1">
@@ -619,7 +617,7 @@
 				<description>All files should be owned by a user</description>
 			</metadata>
 			<criteria>
-				<criterion comment="Check all files and make sure they are owned by a user" test_ref="oval:gov.nist.usgcb.rhel:tst:20050" negate="true"/>
+				<criterion comment="Check all files and make sure they are owned by a user" test_ref="oval:gov.nist.usgcb.rhel:tst:20050"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20051" version="1">
@@ -632,7 +630,7 @@
 				<description>All files should be owned by a group</description>
 			</metadata>
 			<criteria>
-				<criterion comment="Check all files and make sure they are owned by a group" test_ref="oval:gov.nist.usgcb.rhel:tst:20051" negate="true"/>
+				<criterion comment="Check all files and make sure they are owned by a group" test_ref="oval:gov.nist.usgcb.rhel:tst:20051"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20052" version="1">
@@ -645,7 +643,7 @@
 				<description>All world writable directories should be owned by a system user</description>
 			</metadata>
 			<criteria>
-				<criterion comment="Check all directories are not world writable or owned by a user with uid less than 500" test_ref="oval:gov.nist.usgcb.rhel:tst:20052" negate="true"/>
+				<criterion comment="Check all directories are not world writable or owned by a user with uid less than 500" test_ref="oval:gov.nist.usgcb.rhel:tst:20052"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20053" version="1">
@@ -791,7 +789,7 @@
 				<description>Login access to non-root system accounts should be disabled</description>
 			</metadata>
 			<criteria>
-				<criterion comment="check /etc/passwd for /sbin/nologin on non root system accounts" test_ref="oval:gov.nist.usgcb.rhel:tst:20068" negate="true"/>
+				<criterion comment="check /etc/passwd for /sbin/nologin on non root system accounts" test_ref="oval:gov.nist.usgcb.rhel:tst:20068"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20069" version="1">
@@ -1087,8 +1085,8 @@
 				<description>File permissions should be set correctly for the home directories for all user accounts.</description>
 			</metadata>
 			<criteria comment="Both criterion are negated to get desired result">
-				<criterion comment="Home directories are group writable" test_ref="oval:gov.nist.usgcb.rhel:tst:200861"/>
-				<criterion comment="Home directories are world readable" test_ref="oval:gov.nist.usgcb.rhel:tst:200862"/>
+				<criterion comment="Home directories are group writable" test_ref="oval:gov.nist.usgcb.rhel:tst:200861" negate="true"/>
+				<criterion comment="Home directories are world readable" test_ref="oval:gov.nist.usgcb.rhel:tst:200862" negate="true"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20087" version="1">
@@ -1150,7 +1148,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-4144-2" source="CCE"/>
-				<description>The /etc/grub.conf file should be owned by the appropriate user.</description>
+				<description>The /boot/grub/grub.conf file should be owned by the appropriate user.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20092"/>
@@ -1163,7 +1161,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-4197-0" source="CCE"/>
-				<description>The /etc/grub.conf file should be owned by the appropriate group.</description>
+				<description>The /boot/grub/grub.conf file should be owned by the appropriate group.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20093"/>
@@ -1176,7 +1174,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-3923-0" source="CCE"/>
-				<description>File permissions for /etc/grub.conf should be set correctly.</description>
+				<description>File permissions for /boot/grub/grub.conf should be set correctly.</description>
 			</metadata>
 			<criteria>
 				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20094"/>
@@ -1270,7 +1268,7 @@
 				<description>The screen saver should be blank.</description>
 			</metadata>
 			<criteria>
-				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:201007"/>
+				<criterion comment="check value of mode in GCONF" test_ref="oval:gov.nist.usgcb.rhel:tst:201007"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20101" version="1">
@@ -1410,7 +1408,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14991-4" source="CCE"/>
-				<description>Check for device file that is not labeled.</description>
+				<description>Check for device ﬁle that is not labeled.</description>
 			</metadata>
 			<criteria>
 				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:22"/>
@@ -1620,23 +1618,22 @@
 				<reference ref_id="CCE-4276-2" source="CCE"/>
 				<description>All wireless interfaces should be disabled.</description>
 			</metadata>
-			<criteria>
-				<criterion comment="Find wireless interfaces" test_ref="oval:gov.nist.usgcb.rhel:tst:20128"/>
-				<criterion comment="The file /proc/net/wireless exists" test_ref="oval:gov.nist.usgcb.rhel:tst:42760"/>
+			<criteria operator="OR">
+				<criterion comment="No wireless interfaces exist" test_ref="oval:gov.nist.usgcb.rhel:tst:20128"/>
+				<criterion comment="The file /proc/net/wireless does not exist" test_ref="oval:gov.nist.usgcb.rhel:tst:42760"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20130" version="1">
 			<metadata>
-				<title>Disable Automatic Loading of IPv6 Kernel Module</title>
+				<title>Disable IPv6 address assignment</title>
 				<affected family="unix">
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
-				<reference ref_id="CCE-3562-6" source="CCE"/>
-				<description>Automatic loading of the IPv6 kernel module should be disabled.</description>
+				<reference ref_id="CCE-18455-6" source="CCE"/>
+				<description>Automatic IPv6 address assignment should be disabled.</description>
 			</metadata>
 			<criteria>
-				<!--<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20130"/>-->
-				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:35620" comment="unknown test stub"/>
+				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:20130" comment="ipv6 option disable=1 set for modprobe"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20131" version="1">
@@ -1723,13 +1720,10 @@
 				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20132" comment="Global IPv6 initialization should be disabled"/>
 				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20133" comment="IPv6 configuration should be disabled for all interfaces"/>
 				<criteria operator="AND">
-					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20146"/>
-					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201461"/>
 					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201462"/>
 					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201463"/>
 					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201464"/>
 					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201465"/>
-					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201466"/>
 				</criteria>
 			</criteria>
 		</definition>
@@ -1742,14 +1736,11 @@
 				<reference ref_id="CCE-4189-7" source="CCE"/>
 				<description>The iptables service should be enabled.</description>
 			</metadata>
-			<criteria operator="OR">
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201470"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2014701"/>
+			<criteria operator="AND">
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2014702"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2014703"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2014704"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2014705"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2014706"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:201474" version="1">
@@ -1829,7 +1820,7 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-17742-8" source="CCE"/>
-				<description>TThe rsyslog package should be installed or uninstalled as appropriate.</description>
+				<description>The rsyslog package should be installed or uninstalled as appropriate.</description>
 			</metadata>
 			<criteria>
 				<criterion comment="Check to see if rsylog is installed" test_ref="oval:gov.nist.usgcb.rhel:tst:201480"/>
@@ -1844,8 +1835,7 @@
 				<reference ref_id="CCE-17698-2" source="CCE"/>
 				<description>The syslog service should be enabled or disabled as appropriate.</description>
 			</metadata>
-			<criteria operator="OR">
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201481"/>
+			<criteria operator="AND">
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201482"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201483"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201484"/>
@@ -1939,14 +1929,11 @@
 				<reference ref_id="CCE-4292-9" source="CCE"/>
 				<description>The auditd service should be enabled.</description>
 			</metadata>
-			<criteria operator="OR">
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20156"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201561"/>
+			<criteria operator="AND">
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201562"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201563"/>
 				<criterion  comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201564"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201565"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:201566"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20157" version="1">
@@ -1956,10 +1943,10 @@
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-15026-8" source="CCE"/>
-				<description>Look for argument audit=1 in the kernel line in /etc/grub.conf</description>
+				<description>Look for argument audit=1 in the kernel line in /boot/grub/grub.conf</description>
 			</metadata>
 			<criteria>
-				<criterion comment="check for audit=1 in /etc/grub.conf" test_ref="oval:gov.nist.usgcb.rhel:tst:20157"/>
+				<criterion comment="check for audit=1 in /boot/grub/grub.conf" test_ref="oval:gov.nist.usgcb.rhel:tst:20157"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:201575" version="1">
@@ -1972,16 +1959,18 @@
 				<description>Audit rules about time are enabled</description>
 			</metadata>
 			<criteria>
-				<criteria operator="OR" comment="Architecture is 32 bit or 64 bit">
-					<criteria comment="32bit arch">
-						<criterion comment="check that arch is i386 or i686" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
+				<criteria operator="OR" comment="check for 32-bit rules">
+					<criterion comment="check that 32-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
+					<criteria>
 						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S adjtimex -S settimeofday -S stime -k time-change" test_ref="oval:gov.nist.usgcb.rhel:tst:2015750"/>
-						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S clock_settime -k time-change" test_ref="oval:gov.nist.usgcb.rhel:tst:2015751"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S clock_settime -F a0=0 -k time-change" test_ref="oval:gov.nist.usgcb.rhel:tst:2015751"/>
 					</criteria>
-					<criteria comment="62bit arch">
-						<criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
+				</criteria>
+				<criteria operator="OR" comment="check for 64-bit rules">
+					<criterion comment="check that 64-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
+					<criteria>
 						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S adjtimex -S settimeofday -S stime -k time-change" test_ref="oval:gov.nist.usgcb.rhel:tst:2015752"/>
-						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S clock_settime -k time-change" test_ref="oval:gov.nist.usgcb.rhel:tst:2015753"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S clock_settime -F a0=0 -k time-change" test_ref="oval:gov.nist.usgcb.rhel:tst:2015753"/>
 					</criteria>
 				</criteria>
 				<criterion comment="/etc/audit/audit.rules contains -w /etc/localtime -p wa -k time-change" test_ref="oval:gov.nist.usgcb.rhel:tst:2015754"/>
@@ -2014,15 +2003,13 @@
 				<description>Audit rules about the System’s Network Environment are enabled</description>
 			</metadata>
 			<criteria>
-				<criteria operator="OR" comment="Architecture is 32 bit or 64 bit">
-					<criteria comment="32bit arch">
-						<criterion comment="check that arch is i386 or i686" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
-						<criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale" test_ref="oval:gov.nist.usgcb.rhel:tst:201590"/>
-					</criteria>
-					<criteria comment="62bit arch">
-						<criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
-						<criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale" test_ref="oval:gov.nist.usgcb.rhel:tst:201591"/>
-					</criteria>
+				<criteria operator="OR" comment="check for 32-bit rules">
+					<criterion comment="check that 32-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
+					<criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale" test_ref="oval:gov.nist.usgcb.rhel:tst:201590"/>
+				</criteria>
+				<criteria operator="OR" comment="check for 64-bit rules">
+					<criterion comment="check that 64-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
+					<criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale" test_ref="oval:gov.nist.usgcb.rhel:tst:201591"/>
 				</criteria>
 				<criterion comment="/etc/audit/audit.rules contains -w /etc/issue -p wa -k system-locale" test_ref="oval:gov.nist.usgcb.rhel:tst:201592"/>
 				<criterion comment="/etc/audit/audit.rules contains -w /etc/issue.net -p wa -k system-locale" test_ref="oval:gov.nist.usgcb.rhel:tst:201593"/>
@@ -2074,25 +2061,29 @@
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20163" version="1">
 			<metadata>
-				<title>Ensure auditd Collects Discretionary Access Control Permission Modification Events</title>
+				<title>Ensure auditd Collects Discretionary Access Control Permission Modiﬁcation Events</title>
 				<affected family="unix">
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
 				<reference ref_id="CCE-14058-2" source="CCE"/>
-				<description>Audit rules about the Discretionary Access Control Permission Modification Events are enabled</description>
+				<description>Audit rules about the Discretionary Access Control Permission Modiﬁcation Events are enabled</description>
 			</metadata>
-			<criteria operator="OR" comment="Architecture is 32 bit or 64 bit">
-				<criteria comment="32bit arch">
-					<criterion comment="check that arch is i386 or i686" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201630"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chown -S fchown -S fchownat -S lchown -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201631"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201632"/>
+			<criteria>
+				<criteria operator="OR" comment="check for 32-bit rules">
+					<criterion comment="check that 32-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
+					<criteria>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201630"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chown -S fchown -S fchownat -S lchown -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201631"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201632"/>
+					</criteria>
 				</criteria>
-				<criteria comment="62bit arch">
-					<criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201633"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chown -S fchown -S fchownat -S lchown -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201634"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201635"/>
+				<criteria operator="OR" comment="check for 64-bit rules">
+					<criterion comment="check that 64-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
+					<criteria>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201633"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S chown -S fchown -S fchownat -S lchown -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201634"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod" test_ref="oval:gov.nist.usgcb.rhel:tst:201635"/>
+					</criteria>
 				</criteria>
 			</criteria>
 		</definition>
@@ -2105,16 +2096,20 @@
 				<reference ref_id="CCE-14917-9" source="CCE"/>
 				<description>Audit rules about the Unauthorized Access Attempts to Files (unsuccessful) are enabled</description>
 			</metadata>
-			<criteria operator="OR" comment="Architecture is 32 bit or 64 bit">
-				<criteria comment="32bit arch">
-					<criterion comment="check that arch is i386 or i686" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201640"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201641"/>
+			<criteria>
+				<criteria operator="OR" comment="check for 32-bit rules">
+					<criterion comment="check that 32-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
+					<criteria>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201640"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201641"/>
+					</criteria>
 				</criteria>
-				<criteria comment="62bit arch">
-					<criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201642"/>
-					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201643"/>
+				<criteria operator="OR" comment="check for 64-bit rules">
+					<criterion comment="check that 64-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
+					<criteria>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201642"/>
+						<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=500 -F auid!=4294967295 -k access" test_ref="oval:gov.nist.usgcb.rhel:tst:201643"/>
+					</criteria>
 				</criteria>
 			</criteria>
 		</definition>
@@ -2140,13 +2135,13 @@
 				<reference ref_id="CCE-14569-8" source="CCE"/>
 				<description>Audit rules about the Information on Exporting to Media (successful) are enabled</description>
 			</metadata>
-			<criteria operator="OR" comment="Architecture is 32 bit or 64 bit">
-				<criteria comment="32bit arch">
-					<criterion comment="check that arch is i386 or i686" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
+			<criteria>
+				<criteria operator="OR" comment="check for 32-bit rules">
+					<criterion comment="check that 32-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
 					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S mount -F auid>=500 -F auid!=4294967295 -k export" test_ref="oval:gov.nist.usgcb.rhel:tst:201660"/>
 				</criteria>
-				<criteria comment="62bit arch">
-					<criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
+				<criteria operator="OR" comment="check for 64-bit rules">
+					<criterion comment="check that 64-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
 					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S mount -F auid>=500 -F auid!=4294967295 -k export" test_ref="oval:gov.nist.usgcb.rhel:tst:201661"/>
 				</criteria>
 			</criteria>
@@ -2160,13 +2155,13 @@
 				<reference ref_id="CCE-14820-5" source="CCE"/>
 				<description>Audit rules about the Files Deletion Events by User (successful and unsuccessful) are enabled</description>
 			</metadata>
-			<criteria operator="OR" comment="Architecture is 32 bit or 64 bit">
-				<criteria comment="32bit arch">
-					<criterion comment="check that arch is i386 or i686" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
+			<criteria>
+				<criteria operator="OR" comment="check for 32-bit rules">
+					<criterion comment="check that 32-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201670"/>
 					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S unlink -S unlinkat -S rename -S renameat -F auid>=500 -F auid!=4294967295 -k delete" test_ref="oval:gov.nist.usgcb.rhel:tst:201671"/>
 				</criteria>
-				<criteria comment="62bit arch">
-					<criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
+				<criteria operator="OR" comment="check for 64-bit rules">
+					<criterion comment="check that 64-bit arch is irrelevant for this architecture" test_ref="oval:gov.nist.usgcb.rhel:tst:201672"/>
 					<criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S unlink -S unlinkat -S rename -S renameat -F auid>=500 -F auid!=4294967295 -k delete" test_ref="oval:gov.nist.usgcb.rhel:tst:201673"/>
 				</criteria>
 			</criteria>
@@ -2202,7 +2197,7 @@
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20169" version="1">
 			<metadata>
-				<title>Make the auditd Configuration Immutable</title>
+				<title>Make the auditd Conﬁguration Immutable</title>
 				<affected family="unix">
 					<platform>Red Hat Enterprise Linux 5</platform>
 				</affected>
@@ -2333,7 +2328,7 @@
 				<description>The rcp service should be disabled.</description>
 			</metadata>
 			<criteria operator="OR" comment="telnet-server is not installed or conditions are met">
-				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20177" comment="telnet-server is not installed"/>
+				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20177" comment="rsh-server is not installed"/>
 				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:22"/>
 			</criteria>
 		</definition>
@@ -2347,7 +2342,7 @@
 				<description>The rsh service should be disabled.</description>
 			</metadata>
 			<criteria operator="OR" comment="telnet-server is not installed or conditions are met">
-				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20177" comment="telnet-server is not installed"/>
+				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20177" comment="rsh-server is not installed"/>
 				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:22"/>
 			</criteria>
 		</definition>
@@ -2361,7 +2356,7 @@
 				<description>The rlogin service should be disabled.</description>
 			</metadata>
 			<criteria operator="OR" comment="telnet-server is not installed or conditions are met">
-				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20177" comment="telnet-server is not installed"/>
+				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20177" comment="rsh-server is not installed"/>
 				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:22"/>
 			</criteria>
 		</definition>
@@ -2534,11 +2529,13 @@
 				<description>The bluetooth service should be disabled.</description>
 			</metadata>
 			<criteria operator="AND">
+				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20200"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202001"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202002"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202003"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202004"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202005"/>
+				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202006"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20201" version="1">
@@ -2569,14 +2566,11 @@
 				<reference ref_id="CCE-4324-0" source="CCE"/>
 				<description>The crond service should be enabled.</description>
 			</metadata>
-			<criteria operator="OR">
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2020005"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20200051"/>
+			<criteria operator="AND">
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20200052"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20200053"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20200054"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20200055"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20200056"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:202052" version="1">
@@ -2589,7 +2583,7 @@
 				<description>The atd service should be disabled.</description>
 			</metadata>
 			<criteria operator="OR" comment="at is not installed or conditions are met">
-				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20180" comment="at is not installed"/>
+				<criterion comment="at is not installed" test_ref="oval:gov.nist.usgcb.rhel:tst:202053"/>
 				<criteria operator="AND">
 					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202052"/>
 					<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:2020521"/>
@@ -3004,7 +2998,7 @@
 			</metadata>
 			<criteria operator="OR" comment="SSH is not being used or conditions are met">
 				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20234" comment="sshd service is disabled"/>
-				<criterion negate="true" comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20244"/>
+				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20244"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20245" version="1">
@@ -3032,7 +3026,7 @@
 			</metadata>
 			<criteria operator="OR" comment="SSH is not being used or conditions are met">
 				<extend_definition definition_ref="oval:gov.nist.usgcb.rhel:def:20234" comment="sshd service is disabled"/>
-				<criterion negate="true" comment="Check value of PermitUserEnvironment in /etc/ssh/sshd_config" test_ref="oval:gov.nist.usgcb.rhel:tst:202455"/>
+				<criterion comment="Check value of PermitUserEnvironment in /etc/ssh/sshd_config" test_ref="oval:gov.nist.usgcb.rhel:tst:202455"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:202456" version="1">
@@ -3157,14 +3151,11 @@
 				<reference ref_id="CCE-4376-0" source="CCE"/>
 				<description>The ntpd service should be enabled.</description>
 			</metadata>
-			<criteria operator="OR">
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:20281"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202811"/>
+			<criteria operator="AND">
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202812"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202813"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202814"/>
 				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202815"/>
-				<criterion comment="Conditions are satisfied" test_ref="oval:gov.nist.usgcb.rhel:tst:202816"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20283" version="1">
@@ -3210,7 +3201,7 @@
 				<description>Clients require LDAP servers to provide valid certificates for SSL communications.</description>
 			</metadata>
 			<criteria>
-				<criterion comment="look for tls_checkpeer yess in /etc/ldap.conf" test_ref="oval:gov.nist.usgcb.rhel:tst:202885"/>
+				<criterion comment="look for tls_checkpeer yes in /etc/ldap.conf" test_ref="oval:gov.nist.usgcb.rhel:tst:202885"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:20289" version="1">
@@ -3895,7 +3886,7 @@
 				<description>Postfix network listening should be disabled</description>
 			</metadata>
 			<criteria>
-				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:150180"/>
+				<criterion test_ref="oval:gov.nist.usgcb.rhel:tst:150180"/>
 			</criteria>
 		</definition>
 		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:182444" version="1">
@@ -3991,7 +3982,19 @@
 				<criterion comment="Unknown test stub" test_ref="oval:gov.nist.usgcb.rhel:tst:43680"/>
 			</criteria>
 		</definition>
-		
+		<definition class="compliance" id="oval:gov.nist.usgcb.rhel:def:99900" version="1">
+			<metadata>
+				<title>User accounts may or may not be inactivated a specified number of days after account expiration.</title>
+				<affected family="unix">
+					<platform>Red Hat Enterprise Linux 5</platform>
+				</affected>
+				<reference ref_id="CCE-18412-7" source="CCE"/>
+				<description>User accounts may or may not be inactivated a specified number of days after account expiration.</description>
+			</metadata>
+			<criteria>
+				<criterion comment="Test for INACTIVE=30 in /etc/default/useradd" test_ref="oval:gov.nist.usgcb.rhel:tst:99900"/>
+			</criteria>
+		</definition>
 	</definitions>
 	<tests>
 		<!-- OVAL Repostiory defniition tests -->
@@ -4014,9 +4017,11 @@
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:200781" version="1" check="all" comment="check the configuration of /etc/pam.d/system-auth">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:100002"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:100002"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:200782" version="1" check="all" comment="check the configuration of /etc/pam.d/system-auth">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:100001"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:100001"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:141130" version="1" check="all" comment="check the configuration of /etc/pam.d/system-auth">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:141130"/>
@@ -4024,27 +4029,22 @@
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:200786" version="1" check="all" comment="check the configuration of /etc/pam.d/system-auth">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:100000"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:100000"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:200787" version="1" check="all" comment="check the configuration of /etc/pam.d/system-auth">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:100006"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:100006"/>
 		</ind-def:textfilecontent54_test>
 		<unix-def:password_test id="oval:gov.nist.usgcb.rhel:tst:200695" version="1" check="all" comment="Check that passwords are shadowed">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:200695"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:200695"/>
 		</unix-def:password_test>
-		<unix-def:file_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:200461" version="1" check="all" comment="sticky bit on all world writable directories">
+		<unix-def:file_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20046" version="1" check="all" comment="sticky bit on all world writable directories">
 			<notes>
-				<note>This will enumerate all directories on local partitions</note>
+				<note>This will check all directories on local partitions</note>
 			</notes>
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20046"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20046"/>
-		</unix-def:file_test>
-		<unix-def:file_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:200462" version="1" check="all" comment="all directories not world writable">
-			<notes>
-				<note>This will enumerate all directories on local partitions</note>
-			</notes>
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20046"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:200462"/>
 		</unix-def:file_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:201476" check_existence="at_least_one_exists" version="1" check="all" comment="Check /etc/modprobe.conf for line install DCCP /bin/true">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201476"/>
@@ -4087,38 +4087,37 @@
 			<object object_ref="oval:gov.nist.usgcb.rhel:obj:10000"/>
 			<state state_ref="oval:gov.nist.usgcb.rhel:ste:10000"/>
 		</rpminfo_test>
-		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20000" version="1" check="all" comment="look for /tmp partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20000" version="1" check="at least one" comment="look for /tmp partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20000"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20000"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20002" version="1" check="all" comment="look for /var partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20002" version="1" check="at least one" comment="look for /var partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20000"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20002"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20004" version="1" check="all" comment="look for /var/log partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20004" version="1" check="at least one" comment="look for /var/log partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20000"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20004"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20005" version="1" check="all" comment="look for /var/log/audit partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20005" version="1" check="at least one" comment="look for /var/log/audit partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20000"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20005"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20006" version="1" check="all" comment="look for /home partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20006" version="1" check="at least one" comment="look for /home partition or logical volume in /etc/fstab" check_existence="at_least_one_exists">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20000"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20006"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:unknown_test id="oval:gov.nist.usgcb.rhel:tst:200065" version="1" check="all" comment="place holder"/>
+		<lin-def:rpminfo_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:200065" version="1" check="at least one" comment="proper gpg-pubkey version is installed">
+			<lin-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:200065"/>
+			<lin-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:200065"/>
+		</lin-def:rpminfo_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20010" version="1" check="all" comment="check value of gpgcheck in /etc/yum.conf" check_existence="at_least_one_exists">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20010"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20010"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20011" version="1" check="all" comment="check value of gpgcheck=0 in /etc/yum.repos.d/">
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20011" version="1" check="at least one" comment="check value of gpgcheck=0 in /etc/yum.repos.d/">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20011"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20011"/>
-		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20016" version="1" check="all" comment="Check options for nodev in /etc/fstab for all non-root partitions" check_existence="at_least_one_exists">
-			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20016"/>
-			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:200163"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:200162" version="1" check="all" comment="Check options for nodev in /etc/mtab for all non-root partitions" check_existence="at_least_one_exists">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:200162"/>
@@ -4252,47 +4251,41 @@
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20040"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:1000644"/>
 		</unix-def:file_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20047" version="1" check="all" comment="world writable files">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20047" version="1" check_existence="none_exist" check="all" comment="world writable (regular) files">
 			<notes>
-				<note>This will enumerate all files on local partitions</note>
+				<note>This will check all files on local partitions</note>
 			</notes>
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20047"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20047"/>
 		</unix-def:file_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20048" version="1" check="all" comment="executable files with sgid set">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20048" version="1" check_existence="none_exist" check="all" comment="unauthorized executable (regular) files with sgid set">
 			<notes>
-				<note>This will enumerate all files on local partitions</note>
+				<note>This will check all files on local partitions</note>
 			</notes>
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20047"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20048"/>
+			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20048"/>
 		</unix-def:file_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20049" version="1" check="all" comment="executable files with suid set">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20049" version="1" check_existence="none_exist" check="all" comment="unauthorized executable (regular) files with suid set">
 			<notes>
-				<note>This will enumerate all files on local partitions</note>
+				<note>This will check all files on local partitions</note>
 			</notes>
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20047"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20049"/>
+			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20049"/>
 		</unix-def:file_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20050" version="1" check="all" comment="files with no user owner">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20050" version="1" check_existence="none_exist" check="all" comment="files with no user owner">
 			<notes>
-				<note>This will enumerate all files on local partitions</note>
+				<note>This will check all files on local partitions</note>
 			</notes>
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20047"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20050"/>
+			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20050"/>
 		</unix-def:file_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20051" version="1" check="all" comment="files with no group owner">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20051" version="1" check_existence="none_exist" check="all" comment="files with no group owner">
 			<notes>
-				<note>This will enumerate all files on local partitions</note>
+				<note>This will check all files on local partitions</note>
 			</notes>
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20047"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20051"/>
+			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20051"/>
 		</unix-def:file_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20052" version="1" check="all" comment="world writable directories have a uid greater than or equal to 500">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:20052" version="1" check_existence="none_exist" check="all" comment="world writable directories have a uid greater than or equal to 500">
 			<notes>
-				<note>This will enumerate all directories on local partitions</note>
+				<note>This will check all directories on local partitions</note>
 			</notes>
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20046"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20052"/>
+			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20052"/>
 		</unix-def:file_test>
 		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20053" version="1" check="all" comment="Tests the value of the umask[\s]+(.*) expression in the /etc/sysconfig/init file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20053"/>
@@ -4302,13 +4295,13 @@
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20055"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20055"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:20056" version="2" check="all" comment="Tests the value of the ^[\s]*fs\.suid_dumpable[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:20056" version="2" check="all" comment="Tests the value of the ^[\s]*fs\.suid_dumpable[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20056"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20057" version="1" check="all" comment="Tests the value of the ^[\s]*kernel\.exec-shield[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20057" version="1" check="all" comment="Tests the value of /proc/sys/kernel/exec-shield">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20057"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20058" version="1" check="all" comment="Tests the contents of /proc/sys/kernel a_space/randomize_va_space to see if they equal 1">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20058" version="1" check="all" comment="Tests the contents of /proc/sys/kernel/randomize_va_space to see if they equal 1">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20058"/>
 		</ind-def:textfilecontent54_test>
 		<lin-def:rpminfo_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20059" version="1" check="all" comment="The kernel-PAE package should be installed or not as appropriate">
@@ -4326,7 +4319,7 @@
 		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20066" version="1" check="all" comment="Tests the value of the &lt;:begin:&gt;auth[\s]+required[\s]+pam_wheel.so[\s]+use_uid&lt;:end:&gt; setting in the /etc/pam.d/su file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20066"/>
 		</ind-def:textfilecontent54_test>
-		<unix-def:password_test id="oval:gov.nist.usgcb.rhel:tst:20068" version="1" check="all" comment="Tests the login shell for non root system accounts">
+		<unix-def:password_test id="oval:gov.nist.usgcb.rhel:tst:20068" version="1" check="none satisfy" comment="Tests the login shell for non root system accounts">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20068"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20068"/>
 		</unix-def:password_test>
@@ -4360,9 +4353,11 @@
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:200784" version="1" check="all" comment="check the configuration of /etc/pam.d/system-auth">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:100005"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:100005"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:200785" version="1" check="all" comment="check the configuration of /etc/pam.d/system-auth">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:100003"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:100003"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:unknown_test id="oval:gov.nist.usgcb.rhel:tst:20079" version="1" check="all" comment="pam_passwdqc is not implemented"/>
 		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:200834" version="1" check="all" comment="check the /etc/pam.d/system-auth file for the hash algorithm setting">
@@ -4385,27 +4380,27 @@
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20085"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20085"/>
 		</ind-def:environmentvariable_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:2008551" check_existence="any_exist" version="1" check="all" comment="Check that write permission to group and other in root's path is denied">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:2008551" check_existence="any_exist" version="1" check="at least one" comment="Check that write permission to group and other in root's path is denied">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:200855"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:2008551"/>
 		</unix-def:file_test>
-		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:2008552" check_existence="any_exist" version="1" check="all" comment="Check that write permission to group and other in root's path is denied">
+		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:2008552" check_existence="any_exist" version="1" check="at least one" comment="Check that write permission to group and other in root's path is denied">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:200855"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:2008552"/>
 		</unix-def:file_test>
 		<unix-def:file_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:200861" version="1" check="all" comment="home directories are group writeable">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20086"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:1000701"/>
+			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:200861"/>
 		</unix-def:file_test>
 		<unix-def:file_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:200862" version="1" check="all" comment="home directories are world readable">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20086"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:200862"/>
 		</unix-def:file_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20087" version="1" check="all" comment="Tests the value of the ^[\s]*umask[\s]+([^#]*) expression in the /etc/bashrc file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20087" version="1" check="all" comment="Tests the value of the second ^[\s]*umask[\s]+([^#]*) expression in the /etc/bashrc file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20087"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20087"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20088" version="1" check="all" comment="Tests the value of the ^[\s]*umask[\s]+([^#]*) expression in the /etc/csh.cshrc file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20088" version="1" check="all" comment="Tests the value of the second ^[\s]*umask[\s]+([^#]*) expression in the /etc/csh.cshrc file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20088"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20087"/>
 		</ind-def:textfilecontent54_test>
@@ -4429,7 +4424,7 @@
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20094"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:1000600"/>
 		</unix-def:file_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20095" version="1" check="all" comment="Tests the value of the password[\s]+--md5[\s]+.* setting in the /etc/grub.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20095" version="1" check="all" comment="Tests the value of the password[\s]+--md5[\s]+.* setting in the /boot/grub/grub.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20095"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20096" version="1" check="all" comment="Tests the value of the ~~:S:wait:/sbin/sulogin setting in the /etc/inittab file">
@@ -4438,26 +4433,26 @@
 		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20097" version="1" check="all" comment="Tests the value of the PROMPT[\s]*=[\s]*([^#]*) expression in the /etc/sysconfig/init file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20096"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:20100" version="1" check="all" comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_delay']/local_schema[1]/default[1]/@value">
+		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:20100" version="1" check="all" comment="/apps/gnome-screensaver/idle_delay in GConf">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20100"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20100"/>
 		</ind-def:xmlfilecontent_test>
-		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:201005" version="1" check="all" comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_activation_enabled']/local_schema[1]/default[1]/@value">
+		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:201005" version="1" check="all" comment="/apps/gnome-screensaver/idle_activation_enabled in GConf">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201005"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:201005"/>
 		</ind-def:xmlfilecontent_test>
-		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:201006" version="1" check="all" comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='lock_enabled']/local_schema[1]/default[1]/@value">
+		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:201006" version="1" check="all" comment="/apps/gnome-screensaver/lock_enabled in GConf">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201006"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:201006"/>
 		</ind-def:xmlfilecontent_test>
-		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:201007" version="1" check="all" comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='mode']/local_schema[1]/default[1]/@value">
+		<ind-def:xmlfilecontent_test id="oval:gov.nist.usgcb.rhel:tst:201007" version="1" check="all" comment="/apps/gnome-screensaver/mode in GConf">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201007"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:201007"/>
 		</ind-def:xmlfilecontent_test>
 		<lin-def:rpminfo_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20101" version="1" check="all" comment="The vlock package should be installed or not as appropriate">
 			<lin-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20101"/>
 		</lin-def:rpminfo_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20102" version="1" check="all" comment="Tests the value of the (.*) setting in the /etc/issue file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20102" version="1" check="at least one" comment="Tests the value of the (.*) setting in the /etc/issue file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20102"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20102"/>
 		</ind-def:textfilecontent54_test>
@@ -4468,7 +4463,7 @@
 		<unix-def:file_test id="oval:gov.nist.usgcb.rhel:tst:201035" check_existence="at_least_one_exists" version="1" check="all" comment="/selinux exists">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201035"/>
 		</unix-def:file_test>
-		<ind-def:textfilecontent54_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:20104" version="1" check="all" comment="Tests the value of the ^[\s]*enforcing[\s]*=[\s]*([^#]*) expression in the /etc/grub.conf file">
+		<ind-def:textfilecontent54_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:20104" version="1" check="all" comment="Tests the value of the ^[\s]*enforcing[\s]*=[\s]*([^#]*) expression in the /boot/grub/grub.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20104"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20106" version="1" check="all" comment="Tests the value of the ^[\s]*selinux[\s]*=[\s]*([^#]*) expression in the /etc/selinux/config file">
@@ -4527,71 +4522,72 @@
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201106"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
 		</unix-def:runlevel_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20112" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.send_redirects[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20112" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.send_redirects[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20112"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20112"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20113" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.send_redirects[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20113" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.send_redirects[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20113"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20113"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20114" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.ip_forward[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20114" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.ip_forward[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20114"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20114"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20115" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.accept_source_route[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20115" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.accept_source_route[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20115"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20115"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20116" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.accept_redirects[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20116" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.accept_redirects[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20116"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20116"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20117" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.secure_redirects[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20117" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.secure_redirects[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20117"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20117"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20118" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.log_martians[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20118" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.log_martians[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20118"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20118"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20119" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.accept_source_route[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20119" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.accept_source_route[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20119"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20119"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20120" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.accept_redirects[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20120" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.accept_redirects[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20120"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20120"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20121" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.secure_redirects[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20121" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.secure_redirects[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20121"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20121"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20122" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.icmp_echo_ignore_broadcasts[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20122" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.icmp_echo_ignore_broadcasts[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20122"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20122"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20123" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.icmp_ignore_bogus_error_messages[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20123" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.icmp_ignore_bogus_error_messages[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20123"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20123"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20124" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.tcp_syncookies[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20124" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.tcp_syncookies[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20124"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20124"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20125" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.rp_filter[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20125" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.all\.rp_filter[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20125"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20125"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20126" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.rp_filter[\s]*=([\s]*) expression in the /etc/sysctl.conf file">
+		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20126" version="1" check="all" comment="Tests the value of the ^[\s]*net\.ipv4\.conf\.default\.rp_filter[\s]*=[\s]*([\S].*) expression in the /etc/sysctl.conf file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20126"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20126"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20128" version="1" check="all" comment="Look in /proc/net/wireless">
+		<ind-def:textfilecontent54_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:20128" version="1" check="all" comment="Look in /proc/net/wireless">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20128"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:20130" version="1" check="all" comment="Tests the value of the &lt;:begin:&gt;alias[\s]+net-pf-10[\s]+off&lt;:end:&gt; setting in the /etc/modprobe.conf file">
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:20130" version="2" check="all" comment="Check ipv6 option disable in /etc/modprobe.d/usgcb-blacklist">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20130"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20130"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20131" version="1" check="all" comment="Tests the value of the ^[\s]*IPV6INIT[\s]*=[\s]*([^#]*) expression in the /etc/sysconfig/network file">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20131"/>
@@ -4605,60 +4601,36 @@
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20133"/>
 			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20133"/>
 		</ind-def:textfilecontent54_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20146" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20146"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201461" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201461"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201462" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201462" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201462"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201463" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201463" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201463"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201464" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201464" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201464"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201465" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201465" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201465"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201466" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201466"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201470" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201470"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:2014701" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2014701"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:2014702" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2014702"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:2014703" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:2014703" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2014703"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:2014704" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:2014704" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2014704"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:2014705" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:2014705" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2014705"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:2014706" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2014706"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
 		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:2014741" check_existence="at_least_one_exists" version="1" check="all" comment="Check /etc/sysconfig/iptables for line :INPUT DROP [0:0]">
@@ -4670,23 +4642,19 @@
 		<lin-def:rpminfo_test check_existence="all_exist" comment="check to see if syslog is installed" check="all" version="1" id="oval:gov.nist.usgcb.rhel:tst:201480">
 			<lin-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201480"/>
 		</lin-def:rpminfo_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201481" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201481"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201482" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201482" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201482"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201483" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201483" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201483"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201484" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201484" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201484"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201485" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201485" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201485"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
@@ -4700,47 +4668,35 @@
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20153"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:unknown_test id="oval:gov.nist.usgcb.rhel:tst:20154" check="all" version="1" comment="use extended content to evaluated this test"/>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20156" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20156"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201561" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201561"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201562" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201562" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201562"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201563" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201563" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201563"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201564" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201564" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201564"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201565" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:201565" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201565"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:201566" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201566"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:20157" version="1" check="all" comment="check for audit=1 in /etc/grub.conf">
+		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:20157" version="1" check="all" comment="check for audit=1 in /boot/grub/grub.conf">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20157"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:2015750" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2015750"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:2015751" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=b32 -S clock_settime -k time-change">
+		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:2015751" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=b32 -S clock_settime -F a0=0 -k time-change">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2015751"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:2015752" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=b64 -S adjtimex -S settimeofday -S stime -k time-change">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2015752"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:2015753" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=b64 -S clock_settime -k time-change">
+		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:2015753" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=b64 -S clock_settime -F a0=0 -k time-change">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2015753"/>
 		</ind-def:textfilecontent54_test>
 		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:2015754" version="1" check="all" comment="/etc/audit/audit.rules contains -w /etc/localtime -p wa -k time-change">
@@ -4836,14 +4792,14 @@
 		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:201661" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S mount -F auid>=500 -F auid!=4294967295 -k export">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201661"/>
 		</ind-def:textfilecontent54_test>
-		<unix-def:uname_test id="oval:gov.nist.usgcb.rhel:tst:201670" version="1" check="all" comment="check architecture is 32 bit">
+		<unix-def:uname_test id="oval:gov.nist.usgcb.rhel:tst:201670" version="1" check="none satisfy" comment="check architecture does not run 32-bit applications">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201670"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:201670"/>
 		</unix-def:uname_test>
 		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:201671" version="1" check="all" comment="/etc/audit/audit.rules contains -a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=500 -F auid!=4294967295 -k delete">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201671"/>
 		</ind-def:textfilecontent54_test>
-		<unix-def:uname_test id="oval:gov.nist.usgcb.rhel:tst:201672" version="1" check="all" comment="check architecture is 64 bit">
+		<unix-def:uname_test id="oval:gov.nist.usgcb.rhel:tst:201672" version="1" check="none satisfy" comment="check architecture does not run 64-bit applications">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201670"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:201672"/>
 		</unix-def:uname_test>
@@ -5111,6 +5067,10 @@
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:201976"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
 		</unix-def:runlevel_test>
+		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20200" version="2" check="all" comment="Runlevel test">
+			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20200"/>
+			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
+		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202001" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202001"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
@@ -5129,6 +5089,10 @@
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202005" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202005"/>
+			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
+		</unix-def:runlevel_test>
+		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202006" version="2" check="all" comment="Runlevel test">
+			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202006"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20201" version="2" check="all" comment="Runlevel test">
@@ -5159,14 +5123,6 @@
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202016"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:2020005" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2020005"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20200051" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20200051"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20200052" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20200052"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
@@ -5181,10 +5137,6 @@
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20200055" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20200055"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20200056" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20200056"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202052" version="2" check="all" comment="Runlevel test">
@@ -5215,6 +5167,9 @@
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:2020526"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
 		</unix-def:runlevel_test>
+		<lin-def:rpminfo_test check="all" check_existence="none_exist" version="1" id="oval:gov.nist.usgcb.rhel:tst:202053" comment="at is not installed">
+			<lin-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202053"/>
+		</lin-def:rpminfo_test>
 		<unix-def:file_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:20208" version="1" check="all" comment="Testing group ownership">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20208"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20208"/>
@@ -5456,32 +5411,20 @@
 		<lin-def:rpminfo_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:20269" version="1" check="all" comment="The dhcp package should be installed or not as appropriate">
 			<lin-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20269"/>
 		</lin-def:rpminfo_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20281" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20281"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202811" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202811"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202812" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:202812" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202812"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202813" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:202813" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202813"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202814" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:202814" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202814"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202815" version="2" check="all" comment="Runlevel test">
+		<unix-def:runlevel_test check_existence="all_exist" id="oval:gov.nist.usgcb.rhel:tst:202815" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202815"/>
-			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
-		</unix-def:runlevel_test>
-		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:202816" version="2" check="all" comment="Runlevel test">
-			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:202816"/>
 			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20008"/>
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20287" version="2" check="all" comment="Runlevel test">
@@ -5713,6 +5656,7 @@
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:20304" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:20304"/>
+			<unix-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:20007"/>
 		</unix-def:runlevel_test>
 		<unix-def:runlevel_test check_existence="any_exist" id="oval:gov.nist.usgcb.rhel:tst:203041" version="2" check="all" comment="Runlevel test">
 			<unix-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:203041"/>
@@ -6023,9 +5967,7 @@
 		<ind-def:textfilecontent54_test check_existence="none_exist" id="oval:gov.nist.usgcb.rhel:tst:180371" version="1" check="all" comment="TODO::INSERT">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:180371"/>
 		</ind-def:textfilecontent54_test>
-		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:43850" version="1" check="all" comment="TODO::INSERT">
-			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:43850"/>
-		</ind-def:textfilecontent54_test>
+		<ind-def:unknown_test id="oval:gov.nist.usgcb.rhel:tst:43850" version="1" check="all" comment="remote NTP server is specified"/>
 		<ind-def:textfilecontent54_test check_existence="at_least_one_exists" id="oval:gov.nist.usgcb.rhel:tst:178160" version="1" check="all" comment="TODO::INSERT">
 			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:178160"/>
 		</ind-def:textfilecontent54_test>
@@ -6066,6 +6008,10 @@
 			<lin-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:144120"/>
 			<lin-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:144120"/>
 		</lin-def:partition_test>
+		<ind-def:textfilecontent54_test id="oval:gov.nist.usgcb.rhel:tst:99900" version="1" check="all" comment="Test for INACTIVE=30 in /etc/default/useradd">
+			<ind-def:object object_ref="oval:gov.nist.usgcb.rhel:obj:99900"/>
+			<ind-def:state state_ref="oval:gov.nist.usgcb.rhel:ste:99900"/>
+		</ind-def:textfilecontent54_test>
 	</tests>
 	<objects>
 		<!-- OVAL Repository definition objects -->
@@ -6090,6 +6036,9 @@
 			<ind-def:pattern operation="pattern match">^[\s]*[\S]+[\s]+([\S]+)[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+</ind-def:pattern>
 			<ind-def:instance datatype="int" operation="greater than or equal">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
+		<lin-def:rpminfo_object id="oval:gov.nist.usgcb.rhel:obj:200065" version="1">
+			<lin-def:name>gpg-pubkey</lin-def:name>
+		</lin-def:rpminfo_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20009" version="1" comment="Check existance of yum.cron">
 			<unix-def:path operation="pattern match">^/etc/cron\.(hourly|daily|weekly|monthly)$</unix-def:path>
 			<unix-def:filename>yum.cron</unix-def:filename>
@@ -6118,16 +6067,16 @@
 			<ind-def:pattern operation="pattern match">^[\s]*repo_gpgcheck[\s]*=[\s]*([0-1])</ind-def:pattern>
 			<ind-def:instance datatype="int" operation="equals">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20016" version="1" comment="ext[2-3] file systems mounted not on / defined in /etc/fstab">
+		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20016" version="1" comment="nfs4? file systems mounted not on / defined in /etc/fstab">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>fstab</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\w/\d=\-]+[\s]+/[\w/\d]+[\s]+nfs[4]?[\s]+([\w,]+)$|[\s]+</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\w/\d=\-]+[\s]+/[\w/\d]+[\s]+nfs[4]?[\s]+([\w,]+)$</ind-def:pattern>
 			<ind-def:instance datatype="int" operation="greater than or equal">0</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:200162" version="1" comment="ext[2-3] file systems mounted not on / defined in /etc/mtab">
+		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:200162" version="1" comment="nfs4? file systems mounted not on / defined in /etc/mtab">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>mtab</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\w/\d=\-]+[\s]+/[\w/\d]+[\s]+nfs[4]?[\s]+([\w,]+)$|[\s]+</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\w/\d=\-]+[\s]+/[\w/\d]+[\s]+nfs[4]?[\s]+([\w,]+)$</ind-def:pattern>
 			<ind-def:instance datatype="int" operation="greater than or equal">0</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20007" version="1">
@@ -6206,7 +6155,7 @@
 			<unix-def:filename>usb-storage.ko</unix-def:filename>
 		</unix-def:file_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20023" version="1">
-			<ind-def:path>/etc</ind-def:path>
+			<ind-def:path>/boot/grub</ind-def:path>
 			<ind-def:filename>grub.conf</ind-def:filename>
 			<ind-def:pattern operation="pattern match">^[\s]*kernel[^#]nousb</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
@@ -6266,15 +6215,62 @@
 			<unix-def:path>/etc</unix-def:path>
 			<unix-def:filename>passwd</unix-def:filename>
 		</unix-def:file_object>
-		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20046" version="1" comment="all local directories">
-			<unix-def:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local"/>
-			<unix-def:path operation="pattern match">.*</unix-def:path>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20046" version="1" comment="all local world writable directories">
+			<unix-def:behaviors recurse_direction="down" recurse_file_system="local" recurse="directories"/>
+			<unix-def:path>/</unix-def:path>
 			<unix-def:filename xsi:nil="true"/>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200461</filter>
 		</unix-def:file_object>
-		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20047" version="1" comment="all local files">
-			<unix-def:behaviors recurse="files" recurse_file_system="local"/>
-			<unix-def:path operation="pattern match">.*</unix-def:path>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20047" version="1" comment="all local world writable (regular) files">
+			<unix-def:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local"/>
+			<unix-def:path>/</unix-def:path>
 			<unix-def:filename operation="pattern match">.*</unix-def:filename>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200461</filter>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200471</filter>
+		</unix-def:file_object>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20048" version="1" comment="all local (regular) files with sgid bit set">
+			<unix-def:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local"/>
+			<unix-def:path>/</unix-def:path>
+			<unix-def:filename operation="pattern match">.*</unix-def:filename>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200471</filter>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200481</filter>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200482</filter>
+		</unix-def:file_object>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20049" version="1" comment="all local (regular) files with suid bit set">
+			<unix-def:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local"/>
+			<unix-def:path>/</unix-def:path>
+			<unix-def:filename operation="pattern match">.*</unix-def:filename>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200471</filter>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200491</filter>
+			<filter>oval:gov.nist.usgcb.rhel:ste:200492</filter>
+		</unix-def:file_object>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20050" version="1" comment="all local files without a valid user assigned">
+			<unix-def:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local"/>
+			<unix-def:path>/</unix-def:path>
+			<unix-def:filename operation="pattern match">.*</unix-def:filename>
+			<filter>oval:gov.nist.usgcb.rhel:ste:20050</filter>
+		</unix-def:file_object>
+		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:200501" version="1">
+			<ind-def:filepath>/etc/passwd</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[^:]+:[^:]+:([\d]+):[\d]+:[^:]*:[^:]+:[^:]*$</ind-def:pattern>
+			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+		</ind-def:textfilecontent54_object>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20051" version="1" comment="all local files without a valid group assigned">
+			<unix-def:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local"/>
+			<unix-def:path>/</unix-def:path>
+			<unix-def:filename operation="pattern match">.*</unix-def:filename>
+			<filter>oval:gov.nist.usgcb.rhel:ste:20051</filter>
+		</unix-def:file_object>
+		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:200511" version="1">
+			<ind-def:filepath>/etc/group</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind-def:pattern>
+			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+		</ind-def:textfilecontent54_object>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20052" version="1" comment="world writable directories with uid not less than 500">
+			<unix-def:behaviors recurse_direction="down" recurse_file_system="local" recurse="directories"/>
+			<unix-def:path>/</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
+			<filter>oval:gov.nist.usgcb.rhel:ste:20052</filter>
 		</unix-def:file_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20053" version="1">
 			<ind-def:path>/etc/sysconfig</ind-def:path>
@@ -6411,18 +6407,11 @@
 			<ind-def:pattern operation="pattern match">^\+</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20078" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+required[\s]+pam_cracklib\.so[\s]+try_first_pass[\s]+retry=([\d]+)[\s]+minlen=([1-9][\d]*)[\s]+dcredit=([-]?[\d]+)[\s]+ucredit=([-]?[\d]+)[\s]+ocredit=([-]?[\d]+)[\s]+lcredit=([-]?[\d]+)[\s]+difok=([\d]+)</ind-def:pattern>
-			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
-		</ind-def:textfilecontent54_object>
 		<ind-def:variable_object id="oval:gov.nist.usgcb.rhel:obj:200800" version="1">
 			<ind-def:var_ref>oval:gov.nist.usgcb.rhel:var:200803</ind-def:var_ref>
 		</ind-def:variable_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:200801" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
 			<ind-def:pattern operation="pattern match">^\s*auth\s+required\s+pam_tally2\.so\s+deny=5\s+onerr=fail$</ind-def:pattern>
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
@@ -6473,8 +6462,7 @@
 			<ind-def:var_ref>oval:gov.nist.usgcb.rhel:var:20084</ind-def:var_ref>
 		</ind-def:variable_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:200842" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
 			<ind-def:pattern operation="pattern match">^\s*password[\s]+(?:sufficient|required)[\s]+pam_unix\.so[\s]+.*remember=([\d]+)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
@@ -6482,25 +6470,25 @@
 			<ind-def:name>PATH</ind-def:name>
 		</ind-def:environmentvariable_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:200855" version="1" comment="root's PATH">
-			<unix-def:path var_ref="oval:gov.nist.usgcb.rhel:var:200855"/>
+			<unix-def:path var_ref="oval:gov.nist.usgcb.rhel:var:200855" var_check="at least one"/>
 			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20086" version="1" comment="/home/*">
-			<unix-def:behaviors recurse="symlinks and directories" max_depth="1"/>
-			<unix-def:path operation="pattern match">/home/.*</unix-def:path>
+			<unix-def:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="1"/>
+			<unix-def:path>/home</unix-def:path>
 			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20087" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>bashrc</ind-def:filename>
 			<ind-def:pattern operation="pattern match">^[\s]*umask[\s]+([^#\s]*)</ind-def:pattern>
-			<ind-def:instance datatype="int">1</ind-def:instance>
+			<ind-def:instance datatype="int">2</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20088" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>csh.cshrc</ind-def:filename>
 			<ind-def:pattern operation="pattern match">^[\s]*umask[\s]+([^#\s]*)</ind-def:pattern>
-			<ind-def:instance datatype="int">1</ind-def:instance>
+			<ind-def:instance datatype="int">2</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20089" version="1">
 			<ind-def:path>/etc</ind-def:path>
@@ -6514,22 +6502,22 @@
 			<ind-def:pattern operation="pattern match">^[\s]*umask[\s]+([^#\s]*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20092" version="1" comment="/etc/grub.conf">
-			<unix-def:path>/etc</unix-def:path>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20092" version="1" comment="/boot/grub/grub.conf">
+			<unix-def:path>/boot/grub</unix-def:path>
 			<unix-def:filename>grub.conf</unix-def:filename>
 		</unix-def:file_object>
-		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20094" version="1" comment="/etc/grub.conf">
-			<unix-def:path>/etc</unix-def:path>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20094" version="1" comment="/boot/grub/grub.conf">
+			<unix-def:path>/boot/grub</unix-def:path>
 			<unix-def:filename>grub.conf</unix-def:filename>
 		</unix-def:file_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20095" version="1">
-			<ind-def:path>/etc</ind-def:path>
+			<ind-def:path>/boot/grub</ind-def:path>
 			<ind-def:filename>grub.conf</ind-def:filename>
 			<ind-def:pattern operation="pattern match">password[\s]+--md5[\s]+.*</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20093" version="1" comment="/etc/grub.conf">
-			<unix-def:path>/etc</unix-def:path>
+		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20093" version="1" comment="/boot/grub/grub.conf">
+			<unix-def:path>/boot/grub</unix-def:path>
 			<unix-def:filename>grub.conf</unix-def:filename>
 		</unix-def:file_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:73" version="1">
@@ -6551,33 +6539,30 @@
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:xmlfilecontent_object id="oval:gov.nist.usgcb.rhel:obj:20100" version="1">
-			<ind-def:path>/etc/gconf/gconf.xml.defaults</ind-def:path>
-			<ind-def:filename>%gconf-tree.xml</ind-def:filename>
-			<ind-def:xpath datatype="string" operation="equals">/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_delay']/local_schema[1]/default[1]/@value</ind-def:xpath>
+			<ind-def:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind-def:filepath>
+			<ind-def:xpath>/gconf/entry[@name='idle_delay']/@value</ind-def:xpath>
 		</ind-def:xmlfilecontent_object>
 		<ind-def:xmlfilecontent_object id="oval:gov.nist.usgcb.rhel:obj:201005" version="1">
-			<ind-def:path>/etc/gconf/gconf.xml.defaults</ind-def:path>
-			<ind-def:filename>%gconf-tree.xml</ind-def:filename>
-			<ind-def:xpath>/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_activation_enabled']/local_schema[1]/default[1]/@value</ind-def:xpath>
+			<ind-def:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind-def:filepath>
+			<ind-def:xpath>/gconf/entry[@name='idle_activation_enabled']/@value</ind-def:xpath>
 		</ind-def:xmlfilecontent_object>
 		<ind-def:xmlfilecontent_object id="oval:gov.nist.usgcb.rhel:obj:201006" version="1">
-			<ind-def:path>/etc/gconf/gconf.xml.defaults</ind-def:path>
-			<ind-def:filename>%gconf-tree.xml</ind-def:filename>
-			<ind-def:xpath>/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='lock_enabled']/local_schema[1]/default[1]/@value</ind-def:xpath>
+			<ind-def:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind-def:filepath>
+			<ind-def:xpath>/gconf/entry[@name='lock_enabled']/@value</ind-def:xpath>
 		</ind-def:xmlfilecontent_object>
 		<ind-def:xmlfilecontent_object id="oval:gov.nist.usgcb.rhel:obj:201007" version="1">
-			<ind-def:path>/etc/gconf/gconf.xml.defaults</ind-def:path>
-			<ind-def:filename>%gconf-tree.xml</ind-def:filename>
-			<ind-def:xpath>/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='mode']/local_schema[1]/default[1]/stringvalue[1]</ind-def:xpath>
+			<ind-def:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind-def:filepath>
+			<ind-def:xpath>/gconf/entry[@name='mode']/stringvalue/text()</ind-def:xpath>
 		</ind-def:xmlfilecontent_object>
 		<lin-def:rpminfo_object id="oval:gov.nist.usgcb.rhel:obj:20101" version="1">
 			<lin-def:name>vlock</lin-def:name>
 		</lin-def:rpminfo_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20102" version="1">
+			<ind-def:behaviors singleline="true"/>
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>issue</ind-def:filename>
-			<ind-def:pattern operation="pattern match">(.*)</ind-def:pattern>
-			<ind-def:instance datatype="int">1</ind-def:instance>
+			<ind-def:pattern operation="pattern match">(.+)</ind-def:pattern>
+			<ind-def:instance datatype="int" operation="greater than or equal">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:xmlfilecontent_object id="oval:gov.nist.usgcb.rhel:obj:20103" version="1">
 			<ind-def:path>/usr/share/gdm/themes/RHEL</ind-def:path>
@@ -6589,13 +6574,13 @@
 			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20104" version="1">
-			<ind-def:path>/etc</ind-def:path>
+			<ind-def:path>/boot/grub</ind-def:path>
 			<ind-def:filename>grub.conf</ind-def:filename>
 			<ind-def:pattern operation="pattern match">^\s*kernel\s+[-=\\/\w\s]*(?:(?:selinux)|(?:enforcing))=0\s*[-=\\/\w\s]*$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20105" version="1">
-			<ind-def:path>/etc</ind-def:path>
+			<ind-def:path>/boot/grub</ind-def:path>
 			<ind-def:filename>grub.conf</ind-def:filename>
 			<ind-def:pattern operation="pattern match">^[\s]*selinux[\s]*=[\s]*([^#\s]*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
@@ -6603,7 +6588,7 @@
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20106" version="1">
 			<ind-def:path>/etc/selinux</ind-def:path>
 			<ind-def:filename>config</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*selinux[\s]*=[\s]*([^#\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*SELINUX[\s]*=[\s]*([^#\s]*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:variable_object id="oval:gov.nist.usgcb.rhel:obj:201061" version="1">
@@ -6612,7 +6597,7 @@
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:201064" version="1">
 			<ind-def:path>/selinux</ind-def:path>
 			<ind-def:filename>enforce</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^\d$</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^(\d)$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20107" version="1">
@@ -6708,73 +6693,73 @@
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20112" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.send_redirects[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.send_redirects[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20113" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.send_redirects[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.send_redirects[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20114" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.ip_forward[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.ip_forward[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20115" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.accept_source_route[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.accept_source_route[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20116" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.accept_redirects[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.accept_redirects[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20117" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.secure_redirects[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.secure_redirects[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20118" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.log_martians[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.log_martians[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20119" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.accept_source_route[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.accept_source_route[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20120" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.accept_redirects[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.accept_redirects[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20121" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.secure_redirects[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.secure_redirects[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20122" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.icmp_echo_ignore_broadcasts[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.icmp_echo_ignore_broadcasts[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20123" version="2">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.icmp_ignore_bogus_error_responses[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.icmp_ignore_bogus_error_responses[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20124" version="1">
@@ -6786,13 +6771,13 @@
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20125" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.rp_filter[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.all\.rp_filter[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20126" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.rp_filter[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv4\.conf\.default\.rp_filter[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20128" version="1">
@@ -6802,13 +6787,12 @@
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20129" version="1" comment="/lib/modules/*/kernel/drivers/net/wireless">
-			<unix-def:path operation="pattern match">/lib/modules/*/kernel/drivers/net</unix-def:path>
-			<unix-def:filename>wireless</unix-def:filename>
+			<unix-def:path operation="pattern match">^/lib/modules/*/kernel/drivers/net/wireless</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
-		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20130" version="1">
-			<ind-def:path>/etc</ind-def:path>
-			<ind-def:filename>modprobe.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*alias[\s]+net-pf-10[\s]+/bin/true</ind-def:pattern>
+		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20130" version="1" comment="Value of ipv6 option disable in /etc/modprobe.d/usgcb-blacklist">
+			<ind-def:filepath>/etc/modprobe.d/usgcb-blacklist</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[\s]*options[\s]+ipv6\s+(?:[\w_\.\-=\s]+[\s])?disable=(\d+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20132" version="1">
@@ -6838,53 +6822,45 @@
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20140" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.accept_ra_rtr_pref[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.accept_ra_rtr_pref[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20145" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.max_addresses[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.max_addresses[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20139" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.router_solicitations[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.router_solicitations[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20144" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.dad_transmits[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.dad_transmits[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20143" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.autoconf[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.autoconf[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20141" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.accept_ra_pinfo[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.accept_ra_pinfo[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20142" version="1">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>sysctl.conf</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.accept_ra_defrtr[\s]*=([\s]*)</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*net\.ipv6\.conf\.default\.accept_ra_defrtr[\s]*=[\s]*([\S].*)</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20146" version="1">
-			<unix-def:service_name>ip6tables</unix-def:service_name>
-			<unix-def:runlevel operation="equals">0</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201461" version="1">
-			<unix-def:service_name>ip6tables</unix-def:service_name>
-			<unix-def:runlevel operation="equals">1</unix-def:runlevel>
-		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201462" version="1">
 			<unix-def:service_name>ip6tables</unix-def:service_name>
 			<unix-def:runlevel operation="equals">2</unix-def:runlevel>
@@ -6901,18 +6877,6 @@
 			<unix-def:service_name>ip6tables</unix-def:service_name>
 			<unix-def:runlevel operation="equals">5</unix-def:runlevel>
 		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201466" version="1">
-			<unix-def:service_name>ip6tables</unix-def:service_name>
-			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201470" version="1">
-			<unix-def:service_name>iptables</unix-def:service_name>
-			<unix-def:runlevel operation="equals"/>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:2014701" version="1">
-			<unix-def:service_name>iptables</unix-def:service_name>
-			<unix-def:runlevel operation="equals">1</unix-def:runlevel>
-		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:2014702" version="1">
 			<unix-def:service_name>iptables</unix-def:service_name>
 			<unix-def:runlevel operation="equals">2</unix-def:runlevel>
@@ -6928,10 +6892,6 @@
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:2014705" version="1">
 			<unix-def:service_name>iptables</unix-def:service_name>
 			<unix-def:runlevel operation="equals">5</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:2014706" version="1">
-			<unix-def:service_name>iptables</unix-def:service_name>
-			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
 		</unix-def:runlevel_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:2014741" version="1">
 			<ind-def:path>/etc/sysconfig</ind-def:path>
@@ -6978,7 +6938,7 @@
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:201479" version="2">
 			<ind-def:path>/etc/modprobe.d</ind-def:path>
 			<ind-def:filename>usgcb-blacklist</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*install[\s]+ticp[\s]+/bin/true$</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^[\s]*install[\s]+tipc[\s]+/bin/true$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<lin-def:rpminfo_object id="oval:gov.nist.usgcb.rhel:obj:201480" version="1">
@@ -6987,10 +6947,6 @@
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20148" version="1">
 			<unix-def:service_name>rsyslog</unix-def:service_name>
 			<unix-def:runlevel operation="equals">0</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201481" version="1">
-			<unix-def:service_name>rsyslog</unix-def:service_name>
-			<unix-def:runlevel operation="equals">1</unix-def:runlevel>
 		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201482" version="1">
 			<unix-def:service_name>rsyslog</unix-def:service_name>
@@ -7024,14 +6980,6 @@
 			<ind-def:pattern operation="pattern match">^\$Input(?:(TCP)|(UDP)|(RELP))ServerRun\s*$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20156" version="1">
-			<unix-def:service_name>auditd</unix-def:service_name>
-			<unix-def:runlevel operation="equals">0</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201561" version="1">
-			<unix-def:service_name>auditd</unix-def:service_name>
-			<unix-def:runlevel operation="equals">1</unix-def:runlevel>
-		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201562" version="1">
 			<unix-def:service_name>auditd</unix-def:service_name>
 			<unix-def:runlevel operation="equals">2</unix-def:runlevel>
@@ -7048,12 +6996,8 @@
 			<unix-def:service_name>auditd</unix-def:service_name>
 			<unix-def:runlevel operation="equals">5</unix-def:runlevel>
 		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:201566" version="1">
-			<unix-def:service_name>auditd</unix-def:service_name>
-			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
-		</unix-def:runlevel_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20157" version="1">
-			<ind-def:path>/etc</ind-def:path>
+			<ind-def:path>/boot/grub</ind-def:path>
 			<ind-def:filename>grub.conf</ind-def:filename>
 			<ind-def:pattern operation="pattern match">^[\s]*kernel.+\saudit=1</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
@@ -7067,19 +7011,19 @@
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:2015751" version="1">
 			<ind-def:path>/etc/audit</ind-def:path>
 			<ind-def:filename>audit.rules</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b32\s\-S\sclock_settime\s\-k\stime\-change$</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b32\s\-S\sclock_settime\s-F\sa0=0\s\-k\stime\-change$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:2015752" version="1">
 			<ind-def:path>/etc/audit</ind-def:path>
 			<ind-def:filename>audit.rules</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b64\s\-S\sadjtimex\s\-S\ssettimeofday\s\-S\sstime\s\-k\stime\-change$</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b64\s\-S\sadjtimex\s\-S\ssettimeofday\s-k\stime\-change$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:2015753" version="1">
 			<ind-def:path>/etc/audit</ind-def:path>
 			<ind-def:filename>audit.rules</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b64\s\-S\sclock_settime\s\-k\stime\-change$</ind-def:pattern>
+			<ind-def:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b64\s\-S\sclock_settime\s-F\sa0=0\s\-k\stime\-change$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:2015754" version="1">
@@ -7873,10 +7817,10 @@
 			<unix-def:service_name>haldaemon</unix-def:service_name>
 			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
 		</unix-def:runlevel_object>-->
-		<!--<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20200" version="1">
+		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20200" version="1">
 			<unix-def:service_name>bluetooth</unix-def:service_name>
 			<unix-def:runlevel operation="equals">0</unix-def:runlevel>
-		</unix-def:runlevel_object>-->
+		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202001" version="1">
 			<unix-def:service_name>bluetooth</unix-def:service_name>
 			<unix-def:runlevel operation="equals">1</unix-def:runlevel>
@@ -7897,10 +7841,10 @@
 			<unix-def:service_name>bluetooth</unix-def:service_name>
 			<unix-def:runlevel operation="equals">5</unix-def:runlevel>
 		</unix-def:runlevel_object>
-		<!--<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202006" version="1">
+		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202006" version="1">
 			<unix-def:service_name>bluetooth</unix-def:service_name>
 			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
-		</unix-def:runlevel_object>-->
+		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20201" version="1">
 			<unix-def:service_name>hidd</unix-def:service_name>
 			<unix-def:runlevel operation="equals">0</unix-def:runlevel>
@@ -8025,14 +7969,6 @@
 			<unix-def:service_name>cpuspeed</unix-def:service_name>
 			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
 		</unix-def:runlevel_object>-->
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:2020005" version="1">
-			<unix-def:service_name>crond</unix-def:service_name>
-			<unix-def:runlevel operation="equals">0</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20200051" version="1">
-			<unix-def:service_name>crond</unix-def:service_name>
-			<unix-def:runlevel operation="equals">1</unix-def:runlevel>
-		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20200052" version="1">
 			<unix-def:service_name>crond</unix-def:service_name>
 			<unix-def:runlevel operation="equals">2</unix-def:runlevel>
@@ -8048,10 +7984,6 @@
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20200055" version="1">
 			<unix-def:service_name>crond</unix-def:service_name>
 			<unix-def:runlevel operation="equals">5</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20200056" version="1">
-			<unix-def:service_name>crond</unix-def:service_name>
-			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
 		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202052" version="1">
 			<unix-def:service_name>atd</unix-def:service_name>
@@ -8116,16 +8048,16 @@
 			<lin-def:name>anacron</lin-def:name>
 		</lin-def:rpminfo_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20217" version="1" comment="/etc/cron.monthly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.monthly</unix-def:filename>
+			<unix-def:path>/etc/cron.monthly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20225" version="1" comment="/etc/cron.daily">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.daily</unix-def:filename>
+			<unix-def:path>/etc/cron.daily</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20216" version="1" comment="/etc/cron.weekly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.weekly</unix-def:filename>
+			<unix-def:path>/etc/cron.weekly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20209" version="1" comment="/etc/crontab">
 			<unix-def:path>/etc</unix-def:path>
@@ -8140,65 +8072,62 @@
 			<unix-def:filename>crontab</unix-def:filename>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20214" version="1" comment="/etc/cron.hourly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.hourly</unix-def:filename>
+			<unix-def:path>/etc/cron.hourly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20222" version="1" comment="/etc/cron.monthly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.monthly</unix-def:filename>
+			<unix-def:path>/etc/cron.monthly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20218" version="1" comment="/etc/cron.d">
-			<unix-def:behaviors recurse="symlinks and directories"/>
 			<unix-def:path>/etc/cron.d</unix-def:path>
 			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20223" version="1" comment="/etc/cron.d">
-			<unix-def:behaviors recurse="symlinks and directories"/>
 			<unix-def:path>/etc/cron.d</unix-def:path>
 			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20221" version="1" comment="/etc/cron.weekly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.weekly</unix-def:filename>
+			<unix-def:path>/etc/cron.weekly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20211" version="1" comment="/etc/anacrontab">
 			<unix-def:path>/etc</unix-def:path>
 			<unix-def:filename>anacrontab</unix-def:filename>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20224" version="1" comment="/etc/cron.hourly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.hourly</unix-def:filename>
+			<unix-def:path>/etc/cron.hourly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20219" version="1" comment="/etc/cron.hourly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.hourly</unix-def:filename>
+			<unix-def:path>/etc/cron.hourly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20208" version="1" comment="/etc/crontab">
 			<unix-def:path>/etc</unix-def:path>
 			<unix-def:filename>crontab</unix-def:filename>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20220" version="1" comment="/etc/cron.daily">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.daily</unix-def:filename>
+			<unix-def:path>/etc/cron.daily</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20213" version="1" comment="/etc/anacrontab">
 			<unix-def:path>/etc</unix-def:path>
 			<unix-def:filename>anacrontab</unix-def:filename>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20226" version="1" comment="/etc/cron.weekly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.weekly</unix-def:filename>
+			<unix-def:path>/etc/cron.weekly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20227" version="1" comment="/etc/cron.monthly">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.monthly</unix-def:filename>
+			<unix-def:path>/etc/cron.monthly</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20215" version="1" comment="/etc/cron.daily">
-			<unix-def:path>/etc</unix-def:path>
-			<unix-def:filename>cron.daily</unix-def:filename>
+			<unix-def:path>/etc/cron.daily</unix-def:path>
+			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
 		<unix-def:file_object id="oval:gov.nist.usgcb.rhel:obj:20228" version="1" comment="/etc/cron.d">
-			<unix-def:behaviors recurse="symlinks and directories"/>
 			<unix-def:path>/etc/cron.d</unix-def:path>
 			<unix-def:filename xsi:nil="true"/>
 		</unix-def:file_object>
@@ -8537,14 +8466,6 @@
 			<ind-def:pattern operation="pattern match">daemon\.\*[\s]+/var/log/daemon\.log</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:20281" version="1">
-			<unix-def:service_name>ntpd</unix-def:service_name>
-			<unix-def:runlevel operation="equals">0</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202811" version="1">
-			<unix-def:service_name>ntpd</unix-def:service_name>
-			<unix-def:runlevel operation="equals">1</unix-def:runlevel>
-		</unix-def:runlevel_object>
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202812" version="1">
 			<unix-def:service_name>ntpd</unix-def:service_name>
 			<unix-def:runlevel operation="equals">2</unix-def:runlevel>
@@ -8560,10 +8481,6 @@
 		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202815" version="1">
 			<unix-def:service_name>ntpd</unix-def:service_name>
 			<unix-def:runlevel operation="equals">5</unix-def:runlevel>
-		</unix-def:runlevel_object>
-		<unix-def:runlevel_object id="oval:gov.nist.usgcb.rhel:obj:202816" version="1">
-			<unix-def:service_name>ntpd</unix-def:service_name>
-			<unix-def:runlevel operation="equals">6</unix-def:runlevel>
 		</unix-def:runlevel_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:20282" version="1">
 			<ind-def:path>/etc</ind-def:path>
@@ -9322,45 +9239,38 @@
 		</lin-def:rpminfo_object>
 		<!-- Added objects -->
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:100000" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]lcredit=(-1)(?:[\s]|$)</ind-def:pattern>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]lcredit=(-?[[:digit:]]+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:100001" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]minlen=(12)(?:[\s]|$)</ind-def:pattern>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]minlen=([[:digit:]]+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:100002" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]retry=(3)(?:[\s]|$)</ind-def:pattern>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]retry=([[:digit:]]+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:100003" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]ocredit=(-1)(?:[\s]|$)</ind-def:pattern>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]ocredit=(-?[[:digit:]]+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:141130" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
 			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]dcredit=(-?\d+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance operation="less than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:100005" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]ucredit=(-1)(?:[\s]|$)</ind-def:pattern>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]ucredit=(-?[[:digit:]]+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:100006" version="1">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]difok=(3)(?:[\s]|$)</ind-def:pattern>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:requisite))[\s]+[\w_\.\-=\s]+[\s]difok=([[:digit:]]+)(?:[\s]|$)</ind-def:pattern>
 			<ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<lin-def:rpminfo_object id="oval:gov.nist.usgcb.rhel:obj:573891" version="1" comment="CCE-14068-1">
@@ -9429,12 +9339,6 @@
 			<ind-def:pattern operation="pattern match">^-A RH-Firewall-1-INPUT -p udp --dport 5353 -d 224.0.0.251 -j ACCEPT$</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
-		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:43850" version="1" comment="TODO::INSERT">
-			<ind-def:path>/etc/sysconfig</ind-def:path>
-			<ind-def:filename>iptables</ind-def:filename>
-			<ind-def:pattern operation="pattern match">^.+$</ind-def:pattern>
-			<ind-def:instance datatype="int">1</ind-def:instance>
-		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:178160" version="1" comment="TODO::INSERT">
 			<ind-def:path>/etc</ind-def:path>
 			<ind-def:filename>libuser.conf</ind-def:filename>
@@ -9442,8 +9346,7 @@
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
 		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:140630" version="1" comment="TODO::INSERT">
-			<ind-def:path>/etc/pam.d</ind-def:path>
-			<ind-def:filename>system-auth</ind-def:filename>
+			<ind-def:filepath>/etc/pam.d/system-auth</ind-def:filepath>
 			<ind-def:pattern operation="pattern match">^password\s+sufficient\s+pam_unix.so\s+sha512($|(\s.*$))</ind-def:pattern>
 			<ind-def:instance datatype="int">1</ind-def:instance>
 		</ind-def:textfilecontent54_object>
@@ -9466,11 +9369,16 @@
 		<lin-def:partition_object version="1" id="oval:gov.nist.usgcb.rhel:obj:144120">
 			<lin-def:mount_point>/tmp</lin-def:mount_point>
 		</lin-def:partition_object>
+		<ind-def:textfilecontent54_object id="oval:gov.nist.usgcb.rhel:obj:99900" version="1" comment="Value of INACTIVE in /etc/default/useradd">
+			<ind-def:filepath>/etc/default/useradd</ind-def:filepath>
+			<ind-def:pattern operation="pattern match">^INACTIVE=(-?\d+)$</ind-def:pattern>
+			<ind-def:instance datatype="int">1</ind-def:instance>
+		</ind-def:textfilecontent54_object>
 	</objects>
 	<states>
 		<!-- OVAL Repository defintion states -->
 		<uname_state id="oval:org.mitre.oval:ste:3081" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix">
-			<processor_type operation="pattern match">^i.*64</processor_type>
+			<processor_type>x86_64</processor_type>
 		</uname_state>
 		<rpminfo_state id="oval:org.mitre.oval:ste:11314" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
 			<version operation="pattern match">^.*5.</version>
@@ -9510,25 +9418,24 @@
 			<version operation="pattern match">^5Server</version>
 		</rpminfo_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20000" version="2" comment="/tmp mount point is defined">
-			<ind-def:instance datatype="int">1</ind-def:instance>
 			<ind-def:subexpression datatype="string" operation="equals" entity_check="at least one">/tmp</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20002" version="2" comment="/var mount point is defined">
-			<ind-def:instance datatype="int">1</ind-def:instance>
 			<ind-def:subexpression datatype="string" operation="equals" entity_check="at least one">/var</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20004" version="2" comment="/var/log mount point is defined">
-			<ind-def:instance datatype="int">1</ind-def:instance>
 			<ind-def:subexpression datatype="string" operation="equals" entity_check="at least one">/var/log</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20005" version="2" comment="/var/log/audit mount point is defined">
-			<ind-def:instance datatype="int">1</ind-def:instance>
 			<ind-def:subexpression datatype="string" operation="equals" entity_check="at least one">/var/log/audit</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20006" version="2" comment="/home mount point is defined">
-			<ind-def:instance datatype="int">1</ind-def:instance>
 			<ind-def:subexpression datatype="string" operation="equals" entity_check="at least one">/home</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
+		<lin-def:rpminfo_state id="oval:gov.nist.usgcb.rhel:ste:200065" version="1" comment="gpg(Red Hat, Inc. (release key) &lt;security@redhat.com&gt;)">
+			<lin-def:release>45761324</lin-def:release>
+			<lin-def:version>37017186</lin-def:version>
+		</lin-def:rpminfo_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20010" version="2" comment="Expected value of gpgcheck should be enabled">
 			<ind-def:instance datatype="int">1</ind-def:instance>
 			<ind-def:subexpression datatype="int" operation="equals" entity_check="at least one">1</ind-def:subexpression>
@@ -9554,7 +9461,7 @@
             -->
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200163" version="1" comment="Check for the nodev option">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="string" operation="pattern match" entity_check="all">.*,nodev.*</ind-def:subexpression>
+			<ind-def:subexpression datatype="string" operation="pattern match" entity_check="all">(.*,)?nodev.*</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<ind-def:xmlfilecontent_state id="oval:gov.nist.usgcb.rhel:ste:20026" version="1">
 			<ind-def:value_of operation="equals">false</ind-def:value_of>
@@ -9648,33 +9555,36 @@
 			<unix-def:owrite var_check="all" datatype="boolean" var_ref="oval:gov.nist.usgcb.rhel:var:35"/>
 			<unix-def:oexec var_check="all" datatype="boolean" var_ref="oval:gov.nist.usgcb.rhel:var:36"/>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20046" version="1">
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20046" version="1" comment="u+s">
 			<unix-def:sticky datatype="boolean">1</unix-def:sticky>
-			<unix-def:owrite datatype="boolean">1</unix-def:owrite>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:200462" version="1">
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:200461" version="1" comment="o-w">
 			<unix-def:owrite datatype="boolean">0</unix-def:owrite>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20047" version="1">
-			<unix-def:owrite datatype="boolean">1</unix-def:owrite>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:200471" version="1" comment="not regular file">
+			<unix-def:type datatype="string" operation="not equal">regular</unix-def:type>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20048" version="1">
-			<unix-def:sgid datatype="boolean">1</unix-def:sgid>
-			<unix-def:uexec datatype="boolean">1</unix-def:uexec>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:200481" version="1" comment="g-s">
+			<unix-def:sgid datatype="boolean">0</unix-def:sgid>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20049" version="1" comment="Executables with suid set">
-			<unix-def:suid datatype="boolean">1</unix-def:suid>
-			<unix-def:uexec datatype="boolean">1</unix-def:uexec>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:200482" version="1" comment="sgid whitelist">
+			<unix-def:filepath var_check="at least one" var_ref="oval:gov.nist.usgcb.rhel:var:200482"/>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20050" version="1" comment="Executables with suid set">
-			<unix-def:user_id datatype="int">0</unix-def:user_id>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:200491" version="1" comment="u-s">
+			<unix-def:suid datatype="boolean">0</unix-def:suid>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20051" version="1" comment="Executables with suid set">
-			<unix-def:group_id datatype="int">0</unix-def:group_id>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:200492" version="1" comment="suid whitelist">
+			<unix-def:filepath var_check="at least one" var_ref="oval:gov.nist.usgcb.rhel:var:200492"/>
 		</unix-def:file_state>
-		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20052" version="1" comment="uid not less than 500">
-			<unix-def:group_id datatype="int" operation="equals">500</unix-def:group_id>
-			<unix-def:owrite datatype="boolean">1</unix-def:owrite>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20050" version="1" comment="Files with a valid user id assigned">
+			<unix-def:user_id datatype="int" var_check="at least one" var_ref="oval:gov.nist.usgcb.rhel:var:200501"/>
+		</unix-def:file_state>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20051" version="1" comment="Files with a valid group id assigned">
+			<unix-def:group_id datatype="int" var_check="at least one" var_ref="oval:gov.nist.usgcb.rhel:var:200511"/>
+		</unix-def:file_state>
+		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20052" version="1" operator="OR">
+			<unix-def:user_id datatype="int" operation="less than">500</unix-def:user_id>
+			<unix-def:owrite datatype="boolean">0</unix-def:owrite>
 		</unix-def:file_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20053" version="1">
 			<ind-def:subexpression var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:20053"/>
@@ -9686,7 +9596,7 @@
 			<ind-def:subexpression operation="equals">0</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<unix-def:password_state id="oval:gov.nist.usgcb.rhel:ste:20068" version="1">
-			<unix-def:user_id operation="less than or equal" datatype="int">500</unix-def:user_id>
+			<unix-def:user_id operation="less than" datatype="int">500</unix-def:user_id>
 			<unix-def:login_shell operation="not equal">/sbin/nologin</unix-def:login_shell>
 		</unix-def:password_state>
 		<unix-def:password_state id="oval:gov.nist.usgcb.rhel:ste:200695" version="1">
@@ -9694,34 +9604,6 @@
 		</unix-def:password_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20071" version="1">
 			<ind-def:subexpression var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:20071"/>
-		</ind-def:textfilecontent54_state>
-		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200781" version="1" comment="retry">
-			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression var_check="all" datatype="int" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:200781"/>
-		</ind-def:textfilecontent54_state>
-		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200782" version="1" comment="minlen">
-			<ind-def:instance datatype="int">2</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="equals" var_check="all" var_ref="oval:gov.nist.usgcb.rhel:var:200782"/>
-		</ind-def:textfilecontent54_state>
-		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200783" version="1" comment="dcredit">
-			<ind-def:instance datatype="int">3</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="equals" var_check="all" var_ref="oval:gov.nist.usgcb.rhel:var:200783"/>
-		</ind-def:textfilecontent54_state>
-		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200784" version="1" comment="ucredit">
-			<ind-def:instance datatype="int">4</ind-def:instance>
-			<ind-def:subexpression datatype="int" var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:200784"/>
-		</ind-def:textfilecontent54_state>
-		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200785" version="1" comment="ocredit">
-			<ind-def:instance datatype="int">5</ind-def:instance>
-			<ind-def:subexpression datatype="int" var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:200785"/>
-		</ind-def:textfilecontent54_state>
-		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200786" version="1" comment="lcredit">
-			<ind-def:instance datatype="int">6</ind-def:instance>
-			<ind-def:subexpression datatype="int" var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:200786"/>
-		</ind-def:textfilecontent54_state>
-		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:200787" version="1" comment="difok">
-			<ind-def:instance datatype="int">7</ind-def:instance>
-			<ind-def:subexpression datatype="int" var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:200787"/>
 		</ind-def:textfilecontent54_state>
 		<ind-def:variable_state id="oval:gov.nist.usgcb.rhel:ste:200800" version="1" comment="expected value of unlock_time">
 			<ind-def:value>0</ind-def:value>
@@ -9891,6 +9773,9 @@
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20115" version="1">
 			<ind-def:subexpression var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:20115"/>
 		</ind-def:textfilecontent54_state>
+		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20130" version="1" comment="Expected value of ipv6 option disable">
+			<ind-def:subexpression datatype="int" operation="equals">1</ind-def:subexpression>
+		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20132" version="1">
 			<ind-def:subexpression operation="equals">no</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
@@ -9925,10 +9810,10 @@
 			<ind-def:subexpression var_check="all" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:20142"/>
 		</ind-def:textfilecontent54_state>
 		<unix-def:uname_state id="oval:gov.nist.usgcb.rhel:ste:201670" version="1">
-			<unix-def:processor_type operation="pattern match">^i386$|^i686$</unix-def:processor_type>
+			<unix-def:processor_type operation="pattern match">^.*$</unix-def:processor_type>
 		</unix-def:uname_state>
 		<unix-def:uname_state id="oval:gov.nist.usgcb.rhel:ste:201672" version="1">
-			<unix-def:processor_type operation="pattern match">^x86_64$|^ia64$|</unix-def:processor_type>
+			<unix-def:processor_type operation="pattern match">^x86_64$|^ia64$</unix-def:processor_type>
 		</unix-def:uname_state>
 		<unix-def:file_state id="oval:gov.nist.usgcb.rhel:ste:20217" version="1">
 			<unix-def:group_id datatype="int">0</unix-def:group_id>
@@ -10174,7 +10059,6 @@
 			<ind-def:subexpression operation="equals">yes</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20340112" version="1">
-			<ind-def:instance datatype="int">2</ind-def:instance>
 			<ind-def:subexpression operation="pattern match">sec=(krb5i|ntlmv2i)</ind-def:subexpression>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:20343" version="1">
@@ -10282,34 +10166,34 @@
 		</unix-def:file_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:100000" version="1">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200786"/>
+			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200786" var_check="all"/>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:100001" version="1">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200782"/>
+			<ind-def:subexpression datatype="string" operation="equals" var_ref="oval:gov.nist.usgcb.rhel:var:20071" var_check="all"/>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:100002" version="1">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200781"/>
+			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200781" var_check="all"/>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:100003" version="1">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200785"/>
+			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200785" var_check="all"/>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:141130" version="1">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:141130"/>
+			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:141130" var_check="all"/>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:100005" version="1">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200784"/>
+			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200784" var_check="all"/>
 		</ind-def:textfilecontent54_state>
 		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:100006" version="1">
 			<ind-def:instance datatype="int">1</ind-def:instance>
-			<ind-def:subexpression datatype="int" operation="less than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200787"/>
+			<ind-def:subexpression datatype="int" operation="greater than or equal" var_ref="oval:gov.nist.usgcb.rhel:var:200787" var_check="all"/>
 		</ind-def:textfilecontent54_state>
 		<lin-def:partition_state version="1" id="oval:gov.nist.usgcb.rhel:ste:144120">
-			<lin-def:mount_options>nodev</lin-def:mount_options>
+			<lin-def:mount_options entity_check="at least one">nodev</lin-def:mount_options>
 		</lin-def:partition_state>
 		<unix-def:runlevel_state version="1" id="oval:gov.nist.usgcb.rhel:ste:20007" comment="daemon is not running or is stopping">
 			<unix-def:start datatype="boolean">false</unix-def:start>
@@ -10319,6 +10203,10 @@
 			<unix-def:start datatype="boolean">true</unix-def:start>
 			<unix-def:kill datatype="boolean">false</unix-def:kill>
 		</unix-def:runlevel_state>
+		<ind-def:textfilecontent54_state id="oval:gov.nist.usgcb.rhel:ste:99900" version="1" comment="Required value of INACTIVE in /etc/default/useradd">
+			<ind-def:instance datatype="int">1</ind-def:instance>
+			<ind-def:subexpression datatype="int">30</ind-def:subexpression>
+		</ind-def:textfilecontent54_state>
 	</states>
 	<variables>
 		<external_variable id="oval:gov.nist.usgcb.rhel:var:141130" version="1" datatype="int" comment="External variable for definition 141130"/>
@@ -10329,7 +10217,6 @@
 		<external_variable id="oval:gov.nist.usgcb.rhel:var:20053" version="1" datatype="string" comment="External variable for definition 20053"/>
 		<external_variable id="oval:gov.nist.usgcb.rhel:var:20071" version="1" datatype="string" comment="External variable for definition 20071"/>
 		<external_variable id="oval:gov.nist.usgcb.rhel:var:200781" version="1" datatype="int" comment="External variable for definition 20078"/>
-		<external_variable id="oval:gov.nist.usgcb.rhel:var:200782" version="1" datatype="int" comment="External variable for definition 20078"/>
 		<external_variable id="oval:gov.nist.usgcb.rhel:var:200783" version="1" datatype="int" comment="External variable for definition 20078"/>
 		<external_variable id="oval:gov.nist.usgcb.rhel:var:200784" version="1" datatype="int" comment="External variable for definition 20078"/>
 		<external_variable id="oval:gov.nist.usgcb.rhel:var:200785" version="1" datatype="int" comment="External variable for definition 20078"/>
@@ -11235,6 +11122,139 @@
 			<split delimiter=":">
 				<object_component item_field="value" object_ref="oval:gov.nist.usgcb.rhel:obj:20085"/>
 			</split>
+		</local_variable>
+		<constant_variable id="oval:gov.nist.usgcb.rhel:var:200482" version="1" datatype="string" comment="sgid whitelist">
+			<!-- Based on RHEL5.6, both client and server, with cluster, cluster/storage, VT, workstation options -->
+			<!-- FIXME: do the same for x86_64 -->
+			<value>/sbin/netreport</value>
+			<value>/usr/bin/crontab</value>
+			<value>/usr/bin/cu</value>
+			<value>/usr/bin/gataxx</value>
+			<value>/usr/bin/glines</value>
+			<value>/usr/bin/gnibbles</value>
+			<value>/usr/bin/gnobots2</value>
+			<value>/usr/bin/gnomine</value>
+			<value>/usr/bin/gnotravex</value>
+			<value>/usr/bin/gnotski</value>
+			<value>/usr/bin/gtali</value>
+			<value>/usr/bin/iagno</value>
+			<value>/usr/bin/konsole</value>
+			<value>/usr/bin/locate</value>
+			<value>/usr/bin/lockfile</value>
+			<value>/usr/bin/mahjongg</value>
+			<value>/usr/bin/same-gnome</value>
+			<value>/usr/bin/screen</value>
+			<value>/usr/bin/slrnpull</value>
+			<value>/usr/bin/ssh-agent</value>
+			<value>/usr/bin/uuname</value>
+			<value>/usr/bin/wall</value>
+			<value>/usr/bin/write</value>
+			<value>/usr/lib/mailman/cgi-bin/admin</value>
+			<value>/usr/lib/mailman/cgi-bin/admindb</value>
+			<value>/usr/lib/mailman/cgi-bin/confirm</value>
+			<value>/usr/lib/mailman/cgi-bin/create</value>
+			<value>/usr/lib/mailman/cgi-bin/edithtml</value>
+			<value>/usr/lib/mailman/cgi-bin/listinfo</value>
+			<value>/usr/lib/mailman/cgi-bin/options</value>
+			<value>/usr/lib/mailman/cgi-bin/private</value>
+			<value>/usr/lib/mailman/cgi-bin/rmlist</value>
+			<value>/usr/lib/mailman/cgi-bin/roster</value>
+			<value>/usr/lib/mailman/cgi-bin/subscribe</value>
+			<value>/usr/lib/mailman/mail/mailman</value>
+			<value>/usr/lib/vte/gnome-pty-helper</value>
+			<value>/usr/lib64/vte/gnome-pty-helper</value>
+			<value>/usr/libexec/utempter/utempter</value>
+			<value>/usr/sbin/lockdev</value>
+			<value>/usr/sbin/postdrop</value>
+			<value>/usr/sbin/postqueue</value>
+			<value>/usr/sbin/sendmail.sendmail</value>
+			<value>/usr/sbin/uucico</value>
+			<value>/usr/sbin/uuxqt</value>
+		</constant_variable>
+		<constant_variable id="oval:gov.nist.usgcb.rhel:var:200492" version="1" datatype="string" comment="suid whitelist">
+			<!-- Based on RHEL5.6, both client and server, with cluster, cluster/storage, VT, workstation options -->
+			<!-- FIXME: do the same for x86_64 -->
+			<value>/bin/fusermount</value>
+			<value>/bin/mount</value>
+			<value>/bin/ping</value>
+			<value>/bin/ping6</value>
+			<value>/bin/su</value>
+			<value>/bin/umount</value>
+			<value>/lib/dbus-1/dbus-daemon-launch-helper</value>
+			<value>/lib64/dbus-1/dbus-daemon-launch-helper</value>
+			<value>/sbin/mount.ecryptfs_private</value>
+			<value>/sbin/mount.nfs</value>
+			<value>/sbin/mount.nfs4</value>
+			<value>/sbin/pam_timestamp_check</value>
+			<value>/sbin/umount.nfs</value>
+			<value>/sbin/umount.nfs4</value>
+			<value>/sbin/unix_chkpwd</value>
+			<value>/usr/bin/Xorg</value>
+			<value>/usr/bin/at</value>
+			<value>/usr/bin/chage</value>
+			<value>/usr/bin/chfn</value>
+			<value>/usr/bin/chsh</value>
+			<value>/usr/bin/crontab</value>
+			<value>/usr/bin/cu</value>
+			<value>/usr/bin/gpasswd</value>
+			<value>/usr/bin/kgrantpty</value>
+			<value>/usr/bin/kpac_dhcp_helper</value>
+			<value>/usr/bin/newgrp</value>
+			<value>/usr/bin/newrole</value>
+			<value>/usr/bin/passwd</value>
+			<value>/usr/bin/rcp</value>
+			<value>/usr/bin/rlogin</value>
+			<value>/usr/bin/rsh</value>
+			<value>/usr/bin/sperl5.8.8</value>
+			<value>/usr/bin/staprun</value>
+			<value>/usr/bin/sudo</value>
+			<value>/usr/bin/sudoedit</value>
+			<value>/usr/bin/uucp</value>
+			<value>/usr/bin/uuname</value>
+			<value>/usr/bin/uustat</value>
+			<value>/usr/bin/uux</value>
+			<value>/usr/kerberos/bin/ksu</value>
+			<value>/usr/lib/amanda/calcsize</value>
+			<value>/usr/lib/amanda/dumper</value>
+			<value>/usr/lib/amanda/killpgrp</value>
+			<value>/usr/lib/amanda/planner</value>
+			<value>/usr/lib/amanda/rundump</value>
+			<value>/usr/lib/amanda/runtar</value>
+			<value>/usr/lib/mgetty+sendfax/faxq-helper</value>
+			<value>/usr/lib/news/bin/inndstart</value>
+			<value>/usr/lib/news/bin/rnews</value>
+			<value>/usr/lib/news/bin/startinnfeed</value>
+			<value>/usr/lib/nspluginwrapper/plugin-config</value>
+			<value>/usr/lib/squid/ncsa_auth</value>
+			<value>/usr/lib/squid/pam_auth</value>
+			<value>/usr/lib64/amanda/calcsize</value>
+			<value>/usr/lib64/amanda/dumper</value>
+			<value>/usr/lib64/amanda/killpgrp</value>
+			<value>/usr/lib64/amanda/planner</value>
+			<value>/usr/lib64/amanda/rundump</value>
+			<value>/usr/lib64/amanda/runtar</value>
+			<value>/usr/lib64/mgetty+sendfax/faxq-helper</value>
+			<value>/usr/lib64/nspluginwrapper/plugin-config</value>
+			<value>/usr/lib64/squid/ncsa_auth</value>
+			<value>/usr/lib64/squid/pam_auth</value>
+			<value>/usr/libexec/libvirt_proxy</value>
+			<value>/usr/libexec/mc/cons.saver</value>
+			<value>/usr/libexec/openssh/ssh-keysign</value>
+			<value>/usr/sbin/amcheck</value>
+			<value>/usr/sbin/ccreds_validate</value>
+			<value>/usr/sbin/exim</value>
+			<value>/usr/sbin/suexec</value>
+			<value>/usr/sbin/userhelper</value>
+			<value>/usr/sbin/userisdnctl</value>
+			<value>/usr/sbin/usernetctl</value>
+			<value>/usr/sbin/uucico</value>
+			<value>/usr/sbin/uuxqt</value>
+		</constant_variable>
+		<local_variable id="oval:gov.nist.usgcb.rhel:var:200501" version="1" datatype="int" comment="List of user ids">
+			<object_component item_field="subexpression" object_ref="oval:gov.nist.usgcb.rhel:obj:200501"/>
+		</local_variable>
+		<local_variable id="oval:gov.nist.usgcb.rhel:var:200511" version="1" datatype="int" comment="List of group ids">
+			<object_component item_field="subexpression" object_ref="oval:gov.nist.usgcb.rhel:obj:200511"/>
 		</local_variable>
 	</variables>
 </oval_definitions>
