@@ -198,25 +198,25 @@
 <select idref="uninstall_net-snmp" selected="true"/>
 <!-- Refine Values -->
 <!-- Permissions for passwd -->
-<refine-value idref="var-2.2.4.1.a" selector="027"/>
+<refine-value idref="daemon_umask_value" selector="027"/>
 <!-- daemon umask -->
-<refine-value idref="var-2.3.1.7.a" selector="14"/>
+<refine-value idref="password_minlen_login_defs_value" selector="14"/>
 <!-- password minimum length -->
 <!-- maximum password age -->
 <!-- password warn age -->
-<refine-value idref="var-2.3.3.1.1.retry" selector="3"/>
+<refine-value idref="password_pamcracklib_retry_value" selector="3"/>
 <!-- Number of retry attempts before erroring out -->
-<refine-value idref="var-2.3.3.1.1.minlen" selector="14"/>
+<refine-value idref="password_pamcracklib_minlen_value" selector="14"/>
 <!-- Minimum number of characters in password -->
-<refine-value idref="var-2.3.3.1.1.dcredit" selector="1"/>
+<refine-value idref="password_pamcracklib_dcredit_value" selector="1"/>
 <!-- Mininum number of digits in password -->
-<refine-value idref="var-2.3.3.1.1.ucredit" selector="2"/>
+<refine-value idref="password_pamcracklib_ucredit_value" selector="2"/>
 <!-- Mininum number of upper case in password -->
-<refine-value idref="var-2.3.3.1.1.ocredit" selector="2"/>
+<refine-value idref="password_pamcracklib_ocredit_value" selector="2"/>
 <!-- Mininum number of other (special characters) in password< -->
-<refine-value idref="var-2.3.3.1.1.lcredit" selector="2"/>
+<refine-value idref="password_pamcracklib_lcredit_value" selector="2"/>
 <!-- Mininum number of lower case in password -->
-<refine-value idref="var-2.3.3.1.1.difok" selector="3"/>
+<refine-value idref="password_pamcracklib_difok_value" selector="3"/>
 <!-- Mininum number of characters not present in old password -->
 <!-- Allow access after n seconds after failed attempt -->
 <!--            <refine-value idref="var-2.3.3.4.a" selector="usergroup"/>-->
@@ -227,17 +227,13 @@
 <!-- Passwords to remember -->
 <refine-value idref="var-2.3.4.4" selector="077"/>
 <!-- Sensible umask -->
-<refine-value idref="var-2.3.5.2.a" selector="root"/>
-<!-- User that owns /etc/grub.conf -->
-<refine-value idref="var-2.3.5.2.b" selector="root"/>
-<!-- permissions on /etc/hrub.conf -->
-<refine-value idref="var-2.3.5.5" selector="15_minutes"/>
+<refine-value idref="inactivity_timeout_value" selector="15_minutes"/>
 <!-- Inactivity timout -->
 <refine-value idref="var-2.3.7" selector="ANY_text"/>
 <!-- login banner verbiage -->
-<refine-value idref="var-2.4.2.c" selector="enforcing"/>
+<refine-value idref="selinux_state_name" selector="enforcing"/>
 <!-- SELinux state -->
-<refine-value idref="var-2.4.2.d" selector="targeted"/>
+<refine-value idref="selinux_policy_name" selector="targeted"/>
 <!-- SELinux policy -->
 <refine-value idref="var-2.5.1.2.a" selector="disabled"/>
 <!-- net.ipv4.conf.all.accept_source_route -->
@@ -271,17 +267,5 @@
 <!-- user that owns system log files -->
 <refine-value idref="var-2.6.1.2.b" selector="root"/>
 <!-- permissions of system log files -->
-<refine-value idref="var-3.4.2.system.crontab.primary.group" selector="root"/>
-<!-- group owner of /etc/crontab -->
-<refine-value idref="var-3.4.2.system.crontab.primary.user" selector="root"/>
-<!-- permissions on /etc/crontab file -->
-<refine-value idref="var-3.4.2.system.anacrontab.group" selector="root"/>
-<!-- group owner of /etc/anacrontab -->
-<refine-value idref="var-3.4.2.system.anacrontab.user" selector="root"/>
-<!-- permissions on /etc/anacrontab file -->
-<refine-value idref="var-3.4.2.system.crontab.directories.group" selector="root"/>
-<!-- group owner of cron.hourly cron.daily cron.weekly cron.monthly cron.d -->
-<refine-value idref="var-3.4.2.system.crontab.directories.user" selector="root"/>
-<!-- permissions on cron.hourly cron.daily cron.weekly cron.monthly cron.d -->
 <refine-value idref="var-3.5.2.3.a" selector="5_minutes"/>
 </Profile>
