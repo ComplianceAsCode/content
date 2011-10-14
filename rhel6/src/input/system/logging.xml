@@ -47,14 +47,14 @@ it is important to verify that all log files exist. Some logs may
 contain sensitive information, so it is better to restrict
 permissions so that only administrative users can read or write
 logfiles.</description>
-<Value id="var-2.6.1.2.a" type="string"
+<Value id="file_owner_logfiles_value" type="string"
 operator="equals" interactive="0">
 <title>User who owns log files</title>
 <description>Specify user owner of all logfiles specified in
 <tt>/etc/rsyslog.conf</tt>.</description>
 <value selector="root">root</value>
 </Value>
-<Value id="var-2.6.1.2.b" type="string"
+<Value id="file_groupowner_logfiles_value" type="string"
 operator="equals" interactive="0">
 <title>group who owns log files</title>
 <description>Specify group owner of all logfiles specified in

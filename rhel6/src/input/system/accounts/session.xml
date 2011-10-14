@@ -167,7 +167,7 @@ service accounts such as the FTP user. However, setting a
 restrictive default protects the files of users who have not taken
 steps to make their files more available, and preventing files from
 being inadvertently shared.</description>
-<Value id="var-2.3.4.4" type="string"
+<Value id="umask_user_value" type="string"
 operator="equals" interactive="0">
 <title>Sensible umask</title>
 <description>Enter default user umask</description>
@@ -183,7 +183,7 @@ operator="equals" interactive="0">
 in <tt>/etc/bashrc</tt></title>
 <description>The default <tt>umask</tt> for all users for the <tt>bash</tt> shell
 should be set to:
-<sub idref="var-2.3.4.4" /></description>
+<sub idref="umask_user_value" /></description>
 <ident cce="3844-8" />
 <oval id="accounts_umask_bash_users" />
 <ref nist="CM-6, CM-7"/>
@@ -194,7 +194,7 @@ should be set to:
 in <tt>/etc/csh.cshrc</tt></title>
 <description>The default <tt>umask</tt> for all users for the <tt>csh</tt> shell
 should be set to:
-<sub idref="var-2.3.4.4" /></description>
+<sub idref="umask_user_value" /></description>
 <ident cce="4227-5" />
 <oval id="accounts_umask_csh" />
 <ref nist="CM-6, CM-7"/>
@@ -204,7 +204,7 @@ should be set to:
 <title>The default <tt>umask</tt> for all users is set correctly
 in <tt>/etc/login.defs</tt></title>
 <description>The default <tt>umask</tt> for all users should be set to:
-<sub idref="var-2.3.4.4" /></description>
+<sub idref="umask_user_value" /></description>
 <ident cce="14107-7" />
 <oval id="accounts_umask_login_defs" />
 <ref nist="CM-6, CM-7"/>
@@ -214,7 +214,7 @@ in <tt>/etc/login.defs</tt></title>
 <title>The default <tt>umask</tt> for all users is set correctly
 in <tt>/etc/profile</tt></title>
 <description>The default <tt>umask</tt> for all users should be set to:
-<sub idref="var-2.3.4.4" /></description>
+<sub idref="umask_user_value" /></description>
 <ident cce="14847-8" />
 <oval id="accounts_umask_etc_profile" />
 <ref nist="CM-6, CM-7"/>

@@ -295,15 +295,14 @@ organization security policy. The example value of 8 provided here
 may be inadequate for many environments. See Section 2.3.3 for
 information on how to enforce more sophisticated requirements on
 password length and quality</description>
-<Value id="password_minlen_login_defs_value" type="string"
+
+<Value id="password_min_len_login_defs_value" type="string"
 operator="equals" interactive="0">
 <title>minimum password length</title>
 <description>Minimum number of characters in password</description>
 <warning category="general">This will only check new passwords</warning>
 <value selector="">14</value>
 <value selector="6">6</value>
-
-
 <!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
 <value selector="8">8</value>
 <value selector="10">10</value>
@@ -328,24 +327,45 @@ appropriately</description>
 <ref nist="CM-6, IA-5" />
 </Rule>
 
+<Value id="password_max_age_login_defs_value" type="string"
+operator="equals" interactive="0">
+<title>maximum password age</title>
+<description>Maximum age of password in days</description>
+<warning category="general">This will only apply to newly created accounts</warning>
+<value selector="">90</value>
+<value selector="90">90</value>
+<value selector="120">120</value>
+<value selector="180">180</value>
+</Value>
+
+
 <Rule id="password_max_age">
 <title>Set maximum password age</title>
 <description>The maximum password age should be set to:
-<sub idref="var-2.3.1.7.c" /></description>
+<sub idref="password_max_age_login_defs_value" /></description>
 <ident cce="4092-3" />
 <oval id="accounts_maximum_age_login_defs" />
 <ref nist="CM-6, CM-7, IA-5, AC-3" />
 </Rule>
 
+<Value id="password_warn_age_login_defs_value" type="string"
+operator="equals" interactive="0">
+<title>warning days before password expires</title>
+<description>The number of days' warning given before a password expires.</description>
+<warning category="general">This will only apply to newly created accounts</warning>
+<value selector="">7</value>
+<value selector="7">7</value>
+<value selector="14">14</value>
+</Value>
+
 <Rule id="password_warn_age">
 <title>Set password warn age</title>
 <description>The password warn age should be set to:
-<sub idref="var-2.3.1.7.d" /></description>
+<sub idref="password_warn_age_login_defs_value" /></description>
 <ident cce="4097-2" />
 <oval id="accounts_password_warn_age_login_defs" />
 <ref nist="CM-6, CM-7, IA-5, AC-3" />
 </Rule>
-
 </Group>
 
 <Group id="nis_inclusions">

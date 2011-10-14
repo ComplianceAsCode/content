@@ -200,9 +200,11 @@
 <!-- Permissions for passwd -->
 <refine-value idref="daemon_umask_value" selector="027"/>
 <!-- daemon umask -->
-<refine-value idref="password_minlen_login_defs_value" selector="14"/>
+<refine-value idref="password_min_len_login_defs_value" selector="14"/>
 <!-- password minimum length -->
+<refine-value idref="password_max_age_login_defs_value" selector="90"/>
 <!-- maximum password age -->
+<refine-value idref="password_warn_age_login_defs_value" selector="7"/>
 <!-- password warn age -->
 <refine-value idref="password_pamcracklib_retry_value" selector="3"/>
 <!-- Number of retry attempts before erroring out -->
@@ -218,54 +220,47 @@
 <!-- Mininum number of lower case in password -->
 <refine-value idref="password_pamcracklib_difok_value" selector="3"/>
 <!-- Mininum number of characters not present in old password -->
-<!-- Allow access after n seconds after failed attempt -->
-<!--            <refine-value idref="var-2.3.3.4.a" selector="usergroup"/>-->
-<!-- userhelper file permissions -->
-<refine-value idref="var-2.3.3.5.a" selector="SHA-512"/>
+<refine-value idref="password_hash_algorithm_name" selector="SHA-512"/>
 <!-- Password hashing algorithm -->
-<refine-value idref="var-2.3.3.6.a" selector="5"/>
+<refine-value idref="password_history_retain_number" selector="5"/>
 <!-- Passwords to remember -->
-<refine-value idref="var-2.3.4.4" selector="077"/>
+<refine-value idref="umask_user_value" selector="077"/>
 <!-- Sensible umask -->
 <refine-value idref="inactivity_timeout_value" selector="15_minutes"/>
 <!-- Inactivity timout -->
-<refine-value idref="var-2.3.7" selector="ANY_text"/>
+<refine-value idref="login_banner_text" selector="ANY_text"/>
 <!-- login banner verbiage -->
 <refine-value idref="selinux_state_name" selector="enforcing"/>
 <!-- SELinux state -->
 <refine-value idref="selinux_policy_name" selector="targeted"/>
 <!-- SELinux policy -->
-<refine-value idref="var-2.5.1.2.a" selector="disabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="disabled"/>
 <!-- net.ipv4.conf.all.accept_source_route -->
-<refine-value idref="var-2.5.1.2.b" selector="disabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_redirects_value" selector="disabled"/>
 <!-- net.ipv4.conf.all.accept_redirectse -->
-<refine-value idref="var-2.5.1.2.c" selector="disabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_all_secure_redirects_value" selector="disabled"/>
 <!-- net.ipv4.conf.all.secure_redirects -->
-<refine-value idref="var-2.5.1.2.d" selector="enabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="enabled"/>
 <!-- net.ipv4.conf.all.log_martians -->
-<refine-value idref="var-2.5.1.2.e" selector="disabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_default_accept_source_route_value" selector="disabled"/>
 <!-- net.ipv4.conf.default.accept_source_route -->
-<refine-value idref="var-2.5.1.2.f" selector="disabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_default_accept_redirects_value" selector="disabled"/>
 <!-- net.ipv4.conf.default.accept_redirects -->
-<refine-value idref="var-2.5.1.2.g" selector="disabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_default_secure_redirects_value" selector="disabled"/>
 <!-- net.ipv4.conf.default.secure_redirects -->
-<refine-value idref="var-2.5.1.2.h" selector="enabled"/>
+<refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcast_value" selector="enabled"/>
 <!-- net.ipv4.icmp_echo_ignore_broadcast -->
-<refine-value idref="var-2.5.1.2.i" selector="enabled"/>
+<refine-value idref="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" selector="enabled"/>
 <!-- net.ipv4.icmp_ignore_bogus_error_messages -->
-<refine-value idref="var-2.5.1.2.j" selector="enabled"/>
+<refine-value idref="sysctl_net_ipv4_tcp_syncookies_value" selector="enabled"/>
 <!-- net.ipv4.tcp_syncookie -->
-<refine-value idref="var-2.5.1.2.k" selector="enabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_all_rp_filter_value" selector="enabled"/>
 <!-- net.ipv4.conf.all.rp_filtere -->
-<refine-value idref="var-2.5.3.2.1.b" selector="disabled"/>
-<!-- accept default router advertisements -->
-<refine-value idref="var-2.5.3.2.1.c" selector="disabled"/>
-<!-- accept default router advertisements -->
-<refine-value idref="var-2.5.1.2.l" selector="enabled"/>
+<refine-value idref="sysctl_net_ipv4_conf_default_rp_filter_value" selector="enabled"/>
 <!-- net.ipv4.conf.default.rp_filter -->
-<refine-value idref="var-2.6.1.2.a" selector="root"/>
+<refine-value idref="file_owner_logfiles_value" selector="root"/>
 <!-- user that owns system log files -->
-<refine-value idref="var-2.6.1.2.b" selector="root"/>
+<refine-value idref="file_groupowner_logfiles_value" selector="root"/>
 <!-- permissions of system log files -->
-<refine-value idref="var-3.5.2.3.a" selector="5_minutes"/>
+<refine-value idref="sshd_idle_timeout_value" selector="15_minutes"/>
 </Profile>

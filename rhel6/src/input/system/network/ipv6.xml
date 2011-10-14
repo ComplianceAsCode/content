@@ -56,7 +56,7 @@ sending router solicitations):
 <pre>
 IPV6_AUTOCONF=no</pre>
 </description>
-<Value id="var-2.5.3.2.1.a" type="string"
+<Value id="sysconfig_network_IPV6_AUTOCONF_value" type="string"
 operator="equals" interactive="0">
 <title>IPV6_AUTOCONF</title>
 <description>Toggle global IPv6 autoconfiguration (only, if global
@@ -65,7 +65,7 @@ forwarding is disabled)</description>
 <value selector="enabled">enabled</value>
 <value selector="disabled">disabled</value>
 </Value>
-<Value id="var-2.5.3.2.1.b" type="string"
+<Value id="sysctl_net_ipv6_conf_default_accept_ra_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv6.conf.default.accept_ra</title>
 <description>accept default router advertisements</description>
@@ -75,7 +75,7 @@ operator="equals" interactive="0">
 </Value>
 
 
-<Value id="var-2.5.3.2.1.c" type="string"
+<Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv6.conf.default.accept_redirects</title>
 <description>Toggle ICMP Redirect Acceptance</description>
@@ -83,7 +83,7 @@ operator="equals" interactive="0">
 <value selector="enabled">enabled</value>
 <value selector="disabled">disabled</value>
 </Value>
-<Value id="var-2.5.3.2.1.d" type="string"
+<Value id="sysctl_net_ipv6_conf_all_accept_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv6.conf.all.accept_redirects</title>
 <description>Toggle ICMP Redirect Acceptance</description>
@@ -96,7 +96,7 @@ operator="equals" interactive="0">
 (<tt>net.ipv6.conf.default.accept_ra</tt>)</title>
 <description>The default setting for accepting IPv6 router
 advertisements should be:
-<sub idref="var-2.5.3.2.b" />for all
+<sub idref="sysctl_net_ipv6_conf_default_accept_ra_value" />for all
 interfaces.</description>
 <ident cce="4269-7" />
 <oval id="sysctl_ipv6_router_ra" />
@@ -106,7 +106,7 @@ interfaces.</description>
 <title>Disable accepting redirects from IPv6 routers
 (<tt>net.ipv6.conf.default.accept_redirects</tt>)</title>
 <description>Accepting redirects from IPv6 routers should be:
-<sub idref="var-2.5.3.2.c" />for all
+<sub idref="sysctl_net_ipv6_conf_default_accept_redirects_value" />for all
 interfaces.</description>
 <ident cce="4313-3" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" />

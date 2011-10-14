@@ -307,7 +307,7 @@ When users change their passwords, hashes for the new passwords
 will be generated using the SHA-512 algorithm. All accounts will
 need to perform a password change in order to upgrade the stored
 hashes to the stronger algorithm.</description>
-<Value id="var-2.3.3.5.a" type="string"
+<Value id="password_hash_algorithm_name" type="string"
 operator="equals" interactive="0">
 <title>Password hashing algorithm</title>
 <description>Enter <tt>/etc/shadow</tt> password hashing
@@ -341,7 +341,7 @@ password sufficient pam_unix.so existing_options remember=5
 </pre>
 Old (and thus no longer valid) passwords are stored in the
 file <tt>/etc/security/opasswd</tt>.</description>
-<Value id="var-2.3.3.6.a" type="number"
+<Value id="password_history_retain_number" type="number"
 operator="equals" interactive="0">
 <title>remember</title>
 <description>The last n passwords for each user are saved in
@@ -357,7 +357,7 @@ frequently.</description>
 <Rule id="limit_password_reuse">
 <title>Limit password reuse</title>
 <description>The passwords to remember should be set to:
-<sub idref="var-2.3.3.6.a" /></description>
+<sub idref="password_history_retain_number" /></description>
 <ident cce="14939-3" />
 <oval id="accounts_password_reuse_limit" />
 <ref nist="IA-5" />
