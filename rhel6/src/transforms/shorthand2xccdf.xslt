@@ -41,6 +41,18 @@ exclude-result-prefixes="xccdf">
       <xsl:attribute name="system">
         <xsl:value-of select="$ovaluri" />
       </xsl:attribute>
+
+      <xsl:if test="@value">
+      <check-export>
+      <xsl:attribute name="value-id">
+        <xsl:value-of select="@value" />
+      </xsl:attribute>
+      <xsl:attribute name="export-name">
+        <xsl:value-of select="@value" />
+      </xsl:attribute>
+      </check-export>
+      </xsl:if> 
+
       <check-content-ref>
         <xsl:attribute name="href">
           <xsl:value-of select="$ovalfile" />
