@@ -55,6 +55,14 @@ RhostsRSAAuthentication no
 RSAAuthentication no</pre></description>
 </Group>
 
+<Group id="sshd_disable_tunnel">
+<title>Disable Tunneling</title>
+<description>OpenSSH comes with the ability to perform tunneling utilizing a tunnel device. This allows
+a user to establish a small VPN connection with a firewall/gateway machine and then access resources sitting behind that firewall/gateway machine. This feature is disabled by default but it is best to explicitly disable it if it is not needed.
+<pre>PermitTunnel no</pre>
+</description>
+</Group>
+
 <Group id="sshd_client_alive_interval">
 <title>Set Idle Timeout Interval for User Logins</title>
 <description>SSH allows administrators to set an idle timeout

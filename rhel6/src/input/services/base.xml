@@ -1,7 +1,7 @@
 <Group id="base">
 <title>Base Services</title>
 <description>
-This section documents the services that are installed by default on a RHEL 6 system that was built with the "Minimal" package configuration during operating system installation. Some of these services are network enabled and should be treated with particular discretion. The other services are local system utilities that may or may not be extraneous depending upon the site configuration. Here is the output from the chkconfig utility showing the services that are installed by default on a minimal RHEL 6 system:
+When building new servers it is best practice to start out with an absolute basic operating system installation. From this basic point the system is built out to meet it's designed purpose such as a DNS server, MySQL/PostgreSQL database server, or Apache web server. The RHEL 6 installer now comes with an option that will install a minimal Linux environment. The purpose of this section is to document the services that are installed by default on a RHEL 6 system that was built with the "Minimal" package configuration during operating system installation. Overall, the "Minimal" package configuration serves as an excellent starting point. Here is the output from the chkconfig utility showing the services that are installed by default on a minimal RHEL 6 system:
 <pre>
 # /sbin/chkconfig --list
 auditd          0:off 1:off 2:on  3:on  4:on  5:on  6:off
@@ -22,29 +22,15 @@ saslauthd       0:off 1:off 2:off 3:off 4:off 5:off 6:off
 sshd            0:off 1:off 2:on  3:on  4:on  5:on  6:off
 udev-post       0:off 1:on  2:on  3:on  4:on  5:on  6:off
 </pre>
-As you can see, the "Minimal" package configuration in RHEL 6 lives up to its name. The system services listed above are for the most part the bare essentials needed for a running system. Each one of these services will be discussed and a specific recommendation will be made as to whether the service should be enabled or not.
+As you can see, the "Minimal" package configuration in RHEL 6 lives up to its name. The system services listed above are for the most part the bare essentials needed for a running system. Each one of these services will be discussed and a specific recommendation will be made as to whether the service should
+be enabled or not.
 </description>
-
-  <!--
-  <Rule id="enable_auditd">
-    <title>Audit Daemon (auditd)</title>
-    <description>
-      The audit service is provided for system auditing. This service should
-      be enabled.
-      <pre># chkconfig auditd on</pre>
-    </description>
-    <ident cce="9999-9" />
-    <oval id="package_auditd_installed" />
-    <ref nist="CM-X, CM-X" />
-  </Rule>
-  -->
 
 <Group id="base_service_auditd">
 <title>Audit Daemon (auditd)</title>
 <description>
-The audit service is provided for system auditing. By default, the service audits about SELinux AVC denials and certain types of security-relevant events such as system logins, account modifications, and authentication events performed by programs such as sudo.
+The audit service is provided for system auditing. By default the service audits SELinux AVC denials and certain types of security-relevant events such as system logins, account modifications, and authentication events performed by programs such as sudo. Unless there is another service that will be used for system auditing it is recommended that auditd be enabled.
 <pre># chkconfig auditd on</pre>
-Unless there is another application that will be used for system auditing it is recommended that auditd be enabled.
 </description>
 </Group>
 
@@ -59,7 +45,7 @@ The cron daemon is used to execute commands at preconfigured times. The cron dae
 <Group id="base_service_firewall">
 <title>Firewall (iptables and ip6tables)</title>
 <description>
-A host-based firewall called Netfilter is included as part of the Linux kernel distributed with the system. It is activated by default (the services are enabled at boot). This firewall is controlled by the program iptables, and the entire capability is frequently referred to by this name. An analogous program called ip6tables handles filtering for IPv6. Unlike TCP Wrappers, which depends on the network server program to support and respect the rules written, Netfilter filtering occurs at the kernel level, before a program can even process the data from the network packet. As such, any program on the system is affected by the rules written.
+A host-based firewall called Netfilter is included as part of the Linux kernel distributed with the system. It is activated by default. This firewall is controlled by the program iptables, and the entire capability is frequently referred to by this name. An analogous program called ip6tables handles filtering for IPv6. Unlike TCP Wrappers, which depends on the network server program to support and respect the rules written, Netfilter filtering occurs at the kernel level, before a program can even process the data from the network packet. As such, any program on the system is affected by the rules written.
 <pre># chkconfig iptables on
 # chkconfig ip6tables on</pre>
 </description>
@@ -141,6 +127,16 @@ The Red Hat Subscription Manager (rhsmcertd) runs routinely to check for changes
 <description>
 The rsyslog service provides the default logging daemon for RHEL 6. Unless some sort of custom logging daemon is used (like syslog-ng or something similar) then this service must be enabled and configured properly. The rsyslog service provides improvements such as connection-oriented (TCP) transmission of logs, the option to log to database formats, and the encryption of log data en route to a central logging server.
 <pre># chkconfig rsyslog on</pre>
+</description>
+</Group>
+
+<Group id="base_service_saslauthd">
+<title>Cyrus SASL Authentication Daemon (saslauthd)</title>
+<description>
+The saslauthd service handles plaintext authentication requests on behalf of the SASL library.
+This service fulfills two roles: 1) it isolates all code requiring superuser privileges into a single process, and 2) it can be used to provide proxy authentication services to clients that do not
+understand SASL based authentication. Unless this service is absolutely needed it should be disabled.
+<pre># chkconfig saslauthd off</pre>
 </description>
 </Group>
 
