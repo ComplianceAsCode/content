@@ -8,6 +8,7 @@ implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
+
 <Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
 <description>If the system needs to act as an SSH server, then
@@ -15,17 +16,16 @@ certain changes should be made to the OpenSSH daemon configuration
 file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
 applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
+
 <Group id="sshd_allowing_only_protocol2">
 <title>Ensure Only Protocol 2 Connections Allowed</title>
 <description>Only SSH protocol version 2 connections should be
 permitted. Version 1 of the protocol contains security
 vulnerabilities. The default setting shipped in the configuration
 file is correct, but it is important enough to check.
-<br /><br />
-Verify that the following line appears:
 <br />
-<pre>
-Protocol 2</pre>
+Verify that the following line appears:
+<pre>Protocol 2</pre>
 </description>
 <Rule id="sshd_allow_only_protocol2">
 <title>Ensure Only Protocol 2 Connections Allowed</title>
@@ -35,7 +35,27 @@ disabled.</description>
 <oval id="sshd_protocol_2" />
 </Rule>
 </Group>
-<Group id="group-3.5.2.3">
+
+<Group id="sshd_disable_extraneous_authentication">
+<title>Disable Extraneous Authentication Schemes</title>
+<description>OpenSSH comes with a wide variety of authentication schemes that may or may not
+be applicable. It is best practice to explicitly disable all authentication schemes except for
+those which are actually required. This reduces the overall attack surface of the daemon.
+<br />
+In the configuration file excerpt below only public key authentication (PubKeyAuthentication)
+and password authentication (PasswordAuthentication) is permitted. All other schemes are disabled.
+<pre>PasswordAuthentication yes
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+GSSAPIAuthentication no
+HostbasedAuthentication no
+KbdInteractiveAuthentication no
+KerberosAuthentication no
+RhostsRSAAuthentication no
+RSAAuthentication no</pre></description>
+</Group>
+
+<Group id="sshd_client_alive_interval">
 <title>Set Idle Timeout Interval for User Logins</title>
 <description>SSH allows administrators to set an idle timeout
 interval. After this interval has passed, the idle user will be
@@ -44,11 +64,8 @@ automatically logged out.
 Find and edit the following lines in <tt>/etc/ssh/sshd_config</tt> as
 follows:
 <br />
-<pre>
-ClientAliveInterval <b>interval</b>
-ClientAliveCountMax 0
-
-</pre>
+<pre>ClientAliveInterval <b>interval</b>
+ClientAliveCountMax 0</pre>
 The timeout <b>interval</b> is given in seconds. To have a timeout
 of 5 minutes, set <b>interval</b> to 300.
 <br /><br />
