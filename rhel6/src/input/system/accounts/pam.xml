@@ -317,12 +317,13 @@ algorithm</description>
 <value selector="SHA-256">sha256</value>
 <value selector="SHA-512">sha512</value>
 </Value>
+
 <Rule id="set_password_hashing_algorithm">
 <title>Set Password hashing algorithm</title>
 <description>The password hashing algorithm should be set to
 SHA-512</description>
 <ident cce="14063-2" />
-<oval id="accounts_password_hashing_algorithm" />
+<oval id="accounts_password_hashing_algorithm" value="password_hash_algorithm_name" />
 <ref nist="IA-5" />
 </Rule>
 </Group>

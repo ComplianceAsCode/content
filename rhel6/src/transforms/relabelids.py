@@ -6,6 +6,7 @@ import lxml.etree as ET
 
 # This script requires two arguments: an XCCDF file and an ID name scheme.
 # This script is designed to convert and synchronize all IDs referenced from the XCCDF document.
+# These references would typically be inside OVAL documents, but we also looking to OCIL.
 # The IDs are to be converted from strings to meaningless numbers.
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"

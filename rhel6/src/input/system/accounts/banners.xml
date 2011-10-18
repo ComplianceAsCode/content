@@ -22,6 +22,17 @@ operator="equals" interactive="0">
 <description>Enter an appropriate login banner for your
 organization</description>
 <value selector="any_text">.+</value>
+<value selector="usgcb_default">
+-- WARNING --
+This system is for the use of authorized users only. Individuals
+using this computer system without authority or in excess of their
+authority are subject to having all their activities on this system
+monitored and recorded by system personnel. Anyone using this
+system expressly consents to such monitoring and is advised that
+if such monitoring reveals possible evidence of criminal activity
+system personal may provide the evidence of such monitoring to law
+enforcement officials.
+</value>
 </Value>
 
 
@@ -45,7 +56,7 @@ disclaimer.</description>
 <description>The system login banner text should be:
 <sub idref="login_banner_text" /></description>
 <ident cce="4060-0" />
-<oval id="banner_etc_issue" />
+<oval id="banner_etc_issue" value="login_banner_text"/>
 <ref nist="AC-3, CM-6, AC-8" />
 </Rule>
 </Group>
