@@ -45,9 +45,15 @@ The cron daemon is used to execute commands at preconfigured times. The cron dae
 <Group id="base_service_firewall">
 <title>Firewall (iptables and ip6tables)</title>
 <description>
-A host-based firewall called Netfilter is included as part of the Linux kernel distributed with the system. It is activated by default. This firewall is controlled by the program iptables, and the entire capability is frequently referred to by this name. An analogous program called ip6tables handles filtering for IPv6. Unlike TCP Wrappers, which depends on the network server program to support and respect the rules written, Netfilter filtering occurs at the kernel level, before a program can even process the data from the network packet. As such, any program on the system is affected by the rules written.
+The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The framework consists of two components: a set of kernel modules that perform the actual packet filtering, and a set of userspace tools used to administer the firewall ruleset. The most common userspace tools are <tt>iptables</tt> and <tt>ip6tables</tt> used to adminster the IPv4 tables and IPv6 tables respectively. Packet filtering occurs at the kernel level before a program can even process the data from the network packet. As such, any program on the system is affected by the rules written. It is highly recommended to leave these services enabled.
 <pre># chkconfig iptables on
 # chkconfig ip6tables on</pre>
+Please note that both IPv4 and IPv6 network stacks are installed by default. There are two ways to determine if the local machine is dual stacked. You can examine the output of the <tt>lsmod</tt> command and look for a module called <tt>ipv6</tt>. You can also examine the output of <tt>ifconfig</tt> to see if network interfaces have both IPv4 and IPv6 addresses. This output from the <tt>ifconfig</tt> command shows that the local system is dual stacked. Notice how the loopback interface <tt>lo</tt> has both IPv4 and IPv6 addresses: <pre>lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host</pre>
+Because of the dual stacks it is important to leave both services enabled even though the server or workstation sits on either a IPv4 network or a IPv6 network. If the machine is sitting on an IPv4 network then use <tt>ip6tables</tt> to completely close down the IPv6 side of things. If the machine is sitting on an IPv6 network then use <tt>iptables</tt> to close down the IPv4 side of things.
+<br />
+Finally, it is not enough to simply enable the iptables and ip6tables services and walk away. The Netfilter packet filtering framework within the Linux kernel allows for a wide variety of firewall configurations. Taking the time to configure a robust host-based firewall is well worth the effort.
 </description>
 </Group>
 
