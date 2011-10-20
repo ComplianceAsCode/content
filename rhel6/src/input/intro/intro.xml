@@ -27,6 +27,37 @@ guide and should also influence any configuration decisions that are
 not explicitly covered.
 </description>
 
+<Group id="principle-minimize-software">
+<title>Minimize Installed Software</title>
+<description>
+Installed software can contribute to system vulnerability in several different
+ways. Packages can include setuid programs (for instance <tt>passwd</tt> and
+<tt>sudo</tt>) which can provide local attackers a potential path to privilege
+escalation. Packages can include network services that may be vulnerable to
+remote exploitation. The network services also come with a default configuration
+that could expose unintended additional functionality that could be exploited
+by an attacker. The less software resident on the local system the better.
+<br />
+The simplest way to avoid vulnerabilities in software is to install as little
+software as possible on the system right from the start. Minimizing installed software is most
+easily accomplished when the operating system is being installed. The RHEL 6
+installer gives the system administrator the choice to install a "Minimal"
+package configuration that does a good job of installing the bare essentials
+required for a running system. The "Minimal" package configuration serves as
+a good starting pointing for building out a system.
+<br />
+Software minimization can be achieved on previously built machines but the
+process can be tedious. When reviewing possible candidates for removal, care must
+be taken that deleted packages do not introduce side effects into the system that
+impact stability and/or performance. 
+<br />
+On RHEL 6, the RPM Package Manager (abbreviated RPM) allows for careful management
+of the set of software packages installed on a system. The number of software packages
+installed on a system can almost always be significantly pruned to include
+only the software for which there is an environmental or operational need.
+</description>
+</Group>
+
 <Group id="principle-encrypt-transmitted-data">
 <title>Encrypt Transmitted Data Whenever Possible</title>
 <description>
@@ -38,26 +69,6 @@ Encrypting authentication data, such as passwords, is particularly
 important. Networks of RHEL6 machines can and should be configured
 so that no unencrypted authentication data is ever transmitted between
 machines.
-</description>
-</Group>
-
-
-<Group id="principle-minimize-software">
-<title>Minimize Software to Minimize Vulnerability</title>
-<description>
-The simplest way to avoid vulnerabilities in software is to avoid
-installing that software. On RHEL, the RPM Package Manager (originally
-Red Hat Package Manager, abbreviated RPM) allows for careful management of
-the set of software packages installed on a system. Installed software
-contributes to system vulnerability in several ways. Packages that
-include setuid programs may provide local attackers a potential path to
-privilege escalation. Packages that include network services may give
-this opportunity to network-based attackers. Packages that include
-programs which are predictably executed by local users (e.g. after
-graphical login) may provide opportunities for trojan horses or other
-attack code to be run undetected. The number of software packages
-installed on a system can almost always be significantly pruned to include
-only the software for which there is an environmental or operational need.
 </description>
 </Group>
 
