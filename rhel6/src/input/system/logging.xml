@@ -47,18 +47,12 @@ it is important to verify that all log files exist. Some logs may
 contain sensitive information, so it is better to restrict
 permissions so that only administrative users can read or write
 logfiles.</description>
+
 <Value id="file_owner_logfiles_value" type="string"
 operator="equals" interactive="0">
 <title>User who owns log files</title>
 <description>Specify user owner of all logfiles specified in
 <tt>/etc/rsyslog.conf</tt>.</description>
-<value selector="root">root</value>
-</Value>
-<Value id="file_groupowner_logfiles_value" type="string"
-operator="equals" interactive="0">
-<title>group who owns log files</title>
-<description>Specify group owner of all logfiles specified in
-<tt>/etc/rsyslog.conf.</tt></description>
 <value selector="root">root</value>
 </Value>
 
@@ -68,9 +62,19 @@ appropriate user.</title>
 <description>All <tt>rsyslog</tt> log files should be owned by the
 appropriate user.</description>
 <ident cce="17857-4" />
-<oval id="rsyslog_files_ownership" />
+<oval id="rsyslog_files_ownership" 
+   value="file_owner_logfiles_value" >
 <ref nist="AC-3, CM-6" />
 </Rule>
+
+
+<Value id="file_groupowner_logfiles_value" type="string"
+operator="equals" interactive="0">
+<title>group who owns log files</title>
+<description>Specify group owner of all logfiles specified in
+<tt>/etc/rsyslog.conf.</tt></description>
+<value selector="root">root</value>
+</Value>
 
 <Rule id="groupowner_rsyslog_files">
 <title>All <tt>rsyslog</tt> log files should be owned by the
@@ -81,6 +85,7 @@ appropriate group.</description>
 <oval id="rsyslog_files_groupownership" />
 <ref nist="AC-3, CM-6" />
 </Rule>
+
 
 <Rule id="rsyslog_file_permissions">
 <title>File permissions for all <tt>rsyslog</tt> log files

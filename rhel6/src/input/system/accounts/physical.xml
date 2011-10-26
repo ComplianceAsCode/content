@@ -48,21 +48,34 @@ password --md5 <b>password-hash</b>
 </pre></li>
 </ol>Boot loaders for other platforms should offer a similar
 password protection feature.</description>
-<Rule>
-<title>Set Boot Loader user owner</title>
+
+<Value id="file_owner_etc_grub_conf_value" type="string" operator="equals">
+<title>User that owns /etc/grub.conf</title>
+<description xml:lang="en-US">Choose user that should own /etc/grub.conf</description>
+<value selector="root">root</value>
+</Value>
+
+<Rule id "userowner_grub.conf">
+<title>Set Boot Loader configuration file user owner</title>
 <description>The <tt>/etc/grub.conf</tt> file should be owned by
 root.</description>
 <ident cce="4144-2" />
-<oval id="file_owner_etc_grub_conf" />
+<oval id="file_owner_etc_grub_conf" value="file_owner_etc_grub_conf_value" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
+
+<Value id="file_groupowner_etc_grub_conf_value" type="string" operator="equals">
+<title>Group that owns /etc/grub.conf</title>
+<description xml:lang="en-US">Choose group that should own /etc/grub.conf</description>
+<value selector="root">root</value>
+</Value>
 
 <Rule id="groupowner_grub.conf">
 <title>Set Boot Loader group owner</title>
 <description>The <tt>/etc/grub.conf</tt> file should be owned by group
 root.</description>
 <ident cce="4197-0" />
-<oval id="file_groupowner_etc_grub_conf" />
+<oval id="file_groupowner_etc_grub_conf" value="file_groupowner_etc_grub_conf_value"/>
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -217,7 +230,7 @@ shells, and X sessions</description>
 <description>The idle time-out value for period of inactivity GNOME
 desktop lockout should be 15 minutes</description>
 <ident cce="3315-9" />
-<oval id="gconf_gnome-screensaver_idle_delay" />
+<oval id="gconf_gnome-screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" />
 </Rule>
 

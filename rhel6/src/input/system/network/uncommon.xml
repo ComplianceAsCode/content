@@ -7,7 +7,7 @@ discovered, the consequences can be dramatic. Ensuring uncommon
 network protocols are disabled reduces the system’s risk to attacks
 targeted at its implementation of those protocols.</description>
 
-<Group id="group-2.5.7.1">
+<Group id="dccp_support">
 <title>Disable Support for DCCP</title>
 <description>To prevent the DCCP kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
@@ -19,7 +19,7 @@ install dccp /bin/true
 The Datagram Congestion Control Protocol (DCCP) is a
 relatively new transport layer protocol, designed to support
 streaming media and telephony.</description>
-<Rule id="disable_network_protocol_dccp">
+<Rule id="disable_protocol_dccp">
 <title>Disable Support for DCCP</title>
 <description>Support for DCCP should be disabled.</description>
 <ident cce="14268-7" />
@@ -27,7 +27,7 @@ streaming media and telephony.</description>
 </Rule>
 </Group>
 
-<Group id="group-2.5.7.2">
+<Group id="sctp_support">
 <title>Disable Support for SCTP</title>
 <description>To prevent the SCTP kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
@@ -40,7 +40,7 @@ The Stream Control Transmission Protocol (SCTP) is a
 transport layer protocol, designed to support the idea of
 message-oriented communication, with several streams of messages
 within one connection.</description>
-<Rule id="rule-2.5.7.2.a">
+<Rule id="disable_protocol_sctp">
 <title>Disable Support for SCTP</title>
 <description>Support for SCTP should be disabled.</description>
 <ident cce="14132-5" />
@@ -48,7 +48,7 @@ within one connection.</description>
 </Rule>
 </Group>
 
-<Group id="group-2.5.7.3">
+<Group id="rds_support">
 <title>Disable Support for RDS</title>
 <description>To prevent the RDS kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
@@ -60,7 +60,7 @@ install rds /bin/true
 The Reliable Datagram Sockets (RDS) protocol is a transport
 layer protocol designed to provide reliable high- bandwidth,
 low-latency communications between nodes in a cluster.</description>
-<Rule id="disable_network_protocol_rds">
+<Rule id="disable_protocol_rds">
 <title>Disable Support for RDS</title>
 <description>Support for RDS should be disabled.</description>
 <ident cce="14027-7" />
@@ -68,7 +68,7 @@ low-latency communications between nodes in a cluster.</description>
 </Rule>
 </Group>
 
-<Group id="disable_network_protocol_tipc_group">
+<Group id="tipc_support">
 <title>Disable Support for TIPC</title>
 <description>To prevent the TIPC kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
@@ -80,7 +80,7 @@ install rds /bin/true
 The Transparent Inter-Process Communication (TIPC) protocol
 is designed to provide communications between nodes in a
 cluster.</description>
-<Rule id="disable_network_protocol_tipc">
+<Rule id="disable_protocol_tipc">
 <title>Disable Support for TIPC</title>
 <description>Support for TIPC should be disabled.</description>
 <ident cce="14911-2" />

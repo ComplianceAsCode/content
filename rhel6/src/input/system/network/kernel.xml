@@ -96,6 +96,9 @@ serving small networks.
 <br /><br />
 For more information on any of these, see the kernel source documentation
 file <tt>/Documentation/networking/ip-sysctl.txt.2</tt></description>
+
+
+
 <Value id="sysctl_net_ipv4_conf_all_accept_source_route_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.accept_source_route</title>
@@ -106,14 +109,40 @@ created outside and has been redirected.</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_all_accept_source_route">
+<title>Set net.ipv4.conf.all.accept_source_route for
+Hosts and Routers</title>
+<description>Accepting source routed packets should be:
+<sub idref="sysctl_net_ipv4_conf_all_accept_source_route_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4236-6" />
+<oval id="sysctl_net_ipv4_conf_all_accept_source_route" 
+   value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
+<ref nist="CM-7" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.accept_redirects</title>
-<description>Disable ICMP Redirect Acceptance?</description>
+<description>Disable ICMP Redirect Acceptance</description>
 <value selector="">0</value>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_all_accept_redirects">
+<title>Set net.ipv4.conf.all.accept_redirects for Hosts
+and Routers</title>
+<description>Accepting ICMP redirects should be:
+<sub idref="sysctl_net_ipv4_conf_all_accept_redirects_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4217-6" />
+<oval id="sysctl_net_ipv4_conf_all_accept_redirects" 
+   value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
+<ref nist="CM-7" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.secure_redirects</title>
@@ -124,6 +153,19 @@ table.</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_all_secure_redirects">
+<title>Set net.ipv4.conf.all.secure_redirects for Hosts
+and Routers</title>
+<description>Accepting "secure" ICMP redirects (those from gateways
+listed in the default gateways list) should be:
+<sub idref="sysctl_net_ipv4_conf_all_secure_redirects_value" />for all interfaces
+as appropriate.</description>
+<ident cce="3472-8" />
+<oval id="sysctl_net_ipv4_conf_all_secure_redirects" 
+   value="sysctl_net_ipv4_conf_all_secure_redirects_value" />
+<ref nist="CM-7, AC-4" />
+</Rule>
+
 
 <Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="string"
 operator="equals" interactive="0">
@@ -134,6 +176,20 @@ Routed Packets, Redirect Packets</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_all_log_martians">
+<title>Set net.ipv4.conf.all.log_martians for Hosts and
+Routers</title>
+<description>Logging of "martian" packets (those with impossible
+addresses) should be:
+<sub idref="sysctl_net_ipv4_conf_all_log_martians_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4320-8" />
+<oval id="sysctl_net_ipv4_conf_all_log_martians"
+   value="sysctl_net_ipv4_conf_all_log_martians_value" />
+<ref nist="CM-7" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.accept_source_route</title>
@@ -142,6 +198,20 @@ operator="equals" interactive="0">
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_default_accept_source_route">
+<title>Set net.ipv4.conf.default.accept_source_route for
+Hosts and Routers</title>
+<description>The default setting for accepting source routed
+packets should be:
+<sub idref="sysctl_net_ipv4_conf_default_accept_source_route_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4091-5" />
+<oval id="sysctl_net_ipv4_conf_all_accept_source_route" 
+   value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
+<ref nist="AC-4, SC-5, SC-7" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.accept_redirects</title>
@@ -150,6 +220,19 @@ operator="equals" interactive="0">
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_default_accept_redirects">
+<title>Set net.ipv4.conf.default.accept_redirects for
+Hosts and Routers</title>
+<description>The default setting for accepting ICMP redirects
+should be:
+<sub idref="sysctl_net_ipv4_conf_default_accept_redirects_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4186-3" />
+<oval id="sysctl_net_ipv4_conf_default_accept_redirects" />
+<ref nist="AC-4, SC-5, SC-7" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.secure_redirects</title>
@@ -159,6 +242,21 @@ log?</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_default_secure_redirects">
+<title>Set net.ipv4.conf.default.secure_redirects for
+Hosts and Routers</title>
+<description>The default setting for accepting "secure" ICMP
+redirects (those from gateways listed in the default gateways list)
+should be:
+<sub idref="sysctl_net_ipv4_conf_default_secure_redirects_value" />for all interfaces
+as appropriate.</description>
+<ident cce="3339-9" />
+<oval id="sysctl_net_ipv4_conf_default_secure_redirects" 
+   value="sysctl_net_ipv4_conf_default_secure_redirects_value" />
+<ref nist="AC-4, SC-5, SC-7" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcast_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.icmp_echo_ignore_broadcast</title>
@@ -168,6 +266,20 @@ via broadcast/multicast</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts">
+<title>Set net.ipv4.icmp_echo_ignore_broadcasts for
+Hosts and Routers</title>
+<description>Ignoring ICMP echo requests (pings) sent to broadcast
+/ multicast addresses should be:
+<sub idref="sysctl_net_ipv4_icmp_echo_ignore_broadcast_value" />for all interfaces
+as appropriate.</description>
+<ident cce="3644-2" />
+<oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" 
+   value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
+<ref nist="AC-3, CM-6, CM-7, SC-5" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.icmp_ignore_bogus_error_messages</title>
@@ -177,6 +289,19 @@ attacks</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_icmp_ignore_bogus_error_messages">
+<title>Set net.ipv4.icmp_ignore_bogus_error_messages for
+Hosts and Routers</title>
+<description>Ignoring bogus ICMP responses to broadcasts should be:
+<sub idref="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4133-5" />
+<oval id="sysctl_net_ipv4_icmp_ignore_bogus_error_messages" 
+   value="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" />
+<ref nist="AC-3, CM-6, CM-7, SC-5" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_tcp_syncookies_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.tcp_syncookies</title>
@@ -186,6 +311,19 @@ Protection</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_tcp_syncookies">
+<title>Set net.ipv4.tcp_syncookies for Hosts and
+Routers</title>
+<description>Sending TCP syncookies should be:
+<sub idref="sysctl_net_ipv4_tcp_syncookies_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4265-5" />
+<oval id="sysctl_net_ipv4_tcp_syncookies"
+   value="sysctl_net_ipv4_tcp_syncookies_value" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+
+
 <Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.rp_filter</title>
@@ -198,6 +336,19 @@ it arrived.</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+<Rule id="set_sysctl_net_ipv4_conf_all_rp_filter">
+<title>Set net.ipv4.conf.all.rp_filter for Hosts and
+Routers</title>
+<description>Performing source validation by reverse path should
+be:
+<sub idref="sysctl_net_ipv4_conf_all_rp_filter_value" />for all interfaces
+as appropriate.</description>
+<ident cce="4080-8" />
+<oval id="sysctl_net_ipv4_conf_all_rp_filter" 
+   value="sysctl_net_ipv4_conf_all_rp_filter_value" />
+<ref nist="AC-4, SC-5, SC-7" />
+</Rule>
+
 
 <Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="string"
 operator="equals" interactive="0">
@@ -207,138 +358,7 @@ operator="equals" interactive="0">
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
-
-<Rule id="set_sysctl_ipv4_all_accept_source_route">
-<title>Set net.ipv4.conf.all.accept_source_route for
-Hosts and Routers</title>
-<description>Accepting source routed packets should be:
-<sub idref="sysctl_net_ipv4_conf_all_accept_source_route_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4236-6" />
-<oval id="sysctl_net_ipv4_conf_all_accept_source_route" />
-<ref nist="CM-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_all_accept_redirects">
-<title>Set net.ipv4.conf.all.accept_redirects for Hosts
-and Routers</title>
-<description>Accepting ICMP redirects should be:
-<sub idref="sysctl_net_ipv4_conf_all_accept_redirects_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4217-6" />
-<oval id="sysctl_net_ipv4_conf_all_accept_redirects" />
-<ref nist="CM-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_all_secure_redirects">
-<title>Set net.ipv4.conf.all.secure_redirects for Hosts
-and Routers</title>
-<description>Accepting "secure" ICMP redirects (those from gateways
-listed in the default gateways list) should be:
-<sub idref="sysctl_net_ipv4_conf_all_secure_redirects_value" />for all interfaces
-as appropriate.</description>
-<ident cce="3472-8" />
-<oval id="sysctl_net_ipv4_conf_all_secure_redirects" />
-<ref nist="CM-7, AC-4" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_all_log_martians">
-<title>Set net.ipv4.conf.all.log_martians for Hosts and
-Routers</title>
-<description>Logging of "martian" packets (those with impossible
-addresses) should be:
-<sub idref="sysctl_net_ipv4_conf_all_log_martians_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4320-8" />
-<oval id="sysctl_net_ipv4_conf_all_log_martians" />
-<ref nist="CM-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_all_accept_source_route">
-<title>Set net.ipv4.conf.default.accept_source_route for
-Hosts and Routers</title>
-<description>The default setting for accepting source routed
-packets should be:
-<sub idref="sysctl_net_ipv4_conf_default_accept_source_route_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4091-5" />
-<oval id="sysctl_net_ipv4_conf_all_accept_source_route" />
-<ref nist="AC-4, SC-5, SC-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_default_accept_redirects">
-<title>Set net.ipv4.conf.default.accept_redirects for
-Hosts and Routers</title>
-<description>The default setting for accepting ICMP redirects
-should be:
-<sub idref="sysctl_net_ipv4_conf_default_accept_redirects_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4186-3" />
-<oval id="sysctl_net_ipv4_conf_default_accept_redirects" />
-<ref nist="AC-4, SC-5, SC-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_default_secure_redirects">
-<title>Set net.ipv4.conf.default.secure_redirects for
-Hosts and Routers</title>
-<description>The default setting for accepting "secure" ICMP
-redirects (those from gateways listed in the default gateways list)
-should be:
-<sub idref="sysctl_net_ipv4_conf_default_secure_redirects_value" />for all interfaces
-as appropriate.</description>
-<ident cce="3339-9" />
-<oval id="sysctl_net_ipv4_conf_default_secure_redirects" />
-<ref nist="AC-4, SC-5, SC-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_icmp_echo_ignore_broadcasts">
-<title>Set net.ipv4.icmp_echo_ignore_broadcasts for
-Hosts and Routers</title>
-<description>Ignoring ICMP echo requests (pings) sent to broadcast
-/ multicast addresses should be:
-<sub idref="sysctl_net_ipv4_icmp_echo_ignore_broadcast_value" />for all interfaces
-as appropriate.</description>
-<ident cce="3644-2" />
-<oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" />
-<ref nist="AC-3, CM-6, CM-7, SC-5" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_icmp_ignore_bogus_error_messages">
-<title>Set net.ipv4.icmp_ignore_bogus_error_messages for
-Hosts and Routers</title>
-<description>Ignoring bogus ICMP responses to broadcasts should be:
-
-<sub idref="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4133-5" />
-<oval id="sysctl_net_ipv4_icmp_ignore_bogus_error_messages" />
-<ref nist="AC-3, CM-6, CM-7, SC-5" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_tcp_syncookies">
-<title>Set net.ipv4.tcp_syncookies for Hosts and
-Routers</title>
-<description>Sending TCP syncookies should be:
-<sub idref="sysctl_net_ipv4_tcp_syncookies_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4265-5" />
-<oval id="sysctl_net_ipv4_tcp_syncookies" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_all_rp_filter">
-<title>Set net.ipv4.conf.all.rp_filter for Hosts and
-Routers</title>
-<description>Performing source validation by reverse path should
-be:
-<sub idref="sysctl_net_ipv4_conf_all_rp_filter_value" />for all interfaces
-as appropriate.</description>
-<ident cce="4080-8" />
-<oval id="sysctl_net_ipv4_conf_all_rp_filter" />
-<ref nist="AC-4, SC-5, SC-7" />
-</Rule>
-
-<Rule id="set_sysctl_ipv4_default_rp_filter">
+<Rule id="set_sysctl_net_ipv4_conf_default_rp_filter">
 <title>Set net.ipv4.conf.default.rp_filter for Hosts and
 Routers</title>
 <description>The default setting for performing source validation
@@ -346,9 +366,11 @@ by reverse path should be:
 <sub idref="sysctl_net_ipv4_conf_default_rp_filter_value" />for all interfaces
 as appropriate.</description>
 <ident cce="3840-6" />
-<oval id="sysctl_net_ipv4_conf_default_rp_filter" />
+<oval id="sysctl_net_ipv4_conf_default_rp_filter" 
+   value="sysctl_net_ipv4_conf_default_rp_filter_value" />
 <ref nist="AC-4, SC-5, SC-7" />
 </Rule>
+
 </Group>
 
 </Group>

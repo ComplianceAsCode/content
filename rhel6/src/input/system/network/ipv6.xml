@@ -56,6 +56,7 @@ sending router solicitations):
 <pre>
 IPV6_AUTOCONF=no</pre>
 </description>
+
 <Value id="sysconfig_network_IPV6_AUTOCONF_value" type="string"
 operator="equals" interactive="0">
 <title>IPV6_AUTOCONF</title>
@@ -65,6 +66,16 @@ forwarding is disabled)</description>
 <value selector="enabled">enabled</value>
 <value selector="disabled">disabled</value>
 </Value>
+
+<Value id="sysctl_net_ipv6_conf_all_accept_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.all.accept_redirects</title>
+<description>Toggle ICMP Redirect Acceptance</description>
+<value selector="">disabled</value>
+<value selector="enabled">enabled</value>
+<value selector="disabled">disabled</value>
+</Value>
+
 <Value id="sysctl_net_ipv6_conf_default_accept_ra_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv6.conf.default.accept_ra</title>
@@ -73,7 +84,18 @@ operator="equals" interactive="0">
 <value selector="enabled">yes</value>
 <value selector="disabled">no</value>
 </Value>
-
+<Rule id="set_sysctl_net_ipv6_conf_default_accept_ra">
+<title>Disable accepting IPv6 router advertisements
+(<tt>net.ipv6.conf.default.accept_ra</tt>)</title>
+<description>The default setting for accepting IPv6 router
+advertisements should be:
+<sub idref="sysctl_net_ipv6_conf_default_accept_ra_value" />for all
+interfaces.</description>
+<ident cce="4269-7" />
+<oval id="sysctl_ipv6_router_ra" 
+   value="sysctl_net_ipv6_conf_default_accept_ra_value" />
+<ref nist="CM-7" />
+</Rule>
 
 <Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" type="string"
 operator="equals" interactive="0">
@@ -83,25 +105,6 @@ operator="equals" interactive="0">
 <value selector="enabled">enabled</value>
 <value selector="disabled">disabled</value>
 </Value>
-<Value id="sysctl_net_ipv6_conf_all_accept_redirects_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv6.conf.all.accept_redirects</title>
-<description>Toggle ICMP Redirect Acceptance</description>
-<value selector="">disabled</value>
-<value selector="enabled">enabled</value>
-<value selector="disabled">disabled</value>
-</Value>
-<Rule id="set_sysctl_ipv6_default_accept_ra">
-<title>Disable accepting IPv6 router advertisements
-(<tt>net.ipv6.conf.default.accept_ra</tt>)</title>
-<description>The default setting for accepting IPv6 router
-advertisements should be:
-<sub idref="sysctl_net_ipv6_conf_default_accept_ra_value" />for all
-interfaces.</description>
-<ident cce="4269-7" />
-<oval id="sysctl_ipv6_router_ra" />
-<ref nist="CM-7" />
-</Rule>
 <Rule id="set_sysctl_ipv6_default_accept_redirects">
 <title>Disable accepting redirects from IPv6 routers
 (<tt>net.ipv6.conf.default.accept_redirects</tt>)</title>
@@ -109,7 +112,8 @@ interfaces.</description>
 <sub idref="sysctl_net_ipv6_conf_default_accept_redirects_value" />for all
 interfaces.</description>
 <ident cce="4313-3" />
-<oval id="sysctl_net_ipv6_conf_default_accept_redirects" />
+<oval id="sysctl_net_ipv6_conf_default_accept_redirects" 
+   value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>

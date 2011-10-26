@@ -185,7 +185,7 @@ in <tt>/etc/bashrc</tt></title>
 should be set to:
 <sub idref="umask_user_value" /></description>
 <ident cce="3844-8" />
-<oval id="accounts_umask_bash_users" />
+<oval id="accounts_umask_bash_users" value="umask_user_value"/>
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -196,7 +196,7 @@ in <tt>/etc/csh.cshrc</tt></title>
 should be set to:
 <sub idref="umask_user_value" /></description>
 <ident cce="4227-5" />
-<oval id="accounts_umask_csh" />
+<oval id="accounts_umask_csh"  value="umask_user_value"/>
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -206,7 +206,7 @@ in <tt>/etc/login.defs</tt></title>
 <description>The default <tt>umask</tt> for all users should be set to:
 <sub idref="umask_user_value" /></description>
 <ident cce="14107-7" />
-<oval id="accounts_umask_login_defs" />
+<oval id="accounts_umask_login_defs" value="umask_user_value" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
@@ -216,7 +216,7 @@ in <tt>/etc/profile</tt></title>
 <description>The default <tt>umask</tt> for all users should be set to:
 <sub idref="umask_user_value" /></description>
 <ident cce="14847-8" />
-<oval id="accounts_umask_etc_profile" />
+<oval id="accounts_umask_etc_profile" value="umask_user_value" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 </Group>
