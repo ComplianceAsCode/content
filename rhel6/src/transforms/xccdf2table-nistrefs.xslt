@@ -19,7 +19,6 @@
 		</html>
 	</xsl:template>
 
-
 	<xsl:template match="cdf:Benchmark">
 		<style type="text/css">
 		table
@@ -47,7 +46,7 @@
 						<td>Description</td>
 						<td>Rationale</td>
 						<td>Variable Setting</td>
-						<td>Configuration Mechanism</td>
+		<!--				<td>Configuration Mechanism</td> -->
 						<td>NIST 800-53 Mapping</td>
 					</thead>
 					<xsl:for-each select="cdf:select">
@@ -131,9 +130,9 @@
 			<td>
 				<xsl:apply-templates select="cdf:fixtext"/>
 			</td>
-			<td>
+<!--			<td>
 				<xsl:apply-templates select="cdf:fix"/>
-			</td>
+			</td> -->
 			<td>
 				<xsl:apply-templates select="cdf:reference"/>
 			</td>

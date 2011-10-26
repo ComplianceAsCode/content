@@ -36,8 +36,11 @@ xccdf2shorthand:
 	xsltproc -o ${OUTDIR}/rhel5-shorthand.xml ${TRANSDIR}/xccdf2shorthand.xslt ${REFS}/usgcb-rhel5desktop-xccdf.xml
 	tidy -m -xml -utf8 --indent-spaces=0 ${OUTDIR}/rhel5-shorthand.xml
 
-xccdf2table-nistrefs:
-	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
+xccdf-addprofiles:
+	xsltproc -stringparam profile "allprofiles" -o ${OUTDIR}/rhel6-xccdf-allprofiles.xml ${TRANSDIR}/xccdf-addprofiles.xslt ${OUTDIR}/rhel6-xccdf.xml
+
+xccdf2table-nistrefs: guide xccdf-addprofiles
+	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf-allprofiles.xml
 
 content: guide checks
 	${TRANSDIR}/relabelids.py rhel6-xccdf.xml scap-security-guide 
