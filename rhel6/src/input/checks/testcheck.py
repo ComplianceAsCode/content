@@ -37,8 +37,11 @@ variables = ET.Element("variables")
 # add oval elements to the global Elements defined above
 def add_oval_elements(body):
     tree = ET.fromstring(header + body + footer)
+    tree = replace_external_vars(tree)
     # parse new file(string) as an etree, so we can arrange elements appropriately 
     for childnode in tree.findall("./{" + ovalns + "}def-group/*"):
+        # print "childnode.tag is " + childnode.tag
+        if childnode.tag is ET.Comment: continue 
         if childnode.tag == ("{" + ovalns + "}definition"):
             definitions.append(childnode)
             defname = childnode.get("id")
@@ -54,6 +57,18 @@ def add_oval_elements(body):
         if childnode.tag.endswith("_variable"): variables.append(childnode)
     return defname
 
+# replace external_varables with local_variables, so the definition can be tested
+# independently of an XCCDF file
+def replace_external_vars(tree):
+    print "considering replace"
+    # external_variable is a special case: we turn it into a local_variable so we can test
+    for node in tree.findall("./{" + ovalns + "}external_variable"):
+        print "external_variable with id : " + node.get("id") 
+        node.tag = "local_variable"
+        # this doesn't work.
+    return tree
+
+
 def read_ovaldefgroup_file(testfile):
     with open( testfile, 'r') as f:
         body = f.read()
@@ -61,7 +76,7 @@ def read_ovaldefgroup_file(testfile):
 
 def main():
     if len(sys.argv) < 2:
-        print "Provide the name of an XML file, which contains the definition (and dependencies) to test."
+        print "Provide the name of an XML file, which contains the definition to test."
         sys.exit(1)
 
     for testfile in sys.argv[1:]:

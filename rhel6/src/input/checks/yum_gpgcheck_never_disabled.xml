@@ -5,7 +5,7 @@
       <title>Ensure Package Signature Checking is Not Disabled For
       Any Repos</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14813-0" source="CCE" />
       <description>To ensure that signature checking is not
@@ -34,9 +34,7 @@
   id="obj_20011" version="1">
     <ind:path>/etc/yum.repos.d</ind:path>
     <ind:filename operation="pattern match">.*</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*gpgcheck[\s]*=[\s]*([0-1])</ind:pattern>
-    <ind:instance datatype="int" operation="equals">
-    1</ind:instance>
+    <ind:pattern operation="pattern match">^[\s]*gpgcheck[\s]*=[\s]*([0-1])</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

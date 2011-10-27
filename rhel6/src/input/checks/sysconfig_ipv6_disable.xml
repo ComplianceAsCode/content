@@ -4,7 +4,7 @@
     <metadata>
       <title>Disable Interface Usage of IPv6</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3381-1" source="CCE" />
       <description>The default setting for IPv6 configuration
@@ -32,8 +32,7 @@
   version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>network</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*IPV6INIT[\s]*=[\s]*([^#\s]*)</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*IPV6INIT[\s]*=[\s]*([^#\s]*)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

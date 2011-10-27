@@ -5,7 +5,7 @@
       <title>Ensure auditd Collects Process and Session Initiation
       Information</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14679-5" source="CCE" />
       <description>Audit rules about the Process and Session
@@ -30,8 +30,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/var/run/utmp\s\-p\swa\s\-k\ssession$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/var/run/utmp\s\-p\swa\s\-k\ssession$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -44,8 +43,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/var/log/btmp\s\-p\swa\s\-k\ssession$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/var/log/btmp\s\-p\swa\s\-k\ssession$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -58,8 +56,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/var/log/wtmp\s\-p\swa\s\-k\ssession$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/var/log/wtmp\s\-p\swa\s\-k\ssession$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

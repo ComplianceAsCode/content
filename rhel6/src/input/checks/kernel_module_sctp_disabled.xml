@@ -4,7 +4,7 @@
     <metadata>
       <title>Disable Support for SCTP</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14132-5" source="CCE" />
       <description>Support for SCTP should be
@@ -25,8 +25,7 @@
   version="2">
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename>usgcb-blacklist</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*install[\s]+sctp[\s]+/bin/true$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*install[\s]+sctp[\s]+/bin/true$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

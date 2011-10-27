@@ -4,7 +4,7 @@
     <metadata>
       <title>Set Idle Timeout Interval for User Logins</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3845-5" source="CCE" />
       <description>The SSH idle timout interval should be set to an
@@ -13,7 +13,7 @@
     <criteria comment="SSH is not being used or conditions are met"
     operator="OR">
       <extend_definition comment="sshd service is disabled"
-      definition_ref="NEEDSFIXUP_20234" />
+      definition_ref="service_sshd_disabled" />
       <criterion comment="check ClientAliveInterval in /etc/ssh/sshd_config"
       test_ref="test_20239" />
     </criteria>
@@ -23,22 +23,28 @@
   comment="Tests the value of the ClientAliveInterval setting in the /etc/ssh/sshd_config file"
   id="test_20239" version="1">
     <ind:object object_ref="obj_20239" />
-    <ind:state state_ref="state_20239" />
+  <!--  <ind:state state_ref="state_20239" /> -->
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state comment="ClientAliveInterval in seconds"
+<!--  <ind:textfilecontent54_state comment="ClientAliveInterval in seconds"
   id="state_20239" version="1">
-    <ind:subexpression datatype="int" operation="equals"
+    <ind:subexpression datatype="int" operation="equals" />
     var_check="all" var_ref="var_20239" />
-  </ind:textfilecontent54_state>
-  <external_variable comment="External variable for ClientActiveinterval in definition 20239"
+  </ind:textfilecontent54_state> -->
+<!--  <external_variable comment="local variable for ClientActiveinterval in definition 20239"
   datatype="int" id="var_20239"
-  version="1" />
+  version="1" /> -->
+  <constant_variable comment="local variable for ClientActiveinterval in definition 20239"
+  datatype="int" id="var_20239"
+  version="1">
+  <value>1</value>
+  </constant_variable> 
+
   <ind:textfilecontent54_object id="obj_20239"
   version="1">
     <ind:path>/etc/ssh</ind:path>
     <ind:filename>sshd_config</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*ClientAliveInterval[\s]*([\d]+)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">^[\s]*ClientAliveInterval[\s]*(1)</ind:pattern>
+    <!-- <ind:pattern operation="pattern match">^[\s]*ClientAliveInterval[\s]*([\d]+)</ind:pattern> -->
+   <ind:instance datatype="int">1</ind:instance> 
   </ind:textfilecontent54_object>
 </def-group>

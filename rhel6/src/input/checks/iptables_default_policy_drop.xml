@@ -5,7 +5,7 @@
       <title>Change the default policy to DROP (from ACCEPT) for
       the INPUT built-in chain</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14264-6" source="CCE" />
       <description>Change the default policy to DROP (from ACCEPT)
@@ -28,8 +28,7 @@
   version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>iptables</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*:INPUT\sDROP\s\[0:0\]</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*:INPUT\sDROP\s\[0:0\]</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -42,8 +41,7 @@
   version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>iptables</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*:INPUT\ACCEPT\s\[0:0\]</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*:INPUT\ACCEPT\s\[0:0\]</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

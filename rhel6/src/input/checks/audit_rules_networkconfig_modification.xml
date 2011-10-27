@@ -5,7 +5,7 @@
       <title>Record Events that Modify the System’s Network
       Environment</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14816-3" source="CCE" />
       <description>Audit rules about the System’s Network
@@ -45,8 +45,7 @@
   </unix:uname_test>
   <unix:uname_state id="state_201670"
   version="1">
-    <unix:processor_type operation="pattern match">
-    ^i386$|^i686$</unix:processor_type>
+    <unix:processor_type operation="pattern match">^i386$|^i686$</unix:processor_type>
   </unix:uname_state>
   <unix:uname_object id="obj_201670"
   version="1" />
@@ -60,8 +59,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-a\sexit,always\s\-F\sarch=b32\s\-S\ssethostname\s\-S\ssetdomainname\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-a\sexit,always\s\-F\sarch=b32\s\-S\ssethostname\s\-S\ssetdomainname\s\-k\ssystem\-locale$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <unix:uname_test check="all"
@@ -72,8 +70,7 @@
   </unix:uname_test>
   <unix:uname_state id="state_201672"
   version="1">
-    <unix:processor_type operation="pattern match">
-    ^x86_64$|^ia64$|</unix:processor_type>
+    <unix:processor_type operation="pattern match">^x86_64$|^ia64$|</unix:processor_type>
   </unix:uname_state>
   <ind:textfilecontent54_test check="all"
   check_existence="at_least_one_exists"
@@ -85,8 +82,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-a\sexit,always\s\-F\sarch=b64\s\-S\ssethostname\s\-S\ssetdomainname\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-a\sexit,always\s\-F\sarch=b64\s\-S\ssethostname\s\-S\ssetdomainname\s\-k\ssystem\-locale$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -99,8 +95,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/issue\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/issue\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -113,8 +108,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/issue\.net\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/issue\.net\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -127,8 +121,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/hosts\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/hosts\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -141,8 +134,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/sysconfig/network\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/sysconfig/network\s\-p\swa\s\-k\ssystem\-locale$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

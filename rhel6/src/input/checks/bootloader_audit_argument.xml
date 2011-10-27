@@ -5,7 +5,7 @@
       <title>Enable Auditing for Processes Which Start Prior to the
       Audit Daemon</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-15026-8" source="CCE" />
       <description>Look for argument audit=1 in the kernel line in
@@ -22,12 +22,10 @@
   id="test_20157" version="1">
     <ind:object object_ref="obj_20157" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20157"
-  version="1">
+  <ind:textfilecontent54_object id="obj_20157" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>grub.conf</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*kernel.+\saudit=1</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*kernel.+\saudit=1</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

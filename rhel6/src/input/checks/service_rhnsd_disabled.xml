@@ -4,14 +4,14 @@
     <metadata>
       <title>Disable the rhnsd Daemon</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3416-5" source="CCE" />
       <description>The rhnsd service should be
       disabled.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Red Hat Enterprise Linux 5 is installed"
+      <extend_definition comment="Red Hat Enterprise Linux 6 is installed"
       definition_ref="NEEDSFIXUP_10000" />
       <criterion comment="Check that rhnsd service is not running"
       test_ref="test_20007" />

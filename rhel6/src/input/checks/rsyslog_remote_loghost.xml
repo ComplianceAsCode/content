@@ -4,7 +4,7 @@
     <metadata>
       <title>Send Logs to a Remote Loghost</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-17248-6" source="CCE" />
       <description>Syslog logs should be sent to a remote
@@ -25,8 +25,7 @@
   version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>rsyslog.conf</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\*\.\*[\s]+@</ind:pattern>
+    <ind:pattern operation="pattern match">^\*\.\*[\s]+@</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

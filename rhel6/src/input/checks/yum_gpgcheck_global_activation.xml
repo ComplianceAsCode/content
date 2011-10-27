@@ -4,7 +4,7 @@
     <metadata>
       <title>Ensure gpgcheck is Globally Activated</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14914-6" source="CCE" />
       <description>The gpgcheck option should be used to ensure
@@ -33,8 +33,7 @@
   id="obj_20010" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>yum.conf</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*gpgcheck[\s]*=[\s]*([0-1])</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*gpgcheck[\s]*=[\s]*([0-1])</ind:pattern>
     <ind:instance datatype="int" operation="equals">
     1</ind:instance>
   </ind:textfilecontent54_object>

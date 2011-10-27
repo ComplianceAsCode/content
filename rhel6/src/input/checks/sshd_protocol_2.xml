@@ -4,7 +4,7 @@
     <metadata>
       <title>Ensure Only Protocol 2 Connections Allowed</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4325-7" source="CCE" />
       <description>SSH version 1 protocol support should be
@@ -28,8 +28,7 @@
   version="2">
     <ind:path>/etc/ssh</ind:path>
     <ind:filename>sshd_config</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*[Pp][Rr][Oo][Tt][Oo][Cc][Oo][lL][\s]+2(?:(?:[\s]+)|(?:$)|(?:#[\w\d\s]*))</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*[Pp][Rr][Oo][Tt][Oo][Cc][Oo][lL][\s]+2(?:(?:[\s]+)|(?:$)|(?:#[\w\d\s]*))</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

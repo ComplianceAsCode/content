@@ -4,7 +4,7 @@
     <metadata>
       <title>Disable X Window System Listening</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4074-1" source="CCE" />
       <description>Disable the ability to provide remote graphical
@@ -25,8 +25,7 @@
   version="1">
     <ind:path>/etc/X11/xinit</ind:path>
     <ind:filename>xserverrc</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*exec\sX\s:0\s\-nolisten\stcp\s\$@</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*exec\sX\s:0\s\-nolisten\stcp\s\$@</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

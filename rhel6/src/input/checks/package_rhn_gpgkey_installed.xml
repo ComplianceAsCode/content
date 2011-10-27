@@ -5,13 +5,13 @@
       <title>Ensure that GPG Key for Red Hat Network is
       installed</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14440-2" source="CCE" />
       <description>The GPG key should be installed.</description>
     </metadata>
     <criteria>
-      <extend_definition comment="Red Hat Enterprise Linux 5 is installed"
+      <extend_definition comment="Red Hat Enterprise Linux 6 is installed"
       definition_ref="NEEDSFIXUP_10000" />
       <criterion comment="check gpg signature"
       test_ref="test_200065" />

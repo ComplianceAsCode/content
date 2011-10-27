@@ -8,6 +8,18 @@ implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
+<Rule id="ssh_server_disabled">
+<title>Disable SSH Server if Possible (Unlikely)</title>
+<description>The SSH server service, sshd, is commonly needed.
+However, if it can be disabled, do so with the command:
+<br />
+<pre>
+# chkconfig sshd off
+</pre>
+</description>
+<ident cce="4268-9" />
+<oval id="service_sshd_disabled" />
+</Rule>
 
 <Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
@@ -96,7 +108,7 @@ appropriate value</title>
 <description>The SSH idle timout interval should be set to an
 appropriate value</description>
 <ident cce="3845-5" />
-<oval id="sshd_idle_timeout" />
+<oval id="sshd_idle_timeout" value="sshd_idle_timeout_value"/>
 </Rule>
 
 <Rule id="sshd_set_keepalive">

@@ -4,7 +4,7 @@
     <metadata>
       <title>Disable .rhosts Files</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4475-0" source="CCE" />
       <description>Emulation of the rsh command through the ssh
@@ -29,8 +29,7 @@
   version="1">
     <ind:path>/etc/ssh</ind:path>
     <ind:filename>sshd_config</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*[Ii][Gg][Nn][Oo][Rr][Ee][Rr][Hh][Oo][Ss][Tt][Ss][\s]*no\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*[Ii][Gg][Nn][Oo][Rr][Ee][Rr][Hh][Oo][Ss][Tt][Ss][\s]*no\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

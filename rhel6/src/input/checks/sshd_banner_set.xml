@@ -4,7 +4,7 @@
     <metadata>
       <title>Enable a Warning Banner</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4431-3" source="CCE" />
       <description>SSH warning banner should be enabled (and
@@ -28,8 +28,7 @@
   version="1">
     <ind:path>/etc/ssh</ind:path>
     <ind:filename>sshd_config</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*Banner[\s]+/etc/issue$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*Banner[\s]+/etc/issue$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

@@ -3,7 +3,7 @@ OUTDIR=output
 TRANSDIR=transforms
 REFS=references
 
-all: shorthand-guide shorthand2xccdf xccdf2table-nistrefs guide
+all: shorthand-guide shorthand2xccdf xccdf2table-nistrefs guide checks content
 
 shorthand-guide:
 	xsltproc -o ${OUTDIR}/rhel6-shorthand.xml ${INDIR}/guide.xslt ${INDIR}/guide.xml

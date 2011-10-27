@@ -4,7 +4,7 @@
     <metadata>
       <title>Disable Mounting of hfs</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-15087-0" source="CCE" />
       <description>prevents usage of this uncommon
@@ -30,8 +30,7 @@
   id="obj_20027" version="2">
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename>usgcb-blacklist</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*install[\s]+([\S]+)[\s]+/bin/true</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*install[\s]+([\S]+)[\s]+/bin/true</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">
     1</ind:instance>
   </ind:textfilecontent54_object>

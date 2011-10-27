@@ -4,7 +4,7 @@
     <metadata>
       <title>Disable Automatic Configuration</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4313-3" source="CCE" />
       <description>Accepting redirects from IPv6 routers should be
@@ -28,8 +28,7 @@
   id="obj_43130" version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>network</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^IPV6_AUTOCONF=no$</ind:pattern>
+    <ind:pattern operation="pattern match">^IPV6_AUTOCONF=no$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

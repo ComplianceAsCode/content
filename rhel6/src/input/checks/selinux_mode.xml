@@ -4,7 +4,7 @@
     <metadata>
       <title>Enable SELinux state</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3999-0" source="CCE" />
       <description>The SELinux state should be set
@@ -60,8 +60,7 @@
   version="1">
     <ind:path>/etc/selinux</ind:path>
     <ind:filename>config</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*selinux[\s]*=[\s]*([^#\s]*)</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*selinux[\s]*=[\s]*([^#\s]*)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:variable_test check="all" comment="enforce is disabled"

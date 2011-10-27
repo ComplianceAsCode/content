@@ -5,7 +5,7 @@
       <title>Ensure auditd Collects System Administrator
       Actions</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14824-7" source="CCE" />
       <description>Audit rules about the System Administrator
@@ -26,8 +26,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/sudoers\s\-p\swa\s\-k\sactions</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/sudoers\s\-p\swa\s\-k\sactions</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

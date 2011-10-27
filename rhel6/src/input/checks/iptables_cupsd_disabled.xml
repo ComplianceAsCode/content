@@ -5,7 +5,7 @@
       <title>Firewall access to printing service should be enabled
       or disabled as appropriate</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3649-1" source="CCE" />
       <description>Firewall access to printing service should be
@@ -26,8 +26,7 @@
   id="obj_36490" version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>iptables</ind:filename>
-    <ind:pattern operation="pattern match">^-A RH-Firewall-1-INPUT
-    -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j
+    <ind:pattern operation="pattern match">^-A RH-Firewall-1-INPUT -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j
     ACCEPT$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -40,8 +39,7 @@
   id="obj_36491" version="1">
     <ind:path>etc/sysconfig</ind:path>
     <ind:filename>ip6tables</ind:filename>
-    <ind:pattern operation="pattern match">^-A RH-Firewall-1-INPUT
-    -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j
+    <ind:pattern operation="pattern match">^-A RH-Firewall-1-INPUT -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j
     ACCEPT$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

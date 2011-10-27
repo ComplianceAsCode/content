@@ -5,7 +5,7 @@
       <title>Record Events that Modify User/Group
       Information</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14829-6" source="CCE" />
       <description>Audit rules about User/Group Information are
@@ -34,8 +34,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/group\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/group\s\-p\swa\s\-k\sidentity$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -48,8 +47,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/passwd\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/passwd\s\-p\swa\s\-k\sidentity$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -62,8 +60,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/gshadow\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/gshadow\s\-p\swa\s\-k\sidentity$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -76,8 +73,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/shadow\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/shadow\s\-p\swa\s\-k\sidentity$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -90,8 +86,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-w\s/etc/security/opasswd\s\-p\swa\s\-k\sidentity$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s/etc/security/opasswd\s\-p\swa\s\-k\sidentity$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

@@ -4,7 +4,7 @@
     <metadata>
       <title>Deactivate Wireless Interfaces</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4276-2" source="CCE" />
       <description>All wireless interfaces should be
@@ -26,8 +26,7 @@
   version="1">
     <ind:path>/proc/net</ind:path>
     <ind:filename>wireless</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*([\S\d]+):</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*([\S\d]+):</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">
     1</ind:instance>
   </ind:textfilecontent54_object>

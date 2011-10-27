@@ -4,7 +4,7 @@
     <metadata>
       <title>Disable Zeroconf Networking</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14054-1" source="CCE" />
       <description>Disable Zeroconf automatic route assignment in
@@ -25,8 +25,7 @@
   version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>network</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\s*NOZEROCONF=yes</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*NOZEROCONF=yes</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

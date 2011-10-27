@@ -55,6 +55,7 @@ def main():
 	variables = ET.Element("variables")
 
 	for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
+                if childnode.tag is ET.Comment: continue
 		if childnode.tag.endswith("definition"): definitions.append(childnode)
 		if childnode.tag.endswith("_test"): tests.append(childnode)
 		if childnode.tag.endswith("_object"): objects.append(childnode) 

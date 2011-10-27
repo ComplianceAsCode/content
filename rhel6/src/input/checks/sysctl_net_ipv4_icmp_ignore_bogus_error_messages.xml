@@ -4,7 +4,7 @@
     <metadata>
       <title>Network Parameters for Hosts and Routers</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4133-5" source="CCE" />
       <description>Ignoring bogus ICMP responses to broadcasts
@@ -33,8 +33,7 @@
   version="2">
     <ind:path>/etc</ind:path>
     <ind:filename>sysctl.conf</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*net\.ipv4\.icmp_ignore_bogus_error_responses[\s]*=([\s]*)</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*net\.ipv4\.icmp_ignore_bogus_error_responses[\s]*=([\s]*)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

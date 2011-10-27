@@ -5,7 +5,7 @@
       <title>Ensure auditd Collects Information on the Use of
       Privileged Commands</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 5</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14296-8" source="CCE" />
       <description>Audit rules about the Information on the Use of
@@ -26,9 +26,7 @@
   version="1">
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^\-a\salways,exit\s-F\spath=/bin/ping\s-F
-    perm=x\s\-F\sauid&gt;=500\s\-F\sauid!=4294967295\s\-k\sprivileged</ind:pattern>
+    <ind:pattern operation="pattern match">^\-a\salways,exit\s-F\spath=/bin/ping\s-F perm=x\s\-F\sauid&gt;=500\s\-F\sauid!=4294967295\s\-k\sprivileged</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
