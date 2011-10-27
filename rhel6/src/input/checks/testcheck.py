@@ -75,6 +75,12 @@ def read_ovaldefgroup_file(testfile):
     return body
 
 def main():
+    global definitions
+    global tests
+    global objects
+    global states
+    global variables
+
     if len(sys.argv) < 2:
         print "Provide the name of an XML file, which contains the definition to test."
         sys.exit(1)
@@ -101,6 +107,11 @@ def main():
         else:
             subprocess.call("/usr/bin/oscap oval eval --results "+ fname + "-results " + fname, shell=True)
         # perhaps delete tempfile?
+        definitions = ET.Element("definitions")
+        tests = ET.Element("tests")
+        objects = ET.Element("objects")
+        states = ET.Element("states")
+        variables = ET.Element("variables")
 
     sys.exit(0)
 
