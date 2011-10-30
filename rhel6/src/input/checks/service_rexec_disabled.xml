@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance"
+  id="service_rexec_disabled" version="1">
+    <metadata>
+      <title>disable rcp</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="undefined" source="CCE" />
+      <description>The rexec service should be
+      disabled.</description>
+    </metadata>
+    <criteria comment="rsh-server is not installed or conditions are met"
+    operator="OR">
+      <extend_definition comment="rsh-server is not installed"
+      definition_ref="package_rsh-server_removed" />
+      <criterion comment="Unknown test stub"
+      test_ref="test_22" />
+    </criteria>
+  </definition>
+  <ind:unknown_test check="all"
+  comment="Test implementation is unknown, unavailable, or impossible"
+  id="test_22" version="1" />
+</def-group>

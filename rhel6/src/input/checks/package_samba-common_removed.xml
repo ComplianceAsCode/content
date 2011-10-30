@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance"
+  id="package_samba-common_removed" version="1">
+    <metadata>
+      <title>Uninstall samba-common</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="undefined" source="CCE" />
+      <description>The samba-common package should be
+      uninstalled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_rpm_samba-common_removed" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="The samba-common package should be installed or not as appropriate"
+  id="test_rpm_samba-common_removed" version="1">
+    <linux:object object_ref="obj_rpm_samba-common" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rpm_samba-common"
+  version="1">
+    <linux:name>samba-common</linux:name>
+  </linux:rpminfo_object>
+</def-group>

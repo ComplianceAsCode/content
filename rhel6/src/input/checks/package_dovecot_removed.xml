@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance"
+  id="package_dovecot_disabled" version="1">
+    <metadata>
+      <title>Disable Dovecot if Possible</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-4239-0" source="CCE" />
+      <description>The dovecot package should be
+      uninstalled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20332" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="The dovecot package should be installed or not as appropriate"
+  id="test_20332" version="1">
+    <linux:object object_ref="obj_20332" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_20332"
+  version="1">
+    <linux:name>dovecot</linux:name>
+  </linux:rpminfo_object>
+</def-group>

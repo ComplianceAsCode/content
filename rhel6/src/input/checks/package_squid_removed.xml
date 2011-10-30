@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance"
+  id="package_squid_removed" version="1">
+    <metadata>
+      <title>Disable Squid if Possible</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-4076-6" source="CCE" />
+      <description>The squid package should be
+      uninstalled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_20342" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  comment="The squid package should be installed or not as appropriate"
+  id="test_20342" version="1">
+    <linux:object object_ref="obj_20342" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_20342"
+  version="1">
+    <linux:name>squid</linux:name>
+  </linux:rpminfo_object>
+</def-group>
