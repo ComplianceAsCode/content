@@ -12,11 +12,23 @@
     </metadata>
     <criteria>
       <extend_definition comment="Red Hat Enterprise Linux 6 is installed"
-      definition_ref="NEEDSFIXUP_10000" />
-      <criterion comment="check gpg signature"
-      test_ref="test_200065" />
+      definition_ref="installed_OS_is_rhel6" />
+      <criterion comment="check gpg signature" test_ref="test_200065" />
     </criteria>
   </definition>
-  <ind:unknown_test check="all" comment="place holder"
-  id="test_200065" version="1" />
+
+  <linux:rpminfo_test check_existence="any_exist" id="test_200065" version="1" check="at least one" comment="proper gpg-pubkey version is installed">
+	<linux:object object_ref="obj_200065"/>
+	<linux:state state_ref="ste_200065"/>
+  </linux:rpminfo_test>
+
+<linux:rpminfo_object id="obj_200065" version="1">
+	<linux:name>gpg-pubkey</linux:name>
+</linux:rpminfo_object>
+
+<linux:rpminfo_state id="ste_200065" version="1" comment="gpg(Red Hat, Inc. (release key) &lt;security@redhat.com&gt;)">
+	<linux:release>45761324</linux:release>
+	<linux:version>37017186</linux:version>
+</linux:rpminfo_state>
+
 </def-group>

@@ -13,7 +13,7 @@
     <criteria comment="ntpd is enabled and conditions are met"
     operator="AND">
       <extend_definition comment="ntpd is enabled"
-      definition_ref="NEEDSFIXUP_20281" />
+      definition_ref="service_ntpd_enabled" />
       <criterion test_ref="test_43850" />
     </criteria>
   </definition>
@@ -24,9 +24,9 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="TODO::INSERT"
   id="obj_43850" version="1">
-    <ind:path>/etc/sysconfig</ind:path>
-    <ind:filename>iptables</ind:filename>
-    <ind:pattern operation="pattern match">^.+$</ind:pattern>
+    <ind:path>/etc</ind:path>
+    <ind:filename>ntp.conf</ind:filename>
+    <ind:pattern operation="pattern match">^server\s+.+$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

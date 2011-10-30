@@ -13,7 +13,7 @@
     <criteria comment="tftp-server is not installed or conditions are met"
     operator="OR">
       <extend_definition comment="tftp-server is not installed"
-      definition_ref="NEEDSFIXUP_20182" />
+      definition_ref="package_tftp-server_removed" />
       <criteria operator="AND">
         <criterion comment="The tftp service is not running"
         test_ref="test_201825" />

@@ -13,7 +13,7 @@
     <criteria comment="net-snmp is not installed or conditions are met"
     operator="OR">
       <extend_definition comment="net-snmp is not installed"
-      definition_ref="NEEDSFIXUP_20366" />
+      definition_ref="package_net-snmp_removed" />
       <criteria operator="AND">
         <criterion comment="Conditions are satisfied"
         test_ref="test_20365" />

@@ -15,14 +15,14 @@
       <criteria operator="OR">
         <criteria operator="AND">
           <extend_definition comment="/selinux exists"
-          definition_ref="NEEDSFIXUP_201035"
+          definition_ref="selinux_enabled"
           negate="true" />
           <criterion comment="enforce is disabled"
           test_ref="test_201061" />
         </criteria>
         <criteria operator="AND">
           <extend_definition comment="/selinux exists"
-          definition_ref="NEEDSFIXUP_201035" />
+          definition_ref="selinux_enabled" />
           <criteria operator="OR">
             <criteria operator="AND">
               <criterion comment="enforce is permissive"

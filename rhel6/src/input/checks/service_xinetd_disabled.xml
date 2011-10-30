@@ -13,7 +13,7 @@
     <criteria comment="xinetd is not installed or conditions are met"
     operator="OR">
       <extend_definition comment="xinetd is not installed"
-      definition_ref="NEEDSFIXUP_20173" />
+      definition_ref="package_xinetd_removed" />
       <criteria operator="AND">
         <criterion comment="Conditions are satisfied"
         test_ref="test_20171" />

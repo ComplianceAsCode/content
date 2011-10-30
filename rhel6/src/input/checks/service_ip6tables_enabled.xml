@@ -12,12 +12,8 @@
     </metadata>
     <criteria comment="Either IPv6 is disabled or this feature should be"
     operator="OR">
-      <extend_definition comment="The default setting for IPv6 configuration should be disabled for network interfaces"
-      definition_ref="NEEDSFIXUP_20131" />
-      <extend_definition comment="Global IPv6 initialization should be disabled"
-      definition_ref="NEEDSFIXUP_20132" />
-      <extend_definition comment="IPv6 configuration should be disabled for all interfaces"
-      definition_ref="NEEDSFIXUP_20133" />
+      <extend_definition comment="IPv6 kernel module disabled via option"
+      definition_ref="kernel_module_ipv6_option_disabled" />
       <criteria operator="AND">
         <criterion comment="Conditions are satisfied"
         test_ref="test_20146" />

@@ -13,7 +13,7 @@
     <criteria comment="vsftpd is not installed or conditions are met"
     operator="OR">
       <extend_definition comment="vsftpd is not installed"
-      definition_ref="NEEDSFIXUP_203175" />
+      definition_ref="package_vsftpd_removed" />
       <criteria operator="AND">
         <criterion comment="Conditions are satisfied"
         test_ref="test_203170" />

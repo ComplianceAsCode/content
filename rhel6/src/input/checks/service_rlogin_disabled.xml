@@ -10,10 +10,10 @@
       <description>The rlogin service should be
       disabled.</description>
     </metadata>
-    <criteria comment="telnet-server is not installed or conditions are met"
+    <criteria comment="rsh-server is not installed or conditions are met"
     operator="OR">
-      <extend_definition comment="telnet-server is not installed"
-      definition_ref="NEEDSFIXUP_20177" />
+      <extend_definition comment="rsh-server is not installed"
+      definition_ref="package_rsh-server_removed" />
       <criterion comment="Unknown test stub"
       test_ref="test_22" />
     </criteria>

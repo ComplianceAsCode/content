@@ -10,10 +10,10 @@
       <description>The ypbind service should be
       disabled.</description>
     </metadata>
-    <criteria comment="ypserv is not installed or conditions are met"
+    <criteria comment="ypbind is not installed or conditions are met"
     operator="OR">
-      <extend_definition comment="ypserv is not installed"
-      definition_ref="NEEDSFIXUP_20180" />
+      <extend_definition comment="ypbind is not installed"
+      definition_ref="package_ypbind_removed" />
       <criteria operator="AND">
         <criterion comment="Conditions are satisfied"
         test_ref="test_20181" />
