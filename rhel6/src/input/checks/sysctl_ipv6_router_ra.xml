@@ -11,15 +11,21 @@
       advertisements should be disabled for network interfaces.
       (and dependencies are met)</description>
     </metadata>
-    <criteria comment="Either IPv6 kernel module is not loaded or this feature should be disabled"
-    operator="OR">
-      <extend_definition comment="Automatic loading of the IPv6 kernel module should be disabled"
-      definition_ref="NEEDSFIXUP_20130" />
-      <criterion comment="Unknown test stub"
-      test_ref="test_22" />
+    <criteria comment="ipv6 capability disabled in kernel or net.ipv6.conf.all.accept_ra_defrtr set to 0" operator="OR">
+      <extend_definition comment="ipv6 is disabled in /etc/sysctl.conf" definition_ref="sysctl_net_ipv6_disabled" />
+      <extend_definition comment="ipv6 is disabled via modprobe" definition_ref="kernel_module_ipv6_option_disabled" />
+      <!-- net.ipv6.conf.all.accept_ra_defrtr = "learn default router in router advertisement" -->
+      <criterion test_ref="test_20135" comment="net.ipv6.conf.all.accept_ra_defrtr set to 0 (false) in /etc/sysctl.conf"/>
     </criteria>
   </definition>
-  <ind:unknown_test check="all"
-  comment="Test implementation is unknown, unavailable, or impossible"
-  id="test_22" version="1" />
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="net.ipv6.conf.all.accept_ra_defrtr set to 0 (false) in /etc/sysctl.conf" id="test_20135" version="1">
+    <ind:object object_ref="obj_20135" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20135" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>sysctl.conf</ind:filename>
+    <ind:pattern operation="pattern match">^\s*net\.ipv6\.conf\.all\.accept_ra_defrtr\s*=\s*0$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>
