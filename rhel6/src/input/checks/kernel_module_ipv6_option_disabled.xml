@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="kernel_module_ipv6_option_disabled" version="1">
+  <definition class="compliance" id="kernel_module_ipv6_option_disabled" version="1">
     <metadata>
       <title>Disable IPv6 Kernel Module Functionality via Disable Option</title>
       <affected family="unix">
@@ -9,27 +8,24 @@
       <reference ref_id="CCE-3562-6" source="CCE" />
       <description>The disable option will allow the IPv6 module to be inserted, but prevent address assignment and activation of the network stack.</description>
     </metadata>
-	<criteria>
-		<criterion test_ref="test_20130" comment="ipv6 option disable=1 set for modprobe"/>
-	</criteria>
+  	<criteria>
+	  	<criterion test_ref="test_20130" comment="ipv6 option disable=1 set for modprobe"/>
+  	</criteria>
   </definition>
 
-<ind:textfilecontent54_test id="test_20130" version="2" check="all" comment="Check ipv6 option disable in /etc/modprobe.d/local.conf">
-	<ind:object object_ref="obj_20130"/>
-	<ind:state state_ref="ste_20130"/>
-</ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_20130" version="2" check="all" comment="Check ipv6 option disable in /etc/modprobe.d/local.conf">
+    <ind:object object_ref="obj_20130"/>
+    <ind:state state_ref="ste_20130"/>
+  </ind:textfilecontent54_test>
 
+  <ind:textfilecontent54_object id="obj_20130" version="1" comment="Value of ipv6 option disable in /etc/modprobe.d/local.conf">
+    <ind:path>/etc/modprobe.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*options[\s]+ipv6\s+(?:[\w_\.\-=\s]+[\s])?disable=(\d+)(?:[\s]|$)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
-<ind:textfilecontent54_object id="obj_20130" version="1" comment="Value of ipv6 option disable in /etc/modprobe.d/local.conf">
-<ind:filepath>/etc/modprobe.d/local.conf</ind:filepath>
-<ind:pattern operation="pattern match">^[\s]*options[\s]+ipv6\s+(?:[\w_\.\-=\s]+[\s])?disable=(\d+)(?:[\s]|$)</ind:pattern>
-<ind:instance datatype="int">1</ind:instance>
-</ind:textfilecontent54_object>
-
-
-
-<ind:textfilecontent54_state id="ste_20130" version="1" comment="Expected value of ipv6 option disable">
-<ind:subexpression datatype="int" operation="equals">1</ind:subexpression>
-</ind:textfilecontent54_state>
-
+  <ind:textfilecontent54_state id="ste_20130" version="1" comment="Expected value of ipv6 option disable">
+    <ind:subexpression datatype="int" operation="equals">1</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>
