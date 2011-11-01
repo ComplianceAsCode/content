@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="accounts_maximum_age_login_defs" version="1">
+  <definition class="compliance" id="accounts_maximum_age_login_defs" version="1">
     <metadata>
       <title>Set Password Expiration Parameters</title>
       <affected family="unix">
@@ -8,24 +7,20 @@
       </affected>
       <reference ref_id="CCE-4092-3" source="CCE" />
       <description>The "maximum password age" policy should meet
-      minimum requirements.</description>
+      minimum requirements. This particular check looks for a
+      maximum password age of 60 days.</description>
     </metadata>
     <criteria>
       <criterion test_ref="test_20073" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="all_exist"
-  comment="Tests the value of the PASS_MAX_DAYS[\s]*=[\s]*(.*) expression in the /etc/login.defs file"
-  id="test_20073" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="checks for the presence of 'PASS_MAX_DAYS[\s]*60' in /etc/login.defs" id="test_20073" version="1">
     <ind:object object_ref="obj_20073" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20073"
-  version="1">
+  <ind:textfilecontent54_object id="obj_20073" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>login.defs</ind:filename>
-    <ind:pattern operation="pattern match">
-    ^[\s]*PASS_MAX_DAYS[\s]*60$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*PASS_MAX_DAYS[\s]*60$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
