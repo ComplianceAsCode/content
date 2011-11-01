@@ -11,11 +11,18 @@
       Partition</description>
     </metadata>
     <criteria>
-      <criterion comment="Unknown test stub"
-      test_ref="test_22" />
+      <criterion comment="checks for string 'nosuid' on /dev/shm line within /etc/fstab" test_ref="test_20138" />
     </criteria>
   </definition>
-  <ind:unknown_test check="all"
-  comment="Test implementation is unknown, unavailable, or impossible"
-  id="test_22" version="1" />
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="checks for string 'nosuid' on /dev/shm line within /etc/fstab" id="test_20138" version="1">
+    <ind:object object_ref="obj_20138" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20138" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>fstab</ind:filename>
+    <ind:pattern operation="pattern match">^\s*tmpfs\s*/dev/shm\s*tmpfs.*nosuid.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>
