@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="mount_option_dev_shm_nodev" version="1">
+  <definition class="compliance" id="mount_option_dev_shm_nodev" version="1">
     <metadata>
       <title>Add nodev Option to /dev/shm Partition</title>
       <affected family="unix">
@@ -11,11 +10,18 @@
       Partition</description>
     </metadata>
     <criteria>
-      <criterion comment="Unknown test stub"
-      test_ref="test_22" />
+      <criterion comment="checks for string 'nodev' on /dev/shm line within /etc/fstab" test_ref="test_20136" />
     </criteria>
   </definition>
-  <ind:unknown_test check="all"
-  comment="Test implementation is unknown, unavailable, or impossible"
-  id="test_22" version="1" />
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="checks for string 'nodev' on /dev/shm line within /etc/fstab" id="test_20136" version="1">
+    <ind:object object_ref="obj_20136" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_20136" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>fstab</ind:filename>
+    <ind:pattern operation="pattern match">^\s*tmpfs\s*/dev/shm\s*tmpfs.*nodev.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>
