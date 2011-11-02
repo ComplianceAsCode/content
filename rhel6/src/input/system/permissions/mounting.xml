@@ -96,4 +96,26 @@ filesystems.</description>
 <oval id="kernel_module_udf_disable" />
 <ref nist="CM-6, CM-7" />
 </Rule>
+
+<Rule id="disable_gnome_thumbnailers">
+<title>Disable All GNOME Thumbnailers</title>
+<description>The system’s default desktop environment, GNOME, uses
+a number of different thumbnailer programs to generate thumbnails
+for any new or modified content in an opened folder. The following
+command can disable the execution of these thumbnail applications:
+<pre>
+# gconftool-2 --direct \
+    --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+    --type bool \
+    --set /desktop/gnome/thumbnailers/disable_all true
+
+</pre>
+This effectively prevents an attacker from gaining access to a
+system through a flaw in GNOME’s Nautilus thumbnail creators.
+</description>
+<ident cce="TODO" />
+<oval id="disable_gnome_thumbnailers" />
+<ref nist="TODO" />
+</Rule>
+
 </Group>
