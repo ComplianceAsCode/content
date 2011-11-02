@@ -1,4 +1,4 @@
-<Group id="aaa-permissions">
+<Group id="permissions">
 <title>File Permissions and Masks</title>
 <description>Traditional Unix security relies heavily on file and
 directory permissions to prevent unauthorized users from reading or
@@ -10,18 +10,18 @@ to serve its purpose.
 Note: Several of the commands in this section search
 filesystems for files or directories with certain characteristics,
 and are intended to be run on every local ext2 or ext3 partition on
-a given machine. When the variable <i>PART</i>appears in one of the
+a given machine. When the variable <i>PART</i> appears in one of the
 commands below, it means that the command is intended to be run
 repeatedly, with the name of each local partition substituted for
-<i>PART</i>in turn.
+<i>PART</i> in turn.
 <br /><br />
-The following command prints a list of ext2 and ext3
-partitions on a given machine:
+The following command prints a list of ext4 partitions on the local
+machine:
 <br />
 <pre>
-$ mount -t ext2,ext3 | awk '{print $3}'
+$ mount -t ext4 | awk '{print $3}'
 
 </pre>
-If your site uses a local filesystem type other than ext2 or
-ext3, you will need to modify this command.</description>
+If your site uses a local filesystem type other than ext4 then you
+will need to modify this command.</description>
 </Group>
