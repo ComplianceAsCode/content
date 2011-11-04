@@ -42,7 +42,26 @@ module, but will not prevent an administrator (or another program) from using th
 <ref nist="CM-6, CM-7" />
 </Rule>
 
+<Rule id="kernel_module_usb-storage_removed">
+<title>Remove USB Storage Driver</title>
+<description>If your system never requires the use of USB storage devices, then the
+supporting driver can be permanently removed. Though more effective than disabling the
+module within modprobe, this solution is less elegant than the modprobe method described
+in "Disable Modprobe Loading of USB". The technique described here will cause the
+command <tt>rpm -q --verify kernel</tt> to fail which may be an undesirable side effect.
+<br /><br />
+To permanently remove the USB storage driver from the system execute this command:
+<pre>
+# rm /lib/modules/<i>KERNEL-VERSION</i>/kernel/drivers/usb/storage/usb-storage.ko
 
+</pre>
+The variable <tt><i>KERNEL-VERSION</i></tt> can be determined using the <tt>uname -r</tt>
+command which returns the version of the currently loaded kernel. The <tt>rm</tt> command
+will need to be repeated every time the kernel is updated.</description>
+<ident cce="4006-3" />
+<oval id="kernel_module_usb-storage_removed" />
+<ref nist="CM-6, CM-7" />
+</Rule>
 
 <Rule id="disable_module_cramfs">
 <title>Disable Mounting of <tt>cramfs</tt></title>
