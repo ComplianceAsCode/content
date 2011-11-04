@@ -63,6 +63,27 @@ will need to be repeated every time the kernel is updated.</description>
 <ref nist="CM-6, CM-7" />
 </Rule>
 
+<Rule id="bootloader_nousb_argument">
+<title>Disable Kernel Support for USB via Bootloader Configuration</title>
+<description>
+Another means of disabling USB storage is to disable all USB support provided
+by the operating system. This can be accomplished by adding the <tt>nousb</tt>
+argument to the kernel’s boot loader configuration. To disable kernel support
+for USB, append “nousb” to the kernel line in /etc/grub.conf as follows:
+<pre>
+kernel /vmlinuz-<i>VERSION</i> ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet nousb
+
+</pre>
+<br /><br />
+<i><b>WARNING:</b> Disabling all kernel support for USB will cause problems for systems with USB-based keyboards,
+mice, or printers. This guidance is inappropriate for systems which require USB connectivity.</i></description>
+<ident cce="4173-1" />
+<oval id="bootloader_nousb_argument" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+
+
+
 <Rule id="disable_module_cramfs">
 <title>Disable Mounting of <tt>cramfs</tt></title>
 <description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
