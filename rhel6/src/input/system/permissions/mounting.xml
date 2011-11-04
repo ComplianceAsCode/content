@@ -94,6 +94,40 @@ the section titled "Set BIOS Password" to prevent unauthorized configuration cha
 <ref nist="CM-6, CM-7" />
 </Rule>
 
+
+
+
+
+
+
+<Rule id="service_autofs_disabled">
+<title>Disable the Automounter if Possible</title>
+<description>The <tt>autofs</tt> daemon mounts and unmounts filesystems, such as user
+home directories shared via NFS, on demand. In addition, autofs can be used to handle
+removable media, and the default configuration provides the cdrom device as <tt>/misc/cd</tt>.
+However, this method of providing access to removable media is not common, so autofs
+can almost always be disabled if NFS is not in use. Even if NFS is required, it is
+almost always possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
+rather than relying on the automounter.
+<br /><br />
+If the <tt>autofs</tt> service is not needed to dynamically mount NFS filesystems
+or removable media, disable the service for all runlevels:
+<pre>
+# chkconfig --level 0123456 autofs off
+
+</pre>
+</description>
+<ident cce="4072-5" />
+<oval id="service_autofs_disabled" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+
+
+
+
+
+
+
 <Rule id="disable_module_cramfs">
 <title>Disable Mounting of <tt>cramfs</tt></title>
 <description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
