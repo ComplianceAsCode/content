@@ -8,18 +8,23 @@ implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
+
+
 <Rule id="ssh_server_disabled">
-<title>Disable SSH Server if Possible (Unlikely)</title>
+<title>Disable SSH Server if Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
 However, if it can be disabled, do so with the command:
 <br />
 <pre>
 # chkconfig sshd off
 </pre>
+This is unusual, as SSH is a common method for encrypted and authenticated 
+remote access.
 </description>
 <ident cce="4268-9" />
 <oval id="service_sshd_disabled" />
 </Rule>
+
 
 <Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
@@ -29,24 +34,22 @@ file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
 applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
 
-<Group id="sshd_allowing_only_protocol2">
+
+<Rule id="sshd_allow_only_protocol2">
 <title>Ensure Only Protocol 2 Connections Allowed</title>
 <description>Only SSH protocol version 2 connections should be
-permitted. Version 1 of the protocol contains security
+permitted, because version 1 contains security
 vulnerabilities. The default setting shipped in the configuration
-file is correct, but it is important enough to check.
+file is correct, but is important enough to verify.
 <br />
 Verify that the following line appears:
 <pre>Protocol 2</pre>
 </description>
-<Rule id="sshd_allow_only_protocol2">
-<title>Ensure Only Protocol 2 Connections Allowed</title>
-<description>SSH version 1 protocol support should be
-disabled.</description>
 <ident cce="4325-7" />
 <oval id="sshd_protocol_2" />
 </Rule>
-</Group>
+
+<!-- FIXME: figure out whether/how to say something discrete here -->
 
 <Group id="sshd_disable_extraneous_authentication">
 <title>Disable Extraneous Authentication Schemes</title>
@@ -75,24 +78,7 @@ a user to establish a small VPN connection with a firewall/gateway machine and t
 </description>
 </Group>
 
-<Group id="sshd_client_alive_interval">
-<title>Set Idle Timeout Interval for User Logins</title>
-<description>SSH allows administrators to set an idle timeout
-interval. After this interval has passed, the idle user will be
-automatically logged out.
-<br /><br />
-Find and edit the following lines in <tt>/etc/ssh/sshd_config</tt> as
-follows:
-<br />
-<pre>ClientAliveInterval <b>interval</b>
-ClientAliveCountMax 0</pre>
-The timeout <b>interval</b> is given in seconds. To have a timeout
-of 5 minutes, set <b>interval</b> to 300.
-<br /><br />
-If a shorter timeout has already been set for the login
-shell, as in Section 2.3.5.5, that value will preempt any SSH
-setting made here. Keep in mind that some processes may stop SSH
-from correctly detecting that the user is idle.</description>
+
 <Value id="sshd_idle_timeout_value" type="number"
 operator="equals" interactive="0">
 <title>SSH session Idle time</title>
@@ -102,26 +88,48 @@ operator="equals" interactive="0">
 <value selector="10_minutes">600</value>
 </Value>
 
+
 <Rule id="sshd_set_idle_timeout">
-<title>The SSH idle timout interval should be set to an
-appropriate value</title>
-<description>The SSH idle timout interval should be set to an
-appropriate value</description>
+<title>Set SSH Idle Timeout Interval for User Logins</title>
+<description>SSH allows administrators to set an idle timeout
+interval. After this interval has passed, the idle user will be
+automatically logged out.
+<br /><br />
+To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
+follows:
+<br />
+<pre>ClientAliveInterval <b>interval</b>
+</pre>
+The timeout <b>interval</b> is given in seconds. To have a timeout
+of 5 minutes, set <b>interval</b> to 300.
+<br /><br />
+If a shorter timeout has already been set for the login
+shell, that value will preempt any SSH
+setting made here. Keep in mind that some processes may stop SSH
+from correctly detecting that the user is idle.</description>
 <ident cce="3845-5" />
 <oval id="sshd_idle_timeout" value="sshd_idle_timeout_value"/>
 </Rule>
 
+
 <Rule id="sshd_set_keepalive">
-<title>The SSH 'keep alive' message count should be set
-to an appropriate value</title>
-<description>The <tt>ClientAliveCountMax</tt> should be set to an
-appropriate value</description>
+<title>Set the SSH Client Alive Count to Ensure Idle Timeout Occurs</title>
+<description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveInterval</tt> is set, 
+edit <tt>/etc/ssh/sshd_config</tt> as
+follows:
+<br />
+<pre>
+ClientAliveCountMax 0</pre>
+<br /><br />
+This ensures that a user login will be terminated as soon as the <tt>ClientAliveInternal</tt>
+is reached.
+</description>
 <ident cce="14061-6" />
 <oval id="sshd_clientalivecountmax" />
 </Rule>
-</Group>
 
-<Group id="sshd_disabling_rhosts">
+
+<Rule id="sshd_disable_rhosts">
 <title>Disable .rhosts Files</title>
 <description>SSH can emulate the behavior of the obsolete rsh
 command in allowing users to enable insecure access to their
@@ -133,19 +141,15 @@ following line:
 <pre>
 IgnoreRhosts yes</pre>
 </description>
-<Rule id="sshd_disable_rhosts">
-<title>Disable .rhosts Files</title>
-<description>Emulation of the rsh command through the ssh server
-should be disabled</description>
 <ident cce="4475-0" />
 <oval id="sshd_rsh_emulation_disabled" />
 </Rule>
-</Group>
 
-<Group id="disabling_host_auth">
+
+<Rule id="disable_host_auth">
 <title>Disable Host-Based Authentication</title>
 <description>SSH's cryptographic host-based authentication is
-slightly more secure than <tt>.rhosts</tt> authentication,
+more secure than <tt>.rhosts</tt> authentication,
 since hosts are cryptographically authenticated. However, it is
 not recommended that hosts unilaterally trust one another, even
 within an organization.
@@ -156,15 +160,12 @@ following line:
 <pre>
 HostbasedAuthentication no</pre>
 </description>
-<Rule id="disable_host_auth">
-<title>Disable Host-Based Authentication</title>
-<description>SSH host-based authentication should be
-disabled</description>
 <ident cce="4370-3" />
 <oval id="sshd_hostbased_authentication" />
 </Rule>
-</Group>
-<Group id="sshd_disabling_root_login">
+
+
+<Rule id="sshd_disable_root_login">
 <title>Disable root Login via SSH</title>
 <description>The root user should never be allowed to login
 directly over a network, as this both reduces auditable information
@@ -176,53 +177,43 @@ To disable root login via SSH, add or correct the following line:
 <pre>
 PermitRootLogin no</pre>
 </description>
-
-<Rule id="sshd_disable_root_login">
-<title>Disable root Login via SSH</title>
-<description>Root login via SSH should be disabled</description>
 <ident cce="4387-7" />
 <oval id="sshd_permitrootlogin_no" />
 </Rule>
-</Group>
-<Group id="sshd_disabling_empty_passwords">
+
+
+<Rule id="sshd_disable_empty_passwords">
 <title>Disable Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
 empty passwords, add or correct the following line:
 <br />
 <pre>
 PermitEmptyPasswords no
-
 </pre>
 Measures should also be taken to disable accounts with empty
 passwords system-wide, as described in Section 2.3.1.5.</description>
-
-<Rule id="sshd_disable_empty_passwords">
-<title>Disable Empty Passwords</title>
-<description>Remote connections from accounts with empty passwords
-should be disabled</description>
 <ident cce="3660-8" />
 <oval id="sshd_permitemptypasswords_no" />
 </Rule>
-</Group>
-<Group id="sshd_enabling_warning_banner">
+
+<Rule id="sshd_enable_warning_banner">
 <title>Enable a Warning Banner</title>
-<description>Section 2.3.7 contains information on how to create an
+<description>An earlier section contains information on how to create an
 appropriate warning banner.
 <br /><br />
-To enable a warning banner, add or correct the following line:
+To enable the warning banner and ensure it is consistent  
+across the system, add or correct the following line:
 <br />
 <pre>
 Banner /etc/issue</pre>
 </description>
-<Rule id="sshd_enable_warning_banner">
-<title>Enable a Warning Banner</title>
-<description>SSH warning banner should be enabled</description>
 <ident cce="4431-3" />
 <oval id="sshd_banner_set" />
 </Rule>
-</Group>
-<Group id="sshd_permitting_user_env">
-<title>Do Not Allow Users to Set Environment Options</title>
+
+
+<Rule id="sshd_do_not_permit_user_env">
+<title>Do Not Allow SSH Users to Set Environment Options</title>
 <description>To prevent users from being able to present
 environment options to the SSH daemon and potentially bypass some
 access restrictions, add or correct the following line:
@@ -230,13 +221,15 @@ access restrictions, add or correct the following line:
 <pre>
 PermitUserEnvironment no</pre>
 </description>
-<Rule id="sshd_do_not_permit_user_env">
-<title>Do Not Allow Users to Set Environment Options</title>
-<description><tt>PermitUserEnvironment</tt> should be disabled</description>
 <ident cce="4422-2" />
 <oval id="sshd_no_user_envset" />
 </Rule>
-</Group>
+
+
+<!--
+ Need to investigate current status of this.  
+ Earlier issues with CBC supposed to be fixed.
+
 <Group id="sshd_using_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
 <description>Limit the ciphers to those which are FIPS-approved and
@@ -250,7 +243,6 @@ Ciphers aes128-ctr,aes192-ctr,aes256-ctr
 The man page <tt>sshd_config(5)</tt> contains a list of the ciphers
 supported for the current release of the SSH daemon.</description>
 
-<!--
 <Rule id="sshd_use_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
 <description>Use only FIPS approved ciphers not in CBC
@@ -258,8 +250,9 @@ mode</description>
 <ident cce="14491-5" />
 <oval id="sshd_undefined" />
 </Rule>
--->
 </Group>
+-->
+
 </Group>
 </Group>
 
