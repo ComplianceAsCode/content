@@ -6,10 +6,40 @@ system is called X.org.</description>
 <Group id="disabling_xwindows">
 <title>Disable X Windows if Possible</title>
 <description>Unless there is a mission-critical reason for the
-machine to run a GUI login screen, prevent X from starting
-automatically at boot. There is usually no reason to run X Windows
-on a dedicated server machine, since administrators can login via
+system to run a graphical user interface, ensure that X is not set to start 
+automatically at boot and remove the X Windows software packages. 
+There is usually no reason to run X Windows
+on a dedicated server machine, as it increases the system's attack surface and consumes 
+system resources.  Administrators of server systems should instead login via
 SSH or on the text console.</description>
+
+<Rule id="disable_xwindows_with_runlevel">
+<title>Disable X Windows Startup By Setting Runlevel</title>
+<description>Setting the system's runlevel to 3 will prevent automatic startup
+of the X server.  To do so, ensure that the following line in <tt>/etc/inittab</tt> 
+features a <tt>3</tt> as shown:
+<pre>
+id:3:initdefault:
+</pre>
+</description>
+<ident cce="4462-8" />
+<oval id="xwindows_runlevel_setting" />
+</Rule>
+
+
+<Rule id="packagegroup_xwindows_remove">
+<title>Remove the X Windows Package Group if Possible</title>
+<description>Removing all packages which constitute the X Window System 
+ensures that users or malicious software cannot start X.
+To do so, run the following command:
+<pre>
+# yum groupremove "X Window System"
+</pre>
+</description>
+<ident cce="4422-2" />
+<oval id="packagegroup_xwindows_removed" />
+</Rule>
+<!--
 <Group id="xwindows_startx">
 <title>Lock Down X Windows startx Configuration if Necessary</title>
 <description>If X is not to be started at boot time but the
@@ -18,6 +48,7 @@ manually using the <tt>startx</tt> command. In some cases, this runs
 X with a configuration which is less safe than the default. Follow these
 instructions to mitigate risk from this
 configuration.</description>
+
 <Group id="xwindows_no_listen">
 <title>Disable X Window System Listening</title>
 <description>To prevent X.org from listening for remote
@@ -38,6 +69,7 @@ on X's default port, 6000.
 <br /><br />
 See the <tt>xinit(1)</tt>, <tt>startx(1)</tt>, and <tt>Xserver(1)</tt>
  man pages for more information.</description>
+
 <Rule id="disable_xwindows_listening">
 <title>Disable X Window System Listening</title>
 <description>Disable the ability to provide remote graphical
@@ -47,24 +79,28 @@ display</description>
 </Rule>
 </Group>
 </Group>
+-->
+
 </Group>
 
 <Group id="xwindows_configuration">
 <title>Configure X Windows if Necessary</title>
-<description>If there is a mission-critical reason for this machine
-to run a GUI, improve the security of the default X configuration
-by following the guidance in this section.</description>
-<Group id="xwindows_banner">
-<title>Create Warning Banners for GUI Login Users</title>
-<description>Edit the file <tt>/etc/gdm/custom.conf</tt>. Locate the
+<description>If there is an operational need for the system
+to run a GUI, apply the following guidance.
+</description>
+
+<Rule id="set_gui_login_banner">
+<title>Create Warning Banners for GUI Login
+Users</title>
+<description>To ensure the GNOME display manager displays a warning banner prior to login,
+edit the file <tt>/etc/gdm/custom.conf</tt>. Locate the
 <tt>[greeter]</tt> section, and correct that section to contain the lines:
 <br />
 <pre>
 [greeter]
 InfoMsgFile=/etc/issue
-
 </pre>
-See Section 2.3.7 for an explanation of banner file use. This
+See FIXME_REF_EARLIER_SECTION for an explanation of banner file use. This
 setting will cause the system greeting banner to be displayed in a
 box prior to GUI login. If the default banner font is
 inappropriate, it can be changed by specifying the <tt>InfoMsgFont</tt>
@@ -73,13 +109,8 @@ directive as well, for instance:
 <pre>
 InfoMsgFont=Sans 12</pre>
 </description>
-<Rule id="set_gui_login_banner">
-<title>Create Warning Banners for GUI Login
-Users</title>
-<description>Enable warning banner for GUI login</description>
 <ident cce="3717-6" />
 <oval id="banner_gui_gdm" />
 </Rule>
-</Group>
 </Group>
 </Group>
