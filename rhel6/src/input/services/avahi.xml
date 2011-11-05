@@ -5,25 +5,21 @@ and Multicast DNS protocols, which provide service and host
 discovery on a network. It allows a system to automatically
 identify resources on the network, such as printers or web servers.
 This capability is also known as mDNSresponder and is a major part
-of Zeroconf networking. By default, it is enabled.</description>
-<Group id="disabling_avahi">
-<title>Disable Avahi Server if Possible</title>
+of Zeroconf networking. </description>
+
+<Rule id="disable_avahi">
+<title>Disable Avahi Server Software</title>
 <description>Because the Avahi daemon service keeps an open network
 port, it is subject to network attacks. Disabling it is
-particularly important to reduce the system's vulnerability to such
-attacks.
+important to reduce the system's vulnerability to 
+attacks from the local network.
 <br /><br />
 Issue the command:
 <br />
 <pre>
 # chkconfig avahi-daemon off</pre></description>
-<Rule id="disable_avahi">
-<title>Disable Avahi Server Software</title>
-<description>The avahi-daemon service should be
-disabled.</description>
 <ident cce="4365-3" />
 <oval id="service_avahi-daemon_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
-</Group>
 </Group>
