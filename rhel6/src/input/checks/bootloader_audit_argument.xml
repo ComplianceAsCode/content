@@ -1,31 +1,26 @@
 <def-group>
-  <definition class="compliance"
-  id="bootloader_audit_argument" version="1">
+  <definition class="compliance" id="bootloader_audit_argument" version="1">
     <metadata>
-      <title>Enable Auditing for Processes Which Start Prior to the
-      Audit Daemon</title>
+      <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-15026-8" source="CCE" />
-      <description>Look for argument audit=1 in the kernel line in
-      /etc/grub.conf</description>
+      <description>Look for argument audit=1 in the kernel line in /etc/grub.conf</description>
     </metadata>
     <criteria>
-      <criterion comment="check for audit=1 in /etc/grub.conf"
-      test_ref="test_20157" />
+      <criterion test_ref="test_20157" comment="check for audit=1 in /etc/grub.conf" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="check for audit=1 in /etc/grub.conf"
-  id="test_20157" version="1">
+
+  <ind:textfilecontent54_test check="all" comment="check for audit=1 in /etc/grub.conf"  id="test_20157" version="1">
     <ind:object object_ref="obj_20157" />
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="obj_20157" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>grub.conf</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*kernel.+\saudit=1</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*kernel\s/vmlinuz.*audit=1.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
