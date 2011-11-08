@@ -104,6 +104,30 @@ be used for system auditing it is recommended that auditd be enabled.
   </Rule>
 </Group>
 
+<Group id="base_service_autofs">
+<title>Automounter (autofs)</title>
+<description>The autofs daemon mounts and unmounts filesystems, such as user home
+directories shared via NFS, on demand. Even if NFS is required, it is almost always
+possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
+rather than relying on the automounter. The autofs service should be disabled.
+<pre>
+# chkconfig autofs off
+
+</pre>
+</description>
+  <Rule id="service_autofs_disabled">
+    <title>Daemon <tt>autofs</tt> Disabled</title>
+    <description>The <tt>autofs</tt> daemon should be disabled.</description>
+    <ident cce="4072-5" />
+    <oval id="service_autofs_disabled" />
+  </Rule>
+</Group>
+
+
+
+
+
+
 <Group id="base_service_crond">
 <title>Cron Daemon (crond)</title>
 <description>

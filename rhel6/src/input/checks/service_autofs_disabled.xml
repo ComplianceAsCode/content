@@ -12,14 +12,17 @@
       as appropriate.</description>
     </metadata>
 
-    <criteria operator="AND">
-      <criterion comment="runlevel 0" test_ref="test_2030520" />
-      <criterion comment="runlevel 1" test_ref="test_2030521" />
-      <criterion comment="runlevel 2" test_ref="test_2030522" />
-      <criterion comment="runlevel 3" test_ref="test_2030523" />
-      <criterion comment="runlevel 4" test_ref="test_2030524" />
-      <criterion comment="runlevel 5" test_ref="test_2030525" />
-      <criterion comment="runlevel 6" test_ref="test_2030526" />
+    <criteria comment="package autofs not installed or service autofs disabled" operator="OR">
+      <extend_definition comment="package autofs removed" definition_ref="package_autofs_removed" />
+      <criteria comment="service autofs disabled for all runlevels" operator="AND">
+        <criterion comment="runlevel 0" test_ref="test_2030520" />
+        <criterion comment="runlevel 1" test_ref="test_2030521" />
+        <criterion comment="runlevel 2" test_ref="test_2030522" />
+        <criterion comment="runlevel 3" test_ref="test_2030523" />
+        <criterion comment="runlevel 4" test_ref="test_2030524" />
+        <criterion comment="runlevel 5" test_ref="test_2030525" />
+        <criterion comment="runlevel 6" test_ref="test_2030526" />
+      </criteria>
     </criteria>
   </definition>
 
