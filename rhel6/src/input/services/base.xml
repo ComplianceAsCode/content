@@ -46,6 +46,43 @@ software executing on the local machine. For most deployments this daemon should
   </Rule>
 </Group>
 
+<Group id="base_service_acpid">
+<title>Advanced Configuration and Power Interface Daemon (acpid)</title>
+<description>The Advanced Configuration and Power Interface Daemon (acpid) dispatches ACPI events (such
+as power/reset button depressed) to userspace programs. Unless trapping ACPI events is a requirement
+on the local system this daemon should be disabled.
+<pre>
+# chkconfig acpid off
+
+</pre>
+</description>
+  <Rule id="service_acpid_disabled">
+    <title>Daemon <tt>acpid</tt> Disabled</title>
+    <description>The <tt>acpid</tt> daemon should be disabled.</description>
+    <ident cce="4298-6" />
+    <oval id="service_acpid_disabled" />
+  </Rule>
+</Group>
+
+<Group id="base_service_atd">
+<title>At Daemon (atd)</title>
+<description>The <tt>at</tt> and <tt>batch</tt> commands can be used to schedule tasks that are meant
+to be executed only once (similar to cron but not recurring). The daemon <tt>atd</tt> keeps track of
+tasks scheduled via <tt>at</tt> and <tt>batch</tt> and executes them at the specified time. Unless
+scheduling tasks with <tt>at</tt> or <tt>batch</tt> is a requirement for the local machine this
+daemon should be disabled.
+<pre>
+# chkconfig atd off
+
+</pre>
+</description>
+  <Rule id="service_atd_disabled">
+    <title>Daemon <tt>atd</tt> Disabled</title>
+    <description>The <tt>atd</tt> daemon should be disabled.</description>
+    <ident cce="TODO" />
+    <oval id="service_atd_disabled" />
+  </Rule>
+</Group>
 
 <Group id="base_service_auditd">
 <title>Audit Daemon (auditd)</title>
