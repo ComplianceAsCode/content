@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="package_at_removed" version="1">
+    <metadata>
+      <title>Package at Removed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-TODO" source="CCE" />
+      <description>The package at should be removed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package at removed" test_ref="test_20016" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="none_exist" comment="package at removed" id="test_20016" version="1">
+    <linux:object object_ref="obj_20016" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_object id="obj_20016" version="1">
+    <linux:name>at</linux:name>
+  </linux:rpminfo_object>
+</def-group>
