@@ -26,6 +26,27 @@ As you can see, the "Minimal" package configuration in RHEL 6 lives up to its na
 be enabled or not.
 </description>
 
+<Group id="base_service_abrtd">
+<title>Automatic Bug Reporting Tool (abrtd)</title>
+<description>The Automatic Bug Reporting Tool (abrtd) is a daemon that collects and reports crash data
+when an application crash is detected. Using a variety of plugins abrtd can email crash reports to system
+administrators, log crash reports to files, or forward crash reports to a centralized issue tracking
+system such as RHTSupport. Mishandling crash data exposes sensitive information about vulnerablities in
+software executing on the local machine. For most deployments this daemon should be disabled.
+<pre>
+# chkconfig abrtd off
+
+</pre>
+</description>
+  <Rule id="service_abrtd_disabled">
+    <title>Daemon <tt>abrtd</tt> Disabled</title>
+    <description>The <tt>abrtd</tt> daemon should be disabled.</description>
+    <ident cce="TODO" />
+    <oval id="service_abrtd_disabled" />
+  </Rule>
+</Group>
+
+
 <Group id="base_service_auditd">
 <title>Audit Daemon (auditd)</title>
 <description>
