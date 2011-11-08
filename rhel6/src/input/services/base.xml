@@ -86,10 +86,22 @@ daemon should be disabled.
 
 <Group id="base_service_auditd">
 <title>Audit Daemon (auditd)</title>
-<description>
-The audit service is provided for system auditing. By default the service audits SELinux AVC denials and certain types of security-relevant events such as system logins, account modifications, and authentication events performed by programs such as sudo. Unless there is another service that will be used for system auditing it is recommended that auditd be enabled.
-<pre># chkconfig auditd on</pre>
+<description>The audit service is provided for system auditing. By default
+the service audits SELinux AVC denials and certain types of security-relevant
+events such as system logins, account modifications, and authentication events
+performed by programs such as sudo. Unless there is another service that will
+be used for system auditing it is recommended that auditd be enabled.
+<pre>
+# chkconfig auditd on
+
+</pre>
 </description>
+  <Rule id="service_auditd_enabled">
+    <title>Daemon <tt>auditd</tt> Enabled</title>
+    <description>The <tt>auditd</tt> daemon should be enabled.</description>
+    <ident cce="4292-9" />
+    <oval id="service_auditd_enabled" />
+  </Rule>
 </Group>
 
 <Group id="base_service_crond">
