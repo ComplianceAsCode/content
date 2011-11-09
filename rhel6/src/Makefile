@@ -7,16 +7,11 @@ all: shorthand-guide shorthand2xccdf xccdf2table-nistrefs guide checks content
 
 shorthand-guide:
 	xsltproc -o ${OUTDIR}/rhel6-shorthand.xml ${INDIR}/guide.xslt ${INDIR}/guide.xml
-#	tidy -m -i -xml -utf8 ${OUTDIR}/rhel6-shorthand.xml
 	xmllint --format --output ${OUTDIR}/rhel6-shorthand.xml ${OUTDIR}/rhel6-shorthand.xml 
 
 shorthand2xccdf:
 	xsltproc -o ${OUTDIR}/rhel6-xccdf.xml ${TRANSDIR}/shorthand2xccdf.xslt ${OUTDIR}/rhel6-shorthand.xml
-#	tidy -m -i -xml -utf8 ${OUTDIR}/rhel6-xccdf.xml
 	xmllint --format --output ${OUTDIR}/rhel6-xccdf.xml ${OUTDIR}/rhel6-xccdf.xml 
-
-spreadsheet:
-	xsltproc -o ${OUTDIR}/rhel6-spreadsheet.html ${OUTDIR}/xccdf2spreadsheet.xslt ${OUTDIR}/rhel6-xccdf.xml
 
 checks:
 	xmlwf ${INDIR}/checks/*.xml
@@ -25,8 +20,6 @@ checks:
 #       SCC WILL RETURN, when it is ready
 #       scc -i ${INDIR}/checks/id.ini ${INDIR}/checks/*.sc -o ${OUTDIR}/rhel6-scc-oval.xml
 
-validate:
-	oscap xccdf validate-xml output/rhel6-xccdf.xml
 
 guide: shorthand-guide shorthand2xccdf 
 	oscap xccdf generate guide --profile allrules ${OUTDIR}/rhel6-xccdf.xml > ${OUTDIR}/rhel6-guide.html
@@ -39,12 +32,16 @@ xccdf2shorthand:
 xccdf-addprofiles:
 	xsltproc -stringparam profile "allprofiles" -o ${OUTDIR}/rhel6-xccdf-allprofiles.xml ${TRANSDIR}/xccdf-addprofiles.xslt ${OUTDIR}/rhel6-xccdf.xml
 
-xccdf2table-nistrefs: guide xccdf-addprofiles
+xccdf2table-nistrefs: shorthand-guide shorthand2xccdf xccdf-addprofiles
 	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf-allprofiles.xml
 
-content: guide checks
+content: shorthand-guide shorthand2xccdf checks
 	${TRANSDIR}/relabelids.py rhel6-xccdf.xml scap-security-guide 
 # 	the script chdirs to ./output, so refer to files from there
+
+validate:
+	oscap xccdf validate-xml output/rhel6-xccdf-scap-security-guide.xml
+	oscap oval validate-xml output/rhel6-oval-scap-security-guide.xml
 
 clean:
 	rm ${OUTDIR}/*.xml ${OUTDIR}/*.html ${OUTDIR}/*.pdf
