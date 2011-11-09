@@ -162,6 +162,24 @@ Unless control groups are used to manage system resources this service should be
   </Rule>
 </Group>
 
+<Group id="base_service_cgred">
+<title>Control Group Rules Engine Daemon (cgred)</title>
+<description>The <tt>cgred</tt> service moves tasks into control groups according to
+parameters set in the <tt>/etc/cgrules.conf</tt> configuration file. Like the cgconfig service,
+if control groups are not needed to manage system resources then this service should be disabled.
+<pre>
+# chkconfig cgred off
+
+</pre>
+</description>
+  <Rule id="service_cgred_disabled">
+    <title>Daemon <tt>cgred</tt> Disabled</title>
+    <description>The <tt>cgred</tt> daemon should be disabled.</description>
+    <ident cce="TODO" />
+    <oval id="service_cgred_disabled" />
+  </Rule>
+</Group>
+
 
 
 
