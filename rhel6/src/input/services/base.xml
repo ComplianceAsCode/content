@@ -123,6 +123,26 @@ rather than relying on the automounter. The autofs service should be disabled.
   </Rule>
 </Group>
 
+<Group id="base_service_certmonger">
+<title>Certmonger (certmonger)</title>
+<description>Certmonger is a D-Bus based service that attempts to simplify interaction
+with certifying authorities on networks which use public-key infrastructure. It is often
+combined with Red Hat's IPA (Identity Policy Audit) security information management
+solution to aid in the management of certificates. Unless IPA is used to help administer
+the LAN this service should be disabled.
+<pre>
+# chkconfig certmonger off
+
+</pre>
+</description>
+  <Rule id="service_certmonger_disabled">
+    <title>Daemon <tt>certmonger</tt> Disabled</title>
+    <description>The <tt>certmonger</tt> daemon should be disabled.</description>
+    <ident cce="4072-5" />
+    <oval id="service_certmonger_disabled" />
+  </Rule>
+</Group>
+
 
 
 
