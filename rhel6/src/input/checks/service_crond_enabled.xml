@@ -1,112 +1,99 @@
 <def-group>
-  <definition class="compliance"
-  id="service_crond_enabled" version="1">
+  <definition class="compliance" id="service_crond_enabled" version="1">
     <metadata>
-      <title>Cron Daemon running state</title>
+      <title>Daemon crond Enabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <reference ref_id="CCE-4324-0" source="CCE" />
-      <description>The crond service should be
-      enabled.</description>
+      <reference ref_id="CCE-4292-9" source="CCE" />
+      <description>The crond service should be enabled.</description>
     </metadata>
-    <criteria operator="OR">
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_2020005" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_20200051" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_20200052" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_20200053" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_20200054" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_20200055" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_20200056" />
+    <criteria comment="package cronie installed and service crond enabled" operator="AND">
+      <extend_definition comment="package cronie installed" definition_ref="package_cronie_installed" />
+      <criteria comment="service crond enabled for appropriate runlevels" operator="OR">
+        <criterion comment="runlevel 0" test_ref="test_2030850" />
+        <criterion comment="runlevel 1" test_ref="test_2030851" />
+        <criterion comment="runlevel 2" test_ref="test_2030852" />
+        <criterion comment="runlevel 3" test_ref="test_2030853" />
+        <criterion comment="runlevel 4" test_ref="test_2030854" />
+        <criterion comment="runlevel 5" test_ref="test_2030855" />
+        <criterion comment="runlevel 6" test_ref="test_2030856" />
+      </criteria>
     </criteria>
   </definition>
-  <unix:runlevel_test check="all" check_existence="all_exist"
-  comment="Runlevel test" id="test_2020005"
-  version="2">
-    <unix:object object_ref="obj_2020005" />
+
+  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 0 test" id="test_2030850" version="1">
+    <unix:object object_ref="obj_2030850" />
     <unix:state state_ref="state_20008" />
   </unix:runlevel_test>
-  <unix:runlevel_state comment="daemon is running and not stopping"
-  id="state_20008" version="1">
-    <unix:start datatype="boolean">true</unix:start>
-    <unix:kill datatype="boolean">false</unix:kill>
-  </unix:runlevel_state>
-  <unix:runlevel_object id="obj_2020005"
-  version="1">
+
+  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 1 test" id="test_2030851" version="1">
+    <unix:object object_ref="obj_2030851" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+
+  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 2 test" id="test_2030852" version="1">
+    <unix:object object_ref="obj_2030852" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+
+  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 3 test" id="test_2030853" version="1">
+    <unix:object object_ref="obj_2030853" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+
+  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 4 test" id="test_2030854" version="1">
+    <unix:object object_ref="obj_2030854" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+
+  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 5 test" id="test_2030855" version="1">
+    <unix:object object_ref="obj_2030855" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+
+  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 6 test" id="test_2030856" version="1">
+    <unix:object object_ref="obj_2030856" />
+    <unix:state state_ref="state_20008" />
+  </unix:runlevel_test>
+
+  <unix:runlevel_object id="obj_2030850" version="1">
     <unix:service_name>crond</unix:service_name>
     <unix:runlevel operation="equals">0</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="all_exist"
-  comment="Runlevel test"
-  id="test_20200051" version="2">
-    <unix:object object_ref="obj_20200051" />
-    <unix:state state_ref="state_20008" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_20200051"
-  version="1">
+
+  <unix:runlevel_object id="obj_2030851" version="1">
     <unix:service_name>crond</unix:service_name>
     <unix:runlevel operation="equals">1</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="all_exist"
-  comment="Runlevel test"
-  id="test_20200052" version="2">
-    <unix:object object_ref="obj_20200052" />
-    <unix:state state_ref="state_20008" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_20200052"
-  version="1">
+
+  <unix:runlevel_object id="obj_2030852" version="1">
     <unix:service_name>crond</unix:service_name>
     <unix:runlevel operation="equals">2</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="all_exist"
-  comment="Runlevel test"
-  id="test_20200053" version="2">
-    <unix:object object_ref="obj_20200053" />
-    <unix:state state_ref="state_20008" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_20200053"
-  version="1">
+
+  <unix:runlevel_object id="obj_2030853" version="1">
     <unix:service_name>crond</unix:service_name>
     <unix:runlevel operation="equals">3</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="all_exist"
-  comment="Runlevel test"
-  id="test_20200054" version="2">
-    <unix:object object_ref="obj_20200054" />
-    <unix:state state_ref="state_20008" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_20200054"
-  version="1">
+
+  <unix:runlevel_object id="obj_2030854" version="1">
     <unix:service_name>crond</unix:service_name>
     <unix:runlevel operation="equals">4</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="all_exist"
-  comment="Runlevel test"
-  id="test_20200055" version="2">
-    <unix:object object_ref="obj_20200055" />
-    <unix:state state_ref="state_20008" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_20200055"
-  version="1">
+
+  <unix:runlevel_object id="obj_2030855" version="1">
     <unix:service_name>crond</unix:service_name>
     <unix:runlevel operation="equals">5</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="all_exist"
-  comment="Runlevel test"
-  id="test_20200056" version="2">
-    <unix:object object_ref="obj_20200056" />
-    <unix:state state_ref="state_20008" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_20200056"
-  version="1">
+
+  <unix:runlevel_object id="obj_2030856" version="1">
     <unix:service_name>crond</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
+
+  <unix:runlevel_state comment="daemon is enabled" id="state_20008" version="1">
+    <unix:start datatype="boolean">true</unix:start>
+    <unix:kill datatype="boolean">false</unix:kill>
+  </unix:runlevel_state>
 </def-group>

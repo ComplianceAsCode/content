@@ -199,17 +199,22 @@ this service should be disabled.
   </Rule>
 </Group>
 
-
-
-
-
-
 <Group id="base_service_crond">
 <title>Cron Daemon (crond)</title>
-<description>
-The cron daemon is used to execute commands at preconfigured times. The cron daemon is required by almost all systems to perform necessary maintenance tasks. The daemon should be configured defensively.
-<pre># chkconfig crond on</pre>
+<description>The cron daemon is used to execute commands at preconfigured times.
+The cron daemon is required by almost all systems to perform necessary maintenance
+tasks. The daemon should be configured defensively.
+<pre>
+# chkconfig crond on
+
+</pre>
 </description>
+  <Rule id="service_crond_enabled">
+    <title>Daemon <tt>crond</tt> Enabled</title>
+    <description>The <tt>crond</tt> daemon should be enabled.</description>
+    <ident cce="4324-0" />
+    <oval id="service_crond_enabled" />
+  </Rule>
 </Group>
 
 <Group id="base_service_firewall">
