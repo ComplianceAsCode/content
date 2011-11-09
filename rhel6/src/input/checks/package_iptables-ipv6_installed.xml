@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="package_iptables-ipv6_installed" version="1">
+    <metadata>
+      <title>Package iptables-ipv6 Installed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-4292-9" source="CCE" />
+      <description>The package iptables-ipv6 should be installed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package iptables-ipv6 installed" test_ref="test_20017" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="package iptables-ipv6 installed" id="test_20017" version="1">
+    <linux:object object_ref="obj_20017" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_object id="obj_20017" version="1">
+    <linux:name>iptables-ipv6</linux:name>
+  </linux:rpminfo_object>
+</def-group>

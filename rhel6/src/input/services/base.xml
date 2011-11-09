@@ -259,37 +259,45 @@ be disabled.
 
 <Group id="base_service_ip6tables">
 <title>Ip6tables (ip6tables)</title>
-<description>The ip6tables service applies IPv6 firewall rules during system boot.
+<description>The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The
+framework has the ability to filter IPv6 packets. Firewall configuration can be administered with the
+<tt>ip6tables</tt> command line tool. The ip6tables service applies IPv6 firewall rules during system boot
+and can be used to save the current ip6tables ruleset via <tt>/sbin/service ip6tables save</tt>. If IPv6
+networking is enabled on the local machine then this service should be enabled.
 <pre>
 # chkconfig ip6tables on
 
 </pre>
 </description>
   <Rule id="service_ip6tables_enabled">
-    <title>Daemon <tt>ip6tables</tt> Enabled</title>
+    <title>Service <tt>ip6tables</tt> Enabled</title>
     <description>The <tt>ip6tables</tt> service should be enabled.</description>
     <ident cce="4167-3" />
     <oval id="service_ip6tables_enabled" />
   </Rule>
 </Group>
 
+<Group id="base_service_iptables">
+<title>Iptables (iptables)</title>
+<description>The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The
+framework has the ability to filter IPv4 packets. Firewall configuration can be administered with the
+<tt>iptables</tt> command line tool. The iptables service applies IPv4 firewall rules during system boot
+and can be used to save the current iptables ruleset via <tt>/sbin/service iptables save</tt>. If IPv4
+networking is enabled on the local machine then this service should be enabled.
+<pre>
+# chkconfig iptables on
 
-
-
-<Group id="base_service_firewall">
-<title>Firewall (iptables and ip6tables)</title>
-<description>
-The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The framework consists of two components: a set of kernel modules that perform the actual packet filtering, and a set of userspace tools used to administer the firewall ruleset. The most common userspace tools are <tt>iptables</tt> and <tt>ip6tables</tt> used to adminster the IPv4 tables and IPv6 tables respectively. Packet filtering occurs at the kernel level before a program can even process the data from the network packet. As such, any program on the system is affected by the rules written. It is highly recommended to leave these services enabled.
-<pre># chkconfig iptables on
-# chkconfig ip6tables on</pre>
-Please note that both IPv4 and IPv6 network stacks are installed by default. There are two ways to determine if the local machine is dual stacked. You can examine the output of the <tt>lsmod</tt> command and look for a module called <tt>ipv6</tt>. You can also examine the output of <tt>ifconfig</tt> to see if network interfaces have both IPv4 and IPv6 addresses. This output from the <tt>ifconfig</tt> command shows that the local system is dual stacked. Notice how the loopback interface <tt>lo</tt> has both IPv4 and IPv6 addresses: <pre>lo        Link encap:Local Loopback  
-          inet addr:127.0.0.1  Mask:255.0.0.0
-          inet6 addr: ::1/128 Scope:Host</pre>
-If IPv6 is not required then it should be disabled. If disabling IPv6 is not feasible for some reason, it is important to leave both services enabled even though the server or workstation sits on either a IPv4 network or a IPv6 network. If the machine is sitting on an IPv4 network then use <tt>ip6tables</tt> to completely close down the IPv6 side of things. If the machine is sitting on an IPv6 network then use <tt>iptables</tt> to close down the IPv4 side of things.
-<br />
-Finally, it is not enough to simply enable the iptables and ip6tables services and walk away. The Netfilter packet filtering framework within the Linux kernel allows for a wide variety of firewall configurations. Taking the time to configure a robust host-based firewall is well worth the effort.
+</pre>
 </description>
+  <Rule id="service_iptables_enabled">
+    <title>Service <tt>iptables</tt> Enabled</title>
+    <description>The <tt>iptables</tt> service should be enabled.</description>
+    <ident cce="4189-7" />
+    <oval id="service_iptables_enabled" />
+  </Rule>
 </Group>
+
+
 
 <Group id="base_service_lvm2-monitor">
 <title>Logical Volume Management Monitor (lvm2-monitor)</title>
