@@ -143,6 +143,25 @@ the LAN this service should be disabled.
   </Rule>
 </Group>
 
+<Group id="base_service_cgconfig">
+<title>Control Group Config (cgconfig)</title>
+<description>Control groups allow an administrator to allocate system resources (such as CPU,
+memory, network bandwidth, etc) among a defined group (or groups) of processes executing on
+a system. The cgconfig daemon starts at boot and establishes the predefined control groups.
+Unless control groups are used to manage system resources this service should be disabled.
+<pre>
+# chkconfig cgconfig off
+
+</pre>
+</description>
+  <Rule id="service_cgconfig_disabled">
+    <title>Daemon <tt>cgconfig</tt> Disabled</title>
+    <description>The <tt>cgconfig</tt> daemon should be disabled.</description>
+    <ident cce="TODO" />
+    <oval id="service_cgconfig_disabled" />
+  </Rule>
+</Group>
+
 
 
 
