@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="package_hal_removed" version="1">
+    <metadata>
+      <title>Package hal Removed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-TODO" source="CCE" />
+      <description>The package hal should be removed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package hal removed" test_ref="test_20015" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="none_exist" comment="package hal removed" id="test_20015" version="1">
+    <linux:object object_ref="obj_20015" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_object id="obj_20015" version="1">
+    <linux:name>hal</linux:name>
+  </linux:rpminfo_object>
+</def-group>

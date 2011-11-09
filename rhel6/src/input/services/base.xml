@@ -235,6 +235,47 @@ as a print server then this service should be disabled.
   </Rule>
 </Group>
 
+
+<Group id="base_service_haldaemon">
+<title>Hardware Abstraction Layer Daemon (haldaemon)</title>
+<description>As its name implies, the Hardware Abstraction Layer Daemon (haldaemon) collects
+and maintains information about the system's hardware configuration. A list of live devices
+is provided via D-Bus messaging. Please note that this service is required on a workstation
+running a desktop environment. If a desktop environment is not needed then this service can
+be disabled.
+<pre>
+# chkconfig haldaemon off
+
+</pre>
+</description>
+  <Rule id="service_haldaemon_disabled">
+    <title>Daemon <tt>haldaemon</tt> Disabled</title>
+    <description>The <tt>haldaemon</tt> daemon should be disabled unless a desktop environment is required.</description>
+    <ident cce="4364-6" />
+    <oval id="service_haldaemon_disabled" />
+  </Rule>
+</Group>
+
+
+<Group id="base_service_ip6tables">
+<title>Ip6tables (ip6tables)</title>
+<description>The ip6tables service applies IPv6 firewall rules during system boot.
+<pre>
+# chkconfig ip6tables on
+
+</pre>
+</description>
+  <Rule id="service_ip6tables_enabled">
+    <title>Daemon <tt>ip6tables</tt> Enabled</title>
+    <description>The <tt>ip6tables</tt> service should be enabled.</description>
+    <ident cce="4167-3" />
+    <oval id="service_ip6tables_enabled" />
+  </Rule>
+</Group>
+
+
+
+
 <Group id="base_service_firewall">
 <title>Firewall (iptables and ip6tables)</title>
 <description>
