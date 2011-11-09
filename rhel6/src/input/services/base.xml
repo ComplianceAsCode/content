@@ -217,6 +217,24 @@ tasks. The daemon should be configured defensively.
   </Rule>
 </Group>
 
+<Group id="base_service_cups">
+<title>Common Unix Printing System (cups)</title>
+<description>The Common Unix Printing System (CUPS) allows a machine to interact with
+attached printers. If the machine does not require print services and is not serving
+as a print server then this service should be disabled.
+<pre>
+# chkconfig cups off
+
+</pre>
+</description>
+  <Rule id="service_cups_disabled">
+    <title>Daemon <tt>cups</tt> Disabled</title>
+    <description>The <tt>cups</tt> daemon should be disabled.</description>
+    <ident cce="4112-9" />
+    <oval id="service_crond_enabled" />
+  </Rule>
+</Group>
+
 <Group id="base_service_firewall">
 <title>Firewall (iptables and ip6tables)</title>
 <description>
