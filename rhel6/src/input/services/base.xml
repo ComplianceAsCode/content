@@ -180,6 +180,25 @@ if control groups are not needed to manage system resources then this service sh
   </Rule>
 </Group>
 
+<Group id="base_service_cpuspeed">
+<title>CPU Speed (cpuspeed)</title>
+<description>The <tt>cpuspeed</tt> service can adjust the clock speed of supported CPUs based upon
+the current processing load thereby conserving power and reducing heat. This service is most often
+used in laptops where battery life is a concern. Unless laptop battery performance is a requirement
+this service should be disabled.
+<pre>
+# chkconfig cpuspeed off
+
+</pre>
+</description>
+  <Rule id="service_cpuspeed_disabled">
+    <title>Daemon <tt>cpuspeed</tt> Disabled</title>
+    <description>The <tt>cpuspeed</tt> daemon should be disabled.</description>
+    <ident cce="4051-9" />
+    <oval id="service_cpuspeed_disabled" />
+  </Rule>
+</Group>
+
 
 
 
