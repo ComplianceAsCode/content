@@ -378,6 +378,27 @@ disable this service:
 </Group>
 
 
+<Group id="base_service_messagebus">
+<title>D-Bus IPC Service (messagebus)</title>
+<description>D-Bus is an IPC mechanism that provides a common channel for inter-process communication.
+A number of default services make use of D-Bus, including X Windows, Bluetooth, and Avahi. This guide
+recommends that D-Bus and all its dependencies be disabled unless there is a mission-critical need
+for them. Stricter configuration of D-Bus is possible and documented in the man page dbus-daemon(1).
+D-Bus maintains two separate configuration files, located in /etc/dbus-1/, one for system-specific
+configuration and the other forsession-specific configuration. If no services which require D-Bus
+are in use, disable this service:
+<pre>
+# chkconfig messagebus off
+
+</pre>
+</description>
+  <Rule id="service_messagebus_disabled">
+    <title>Service <tt>messagebus</tt> Disabled</title>
+    <description>The <tt>messagebus</tt> service should be disabled.</description>
+    <ident cce="3822-4" />
+    <oval id="service_messagebus_disabled" />
+  </Rule>
+</Group>
 
 
 
