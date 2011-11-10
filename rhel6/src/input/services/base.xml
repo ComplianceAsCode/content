@@ -401,14 +401,28 @@ are in use, disable this service:
 </Group>
 
 
-
 <Group id="base_service_netconsole">
 <title>Network Console (netconsole)</title>
-<description>
-The netconsole service is responsible for loading the netconsole kernel module which logs kernel printk messages over UDP to a syslog server. This allows debugging of problems where disk logging fails and serial consoles are impractical. This service should not be needed unless you need to debug kernel panics. In general this service should be disabled.
-<pre># chkconfig netconsole off</pre>
+<description>The netconsole service is responsible for loading the netconsole kernel
+module which logs kernel printk messages over UDP to a syslog server. This allows
+debugging of problems where disk logging fails and serial consoles are impractical.
+This service should not be needed unless you need to debug kernel panics. In general
+this service should be disabled.
+<pre>
+# chkconfig netconsole off
+
+</pre>
 </description>
+  <Rule id="service_netconsole_disabled">
+    <title>Service <tt>netconsole</tt> Disabled</title>
+    <description>The <tt>netconsole</tt> service should be disabled.</description>
+    <ident cce="TODO" />
+    <oval id="service_netconsole_disabled" />
+  </Rule>
 </Group>
+
+
+
 
 <Group id="base_service_netfs">
 <title>Network File Systems (netfs)</title>
