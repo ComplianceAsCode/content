@@ -357,6 +357,30 @@ mirrored or snapshot logical volumes then this service should be configured and 
   </Rule>
 </Group>
 
+
+<Group id="base_service_mdmonitor">
+<title>Software RAID Monitor (mdmonitor)</title>
+<description>The mdmonitor service is used for monitoring a software RAID (hardware
+RAID setups do not use this service). This service is extraneous unless software
+RAID is in use (which is not common). If software RAID monitoring is not required,
+disable this service:
+<pre>
+# chkconfig mdmonitor off
+
+</pre>
+</description>
+  <Rule id="service_mdmonitor_disabled">
+    <title>Service <tt>mdmonitor</tt> Disabled</title>
+    <description>The <tt>mdmonitor</tt> service should be disabled.</description>
+    <ident cce="3854-7" />
+    <oval id="service_mdmonitor_disabled" />
+  </Rule>
+</Group>
+
+
+
+
+
 <Group id="base_service_netconsole">
 <title>Network Console (netconsole)</title>
 <description>
