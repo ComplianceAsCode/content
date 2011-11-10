@@ -298,6 +298,26 @@ networking is enabled on the local machine then this service should be enabled.
 </Group>
 
 
+<Group id="base_service_irqbalance">
+<title>IRQ Balance (irqbalance)</title>
+<description>The goal of the irqbalance service is to optimize the balance between
+power savings and performance through distribution of hardware interrupts across
+multiple processors. In a server environment with multiple processors, this provides
+a useful service and should be left enabled.
+<pre>
+# chkconfig irqbalance on
+
+</pre>
+</description>
+  <Rule id="service_irqbalance_enabled">
+    <title>Service <tt>irqbalance</tt> Enabled</title>
+    <description>The <tt>irqbalance</tt> service should be enabled.</description>
+    <ident cce="4123-6" />
+    <oval id="service_irqbalance_enabled" />
+  </Rule>
+</Group>
+
+
 
 <Group id="base_service_lvm2-monitor">
 <title>Logical Volume Management Monitor (lvm2-monitor)</title>
