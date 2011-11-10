@@ -317,6 +317,25 @@ a useful service and should be left enabled.
   </Rule>
 </Group>
 
+<Group id="base_service_kdump">
+<title>KDump Kernel Crash Analyzer (kdump)</title>
+<description>Kdump is a new kernel crash dump analyzer. It uses kexec to boot a
+secondary kernel (“capture” kernel) following a system crash. The kernel dump
+from the system crash is loaded into the capture kernel for analysis. Unless the
+system is used for kernel development or testing, disable the service:
+<pre>
+# chkconfig kdump off
+
+</pre>
+</description>
+  <Rule id="service_kdump_disabled">
+    <title>Service <tt>kdump</tt> Disabled</title>
+    <description>The <tt>kdump</tt> service should be disabled.</description>
+    <ident cce="3425-6" />
+    <oval id="service_kdump_disabled" />
+  </Rule>
+</Group>
+
 
 
 <Group id="base_service_lvm2-monitor">
