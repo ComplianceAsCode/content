@@ -450,13 +450,38 @@ If the command did not return any output then disable netfs:
   </Rule>
 </Group>
 
+
 <Group id="base_service_network">
 <title>Network (network)</title>
-<description>
-The network service is made up of a series of scripts and configuration files that are used to configure network interfaces upon system boot. If the system does not need any sort of networking then this service can be disabled. Otherwise, this service can be left enabled.
-<pre># chkconfig network on</pre>
+<description>The network service is made up of a series of scripts and configuration
+files that are used to configure network interfaces upon system boot. If the system
+does not need any sort of networking then this service can be disabled. Otherwise,
+this service can be left enabled.
+<pre>
+# chkconfig network on
+
+</pre>
 </description>
+  <Rule id="service_network_enabled">
+    <title>Service <tt>network</tt> Enabled</title>
+    <description>The <tt>network</tt> service should be enabled.</description>
+    <ident cce="4369-5" />
+    <oval id="service_network_enabled" />
+  </Rule>
 </Group>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <Group id="base_service_postfix">
 <title>Postfix (postfix)</title>
