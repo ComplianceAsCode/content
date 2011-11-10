@@ -337,17 +337,24 @@ system is used for kernel development or testing, disable the service:
 </Group>
 
 
-
 <Group id="base_service_lvm2-monitor">
 <title>Logical Volume Management Monitor (lvm2-monitor)</title>
-<description>
-The lvm2-monitor service can be used to start or stop monitoring a mirrored or snapshot logical volume with dmeventd, if it is installed. If a device used by a monitored mirror reports an I/O error, the failure is handled according to "mirror_image_fault_policy" and "mirror_log_fault_policy" set in the /etc/lvm/lvm.conf configuration file.
-<br />
-If the system utilizes mirrored or snapshot logical volumes then this service should be configured and enabled.
-<pre># chkconfig lvm2-monitor on</pre>
-If the system does not use mirrored or snapshot logical volumes then this service can be disabled.
-<pre># chkconfig lvm2-monitor off</pre>
+<description>The lvm2-monitor service can be used to start or stop monitoring a mirrored
+or snapshot logical volume with dmeventd, if it is installed. If a device used by a
+monitored mirror reports an I/O error, the failure is handled according to "mirror_image_fault_policy"
+and "mirror_log_fault_policy" set in the /etc/lvm/lvm.conf configuration file. If the system utilizes
+mirrored or snapshot logical volumes then this service should be configured and enabled.
+<pre>
+# chkconfig lvm2-monitor on
+
+</pre>
 </description>
+  <Rule id="service_lvm2-monitor_enabled">
+    <title>Service <tt>lvm2-monitor</tt> Enabled</title>
+    <description>The <tt>lvm2-monitor</tt> service should be enabled.</description>
+    <ident cce="TODO" />
+    <oval id="service_lvm2-monitor_enabled" />
+  </Rule>
 </Group>
 
 <Group id="base_service_netconsole">
