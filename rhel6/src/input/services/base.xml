@@ -470,19 +470,6 @@ this service can be left enabled.
   </Rule>
 </Group>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <Group id="base_service_postfix">
 <title>Postfix (postfix)</title>
 <description>
@@ -493,10 +480,24 @@ The Postfix mail transfer agent is used for local mail delivery within the syste
 
 <Group id="base_service_rdisc">
 <title>Network Router Discovery Daemon (rdisc)</title>
-<description>
-The rdisc daemon implements the client side of the ICMP Internet Router Discovery Protocol (IRDP). The daemon can be used to discover routers on the local subnet. If a router is discovered then the local routing table is updated with a corresponding default route. By default this daemon is disabled and it should remain disabled. Servers should have their network and routing information configured by a system administrator in correspondence with the local network management policy. Workstations should use DHCP if they require dynamic network configuration information.
-<pre># chkconfig rdisc off</pre>
+<description>The rdisc daemon implements the client side of the ICMP Internet Router Discovery
+Protocol (IRDP). The daemon can be used to discover routers on the local subnet. If a router
+is discovered then the local routing table is updated with a corresponding default route. By
+default this daemon is disabled and it should remain disabled. Servers should have their network
+and routing information configured by a system administrator in correspondence with the local
+network management policy. Workstations should use DHCP if they require dynamic network
+configuration information.
+<pre>
+# chkconfig rdisc off
+
+</pre>
 </description>
+  <Rule id="service_rdisc_disabled">
+    <title>Service <tt>rdisc</tt> Disabled</title>
+    <description>The <tt>rdisc</tt> service should be disabled.</description>
+    <ident cce="TODO" />
+    <oval id="service_rdisc_disabled" />
+  </Rule>
 </Group>
 
 <Group id="base_service_rhnsd">
