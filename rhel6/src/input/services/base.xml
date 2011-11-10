@@ -423,16 +423,31 @@ this service should be disabled.
 
 
 
-
 <Group id="base_service_netfs">
 <title>Network File Systems (netfs)</title>
-<description>
-The netfs script manages the boot-time mounting of several types of networked filesystems, of which NFS and Samba are the most common. If these filesystem types are not in use, the script can be disabled, protecting the system somewhat against accidental or malicious changes to /etc/fstab and against flaws in the netfs script itself.
+<description>The netfs script manages the boot-time mounting of several types of
+networked filesystems, of which NFS and Samba are the most common. If these filesystem
+types are not in use, the script can be disabled, protecting the system somewhat
+against accidental or malicious changes to /etc/fstab and against flaws in the netfs
+script itself.
 <br />
 To determine if any network filesystems handled by netfs are currently mounted on the system execute the following command:
-<pre># mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
+<pre>
+# mount -t nfs,nfs4,smbfs,cifs,ncpfs
+
+</pre>
 If the command did not return any output then disable netfs:
-<pre># chkconfig netfs off</pre></description>
+<pre>
+# chkconfig netfs off
+
+</pre>
+</description>
+  <Rule id="service_netfs_disabled">
+    <title>Service <tt>netfs</tt> Disabled</title>
+    <description>The <tt>netfs</tt> service should be disabled.</description>
+    <ident cce="4533-6" />
+    <oval id="service_netfs_disabled" />
+  </Rule>
 </Group>
 
 <Group id="base_service_network">
