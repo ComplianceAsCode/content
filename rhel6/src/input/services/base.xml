@@ -26,8 +26,8 @@ As you can see, the "Minimal" package configuration in RHEL 6 lives up to its na
 be enabled or not.
 </description>
 
-<Group id="base_service_abrtd">
-<title>Automatic Bug Reporting Tool (abrtd)</title>
+<Rule id="service_abrtd_disabled">
+<title>Disable Automatic Bug Reporting Tool (abrtd)</title>
 <description>The Automatic Bug Reporting Tool (abrtd) is a daemon that collects and reports crash data
 when an application crash is detected. Using a variety of plugins abrtd can email crash reports to system
 administrators, log crash reports to files, or forward crash reports to a centralized issue tracking
@@ -38,16 +38,13 @@ software executing on the local machine. For most deployments this daemon should
 
 </pre>
 </description>
-  <Rule id="service_abrtd_disabled">
-    <title>Daemon <tt>abrtd</tt> Disabled</title>
-    <description>The <tt>abrtd</tt> daemon should be disabled.</description>
-    <ident cce="TODO" />
-    <oval id="service_abrtd_disabled" />
-  </Rule>
-</Group>
+<ident cce="TODO" />
+<oval id="service_abrtd_disabled" />
+</Rule>
 
-<Group id="base_service_acpid">
-<title>Advanced Configuration and Power Interface Daemon (acpid)</title>
+
+<Rule id="service_acpid_disabled">
+<title>Disable Advanced Configuration and Power Interface (acpid)</title>
 <description>The Advanced Configuration and Power Interface Daemon (acpid) dispatches ACPI events (such
 as power/reset button depressed) to userspace programs. Unless trapping ACPI events is a requirement
 on the local system this daemon should be disabled.
@@ -56,16 +53,13 @@ on the local system this daemon should be disabled.
 
 </pre>
 </description>
-  <Rule id="service_acpid_disabled">
-    <title>Daemon <tt>acpid</tt> Disabled</title>
-    <description>The <tt>acpid</tt> daemon should be disabled.</description>
-    <ident cce="4298-6" />
-    <oval id="service_acpid_disabled" />
-  </Rule>
-</Group>
+<ident cce="4298-6" />
+<oval id="service_acpid_disabled" />
+</Rule>
 
-<Group id="base_service_atd">
-<title>At Daemon (atd)</title>
+
+<Rule id="service_atd_disabled">
+<title>Disable At (atd)</title>
 <description>The <tt>at</tt> and <tt>batch</tt> commands can be used to schedule tasks that are meant
 to be executed only once (similar to cron but not recurring). The daemon <tt>atd</tt> keeps track of
 tasks scheduled via <tt>at</tt> and <tt>batch</tt> and executes them at the specified time. Unless
@@ -76,16 +70,13 @@ daemon should be disabled.
 
 </pre>
 </description>
-  <Rule id="service_atd_disabled">
-    <title>Daemon <tt>atd</tt> Disabled</title>
-    <description>The <tt>atd</tt> daemon should be disabled.</description>
-    <ident cce="TODO" />
-    <oval id="service_atd_disabled" />
-  </Rule>
-</Group>
+<ident cce="TODO" />
+<oval id="service_atd_disabled" />
+</Rule>
 
-<Group id="base_service_auditd">
-<title>Audit Daemon (auditd)</title>
+
+<Rule id="service_auditd_enabled">
+<title>Enable Audit (auditd)</title>
 <description>The audit service is provided for system auditing. By default
 the service audits SELinux AVC denials and certain types of security-relevant
 events such as system logins, account modifications, and authentication events
@@ -96,16 +87,12 @@ be used for system auditing it is recommended that auditd be enabled.
 
 </pre>
 </description>
-  <Rule id="service_auditd_enabled">
-    <title>Daemon <tt>auditd</tt> Enabled</title>
-    <description>The <tt>auditd</tt> daemon should be enabled.</description>
-    <ident cce="4292-9" />
-    <oval id="service_auditd_enabled" />
-  </Rule>
-</Group>
+<ident cce="4292-9" />
+<oval id="service_auditd_enabled" />
+</Rule>
 
-<Group id="base_service_autofs">
-<title>Automounter (autofs)</title>
+<Rule id="service_autofs_disabled">
+<title>Disable Automounter (autofs)</title>
 <description>The autofs daemon mounts and unmounts filesystems, such as user home
 directories shared via NFS, on demand. Even if NFS is required, it is almost always
 possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
@@ -115,16 +102,12 @@ rather than relying on the automounter. The autofs service should be disabled.
 
 </pre>
 </description>
-  <Rule id="service_autofs_disabled">
-    <title>Daemon <tt>autofs</tt> Disabled</title>
-    <description>The <tt>autofs</tt> daemon should be disabled.</description>
-    <ident cce="4072-5" />
-    <oval id="service_autofs_disabled" />
-  </Rule>
-</Group>
+<ident cce="4072-5" />
+<oval id="service_autofs_disabled" />
+</Rule>
 
-<Group id="base_service_certmonger">
-<title>Certmonger (certmonger)</title>
+<Rule id="service_certmonger_disabled">
+<title>Disable Certmonger (certmonger)</title>
 <description>Certmonger is a D-Bus based service that attempts to simplify interaction
 with certifying authorities on networks which use public-key infrastructure. It is often
 combined with Red Hat's IPA (Identity Policy Audit) security information management
@@ -135,16 +118,13 @@ the LAN this service should be disabled.
 
 </pre>
 </description>
-  <Rule id="service_certmonger_disabled">
-    <title>Daemon <tt>certmonger</tt> Disabled</title>
-    <description>The <tt>certmonger</tt> daemon should be disabled.</description>
-    <ident cce="4072-5" />
-    <oval id="service_certmonger_disabled" />
-  </Rule>
-</Group>
+<ident cce="4072-5" />
+<oval id="service_certmonger_disabled" />
+</Rule>
 
-<Group id="base_service_cgconfig">
-<title>Control Group Config (cgconfig)</title>
+
+<Rule id="service_cgconfig_disabled">
+<title>Disable Control Group Config (cgconfig)</title>
 <description>Control groups allow an administrator to allocate system resources (such as CPU,
 memory, network bandwidth, etc) among a defined group (or groups) of processes executing on
 a system. The cgconfig daemon starts at boot and establishes the predefined control groups.
@@ -154,16 +134,12 @@ Unless control groups are used to manage system resources this service should be
 
 </pre>
 </description>
-  <Rule id="service_cgconfig_disabled">
-    <title>Daemon <tt>cgconfig</tt> Disabled</title>
-    <description>The <tt>cgconfig</tt> daemon should be disabled.</description>
-    <ident cce="TODO" />
-    <oval id="service_cgconfig_disabled" />
-  </Rule>
-</Group>
+<ident cce="TODO" />
+<oval id="service_cgconfig_disabled" />
+</Rule>
 
-<Group id="base_service_cgred">
-<title>Control Group Rules Engine Daemon (cgred)</title>
+<Rule id="service_cgred_disabled">
+<title>Disable Control Group Rules Engine (cgred)</title>
 <description>The <tt>cgred</tt> service moves tasks into control groups according to
 parameters set in the <tt>/etc/cgrules.conf</tt> configuration file. Like the cgconfig service,
 if control groups are not needed to manage system resources then this service should be disabled.
@@ -172,16 +148,13 @@ if control groups are not needed to manage system resources then this service sh
 
 </pre>
 </description>
-  <Rule id="service_cgred_disabled">
-    <title>Daemon <tt>cgred</tt> Disabled</title>
-    <description>The <tt>cgred</tt> daemon should be disabled.</description>
-    <ident cce="TODO" />
-    <oval id="service_cgred_disabled" />
-  </Rule>
-</Group>
+<ident cce="TODO" />
+<oval id="service_cgred_disabled" />
+</Rule>
 
-<Group id="base_service_cpuspeed">
-<title>CPU Speed (cpuspeed)</title>
+
+<Rule id="service_cpuspeed_disabled">
+<title>Disable CPU Speed (cpuspeed)</title>
 <description>The <tt>cpuspeed</tt> service can adjust the clock speed of supported CPUs based upon
 the current processing load thereby conserving power and reducing heat. This service is most often
 used in laptops where battery life is a concern. Unless laptop battery performance is a requirement
@@ -191,16 +164,13 @@ this service should be disabled.
 
 </pre>
 </description>
-  <Rule id="service_cpuspeed_disabled">
-    <title>Daemon <tt>cpuspeed</tt> Disabled</title>
-    <description>The <tt>cpuspeed</tt> daemon should be disabled.</description>
-    <ident cce="4051-9" />
-    <oval id="service_cpuspeed_disabled" />
-  </Rule>
-</Group>
+<ident cce="4051-9" />
+<oval id="service_cpuspeed_disabled" />
+</Rule>
 
-<Group id="base_service_crond">
-<title>Cron Daemon (crond)</title>
+
+<Rule id="service_crond_enabled">
+<title>Enable Cron Daemon (crond)</title>
 <description>The cron daemon is used to execute commands at preconfigured times.
 The cron daemon is required by almost all systems to perform necessary maintenance
 tasks. The daemon should be configured defensively.
@@ -209,16 +179,13 @@ tasks. The daemon should be configured defensively.
 
 </pre>
 </description>
-  <Rule id="service_crond_enabled">
-    <title>Daemon <tt>crond</tt> Enabled</title>
-    <description>The <tt>crond</tt> daemon should be enabled.</description>
-    <ident cce="4324-0" />
-    <oval id="service_crond_enabled" />
-  </Rule>
-</Group>
+<ident cce="4324-0" />
+<oval id="service_crond_enabled" />
+</Rule>
 
-<Group id="base_service_cups">
-<title>Common Unix Printing System (cups)</title>
+
+<Rule id="service_cups_disabled">
+<title>Disable Common Unix Printing System (cups)</title>
 <description>The Common Unix Printing System (CUPS) allows a machine to interact with
 attached printers. If the machine does not require print services and is not serving
 as a print server then this service should be disabled.
@@ -227,17 +194,12 @@ as a print server then this service should be disabled.
 
 </pre>
 </description>
-  <Rule id="service_cups_disabled">
-    <title>Daemon <tt>cups</tt> Disabled</title>
-    <description>The <tt>cups</tt> daemon should be disabled.</description>
-    <ident cce="4112-9" />
-    <oval id="service_crond_enabled" />
-  </Rule>
-</Group>
+<ident cce="4112-9" />
+<oval id="service_cups_disabled" />
+</Rule>
 
-
-<Group id="base_service_haldaemon">
-<title>Hardware Abstraction Layer Daemon (haldaemon)</title>
+<Rule id="service_haldaemon_disabled">
+<title>Disable Hardware Abstraction Layer Daemon (haldaemon)</title>
 <description>As its name implies, the Hardware Abstraction Layer Daemon (haldaemon) collects
 and maintains information about the system's hardware configuration. A list of live devices
 is provided via D-Bus messaging. Please note that this service is required on a workstation
@@ -248,17 +210,13 @@ be disabled.
 
 </pre>
 </description>
-  <Rule id="service_haldaemon_disabled">
-    <title>Daemon <tt>haldaemon</tt> Disabled</title>
-    <description>The <tt>haldaemon</tt> daemon should be disabled unless a desktop environment is required.</description>
-    <ident cce="4364-6" />
-    <oval id="service_haldaemon_disabled" />
-  </Rule>
-</Group>
+<ident cce="4364-6" />
+<oval id="service_haldaemon_disabled" />
+</Rule>
 
 
-<Group id="base_service_ip6tables">
-<title>Ip6tables (ip6tables)</title>
+<Rule id="service_ip6tables_enabled">
+<title>Enable Ip6tables (ip6tables)</title>
 <description>The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The
 framework has the ability to filter IPv6 packets. Firewall configuration can be administered with the
 <tt>ip6tables</tt> command line tool. The ip6tables service applies IPv6 firewall rules during system boot
@@ -269,16 +227,13 @@ networking is enabled on the local machine then this service should be enabled.
 
 </pre>
 </description>
-  <Rule id="service_ip6tables_enabled">
-    <title>Service <tt>ip6tables</tt> Enabled</title>
-    <description>The <tt>ip6tables</tt> service should be enabled.</description>
-    <ident cce="4167-3" />
-    <oval id="service_ip6tables_enabled" />
-  </Rule>
-</Group>
+<ident cce="4167-3" />
+<oval id="service_ip6tables_enabled" />
+</Rule>
 
-<Group id="base_service_iptables">
-<title>Iptables (iptables)</title>
+
+<Rule id="service_iptables_enabled">
+<title>Enable Iptables (iptables)</title>
 <description>The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The
 framework has the ability to filter IPv4 packets. Firewall configuration can be administered with the
 <tt>iptables</tt> command line tool. The iptables service applies IPv4 firewall rules during system boot
@@ -289,17 +244,13 @@ networking is enabled on the local machine then this service should be enabled.
 
 </pre>
 </description>
-  <Rule id="service_iptables_enabled">
-    <title>Service <tt>iptables</tt> Enabled</title>
-    <description>The <tt>iptables</tt> service should be enabled.</description>
-    <ident cce="4189-7" />
-    <oval id="service_iptables_enabled" />
-  </Rule>
-</Group>
+<ident cce="4189-7" />
+<oval id="service_iptables_enabled" />
+</Rule>
 
 
-<Group id="base_service_irqbalance">
-<title>IRQ Balance (irqbalance)</title>
+<Rule id="service_irqbalance_enabled">
+<title>Enable IRQ Balance (irqbalance)</title>
 <description>The goal of the irqbalance service is to optimize the balance between
 power savings and performance through distribution of hardware interrupts across
 multiple processors. In a server environment with multiple processors, this provides
@@ -309,16 +260,12 @@ a useful service and should be left enabled.
 
 </pre>
 </description>
-  <Rule id="service_irqbalance_enabled">
-    <title>Service <tt>irqbalance</tt> Enabled</title>
-    <description>The <tt>irqbalance</tt> service should be enabled.</description>
-    <ident cce="4123-6" />
-    <oval id="service_irqbalance_enabled" />
-  </Rule>
-</Group>
+<ident cce="4123-6" />
+<oval id="service_irqbalance_enabled" />
+</Rule>
 
-<Group id="base_service_kdump">
-<title>KDump Kernel Crash Analyzer (kdump)</title>
+<Rule id="service_kdump_disabled">
+<title>Disable KDump Kernel Crash Analyzer (kdump)</title>
 <description>Kdump is a new kernel crash dump analyzer. It uses kexec to boot a
 secondary kernel (“capture” kernel) following a system crash. The kernel dump
 from the system crash is loaded into the capture kernel for analysis. Unless the
@@ -328,17 +275,13 @@ system is used for kernel development or testing, disable the service:
 
 </pre>
 </description>
-  <Rule id="service_kdump_disabled">
-    <title>Service <tt>kdump</tt> Disabled</title>
-    <description>The <tt>kdump</tt> service should be disabled.</description>
-    <ident cce="3425-6" />
-    <oval id="service_kdump_disabled" />
-  </Rule>
-</Group>
+<ident cce="3425-6" />
+<oval id="service_kdump_disabled" />
+</Rule>
 
 
-<Group id="base_service_lvm2-monitor">
-<title>Logical Volume Management Monitor (lvm2-monitor)</title>
+<Rule id="service_lvm2-monitor_enabled">
+<title>Enable Logical Volume Management Monitor (lvm2-monitor)</title>
 <description>The lvm2-monitor service can be used to start or stop monitoring a mirrored
 or snapshot logical volume with dmeventd, if it is installed. If a device used by a
 monitored mirror reports an I/O error, the failure is handled according to "mirror_image_fault_policy"
@@ -349,17 +292,14 @@ mirrored or snapshot logical volumes then this service should be configured and 
 
 </pre>
 </description>
-  <Rule id="service_lvm2-monitor_enabled">
-    <title>Service <tt>lvm2-monitor</tt> Enabled</title>
-    <description>The <tt>lvm2-monitor</tt> service should be enabled.</description>
-    <ident cce="TODO" />
-    <oval id="service_lvm2-monitor_enabled" />
-  </Rule>
-</Group>
+<ident cce="TODO" />
+<oval id="service_lvm2-monitor_enabled" />
+</Rule>
 
 
-<Group id="base_service_mdmonitor">
-<title>Software RAID Monitor (mdmonitor)</title>
+
+<Rule id="service_mdmonitor_disabled">
+<title>Disable Software RAID Monitor (mdmonitor)</title>
 <description>The mdmonitor service is used for monitoring a software RAID (hardware
 RAID setups do not use this service). This service is extraneous unless software
 RAID is in use (which is not common). If software RAID monitoring is not required,
@@ -369,17 +309,13 @@ disable this service:
 
 </pre>
 </description>
-  <Rule id="service_mdmonitor_disabled">
-    <title>Service <tt>mdmonitor</tt> Disabled</title>
-    <description>The <tt>mdmonitor</tt> service should be disabled.</description>
-    <ident cce="3854-7" />
-    <oval id="service_mdmonitor_disabled" />
-  </Rule>
-</Group>
+<ident cce="3854-7" />
+<oval id="service_mdmonitor_disabled" />
+</Rule>
 
 
-<Group id="base_service_messagebus">
-<title>D-Bus IPC Service (messagebus)</title>
+<Rule id="service_messagebus_disabled">
+<title>Disable D-Bus IPC Service (messagebus)</title>
 <description>D-Bus is an IPC mechanism that provides a common channel for inter-process communication.
 A number of default services make use of D-Bus, including X Windows, Bluetooth, and Avahi. This guide
 recommends that D-Bus and all its dependencies be disabled unless there is a mission-critical need
@@ -392,17 +328,13 @@ are in use, disable this service:
 
 </pre>
 </description>
-  <Rule id="service_messagebus_disabled">
-    <title>Service <tt>messagebus</tt> Disabled</title>
-    <description>The <tt>messagebus</tt> service should be disabled.</description>
-    <ident cce="3822-4" />
-    <oval id="service_messagebus_disabled" />
-  </Rule>
-</Group>
+<ident cce="3822-4" />
+<oval id="service_messagebus_disabled" />
+</Rule>
 
 
-<Group id="base_service_netconsole">
-<title>Network Console (netconsole)</title>
+<Rule id="service_netconsole_disabled">
+<title>Disable Network Console (netconsole)</title>
 <description>The netconsole service is responsible for loading the netconsole kernel
 module which logs kernel printk messages over UDP to a syslog server. This allows
 debugging of problems where disk logging fails and serial consoles are impractical.
@@ -413,18 +345,15 @@ this service should be disabled.
 
 </pre>
 </description>
-  <Rule id="service_netconsole_disabled">
-    <title>Service <tt>netconsole</tt> Disabled</title>
-    <description>The <tt>netconsole</tt> service should be disabled.</description>
-    <ident cce="TODO" />
-    <oval id="service_netconsole_disabled" />
-  </Rule>
-</Group>
+<ident cce="TODO" />
+<oval id="service_netconsole_disabled" />
+</Rule>
 
 
 
-<Group id="base_service_netfs">
-<title>Network File Systems (netfs)</title>
+
+<Rule id="service_netfs_disabled">
+<title>Disable Network File Systems (netfs)</title>
 <description>The netfs script manages the boot-time mounting of several types of
 networked filesystems, of which NFS and Samba are the most common. If these filesystem
 types are not in use, the script can be disabled, protecting the system somewhat
@@ -442,17 +371,13 @@ If the command did not return any output then disable netfs:
 
 </pre>
 </description>
-  <Rule id="service_netfs_disabled">
-    <title>Service <tt>netfs</tt> Disabled</title>
-    <description>The <tt>netfs</tt> service should be disabled.</description>
-    <ident cce="4533-6" />
-    <oval id="service_netfs_disabled" />
-  </Rule>
-</Group>
+<ident cce="4533-6" />
+<oval id="service_netfs_disabled" />
+</Rule>
 
 
-<Group id="base_service_network">
-<title>Network (network)</title>
+<Rule id="service_network_enabled">
+<title>Enable Network (network)</title>
 <description>The network service is made up of a series of scripts and configuration
 files that are used to configure network interfaces upon system boot. If the system
 does not need any sort of networking then this service can be disabled. Otherwise,
@@ -462,24 +387,29 @@ this service can be left enabled.
 
 </pre>
 </description>
-  <Rule id="service_network_enabled">
-    <title>Service <tt>network</tt> Enabled</title>
-    <description>The <tt>network</tt> service should be enabled.</description>
-    <ident cce="4369-5" />
-    <oval id="service_network_enabled" />
-  </Rule>
-</Group>
+<ident cce="4369-5" />
+<oval id="service_network_enabled" />
+</Rule>
 
-<Group id="base_service_postfix">
-<title>Postfix (postfix)</title>
-<description>
-The Postfix mail transfer agent is used for local mail delivery within the system. The default configuration only listens for connections to the default SMTP port (port 25) on the loopback interface (127.0.0.1). It is recommended to leave this service enabled for local mail delivery.
-<pre># chkconfig postfix on</pre>
+
+<Rule id="service_postfix_enabled">
+<title>Enable Postfix (postfix)</title>
+<description>The Postfix mail transfer agent is used for local mail delivery within
+the system. The default configuration only listens for connections to the default SMTP
+port (port 25) on the loopback interface (127.0.0.1). It is recommended to leave this
+service enabled for local mail delivery.
+<pre>
+# chkconfig postfix on
+
+</pre>
 </description>
-</Group>
+<ident cce="14068-1" />
+<oval id="service_postfix_enabled" />
+</Rule>
 
-<Group id="base_service_rdisc">
-<title>Network Router Discovery Daemon (rdisc)</title>
+
+<Rule id="service_rdisc_disabled">
+<title>Disable Network Router Discovery Daemon (rdisc)</title>
 <description>The rdisc daemon implements the client side of the ICMP Internet Router Discovery
 Protocol (IRDP). The daemon can be used to discover routers on the local subnet. If a router
 is discovered then the local routing table is updated with a corresponding default route. By
@@ -492,63 +422,114 @@ configuration information.
 
 </pre>
 </description>
-  <Rule id="service_rdisc_disabled">
-    <title>Service <tt>rdisc</tt> Disabled</title>
-    <description>The <tt>rdisc</tt> service should be disabled.</description>
-    <ident cce="TODO" />
-    <oval id="service_rdisc_disabled" />
-  </Rule>
-</Group>
+<ident cce="TODO" />
+<oval id="service_rdisc_disabled" />
+</Rule>
 
-<Group id="base_service_rhnsd">
-<title>Red Hat Update Agent (rhnsd)</title>
-<description>
-The Red Hat Update Agent is a network aware application that automatically queries Red Hat Network servers to determine which packages need to be updated on your machine. More than likely this would be an undesired behavior on production systems where patches must be tested before application. It is recommended to disable this service and perform patching in accordance with local configuration management policy.
-<pre># chkconfig rhnsd on</pre>
+
+<Rule id="service_rhnsd_disabled">
+<title>Disable Red Hat Update Agent (rhnsd)</title>
+<description>The Red Hat Update Agent is a network aware application that automatically
+queries Red Hat Network servers to determine which packages need to be updated on your
+machine. More than likely this would be an undesired behavior on production systems
+where patches must be tested before application. It is recommended to disable this
+service and perform patching in accordance with local configuration management policy.
+<pre>
+# chkconfig rhnsd on
+
+</pre>
 </description>
-</Group>
+<ident cce="TODO" />
+<oval id="service_rhnsd_disabled" />
+</Rule>
 
-<Group id="base_service_rhsmcertd">
-<title>Red Hat Subscription Manager Daemon (rhsmcertd)</title>
-<description>
-The Red Hat Subscription Manager (rhsmcertd) runs routinely to check for changes in the entitlements for an organization. Like the Red Hat Update Agent, it is recommended to also disable this service.
-<pre># chkconfig rhsmcertd on</pre>
+
+<Rule id="service_rhsmcertd_disabled">
+<title>Disable Red Hat Subscription Manager Daemon (rhsmcertd)</title>
+<description>The Red Hat Subscription Manager (rhsmcertd) runs routinely to check for
+changes in the entitlements for an organization. Like the Red Hat Update Agent, it is
+recommended to also disable this service.
+<pre>
+# chkconfig rhsmcertd on
+
+</pre>
 </description>
-</Group>
+<ident cce="TODO" />
+<oval id="service_rhsmcertd_disabled" />
+</Rule>
 
-<Group id="base_service_rsyslog">
-<title>Syslog Daemon (rsyslog)</title>
-<description>
-The rsyslog service provides the default logging daemon for RHEL 6. Unless some sort of custom logging daemon is used (like syslog-ng or something similar) then this service must be enabled and configured properly. The rsyslog service provides improvements such as connection-oriented (TCP) transmission of logs, the option to log to database formats, and the encryption of log data en route to a central logging server.
-<pre># chkconfig rsyslog on</pre>
+
+<Rule id="service_rsyslog_enabled">
+<title>Enable Syslog Daemon (rsyslog)</title>
+<description>The rsyslog service provides the default logging daemon for RHEL 6. Unless
+some sort of custom logging daemon is used (like syslog-ng or something similar) then
+this service must be enabled and configured properly. The rsyslog service provides
+improvements such as connection-oriented (TCP) transmission of logs, the option to log
+to database formats, and the encryption of log data en route to a central logging server.
+<pre>
+# chkconfig rsyslog on
+
+</pre>
 </description>
-</Group>
+<ident cce="TODO" />
+<oval id="service_rsyslog_enabled" />
+</Rule>
 
-<Group id="base_service_saslauthd">
-<title>Cyrus SASL Authentication Daemon (saslauthd)</title>
-<description>
-The saslauthd service handles plaintext authentication requests on behalf of the SASL library.
-This service fulfills two roles: 1) it isolates all code requiring superuser privileges into a single process, and 2) it can be used to provide proxy authentication services to clients that do not
+
+
+
+
+
+
+
+
+
+
+
+<Rule id="service_saslauthd_disabled">
+<title>Disable Cyrus SASL Authentication Daemon (saslauthd)</title>
+<description>The saslauthd service handles plaintext authentication requests on behalf of the SASL library.
+This service fulfills two roles: 1) it isolates all code requiring superuser privileges into a single
+process, and 2) it can be used to provide proxy authentication services to clients that do not
 understand SASL based authentication. Unless this service is absolutely needed it should be disabled.
-<pre># chkconfig saslauthd off</pre>
-</description>
-</Group>
+<pre>
+# chkconfig saslauthd off
 
-<Group id="base_service_sshd">
-<title>OpenSSH Daemon (sshd)</title>
-<description>
-The Secure Shell (SSH) protocol is recommended for remote login and remote file transfer. SSH provides confidentiality and integrity for data exchanged between two systems, as well as server authentication, through the use of public key cryptography. The implementation included with the system is called OpenSSH. If remote administration is needed then this service should be enabled.
-<pre># chkconfig sshd on</pre>
+</pre>
 </description>
-</Group>
+<ident cce="TODO" />
+<oval id="service_saslauthd_disabled" />
+</Rule>
 
-<Group id="base_service_udev-post">
-<title>Device Manager (udev-post)</title>
-<description>
-The udev service serves as the device manager. It maintains a set of devices that are normally located in the /dev directory. This service should be enabled.
-<pre># chkconfig udev-post on</pre>
+<Rule id="service_sshd_enabled">
+<title>Enabled OpenSSH Daemon (sshd)</title>
+<description>The Secure Shell (SSH) protocol is recommended for remote login and remote file
+transfer. SSH provides confidentiality and integrity for data exchanged between two systems,
+as well as server authentication, through the use of public key cryptography. The
+implementation included with the system is called OpenSSH. If remote administration is needed
+then this service should be enabled.
+<pre>
+# chkconfig sshd on
+
+</pre>
 </description>
-</Group>
+<ident cce="TODO" />
+<oval id="service_sshd_enabled" />
+</Rule>
+
+<Rule id="service_udev-post_disabled">
+<title>Disable Device Manager (udev-post)</title>
+<description>The udev service serves as the device manager. It maintains a set of
+devices that are normally located in the /dev directory. This service should be
+enabled.
+<pre>
+# chkconfig udev-post on
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_udev-post_disabled" />
+</Rule>
 
 <!--
 ##### OLDER CONTENT LEFT HERE FOR TEMPORARY REFERENCE #####
