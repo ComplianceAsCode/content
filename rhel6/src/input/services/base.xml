@@ -392,6 +392,102 @@ this service can be left enabled.
 </Rule>
 
 
+<Rule id="service_nfs_disabled">
+<title>Disable Network File System (nfs)</title>
+<description>The Network File System (NFS) service allows remote hosts to mount and interact with
+shared filesystems on the local machine. If the local machine is not designated as a NFS server
+then this service should be disabled.
+<pre>
+# chkconfig nfs off
+
+</pre>
+</description>
+<ident cce="4473-5" />
+<oval id="service_nfs_disabled" />
+</Rule>
+
+<Rule id="service_nfslock_disabled">
+<title>Disable Network File System Lock Service (nfslock)</title>
+<description>The Network File System Lock (nfslock) service starts the required remote procedure
+call (RPC) processes which allow clients to lock files on the server. If the local machine is not
+configured to mount NFS filesystems then this service should be disabled.
+<pre>
+# chkconfig nfslock off
+
+</pre>
+</description>
+<ident cce="4396-8" />
+<oval id="service_nfslock_disabled" />
+</Rule>
+
+
+<Rule id="service_ntpd_enabled">
+<title>Enable Network Time Protocol (ntpd)</title>
+<description>The Network Time Protocol is used to manage the system clock over a network.
+Computer clocks are not very accurate, so time will drift on unmanaged systems. Central
+time protocols can be used both to ensure that time is consistent among a network of
+machines, and that their time is consistent with the outside world. It is recommended
+to leave this service enabled.
+<pre>
+# chkconfig ntpd on
+
+</pre>
+</description>
+<ident cce="4376-0 " />
+<oval id="service_ntpd_enabled" />
+</Rule>
+
+
+<Rule id="service_ntpdate_enabled">
+<title>Disable Network Time Protocol (ntpdate)</title>
+<description>The ntpdate service sets the local hardware clock by polling NTP servers. The
+service is executed once when the system boots. It synchronizes to the NTP servers listed in
+/etc/ntp/step-tickers (or /etc/ntp.conf if there are no NTP servers defined in
+/etc/ntp/step-tickers) and then sets the local hardware clock to the newly synchronized
+system time. This service is best suited for workstations which are rebooted more often than
+servers. For these kinds of workstations, a clock synchronization upon system boot would be
+sufficient. For servers it is generally recommended to enable the ntpd service.
+<pre>
+# chkconfig ntpdate on
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_ntpdate_enabled" />
+</Rule>
+
+
+<Rule id="service_oddjobd_disabled">
+<title>Disable Odd Job Daemon (oddjobd)</title>
+<description>The oddjobd service runs specified privileged tasks for unprivileged client
+applications which communicate with it through the system message bus. 
+<pre>
+# chkconfig oddjobd off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_oddjobd_disabled" />
+</Rule>
+
+
+<Rule id="service_portreserve_disabled">
+<title>Disable Portreserve (portreserve)</title>
+<description>The portreserve service is a TCP port reservation utility that can be used to
+prevent portmap from binding to well known TCP ports that are required for other services.
+This service is one of several services required for remote procedure calls between systems.
+Disable this service unless it is specifically required.
+<pre>
+# chkconfig portreserve off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_portreserve_disabled" />
+</Rule>
+
+
+
 <Rule id="service_postfix_enabled">
 <title>Enable Postfix (postfix)</title>
 <description>The Postfix mail transfer agent is used for local mail delivery within
@@ -405,6 +501,39 @@ service enabled for local mail delivery.
 </description>
 <ident cce="14068-1" />
 <oval id="service_postfix_enabled" />
+</Rule>
+
+
+<Rule id="service_psacct_enabled">
+<title>Enable Process Accounting (psacct)</title>
+<description>The process accounting service (psacct) is an auditing tool that allows system
+administrators to log user activity and view every command issued by users of the system. It
+is recommended that this service be configured and enabled.
+<pre>
+# chkconfig psacct on
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_psacct_enabled" />
+</Rule>
+
+
+
+<Rule id="service_quota_nld_disabled">
+<title>Disable Quota Netlink (quota_nld)</title>
+<description>The quota netlink service listens to the kernel via a netlink socket for disk quota
+violations and notifies the appropriate user of the violation using D-Bus or by sending a message
+to the terminal that the user has last accessed. If disk quotas are enforced on the local system
+then this service should be enabled. If disk quotas are not used or notification of disk quota
+violations are not desired then disable this service.
+<pre>
+# chkconfig quota_nld off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_quota_nld_disabled" />
 </Rule>
 
 
@@ -424,6 +553,22 @@ configuration information.
 </description>
 <ident cce="TODO" />
 <oval id="service_rdisc_disabled" />
+</Rule>
+
+
+<Rule id="service_restorecond_enabled">
+<title>Disable Restore SELinux Context Service (restorecond)</title>
+<description>The restorecond service utilizes inotify to look for the creation of new files
+listed in the /etc/selinux/restorecond.conf configuration file. Once the file is created,
+restorecond ensures that the file receives the proper SELinux security context. It is
+recommended that this service be enabled.
+<pre>
+# chkconfig restorecond on
+
+</pre>
+</description>
+<ident cce="4129-3" />
+<oval id="service_restorecond_enabled" />
 </Rule>
 
 

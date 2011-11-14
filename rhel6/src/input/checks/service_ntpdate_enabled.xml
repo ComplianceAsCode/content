@@ -1,16 +1,16 @@
 <def-group>
-  <definition class="compliance" id="service_ntpd_enabled" version="1">
+  <definition class="compliance" id="service_ntpdate_enabled" version="1">
     <metadata>
-      <title>Daemon ntpd Enabled</title>
+      <title>Daemon ntpdate Enabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4292-9" source="CCE" />
-      <description>The ntpd service should be enabled.</description>
+      <description>The ntpdate service should be enabled.</description>
     </metadata>
-    <criteria comment="package ntp installed and service ntpd enabled" operator="AND">
-      <extend_definition comment="package ntp installed" definition_ref="package_ntp_installed" />
-      <criteria comment="service ntpd enabled for appropriate runlevels" operator="OR">
+    <criteria comment="package ntp installed and service ntpdate enabled" operator="AND">
+      <extend_definition comment="package ntpdate installed" definition_ref="package_ntpdate_installed" />
+      <criteria comment="service ntpdate enabled for appropriate runlevels" operator="OR">
         <criterion comment="runlevel 0" test_ref="test_2030850" />
         <criterion comment="runlevel 1" test_ref="test_2030851" />
         <criterion comment="runlevel 2" test_ref="test_2030852" />
@@ -58,37 +58,37 @@
   </unix:runlevel_test>
 
   <unix:runlevel_object id="obj_2030850" version="1">
-    <unix:service_name>ntpd</unix:service_name>
+    <unix:service_name>ntpdate</unix:service_name>
     <unix:runlevel operation="equals">0</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030851" version="1">
-    <unix:service_name>ntpd</unix:service_name>
+    <unix:service_name>ntpdate</unix:service_name>
     <unix:runlevel operation="equals">1</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030852" version="1">
-    <unix:service_name>ntpd</unix:service_name>
+    <unix:service_name>ntpdate</unix:service_name>
     <unix:runlevel operation="equals">2</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030853" version="1">
-    <unix:service_name>ntpd</unix:service_name>
+    <unix:service_name>ntpdate</unix:service_name>
     <unix:runlevel operation="equals">3</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030854" version="1">
-    <unix:service_name>ntpd</unix:service_name>
+    <unix:service_name>ntpdate</unix:service_name>
     <unix:runlevel operation="equals">4</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030855" version="1">
-    <unix:service_name>ntpd</unix:service_name>
+    <unix:service_name>ntpdate</unix:service_name>
     <unix:runlevel operation="equals">5</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030856" version="1">
-    <unix:service_name>ntpd</unix:service_name>
+    <unix:service_name>ntpdate</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
 

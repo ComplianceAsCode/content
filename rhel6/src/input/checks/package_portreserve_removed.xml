@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="package_portreserve_removed" version="1">
+    <metadata>
+      <title>Package portreserve Removed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-TODO" source="CCE" />
+      <description>The package portreserve should be removed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied" test_ref="test_20015" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="none_exist" comment="package portreserve removed" id="test_20015" version="1">
+    <linux:object object_ref="obj_20015" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_object id="obj_20015" version="1">
+    <linux:name>portreserve</linux:name>
+  </linux:rpminfo_object>
+</def-group>
