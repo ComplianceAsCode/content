@@ -221,17 +221,17 @@ requirements</description>
 
 <Group id="locking_out_password_attempts">
 <title>Set Lockouts for Failed Password Attempts</title>
-<description>The pam_tally2 PAM module provides the capability to
+<description>The pam_faillock PAM module provides the capability to
 lock out user accounts after a number of failed login attempts. Its
 documentation is available in
-<tt>/usr/share/doc/pam-VERSION/txts/README.pam_tally2</tt>.
+<tt>/usr/share/doc/pam-VERSION/txts/README.pam_faillock</tt>.
 <br /><br />
 If locking out accounts after a number of incorrect login
 attempts is required by your security policy, implement use of
-<tt>pam_tally2.so</tt> for the relevant PAM-aware programs such as
+<tt>pam_faillock.so</tt> for the relevant PAM-aware programs such as
 <tt>login</tt>, <tt>sshd</tt>, and <tt>vsftpd</tt>.
 <br /><br />
-Find the following line in <tt>/etc/pam.d/system-auth</tt>:
+Find the following line in <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
 <br />
 <pre>
 auth sufficient pam_unix.so nullok try_first_pass
@@ -250,41 +250,35 @@ auth requisite pam_succeed_if.so uid &gt;= 500 quiet
 auth required pam_deny.so
 
 </pre>
-To enforce password lockout, add the following to the
-individual programs' configuration files in <tt>/etc/pam.d</tt>. First, add
-to end of the auth lines:
+By default, all individual programs' configuration files in <tt>/etc/pam.d</tt>
+include <tt>system-auth</tt> or <tt>password-auth</tt>. To enforce password
+lockout, add the following to <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>.
+First, add the following just before the pam_unix.so auth line:
 <br />
 <pre>
-auth required pam_tally2.so deny=5 onerr=fail
+auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900
 
 </pre>
-Second, add to the end of the account lines:
+Second, add the following two lines just after the pam_unix.so auth line:
 <br />
 <pre>
-account required pam_tally2.so
+auth     [default=die]  pam_faillock.so authfail audit deny=5 unlock_time=900
+auth     sufficient     pam_faillock.so authsucc audit deny=5 unlock_time=900
 
 </pre>
-Adjust the deny argument to conform to your system security
-policy. The <tt>pam_tally2</tt> utility can be used to unlock user accounts
-as follows:
-<br />
-<pre>
-# /sbin/pam_tally2 --user username --reset</pre>
 </description>
 <warning category="general">Locking out user accounts presents the
 risk of a denial-of-service attack. The security policy regarding
 system lockout must weigh whether the risk of such a
 denial-of-service attack outweighs the benefits of thwarting
-password guessing attacks. The <tt>pam_tally2</tt> utility can be run
-from a cron job on a hourly or daily basis to try and offset this
-risk.</warning>
+password guessing attacks.</warning>
 
 <Rule id="deny_password_attempts">
 <title>Set deny for Failed Password Attempts</title>
 <description>The deny policy should meet minimum
 requirements.</description>
 <ident cce="3410-8" />
-<oval id="accounts_passwords_pam_tally2_deny" />
+<oval id="accounts_passwords_pam_faillock_deny" />
 <ref nist="AC-7, CM-6" />
 </Rule>
 </Group>
