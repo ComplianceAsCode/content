@@ -1,16 +1,16 @@
 <def-group>
-  <definition class="compliance" id="service_nfslock_disabled" version="1">
+  <definition class="compliance" id="service_oddjobd_disabled" version="1">
     <metadata>
-      <title>Daemon nfslock Disabled</title>
+      <title>Daemon oddjobd Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-TODO" source="CCE" />
-      <description>The nfslock service should be disabled.</description>
+      <description>The oddjobd service should be disabled.</description>
     </metadata>
-    <criteria comment="package nfs-utils not installed or service nfslock disabled" operator="OR">
-      <extend_definition comment="package nfs-utils removed" definition_ref="package_nfs-utils_removed" />
-      <criteria comment="service nfslock disabled for all runlevels" operator="AND">
+    <criteria comment="package oddjob not installed or service oddjobd disabled" operator="OR">
+      <extend_definition comment="package oddjob removed" definition_ref="package_oddjob_removed" />
+      <criteria comment="service oddjobd disabled for all runlevels" operator="AND">
         <criterion comment="runlevel 0" test_ref="test_2030820" />
         <criterion comment="runlevel 1" test_ref="test_2030821" />
         <criterion comment="runlevel 2" test_ref="test_2030822" />
@@ -58,37 +58,37 @@
   </unix:runlevel_test>
 
   <unix:runlevel_object id="obj_2030820" version="1">
-    <unix:service_name>nfslock</unix:service_name>
+    <unix:service_name>oddjobd</unix:service_name>
     <unix:runlevel operation="equals">0</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030821" version="1">
-    <unix:service_name>nfslock</unix:service_name>
+    <unix:service_name>oddjobd</unix:service_name>
     <unix:runlevel operation="equals">1</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030822" version="1">
-    <unix:service_name>nfslock</unix:service_name>
+    <unix:service_name>oddjobd</unix:service_name>
     <unix:runlevel operation="equals">2</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030823" version="1">
-    <unix:service_name>nfslock</unix:service_name>
+    <unix:service_name>oddjobd</unix:service_name>
     <unix:runlevel operation="equals">3</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030824" version="1">
-    <unix:service_name>nfslock</unix:service_name>
+    <unix:service_name>oddjobd</unix:service_name>
     <unix:runlevel operation="equals">4</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030825" version="1">
-    <unix:service_name>nfslock</unix:service_name>
+    <unix:service_name>oddjobd</unix:service_name>
     <unix:runlevel operation="equals">5</unix:runlevel>
   </unix:runlevel_object>
 
   <unix:runlevel_object id="obj_2030826" version="1">
-    <unix:service_name>nfslock</unix:service_name>
+    <unix:service_name>oddjobd</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
 
