@@ -471,6 +471,21 @@ applications which communicate with it through the system message bus.
 </Rule>
 
 
+<Rule id="service_portreserve_disabled">
+<title>Disable Portreserve (portreserve)</title>
+<description>The portreserve service is a TCP port reservation utility that can be used to
+prevent portmap from binding to well known TCP ports that are required for other services.
+This service is one of several services required for remote procedure calls between systems.
+Disable this service unless it is specifically required.
+<pre>
+# chkconfig portreserve off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_portreserve_disabled" />
+</Rule>
+
 
 
 <Rule id="service_postfix_enabled">
@@ -486,6 +501,39 @@ service enabled for local mail delivery.
 </description>
 <ident cce="14068-1" />
 <oval id="service_postfix_enabled" />
+</Rule>
+
+
+<Rule id="service_psacct_enabled">
+<title>Enable Process Accounting (psacct)</title>
+<description>The process accounting service (psacct) is an auditing tool that allows system
+administrators to log user activity and view every command issued by users of the system. It
+is recommended that this service be configured and enabled.
+<pre>
+# chkconfig psacct on
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_psacct_enabled" />
+</Rule>
+
+
+
+<Rule id="service_quota_nld_disabled">
+<title>Disable Quota Netlink (quota_nld)</title>
+<description>The quota netlink service listens to the kernel via a netlink socket for disk quota
+violations and notifies the appropriate user of the violation using D-Bus or by sending a message
+to the terminal that the user has last accessed. If disk quotas are enforced on the local system
+then this service should be enabled. If disk quotas are not used or notification of disk quota
+violations are not desired then disable this service.
+<pre>
+# chkconfig quota_nld off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_quota_nld_disabled" />
 </Rule>
 
 
@@ -505,6 +553,22 @@ configuration information.
 </description>
 <ident cce="TODO" />
 <oval id="service_rdisc_disabled" />
+</Rule>
+
+
+<Rule id="service_restorecond_enabled">
+<title>Disable Restore SELinux Context Service (restorecond)</title>
+<description>The restorecond service utilizes inotify to look for the creation of new files
+listed in the /etc/selinux/restorecond.conf configuration file. Once the file is created,
+restorecond ensures that the file receives the proper SELinux security context. It is
+recommended that this service be enabled.
+<pre>
+# chkconfig restorecond on
+
+</pre>
+</description>
+<ident cce="4129-3" />
+<oval id="service_restorecond_enabled" />
 </Rule>
 
 
