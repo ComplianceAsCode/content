@@ -78,73 +78,55 @@ exclude-result-prefixes="xccdf">
 
   <xsl:template match="ul">
     <xhtml:ul>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:ul>
   </xsl:template>
 
   <xsl:template match="li">
     <xhtml:li>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:li>
   </xsl:template>
 
   <xsl:template match="tt">
-    <xhtml:code>
-      <xsl:copy>
+    <xhtml:tt>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
-    </xhtml:code>
+    </xhtml:tt>
   </xsl:template>
 
   <xsl:template match="code">
     <xhtml:code>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:code>
   </xsl:template>
 
   <xsl:template match="strong">
     <xhtml:strong>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:strong>
   </xsl:template>
 
   <xsl:template match="b">
     <xhtml:b>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:b>
   </xsl:template>
 
   <xsl:template match="em">
     <xhtml:em>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:em>
   </xsl:template>
 
   <xsl:template match="i">
     <xhtml:i>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:i>
   </xsl:template>
 
   <xsl:template match="ol">
     <xhtml:ol>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:ol>
   </xsl:template>
 
