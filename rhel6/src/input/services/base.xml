@@ -237,7 +237,7 @@ networking is enabled on the local machine then this service should be enabled.
 <description>The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The
 framework has the ability to filter IPv4 packets. Firewall configuration can be administered with the
 <tt>iptables</tt> command line tool. The iptables service applies IPv4 firewall rules during system boot
-and can be used to save the current iptables ruleset via <tt>/sbin/service iptables save</tt>. If IPv4
+and can be used to save the current iptables ruleset via <code>/sbin/service iptables save</code>. If IPv4
 networking is enabled on the local machine then this service should be enabled.
 <pre>
 # chkconfig iptables on
@@ -602,6 +602,68 @@ recommended to also disable this service.
 <ident cce="TODO" />
 <oval id="service_rhsmcertd_disabled" />
 </Rule>
+
+
+<Rule id="service_rpcbind_disabled">
+<title>Disable RPC Bind Service (rpcbind)</title>
+<description>The rpcbind service is responsible for mapping RPC services to the TCP ports
+that they listen on. The rpcbind service also directs RPC clients to the proper port number
+that corresponds to the service the clients wants to communicate with. Unless RPC services
+are needed on the local system it is recommended to disable this service.
+<pre>
+# chkconfig rpcbind off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_rpcbind_disabled" />
+</Rule>
+
+<Rule id="service_rpcgssd_disabled">
+<title>rpcgssd</title>
+<description>
+<pre>
+# chkconfig rpcgssd off
+
+</pre>
+</description>
+<ident cce="3535-2" />
+<oval id="service_rpcgssd_disabled" />
+</Rule>
+
+
+<Rule id="service_rpcidmapd_disabled">
+<title>rpcidmapd</title>
+<description>
+<pre>
+# chkconfig rpcidmapd off
+
+</pre>
+</description>
+<ident cce="3568-3" />
+<oval id="service_rpcidmapd_disabled" />
+</Rule>
+
+
+
+
+<Rule id="service_rpcsvcgssd_disabled">
+<title>rpcsvcgssd</title>
+<description>
+<pre>
+# chkconfig rpcsvcgssd off
+
+</pre>
+</description>
+<ident cce="4491-7" />
+<oval id="service_rpcsvcgssd_disabled" />
+</Rule>
+
+
+
+
+
+
 
 
 <Rule id="service_rsyslog_enabled">

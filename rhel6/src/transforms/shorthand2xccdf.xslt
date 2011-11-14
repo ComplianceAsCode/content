@@ -89,9 +89,9 @@ exclude-result-prefixes="xccdf">
   </xsl:template>
 
   <xsl:template match="tt">
-    <xhtml:tt>
+    <xhtml:code>
         <xsl:apply-templates select="@*|node()" />
-    </xhtml:tt>
+    </xhtml:code>
   </xsl:template>
 
   <xsl:template match="code">
