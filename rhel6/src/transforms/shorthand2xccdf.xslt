@@ -31,6 +31,9 @@ exclude-result-prefixes="xccdf">
 
   <xsl:template match="Rule/ref">
     <reference>
+      <xsl:attribute name="href">
+        <xsl:text>http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf</xsl:text>
+      </xsl:attribute>
       <xsl:value-of select="@nist" />
     </reference>
   </xsl:template>
