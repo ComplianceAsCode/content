@@ -620,8 +620,10 @@ are needed on the local system it is recommended to disable this service.
 </Rule>
 
 <Rule id="service_rpcgssd_disabled">
-<title>rpcgssd</title>
-<description>
+<title>Disable Secure RPC Client Service (rpcgssd)</title>
+<description>The rpcgssd service manages RPCSEC GSS contexts required to secure protocols
+that use RPC (must often NFS). The rpcgssd service is the client-side of RPCSEC GSS. If the
+system does not require secure RPC then this service should be disabled.
 <pre>
 # chkconfig rpcgssd off
 
@@ -633,8 +635,10 @@ are needed on the local system it is recommended to disable this service.
 
 
 <Rule id="service_rpcidmapd_disabled">
-<title>rpcidmapd</title>
-<description>
+<title>Disable RPC ID Mapping Service (rpcidmapd)</title>
+<description>The rpcidmapd service is used to map user names and groups to UID
+and GID numbers on NFSv4 mounts. If NFS is not in use on the local system then this
+service should be disabled.
 <pre>
 # chkconfig rpcidmapd off
 
@@ -645,11 +649,11 @@ are needed on the local system it is recommended to disable this service.
 </Rule>
 
 
-
-
 <Rule id="service_rpcsvcgssd_disabled">
-<title>rpcsvcgssd</title>
-<description>
+<title>Disable Secure RPC Server Service (rpcsvcgssd)</title>
+<description>The rpcsvcgssd service manages RPCSEC GSS contexts required to secure protocols
+that use RPC (must often NFS). The rpcsvcgssd service is the server-side of RPCSEC GSS. If the
+system does not require secure RPC then this service should be disabled.
 <pre>
 # chkconfig rpcsvcgssd off
 
@@ -658,12 +662,6 @@ are needed on the local system it is recommended to disable this service.
 <ident cce="4491-7" />
 <oval id="service_rpcsvcgssd_disabled" />
 </Rule>
-
-
-
-
-
-
 
 
 <Rule id="service_rsyslog_enabled">
@@ -678,19 +676,9 @@ to database formats, and the encryption of log data en route to a central loggin
 
 </pre>
 </description>
-<ident cce="TODO" />
+<ident cce="17698-2" />
 <oval id="service_rsyslog_enabled" />
 </Rule>
-
-
-
-
-
-
-
-
-
-
 
 
 <Rule id="service_saslauthd_disabled">
@@ -708,20 +696,52 @@ understand SASL based authentication. Unless this service is absolutely needed i
 <oval id="service_saslauthd_disabled" />
 </Rule>
 
-<Rule id="service_sshd_enabled">
-<title>Enabled OpenSSH Daemon (sshd)</title>
+
+<Rule id="service_smartd_disabled">
+<title>Disable SMART Disk Monitoring Service (smartd)</title>
+<description>SMART (Self-Monitoring, Analysis, and Reporting Technology) is a feature of hard drives that
+allows them to detect symptoms of disk failure and relay an appropriate warning. This technology is
+considered to bring relatively low security risk, and can be useful. Leave this service running if the
+system’s hard drives are SMART-capable. Otherwise, disable this service.
+<pre>
+# chkconfig smartd off
+
+</pre>
+</description>
+<ident cce="3455-3" />
+<oval id="service_smartd_disabled" />
+</Rule>
+
+
+<Rule id="service_sshd_disabled">
+<title>Disable OpenSSH Daemon (sshd)</title>
 <description>The Secure Shell (SSH) protocol is recommended for remote login and remote file
 transfer. SSH provides confidentiality and integrity for data exchanged between two systems,
-as well as server authentication, through the use of public key cryptography. The
-implementation included with the system is called OpenSSH. If remote administration is needed
-then this service should be enabled.
+as well as server authentication, through the use of public key cryptography. If remote
+administration is needed then this service should be enabled. Otherwise, it should be disabled.
 <pre>
-# chkconfig sshd on
+# chkconfig sshd off
+
+</pre>
+</description>
+<ident cce="4268-9" />
+<oval id="service_sshd_disabled" />
+</Rule>
+
+
+<Rule id="service_sssd_disabled">
+<title>Disable System Security Services Daemon (sssd)</title>
+<description>The sssd service provides a set of daemons to manage access to remote directories
+and authentication mechanisms. It provides an NSS and PAM interface toward the system and a
+pluggable backend system to connect to multiple different account sources. It is also the basis
+to provide client auditing and policy services for projects like FreeIPA.
+<pre>
+# chkconfig sssd off
 
 </pre>
 </description>
 <ident cce="TODO" />
-<oval id="service_sshd_enabled" />
+<oval id="service_sssd_disabled" />
 </Rule>
 
 <Rule id="service_udev-post_disabled">
