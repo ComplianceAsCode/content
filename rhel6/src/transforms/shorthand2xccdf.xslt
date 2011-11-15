@@ -30,9 +30,9 @@ exclude-result-prefixes="xccdf">
   </xsl:template>
 
   <xsl:template match="Rule/ref">
-    <xccdf:reference>
+    <reference>
       <xsl:value-of select="@nist" />
-    </xccdf:reference>
+    </reference>
   </xsl:template>
 
   <!-- expand reference to OVAL ID -->
