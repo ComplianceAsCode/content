@@ -744,6 +744,23 @@ to provide client auditing and policy services for projects like FreeIPA.
 <oval id="service_sssd_disabled" />
 </Rule>
 
+
+
+<Rule id="service_sysstat_disabled">
+<title>Disable System Statistics Reset Service (sysstat)</title>
+<description>The sysstat service resets various I/O and CPU performance statistics to zero and
+inserts a dummy record in the current daily data file that indicates that these statistics have
+been reset. By default this service is run at boot to reset the statistics. Unless required this
+service should be disabled.
+<pre>
+# chkconfig sysstat off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_sysstat_disabled" />
+</Rule>
+
 <Rule id="service_udev-post_disabled">
 <title>Disable Device Manager (udev-post)</title>
 <description>The udev service serves as the device manager. It maintains a set of
