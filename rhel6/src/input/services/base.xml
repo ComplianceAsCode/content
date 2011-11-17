@@ -1,29 +1,9 @@
 <Group id="base">
 <title>Base Services</title>
-<description>
-When building new servers it is best practice to start out with an absolute basic operating system installation. From this basic point the system is built out to meet it's designed purpose such as a DNS server, MySQL/PostgreSQL database server, or Apache web server. The RHEL 6 installer now comes with an option that will install a minimal Linux environment. The purpose of this section is to document the services that are installed by default on a RHEL 6 system that was built with the "Minimal" package configuration during operating system installation. Overall, the "Minimal" package configuration serves as an excellent starting point. Here is the output from the chkconfig utility showing the services that are installed by default on a minimal RHEL 6 system:
-<pre>
-# /sbin/chkconfig --list
-auditd          0:off 1:off 2:on  3:on  4:on  5:on  6:off
-crond           0:off 1:off 2:on  3:on  4:on  5:on  6:off
-ip6tables       0:off 1:off 2:on  3:on  4:on  5:on  6:off
-iptables        0:off 1:off 2:on  3:on  4:on  5:on  6:off
-lvm2-monitor    0:off 1:on  2:on  3:on  4:on  5:on  6:off
-netconsole      0:off 1:off 2:off 3:off 4:off 5:off 6:off
-netfs           0:off 1:off 2:off 3:on  4:on  5:on  6:off
-network         0:off 1:off 2:on  3:on  4:on  5:on  6:off
-postfix         0:off 1:off 2:on  3:on  4:on  5:on  6:off
-rdisc           0:off 1:off 2:off 3:off 4:off 5:off 6:off
-restorecond     0:off 1:off 2:off 3:off 4:off 5:off 6:off
-rhnsd           0:off 1:off 2:on  3:on  4:on  5:on  6:off
-rhsmcertd       0:off 1:off 2:off 3:on  4:on  5:on  6:off
-rsyslog         0:off 1:off 2:on  3:on  4:on  5:on  6:off
-saslauthd       0:off 1:off 2:off 3:off 4:off 5:off 6:off
-sshd            0:off 1:off 2:on  3:on  4:on  5:on  6:off
-udev-post       0:off 1:on  2:on  3:on  4:on  5:on  6:off
-</pre>
-As you can see, the "Minimal" package configuration in RHEL 6 lives up to its name. The system services listed above are for the most part the bare essentials needed for a running system. Each one of these services will be discussed and a specific recommendation will be made as to whether the service should
-be enabled or not.
+<description>This section addresses the base services that are installed on a RHEL 6 default installation.
+Some of these services listen on the network and should be treated with particular discretion. The other
+services are local system utilities that may or may not be extraneous. Each of these services should be
+disabled if not required.
 </description>
 
 <Rule id="service_abrtd_disabled">
@@ -59,7 +39,7 @@ on the local system this daemon should be disabled.
 
 
 <Rule id="service_atd_disabled">
-<title>Disable At (atd)</title>
+<title>Disable At Service (atd)</title>
 <description>The <tt>at</tt> and <tt>batch</tt> commands can be used to schedule tasks that are meant
 to be executed only once (similar to cron but not recurring). The daemon <tt>atd</tt> keeps track of
 tasks scheduled via <tt>at</tt> and <tt>batch</tt> and executes them at the specified time. Unless
@@ -76,7 +56,7 @@ daemon should be disabled.
 
 
 <Rule id="service_auditd_enabled">
-<title>Enable Audit (auditd)</title>
+<title>Enable Audit Service (auditd)</title>
 <description>The audit service is provided for system auditing. By default
 the service audits SELinux AVC denials and certain types of security-relevant
 events such as system logins, account modifications, and authentication events
@@ -92,7 +72,7 @@ be used for system auditing it is recommended that auditd be enabled.
 </Rule>
 
 <Rule id="service_autofs_disabled">
-<title>Disable Automounter (autofs)</title>
+<title>Disable Automounter Service (autofs)</title>
 <description>The autofs daemon mounts and unmounts filesystems, such as user home
 directories shared via NFS, on demand. Even if NFS is required, it is almost always
 possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
@@ -107,7 +87,7 @@ rather than relying on the automounter. The autofs service should be disabled.
 </Rule>
 
 <Rule id="service_certmonger_disabled">
-<title>Disable Certmonger (certmonger)</title>
+<title>Disable Certmonger Service (certmonger)</title>
 <description>Certmonger is a D-Bus based service that attempts to simplify interaction
 with certifying authorities on networks which use public-key infrastructure. It is often
 combined with Red Hat's IPA (Identity Policy Audit) security information management
@@ -118,10 +98,9 @@ the LAN this service should be disabled.
 
 </pre>
 </description>
-<ident cce="4072-5" />
+<ident cce="TODO" />
 <oval id="service_certmonger_disabled" />
 </Rule>
-
 
 <Rule id="service_cgconfig_disabled">
 <title>Disable Control Group Config (cgconfig)</title>
@@ -152,12 +131,11 @@ if control groups are not needed to manage system resources then this service sh
 <oval id="service_cgred_disabled" />
 </Rule>
 
-
 <Rule id="service_cpuspeed_disabled">
 <title>Disable CPU Speed (cpuspeed)</title>
 <description>The <tt>cpuspeed</tt> service can adjust the clock speed of supported CPUs based upon
 the current processing load thereby conserving power and reducing heat. This service is most often
-used in laptops where battery life is a concern. Unless laptop battery performance is a requirement
+used on laptops where battery life is a concern. Unless laptop battery performance is a requirement
 this service should be disabled.
 <pre>
 # chkconfig cpuspeed off
@@ -170,8 +148,8 @@ this service should be disabled.
 
 
 <Rule id="service_crond_enabled">
-<title>Enable Cron Daemon (crond)</title>
-<description>The cron daemon is used to execute commands at preconfigured times.
+<title>Enable Cron (crond)</title>
+<description>The crond service is used to execute commands at preconfigured times.
 The cron daemon is required by almost all systems to perform necessary maintenance
 tasks. The daemon should be configured defensively.
 <pre>
@@ -199,7 +177,7 @@ as a print server then this service should be disabled.
 </Rule>
 
 <Rule id="service_haldaemon_disabled">
-<title>Disable Hardware Abstraction Layer Daemon (haldaemon)</title>
+<title>Disable Hardware Abstraction Layer Service (haldaemon)</title>
 <description>As its name implies, the Hardware Abstraction Layer Daemon (haldaemon) collects
 and maintains information about the system's hardware configuration. A list of live devices
 is provided via D-Bus messaging. Please note that this service is required on a workstation
@@ -213,7 +191,6 @@ be disabled.
 <ident cce="4364-6" />
 <oval id="service_haldaemon_disabled" />
 </Rule>
-
 
 <Rule id="service_ip6tables_enabled">
 <title>Enable Ip6tables (ip6tables)</title>
@@ -231,7 +208,6 @@ networking is enabled on the local machine then this service should be enabled.
 <oval id="service_ip6tables_enabled" />
 </Rule>
 
-
 <Rule id="service_iptables_enabled">
 <title>Enable Iptables (iptables)</title>
 <description>The kernel distributed with RHEL 6 comes with Netfilter's packet filtering framework. The
@@ -247,7 +223,6 @@ networking is enabled on the local machine then this service should be enabled.
 <ident cce="4189-7" />
 <oval id="service_iptables_enabled" />
 </Rule>
-
 
 <Rule id="service_irqbalance_enabled">
 <title>Enable IRQ Balance (irqbalance)</title>
@@ -296,8 +271,6 @@ mirrored or snapshot logical volumes then this service should be configured and 
 <oval id="service_lvm2-monitor_enabled" />
 </Rule>
 
-
-
 <Rule id="service_mdmonitor_disabled">
 <title>Disable Software RAID Monitor (mdmonitor)</title>
 <description>The mdmonitor service is used for monitoring a software RAID (hardware
@@ -332,7 +305,6 @@ are in use, disable this service:
 <oval id="service_messagebus_disabled" />
 </Rule>
 
-
 <Rule id="service_netconsole_disabled">
 <title>Disable Network Console (netconsole)</title>
 <description>The netconsole service is responsible for loading the netconsole kernel
@@ -348,9 +320,6 @@ this service should be disabled.
 <ident cce="TODO" />
 <oval id="service_netconsole_disabled" />
 </Rule>
-
-
-
 
 <Rule id="service_netfs_disabled">
 <title>Disable Network File Systems (netfs)</title>
@@ -391,7 +360,6 @@ this service can be left enabled.
 <oval id="service_network_enabled" />
 </Rule>
 
-
 <Rule id="service_nfs_disabled">
 <title>Disable Network File System (nfs)</title>
 <description>The Network File System (NFS) service allows remote hosts to mount and interact with
@@ -420,7 +388,6 @@ configured to mount NFS filesystems then this service should be disabled.
 <oval id="service_nfslock_disabled" />
 </Rule>
 
-
 <Rule id="service_ntpd_enabled">
 <title>Enable Network Time Protocol (ntpd)</title>
 <description>The Network Time Protocol is used to manage the system clock over a network.
@@ -436,7 +403,6 @@ to leave this service enabled.
 <ident cce="4376-0 " />
 <oval id="service_ntpd_enabled" />
 </Rule>
-
 
 <Rule id="service_ntpdate_enabled">
 <title>Disable Network Time Protocol (ntpdate)</title>
@@ -455,7 +421,6 @@ sufficient. For servers it is generally recommended to enable the ntpd service.
 <ident cce="TODO" />
 <oval id="service_ntpdate_enabled" />
 </Rule>
-
 
 <Rule id="service_oddjobd_disabled">
 <title>Disable Odd Job Daemon (oddjobd)</title>
@@ -517,8 +482,6 @@ is recommended that this service be configured and enabled.
 <ident cce="TODO" />
 <oval id="service_psacct_enabled" />
 </Rule>
-
-
 
 <Rule id="service_quota_nld_disabled">
 <title>Disable Quota Netlink (quota_nld)</title>
@@ -775,178 +738,18 @@ enabled.
 <oval id="service_udev-post_disabled" />
 </Rule>
 
-<!--
-##### OLDER CONTENT LEFT HERE FOR TEMPORARY REFERENCE #####
-
-<Group id="isdn">
-<title>ISDN Support (isdn)</title>
-<description>The ISDN service facilitates Internet connectivity in
-the presence of an ISDN modem. If an ISDN modem is not being used,
-disable this service:
-<br /><br />
-<code># chkconfig isdn off</code>
-</description>
-<Rule id="disable_isdn">
-<title>ISDN Support (isdn)</title>
-<description>The isdn service should be disabled.</description>
-<ident cce="4286-1" />
-<oval id="package_isdn4k-utils_removed" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-</Group>
-
-<Group id="kdump">
-<title>Kdump Kernel Crash Analyzer (kdump)</title>
-<description>Kdump is a new kernel crash dump analyzer. It uses
-kexec to boot a secondary kernel ('capture' kernel) following a
-system crash. The kernel dump from the system crash is loaded into
-the capture kernel for analysis.
-<br /><br />
-Unless the system is used for kernel development or testing,
-disable the service:
-<br /><br />
-<code># chkconfig kdump off</code>
-</description>
-<Rule id="disable_kdump">
-<title>Kdump Kernel Crash Analyzer (kdump)</title>
-<description>The kdump service should be disabled.</description>
-<ident cce="3425-6" />
-<oval id="service_kdump_disabled" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-</Group>
-
-<Group id="network_service">
-<title>Network Service (network)</title>
-<description>The network service allows associated network
-interfaces to access the network. This section contains general
-guidance for controlling the operation of the service. For kernel
-parameters which affect networking, see Section</description>
-<Group id="zeroconf_service">
-<title>Disable Zeroconf Networking</title>
-<description>Zeroconf networking allows the system to assign itself
-an IP address and engage in IP communication without a
-statically-assigned address or even a DHCP server. Automatic
-address assignment via Zeroconf (or DHCP) is not recommended.
-<br /><br />
-To disable Zeroconf automatic route assignment in the
-169.245.0.0 subnet, add or correct the following line in
-<tt>/etc/sysconfig/network</tt>:
-<br />
+<Rule id="service_ypbind_disabled">
+<title>Disable Yellow Pages Service (ypbind)</title>
+<description>The ypbind service runs on NIS clients and binds them to a NIS domain.
+It must be running for systems based on glibc to work as NIS clients, but it should
+not be enabled on systems which are not using NIS.
 <pre>
-NOZEROCONF=yes
+# chkconfig ypbind off
 
 </pre>
-Zeroconf addresses are in the network 169.254.0.0. The
-networking scripts add entries to the system's routing table for
-these addresses. Zeroconf address assignment commonly occurs when
-the system is configured to use DHCP but fails to receive an
-address assignment from the DHCP server.</description>
-<Rule id="disable_zeroconf">
-<title>Disable Zeroconf Networking</title>
-<description>Disable Zeroconf automatic route assignment in the
-169.245.0.0 subnet.</description>
-<ident cce="14054-1" />
-<oval id="sysconfig_nozeroconf_yes" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-</Group>
-</Group>
-
-<Group id="boot_caching_services">
-<title>Boot Caching (readahead early/readahead later)</title>
-<description>The following services provide one-time caching of
-files belonging to some boot services, with the goal of allowing
-the system to boot faster.
-<br /><br />
-It is recommended that this service be disabled on most
-machines:
-<br /><br />
-<pre>
-# chkconfig readahead_early off
-# chkconfig readahead_later off
-
-</pre>
-The readahead services do not substantially increase a
-system's risk exposure, but they also do not provide great benefit.
-Unless the system is running a specialized application for which
-the file caching substantially improves system boot time, this
-guide recommends disabling the services.</description>
-
-<Rule id="disable_readahead_early">
-<title>Boot Caching (readahead early/readahead
-later)</title>
-<description>The readahead_early service should be
-disabled.</description>
-<ident cce="4421-4" />
-<oval id="service_readahead_early_disabled" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-
-<Rule id="disable_readahead_later">
-<title>Boot Caching (readahead early/readahead later)</title>
-<description>The readahead_later service should be
-disabled.</description>
-<ident cce="4302-6" />
-<oval id="service_readahead_later_disabled" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-</Group>
-<Group id="bluetooth">
-<title>Bluetooth Support</title>
-<description>Bluetooth provides a way to transfer information
-between devices such as mobile phones, laptops, PCs, printers,
-digital cameras, and video game consoles over a short-range
-wireless link. Any wireless communication presents a serious
-security risk to sensitive or classified systems. Section 2.5.2
-contains information on the related topic of wireless networking.
-<br /><br />
-Removal of hardware is the only way to ensure that the
-Bluetooth wireless capability remains disabled. If it is completely
-impractical to remove the Bluetooth hardware module, and site
-policy still allows the device to enter sensitive spaces, every
-effort to disable the capability via software should be made. In
-general, acquisition policy should include provisions to prevent
-the purchase of equipment that will be used in sensitive spaces and
-includes Bluetooth capabilities.</description>
-<Group id="bluetooth_service">
-<title>Bluetooth Host Controller Interface Daemon (bluetooth)</title>
-<description>The bluetooth service enables the system to use
-Bluetooth devices. If the system requires no Bluetooth devices,
-disable this service:
-<br />
-<pre>
-# chkconfig bluetooth off</pre>
 </description>
-<Rule id="disable_bluetooth_service">
-<title>Bluetooth Host Controller Interface Daemon
-(bluetooth)</title>
-<description>The bluetooth service should be
-disabled.</description>
-<ident cce="4355-4" />
-<oval id="service_bluetooth_disabled" />
-<ref nist="CM-6, CM-7" />
+<ident cce="3705-1" />
+<oval id="service_ypbind_disabled" />
 </Rule>
-</Group>
-
-
-<Group id="bluetooth_hidd">
-<title>Bluetooth Input Devices (hidd)</title>
-<description>The hidd service provides support for Bluetooth input
-devices. If the system has no Bluetooth input devices (e.g.
-keyboard or mouse), disable this service:
-<br />
-<pre>
-# chkconfig hidd off</pre>
-</description>
-<Rule id="disable_bluetooth_hidd">
-<title>Bluetooth Input Devices (hidd)</title>
-<description>The hidd service should be disabled.</description>
-<ident cce="4377-8" />
-<oval id="service_hidd_disabled" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-</Group>
--->
 
 </Group>
