@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance"
+  id="kernel_module_MODULENAME_disabled" version="2">
+    <metadata>
+      <title>Disable Kernel Module MODULENAME</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="TODO" source="CCE" />
+      <description>prevents usage of this kernel module</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check for MODULENAME"
+      test_ref="test_kernelmodule_MODULENAME_disabled" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="at least one"
+  comment="Check /etc/modprobe.d for line install MODULENAME /bin/true"
+  id="test_kernelmodule_MODULENAME_disabled" version="2">
+    <ind:object object_ref="obj_kernelmodule_MODULENAME_line" />
+    <ind:state state_ref="state_kernelmodule_MODULENAME_line" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state comment="Check for the MODULENAME module disabled" id="state_kernelmodule_MODULENAME_line" version="1">
+    <ind:subexpression datatype="string" entity_check="all">MODULENAME</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_object comment="Check in /etc/modprobe.d/local.conf for modules being loaded"
+  id="obj_kernelmodule_MODULENAME_line" version="2">
+    <ind:path>/etc/modprobe.d</ind:path>
+    <ind:filename>local.conf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*install[\s]+([\S]+)[\s]+/bin/true</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">
+    1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
