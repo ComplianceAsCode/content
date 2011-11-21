@@ -25,21 +25,21 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
 
 footer = '</oval_definitions>'
 
-#xmlns = {
-#	None : "http://oval.mitre.org/XMLSchema/oval-common-5",
-#	"oval" : "http://oval.mitre.org/XMLSchema/oval-common-5",
-#	"ind" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#independent",
-#	"unix" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix",
-#	"linux" : "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux",
-#	"xsi" : "http://www.w3.org/2001/XMLSchema-instance",
-#}
+# append new child ONLY if it's not a duplicate 
+def append(element, newchild):
+    newid = newchild.get("id")
+    existing = element.find(".//*[@id='" + newid + "']")
+    if(existing):
+        sys.stderr.write( "Duplicate ID, which will not be added: " + newid + "\n")
+    else:
+        element.append(newchild)
 
 def main():
 	if len(sys.argv) < 2:
 		print "Provide a directory name, which contains the checks."
 		sys.exit(1)
 
-    # concatenate all XML files in the checks directory, to create the document body
+        # concatenate all XML files in the checks directory, to create the document body
 	body = ""
 	for filename in os.listdir(sys.argv[1]):
 		if filename.endswith(".xml"):
@@ -56,11 +56,11 @@ def main():
 
 	for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
                 if childnode.tag is ET.Comment: continue
-		if childnode.tag.endswith("definition"): definitions.append(childnode)
-		if childnode.tag.endswith("_test"): tests.append(childnode)
-		if childnode.tag.endswith("_object"): objects.append(childnode) 
-		if childnode.tag.endswith("_state"): states.append(childnode) 
-		if childnode.tag.endswith("_variable"): variables.append(childnode) 
+		if childnode.tag.endswith("definition"): append(definitions, childnode) 
+		if childnode.tag.endswith("_test"): append(tests, childnode)
+		if childnode.tag.endswith("_object"): append(objects, childnode) 
+		if childnode.tag.endswith("_state"): append(states, childnode) 
+		if childnode.tag.endswith("_variable"): append(variables, childnode) 
 
 	tree = ET.fromstring(header + footer)
 	tree.append(definitions)
@@ -69,7 +69,6 @@ def main():
 	tree.append(states)
 	tree.append(variables)
 
-	# fixup the IDs
 	ET.dump(tree) 
 	sys.exit(0)
 
