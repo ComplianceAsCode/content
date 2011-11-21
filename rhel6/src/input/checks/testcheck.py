@@ -62,10 +62,9 @@ def add_oval_elements(body):
 def replace_external_vars(tree):
     print "considering replace"
     # external_variable is a special case: we turn it into a local_variable so we can test
-    for node in tree.findall("./{" + ovalns + "}external_variable"):
+    for node in tree.findall(".//{"+ovalns+"}external_variable"):
         print "external_variable with id : " + node.get("id") 
-        node.tag = "local_variable"
-        # this doesn't work.
+        # TODO: assignment of external_variable via environment vars, for testing
     return tree
 
 
