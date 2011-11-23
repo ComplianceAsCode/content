@@ -3,9 +3,10 @@ which have repetitive structure easier.
 
 For example:
 ./create_services_disabled.py services_disabled.csv
+./create_sysctl_checks.py sysctl_values.csv
 
 should produce all the OVAL checks (in a shorthand format)
-to disable services in the output folder.
+to disable services and check sysctl variables in the output folder.
 
 The CSV input files should contain all the relevant information
 for each check.  Files should be compared to existing OVAL checks
