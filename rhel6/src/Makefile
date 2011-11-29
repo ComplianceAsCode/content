@@ -34,9 +34,10 @@ xccdf-addprofiles:
 
 xccdf2table-nistrefs: shorthand-guide shorthand2xccdf xccdf-addprofiles
 	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf-allprofiles.xml
+	xmllint --format --output ${OUTDIR}/rhel6-xccdf-allprofiles.xml ${OUTDIR}/rhel6-xccdf-allprofiles.xml
 
-content: shorthand-guide shorthand2xccdf checks
-	${TRANSDIR}/relabelids.py rhel6-xccdf.xml scap-security-guide 
+content: shorthand-guide shorthand2xccdf xccdf-addprofiles checks
+	${TRANSDIR}/relabelids.py rhel6-xccdf-allprofiles.xml scap-security-guide 
 # 	the script chdirs to ./output, so refer to files from there
 
 validate:
