@@ -8,9 +8,17 @@
 # template contains the following tags that *must* be replaced successfully in order for the checks to work.
 #
 # PKGNAME - the name of the package that should be installed/removed
-# PKGSTATUS - should either be "removed" or "installed"
-# PKGCCE - the corresponding CCE reference
+# PKGSTATUS - must be either the string "removed" or the string "installed"
+# PKGCCE - the corresponding CCE reference (optional)
 # PKGEXISTANCE - will either be "all_exist" (installed) or "none_exist" (removed)
+#
+# The CSV file must contain lines that look like this:
+#
+#   aide,installed,4209-3
+#   vlock,removed,3910-7
+#
+# The first field is the name of the RPM package.  The second field specifies if the package should
+# be installed for removed.  The third and final field contains a CCE reference if applicable.
 #
 
 import sys, csv, re
