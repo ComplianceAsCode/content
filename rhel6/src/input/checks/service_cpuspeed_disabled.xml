@@ -8,24 +8,21 @@
       </affected>
       <reference ref_id="TODO" source="CCE" />
       <description>The cpuspeed service should be disabled if
-      possible.</description>
+      possible. This check was generated with the
+      create_services_disabled.py script in the templates
+      directory.</description>
     </metadata>
-    <criteria operator="AND"
-    comment="service cpuspeed is not configured to start">
-      <criterion comment="cpuspeed runlevel 0"
-      test_ref="test_runlevel0_cpuspeed" />
-      <criterion comment="cpuspeed runlevel 1"
-      test_ref="test_runlevel1_cpuspeed" />
-      <criterion comment="cpuspeed runlevel 2"
-      test_ref="test_runlevel2_cpuspeed" />
-      <criterion comment="cpuspeed runlevel 3"
-      test_ref="test_runlevel3_cpuspeed" />
-      <criterion comment="cpuspeed runlevel 4"
-      test_ref="test_runlevel4_cpuspeed" />
-      <criterion comment="cpuspeed runlevel 5"
-      test_ref="test_runlevel5_cpuspeed" />
-      <criterion comment="cpuspeed runlevel 6"
-      test_ref="test_runlevel6_cpuspeed" />
+   <criteria comment="package cpuspeed removed or service cpuspeed is not configured to start" operator="OR">
+    <extend_definition comment="cpuspeed removed" definition_ref="package_cpuspeed_removed" />
+    <criteria operator="AND" comment="service cpuspeed is not configured to start">
+      <criterion comment="cpuspeed runlevel 0" test_ref="test_runlevel0_cpuspeed" />
+      <criterion comment="cpuspeed runlevel 1" test_ref="test_runlevel1_cpuspeed" />
+      <criterion comment="cpuspeed runlevel 2" test_ref="test_runlevel2_cpuspeed" />
+      <criterion comment="cpuspeed runlevel 3" test_ref="test_runlevel3_cpuspeed" />
+      <criterion comment="cpuspeed runlevel 4" test_ref="test_runlevel4_cpuspeed" />
+      <criterion comment="cpuspeed runlevel 5" test_ref="test_runlevel5_cpuspeed" />
+      <criterion comment="cpuspeed runlevel 6" test_ref="test_runlevel6_cpuspeed" />
+    </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
@@ -98,7 +95,7 @@
     <unix:service_name>cpuspeed</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_state comment="daemon is not running or is stopping"
+  <unix:runlevel_state comment="daemon is configured to start"
   id="state_service_off" version="1">
     <unix:start datatype="boolean">false</unix:start>
     <unix:kill datatype="boolean">true</unix:kill>

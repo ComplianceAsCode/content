@@ -8,24 +8,21 @@
       </affected>
       <reference ref_id="4268-9" source="CCE" />
       <description>The sshd service should be disabled if
-      possible.</description>
+      possible. This check was generated with the
+      create_services_disabled.py script in the templates
+      directory.</description>
     </metadata>
-    <criteria operator="AND"
-    comment="service sshd is not configured to start">
-      <criterion comment="sshd runlevel 0"
-      test_ref="test_runlevel0_sshd" />
-      <criterion comment="sshd runlevel 1"
-      test_ref="test_runlevel1_sshd" />
-      <criterion comment="sshd runlevel 2"
-      test_ref="test_runlevel2_sshd" />
-      <criterion comment="sshd runlevel 3"
-      test_ref="test_runlevel3_sshd" />
-      <criterion comment="sshd runlevel 4"
-      test_ref="test_runlevel4_sshd" />
-      <criterion comment="sshd runlevel 5"
-      test_ref="test_runlevel5_sshd" />
-      <criterion comment="sshd runlevel 6"
-      test_ref="test_runlevel6_sshd" />
+   <criteria comment="package openssh-server removed or service sshd is not configured to start" operator="OR">
+    <extend_definition comment="openssh-server removed" definition_ref="package_openssh-server_removed" />
+    <criteria operator="AND" comment="service sshd is not configured to start">
+      <criterion comment="sshd runlevel 0" test_ref="test_runlevel0_sshd" />
+      <criterion comment="sshd runlevel 1" test_ref="test_runlevel1_sshd" />
+      <criterion comment="sshd runlevel 2" test_ref="test_runlevel2_sshd" />
+      <criterion comment="sshd runlevel 3" test_ref="test_runlevel3_sshd" />
+      <criterion comment="sshd runlevel 4" test_ref="test_runlevel4_sshd" />
+      <criterion comment="sshd runlevel 5" test_ref="test_runlevel5_sshd" />
+      <criterion comment="sshd runlevel 6" test_ref="test_runlevel6_sshd" />
+    </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
@@ -98,7 +95,7 @@
     <unix:service_name>sshd</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_state comment="daemon is not running or is stopping"
+  <unix:runlevel_state comment="daemon is configured to start"
   id="state_service_off" version="1">
     <unix:start datatype="boolean">false</unix:start>
     <unix:kill datatype="boolean">true</unix:kill>

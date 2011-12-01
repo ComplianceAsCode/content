@@ -8,24 +8,21 @@
       </affected>
       <reference ref_id="3705-1" source="CCE" />
       <description>The ypserv service should be disabled if
-      possible.</description>
+      possible. This check was generated with the
+      create_services_disabled.py script in the templates
+      directory.</description>
     </metadata>
-    <criteria operator="AND"
-    comment="service ypserv is not configured to start">
-      <criterion comment="ypserv runlevel 0"
-      test_ref="test_runlevel0_ypserv" />
-      <criterion comment="ypserv runlevel 1"
-      test_ref="test_runlevel1_ypserv" />
-      <criterion comment="ypserv runlevel 2"
-      test_ref="test_runlevel2_ypserv" />
-      <criterion comment="ypserv runlevel 3"
-      test_ref="test_runlevel3_ypserv" />
-      <criterion comment="ypserv runlevel 4"
-      test_ref="test_runlevel4_ypserv" />
-      <criterion comment="ypserv runlevel 5"
-      test_ref="test_runlevel5_ypserv" />
-      <criterion comment="ypserv runlevel 6"
-      test_ref="test_runlevel6_ypserv" />
+   <criteria comment="package ypserv removed or service ypserv is not configured to start" operator="OR">
+    <extend_definition comment="ypserv removed" definition_ref="package_ypserv_removed" />
+    <criteria operator="AND" comment="service ypserv is not configured to start">
+      <criterion comment="ypserv runlevel 0" test_ref="test_runlevel0_ypserv" />
+      <criterion comment="ypserv runlevel 1" test_ref="test_runlevel1_ypserv" />
+      <criterion comment="ypserv runlevel 2" test_ref="test_runlevel2_ypserv" />
+      <criterion comment="ypserv runlevel 3" test_ref="test_runlevel3_ypserv" />
+      <criterion comment="ypserv runlevel 4" test_ref="test_runlevel4_ypserv" />
+      <criterion comment="ypserv runlevel 5" test_ref="test_runlevel5_ypserv" />
+      <criterion comment="ypserv runlevel 6" test_ref="test_runlevel6_ypserv" />
+    </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
@@ -98,7 +95,7 @@
     <unix:service_name>ypserv</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_state comment="daemon is not running or is stopping"
+  <unix:runlevel_state comment="daemon is configured to start"
   id="state_service_off" version="1">
     <unix:start datatype="boolean">false</unix:start>
     <unix:kill datatype="boolean">true</unix:kill>

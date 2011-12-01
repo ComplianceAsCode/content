@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#
+# test-service-checks
+#   test all service_*.xml checks
+#
+
+# generate the target list
+SERVICES="`/bin/cat ./templates/services*.csv`"
+
+for CHECK in ${SERVICES}
+do
+  echo
+  echo "##############################################################################"
+  echo "##############################################################################"
+  echo "##############################################################################"
+
+  SVC="`echo ${CHECK} | awk -F',' '{ print $1; }'`"
+  PKG="`echo ${CHECK} | awk -F',' '{ print $2; }'`"
+
+  echo
+  echo "##### SVC -> ${SVC}  PKG -> ${PKG} #####"
+  echo
+  
+  ls ./service_${SVC}_*.xml
+  echo
+  ls ./service_${SVC}_*.xml | xargs -L1 ./testcheck.py
+  echo
+  /sbin/chkconfig --list ${SVC}
+  echo
+
+  if [ -n "${PKG}" ]; then
+    rpm -q ${PKG}
+  else
+    echo "NOT INSTALLED"
+  fi
+done
+
+exit 0
+
+
+

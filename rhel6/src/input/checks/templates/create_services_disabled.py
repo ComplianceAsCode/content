@@ -8,41 +8,24 @@
 # template contains the following tags that *must* be replaced successfully in order for the checks to work.
 #
 # SERVICENAME - the name of the service that should be disabled
+# PACKAGENAME - the name of the package that installs the service
 # CCE_ID - the corresponding CCE reference (optional)
-#
-# NOTE: I have removed the code that deals with the "extends_definition" package check because testing revealed
-# that it didn't really add anything to the overall check. Checks for disabled services whose corresponding packages
-# are not installed still return the correct value of "TRUE". For instance, the "service_squid_disabled.xml" check still
-# returns "TRUE" even if the "squid" package is not installed. Removing this code makes for a more concise check.
-#
-# Just in case we want to eventually add this back here is exactly what was removed:
-#
-# This goes in the template file 'template_service_disabled':
-#
-#   <criteria comment="PACKAGENAME is not installed or service is not running" operator="OR">
-#       <extend_definition comment="PACKAGENAME is not installed" definition_ref="package_PACKAGENAME_removed" />
-#       <SERVICE CHECK CRITERIA BLOCK>
-#   </criteria>
-#
-# Here is the python code that removes the "extend_definition" if no package name was given
-#
-#   # remove extend_definition if no package name is given
-#   if packagename:
-#       filestring = filestring.replace("PACKAGENAME", packagename)
-#   else:
-#       filestring = re.sub("<criteria.*\n.*<extend_definition.*/>","",filestring)
-#       filestring = filestring.replace("</criteria>", "",1)
 #
 
 import sys, csv, re
 
 def output_checkfile(serviceinfo):
-    #get the items out of the list
+    # get the items out of the list
     servicename, packagename, cce = serviceinfo
     with open("./template_service_disabled", 'r') as templatefile:
         filestring = templatefile.read()
         filestring = filestring.replace("SERVICENAME", servicename)
         filestring = filestring.replace("CCE_ID", cce if cce else "TODO")
+        if packagename:
+            filestring = filestring.replace("PACKAGENAME", packagename)
+        else:
+            filestring = re.sub("\n\s*<criteria.*>\n\s*<extend_definition.*/>", "", filestring)
+            filestring = re.sub("\s*</criteria>\n\s*</criteria>", "\n    </criteria>", filestring)
         with open("./output/service_" + servicename + "_disabled.xml", 'wb+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
