@@ -15,13 +15,13 @@
     operator="OR">
       <criteria comment="32bit arch">
         <criterion comment="check that arch is i386 or i686"
-        test_ref="test_201670" />
+        test_ref="test_201674" />
         <criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export"
         test_ref="test_201660" />
       </criteria>
       <criteria comment="62bit arch">
         <criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x"
-        test_ref="test_201672" />
+        test_ref="test_201681" />
         <criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export"
         test_ref="test_201661" />
       </criteria>
@@ -29,11 +29,11 @@
   </definition>
   <unix:uname_test check="all"
   comment="check architecture is 32 bit"
-  id="test_201670" version="1">
+  id="test_201674" version="1">
     <unix:object object_ref="obj_201670" />
-    <unix:state state_ref="state_201670" />
+    <unix:state state_ref="state_201673" />
   </unix:uname_test>
-  <unix:uname_state id="state_201670"
+  <unix:uname_state id="state_201673"
   version="1">
     <unix:processor_type operation="pattern match">
     ^i386$|^i686$</unix:processor_type>
@@ -55,11 +55,11 @@
   </ind:textfilecontent54_object>
   <unix:uname_test check="all"
   comment="check architecture is 64 bit"
-  id="test_201672" version="1">
+  id="test_201681" version="1">
     <unix:object object_ref="obj_201670" />
-    <unix:state state_ref="state_201672" />
+    <unix:state state_ref="state_201678" />
   </unix:uname_test>
-  <unix:uname_state id="state_201672"
+  <unix:uname_state id="state_201678"
   version="1">
     <unix:processor_type operation="pattern match">^x86_64$|^ia64$|</unix:processor_type>
   </unix:uname_state>
