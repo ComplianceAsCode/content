@@ -1,117 +1,103 @@
 <def-group>
-  <definition class="compliance"
-  id="service_squid_disabled" version="1">
+  <definition class="compliance" id="service_squid_disabled"
+  version="1">
     <metadata>
-      <title>Disable Squid if Possible</title>
+      <title>Service squid Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <reference ref_id="CCE-4556-7" source="CCE" />
-      <description>The squid service should be
-      disabled.</description>
+      <reference ref_id="4556-7" source="CCE" />
+      <description>The squid service should be disabled if
+      possible. This check was generated with the
+      create_services_disabled.py script in the templates
+      directory.</description>
     </metadata>
-    <criteria comment="squid is not installed or conditions are met"
-    operator="OR">
-      <extend_definition comment="squid is not installed"
-      definition_ref="package_squid_removed" />
-      <criteria operator="AND">
-        <criterion comment="Conditions are satisfied"
-        test_ref="test_20341" />
-        <criterion comment="Conditions are satisfied"
-        test_ref="test_203411" />
-        <criterion comment="Conditions are satisfied"
-        test_ref="test_203412" />
-        <criterion comment="Conditions are satisfied"
-        test_ref="test_203413" />
-        <criterion comment="Conditions are satisfied"
-        test_ref="test_203414" />
-        <criterion comment="Conditions are satisfied"
-        test_ref="test_203415" />
-        <criterion comment="Conditions are satisfied"
-        test_ref="test_203416" />
-      </criteria>
+   <criteria comment="package squid removed or service squid is not configured to start" operator="OR">
+    <extend_definition comment="squid removed" definition_ref="package_squid_removed" />
+    <criteria operator="AND" comment="service squid is not configured to start">
+      <criterion comment="squid runlevel 0" test_ref="test_runlevel0_squid" />
+      <criterion comment="squid runlevel 1" test_ref="test_runlevel1_squid" />
+      <criterion comment="squid runlevel 2" test_ref="test_runlevel2_squid" />
+      <criterion comment="squid runlevel 3" test_ref="test_runlevel3_squid" />
+      <criterion comment="squid runlevel 4" test_ref="test_runlevel4_squid" />
+      <criterion comment="squid runlevel 5" test_ref="test_runlevel5_squid" />
+      <criterion comment="squid runlevel 6" test_ref="test_runlevel6_squid" />
+    </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_20341"
+  comment="Runlevel test" id="test_runlevel0_squid"
   version="2">
-    <unix:object object_ref="obj_20341" />
-    <unix:state state_ref="state_20007" />
+    <unix:object object_ref="obj_runlevel0_squid" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-  <unix:runlevel_state comment="daemon is not running or is stopping"
-  id="state_20007" version="1">
-    <unix:start datatype="boolean">false</unix:start>
-    <unix:kill datatype="boolean">true</unix:kill>
-  </unix:runlevel_state>
-  <unix:runlevel_object id="obj_20341"
-  version="1">
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel1_squid"
+  version="2">
+    <unix:object object_ref="obj_runlevel1_squid" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel2_squid"
+  version="2">
+    <unix:object object_ref="obj_runlevel2_squid" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel3_squid"
+  version="2">
+    <unix:object object_ref="obj_runlevel3_squid" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel4_squid"
+  version="2">
+    <unix:object object_ref="obj_runlevel4_squid" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel5_squid"
+  version="2">
+    <unix:object object_ref="obj_runlevel5_squid" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel6_squid"
+  version="2">
+    <unix:object object_ref="obj_runlevel6_squid" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_runlevel0_squid" version="1">
     <unix:service_name>squid</unix:service_name>
     <unix:runlevel operation="equals">0</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_203411"
-  version="2">
-    <unix:object object_ref="obj_203411" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_203411"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel1_squid" version="1">
     <unix:service_name>squid</unix:service_name>
     <unix:runlevel operation="equals">1</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_203412"
-  version="2">
-    <unix:object object_ref="obj_203412" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_203412"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel2_squid" version="1">
     <unix:service_name>squid</unix:service_name>
     <unix:runlevel operation="equals">2</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_203413"
-  version="2">
-    <unix:object object_ref="obj_203413" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_203413"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel3_squid" version="1">
     <unix:service_name>squid</unix:service_name>
     <unix:runlevel operation="equals">3</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_203414"
-  version="2">
-    <unix:object object_ref="obj_203414" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_203414"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel4_squid" version="1">
     <unix:service_name>squid</unix:service_name>
     <unix:runlevel operation="equals">4</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_203415"
-  version="2">
-    <unix:object object_ref="obj_203415" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_203415"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel5_squid" version="1">
     <unix:service_name>squid</unix:service_name>
     <unix:runlevel operation="equals">5</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_203416"
-  version="2">
-    <unix:object object_ref="obj_203416" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_203416"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel6_squid" version="1">
     <unix:service_name>squid</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
+  <unix:runlevel_state comment="daemon is configured to start"
+  id="state_service_off" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
 </def-group>

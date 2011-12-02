@@ -1,87 +1,100 @@
 <def-group>
-  <definition class="compliance"
-  id="service_bluetooth_disabled" version="1">
+  <definition class="compliance" id="service_bluetooth_disabled"
+  version="1">
     <metadata>
-      <title>Bluetooth Host Controller Interface Daemon
-      (bluetooth)</title>
+      <title>Service bluetooth Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <reference ref_id="CCE-4355-4" source="CCE" />
-      <description>The bluetooth service should be
-      disabled.</description>
+      <reference ref_id="4355-4" source="CCE" />
+      <description>The bluetooth service should be disabled if
+      possible. This check was generated with the
+      create_services_disabled.py script in the templates
+      directory.</description>
     </metadata>
-    <criteria operator="AND">
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_202001" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_202002" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_202003" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_202004" />
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_202005" />
+    <criteria operator="AND" comment="service bluetooth is not configured to start">
+      <criterion comment="bluetooth runlevel 0" test_ref="test_runlevel0_bluetooth" />
+      <criterion comment="bluetooth runlevel 1" test_ref="test_runlevel1_bluetooth" />
+      <criterion comment="bluetooth runlevel 2" test_ref="test_runlevel2_bluetooth" />
+      <criterion comment="bluetooth runlevel 3" test_ref="test_runlevel3_bluetooth" />
+      <criterion comment="bluetooth runlevel 4" test_ref="test_runlevel4_bluetooth" />
+      <criterion comment="bluetooth runlevel 5" test_ref="test_runlevel5_bluetooth" />
+      <criterion comment="bluetooth runlevel 6" test_ref="test_runlevel6_bluetooth" />
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_202001"
+  comment="Runlevel test" id="test_runlevel0_bluetooth"
   version="2">
-    <unix:object object_ref="obj_202001" />
-    <unix:state state_ref="state_20007" />
+    <unix:object object_ref="obj_runlevel0_bluetooth" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-  <unix:runlevel_state comment="daemon is not running or is stopping"
-  id="state_20007" version="1">
-    <unix:start datatype="boolean">false</unix:start>
-    <unix:kill datatype="boolean">true</unix:kill>
-  </unix:runlevel_state>
-  <unix:runlevel_object id="obj_202001"
-  version="1">
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel1_bluetooth"
+  version="2">
+    <unix:object object_ref="obj_runlevel1_bluetooth" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel2_bluetooth"
+  version="2">
+    <unix:object object_ref="obj_runlevel2_bluetooth" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel3_bluetooth"
+  version="2">
+    <unix:object object_ref="obj_runlevel3_bluetooth" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel4_bluetooth"
+  version="2">
+    <unix:object object_ref="obj_runlevel4_bluetooth" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel5_bluetooth"
+  version="2">
+    <unix:object object_ref="obj_runlevel5_bluetooth" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel6_bluetooth"
+  version="2">
+    <unix:object object_ref="obj_runlevel6_bluetooth" />
+    <unix:state state_ref="state_service_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_runlevel0_bluetooth" version="1">
+    <unix:service_name>bluetooth</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel1_bluetooth" version="1">
     <unix:service_name>bluetooth</unix:service_name>
     <unix:runlevel operation="equals">1</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_202002"
-  version="2">
-    <unix:object object_ref="obj_202002" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_202002"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel2_bluetooth" version="1">
     <unix:service_name>bluetooth</unix:service_name>
     <unix:runlevel operation="equals">2</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_202003"
-  version="2">
-    <unix:object object_ref="obj_202003" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_202003"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel3_bluetooth" version="1">
     <unix:service_name>bluetooth</unix:service_name>
     <unix:runlevel operation="equals">3</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_202004"
-  version="2">
-    <unix:object object_ref="obj_202004" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_202004"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel4_bluetooth" version="1">
     <unix:service_name>bluetooth</unix:service_name>
     <unix:runlevel operation="equals">4</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_202005"
-  version="2">
-    <unix:object object_ref="obj_202005" />
-    <unix:state state_ref="state_20007" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_202005"
-  version="1">
+  <unix:runlevel_object id="obj_runlevel5_bluetooth" version="1">
     <unix:service_name>bluetooth</unix:service_name>
     <unix:runlevel operation="equals">5</unix:runlevel>
   </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel6_bluetooth" version="1">
+    <unix:service_name>bluetooth</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_state comment="daemon is configured to start"
+  id="state_service_off" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
 </def-group>

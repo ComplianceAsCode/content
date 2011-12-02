@@ -1,98 +1,102 @@
 <def-group>
-  <definition class="compliance" id="service_nfs_disabled" version="1">
+  <definition class="compliance" id="service_nfs_disabled"
+  version="1">
     <metadata>
-      <title>Daemon nfs Disabled</title>
+      <title>Service nfs Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <reference ref_id="CCE-TODO" source="CCE" />
-      <description>The nfs service should be disabled.</description>
+      <reference ref_id="TODO" source="CCE" />
+      <description>The nfs service should be disabled if
+      possible. This check was generated with the
+      create_services_disabled.py script in the templates
+      directory.</description>
     </metadata>
-    <criteria comment="package nfs-utils not installed or service nfs disabled" operator="OR">
-      <extend_definition comment="package nfs-utils removed" definition_ref="package_nfs-utils_removed" />
-      <criteria comment="service nfs disabled for all runlevels" operator="AND">
-        <criterion comment="runlevel 0" test_ref="test_2030820" />
-        <criterion comment="runlevel 1" test_ref="test_2030821" />
-        <criterion comment="runlevel 2" test_ref="test_2030822" />
-        <criterion comment="runlevel 3" test_ref="test_2030823" />
-        <criterion comment="runlevel 4" test_ref="test_2030824" />
-        <criterion comment="runlevel 5" test_ref="test_2030825" />
-        <criterion comment="runlevel 6" test_ref="test_2030826" />
-      </criteria>
+   <criteria comment="package nfs-utils removed or service nfs is not configured to start" operator="OR">
+    <extend_definition comment="nfs-utils removed" definition_ref="package_nfs-utils_removed" />
+    <criteria operator="AND" comment="service nfs is not configured to start">
+      <criterion comment="nfs runlevel 0" test_ref="test_runlevel0_nfs" />
+      <criterion comment="nfs runlevel 1" test_ref="test_runlevel1_nfs" />
+      <criterion comment="nfs runlevel 2" test_ref="test_runlevel2_nfs" />
+      <criterion comment="nfs runlevel 3" test_ref="test_runlevel3_nfs" />
+      <criterion comment="nfs runlevel 4" test_ref="test_runlevel4_nfs" />
+      <criterion comment="nfs runlevel 5" test_ref="test_runlevel5_nfs" />
+      <criterion comment="nfs runlevel 6" test_ref="test_runlevel6_nfs" />
+    </criteria>
     </criteria>
   </definition>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 0 test" id="test_2030820" version="1">
-    <unix:object object_ref="obj_2030820" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel0_nfs"
+  version="2">
+    <unix:object object_ref="obj_runlevel0_nfs" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 1 test" id="test_2030821" version="1">
-    <unix:object object_ref="obj_2030821" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel1_nfs"
+  version="2">
+    <unix:object object_ref="obj_runlevel1_nfs" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 2 test" id="test_2030822" version="1">
-    <unix:object object_ref="obj_2030822" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel2_nfs"
+  version="2">
+    <unix:object object_ref="obj_runlevel2_nfs" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 3 test" id="test_2030823" version="1">
-    <unix:object object_ref="obj_2030823" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel3_nfs"
+  version="2">
+    <unix:object object_ref="obj_runlevel3_nfs" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 4 test" id="test_2030824" version="1">
-    <unix:object object_ref="obj_2030824" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel4_nfs"
+  version="2">
+    <unix:object object_ref="obj_runlevel4_nfs" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 5 test" id="test_2030825" version="1">
-    <unix:object object_ref="obj_2030825" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel5_nfs"
+  version="2">
+    <unix:object object_ref="obj_runlevel5_nfs" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 6 test" id="test_2030826" version="1">
-    <unix:object object_ref="obj_2030826" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel6_nfs"
+  version="2">
+    <unix:object object_ref="obj_runlevel6_nfs" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_object id="obj_2030820" version="1">
+  <unix:runlevel_object id="obj_runlevel0_nfs" version="1">
     <unix:service_name>nfs</unix:service_name>
     <unix:runlevel operation="equals">0</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030821" version="1">
+  <unix:runlevel_object id="obj_runlevel1_nfs" version="1">
     <unix:service_name>nfs</unix:service_name>
     <unix:runlevel operation="equals">1</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030822" version="1">
+  <unix:runlevel_object id="obj_runlevel2_nfs" version="1">
     <unix:service_name>nfs</unix:service_name>
     <unix:runlevel operation="equals">2</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030823" version="1">
+  <unix:runlevel_object id="obj_runlevel3_nfs" version="1">
     <unix:service_name>nfs</unix:service_name>
     <unix:runlevel operation="equals">3</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030824" version="1">
+  <unix:runlevel_object id="obj_runlevel4_nfs" version="1">
     <unix:service_name>nfs</unix:service_name>
     <unix:runlevel operation="equals">4</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030825" version="1">
+  <unix:runlevel_object id="obj_runlevel5_nfs" version="1">
     <unix:service_name>nfs</unix:service_name>
     <unix:runlevel operation="equals">5</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030826" version="1">
+  <unix:runlevel_object id="obj_runlevel6_nfs" version="1">
     <unix:service_name>nfs</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_state comment="daemon is not enabled" id="state_20007" version="1">
+  <unix:runlevel_state comment="daemon is configured to start"
+  id="state_service_off" version="1">
     <unix:start datatype="boolean">false</unix:start>
     <unix:kill datatype="boolean">true</unix:kill>
   </unix:runlevel_state>

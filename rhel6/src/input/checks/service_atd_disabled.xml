@@ -1,98 +1,102 @@
 <def-group>
-  <definition class="compliance" id="service_atd_disabled" version="1">
+  <definition class="compliance" id="service_atd_disabled"
+  version="1">
     <metadata>
-      <title>Daemon atd Disabled</title>
+      <title>Service atd Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <reference ref_id="CCE-4298-6" source="CCE" />
-      <description>The atd service should be disabled.</description>
+      <reference ref_id="4298-6" source="CCE" />
+      <description>The atd service should be disabled if
+      possible. This check was generated with the
+      create_services_disabled.py script in the templates
+      directory.</description>
     </metadata>
-    <criteria comment="package at not installed or service atd disabled" operator="OR">
-      <extend_definition comment="package at removed" definition_ref="package_at_removed" />
-      <criteria comment="service atd disabled for all runlevels" operator="AND">
-        <criterion comment="runlevel 0" test_ref="test_2030840" />
-        <criterion comment="runlevel 1" test_ref="test_2030841" />
-        <criterion comment="runlevel 2" test_ref="test_2030842" />
-        <criterion comment="runlevel 3" test_ref="test_2030843" />
-        <criterion comment="runlevel 4" test_ref="test_2030844" />
-        <criterion comment="runlevel 5" test_ref="test_2030845" />
-        <criterion comment="runlevel 6" test_ref="test_2030846" />
-      </criteria>
+   <criteria comment="package at removed or service atd is not configured to start" operator="OR">
+    <extend_definition comment="at removed" definition_ref="package_at_removed" />
+    <criteria operator="AND" comment="service atd is not configured to start">
+      <criterion comment="atd runlevel 0" test_ref="test_runlevel0_atd" />
+      <criterion comment="atd runlevel 1" test_ref="test_runlevel1_atd" />
+      <criterion comment="atd runlevel 2" test_ref="test_runlevel2_atd" />
+      <criterion comment="atd runlevel 3" test_ref="test_runlevel3_atd" />
+      <criterion comment="atd runlevel 4" test_ref="test_runlevel4_atd" />
+      <criterion comment="atd runlevel 5" test_ref="test_runlevel5_atd" />
+      <criterion comment="atd runlevel 6" test_ref="test_runlevel6_atd" />
+    </criteria>
     </criteria>
   </definition>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 0 test" id="test_2030840" version="1">
-    <unix:object object_ref="obj_2030840" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel0_atd"
+  version="2">
+    <unix:object object_ref="obj_runlevel0_atd" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 1 test" id="test_2030841" version="1">
-    <unix:object object_ref="obj_2030841" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel1_atd"
+  version="2">
+    <unix:object object_ref="obj_runlevel1_atd" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 2 test" id="test_2030842" version="1">
-    <unix:object object_ref="obj_2030842" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel2_atd"
+  version="2">
+    <unix:object object_ref="obj_runlevel2_atd" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 3 test" id="test_2030843" version="1">
-    <unix:object object_ref="obj_2030843" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel3_atd"
+  version="2">
+    <unix:object object_ref="obj_runlevel3_atd" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 4 test" id="test_2030844" version="1">
-    <unix:object object_ref="obj_2030844" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel4_atd"
+  version="2">
+    <unix:object object_ref="obj_runlevel4_atd" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 5 test" id="test_2030845" version="1">
-    <unix:object object_ref="obj_2030845" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel5_atd"
+  version="2">
+    <unix:object object_ref="obj_runlevel5_atd" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_test check="all" check_existence="all_exist" comment="runlevel 6 test" id="test_2030846" version="1">
-    <unix:object object_ref="obj_2030846" />
-    <unix:state state_ref="state_20007" />
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel6_atd"
+  version="2">
+    <unix:object object_ref="obj_runlevel6_atd" />
+    <unix:state state_ref="state_service_off" />
   </unix:runlevel_test>
-
-  <unix:runlevel_object id="obj_2030840" version="1">
+  <unix:runlevel_object id="obj_runlevel0_atd" version="1">
     <unix:service_name>atd</unix:service_name>
     <unix:runlevel operation="equals">0</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030841" version="1">
+  <unix:runlevel_object id="obj_runlevel1_atd" version="1">
     <unix:service_name>atd</unix:service_name>
     <unix:runlevel operation="equals">1</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030842" version="1">
+  <unix:runlevel_object id="obj_runlevel2_atd" version="1">
     <unix:service_name>atd</unix:service_name>
     <unix:runlevel operation="equals">2</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030843" version="1">
+  <unix:runlevel_object id="obj_runlevel3_atd" version="1">
     <unix:service_name>atd</unix:service_name>
     <unix:runlevel operation="equals">3</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030844" version="1">
+  <unix:runlevel_object id="obj_runlevel4_atd" version="1">
     <unix:service_name>atd</unix:service_name>
     <unix:runlevel operation="equals">4</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030845" version="1">
+  <unix:runlevel_object id="obj_runlevel5_atd" version="1">
     <unix:service_name>atd</unix:service_name>
     <unix:runlevel operation="equals">5</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_object id="obj_2030846" version="1">
+  <unix:runlevel_object id="obj_runlevel6_atd" version="1">
     <unix:service_name>atd</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
-
-  <unix:runlevel_state comment="daemon is not enabled" id="state_20007" version="1">
+  <unix:runlevel_state comment="daemon is configured to start"
+  id="state_service_off" version="1">
     <unix:start datatype="boolean">false</unix:start>
     <unix:kill datatype="boolean">true</unix:kill>
   </unix:runlevel_state>

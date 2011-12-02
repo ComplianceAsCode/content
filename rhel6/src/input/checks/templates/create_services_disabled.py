@@ -1,21 +1,32 @@
 #!/usr/bin/python
 
+#
+# create_services_disabled.py
+#   automatically generate checks for disabled services
+#
+# NOTE: The file 'template_service_disabled' should be located in the same working directory as this script. The
+# template contains the following tags that *must* be replaced successfully in order for the checks to work.
+#
+# SERVICENAME - the name of the service that should be disabled
+# PACKAGENAME - the name of the package that installs the service
+# CCE_ID - the corresponding CCE reference (optional)
+#
+
 import sys, csv, re
 
 def output_checkfile(serviceinfo):
-    #get the items out of the list
+    # get the items out of the list
     servicename, packagename, cce = serviceinfo
-    with open("service_disabled_template", 'r') as templatefile:
+    with open("./template_service_disabled", 'r') as templatefile:
         filestring = templatefile.read()
         filestring = filestring.replace("SERVICENAME", servicename)
         filestring = filestring.replace("CCE_ID", cce if cce else "TODO")
-        # if there's no packagename, use regexes to remove the criteria
         if packagename:
             filestring = filestring.replace("PACKAGENAME", packagename)
         else:
-            filestring = re.sub("<criteria.*\n.*<extend_definition.*/>","",filestring)
-            filestring = filestring.replace("</criteria>", "",1)
-        with open("output/service_" + servicename + "_disabled.xml", 'wb+') as outputfile:
+            filestring = re.sub("\n\s*<criteria.*>\n\s*<extend_definition.*/>", "", filestring)
+            filestring = re.sub("\s*</criteria>\n\s*</criteria>", "\n    </criteria>", filestring)
+        with open("./output/service_" + servicename + "_disabled.xml", 'wb+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
 
