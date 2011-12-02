@@ -41,8 +41,9 @@ content: shorthand-guide shorthand2xccdf xccdf-addprofiles checks
 # 	the script chdirs to ./output, so refer to files from there
 
 validate:
-	oscap xccdf validate-xml output/rhel6-xccdf-scap-security-guide.xml
-	oscap oval validate-xml output/rhel6-oval-scap-security-guide.xml
+	xsltproc -o ${OUTDIR}/rhel6-xccdf-valid.xml ${TRANSDIR}/xccdf2oscapvalid.xslt ${OUTDIR}/rhel6-xccdf-allprofiles-scap-security-guide.xml
+	oscap xccdf validate-xml ${OUTDIR}/rhel6-xccdf-valid.xml
+#	oscap oval validate-xml ${OUTDIR}/rhel6-oval-scap-security-guide.xml
 
 clean:
 	rm ${OUTDIR}/*.xml ${OUTDIR}/*.html ${OUTDIR}/*.pdf
