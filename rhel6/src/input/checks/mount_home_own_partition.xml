@@ -22,7 +22,7 @@
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="look for /home partition or logical volume in /etc/fstab" id="test_20006" version="1">
-    <ind:object object_ref="obj_20000" />
+    <ind:object object_ref="obj_20005" />
     <!-- <ind:state state_ref="state_20006" /> -->
   </ind:textfilecontent54_test>
 
@@ -33,7 +33,7 @@
   </ind:textfilecontent54_state>
   -->
 
-  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/fstab" id="obj_20000" version="1">
+  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/fstab" id="obj_20005" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>fstab</ind:filename>
     <ind:pattern operation="pattern match">^.*\s+/home\s+.*$</ind:pattern>
