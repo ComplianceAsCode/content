@@ -109,6 +109,125 @@ created outside and has been redirected.</description>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+
+<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.all.accept_redirects</title>
+<description>Disable ICMP Redirect Acceptance</description>
+<value selector="">0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.all.secure_redirects</title>
+<description>Enable to prevent hijacking of routing path by only
+allowing redirects from gateways known in routing
+table.</description>
+<value selector="">1</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+<Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.all.log_martians</title>
+<description>Disable so you don't Log Spoofed Packets, Source
+Routed Packets, Redirect Packets</description>
+<value selector="">0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.default.accept_source_route</title>
+<description>Disable IP source routing?</description>
+<value selector="">0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.default.accept_redirects</title>
+<description>Disable ICMP Redirect Acceptance?</description>
+<value selector="">0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.default.secure_redirects</title>
+<description>Log packets with impossible addresses to kernel
+log?</description>
+<value selector="">1</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.icmp_echo_ignore_broadcasts</title>
+<description>Ignore all ICMP ECHO and TIMESTAMP requests sent to it
+via broadcast/multicast</description>
+<value selector="">1</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.icmp_ignore_bogus_error_messages</title>
+<description>Enable to prevent certain types of
+attacks</description>
+<value selector="">1</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_tcp_syncookies_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.tcp_syncookies</title>
+<description>Enable to turn on TCP SYN Cookie
+Protection</description>
+<value selector="">1</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.all.rp_filter</title>
+<description>Enable to enforce sanity checking, also called ingress
+filtering or egress filtering. The point is to drop a packet if the
+source and destination IP addresses in the IP header do not make
+sense when considered in light of the physical interface on which
+it arrived.</description>
+<value selector="">1</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+
+<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv4.conf.default.rp_filter</title>
+<description>Enables source route verification</description>
+<value selector="">1</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
 <Rule id="set_sysctl_net_ipv4_conf_all_accept_source_route">
 <title>Set net.ipv4.conf.all.accept_source_route for
 Hosts and Routers</title>
@@ -122,14 +241,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.all.accept_redirects</title>
-<description>Disable ICMP Redirect Acceptance</description>
-<value selector="">0</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_all_accept_redirects">
 <title>Set net.ipv4.conf.all.accept_redirects for Hosts
 and Routers</title>
@@ -143,16 +254,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.all.secure_redirects</title>
-<description>Enable to prevent hijacking of routing path by only
-allowing redirects from gateways known in routing
-table.</description>
-<value selector="">1</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_all_secure_redirects">
 <title>Set net.ipv4.conf.all.secure_redirects for Hosts
 and Routers</title>
@@ -167,15 +268,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.all.log_martians</title>
-<description>Disable so you don't Log Spoofed Packets, Source
-Routed Packets, Redirect Packets</description>
-<value selector="">0</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_all_log_martians">
 <title>Set net.ipv4.conf.all.log_martians for Hosts and
 Routers</title>
@@ -190,14 +282,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.default.accept_source_route</title>
-<description>Disable IP source routing?</description>
-<value selector="">0</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_default_accept_source_route">
 <title>Set net.ipv4.conf.default.accept_source_route for
 Hosts and Routers</title>
@@ -212,14 +296,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.default.accept_redirects</title>
-<description>Disable ICMP Redirect Acceptance?</description>
-<value selector="">0</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_default_accept_redirects">
 <title>Set net.ipv4.conf.default.accept_redirects for
 Hosts and Routers</title>
@@ -233,15 +309,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.default.secure_redirects</title>
-<description>Log packets with impossible addresses to kernel
-log?</description>
-<value selector="">1</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_default_secure_redirects">
 <title>Set net.ipv4.conf.default.secure_redirects for
 Hosts and Routers</title>
@@ -257,21 +324,12 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcast_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.icmp_echo_ignore_broadcast</title>
-<description>Ignore all ICMP ECHO and TIMESTAMP requests sent to it
-via broadcast/multicast</description>
-<value selector="">1</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts">
 <title>Set net.ipv4.icmp_echo_ignore_broadcasts for
 Hosts and Routers</title>
 <description>Ignoring ICMP echo requests (pings) sent to broadcast
 / multicast addresses should be:
-<sub idref="sysctl_net_ipv4_icmp_echo_ignore_broadcast_value" />for all interfaces
+<sub idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />for all interfaces
 as appropriate.</description>
 <ident cce="3644-2" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" 
@@ -280,15 +338,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.icmp_ignore_bogus_error_messages</title>
-<description>Enable to prevent certain types of
-attacks</description>
-<value selector="">1</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_icmp_ignore_bogus_error_messages">
 <title>Set net.ipv4.icmp_ignore_bogus_error_messages for
 Hosts and Routers</title>
@@ -302,15 +351,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_tcp_syncookies_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.tcp_syncookies</title>
-<description>Enable to turn on TCP SYN Cookie
-Protection</description>
-<value selector="">1</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_tcp_syncookies">
 <title>Set net.ipv4.tcp_syncookies for Hosts and
 Routers</title>
@@ -324,18 +364,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.all.rp_filter</title>
-<description>Enable to enforce sanity checking, also called ingress
-filtering or egress filtering. The point is to drop a packet if the
-source and destination IP addresses in the IP header do not make
-sense when considered in light of the physical interface on which
-it arrived.</description>
-<value selector="">1</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_all_rp_filter">
 <title>Set net.ipv4.conf.all.rp_filter for Hosts and
 Routers</title>
@@ -350,14 +378,6 @@ as appropriate.</description>
 </Rule>
 
 
-<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv4.conf.default.rp_filter</title>
-<description>Enables source route verification</description>
-<value selector="">1</value>
-<value selector="enabled">1</value>
-<value selector="disabled">0</value>
-</Value>
 <Rule id="set_sysctl_net_ipv4_conf_default_rp_filter">
 <title>Set net.ipv4.conf.default.rp_filter for Hosts and
 Routers</title>

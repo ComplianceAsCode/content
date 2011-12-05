@@ -10,6 +10,15 @@ http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
 
 
+<Value id="sshd_idle_timeout_value" type="number"
+operator="equals" interactive="0">
+<title>SSH session Idle time</title>
+<description>Specify duration of allowed idle time.</description>
+<value selector="">300</value>
+<value selector="5_minutes">300</value>
+<value selector="10_minutes">600</value>
+</Value>
+
 <Rule id="ssh_server_disabled">
 <title>Disable SSH Server if Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
@@ -78,15 +87,6 @@ a user to establish a small VPN connection with a firewall/gateway machine and t
 </description>
 </Group>
 
-
-<Value id="sshd_idle_timeout_value" type="number"
-operator="equals" interactive="0">
-<title>SSH session Idle time</title>
-<description>Specify duration of allowed idle time.</description>
-<value selector="">300</value>
-<value selector="5_minutes">300</value>
-<value selector="10_minutes">600</value>
-</Value>
 
 
 <Rule id="sshd_set_idle_timeout">

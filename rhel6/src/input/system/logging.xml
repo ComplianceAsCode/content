@@ -56,6 +56,14 @@ operator="equals" interactive="0">
 <value selector="root">root</value>
 </Value>
 
+<Value id="file_groupowner_logfiles_value" type="string"
+operator="equals" interactive="0">
+<title>group who owns log files</title>
+<description>Specify group owner of all logfiles specified in
+<tt>/etc/rsyslog.conf.</tt></description>
+<value selector="root">root</value>
+</Value>
+
 <Rule id="userowner_rsyslog_files">
 <title>All <tt>rsyslog</tt> log files should be owned by the
 appropriate user.</title>
@@ -67,13 +75,6 @@ appropriate user.</description>
 </Rule>
 
 
-<Value id="file_groupowner_logfiles_value" type="string"
-operator="equals" interactive="0">
-<title>group who owns log files</title>
-<description>Specify group owner of all logfiles specified in
-<tt>/etc/rsyslog.conf.</tt></description>
-<value selector="root">root</value>
-</Value>
 
 <Rule id="groupowner_rsyslog_files">
 <title>All <tt>rsyslog</tt> log files should be owned by the
@@ -192,7 +193,7 @@ appropriate</description>
 <ref nist="AU-2, AU-9" />
 </Rule>
 </Group>
--->
+
 <Group id="log_rotation">
 <title>Ensure All Logs are Rotated by <tt>logrotate</tt></title>
 <description>Edit the file <tt>/etc/logrotate.d/syslog</tt>. Find the first

@@ -148,12 +148,12 @@ as Itanium and POWER, have included such support since inception
 and the standard kernel for those platforms supports the
 feature.</description>
 
-<Group id="install_PAE_kernel_on_x86-32">
-<title>Install New Kernel on Supported x86 Systems</title>
+<Rule id="install_PAE_kernel_on_x86-32">
+<title>Install PAE Kernel on Supported 32-bit x86 Systems</title>
 <description>Systems that are using the 64-bit x86 kernel package
 do not need to install the kernel-PAE package because the 64-bit
 x86 kernel already includes this support. However, if the system is
-running 32-bit kernel package supports PAE and NX features as
+32-bit and also supports the PAE and NX features as
 determined in the previous section, the kernel-PAE package should
 be installed to enable XD or NX support:
 <br />
@@ -167,13 +167,9 @@ and modify <tt>/etc/grub.conf</tt> if necessary.</description>
 <warning category="hardware">The kernel-PAE package should not be
 installed on older systems that do not support the XD or NX bit, as
 this may prevent them from booting.</warning>
-<Rule id="install_PAE_kernel_on_x86-32">
-<title>Install New Kernel on Supported x86 Systems</title>
-<description>Kernel support for the XD/NX processor feature should
-be enabled</description>
 <ident cce="4172-3" />
 <ref nist="CM-7" />
 </Rule>
-</Group>
+
 </Group>
 </Group>

@@ -84,6 +84,16 @@ operator="equals" interactive="0">
 <value selector="enabled">yes</value>
 <value selector="disabled">no</value>
 </Value>
+
+<Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.default.accept_redirects</title>
+<description>Toggle ICMP Redirect Acceptance</description>
+<value selector="">disabled</value>
+<value selector="enabled">enabled</value>
+<value selector="disabled">disabled</value>
+</Value>
+
 <Rule id="set_sysctl_net_ipv6_conf_default_accept_ra">
 <title>Disable accepting IPv6 router advertisements
 (<tt>net.ipv6.conf.default.accept_ra</tt>)</title>
@@ -97,14 +107,6 @@ interfaces.</description>
 <ref nist="CM-7" />
 </Rule>
 
-<Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" type="string"
-operator="equals" interactive="0">
-<title>net.ipv6.conf.default.accept_redirects</title>
-<description>Toggle ICMP Redirect Acceptance</description>
-<value selector="">disabled</value>
-<value selector="enabled">enabled</value>
-<value selector="disabled">disabled</value>
-</Value>
 <Rule id="set_sysctl_ipv6_default_accept_redirects">
 <title>Disable accepting redirects from IPv6 routers
 (<tt>net.ipv6.conf.default.accept_redirects</tt>)</title>

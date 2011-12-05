@@ -309,6 +309,28 @@ operator="equals" interactive="0">
 <value selector="14">14</value>
 </Value>
 
+<Value id="password_max_age_login_defs_value" type="string"
+operator="equals" interactive="0">
+<title>maximum password age</title>
+<description>Maximum age of password in days</description>
+<warning category="general">This will only apply to newly created accounts</warning>
+<value selector="">90</value>
+<value selector="90">90</value>
+<value selector="120">120</value>
+<value selector="180">180</value>
+</Value>
+
+
+<Value id="password_warn_age_login_defs_value" type="string"
+operator="equals" interactive="0">
+<title>warning days before password expires</title>
+<description>The number of days' warning given before a password expires.</description>
+<warning category="general">This will only apply to newly created accounts</warning>
+<value selector="">7</value>
+<value selector="7">7</value>
+<value selector="14">14</value>
+</Value>
+
 <Rule id="password_min_len">
 <title>Set password minimum length</title>
 <description>The password minimum length should be set
@@ -327,16 +349,6 @@ appropriately</description>
 <ref nist="CM-6, IA-5" />
 </Rule>
 
-<Value id="password_max_age_login_defs_value" type="string"
-operator="equals" interactive="0">
-<title>maximum password age</title>
-<description>Maximum age of password in days</description>
-<warning category="general">This will only apply to newly created accounts</warning>
-<value selector="">90</value>
-<value selector="90">90</value>
-<value selector="120">120</value>
-<value selector="180">180</value>
-</Value>
 
 
 <Rule id="password_max_age">
@@ -348,15 +360,6 @@ operator="equals" interactive="0">
 <ref nist="CM-6, CM-7, IA-5, AC-3" />
 </Rule>
 
-<Value id="password_warn_age_login_defs_value" type="string"
-operator="equals" interactive="0">
-<title>warning days before password expires</title>
-<description>The number of days' warning given before a password expires.</description>
-<warning category="general">This will only apply to newly created accounts</warning>
-<value selector="">7</value>
-<value selector="7">7</value>
-<value selector="14">14</value>
-</Value>
 
 <Rule id="password_warn_age">
 <title>Set password warn age</title>

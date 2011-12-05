@@ -71,21 +71,6 @@ be used for system auditing it is recommended that auditd be enabled.
 <oval id="service_auditd_enabled" />
 </Rule>
 
-<Rule id="service_autofs_disabled">
-<title>Disable Automounter Service (autofs)</title>
-<description>The autofs daemon mounts and unmounts filesystems, such as user home
-directories shared via NFS, on demand. Even if NFS is required, it is almost always
-possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
-rather than relying on the automounter. The autofs service should be disabled.
-<pre>
-# chkconfig autofs off
-
-</pre>
-</description>
-<ident cce="4072-5" />
-<oval id="service_autofs_disabled" />
-</Rule>
-
 <Rule id="service_certmonger_disabled">
 <title>Disable Certmonger Service (certmonger)</title>
 <description>Certmonger is a D-Bus based service that attempts to simplify interaction

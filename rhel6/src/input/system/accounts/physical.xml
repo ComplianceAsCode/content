@@ -55,6 +55,15 @@ password protection feature.</description>
 <value selector="root">root</value>
 </Value>
 
+<Value id="file_groupowner_etc_grub_conf_value" type="string" operator="equals">
+<title>Group that owns /etc/grub.conf</title>
+<description xml:lang="en-US">Choose group that should own /etc/grub.conf</description>
+<value selector="root">root</value>
+</Value>
+
+
+
+
 <Rule id="userowner_grub.conf">
 <title>Set Boot Loader configuration file user owner</title>
 <description>The <tt>/etc/grub.conf</tt> file should be owned by
@@ -64,11 +73,6 @@ root.</description>
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
-<Value id="file_groupowner_etc_grub_conf_value" type="string" operator="equals">
-<title>Group that owns /etc/grub.conf</title>
-<description xml:lang="en-US">Choose group that should own /etc/grub.conf</description>
-<value selector="root">root</value>
-</Value>
 
 <Rule id="groupowner_grub.conf">
 <title>Set Boot Loader group owner</title>
