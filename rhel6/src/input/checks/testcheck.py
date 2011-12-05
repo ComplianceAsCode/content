@@ -100,11 +100,14 @@ def main():
         os.close(ovalfile)
         print "Evaluating with OVAL tempfile : " + fname
 	# temporary workaround for fedora/redhat oscap version differences
-        (distname, distversion, distcodename) = platform.linux_distribution(full_distribution_name=0)
-        if distname == 'redhat':
-            subprocess.call("/usr/bin/oscap oval eval --result-file "+ fname + "-results " + fname, shell=True)
-        else:
-            subprocess.call("/usr/bin/oscap oval eval --results "+ fname + "-results " + fname, shell=True)
+        # (distname, distversion, distcodename) = platform.linux_distribution(full_distribution_name=0)
+        # if distname == 'redhat':
+        #    subprocess.call("oscap oval eval --result-file "+ fname + "-results " + fname, shell=True)
+        # else:
+
+        # content requires OVAL 5.8 support, which is only supported by openscap 0.8 or later
+        # for RHEL 6, this implies installing openscap from source until RPM is released
+        subprocess.call("oscap oval eval --results "+ fname + "-results " + fname, shell=True)
         # perhaps delete tempfile?
         definitions = ET.Element("definitions")
         tests = ET.Element("tests")
