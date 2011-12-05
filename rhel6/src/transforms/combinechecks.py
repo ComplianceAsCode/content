@@ -29,7 +29,7 @@ footer = '</oval_definitions>'
 def append(element, newchild):
     newid = newchild.get("id")
     existing = element.find(".//*[@id='" + newid + "']")
-    if(existing):
+    if existing is not None:
         sys.stderr.write( "Duplicate ID, which will not be added: " + newid + "\n")
     else:
         element.append(newchild)
