@@ -40,14 +40,14 @@
   <unix:uname_test check="all"
   comment="check architecture is 32 bit"
   id="test_201678" version="1">
-    <unix:object object_ref="obj_201670" />
+    <unix:object object_ref="obj_201678" />
     <unix:state state_ref="state_201677" />
   </unix:uname_test>
   <unix:uname_state id="state_201677"
   version="1">
     <unix:processor_type operation="pattern match">^i386$|^i686$</unix:processor_type>
   </unix:uname_state>
-  <unix:uname_object id="obj_201670"
+  <unix:uname_object id="obj_201678"
   version="1" />
   <ind:textfilecontent54_test check="all"
   check_existence="at_least_one_exists"
@@ -65,7 +65,7 @@
   <unix:uname_test check="all"
   comment="check architecture is 64 bit"
   id="test_201686" version="1">
-    <unix:object object_ref="obj_201670" />
+    <unix:object object_ref="obj_201678" />
     <unix:state state_ref="state_201682" />
   </unix:uname_test>
   <unix:uname_state id="state_201682"
