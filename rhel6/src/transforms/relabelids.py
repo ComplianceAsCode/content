@@ -59,12 +59,15 @@ def main():
     ovaltree = parse_xml_file(ovalfile) 
     translator = idtranslate.idtranslator(idname+".ini", "oval:"+idname)
     ovaltree = translator.translate(ovaltree)
+
     newovalfile = ovalfile.replace(".xml", "-" + idname + ".xml")
     ET.ElementTree(ovaltree).write(newovalfile)
 
-    # rename all IDs in the xccdf file
+    # rename all IDs and file refs in the xccdf file
     for checkref in checkfilerefs:
-        checkref.set("name", translator.assign_id("definition", checkref.get("name")))
+        checkid = translator.assign_id("definition", checkref.get("name"))
+        checkref.set("name", checkid)
+        checkref.set("href", newovalfile)
 
     newxccdffile = xccdffile.replace(".xml", "-" + idname + ".xml")
     #ET.dump(xccdftree)
