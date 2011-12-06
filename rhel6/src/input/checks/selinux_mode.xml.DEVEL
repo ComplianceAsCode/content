@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="selinux_mode" version="1">
+  <definition class="compliance" id="selinux_mode" version="1">
     <metadata>
       <title>Enable SELinux state</title>
       <affected family="unix">
@@ -10,44 +9,43 @@
       <description>The SELinux state should be set
       appropriately.</description>
     </metadata>
+
     <criteria operator="AND">
-      <criterion test_ref="test_20106" />
+      <!-- <criterion test_ref="test_20106" /> -->
       <criteria operator="OR">
+
         <criteria operator="AND">
-          <extend_definition comment="/selinux exists"
-          definition_ref="selinux_enabled"
-          negate="true" />
-          <criterion comment="enforce is disabled"
-          test_ref="test_201061" />
+          <extend_definition comment="/selinux exists" definition_ref="selinux_enabled" negate="true" />
+          <criterion comment="enforce is disabled" test_ref="test_201061" />
         </criteria>
+
         <criteria operator="AND">
-          <extend_definition comment="/selinux exists"
-          definition_ref="selinux_enabled" />
+          <extend_definition comment="/selinux exists" definition_ref="selinux_enabled" />
           <criteria operator="OR">
             <criteria operator="AND">
-              <criterion comment="enforce is permissive"
-              test_ref="test_201062" />
+              <criterion comment="enforce is permissive" test_ref="test_201062" />
               <criterion comment="/selinux/enforce is 0"
               test_ref="test_201064" />
             </criteria>
             <criteria operator="AND">
-              <criterion comment="enforce is enforcing"
-              test_ref="test_201063" />
-              <criterion comment="/selinux/enforce is 1"
-              test_ref="test_201065" />
+              <criterion comment="enforce is enforcing" test_ref="test_201063" />
+              <criterion comment="/selinux/enforce is 1" test_ref="test_201065" />
             </criteria>
           </criteria>
+
         </criteria>
       </criteria>
     </criteria>
+
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="all_exist"
-  comment="Tests the value of the ^[\s]*selinux[\s]*=[\s]*([^#]*) expression in the /etc/selinux/config file"
-  id="test_20106" version="1">
+
+
+  <ind:textfilecontent54_test check="all"  check_existence="all_exist" comment="Tests the value of the ^[\s]*selinux[\s]*=[\s]*([^#]*) expression in the /etc/selinux/config file" id="test_20106" version="1">
     <ind:object object_ref="obj_20106" />
     <ind:state state_ref="state_20106" />
   </ind:textfilecontent54_test>
+
+
   <ind:textfilecontent54_state id="state_20106"
   version="1">
     <ind:subexpression operation="equals" var_check="all"
