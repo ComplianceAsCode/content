@@ -7,17 +7,29 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14931-0" source="CCE" />
-      <description>&gt;Verify the integrity of installed packages
+      <description>Verify the integrity of installed packages
       by comparing the installed files with information about the
       files taken from the package metadata stored in the RPM
       database.</description>
     </metadata>
     <criteria>
-      <criterion comment="Unknown test stub"
-      test_ref="test_24" />
+      <criterion test_ref="test_rpmverify_1000" comment="rpm verify of all files" />
     </criteria>
   </definition>
-  <ind:unknown_test check="all"
-  comment="Test implementation is unknown, unavailable, or impossible"
-  id="test_24" version="1" />
+
+  <linux:rpmverify_test check_existence="none_exist" id="test_rpmverify_1000" version="1" check="all" comment="files with changed permissions">
+    <linux:object object_ref="obj_rpmverify_1000"/>
+    <linux:state state_ref="state_rpmverify_1000"/>
+  </linux:rpmverify_test>
+
+  <linux:rpmverify_object id="obj_rpmverify_1000" version="1" comment="rpm verify of all files">
+    <linux:behaviors nodeps="true" nofiles="false" nodigest="true" noscripts="true" nosignature="true" nomd5="true"/>
+    <linux:name operation="pattern match">.*</linux:name>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+  </linux:rpmverify_object>
+
+  <linux:rpmverify_state id="state_rpmverify_1000" version="1">
+    <linux:mode_differs>fail</linux:mode_differs>
+  </linux:rpmverify_state>
+
 </def-group>
