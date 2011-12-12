@@ -1,0 +1,253 @@
+<Profile id="desktop_fastcheck" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Desktop Fastcheck Baseline</title>
+<description>This profile is for a desktop installation of RHEL
+6.</description>
+<select idref="partition_for_tmp" selected="true"/>
+<select idref="partition_for_var" selected="true"/>
+<select idref="partition_for_var_log" selected="true"/>
+<select idref="partition_for_var_log_audit" selected="true"/>
+<select idref="partition_for_home" selected="true"/>
+<select idref="ensure_redhat_gpgkey_installed" selected="true"/>
+<select idref="disable_rhnsd" selected="true"/>
+<select idref="security_patches_up_to_date" selected="true"/>
+<select idref="disable_yum-updatesd" selected="true"/>
+<select idref="ensure_gpgcheck_globally_activated" selected="true"/>
+<select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+<select idref="install_aide" selected="true"/>
+<!-- <select idref="verify_package_integrity" selected="true"/> -->
+<select idref="enable_selinux_bootloader" selected="true"/>
+<select idref="set_selinux_state" selected="true"/>
+<select idref="set_selinux_policy" selected="true"/>
+<select idref="disable_mcstransd" selected="true"/>
+<select idref="selinux_unlabeled_device_files" selected="true"/>
+<select idref="restrict_root_console_logins" selected="true"/>
+<select idref="restrict_serial_port_logins" selected="true"/>
+<select idref="no_shelllogin_for_systemaccounts" selected="true"/>
+<select idref="no_empty_passwords" selected="true"/>
+<select idref="no_hashes_outside_shadow" selected="true"/>
+<select idref="no_uidzero_except_root" selected="true"/>
+<select idref="password_min_len" selected="true"/>
+<select idref="password_min_age" selected="true"/>
+<select idref="password_max_age" selected="true"/>
+<select idref="password_warn_age" selected="true"/>
+<select idref="no_nis_inclusions_shadow" selected="true"/>
+<select idref="no_nis_inclusions_group" selected="true"/>
+<select idref="no_nis_inclusions_passwd" selected="true"/>
+<select idref="password_retry" selected="true"/>
+<select idref="password_require_digits" selected="true"/>
+<select idref="password_require_uppercases" selected="true"/>
+<select idref="password_require_specials" selected="true"/>
+<select idref="password_require_lowercases" selected="true"/>
+<select idref="password_require_diffchars" selected="true"/>
+<select idref="deny_password_attempts" selected="true"/>
+<select idref="set_password_hashing_algorithm" selected="true"/>
+<select idref="limit_password_reuse" selected="true"/>
+<select idref="userowner_grub.conf" selected="true"/>
+<select idref="groupowner_grub.conf" selected="true"/>
+<select idref="perms_grub.conf" selected="true"/>
+<select idref="bootloader_password" selected="true"/>
+<select idref="require_singleuser_auth" selected="true"/>
+<select idref="disable_interactive_boot" selected="true"/>
+<select idref="set_screensaver_inactivity_timeout" selected="true"/>
+<select idref="enable_screensaver_after_idle" selected="true"/>
+<select idref="enable_screensaver_password_lock" selected="true"/>
+<select idref="set_blank_screensaver" selected="true"/>
+<select idref="install_vlock_package" selected="true"/>
+<select idref="set_system_login_banner" selected="true"/>
+<select idref="set_gui_login_banner" selected="true"/>
+<select idref="disable_sysctl_ipv4_default_send_redirects" selected="true"/>
+<select idref="disable_sysctl_ipv4_all_send_redirects" selected="true"/>
+<select idref="disable_sysctl_ipv4_ip_forward" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_all_accept_source_route" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_all_accept_redirects" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_all_secure_redirects" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_all_log_martians" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_default_accept_source_route" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_default_secure_redirects" selected="true"/>
+<select idref="set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true"/>
+<select idref="set_sysctl_net_ipv4_icmp_ignore_bogus_error_messages" selected="true"/>
+<select idref="set_sysctl_net_ipv4_tcp_syncookies" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_all_rp_filter" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_default_rp_filter" selected="true"/>
+<select idref="deactivate_wireless_interfaces" selected="true"/>
+<select idref="disable_ipv6_module_loading" selected="true"/>
+<select idref="set_sysctl_ipv6_default_accept_ra" selected="true"/>
+<select idref="set_sysctl_ipv6_default_accept_redirects" selected="true"/>
+<select idref="enable_ip6tables" selected="true"/>
+<select idref="enable_iptables" selected="true"/>
+<select idref="set_iptables_default_rule" selected="true"/>
+<select idref="disable_protocol_dccp" selected="true"/>
+<select idref="disable_protocol_sctp" selected="true"/>
+<select idref="disable_protocol_rds" selected="true"/>
+<select idref="disable_protocol_tipc" selected="true"/>
+<select idref="install_openswan" selected="true"/>
+<select idref="install_rsyslog" selected="true"/>
+<select idref="enable_rsyslog" selected="true"/>
+<select idref="userowner_rsyslog_files" selected="true"/>
+<select idref="groupowner_rsyslog_files" selected="true"/>
+<select idref="rsyslog_file_permissions" selected="true"/>
+<select idref="rsyslog_send_messages_to_logserver" selected="true"/>
+<select idref="rsyslog_accept_remote_messages" selected="true"/>
+<select idref="ensure_logrotate_activated" selected="true"/>
+<select idref="enable_auditd_service" selected="true"/>
+<select idref="enable_auditd_bootloader" selected="true"/>
+<select idref="audit_time_rules" selected="true"/>
+<select idref="audit_account_changes" selected="true"/>
+<select idref="audit_network_modifications" selected="true"/>
+<select idref="audit_mac_changes" selected="true"/>
+<select idref="audit_dac_actions" selected="true"/>
+<select idref="audit_file_access" selected="true"/>
+<select idref="audit_privileged_commands" selected="true"/>
+<select idref="audit_media_exports" selected="true"/>
+<select idref="audit_file_deletions" selected="true"/>
+<select idref="audit_sysadmin_actions" selected="true"/>
+<select idref="audit_kernel_module_loading" selected="true"/>
+<select idref="audit_config_immutable" selected="true"/>
+<select idref="disable_inetd" selected="true"/>
+<select idref="disable_xinetd" selected="true"/>
+<select idref="uninstall_inetd" selected="true"/>
+<select idref="uninstall_xinetd" selected="true"/>
+<select idref="uninstall_telnet_server" selected="true"/>
+<select idref="disable_telnet_service" selected="true"/>
+<select idref="uninstall_rsh-server" selected="true"/>
+<select idref="disable_rcp" selected="true"/>
+<select idref="disable_rsh" selected="true"/>
+<select idref="disable_rlogin" selected="true"/>
+<select idref="uninstall_ypserv" selected="true"/>
+<select idref="disable_ypbind" selected="true"/>
+<select idref="uninstall_tftp-server" selected="true"/>
+<select idref="disable_tftp" selected="true"/>
+<select idref="disable_isdn" selected="true"/>
+<select idref="disable_kdump" selected="true"/>
+<select idref="disable_zeroconf" selected="true"/>
+<select idref="disable_readahead_early" selected="true"/>
+<select idref="disable_readahead_later" selected="true"/>
+<select idref="disable_bluetooth_service" selected="true"/>
+<select idref="disable_bluetooth_hidd" selected="true"/>
+<select idref="enable_cron" selected="true"/>
+<select idref="groupowner_crontab" selected="true"/>
+<select idref="userowner_crontab" selected="true"/>
+<select idref="groupowner_cron.hourly" selected="true"/>
+<select idref="groupowner_cron.daily" selected="true"/>
+<select idref="groupowner_cron.weekly" selected="true"/>
+<select idref="groupowner_cron.monthly" selected="true"/>
+<select idref="groupowner_cron.d" selected="true"/>
+<select idref="userowner_cron.hourly" selected="true"/>
+<select idref="userowner_cron.daily" selected="true"/>
+<select idref="userowner_cron.weekly" selected="true"/>
+<select idref="userowner_cron.monthly" selected="true"/>
+<select idref="userowner_cron.d" selected="true"/>
+<select idref="disable_at" selected="true"/>
+<select idref="sshd_allow_only_protocol2" selected="true"/>
+<select idref="sshd_set_idle_timeout" selected="true"/>
+<select idref="sshd_set_keepalive" selected="true"/>
+<select idref="sshd_disable_rhosts" selected="true"/>
+<select idref="disable_host_auth" selected="true"/>
+<select idref="sshd_disable_root_login" selected="true"/>
+<select idref="sshd_disable_empty_passwords" selected="true"/>
+<select idref="sshd_enable_warning_banner" selected="true"/>
+<select idref="sshd_do_not_permit_user_env" selected="true"/>
+<select idref="sshd_use_approved_ciphers" selected="true"/>
+<select idref="disable_xwindows_listening" selected="true"/>
+<select idref="disable_avahi" selected="true"/>
+<select idref="disable_hplip_service" selected="true"/>
+<select idref="disable_dhcp_server" selected="true"/>
+<select idref="uninstall_dhcp_server" selected="true"/>
+<select idref="enable_ntpd" selected="true"/>
+<select idref="ntpd_specify_remote_server" selected="true"/>
+<select idref="postfix_package_installation" selected="true"/>
+<select idref="postfix_network_listening" selected="true"/>
+<select idref="ldap_require_tls" selected="true"/>
+<select idref="disable_openldap_service" selected="true"/>
+<select idref="disable_nfslock" selected="true"/>
+<select idref="disable_rpcgssc" selected="true"/>
+<select idref="disable_rpcidmapd" selected="true"/>
+<select idref="disable_netfs" selected="true"/>
+<select idref="disable_portmap" selected="true"/>
+<select idref="disable_nfsd" selected="true"/>
+<select idref="disable_rpcsvcgssd" selected="true"/>
+<select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
+<select idref="use_nosuid_option_on_nfs_mounts" selected="true"/>
+<select idref="disable_dns_server" selected="true"/>
+<select idref="uninstall_bind" selected="true"/>
+<select idref="disable_vsftpd" selected="true"/>
+<select idref="uninstall_vsftpd" selected="true"/>
+<select idref="disable_httpd" selected="true"/>
+<select idref="uninstall_httpd" selected="true"/>
+<select idref="disable_dovecot" selected="true"/>
+<select idref="uninstall_dovecot" selected="true"/>
+<select idref="disable_smb_server" selected="true"/>
+<select idref="require_smb_client_signing" selected="true"/>
+<select idref="require_smb_client_signing_mount.cifs" selected="true"/>
+<select idref="disable_squid" selected="true"/>
+<select idref="uninstall_squid" selected="true"/>
+<select idref="disable_snmpd" selected="true"/>
+<select idref="uninstall_net-snmp" selected="true"/>
+<!-- Refine Values -->
+<!-- Permissions for passwd -->
+<refine-value idref="daemon_umask_value" selector="027"/>
+<!-- daemon umask -->
+<refine-value idref="password_min_len_login_defs_value" selector="14"/>
+<!-- password minimum length -->
+<refine-value idref="password_max_age_login_defs_value" selector="90"/>
+<!-- maximum password age -->
+<refine-value idref="password_warn_age_login_defs_value" selector="7"/>
+<!-- password warn age -->
+<refine-value idref="password_pamcracklib_retry_value" selector="3"/>
+<!-- Number of retry attempts before erroring out -->
+<refine-value idref="password_pamcracklib_minlen_value" selector="14"/>
+<!-- Minimum number of characters in password -->
+<refine-value idref="password_pamcracklib_dcredit_value" selector="1"/>
+<!-- Mininum number of digits in password -->
+<refine-value idref="password_pamcracklib_ucredit_value" selector="2"/>
+<!-- Mininum number of upper case in password -->
+<refine-value idref="password_pamcracklib_ocredit_value" selector="2"/>
+<!-- Mininum number of other (special characters) in password< -->
+<refine-value idref="password_pamcracklib_lcredit_value" selector="2"/>
+<!-- Mininum number of lower case in password -->
+<refine-value idref="password_pamcracklib_difok_value" selector="3"/>
+<!-- Mininum number of characters not present in old password -->
+<refine-value idref="password_hash_algorithm_name" selector="SHA-512"/>
+<!-- Password hashing algorithm -->
+<refine-value idref="password_history_retain_number" selector="5"/>
+<!-- Passwords to remember -->
+<refine-value idref="umask_user_value" selector="077"/>
+<!-- Sensible umask -->
+<refine-value idref="inactivity_timeout_value" selector="15_minutes"/>
+<!-- Inactivity timout -->
+<refine-value idref="login_banner_text" selector="ANY_text"/>
+<!-- login banner verbiage -->
+<refine-value idref="selinux_state_name" selector="enforcing"/>
+<!-- SELinux state -->
+<refine-value idref="selinux_policy_name" selector="targeted"/>
+<!-- SELinux policy -->
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="disabled"/>
+<!-- net.ipv4.conf.all.accept_source_route -->
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_redirects_value" selector="disabled"/>
+<!-- net.ipv4.conf.all.accept_redirectse -->
+<refine-value idref="sysctl_net_ipv4_conf_all_secure_redirects_value" selector="disabled"/>
+<!-- net.ipv4.conf.all.secure_redirects -->
+<refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="enabled"/>
+<!-- net.ipv4.conf.all.log_martians -->
+<refine-value idref="sysctl_net_ipv4_conf_default_accept_source_route_value" selector="disabled"/>
+<!-- net.ipv4.conf.default.accept_source_route -->
+<refine-value idref="sysctl_net_ipv4_conf_default_accept_redirects_value" selector="disabled"/>
+<!-- net.ipv4.conf.default.accept_redirects -->
+<refine-value idref="sysctl_net_ipv4_conf_default_secure_redirects_value" selector="disabled"/>
+<!-- net.ipv4.conf.default.secure_redirects -->
+<refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" selector="enabled"/>
+<!-- net.ipv4.icmp_echo_ignore_broadcast -->
+<refine-value idref="sysctl_net_ipv4_icmp_ignore_bogus_error_messages_value" selector="enabled"/>
+<!-- net.ipv4.icmp_ignore_bogus_error_messages -->
+<refine-value idref="sysctl_net_ipv4_tcp_syncookies_value" selector="enabled"/>
+<!-- net.ipv4.tcp_syncookie -->
+<refine-value idref="sysctl_net_ipv4_conf_all_rp_filter_value" selector="enabled"/>
+<!-- net.ipv4.conf.all.rp_filtere -->
+<refine-value idref="sysctl_net_ipv4_conf_default_rp_filter_value" selector="enabled"/>
+<!-- net.ipv4.conf.default.rp_filter -->
+<refine-value idref="file_owner_logfiles_value" selector="root"/>
+<!-- user that owns system log files -->
+<refine-value idref="file_groupowner_logfiles_value" selector="root"/>
+<!-- permissions of system log files -->
+<refine-value idref="sshd_idle_timeout_value" selector="15_minutes"/>
+</Profile>
