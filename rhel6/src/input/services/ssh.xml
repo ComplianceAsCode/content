@@ -225,11 +225,6 @@ PermitUserEnvironment no</pre>
 <oval id="sshd_no_user_envset" />
 </Rule>
 
-
-<!--
- Need to investigate current status of this.  
- Earlier issues with CBC supposed to be fixed.
-
 <Group id="sshd_using_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
 <description>Limit the ciphers to those which are FIPS-approved and
@@ -241,17 +236,19 @@ Ciphers aes128-ctr,aes192-ctr,aes256-ctr
 
 </pre>
 The man page <tt>sshd_config(5)</tt> contains a list of the ciphers
-supported for the current release of the SSH daemon.</description>
+supported for the current release of the SSH daemon.
+<br />
+TODO: Need to investigate current status of this. Earlier issues with
+CBC were supposed to be fixed.</description>
 
 <Rule id="sshd_use_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
 <description>Use only FIPS approved ciphers not in CBC
 mode</description>
 <ident cce="14491-5" />
-<oval id="sshd_undefined" />
+<oval id="sshd_use_approved_ciphers" />
 </Rule>
 </Group>
--->
 
 </Group>
 </Group>

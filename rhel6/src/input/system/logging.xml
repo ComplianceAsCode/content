@@ -1,21 +1,19 @@
 <Group id="logging">
 <title>Configure Syslog</title>
-<description>Syslog has been the default Unix logging mechanism for
-many years. It has a number of downsides, including inconsistent
-log format, lack of authentication for received messages, and lack
-of authentication, encryption, or reliable transport for messages
-sent over a network. However, due to its long history, <tt>syslog</tt> is an
-accepted standard which is supported by almost all Unix
-applications. In RHEL 6, <tt>rsyslog</tt> has replaced <tt>syslog</tt> as the
-<tt>syslog</tt> daemon of choice. This section discusses how to configure
-<tt>rsyslog</tt> for best effect, and how to use tools provided with the
-system to maintain and monitor your logs.</description>
+<description>The syslog service has been the default Unix logging mechanism for
+many years. It has a number of downsides, including inconsistent log format,
+lack of authentication for received messages, and lack of authentication,
+encryption, or reliable transport for messages sent over a network. However,
+due to its long history, syslog is an accepted standard which is supported by
+almost all Unix applications. In RHEL 6, rsyslog has replaced syslog as the
+syslog daemon of choice. This section discusses how to configure rsyslog for
+best effect, and how to use tools provided with the system to maintain and
+monitor your logs.</description>
 
-<Rule id="install_rsyslog">
-<title>The <tt>rsyslog</tt> package should be installed or
-uninstalled as appropriate.</title>
-<description>The <tt>rsyslog</tt> package should be installed or uninstalled
-as appropriate.</description>
+<Rule id="package_rsyslog_installed">
+<title>The rsyslog package should be installed.</title>
+<description>This check queries the local RPM database to
+make sure that the rsyslog RPM is installed.</description>
 <ident cce="17742-8" />
 <oval id="package_rsyslog_installed" />
 <ref nist="AU-2, AU-9, CM-6" />
