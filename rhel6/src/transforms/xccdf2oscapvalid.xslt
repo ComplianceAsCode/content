@@ -8,6 +8,14 @@ exclude-result-prefixes="xccdf">
   <xsl:template match="xccdf:reference"/>
   <xsl:template match="xccdf:rationale"/>
   <xsl:template match="xhtml:code"/>
+  <xsl:template match="xccdf:Rule">
+    <xsl:copy>
+       <xsl:apply-templates select="@*" />
+       <xsl:attribute name="selected">false</xsl:attribute>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+  </xsl:template>
+
 
   <xsl:template match="@*|node()">
     <xsl:copy>
