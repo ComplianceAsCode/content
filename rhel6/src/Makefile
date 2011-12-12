@@ -45,5 +45,8 @@ validate:
 	oscap xccdf validate-xml ${OUTDIR}/rhel6-xccdf-valid.xml
 	oscap oval validate-xml ${OUTDIR}/rhel6-oval-scap-security-guide.xml
 
+eval-test:
+	oscap xccdf eval --profile test --results /tmp/results-test.xml output/rhel6-xccdf-valid.xml
+
 clean:
 	rm ${OUTDIR}/*.xml ${OUTDIR}/*.html ${OUTDIR}/*.pdf
