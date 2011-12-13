@@ -25,7 +25,7 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
     </generator>'''
 footer = '</oval_definitions>'
 
-ovalns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+ovalns = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
 
 # globals, to make recursion easier in case we encounter extend_definition
 definitions = ET.Element("definitions")
@@ -39,14 +39,14 @@ def add_oval_elements(body):
     tree = ET.fromstring(header + body + footer)
     tree = replace_external_vars(tree)
     # parse new file(string) as an etree, so we can arrange elements appropriately 
-    for childnode in tree.findall("./{" + ovalns + "}def-group/*"):
+    for childnode in tree.findall("./" + ovalns + "def-group/*"):
         # print "childnode.tag is " + childnode.tag
         if childnode.tag is ET.Comment: continue 
-        if childnode.tag == ("{" + ovalns + "}definition"):
+        if childnode.tag == ( ovalns + "definition"):
             definitions.append(childnode)
             defname = childnode.get("id")
             # extend_definition is a special case: must include a whole other definition
-            for defchild in childnode.findall(".//{" + ovalns + "}extend_definition"):
+            for defchild in childnode.findall(".//" + ovalns + "extend_definition"):
                 defid = defchild.get("definition_ref")            
                 includedbody = read_ovaldefgroup_file(defid+".xml")
                 # recursively add the elements in the other file
@@ -62,7 +62,7 @@ def add_oval_elements(body):
 def replace_external_vars(tree):
     print "considering replace"
     # external_variable is a special case: we turn it into a local_variable so we can test
-    for node in tree.findall(".//{"+ovalns+"}external_variable"):
+    for node in tree.findall(".//"+ovalns+"external_variable"):
         print "external_variable with id : " + node.get("id") 
         # TODO: assignment of external_variable via environment vars, for testing
     return tree

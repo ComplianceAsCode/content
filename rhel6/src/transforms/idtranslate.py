@@ -5,6 +5,7 @@ import lxml.etree as ET
 # OVAL-style IDs.  This is intentionally similar to code in  
 # Tresys SCC, to enable future integration.
 
+ovalns = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
 
 keyword_to_abbrev = {
     'definition' : 'def',
@@ -71,6 +72,9 @@ class idtranslator:
         for element in tree.getiterator():
             if element.get("id"):
                 element.set("id", self.assign_id(element.tag, element.get("id")))
+                continue
+            if element.tag == ovalns + "filter":
+                element.text = self.assign_id("state", element.text)
                 continue
             for attr in element.keys():
                 if attr in refattr_to_keyword.keys():
