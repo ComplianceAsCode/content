@@ -1,45 +1,29 @@
 <def-group>
-  <definition class="compliance"
-  id="dir_perms_world_writable_system_owned" version="1">
+  <definition class="compliance" id="dir_perms_world_writable_system_owned" version="1">
     <metadata>
-      <title>Find world writable directories not owned by a system
-      account</title>
+      <title>Find world writable directories not owned by a system account</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14794-2" source="CCE" />
-      <description>All world writable directories should be owned
-      by a system user</description>
+      <description>All world writable directories should be owned by a system user.</description>
     </metadata>
-    <criteria>
-      <criterion comment="Check all directories are not world writable or owned by a user with uid less than 500"
-      negate="true"
-      test_ref="test_20052" />
+    <criteria comment="check for local directories that are world writable and have uid greater than or equal to 500" negate="true">
+      <criterion comment="check for local directories that are world writable and have uid greater than or equal to 500" test_ref="test_dir_world_writable_uid_gt_500" />
     </criteria>
   </definition>
-  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-  check="all"
-  comment="world writable directories have a uid greater than or equal to 500"
-  id="test_20052" version="1">
-    <notes>
-      <note>This will enumerate all directories on local
-      partitions</note>
-    </notes>
-    <unix:object object_ref="obj_20046" />
-    <unix:state state_ref="state_20052" />
+  <unix:file_test check="all" comment="check for local directories that are world writable and have uid greater than or equal to 500" id="test_dir_world_writable_uid_gt_500" version="1">
+    <unix:object object_ref="all_local_directories" />
+    <unix:state state_ref="state_gid_is_user_and_world_writable" />
   </unix:file_test>
-  <unix:file_state comment="uid not less than 500"
-  id="state_20052" version="1">
-    <unix:group_id datatype="int" operation="equals">
-    500</unix:group_id>
-    <unix:owrite datatype="boolean">1</unix:owrite>
-  </unix:file_state>
-  <unix:file_object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  comment="all local directories"
-  id="obj_20046" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down"
-    recurse_file_system="local" />
-    <unix:path operation="pattern match">.*</unix:path>
+  <unix:file_object comment="all local directories" id="all_local_directories" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
+    <unix:path>/</unix:path>
     <unix:filename xsi:nil="true" />
+    <filter action="include">state_gid_is_user_and_world_writable</filter>
   </unix:file_object>
+  <unix:file_state comment="uid greater than or equal to 500 and world writable" id="state_gid_is_user_and_world_writable" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">500</unix:user_id>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
 </def-group>
