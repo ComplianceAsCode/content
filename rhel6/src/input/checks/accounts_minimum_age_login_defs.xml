@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="accounts_minimum_age_login_defs" version="1">
+  <definition class="compliance" id="accounts_minimum_age_login_defs" version="1">
     <metadata>
       <title>Set Password Expiration Parameters</title>
       <affected family="unix">
@@ -8,23 +7,20 @@
       </affected>
       <reference ref_id="CCE-4180-6" source="CCE" />
       <description>The "minimum password age" policy should meet
-      minimum requirements.</description>
+      minimum requirements. This particular check looks for a
+      minimum password age of 7 days.</description>
     </metadata>
-    <criteria>
-      <criterion test_ref="test_20072" />
+    <criteria comment="the value PASS_MIN_DAYS should be set to 7 in /etc/login.defs">
+      <criterion test_ref="test_pass_min_days_seven" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="all_exist"
-  comment="Tests the value of the PASS_MIN_DAYS[\s]*=[\s]*(.*) expression in the /etc/login.defs file"
-  id="test_20072" version="1">
-    <ind:object object_ref="obj_20072" />
+  <ind:textfilecontent54_test check="all" comment="the value PASS_MIN_DAYS should be set to 7 in /etc/login.defs" id="test_pass_min_days_seven" version="1">
+    <ind:object object_ref="object_etc_login_defs_pass_min" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20072"
-  version="1">
+  <ind:textfilecontent54_object id="object_etc_login_defs_pass_min" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>login.defs</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*PASS_MIN_DAYS[\s]*1$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*PASS_MIN_DAYS[\s]+7$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

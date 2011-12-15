@@ -10,17 +10,17 @@
       minimum requirements. This particular check looks for a
       maximum password age of 60 days.</description>
     </metadata>
-    <criteria>
-      <criterion test_ref="test_20073" />
+    <criteria comment="the value PASS_MAX_DAYS should be set to 60 in /etc/login.defs">
+      <criterion test_ref="test_pass_max_days_sixty" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="checks for the presence of 'PASS_MAX_DAYS[\s]*60' in /etc/login.defs" id="test_20073" version="1">
-    <ind:object object_ref="obj_20073" />
+  <ind:textfilecontent54_test check="all" comment="the value PASS_MAX_DAYS should be set to 60 in /etc/login.defs" id="test_pass_max_days_sixty" version="1">
+    <ind:object object_ref="object_etc_login_defs_pass_max" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20073" version="1">
+  <ind:textfilecontent54_object id="object_etc_login_defs_pass_max" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>login.defs</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*PASS_MAX_DAYS[\s]*60$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*PASS_MAX_DAYS[\s]+60$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
