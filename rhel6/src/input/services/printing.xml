@@ -9,46 +9,8 @@ service is installed and activated by default. The project homepage
 and more detailed documentation are available at
 http://www.cups.org.
 <br /><br />
-The HP Linux Imaging and Printing service (HPLIP) is a
-separate package that provides support for some of the additional
-features that HP printers provide that CUPS may not necessarily
-support. It relies upon the CUPS service.</description>
+</description>
 <reference href="http://www.cups.org">CUPS is the standards-based,
 open source printing system</reference>
-<Group id="hplip_service">
-<title>The HP Linux Imaging and Printing (HPLIP) Toolkit</title>
-<description>The HPLIP package is an HP printing support utility
-that is installed and enabled in a default installation. The HPLIP
-package is comprised of two separate components. The first is the
-main HPLIP service and the second is a smaller subcomponent called
-HPIJS. HPLIP is a feature-oriented network service that provides
-higher level printing support (such as bi-directional I/O,
-scanning, photo card, and toolbox functionality). HPIJS is a lower
-level basic printing driver that provides basic support for
-non-PostScript HP printers.</description>
-<Group id="disabling_hplip_service">
-<title>Disable HPLIP Service if Possible</title>
-<description>Since the HPIJS driver will still function without the
-added HPLIP service, HPLIP should be disabled unless the specific
-higher level functions that HPLIP provides are needed by a
-non-PostScript HP printer on the system.
-<br />
-<pre>
-# chkconfig hplip off
-
-</pre>
-Note: If installing the HPLIP package from scratch, it should
-be noted that HPIJS can be installed directly without HPLIP. Please
-see the FAQ at the HPLIP web site at
-http://hplip.sourceforge.net/faqs.html for more information on how
-to do this.</description>
-<Rule id="disable_hplip_service">
-<title>Disable HPLIP Service if Possible</title>
-<description>The <tt>hplip</tt> service should be disabled.</description>
-<ident cce="4425-5" />
-<oval id="service_hplip_disabled" />
-</Rule>
-</Group>
-</Group>
 </Group>
 
