@@ -9,15 +9,13 @@
       <description>Look for argument "nousb" in the kernel line in /etc/grub.conf</description>
     </metadata>
     <criteria>
-      <criterion test_ref="test_20460" comment="look for argument 'nousb' in the kernel line in /etc/grub.conf" />
+      <criterion test_ref="test_bootloader_nousb_argument" comment="look for argument 'nousb' in the kernel line in /etc/grub.conf" />
     </criteria>
   </definition>
-
-  <ind:textfilecontent54_test check="all" comment="look for argument 'nousb' in the kernel line in /etc/grub.conf" id="test_20460" version="1">
-    <ind:object object_ref="obj_20460" />
+  <ind:textfilecontent54_test check="all" comment="look for argument 'nousb' in the kernel line in /etc/grub.conf" id="test_bootloader_nousb_argument" version="1">
+    <ind:object object_ref="object_bootloader_nousb_argument" />
   </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_20460" version="1">
+  <ind:textfilecontent54_object id="object_bootloader_nousb_argument" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>grub.conf</ind:filename>
     <ind:pattern operation="pattern match">^\s*kernel\s/vmlinuz.*nousb.*$</ind:pattern>
