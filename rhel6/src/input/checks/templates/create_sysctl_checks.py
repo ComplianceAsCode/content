@@ -5,19 +5,15 @@ import sys, csv, re
 def output_checkfile(serviceinfo):
     # get the items out of the list
     sysctl_var, sysctl_val, cce = serviceinfo
-    # convert variable name to a format suitable for 'id' tags (get rid of periods and dashes)
-    sysctl_var_id = sysctl_var.replace('.', '_')
-    sysctl_var_id = sysctl_var_id.replace('-', '_')
-    # build the regular expression that will find the variable
-    sysctl_var_regex = sysctl_var.replace('.', '\.')
+    # convert variable name to a format suitable for 'id' tags
+    sysctl_var_id = re.sub('[-\.]', '_', sysctl_var)
     # open the template and perform the conversions
     with open("template_sysctl", 'r') as templatefile:
         filestring = templatefile.read()
-        filestring = filestring.replace("SYSCTLVAR", sysctl_var)
         filestring = filestring.replace("SYSCTLID", sysctl_var_id)
-        filestring = filestring.replace("SYSCTLREGEX", sysctl_var_regex)
-        filestring = filestring.replace("CCE_ID", cce if cce else "TODO")
+        filestring = filestring.replace("SYSCTLVAR", sysctl_var)
         filestring = filestring.replace("SYSCTLVAL", sysctl_val)
+        filestring = filestring.replace("CCE_ID", cce if cce else "TODO")
         # write the check
         with open("./output/sysctl_" + sysctl_var_id + ".xml", 'wb+') as outputfile:
             outputfile.write(filestring)
