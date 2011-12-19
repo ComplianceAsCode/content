@@ -16,8 +16,8 @@
 <select idref="install_aide" selected="true"/>
 <!-- <select idref="verify_package_integrity" selected="true"/> -->
 <select idref="enable_selinux_bootloader" selected="true"/>
-<select idref="set_selinux_state" selected="true"/>
-<select idref="set_selinux_policy" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="set_selinux_state" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="set_selinux_policy" selected="true"/> -->
 <select idref="disable_mcstransd" selected="true"/>
 <select idref="selinux_unlabeled_device_files" selected="true"/>
 <select idref="restrict_root_console_logins" selected="true"/>
@@ -26,35 +26,35 @@
 <select idref="no_empty_passwords" selected="true"/>
 <select idref="no_hashes_outside_shadow" selected="true"/>
 <select idref="no_uidzero_except_root" selected="true"/>
-<select idref="password_min_len" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="password_min_len" selected="true"/> -->
 <select idref="password_min_age" selected="true"/>
 <select idref="password_max_age" selected="true"/>
 <select idref="password_warn_age" selected="true"/>
 <select idref="no_nis_inclusions_shadow" selected="true"/>
 <select idref="no_nis_inclusions_group" selected="true"/>
 <select idref="no_nis_inclusions_passwd" selected="true"/>
-<select idref="password_retry" selected="true"/>
-<select idref="password_require_digits" selected="true"/>
-<select idref="password_require_uppercases" selected="true"/>
-<select idref="password_require_specials" selected="true"/>
-<select idref="password_require_lowercases" selected="true"/>
-<select idref="password_require_diffchars" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="password_retry" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="password_require_digits" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="password_require_uppercases" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="password_require_specials" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="password_require_lowercases" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="password_require_diffchars" selected="true"/> -->
 <select idref="deny_password_attempts" selected="true"/>
-<select idref="set_password_hashing_algorithm" selected="true"/>
-<select idref="limit_password_reuse" selected="true"/>
-<select idref="userowner_grub.conf" selected="true"/>
-<select idref="groupowner_grub.conf" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="set_password_hashing_algorithm" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="limit_password_reuse" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="userowner_grub.conf" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="groupowner_grub.conf" selected="true"/> -->
 <select idref="perms_grub.conf" selected="true"/>
 <select idref="bootloader_password" selected="true"/>
 <select idref="require_singleuser_auth" selected="true"/>
 <select idref="disable_interactive_boot" selected="true"/>
-<select idref="set_screensaver_inactivity_timeout" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="set_screensaver_inactivity_timeout" selected="true"/> -->
 <select idref="enable_screensaver_after_idle" selected="true"/>
 <select idref="enable_screensaver_password_lock" selected="true"/>
 <select idref="set_blank_screensaver" selected="true"/>
 <select idref="install_vlock_package" selected="true"/>
-<select idref="set_system_login_banner" selected="true"/>
-<select idref="set_gui_login_banner" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="set_system_login_banner" selected="true"/> -->
+<!-- DBG-EXT-VAR <select idref="set_gui_login_banner" selected="true"/> -->
 <select idref="disable_sysctl_ipv4_default_send_redirects" selected="true"/>
 <select idref="disable_sysctl_ipv4_all_send_redirects" selected="true"/>
 <select idref="disable_sysctl_ipv4_ip_forward" selected="true"/>
@@ -71,7 +71,7 @@
 <select idref="set_sysctl_net_ipv4_conf_default_rp_filter" selected="true"/>
 <select idref="deactivate_wireless_interfaces" selected="true"/>
 <select idref="disable_ipv6_module_loading" selected="true"/>
-<select idref="set_sysctl_ipv6_default_accept_ra" selected="true"/>
+<!-- DBG-DOES-NOT-EXIST <select idref="set_sysctl_ipv6_default_accept_ra" selected="true"/> -->
 <select idref="set_sysctl_ipv6_default_accept_redirects" selected="true"/>
 <select idref="enable_ip6tables" selected="true"/>
 <select idref="enable_iptables" selected="true"/>
@@ -83,7 +83,7 @@
 <select idref="install_openswan" selected="true"/>
 <select idref="package_rsyslog_installed" selected="true"/>
 <select idref="enable_rsyslog" selected="true"/>
-<select idref="userowner_rsyslog_files" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="userowner_rsyslog_files" selected="true"/> -->
 <select idref="groupowner_rsyslog_files" selected="true"/>
 <select idref="rsyslog_file_permissions" selected="true"/>
 <select idref="rsyslog_send_messages_to_logserver" selected="true"/>
@@ -117,29 +117,29 @@
 <select idref="disable_ypbind" selected="true"/>
 <select idref="uninstall_tftp-server" selected="true"/>
 <select idref="disable_tftp" selected="true"/>
-<select idref="disable_isdn" selected="true"/>
-<select idref="disable_kdump" selected="true"/>
-<select idref="disable_zeroconf" selected="true"/>
-<select idref="disable_readahead_early" selected="true"/>
-<select idref="disable_readahead_later" selected="true"/>
-<select idref="disable_bluetooth_service" selected="true"/>
-<select idref="disable_bluetooth_hidd" selected="true"/>
+<!-- DBG-DOES-NOT-EXIST <select idref="disable_isdn" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="disable_kdump" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="disable_zeroconf" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="disable_readahead_early" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="disable_readahead_later" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="disable_bluetooth_service" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="disable_bluetooth_hidd" selected="true"/> -->
 <select idref="enable_cron" selected="true"/>
-<select idref="groupowner_crontab" selected="true"/>
-<select idref="userowner_crontab" selected="true"/>
-<select idref="groupowner_cron.hourly" selected="true"/>
-<select idref="groupowner_cron.daily" selected="true"/>
-<select idref="groupowner_cron.weekly" selected="true"/>
-<select idref="groupowner_cron.monthly" selected="true"/>
-<select idref="groupowner_cron.d" selected="true"/>
-<select idref="userowner_cron.hourly" selected="true"/>
-<select idref="userowner_cron.daily" selected="true"/>
-<select idref="userowner_cron.weekly" selected="true"/>
-<select idref="userowner_cron.monthly" selected="true"/>
-<select idref="userowner_cron.d" selected="true"/>
+<!-- DBG-DOES-NOT-EXIST <select idref="groupowner_crontab" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="userowner_crontab" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.hourly" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.daily" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.weekly" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.monthly" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.d" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="userowner_cron.hourly" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="userowner_cron.daily" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="userowner_cron.weekly" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="userowner_cron.monthly" selected="true"/> -->
+<!-- DBG-DOES-NOT-EXIST <select idref="userowner_cron.d" selected="true"/> -->
 <select idref="disable_at" selected="true"/>
 <select idref="sshd_allow_only_protocol2" selected="true"/>
-<select idref="sshd_set_idle_timeout" selected="true"/>
+<!-- DBG-EXT-VAR <select idref="sshd_set_idle_timeout" selected="true"/> -->
 <select idref="sshd_set_keepalive" selected="true"/>
 <select idref="sshd_disable_rhosts" selected="true"/>
 <select idref="disable_host_auth" selected="true"/>
