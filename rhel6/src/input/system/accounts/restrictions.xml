@@ -62,7 +62,7 @@ via network protocols. See Section 3.5 for instructions on
 preventing root from logging in via SSH.</description>
 
 <Rule id="restrict_root_console_logins">
-<title>Restrict virtual console Root Logins</title>
+<title>Restrict Virtual Console Root Logins</title>
 <description>Logins through the virtual console devices should be
 disabled</description>
 <ident cce="3485-0" />
@@ -71,7 +71,7 @@ disabled</description>
 </Rule>
 
 <Rule id="restrict_serial_port_logins">
-<title>Restrict serial port Root Logins</title>
+<title>Restrict Serial Port Root Logins</title>
 <description>Login prompts on serial ports should be
 disabled.</description>
 <ident cce="4256-4" />
@@ -109,8 +109,9 @@ unauthorized users or by accounts which have been compromised.
 By convention, the group <tt>wheel</tt> contains all users who are
 allowed to run privileged commands. The PAM module <tt>pam_wheel.so</tt> is
 used to restrict root access to this set of users.</description>
+
 <Rule id="limit_su_to_wheel">
-<title>Limit <tt>su</tt> Access to the wheel group</title>
+<title>Limit /bin/su Access To Wheel Group</title>
 <description>Command access to the root account should be
 restricted to the <tt>wheel</tt> group.</description>
 <ident cce="15047-4" />
@@ -118,6 +119,7 @@ restricted to the <tt>wheel</tt> group.</description>
 <ref nist="AC-3, CM-6" />
 </Rule>
 </Group>
+
 <Group id="systemaccount_shells">
 <title>Block Shell and Login Access for Non-Root System
 Accounts</title>
@@ -157,8 +159,7 @@ section on the root account. Doing so might cause the system to
 become inaccessible.</warning>
 
 <Rule id="no_shelllogin_for_systemaccounts">
-<title>Block Shell and Login Access for Non-Root System
-Accounts</title>
+<title>Block Shell/Login For Non-Root System Accounts</title>
 <description>Login access to non-root system accounts should be
 disabled</description>
 <ident cce="3987-5" />
@@ -189,7 +190,7 @@ empty passwords should never be used in operational
 environments.</description>
 
 <Rule id="no_empty_passwords">
-<title>Verify that No Accounts Have Empty Password Fields</title>
+<title>No Empty Password Fields</title>
 <description>Login access to accounts without passwords should be
 disabled</description>
 <ident cce="4238-2" />
@@ -210,9 +211,9 @@ disabled</description>
 The hashes for all user account passwords should be stored in
 the file <tt>/etc/shadow</tt> and never in <tt>/etc/passwd</tt>,
 which is readable by all users.</description>
+
 <Rule id="no_hashes_outside_shadow">
-<title>Verify that All Account Password Hashes are
-Shadowed</title>
+<title>Verify All Account Passwords Shadowed</title>
 <description>Check that passwords are shadowed</description>
 <ident cce="14300-8" />
 <oval id="accounts_password_all_shadowed" />
@@ -220,7 +221,6 @@ Shadowed</title>
 </Rule>
 </Group>
 </Group>
-
 
 
 <Group id="uidzero_accounts">
@@ -245,7 +245,7 @@ practice may have unexpected side effects, and is therefore not
 recommended.</description>
 
 <Rule id="no_uidzero_except_root">
-<title>Verify that No Non-Root Accounts Have UID 0</title>
+<title>Verify Only Root Has UID 0</title>
 <description>Anonymous root logins should be disabled</description>
 <ident cce="4009-7" />
 <oval id="accounts_no_uid_except_zero" />
@@ -332,7 +332,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="password_min_len">
-<title>Set password minimum length</title>
+<title>Set Password Minimum Length</title>
 <description>The password minimum length should be set
 appropriately</description>
 <ident cce="4154-1" />
@@ -341,7 +341,7 @@ appropriately</description>
 </Rule>
 
 <Rule id="password_min_age">
-<title>Set minimum password age</title>
+<title>Set Password Minimum Age</title>
 <description>The minimum password age should be set
 appropriately</description>
 <ident cce="4180-6" />
@@ -352,7 +352,7 @@ appropriately</description>
 
 
 <Rule id="password_max_age">
-<title>Set maximum password age</title>
+<title>Set Password Maximum Age</title>
 <description>The maximum password age should be set to:
 <sub idref="password_max_age_login_defs_value" /></description>
 <ident cce="4092-3" />
@@ -362,7 +362,7 @@ appropriately</description>
 
 
 <Rule id="password_warn_age">
-<title>Set password warn age</title>
+<title>Set Password Warn Age</title>
 <description>The password warn age should be set to:
 <sub idref="password_warn_age_login_defs_value" /></description>
 <ident cce="4097-2" />
@@ -394,7 +394,7 @@ databases such as LDAP or NIS for user information is to make
 appropriate modifications to <tt>/etc/nsswitch.conf</tt>.</description>
 
 <Rule id="no_nis_inclusions_shadow">
-<title>Remove Legacy + Entries from <tt>/etc/shadow</tt></title>
+<title>Remove Legacy + Entries From /etc/shadow</title>
 <description>NIS file inclusions should be set appropriately in the
 <tt>/etc/shadow</tt> file</description>
 <ident cce="14071-5" />
@@ -403,7 +403,7 @@ appropriate modifications to <tt>/etc/nsswitch.conf</tt>.</description>
 </Rule>
 
 <Rule id="no_nis_inclusions_group">
-<title>Remove Legacy + Entries from <tt>/etc/group</tt></title>
+<title>Remove Legacy + Entries From /etc/group</title>
 <description>NIS file inclusions should be set appropriately in the
 <tt>/etc/group</tt> file</description>
 <ident cce="14675-3" />
@@ -412,7 +412,7 @@ appropriate modifications to <tt>/etc/nsswitch.conf</tt>.</description>
 </Rule>
 
 <Rule id="no_nis_inclusions_passwd">
-<title>Remove Legacy + Entries from <tt>/etc/passwd</tt></title>
+<title>Remove Legacy + Entries From /etc/passwd</title>
 <description>NIS file inclusions should be set appropriately in the
 <tt>/etc/passwd</tt> file</description>
 <ident cce="4114-5" />

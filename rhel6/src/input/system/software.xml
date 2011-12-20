@@ -36,7 +36,7 @@ See the LVM HOWTO at http://tldp.org/HOWTO/LVM-HOWTO/ for more
 detailed information on LVM.</description>
 
 <Rule id="partition_for_tmp">
-<title>Ensure that <tt>/tmp</tt> has its own partition or logical volume</title>
+<title>Ensure /tmp Located On Separate Partition</title>
 <description>The <tt>/tmp</tt> directory is a world-writable directory used
 for temporary file storage. Ensure that it has its own partition or
 logical volume.</description>
@@ -51,7 +51,7 @@ by many programs (sometimes insecurely).
 </Rule>
 
 <Rule id="partition_for_var">
-<title>Ensure that <tt>/var</tt> has its own partition or logical volume</title>
+<title>Ensure /var Located On Separate Partition</title>
 <description>The <tt>/var</tt> directory is used by daemons and other system
 services to store frequently-changing data. 
 Ensure that <tt>/var</tt> has its own partition
@@ -69,8 +69,7 @@ world-writable directories, installed by other software packages.
 </Rule>
 
 <Rule id="partition_for_var_log">
-<title>Ensure that <tt>/var/log</tt> has its own partition or
-logical volume</title>
+<title>Ensure /var/log Located On Separate Partition</title>
 <description>System logs are stored in the <tt>/var/log</tt> directory.
 Ensure that it has its own partition or logical
 volume.</description>
@@ -80,8 +79,7 @@ volume.</description>
 </Rule>
 
 <Rule id="partition_for_var_log_audit">
-<title>Ensure that <tt>/var/log/audit</tt> has its own partition
-or logical volume</title>
+<title>Ensure /var/log/audit Located On Separate Partition</title>
 <description>Audit logs are stored in the <tt>/var/log/audit</tt> directory.
 Ensure that it has its own partition or logical volume. Make
 absolutely certain that it is large enough to store all audit logs
@@ -92,8 +90,7 @@ that will be created by the auditing daemon.</description>
 </Rule>
 
 <Rule id="partition_for_home">
-<title>Ensure that <tt>/home</tt> has its own partition or
-logical volume</title>
+<title>Ensure /home Located On Separate Partition</title>
 <description>If user home directories will be stored locally,
 create a separate partition for <tt>/home</tt>. If <tt>/home</tt> will be mounted
 from another system such as an NFS server, then creating a separate
@@ -119,8 +116,9 @@ is labeled <b>Add/Remove Software</b> and pup is labeled
 <br /><br />
 It is recommended that these tools be used to keep systems up
 to date with the latest security patches.</description>
+
 <Rule id="ensure_redhat_gpgkey_installed">
-<title>Ensure Red Hat GPG Key is Installed</title>
+<title>Ensure Red Hat GPG Key Installed</title>
 <description>The GPG key should be installed.</description>
 <rationale>
 This key is necessary to cryptographically verify that packages 
@@ -132,7 +130,7 @@ are from Red Hat.
 </Rule>
 
 <Rule id="disable_rhnsd">
-<title>Disable the rhnsd Daemon</title>
+<title>Disable rhnsd Service</title>
 <description>The <tt>rhnsd</tt> daemon polls the Red Hat Network web site
 for scheduled actions. Unless it is actually necessary to schedule
 updates remotely through the RHN website, it is recommended that
@@ -143,7 +141,7 @@ the service be disabled.</description>
 </Rule>
 
 <Rule id="security_patches_up_to_date">
-<title>Ensure software is up to date</title>
+<title>Ensure Software Patches Installed</title>
 <description>The following command prints a list of packages that
 need to be updated:
 <br />
@@ -160,7 +158,7 @@ To actually install these updates, run:
 </Rule>
 
 <Rule id="disable_yum-updatesd">
-<title>The <tt>yum-updatesd</tt> service should be disabled</title>
+<title>Disable yum-updatesd Service</title>
 <description>The <tt>yum-updatesd</tt> service is not mature enough for
 an enterprise environment, and the service may introduce unnecessary
 overhead. When possible, replace this service with a <tt>cron</tt> job
@@ -171,7 +169,7 @@ that calls <tt>yum</tt> directly.</description>
 </Rule>
 
 <Rule id="ensure_gpgcheck_globally_activated">
-<title>Ensure <tt>gpgcheck</tt> is Globally Activated</title>
+<title>Ensure "gpgcheck" Enabled In Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option should be used to ensure that
 checking of an RPM package’s signature always occurs prior to its
 installation.
@@ -189,8 +187,7 @@ gpgcheck=1</pre>
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled">
-<title>Ensure Package Signature Checking is Not
-Disabled For Any Repos</title>
+<title>Ensure "gpgcheck" Enabled For All Yum Package Repositories</title>
 <description>To ensure that signature checking is not disabled for
 any repos, ensure that the following line DOES NOT appear in any
 repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:
@@ -235,7 +232,7 @@ advice is based, is available in
 </Rule>
 
 <Rule id="verify_package_integrity">
-<title>erify Package Integrity Using RPM</title>
+<title>Verify RPM Package Integrity</title>
 <description>The RPM package management system includes the ability
 to verify the integrity of installed packages by comparing the
 installed files with information about the files taken from the

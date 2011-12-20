@@ -90,7 +90,7 @@ and to protect the boot process.
 </Value>
 
 <Rule id="enable_selinux_bootloader">
-<title>Ensure SELinux Not Disabled in <tt>/etc/grub.conf</tt></title>
+<title>Ensure SELinux Not Disabled In /etc/grub.conf</title>
 <description>SELinux should NOT be disabled in <tt>/etc/grub.conf</tt>.
 Check that <tt>selinux=0</tt> is not found</description>
 <ident cce="3977-6" />
@@ -99,7 +99,7 @@ Check that <tt>selinux=0</tt> is not found</description>
 </Rule>
 
 <Rule id="set_selinux_state">
-<title>Set the SELinux state</title>
+<title>Check SELinux State</title>
 <description>The SELinux state should be set
 appropriately</description>
 <ident cce="3999-0" />
@@ -108,7 +108,7 @@ appropriately</description>
 </Rule>
 
 <Rule id="set_selinux_policy">
-<title>Set the SELinux policy</title>
+<title>Check SELinux Policy</title>
 <description>The SELinux policy should be set
 appropriately.</description>
 <ident cce="3624-4" />
@@ -145,10 +145,10 @@ with special requirements. Therefore, it should be disabled in
 order to reduce the amount of potentially vulnerable code running
 on the system. See Section 2.4.6 for more information about systems
 which use category labelling.</description>
+
 <Rule id="disable_mcstransd">
-<title>Disable MCS Translation Service (mcstrans) if
-Possible</title>
-<description>The mcstrans service should be disabled.</description>
+<title>Disable mcstrans Service</title>
+<description>The MCS Translation Service (mcstrans) should be disabled.</description>
 <ident cce="3668-1" />
 <oval id="service_mcstrans_disabled" />
 <ref nist="CM-6, CM-7" />
@@ -170,8 +170,9 @@ To check for unlabeled device files, run the following command:
 
 </pre>
 It should produce no output in a well-configured system.</description>
+
 <Rule id="selinux_unlabeled_device_files">
-<title>Check for Unlabeled Device Files</title>
+<title>Find Device Files Without SELinux Label</title>
 <description>Check for device file that is not labeled.</description>
 <ident cce="14991-4" />
 <oval id="selinux_all_devicefiles_labeled" />

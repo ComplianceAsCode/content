@@ -159,7 +159,7 @@ passwords</warning>
 </Value>
 
 <Rule id="password_retry">
-<title>Set Password retry Requirements</title>
+<title>Set Password Retry Requirements</title>
 <description>The password retry should meet minimum
 requirements</description>
 <ident cce="15054-0" />
@@ -168,50 +168,47 @@ requirements</description>
 </Rule>
 
 <Rule id="password_require_digits">
-<title>The password strength parameters should require
-a minimum number of digits</title>
-<description>The password dcredit should meet minimum
-requirements</description>
+<title>Set Password Strength Minimum Digit Characters</title>
+<description>The password strength parameters should require
+a minimum number of digits. The password dcredit should meet minimum
+requirements.</description>
 <ident cce="14113-5" />
 <oval id="accounts_password_pam_cracklib_dcredit" value="password_pamcracklib_dcredit_value"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_uppercases">
-<title>The password strength parameters should require
-a minimum number of uppercase characters</title>
-<description>The password ucredit should meet minimum
-requirements</description>
+<title>Set Password Strength Minimum Uppercase Characters</title>
+<description>The password strength parameters should require
+a minimum number of uppercase characters.</description>
 <ident cce="14672-0" />
 <oval id="accounts_password_pam_cracklib_ucredit" value="password_pamcracklib_ucredit_value"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_specials">
-<title>The password strenght parameters should require
-a minimum number of special characters</title>
-<description>The password strenght parameters should require a
-minimum number of special characters</description>
+<title>Set Password Strength Minimum Special Characters</title>
+<description>The password strength parameters should require
+a minimum number of special characters.</description>
 <ident cce="14122-6" />
 <oval id="accounts_password_pam_cracklib_ocredit" value="password_pamcracklib_ocredit_value"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_lowercases">
-<title>Set Password lcredit Requirements</title>
+<title>Set Password Strength Minimum Lowercase Characters</title>
 <description>The password strenght parameters should require a
-minimum number of lowercase characters</description>
+minimum number of lowercase characters.</description>
 <ident cce="14712-4" />
 <oval id="accounts_password_pam_cracklib_lcredit" value="password_pamcracklib_lcredit_value"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_diffchars">
-<title>The password strength parameters should require
+<title>Set Password Strength Minimum Different Characters</title>
+<description>The password strength parameters should require
 new passwords to differ from old ones by a minimum number of
-characters</title>
-<description>The password difok should meet minimum
-requirements</description>
+characters.</description>
 <ident cce="14701-7" />
 <oval id="accounts_password_pam_cracklib_difok" value="password_pamcracklib_difok_value"/>
 <ref nist="IA-5" />
@@ -274,7 +271,7 @@ denial-of-service attack outweighs the benefits of thwarting
 password guessing attacks.</warning>
 
 <Rule id="deny_password_attempts">
-<title>Set deny for Failed Password Attempts</title>
+<title>Set Deny For Failed Password Attempts</title>
 <description>The deny policy should meet minimum
 requirements.</description>
 <ident cce="3410-8" />
@@ -313,7 +310,7 @@ algorithm</description>
 </Value>
 
 <Rule id="set_password_hashing_algorithm">
-<title>Set Password hashing algorithm</title>
+<title>Set Password Hashing Algorithm</title>
 <description>The password hashing algorithm should be set to
 SHA-512</description>
 <ident cce="14063-2" />
@@ -350,7 +347,7 @@ frequently.</description>
 </Value>
 
 <Rule id="limit_password_reuse">
-<title>Limit password reuse</title>
+<title>Limit Password Reuse</title>
 <description>The passwords to remember should be set to:
 <sub idref="password_history_retain_number" /></description>
 <ident cce="14939-3" />
