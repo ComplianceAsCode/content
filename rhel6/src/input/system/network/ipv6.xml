@@ -27,8 +27,9 @@ options ipv6 disable=1
 </pre>
 The IPv6 module cannot be disabled completely, but it can be
 configured to disable IPv6 networking support.</description>
+
 <Rule id="disable_ipv6_module_loading">
-<title>Disable Automatic Loading of IPv6 Networking Support</title>
+<title>Disable IPv6 Networking Support Automatic Loading</title>
 <description>Automatic loading of IPv6 networking support should be
 disabled.</description>
 <ident cce="3562-6" />
@@ -95,8 +96,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="set_sysctl_net_ipv6_conf_default_accept_ra">
-<title>Disable accepting IPv6 router advertisements
-(<tt>net.ipv6.conf.default.accept_ra</tt>)</title>
+<title>Disable Accepting IPv6 Router Advertisements</title>
 <description>The default setting for accepting IPv6 router
 advertisements should be:
 <sub idref="sysctl_net_ipv6_conf_default_accept_ra_value" />for all
@@ -108,8 +108,7 @@ interfaces.</description>
 </Rule>
 
 <Rule id="set_sysctl_ipv6_default_accept_redirects">
-<title>Disable accepting redirects from IPv6 routers
-(<tt>net.ipv6.conf.default.accept_redirects</tt>)</title>
+<title>Disable Accepting IPv6 Redirects</title>
 <description>Accepting redirects from IPv6 routers should be:
 <sub idref="sysctl_net_ipv6_conf_default_accept_redirects_value" />for all
 interfaces.</description>

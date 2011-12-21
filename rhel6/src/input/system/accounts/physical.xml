@@ -65,9 +65,9 @@ password protection feature.</description>
 
 
 <Rule id="userowner_grub.conf">
-<title>Set Boot Loader configuration file user owner</title>
-<description>The <tt>/etc/grub.conf</tt> file should be owned by
-root.</description>
+<title>Verify /boot/grub/grub.conf User Ownership</title>
+<description>The file /etc/grub.conf is a symbolic link to /boot/grub/grub.conf which
+should be owned by the root user to prevent destruction or modification of the file.</description>
 <ident cce="4144-2" />
 <oval id="file_owner_etc_grub_conf" value="file_owner_etc_grub_conf_value" />
 <ref nist="AC-3, CM-6"/>
@@ -75,18 +75,17 @@ root.</description>
 
 
 <Rule id="groupowner_grub.conf">
-<title>Set Boot Loader group owner</title>
-<description>The <tt>/etc/grub.conf</tt> file should be owned by group
-root.</description>
+<title>Verify /boot/grub/grub.conf Group Ownership</title>
+<description>The file /etc/grub.conf is a symbolic link to /boot/grub/grub.conf which
+should be owned by the root group to prevent destruction or modification of the file.</description>
 <ident cce="4197-0" />
 <oval id="file_groupowner_etc_grub_conf" value="file_groupowner_etc_grub_conf_value"/>
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
 <Rule id="perms_grub.conf">
-<title>Set permission on <tt>/etc/grub.conf</tt></title>
-<description>File permissions for <tt>/etc/grub.conf</tt> should be set
-correctly.</description>
+<title>Verify /boot/grub/grub.conf Permissions</title>
+<description>File permissions for /boot/grub/grub.conf should be set correctly.</description>
 <ident cce="3923-0" />
 <oval id="file_permissions_etc_grub_conf" />
 <ref nist="AC-3, CM-6"/>
@@ -120,7 +119,7 @@ SINGLE=/sbin/sulogin</pre>
 </description>
 
 <Rule id="require_singleuser_auth">
-<title>Require Authentication for Single-User Mode</title>
+<title>Require Single User Mode Authentication</title>
 <description>The requirement for a password to boot into
 single-user mode should be enabled.</description>
 <ident cce="4241-6" />
@@ -143,6 +142,7 @@ interactive system startup, in which it is possible to select the
 set of services which are started on boot. Using interactive boot,
 the console user could disable auditing, firewalls, or other
 services, weakening system security.</description>
+
 <Rule id="disable_interactive_boot">
 <title>Disable Interactive Boot</title>
 <description>The ability for users to perform interactive startups
@@ -230,18 +230,16 @@ shells, and X sessions</description>
 </Value>
 
 <Rule id="set_screensaver_inactivity_timeout">
-<title>Implement Inactivity Time-out for GNOME Login</title>
+<title>Set GNOME Login Inactivity Timeout</title>
 <description>The idle time-out value for period of inactivity GNOME
-desktop lockout should be 15 minutes</description>
+desktop lockout should be 15 minutes.</description>
 <ident cce="3315-9" />
 <oval id="gconf_gnome-screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" />
 </Rule>
 
 <Rule id="enable_screensaver_after_idle">
-<title>The GNOME desktop screensaver should be enabled
-or disabled as appropriate as a mandatory setting for all
-users.</title>
+<title>GNOME Desktop Screensaver Mandatory Use</title>
 <description>Idle activation of the screen saver should be
 enabled</description>
 <ident cce="14604-3" />
@@ -250,7 +248,7 @@ enabled</description>
 </Rule>
 
 <Rule id="enable_screensaver_password_lock">
-<title>Implement idle activation of screen lock</title>
+<title>Implement Screensaver Idle Activation</title>
 <description>Idle activation of the screen lock should be
 enabled</description>
 <ident cce="14023-6" />
@@ -259,7 +257,7 @@ enabled</description>
 </Rule>
 
 <Rule id="set_blank_screensaver">
-<title>Implement blank screen saver</title>
+<title>Implement Blank Screen Saver</title>
 <description>The screen saver should be blank</description>
 <ident cce="14735-5" />
 <oval id="gconf_gnome-screensaver_mode_blank" />
@@ -289,7 +287,7 @@ The <tt>-a</tt> option can be used to prevent switching to other
 virtual consoles.</description>
 
 <Rule id="install_vlock_package">
-<title>Configure console screen locking</title>
+<title>Configure Console Screen Locking</title>
 <description>The vlock package should be installed</description>
 <ident cce="3910-7" />
 <oval id="package_vlock_installed" />
