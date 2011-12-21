@@ -5,8 +5,9 @@ be executed at a later time. The cron service is required by almost
 all systems to perform necessary maintenance tasks, while at may or
 may not be required on a given system. Both daemons should be
 configured defensively.</description>
+
 <Rule id="enable_cron">
-<title>Enable <tt>cron</tt> Daemon</title>
+<title>Enable cron Service</title>
 <description>The <tt>crond</tt> service should be enabled.</description>
 <ident cce="4324-0" />
 <oval id="service_crond_enabled" />
@@ -14,7 +15,7 @@ configured defensively.</description>
 </Rule>
 
 <Rule id="disable_anacron">
-<title>Disable <tt>anacron</tt> if Possible</title>
+<title>Disable anacron Service</title>
 <description>The <tt>cronie-anacron</tt> package which provides anacron
 functionality is installed by default. To disable <tt>anacron</tt> support,
 run the following commands:
@@ -108,8 +109,9 @@ following command:
 Many of the periodic or delayed execution features of the at
 daemon can be provided through the cron daemon
 instead.</description>
+
 <Rule id="disable_at">
-<title>The 'at' daemon should be disabled</title>
+<title>Disable atd Service</title>
 <description>The atd service should be disabled.</description>
 <ident cce="14466-7" />
 <oval id="service_atd_disabled" />

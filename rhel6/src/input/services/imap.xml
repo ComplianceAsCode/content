@@ -13,14 +13,16 @@ POP3 server, disable and remove Dovecot if it was installed:
 # chkconfig dovecot off
 # yum erase dovecot</pre>
 </description>
+
 <Rule id="disable_dovecot">
-<title>Disable Dovecot if Possible</title>
+<title>Disable Dovecot Service Unless Required</title>
 <description>The <tt>dovecot</tt> service should be disabled.</description>
 <ident cce="3847-1" />
 <oval id="service_dovecot_disabled" />
 </Rule>
+
 <Rule id="uninstall_dovecot">
-<title>Uninstall Dovecot if Possible</title>
+<title>Uninstall dovecot RPM Package</title>
 <description>The <tt>dovecot</tt> package should be uninstalled.</description>
 <ident cce="4239-0" />
 <oval id="package_dovecot_removed" />

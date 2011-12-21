@@ -24,14 +24,16 @@ and removed from the system:
 # chkconfig httpd off
 # yum erase httpd</pre>
 </description>
+
 <Rule id="disable_httpd">
-<title>Disable Apache if Possible</title>
+<title>Disable Apache Unless Required</title>
 <description>The <tt>httpd</tt> service should be disabled.</description>
 <ident cce="4338-0" />
 <oval id="service_httpd_disabled" />
 </Rule>
+
 <Rule id="uninstall_httpd">
-<title>Uninstall Apache if Possible</title>
+<title>Uninstall apache RPM Package</title>
 <description>The <tt>httpd</tt> package should be uninstalled.</description>
 <ident cce="4514-6" />
 <oval id="package_httpd_removed" />

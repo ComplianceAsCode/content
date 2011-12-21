@@ -9,7 +9,6 @@ detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
 
-
 <Value id="sshd_idle_timeout_value" type="number"
 operator="equals" interactive="0">
 <title>SSH session Idle time</title>
@@ -20,7 +19,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="ssh_server_disabled">
-<title>Disable SSH Server if Possible (Unusual)</title>
+<title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
 However, if it can be disabled, do so with the command:
 <br />
@@ -34,7 +33,6 @@ remote access.
 <oval id="service_sshd_disabled" />
 </Rule>
 
-
 <Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
 <description>If the system needs to act as an SSH server, then
@@ -43,9 +41,8 @@ file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
 applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
 
-
 <Rule id="sshd_allow_only_protocol2">
-<title>Ensure Only Protocol 2 Connections Allowed</title>
+<title>Allow Only SSH Protocol 2</title>
 <description>Only SSH protocol version 2 connections should be
 permitted, because version 1 contains security
 vulnerabilities. The default setting shipped in the configuration
@@ -90,7 +87,7 @@ a user to establish a small VPN connection with a firewall/gateway machine and t
 
 
 <Rule id="sshd_set_idle_timeout">
-<title>Set SSH Idle Timeout Interval for User Logins</title>
+<title>Set SSH Idle Timeout Interval</title>
 <description>SSH allows administrators to set an idle timeout
 interval. After this interval has passed, the idle user will be
 automatically logged out.
@@ -113,7 +110,7 @@ from correctly detecting that the user is idle.</description>
 
 
 <Rule id="sshd_set_keepalive">
-<title>Set the SSH Client Alive Count to Ensure Idle Timeout Occurs</title>
+<title>Set SSH Client Alive Count</title>
 <description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveInterval</tt> is set, 
 edit <tt>/etc/ssh/sshd_config</tt> as
 follows:
@@ -166,7 +163,7 @@ HostbasedAuthentication no</pre>
 
 
 <Rule id="sshd_disable_root_login">
-<title>Disable root Login via SSH</title>
+<title>Disable SSH Root Login</title>
 <description>The root user should never be allowed to login
 directly over a network, as this both reduces auditable information
 about who ran privileged commands on the system and allows direct
@@ -197,7 +194,7 @@ passwords system-wide, as described in Section 2.3.1.5.</description>
 </Rule>
 
 <Rule id="sshd_enable_warning_banner">
-<title>Enable a Warning Banner</title>
+<title>Enable Warning Banner</title>
 <description>An earlier section contains information on how to create an
 appropriate warning banner.
 <br /><br />
@@ -213,7 +210,7 @@ Banner /etc/issue</pre>
 
 
 <Rule id="sshd_do_not_permit_user_env">
-<title>Do Not Allow SSH Users to Set Environment Options</title>
+<title>Do Not Allow SSH Environment Options</title>
 <description>To prevent users from being able to present
 environment options to the SSH daemon and potentially bypass some
 access restrictions, add or correct the following line:
@@ -244,7 +241,7 @@ CBC were supposed to be fixed.</description>
 <Rule id="sshd_use_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
 <description>Use only FIPS approved ciphers not in CBC
-mode</description>
+mode.</description>
 <ident cce="14491-5" />
 <oval id="sshd_use_approved_ciphers" />
 </Rule>

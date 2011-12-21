@@ -11,7 +11,7 @@ best effect, and how to use tools provided with the system to maintain and
 monitor your logs.</description>
 
 <Rule id="package_rsyslog_installed">
-<title>The rsyslog package should be installed.</title>
+<title>Install rsyslog</title>
 <description>This check queries the local RPM database to
 make sure that the rsyslog RPM is installed.</description>
 <ident cce="17742-8" />
@@ -63,8 +63,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="userowner_rsyslog_files">
-<title>All <tt>rsyslog</tt> log files should be owned by the
-appropriate user.</title>
+<title>RSyslog Log Files Owned By Appropriate User</title>
 <description>All <tt>rsyslog</tt> log files should be owned by the
 appropriate user.</description>
 <ident cce="17857-4" />
@@ -72,11 +71,8 @@ appropriate user.</description>
 <ref nist="AC-3, CM-6" />
 </Rule>
 
-
-
 <Rule id="groupowner_rsyslog_files">
-<title>All <tt>rsyslog</tt> log files should be owned by the
-appropriate group.</title>
+<title>RSyslog Log Files Owned By Appropriate Group</title>
 <description>All <tt>rsyslog</tt> log files should be owned by the
 appropriate group.</description>
 <ident cce="18240-2" />
@@ -86,8 +82,7 @@ appropriate group.</description>
 
 
 <Rule id="rsyslog_file_permissions">
-<title>File permissions for all <tt>rsyslog</tt> log files
-should be set correctly.</title>
+<title>RSyslog Log Files Have Correct Permissions</title>
 <description>File permissions for all <tt>rsyslog</tt> log files should be
 set correctly.</description>
 <ident cce="18095-0" />
@@ -97,7 +92,7 @@ set correctly.</description>
 </Group>
 
 <Group id="rsyslog_sending_messages">
-<title>Rsyslog logs should be sent to a remote loghost</title>
+<title>Rsyslog Logs Sent To Remote Host</title>
 <description>Edit <tt>/etc/rsyslog.conf</tt>. Add or correct the line:
 <br />
 <pre>
@@ -125,9 +120,9 @@ problems cause loss of network connectivity, which will prevent the
 sending of messages to the central server. For all of these reasons, it is
 better to store log messages both centrally and on each host, so
 that they can be correlated if necessary.</description>
+
 <Rule id="rsyslog_send_messages_to_logserver">
-<title>Rsyslog logs should be sent to a remote loghost
-or not as appropriate</title>
+<title>Rsyslog Logs Sent To Remote Host</title>
 <description>Rsyslog logs should be sent to a remote loghost or not
 as appropriate</description>
 <ident cce="17248-6" />
@@ -181,9 +176,9 @@ hostname before logging messages from that host, to reduce the
 amount of redundant information placed in log files. See the
 <tt>rsyslogd(8)</tt> man page for further information.</description>
 -->
+
 <Rule id="rsyslog_accept_remote_messages">
-<title><tt>rsyslog</tt> should accept remote messages or not as
-appropriate</title>
+<title>RSyslog Should Accept Remote Messages As Appropriate</title>
 <description><tt>rsyslog</tt> should accept remote messages or not as
 appropriate</description>
 <ident cce="17639-6" />
@@ -218,8 +213,9 @@ Note that <tt>logrotate</tt> is run nightly by the cron job
 <tt>/etc/cron.daily/logrotate</tt>. If particularly active logs need to be
 rotated more often than once a day, some other mechanism must be
 used.</description>
+
 <Rule id="ensure_logrotate_activated">
-<title>Ensure All Logs are Rotated by <tt>logrotate</tt></title>
+<title>Ensure Logs Are Rotated</title>
 <description>The <tt>logrotate</tt> (<tt>rsyslog</tt> rotater) service should be
 enabled.</description>
 <ident cce="4182-2" />

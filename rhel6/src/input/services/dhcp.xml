@@ -45,8 +45,9 @@ and removed. Unmanaged DHCP servers will provide faulty information
 to clients, interfering with the operation of a legitimate site
 DHCP server if there is one, or causing misconfigured machines to
 exhibit unpredictable behavior if there is not.</description>
+
 <Rule id="disable_dhcp_server">
-<title>Disable DHCP Server if possible</title>
+<title>Disable DHCP Service</title>
 <description>The <tt>dhcpd</tt> service should be disabled.</description>
 <ident cce="4336-4" />
 <oval id="service_dhcpd_disabled" />
@@ -54,7 +55,7 @@ exhibit unpredictable behavior if there is not.</description>
 </Rule>
 
 <Rule id="uninstall_dhcp_server">
-<title>Uninstall DHCP Server if possible</title>
+<title>Uninstall DHCP Server Package</title>
 <description>The dhcp package should be uninstalled.</description>
 <ident cce="4464-4" />
 <oval id="package_dhcpd_removed" />
