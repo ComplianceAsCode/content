@@ -75,7 +75,7 @@ range. This is because the current Netfilter implementation for
 IPv6 lacks reliable connection-tracking functionality.</description>
 
 <Rule id="enable_ip6tables">
-<title>Verify <tt>ip6tables</tt> is enabled</title>
+<title>Verify ip6tables Enabled</title>
 <description>The <tt>ip6tables</tt> service should be enabled.</description>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
@@ -83,7 +83,7 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 </Rule>
 
 <Rule id="enable_iptables">
-<title>Verify <tt>iptables</tt> is enabled</title>
+<title>Verify iptables Enabled</title>
 <description>The <tt>iptables</tt> service should be enabled.</description>
 <ident cce="4189-7" />
 <oval id="service_iptables_enabled" />
@@ -135,9 +135,9 @@ the INPUT and FORWARD built-in chains:
 Changing the default policy in this way implements proper
 design for a firewall, i.e. any packets which are not explicitly
 permitted should not be accepted.</description>
+
 <Rule id="set_iptables_default_rule">
-<title>The default policy for iptables INPUT table
-should be set appropriately</title>
+<title>Set Default Firewall Policy</title>
 <description>Change the default policy to DROP (from ACCEPT) for
 the INPUT built-in chain.</description>
 <ident cce="14264-6" />
