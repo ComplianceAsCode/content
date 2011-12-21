@@ -79,7 +79,8 @@ disabled.</description>
 <ref nist="AC-3, AC-6" />
 </Rule>
 </Group>
-
+<!-- Commenting the wheel/su items, since there may be diversity here -->
+<!-- 
 <Group id="wheel_group">
 <title>The wheel group should exist</title>
 <description>
@@ -119,7 +120,7 @@ restricted to the <tt>wheel</tt> group.</description>
 <ref nist="AC-3, CM-6" />
 </Rule>
 </Group>
-
+-->
 <Group id="systemaccount_shells">
 <title>Block Shell and Login Access for Non-Root System
 Accounts</title>
@@ -173,7 +174,9 @@ disabled</description>
 Hashes</title>
 <description>TODO::INSERT</description>
 
-<Group id="empty_passwords">
+
+
+<Rule id="no_empty_passwords">
 <title>Verify that No Accounts Have Empty Password Fields</title>
 <description>Run the command:
 <br />
@@ -188,19 +191,14 @@ If an account has an empty password, anybody may log in and
 run commands with the privileges of that account. Accounts with
 empty passwords should never be used in operational
 environments.</description>
-
-<Rule id="no_empty_passwords">
-<title>No Empty Password Fields</title>
-<description>Login access to accounts without passwords should be
-disabled</description>
 <ident cce="4238-2" />
 <oval id="accounts_no_empty_passwords" />
 <ref nist="AC-3, CM-6, IA-5" />
 </Rule>
-</Group>
 
-<Group id="password_hashes_in_shadow">
-<title>Verify that All Account Password Hashes are Shadowed</title>
+
+<Rule id="no_hashes_outside_shadow">
+<title>Verify All Account Password Hashes are Shadowed</title>
 <description>To ensure that no password hashes are stored in
 <tt>/etc/passwd</tt>, the following command should have no output:
 <br />
@@ -211,20 +209,15 @@ disabled</description>
 The hashes for all user account passwords should be stored in
 the file <tt>/etc/shadow</tt> and never in <tt>/etc/passwd</tt>,
 which is readable by all users.</description>
-
-<Rule id="no_hashes_outside_shadow">
-<title>Verify All Account Passwords Shadowed</title>
-<description>Check that passwords are shadowed</description>
 <ident cce="14300-8" />
 <oval id="accounts_password_all_shadowed" />
 <ref nist="IA-5" />
 </Rule>
 </Group>
-</Group>
 
 
-<Group id="uidzero_accounts">
-<title>Verify that No Non-Root Accounts Have UID 0</title>
+<Rule id="no_uidzero_except_root">
+<title>Verify Only Root Has UID 0</title>
 <description>This command will print all password file entries for
 accounts with UID 0:
 <br />
@@ -243,15 +236,10 @@ all cases. Some sites choose to have more than one account with UID
 0 in order to differentiate between administrators, but this
 practice may have unexpected side effects, and is therefore not
 recommended.</description>
-
-<Rule id="no_uidzero_except_root">
-<title>Verify Only Root Has UID 0</title>
-<description>Anonymous root logins should be disabled</description>
 <ident cce="4009-7" />
 <oval id="accounts_no_uid_except_zero" />
 <ref nist="AC-3, AC-11, CM-6, CM-7" />
 </Rule>
-</Group>
 
 <Group id="password_expiration">
 <title>Set Password Expiration Parameters</title>

@@ -156,8 +156,8 @@ To actually install these updates, run:
 </description>
 <ref nist="SI-2"/>
 </Rule>
-
-<Rule id="disable_yum-updatesd">
+<!-- yum-updatesd is not part of RHEL 6 -->
+<!--<Rule id="disable_yum-updatesd">
 <title>Disable yum-updatesd Service</title>
 <description>The <tt>yum-updatesd</tt> service is not mature enough for
 an enterprise environment, and the service may introduce unnecessary
@@ -167,7 +167,7 @@ that calls <tt>yum</tt> directly.</description>
 <oval id="service_yum-updatesd_disabled" />
 <ref nist="CM-6, CM-7, SI-2"/>
 </Rule>
-
+-->
 <Rule id="ensure_gpgcheck_globally_activated">
 <title>Ensure "gpgcheck" Enabled In Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option should be used to ensure that
