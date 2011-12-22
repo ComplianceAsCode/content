@@ -14,6 +14,17 @@
     </xsl:if>
   </xsl:template>
 
+  <!-- add attribute selected=false so that Profiles
+       can activate Rules as needed -->
+  <xsl:template match="xccdf:Rule">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:attribute name="selected">false</xsl:attribute>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+  </xsl:template>
+
+
   <!-- copy everything else through to final output -->
   <xsl:template match="@*|node()">
     <xsl:copy>

@@ -10,8 +10,10 @@ shorthand-guide:
 	xmllint --format --output ${OUTDIR}/rhel6-shorthand.xml ${OUTDIR}/rhel6-shorthand.xml 
 
 shorthand2xccdf:
-	xsltproc -o ${OUTDIR}/rhel6-xccdf.xml ${TRANSDIR}/shorthand2xccdf.xslt ${OUTDIR}/rhel6-shorthand.xml
+	xsltproc -o ${OUTDIR}/rhel6-xccdf-noprofiles.xml ${TRANSDIR}/shorthand2xccdf.xslt ${OUTDIR}/rhel6-shorthand.xml
+	xsltproc -stringparam profile "allprofiles" -o ${OUTDIR}/rhel6-xccdf.xml ${TRANSDIR}/xccdf-addprofiles.xslt ${OUTDIR}/rhel6-xccdf-noprofiles.xml
 	xmllint --format --output ${OUTDIR}/rhel6-xccdf.xml ${OUTDIR}/rhel6-xccdf.xml 
+
 
 checks:
 	xmlwf ${INDIR}/checks/*.xml
@@ -25,23 +27,21 @@ guide: shorthand-guide shorthand2xccdf
 	oscap xccdf generate guide --profile allrules ${OUTDIR}/rhel6-xccdf.xml > ${OUTDIR}/rhel6-guide.html
 #       specifying a nonexistent profile, "allrules," to make oscap print all Rules
 
-xccdf2shorthand:
-	xsltproc -o ${OUTDIR}/rhel5-shorthand.xml ${TRANSDIR}/xccdf2shorthand.xslt ${REFS}/usgcb-rhel5desktop-xccdf.xml
-	tidy -m -xml -utf8 --indent-spaces=0 ${OUTDIR}/rhel5-shorthand.xml
+# this is only here as an example
+#xccdf2shorthand:
+#	xsltproc -o ${OUTDIR}/rhel5-shorthand.xml ${TRANSDIR}/xccdf2shorthand.xslt ${REFS}/usgcb-rhel5desktop-xccdf.xml
+#	tidy -m -xml -utf8 --indent-spaces=0 ${OUTDIR}/rhel5-shorthand.xml
 
-xccdf-addprofiles:
-	xsltproc -stringparam profile "allprofiles" -o ${OUTDIR}/rhel6-xccdf-allprofiles.xml ${TRANSDIR}/xccdf-addprofiles.xslt ${OUTDIR}/rhel6-xccdf.xml
+xccdf2table-nistrefs: shorthand-guide shorthand2xccdf
+	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
 
-xccdf2table-nistrefs: shorthand-guide shorthand2xccdf xccdf-addprofiles
-	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf-allprofiles.xml
-	xmllint --format --output ${OUTDIR}/rhel6-xccdf-allprofiles.xml ${OUTDIR}/rhel6-xccdf-allprofiles.xml
+content: shorthand-guide shorthand2xccdf checks
+	${TRANSDIR}/relabelids.py rhel6-xccdf.xml scap-security-guide 
+# 	the script chdirs to ./output, so refer to files from there.
+# 	this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml
 
-content: shorthand-guide shorthand2xccdf xccdf-addprofiles checks
-	${TRANSDIR}/relabelids.py rhel6-xccdf-allprofiles.xml scap-security-guide 
-# 	the script chdirs to ./output, so refer to files from there
-
-validate:
-	xsltproc -o ${OUTDIR}/rhel6-xccdf-valid.xml ${TRANSDIR}/xccdf2oscapvalid.xslt ${OUTDIR}/rhel6-xccdf-allprofiles-scap-security-guide.xml
+validate: 
+	xsltproc -o ${OUTDIR}/rhel6-xccdf-valid.xml ${TRANSDIR}/xccdf2oscapvalid.xslt ${OUTDIR}/rhel6-xccdf-scap-security-guide.xml
 	oscap xccdf validate-xml ${OUTDIR}/rhel6-xccdf-valid.xml
 	oscap oval validate-xml ${OUTDIR}/rhel6-oval-scap-security-guide.xml
 
