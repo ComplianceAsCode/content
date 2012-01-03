@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance"
-  id="selinux_policy_enforcing" version="1">
+  id="selinux_policytype" version="1">
     <metadata>
       <title>Enable SELinux</title>
       <affected family="unix">
@@ -11,25 +11,28 @@
       appropriately.</description>
     </metadata>
     <criteria>
-      <criterion test_ref="test_20107" />
+      <criterion test_ref="test_selinux_policy" />
     </criteria>
   </definition>
+
   <ind:textfilecontent54_test check="all"
   check_existence="all_exist"
   comment="Tests the value of the ^[\s]*SELINUXTYPE[\s]*=[\s]*([^#]*) expression in the /etc/selinux/config file"
-  id="test_20107" version="1">
-    <ind:object object_ref="obj_20107" />
-    <ind:state state_ref="state_20107" />
+  id="test_selinux_policy" version="1">
+    <ind:object object_ref="obj_selinux_policy" />
+    <ind:state state_ref="state_selinux_policy" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state id="state_20107"
-  version="1">
+
+  <ind:textfilecontent54_state id="state_selinux_policy" version="1">
     <ind:subexpression operation="equals" var_check="all"
-    var_ref="var_20107" />
+    var_ref="var_selinux_policy_name" />
   </ind:textfilecontent54_state>
-  <external_variable comment="External variable for definition 20107"
-  datatype="string" id="var_20107"
+
+  <external_variable comment="External variable: name of selinux policy in /etc/selinux/config"
+  datatype="string" id="var_selinux_policy_name"
   version="1" />
-  <ind:textfilecontent54_object id="obj_20107"
+
+  <ind:textfilecontent54_object id="obj_selinux_policy"
   version="1">
     <ind:path>/etc/selinux</ind:path>
     <ind:filename>config</ind:filename>

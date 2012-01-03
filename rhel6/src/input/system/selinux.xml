@@ -66,7 +66,7 @@ necessary to check <tt>grub.conf</tt> to ensure that this has not been done
 and to protect the boot process.
 </description>
 
-<Value id="selinux_state_name" type="string" operator="equals" interactive="0">
+<Value id="var_selinux_state_name" type="string" operator="equals" interactive="0">
 <title>SELinux state</title>
 <description>enforcing - SELinux security policy is enforced.
 <br />permissive - SELinux prints warnings instead of enforcing.
@@ -77,7 +77,7 @@ and to protect the boot process.
 <value selector="disabled">disabled</value>
 </Value>
 
-<Value id="selinux_policy_name" type="string" operator="equals" interactive="0">
+<Value id="var_selinux_policy_name" type="string" operator="equals" interactive="0">
 <title>SELinux policy</title>
 <description>Type of policy in use. Possible values are:
 <br />targeted - Only targeted network daemons are protected.
@@ -103,7 +103,7 @@ Check that <tt>selinux=0</tt> is not found</description>
 <description>The SELinux state should be set
 appropriately</description>
 <ident cce="3999-0" />
-<oval id="selinux_mode" value="selinux_state_name"/>
+<oval id="selinux_mode" value="var_selinux_state_name"/>
 <ref nist="CM-6, CM-7" />
 </Rule>
 
@@ -112,7 +112,7 @@ appropriately</description>
 <description>The SELinux policy should be set
 appropriately.</description>
 <ident cce="3624-4" />
-<oval id="selinux_policytype" value="selinux_policy_name"/>
+<oval id="selinux_policytype" value="var_selinux_policy_name"/>
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
