@@ -60,10 +60,19 @@ def add_oval_elements(body):
 # replace external_varables with local_variables, so the definition can be tested
 # independently of an XCCDF file
 def replace_external_vars(tree):
-    print "considering replace"
     # external_variable is a special case: we turn it into a local_variable so we can test
     for node in tree.findall(".//"+ovalns+"external_variable"):
         print "external_variable with id : " + node.get("id") 
+        extvar_id = node.get("id")
+        #for envkey, envval in os.environ.iteritems():
+        #    print envkey + " = " + envval
+        #sys.exit()
+        if extvar_id not in os.environ.keys():
+            sys.exit("external_variable specified, but no value provided via environment variable")
+        node.tag = ovalns + "local_variable"    # replace tag name: external -> local
+        literal = ET.Element("literal_component")
+        literal.text = os.environ[extvar_id]
+        node.append(literal)
         # TODO: assignment of external_variable via environment vars, for testing
     return tree
 
