@@ -1,18 +1,17 @@
 <Group id="accounts-pam">
 <title>Protect Accounts by Configuring PAM</title>
 <description>PAM, or Pluggable Authentication Modules, is a system
-which implements modular authentication for Linux programs. PAM is
-well-integrated into Linux's authentication architecture, making it
-difficult to remove, but it can be configured to minimize your
-system's exposure to unnecessary risk. This section contains
-guidance on how to accomplish that, and how to ensure that the
-modules used by your PAM configuration do what they are supposed to
-do.
+which implements modular authentication for Linux programs. PAM provides
+a flexible and configurable architecture for authentication, and it should be configured 
+to minimize exposure to unnecessary risk. This section contains
+guidance on how to accomplish that.  
 <br /><br />
 PAM is implemented as a set of shared objects which are
 loaded and invoked whenever an application wishes to authenticate a
 user. Typically, the application must be running as root in order
-to take advantage of PAM. Traditional privileged network listeners
+to take advantage of PAM, because PAM's modules often need to be able 
+to access sensitive stores of account information, such as /etc/shadow. 
+Traditional privileged network listeners
 (e.g. sshd) or SUID programs (e.g. sudo) already meet this
 requirement. An SUID root application, userhelper, is provided so
 that programs which are not SUID or privileged themselves can still
@@ -51,8 +50,8 @@ at least a certain length, are not the previous password reversed,
 and are not simply a change of case from the previous password. It
 can also require passwords to be in certain character classes.
 <br /><br />
-The <tt>pam_passwdqc</tt> PAM module provides the ability to enforce
-even more stringent password strength requirements. It is provided
+The <tt>pam_passwdqc</tt> PAM module also provides the ability to enforce
+stringent password strength requirements. It is provided
 in an RPM of the same name.
 <br /><br />
 The man pages <tt>pam_cracklib(8)</tt> and <tt>pam_passwdqc(8)</tt>
@@ -63,9 +62,9 @@ each.</description>
 <title>Set Password Quality Requirements, if using
 pam_cracklib</title>
 <description>The <tt>pam_cracklib</tt> PAM module can be configured to meet
-recommendations for DoD systems as stated in [12].
+requirements for a variety of policies.  
 <br /><br />
-To configure <tt>pam_cracklib</tt> to require at least one uppercase
+For example, to configure <tt>pam_cracklib</tt> to require at least one uppercase
 character, lowercase character, digit, and other (special)
 character, locate the following line in <tt>/etc/pam.d/system-auth</tt>:
 <br />
@@ -79,12 +78,13 @@ and then alter it to read:
 password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=0
 
 </pre>
-If necessary, modify the arguments to ensure compliance with
-your organization’s security policy.</description>
+The arguments can be modified to ensure compliance with
+your organization’s security policy.  Discussion of each parameter follows.
+</description>
 <warning category="general">Note that the password quality
 requirements are not enforced for the root account for some
 reason.</warning>
-<Value id="password_pamcracklib_retry_value" type="number"
+<Value id="var_password_pam_cracklib_retry" type="number"
 operator="equals" interactive="0">
 <title>retry</title>
 <description>Number of retry attempts before erroring
@@ -94,7 +94,7 @@ out</description>
 <value selector="2">2</value>
 <value selector="3">3</value>
 </Value>
-<Value id="password_pamcracklib_minlen_value" type="number"
+<Value id="var_password_pam_cracklib_minlen" type="number"
 operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
@@ -107,7 +107,7 @@ operator="equals" interactive="0">
 <value selector="14">14</value>
 <value selector="15">15</value>
 </Value>
-<Value id="password_pamcracklib_dcredit_value" type="number"
+<Value id="var_password_pam_cracklib_dcredit" type="number"
 operator="equals" interactive="0">
 <title>dcredit</title>
 <description>Mininum number of digits in password</description>
@@ -116,7 +116,7 @@ operator="equals" interactive="0">
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="password_pamcracklib_ocredit_value" type="number"
+<Value id="var_password_pam_cracklib_ocredit" type="number"
 operator="equals" interactive="0">
 <title>ocredit</title>
 <description>Mininum number of other (special characters) in
@@ -126,7 +126,7 @@ password</description>
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="password_pamcracklib_lcredit_value" type="number"
+<Value id="var_password_pam_cracklib_lcredit" type="number"
 operator="equals" interactive="0">
 <title>lcredit</title>
 <description>Mininum number of lower case in password</description>
@@ -135,7 +135,7 @@ operator="equals" interactive="0">
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="password_pamcracklib_ucredit_value" type="number"
+<Value id="var_password_pam_cracklib_ucredit" type="number"
 operator="equals" interactive="0">
 <title>ucredit</title>
 <description>Mininum number of upper case in password</description>
@@ -144,7 +144,7 @@ operator="equals" interactive="0">
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="password_pamcracklib_difok_value" type="number"
+<Value id="var_password_pam_cracklib_difok" type="number"
 operator="equals" interactive="0">
 <title>difok</title>
 <description>Mininum number of characters not present in old
@@ -159,58 +159,97 @@ passwords</warning>
 </Value>
 
 <Rule id="password_retry">
-<title>Set Password Retry Requirements</title>
-<description>The password retry should meet minimum
-requirements</description>
+<title>Set Password Retry Prompts Permitted Per-session</title>
+<description>The pam_cracklib module's <tt>retry=</tt> parameter controls how many times a program
+will re-prompt a user after an incorrect password entry, on a per-session basis.
+</description>
+<rationale>
+Setting the password retry prompts that are permitted on a per-session basis to a low value 
+requires some software, such as SSH, to re-connect.  This can slow down and
+draw additional attention to some types of password-guessing attacks.  Note that this 
+is different from account lockout, which is provided by the pam_faillock module.
+</rationale>
 <ident cce="15054-0" />
-<oval id="accounts_password_pam_cracklib_retry" value="password_pamcracklib_retry_value"/>
+<oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_digits">
 <title>Set Password Strength Minimum Digit Characters</title>
-<description>The password strength parameters should require
-a minimum number of digits. The password dcredit should meet minimum
-requirements.</description>
+<description>The pam_cracklib module's <tt>dcredit=</tt> parameter controls requirements for
+usage of digits in a password.  When set to a negative number, any password will be required to
+contain that many digits.  When set to a positive number, pam_cracklib will grant +1 additional 
+length credit for each digit.
+</description>
+<rationale>
+Requiring digits makes password guessing attacks more difficult by ensuring a larger
+search space. 
+</rationale>
 <ident cce="14113-5" />
-<oval id="accounts_password_pam_cracklib_dcredit" value="password_pamcracklib_dcredit_value"/>
+<oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_uppercases">
 <title>Set Password Strength Minimum Uppercase Characters</title>
-<description>The password strength parameters should require
-a minimum number of uppercase characters.</description>
+<description>The pam_cracklib module's <tt>ucredit=</tt> parameter controls requirements for
+usage of uppercase letters in a password.  When set to a negative number, any password will be required to
+contain that many uppercase characters.  When set to a positive number, pam_cracklib will grant +1 additional 
+length credit for each uppercase character.
+</description>
+<rationale>
+Requiring a minimum number of uppercase characters makes password guessing attacks 
+more difficult by ensuring a larger search space. 
+</rationale>
 <ident cce="14672-0" />
-<oval id="accounts_password_pam_cracklib_ucredit" value="password_pamcracklib_ucredit_value"/>
+<oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_specials">
 <title>Set Password Strength Minimum Special Characters</title>
-<description>The password strength parameters should require
-a minimum number of special characters.</description>
+<description>The pam_cracklib module's <tt>ocredit=</tt> parameter controls requirements for
+usage of special (or ``other'') characters in a password.  When set to a negative number, any password will be required to
+contain that many special characters.  When set to a positive number, pam_cracklib will grant +1 additional 
+length credit for each special character.
+</description>
+<rationale>
+Requiring a minimum number of special characters makes password guessing attacks 
+more difficult by ensuring a larger search space. 
+</rationale>
 <ident cce="14122-6" />
-<oval id="accounts_password_pam_cracklib_ocredit" value="password_pamcracklib_ocredit_value"/>
+<oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_lowercases">
 <title>Set Password Strength Minimum Lowercase Characters</title>
-<description>The password strenght parameters should require a
-minimum number of lowercase characters.</description>
+<description>The pam_cracklib module's <tt>lcredit=</tt> parameter controls requirements for
+usage of lowercase letters in a password.  When set to a negative number, any password will be required to
+contain that many lowercase characters.  When set to a positive number, pam_cracklib will grant +1 additional 
+length credit for each lowercase character.
+</description>
+<rationale>
+Requiring a minimum number of lowercase characters makes password guessing attacks 
+more difficult by ensuring a larger search space. 
+</rationale>
 <ident cce="14712-4" />
-<oval id="accounts_password_pam_cracklib_lcredit" value="password_pamcracklib_lcredit_value"/>
+<oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
 <ref nist="IA-5" />
 </Rule>
 
 <Rule id="password_require_diffchars">
 <title>Set Password Strength Minimum Different Characters</title>
-<description>The password strength parameters should require
-new passwords to differ from old ones by a minimum number of
-characters.</description>
+<description>The pam_cracklib module's <tt>difok=</tt> parameter controls requirements for
+usage of different characters during a password change.  
+</description>
+<rationale>
+Requiring a minimum number of different characters during password changes ensures that 
+newly changed passwords should not resemble previously compromised ones.
+Note that passwords which are changed on compromised systems will still be compromised, however. 
+</rationale>
 <ident cce="14701-7" />
-<oval id="accounts_password_pam_cracklib_difok" value="password_pamcracklib_difok_value"/>
+<oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
 <ref nist="IA-5" />
 </Rule>
 </Group>
