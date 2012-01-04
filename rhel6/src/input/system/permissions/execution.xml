@@ -18,8 +18,8 @@ unauthorized reading by unprivileged users on the system.
 If a particular daemon needs a less restrictive umask,
 consider editing the startup script or sysconfig file of that
 daemon to make a specific exception.</description>
-<Value id="daemon_umask_value" type="string"
-operator="equals" interactive="0">
+
+<Value id="var_umask_for_daemons" type="string" operator="equals" interactive="0">
 <title>daemon umask</title>
 <description>Enter umask for daemons</description>
 <value selector="">027</value>
@@ -32,7 +32,7 @@ operator="equals" interactive="0">
 <description>The daemon umask should be set as
 appropriate</description>
 <ident cce="4220-0" />
-<oval id="umask_for_daemons" value="daemon_umask_value"/>
+<oval id="umask_for_daemons" value="var_umask_for_daemons"/>
 <ref nist="AC-3, CM-6"/>
 </Rule>
 </Group>
