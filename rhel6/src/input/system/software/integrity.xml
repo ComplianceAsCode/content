@@ -1,0 +1,161 @@
+<Group id="integrity">
+<title>Software Integrity Checking</title>
+<description>
+Both the AIDE (Advanced Intrusion Detection Environment) 
+software and the RPM package management system provide 
+mechanisms for verifying the integrity of installed software.
+AIDE is designed to be a replacement for the well-known
+Tripwire integrity checker.  The RPM package management system can 
+conduct integrity checks by comparing information in its 
+metadata database with files installed on the system.
+<br /><br />
+Integrity checking cannot
+<i>prevent</i> intrusions into your system, but can detect that
+they have occurred.  Requirements for software integrity checking may be 
+highly dependent on the environment
+in which the system will be used. 
+</description>
+
+<Group id="aide">
+<title>Verify Integrity with AIDE</title>
+<description>AIDE conducts integrity checks by comparing information
+about files with previously-gathered information, which it stores in a 
+database (to use the term loosely; it's really just data inside a file).
+Ideally, the AIDE database would be built before the
+system is connected to any network, though this may prove
+impractical due to registration and software updates.
+AIDE is highly configurable.  This advice is based on information
+provided in its documentation available in 
+<tt>/usr/share/doc/aide-VERSION</tt></description>
+
+<Rule id="install_aide">
+<title>Install AIDE</title>
+<description>
+Install the AIDE package with the command:
+<pre>
+# yum install aide</pre>
+</description>
+<rationale>
+The AIDE package must be installed if it is to be available for integrity checking.
+</rationale>
+<ident cce="4209-3" />
+<oval id="package_aide_installed" />
+<ref nist="CM-6, CM-7"/>
+</Rule>
+
+<Rule id="disable_prelink">
+<title>Disable Prelinking</title>
+<description>
+The prelinking feature 
+changes binaries in an attempt to decrease their startup time. 
+In order to disable it, change or add the following line inside the file <tt>/etc/sysconfig/prelink</tt>:
+<pre>
+PRELINKING=no 
+</pre>
+Next, run the command
+<pre>
+# /usr/sbin/prelink -ua 
+</pre>
+to restore binaries to a normal, non-prelinked state.  
+</description>
+<rationale>
+The prelinking feature can interfere with the operation
+of AIDE, because it changes binaries. 
+</rationale>
+</Rule>
+
+<Rule id="aide_build_database">
+<title>Build and Test AIDE Database</title>
+<description>Run the following command to generate a new database:
+<pre>
+# /usr/sbin/aide --init</pre>
+By default, the database will be written to the file <tt>/var/lib/aide/aide.db.new.gz</tt>.
+Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary 
+<tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
+The newly-generated database can be installed as follows:
+<pre>
+# cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+To initiate a manual check, run the following command:
+<pre>
+# /usr/sbin/aide --check</pre>
+If this check produces any unexpected output, investigate.
+</description>
+<rationale>
+For AIDE to be effective, an initial database of "known-good" information about files
+must be captured and it should be able to be verified against the installed files.
+</rationale>
+</Rule>
+
+<Rule id="aide_periodic_cron_checking">
+<title>Configure Periodic Execution of AIDE</title>
+<description>
+AIDE should be executed on a periodic basis to check for changes.
+To implement a daily execution of AIDE at 4:05am using cron, add the following line to /etc/crontab:
+<pre>
+05 4 * * * root /usr/sbin/aide --check
+</pre>
+AIDE can be executed periodically through other means; this is merely one example.
+</description>
+<rationale>
+By default, AIDE does not install itself for periodic execution.  Periodically 
+running AIDE may reveal unexpected changes in installed files.
+</rationale>
+</Rule>
+</Group>
+
+<Group id="rpm_verification">
+<title>Verify Integrity with RPM</title>
+<description>The RPM package management system includes the ability
+to verify the integrity of installed packages by comparing the
+installed files with information about the files taken from the
+package metadata stored in the RPM database. Although an attacker
+could corrupt the RPM database (analogous to attacking the AIDE
+database as described above), this check can still reveal
+modification of important files.
+
+To list which files on the system differ from what is expected by the RPM database:
+<pre>
+# rpm -qVa</pre>
+See the man page for <tt>rpm</tt> to see a complete explanation of each column.
+
+</description>
+
+<Rule id="rpm_verify_permissions">
+<title>Verify File Permissions with RPM</title>
+<description>The RPM package management system 
+can check the permissions of thousands of installed files, including
+many that are important to system security.
+
+The following command will list which files on the system have permissions that are different 
+from what is expected by the RPM database:
+<pre>
+TODO/FIXUP: # rpm -qVa | awk -F='' $2="M" {print $0}'</pre>
+</description>
+<rationale>
+</rationale>
+<ident cce="14931-0" />
+<oval id="rpm_verify_permissions" />
+<ref nist="SI-7"/>
+</Rule>
+
+<Rule id="rpm_verify_hashes">
+<title>Verify File Hashes with RPM</title>
+<description>The RPM package management system 
+can check the hashes of thousands of installed files, including
+many that are important to system security.
+To list which files on the system have hashes that differ from what is expected by the 
+RPM database (except for configuration files, which may be expected to change):
+<pre>
+TODO/FIXUP: select only files with a "5" in 3rd column
+# rpm -qVa | awk '$2!="c" {print $0}'
+</pre>
+A “c” in the second column indicates that a file is a configuration file. 
+</description>
+<ident cce="TODO" />
+<oval id="rpm_verify_hashes" />
+<ref nist="SI-7"/>
+</Rule>
+
+</Group>
+
+</Group>

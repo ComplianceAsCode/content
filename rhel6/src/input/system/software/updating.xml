@@ -1,0 +1,98 @@
+<Group id="updating">
+<title>Updating Software</title>
+<description>The <tt>yum</tt> command line tool is used to install and
+update software packages. Yum replaces the <tt>up2date</tt> utility used in
+previous system releases. The system also provides two graphical
+package managers, <tt>pirut</tt> and <tt>pup</tt>. The <tt>pirut</tt>
+tool is a graphical front-end for <tt>yum</tt> that allows users to install
+and update packages while <tt>pup</tt> is a simple update tool for packages
+that are already installed. In the <b>Applications</b> menu, <tt>pirut</tt>
+is labeled <b>Add/Remove Software</b> and pup is labeled
+<b>Software Updater</b>.
+<br /><br />
+It is recommended that these tools be used to keep systems up
+to date with the latest security patches.</description>
+
+<Rule id="ensure_redhat_gpgkey_installed">
+<title>Ensure Red Hat GPG Key Installed</title>
+<description>The GPG key should be installed.</description>
+<rationale>
+This key is necessary to cryptographically verify that packages 
+are from Red Hat.
+</rationale>
+<ident cce="14440-2"/>
+<oval id="package_rhn_gpgkey_installed" />
+<ref nist="SI-2, SI-7, SC-13"/>
+</Rule>
+
+<Rule id="disable_rhnsd">
+<title>Disable rhnsd Service</title>
+<description>The <tt>rhnsd</tt> daemon polls the Red Hat Network web site
+for scheduled actions. Unless it is actually necessary to schedule
+updates remotely through the RHN website, it is recommended that
+the service be disabled.</description>
+<ident cce="3416-5" />
+<oval id="service_rhnsd_disabled" />
+<ref nist="CM-6, CM-7"/>
+</Rule>
+
+<Rule id="security_patches_up_to_date">
+<title>Ensure Software Patches Installed</title>
+<description>The following command prints a list of packages that
+need to be updated:
+<br />
+<pre>
+# yum check-update
+
+</pre>
+To actually install these updates, run:
+<br />
+<pre>
+# yum update</pre>
+</description>
+<ref nist="SI-2"/>
+</Rule>
+<!-- yum-updatesd is not part of RHEL 6 -->
+<!--<Rule id="disable_yum-updatesd">
+<title>Disable yum-updatesd Service</title>
+<description>The <tt>yum-updatesd</tt> service is not mature enough for
+an enterprise environment, and the service may introduce unnecessary
+overhead. When possible, replace this service with a <tt>cron</tt> job
+that calls <tt>yum</tt> directly.</description>
+<ident cce="4218-4" />
+<oval id="service_yum-updatesd_disabled" />
+<ref nist="CM-6, CM-7, SI-2"/>
+</Rule>
+-->
+<Rule id="ensure_gpgcheck_globally_activated">
+<title>Ensure "gpgcheck" Enabled In Yum Configuration</title>
+<description>The <tt>gpgcheck</tt> option should be used to ensure that
+checking of an RPM package’s signature always occurs prior to its
+installation.
+<br /><br />
+To force yum to check package signatures before installing
+them, ensure that the following line appears in <tt>/etc/yum.conf</tt> in
+the <tt>[main]</tt> section:
+<br /><br />
+<pre>
+gpgcheck=1</pre>
+</description>
+<ident cce="14914-6" />
+<oval id="yum_gpgcheck_global_activation" />
+<ref nist="SI-2"/>
+</Rule>
+
+<Rule id="ensure_gpgcheck_never_disabled">
+<title>Ensure "gpgcheck" Enabled For All Yum Package Repositories</title>
+<description>To ensure that signature checking is not disabled for
+any repos, ensure that the following line DOES NOT appear in any
+repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:
+<br />
+<pre>
+gpgcheck=0</pre>
+</description>
+<ident cce="14813-0" />
+<oval id="yum_gpgcheck_never_disabled" />
+<ref nist="SI-2"/>
+</Rule>
+</Group>
