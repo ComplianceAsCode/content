@@ -13,13 +13,22 @@
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('system/software.xml')" />
+      <xsl:apply-templates select="document('system/software/software.xml')" />
       <xsl:apply-templates select="document('system/permissions/permissions.xml')" />
       <xsl:apply-templates select="document('system/selinux.xml')" />
       <xsl:apply-templates select="document('system/accounts/accounts.xml')" />
       <xsl:apply-templates select="document('system/network/network.xml')" />
       <xsl:apply-templates select="document('system/logging.xml')" />
       <xsl:apply-templates select="document('system/auditing.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='software']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/software/disk_partitioning.xml')" />
+      <xsl:apply-templates select="document('system/software/updating.xml')" />
+      <xsl:apply-templates select="document('system/software/integrity.xml')" />
     </xsl:copy>
   </xsl:template>
 
