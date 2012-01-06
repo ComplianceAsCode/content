@@ -48,5 +48,8 @@ validate:
 eval-test:
 	oscap xccdf eval --profile test --results /tmp/results-test.xml output/rhel6-xccdf-valid.xml
 
+eval-common:
+	oscap xccdf eval --profile common --results /tmp/results-test.xml output/rhel6-xccdf-valid.xml
+
 clean:
 	rm ${OUTDIR}/*.xml ${OUTDIR}/*.html ${OUTDIR}/*.pdf

@@ -8,8 +8,8 @@
     </xsl:copy>
     <xsl:if test="'allprofiles'=$profile">
           <xsl:apply-templates select="document('../input/profiles/test.xml')" />
+          <xsl:apply-templates select="document('../input/profiles/common.xml')" />
           <xsl:apply-templates select="document('../input/profiles/desktop.xml')" />
-          <xsl:apply-templates select="document('../input/profiles/desktop_fastcheck.xml')" />
           <xsl:apply-templates select="document('../input/profiles/server.xml')" />
     </xsl:if>
   </xsl:template>
