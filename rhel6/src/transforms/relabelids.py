@@ -20,20 +20,20 @@ def parse_xml_file(xmlfile):
         #print filestring
     return tree
 
-def get_checkrefs(xccdftree):
-    checkrefs = {}
-    checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
+
+def get_ovalfiles(checks):
+    # iterate over all checks, grab the OVAL files referenced within
+    ovalfiles = set()
     for check in checks:
-        # just grab the OVAL refs, for now
         if check.get("system") == oval_ns:
-            checkref = check.find("./{%s}check-content-ref" % xccdf_ns)
-            checkrefs[checkref] = checkref.get("href")
+            checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
+            ovalfiles.add(checkcontentref.get("href"))
         else:
             print "Non-OVAL checking system found: " + check.get("system")
-    return checkrefs
+    return ovalfiles
+
 
 def main():
-    oval_file_refs = {}
     if len(sys.argv) < 3:
         print "Provide an XCCDF file and an ID name scheme."
         print "This script finds check-content files (currently, OVAL) referenced from XCCDF and synchronizes all IDs."
@@ -46,14 +46,12 @@ def main():
     # step over xccdf file, and find referenced oval files
     xccdftree = parse_xml_file(xccdffile)
 
-    checkfilerefs = get_checkrefs(xccdftree) 
-    ovalfiles = checkfilerefs.values()
-    # get rid of duplicates in filelist
-    ovalfiles = list(set(ovalfiles))
+    checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
+    ovalfiles = get_ovalfiles(checks)
+
     if len(ovalfiles) > 1:
-        print "referencing more than one OVAL file is not yet supported by this script."
-        exit(1)
-    ovalfile = ovalfiles[0]
+        sys.exit("referencing more than one OVAL file is not yet supported by this script.")
+    ovalfile = ovalfiles.pop()
 
     # rename all IDs in the oval file
     ovaltree = parse_xml_file(ovalfile) 
@@ -64,10 +62,16 @@ def main():
     ET.ElementTree(ovaltree).write(newovalfile)
 
     # rename all IDs and file refs in the xccdf file
-    for checkref in checkfilerefs:
-        checkid = translator.assign_id("definition", checkref.get("name"))
-        checkref.set("name", checkid)
-        checkref.set("href", newovalfile)
+    for check in checks:
+        checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
+        checkid = translator.assign_id("definition", checkcontentref.get("name"))
+        checkcontentref.set("name", checkid)
+        checkcontentref.set("href", newovalfile)
+
+        checkexport = check.find("./{%s}check-export" % xccdf_ns)
+        if checkexport is not None:
+            newexportname = translator.assign_id("variable", checkexport.get("export-name"))
+            checkexport.set("export-name", newexportname) 
 
     newxccdffile = xccdffile.replace(".xml", "-" + idname + ".xml")
     #ET.dump(xccdftree)
