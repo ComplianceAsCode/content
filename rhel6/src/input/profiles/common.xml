@@ -15,7 +15,7 @@
 <!-- <select idref="verify_package_integrity" selected="true"/> -->
 <select idref="enable_selinux_bootloader" selected="true"/>
 <select idref="set_selinux_state" selected="true"/>
-<!-- DBG-EXT-VAR <select idref="set_selinux_policy" selected="true"/> -->
+<select idref="set_selinux_policy" selected="true"/>
 <select idref="selinux_unlabeled_device_files" selected="true"/>
 <select idref="restrict_root_console_logins" selected="true"/>
 <select idref="restrict_serial_port_logins" selected="true"/>
@@ -23,7 +23,7 @@
 <select idref="no_empty_passwords" selected="true"/>
 <select idref="no_hashes_outside_shadow" selected="true"/>
 <select idref="no_uidzero_except_root" selected="true"/>
-<!-- DBG-EXT-VAR <select idref="password_min_len" selected="true"/> -->
+<select idref="password_min_len" selected="true"/>
 <select idref="password_min_age" selected="true"/>
 <select idref="password_max_age" selected="true"/>
 <select idref="password_warn_age" selected="true"/>
@@ -183,7 +183,7 @@
 <!-- Permissions for passwd -->
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <!-- daemon umask -->
-<refine-value idref="password_min_len_login_defs_value" selector="14"/>
+<refine-value idref="var_password_min_len" selector="14"/>
 <!-- password minimum length -->
 <refine-value idref="password_max_age_login_defs_value" selector="90"/>
 <!-- maximum password age -->

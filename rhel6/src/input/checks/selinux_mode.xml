@@ -22,12 +22,11 @@
     <ind:path>/etc/selinux</ind:path>
     <ind:filename>config</ind:filename>
     <ind:pattern operation="pattern match">^SELINUX=(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
+    <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_etc_selinux_config" version="1">
-    <ind:instance datatype="int">1</ind:instance>
-    <ind:subexpression datatype="string" operation="equals" var_ref="var_selinux_state_name" />
+    <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_selinux_state_name" />
   </ind:textfilecontent54_state>
 
   <external_variable comment="external variable for selinux state" datatype="string" id="var_selinux_state_name" version="1" />

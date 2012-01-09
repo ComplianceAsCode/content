@@ -284,8 +284,7 @@ may be inadequate for many environments. See Section 2.3.3 for
 information on how to enforce more sophisticated requirements on
 password length and quality</description>
 
-<Value id="password_min_len_login_defs_value" type="string"
-operator="equals" interactive="0">
+<Value id="var_password_min_len" type="string" operator="equals" interactive="0">
 <title>minimum password length</title>
 <description>Minimum number of characters in password</description>
 <warning category="general">This will only check new passwords</warning>
@@ -324,7 +323,7 @@ operator="equals" interactive="0">
 <description>The password minimum length should be set
 appropriately</description>
 <ident cce="4154-1" />
-<oval id="accounts_password_minlen_login_defs" value="password_min_len_login_defs_value"/>
+<oval id="accounts_password_minlen_login_defs" value="var_password_min_len"/>
 <ref nist="CM-6, CM-7, IA-5, AC-3" />
 </Rule>
 
