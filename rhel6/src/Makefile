@@ -3,7 +3,7 @@ OUTDIR=output
 TRANSDIR=transforms
 REFS=references
 
-all: shorthand-guide shorthand2xccdf xccdf2table-nistrefs guide checks content
+all: shorthand-guide shorthand2xccdf table-nistrefs guide checks content
 
 shorthand-guide:
 	xsltproc -o ${OUTDIR}/rhel6-shorthand.xml ${INDIR}/guide.xslt ${INDIR}/guide.xml
@@ -32,8 +32,11 @@ guide: shorthand-guide shorthand2xccdf
 #	xsltproc -o ${OUTDIR}/rhel5-shorthand.xml ${TRANSDIR}/xccdf2shorthand.xslt ${REFS}/usgcb-rhel5desktop-xccdf.xml
 #	tidy -m -xml -utf8 --indent-spaces=0 ${OUTDIR}/rhel5-shorthand.xml
 
-xccdf2table-nistrefs: shorthand-guide shorthand2xccdf
-	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
+table-nistrefs: shorthand-guide shorthand2xccdf
+#	xsltproc -o ${OUTDIR}/rhel6-table-nistrefs.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
+	xsltproc -stringparam profile "desktop_baseline" -o ${OUTDIR}/rhel6-table-nistrefs-desktop.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
+	xsltproc -stringparam profile "server_baseline" -o ${OUTDIR}/rhel6-table-nistrefs-server.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
+	xsltproc -stringparam profile "common" -o ${OUTDIR}/rhel6-table-nistrefs-common.html ${TRANSDIR}/xccdf2table-nistrefs.xslt ${OUTDIR}/rhel6-xccdf.xml
 
 content: shorthand-guide shorthand2xccdf checks
 	${TRANSDIR}/relabelids.py rhel6-xccdf.xml scap-security-guide 
