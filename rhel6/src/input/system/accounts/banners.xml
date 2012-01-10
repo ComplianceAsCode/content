@@ -16,6 +16,7 @@ Many organizations implement security policies that require a
 system banner provide notice of the system's ownership, provide
 warning to unauthorized users, and remind authorized users of their
 consent to monitoring.</description>
+
 <Value id="login_banner_text" type="string"
 operator="equals" interactive="0">
 <title>login banner verbiage</title>
@@ -33,6 +34,7 @@ if such monitoring reveals possible evidence of criminal activity
 system personal may provide the evidence of such monitoring to law
 enforcement officials.
 </value>
+<value selector="usgcb_test">WARNING</value>
 </Value>
 
 
@@ -51,6 +53,7 @@ the kernel version, and the host name.
 Edit <tt>/etc/issue</tt>. Replace the default text with a message
 compliant with the local site policy or a legal
 disclaimer.</description>
+
 <Rule id="set_system_login_banner">
 <title>Modify the System Login Banner</title>
 <description>The system login banner text should be:
@@ -87,6 +90,7 @@ to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</tt>,
 and create the necessary parent directories. Once created,
 this file can be edited directly if necessary.
 </description>
+
 <Rule id="set_gui_login_banner">
 <title>Implement a GUI Warning Banner</title>
 <description>The direct Gnome login warning banner text should be

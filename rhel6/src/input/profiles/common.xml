@@ -45,13 +45,13 @@
 <select idref="bootloader_password" selected="true"/>
 <select idref="require_singleuser_auth" selected="true"/>
 <select idref="disable_interactive_boot" selected="true"/>
-<!-- DBG-EXT-VAR <select idref="set_screensaver_inactivity_timeout" selected="true"/> -->
+<select idref="set_screensaver_inactivity_timeout" selected="true"/>
 <select idref="enable_screensaver_after_idle" selected="true"/>
 <select idref="enable_screensaver_password_lock" selected="true"/>
 <select idref="set_blank_screensaver" selected="true"/>
 <select idref="install_vlock_package" selected="true"/>
-<!-- DBG-EXT-VAR <select idref="set_system_login_banner" selected="true"/> -->
-<!-- DBG-EXT-VAR <select idref="set_gui_login_banner" selected="true"/> -->
+<select idref="set_system_login_banner" selected="true"/>
+<!-- CURRENTLY NOT IMPLEMENTED <select idref="set_gui_login_banner" selected="true"/> -->
 <select idref="disable_sysctl_ipv4_default_send_redirects" selected="true"/>
 <select idref="disable_sysctl_ipv4_all_send_redirects" selected="true"/>
 <select idref="disable_sysctl_ipv4_ip_forward" selected="true"/>
@@ -68,7 +68,7 @@
 <select idref="set_sysctl_net_ipv4_conf_default_rp_filter" selected="true"/>
 <select idref="deactivate_wireless_interfaces" selected="true"/>
 <select idref="disable_ipv6_module_loading" selected="true"/>
-<!-- DBG-DOES-NOT-EXIST <select idref="set_sysctl_ipv6_default_accept_ra" selected="true"/> -->
+<!-- RULE-DOES-NOT-EXIST <select idref="set_sysctl_ipv6_default_accept_ra" selected="true"/> -->
 <select idref="set_sysctl_ipv6_default_accept_redirects" selected="true"/>
 <select idref="enable_ip6tables" selected="true"/>
 <select idref="enable_iptables" selected="true"/>
@@ -211,7 +211,7 @@
 <!-- Sensible umask -->
 <refine-value idref="inactivity_timeout_value" selector="15_minutes"/>
 <!-- Inactivity timout -->
-<refine-value idref="login_banner_text" selector="ANY_text"/>
+<refine-value idref="login_banner_text" selector="usgcb_test"/>
 <!-- login banner verbiage -->
 <refine-value idref="var_selinux_state_name" selector="enforcing"/>
 <!-- SELinux state -->
