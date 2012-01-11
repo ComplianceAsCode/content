@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1">
 
+<!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
+
 	<xsl:template match="/">
 		<html>
-			<head>
-				<title><xsl:copy-of select="$profile" /></title>
-			</head>
-			<body>
-				<br/>
-				<br/>
-				<div style="text-align: center; font-size: x-large; font-weight:bold"><xsl:copy-of select="$profile" /></div>
-				<br/>
-				<br/>
-				<xsl:apply-templates select="cdf:Benchmark"/>
-			</body>
+		<head>
+			<title><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></title>
+		</head>
+		<body>
+			<br/>
+			<br/>
+			<div style="text-align: center; font-size: x-large; font-weight:bold"><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></div>
+			<br/>
+			<br/>
+			<xsl:apply-templates select="cdf:Benchmark"/>
+		</body>
 		</html>
 	</xsl:template>
 
@@ -107,7 +109,7 @@
 		<tr>
 			<td> <xsl:value-of select="cdf:ident" /></td>
 			<td> <xsl:value-of select="cdf:title" /></td>
-			<td> <xsl:value-of select="cdf:description"/> </td>
+			<td> <xsl:copy-of select="cdf:description"/> </td>
 			<td> <xsl:value-of select="cdf:rationale"/> </td>
 			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
 			<!-- select the desired reference via href attribute.  here, NIST. -->
