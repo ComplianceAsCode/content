@@ -41,8 +41,8 @@ enforcing=0
 
 </pre>
 The directive <tt>SELINUX=enforcing</tt> enables SELinux at boot time.
-If SELinux is causing a lot of problems or preventing the system
-from booting, it is possible to boot into the warning-only mode
+If SELinux is suspected of involvement with boot-time problems
+(unlikely), it is possible to boot into the warning-only mode
 <tt>SELINUX=permissive</tt> for debugging purposes. Make certain to change
 the mode back to enforcing after debugging, set the filesystems to
 be relabelled for consistency using the command <tt>touch
@@ -90,9 +90,17 @@ and to protect the boot process.
 </Value>
 
 <Rule id="enable_selinux_bootloader">
-<title>Ensure SELinux Not Disabled In /etc/grub.conf</title>
-<description>SELinux should NOT be disabled in <tt>/etc/grub.conf</tt>.
-Check that <tt>selinux=0</tt> is not found</description>
+<title>Ensure SELinux Not Disabled in /etc/grub.conf</title>
+<description>SELinux can be disabled at boot time by an argument
+in <tt>/etc/grub.conf</tt>.
+To ensure that SELinux is not disabled at boot time, ensure that <tt>selinux=0</tt> is not 
+found in the kernel arguments in that file.
+</description>
+<rationale>
+Disabling a major host protection feature such as SELinux at boot time prevents
+it from confining system services at boot time, and increases 
+the chances that it remain off during system operation.
+</rationale>
 <ident cce="3977-6" />
 <oval id="selinux_bootloader_notdisabled" />
 <ref nist="AC-3, CM-6" />
@@ -100,8 +108,20 @@ Check that <tt>selinux=0</tt> is not found</description>
 
 <Rule id="set_selinux_state">
 <title>Check SELinux State</title>
-<description>The SELinux state should be set
-appropriately</description>
+<description>The SELinux state should be set to <tt>enforcing</tt> during 
+normal system operation.  To ensure the system is configured to 
+boot into enforcing mode, add or correct the following line in 
+<tt>/etc/selinux/config</tt>:
+<pre>
+SELINUX=enforcing
+</pre>
+</description>
+<rationale>
+Setting the SELinux state to enforcing ensures that SELinux is able to confine
+potentially compromised processes to the security policy, which is designed to 
+prevent them from causing damage to the system or further elevating their 
+privileges.
+</rationale>
 <ident cce="3999-0" />
 <oval id="selinux_mode" value="var_selinux_state_name"/>
 <ref nist="CM-6, CM-7" />
@@ -109,8 +129,22 @@ appropriately</description>
 
 <Rule id="set_selinux_policy">
 <title>Check SELinux Policy</title>
-<description>The SELinux policy should be set
-appropriately.</description>
+<description>The SELinux <tt>targeted</tt> policy is appropriate for 
+general-purpose desktops and servers, as well as systems in many other roles.
+To configure the system to use this policy,
+add or correct the following line in
+<tt>/etc/selinux/config</tt>:
+<pre>
+SELINUXTYPE=targeted
+</pre>
+Other policies, such as <tt>mls</tt>, provide additional security labeling
+and greater confinement. 
+</description>
+<rationale>
+Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
+ensures that the system will confine processes that are likely to be 
+targeted for exploitation, such as network services or system services.
+</rationale>
 <ident cce="3624-4" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
 <ref nist="CM-6, CM-7" />
@@ -169,7 +203,8 @@ To check for unlabeled device files, run the following command:
 # ls -Z | grep unlabeled_t
 
 </pre>
-It should produce no output in a well-configured system.</description>
+It should produce no output in a well-configured system.
+</description>
 
 <Rule id="selinux_unlabeled_device_files">
 <title>Find Device Files Without SELinux Label</title>
