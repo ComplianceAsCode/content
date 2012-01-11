@@ -49,45 +49,29 @@ password --md5 <b>password-hash</b>
 </ol>Boot loaders for other platforms should offer a similar
 password protection feature.</description>
 
-<Value id="file_owner_etc_grub_conf_value" type="string" operator="equals">
-<title>User that owns /etc/grub.conf</title>
-<description xml:lang="en-US">Choose user that should own /etc/grub.conf</description>
-<value selector="root">root</value>
-</Value>
-
-<Value id="file_groupowner_etc_grub_conf_value" type="string" operator="equals">
-<title>Group that owns /etc/grub.conf</title>
-<description xml:lang="en-US">Choose group that should own /etc/grub.conf</description>
-<value selector="root">root</value>
-</Value>
-
-
-
-
-<Rule id="userowner_grub.conf">
+<Rule id="user_owner_grub_conf">
 <title>Verify /boot/grub/grub.conf User Ownership</title>
 <description>The file /etc/grub.conf is a symbolic link to /boot/grub/grub.conf which
 should be owned by the root user to prevent destruction or modification of the file.</description>
 <ident cce="4144-2" />
-<oval id="file_owner_etc_grub_conf" value="file_owner_etc_grub_conf_value" />
+<oval id="file_user_owner_grub_conf" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
-
-<Rule id="groupowner_grub.conf">
+<Rule id="group_owner_grub_conf">
 <title>Verify /boot/grub/grub.conf Group Ownership</title>
 <description>The file /etc/grub.conf is a symbolic link to /boot/grub/grub.conf which
 should be owned by the root group to prevent destruction or modification of the file.</description>
 <ident cce="4197-0" />
-<oval id="file_groupowner_etc_grub_conf" value="file_groupowner_etc_grub_conf_value"/>
+<oval id="file_group_owner_grub_conf" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
-<Rule id="perms_grub.conf">
+<Rule id="permissions_grub_conf">
 <title>Verify /boot/grub/grub.conf Permissions</title>
 <description>File permissions for /boot/grub/grub.conf should be set correctly.</description>
 <ident cce="3923-0" />
-<oval id="file_permissions_etc_grub_conf" />
+<oval id="file_permissions_grub_conf" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -218,8 +202,8 @@ http://live.gnome.org/GnomeScreensaver. For more information about
 enforcing preferences in the GNOME environment using the GConf
 configuration system, see http://projects.gnome.org/gconf and
 the man page <tt>gconftool-2(1)</tt>.</description>
-<Value id="inactivity_timeout_value" type="string"
-operator="equals">
+
+<Value id="inactivity_timeout_value" type="string" operator="equals">
 <title>Inactivity timeout</title>
 <description>Choose allowed duration of inactive SSH connections,
 shells, and X sessions</description>
@@ -234,7 +218,7 @@ shells, and X sessions</description>
 <description>The idle time-out value for period of inactivity GNOME
 desktop lockout should be 15 minutes.</description>
 <ident cce="3315-9" />
-<oval id="gconf_gnome-screensaver_idle_delay" value="inactivity_timeout_value" />
+<oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" />
 </Rule>
 
