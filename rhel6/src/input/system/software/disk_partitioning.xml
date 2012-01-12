@@ -30,9 +30,11 @@ detailed information on LVM.</description>
 
 <Rule id="partition_for_tmp">
 <title>Ensure /tmp Located On Separate Partition</title>
-<description>The <tt>/tmp</tt> directory is a world-writable directory used
+<description>
+The <tt>/tmp</tt> directory is a world-writable directory used
 for temporary file storage. Ensure that it has its own partition or
-logical volume.</description>
+logical volume.
+</description>
 <rationale>
 Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive 
 mount options, which is used as temporary storage
@@ -63,9 +65,16 @@ world-writable directories, installed by other software packages.
 
 <Rule id="partition_for_var_log">
 <title>Ensure /var/log Located On Separate Partition</title>
-<description>System logs are stored in the <tt>/var/log</tt> directory.
+<description>
+System logs are stored in the <tt>/var/log</tt> directory.
 Ensure that it has its own partition or logical
-volume.</description>
+volume.
+</description>
+<rationale>
+Placing <tt>/var/log</tt> in its own partition 
+enables better separation between log files
+and other files in <tt>/var/</tt>.  
+</rationale>
 <ident cce="14011-1" />
 <oval id="mount_var_log_own_partition" />
 <ref nist="CM-6, AU-9"/>
@@ -73,10 +82,19 @@ volume.</description>
 
 <Rule id="partition_for_var_log_audit">
 <title>Ensure /var/log/audit Located On Separate Partition</title>
-<description>Audit logs are stored in the <tt>/var/log/audit</tt> directory.
+<description>
+Audit logs are stored in the <tt>/var/log/audit</tt> directory.
 Ensure that it has its own partition or logical volume. Make
 absolutely certain that it is large enough to store all audit logs
-that will be created by the auditing daemon.</description>
+that will be created by the auditing daemon.
+</description>
+<rationale>
+Placing <tt>/var/log/audit</tt> in its own partition 
+enables better separation between audit files
+and other files, and helps ensure that 
+auditing cannot be halted due to the partition running out
+of space.
+</rationale>
 <ident cce="14171-3" />
 <oval id="mount_var_log_audit_own_partition" />
 <ref nist="CM-6, AU-9"/>
@@ -84,11 +102,18 @@ that will be created by the auditing daemon.</description>
 
 <Rule id="partition_for_home">
 <title>Ensure /home Located On Separate Partition</title>
-<description>If user home directories will be stored locally,
+<description>
+If user home directories will be stored locally,
 create a separate partition for <tt>/home</tt>. If <tt>/home</tt> will be mounted
 from another system such as an NFS server, then creating a separate
 partition is not necessary at this time, and the mountpoint can
-instead be configured later.</description>
+instead be configured later.
+</description>
+<rationale>
+Ensuring that <tt>/home</tt> is mounted on its own partition enables the
+setting of more restrictive mount options, and also helps ensure that
+users cannot trivially fill partitions used for log or audit data storage.
+</rationale>
 <ident cce="14559-9" />
 <oval id="mount_home_own_partition" />
 <ref nist="CM-6"/>
