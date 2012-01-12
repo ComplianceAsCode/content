@@ -1,0 +1,197 @@
+<Group id="root_logins">
+<title>Restrict Root Logins to System Console</title>
+<description>
+Edit the file <tt>/etc/securetty</tt>. Ensure that the file
+contains only the following lines:
+<br />
+<ul>
+<li>The primary system console device:
+<br />
+<pre>
+console
+
+</pre></li>
+<li>The virtual console devices:
+<br />
+<pre>
+tty1 tty2 tty3 tty4 tty5 tty6 ...
+
+</pre></li>
+<li>If required by your organization, the deprecated virtual
+console interface may be retained for backwards compatibility:
+<br />
+<pre>
+vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...
+
+</pre></li>
+<li>If required by your organization, the serial consoles may be
+added:
+<br />
+<pre>
+ttyS0 ttyS1
+
+</pre></li>
+</ul>
+Direct root logins should be allowed only for emergency use.
+In normal situations, the administrator should access the system
+via a unique unprivileged account, and use su or sudo to execute
+privileged commands. Discouraging administrators from accessing the
+root account directly ensures an audit trail in organizations with
+multiple administrators. Locking down the channels through which
+root can connect directly reduces opportunities for
+password-guessing against the root account. The <tt>login</tt> program
+uses the file <tt>/etc/securetty</tt> to determine which interfaces
+should allow root logins. 
+
+The virtual devices <tt>/dev/console</tt>
+and <tt>/dev/tty*</tt> represent the system consoles (accessible via
+the Ctrl-Alt-F1 through Ctrl-Alt-F6 keyboard sequences on a default
+installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
+These are likely to be deprecated in most environments, but may be retained
+for compatibility. Root should also be prohibited from connecting
+via network protocols. See Section 3.5 for instructions on
+preventing root from logging in via SSH.</description>
+
+<Rule id="restrict_root_console_logins">
+<title>Restrict Virtual Console Root Logins</title>
+<description>
+Root logins through the (deprecated) virtual console devices should be
+disabled, unless required for some unusual reason.
+To do so, edit <tt>/etc/securetty</tt> and remove lines of the form:
+<pre>
+vc/1
+vc/2
+vc/3
+vc/4
+</pre>
+</description>
+<rationale>
+
+</rationale>
+<ident cce="3485-0" />
+<oval id="securetty_root_login_console_only" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+
+<Rule id="restrict_serial_port_logins">
+<title>Restrict Serial Port Root Logins</title>
+<description>Login prompts on serial ports should be
+disabled.</description>
+<ident cce="4256-4" />
+<oval id="securetty_no_serial" />
+<ref nist="AC-3, AC-6" />
+</Rule>
+
+<Rule id="no_shelllogin_for_systemaccounts">
+<title>Block Shell/Login for Non-Root System Accounts</title>
+<description>
+Using <tt>/etc/passwd</tt>, obtain a listing of all users,
+their UIDs, and their shells, for instance by running:
+<br />
+<pre>
+# awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd
+</pre>
+Identify the system accounts from this listing. These will
+primarily be the accounts with UID numbers less than 500, other
+than root.
+<br /><br />
+For each identified system account SYSACCT, lock the account:
+<br />
+<pre>
+# usermod -L SYSACCT
+</pre>
+and disable its shell:
+<br />
+<pre>
+# usermod -s /sbin/nologin SYSACCT
+</pre>
+These are the accounts which are not associated with a human
+user of the system, but which exist to perform some administrative
+function. Make it more difficult for an attacker to use these
+accounts by locking their passwords and by setting their shells to
+some non-valid shell. The RHEL6 default non-valid shell is
+<tt>/sbin/nologin</tt>, but any command which will exit with a failure
+status and disallow execution of any further commands, such as
+<tt>/bin/false</tt> or <tt>/dev/null</tt>, will work.
+</description>
+<warning category="functionality">
+Do not perform the steps in this
+section on the root account. Doing so might cause the system to
+become inaccessible.
+</warning>
+<ident cce="3987-5" />
+<oval id="accounts_nologin_for_system" />
+<ref nist="AC-3, CM-6" />
+</Rule>
+
+
+<Rule id="no_uidzero_except_root">
+<title>Verify Only Root Has UID 0</title>
+<description>This command will print all password file entries for
+accounts with UID 0:
+<br />
+<pre>
+# awk -F: '($3 == "0") {print}' /etc/passwd
+
+</pre>
+This should print only one line, for the user root. If any
+other lines appear, ensure that these additional UID-0 accounts are
+authorized, and that there is a good reason for them to exist.
+<br /><br />
+In general, the best practice solution for auditing use of
+the root account is to restrict the set of cases in which root must
+be accessed anonymously by requiring use of su or sudo in almost
+all cases. Some sites choose to have more than one account with UID
+0 in order to differentiate between administrators, but this
+practice may have unexpected side effects, and is therefore not
+recommended.</description>
+<ident cce="4009-7" />
+<oval id="accounts_no_uid_except_zero" />
+<ref nist="AC-3, AC-11, CM-6, CM-7" />
+</Rule>
+
+</Group>
+
+<!-- Commenting the wheel/su items, since there may be little value/benefit
+     in dictating others' account privilege choices.
+
+<Group id="wheel_group">
+<title>The wheel group should exist</title>
+<description>
+<ol>
+<li>Ensure that the group <tt>wheel</tt> exists, and that the usernames of
+all administrators who should be allowed to execute commands as
+root are members of that group.
+<br />
+<pre>
+# grep ^wheel /etc/group
+
+</pre></li>
+<li>Edit the file <tt>/etc/pam.d/su</tt>. Add, uncomment, or correct the
+line:
+<br />
+<pre>
+auth required pam_wheel.so use_uid
+
+</pre></li>
+</ol>The <tt>su</tt> command allows a user to gain the privileges of another
+user by entering the password for that user's account. It is
+desirable to restrict the root user so that only known
+administrators are ever allowed to access the root account. This
+restricts password-guessing against the root account by
+unauthorized users or by accounts which have been compromised.
+<br /><br />
+By convention, the group <tt>wheel</tt> contains all users who are
+allowed to run privileged commands. The PAM module <tt>pam_wheel.so</tt> is
+used to restrict root access to this set of users.</description>
+
+<Rule id="limit_su_to_wheel">
+<title>Limit /bin/su Access To Wheel Group</title>
+<description>Command access to the root account should be
+restricted to the <tt>wheel</tt> group.</description>
+<ident cce="15047-4" />
+<oval id="accounts_su_wheel_only" />
+<ref nist="AC-3, CM-6" />
+</Rule>
+</Group>
+-->
