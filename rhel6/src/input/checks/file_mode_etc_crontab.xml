@@ -1,27 +1,29 @@
 <def-group>
-  <definition class="compliance"
-  id="file_permissions_etc_crontab" version="1">
+  <definition class="compliance" id="file_mode_etc_crontab" version="1">
     <metadata>
-      <title>Restrict Permissions on Files Used by cron</title>
+      <title>Check Mode /etc/crontab</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4388-5" source="CCE" />
-      <description>File permissions for /etc/crontab should be set
-      correctly.</description>
+      <description>The file /etc/crontab should be mode 600.</description>
     </metadata>
     <criteria>
-      <criterion test_ref="test_20210" />
+      <criterion test_ref="test_file_mode_etc_crontab" />
     </criteria>
   </definition>
-  <unix:file_test check="all" check_existence="all_exist"
-  comment="Testing file permissions"
-  id="test_20210" version="1">
-    <unix:object object_ref="obj_20210" />
-    <unix:state state_ref="state_1000600" />
+
+  <unix:file_test check="all" check_existence="all_exist" comment="mode for /etc/crontab" id="test_file_mode_etc_crontab" version="1">
+    <unix:object object_ref="object_file_etc_crontab" />
+    <unix:state state_ref="state_mode_600" />
   </unix:file_test>
-  <unix:file_state id="state_1000600"
-  version="1">
+
+  <unix:file_object comment="/etc/crontab" id="object_file_etc_crontab" version="1">
+    <unix:path>/etc</unix:path>
+    <unix:filename>crontab</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_mode_600" version="1">
     <unix:uread datatype="boolean">true</unix:uread>
     <unix:uwrite datatype="boolean">true</unix:uwrite>
     <unix:uexec datatype="boolean">false</unix:uexec>
@@ -32,9 +34,4 @@
     <unix:owrite datatype="boolean">false</unix:owrite>
     <unix:oexec datatype="boolean">false</unix:oexec>
   </unix:file_state>
-  <unix:file_object comment="/etc/crontab"
-  id="obj_20210" version="1">
-    <unix:path>/etc</unix:path>
-    <unix:filename>crontab</unix:filename>
-  </unix:file_object>
 </def-group>

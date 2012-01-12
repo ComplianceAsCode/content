@@ -113,16 +113,10 @@
 <select idref="disable_ypbind" selected="true"/>
 <select idref="uninstall_tftp-server" selected="true"/>
 <select idref="disable_tftp" selected="true"/>
-<!-- DBG-DOES-NOT-EXIST <select idref="disable_isdn" selected="true"/> -->
-<!-- DBG-DOES-NOT-EXIST <select idref="disable_kdump" selected="true"/> -->
-<!-- DBG-DOES-NOT-EXIST <select idref="disable_zeroconf" selected="true"/> -->
-<!-- DBG-DOES-NOT-EXIST <select idref="disable_readahead_early" selected="true"/> -->
-<!-- DBG-DOES-NOT-EXIST <select idref="disable_readahead_later" selected="true"/> -->
-<!-- DBG-DOES-NOT-EXIST <select idref="disable_bluetooth_service" selected="true"/> -->
-<!-- DBG-DOES-NOT-EXIST <select idref="disable_bluetooth_hidd" selected="true"/> -->
 <select idref="enable_cron" selected="true"/>
-<!-- DBG-DOES-NOT-EXIST <select idref="groupowner_crontab" selected="true"/> -->
-<!-- DBG-DOES-NOT-EXIST <select idref="userowner_crontab" selected="true"/> -->
+<!-- FILE PERMISSIONS <select idref="file_user_owner_etc_crontab" selected="true"/> -->
+<!-- FILE PERMISSIONS <select idref="file_group_owner_etc_crontab" selected="true"/> -->
+<!-- FILE PERMISSIONS <select idref="file_mode_etc_crontab" selected="true"/> -->
 <!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.hourly" selected="true"/> -->
 <!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.daily" selected="true"/> -->
 <!-- DBG-DOES-NOT-EXIST <select idref="groupowner_cron.weekly" selected="true"/> -->
@@ -135,7 +129,7 @@
 <!-- DBG-DOES-NOT-EXIST <select idref="userowner_cron.d" selected="true"/> -->
 <select idref="disable_at" selected="true"/>
 <select idref="sshd_allow_only_protocol2" selected="true"/>
-<!-- DBG-EXT-VAR <select idref="sshd_set_idle_timeout" selected="true"/> -->
+<select idref="sshd_set_idle_timeout" selected="true"/>
 <select idref="sshd_set_keepalive" selected="true"/>
 <select idref="sshd_disable_rhosts" selected="true"/>
 <select idref="disable_host_auth" selected="true"/>
@@ -202,8 +196,6 @@
 <!-- Mininum number of lower case in password -->
 <refine-value idref="var_password_pam_cracklib_difok" selector="3"/>
 <!-- Mininum number of characters not present in old password -->
-<refine-value idref="password_hash_algorithm_name" selector="SHA-512"/>
-<!-- Password hashing algorithm -->
 <refine-value idref="password_history_retain_number" selector="5"/>
 <!-- Passwords to remember -->
 <refine-value idref="umask_user_value" selector="077"/>
@@ -244,5 +236,5 @@
 <!-- user that owns system log files -->
 <refine-value idref="file_groupowner_logfiles_value" selector="root"/>
 <!-- permissions of system log files -->
-<refine-value idref="sshd_idle_timeout_value" selector="15_minutes"/>
+<refine-value idref="sshd_idle_timeout_value" selector="5_minutes"/>
 </Profile>

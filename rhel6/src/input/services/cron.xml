@@ -32,21 +32,43 @@ additional functionality, <tt>anacron</tt> could needlessly increase the possibl
 attack surface for an intruder.</description>
 </Rule>
 
+<!--
+
+<Rule id="file_user_owner_etc_crontab">
+<title>Check User Ownership /etc/crontab</title>
+<description>The system crontab /etc/crontab should be owned by the root user. This
+file is provided for backwards compatibility by the RPM package crontabs and it
+will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
+<ident cce="3851-3" />
+<oval id="file_user_owner_etc_crontab" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+
+<Rule id="file_group_owner_etc_crontab">
+<title>Check Group Ownership /etc/crontab</title>
+<description>The file /etc/crontab should be owned by the root group. This
+file is provided for backwards compatibility by the RPM package crontabs and it
+will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
+<ident cce="3626-9" />
+<oval id="file_group_owner_etc_crontab" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+
+<Rule id="file_mode_etc_crontab">
+<title>Check Mode /etc/crontab</title>
+<description>The file /etc/crontab should be mode 600. This
+file is provided for backwards compatibility by the RPM package crontabs and it
+will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
+<ident cce="4388-5" />
+<oval id="file_mode_etc_crontab" />
+<ref nist="CM-6, CM-7" />
+</Rule>
+
 <Group id="cron_file_perms">
 <title>Restrict Permissions on Files Used by <tt>cronie</tt></title>
 <description>
 <ol>
-<li>Restrict the permissions on the primary system <tt>crontab</tt>:
-<br />
-<pre>
-# chown root:root /etc/crontab
-# chmod 600 /etc/crontab
 
-</pre>
-<tt>/etc/crontab</tt> is provided for backwards compatibility by the RPM
-package <tt>crontabs</tt> and will be read by the <tt>crond</tt> service.
-RHEL6 will not add jobs to it by default.
-</li>
 <li>If <tt>cronie-noanacron</tt> is installed, restrict the permissions its
 primary job file:
 <br />
@@ -93,10 +115,10 @@ and user crontabs are edited using the setuid root crontab command.
 If unprivileged users can modify system cron configuration files,
 they may be able to gain elevated privileges, so all unnecessary
 access to these files should be disabled.</description>
-<!--
-     The crontab files are now covered by the package manager's file check.
--->
 </Group>
+
+-->
+
 <Group id="at_service">
 <title>Disable at if Possible</title>
 <description>Unless the <tt>at</tt> daemon is required, disable it with the
@@ -117,6 +139,7 @@ instead.</description>
 <oval id="service_atd_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
+
 </Group>
 </Group>
 
