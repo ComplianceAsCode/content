@@ -37,6 +37,27 @@ disabled.</description>
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
+
+<Group id="disabling_ipv6_rpc">
+<title>Disable Support for RPC IPv6 unless Needed</title>
+<description>RPC services for NFSv4 try to load transport modules for <tt>udp6</tt> and <tt>tcp6</tt> by default, even if IPv6 has been disabled in <tt>/etc/modprobe.d</tt>. To prevent RPC services such as <tt>rpc.mountd</tt> from attempting to start IPv6 network listeners, remove or comment out the following two lines in <tt>/etc/netconfig</tt>:
+<br />
+<pre>
+udp6       tpi_clts      v     inet6    udp     -       -
+tcp6       tpi_cots_ord  v     inet6    tcp     -       -
+
+</pre>
+</description>
+
+<Rule id="disable_ipv6_nfs_listeners">
+<title>Disable RPC IPv6 Network Listeners</title>
+<description>RPC IPv6 network listeners should be disabled.</description>
+<ident />
+<oval />
+<ref />
+</Rule>
+</Group>
+
 </Group>
 
 <Group id="configuring_ipv6">
