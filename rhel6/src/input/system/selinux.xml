@@ -191,28 +191,46 @@ which use category labelling.</description>
 </Group>
 -->
 
-<Group id="selinux_confinement_of_daemons">
-<title>Check for Unconfined Daemons</title>
-<description>Device files are used for communication with important
-system resources. SELinux contexts should exist for these. If a
-device file is not labeled, then misconfiguration is likely.
+<Rule id="selinux_confinement_of_daemons">
+<title>Ensure No Daemons are Unconfined by SELinux</title>
+<description>
+Daemons for which the SELinux policy does not contain rules will inherit the 
+context of the parent process. Because daemons are launched during 
+startup and descend from the <tt>init</tt> process, they inherit the <tt>initrc_t</tt> context. 
+<br/>
+<br/>
+To check for unconfined daemons, run the following command:
+<pre>
+# ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }' 
+</pre>
+It should produce no output in a well-configured system.
+</description>
+<rationale>
+Daemons which run with the <tt>initrc_t</tt> context may cause AVC denials, 
+or allow privileges that the daemon does not require.
+</rationale>
+</Rule>
+
+<Rule id="selinux_unlabeled_device_files">
+<title>Ensure No Device Files are Unlabeled by SELinux</title>
+<description>
+Device files are used for communication with important
+system resources. SELinux contexts should exist for these. 
 <br /><br />
 To check for unlabeled device files, run the following command:
 <br />
 <pre>
 # ls -Z | grep unlabeled_t
-
 </pre>
 It should produce no output in a well-configured system.
 </description>
+<rationale>
+If a device file is not labeled, then misconfiguration is likely.
+</rationale>
 
-<Rule id="selinux_unlabeled_device_files">
-<title>Find Device Files Without SELinux Label</title>
-<description>Check for device file that is not labeled.</description>
 <ident cce="14991-4" />
 <oval id="selinux_all_devicefiles_labeled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
-</Group>
 </Group>
 

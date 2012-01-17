@@ -164,16 +164,18 @@ HostbasedAuthentication no</pre>
 
 <Rule id="sshd_disable_root_login">
 <title>Disable SSH Root Login</title>
-<description>The root user should never be allowed to login
-directly over a network, as this both reduces auditable information
-about who ran privileged commands on the system and allows direct
-attack attempts on root's password.
-<br /><br />
+<description>The root user should never be allowed to login to a 
+system directly over a network. 
 To disable root login via SSH, add or correct the following line:
 <br />
 <pre>
 PermitRootLogin no</pre>
 </description>
+<rationale>
+Permitting direct root login reduces auditable information about who ran 
+privileged commands on the system 
+and also allows direct attack attempts on root’s password.
+</rationale>
 <ident cce="4387-7" />
 <oval id="sshd_permitrootlogin_no" />
 </Rule>
@@ -187,8 +189,14 @@ empty passwords, add or correct the following line:
 <pre>
 PermitEmptyPasswords no
 </pre>
-Measures should also be taken to disable accounts with empty
-passwords system-wide, as described in Section 2.3.1.5.</description>
+Any accounts with empty passwords should be disabled immediately, and PAM configuration 
+should prevent users from being able to assign themselves empty passwords.
+</description>
+<rationale>
+Configuring this setting for the SSH daemon provides additional assurance that 
+remote login via SSH will require a password, 
+even in the event of misconfiguration elsewhere.
+</rationale>
 <ident cce="3660-8" />
 <oval id="sshd_permitemptypasswords_no" />
 </Rule>

@@ -1,7 +1,9 @@
 <Group id="accounts-session">
-<title>Secure Session Configuration Files for Login
-Accounts</title>
-<description>When a user logs into a Unix account, the system
+<title>
+Secure Session Configuration Files for Login Accounts
+</title>
+<description>
+When a user logs into a Unix account, the system
 configures the user's session by reading a number of files. Many of
 these files are located in the user's home directory, and may have
 weak permissions as a result of user error or misconfiguration. If
@@ -10,44 +12,27 @@ configuration information, he can often gain full access to the
 affected user's account. Therefore, it is important to test and
 correct configuration file permissions for interactive accounts,
 particularly those of privileged users such as root or system
-administrators.</description>
+administrators.
+</description>
+
 <Group id="root_paths">
-<title>Ensure that No Dangerous Directories Exist in Roots Path</title>
+<title>Ensure that No Dangerous Directories Exist in Root's Path</title>
 <description>The active path of the root account can be obtained by
 starting a new root shell and running:
 <br />
 <pre>
 # echo $PATH
-
 </pre>
 This will produce a colon-separated list of
-directories in the path. For each directory DIR in the path, ensure
-that DIR is not equal to a single . character. Also ensure that
-there are no 'empty' elements in the path, such as in these
-examples:
-<br />
-<pre>
-PATH=:/bin
-PATH=/bin:
-PATH=/bin::/sbin
-
-</pre>
-These empty elements have the same effect as a single . character.
+directories in the path. 
 <br /><br />
-For each element in the path, run:
-<br />
-<pre>
-# ls -ld DIR
-
-</pre>
-and ensure that write permissions are disabled for group and
-other.
 <br /><br />
-It is important to prevent root from executing unknown or
-untrusted programs, since such programs could contain malicious
-code. Therefore, root should not run programs installed by
-unprivileged users. Since root may often be working inside
-untrusted directories, the . character, which represents the
+Certain path elements could be considered dangerous, as they could lead
+to root executing unknown or
+untrusted programs, which could contain malicious
+code. 
+Since root may sometimes work inside
+untrusted directories, the <tt>.</tt> character, which represents the
 current directory, should never be in the root path, nor should any
 directory which can be written to by an unprivileged or
 semi-privileged (system) user.
@@ -55,35 +40,66 @@ semi-privileged (system) user.
 It is a good practice for administrators to always execute
 privileged commands by typing the full path to the
 command.</description>
+
 <Rule id="root_path_no_dot">
-<title>The PATH variable should be set correctly for
-user root</title>
-<description>The PATH variable should be set correctly for user
-root</description>
+<title>
+Ensure that Root's Path Does Not Include Relative Paths or Null Directories
+</title>
+<description>
+Ensure that none of the directories in root's path is equal to a single 
+<tt>.</tt> character, or 
+that it contains any instances that lead to relative path traversal, such as 
+<tt>..</tt> or beginning a path without the slash (<tt>/</tt>) character. 
+Also ensure that there are no "empty" elements in the path, such as in these examples:
+<pre>
+PATH=:/bin 
+PATH=/bin: 
+PATH=/bin::/sbin
+</pre>
+These empty elements have the same effect as a single <tt>.</tt> character.
+</description>
+<rationale>
+Including these entries increases the risk that root could 
+execute code from an untrusted location.
+</rationale>
 <ident cce="3301-9" />
 <oval id="accounts_dangerous_path_for_root" />
 <ref nist="CM6, CM-7"/>
 </Rule>
+
 <Rule id="root_path_no_groupother_writable">
-<title>The path variable for ROOT does not include any
-world-writable or group-writable directories</title>
-<description>Check each directory in root's path and make use it
-does not grant write permission to group and other</description>
+<title>
+Ensure that Root's Path Does Not Include World or Group-Writable Directories
+</title>
+<description>
+For each element in root's path, run:
+<br />
+<pre>
+# ls -ld DIR
+</pre>
+and ensure that write permissions are disabled for group and
+other.
+</description>
+<rationale>
+Such entries increase the risk that root could 
+execute code provided by unprivileged users,
+and potentially malicious code.
+</rationale>
 <ident cce="14957-5" />
 <oval id="accounts_root_path_dirs_no_write" />
 <ref nist="CM6, CM-7"/>
 </Rule>
 </Group>
 
-<Group id="homedir_perms">
-<title>Ensure that User Home Directories are not Group-Writable or
-World-Readable</title>
+<Rule id="homedir_perms_no_groupwrite_worldread">
+<title>
+Ensure that User Home Directories are not Group-Writable or World-Readable
+</title>
 <description>For each human user USER of the system, view the
 permissions of the user's home directory:
 <br />
 <pre>
 # ls -ld /home/USER
-
 </pre>
 Ensure that the directory is not group-writable and that it
 is not world-readable. If necessary, repair the permissions:
@@ -91,82 +107,74 @@ is not world-readable. If necessary, repair the permissions:
 <pre>
 # chmod g-w /home/USER
 # chmod o-rwx /home/USER
-
 </pre>
+</description>
+<warning category="general">This action may involve 
+modifying user home directories. Notify your user community, and
+solicit input if appropriate, before making this type of
+change.</warning>
+<rationale>
 User home directories contain many configuration files which
 affect the behavior of a user's account. No user should ever have
 write permission to another user's home directory. Group shared
 directories can be configured in subdirectories or elsewhere in the
 filesystem if they are needed. Typically, user home directories
-should not be world-readable. If a subset of users need read access
+should not be world-readable, as it would disclose file names
+to other users. If a subset of users need read access
 to one another's home directories, this can be provided using
-groups.</description>
-<warning category="general">Sections 2.3.4.2–2.3.4.5 recommend
-modifying user home directories. Notify your user community, and
-solicit input if appropriate, before making this type of
-change.</warning>
-
-<Rule id="homedir_perms_no_groupwrite_worldread">
-<title>Ensure that User Home Directories are not
-Group-Writable or World-Readable</title>
-<description>File permissions should be set correctly for the home
-directories for all user accounts.</description>
+groups or ACLs.
+</rationale>
 <ident cce="4090-7" />
 <oval id="file_permissions_home_dirs" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
-</Group>
 
 <Group id="user_umask">
 <title>Ensure that Users Have Sensible Umask Values</title>
 <description>
-<ol>
-<li>Edit the global configuration files <tt>/etc/profile</tt>,
-<tt>/etc/bashrc</tt>, and <tt>/etc/csh.cshrc</tt>. Add or correct the line:
-<br />
-<pre>
-umask 077
-
-</pre></li>
-<li>Edit the user definitions file <tt>/etc/login.defs</tt>. Add or correct
-the line:
-<br />
-<pre>
-UMASK 077
-
-</pre></li>
-<li>View the additional configuration files <tt>/etc/csh.login</tt> and
-<tt>/etc/profile.d/*</tt>, and ensure that none of these files redefine the
-umask to a more permissive value unless there is a good reason for
-it.</li>
-<li>Edit the root shell configuration files <tt>/root/.bashrc</tt>,
-<tt>/root/.bash profile</tt>, <tt>/root/.cshrc</tt>, and <tt>/root/.tcshrc</tt>. Add or
-correct the line:
-<br />
-<pre>
-umask 077
-
-</pre></li>
-</ol>With a default <tt>umask</tt> setting of 077, files and directories
+The umask setting controls the default permissions
+for the creation of new files.  
+With a default <tt>umask</tt> setting of 077, files and directories
 created by users will not be readable by any other user on the
 system. Users who wish to make specific files group- or
-world-readable can accomplish this using the chmod command.
+world-readable can accomplish this by using the chmod command.
 Additionally, users can make all their files readable to their
 group by default by setting a <tt>umask</tt> of 027 in their shell
 configuration files. If default per-user groups exist (that is, if
 every user has a default group whose name is the same as that
 user's username and whose only member is the user), then it may
 even be safe for users to select a <tt>umask</tt> of 007, making it very
-easy to intentionally share files with group s of which the user is
+easy to intentionally share files with groups of which the user is
 a member.
 <br /><br />
-In addition, it may be necessary to change root's <tt>umask</tt>
+<!--In addition, it may be necessary to change root's <tt>umask</tt>
 temporarily in order to install software or files which must be
 readable by other users, or to change the default umasks of certain
 service accounts such as the FTP user. However, setting a
 restrictive default protects the files of users who have not taken
 steps to make their files more available, and preventing files from
-being inadvertently shared.</description>
+being inadvertently shared.-->
+</description>
+
+<!-- Define a new catch-all Rule?
+<li>View the additional configuration files <tt>/etc/csh.login</tt> and
+<tt>/etc/profile.d/*</tt>, and ensure that none of these files redefine the
+umask to a more permissive value unless there is a good reason for
+it.
+</li>
+<li>-->
+
+<!-- Define a new Rule to check root's umask?  
+     It seems unlikely to ever be misconfigured.
+Edit the root shell configuration files <tt>/root/.bashrc</tt>,
+<tt>/root/.bash profile</tt>, <tt>/root/.cshrc</tt>, and <tt>/root/.tcshrc</tt>. Add or
+correct the line:
+<br />
+<pre>
+umask 077
+</pre>
+</li>
+-->
 <Value id="umask_user_value" type="string"
 operator="equals" interactive="0">
 <title>Sensible umask</title>
@@ -179,46 +187,88 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="user_umask_bashrc">
-<title>The default <tt>umask</tt> for all users is set correctly
-in <tt>/etc/bashrc</tt></title>
-<description>The default <tt>umask</tt> for all users for the <tt>bash</tt> shell
-should be set to:
-<sub idref="umask_user_value" /></description>
+<title>
+Ensure the Default Bash Umask is Set Correctly
+</title>
+<description>
+To ensure the default umask for users of the Bash shell is set properly,
+add or correct in <tt>/etc/bashrc</tt> the line:
+<br />
+<pre>
+umask 077
+<!-- <sub idref="umask_user_value" /> -->
+</pre>
+</description>
+<rationale>
+</rationale>
 <ident cce="3844-8" />
 <oval id="accounts_umask_bash_users" value="umask_user_value"/>
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
 <Rule id="user_umask_cshrc">
-<title>The default <tt>umask</tt> for all users is set correctly
-in <tt>/etc/csh.cshrc</tt></title>
-<description>The default <tt>umask</tt> for all users for the <tt>csh</tt> shell
-should be set to:
-<sub idref="umask_user_value" /></description>
+<title>
+Ensure the Default C Shell Umask is Set Correctly
+</title>
+<description>
+To ensure the default umask for users of the C shell is set properly,
+add or correct in <tt>/etc/csh.cshrc</tt> the line:
+<br />
+<pre>
+umask 077
+<!-- <sub idref="umask_user_value" /> -->
+</pre>
+</description>
+<rationale>
+</rationale>
 <ident cce="4227-5" />
 <oval id="accounts_umask_csh"  value="umask_user_value"/>
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
+
+<Rule id="user_umask_profile">
+<title>
+Ensure the Default Umask is Set Correctly in /etc/profile
+</title>
+<description>
+To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
+add or correct the line:
+<br />
+<pre>
+umask 077
+<!--<sub idref="umask_user_value" /> -->
+</pre>
+</description>
+<rationale>
+</rationale>
+<ident cce="14847-8" />
+<oval id="accounts_umask_etc_profile" value="umask_user_value" />
+<ref nist="CM-6, CM-7"/>
+</Rule>
+
+
 <Rule id="user_umask_logindefs">
-<title>The default <tt>umask</tt> for all users is set correctly
-in <tt>/etc/login.defs</tt></title>
-<description>The default <tt>umask</tt> for all users should be set to:
-<sub idref="umask_user_value" /></description>
+<title>
+Ensure the Default Umask is Set Correctly in login.defs
+</title>
+<description>
+To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
+add or correct the line:
+<br />
+<pre>
+UMASK 077
+<!-- <sub idref="umask_user_value" /> -->
+</pre>
+</description>
+<rationale>
+</rationale>
 <ident cce="14107-7" />
 <oval id="accounts_umask_login_defs" value="umask_user_value" />
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
-<Rule id="user_umask_profile">
-<title>The default <tt>umask</tt> for all users is set correctly
-in <tt>/etc/profile</tt></title>
-<description>The default <tt>umask</tt> for all users should be set to:
-<sub idref="umask_user_value" /></description>
-<ident cce="14847-8" />
-<oval id="accounts_umask_etc_profile" value="umask_user_value" />
-<ref nist="CM-6, CM-7"/>
-</Rule>
+
 </Group>
 
 </Group>
