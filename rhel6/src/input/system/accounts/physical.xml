@@ -6,6 +6,7 @@ system is located should be considered a necessary step. However,
 there are some steps which, if taken, make it more difficult for an
 attacker to quickly or undetectably modify a system from its
 console.</description>
+
 <Group id="bootloader">
 <title>Set Boot Loader Password</title>
 <description>During the boot process, the boot loader is
@@ -85,8 +86,9 @@ enabled</description>
 </Rule>
 
 </Group>
-<Group id="singleuser_auth">
-<title>Require Authentication for Single-User Mode</title>
+
+<Rule id="require_singleuser_auth">
+<title>Require Authentication for Single User Mode</title>
 <description>Single-user mode is intended as a system recovery
 method, providing a single user root access to the system by
 providing a boot option at startup. By default, no authentication
@@ -101,90 +103,60 @@ file <tt>/etc/sysconfig/init</tt>:
 <pre>
 SINGLE=/sbin/sulogin</pre>
 </description>
-
-<Rule id="require_singleuser_auth">
-<title>Require Single User Mode Authentication</title>
-<description>The requirement for a password to boot into
-single-user mode should be enabled.</description>
 <ident cce="4241-6" />
 <oval id="singleuser_password" />
 <ref nist="AC-6, IA-5"/>
 </Rule>
-</Group>
 
-<Group id="interactive_boot">
-<title>Disable Interactive Boot</title>
-<description>Edit the file <tt>/etc/sysconfig/init</tt>. Add or correct the
-setting:
-<br />
-<pre>
-PROMPT=no
-
-</pre>
-The <tt>PROMPT</tt> option allows the console user to perform an
-interactive system startup, in which it is possible to select the
-set of services which are started on boot. Using interactive boot,
-the console user could disable auditing, firewalls, or other
-services, weakening system security.</description>
 
 <Rule id="disable_interactive_boot">
 <title>Disable Interactive Boot</title>
-<description>The ability for users to perform interactive startups
-should be disabled.</description>
+<description>
+To disable the ability for users to perform interactive startups,
+edit the file <tt>/etc/sysconfig/init</tt>. 
+Add or correct the line:
+<br />
+<pre>
+PROMPT=no
+</pre>
+The <tt>PROMPT</tt> option allows the console user to perform an
+interactive system startup, in which it is possible to select the
+set of services which are started on boot. 
+</description>
+<rationale>
+Using interactive boot,
+the console user could disable auditing, firewalls, or other
+services, weakening system security.
+</rationale>
 <ident cce="4245-7" />
 <oval id="interactive_boot_disable" />
 <ref nist="CM-7, IA-4, SC-2"/>
 </Rule>
-</Group>
+
 
 <Group id="screen_locking">
 <title>Configure Screen Locking</title>
 <description>When a user must temporarily leave an account
 logged-in, screen locking should be employed to prevent passersby
 from abusing the account. User education and training is
-particularly important for screen locking to be effective.
+particularly important for screen locking to be effective, and policies
+can be implemented to reinforce this.
 <br /><br />
-A policy should be implemented that trains all users to lock
-the screen when they plan to temporarily step away from a logged-in
-account. Automatic screen locking is only meant as a safeguard for
+Automatic screen locking is only meant as a safeguard for
 those cases where a user forgot to lock the screen.</description>
+
 <Group id="gui_screen_locking">
 <title>Configure GUI Screen Locking</title>
 <description>In the default GNOME desktop, the screen can be locked
-by choosing Lock Screen from the System menu.
+by choosing <b>Lock Screen</b> from the <b>System</b> menu.
 <br /><br />
 The <tt>gconftool-2</tt> program can be used to enforce mandatory
-screen locking settings for the default GNOME environment. Run the
-following commands to enforce idle activation of the screen saver,
-screen locking, a blank-screen screensaver, and 15-minute idle
-activation time:
-<br />
-<pre>
-# gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type bool \
-  --set /apps/gnome-screensaver/idle_activation_enabled true
-# gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type bool \
-  --set /apps/gnome-screensaver/lock_enabled true
-# gconftool-2
-  --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type string \
-  --set /apps/gnome-screensaver/mode blank-only
-# gconftool-2
-  --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type int \
-  --set /apps/gnome-screensaver/idle_delay 15
+screen locking settings for the default GNOME environment. 
+The
+following sections detail commands to enforce idle activation of the screen saver,
+screen locking, a blank-screen screensaver, and an idle
+activation time.
 
-</pre>
-The default setting of 15 minutes for idle activation is
-reasonable for many office environments, but the setting should
-conform to whatever policy is defined. The screensaver mode
-blank-only is selected to conceal the contents of the display from
-passersby.
 <br /><br />
 Because users should be trained to lock the screen when they
 step away from the computer, the automatic locking feature is only
@@ -193,7 +165,8 @@ also be dragged to the taskbar in order to facilitate even more
 convenient screen-locking.
 <br /><br />
 The root account cannot be screen-locked, but this should
-have no practical effect as the root account should never be used
+<!-- TODO: is this still true? -->
+have no practical effect as the root account should <i>never</i> be used
 to log into an X Windows environment, and should only be used to
 for direct login via console in emergency circumstances.
 <br /><br />
@@ -215,8 +188,22 @@ shells, and X sessions</description>
 
 <Rule id="set_screensaver_inactivity_timeout">
 <title>Set GNOME Login Inactivity Timeout</title>
-<description>The idle time-out value for period of inactivity GNOME
-desktop lockout should be 15 minutes.</description>
+<description>
+The idle time-out value for period of inactivity GNOME
+desktop lockout should be 15 minutes.
+<pre>
+# gconftool-2
+  --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type int \
+  --set /apps/gnome-screensaver/idle_delay 15
+</pre>
+</description>
+<rationale>
+Setting the idle delay controls when the 
+screensaver will start, and can be combined with
+screen locking to prevent access from passersby.
+</rationale>
 <ident cce="3315-9" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" />
@@ -225,30 +212,69 @@ desktop lockout should be 15 minutes.</description>
 <Rule id="enable_screensaver_after_idle">
 <title>GNOME Desktop Screensaver Mandatory Use</title>
 <description>Idle activation of the screen saver should be
-enabled</description>
+enabled
+<pre>
+# gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/idle_activation_enabled true
+</pre>
+</description>
+<rationale>
+Enabling idle activation of the screen saver ensures that the
+screensaver will be activated after the idle delay.  
+</rationale>
 <ident cce="14604-3" />
 <oval id="gconf_gnome-screensaver_idle_activation_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
+
 <Rule id="enable_screensaver_password_lock">
-<title>Implement Screensaver Idle Activation</title>
+<title>Enable Screen Lock Activation After Idle Period</title>
 <description>Idle activation of the screen lock should be
-enabled</description>
+enabled
+<pre>
+# gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/lock_enabled true
+</pre>
+</description>
+<rationale>
+Enabling the activation of the screen lock after an idle period
+ensures that password entry will be required in order to 
+access the system, preventing access by passersby.
+</rationale>
 <ident cce="14023-6" />
 <oval id="gconf_gnome-screensaver_idle_activation_enabled" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" />
 </Rule>
 
+
 <Rule id="set_blank_screensaver">
 <title>Implement Blank Screen Saver</title>
-<description>The screen saver should be blank</description>
+<description>
+The screen saver should be blank
+<pre>
+# gconftool-2
+  --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type string \
+  --set /apps/gnome-screensaver/mode blank-only
+</pre>
+</description>
+<rationale>
+Setting the screensaver mode to blank-only conceals the 
+contents of the display from passersby.
+</rationale>
 <ident cce="14735-5" />
 <oval id="gconf_gnome-screensaver_mode_blank" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
 </Group>
+
 
 <Group id="console_screen_locking">
 <title>Configure Console Screen Locking</title>
@@ -265,7 +291,6 @@ to prevent passersby from abusing their login:
 <br />
 <pre>
 $ vlock
-
 </pre>
 The <tt>-a</tt> option can be used to prevent switching to other
 virtual consoles.</description>
