@@ -14,20 +14,18 @@ shorthand2xccdf:
 	xsltproc -stringparam profile "allprofiles" -o ${OUTDIR}/rhel6-xccdf.xml ${TRANSDIR}/xccdf-addprofiles.xslt ${OUTDIR}/rhel6-xccdf-noprofiles.xml
 	xmllint --format --output ${OUTDIR}/rhel6-xccdf.xml ${OUTDIR}/rhel6-xccdf.xml 
 
-
 checks:
 	xmlwf ${INDIR}/checks/*.xml
 	${TRANSDIR}/combinechecks.py ${INDIR}/checks > ${OUTDIR}/rhel6-oval.xml
 	xmllint --format --output ${OUTDIR}/rhel6-oval.xml ${OUTDIR}/rhel6-oval.xml 
-#       SCC WILL RETURN, when it is ready
-#       scc -i ${INDIR}/checks/id.ini ${INDIR}/checks/*.sc -o ${OUTDIR}/rhel6-scc-oval.xml
+#       SCC might return someday
 
 
 guide: shorthand-guide shorthand2xccdf 
 	oscap xccdf generate guide --profile allrules ${OUTDIR}/rhel6-xccdf.xml > ${OUTDIR}/rhel6-guide.html
 #       specifying a nonexistent profile, "allrules," to make oscap print all Rules
 
-# this is only here as an example
+# example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
 #	xsltproc -o ${OUTDIR}/rhel5-shorthand.xml ${TRANSDIR}/xccdf2shorthand.xslt ${REFS}/usgcb-rhel5desktop-xccdf.xml
 #	tidy -m -xml -utf8 --indent-spaces=0 ${OUTDIR}/rhel5-shorthand.xml
@@ -44,15 +42,14 @@ content: shorthand-guide shorthand2xccdf checks
 # 	this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml
 
 validate: 
-	xsltproc -o ${OUTDIR}/rhel6-xccdf-valid.xml ${TRANSDIR}/xccdf2oscapvalid.xslt ${OUTDIR}/rhel6-xccdf-scap-security-guide.xml
-	oscap xccdf validate-xml ${OUTDIR}/rhel6-xccdf-valid.xml
+	oscap xccdf validate-xml ${OUTDIR}/rhel6-xccdf-scap-security-guide.xml
 	oscap oval validate-xml ${OUTDIR}/rhel6-oval-scap-security-guide.xml
 
 eval-test:
-	oscap xccdf eval --profile test --results /tmp/results-test.xml output/rhel6-xccdf-valid.xml
+	oscap xccdf eval --profile test --results /tmp/results-test.xml output/rhel6-xccdf-scap-security-guide.xml
 
 eval-common:
-	oscap xccdf eval --profile common --results /tmp/results-test.xml output/rhel6-xccdf-valid.xml
+	oscap xccdf eval --profile common --results /tmp/results-test.xml output/rhel6-xccdf-scap-security-guide.xml
 
 clean:
 	rm ${OUTDIR}/*.xml ${OUTDIR}/*.html ${OUTDIR}/*.pdf
