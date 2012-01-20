@@ -19,6 +19,18 @@ exclude-result-prefixes="xccdf">
     </xsl:copy>
   </xsl:template>
 
+  <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
+  <xsl:template match="Rule">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:apply-templates select="title"/>
+      <xsl:apply-templates select="description"/>
+      <xsl:apply-templates select="warning"/> 
+      <xsl:apply-templates select="ref"/> 
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref)]"/>
+    </xsl:copy>
+  </xsl:template> 
+
   <!-- expand reference to CCE ID -->
   <xsl:template match="Rule/ident">
     <ident>
@@ -29,6 +41,7 @@ exclude-result-prefixes="xccdf">
     </ident>
   </xsl:template>
 
+  <!-- expand reference to NIST 800-53 -->
   <xsl:template match="Rule/ref">
     <reference>
       <xsl:attribute name="href">
@@ -37,6 +50,7 @@ exclude-result-prefixes="xccdf">
       <xsl:value-of select="@nist" />
     </reference>
   </xsl:template>
+
 
   <!-- expand reference to OVAL ID -->
   <xsl:template match="Rule/oval">
@@ -95,6 +109,12 @@ exclude-result-prefixes="xccdf">
     <xhtml:code>
         <xsl:apply-templates select="@*|node()" />
     </xhtml:code>
+  </xsl:template>
+
+
+  <!-- remove use of tt in titles; xhtml in titles is not allowed -->
+  <xsl:template match="title/tt">
+        <xsl:apply-templates select="@*|node()" />
   </xsl:template>
 
   <xsl:template match="code">
