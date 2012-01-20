@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_etc_resolv_conf" version="1">
+    <metadata>
+      <title>Verify /etc/resolv.conf Permissions</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="TODO" source="CCE" />
+      <description>Checks for correct permissions for /etc/resolv.conf.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_etc_resolv_conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="samba password files uid" id="test_etc_resolv_conf" version="1">
+    <unix:object object_ref="object_etc_resolv_conf" />
+    <unix:state state_ref="state_uid_root" />
+    <unix:state state_ref="state_gid_root" />
+    <unix:state state_ref="state_mode_0644" />
+  </unix:file_test>
+
+  <unix:file_object comment="all files in /var/lib/samba/private" id="object_etc_resolv_conf" version="1">
+    <unix:path>/etc</unix:path>
+    <unix:filename>resolv.conf</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_uid_root" version="1">
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_gid_root" version="1">
+    <unix:group_id datatype="int" operation="equals">0</unix:group_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_mode_0644" version="1">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:uread datatype="boolean">true</unix:uread>
+    <unix:uwrite datatype="boolean">true</unix:uwrite>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gread datatype="boolean">true</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>
