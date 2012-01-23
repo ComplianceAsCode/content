@@ -38,67 +38,93 @@ enforcement officials.
 </Value>
 
 
-<Group id="system_login_banner">
+<Rule id="set_system_login_banner">
 <title>Modify the System Login Banner</title>
-<description>The contents of the file <tt>/etc/issue</tt> are
+<description>
+The contents of the file <tt>/etc/issue</tt> are
 displayed on the screen just above the login prompt for users
 logging directly into a terminal. Remote login programs such as
 SSH or FTP can be configured to display <tt>/etc/issue</tt> as well.
-Instructions for configuring each server daemon to show this file
-can be found in the relevant sections of Chapter 3.
+Instructions for configuring these daemons are available later. 
 <br /><br />
 By default, the system will display the version of the OS,
 the kernel version, and the host name.
 <br /><br />
 Edit <tt>/etc/issue</tt>. Replace the default text with a message
 compliant with the local site policy or a legal
-disclaimer.</description>
-
-<Rule id="set_system_login_banner">
-<title>Modify the System Login Banner</title>
-<description>The system login banner text should be:
-<sub idref="login_banner_text" /></description>
+disclaimer.
+<!--<sub idref="login_banner_text" />-->
+</description>
+<rationale>
+Although unlikely to dissuade a serious attacker, the warning message 
+reinforces policy awareness during the logon process. 
+</rationale>
 <ident cce="4060-0" />
 <oval id="banner_etc_issue" value="login_banner_text"/>
 <ref nist="AC-3, CM-6, AC-8" />
 </Rule>
-</Group>
 
 
 <Group id="gui_login_banner">
 <title>Implement a GUI Warning Banner</title>
 <description>In the default graphical environment, users logging
 directly into the system are greeted with a login screen provided
-by the GNOME display manager. The warning banner should be
+by the GNOME Display Manager (GDM). The warning banner should be
 displayed in this graphical environment for these users.
-<br /><br />
-Run the following command to set a warning banner:
+The following sections describe how to configure the GDM login
+banner.
+</description>
+
+<Rule id="enable_gdm_login_banner">
+<title>Enable GUI Warning Banner</title>
+<description>
+To enable displaying a login warning banner in the GNOME 
+Display Manager's login screen, run the following command:
 <br />
 <pre>
 sudo -u gdm gconftool-2 \
      --type bool \
      --set /apps/gdm/simple-greeter/banner_message_enable true
+</pre>
+To display a banner, this setting must be enabled and then 
+banner text must also be set.
+</description>
+<rationale>
+Although unlikely to dissuade a serious attacker, the warning message 
+reinforces policy awareness during the logon process. 
+</rationale>
+<ident cce="4188-9" />
+<oval id="banner_gui_enabled" />
+<ref nist="AC-3, CM-6, AC-8" />
+</Rule>
+
+
+<Rule id="set_gdm_login_banner_text">
+<title>Set GUI Warning Banner Text</title>
+<description>
+To set the text shown by the GNOME Display Manager 
+in the login screen, run the following command:
+<br />
+<pre>
 sudo -u gdm gconftool-2 \
      --type string \
      --set /apps/gdm/simple-greeter/banner_message_text \
-     "Insert the text of your warning banner here"
-
+     "Text of the warning banner here"
 </pre>
 When entering a warning banner that spans several lines, remember
-to begin and end the string with <tt>"</tt>. These two commands write
-to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</tt>,
-and create the necessary parent directories. Once created,
-this file can be edited directly if necessary.
+to begin and end the string with <tt>"</tt>. This command writes
+directly to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</tt>,
+and this file can later be edited directly if necessary.
 </description>
-
-<Rule id="set_gui_login_banner">
-<title>Implement a GUI Warning Banner</title>
-<description>The direct Gnome login warning banner text should be
-set appropriately</description>
+<rationale>
+Although unlikely to dissuade a serious attacker, the warning message 
+reinforces policy awareness during the logon process. 
+</rationale>
 <ident cce="4188-9" />
-<oval id="banner_gui" value="login_banner_text" />
+<oval id="banner_gui_text_set" value="login_banner_text" />
 <ref nist="AC-3, CM-6, AC-8" />
 </Rule>
+
 </Group>
 
 <Group id="user_list">

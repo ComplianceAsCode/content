@@ -30,6 +30,7 @@ sharing functionality.</description>
 <oval id="service_smb_disabled" />
 </Rule>
 </Group>
+
 <Group id="configuring_samba">
 <title>Configure Samba if Necessary</title>
 <description>All settings for the Samba daemon can be found in
@@ -40,10 +41,13 @@ shares on the system. By default, Samba will operate in user mode
 and allow client machines to access local home directories and
 printers. It is recommended that these settings be changed or that
 additional limitations be set in place.</description>
-<Group id="smb_client_signing">
+
+
+<Rule id="require_smb_client_signing">
 <title>Require Client SMB Packet Signing, if using
 <tt>smbclient</tt></title>
-<description>To require samba clients running <tt>smbclient</tt> to use
+<description>
+To require samba clients running <tt>smbclient</tt> to use
 packet signing, add the following to the <tt>[global]</tt> section
 of the Samba configuration file:
 <br />
@@ -51,35 +55,20 @@ of the Samba configuration file:
 client signing = mandatory
 
 </pre>
-A Samba client should only communicate with servers who can
-support SMB packet signing. Packet signing can prevent
+Requiring samba clients such as <tt>smbclient</tt> to use packet
+signing ensures that they can
+only communicate with servers that support packet signing. 
+</description>
+<rationale>
+Packet signing can prevent
 man-in-the-middle attacks which modify SMB packets in
-transit.</description>
-<Rule id="require_smb_client_signing">
-<title>Require Client SMB Packet Signing, if using
-<tt>smbclient</tt></title>
-<description>Require samba clients running <tt>smbclient</tt> to use packet
-signing. A Samba client should only communicate with servers who
-can support SMB packet signing. Packet signing can prevent
-man-in-the-middle attacks which modify SMB packets in
-transit.</description>
+transit.
+</rationale>
 <ident cce="14075-6" />
 <oval id="smb_client_signing_smb_conf" />
 </Rule>
-</Group>
 
-<Group id="smb_client_signing_mount.cifs">
-<title>Require Client SMB Packet Signing, if using
-<tt>mount.cifs</tt></title>
-<description>Require packet signing of clients who mount Samba
-shares using the <tt>mount.cifs</tt> program (e.g., those who specify shares
-in <tt>/etc/fstab</tt>). To do so, ensure that signing options (either
-<tt>sec=krb5i</tt> or <tt>sec=ntlmv2i</tt>) are used.
-<br /><br />
-See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
-client should only communicate with servers who can support SMB
-packet signing. Packet signing can prevent man-in-the-middle
-attacks which modify SMB packets in transit.</description>
+
 <Rule id="require_smb_client_signing_mount.cifs">
 <title>Require Client SMB Packet Signing, if using
 mount.cifs</title>
@@ -90,12 +79,16 @@ in <tt>/etc/fstab</tt>). To do so, ensure that signing options (either
 <br /><br />
 See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
 client should only communicate with servers who can support SMB
-packet signing. Packet signing can prevent man-in-the-middle
-attacks which modify SMB packets in transit.</description>
+packet signing. 
+</description>
+<rationale>
+Packet signing can prevent man-in-the-middle
+attacks which modify SMB packets in transit.
+</rationale>
 <ident cce="15029-2" />
 <oval id="mount_option_smb_client_signing" />
 </Rule>
 </Group>
-</Group>
+
 </Group>
 

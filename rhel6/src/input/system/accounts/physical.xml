@@ -278,13 +278,18 @@ contents of the display from passersby.
 
 <Group id="console_screen_locking">
 <title>Configure Console Screen Locking</title>
-<description>A console screen locking mechanism is provided in the
-vlock package, which is not installed by default. If the ability to
-lock console screens is necessary, install the vlock package:
+<description>
+A console screen locking mechanism is provided in the
+<tt>vlock package</tt>, which is not installed by default. 
+</description>
+
+<Rule id="install_vlock_package">
+<title>Install the vlock Package</title>
+<description>
+To enable console screen locking, install the vlock package:
 <br />
 <pre>
 # yum install vlock
-
 </pre>
 Instruct users to invoke the program when necessary, in order
 to prevent passersby from abusing their login:
@@ -293,11 +298,12 @@ to prevent passersby from abusing their login:
 $ vlock
 </pre>
 The <tt>-a</tt> option can be used to prevent switching to other
-virtual consoles.</description>
-
-<Rule id="install_vlock_package">
-<title>Configure Console Screen Locking</title>
-<description>The vlock package should be installed</description>
+virtual consoles.
+</description>
+<rationale>
+Installing vlock ensures that a console locking capability is available
+for users who may need to suspend console logins.
+</rationale>
 <ident cce="3910-7" />
 <oval id="package_vlock_installed" />
 <ref nist="CM-6, CM-7" />
