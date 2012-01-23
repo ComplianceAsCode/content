@@ -84,7 +84,6 @@
 	<xsl:template match="cdf:Group" name="groupplate">
 		<xsl:param name="idreference" />
 		<xsl:param name="enabletest" />
-
 		<!-- Group cdf:title -->
 		<xsl:for-each select="cdf:Group">
 			<xsl:call-template name="groupplate">
@@ -109,7 +108,9 @@
 		<tr>
 			<td> <xsl:value-of select="cdf:ident" /></td>
 			<td> <xsl:value-of select="cdf:title" /></td>
-			<td> <xsl:copy-of select="cdf:description"/> </td>
+			<td> <xsl:apply-templates select="cdf:description"/> </td>
+			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
+			<!-- need to resolve <sub idref=""> here  -->
 			<td> <xsl:value-of select="cdf:rationale"/> </td>
 			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
 			<!-- select the desired reference via href attribute.  here, NIST. -->
@@ -117,7 +118,6 @@
 <!--			<xsl:apply-templates select="cdf:reference[@href=http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final-errata.pdf]"/>-->
 			<xsl:apply-templates select="cdf:reference"/>
 			</td> 
-
 		</tr>
 		</xsl:if>
 	</xsl:template>
@@ -138,6 +138,11 @@
 	<xsl:template match="cdf:reference">
 		<!-- adjust for the desired reference here -->
 		<xsl:value-of select="." />
+	</xsl:template>
+
+	<xsl:template match="cdf:description">
+		<!-- print all the text and children (xhtml elements) of the description -->
+		<xsl:copy-of select="./node()" />
 	</xsl:template>
 
 </xsl:stylesheet>
