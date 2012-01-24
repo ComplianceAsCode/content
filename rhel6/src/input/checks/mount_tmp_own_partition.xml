@@ -1,9 +1,7 @@
 <def-group>
-  <definition class="compliance"
-  id="mount_tmp_own_partition" version="1">
+  <definition class="compliance" id="mount_tmp_own_partition" version="1">
     <metadata>
-      <title>Ensure that /tmp has its own partition or logical
-      volume</title>
+      <title>Ensure /tmp Located On Separate Partition</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
@@ -12,31 +10,28 @@
       used for temporary file storage. Verify that it has its own
       partition or logical volume.</description>
     </metadata>
-    <criteria>
-      <criterion comment="Check in /etc/fstab for a /tmp mount point"
-      test_ref="test_20000" />
+    <criteria operator="AND">
+      <criterion test_ref="test_tmp_partition" comment="check for /tmp partition" />
+      <criterion test_ref="test_etc_fstab_tmp" comment="find /tmp in /etc/fstab" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="look for /tmp partition or logical volume in /etc/fstab"
-  id="test_20000" version="1">
-    <ind:object object_ref="obj_20002" />
-    <ind:state state_ref="state_20000" />
+
+  <linux:partition_test check="all" check_existence="all_exist" id="test_tmp_partition" version="1" comment="check for /tmp partition">
+      <linux:object object_ref="object_tmp_partition" />
+  </linux:partition_test>
+
+  <linux:partition_object id="object_tmp_partition" version="1">
+      <linux:mount_point>/tmp</linux:mount_point>
+  </linux:partition_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="find /tmp in /etc/fstab" id="test_etc_fstab_tmp" version="1">
+    <ind:object object_ref="object_etc_fstab_tmp" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state comment="/tmp mount point is defined"
-  id="state_20000" version="2">
-    <ind:instance datatype="int">1</ind:instance>
-    <ind:subexpression datatype="string"
-    entity_check="at least one" operation="equals">
-    /tmp</ind:subexpression>
-  </ind:textfilecontent54_state>
-  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/fstab"
-  id="obj_20002" version="1">
+
+  <ind:textfilecontent54_object id="object_etc_fstab_tmp" version="1" comment="find /tmp in /etc/fstab">
     <ind:path>/etc</ind:path>
     <ind:filename>fstab</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*[\S]+[\s]+([\S]+)[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">
-    1</ind:instance>
+    <ind:pattern operation="pattern match">^.*\s/tmp\s.*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
