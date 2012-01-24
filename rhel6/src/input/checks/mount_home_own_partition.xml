@@ -1,43 +1,39 @@
 <def-group>
-  <definition class="compliance"
-  id="mount_home_own_partition" version="1">
+  <definition class="compliance" id="mount_home_own_partition" version="1">
     <metadata>
-      <title>Ensure that /home has its own partition or logical
-      volume</title>
+      <title>Ensure /home Located On Separate Partition</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14559-9" source="CCE" />
       <description>If user home directories will be stored locally,
-      create a separate partition for /home. If /home will be
-      mounted from another system such as an NFS server, then
-      creating a separate partition is not necessary at this time,
-      and the mountpoint can instead be configured
-      later.</description>
+      create a separate partition for /home. If /home will be mounted
+      from another system such as an NFS server, then creating a separate
+      partition is not necessary at this time, and the mountpoint can
+      instead be configured later.</description>
     </metadata>
-    <criteria>
-      <criterion comment="Check in /etc/fstab for a /home mount point"
-      test_ref="test_20006" />
+    <criteria operator="AND">
+      <criterion test_ref="test_home_partition" comment="check for /home partition" />
+      <criterion test_ref="test_etc_fstab_home" comment="find /home in /etc/fstab" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="look for /home partition or logical volume in /etc/fstab" id="test_20006" version="1">
-    <ind:object object_ref="obj_20005" />
-    <!-- <ind:state state_ref="state_20006" /> -->
+  <linux:partition_test check="all" check_existence="all_exist" id="test_home_partition" version="1" comment="check for /home partition">
+      <linux:object object_ref="object_home_partition" />
+  </linux:partition_test>
+
+  <linux:partition_object id="object_home_partition" version="1">
+      <linux:mount_point>/home</linux:mount_point>
+  </linux:partition_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="find /home in /etc/fstab" id="test_etc_fstab_home" version="1">
+    <ind:object object_ref="object_etc_fstab_home" />
   </ind:textfilecontent54_test>
 
-  <!--
-  <ind:textfilecontent54_state comment="/home mount point is defined" id="state_20006" version="2">
-    <ind:instance datatype="int">1</ind:instance>
-    <ind:subexpression datatype="string" entity_check="at least one" operation="equals">/home</ind:subexpression>
-  </ind:textfilecontent54_state>
-  -->
-
-  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/fstab" id="obj_20005" version="1">
+  <ind:textfilecontent54_object id="object_etc_fstab_home" version="1" comment="find /home in /etc/fstab">
     <ind:path>/etc</ind:path>
     <ind:filename>fstab</ind:filename>
-    <ind:pattern operation="pattern match">^.*\s+/home\s+.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <ind:pattern operation="pattern match">^.*\s/home\s.*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
-
 </def-group>
