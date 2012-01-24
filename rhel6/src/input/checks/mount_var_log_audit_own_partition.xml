@@ -1,44 +1,38 @@
 <def-group>
-  <definition class="compliance"
-  id="mount_var_log_audit_own_partition" version="1">
+  <definition class="compliance" id="mount_var_log_audit_own_partition" version="1">
     <metadata>
-      <title>Ensure that /var/log/audit has its own partition or
-      logical volume</title>
+      <title>Ensure /var/log/audit Located On Separate Partition</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14171-3" source="CCE" />
-      <description>Audit logs are stored in the /var/log/audit
-      directory. Ensure that it has its own partition or logical
-      volume. Make absolutely certain that it is large enough to
-      store all audit logs that will be created by the auditing
-      daemon.</description>
+      <description>Audit logs are stored in the /var/log/audit directory.
+      Ensure that it has its own partition or logical volume. Make
+      absolutely certain that it is large enough to store all audit logs
+      that will be created by the auditing daemon.</description>
     </metadata>
-    <criteria>
-      <criterion comment="Check in /etc/fstab for a /var/log/audit mount point"
-      test_ref="test_20005" />
+    <criteria operator="AND">
+      <criterion test_ref="test_var_log_audit_partition" comment="check for /var/log/audit partition" />
+      <criterion test_ref="test_etc_fstab_var_log_audit" comment="find /var/log/audit in /etc/fstab" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="look for /var/log/audit partition or logical volume in /etc/fstab"
-  id="test_20005" version="1">
-    <ind:object object_ref="obj_20000" />
-    <ind:state state_ref="state_20005" />
+
+  <linux:partition_test check="all" check_existence="all_exist" id="test_var_log_audit_partition" version="1" comment="check for /var/log/audit partition">
+      <linux:object object_ref="object_var_log_audit_partition" />
+  </linux:partition_test>
+
+  <linux:partition_object id="object_var_log_audit_partition" version="1">
+      <linux:mount_point>/var/log/audit</linux:mount_point>
+  </linux:partition_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="find /var/log/audit in /etc/fstab" id="test_etc_fstab_var_log_audit" version="1">
+    <ind:object object_ref="object_etc_fstab_var_log_audit" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state comment="/var/log/audit mount point is defined"
-  id="state_20005" version="2">
-    <ind:instance datatype="int">1</ind:instance>
-    <ind:subexpression datatype="string"
-    entity_check="at least one" operation="equals">
-    /var/log/audit</ind:subexpression>
-  </ind:textfilecontent54_state>
-  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/fstab"
-  id="obj_20000" version="1">
+
+  <ind:textfilecontent54_object id="object_etc_fstab_var_log_audit" version="1" comment="find /var/log/audit in /etc/fstab">
     <ind:path>/etc</ind:path>
     <ind:filename>fstab</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*[\S]+[\s]+([\S]+)[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+[\s]+[\S]+</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">
-    1</ind:instance>
+    <ind:pattern operation="pattern match">^.*\s/var/log/audit\s.*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
