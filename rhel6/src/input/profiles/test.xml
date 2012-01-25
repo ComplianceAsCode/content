@@ -4,13 +4,12 @@
 <select idref="install_openswan" selected="true"/>
 <select idref="package_rsyslog_installed" selected="true"/>
 <select idref="disable_vsftpd" selected="true"/>
-<select idref="uninstall_vsftpd" selected="true"/>
-<select idref="uninstall_httpd" selected="true"/>
 <select idref="set_daemon_umask" selected="true"/>
 <select idref="set_selinux_state" selected="true"/>
 <select idref="password_require_digits" selected="true"/>
-
+<select idref="set_system_login_banner" selected="true"/>
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <refine-value idref="var_selinux_state_name" selector="enforcing"/>
 <refine-value idref="var_password_pam_cracklib_dcredit" selector="1"/>
+<refine-value idref="login_banner_text" selector="usgcb_default"/>
 </Profile>

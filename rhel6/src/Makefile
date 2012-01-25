@@ -46,7 +46,7 @@ validate:
 	oscap oval validate-xml ${OUTDIR}/rhel6-oval-scap-security-guide.xml
 
 eval-test:
-	oscap xccdf eval --profile test --results /tmp/results-test.xml output/rhel6-xccdf-scap-security-guide.xml
+	oscap xccdf eval --profile test output/rhel6-xccdf-scap-security-guide.xml
 
 eval-common:
 	oscap xccdf eval --profile common --results /tmp/results-test.xml output/rhel6-xccdf-scap-security-guide.xml

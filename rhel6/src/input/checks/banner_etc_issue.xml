@@ -15,19 +15,13 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="correct banner in /etc/issue" id="test_20102" version="1">
     <ind:object object_ref="obj_20102" />
-    <ind:state state_ref="state_20102" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_20102" version="1">
-    <ind:path>/etc</ind:path>
-    <ind:filename>issue</ind:filename>
-    <ind:pattern operation="pattern match">(.*)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:filepath>/etc/issue</ind:filepath>
+    <ind:pattern var_ref="login_banner_text" operation="pattern match">^.*(.+).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_20102" version="1">
-    <ind:subexpression var_check="all" var_ref="login_banner_text" />
-  </ind:textfilecontent54_state>
-
-  <external_variable comment="warning banner text variable" datatype="string" id="login_banner_text" version="1" />
+   <external_variable comment="warning banner text variable" datatype="string" id="login_banner_text" version="1" />
 </def-group>

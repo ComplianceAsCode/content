@@ -17,26 +17,15 @@ system banner provide notice of the system's ownership, provide
 warning to unauthorized users, and remind authorized users of their
 consent to monitoring.</description>
 
-<Value id="login_banner_text" type="string"
-operator="equals" interactive="0">
-<title>login banner verbiage</title>
-<description>Enter an appropriate login banner for your
-organization</description>
+<Value id="login_banner_text" type="string" operator="equals" interactive="0">
+<title>Login Banner Verbiage</title>
+<description>Enter an appropriate login banner for your organization. Please note that new lines must
+be expressed by the '\n' character.</description>
 <value selector="any_text">.+</value>
 <value selector="usgcb_default">
--- WARNING --
-This system is for the use of authorized users only. Individuals
-using this computer system without authority or in excess of their
-authority are subject to having all their activities on this system
-monitored and recorded by system personnel. Anyone using this
-system expressly consents to such monitoring and is advised that
-if such monitoring reveals possible evidence of criminal activity
-system personal may provide the evidence of such monitoring to law
-enforcement officials.
+-- WARNING --\nThis system is for the use of authorized users only. Individuals\nusing this computer system without authority or in excess of their\nauthority are subject to having all their activities on this system\nmonitored and recorded by system personnel. Anyone using this\nsystem expressly consents to such monitoring and is advised that\nif such monitoring reveals possible evidence of criminal activity\nsystem personal may provide the evidence of such monitoring to law\nenforcement officials.
 </value>
-<value selector="usgcb_test">WARNING</value>
 </Value>
-
 
 <Rule id="set_system_login_banner">
 <title>Modify the System Login Banner</title>
@@ -51,8 +40,7 @@ By default, the system will display the version of the OS,
 the kernel version, and the host name.
 <br /><br />
 Edit <tt>/etc/issue</tt>. Replace the default text with a message
-compliant with the local site policy or a legal
-disclaimer.
+compliant with the local site policy or a legal disclaimer.
 <!--<sub idref="login_banner_text" />-->
 </description>
 <rationale>
