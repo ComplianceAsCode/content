@@ -5,15 +5,35 @@ many years. It has a number of downsides, including inconsistent log format,
 lack of authentication for received messages, and lack of authentication,
 encryption, or reliable transport for messages sent over a network. However,
 due to its long history, syslog is an accepted standard which is supported by
-almost all Unix applications. In RHEL 6, rsyslog has replaced syslog as the
-syslog daemon of choice. This section discusses how to configure rsyslog for
+almost all Unix applications. 
+<br/>
+<br/>
+In RHEL 6, rsyslog has replaced ksyslogd as the
+syslog daemon of choice, and it includes some additional security features 
+such as reliable, connection-oriented (i.e. TCP) transmission of logs, the 
+option to log to database formats, and the encryption of log data en route to 
+a central logging server. 
+This section discusses how to configure rsyslog for
 best effect, and how to use tools provided with the system to maintain and
-monitor your logs.</description>
+monitor logs.</description>
 
 <Rule id="package_rsyslog_installed">
-<title>Install rsyslog</title>
-<description>This check queries the local RPM database to
-make sure that the rsyslog RPM is installed.</description>
+<title>Ensure rsyslog is Installed</title>
+<description>
+Rsyslog is installed by default.  Ensure that it is installed 
+by running:
+<pre>
+$ rpm -q rsyslog
+</pre>
+If it is not installed, install it by running:
+<pre>
+# yum install rsyslog
+</pre>
+</description>
+<rationale>
+The rsyslog package provides the rsyslog daemon, which provides
+system logging services.
+</rationale>
 <ident cce="17742-8" />
 <oval id="package_rsyslog_installed" />
 <ref nist="AU-2, AU-9, CM-6" />
@@ -21,8 +41,22 @@ make sure that the rsyslog RPM is installed.</description>
 
 <Rule id="enable_rsyslog">
 <title>Configure Rsyslog</title>
-<description>The <tt>rsyslog</tt> service should be enabled or disabled
-as appropriate.</description>
+<description>
+To ensure that the rsyslog service is activated, run the following command:
+<pre>
+$ chkconfig --list rsyslog
+</pre>
+The service should be <tt>on</tt> for runlevels 2 through 5.
+<br/>
+If not, activate it with the command:
+<pre>
+$ chkconfig rsyslog on
+</pre>
+</description>
+<rationale>
+The rsyslog service must be running in order to provide 
+logging services.
+</rationale>
 <ident cce="17698-2" />
 <oval id="service_rsyslog_enabled" />
 <ref nist="AU-2" />
@@ -132,25 +166,17 @@ as appropriate</description>
 </Group>
 
 <Group id="rsyslog_accepting_remote_messages">
-<title>Enable <tt>rsyslogd</tt> to Accept Remote Messages on Loghosts
-Only</title>
-<description>Is this machine the central log server for your
-organization? If so, edit the file <tt>/etc/rsyslog.conf</tt>. Add or
-correct the following lines:
-<br />
-<pre>
-$ModLoad imtcp.so
-$InputTCPServerRun 514
-
-</pre>
-If the machine is not a log server, ensure that those two lines are
-commented out.
-<br /><br />
+<title>Configure <tt>rsyslogd</tt> to Accept Remote Messages Only As Needed</title>
+<description>
 By default, RHEL6's <tt>rsyslog</tt> does not listen over the network
-for log messages. The options <tt>$ModLoad imtcp.so</tt> and
-<tt>$InputTCPServerRun 514</tt> enable <tt>rsyslogd</tt> to listen over
-TCP port 514, and should be used only if necessary.
+for log messages. If needed, the modules <tt>imtcp.so</tt> and <tt>imudp.so</tt>
+(and others) enable the daemon to receive messages from other systems and for the system
+thus to act as a log server.  
+If the machine is not a log server, then lines concerning these modules 
+should remain commented out.
+<br /><br />
 </description>
+
 <!--<description>Is this machine the central log server for your
 organization? If so, edit the file <tt>/etc/sysconfig/rsyslog</tt>. Add
 or correct the following line:
@@ -177,14 +203,79 @@ amount of redundant information placed in log files. See the
 <tt>rsyslogd(8)</tt> man page for further information.</description>
 -->
 
-<Rule id="rsyslog_accept_remote_messages">
-<title>RSyslog Should Accept Remote Messages As Appropriate</title>
-<description><tt>rsyslog</tt> should accept remote messages or not as
-appropriate</description>
+<Rule id="rsyslog_accept_remote_messages_none">
+<title>Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server</title>
+<description>The <tt>rsyslog</tt> daemon should not accept remote messages
+unless the system acts as a log server. 
+<br/> 
+TODO: See how /etc/sysconfig/rsyslog plays or interferes or overwrites here.
+<br/> 
+To ensure that it is not listening on the network, ensure the following lines are 
+<i>not</i> found in <tt>/etc/rsyslog.conf</tt>:
+<pre>
+$ModLoad imtcp.so
+$InputTCPServerRun <i>port</i>
+$ModLoad imudp.so
+$InputUDPServerRun <i>port</i>
+$ModLoad imrelp.so
+$InputRELPServerRun <i>port</i>
+</pre>
+</description>
+<rationale>
+Any process which receives messages from the network incurs some risk 
+of receiving malicious messages.  This risk can be eliminated for 
+rsyslog by configuring it not to listen on the network.
+</rationale>
 <ident cce="17639-6" />
 <oval id="rsyslog_nolisten" />
 <ref nist="AU-2, AU-9" />
 </Rule>
+
+<Rule id="rsyslog_accept_remote_messages_tcp">
+<title>Enable rsyslog to Accept Messages via TCP, if Acting As Log Server</title>
+<description>The <tt>rsyslog</tt> daemon should not accept remote messages
+unless the system acts as a log server. 
+<br/> 
+TODO: See how /etc/sysconfig/rsyslog plays or interferes or overwrites here.
+<br/> 
+If the system needs to act as a central log server, add the following lines to
+<tt>/etc/rsyslog.conf</tt> to enable reception of messages over TCP:
+<pre>
+$ModLoad imtcp.so
+$InputTCPServerRun 514
+</pre>
+</description>
+<rationale>
+If the system needs to act as a log server, this ensures that it can receive 
+messages over a reliable TCP connection.
+</rationale>
+<ident cce="TODO" />
+<!--<oval id="rsyslog_listen_tcp" />-->
+<ref nist="AU-2, AU-9" />
+</Rule>
+
+
+<Rule id="rsyslog_accept_remote_messages_udp">
+<title>Enable rsyslog to Accept Messages via UDP, if Acting As Log Server</title>
+<description>
+If the system needs to act as a central log server, and it also must receive 
+messages from systems which can only send them in the traditional UDP 
+format, then ensure the following lines exist in <tt>/etc/syslog.conf</tt>:
+<pre>
+$ModLoad imudp.so
+$InputUDPServerRun 514
+</pre>
+</description>
+<rationale>
+Many devices, such as switches, routers, and other Unix-like systems, may only support 
+the traditional syslog transmission over UDP.  If the system must act as a log server,
+this enables it to receive their messages as well.
+</rationale>
+<ident cce="TODO" />
+<!--<oval id="rsyslog_listen_udp" />-->
+<ref nist="AU-2, AU-9" />
+</Rule>
+
 </Group>
 
 <Group id="log_rotation">
