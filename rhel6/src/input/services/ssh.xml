@@ -48,7 +48,7 @@ permitted, because version 1 contains security
 vulnerabilities. The default setting shipped in the configuration
 file is correct, but is important enough to verify.
 <br />
-Verify that the following line appears:
+Verify that the following line appears in <tt>/etc/ssh/sshd_config</tt>:
 <pre>Protocol 2</pre>
 </description>
 <ident cce="4325-7" />
@@ -56,7 +56,7 @@ Verify that the following line appears:
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
-
+<!--
 <Group id="sshd_disable_extraneous_authentication">
 <title>Disable Extraneous Authentication Schemes</title>
 <description>OpenSSH comes with a wide variety of authentication schemes that may or may not
@@ -75,15 +75,21 @@ KerberosAuthentication no
 RhostsRSAAuthentication no
 RSAAuthentication no</pre></description>
 </Group>
+-->
 
-<Group id="sshd_disable_tunnel">
+<!--
+<Rule id="sshd_disable_tunnel">
 <title>Disable Tunneling</title>
-<description>OpenSSH comes with the ability to perform tunneling utilizing a tunnel device. This allows
-a user to establish a small VPN connection with a firewall/gateway machine and then access resources sitting behind that firewall/gateway machine. This feature is disabled by default but it is best to explicitly disable it if it is not needed.
+<description>OpenSSH includes the ability to provide tunneling, which allows
+a user to effectively stablish a VPN connection with a firewall/gateway machine and then access resources 
+sitting behind it. This feature is disabled by default.  To explicitly 
+disable it:
 <pre>PermitTunnel no</pre>
 </description>
+<rationale>
+</rationale>
 </Group>
-
+-->
 
 
 <Rule id="sshd_set_idle_timeout">
@@ -103,7 +109,11 @@ of 5 minutes, set <b>interval</b> to 300.
 If a shorter timeout has already been set for the login
 shell, that value will preempt any SSH
 setting made here. Keep in mind that some processes may stop SSH
-from correctly detecting that the user is idle.</description>
+from correctly detecting that the user is idle.
+</description>
+<rationale>
+
+</rationale>
 <ident cce="3845-5" />
 <oval id="sshd_idle_timeout" value="sshd_idle_timeout_value"/>
 </Rule>
@@ -127,7 +137,7 @@ is reached.
 
 
 <Rule id="sshd_disable_rhosts">
-<title>Disable .rhosts Files</title>
+<title>Disable SSH Support for .rhosts Files</title>
 <description>SSH can emulate the behavior of the obsolete rsh
 command in allowing users to enable insecure access to their
 accounts via <tt>.rhosts</tt> files.
@@ -138,6 +148,10 @@ following line:
 <pre>
 IgnoreRhosts yes</pre>
 </description>
+<rationale>
+SSH trust relationships mean that a compromise on one host 
+can allow an attacker to move trivially to other hosts.
+</rationale>
 <ident cce="4475-0" />
 <oval id="sshd_rsh_emulation_disabled" />
 </Rule>
@@ -157,6 +171,10 @@ following line:
 <pre>
 HostbasedAuthentication no</pre>
 </description>
+<rationale>
+SSH trust relationships mean that a compromise on one host 
+can allow an attacker to move trivially to other hosts.
+</rationale>
 <ident cce="4370-3" />
 <oval id="sshd_hostbased_authentication" />
 </Rule>
@@ -182,7 +200,7 @@ and also allows direct attack attempts on root’s password.
 
 
 <Rule id="sshd_disable_empty_passwords">
-<title>Disable Empty Passwords</title>
+<title>Disable SSH Access via Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
 empty passwords, add or correct the following line:
 <br />
@@ -202,16 +220,24 @@ even in the event of misconfiguration elsewhere.
 </Rule>
 
 <Rule id="sshd_enable_warning_banner">
-<title>Enable Warning Banner</title>
-<description>An earlier section contains information on how to create an
-appropriate warning banner.
-<br /><br />
+<title>Enable SSH Warning Banner</title>
+<description>
 To enable the warning banner and ensure it is consistent  
-across the system, add or correct the following line:
+across the system, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
+
 <br />
 <pre>
 Banner /etc/issue</pre>
+<br /><br />
+Another section contains information on how to create an
+appropriate system-wide warning banner.
 </description>
+<rationale>
+Although unlikely to dissuade a serious attacker, the warning message
+reinforces policy awareness during the logon process.  Alternatively,
+systems whose ownership should not be obvious 
+should ensure usage of a banner that does not provide easy attribution.
+</rationale>
 <ident cce="4431-3" />
 <oval id="sshd_banner_set" />
 </Rule>
@@ -219,41 +245,44 @@ Banner /etc/issue</pre>
 
 <Rule id="sshd_do_not_permit_user_env">
 <title>Do Not Allow SSH Environment Options</title>
-<description>To prevent users from being able to present
-environment options to the SSH daemon and potentially bypass some
-access restrictions, add or correct the following line:
+<description>To ensure users are not able to present
+environment options to the SSH daemon, add or correct the following line
+in <tt>/etc/ssh/sshd_config</tt>:
 <br />
 <pre>
 PermitUserEnvironment no</pre>
 </description>
+<rationale>
+SSH environment options potentially allow users to bypass
+access restriction in some configurations.
+</rationale>
 <ident cce="4422-2" />
 <oval id="sshd_no_user_envset" />
 </Rule>
 
-<Group id="sshd_using_approved_ciphers">
-<title>Use Only Approved Ciphers</title>
-<description>Limit the ciphers to those which are FIPS-approved and
-only use ciphers in counter (CTR) mode. The following line
-demonstrates use of FIPS-approved ciphers in CTR mode:
-<br />
-<pre>
-Ciphers aes128-ctr,aes192-ctr,aes256-ctr
-
-</pre>
-The man page <tt>sshd_config(5)</tt> contains a list of the ciphers
-supported for the current release of the SSH daemon.
-<br />
-TODO: Need to investigate current status of this. Earlier issues with
-CBC were supposed to be fixed.</description>
-
 <Rule id="sshd_use_approved_ciphers">
 <title>Use Only Approved Ciphers</title>
-<description>Use only FIPS approved ciphers not in CBC
-mode.</description>
+<description>Limit the ciphers to those algorithms which are FIPS-approved.
+Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
+The following line in <tt>/etc/ssh/sshd_config</tt> 
+demonstrates use of FIPS-approved ciphers in CTR mode:
+<pre>
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr
+</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+Note that older or less capable versions of SSH client or server software
+may still be found on systems such as networking equipment, and these
+may not support CTR mode.   This may become an issue if, for example,
+these systems need to retrieve files from your SSH server using SFTP.
+TODO: Need to investigate current status of this. Earlier issues with
+CBC were supposed to be fixed.</description>
+<rationale>
+Approved algorithms should impart some level of confidence in their
+implementation.  These are also required for compliance.  
+</rationale>
 <ident cce="14491-5" />
 <oval id="sshd_use_approved_ciphers" />
 </Rule>
-</Group>
 
 </Group>
 </Group>
