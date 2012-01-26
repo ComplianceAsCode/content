@@ -44,13 +44,17 @@ detailed information.</description>
 <Rule id="sshd_allow_only_protocol2">
 <title>Allow Only SSH Protocol 2</title>
 <description>Only SSH protocol version 2 connections should be
-permitted, because version 1 contains security
-vulnerabilities. The default setting shipped in the configuration
-file is correct, but is important enough to verify.
-<br />
-Verify that the following line appears in <tt>/etc/ssh/sshd_config</tt>:
+permitted.  The default setting in 
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be 
+verified by ensuring that the following
+line appears:
 <pre>Protocol 2</pre>
 </description>
+<rationale>
+SSH protocol version 1 suffers from design flaws that 
+result in security vulnerabilities and 
+should not be used.
+</rationale>
 <ident cce="4325-7" />
 <oval id="sshd_protocol_2" />
 </Rule>
@@ -95,7 +99,8 @@ disable it:
 <Rule id="sshd_set_idle_timeout">
 <title>Set SSH Idle Timeout Interval</title>
 <description>SSH allows administrators to set an idle timeout
-interval. After this interval has passed, the idle user will be
+interval. 
+After this interval has passed, the idle user will be
 automatically logged out.
 <br /><br />
 To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
@@ -104,7 +109,7 @@ follows:
 <pre>ClientAliveInterval <b>interval</b>
 </pre>
 The timeout <b>interval</b> is given in seconds. To have a timeout
-of 5 minutes, set <b>interval</b> to 300.
+of 15 minutes, set <b>interval</b> to 900.
 <br /><br />
 If a shorter timeout has already been set for the login
 shell, that value will preempt any SSH
@@ -112,7 +117,9 @@ setting made here. Keep in mind that some processes may stop SSH
 from correctly detecting that the user is idle.
 </description>
 <rationale>
-
+Causing idle users to be automatically logged out 
+guards against compromises one system leading trivially 
+to compromises on another. 
 </rationale>
 <ident cce="3845-5" />
 <oval id="sshd_idle_timeout" value="sshd_idle_timeout_value"/>
@@ -128,9 +135,11 @@ follows:
 <pre>
 ClientAliveCountMax 0</pre>
 <br /><br />
+</description>
+<rationale>
 This ensures that a user login will be terminated as soon as the <tt>ClientAliveInternal</tt>
 is reached.
-</description>
+</rationale>
 <ident cce="14061-6" />
 <oval id="sshd_clientalivecountmax" />
 </Rule>

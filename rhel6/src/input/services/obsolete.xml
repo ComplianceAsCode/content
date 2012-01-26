@@ -85,6 +85,25 @@ working to migrate to a more secure protocol.
 
 See Section 3.5 for information about the SSH service.</description>
 
+<Rule id="disable_telnet_service">
+<title>Disable telnet service</title>
+<description>
+To disable the telnet service, run the following command:
+<pre>
+# chkconfig telnet off
+</pre>
+</description>
+<rationale>
+The telnet protocol uses unencrypted network communication, which 
+means that data from the login session, including passwords and 
+all other information transmitted during the session, can be 
+stolen by eavesdroppers on the network.  The telnet protocol is also 
+subject to man in the middle attacks. 
+</rationale>
+<ident cce="3390-2" />
+<oval id="service_telnetd_disabled" />
+</Rule>
+
 <Rule id="uninstall_telnet_server">
 <title>Uninstall Telnet server</title>
 <description>The <tt>telnet-server</tt> package should be
@@ -93,12 +112,6 @@ uninstalled.</description>
 <oval id="package_telnet-server_removed" />
 </Rule>
 
-<Rule id="disable_telnet_service">
-<title>Disable telnet service</title>
-<description><tt>telnet</tt> service should be disabled.</description>
-<ident cce="3390-2" />
-<oval id="service_telnetd_disabled" />
-</Rule>
 </Group>
 
 
