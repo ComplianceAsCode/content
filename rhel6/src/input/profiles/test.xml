@@ -8,8 +8,12 @@
 <select idref="set_selinux_state" selected="true"/>
 <select idref="password_require_digits" selected="true"/>
 <select idref="set_system_login_banner" selected="true"/>
+<select idref="mountopt_nodev_on_removable_partitions" selected="true"/>
+<select idref="mountopt_noexec_on_removable_partitions" selected="true"/>
+<select idref="mountopt_nosuid_on_removable_partitions" selected="true"/>
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <refine-value idref="var_selinux_state_name" selector="enforcing"/>
 <refine-value idref="var_password_pam_cracklib_dcredit" selector="1"/>
 <refine-value idref="login_banner_text" selector="usgcb_default"/>
+<refine-value idref="var_removable_partition" selector="dev_cdrom"/>
 </Profile>
