@@ -139,7 +139,9 @@
 
 	<xsl:template match="cdf:reference">
 		<!-- adjust for the desired reference here -->
-		<xsl:value-of select="." />
+		<xsl:if test="@href=$nist800-53uri">
+			<xsl:value-of select="." />
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="cdf:description">
