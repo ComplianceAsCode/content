@@ -2,7 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1">
 
 <!-- this style sheet expects parameter $ref, which is the abbreviation of the ref to be shown -->
-
 <xsl:include href="constants.xslt"/>
 
 	<xsl:template match="/">
@@ -77,7 +76,7 @@
 	<xsl:template match="cdf:Rule">
 		  <xsl:if test="cdf:reference[@href=$nist800-53uri] and $ref='nist'">
                     <xsl:call-template name="rule-info">
-		      <xsl:with-param name="refinfo" select="cdf:reference" />
+		      <xsl:with-param name="refinfo" select="cdf:reference[@href=$nist800-53uri]" />
                     </xsl:call-template>
 		  </xsl:if>
 		  <xsl:if test="cdf:reference[@href=$dcid63uri] and $ref='dcid'">
@@ -93,30 +92,6 @@
 	</xsl:template>
 
 
-	<xsl:template match="cdf:check">
-		<xsl:for-each select="cdf:check-export">
-			<xsl:variable name="rulevar" select="@value-id" />
-				<!--<xsl:value-of select="$rulevar" />:-->
-				<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:refine-value">
-					<xsl:if test="@idref=$rulevar">
-						<xsl:value-of select="@selector" />
-					</xsl:if>
-				</xsl:for-each>
-		</xsl:for-each>
-	</xsl:template>
-<!--
-	<xsl:template match="cdf:reference">
-		  <xsl:if test="@href=$nist800-53uri and $ref='nist'">
-		    <xsl:value-of select="." />
-		  </xsl:if>
-		  <xsl:if test="@href=$dcid63uri and $ref='dcid'">
-		    <xsl:value-of select="." />
-		  </xsl:if>
-		  <xsl:if test="@href=$cnss1253uri and $ref='cnss'">
-		    <xsl:value-of select="." />
-		  </xsl:if>
-	</xsl:template>
--->
 	<xsl:template match="cdf:description">
 		<!-- print all the text and children (xhtml elements) of the description -->
 		<xsl:copy-of select="./node()" />
