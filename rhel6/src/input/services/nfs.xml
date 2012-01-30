@@ -2,75 +2,61 @@
 
 <Group id="nfs_and_rpc">
 <title>NFS and RPC</title>
-<description>The Network File System is the most popular
-distributed filesystem for the Unix environment, and is very widely
-deployed. Unfortunately, NFS was not designed with security in
-mind, and has a number of weaknesses, both in terms of the protocol
-itself and because any NFS installation must expose several
-daemons, running on both servers and clients, to network attack.
+<description>The Network File System is the most popular distributed filesystem for the Unix environment, and is very widely deployed. Unfortunately, NFS was not designed with security in mind, and has a number of weaknesses, both in terms of the protocol itself and because any NFS installation must expose several daemons, running on both servers and clients, to network attack.
 <br /><br />
-This section discusses the circumstances under which it is
-possible to disable NFS and its dependencies, and then details
-steps which should be taken to secure, as much as possible, NFS's
-configuration. This section is relevant to machines operating as
-NFS clients, as well as to those operating as NFS
+This section discusses the circumstances under which it is possible to disable NFS and its dependencies, and then details steps which should be taken to secure, as much as possible, NFS's configuration. This section is relevant to machines operating as NFS clients, as well as to those operating as NFS
 servers.</description>
 
 
 <Group id="disabling_nfs">
 <title>Disable All NFS Services if Possible</title>
-<description>Is there a mission-critical reason for this machine to
-operate as either an NFS client or an NFS server?
+<description>Is there a mission-critical reason for this machine to operate as either an NFS client or an NFS server?
 <br /><br />
-If not, follow all instructions in the remainder of Section
-3.13.1 to disable subsystems required by NFS.
+If not, follow all instructions in the remainder of this section to disable subsystems required by NFS.
 <br /><br />
-NFS is a commonly used mechanism for sharing data between
-machines in an organization. However, its use opens many potential
-security holes. If NFS is not universally needed in your
-organization, improve the security posture of any machine which
-does not require NFS by disabling it entirely.</description>
-<warning category="general">The steps in Section 3.13.1 will
-prevent a machine from operating as either an NFS client or an NFS
-server. Only perform these steps on machines which do not need NFS
-at all.</warning>
+NFS is a commonly used mechanism for sharing data between machines in an organization. However, its use opens many potential security holes. If NFS is not universally needed in your organization, improve the security posture of any machine which does not require NFS by disabling it entirely.</description>
+<warning category="general">The steps in this section will prevent a machine from operating as either an NFS client or an NFS server. Only perform these steps on machines which do not need NFS at all.</warning>
 
 
 <Group id="disabling_nfs_services">
 <title>Disable Services Used Only by NFS</title>
-<description>If NFS is not needed, perform the following steps to
-disable NFS client daemons:
-<br />
+<description>If NFS is not needed, disable the NFS client daemons nfslock, rpcgssd, and rpcidmapd.
+<br /><br />
+All of these daemons run with elevated privileges, and many listen for network connections. If they are not needed, they should be disabled to improve system security posture.</description>
+
+<Rule id="service_nfslock_disabled">
+<title>Disable Network File System Lock Service (nfslock)</title>
+<description>The Network File System Lock (nfslock) service starts the required remote procedure call (RPC) processes which allow clients to lock files on the server. If the local machine is not configured to mount NFS filesystems then this service should be disabled.
 <pre>
 # chkconfig nfslock off
-# chkconfig rpcgssd off
-# chkconfig rpcidmapd off
 
 </pre>
-The nfslock, rpcgssd, and rpcidmapd daemons all perform NFS
-client functions.
-<br /><br />
-All of these daemons run with elevated privileges, and many
-listen for network connections. If they are not needed, they should
-be disabled to improve system security posture.</description>
-<Rule id="disable_nfslock">
-<title>Disable nfslock</title>
-<description>The nfslock service should be disabled.</description>
+</description>
 <ident cce="4396-8" />
 <oval id="service_nfslock_disabled" />
 </Rule>
 
-<Rule id="disable_rpcgssc">
-<title>Disable rpcgssd</title>
-<description>The rpcgssd service should be disabled.</description>
+<Rule id="service_rpcgssd_disabled">
+<title>Disable Secure RPC Client Service (rpcgssd)</title>
+<description>
+The rpcgssd service manages RPCSEC GSS contexts required to secure protocols that use RPC (most often Kerberos and NFS). The rpcgssd service is the client-side of RPCSEC GSS. If the system does not require secure RPC then this service should be disabled.
+<pre>
+# chkconfig rpcgssd off
+
+</pre>
+</description>
 <ident cce="3535-2" />
 <oval id="service_rpcgssd_disabled" />
 </Rule>
 
-<Rule id="disable_rpcidmapd">
-<title>Disable rpcidmapd</title>
-<description>The rpcidmapd service should be
-disabled.</description>
+<Rule id="service_rpcidmapd_disabled">
+<title>Disable RPC ID Mapping Service (rpcidmapd)</title>
+<description>The rpcidmapd service is used to map user names and groups to UID and GID numbers on NFSv4 mounts. If NFS is not in use on the local system then this service should be disabled.
+<pre>
+# chkconfig rpcidmapd off
+
+</pre>
+</description>
 <ident cce="3568-3" />
 <oval id="service_rpcidmapd_disabled" />
 </Rule>
@@ -78,150 +64,117 @@ disabled.</description>
 
 <Group id="disabling_netfs">
 <title>Disable netfs if Possible</title>
-<description>Determine whether any network filesystems handled by
-netfs are mounted on this system:
-<br />
+<description>To determine if any network filesystems handled by netfs are currently mounted on the system execute the following command:
 <pre>
 # mount -t nfs,nfs4,smbfs,cifs,ncpfs
 
 </pre>
-If this command returns no output, disable netfs to improve
-system security:
-<br />
+If the command did not return any output then disable netfs.
+</description>
+<Rule id="service_netfs_disabled">
+<title>Disable Network File Systems (netfs)</title>
+<description>The netfs script manages the boot-time mounting of several types of networked filesystems, of which NFS and Samba are the most common. If these filesystem types are not in use, the script can be disabled, protecting the system somewhat against accidental or malicious changes to <tt>/etc/fstab</tt> and against flaws in the netfs script itself.
 <pre>
 # chkconfig netfs off
 
 </pre>
-The netfs script manages the boot-time mounting of several
-types of networked filesystems, of which NFS and Samba (see Section
-3.18) are the most common. If these filesystem types are not in
-use, the script can be disabled, protecting the system somewhat
-against accidental or malicious changes to <tt>/etc/fstab</tt> and against
-flaws in the netfs script itself.</description>
-<Rule id="disable_netfs">
-<title>Disable netfs if Possible</title>
-<description>The netfs service should be disabled.</description>
+</description>
 <ident cce="4533-6" />
 <oval id="service_netfs_disabled" />
 </Rule>
 </Group>
-<Group id="disabling_portmap">
-<title>Disable RPC Portmapper if Possible</title>
+<Group id="disabling_rpcbind">
+<title>Disable RPC Bind Service if Possible</title>
 <description>If:
-<br /><br />
 <ul>
-<li>NFS is not needed</li>
+<li>NFSv3 or NFSv2 is not needed</li>
 <li>The site does not rely on NIS for authentication information,
 and</li>
 <li>The machine does not run any other RPC-based service</li>
 </ul>
+then disable the RPC bind service.
 <br /><br />
-then disable the RPC portmapper service:
-<br />
-<pre>
-# chkconfig portmap off
-
-</pre>
-By design, the RPC model does not require particular services
-to listen on fixed ports, but instead uses a daemon, portmap, to
-tell prospective clients which ports to use to contact the services
-they are trying to reach. This model weakens system security by
-introducing another privileged daemon which may be directly
-attacked, and is unnecessary because RPC was never adopted by
-enough services to risk using up all the ports on a system.
+By design, the RPC model does not require particular services to listen on fixed ports, but instead uses a daemon, rpcbind, to tell prospective clients which ports to use to contact the services they are trying to reach. This model weakens system security by introducing another privileged daemon which may be directly attacked, and is unnecessary because RPC was never adopted by enough services to risk using up all the ports on a system.
 <br /><br />
-Unfortunately, the portmapper is central to RPC design, so it
-cannot be disabled if your site is using any RPCbased services,
-including NFS, NIS (see Section 3.2.4 for information about NIS,
-which is not recommended), or any third-party or custom RPC-based
-program. If none of these programs are in use, however, portmap
-should be disabled to improve system security.
+Unfortunately, rpcbind is central to RPC design, so it cannot be disabled if your site is using NFSv3 or NFSv2, NIS (see Section 3.2.4 for information about NIS, which is not recommended), or any third-party or custom RPC-based program. If none of these programs are in use, however, rpcbind should be disabled to improve system security.
 <br /><br />
-In order to get more information about whether portmap may be
-disabled on a given host, query the local portmapper using the
-command:
+In order to get more information about whether rpcbind may be disabled on a given host, query rpcbind using the command:
 <br />
 <pre>
 # rpcinfo -p
 
 </pre>
-If the only services listed are portmapper and status, it is
-safe to disable the portmapper. If other services are listed and
-your site is not running NFS or NIS, investigate these services and
-disable them if possible.</description>
-<Rule id="disable_portmap">
-<title>Disable RPC Portmapper if Possible</title>
-<description>The portmap service should be disabled.</description>
-<ident cce="4550-0" />
-<oval id="service_portmap_disabled" />
+If the only services listed are portmapper and status, it is safe to disable rpcbind. If other services are listed and your site is not running NFS or NIS, investigate these services and disable them if possible.</description>
+
+<Rule id="service_rpcbind_disabled">
+<title>Disable RPC Bind Service (rpcbind)</title>
+<description>The rpcbind service is responsible for mapping RPC services to the TCP ports that they listen on. The rpcbind service also directs RPC clients to the proper port number that corresponds to the service the clients wants to communicate with. Unless RPC services are needed on the local system it is recommended to disable this service.
+<pre>
+# chkconfig rpcbind off
+
+</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_rpcbind_disabled" />
 </Rule>
+
 </Group>
 </Group>
 <Group id="nfs_configuring_clients">
 <title>Configure NFS Clients</title>
-<description>The steps in this section are appropriate for machines
-which operate as NFS clients.</description>
+<description>The steps in this section are appropriate for machines which operate as NFS clients.</description>
 <Group id="disabling_nfsd">
 <title>Disable NFS Server Daemons</title>
 <description>
+There is no need to run the NFS server daemons <tt>nfs</tt> and <tt>rpcsvcgssd</tt> except on a small number of properly secured machines designated as NFS servers. Ensure that these daemons are turned off on clients.</description>
+
+<Rule id="service_nfs_disabled">
+<title>Disable Network File System (nfs)</title>
+<description>The Network File System (NFS) service allows remote hosts to mount and interact with shared filesystems on the local machine. If the local machine is not designated as a NFS server then this service should be disabled.
 <pre>
 # chkconfig nfs off
-# chkconfig rpcsvcgssd off
 
 </pre>
-There is no need to run the NFS server daemons except on a
-small number of properly secured machines designated as NFS
-servers. Ensure that these daemons are turned off on
-clients.</description>
-<Rule id="disable_nfsd">
-<title>Disable nfs service</title>
-<description>The nfs service should be disabled</description>
+</description>
 <ident cce="4473-5" />
 <oval id="service_nfs_disabled" />
 </Rule>
-<Rule id="disable_rpcsvcgssd">
-<title>Disable rpcsvcgssd service</title>
-<description>The rpcsvcgssd service should be
-disabled</description>
+
+<Rule id="service_rpcsvcgssd_disabled">
+<title>Disable Secure RPC Server Service (rpcsvcgssd)</title>
+<description>The rpcsvcgssd service manages RPCSEC GSS contexts required to secure protocols that use RPC (most often Kerberos and NFS). The rpcsvcgssd service is the server-side of RPCSEC GSS. If the system does not require secure RPC then this service should be disabled.
+<pre>
+# chkconfig rpcsvcgssd off
+
+</pre>
+</description>
 <ident cce="4491-7" />
 <oval id="service_rpcsvcgssd_disabled" />
 </Rule>
 </Group>
+
 <Group id="mounting_remote_filesystems">
 <title>Mount Remote Filesystems with Restrictive Options</title>
-<description>Edit the file <tt>/etc/fstab</tt>. For each filesystem whose
-type (column 3) is nfs or nfs4, add the text ,nodev,nosuid to the
-list of mount options in column 4. If appropriate, also add
-,noexec.
+<description>Edit the file <tt>/etc/fstab</tt>. For each filesystem whose type (column 3) is <tt>nfs</tt> or <tt>nfs4</tt>, add the text <tt>,nodev,nosuid</tt> to the list of mount options in column 4. If appropriate, also add <tt>,noexec</tt>.
 <br /><br />
-See Section 2.2.1.2 for a description of the effects of these
-options. In general, execution of files mounted via NFS should be
-considered risky because of the possibility that an adversary could
-intercept the request and substitute a malicious file. Allowing
-setuid files to be executed from remote servers is particularly
-risky, both for this reason and because it requires the clients to
-extend root-level trust to the NFS server.</description>
+See Section 2.2.1.2 for a description of the effects of these options. In general, execution of files mounted via NFS should be considered risky because of the possibility that an adversary could intercept the request and substitute a malicious file. Allowing setuid files to be executed from remote servers is particularly risky, both for this reason and because it requires the clients to extend root-level trust to the NFS server.</description>
 
 <Value id="var_remote_nfs_filesystem" type="string" operator="equals" interactive="0">
 <title>Remote NFS Partitions</title>
-<description>This value is used by the checks mount_option_nodev_remote_filesystems and mount_option_nosuid_remote_filesystems
-to ensure that the correct mount options are set on filesystems that are mounted via NFS shares. This value should be modified
-to reflect any remote NFS filesystems that are required on the local system.</description>
+<description>This value is used by the checks mount_option_nodev_remote_filesystems and mount_option_nosuid_remote_filesystems to ensure that the correct mount options are set on filesystems that are mounted via NFS shares. This value should be modified to reflect any remote NFS filesystems that are required on the local system.</description>
 <value selector="dev_nfs5">/dev/nfs5</value>
 </Value>
 
 <Rule id="use_nodev_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nodev</title>
-<description>The <tt>nodev</tt> option should be enabled for all NFS
-mounts</description>
+<description>The <tt>nodev</tt> option should be enabled for all NFS mounts</description>
 <ident cce="4368-7" />
 <oval id="mount_option_nodev_remote_filesystems" var="var_remote_nfs_filesystem" />
 </Rule>
 
 <Rule id="use_nosuid_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nosuid</title>
-<description>The <tt>nosuid</tt> option should be enabled for all NFS
-mounts</description>
+<description>The <tt>nosuid</tt> option should be enabled for all NFS mounts</description>
 <ident cce="4024-6" />
 <oval id="mount_option_nosuid_remote_filesystems" var="var_remote_nfs_filesystem" />
 </Rule>
