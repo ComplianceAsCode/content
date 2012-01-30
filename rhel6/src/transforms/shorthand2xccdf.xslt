@@ -4,10 +4,10 @@ xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
 xmlns:xhtml="http://www.w3.org/1999/xhtml"
 exclude-result-prefixes="xccdf">
 
-  <xsl:variable name="cceuri">http://cce.mitre.org</xsl:variable>
-  <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
-  <xsl:variable name="ovalpath">oval:org.scap-security-guide.rhel:def:</xsl:variable>
-  <xsl:variable name="ovalfile">rhel6-oval.xml</xsl:variable>
+<xsl:include href="constants.xslt"/>
+
+<xsl:variable name="ovalpath">oval:org.scap-security-guide.rhel:def:</xsl:variable>
+<xsl:variable name="ovalfile">rhel6-oval.xml</xsl:variable>
 
   <!-- Content:template -->
   <xsl:template match="Benchmark">
@@ -33,22 +33,43 @@ exclude-result-prefixes="xccdf">
 
   <!-- expand reference to CCE ID -->
   <xsl:template match="Rule/ident">
-    <ident>
-      <xsl:attribute name="system">
-        <xsl:value-of select="$cceuri" />
-      </xsl:attribute>
-      <xsl:value-of select="@cce" />
-    </ident>
+    <xsl:for-each select="@*">
+      <ident>
+        <xsl:attribute name="system">
+          <xsl:if test="name() = 'cce'">
+            <xsl:value-of select="$cceuri" />
+          </xsl:if>
+          <!-- NOTE: use DISA's OS SRG to see these tied to more-concrete OS settings -->
+          <xsl:if test="name() = 'cci'">
+            <xsl:value-of select="$cciuri" />
+            <!-- <xsl:text>http://iase.disa.mil/cci/index.html</xsl:text> -->
+          </xsl:if>
+        </xsl:attribute>
+        <xsl:value-of select="." />
+      </ident>
+    </xsl:for-each>
   </xsl:template>
 
-  <!-- expand reference to NIST 800-53 -->
-  <xsl:template match="Rule/ref">
-    <reference>
-      <xsl:attribute name="href">
-        <xsl:text>http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf</xsl:text>
-      </xsl:attribute>
-      <xsl:value-of select="@nist" />
-    </reference>
+  <!-- expand ref attributes to appropriate XCCDF reference bodies -->
+  <xsl:template match="Rule/ref"> 
+    <xsl:for-each select="@*">
+      <reference>
+        <xsl:attribute name="href">
+        <!-- populate the href attribute with a global reference-->
+          <xsl:if test="name() = 'nist'">
+            <xsl:value-of select="$nist800-53uri" />
+          </xsl:if>
+          <xsl:if test="name() = 'cnss'">
+            <xsl:value-of select="$cnss1253uri" />
+          </xsl:if>
+          <xsl:if test="name() = 'dcid'">
+            <xsl:value-of select="$dcid63uri" />
+          </xsl:if>
+        </xsl:attribute>
+      <!-- the actual string specified -->
+        <xsl:value-of select="." />  
+      </reference>
+    </xsl:for-each>
   </xsl:template>
 
 
