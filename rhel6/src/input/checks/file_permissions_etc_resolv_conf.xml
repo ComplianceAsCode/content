@@ -13,14 +13,14 @@
     </criteria>
   </definition>
 
-  <unix:file_test check="all" check_existence="all_exist" comment="samba password files uid" id="test_etc_resolv_conf" version="1">
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/resolv.conf" id="test_etc_resolv_conf" version="1">
     <unix:object object_ref="object_etc_resolv_conf" />
     <unix:state state_ref="state_uid_root" />
     <unix:state state_ref="state_gid_root" />
     <unix:state state_ref="state_mode_0644" />
   </unix:file_test>
 
-  <unix:file_object comment="all files in /var/lib/samba/private" id="object_etc_resolv_conf" version="1">
+  <unix:file_object comment="/etc/resolv.conf" id="object_etc_resolv_conf" version="1">
     <unix:path>/etc</unix:path>
     <unix:filename>resolv.conf</unix:filename>
   </unix:file_object>

@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="file_ownership_var_log_audit" version="1">
+    <metadata>
+      <title>Verify /var/log/audit Ownership</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="TODO" source="CCE" />
+      <description>Checks that all /var/log/audit files and directories are owned by the root user and group.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_ownership_var_log_audit_files" />
+      <criterion test_ref="test_ownership_var_log_audit_directories" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit files uid root gid root" id="test_ownership_var_log_audit_files" version="1">
+    <unix:object object_ref="object_ownership_var_log_audit_files" />
+    <unix:state state_ref="state_uid_root" />
+    <unix:state state_ref="state_gid_root" />
+  </unix:file_test>
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit directories uid root gid root" id="test_ownership_var_log_audit_directories" version="1">
+    <unix:object object_ref="object_ownership_var_log_audit_directories" />
+    <unix:state state_ref="state_uid_root" />
+    <unix:state state_ref="state_gid_root" />
+  </unix:file_test>
+  <unix:file_object comment="/var/log/audit files" id="object_ownership_var_log_audit_files" version="1">
+    <unix:behaviors recurse="files and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="pattern match">^/var/log/audit($|/.*$)</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+  <unix:file_object comment="/var/log/audit directories" id="object_ownership_var_log_audit_directories" version="1">
+    <unix:behaviors recurse="files and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="pattern match">^/var/log/audit($|/.*$)</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+  <unix:file_state id="state_uid_root" version="1">
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
+  </unix:file_state>
+  <unix:file_state id="state_gid_root" version="1">
+    <unix:group_id datatype="int" operation="equals">0</unix:group_id>
+  </unix:file_state>
+</def-group>
