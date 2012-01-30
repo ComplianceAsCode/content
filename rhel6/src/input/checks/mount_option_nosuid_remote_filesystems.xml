@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="mount_option_nosuid_remote_filesystems" version="1">
+    <metadata>
+      <title>Mount Remote Filesystems With nosuid</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-4024-6" source="CCE" />
+      <description>The nosuid option should be enabled for all NFS mounts.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="remote nfs filesystems" test_ref="test_etc_fstab_remote_nfs_filesystems_nosuid" />
+      <criterion comment="remote nfs filesystems" test_ref="test_nosuid_remote_nfs_filesystems" />
+    </criteria>
+  </definition>
+  <linux:partition_test check="all" check_existence="all_exist" id="test_nosuid_remote_nfs_filesystems" version="1" comment="nosuid on removable partition">
+    <linux:object object_ref="object_remote_nfs_partition" />
+    <linux:state state_ref="state_nosuid" />
+  </linux:partition_test>
+  <ind:textfilecontent54_test check="at least one" comment="removable partition /etc/fstab" id="test_etc_fstab_remote_nfs_filesystems_nosuid" version="1">
+    <ind:object object_ref="object_etc_fstab_remote_nfs_filesystems_nosuid" />
+    <ind:state state_ref="state_remote_nfs_filesystem" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_etc_fstab_remote_nfs_filesystems_nosuid" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*[\.\w]+:[/\w]+\s+([/\w]+)\s+nfs[4]?\s+.*,?nosuid,?.*$</ind:pattern>
+    <!-- the "not equal" operation essentially means all instances of the regexp within /etc/fstab -->
+    <ind:instance datatype="int" operation="not equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+  <linux:partition_object id="object_remote_nfs_partition" version="1">
+    <linux:mount_point var_ref="var_remote_nfs_filesystem" />
+  </linux:partition_object>
+  <ind:textfilecontent54_state id="state_remote_nfs_filesystem" version="1">
+    <ind:subexpression datatype="string" var_ref="var_remote_nfs_filesystem" />
+  </ind:textfilecontent54_state>
+  <linux:partition_state id="state_nosuid" version="1">
+    <linux:mount_options datatype="string" entity_check="at least one" operation="equals">nosuid</linux:mount_options>
+  </linux:partition_state>
+  <external_variable comment="remote nfs filesystem" datatype="string" id="var_remote_nfs_filesystem" version="1" />
+</def-group>

@@ -11,9 +11,12 @@
 <select idref="mountopt_nodev_on_removable_partitions" selected="true"/>
 <select idref="mountopt_noexec_on_removable_partitions" selected="true"/>
 <select idref="mountopt_nosuid_on_removable_partitions" selected="true"/>
+<select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
+<select idref="use_nosuid_option_on_nfs_mounts" selected="true"/>
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <refine-value idref="var_selinux_state_name" selector="enforcing"/>
 <refine-value idref="var_password_pam_cracklib_dcredit" selector="1"/>
 <refine-value idref="login_banner_text" selector="usgcb_default"/>
 <refine-value idref="var_removable_partition" selector="dev_cdrom"/>
+<refine-value idref="var_remote_nfs_filesystem" selector="dev_nfs5"/>
 </Profile>

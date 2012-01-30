@@ -1,3 +1,5 @@
+
+
 <Group id="nfs_and_rpc">
 <title>NFS and RPC</title>
 <description>The Network File System is the most popular
@@ -13,6 +15,8 @@ steps which should be taken to secure, as much as possible, NFS's
 configuration. This section is relevant to machines operating as
 NFS clients, as well as to those operating as NFS
 servers.</description>
+
+
 <Group id="disabling_nfs">
 <title>Disable All NFS Services if Possible</title>
 <description>Is there a mission-critical reason for this machine to
@@ -30,6 +34,8 @@ does not require NFS by disabling it entirely.</description>
 prevent a machine from operating as either an NFS client or an NFS
 server. Only perform these steps on machines which do not need NFS
 at all.</warning>
+
+
 <Group id="disabling_nfs_services">
 <title>Disable Services Used Only by NFS</title>
 <description>If NFS is not needed, perform the following steps to
@@ -195,20 +201,31 @@ intercept the request and substitute a malicious file. Allowing
 setuid files to be executed from remote servers is particularly
 risky, both for this reason and because it requires the clients to
 extend root-level trust to the NFS server.</description>
+
+<Value id="var_remote_nfs_filesystem" type="string" operator="equals" interactive="0">
+<title>Remote NFS Partitions</title>
+<description>This value is used by the checks mount_option_nodev_remote_filesystems and mount_option_nosuid_remote_filesystems
+to ensure that the correct mount options are set on filesystems that are mounted via NFS shares. This value should be modified
+to reflect any remote NFS filesystems that are required on the local system.</description>
+<value selector="dev_nfs5">/dev/nfs5</value>
+</Value>
+
 <Rule id="use_nodev_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nodev</title>
 <description>The <tt>nodev</tt> option should be enabled for all NFS
 mounts</description>
 <ident cce="4368-7" />
-<oval id="mount_remote_filesystems_nodev" />
+<oval id="mount_option_nodev_remote_filesystems" var="var_remote_nfs_filesystem" />
 </Rule>
+
 <Rule id="use_nosuid_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nosuid</title>
 <description>The <tt>nosuid</tt> option should be enabled for all NFS
 mounts</description>
 <ident cce="4024-6" />
-<oval id="mount_remote_filesystems_nosuid" />
+<oval id="mount_option_nosuid_remote_filesystems" var="var_remote_nfs_filesystem" />
 </Rule>
+
 </Group>
 </Group>
 </Group>
