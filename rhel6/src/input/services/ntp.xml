@@ -39,55 +39,40 @@ on your network to request the time data.
 The NTP server configuration file is located at <tt>/etc/ntp.conf</tt>.</description>
 <Group id="enabling_ntpd">
 <title>Enable the NTP Daemon</title>
-<description>If this machine is an NTP server, ensure that <tt>ntpd</tt> is
-enabled at boot time:
-<br />
-<pre>
-# chkconfig ntpd on</pre>
-</description>
+<description>If this machine is an NTP server, ensure that <tt>ntpd</tt> is enabled at boot time.</description>
 <Rule id="enable_ntpd">
 <title>Enable the NTP Daemon</title>
-<description>The <tt>ntpd</tt> service should be enabled.</description>
+<description>The <tt>ntpd</tt> service should be enabled.
+<pre>
+# chkconfig ntpd on
+
+</pre>
+</description>
+<rationale>
+Enabling the <tt>ntpd</tt> service ensures that the local system time will be the same on all computers. This is essential for authentication services such as Kerberos, but it is also important for maintaining accurate logs and auditing possible security breaches.
+</rationale>
 <ident cce="4376-0" />
 <oval id="service_ntpd_enabled" />
 </Rule>
 </Group>
 <Group id="configuring_ntpd_client">
 <title>Specify a Remote NTP Server for Time Data</title>
-<description>Find the IP address, server-ip , of an appropriate
-remote NTP server. Edit the file <tt>/etc/ntp.conf</tt>, and add or correct
-the following lines:
-<br />
+<description>Find the IP address of an appropriate remote NTP server and configure <tt>ntpd</tt> to use it to obtain accurate time data. If your site does not require time data to be accurate, but merely to be synchronized among local machines, this step can be omitted, and the NTP server will default to providing time data from the local clock. However, it is a good idea to periodically synchronize the clock to some source of accurate time, even if it is not appropriate to do so automatically.</description>
+
+<Rule id="ntpd_specify_remote_server">
+<title>Specify a Remote NTP Server for Time Data</title>
+<description>A remote NTP Server for time synchronization should be specified. Edit the file <tt>/etc/ntp.conf</tt>, and add or correct the following lines, substituting the IP address of a remote NTP server for <em>server-ip</em>:
 <pre>
 restrict server-ip mask 255.255.255.255 nomodify notrap noquery
 server server-ip
 
 </pre>
-If your site does not require time data to be accurate, but
-merely to be synchronized among local machines, this step can be
-omitted, and the NTP server will default to providing time data
-from the local clock. However, it is a good idea to periodically
-synchronize the clock to some source of accurate time, even if it
-is not appropriate to do so automatically.
+This NTP server must contact a remote server to obtain accurate data, so NTP's configuration must allow that remote data to be used to modify the system clock. The restrict line changes the default access permissions for that remote server. The server line specifies the remote server as the preferred NTP server for time data. If you intend to synchronize to more than one server, specify restrict and server lines for each server.
 <br /><br />
-The previous step disabled all remote access to this NTP
-server's state data. This NTP server must contact a remote server
-to obtain accurate data, so NTP's configuration must allow that
-remote data to be used to modify the system clock. The restrict
-line changes the default access permissions for that remote server.
-The server line specifies the remote server as the preferred NTP
-server for time data. If you intend to synchronize to more than one
-server, specify restrict and server lines for each server.
-<br /><br />
-Note: It would be possible to specify a hostname, rather than
-an IP address, for the server field. However, the restrict setting
-applies only to network blocks of IP addresses, so it is considered
-more maintainable to use the IP address in both
-fields.</description>
-<Rule id="ntpd_specify_remote_server">
-<title>Specify a Remote NTP Server for Time Data</title>
-<description>A remote NTP Server for time synchronization should be
-specified</description>
+Note: It would be possible to specify a hostname, rather than an IP address, for the server field. However, the restrict setting applies only to network blocks of IP addresses, so it is considered more maintainable to use the IP address in both fields.</description>
+<rationale>
+Synchonizing <tt>ntpd</tt> with an accurate clock makes it easier to collate system logs from multiple sources or correlate computer events with real time events.
+</rationale>
 <ident cce="4385-1" />
 <oval id="ntp_remote_server" />
 </Rule>
