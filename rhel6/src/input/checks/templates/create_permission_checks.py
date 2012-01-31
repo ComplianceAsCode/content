@@ -40,6 +40,12 @@
 #         /etc,resolv.conf,0,0,0644,1234-6
 #         /etc,[NULL],0,0,0755,1234-6
 #
+# OUTPUT
+#     This script is designed to be executed within the 'templates' directory. This directory
+#     should contain the CSV file, the OVAL templates, as well as a directory called 'output'.
+#     All generated checks will be placed in the 'output' directory. This allows a developer
+#     to verify the OVAL check and then move it to the official OVAL content once verified.
+#
 ####################################################################################################
 ####################################################################################################
 ####################################################################################################
