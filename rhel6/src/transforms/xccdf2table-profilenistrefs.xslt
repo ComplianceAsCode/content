@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
@@ -112,12 +112,10 @@
 			<td> <xsl:value-of select="cdf:title" /></td>
 			<td> <xsl:apply-templates select="cdf:description"/> </td>
 			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
+			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
 			<!-- need to resolve <sub idref=""> here  -->
-			<td> <xsl:value-of select="cdf:rationale"/> </td>
 			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
-			<!-- select the desired reference via href attribute.  here, NIST. -->
 			<td> 
-<!--			<xsl:apply-templates select="cdf:reference[@href=http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final-errata.pdf]"/>-->
 			<xsl:apply-templates select="cdf:reference"/>
 			</td> 
 		</tr>
@@ -144,9 +142,29 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="cdf:description">
-		<!-- print all the text and children (xhtml elements) of the description -->
-		<xsl:copy-of select="./node()" />
+    <!-- getting rid of XHTML namespace -->
+	<xsl:template match="xhtml:*">
+		<xsl:element name="{local-name()}">
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:element>
 	</xsl:template>
+
+    <xsl:template match="@*|node()">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+
+    <xsl:template match="cdf:description">
+             <!-- print all the text and children (xhtml elements) of the description -->
+        <xsl:apply-templates select="@*|node()" />
+            </xsl:template>
+
+    <xsl:template match="cdf:rationale">
+             <!-- print all the text and children (xhtml elements) of the description -->
+        <xsl:apply-templates select="@*|node()" />
+            </xsl:template>
+
+
 
 </xsl:stylesheet>

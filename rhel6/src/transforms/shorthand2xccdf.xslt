@@ -176,9 +176,7 @@ exclude-result-prefixes="xccdf">
 
   <xsl:template match="pre">
     <xhtml:pre>
-      <xsl:copy>
         <xsl:apply-templates select="@*|node()" />
-      </xsl:copy>
     </xhtml:pre>
   </xsl:template>
 </xsl:stylesheet>
