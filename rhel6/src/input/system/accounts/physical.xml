@@ -13,47 +13,32 @@ console.</description>
 responsible for starting the execution of the kernel and passing
 options to it. The boot loader allows for the selection of
 different kernels – possibly on different partitions or media.
-Options it can pass to the kernel include 'single-user mode,' which
+The default RHEL boot loader for x86 systems is called GRUB.
+Options it can pass to the kernel include <i>single-user mode</i>, which
 provides root access without any authentication, and the ability to
 disable SELinux. To prevent local users from modifying the boot
 parameters and endangering security, the boot loader configuration
-should be protected with a password.
-<br /><br />
-The default RHEL boot loader for x86 systems is called GRUB.
-To protect its configuration:
-<br />
-<ol>
-<li>Select a password and then generate a hash from it by running:
-<br />
-<pre>
-# grub-md5-crypt
-
-</pre>
-</li>
-<li>Insert the following line into <tt>/etc/grub.conf</tt> immediately
-after the header comments. (Use the output from <tt>grub-md5-crypt</tt> as the
-value of <b>password-hash</b>):
-<br />
-<pre>
-password --md5 <b>password-hash</b>
-
-</pre>
-</li>
-<li>Verify the permissions on <tt>/etc/grub.conf</tt> (which is a symlink to
-<tt>../boot/grub/grub.conf</tt>):
+should be protected with a password and its configuration file's permissions 
+should be set properly.
+<br/>
+If any correction is needed for the permissions on <tt>/etc/grub.conf</tt>,
+ (which is a symlink to
+<tt>../boot/grub/grub.conf</tt>) the following commands can be used:
 <br />
 <pre>
 # chown root:root /etc/grub.conf
 # chmod 600 /etc/grub.conf
+</pre>
 
-</pre></li>
-</ol>Boot loaders for other platforms should offer a similar
-password protection feature.</description>
+</description>
 
 <Rule id="user_owner_grub_conf">
 <title>Verify /boot/grub/grub.conf User Ownership</title>
-<description>The file /etc/grub.conf is a symbolic link to /boot/grub/grub.conf which
-should be owned by the root user to prevent destruction or modification of the file.</description>
+<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to <tt>/boot/grub/grub.conf</tt> which
+should be owned by the <tt>root</tt> user to prevent destruction or modification of the file.</description>
+<rationale>
+Only root should be able to modify important boot parameters.
+</rationale>
 <ident cce="4144-2" />
 <oval id="file_user_owner_grub_conf" />
 <ref nist="AC-3, CM-6"/>
@@ -61,8 +46,12 @@ should be owned by the root user to prevent destruction or modification of the f
 
 <Rule id="group_owner_grub_conf">
 <title>Verify /boot/grub/grub.conf Group Ownership</title>
-<description>The file /etc/grub.conf is a symbolic link to /boot/grub/grub.conf which
-should be owned by the root group to prevent destruction or modification of the file.</description>
+<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to <tt>/boot/grub/grub.conf</tt> which
+should be group-owned by the <tt>root</tt> group to prevent destruction or modification of the file.</description>
+<rationale>
+The <tt>root</tt> group is a highly-privileged group.  Furthermore, the group-owner of this 
+file should not have any access privileges anyway.
+</rationale>
 <ident cce="4197-0" />
 <oval id="file_group_owner_grub_conf" />
 <ref nist="AC-3, CM-6"/>
@@ -70,7 +59,12 @@ should be owned by the root group to prevent destruction or modification of the 
 
 <Rule id="permissions_grub_conf">
 <title>Verify /boot/grub/grub.conf Permissions</title>
-<description>File permissions for /boot/grub/grub.conf should be set correctly.</description>
+<description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
+is the default.</description>
+<rationale>
+This ensures that only the root user should be able to modify important boot parameters contained in 
+this file.
+</rationale>
 <ident cce="3923-0" />
 <oval id="file_permissions_grub_conf" />
 <ref nist="AC-3, CM-6"/>
@@ -79,7 +73,26 @@ should be owned by the root group to prevent destruction or modification of the 
 <Rule id="bootloader_password">
 <title>Set Boot Loader Password</title>
 <description>The grub boot loader should have password protection
-enabled</description>
+enabled to protect boot-time settings.  
+To do so, select a password and then generate a hash from it by running:
+<br />
+<pre>
+# grub-md5-crypt
+</pre>
+Insert the following line into <tt>/etc/grub.conf</tt> immediately
+after the header comments. (Use the output from <tt>grub-md5-crypt</tt> as the
+value of <b>password-hash</b>):
+<br />
+<pre>
+password --md5 <b>password-hash</b>
+</pre>
+</description>
+<rationale>
+Password protection on the boot loader configuration ensures that 
+users with physical access cannot trivially alter 
+important bootloader settings.  These include which kernel to use, 
+and whether to enter single-user mode.
+</rationale>
 <ident cce="3818-2" />
 <oval id="bootloader_password" />
 <ref nist="CM-7, IA-5, AC-3"/>
@@ -92,9 +105,7 @@ enabled</description>
 <description>Single-user mode is intended as a system recovery
 method, providing a single user root access to the system by
 providing a boot option at startup. By default, no authentication
-is performed if single-user mode is selected. This provides a
-trivial mechanism of bypassing security on the machine and gaining
-root access.
+is performed if single-user mode is selected. 
 <br /><br />
 To require entry of the root password even if the system is
 started in single-user mode, add or correct the following line in the
@@ -103,6 +114,11 @@ file <tt>/etc/sysconfig/init</tt>:
 <pre>
 SINGLE=/sbin/sulogin</pre>
 </description>
+<rationale>
+This prevents attackers with physical access from trivially bypassing security 
+on the machine and gaining root access.  Such accesses are further prevented 
+by configuring the bootloader password.
+</rationale>
 <ident cce="4241-6" />
 <oval id="singleuser_password" />
 <ref nist="AC-6, IA-5"/>
