@@ -30,10 +30,8 @@ changes – and should therefore be used with caution.</description>
 The DHCP server <tt>dhcpd</tt> is not installed or activated by
 default. If the software was installed and activated, but the
 system does not need to act as a DHCP server, it should be disabled
-and removed. Unmanaged DHCP servers may provide faulty information
-to clients, interfering with the operation of a legitimate site
-DHCP server if there is one, or causing misconfigured machines to
-exhibit unpredictable behavior if there is not.</description>
+and removed. 
+</description>
 
 <Rule id="disable_dhcp_server">
 <title>Disable DHCP Service</title>
@@ -44,6 +42,11 @@ To do so, run the command:
 # chkconfig dhcpd off
 </pre>
 </description>
+<rationale>
+Unmanaged or unintentionally activate DHCP servers may provide faulty information
+to clients, interfering with the operation of a legitimate site
+DHCP server if there is one. 
+</rationale>
 <ident cce="4336-4" />
 <oval id="service_dhcpd_disabled" />
 <ref nist="CM-6, CM-7" />

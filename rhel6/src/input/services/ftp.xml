@@ -1,5 +1,5 @@
 <Group id="ftp">
-<title>FTPServer</title>
+<title>FTP Server</title>
 <description>FTP is a common method for allowing remote access to
 files. Like telnet, the FTP protocol is unencrypted, which means
 that passwords and other data transmitted during the session can be
@@ -10,19 +10,26 @@ However, there are some FTP server configurations which may
 be appropriate for some environments, particularly those which
 allow only read-only anonymous access as a means of downloading
 data available to the public.</description>
+
 <Group id="disabling_vsftpd">
 <title>Disable vsftpd if Possible</title>
-<description>Is there a mission-critical reason for the machine to
-act as an FTP server? If not, disable vsftpd if it has been
-installed:
-<br />
-<pre>
-# chkconfig vsftpd off</pre>
-</description>
 
 <Rule id="disable_vsftpd">
 <title>Disable vsftpd Service</title>
-<description>The vsftpd service should be disabled.</description>
+<description>The vsftpd service should be disabled unless there is 
+a mission-critical reason for the system to act as an 
+FTP server.  To disable the vsftpd server software:
+<br />
+<pre>
+# chkconfig vsftpd off
+</pre>
+</description>
+<rationale>
+All network services involve some risk of compromise due to 
+implementation flaws and should be disabled if possible.
+Furthermore, the FTP protocol is unencrypted and creates 
+a risk of compromising sensitive information.  
+</rationale>
 <ident cce="3919-8" />
 <oval id="service_vsftpd_disabled" />
 <ref nist="CM-6, CM-7" />
@@ -31,8 +38,17 @@ installed:
 
 <Rule id="uninstall_vsftpd">
 <title>Uninstall vsftpd Package</title>
-<description>The vsftpd service should be
-uninstalled.</description>
+<description>The vsftpd package should be
+uninstalled if it is not needed.  To remove the 
+vsftpd package:
+<pre>
+# yum erase vsftpd
+</pre>
+</description>
+<rationale>
+Removing the vsftpd package decreases the risk of its
+accidental activation.
+</rationale>
 <ident cce="14881-7" />
 <oval id="package_vsftpd_removed" />
 <ref nist="CM-6, CM-7" />

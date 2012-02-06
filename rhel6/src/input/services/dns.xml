@@ -2,27 +2,33 @@
 <title>DNS Server</title>
 <description>Most organizations have an operational need to run at
 least one nameserver. However, there are many common attacks
-involving DNS, be configured defensively.</description>
+involving DNS server software, and this server software should 
+be disabled on any system 
+on which it is not needed.</description>
+
 <Group id="disabling_dns_server">
 <title>Disable DNS Server if Possible</title>
-<description>Is there an operational need for this machine to act
-as a DNS server for this site?
-<br /><br />
-If not, disable the software and remove it from the system:
-<br />
-<pre>
-# chkconfig named off
-# yum erase bind
-
-</pre>
+<description>
 DNS software should be disabled on any machine which does not
 need to be a nameserver. Note that the BIND DNS server software is
 not installed on RHEL6 by default. The remainder of this section
 discusses secure configuration of machines which must be
-nameservers.</description>
+nameservers.
+</description>
+
 <Rule id="disable_dns_server">
 <title>Disable DNS Server</title>
-<description>The named service should be disabled.</description>
+<description>
+If there is not, an operational need for the system to act as a DNS server,
+disable the named service with the following command:
+<pre>
+# chkconfig named off
+</pre>
+</description>
+<rationale>
+All network services involve some risk of compromise due to
+implementation flaws and should be disabled if possible.
+</rationale>
 <ident cce="3578-2" />
 <oval id="service_named_disabled" />
 <ref nist="CM-6, CM-7" />
@@ -30,7 +36,16 @@ nameservers.</description>
 
 <Rule id="uninstall_bind">
 <title>Uninstall bind Package</title>
-<description>The bind package should be uninstalled.</description>
+<description>To remove the bind package, which contains the named service, 
+run the following command:
+<pre>
+# yum erase bind
+</pre>
+</description>
+<rationale>
+If there is no need to make DNS server software available, 
+removing it provides a safeguard against its activation.
+</rationale>
 <ident cce="4219-2" />
 <oval id="package_bind_removed" />
 <ref nist="CM-6, CM-7" />

@@ -10,22 +10,30 @@ service. It is this second package that allows a Linux machine to
 act as an Active Directory server, a domain controller, or as a
 domain member. Only the <tt>samba-client</tt> package is installed by
 default.</description>
+
 <Group id="disabling_samba">
 <title>Disable Samba if Possible</title>
-<description>If the Samba service has been enabled and will not be
-used, disable it:
-<br />
-<pre>
-# chkconfig smb off
-
-</pre>
+<description>
 Even after the Samba server package has been installed, it
 will remain disabled. Do not enable this service unless it is
 absolutely necessary to provide Microsoft Windows file and print
-sharing functionality.</description>
+sharing functionality.
+</description>
+
 <Rule id="disable_smb_server">
-<title>Disable Samba if Possible</title>
-<description>The <tt>smb</tt> service should be disabled.</description>
+<title>Disable Samba</title>
+<description>
+If the <tt>smb</tt> service has been enabled but is not
+needed, disable it:
+<br />
+<pre>
+# chkconfig smb off
+</pre>
+</description>
+<rationale>
+Running a Samba server provides a network-based avenue of attack, and 
+should be disabled if not needed.
+</rationale>
 <ident cce="4551-8" />
 <oval id="service_smb_disabled" />
 </Rule>
