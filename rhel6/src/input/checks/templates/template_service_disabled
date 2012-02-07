@@ -27,43 +27,43 @@
   comment="Runlevel test" id="test_runlevel0_SERVICENAME"
   version="2">
     <unix:object object_ref="obj_runlevel0_SERVICENAME" />
-    <unix:state state_ref="state_service_off" />
+    <unix:state state_ref="state_service_SERVICENAME_off" />
   </unix:runlevel_test>
   <unix:runlevel_test check="all" check_existence="any_exist"
   comment="Runlevel test" id="test_runlevel1_SERVICENAME"
   version="2">
     <unix:object object_ref="obj_runlevel1_SERVICENAME" />
-    <unix:state state_ref="state_service_off" />
+    <unix:state state_ref="state_service_SERVICENAME_off" />
   </unix:runlevel_test>
   <unix:runlevel_test check="all" check_existence="any_exist"
   comment="Runlevel test" id="test_runlevel2_SERVICENAME"
   version="2">
     <unix:object object_ref="obj_runlevel2_SERVICENAME" />
-    <unix:state state_ref="state_service_off" />
+    <unix:state state_ref="state_service_SERVICENAME_off" />
   </unix:runlevel_test>
   <unix:runlevel_test check="all" check_existence="any_exist"
   comment="Runlevel test" id="test_runlevel3_SERVICENAME"
   version="2">
     <unix:object object_ref="obj_runlevel3_SERVICENAME" />
-    <unix:state state_ref="state_service_off" />
+    <unix:state state_ref="state_service_SERVICENAME_off" />
   </unix:runlevel_test>
   <unix:runlevel_test check="all" check_existence="any_exist"
   comment="Runlevel test" id="test_runlevel4_SERVICENAME"
   version="2">
     <unix:object object_ref="obj_runlevel4_SERVICENAME" />
-    <unix:state state_ref="state_service_off" />
+    <unix:state state_ref="state_service_SERVICENAME_off" />
   </unix:runlevel_test>
   <unix:runlevel_test check="all" check_existence="any_exist"
   comment="Runlevel test" id="test_runlevel5_SERVICENAME"
   version="2">
     <unix:object object_ref="obj_runlevel5_SERVICENAME" />
-    <unix:state state_ref="state_service_off" />
+    <unix:state state_ref="state_service_SERVICENAME_off" />
   </unix:runlevel_test>
   <unix:runlevel_test check="all" check_existence="any_exist"
   comment="Runlevel test" id="test_runlevel6_SERVICENAME"
   version="2">
     <unix:object object_ref="obj_runlevel6_SERVICENAME" />
-    <unix:state state_ref="state_service_off" />
+    <unix:state state_ref="state_service_SERVICENAME_off" />
   </unix:runlevel_test>
   <unix:runlevel_object id="obj_runlevel0_SERVICENAME" version="1">
     <unix:service_name>SERVICENAME</unix:service_name>
@@ -93,8 +93,7 @@
     <unix:service_name>SERVICENAME</unix:service_name>
     <unix:runlevel operation="equals">6</unix:runlevel>
   </unix:runlevel_object>
-  <unix:runlevel_state comment="daemon is configured to start"
-  id="state_service_off" version="1">
+  <unix:runlevel_state comment="not configured to start" id="state_service_SERVICENAME_off" version="1">
     <unix:start datatype="boolean">false</unix:start>
     <unix:kill datatype="boolean">true</unix:kill>
   </unix:runlevel_state>
