@@ -76,7 +76,18 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 
 <Rule id="enable_ip6tables">
 <title>Verify ip6tables Enabled</title>
-<description>The <tt>ip6tables</tt> service should be enabled.</description>
+<description>
+The <tt>ip6tables</tt> service should be enabled.
+If it is not enabled, activate it with following commands:
+<pre>
+# service ip6tables restart
+# chkconfig ip6tables on
+</pre>
+</description>
+<rationale>
+The <tt>ip6tables</tt> service provides the system's host-based firewalling
+capability for IPv6 and ICMPv6.
+</rationale>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
 <ref nist="CM-6, CM-7" />
@@ -84,7 +95,18 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 
 <Rule id="enable_iptables">
 <title>Verify iptables Enabled</title>
-<description>The <tt>iptables</tt> service should be enabled.</description>
+<description>
+The <tt>iptables</tt> service should be enabled.
+If it is not enabled, activate it with following commands:
+<pre>
+# service iptables restart
+# chkconfig iptables on
+</pre>
+</description>
+<rationale>
+The <tt>iptables</tt> service provides the system's host-based firewalling
+capability for IPv4 and ICMP.
+</rationale>
 <ident cce="4189-7" />
 <oval id="service_iptables_enabled" />
 <ref nist="CM-6, CM-7" />

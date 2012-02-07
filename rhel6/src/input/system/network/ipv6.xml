@@ -7,15 +7,14 @@ important feature is its support for automatic configuration of
 many network settings.</description>
 <Group id="disabling_ipv6">
 <title>Disable Support for IPv6 unless Needed</title>
-<description>Because the IPv6 networking code is relatively new and
-complex, it is particularly important that it be disabled unless
-needed. Despite configuration that suggests support for IPv6 has
+<description>
+Despite configuration that suggests support for IPv6 has
 been disabled, link-local IPv6 address autoconfiguration occurs
 even when only an IPv4 address is assigned. The only way to
 effectively prevent execution of the IPv6 networking stack is to
 instruct the IPv6 kernel module not to load it.</description>
-<Group id="disabling_ipv6_module">
-<title>Disable Automatic Loading of IPv6 Networking Support</title>
+<Rule id="disable_ipv6_module_loading">
+<title>Disable IPv6 Networking Support Automatic Loading</title>
 <description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from
 loading the IPv6 networking stack, add the following line to
 <tt>/etc/modprobe.d/disabled.conf</tt> (or another file in
@@ -23,15 +22,15 @@ loading the IPv6 networking stack, add the following line to
 <br />
 <pre>
 options ipv6 disable=1
-
 </pre>
-The IPv6 module cannot be disabled completely, but it can be
-configured to disable IPv6 networking support.</description>
-
-<Rule id="disable_ipv6_module_loading">
-<title>Disable IPv6 Networking Support Automatic Loading</title>
-<description>Automatic loading of IPv6 networking support should be
-disabled.</description>
+This permits the IPv6 module to be loaded (and thus satisfy other modules that depend on it),
+while disabling support for the IPv6 protocol.
+</description>
+<rationale>
+Any networking stack, including IPv6, that does not need to be active should be 
+disabled in order to reduce the system's vulnerability 
+to exploitation of any implementation flaws.
+</rationale>
 <ident cce="3562-6" />
 <oval id="kernel_module_ipv6_disable" />
 <ref nist="CM-6, CM-7" />
