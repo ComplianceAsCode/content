@@ -9,14 +9,12 @@
       <description>Enable the GUI warning banner.</description>
     </metadata>
     <criteria>
-      <criterion comment="check settings" test_ref="test_201006" />
+      <criterion comment="check settings" test_ref="test_banner_gui_enabled" />
     </criteria>
   </definition>
-
-  <ind:xmlfilecontent_test check="all" comment="stuff" id="test_201006" version="1">
+  <ind:xmlfilecontent_test check="all" comment="stuff" id="test_banner_gui_enabled" version="1">
     <ind:object object_ref="object_banner_message_enable" />
   </ind:xmlfilecontent_test>
-
   <ind:xmlfilecontent_object id="object_banner_message_enable" version="1">
     <ind:path>/etc/gconf/gconf.xml.defaults</ind:path>
     <ind:filename>%gconf-tree.xml</ind:filename>

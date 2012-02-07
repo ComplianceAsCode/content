@@ -12,27 +12,22 @@
       <criterion test_ref="test_etc_resolv_conf" />
     </criteria>
   </definition>
-
   <unix:file_test check="all" check_existence="all_exist" comment="/etc/resolv.conf" id="test_etc_resolv_conf" version="1">
     <unix:object object_ref="object_etc_resolv_conf" />
-    <unix:state state_ref="state_uid_root" />
-    <unix:state state_ref="state_gid_root" />
+    <unix:state state_ref="state_etc_resolv_conf_uid_root" />
+    <unix:state state_ref="state_etc_resolv_conf_gid_root" />
     <unix:state state_ref="state_mode_0644" />
   </unix:file_test>
-
   <unix:file_object comment="/etc/resolv.conf" id="object_etc_resolv_conf" version="1">
     <unix:path>/etc</unix:path>
     <unix:filename>resolv.conf</unix:filename>
   </unix:file_object>
-
-  <unix:file_state id="state_uid_root" version="1">
+  <unix:file_state id="state_etc_resolv_conf_uid_root" version="1">
     <unix:user_id datatype="int" operation="equals">0</unix:user_id>
   </unix:file_state>
-
-  <unix:file_state id="state_gid_root" version="1">
+  <unix:file_state id="state_etc_resolv_conf_gid_root" version="1">
     <unix:group_id datatype="int" operation="equals">0</unix:group_id>
   </unix:file_state>
-
   <unix:file_state id="state_mode_0644" version="1">
     <unix:suid datatype="boolean">false</unix:suid>
     <unix:sgid datatype="boolean">false</unix:sgid>

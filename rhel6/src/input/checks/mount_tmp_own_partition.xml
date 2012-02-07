@@ -15,19 +15,15 @@
       <criterion test_ref="test_etc_fstab_tmp" comment="find /tmp in /etc/fstab" />
     </criteria>
   </definition>
-
   <linux:partition_test check="all" check_existence="all_exist" id="test_tmp_partition" version="1" comment="check for /tmp partition">
-      <linux:object object_ref="object_tmp_partition" />
+      <linux:object object_ref="object_own_tmp_partition" />
   </linux:partition_test>
-
-  <linux:partition_object id="object_tmp_partition" version="1">
+  <linux:partition_object id="object_own_tmp_partition" version="1">
       <linux:mount_point>/tmp</linux:mount_point>
   </linux:partition_object>
-
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="find /tmp in /etc/fstab" id="test_etc_fstab_tmp" version="1">
     <ind:object object_ref="object_etc_fstab_tmp" />
   </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object id="object_etc_fstab_tmp" version="1" comment="find /tmp in /etc/fstab">
     <ind:path>/etc</ind:path>
     <ind:filename>fstab</ind:filename>

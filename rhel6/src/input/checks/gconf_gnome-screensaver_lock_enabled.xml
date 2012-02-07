@@ -12,20 +12,20 @@
     </metadata>
     <criteria>
       <criterion comment="check value of lock_enabled in GCONF"
-      test_ref="test_201006" />
+      test_ref="test_screensaver_lock_enabled" />
     </criteria>
   </definition>
   <ind:xmlfilecontent_test check="all"
   comment="/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='lock_enabled']/local_schema[1]/default[1]/@value"
-  id="test_201006" version="1">
-    <ind:object object_ref="obj_201006" />
-    <ind:state state_ref="state_201006" />
+  id="test_screensaver_lock_enabled" version="1">
+    <ind:object object_ref="object_screensaver_lock_enabled" />
+    <ind:state state_ref="state_screensaver_lock_enabled" />
   </ind:xmlfilecontent_test>
   <ind:xmlfilecontent_state comment="lock_enabled (lock on Activation)"
-  id="state_201006" version="1">
+  id="state_screensaver_lock_enabled" version="1">
     <ind:value_of datatype="string">true</ind:value_of>
   </ind:xmlfilecontent_state>
-  <ind:xmlfilecontent_object id="obj_201006"
+  <ind:xmlfilecontent_object id="object_screensaver_lock_enabled"
   version="1">
     <ind:path>/etc/gconf/gconf.xml.defaults</ind:path>
     <ind:filename>%gconf-tree.xml</ind:filename>
