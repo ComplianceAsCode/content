@@ -16,17 +16,16 @@ data available to the public.</description>
 
 <Rule id="disable_vsftpd">
 <title>Disable vsftpd Service</title>
-<description>The vsftpd service should be disabled unless there is 
-a mission-critical reason for the system to act as an 
-FTP server.  To disable the vsftpd server software:
+<description>
+The <tt>vsftpd</tt> service can be disabled with the following command:
 <br />
 <pre>
 # chkconfig vsftpd off
 </pre>
 </description>
 <rationale>
-All network services involve some risk of compromise due to 
-implementation flaws and should be disabled if possible.
+Running FTP server software provides a network-based avenue 
+of attack, and should be disabled if not needed.
 Furthermore, the FTP protocol is unencrypted and creates 
 a risk of compromising sensitive information.  
 </rationale>
@@ -38,9 +37,8 @@ a risk of compromising sensitive information.
 
 <Rule id="uninstall_vsftpd">
 <title>Uninstall vsftpd Package</title>
-<description>The vsftpd package should be
-uninstalled if it is not needed.  To remove the 
-vsftpd package:
+<description>The <tt>vsftpd</tt> package can be 
+uninstalled with the following command:
 <pre>
 # yum erase vsftpd
 </pre>

@@ -19,8 +19,7 @@ nameservers.
 <Rule id="disable_dns_server">
 <title>Disable DNS Server</title>
 <description>
-If there is not, an operational need for the system to act as a DNS server,
-disable the named service with the following command:
+The <tt>named</tt> service can be disabled with following command:
 <pre>
 # chkconfig named off
 </pre>
@@ -36,7 +35,7 @@ implementation flaws and should be disabled if possible.
 
 <Rule id="uninstall_bind">
 <title>Uninstall bind Package</title>
-<description>To remove the bind package, which contains the named service, 
+<description>To remove the <tt>bind</tt> package, which contains the <tt>named</tt> service, 
 run the following command:
 <pre>
 # yum erase bind

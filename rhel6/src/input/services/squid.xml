@@ -7,25 +7,44 @@ required, the machine acting as a proxy server should be dedicated
 to that purpose alone and be stored in a physically secure
 location. The system's default proxy server software is Squid, and
 provided in an RPM package of the same name.</description>
+
 <Group id="disabling_squid">
 <title>Disable Squid if Possible</title>
 <description>If Squid was installed and activated, but the system
 does not need to act as a proxy server, then it should be disabled
-and removed:
+and removed.
 <br />
-<pre>
-# chkconfig squid off
-# yum erase squid</pre>
 </description>
+
 <Rule id="disable_squid">
 <title>Disable Squid if Possible</title>
-<description>The <tt>squid</tt> service should be disabled.</description>
+<description>
+The <tt>squid</tt> service can be disabled with the following 
+command:
+<pre>
+# chkconfig squid off
+</pre>
+</description>
+<rationale>
+Running proxy server software provides a network-based avenue
+of attack, and should be removed if not needed.
+</rationale>
 <ident cce="4556-7" />
 <oval id="service_squid_disabled" />
 </Rule>
+
 <Rule id="uninstall_squid">
 <title>Uninstall Squid if Possible</title>
-<description>The <tt>squid</tt> package should be uninstalled.</description>
+<description>The <tt>squid</tt> package can be uninstalled with the 
+following command:
+<pre>
+# yum erase squid
+</pre>
+</description>
+<rationale>
+If there is no need to make the proxy server software available,
+removing it provides a safeguard against its activation.
+</rationale>
 <ident cce="4076-6" />
 <oval id="package_squid_removed" />
 </Rule>

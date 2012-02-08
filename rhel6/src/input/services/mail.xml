@@ -1,15 +1,49 @@
 <Group id="mail">
 <title>Mail Server Software</title>
-<Rule id="postfix_package_installation">
+Mail servers are used to send and receive email over the network.
+Mail is a very common service, and Mail Transfer Agents (MTAs) are obvious 
+targets of network attack. 
+Ensure that machines are not running MTAs unnecessarily, 
+and configure needed MTAs as defensively as possible.
+
+Very few systems at any site should be configured to directly receive email over the 
+network.  Users should instead use mail clients programs to retrieve email  
+from a central server that support protocols such as IMAP or POP3.  
+However, it is normal for most systems to be independently capable of sending email, 
+for instance so that cron jobs can report output to an administrator. 
+Most MTAs, including Postfix, support a submission-only mode in which mail can be sent from 
+the local system to a central site MTA (or directly delivered to a local account), 
+but the system still cannot receive mail directly over a network.
+
+The <tt>alternatives</tt> program in RHEL permits selection of other mail server software 
+(such as Sendmail), but Postfix is the default and is preferred.
+Postfix was coded with security in mind and can also be more effectively contained by 
+SELinux as its modular design has resulted in separate processes performing specific actions. 
+More information is available on its website, http://www.postfix.org.
+
+<!-- postfix is installed by default on RHEL 6,
+     but sendmail was the default on RHEL 5. -->
+
+<!-- <Rule id="postfix_package_installation">
 <title>The postfix package should be installed</title>
 <description>TODO::INSERT</description>
 <ident cce="14068-1" />
 <oval id="package_postfix_installed" />
-</Rule>
+</Rule> -->
 <Rule id="postfix_network_listening">
-<title>Postfix network listening should be
-disabled</title>
-<description>TODO::INSERT</description>
+<title>Disable Postfix Network Listening</title>
+<description>
+Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following
+<tt>inet_interfaces</tt> line appears:
+<pre>
+inet_interfaces = localhost
+</pre>
+</description>
+<rationale>
+This ensures that <tt>postfix</tt> accepts mail messages 
+(such as cron job reports) from the local system only, 
+and not from the network, which protects it from network attack.
+</rationale>
 <ident cce="15018-5" />
 <oval id="postfix_network_listening_disabled" />
 </Rule>

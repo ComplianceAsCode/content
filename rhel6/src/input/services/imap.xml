@@ -4,29 +4,45 @@
 installed by default. The project page at http://www.dovecot.org
 contains more detailed information about Dovecot
 configuration.</description>
+
 <Group id="disabling_dovecot">
 <title>Disable Dovecot if Possible</title>
 <description>If the system does not need to operate as an IMAP or
-POP3 server, disable and remove Dovecot if it was installed:
-<br />
-<pre>
-# chkconfig dovecot off
-# yum erase dovecot</pre>
+POP3 server, the dovecot software should be disabled and removed.
 </description>
 
+
 <Rule id="disable_dovecot">
-<title>Disable Dovecot Service Unless Required</title>
-<description>The <tt>dovecot</tt> service should be disabled.</description>
+<title>Disable Dovecot Service</title>
+<description>The <tt>dovecot</tt> service can be disabled with the following command:
+<pre>
+# chkconfig dovecot off
+</pre>
+</description>
+<rationale>
+Running an IMAP or POP3 server provides a network-based
+avenue of attack, and should be disabled if not needed.
+</rationale>
 <ident cce="3847-1" />
 <oval id="service_dovecot_disabled" />
 </Rule>
 
 <Rule id="uninstall_dovecot">
 <title>Uninstall dovecot RPM Package</title>
-<description>The <tt>dovecot</tt> package should be uninstalled.</description>
+<description>The <tt>dovecot</tt> package can be uninstalled 
+with the following command:
+<pre>
+# yum erase dovecot</pre>
+</description>
+
+<rationale>
+If there is no need to make the Dovecot software available, 
+removing it provides a safeguard against its activation.
+</rationale>
 <ident cce="4239-0" />
 <oval id="package_dovecot_removed" />
 </Rule>
+
 </Group>
 </Group>
 

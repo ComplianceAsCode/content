@@ -6,33 +6,46 @@ computers. Older versions of SNMP were well-known for weak
 security, such as plaintext transmission of the community string
 (used for authentication) and also usage of easily-guessable
 choices for community string.</description>
+
 <Group id="disabling_snmp_service">
 <title>Disable SNMP Server if Possible</title>
 <description>The system includes an SNMP daemon that allows for its
 remote monitoring, though it not installed by default. If it was
-installed and activated, it is important that the software be
-disabled and removed.
-<br /><br />
-If there is not a mission-critical need for hosts at this
-site to be remotely monitored by a SNMP tool, then disable and
-remove SNMP as follows:
-<br />
+installed and activated, the software should be disabled and removed.
+</description>
+
+<Rule id="disable_snmpd">
+<title>Disable <tt>snmpd</tt> Service</title>
+<description>
+The <tt>snmpd</tt> service can be disabled with the following command:
 <pre>
 # chkconfig snmpd off
-# yum erase net-snmpd</pre>
+</pre>
 </description>
-<Rule id="disable_snmpd">
-<title>Disable <tt>snmpd</tt> if Possible</title>
-<description>The <tt>snmpd</tt> service should be disabled.</description>
+<rationale>
+Running SNMP software provides a network-based avenue of attack, and 
+should be disabled if not needed.
+</rationale>
 <ident cce="3765-5" />
 <oval id="service_snmpd_disabled" />
 </Rule>
+
 <Rule id="uninstall_net-snmp">
-<title>Uninstall <tt>net-snmp</tt> if Possible</title>
-<description>The <tt>net-snmp</tt> package should be
-uninstalled.</description>
+<title>Uninstall <tt>net-snmp</tt> Package</title>
+<description>The <tt>net-snmp</tt> package, which provides the snmpd service, 
+can be uninstalled with the following command:
+<pre>
+# yum erase net-snmpd
+</pre>
+</description>
+<rationale>
+If there is no need to run SNMP server software, 
+removing the package provides a safeguard against its 
+activation. 
+</rationale>
 <ident cce="14081-4" />
 <oval id="package_net-snmp_removed" />
 </Rule>
+
 </Group>
 </Group>
