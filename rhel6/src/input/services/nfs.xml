@@ -162,6 +162,8 @@ See Section 2.2.1.2 for a description of the effects of these options. In genera
 <Rule id="use_nodev_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nodev</title>
 <description>The <tt>nodev</tt> option should be enabled for all NFS mounts</description>
+<rationale>Legitimate device files should only exist in the /dev directory. NFS mounts
+should not present device files to users.</rationale>
 <ident cce="4368-7" />
 <oval id="mount_option_nodev_remote_filesystems" />
 </Rule>
@@ -169,6 +171,8 @@ See Section 2.2.1.2 for a description of the effects of these options. In genera
 <Rule id="use_nosuid_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nosuid</title>
 <description>The <tt>nosuid</tt> option should be enabled for all NFS mounts</description>
+<rationale>NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables
+should be installed to their default location on the local filesystem.</rationale>
 <ident cce="4024-6" />
 <oval id="mount_option_nosuid_remote_filesystems" />
 </Rule>

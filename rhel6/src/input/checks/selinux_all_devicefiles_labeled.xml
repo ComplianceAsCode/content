@@ -1,21 +1,27 @@
 <def-group>
-  <definition class="compliance"
-  id="selinux_all_devicefiles_labeled" version="1">
+  <definition class="compliance" id="selinux_all_devicefiles_labeled" version="1">
     <metadata>
-      <title>Check for Unconfined Daemons</title>
+      <title>Device Files Have Proper SELinux Context</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14991-4" source="CCE" />
-      <description>Check for device file that is not
-      labeled.</description>
+      <description>All device files in /dev should be assigned an SELinux security context other than 'unlabeled_t'.</description>
     </metadata>
     <criteria>
-      <criterion comment="Unknown test stub"
-      test_ref="test_selinux_all_devicefiles_labeled" />
+      <criterion comment="unlabeled_t in /dev" test_ref="test_selinux_all_devicefiles_labeled" />
     </criteria>
   </definition>
-  <ind:unknown_test check="all"
-  comment="Test implementation is unknown, unavailable, or impossible"
-  id="test_selinux_all_devicefiles_labeled" version="1" />
+  <linux:selinuxsecuritycontext_test check="none exist" check_existence="all_exist" comment="unlabeled_t in /dev" id="test_selinux_all_devicefiles_labeled" version="1">
+    <linux:object object_ref="object_selinux_all_devicefiles_labeled" />
+    <linux:state state_ref="state_selinux_all_devicefiles_labeled" />
+  </linux:selinuxsecuritycontext_test>
+  <linux:selinuxsecuritycontext_object comment="unlabeled_t in /dev" id="object_selinux_all_devicefiles_labeled" version="1">
+    <linux:path>/dev</linux:path>
+    <linux:filename operation="pattern match">^.*$</linux:filename>
+    <filter action="include">state_selinux_all_devicefiles_labeled</filter>
+  </linux:selinuxsecuritycontext_object>
+  <linux:selinuxsecuritycontext_state comment="do it" id="state_selinux_all_devicefiles_labeled" version="1">
+    <linux:type datatype="string" operation="equals">unlabeled_t</linux:type>
+  </linux:selinuxsecuritycontext_state>
 </def-group>
