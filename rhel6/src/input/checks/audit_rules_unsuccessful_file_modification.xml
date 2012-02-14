@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="audit_rules_unsuccessful_file_modification" version="1">
+  <definition class="compliance" id="audit_rules_unsuccessful_file_modification" version="1">
     <metadata>
       <title>Ensure auditd Collects Unauthorized Access Attempts to
       Files (unsuccessful)</title>
@@ -11,98 +10,25 @@
       <description>Audit rules about the Unauthorized Access
       Attempts to Files (unsuccessful) are enabled</description>
     </metadata>
-    <criteria comment="Architecture is 32 bit or 64 bit"
-    operator="OR">
-      <criteria comment="32bit arch">
-        <criterion comment="check that arch is i386 or i686"
-        test_ref="test_201677" />
-        <criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access"
-        test_ref="test_201640" />
-        <criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access"
-        test_ref="test_201641" />
-      </criteria>
-      <criteria comment="62bit arch">
-        <criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x"
-        test_ref="test_201684" />
-        <criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access"
-        test_ref="test_201642" />
-        <criterion comment="/etc/audit/audit.rules contains -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access"
-        test_ref="test_201643" />
-      </criteria>
+    <criteria operator="AND">
+      <criterion comment="audit file eacces" test_ref="test_audit_rules_unsuccessful_file_modification_eacces" />
+      <criterion comment="audit file eperm" test_ref="test_audit_rules_unsuccessful_file_modification_eperm" />
     </criteria>
   </definition>
-  <unix:uname_test check="all"
-  comment="check architecture is 32 bit"
-  id="test_201677" version="1">
-    <unix:object object_ref="obj_201677" />
-    <unix:state state_ref="state_201676" />
-  </unix:uname_test>
-  <unix:uname_state id="state_201676"
-  version="1">
-    <unix:processor_type operation="pattern match">^i386$|^i686$</unix:processor_type>
-  </unix:uname_state>
-  <unix:uname_object id="obj_201677"
-  version="1" />
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="/etc/audit/audit.rules contains -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access"
-  id="test_201640" version="1">
-    <ind:object object_ref="obj_201640" />
+  <ind:textfilecontent54_test check="all" comment="audit file eacces" id="test_audit_rules_unsuccessful_file_modification_eacces" version="1">
+    <ind:object object_ref="object_audit_rules_unsuccessful_file_modification_eacces" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_201640"
-  version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b32\s\-S\screat\s\-S\sopen\s\-S\sopenat\s\-S\struncate\s\-S\sftruncate\s\-F\sexit=\-EACCES\s\-F\sauid&gt;=500\s\-F\sauid!=4294967295\s\-k\saccess$</ind:pattern>
+  <ind:textfilecontent54_object id="object_audit_rules_unsuccessful_file_modification_eacces" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+(\-F\s+arch=(b64|b32)\s+)?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EACCES\s+\-F\s+auid>=500\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="/etc/audit/audit.rules contains -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access"
-  id="test_201641" version="1">
-    <ind:object object_ref="obj_201641" />
+  <ind:textfilecontent54_test check="all" comment="audit file eperm" id="test_audit_rules_unsuccessful_file_modification_eperm" version="1">
+    <ind:object object_ref="object_audit_rules_unsuccessful_file_modification_eperm" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_201641"
-  version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b32\s\-S\screat\s\-S\sopen\s\-S\sopenat\s\-S\struncate\s\-S\sftruncate\s\-F\sexit=\-EPERM\s\-F\sauid&gt;=500\s\-F\sauid!=4294967295\s\-k\saccess$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <unix:uname_test check="all"
-  comment="check architecture is 64 bit"
-  id="test_201684" version="1">
-    <unix:object object_ref="obj_201677" />
-    <unix:state state_ref="state_201681" />
-  </unix:uname_test>
-  <unix:uname_state id="state_201681"
-  version="1">
-    <unix:processor_type operation="pattern match">^x86_64$|^ia64$|</unix:processor_type>
-  </unix:uname_state>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="/etc/audit/audit.rules contains -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access"
-  id="test_201642" version="1">
-    <ind:object object_ref="obj_201642" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_201642"
-  version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b64\s\-S\screat\s\-S\sopen\s\-S\sopenat\s\-S\struncate\s\-S\sftruncate\s\-F\sexit=\-EACCES\s\-F\sauid&gt;=500\s\-F\sauid!=4294967295\s\-k\saccess$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="/etc/audit/audit.rules contains -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access"
-  id="test_201643" version="1">
-    <ind:object object_ref="obj_201643" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_201643"
-  version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^\-a\salways,exit\s\-F\sarch=b64\s\-S\screat\s\-S\sopen\s\-S\sopenat\s\-S\struncate\s\-S\sftruncate\s\-F\sexit=\-EPERM\s\-F\sauid&gt;=500\s\-F\sauid!=4294967295\s\-k\saccess$</ind:pattern>
+  <ind:textfilecontent54_object id="object_audit_rules_unsuccessful_file_modification_eperm" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+(\-F\s+arch=(b64|b32)\s+)?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EPERM\s+\-F\s+auid>=500\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

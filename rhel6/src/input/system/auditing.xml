@@ -155,7 +155,9 @@ ARCH to either b32 or b64 as appropriate for your system:
 -a always,exit -F arch=ARCH -S clock_settime -k time-change
 -w /etc/localtime -p wa -k time-change</pre>
 </description>
-
+<rationale>Arbitrary changes to the system time can be used to obfuscate nefarious
+activites in log files as well as to confuse network services that are highly dependent
+upon an accurate system time. All changes to the system time should be audited.</rationale>
 <ident cce="14051-7" />
 <oval id="audit_rules_record_timechange" />
 <ref nist="AU-2" />
@@ -174,6 +176,8 @@ to capture events that modify account changes:
 -w /etc/shadow -p wa -k identity
 -w /etc/security/opasswd -p wa -k identity</pre>
 </description>
+<rationale>New user or group accounts need to be audited to verify that they are legitimate. Any suspect
+users or groups should be investigated.</rationale>
 <ident cce="14829-6" />
 <oval id="audit_rules_usergroup_modification" />
 <ref nist="AU-2" />
@@ -193,7 +197,8 @@ ARCH to either b32 or b64 as appropriate for your system:
 -w /etc/sysconfig/network -p wa -k system-locale
 </pre>
 </description>
-
+<rationale>The network environment should not be modified by anything other than
+administrator action. Any change to network parameters should be audited.</rationale>
 <ident cce="14816-3" />
 <oval id="audit_rules_networkconfig_modification" />
 <ref nist="AU-2" />
@@ -209,7 +214,8 @@ Controls</title>
 -w /etc/selinux/ -p wa -k MAC-policy</pre>
 </description>
 <!-- TODO add info for selinux system calls which load new policy? -->
-
+<rationale>The system's mandatory access policy (SELinux) should not be arbitrarily changed by
+anything other than administrator action. All changes to MAC policy should be audited.</rationale>
 <ident cce="14821-3" />
 <oval id="audit_rules_mac_modification" />
 <ref nist="AU-2" />
@@ -233,7 +239,10 @@ appropriate for your system:
     -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr \
     -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
 </description>
-
+<rationale>The changing of file permissions could indicate that a user is attempting to
+gain access to information that would otherwise be disallowed. Auditing DAC modifications
+can facilitate the identification of patterns of abuse amoung both authorized and
+unauthorized users.</rationale>
 <ident cce="14058-2" />
 <oval id="audit_rules_dac_modification" />
 <ref nist="AU-2" />
@@ -252,6 +261,8 @@ appropriate for your system:
 -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate \
     -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
 </description>
+<rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
+these events could serve as evidence of potential system compromise.</rationale>
 <ident cce="14917-9" />
 <oval id="audit_rules_unsuccessful_file_modification" />
 <ref nist="AU-2" />
@@ -283,6 +294,10 @@ appropriate for your system:
 <pre>
 -a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export</pre>
 </description>
+<rationale>The unauthorized exportation of data to external media could result in an information leak
+where classified information, Privacy Act information, and intellectual property could be lost. An audit
+trail should be created each time a filesystem is mounted to help identify and guard against information
+loss.</rationale>
 <ident cce="14569-8" />
 <oval id="audit_rules_media_export" />
 <ref nist="AU-2" />
@@ -300,7 +315,9 @@ appropriate for your system:
     -F auid&gt;=500 -F auid!=4294967295 -k delete
 </pre>
 </description>
-
+<rationale>Auditing file deletions will create an audit trail for files that are removed
+from the system. The audit trail could aid in system troubleshooting as well as detecting
+malicious processes that attempt to delete log files to conceal their presence.</rationale>
 <ident cce="14820-5" />
 <oval id="audit_rules_file_deletion_events" />
 <ref nist="AU-2" />
@@ -315,7 +332,8 @@ administrator actions for all users and root. Add the following to
 <pre>
 -w /etc/sudoers -p wa -k actions</pre>
 </description>
-
+<rationale>The actions taken by system administrators should be audited to keep a record
+of what was executed on the system as well as for accountability purposes.</rationale>
 <ident cce="14824-7" />
 <oval id="audit_rules_sysadmin_actions" />
 <ref nist="AU-2" />
@@ -333,6 +351,9 @@ to capture kernel module loading and unloading events:
 -w /sbin/modprobe -p x -k modules
 -a always,exit -S init_module -S delete_module -k modules</pre>
 </description>
+<rationale>The addition/removal of kernel modules can be used to alter the behavior of
+the kernel and potentially introduce malicious code into kernel space. It is important
+to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident cce="14688-6" />
 <oval id="audit_rules_kernel_module_loading" />
 <ref nist="AU-2" />
@@ -348,7 +369,8 @@ to make the configuration immutable:
 </pre>
 With this setting, a reboot will be required to change any
 audit rules.</description>
-
+<rationale>Making the audit configuration immutable prevents the accidential as
+well as malicious modification of the audit rules.</rationale>
 <ident cce="14692-8" />
 <oval id="audit_rules_immutable" />
 <ref nist="AU-2" />

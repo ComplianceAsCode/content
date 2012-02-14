@@ -1,42 +1,18 @@
 <def-group>
-  <definition class="compliance"
-  id="audit_rules_networkconfig_modification" version="1">
+  <definition class="compliance" id="audit_rules_networkconfig_modification" version="1">
     <metadata>
-      <title>Record Events that Modify the System’s Network
-      Environment</title>
+      <title>Audit Network Environment Modification</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14816-3" source="CCE" />
-      <description>Audit rules about the System’s Network
-      Environment are enabled</description>
+      <description>Audit rules should be configured to detect changes to the system's network environment.</description>
     </metadata>
     <criteria>
-      <criteria comment="Architecture is 32 bit or 64 bit"
-      operator="OR">
-        <criteria comment="32bit arch">
-          <criterion comment="check that arch is i386 or i686"
-          test_ref="test_201678" />
-          <criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale"
-          test_ref="test_201590" />
-        </criteria>
-        <criteria comment="62bit arch">
-          <criterion comment="check that arch is x86_64 ia64 amd64 ppc64 s390x"
-          test_ref="test_201686" />
-          <criterion comment="/etc/audit/audit.rules contains -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale"
-          test_ref="test_201591" />
-        </criteria>
-      </criteria>
-      <criterion comment="/etc/audit/audit.rules contains -w /etc/issue -p wa -k system-locale"
-      test_ref="test_201592" />
-      <criterion comment="/etc/audit/audit.rules contains -w /etc/issue.net -p wa -k system-locale"
-      test_ref="test_201593" />
-      <criterion comment="/etc/audit/audit.rules contains -w /etc/hosts -p wa -k system-locale"
-      test_ref="test_201594" />
-      <criterion comment="/etc/audit/audit.rules contains -w /etc/sysconfig/network -p wa -k system-locale"
-      test_ref="test_201595" />
+      <criterion comment="check that arch is i386 or i686" test_ref="test_201678" />
     </criteria>
   </definition>
+
   <unix:uname_test check="all"
   comment="check architecture is 32 bit"
   id="test_201678" version="1">

@@ -1,32 +1,23 @@
 <def-group>
-  <definition class="compliance"
-  id="audit_rules_mac_modification" version="1">
+  <definition class="compliance" id="audit_rules_mac_modification" version="1">
     <metadata>
-      <title>Record Events that Modify the System’s Mandatory
-      Access Controls</title>
+      <title>Record Events that Modify the System’s Mandatory Access Controls</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14821-3" source="CCE" />
-      <description>Audit rules about the System’s Mandatory Access
-      Controls are enabled</description>
+      <description>Audit rules that detect changes to the system’s mandatory access controls (SELinux) are enabled.</description>
     </metadata>
     <criteria>
-      <criterion comment="/etc/audit/audit.rules contains -w /etc/selinux/ -p wa -k MAC-policy"
-      test_ref="test_20160" />
+      <criterion comment="audit changes selinux" test_ref="test_audit_rules_mac_modification" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="/etc/audit/audit.rules contains -w /etc/selinux/ -p wa -k MAC-policy"
-  id="test_20160" version="1">
-    <ind:object object_ref="obj_20160" />
+  <ind:textfilecontent54_test check="all" comment="audit changes selinux" id="test_audit_rules_mac_modification" version="1">
+    <ind:object object_ref="object_audit_rules_mac_modification" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20160"
-  version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^\-w\s/etc/selinux/\s\-p\swa\s\-k\sMAC\-policy$</ind:pattern>
+  <ind:textfilecontent54_object id="object_audit_rules_mac_modification" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/selinux/\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

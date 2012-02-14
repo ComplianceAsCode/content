@@ -1,32 +1,23 @@
 <def-group>
-  <definition class="compliance"
-  id="audit_rules_sysadmin_actions" version="1">
+  <definition class="compliance" id="audit_rules_sysadmin_actions" version="1">
     <metadata>
-      <title>Ensure auditd Collects System Administrator
-      Actions</title>
+      <title>Audit System Administrator Actions</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14824-7" source="CCE" />
-      <description>Audit rules about the System Administrator
-      Actions are enabled</description>
+      <description>Audit actions taken by system administrators on the system.</description>
     </metadata>
     <criteria>
-      <criterion comment="/etc/audit/audit.rules contains -w /etc/sudoers -p wa -k actions"
-      test_ref="test_20168" />
+      <criterion comment="audit sudoers" test_ref="test_audit_rules_sysadmin_actions" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="/etc/audit/audit.rules contains -w /etc/sudoers -p wa -k actions"
-  id="test_20168" version="1">
-    <ind:object object_ref="obj_20168" />
+  <ind:textfilecontent54_test check="all" comment="audit sudoers" id="test_audit_rules_sysadmin_actions" version="1">
+    <ind:object object_ref="object_audit_rules_sysadmin_actions" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20168"
-  version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^\-w\s/etc/sudoers\s\-p\swa\s\-k\sactions</ind:pattern>
+  <ind:textfilecontent54_object id="object_audit_rules_sysadmin_actions" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/sudoers\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
