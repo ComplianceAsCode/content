@@ -18,7 +18,7 @@
   </unix:file_test>
   <unix:file_object comment="/etc/skel files" id="object_etc_skel_files" version="1">
     <unix:behaviors recurse="files and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-    <unix:path operation="pattern match">^/etc/skel/.*$</unix:path>
+    <unix:path operation="pattern match">^/etc/skel.*$</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_not_mode_0644</filter>
   </unix:file_object>

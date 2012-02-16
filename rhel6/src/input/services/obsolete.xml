@@ -85,7 +85,7 @@ working to migrate to a more secure protocol.
 
 See Section 3.5 for information about the SSH service.</description>
 
-<Rule id="disable_telnet_service">
+<Rule id="disable_telnet_service" severity="high">
 <title>Disable telnet service</title>
 <description>
 To disable the telnet service, run the following command:
@@ -121,6 +121,15 @@ uninstalled.</description>
 allow cleartext remote access and have an insecure trust
 model.</description>
 
+<Rule id="no_rsh_trust_files" severity="high">
+<title>Remove Rsh Trust Files</title>
+<description>The files /etc/hosts.equiv and ~/.rhosts list remote hosts and users that are trusted
+by the local system when using the rshd daemon.</description>
+<rationale>These files are not needed and should be removed.</rationale>
+<ident cce="TODO" />
+<oval id="no_rsh_trusted_host_files" />
+</Rule>
+
 <Rule id="uninstall_rsh-server">
 <title>Remove the Rsh Server Commands from the
 System</title>
@@ -130,14 +139,14 @@ uninstalled.</description>
 <oval id="package_rsh-server_removed" />
 </Rule>
 
-<Rule id="disable_rcp">
+<Rule id="disable_rcp" severity="high">
 <title>Disable rexec</title>
 <description>The <tt>rexec</tt> service should be disabled.</description>
 <ident cce="undefined" />
 <oval id="service_rexec_disabled" />
 </Rule>
 
-<Rule id="disable_rsh">
+<Rule id="disable_rsh" severity="high">
 <title>Disable rsh</title>
 <description>The <tt>rsh</tt> service should be disabled.</description>
 <ident cce="4141-8" />

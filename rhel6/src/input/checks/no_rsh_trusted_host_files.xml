@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="no_rsh_trusted_host_files" version="1">
+    <metadata>
+      <title>Verify /etc/skel Permissions</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="TODO" source="CCE" />
+      <description>Checks for correct permissions for all files and directories in /etc/skel.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_no_rsh_trusted_host_files_root" negate="true" />
+      <criterion test_ref="test_no_rsh_trusted_host_files_home" negate="true" />
+      <criterion test_ref="test_no_rsh_trusted_host_files_etc" negate="true" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="look for .rhosts or .shosts in /root" id="test_no_rsh_trusted_host_files_root" version="1">
+    <unix:object object_ref="object_no_rsh_trusted_host_files_root" />
+  </unix:file_test>
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="look for .rhosts or .shosts in /home" id="test_no_rsh_trusted_host_files_home" version="1">
+    <unix:object object_ref="object_no_rsh_trusted_host_files_home" />
+  </unix:file_test>
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="look for /etc/hosts.equiv or /etc/shosts.equiv" id="test_no_rsh_trusted_host_files_etc" version="1">
+    <unix:object object_ref="object_no_rsh_trusted_host_files_etc" />
+  </unix:file_test>
+  <unix:file_object comment="look for .rhosts or .shosts in /root" id="object_no_rsh_trusted_host_files_root" version="1">
+    <unix:filepath operation="pattern match">^/root/\.(r|s)hosts$</unix:filepath>
+  </unix:file_object>
+  <unix:file_object comment="look for .rhosts or .shosts in /home" id="object_no_rsh_trusted_host_files_home" version="1">
+    <unix:behaviors recurse="files and directories" recurse_direction="down" max_depth="2" recurse_file_system="local" />
+    <unix:path operation="pattern match">^/home/.*$</unix:path>
+    <unix:filename operation="pattern match">^\.(r|s)hosts$</unix:filename>
+  </unix:file_object>
+  <unix:file_object comment="look for /etc/hosts.equiv or /etc/shosts.equiv" id="object_no_rsh_trusted_host_files_etc" version="1">
+    <unix:filepath operation="pattern match">^/etc/s?hosts.equiv$</unix:filepath>
+  </unix:file_object>
+</def-group>
