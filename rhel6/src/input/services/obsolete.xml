@@ -234,5 +234,16 @@ uninstalled.</description>
 <ident cce="4273-9" />
 <oval id="service_tftp_disabled" />
 </Rule>
+
+<Rule id="tftpd_uses_secure_mode" severity="high">
+<title>TFTP Daemon Uses Secure Mode</title>
+<description>Should the TFTP service be required for legitimate purposes it should be configured to change
+the root directory on startup using the "-s" command line argument.</description>
+<rationale>Using the "-s" command line argument causes the TFTP service to only serve files from the
+given directory.</rationale>
+<ident cce="TODO" />
+<oval id="tftpd_uses_secure_mode" />
+</Rule>
+
 </Group>
 </Group>

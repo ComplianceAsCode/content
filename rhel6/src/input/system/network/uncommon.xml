@@ -12,7 +12,7 @@ in your network environment by ensuring they are not needed
 prior to disabling them.
 </warning>
 
-<Rule id="disable_protocol_dccp">
+<Rule id="disable_protocol_dccp" severity="medium">
 <title>Disable DCCP Support</title>
 <description>To prevent the DCCP kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
@@ -34,7 +34,7 @@ the system against exploitation of any flaws in its implementation.
 </Rule>
 
 
-<Rule id="disable_protocol_sctp">
+<Rule id="disable_protocol_sctp" severity="medium">
 <title>Disable SCTP Support</title>
 <description>To prevent the SCTP kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
@@ -79,7 +79,7 @@ the system against exploitation of any flaws in its implementation.
 </Rule>
 
 
-<Rule id="disable_protocol_tipc">
+<Rule id="disable_protocol_tipc" severity="medium">
 <title>Disable TIPC Support</title>
 <description>To prevent the TIPC kernel module from being loaded,
 add the following line to <tt>/etc/modprobe.conf</tt>:
