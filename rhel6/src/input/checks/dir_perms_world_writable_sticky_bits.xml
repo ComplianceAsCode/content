@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="dir_perms_world_writable_sticky_bits" version="1">
+  <definition class="compliance" id="dir_perms_world_writable_sticky_bits" version="1">
     <metadata>
       <title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
       <affected family="unix">
@@ -18,8 +17,8 @@
     <unix:state state_ref="state_world_writable_and_not_sticky" />
   </unix:file_test>
   <unix:file_object comment="only local directories" id="object_only_local_directories" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
-    <unix:path>/</unix:path>
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_world_writable_and_not_sticky</filter>
   </unix:file_object>

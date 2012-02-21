@@ -1,40 +1,32 @@
 <def-group>
-  <definition class="compliance"
-  id="file_permissions_unauthorized_suid" version="1">
+  <definition class="compliance" id="file_permissions_unauthorized_suid" version="1">
     <metadata>
       <title>Find Unauthorized SUID System Executables</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14340-4" source="CCE" />
-      <description>The suid bit should be not set for all
-      files.</description>
+      <description>The suid bit should be not set for all files.</description>
     </metadata>
     <criteria>
-      <criterion comment="Check all files and make sure they do not have suid set"
-      negate="true"
-      test_ref="test_20049" />
+      <criterion test_ref="test_file_permissions_unauthorized_suid" />
     </criteria>
   </definition>
-  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-  check="all" comment="executable files with suid set"
-  id="test_20049" version="1">
-    <notes>
-      <note>This will enumerate all files on local
-      partitions</note>
-    </notes>
-    <unix:object object_ref="obj_20023" />
-    <unix:state state_ref="state_20049" />
+  <!-- NOTE: It is impossible for an OVAL check to determine which suid files are authorized or not. -->
+  <!-- This checks basically fails if any suid files exist on the system. On a default RHEL6 install -->
+  <!-- there are a lot of suid files. It will be up to the system administrator to determine which -->
+  <!-- suid files are approved for use. -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/etc/skel files mode 0644" id="test_file_permissions_unauthorized_suid" version="1">
+    <unix:object object_ref="object_file_permissions_unauthorized_suid" />
+    <unix:state state_ref="state_file_permissions_unauthorized_suid" />
   </unix:file_test>
-  <unix:file_state comment="Executables with suid set"
-  id="state_20049" version="1">
-    <unix:suid datatype="boolean">1</unix:suid>
-    <unix:uexec datatype="boolean">1</unix:uexec>
-  </unix:file_state>
-  <unix:file_object comment="all local files"
-  id="obj_20023" version="1">
-    <unix:behaviors recurse="files" recurse_file_system="local" />
-    <unix:path operation="pattern match">.*</unix:path>
-    <unix:filename operation="pattern match">.*</unix:filename>
+  <unix:file_object comment="files with suid set" id="object_file_permissions_unauthorized_suid" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_file_permissions_unauthorized_suid</filter>
   </unix:file_object>
+  <unix:file_state id="state_file_permissions_unauthorized_suid" version="1">
+    <unix:suid datatype="boolean">true</unix:suid>
+  </unix:file_state>
 </def-group>

@@ -166,6 +166,8 @@ account.</description>
 <Rule id="no_unpackaged_sgid_files">
 <title>Find Unauthorized SGID System Executables</title>
 <description>The sgid bit should not be set for all files.</description>
+<rationale>Executable files with the SGID permission allow users to gain permissions commensurate with the
+group owner of the file. The presence of these files should be strictly controlled on the system.</rationale>
 <ident cce="14970-8" />
 <oval id="file_permissions_unauthorized_sgid" />
 <ref nist="CM-6"/>
@@ -174,6 +176,8 @@ account.</description>
 <Rule id="no_unpackaged_suid_files">
 <title>Find Unauthorized SUID System Executables</title>
 <description>The suid bit should not be set for all files.</description>
+<rationale>Executable files with the SUID permission allow users to gain permissions commensurate with the
+owner of the file. The presence of these files should be strictly controlled on the system.</rationale>
 <ident cce="14340-4" />
 <oval id="file_permissions_unauthorized_suid" />
 <ref nist="AC-3, CM-6"/>

@@ -17,8 +17,8 @@
     <unix:state state_ref="state_not_mode_0640" />
   </unix:file_test>
   <unix:file_object comment="/var/log/audit files" id="object_var_log_audit_files" version="1">
-    <unix:behaviors recurse="files and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-    <unix:path operation="pattern match">^/var/log/audit($|/.*$)</unix:path>
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_not_mode_0640</filter>
   </unix:file_object>
