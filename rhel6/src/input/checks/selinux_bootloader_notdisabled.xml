@@ -13,17 +13,12 @@
       <criterion test_ref="test_20104" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="none_exist"
-  comment="Tests the value of the ^[\s]*enforcing[\s]*=[\s]*([^#]*) expression in the /etc/grub.conf file"
-  id="test_20104" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="do it" id="test_20104" version="1">
     <ind:object object_ref="obj_20104" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20104"
-  version="1">
-    <ind:path>/etc</ind:path>
-    <ind:filename>grub.conf</ind:filename>
-    <ind:pattern operation="pattern match">^\s*kernel\s+[-=\\/\w\s]*(?:(?:selinux)|(?:enforcing))=0\s*[-=\\/\w\s]*$</ind:pattern>
+  <ind:textfilecontent54_object id="obj_20104" version="1">
+    <ind:filepath>/boot/grub/grub.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*kernel\s+.*(selinux|enforcing)=0.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

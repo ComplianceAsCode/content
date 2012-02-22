@@ -1,9 +1,7 @@
 <def-group>
-  <definition class="compliance"
-  id="yum_gpgcheck_never_disabled" version="1">
+  <definition class="compliance" id="yum_gpgcheck_never_disabled" version="1">
     <metadata>
-      <title>Ensure Package Signature Checking is Not Disabled For
-      Any Repos</title>
+      <title>All Yum Repos Ensure Package Signature Checking</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
@@ -14,27 +12,16 @@
       /etc/yum.repos.d or elsewhere</description>
     </metadata>
     <criteria>
-      <criterion comment="check value of gpgcheck=0 in /etc/yum.repos.d/*"
-      negate="true"
-      test_ref="test_20011" />
+      <criterion comment="check value of gpgcheck=0 in /etc/yum.repos.d/*" test_ref="test_yum_gpgcheck_never_disabled" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  comment="check value of gpgcheck=0 in /etc/yum.repos.d/"
-  id="test_20011" version="1">
-    <ind:object object_ref="obj_20011" />
-    <ind:state state_ref="state_20011" />
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" id="test_yum_gpgcheck_never_disabled" comment="gpgcheck=0 should not exist in any repo file within /etc/yum.repos.d" version="1">
+    <ind:object object_ref="object_yum_gpgcheck_never_disabled" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state comment="Expected value of gpgcheck should be disabled because test is none exist"
-  id="state_20011" version="1">
-    <ind:subexpression datatype="int" entity_check="at least one"
-    operation="equals">0</ind:subexpression>
-  </ind:textfilecontent54_state>
-  <ind:textfilecontent54_object comment="look for the value of gpgcheck= in /etc/yum.repos.d"
-  id="obj_20011" version="1">
+  <ind:textfilecontent54_object comment="gpgcheck=0 should not exist in any repo file within /etc/yum.repos.d" id="object_yum_gpgcheck_never_disabled" version="1">
     <ind:path>/etc/yum.repos.d</ind:path>
     <ind:filename operation="pattern match">.*</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*gpgcheck[\s]*=[\s]*([0-1])</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*0\s*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

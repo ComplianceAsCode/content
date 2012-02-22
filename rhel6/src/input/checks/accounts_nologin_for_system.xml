@@ -1,37 +1,26 @@
 <def-group>
-  <definition class="compliance"
-  id="accounts_nologin_for_system" version="1">
+  <definition class="compliance" id="accounts_nologin_for_system" version="1">
     <metadata>
-      <title>Block Shell and Login Access for Non-Root System
-      Accounts</title>
+      <title>Block Shell and Login Access for Non-Root System Accounts</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3987-5" source="CCE" />
-      <description>Login access to non-root system accounts should
-      be disabled</description>
+      <description>Login access to non-root system accounts should be disabled.</description>
     </metadata>
     <criteria>
-      <criterion comment="check /etc/passwd for /sbin/nologin on non root system accounts"
-      negate="true"
-      test_ref="test_20068" />
+      <criterion comment="check /etc/passwd for /sbin/nologin on non root system accounts" test_ref="test_20068" />
     </criteria>
   </definition>
-  <unix:password_test check="all"
-  comment="Tests the login shell for non root system accounts"
-  id="test_20068" version="1">
-    <unix:object object_ref="obj_20068" />
-    <unix:state state_ref="state_20068" />
+  <unix:password_test check="all" check_existence="none_exist" id="test_20068" comment="no system user unauthorized shell" version="1">
+    <unix:object object_ref="object_accounts_nologin_for_system" />
+    <unix:state state_ref="state_sys_user_unauth_shell" />
   </unix:password_test>
-  <unix:password_state id="state_20068"
-  version="1">
-    <unix:user_id datatype="int" operation="less than or equal">
-    500</unix:user_id>
-    <unix:login_shell operation="not equal">
-    /sbin/nologin</unix:login_shell>
-  </unix:password_state>
-  <unix:password_object id="obj_20068"
-  version="1">
+  <unix:password_object id="object_accounts_nologin_for_system" version="1">
     <unix:username operation="not equal">root</unix:username>
   </unix:password_object>
+  <unix:password_state id="state_sys_user_unauth_shell" version="1" operator="AND">
+    <unix:user_id datatype="int" operation="less than">500</unix:user_id>
+    <unix:login_shell datatype="string" operation="not equal">/sbin/nologin</unix:login_shell>
+  </unix:password_state>
 </def-group>

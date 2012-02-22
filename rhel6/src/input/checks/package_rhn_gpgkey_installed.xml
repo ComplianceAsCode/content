@@ -1,34 +1,27 @@
 <def-group>
-  <definition class="compliance"
-  id="package_rhn_gpgkey_installed" version="1">
+  <definition class="compliance" id="package_rhn_gpgkey_installed" version="1">
     <metadata>
-      <title>Ensure that GPG Key for Red Hat Network is
-      installed</title>
+      <title>Red Hat Network GPG Key Installed</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-14440-2" source="CCE" />
-      <description>The GPG key should be installed.</description>
+      <description>The GPG key for the Red Hat Network is installed via a RPM called gpg-pubkey. This RPM should
+      be installed on the local system and the version should be correct.</description>
     </metadata>
     <criteria>
-      <extend_definition comment="Red Hat Enterprise Linux 6 is installed"
-      definition_ref="installed_OS_is_rhel6" />
-      <criterion comment="check gpg signature" test_ref="test_200065" />
+      <criterion comment="check gpg signature" test_ref="test_package_rhn_gpgkey_installed" />
     </criteria>
   </definition>
-
-  <linux:rpminfo_test check_existence="any_exist" id="test_200065" version="1" check="at least one" comment="proper gpg-pubkey version is installed">
-	<linux:object object_ref="obj_200065"/>
-	<linux:state state_ref="ste_200065"/>
+  <linux:rpminfo_test check_existence="any_exist" id="test_package_rhn_gpgkey_installed" version="1" check="at least one" comment="proper gpg-pubkey version is installed">
+    <linux:object object_ref="object_package_rhn_gpgkey_installed"/>
+    <linux:state state_ref="state_package_rhn_gpgkey_installed"/>
   </linux:rpminfo_test>
-
-<linux:rpminfo_object id="obj_200065" version="1">
-	<linux:name>gpg-pubkey</linux:name>
-</linux:rpminfo_object>
-
-<linux:rpminfo_state id="ste_200065" version="1" comment="gpg(Red Hat, Inc. (release key) &lt;security@redhat.com&gt;)">
-	<linux:release>45761324</linux:release>
-	<linux:version>37017186</linux:version>
-</linux:rpminfo_state>
-
+  <linux:rpminfo_object id="object_package_rhn_gpgkey_installed" version="1">
+    <linux:name>gpg-pubkey</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_package_rhn_gpgkey_installed" version="1" comment="Red Hat, Inc. (release key 2)">
+    <linux:release>4ae0493b</linux:release>
+    <linux:version>fd431d51</linux:version>
+  </linux:rpminfo_state>
 </def-group>
