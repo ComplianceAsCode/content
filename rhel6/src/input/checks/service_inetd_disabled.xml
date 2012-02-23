@@ -1,0 +1,95 @@
+<def-group>
+  <definition class="compliance" id="service_inetd_disabled" version="1">
+    <metadata>
+      <title>Service inetd Disabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="4252-3" source="CCE" />
+      <description>The inetd service should be disabled if possible.</description>
+    </metadata>
+    <criteria operator="AND" comment="service inetd is not configured to start">
+      <criterion comment="inetd runlevel 0" test_ref="test_runlevel0_inetd" />
+      <criterion comment="inetd runlevel 1" test_ref="test_runlevel1_inetd" />
+      <criterion comment="inetd runlevel 2" test_ref="test_runlevel2_inetd" />
+      <criterion comment="inetd runlevel 3" test_ref="test_runlevel3_inetd" />
+      <criterion comment="inetd runlevel 4" test_ref="test_runlevel4_inetd" />
+      <criterion comment="inetd runlevel 5" test_ref="test_runlevel5_inetd" />
+      <criterion comment="inetd runlevel 6" test_ref="test_runlevel6_inetd" />
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel0_inetd"
+  version="2">
+    <unix:object object_ref="obj_runlevel0_inetd" />
+    <unix:state state_ref="state_service_inetd_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel1_inetd"
+  version="2">
+    <unix:object object_ref="obj_runlevel1_inetd" />
+    <unix:state state_ref="state_service_inetd_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel2_inetd"
+  version="2">
+    <unix:object object_ref="obj_runlevel2_inetd" />
+    <unix:state state_ref="state_service_inetd_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel3_inetd"
+  version="2">
+    <unix:object object_ref="obj_runlevel3_inetd" />
+    <unix:state state_ref="state_service_inetd_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel4_inetd"
+  version="2">
+    <unix:object object_ref="obj_runlevel4_inetd" />
+    <unix:state state_ref="state_service_inetd_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel5_inetd"
+  version="2">
+    <unix:object object_ref="obj_runlevel5_inetd" />
+    <unix:state state_ref="state_service_inetd_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel6_inetd"
+  version="2">
+    <unix:object object_ref="obj_runlevel6_inetd" />
+    <unix:state state_ref="state_service_inetd_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_runlevel0_inetd" version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel1_inetd" version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel2_inetd" version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel3_inetd" version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel4_inetd" version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel5_inetd" version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel6_inetd" version="1">
+    <unix:service_name>inetd</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_state comment="not configured to start" id="state_service_inetd_off" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+</def-group>

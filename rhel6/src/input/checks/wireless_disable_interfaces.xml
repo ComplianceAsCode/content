@@ -1,43 +1,23 @@
 <def-group>
-  <definition class="compliance"
-  id="wireless_disable_interfaces" version="1">
+  <definition class="compliance" id="wireless_disable_interfaces" version="1">
     <metadata>
       <title>Deactivate Wireless Interfaces</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-4276-2" source="CCE" />
-      <description>All wireless interfaces should be
-      disabled.</description>
+      <description>All wireless interfaces should be disabled.</description>
     </metadata>
     <criteria>
-      <criterion comment="Find wireless interfaces"
-      test_ref="test_20128" />
-      <criterion comment="The file /proc/net/wireless exists"
-      test_ref="test_42760" />
+      <criterion comment="query /proc/net/wireless" test_ref="test_wireless_disable_interfaces" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="any_exist" comment="Look in /proc/net/wireless"
-  id="test_20128" version="1">
-    <ind:object object_ref="obj_20128" />
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="query /proc/net/wireless" id="test_wireless_disable_interfaces" version="1">
+    <ind:object object_ref="object_wireless_disable_interfaces" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20128"
-  version="1">
-    <ind:path>/proc/net</ind:path>
-    <ind:filename>wireless</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*([\S\d]+):</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">
-    1</ind:instance>
+  <ind:textfilecontent54_object id="object_wireless_disable_interfaces" version="1">
+    <ind:filepath>/proc/net/wireless</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*[-\w]+:</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
-  <unix:file_test check="all" check_existence="none_exist"
-  comment="check for the existence of /proc/net/wireless"
-  id="test_42760" version="1">
-    <unix:object object_ref="obj_42760" />
-  </unix:file_test>
-  <unix:file_object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  id="obj_42760" version="1">
-    <unix:path>/proc/net</unix:path>
-    <unix:filename xsi:nil="false">wireless</unix:filename>
-  </unix:file_object>
 </def-group>

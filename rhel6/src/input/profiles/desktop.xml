@@ -1,11 +1,13 @@
 <Profile id="desktop" extends="common" xmlns="http://checklists.nist.gov/xccdf/1.1" >
 <title>Desktop Baseline</title>
-<description>This profile is for a desktop installation of RHEL
-6.</description>
-
+<description>This profile is for a desktop installation of RHEL 6.</description>
 <select idref="enable_gdm_login_banner" selected="true"/>
 <select idref="set_gdm_login_banner_text" selected="true"/>
-
-<!-- TODO: move desktop-specific checks here from common -->
-
+<select idref="set_screensaver_inactivity_timeout" selected="true"/>
+<select idref="enable_screensaver_after_idle" selected="true"/>
+<select idref="enable_screensaver_password_lock" selected="true"/>
+<select idref="set_blank_screensaver" selected="true"/>
+<!-- Refine Values -->
+<!-- inactivity timeout for GNOME screensaver -->
+<refine-value idref="inactivity_timeout_value" selector="15_minutes"/>
 </Profile>
