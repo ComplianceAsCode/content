@@ -189,19 +189,19 @@ users or groups should be investigated.</rationale>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
 <br />
-<pre>
--a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale
--w /etc/issue -p wa -k system-locale
--w /etc/issue.net -p wa -k system-locale
--w /etc/hosts -p wa -k system-locale
--w /etc/sysconfig/network -p wa -k system-locale
+<pre># audit_network_modifications
+-a exit,always -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
+-w /etc/issue -p wa -k audit_network_modifications
+-w /etc/issue.net -p wa -k audit_network_modifications
+-w /etc/hosts -p wa -k audit_network_modifications
+-w /etc/sysconfig/network -p wa -k audit_network_modifications
 </pre>
 </description>
 <rationale>The network environment should not be modified by anything other than
 administrator action. Any change to network parameters should be audited.</rationale>
 <ident cce="14816-3" />
 <oval id="audit_rules_networkconfig_modification" />
-<ref nist="AU-2" />
+<ref nist="AU-2(a)" />
 </Rule>
 
 
