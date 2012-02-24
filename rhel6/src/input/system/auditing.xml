@@ -144,25 +144,26 @@ editing as needed, activate the new rules:
 </pre>
 </description>
 
-
 <Rule id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
-ARCH to either b32 or b64 as appropriate for your system:
+<description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
 <br />
-<pre>
--a always,exit -F arch=ARCH -S adjtimex -S settimeofday -S stime -k time-change
--a always,exit -F arch=ARCH -S clock_settime -k time-change
--w /etc/localtime -p wa -k time-change</pre>
+<pre># audit_time_rules
+-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -S clock_settime -k audit_time_rules
+-w /etc/localtime -p wa -k audit_time_rules</pre>
+On a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt> (note the lack
+of <tt>-S stime</tt>, which is not relevant for a 64-bit installation):
+<pre># audit_time_rules
+-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime -k audit_time_rules
+-w /etc/localtime -p wa -k audit_time_rules</pre>
 </description>
 <rationale>Arbitrary changes to the system time can be used to obfuscate nefarious
 activites in log files as well as to confuse network services that are highly dependent
-upon an accurate system time. All changes to the system time should be audited.</rationale>
+upon an accurate system time (such as sshd). All changes to the system time should be audited.</rationale>
 <ident cce="14051-7" />
 <oval id="audit_rules_record_timechange" />
-<ref nist="AU-2" />
+<ref nist="AU-2(a)" />
 </Rule>
-
 
 <Rule id="audit_account_changes">
 <title>Record Events that Modify User/Group Information</title>
