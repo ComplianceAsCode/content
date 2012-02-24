@@ -169,18 +169,18 @@ upon an accurate system time. All changes to the system time should be audited.<
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, in order
 to capture events that modify account changes:
 <br />
-<pre>
--w /etc/group -p wa -k identity
--w /etc/passwd -p wa -k identity
--w /etc/gshadow -p wa -k identity
--w /etc/shadow -p wa -k identity
--w /etc/security/opasswd -p wa -k identity</pre>
+<pre># audit_account_changes
+-w /etc/group -p wa -k audit_account_changes
+-w /etc/passwd -p wa -k audit_account_changes
+-w /etc/gshadow -p wa -k audit_account_changes
+-w /etc/shadow -p wa -k audit_account_changes
+-w /etc/security/opasswd -p wa -k audit_account_changes
+</pre>
 </description>
-<rationale>New user or group accounts need to be audited to verify that they are legitimate. Any suspect
-users or groups should be investigated.</rationale>
+<rationale>In addition to auditing new user and group accounts, these watches will alert the system administrator(s) to any modifications. It is recommended that any unexpected users, groups, or modifications be investigated for legitimacy.</rationale>
 <ident cce="14829-6" />
 <oval id="audit_rules_usergroup_modification" />
-<ref nist="AU-2" />
+<ref nist="AU-2(a)" />
 </Rule>
 
 
@@ -189,19 +189,19 @@ users or groups should be investigated.</rationale>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
 <br />
-<pre>
--a exit,always -F arch=ARCH -S sethostname -S setdomainname -k system-locale
--w /etc/issue -p wa -k system-locale
--w /etc/issue.net -p wa -k system-locale
--w /etc/hosts -p wa -k system-locale
--w /etc/sysconfig/network -p wa -k system-locale
+<pre># audit_network_modifications
+-a exit,always -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
+-w /etc/issue -p wa -k audit_network_modifications
+-w /etc/issue.net -p wa -k audit_network_modifications
+-w /etc/hosts -p wa -k audit_network_modifications
+-w /etc/sysconfig/network -p wa -k audit_network_modifications
 </pre>
 </description>
 <rationale>The network environment should not be modified by anything other than
 administrator action. Any change to network parameters should be audited.</rationale>
 <ident cce="14816-3" />
 <oval id="audit_rules_networkconfig_modification" />
-<ref nist="AU-2" />
+<ref nist="AU-2(a)" />
 </Rule>
 
 
