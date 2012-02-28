@@ -12,16 +12,16 @@
     </metadata>
     <criteria>
       <criterion comment="Conditions are satisfied"
-      test_ref="test_20152" />
+      test_ref="test_rsyslog_remote_loghost" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all"
   check_existence="all_exist"
   comment="Tests the value of the \*\.\*[\s]+@ setting in the /etc/syslog.conf file"
-  id="test_20152" version="1">
-    <ind:object object_ref="obj_20152" />
+  id="test_rsyslog_remote_loghost" version="1">
+    <ind:object object_ref="object_rsyslog_remote_loghost" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20152"
+  <ind:textfilecontent54_object id="object_rsyslog_remote_loghost"
   version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>rsyslog.conf</ind:filename>
