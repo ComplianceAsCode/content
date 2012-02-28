@@ -6,6 +6,8 @@ It is relatively simple to configure a RHEL6 machine to obtain
 authentication information from an LDAP server. If your network
 uses LDAP for authentication, be sure to configure both clients and
 servers securely.</description>
+
+
 <Group id="openldap_client">
 <title>Configure OpenLDAP Clients</title>
 <description>This guide recommends configuring OpenLDAP clients by
@@ -24,22 +26,23 @@ environment.</description>
 LDAP client, ensure that a working LDAP server is present on the
 network. See Section 3.12.3 for instructions on configuring an LDAP
 server.</warning>
-<Group id="openldap_tls">
-<title>Configure LDAP to Use TLS for All Transactions</title>
+
+
+
+
+<Rule id="ldap_client_tls_checkpeer">
+<title>LDAP Uses TLS For All Transactions</title>
 <description>
-<ol>
-<li>Ensure a copy of the site's CA certificate has been placed in
-the file <tt>/etc/pki/tls/CA/cacert.pem</tt>.</li>
-<li>Configure LDAP to enforce TLS use and to trust certificates
+Ensure a copy of the site's CA certificate has been placed in
+the file <tt>/etc/pki/tls/CA/cacert.pem</tt>.
+Configure LDAP to enforce TLS use and to trust certificates
 signed by the site's CA. First, edit the file <tt>/etc/pam_ldap.conf</tt>,
 and add or correct the following lines:
-<br />
 <pre>
 ssl start_tls
 tls_checkpeer yes
 tls_cacertdir /etc/pki/tls/CA
 tls_cacertfile /etc/pki/tls/CA/cacert.pem
-
 </pre>
 Then edit <tt>/etc/openldap/ldap.conf</tt>, and add or correct the
 following lines:
@@ -47,27 +50,16 @@ following lines:
 <pre>
 TLS_CACERTDIR /etc/pki/tls/CA
 TLS_CACERT /etc/pki/tls/CA/cacert.pem
-
 </pre>
-</li>
-</ol>
-<br /><br />
-Section 2.5.6 describes the system-wide configuration of SSL
-for your enterprise. It is possible to place your certificate
-information under some directory other than <tt>/etc/pki/tls</tt>,
-but using a consistent directory structure across all SSL services
-at your site is recommended. The LDAP server must be configured
-with a certificate signed by the CA certificate named here.</description>
-
-<Rule id="ldap_require_tls">
-<title>LDAP Uses TLS For All Transactions</title>
-<description>Clients require LDAP servers to provide valid
-certificates for SSL communications.</description>
+</description>
 <ident cce="14894-0" />
 <oval id="ldap_client_tls_checkpeer" />
 </Rule>
-</Group>
-</Group>
+
+
+</Group><!--End <Group id="openldap_client"> -->
+
+
 
 <Group id="openldap_server">
 <title>Configure OpenLDAP Server</title>
@@ -75,27 +67,106 @@ certificates for SSL communications.</description>
 OpenLDAP server to securely provide information for use in a
 centralized authentication service. This is not a comprehensive
 guide to maintaining an OpenLDAP server, but may be helpful in
-transitioning to an OpenLDAP infrastructure
-nonetheless.</description>
-<Group id="enabling_openldap_service">
+securing an OpenLDAP infrastructure nonetheless.
+</description>
+
+
+
+<Rule id="package_openldap-servers_removed">
 <title>Install OpenLDAP Server RPM</title>
-<description>Is this machine the OpenLDAP server? If so:
+<description>The <tt>openldap-servers</tt> package should be removed if not in use.  
+Is this machine the OpenLDAP server? If not, remove the package:
 <br />
 <pre>
-# yum install openldap-servers
-# chkconfig ldap on
-
+# yum erase openldap-servers
 </pre>
 The openldap-servers RPM is not installed by default on RHEL6
 machines. It is needed only by the OpenLDAP server, not by the
-clients which use LDAP for authentication.</description>
-<Rule id="disable_openldap_service">
-<title>Disable OpenLDAP service</title>
-<description>The <tt>ldap</tt> service should be disabled.</description>
+clients which use LDAP for authentication.  If the system is not
+intended for use as an LDAP Server it should be removed.
+</description>
 <ident cce="3501-4" />
-<oval id="service_ldap_disabled" />
+<oval id="package_openldap-servers_removed" />
 </Rule>
-</Group>
-</Group>
-</Group>
+
+
+
+
+
+<Rule id="ldap_server_config_olcsuffix">
+<title>Configure Domain-Specific Parameters</title>
+<description>The <tt>ldap</tt> server should be configured to use a domain specific suffix.  
+Is this system an OpenLDAP server? If so, 
+edit the ldap configuration file at 
+/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif 
+to include suffix information relevant to your domain.
+<br />
+<pre>
+Edit the ldap configuration file at 
+/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif 
+to include suffix information relevant to your domain.
+olcSuffix: "dc=example,dc=com "
+olcRootDN: "cn=Manager,dc=example,dc=com "
+where dc=example,dc=com is the same root you will use on the LDAP clients.
+</pre>
+These are basic LDAP configuration directives. The suffix parameter gives the root name of all information
+served by this LDAP server, and should be some name related to your domain. The rootdn parameter names
+LDAP’s privileged user, who is allowed to read or write all data managed by this LDAP server.
+</description>
+<ident cce="3501-4" />
+<oval id="ldap_server_config_olcsuffix" />
+</Rule>
+
+<Rule id="ldap_server_config_bdb_file_security">
+<title>LDAP Configuration File Security</title>
+<description>Is this system an OpenLDAP server? If so, 
+ensure that the configuration files are protected from unauthorized
+access or modification.
+<br />
+<pre>
+Edit the ldap configuration file at 
+/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif 
+
+Ensure that the configuration file has reasonable permissions:
+# chown root:ldap /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
+# chmod 640 /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
+</pre>
+Protect configuration files containing the hashed password the same way you would protect other files, such as
+/etc/shadow, which contain hashed authentication data.
+</description>
+<ident cce="CCE:TBD" />
+<oval id="ldap_server_config_bdb_file_security" />
+</Rule>
+
+
+
+
+<Rule id="ldap_server_config_olcrootpw">
+<title>Configure LDAP Root Password</title>
+<description>Is this system an OpenLDAP server? If so, 
+ensure that the RootDN uses a secure password 
+<br />
+<pre>
+Generate a hashed password using the slappasswd utility:
+# slappasswd
+New password:
+Re-enter new password:
+
+This will output a hashed password string. 
+Edit the file /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif, and add or correct
+the line:
+olcRootPW: {SSHA}hashed-password-string
+</pre>
+Be sure to select a secure password for the LDAP root user, since this user has permission to read and write all
+LDAP data, so a compromise of the LDAP root password will probably enable a full compromise of your site.  
+In addition, be sure to use a reasonably strong hash function.  The default hash function should be used.  The default hash function is a salted SHA-1 algorith which is FIPS 160-1 compliant.  Insecure schemes such as crypt should not be used.
+</description>
+<ident cce="TODO:CCE" />
+<oval id="ldap_server_config_olcrootpw" />
+</Rule>
+
+
+
+</Group><!--End <Group id="openldap_server"> -->
+</Group><!--End <Group id="ldap"> -->
 
