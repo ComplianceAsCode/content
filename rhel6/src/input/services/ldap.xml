@@ -56,10 +56,7 @@ TLS_CACERT /etc/pki/tls/CA/cacert.pem
 <oval id="ldap_client_tls_checkpeer" />
 </Rule>
 
-
 </Group><!--End <Group id="openldap_client"> -->
-
-
 
 <Group id="openldap_server">
 <title>Configure OpenLDAP Server</title>
@@ -69,8 +66,6 @@ centralized authentication service. This is not a comprehensive
 guide to maintaining an OpenLDAP server, but may be helpful in
 securing an OpenLDAP infrastructure nonetheless.
 </description>
-
-
 
 <Rule id="package_openldap-servers_removed">
 <title>Install OpenLDAP Server RPM</title>
@@ -88,10 +83,6 @@ intended for use as an LDAP Server it should be removed.
 <ident cce="3501-4" />
 <oval id="package_openldap-servers_removed" />
 </Rule>
-
-
-
-
 
 <Rule id="ldap_server_config_olcsuffix">
 <title>Configure Domain-Specific Parameters</title>
@@ -138,9 +129,6 @@ Protect configuration files containing the hashed password the same way you woul
 <oval id="ldap_server_config_bdb_file_security" />
 </Rule>
 
-
-
-
 <Rule id="ldap_server_config_olcrootpw">
 <title>Configure LDAP Root Password</title>
 <description>Is this system an OpenLDAP server? If so, 
@@ -165,8 +153,44 @@ In addition, be sure to use a reasonably strong hash function.  The default hash
 <oval id="ldap_server_config_olcrootpw" />
 </Rule>
 
+<Rule id="ldap_server_config_certificate_files">
+<title>Protect LDAP Certificate Files</title>
+<description>Create the PKI directory for LDAP certificates if it does not already exist:
+<pre>
+# mkdir /etc/pki/tls/ldap
+# chown root:root /etc/pki/tls/ldap
+# chmod 755 /etc/pki/tls/ldap
+</pre>
+Using removable media or some other secure transmission format, install the files generated in the previous
+step onto the LDAP server:
+<pre>
+/etc/pki/tls/ldap/serverkey.pem: the private key ldapserverkey.pem
+/etc/pki/tls/ldap/servercert.pem: the certificate file ldapservercert.pem
+</pre>
+Verify the ownership and permissions of these files:
+<pre>
+# chown root:ldap /etc/pki/tls/ldap/serverkey.pem
+# chown root:ldap /etc/pki/tls/ldap/servercert.pem
+# chmod 640 /etc/pki/tls/ldap/serverkey.pem
+# chmod 640 /etc/pki/tls/ldap/servercert.pem
+</pre>
+Verify that the CA’s public certificate file has been installed as /etc/pki/tls/CA/cacert.pem, and has the
+correct permissions:
+<pre>
+# mkdir /etc/pki/tls/CA
+# chown root:root /etc/pki/tls/CA/cacert.pem
+# chmod 644 /etc/pki/tls/CA/cacert.pem
+</pre>
+As a result of these steps, the LDAP server will have access to its own private certificate and the key with which
+that certificate is encrypted, and to the public certificate file belonging to the CA. Note that it would be possible
+for the key to be protected further, so that processes running as ldap could not read it. If this were done, the
+LDAP server process would need to be restarted manually whenever the server rebooted.
+</description>
+<ident cce="CCE-4360-4,CCE-4378-6,CCE-4492-5,CCE-4263-0,CCE-3502-2,CCE-4449-5,CCE-4361-2,CCE-4427-1,CCE-4321-6,CCE-4339-8,CCE-4105-3,CCE-3718-4" />
+<oval id="ldap_server_config_certificate_files" />
+</Rule>
+
 
 
 </Group><!--End <Group id="openldap_server"> -->
 </Group><!--End <Group id="ldap"> -->
-
