@@ -7,7 +7,6 @@ authentication information from an LDAP server. If your network
 uses LDAP for authentication, be sure to configure both clients and
 servers securely.</description>
 
-
 <Group id="openldap_client">
 <title>Configure OpenLDAP Clients</title>
 <description>This guide recommends configuring OpenLDAP clients by
@@ -26,9 +25,6 @@ environment.</description>
 LDAP client, ensure that a working LDAP server is present on the
 network. See Section 3.12.3 for instructions on configuring an LDAP
 server.</warning>
-
-
-
 
 <Rule id="ldap_client_tls_checkpeer">
 <title>LDAP Uses TLS For All Transactions</title>
@@ -82,6 +78,7 @@ intended for use as an LDAP Server it should be removed.
 </description>
 <ident cce="3501-4" />
 <oval id="package_openldap-servers_removed" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="ldap_server_config_olcsuffix">
@@ -106,6 +103,7 @@ LDAP’s privileged user, who is allowed to read or write all data managed by th
 </description>
 <ident cce="3501-4" />
 <oval id="ldap_server_config_olcsuffix" />
+<ref nist="AC-2, CM-7" />
 </Rule>
 
 <Rule id="ldap_server_config_bdb_file_security">
@@ -125,8 +123,9 @@ Ensure that the configuration file has reasonable permissions:
 Protect configuration files containing the hashed password the same way you would protect other files, such as
 /etc/shadow, which contain hashed authentication data.
 </description>
-<ident cce="CCE:TBD" />
+<ident cce="TODO:CCE" />
 <oval id="ldap_server_config_bdb_file_security" />
+<ref nist="AC-6, CM-7" />
 </Rule>
 
 <Rule id="ldap_server_config_olcrootpw">
@@ -151,6 +150,7 @@ In addition, be sure to use a reasonably strong hash function.  The default hash
 </description>
 <ident cce="TODO:CCE" />
 <oval id="ldap_server_config_olcrootpw" />
+<ref nist="AC-2, IA-2" />
 </Rule>
 
 <Rule id="ldap_server_config_certificate_files">
@@ -186,11 +186,238 @@ that certificate is encrypted, and to the public certificate file belonging to t
 for the key to be protected further, so that processes running as ldap could not read it. If this were done, the
 LDAP server process would need to be restarted manually whenever the server rebooted.
 </description>
-<ident cce="CCE-4360-4,CCE-4378-6,CCE-4492-5,CCE-4263-0,CCE-3502-2,CCE-4449-5,CCE-4361-2,CCE-4427-1,CCE-4321-6,CCE-4339-8,CCE-4105-3,CCE-3718-4" />
+<ident cce="4360-4,4378-6,4492-5,4263-0,3502-2,4449-5,4361-2,4427-1,4321-6,4339-8,4105-3,3718-4" />
 <oval id="ldap_server_config_certificate_files" />
+<ref nist="AC-6, CM-7, SC-11, SC-12, SC-13, SC-17" />
 </Rule>
 
+<Rule id="ldap_server_config_directory_domain">
+<title>Create Top-level LDAP Structure for Domain</title>
+<description>Create a structure for the domain itself with at least the following attributes:
+<pre>
+dn: dc=example,dc=com
+objectClass: dcObject
+objectClass: organization
+dc: example
+o: Organization Description
+</pre>
+This is a placeholder for the root of the domain’s LDAP tree. Without this entry, LDAP will not be able to find
+any other entries for the domain.
+</description>
+<ident cce="TODO:CCE" />
+<!--oval id="MANUAL AUDIT" /-->
+<ref nist="AC-2" />
+</Rule>
 
+<Rule id="ldap_server_config_directory_users_groups">
+<title>Create LDAP Structures for Users and Groups</title>
+<description>Create LDAP structures for people (users) and for groups with at least the following attributes:
+<pre>
+dn: ou=people,dc=example,dc=com
+ou: people
+structuralObjectClass: organizationalUnit
+objectClass: organizationalUnit
+dn: ou=groups,dc=example,dc=com
+ou: groups
+structuralObjectClass: organizationalUnit
+objectClass: organizationalUnit
+</pre>
+Posix users and groups are the two top-level items which will be needed in order to use LDAP for authentication.
+These organizational units are used to identify the two categories within LDAP.
+</description>
+<ident cce="TODO:CCE" />
+<!--oval id="MANUAL AUDIT" /-->
+<ref nist="AC-2, AC-6, SC-2" />
+</Rule>
+
+<Rule id="ldap_server_config_directory_accounts">
+<title>Create Unix Accounts</title>
+<description>For each Unix user, create an LDAP entry with at least the following attributes (others may be appropriate
+for your site as well), using variable values appropriate to that user.
+<pre>
+dn: uid=username ,ou=people,dc=example,dc=com
+structuralObjectClass: inetOrgPerson
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: fullname
+sn: surname
+gecos: fullname
+gidNumber: primary-group-id
+homeDirectory: /home/username
+loginShell: /path/to/shell
+uid: username
+uidNumber: uid
+userPassword: {MD5}md5-hashed-password
+shadowMax: N
+</pre>
+In general, the LDAP schemas for users use uid to refer to the text username, and uidNumber for the numeric
+UID. This usage may be slightly confusing when compared to the standard Unix usage.
+You should not create entries for the root account or for system accounts which are unique to individual systems,
+but only for user accounts which are to be shared across machines, and which have authentication information
+(such as a password) associated with them.
+</description>
+<ident cce="TODO:CCE" />
+<!--oval id="MANUAL AUDIT" /-->
+<ref nist="AC-2, CM-7, SC-2" />
+</Rule>
+
+<Rule id="ldap_server_config_directory_groups">
+<title>Create Unix Groups</title>
+<description>For each Unix group, create an LDAP entry with at least the following attributes:
+<pre>
+dn: cn=groupname ,ou=groups,dc=example,dc=com
+cn: groupname
+structuralObjectClass: posixGroup
+objectClass: posixGroup
+gidNumber: gid
+memberUid: username1
+memberUid: username2
+...
+memberUid: usernameN
+</pre>
+Note that each user has a primary group, identified by the gidNumber field in the user’s account entry. That
+group must be created, but it is not necessary to list the user as a memberUid of the group. This behavior should
+be familiar to administrators, since it is identical to the handling of the /etc/passwd and /etc/group files.
+Do not create entries for the root group or for system groups, but only for groups which contain human users
+or which are shared across systems.
+</description>
+<ident cce="TODO:CCE" />
+<!--oval id="MANUAL AUDIT" /-->
+<ref nist="AC-2, CM-7, SC-2" />
+</Rule>
+
+<Rule id="ldap_server_config_directory_admin_group">
+<title>Create Groups to Administer LDAP</title>
+<description>If a group of LDAP administrators, admins , is desired, that group must be created somewhat differently.
+The specification should have these attributes:
+<pre>
+dn: cn=admins ,ou=groups,dc=example,dc=com
+cn: admins
+structuralObjectClass: groupOfUniqueNames
+objectClass: groupOfUniqueNames
+uniqueMember: cn=Manager,dc=example,dc=com
+uniqueMember: uid=admin1-username ,ou=people,dc=example,dc=com
+uniqueMember: uid=admin2-username ,ou=people,dc=example,dc=com
+...
+uniqueMember: uid=adminN-username ,ou=people,dc=example,dc=com
+</pre>
+LDAP cannot use Posix groups for its own internal authentication — it needs to compare the username specified
+in an authenticated bind to some internal groupOfUniqueNames. If you do not specify an LDAP administrators’
+group, then all LDAP management will need to be done using the LDAP root user (Manager). For reasons of
+auditing and error detection, it is recommended that LDAP administrators have unique identities.
+</description>
+<ident cce="TODO:CCE" />
+<!--oval id="MANUAL AUDIT" /-->
+<ref nist="AC-2, CM-7, SC-2" />
+</Rule>
+
+<Rule id="ldap_server_config_olcaccess">
+<title>Configure slapd to Protect Authentication Information</title>
+<description>Use ldapmodify to add these entries to the database. Add or correct the following access specifications:
+1. Protect the user’s password by allowing the user himself or the LDAP administrators to change it,
+allowing the anonymous user to authenticate against it, and allowing no other access:
+<pre>
+olcAccess: to attrs=userPassword
+    by self write
+    by group/groupOfUniqueNames/uniqueMember="cn=admins ,ou=groups,dc=example,dc=com " write
+    by anonymous auth
+    by * none
+olcAccess: to attrs=shadowLastChange
+    by self write
+    by group/groupOfUniqueNames/uniqueMember="cn=admins ,ou=groups,dc=example,dc=com " write
+    by * read
+</pre>
+2. Allow anyone to read other information, and allow the administrators to change it:
+<pre>
+olcAccess: to *
+    by group/groupOfUniqueNames/uniqueMember="cn=admins ,ou=groups,dc=example,dc=com " write
+    by * read
+</pre>
+Access rules are applied in the order encountered, so more specific rules should appear first. In particular,
+the rule restricting access to userPassword must appear before the rule allowing access to all data. The
+shadowLastChange attribute is a timestamp, and is only critical if your site implements password expiration. If
+your site does not have an LDAP administrators group, the LDAP root user (called Manager in this guide) will
+be able to change data without an explicit access statement.
+</description>
+<ident cce="TODO:CCE" />
+<oval id="ldap_server_config_olcaccess" />	
+<ref nist="AC-2, AC-4, AC-6, CM-7, SC-2" />
+</Rule>
+
+<Rule id="ldap_server_config_directory_file_security">
+<title>Correct Permissions on LDAP Server Files</title>
+<description>Correct the permissions on the ldap server’s files:
+<pre>
+# chown ldap:root /var/lib/ldap/*
+</pre>
+Some manual methods of inserting information into the LDAP database may leave these files with incorrect
+permissions. This will prevent slapd from starting correctly.
+</description>
+<ident cce="4484-2, 4502-1" />
+<oval id="ldap_server_config_directory_file_security" />
+<ref nist="AC-6, CM-7" />
+</Rule>
+
+<Rule id="iptables_ldap_enabled">
+<title>Configure iptables to Allow Access to the LDAP Server</title>
+<description>Determine an appropriate network block, netwk , and network mask, mask , representing the machines on
+your network which will synchronize to this server.
+Edit /etc/sysconfig/iptables. Add the following lines, ensuring that they appear before the final LOG and
+DROP lines for the RH-Firewall-1-INPUT chain:
+<pre>
+-A RH-Firewall-1-INPUT -s netwk /mask -m state --state NEW -p tcp --dport 389 -j ACCEPT
+-A RH-Firewall-1-INPUT -s netwk /mask -m state --state NEW -p tcp --dport 636 -j ACCEPT
+</pre>
+The default Iptables configuration does not allow inbound access to any services. These modifications allow
+access to the LDAP primary (389) and encrypted-only (636) ports, while keeping all other ports on the server
+in their default protected state.
+Note: Even if the LDAP server restricts connections so that only encrypted queries are allowed, it will probably
+be necessary to allow traffic to the default port 389. This is true because many LDAP clients implement
+encryption by connecting to the primary port and issuing the STARTTLS command.
+</description>
+<ident cce="TODO:CCE" />
+<oval id="iptables_ldap_enabled" />
+<ref nist="AC-4, CM-7, SC-2, SC-5, SC-7" />
+</Rule>
+
+<Rule id="ldap_server_config_logging">
+<title>Configure Logging for LDAP</title>
+<description>
+1. Edit the file /etc/syslog.conf. Add or correct the following line:
+<pre>
+local4.*
+</pre>
+2. Create the log file with safe permissions:
+<pre>
+# touch /var/log/ldap.log
+# chown root:root /var/log/ldap.log
+# chmod 0600 /var/log/ldap.log
+</pre>
+3. Edit the file /etc/logrotate.d/syslog and add the pathname
+<pre>
+/var/log/ldap.log
+</pre>
+to the space-separated list in the first line.
+
+4. Edit the LDAP configuration file /etc/openldap/slapd.conf and set a reasonable set of default log
+parameters, such as:
+<pre>
+loglevel stats2
+</pre>
+OpenLDAP sends its log data to the syslog facility local4 at priority debug. By default, RHEL5 does not store
+this facility at all. The syslog configuration suggested here will store any output logged by slapd in the file
+/var/log/ldap.log, and will include that file in the standard log rotation for syslog files.
+By default, LDAP’s logging is quite verbose. The loglevel parameter is a space-separated list of items to be
+logged. Specifying stats2 will reduce the log output somewhat, but this level will still produce some logging
+every time an LDAP query is made. (This may be appropriate, depending on your site’s auditing requirements.)
+In order to capture only slapd startup messages, specify loglevel none.
+See slapd.conf(5) for detailed information about the loglevel parameter.
+</description>
+<ident cce="TODO:CCE" />
+<oval id="ldap_server_config_logging" />
+<ref nist="AC-6, AU-2, AU-3, AU-9" />
+</Rule>
 
 </Group><!--End <Group id="openldap_server"> -->
 </Group><!--End <Group id="ldap"> -->
