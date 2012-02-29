@@ -121,17 +121,18 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 
 <Rule id="rpm_verify_permissions">
 <title>Verify File Permissions with RPM</title>
-<description>The RPM package management system 
-can check the permissions of thousands of installed files, including
-many that are important to system security.
-
-The following command will list which files on the system have permissions that are different 
-from what is expected by the RPM database:
+<description>The RPM package management system can check the permissions of
+thousands of installed files, including many that are important to system
+security. The following command will list which files on the system have
+permissions that are different from what is expected by the RPM database:
 <pre>
-TODO/FIXUP: # rpm -qVa | awk -F='' $2="M" {print $0}'</pre>
+# rpm -Va | grep '^.M'</pre>
 </description>
 <rationale>
-</rationale>
+Permissions on system binaries and configuration files that are too generous
+could allow an unauthorized user to gain privileges that they should not have.
+The permissions set by the vendor should be maintained. Any deviations from
+this baseline should be investigated.</rationale>
 <ident cce="14931-0" />
 <oval id="rpm_verify_permissions" />
 <ref nist="SI-7"/>
@@ -145,11 +146,14 @@ many that are important to system security.
 To list which files on the system have hashes that differ from what is expected by the 
 RPM database (except for configuration files, which may be expected to change):
 <pre>
-TODO/FIXUP: select only files with a "5" in 3rd column
-# rpm -qVa | awk '$2!="c" {print $0}'
+# rpm -Va | grep '^..5'
 </pre>
 A “c” in the second column indicates that a file is a configuration file. 
 </description>
+<rationale>
+The MD5 hash on important files like system executables should match the information given
+by the RPM database. Executables with erroneous hashes could be a sign of nefarious activity
+on the system.</rationale>
 <ident cce="TODO" />
 <oval id="rpm_verify_hashes" />
 <ref nist="SI-7"/>
