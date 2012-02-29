@@ -123,7 +123,7 @@ Ensure that the configuration file has reasonable permissions:
 Protect configuration files containing the hashed password the same way you would protect other files, such as
 /etc/shadow, which contain hashed authentication data.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_bdb_file_security" />
 <ref nist="AC-6, CM-7" />
 </Rule>
@@ -148,7 +148,7 @@ Be sure to select a secure password for the LDAP root user, since this user has 
 LDAP data, so a compromise of the LDAP root password will probably enable a full compromise of your site.  
 In addition, be sure to use a reasonably strong hash function.  The default hash function should be used.  The default hash function is a salted SHA-1 algorith which is FIPS 160-1 compliant.  Insecure schemes such as crypt should not be used.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_olcrootpw" />
 <ref nist="AC-2, IA-2" />
 </Rule>
@@ -204,7 +204,7 @@ o: Organization Description
 This is a placeholder for the root of the domain’s LDAP tree. Without this entry, LDAP will not be able to find
 any other entries for the domain.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2" />
 </Rule>
@@ -225,7 +225,7 @@ objectClass: organizationalUnit
 Posix users and groups are the two top-level items which will be needed in order to use LDAP for authentication.
 These organizational units are used to identify the two categories within LDAP.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, AC-6, SC-2" />
 </Rule>
@@ -257,7 +257,7 @@ You should not create entries for the root account or for system accounts which 
 but only for user accounts which are to be shared across machines, and which have authentication information
 (such as a password) associated with them.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, CM-7, SC-2" />
 </Rule>
@@ -282,7 +282,7 @@ be familiar to administrators, since it is identical to the handling of the /etc
 Do not create entries for the root group or for system groups, but only for groups which contain human users
 or which are shared across systems.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, CM-7, SC-2" />
 </Rule>
@@ -307,7 +307,7 @@ in an authenticated bind to some internal groupOfUniqueNames. If you do not spec
 group, then all LDAP management will need to be done using the LDAP root user (Manager). For reasons of
 auditing and error detection, it is recommended that LDAP administrators have unique identities.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, CM-7, SC-2" />
 </Rule>
@@ -340,7 +340,7 @@ shadowLastChange attribute is a timestamp, and is only critical if your site imp
 your site does not have an LDAP administrators group, the LDAP root user (called Manager in this guide) will
 be able to change data without an explicit access statement.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_olcaccess" />	
 <ref nist="AC-2, AC-4, AC-6, CM-7, SC-2" />
 </Rule>
@@ -376,7 +376,7 @@ Note: Even if the LDAP server restricts connections so that only encrypted queri
 be necessary to allow traffic to the default port 389. This is true because many LDAP clients implement
 encryption by connecting to the primary port and issuing the STARTTLS command.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <oval id="iptables_ldap_enabled" />
 <ref nist="AC-4, CM-7, SC-2, SC-5, SC-7" />
 </Rule>
@@ -414,7 +414,7 @@ every time an LDAP query is made. (This may be appropriate, depending on your si
 In order to capture only slapd startup messages, specify loglevel none.
 See slapd.conf(5) for detailed information about the loglevel parameter.
 </description>
-<ident cce="TODO:CCE" />
+<!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_logging" />
 <ref nist="AC-6, AU-2, AU-3, AU-9" />
 </Rule>
