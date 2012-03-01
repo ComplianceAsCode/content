@@ -96,19 +96,18 @@ to the MTA host.
 <!-- <ref nist="TODO:NIST" /> -->
 </Rule>
 
-<Rule id="postfix_configure_iptables">
+<Rule id="iptables_smtp_enabled">
 <title>Configure iptables to Allow Access to the Mail Server</title>
-<description>Edit /etc/sysconfig/iptables. Add the following line, ensuring that it appears before the final LOG and
+<description>Edit <tt>/etc/sysconfig/iptables</tt>. Add the following line, ensuring that it appears before the final LOG and
 DROP lines for the RH-Firewall-1-INPUT chain:
-<pre>
--A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 25 -j ACCEPT
+<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 25 -j ACCEPT
 </pre>
 </description>
 <rationale>The default Iptables configuration does not allow inbound access to the SMTP service. This modification allows
 that access, while keeping other ports on the server in their default protected state.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_configure_iptables" /> -->
+<oval id="iptables_smtp_enabled" />
 <!-- <ref nist="TODO:NIST" /> -->
 </Rule>
 
