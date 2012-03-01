@@ -25,8 +25,8 @@ More information is available on its website, http://www.postfix.org.</descripti
 
 
 <Group id="postfix_client">
-<title>Configure OpenLDAP Server</title>
-<description>This section discusses settings for Postfix and Sendmail in a submission-only e-mail configuration.</description>
+<title>Configure SMTP For Mail Clients</title>
+<description>This section discusses settings for Postfix in a submission-only e-mail configuration.</description>
 
 <!-- postfix is installed by default on RHEL 6,
      but sendmail was the default on RHEL 5. -->
@@ -60,7 +60,8 @@ and not from the network, which protects it from network attack.
 <Group id="postfix_harden_os">
 <title>Configure Operating System to Protect Mail Server
 </title>
-<description>This section discusses settings for Postfix in a submission-only e-mail configuration.</description>
+<description>The guidance in this section is appropriate for any host which is operating as a site MTA, whether the mail server runs using Sendmail, Postfix, or some other software.
+</description>
 
 <Rule id="postfix_seperate_internal_external">
 <title>Use Separate Hosts for External and Internal Mail if Possible</title>
@@ -288,7 +289,7 @@ If only the MTA host itself is trusted to relay messages, add or correct:
 <pre>
 mynetworks_style = <tt>host</tt>
 </pre>
-< br />
+<br />
 If the set of machines which can relay is more complicated, manually specify an entry for each netblock
 or IP address which is trusted to relay by setting the mynetworks variable directly:
 <pre>
