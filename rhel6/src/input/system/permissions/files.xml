@@ -21,6 +21,8 @@ enabled.</description>
 <title>Verify user who owns <tt>shadow</tt> file</title>
 <description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
+<rationale>The /etc/shadow file stores password hashes. Protection of this file is
+critical for system security.</rationale>
 <ident cce="3918-0" />
 <oval id="file_owner_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
@@ -30,8 +32,21 @@ root.</description>
 <title>Verify group who owns <tt>shadow</tt> file</title>
 <description>The <tt>/etc/shadow</tt> file should be group-owned by
 root.</description>
+<rationale>The /etc/shadow file stores password hashes. Protection of this file is
+critical for system security.</rationale>
 <ident cce="3988-3" />
 <oval id="file_groupowner_etc_shadow" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="perms_shadow_file">
+<title>Verify permissions on <tt>shadow</tt> file</title>
+<description>File permissions for <tt>/etc/shadow</tt> should be set
+correctly.</description>
+<rationale>The /etc/shadow file stores password hashes. Protection of this file is
+critical for system security.</rationale>
+<ident cce="4130-1" />
+<oval id="file_permissions_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -39,6 +54,8 @@ root.</description>
 <title>Verify user who owns <tt>group</tt> file</title>
 <description>The <tt>/etc/group</tt> file should be owned by
 root.</description>
+<rationale>The /etc/group file contains information regarding groups that are configured
+on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3276-3" />
 <oval id="file_owner_etc_group" />
 <ref nist="AC-3, CM-6"/>
@@ -48,8 +65,21 @@ root.</description>
 <title>Verify group who owns <tt>group</tt> file</title>
 <description>The <tt>/etc/group</tt> file should be group-owned by
 root.</description>
+<rationale>The /etc/group file contains information regarding groups that are configured
+on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3883-6" />
 <oval id="file_groupowner_etc_group" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="perms_group_file">
+<title>Verify permissions on <tt>group</tt> file</title>
+<description>File permissions for <tt>/etc/group</tt> should be set
+correctly.</description>
+<rationale>The /etc/group file contains information regarding groups that are configured
+on the system. Protection of this file is important for system security.</rationale>
+<ident cce="3967-7" />
+<oval id="file_permissions_etc_group" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -57,6 +87,8 @@ root.</description>
 <title>Verify user who owns <tt>gshadow</tt> file</title>
 <description>The <tt>/etc/gshadow</tt> file should be group-owned by
 root.</description>
+<rationale>The /etc/gshadow file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
 <ident cce="4210-1" />
 <oval id="file_owner_etc_gshadow" />
 <ref nist="AC-3, CM-6"/>
@@ -66,8 +98,21 @@ root.</description>
 <title>Verify group who owns <tt>gshadow</tt> file</title>
 <description>The <tt>/etc/gshadow</tt> file should be group-owned by
 root.</description>
+<rationale>The /etc/gshadow file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
 <ident cce="4064-2" />
 <oval id="file_groupowner_etc_gshadow" />
+<ref nist="AC-3, CM-6"/>
+</Rule>
+
+<Rule id="perms_gshadow_file">
+<title>Verify permissions on <tt>gshadow</tt> file</title>
+<description>File permissions for <tt>/etc/gshadow</tt> should be set
+correctly.</description>
+<rationale>The /etc/gshadow file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
+<ident cce="3932-1" />
+<oval id="file_owner_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -75,6 +120,8 @@ root.</description>
 <title>Verify user who owns <tt>passwd</tt> file</title>
 <description>The <tt>/etc/passwd</tt> file should be owned by
 root.</description>
+<rationale>The /etc/passwd contains information about the users that are configured on
+the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3958-6" />
 <oval id="file_owner_etc_passwd" />
 <ref nist="AC-3, CM-6"/>
@@ -84,35 +131,10 @@ root.</description>
 <title>Verify group who owns <tt>passwd</tt> file</title>
 <description>The <tt>/etc/passwd</tt> file should be group-owned by
 root.</description>
+<rationale>The /etc/passwd contains information about the users that are configured on
+the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3495-9" />
 <oval id="file_groupowner_etc_passwd" />
-<ref nist="AC-3, CM-6"/>
-</Rule>
-
-<Rule id="perms_shadow_file">
-<title>Verify permissions on <tt>shadow</tt> file</title>
-<description>File permissions for <tt>/etc/shadow</tt> should be set
-correctly.</description>
-<ident cce="4130-1" />
-<oval id="file_permissions_etc_shadow" />
-<ref nist="AC-3, CM-6"/>
-</Rule>
-
-<Rule id="perms_group_file">
-<title>Verify permissions on <tt>group</tt> file</title>
-<description>File permissions for <tt>/etc/group</tt> should be set
-correctly.</description>
-<ident cce="3967-7" />
-<oval id="file_permissions_etc_group" />
-<ref nist="AC-3, CM-6"/>
-</Rule>
-
-<Rule id="perms_gshadow_file">
-<title>Verify permissions on <tt>gshadow</tt> file</title>
-<description>File permissions for <tt>/etc/gshadow</tt> should be set
-correctly.</description>
-<ident cce="3932-1" />
-<oval id="file_owner_etc_shadow" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
@@ -120,6 +142,8 @@ correctly.</description>
 <title>Verify permissions on <tt>passwd</tt> file</title>
 <description>File permissions for <tt>/etc/passwd</tt> should be set
 correctly.</description>
+<rationale>The /etc/passwd contains information about the users that are configured on
+the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3566-7" />
 <oval id="file_permissions_etc_passwd" />
 <ref nist="AC-3, CM-6"/>
@@ -127,8 +151,7 @@ correctly.</description>
 </Group>
 
 <Rule id="sticky_world_writable_dirs">
-<title>Verify that All World-Writable Directories Have
-Sticky Bits Set</title>
+<title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
 <description>When the so-called 'sticky bit' is set on a directory,
 only the owner of a given file may remove that file from the
 directory. Without the sticky bit, any user with write access to a
