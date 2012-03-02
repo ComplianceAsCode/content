@@ -252,7 +252,7 @@ Postfix anvil process gathers mail receipt statistics. To get information about 
 typical at your site, look in <tt>/var/log/maillog</tt> for lines with the daemon name postfix/anvil.
 </warning>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_server_denial_of_service" /> -->
+<oval id="postfix_server_denial_of_service" />
 <ref nist="SC-5" />
 </Rule>
 
@@ -273,7 +273,7 @@ already known and may be useful) and the word ESMTP, to indicate that the modern
 supported.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_server_banner" /> -->
+<oval id="postfix_server_banner" />
 <ref nist="AC-22, AU-13" />
 </Rule>
 
@@ -314,7 +314,7 @@ organization be placed in mynetworks, and users of all other machines be require
 mail.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_server_mail_relay_set_trusted_networks" /> -->
+<oval id="postfix_server_mail_relay_set_trusted_networks" />
 <ref nist="IA-8, SI-8" />
 </Rule>
 
@@ -337,7 +337,7 @@ address is not local, preventing any other machines from relaying. These two opt
 this order, and should usually follow one another immediately unless SMTP AUTH is used.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_server_mail_relay_for_trusted_networks" /> -->
+<oval id="postfix_server_mail_relay_for_trusted_networks" />
 <ref nist="SI-8" />
 </Rule>
 
@@ -384,7 +384,7 @@ PAM by default, which should work in most cases. If you have a centralized authe
 work via PAM, look at the saslauthd(8) manpage to find out how to configure saslauthd for your environment.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks" /> -->
+<oval id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks" />
 <ref nist="IA-8, SI-8" />
 </Rule>
 
@@ -411,7 +411,7 @@ attempt to authenticate for relaying using SMTP AUTH. It may not be possible to 
 allow relaying from non-TLS-capable client software. If this is the case, simply omit that line.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_server_mail_relay_require_tls_for_smtp_auth" /> -->
+<oval id="postfix_server_mail_relay_require_tls_for_smtp_auth" />
 <ref nist="IA-8, SC-13" />
 </Rule>
 
