@@ -133,9 +133,13 @@ Run the following commands to ensure correct permissions on the mail log:
 # chown root:root /var/log/maillog
 # chmod 600 /var/log/maillog
 </pre>
+Ensure log will be rotated as appropriate by adding or correcting the following line if needed into the list on the first line of <tt>/etc/logrotate.d/syslog</tt> (this is the default):
+<pre>
+/var/log/maillog
+</pre>
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_logging" /> -->
+<oval id="postfix_logging" />
 <ref nist="AC-6, AU-2, AU-9" />
 </Rule>
 
@@ -208,7 +212,7 @@ correct permissions:
 </pre>
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <oval id="postfix_install_ssl_cert" /> -->
+<oval id="postfix_certificate_files" />
 <ref nist="AC-6, SC-12, SC-13" />
 </Rule>
 
