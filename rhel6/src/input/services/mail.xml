@@ -33,10 +33,20 @@ More information is available on its website, http://www.postfix.org.</descripti
 
 <!-- <Rule id="postfix_package_installation">
 <title>The postfix package should be installed</title>
-<description>TODO::INSERT</description>
+<description>If this machine does not need to operate as a mail server, follow the remaining 
+instructions in this section to ensure this software run only in a submission-only mode. 
+MTA software must still be installed in order to ensure local mail delivery for services 
+such as cron.  
+
+If the machine must operate as a mail server, follow the remaining instructions in this section for
+ strategies for MTA configuration. Then apply both the MTA-independent operating system
+configuration guidance, and the specific guidance for your MTA in this section.
+</description>
 <ident cce="14068-1" />
 <oval id="package_postfix_installed" />
-</Rule> -->
+</Rule> 
+-->
+
 <Rule id="postfix_network_listening">
 <title>Disable Postfix Network Listening</title>
 <description>
@@ -53,6 +63,7 @@ and not from the network, which protects it from network attack.
 </rationale>
 <ident cce="15018-5" />
 <oval id="postfix_network_listening_disabled" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group><!--End <Group id="postfix_client"> -->
@@ -71,29 +82,29 @@ functions be separated, by having an externally visible mail server which proces
 mail, then forwards internal mail to a separate machine from which users can access it.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="CM-7, SC-5, SC-7" />
 </Rule>
 
 <Rule id="postfix_restrict_user_access">
 <title>Protect the MTA Host from User Access</title>
-<description>The mail server contains privileged data belonging to all users and performs a vital network function. Preventing
-users from logging into this server is a precaution against privilege escalation or denial of service attacks which
-might compromise the mail service. Take steps to ensure that only system administrators are allowed shell access
-to the MTA host.
+<description>The mail server contains privileged data belonging to all users and performs a 
+vital network function. Preventing users from logging into this server is a precaution against 
+privilege escalation or denial of service attacks which might compromise the mail service. Take 
+steps to ensure that only system administrators are allowed shell access to the MTA host.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="AC-6, SC-2" />
 </Rule>
 
 <Rule id="postfix_restrict_mail_spool_access">
 <title>Restrict Remote Access to the Mail Spool</title>
-<description>The mail server contains privileged data belonging to all users and performs a vital network function. Preventing
-users from logging into this server is a precaution against privilege escalation or denial of service attacks which
-might compromise the mail service. Take steps to ensure that only system administrators are allowed shell access
-to the MTA host.
+<description>The mail server contains privileged data belonging to all users and performs a vital 
+network function. Preventing users from logging into this server is a precaution against privilege 
+escalation or denial of service attacks which might compromise the mail service. Take steps to 
+ensure that only system administrators are allowed shell access to the MTA host.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="AC-2, AC-4, CM-7, SC-2" />
 </Rule>
 
 <Rule id="iptables_smtp_enabled">
@@ -108,7 +119,7 @@ that access, while keeping other ports on the server in their default protected 
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <oval id="iptables_smtp_enabled" />
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="AC-4, CM-7, SC-7" />
 </Rule>
 
 <Rule id="postfix_logging">
@@ -123,12 +134,9 @@ Run the following commands to ensure correct permissions on the mail log:
 # chmod 600 /var/log/maillog
 </pre>
 </description>
-<rationale>The default Iptables configuration does not allow inbound access to the SMTP service. This modification allows
-that access, while keeping other ports on the server in their default protected state.
-</rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_logging" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="AC-6, AU-2, AU-9" />
 </Rule>
 
 <Group id="postfix_configure_ssl_certs">
@@ -168,7 +176,7 @@ CA. Mail clients at your site should be willing to send their mail only to a ser
 CA sign certificates, then this step should be performed on a separate, physically secure system devoted to that
 purpose.</warning>
 <!-- <ident cce="TODO:CCE" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="CM-7, SC-12" />
 </Rule>
 
 <Rule id="postfix_install_ssl_cert">
@@ -201,7 +209,7 @@ correct permissions:
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_install_ssl_cert" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="AC-6, SC-12, SC-13" />
 </Rule>
 
 </Group><!--End <Group id="postfix_configure_ssl_certs"> -->
@@ -241,7 +249,7 @@ typical at your site, look in <tt>/var/log/maillog</tt> for lines with the daemo
 </warning>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_server_denial_of_service" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="SC-5" />
 </Rule>
 
 <Rule id="postfix_server_banner">
@@ -262,7 +270,7 @@ supported.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_server_banner" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="AC-22, AU-13" />
 </Rule>
 
 <Group id="postfix_server_mail_relay">
@@ -303,7 +311,7 @@ mail.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_server_mail_relay_set_trusted_networks" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="IA-8, SI-8" />
 </Rule>
 
 <Rule id="postfix_server_mail_relay_for_trusted_networks">
@@ -326,7 +334,7 @@ this order, and should usually follow one another immediately unless SMTP AUTH i
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_server_mail_relay_for_trusted_networks" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="SI-8" />
 </Rule>
 
 <Rule id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks">
@@ -373,7 +381,7 @@ work via PAM, look at the saslauthd(8) manpage to find out how to configure sasl
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="IA-8, SI-8" />
 </Rule>
 
 <Rule id="postfix_server_mail_relay_require_tls_for_smtp_auth">
@@ -400,7 +408,7 @@ allow relaying from non-TLS-capable client software. If this is the case, simply
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <!-- <oval id="postfix_server_mail_relay_require_tls_for_smtp_auth" /> -->
-<!-- <ref nist="TODO:NIST" /> -->
+<ref nist="IA-8, SC-13" />
 </Rule>
 
 </Group><!--End <Group id="postfix_server_mail_relay"> -->
