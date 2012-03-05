@@ -29,8 +29,9 @@ daemon to make a specific exception.</description>
 
 <Rule id="set_daemon_umask">
 <title>Set Daemon umask</title>
-<description>The daemon umask should be set as
-appropriate</description>
+<description>The daemon umask should be set as appropriate</description>
+<rationale>The umask influences the permissions assigned to files created by a process at run time.
+A misconfigured umask could result in files being assigned extremely generous permissions upon creation.</rationale>
 <ident cce="4220-0" />
 <oval id="umask_for_daemons" value="var_umask_for_daemons"/>
 <ref nist="AC-3, CM-6"/>
@@ -67,8 +68,10 @@ value of 0 is recommended.</description>
 
 <Rule id="disable_users_coredumps">
 <title>Disable Core Dumps for all users</title>
-<description>Core dumps for all users should be
-disabled</description>
+<description>Core dumps for all users should be disabled.</description>
+<rationale>The core dump includes a memory image taken at the time the operating system
+terminates an application. The memory image often contains sensitive data. The creation
+of these files should be prevented.</rationale>
 <ident cce="4225-9" />
 <oval id="core_dumps_limitsconf" />
 <ref nist="SC-5" />
@@ -77,8 +80,10 @@ disabled</description>
 
 <Rule id="disable_setuid_coredumps">
 <title>Disable Core Dumps for SUID programs</title>
-<description>Core dumps for setuid programs should be
-disabled</description>
+<description>Core dumps for setuid programs should be disabled.</description>
+<rationale>The core dump includes a memory image taken at the time the operating system
+terminates an application. The memory image often contains sensitive data. The creation
+of these files should be prevented.</rationale>
 <ident cce="4247-3" />
 <oval id="core_dump_suid_progs_limitsconf" />
 <ref nist="SI-11" />
@@ -109,6 +114,7 @@ in which execution should not occur, so follow guidance in Section
 <Rule id="enable_execshield">
 <title>Enable ExecShield</title>
 <description>ExecShield should be enabled</description>
+<rationale>The ExecShield feature can be used to render malware harmless. It should be enabled.</rationale>
 <ident cce="4168-1" />
 <oval id="sysctl_kernel_execshield" />
 <ref nist="CM-7" />
@@ -167,6 +173,8 @@ and modify <tt>/etc/grub.conf</tt> if necessary.</description>
 <warning category="hardware">The kernel-PAE package should not be
 installed on older systems that do not support the XD or NX bit, as
 this may prevent them from booting.</warning>
+<rationale>On 32-bit systems that support the XD or NX bit, the vendor-supplied
+PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) support.</rationale>
 <ident cce="4172-3" />
 <ref nist="CM-7" />
 </Rule>
