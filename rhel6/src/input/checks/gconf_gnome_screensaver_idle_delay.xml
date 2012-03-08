@@ -6,28 +6,22 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3315-9" source="CCE" />
-      <description>The allowed period of inactivity gnome desktop
-      lockout should be configured correctly.</description>
+      <description>The allowed period of inactivity before the screensaver is activated.</description>
     </metadata>
     <criteria>
-      <criterion comment="check value of idle_delay in GCONF" test_ref="test_20100" />
+      <criterion comment="check value of idle_delay in GCONF" test_ref="test_gnome_screensaver_idle_delay" />
     </criteria>
   </definition>
-
-  <ind:xmlfilecontent_test check="all" comment="test screensaver timeout period" id="test_20100" version="1">
-    <ind:object object_ref="object_1" />
-    <ind:state state_ref="state_20100" />
+  <ind:xmlfilecontent_test check="all" comment="test screensaver timeout period" id="test_gnome_screensaver_idle_delay" version="1">
+    <ind:object object_ref="object_gnome_screensaver_idle_delay" />
+    <ind:state state_ref="state_gnome_screensaver_idle_delay" />
   </ind:xmlfilecontent_test>
-
-  <ind:xmlfilecontent_state comment="idle timeout" id="state_20100" version="1">
-    <ind:value_of datatype="string" operation="equals" var_check="all" var_ref="inactivity_timeout_value" />
-  </ind:xmlfilecontent_state>
-
-  <external_variable comment="inactivity timout variable" datatype="string" id="inactivity_timeout_value" version="1" />
-
-  <ind:xmlfilecontent_object id="object_1" version="1">
-    <ind:path>/etc/gconf/gconf.xml.defaults</ind:path>
-    <ind:filename>%gconf-tree.xml</ind:filename>
+  <ind:xmlfilecontent_object id="object_gnome_screensaver_idle_delay" version="1">
+    <ind:filepath>/home/michael/XML.xml</ind:filepath>
     <ind:xpath datatype="string" operation="equals">/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_delay']/local_schema[1]/default[1]/@value</ind:xpath>
   </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state comment="idle timeout" id="state_gnome_screensaver_idle_delay" version="1">
+    <ind:value_of datatype="string" operation="equals" var_check="all" var_ref="inactivity_timeout_value" />
+  </ind:xmlfilecontent_state>
+  <external_variable comment="inactivity timout variable" datatype="string" id="inactivity_timeout_value" version="1" />
 </def-group>
