@@ -2,45 +2,41 @@
   <definition class="compliance"
   id="iptables_cupsd_disabled" version="1">
     <metadata>
-      <title>Firewall access to printing service should be enabled
-      or disabled as appropriate</title>
+      <title>Firewall Access to Printing Service</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <reference ref_id="CCE-3649-1" source="CCE" />
       <description>Firewall access to printing service should be
-      enabled or disabled as appropriate</description>
+      disabled unless required</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="TODO::INSERT"
-      test_ref="test_36490" />
-      <criterion test_ref="test_36491" />
+      <criterion comment="iptables"  test_ref="test_iptables_cupsd_disabled_iptables" />
+      <criterion comment="ip6tables" test_ref="test_iptables_cupsd_disabled_ip6tables" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all"
-  check_existence="none_exist" comment="TODO::INSERT"
-  id="test_36490" version="1">
-    <ind:object object_ref="obj_36490" />
+  check_existence="none_exist" comment="Check iptables"
+  id="test_iptables_cupsd_disabled_iptables" version="1">
+    <ind:object object_ref="obj_iptables_cupsd_disabled_iptables" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="TODO::INSERT"
-  id="obj_36490" version="1">
+  <ind:textfilecontent54_object comment="Check iptables"
+  id="obj_iptables_cupsd_disabled_iptables" version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>iptables</ind:filename>
-    <ind:pattern operation="pattern match">^-A RH-Firewall-1-INPUT -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j
-    ACCEPT$</ind:pattern>
+    <ind:pattern operation="pattern match">^-A (?:RH-Firewall-1-)?INPUT -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j ACCEPT$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
-  check_existence="none_exist" comment="TODO::INSERT"
-  id="test_36491" version="1">
-    <ind:object object_ref="obj_36491" />
+  check_existence="none_exist" comment="Check ipv6 tables"
+  id="test_iptables_cupsd_disabled_ip6tables" version="1">
+    <ind:object object_ref="obj_iptables_cupsd_disabled_ip6tables" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="TODO::INSERT"
-  id="obj_36491" version="1">
+  <ind:textfilecontent54_object comment="Check ipv6 tables"
+  id="obj_iptables_cupsd_disabled_ip6tables" version="1">
     <ind:path>etc/sysconfig</ind:path>
     <ind:filename>ip6tables</ind:filename>
-    <ind:pattern operation="pattern match">^-A RH-Firewall-1-INPUT -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j
-    ACCEPT$</ind:pattern>
+    <ind:pattern operation="pattern match">^-A (?:RH-Firewall-1-)?INPUT -p (?:(?:udp)|(?:tcp)) -m (?:(?:udp)|(?:tcp)) --dport 631 -j ACCEPT$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

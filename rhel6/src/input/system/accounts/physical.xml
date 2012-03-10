@@ -194,10 +194,9 @@ the man page <tt>gconftool-2(1)</tt>.</description>
 
 <Value id="inactivity_timeout_value" type="string" operator="equals">
 <title>Inactivity timeout</title>
-<description>Choose allowed duration of inactive SSH connections,
-shells, and X sessions</description>
+<description>Choose allowed duration of inactive SSH connections, shells, and X sessions</description>
 <value>15</value>
-<value selector="0_minutes">0</value>
+<value selector="5_minutes">5</value>
 <value selector="10_minutes">10</value>
 <value selector="15_minutes">15</value>
 </Value>
@@ -208,7 +207,7 @@ shells, and X sessions</description>
 The idle time-out value for period of inactivity GNOME
 desktop lockout should be 15 minutes.
 <pre>
-# gconftool-2
+# gconftool-2 \
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type int \
@@ -241,10 +240,9 @@ Enabling idle activation of the screen saver ensures that the
 screensaver will be activated after the idle delay.  
 </rationale>
 <ident cce="14604-3" />
-<oval id="gconf_gnome-screensaver_idle_activation_enabled" />
+<oval id="gconf_gnome_screensaver_idle_activation_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
-
 
 <Rule id="enable_screensaver_password_lock">
 <title>Enable Screen Lock Activation After Idle Period</title>
@@ -263,10 +261,9 @@ ensures that password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
 <ident cce="14023-6" />
-<oval id="gconf_gnome-screensaver_idle_activation_enabled" />
+<oval id="gconf_gnome_screensaver_lock_enabled" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" />
 </Rule>
-
 
 <Rule id="set_blank_screensaver">
 <title>Implement Blank Screen Saver</title>
@@ -285,7 +282,7 @@ Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
 <ident cce="14735-5" />
-<oval id="gconf_gnome-screensaver_mode_blank" />
+<oval id="gconf_gnome_screensaver_mode_blank" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 
