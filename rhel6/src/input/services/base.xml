@@ -596,19 +596,21 @@ service should be disabled.
 <oval id="service_sysstat_disabled" />
 </Rule>
 
+<!--
 <Rule id="service_udev-post_disabled">
 <title>Disable Device Manager (udev-post)</title>
 <description>The udev service serves as the device manager. It maintains a set of
 devices that are normally located in the /dev directory. This service should be
-enabled.
+disabled.
 <pre>
-# chkconfig udev-post on
+# chkconfig udev-post off
 
 </pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_udev-post_disabled" />
 </Rule>
+-->
 
 <Rule id="service_ypbind_disabled">
 <title>Disable Yellow Pages Service (ypbind)</title>
