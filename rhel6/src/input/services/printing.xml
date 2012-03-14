@@ -32,7 +32,7 @@ open source printing system</reference>
 </Rule>
 
 <Rule id="iptables_cupsd_disabled">
-<title>Disable the CUPS Service if Possible</title>
+<title>Disable Firewall Access to Printing Service</title>
 <description>Does this system need to operate as a network print server? If not, edit the files <tt>/etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt> (if IPv6 is in use). In each file, locate and delete the lines:
 <pre>
 -A RH-Firewall-1-INPUT -p udp -m udp --dport 631 -j ACCEPT
