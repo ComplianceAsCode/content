@@ -35,6 +35,7 @@ table-profilenistrefs: shorthand-guide shorthand2xccdf
 	xsltproc -stringparam profile "desktop" -o ${OUT}/rhel6-table-nistrefs-desktop.html ${TRANS}/xccdf2table-profilenistrefs.xslt ${OUT}/rhel6-xccdf.xml
 	xsltproc -stringparam profile "server" -o ${OUT}/rhel6-table-nistrefs-server.html ${TRANS}/xccdf2table-profilenistrefs.xslt ${OUT}/rhel6-xccdf.xml
 	xsltproc -stringparam profile "common" -o ${OUT}/rhel6-table-nistrefs-common.html ${TRANS}/xccdf2table-profilenistrefs.xslt ${OUT}/rhel6-xccdf.xml
+	xsltproc -stringparam profile "ftp" -o ${OUT}/rhel6-table-nistrefs-ftp.html ${TRANS}/xccdf2table-profilenistrefs.xslt ${OUT}/rhel6-xccdf.xml
 
 table-refs: shorthand-guide shorthand2xccdf
 	xsltproc -stringparam ref "nist" -o ${OUT}/rhel6-table-nistrefs.html ${TRANS}/xccdf2table-byref.xslt ${OUT}/rhel6-xccdf.xml
@@ -56,6 +57,9 @@ validate:
 
 eval-test:
 	oscap xccdf eval --profile test output/rhel6-xccdf-scap-security-guide.xml
+
+eval-ftp:
+	oscap xccdf eval --profile ftp output/rhel6-xccdf-scap-security-guide.xml
 
 eval-common:
 	oscap xccdf eval --profile common --results /tmp/results-test.xml output/rhel6-xccdf-scap-security-guide.xml
