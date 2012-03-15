@@ -20,6 +20,8 @@ def parse_options():
 					  help="print XCCDF Rules that reference an invalid/nonexistent check")
 	parser.add_option("--rules_without_checks", default=True, action="store_true", dest="rules_without_checks",
 					  help="print XCCDF Rules that do not include a check")
+	parser.add_option("--rules_without_severity", default=True, action="store_true", dest="rules_without_severity",
+					  help="print XCCDF Rules that do not include a severity")
 	parser.add_option("--rules_without_nistrefs", default=False, action="store_true", dest="rules_without_nistrefs",
 					  help="print XCCDF Rules which do not include any NIST 800-53 references")
 	parser.add_option("--ovaldefs_unused", default=False, action="store_true", dest="ovaldefs_unused",
@@ -83,6 +85,12 @@ def main():
 				print "An OVAL definition is not referenced by Rule : " + rule.get("id")
 #			else:
 #				print "An OVAL definition is referenced by Rule : " + rule.get("id")
+	if options.rules_without_severity:
+		for rule in rules:
+			if rule.get("severity") is None:
+				print "A severity is not found for Rule: " + rule.get("id")
+#			else:
+#				print "A severity is found for Rule: " + rule.get("id") + " which is " + rule.get("severity")
 
 	if options.rules_without_nistrefs:
 		print "do processing to find rules without nistrefs here"
