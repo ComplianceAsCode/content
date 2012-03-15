@@ -130,26 +130,4 @@ This will prevent remote users from printing to locally configured printers whil
 
 </Group><!--End <Group id="configure_printing"> -->
 
-<Group id="printing_hplip">
-<title>The HP Linux Imaging and Printing (HPLIP) Toolkit</title>
-<description>The HPLIP package is an HP printing support utility that is installed and enabled in a default installation. The HPLIP package is comprised of two separate components. The first is the main HPLIP service and the second is a smaller subcomponent called HPIJS. HPLIP is a feature-oriented network service that provides higher level printing support (such as bi-directional I/O, scanning, photo card, and toolbox functionality). HPIJS is a lower level basic printing driver that provides basic support for non-PostScript HP printers.
-</description>
-<reference href="http://hplip.sourceforge.net/faqs.html">If installing the HPLIP package from scratch, it should be noted that HPIJS can be installed directly without HPLIP. Please see the FAQ at the HPLIP web site at http://hplip.sourceforge.net/faqs.html for more information on how to do this.
-</reference>
-
-<Rule id="service_hplip_disabled">
-<title>Disable HPLIP Service</title>
-<description>Since the HPIJS driver will still function without the added HPLIP service, HPLIP should be disabled unless
-the specific higher level functions that HPLIP provides are needed by a non-PostScript HP printer on the system.
-<pre>
-# chkconfig hplip off
-</pre>
-</description>
-<ident cce="CCE-4425-5" />
-<oval id="service_hplip_disabled" />
-<!--<ref nist="TODO:NIST" />-->
-</Rule>
-
-</Group><!--End <Group id="printing_hplip"> -->
-
 </Group><!--End <Group id="printing"> -->
