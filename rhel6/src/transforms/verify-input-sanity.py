@@ -1,12 +1,43 @@
 #!/usr/bin/python
 
 #
-# verify-references.py
-#   perform general verification of references within the source tree
+# verify-input-sanity.py
+#   perform sanity checks on the individual OVAL checks that exist within the src/input/checks directory
 #
 
 # the python modules that we need
 import os, re
+import lxml.etree as ET
+
+# the "oval_header" variable must be prepended to the body of the check to form valid XML
+oval_header = '''<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions
+    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+    xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+    xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
+    xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
+    xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+       <generator>
+        <oval:product_name>testcheck.py</oval:product_name>
+        <oval:product_version>0.0.1</oval:product_version>
+        <oval:schema_version>5.10</oval:schema_version>
+        <oval:timestamp>2011-09-23T13:44:00</oval:timestamp>
+    </generator>'''
+
+# the "oval_footer" variable must be appended to the body of the check to form valid XML
+oval_footer = '</oval_definitions>'
+
+# the namespace we are working in
+oval_namespace = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
+
+xccdf_header = '<?xml version="1.0" encoding="UTF-8"?><xccdf>'
+xccdf_footer = '</xccdf>'
 
 # print a blank line to keep things pretty
 print
@@ -16,7 +47,7 @@ print
 #
 # The directory src/input/checks contains all of the OVAL checks that are implemented within scap-security-guide.
 # In order to build the XCCDF and OVAL properly, several helper scripts expect that the ID assigned to each OVAL
-# matches its file name.
+# check matches its file name.
 #
 # Assume we have an OVAL check called "mount_option_var_tmp_bind.xml" in the src/input/checks directory. The ID
 # of this check *must* be "mount_option_var_tmp_bind" like so:
@@ -25,35 +56,41 @@ print
 #   <definition class="compliance" id="mount_option_var_tmp_bind" version="1">
 #     <metadata>
 #
-# This piece of Python will step through each OVAL check in src/input/checks and verify that the ID matches the
-# name of the file. Because each OVAL check is not technically valid XML (it is turned into valid XML by various
-# helper scripts) we will have to use some regex-fu to find the ID of each check. Future iterations of this script
-# could behave a lot like testcheck.py and form valid XML before verification.
+# This piece of Python will step through each OVAL check in src/input/checks and verify that the ID assigned to the
+# check matches the name of the file. If a mismatch is found, then a warning is printed to stdout.
 #
 ##################################################################################
 #
 
+# make the checks directory our working directory
+os.chdir("../input/checks")
+
 # generate a list of all the OVAL checks
-oval_checks = []
-for root, dirs, files in os.walk("../input"):
-    if (root == "../input/checks"):
+oval_file_list = []
+for root, dirs, files in os.walk("."):
+    if (root == "."):
         for name in files:
             if (name.find(".xml") > -1):
-                oval_checks.append(root + "/" + name)
+                oval_file_list.append(root + "/" + name)
 
-# step through the OVAL checks
-for oval_check in oval_checks:
+# step through each file and open it for reading
+for oval_check in oval_file_list:
     with open(oval_check, 'r') as infile:
-        for line in infile.readlines():
-            # the id of the oval check should be the first id that we encounter
-            match = re.search(" id=\"(.+?)\"", line)
-            if (match != None):
-                # compare the id to the file name - they should match
-                if (oval_check.find(match.group(1)) < 0):
-                    print "  WARNING: the check " + oval_check + " has id \"" + match.group(1) + "\""
-                    print "           the id should match the file name (without the .xml at the end)\n"
-                # break out of this for loop and move on to next check
-                break
+        # form valid XML so that we can parse it
+        oval_xml_contents = oval_header + infile.read() + oval_footer
+        # parse the XML at this point
+        tree = ET.fromstring(oval_xml_contents)
+        # extract the ID of the check
+        definition_node = tree.findall("./" + oval_namespace + "def-group/*")
+        oval_id = "Error"
+        for node in definition_node:
+            if (node.tag == (oval_namespace + "definition")):
+                oval_id = node.get("id")
+        # at this point the variable oval_id should contain the id of the oval check
+        # now we make sure that the name of the file matches the oval id
+        if (oval_check.find(oval_id + ".xml") < 0):
+            print "  WARNING: OVAL check " + oval_check.replace("./", "src/input/checks/") + " has ID \"" + oval_id + "\""
+            print "           the ID should match the file name without the .xml\n"
 
 #
 ##################################################################################
@@ -69,46 +106,43 @@ for oval_check in oval_checks:
 ##################################################################################
 #
 
+# make the input directory our working directory
+# remember that we are currently at "../input/checks"
+os.chdir("..")
+
+# exclude these directories in the search for XCCDF files
+exclude_subdirs = ['.', './checks', './checks/templates', './checks/templates/output']
+
 # generate a list of all the XML files that are used to generate the XCCDF
 xccdf_xml_files = []
-for root, dirs, files in os.walk("../input"):
-    if ((root != "../input") and (root != "../input/checks")):
+for root, dirs, files in os.walk("."):
+    if not (root in exclude_subdirs):
         for name in files:
             if (name.find(".xml") > -1):
                 xccdf_xml_files.append(root + "/" + name)
 
-# step through each XML file
-for xml_file in xccdf_xml_files:
-    with open(xml_file, 'r') as infile:
-        # start with an empty list of references
-        references_oval_checks = []
-        # boolean flag that helps us keep track of comment blocks
-        in_comment = False
-        # look for references to OVAL checks
-        for line in infile.readlines():
-            # examine the line for end of comment
-            if (re.search("-->", line)):
-                in_comment = False
-                continue
-            # continue if we are in a comment block
-            if (in_comment):
-                continue
-            # see if we start a comment block
-            if (re.search("^\s*<!--", line)):
-                in_comment = True
-                continue
-            # we are not in a comment block so find references to OVAL checks
-            match = re.search("^\s*<oval id=\"(.+?)\"", line)
-            if (match):
-                references_oval_checks.append(match.group(1))
-        # at this point references_oval_checks should contain all of the referenced OVAL checks
-        # loop through the references and make sure they point to an actual file in src/input/checks
-        for reference in references_oval_checks:
-            # build the file name
-            file_name = "../input/checks/" + reference + ".xml"
-            if (not os.access(file_name, os.F_OK)):
-                print "  WARNING: file " + xml_file + " references OVAL check \"" + reference + "\" which does not exist"
-                print "           expects existence of " + file_name + "\n"
+# step through each file and open it for reading
+for xccdf_file in xccdf_xml_files:
+    with open(xccdf_file, 'r') as infile:
+        # form valid XML so that we can parse it
+        xccdf_xml_contents = xccdf_header + infile.read() + xccdf_footer
+        # parse the XML at this point
+        tree = ET.fromstring(xccdf_xml_contents)
+        # extract all of the rules that are defined within the XCCDF
+        xccdf_rules = tree.findall(".//Rule")
+        for xccdf_rule in xccdf_rules:
+            # extract any reference to an OVAL check
+            oval_check_refs = xccdf_rule.findall(".//oval")
+            # make sure the OVAL references point to an actual check
+            for oval_ref in oval_check_refs:
+                # build a path to look for
+                if (oval_ref.get("id")):
+                    file_name = "./checks/" + oval_ref.get("id") + ".xml"
+                    if (not os.access(file_name, os.F_OK)):
+                        print "  WARNING: XCCDF Rule \"" + xccdf_rule.get("id") + "\" references OVAL check \"" + oval_ref.get("id") + "\" which does not exist"
+                        print "           problem occurs in file: " + xccdf_file.replace("./", "src/input/") + "\n"
+                else:
+                    print "  WARNING: XCCDF Rule \"" + xccdf_rule.get("id") + "\" in file " + xccdf_file.replace("./", "src/input/") + " contains a null OVAL check\n"
 
 # we are done
 exit()
