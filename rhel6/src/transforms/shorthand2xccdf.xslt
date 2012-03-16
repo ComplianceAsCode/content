@@ -9,6 +9,8 @@ exclude-result-prefixes="xccdf">
 <xsl:variable name="ovalpath">oval:org.scap-security-guide.rhel:def:</xsl:variable>
 <xsl:variable name="ovalfile">rhel6-oval.xml</xsl:variable>
 
+<xsl:variable name="defaultseverity" select="'low'" />
+
   <!-- Content:template -->
   <xsl:template match="Benchmark">
     <xsl:copy>
@@ -23,6 +25,12 @@ exclude-result-prefixes="xccdf">
   <xsl:template match="Rule">
     <xsl:copy>
       <xsl:apply-templates select="@*" />
+      <!-- also: add severity of "low" to each Rule if otherwise unspecified -->
+      <xsl:if test="not(@severity)">
+          <xsl:attribute name="severity">
+              <xsl:value-of select="$defaultseverity" />
+          </xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates select="title"/>
       <xsl:apply-templates select="description"/>
       <xsl:apply-templates select="warning"/> 
