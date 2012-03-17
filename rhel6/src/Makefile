@@ -78,5 +78,4 @@ eval-common:
 	oscap xccdf eval --profile common --results /tmp/results-test.xml ${XCCDF_OUTPUT_DIR}/rhel6-xccdf-scap-security-guide.xml
 
 clean:
-#	rm -f ${OUT}/*.xml ${OUT}/*.html ${OUT}/*.pdf
-	rm -rf ${OUT}/
+	rm -rf ${XCCDF_OUTPUT_DIR}/ ${POLICYMAPPING_OUTPUT_DIR}/ ${HTML_OUTPUT_DIR}/ ${OVAL_OUTPUT_DIR}/
