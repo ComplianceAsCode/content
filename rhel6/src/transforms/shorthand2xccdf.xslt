@@ -7,7 +7,7 @@ exclude-result-prefixes="xccdf">
 <xsl:include href="constants.xslt"/>
 
 <xsl:variable name="ovalpath">oval:org.scap-security-guide.rhel:def:</xsl:variable>
-<xsl:variable name="ovalfile">rhel6-oval.xml</xsl:variable>
+<xsl:variable name="ovalfile">OVAL/rhel6-oval.xml</xsl:variable>
 
 <xsl:variable name="defaultseverity" select="'low'" />
 
