@@ -1,0 +1,45 @@
+
+Welcome to the scap-security-guide!
+
+
+========= OVERVIEW =========
+
+The scap-security-guide project, or SSH for short, aims to deliver security guidance, baselines, and associated validation mechanisms for Red Hat Enterprise Linux. We utilize the Security Content Automation Protocol (SCAP) to accomplish this, with specific aims to be fully compliant with SCAP Version 1.1. The SSG homepage is https://fedorahosted.org/scap-security-guide/, where you can find the latest versions, documentation, and any FAQs. 
+
+As part of this project you'll find the following content:
+
+(1) HTML/
+This directory contains our human readable prose guides in HTML format. You can view these guides in a standard web browser and they contain practical, actionable information for system administrators. These guides not only list out the security recommendations, but also contain reasoning and a mapping back to a U.S. Government security policy where applicable. This should be your starting point to understand the content that the SSG ships.
+
+(2) OVAL/
+System configuration recommendations in the SSG are paired with an OVAL check script that can scan your system to ensure compliance. These scripts do NOT make any changes to your system, they merely validate system compliance.
+
+(3) PolicyMappings/
+In reviewing feedback from the user community it quickly became apparent that having a table which maps SSG recommendations back to U.S. Government policies would be incredibly helpful. Within the PolicyMappings/ directory you will find tables which link SSG recommendations back to U.S. Government policies, such as NIST 800-53 and DCID 6/3.
+
+(4) XCCDF
+While humans can review the content in the HTML/ directory, it's non-trivial to translate that HTML back to machine readable formats. We've selected the XCCDF content standard to provide a machine readable version of our prose guide, of which can be imported into security scanning tools (secstate, FirstAidKit, oscap, etc). By providing content in the XCCDF standard we offer you the choice of using any XCCDF compliant scanning tool you wish.
+
+
+Project Homepage: https://fedorahosted.org/scap-security-guide/
+Project Mailing List: https://fedorahosted.org/mailman/listinfo/scap-security-guide
+
+
+========= USAGE =========
+To run a scan against the included "Generic Server" profile, run the following command:
+
+$ oscap xccdf eval --profile server XCCDF/rhel6-xccdf-scap-security-guide.xml
+
+You will receive output displayed to your console indicating which checks your system has passed (or failed), simular to the output below:
+Rule ID:	xwindows_remote_listening
+
+Title: 		Disable X Window System Listening
+Result:		fail
+
+Rule ID:	disable_avahi
+Title:		Disable Avahi Server Software
+Result:		fail
+
+Rule ID:	disable_dhcp_server
+Title:		Disable DHCP Service
+Result:		pass
