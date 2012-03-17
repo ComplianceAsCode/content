@@ -2,14 +2,14 @@ IN=input
 OUT=output
 TRANS=transforms
 REFS=references
-XCCDF_OUTPUT_DIR=${OUT}/XCCDF
-XCCDF_OUTPUT_SHORT=XCCDF
+XCCDF_OUTPUT_DIR=${OUT}
+XCCDF_OUTPUT_SHORT=${OUT}
 
 ## NOTE: The location of the OVAL file is also coded into the
 ## shorthand2xccdf.xslt file. If you change the OVAL_OUTPUT_DIR,
 ## make sure you also change the "ovalfile" variable in 
 ## transforms/shorthand2xccdf.xslt.
-OVAL_OUTPUT_DIR=${OUT}/OVAL
+OVAL_OUTPUT_DIR=${XCCDF_OUTPUT_DIR}
 HTML_OUTPUT_DIR=${OUT}/HTML
 POLICYMAPPING_OUTPUT_DIR=${OUT}/PolicyMappings
 
@@ -25,7 +25,7 @@ shorthand2xccdf:
 	xmllint --format --output ${XCCDF_OUTPUT_DIR}/rhel6-xccdf.xml ${XCCDF_OUTPUT_DIR}/rhel6-xccdf.xml 
 
 checks:
-	mkdir ${OVAL_OUTPUT_DIR}
+#	mkdir ${OVAL_OUTPUT_DIR}
 	xmlwf ${IN}/checks/*.xml
 	${TRANS}/combinechecks.py ${IN}/checks > ${OVAL_OUTPUT_DIR}/rhel6-oval.xml
 	xmllint --format --output ${OVAL_OUTPUT_DIR}/rhel6-oval.xml ${OVAL_OUTPUT_DIR}/rhel6-oval.xml 
@@ -59,9 +59,9 @@ table-refs: shorthand-guide shorthand2xccdf
 	xsltproc --html -o ${POLICYMAPPING_OUTPUT_DIR}/rhel6-table-nistrefs-delim-sorted.html ${TRANS}/table-sortbyref.xslt ${POLICYMAPPING_OUTPUT_DIR}/rhel6-table-nistrefs-delim.html
 
 content: shorthand-guide shorthand2xccdf checks
-	${TRANS}/relabelids.py ${XCCDF_OUTPUT_SHORT}/rhel6-xccdf.xml scap-security-guide 
-# 	the script chdirs to ./output, so refer to files from there.
+# 	the relabelids.py script chdirs to ./output, so refer to files from there.
 # 	this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml
+	${TRANS}/relabelids.py rhel6-xccdf.xml scap-security-guide 
 	rm ${OUT}/*.ini
 
 validate: 
@@ -78,4 +78,4 @@ eval-common:
 	oscap xccdf eval --profile common --results /tmp/results-test.xml ${XCCDF_OUTPUT_DIR}/rhel6-xccdf-scap-security-guide.xml
 
 clean:
-	rm -rf ${XCCDF_OUTPUT_DIR}/ ${POLICYMAPPING_OUTPUT_DIR}/ ${HTML_OUTPUT_DIR}/ ${OVAL_OUTPUT_DIR}/
+	rm -rf ${POLICYMAPPING_OUTPUT_DIR}/ ${HTML_OUTPUT_DIR}/ ${OUT}/*.xml
