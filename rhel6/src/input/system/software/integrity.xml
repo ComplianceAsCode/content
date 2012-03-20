@@ -101,6 +101,35 @@ By default, AIDE does not install itself for periodic execution.  Periodically
 running AIDE may reveal unexpected changes in installed files.
 </rationale>
 </Rule>
+
+<Rule id="aide_verify_integrity_manually">
+<title>Manually Verify Integrity of AIDE</title>
+<description>
+Manually verify the integrity of the AIDE binaries, configuration file, and database. Possibilities for doing
+so include:
+<br /><br />
+1. Use sha1sum or md5sum to generate checksums on the files and then visually compare them to those
+generated from the safely stored versions. This does not, of course, preclude the possibility that such
+output could also be faked.
+<br /><br />
+2. Mount the stored versions on read-only media and run <tt>/bin/diff</tt> to verify that there are no differences
+between the files.
+<br /><br />
+3. Copying the files to another system and performing the hash or file comparisons there may impart
+additional confidence that the manual verification process is not being interfered with.
+</description>
+<rationale>
+Because integrity checking is a means of intrusion detection and not intrusion prevention, it cannot be guaranteed
+that the AIDE binaries, configuration files, or database have not been tampered with. An attacker could disable
+or alter these files after a successful intrusion. Because of this, manual and frequent checks on these files is
+recommended. The safely stored copies (or hashes) of the database, binary, and configuration file were created
+earlier for this purpose.
+</rationale>
+<!--<ident cce="4209-3" />-->
+<!--<oval id="aide_verify_integrity_manually" />-->
+<!--<ref nist="CM-6, CM-7"/>-->
+</Rule>
+
 </Group>
 
 <Group id="rpm_verification">
