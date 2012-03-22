@@ -179,5 +179,17 @@ PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) 
 <ref nist="CM-7" />
 </Rule>
 
-</Group>
-</Group>
+<Rule id="bios_enable_execution_restrictions">
+<title>Enable NX or XD Support in the BIOS</title>
+<description>Reboot the system and enter the BIOS or “Setup” configuration menu.
+Navigate the BIOS configuration menu and make sure that the option is enabled. The setting may be located
+under a “Security” section. Look for Execute Disable (XD) on Intel-based systems and No Execute (NX)
+on AMD-based systems.</description>
+<rationale>Computers with the ability to prevent this type of code execution frequently put an option in the BIOS that will
+allow users to turn the feature on or off at will.</rationale>
+<ident cce="4177-2" />
+<!--<ref nist="CM-7" />-->
+</Rule>
+
+</Group> <!--<Group id="enable_nx"> -->
+</Group> <!--<Group id="restrictions"> -->
