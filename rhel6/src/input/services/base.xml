@@ -13,10 +13,7 @@ when an application crash is detected. Using a variety of plugins abrtd can emai
 administrators, log crash reports to files, or forward crash reports to a centralized issue tracking
 system such as RHTSupport. Mishandling crash data exposes sensitive information about vulnerablities in
 software executing on the local machine. For most deployments this daemon should be disabled.
-<pre>
-# chkconfig abrtd off
-
-</pre>
+<pre># chkconfig abrtd off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_abrtd_disabled" />
@@ -28,10 +25,7 @@ software executing on the local machine. For most deployments this daemon should
 <description>The Advanced Configuration and Power Interface Daemon (acpid) dispatches ACPI events (such
 as power/reset button depressed) to userspace programs. Unless trapping ACPI events is a requirement
 on the local system this daemon should be disabled.
-<pre>
-# chkconfig acpid off
-
-</pre>
+<pre># chkconfig acpid off</pre>
 </description>
 <ident cce="4298-6" />
 <oval id="service_acpid_disabled" />
@@ -45,10 +39,7 @@ to be executed only once (similar to cron but not recurring). The daemon <tt>atd
 tasks scheduled via <tt>at</tt> and <tt>batch</tt> and executes them at the specified time. Unless
 scheduling tasks with <tt>at</tt> or <tt>batch</tt> is a requirement for the local machine this
 daemon should be disabled.
-<pre>
-# chkconfig atd off
-
-</pre>
+<pre># chkconfig atd off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_atd_disabled" />
@@ -62,14 +53,24 @@ the service audits SELinux AVC denials and certain types of security-relevant
 events such as system logins, account modifications, and authentication events
 performed by programs such as sudo. Unless there is another service that will
 be used for system auditing it is recommended that auditd be enabled.
-<pre>
-# chkconfig auditd on
-
-</pre>
+<pre># chkconfig auditd on</pre>
 </description>
 <ident cce="4292-9" />
 <oval id="service_auditd_enabled" />
 </Rule>
+
+<!--<Rule id="service_bluetooth_disabled">
+<title>Disable Certmonger Service (certmonger)</title>
+<description>Certmonger is a D-Bus based service that attempts to simplify interaction
+with certifying authorities on networks which use public-key infrastructure. It is often
+combined with Red Hat's IPA (Identity Policy Audit) security information management
+solution to aid in the management of certificates. Unless IPA is used to help administer
+the LAN this service should be disabled.
+<pre># chkconfig bluetooth off</pre>
+</description>
+<ident cce="TODO" />
+<oval id="service_bluetooth_disabled" />
+</Rule>-->
 
 <Rule id="service_certmonger_disabled">
 <title>Disable Certmonger Service (certmonger)</title>
@@ -78,10 +79,7 @@ with certifying authorities on networks which use public-key infrastructure. It 
 combined with Red Hat's IPA (Identity Policy Audit) security information management
 solution to aid in the management of certificates. Unless IPA is used to help administer
 the LAN this service should be disabled.
-<pre>
-# chkconfig certmonger off
-
-</pre>
+<pre># chkconfig certmonger off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_certmonger_disabled" />
@@ -93,10 +91,7 @@ the LAN this service should be disabled.
 memory, network bandwidth, etc) among a defined group (or groups) of processes executing on
 a system. The cgconfig daemon starts at boot and establishes the predefined control groups.
 Unless control groups are used to manage system resources this service should be disabled.
-<pre>
-# chkconfig cgconfig off
-
-</pre>
+<pre># chkconfig cgconfig off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_cgconfig_disabled" />
@@ -107,10 +102,7 @@ Unless control groups are used to manage system resources this service should be
 <description>The <tt>cgred</tt> service moves tasks into control groups according to
 parameters set in the <tt>/etc/cgrules.conf</tt> configuration file. Like the cgconfig service,
 if control groups are not needed to manage system resources then this service should be disabled.
-<pre>
-# chkconfig cgred off
-
-</pre>
+<pre># chkconfig cgred off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_cgred_disabled" />
@@ -122,10 +114,7 @@ if control groups are not needed to manage system resources then this service sh
 the current processing load thereby conserving power and reducing heat. This service is most often
 used on laptops where battery life is a concern. Unless laptop battery performance is a requirement
 this service should be disabled.
-<pre>
-# chkconfig cpuspeed off
-
-</pre>
+<pre># chkconfig cpuspeed off</pre>
 </description>
 <ident cce="4051-9" />
 <oval id="service_cpuspeed_disabled" />
@@ -137,10 +126,7 @@ this service should be disabled.
 <description>The crond service is used to execute commands at preconfigured times.
 The cron daemon is required by almost all systems to perform necessary maintenance
 tasks. The daemon should be configured defensively.
-<pre>
-# chkconfig crond on
-
-</pre>
+<pre># chkconfig crond on</pre>
 </description>
 <ident cce="4324-0" />
 <oval id="service_crond_enabled" />
@@ -152,10 +138,7 @@ tasks. The daemon should be configured defensively.
 <description>The Common Unix Printing System (CUPS) allows a machine to interact with
 attached printers. If the machine does not require print services and is not serving
 as a print server then this service should be disabled.
-<pre>
-# chkconfig cups off
-
-</pre>
+<pre># chkconfig cups off</pre>
 </description>
 <ident cce="4112-9" />
 <oval id="service_cups_disabled" />
@@ -168,10 +151,7 @@ and maintains information about the system's hardware configuration. A list of l
 is provided via D-Bus messaging. Please note that this service is required on a workstation
 running a desktop environment. If a desktop environment is not needed then this service can
 be disabled.
-<pre>
-# chkconfig haldaemon off
-
-</pre>
+<pre># chkconfig haldaemon off</pre>
 </description>
 <ident cce="4364-6" />
 <oval id="service_haldaemon_disabled" />
@@ -184,10 +164,7 @@ framework has the ability to filter IPv6 packets. Firewall configuration can be 
 <tt>ip6tables</tt> command line tool. The ip6tables service applies IPv6 firewall rules during system boot
 and can be used to save the current ip6tables ruleset via <tt>/sbin/service ip6tables save</tt>. If IPv6
 networking is enabled on the local machine then this service should be enabled.
-<pre>
-# chkconfig ip6tables on
-
-</pre>
+<pre># chkconfig ip6tables on</pre>
 </description>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
@@ -200,10 +177,7 @@ framework has the ability to filter IPv4 packets. Firewall configuration can be 
 <tt>iptables</tt> command line tool. The iptables service applies IPv4 firewall rules during system boot
 and can be used to save the current iptables ruleset via <tt>/sbin/service iptables save</tt>. If IPv4
 networking is enabled on the local machine then this service should be enabled.
-<pre>
-# chkconfig iptables on
-
-</pre>
+<pre># chkconfig iptables on</pre>
 </description>
 <ident cce="4189-7" />
 <oval id="service_iptables_enabled" />
@@ -215,10 +189,7 @@ networking is enabled on the local machine then this service should be enabled.
 power savings and performance through distribution of hardware interrupts across
 multiple processors. In a server environment with multiple processors, this provides
 a useful service and should be left enabled.
-<pre>
-# chkconfig irqbalance on
-
-</pre>
+<pre># chkconfig irqbalance on</pre>
 </description>
 <ident cce="4123-6" />
 <oval id="service_irqbalance_enabled" />
@@ -230,10 +201,7 @@ a useful service and should be left enabled.
 secondary kernel (“capture” kernel) following a system crash. The kernel dump
 from the system crash is loaded into the capture kernel for analysis. Unless the
 system is used for kernel development or testing, disable the service:
-<pre>
-# chkconfig kdump off
-
-</pre>
+<pre># chkconfig kdump off</pre>
 </description>
 <ident cce="3425-6" />
 <oval id="service_kdump_disabled" />
@@ -247,10 +215,7 @@ or snapshot logical volume with dmeventd, if it is installed. If a device used b
 monitored mirror reports an I/O error, the failure is handled according to "mirror_image_fault_policy"
 and "mirror_log_fault_policy" set in the /etc/lvm/lvm.conf configuration file. If the system utilizes
 mirrored or snapshot logical volumes then this service should be configured and enabled.
-<pre>
-# chkconfig lvm2-monitor on
-
-</pre>
+<pre># chkconfig lvm2-monitor on</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_lvm2-monitor_enabled" />
@@ -262,10 +227,7 @@ mirrored or snapshot logical volumes then this service should be configured and 
 RAID setups do not use this service). This service is extraneous unless software
 RAID is in use (which is not common). If software RAID monitoring is not required,
 disable this service:
-<pre>
-# chkconfig mdmonitor off
-
-</pre>
+<pre># chkconfig mdmonitor off</pre>
 </description>
 <ident cce="3854-7" />
 <oval id="service_mdmonitor_disabled" />
@@ -281,10 +243,7 @@ for them. Stricter configuration of D-Bus is possible and documented in the man 
 D-Bus maintains two separate configuration files, located in /etc/dbus-1/, one for system-specific
 configuration and the other forsession-specific configuration. If no services which require D-Bus
 are in use, disable this service:
-<pre>
-# chkconfig messagebus off
-
-</pre>
+<pre># chkconfig messagebus off</pre>
 </description>
 <ident cce="3822-4" />
 <oval id="service_messagebus_disabled" />
@@ -297,10 +256,7 @@ module which logs kernel printk messages over UDP to a syslog server. This allow
 debugging of problems where disk logging fails and serial consoles are impractical.
 This service should not be needed unless you need to debug kernel panics. In general
 this service should be disabled.
-<pre>
-# chkconfig netconsole off
-
-</pre>
+<pre># chkconfig netconsole off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_netconsole_disabled" />
@@ -313,10 +269,7 @@ this service should be disabled.
 files that are used to configure network interfaces upon system boot. If the system
 does not need any sort of networking then this service can be disabled. Otherwise,
 this service can be left enabled.
-<pre>
-# chkconfig network on
-
-</pre>
+<pre># chkconfig network on</pre>
 </description>
 <ident cce="4369-5" />
 <oval id="service_network_enabled" />
@@ -330,10 +283,7 @@ Computer clocks are not very accurate, so time will drift on unmanaged systems. 
 time protocols can be used both to ensure that time is consistent among a network of
 machines, and that their time is consistent with the outside world. It is recommended
 to leave this service enabled.
-<pre>
-# chkconfig ntpd on
-
-</pre>
+<pre># chkconfig ntpd on</pre>
 </description>
 <ident cce="4376-0 " />
 <oval id="service_ntpd_enabled" />
@@ -348,10 +298,7 @@ service is executed once when the system boots. It synchronizes to the NTP serve
 system time. This service is best suited for workstations which are rebooted more often than
 servers. For these kinds of workstations, a clock synchronization upon system boot would be
 sufficient. For servers it is generally recommended to enable the ntpd service.
-<pre>
-# chkconfig ntpdate on
-
-</pre>
+<pre># chkconfig ntpdate on</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_ntpdate_enabled" />
@@ -361,10 +308,7 @@ sufficient. For servers it is generally recommended to enable the ntpd service.
 <title>Disable Odd Job Daemon (oddjobd)</title>
 <description>The oddjobd service runs specified privileged tasks for unprivileged client
 applications which communicate with it through the system message bus. 
-<pre>
-# chkconfig oddjobd off
-
-</pre>
+<pre># chkconfig oddjobd off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_oddjobd_disabled" />
@@ -374,10 +318,7 @@ applications which communicate with it through the system message bus.
 <Rule id="service_portreserve_disabled">
 <title>Disable Portreserve (portreserve)</title>
 <description>The portreserve service is a TCP port reservation utility that can be used to prevent portmap from binding to well known TCP ports that are required for other services. This service is one of several services required for remote procedure calls between systems. Disable this service unless it is specifically required.
-<pre>
-# chkconfig portreserve off
-
-</pre>
+<pre># chkconfig portreserve off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_portreserve_disabled" />
@@ -391,10 +332,7 @@ applications which communicate with it through the system message bus.
 the system. The default configuration only listens for connections to the default SMTP
 port (port 25) on the loopback interface (127.0.0.1). It is recommended to leave this
 service enabled for local mail delivery.
-<pre>
-# chkconfig postfix on
-
-</pre>
+<pre># chkconfig postfix on</pre>
 </description>
 <ident cce="14068-1" />
 <oval id="service_postfix_enabled" />
@@ -406,10 +344,7 @@ service enabled for local mail delivery.
 <description>The process accounting service (psacct) is an auditing tool that allows system
 administrators to log user activity and view every command issued by users of the system. It
 is recommended that this service be configured and enabled.
-<pre>
-# chkconfig psacct on
-
-</pre>
+<pre># chkconfig psacct on</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_psacct_enabled" />
@@ -422,10 +357,7 @@ violations and notifies the appropriate user of the violation using D-Bus or by 
 to the terminal that the user has last accessed. If disk quotas are enforced on the local system
 then this service should be enabled. If disk quotas are not used or notification of disk quota
 violations are not desired then disable this service.
-<pre>
-# chkconfig quota_nld off
-
-</pre>
+<pre># chkconfig quota_nld off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_quota_nld_disabled" />
@@ -441,10 +373,7 @@ default this daemon is disabled and it should remain disabled. Servers should ha
 and routing information configured by a system administrator in correspondence with the local
 network management policy. Workstations should use DHCP if they require dynamic network
 configuration information.
-<pre>
-# chkconfig rdisc off
-
-</pre>
+<pre># chkconfig rdisc off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_rdisc_disabled" />
@@ -457,10 +386,7 @@ configuration information.
 listed in the /etc/selinux/restorecond.conf configuration file. Once the file is created,
 restorecond ensures that the file receives the proper SELinux security context. It is
 recommended that this service be enabled.
-<pre>
-# chkconfig restorecond on
-
-</pre>
+<pre># chkconfig restorecond on</pre>
 </description>
 <ident cce="4129-3" />
 <oval id="service_restorecond_enabled" />
@@ -474,10 +400,7 @@ queries Red Hat Network servers to determine which packages need to be updated o
 machine. More than likely this would be an undesired behavior on production systems
 where patches must be tested before application. It is recommended to disable this
 service and perform patching in accordance with local configuration management policy.
-<pre>
-# chkconfig rhnsd off
-
-</pre>
+<pre># chkconfig rhnsd off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_rhnsd_disabled" />
@@ -489,10 +412,7 @@ service and perform patching in accordance with local configuration management p
 <description>The Red Hat Subscription Manager (rhsmcertd) runs routinely to check for
 changes in the entitlements for an organization. Like the Red Hat Update Agent, it is
 recommended to also disable this service.
-<pre>
-# chkconfig rhsmcertd off
-
-</pre>
+<pre># chkconfig rhsmcertd off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_rhsmcertd_disabled" />
@@ -506,10 +426,7 @@ some sort of custom logging daemon is used (like syslog-ng or something similar)
 this service must be enabled and configured properly. The rsyslog service provides
 improvements such as connection-oriented (TCP) transmission of logs, the option to log
 to database formats, and the encryption of log data en route to a central logging server.
-<pre>
-# chkconfig rsyslog on
-
-</pre>
+<pre># chkconfig rsyslog on</pre>
 </description>
 <ident cce="17698-2" />
 <oval id="service_rsyslog_enabled" />
@@ -522,10 +439,7 @@ to database formats, and the encryption of log data en route to a central loggin
 This service fulfills two roles: 1) it isolates all code requiring superuser privileges into a single
 process, and 2) it can be used to provide proxy authentication services to clients that do not
 understand SASL based authentication. Unless this service is absolutely needed it should be disabled.
-<pre>
-# chkconfig saslauthd off
-
-</pre>
+<pre># chkconfig saslauthd off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_saslauthd_disabled" />
@@ -538,10 +452,7 @@ understand SASL based authentication. Unless this service is absolutely needed i
 allows them to detect symptoms of disk failure and relay an appropriate warning. This technology is
 considered to bring relatively low security risk, and can be useful. Leave this service running if the
 system’s hard drives are SMART-capable. Otherwise, disable this service.
-<pre>
-# chkconfig smartd off
-
-</pre>
+<pre># chkconfig smartd off</pre>
 </description>
 <ident cce="3455-3" />
 <oval id="service_smartd_disabled" />
@@ -554,10 +465,7 @@ system’s hard drives are SMART-capable. Otherwise, disable this service.
 transfer. SSH provides confidentiality and integrity for data exchanged between two systems,
 as well as server authentication, through the use of public key cryptography. If remote
 administration is needed then this service should be enabled. Otherwise, it should be disabled.
-<pre>
-# chkconfig sshd off
-
-</pre>
+<pre># chkconfig sshd off</pre>
 </description>
 <ident cce="4268-9" />
 <oval id="service_sshd_disabled" />
@@ -570,10 +478,7 @@ administration is needed then this service should be enabled. Otherwise, it shou
 and authentication mechanisms. It provides an NSS and PAM interface toward the system and a
 pluggable backend system to connect to multiple different account sources. It is also the basis
 to provide client auditing and policy services for projects like FreeIPA.
-<pre>
-# chkconfig sssd off
-
-</pre>
+<pre># chkconfig sssd off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_sssd_disabled" />
@@ -587,10 +492,7 @@ to provide client auditing and policy services for projects like FreeIPA.
 inserts a dummy record in the current daily data file that indicates that these statistics have
 been reset. By default this service is run at boot to reset the statistics. Unless required this
 service should be disabled.
-<pre>
-# chkconfig sysstat off
-
-</pre>
+<pre># chkconfig sysstat off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_sysstat_disabled" />
@@ -602,10 +504,7 @@ service should be disabled.
 <description>The udev service serves as the device manager. It maintains a set of
 devices that are normally located in the /dev directory. This service should be
 disabled.
-<pre>
-# chkconfig udev-post off
-
-</pre>
+<pre># chkconfig udev-post off</pre>
 </description>
 <ident cce="TODO" />
 <oval id="service_udev-post_disabled" />
@@ -617,10 +516,7 @@ disabled.
 <description>The ypbind service runs on NIS clients and binds them to a NIS domain.
 It must be running for systems based on glibc to work as NIS clients, but it should
 not be enabled on systems which are not using NIS.
-<pre>
-# chkconfig ypbind off
-
-</pre>
+<pre># chkconfig ypbind off</pre>
 </description>
 <ident cce="3705-1" />
 <oval id="service_ypbind_disabled" />
