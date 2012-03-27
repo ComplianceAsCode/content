@@ -30,7 +30,7 @@ The <tt>smb</tt> service can be disabled with the following command:
 </pre>
 </description>
 <rationale>
-Running a Samba server provides a network-based avenue of attack, and 
+Running a Samba server provides a network-based avenue of attack, and
 should be disabled if not needed.
 </rationale>
 <ident cce="4551-8" />
@@ -53,10 +53,10 @@ additional limitations be set in place.</description>
 <Rule id="smb_server_disable_guest">
 <title>Ensure Guest Access is Disabled</title>
 <description>Ensure <tt>[global]</tt> or each share does not contain
-<tt>guest ok</tt> to <tt>yes</tt>.  If so remove or set to:
+<tt>guest ok</tt> to <tt>yes</tt>. If so remove or set to:
 <pre>[share]
   guest ok = no</pre>
-Note that setting a share to <tt>guest ok = yes</tt> will override the global settings.  Ensure no share contains <tt>guest ok = yes</tt>.
+Note that setting a share to <tt>guest ok = yes</tt> will override the global settings. Ensure no share contains <tt>guest ok = yes</tt>.
 It is safe to disable local login support for remote Samba users. Consider changing the add user account script to set remote user shells to /sbin/nologin.
 </description>
 <rationale>
@@ -72,7 +72,7 @@ Do not allow guest users to access local file or printer shares.</rationale>-->
   invalid users = root @wheel</pre>
 If administrator accounts cannot be disabled, ensure that local machine passwords and Samba service passwords do not match.</description>
 <rationale>
-Typically, administrator access is required when Samba must create user and machine accounts and shares.  Domain member servers and standalone servers may not need administrator access at all. If that is the case, add the invalid users parameter to [global] instead.
+Typically, administrator access is required when Samba must create user and machine accounts and shares. Domain member servers and standalone servers may not need administrator access at all. If that is the case, add the invalid users parameter to [global] instead.
 </rationale>
 <!--<ident cce="TODO:CCE" />-->
 <!--<oval id="smb_server_disable_root" />-->
@@ -80,13 +80,13 @@ Typically, administrator access is required when Samba must create user and mach
 
 <Rule id="smb_set_auth_levels">
 <title>Disable Root Access</title>
-<description>By default, Samba will attempt to negotiate with Microsoft Windows machines to set a common communication protocol. 
-<!-- This is the default: Whenever possible, be sure to disable LANMAN authentication, as it is far weaker than the other supported protocols.
-<pre>[global]
-  client lanman auth = no</pre>-->
+<description>By default, Samba will attempt to negotiate with Microsoft Windows machines to set a common communication protocol.
 Newer versions of Microsoft Windows may require the use of NTLMv2. NTLMv2 is the preferred protocol for authentication, but since older machines do not support it, Samba has disabled it by default. Enable it with the following:
 <pre>[global]
   client ntlmv2 auth = yes</pre>
+<!-- This is the default: Whenever possible, be sure to disable LANMAN authentication, as it is far weaker than the other supported protocols.
+<pre>[global]
+  client lanman auth = no</pre>-->
 </description>
 <rationale>
 For the sake of backwards compatibility, most modern Windows machines will still allow other machines to communicate with them over weak protocols such as LANMAN. On Samba, by enabling NTLMv2, you are also disabling LANMAN and NTLMv1. If NTLMv1 is required, it is still possible to individually disable LANMAN.</rationale>
@@ -148,7 +148,7 @@ of the Samba configuration file:
 <pre>client signing = mandatory</pre>
 Requiring samba clients such as <tt>smbclient</tt> to use packet
 signing ensures that they can
-only communicate with servers that support packet signing. 
+only communicate with servers that support packet signing.
 </description>
 <rationale>
 Packet signing can prevent
@@ -170,7 +170,7 @@ in <tt>/etc/fstab</tt>). To do so, ensure that signing options (either
 <br /><br />
 See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
 client should only communicate with servers who can support SMB
-packet signing. 
+packet signing.
 </description>
 <rationale>
 Packet signing can prevent man-in-the-middle
@@ -193,7 +193,7 @@ attacks which modify SMB packets in transit.
   guest ok = no
   writable = no
   printable = yes</pre>
-There may be other options present, but these are the only options enabled and uncommented by default.  Removing the <tt>[printers]</tt> share should be enough for most users.  
+There may be other options present, but these are the only options enabled and uncommented by default. Removing the <tt>[printers]</tt> share should be enough for most users.
 If the Samba printer sharing capability is needed, consider disabling the Samba network browsing capability or restricting access to a particular set of users or network addresses. Set the <tt>valid users</tt> parameter to a small subset of users or restrict it to a particular group of users with the shorthand <tt>@</tt>. Separate each user or group of users with a space. For example, under the <tt>[printers]</tt> share:
 <pre>[printers]
   valid users = user @printerusers</pre>

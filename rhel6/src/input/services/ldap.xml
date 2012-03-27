@@ -65,7 +65,7 @@ securing an OpenLDAP infrastructure nonetheless.
 
 <Rule id="package_openldap-servers_removed">
 <title>Install OpenLDAP Server RPM</title>
-<description>The <tt>openldap-servers</tt> package should be removed if not in use.  
+<description>The <tt>openldap-servers</tt> package should be removed if not in use.
 Is this machine the OpenLDAP server? If not, remove the package:
 <br />
 <pre>
@@ -73,7 +73,7 @@ Is this machine the OpenLDAP server? If not, remove the package:
 </pre>
 The openldap-servers RPM is not installed by default on RHEL6
 machines. It is needed only by the OpenLDAP server, not by the
-clients which use LDAP for authentication.  If the system is not
+clients which use LDAP for authentication. If the system is not
 intended for use as an LDAP Server it should be removed.
 </description>
 <ident cce="3501-4" />
@@ -83,15 +83,15 @@ intended for use as an LDAP Server it should be removed.
 
 <Rule id="ldap_server_config_olcsuffix">
 <title>Configure Domain-Specific Parameters</title>
-<description>The <tt>ldap</tt> server should be configured to use a domain specific suffix.  
-Is this system an OpenLDAP server? If so, 
-edit the ldap configuration file at 
-/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif 
+<description>The <tt>ldap</tt> server should be configured to use a domain specific suffix.
+Is this system an OpenLDAP server? If so,
+edit the ldap configuration file at
+<tt>/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif</tt>
 to include suffix information relevant to your domain.
 <br />
 <pre>
-Edit the ldap configuration file at 
-/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif 
+Edit the ldap configuration file at
+/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
 to include suffix information relevant to your domain.
 olcSuffix: "dc=example,dc=com "
 olcRootDN: "cn=Manager,dc=example,dc=com "
@@ -108,20 +108,20 @@ LDAP’s privileged user, who is allowed to read or write all data managed by th
 
 <Rule id="ldap_server_config_bdb_file_security">
 <title>LDAP Configuration File Security</title>
-<description>Is this system an OpenLDAP server? If so, 
+<description>Is this system an OpenLDAP server? If so,
 ensure that the configuration files are protected from unauthorized
 access or modification.
 <br />
 <pre>
-Edit the ldap configuration file at 
-/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif 
+Edit the ldap configuration file at
+/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
 
 Ensure that the configuration file has reasonable permissions:
 # chown root:ldap /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
 # chmod 640 /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
 </pre>
 Protect configuration files containing the hashed password the same way you would protect other files, such as
-/etc/shadow, which contain hashed authentication data.
+<tt>/etc/shadow</tt>, which contain hashed authentication data.
 </description>
 <!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_bdb_file_security" />
@@ -130,8 +130,8 @@ Protect configuration files containing the hashed password the same way you woul
 
 <Rule id="ldap_server_config_olcrootpw">
 <title>Configure LDAP Root Password</title>
-<description>Is this system an OpenLDAP server? If so, 
-ensure that the RootDN uses a secure password 
+<description>Is this system an OpenLDAP server? If so,
+ensure that the RootDN uses a secure password
 <br />
 <pre>
 Generate a hashed password using the slappasswd utility:
@@ -139,14 +139,14 @@ Generate a hashed password using the slappasswd utility:
 New password:
 Re-enter new password:
 
-This will output a hashed password string. 
+This will output a hashed password string.
 Edit the file /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif, and add or correct
 the line:
 olcRootPW: {SSHA}hashed-password-string
 </pre>
 Be sure to select a secure password for the LDAP root user, since this user has permission to read and write all
-LDAP data, so a compromise of the LDAP root password will probably enable a full compromise of your site.  
-In addition, be sure to use a reasonably strong hash function.  The default hash function should be used.  The default hash function is a salted SHA-1 algorith which is FIPS 160-1 compliant.  Insecure schemes such as crypt should not be used.
+LDAP data, so a compromise of the LDAP root password will probably enable a full compromise of your site.
+In addition, be sure to use a reasonably strong hash function. The default hash function should be used. The default hash function is a salted SHA-1 algorith which is FIPS 160-1 compliant. Insecure schemes such as crypt should not be used.
 </description>
 <!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_olcrootpw" />
@@ -384,35 +384,33 @@ encryption by connecting to the primary port and issuing the STARTTLS command.
 <Rule id="ldap_server_config_logging">
 <title>Configure Logging for LDAP</title>
 <description>
-1. Edit the file /etc/syslog.conf. Add or correct the following line:
-<pre>
-local4.*
-</pre>
-2. Create the log file with safe permissions:
-<pre>
-# touch /var/log/ldap.log
+<ol>
+<li>Edit the file <tt>/etc/rsyslog.conf</tt>. Add or correct the following line:
+<pre>local4.*
+</pre></li>
+<li>Create the log file with safe permissions:
+<pre># touch /var/log/ldap.log
 # chown root:root /var/log/ldap.log
 # chmod 0600 /var/log/ldap.log
+</pre></li>
+<li>Edit the file /etc/logrotate.d/syslog and add the pathname
+<pre>/var/log/ldap.log
 </pre>
-3. Edit the file /etc/logrotate.d/syslog and add the pathname
-<pre>
-/var/log/ldap.log
-</pre>
-to the space-separated list in the first line.
-
-4. Edit the LDAP configuration file /etc/openldap/slapd.conf and set a reasonable set of default log
+to the space-separated list in the first line.</li>
+<li>Edit the LDAP configuration file /etc/openldap/slapd.conf and set a reasonable set of default log
 parameters, such as:
-<pre>
-loglevel stats2
-</pre>
+<pre>loglevel stats2
+</pre></li>
+</ol>
+
 OpenLDAP sends its log data to the syslog facility local4 at priority debug. By default, RHEL5 does not store
 this facility at all. The syslog configuration suggested here will store any output logged by slapd in the file
-/var/log/ldap.log, and will include that file in the standard log rotation for syslog files.
+<tt>/var/log/ldap.log</tt>, and will include that file in the standard log rotation for syslog files.
 By default, LDAP’s logging is quite verbose. The loglevel parameter is a space-separated list of items to be
-logged. Specifying stats2 will reduce the log output somewhat, but this level will still produce some logging
+logged. Specifying <tt>stats2</tt> will reduce the log output somewhat, but this level will still produce some logging
 every time an LDAP query is made. (This may be appropriate, depending on your site’s auditing requirements.)
-In order to capture only slapd startup messages, specify loglevel none.
-See slapd.conf(5) for detailed information about the loglevel parameter.
+In order to capture only <tt>slapd</tt> startup messages, specify <tt>loglevel none</tt>.
+See <tt>slapd.conf(5)</tt> for detailed information about the loglevel parameter.
 </description>
 <!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_logging" />

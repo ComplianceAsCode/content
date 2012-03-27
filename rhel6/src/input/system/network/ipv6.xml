@@ -28,8 +28,8 @@ This permits the IPv6 module to be loaded (and thus satisfy other modules that d
 while disabling support for the IPv6 protocol.
 </description>
 <rationale>
-Any networking stack, including IPv6, that does not need to be active should be 
-disabled in order to reduce the system's vulnerability 
+Any networking stack, including IPv6, that does not need to be active should be
+disabled in order to reduce the system's vulnerability
 to exploitation of any implementation flaws.
 </rationale>
 <ident cce="3562-6" />
@@ -122,8 +122,7 @@ advertisements should be:
 <sub idref="sysctl_net_ipv6_conf_default_accept_ra_value" />for all
 interfaces.</description>
 <ident cce="4269-7" />
-<oval id="sysctl_ipv6_router_ra" 
-   value="sysctl_net_ipv6_conf_default_accept_ra_value" />
+<oval id="sysctl_ipv6_router_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -133,8 +132,7 @@ interfaces.</description>
 <sub idref="sysctl_net_ipv6_conf_default_accept_redirects_value" />for all
 interfaces.</description>
 <ident cce="4313-3" />
-<oval id="sysctl_net_ipv6_conf_default_accept_redirects" 
-   value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
+<oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>

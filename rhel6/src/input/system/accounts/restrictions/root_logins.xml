@@ -10,7 +10,7 @@ multiple administrators. Locking down the channels through which
 root can connect directly also reduces opportunities for
 password-guessing against the root account. The <tt>login</tt> program
 uses the file <tt>/etc/securetty</tt> to determine which interfaces
-should allow root logins. 
+should allow root logins.
 
 The virtual devices <tt>/dev/console</tt>
 and <tt>/dev/tty*</tt> represent the system consoles (accessible via
@@ -18,7 +18,7 @@ the Ctrl-Alt-F1 through Ctrl-Alt-F6 keyboard sequences on a default
 installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
 These are likely to be deprecated in most environments, but may be retained
 for compatibility. Root should also be prohibited from connecting
-via network protocols. Other sections of this document 
+via network protocols. Other sections of this document
 include guidance describing how to prevent root from logging in via SSH.</description>
 
 <!--
@@ -60,8 +60,8 @@ vc/4
 </description>
 <rationale>
 Preventing direct root login to virtual console devices
-helps ensure accountability for actions taken on the system 
-using the root account.  
+helps ensure accountability for actions taken on the system
+using the root account.
 </rationale>
 <ident cce="3485-0" />
 <oval id="securetty_root_login_console_only" />
@@ -79,9 +79,9 @@ ttyS0 ttyS1
 <!-- TODO: discussion/description of serial port -->
 </description>
 <rationale>
-Preventing direct root login to serial port interfaces  
-helps ensure accountability for actions taken on the system 
-using the root account.  
+Preventing direct root login to serial port interfaces
+helps ensure accountability for actions taken on the system
+using the root account.
 </rationale>
 <ident cce="4256-4" />
 <oval id="securetty_no_serial" />
@@ -93,7 +93,7 @@ using the root account.
 <description>
 Some accounts are not associated with a human
 user of the system, and exist to perform some administrative
-function.  Should an attacker be able to log into these accounts,
+function. Should an attacker be able to log into these accounts,
 he or she should not be granted access to a shell.
 <br />
 <br />
@@ -113,20 +113,20 @@ than root.
 <pre>
 # usermod -L SYSACCT
 </pre>-->
-If any account <i>SYSACCT</i> has a login shell, 
+If any account <i>SYSACCT</i> has a login shell,
 disable it with the command:
 <br />
 <pre>
 # usermod -s /sbin/nologin SYSACCT
 </pre>
-The RHEL6 default is <tt>/sbin/nologin</tt>, but any command which will 
+The RHEL6 default is <tt>/sbin/nologin</tt>, but any command which will
 exit with a failure
 status and disallow execution of any further commands, such as
 <tt>/bin/false</tt> or <tt>/dev/null</tt>, will work.
 </description>
 <rationale>
-Ensuring shells are not given to system accounts upon login 
-makes it more difficult for attackers to make use of 
+Ensuring shells are not given to system accounts upon login
+makes it more difficult for attackers to make use of
 system accounts.
 </rationale>
 <warning category="functionality">
@@ -158,10 +158,10 @@ authorized, and that there is a good reason for them to exist.
 <rationale>
 Having a UID of 0 means that an account has superuser privileges.
 All actions taken at this privilege level should be accountable.
-The ability to conduct an entire login session with this level of privilege should be 
+The ability to conduct an entire login session with this level of privilege should be
 confined to only the root account (and such logins should be further restricted to only
 certain vectors).
-Best practice for auditing use of the root account involves 
+Best practice for auditing use of the root account involves
 requiring use of su or sudo.
 Some sites choose to have more than one account with UID
 0 in order to differentiate between administrators, but this
@@ -176,7 +176,7 @@ recommended.
 </Group>
 
 <!-- Commenting the wheel/su items, since there may be little value/benefit
-     in dictating others' account privilege choices.
+in dictating others' account privilege choices.
 
 <Group id="wheel_group">
 <title>The wheel group should exist</title>

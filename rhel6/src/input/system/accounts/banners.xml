@@ -34,7 +34,7 @@ The contents of the file <tt>/etc/issue</tt> are
 displayed on the screen just above the login prompt for users
 logging directly into a terminal. Remote login programs such as
 SSH or FTP can be configured to display <tt>/etc/issue</tt> as well.
-Instructions for configuring these daemons are available later. 
+Instructions for configuring these daemons are available later.
 <br /><br />
 By default, the system will display the version of the OS,
 the kernel version, and the host name.
@@ -44,8 +44,8 @@ compliant with the local site policy or a legal disclaimer.
 <!--<sub idref="login_banner_text" />-->
 </description>
 <rationale>
-Although unlikely to dissuade a serious attacker, the warning message 
-reinforces policy awareness during the logon process. 
+Although unlikely to dissuade a serious attacker, the warning message
+reinforces policy awareness during the logon process.
 </rationale>
 <ident cce="4060-0" />
 <oval id="banner_etc_issue" value="login_banner_text"/>
@@ -65,20 +65,20 @@ banner.
 <Rule id="enable_gdm_login_banner">
 <title>Enable GUI Warning Banner</title>
 <description>
-To enable displaying a login warning banner in the GNOME 
+To enable displaying a login warning banner in the GNOME
 Display Manager's login screen, run the following command:
 <br />
 <pre>
 sudo -u gdm gconftool-2 \
-     --type bool \
-     --set /apps/gdm/simple-greeter/banner_message_enable true
+  --type bool \
+  --set /apps/gdm/simple-greeter/banner_message_enable true
 </pre>
-To display a banner, this setting must be enabled and then 
+To display a banner, this setting must be enabled and then
 banner text must also be set.
 </description>
 <rationale>
-Although unlikely to dissuade a serious attacker, the warning message 
-reinforces policy awareness during the logon process. 
+Although unlikely to dissuade a serious attacker, the warning message
+reinforces policy awareness during the logon process.
 </rationale>
 <ident cce="4188-9" />
 <oval id="banner_gui_enabled" />
@@ -88,14 +88,14 @@ reinforces policy awareness during the logon process.
 <Rule id="set_gdm_login_banner_text">
 <title>Set GUI Warning Banner Text</title>
 <description>
-To set the text shown by the GNOME Display Manager 
+To set the text shown by the GNOME Display Manager
 in the login screen, run the following command:
 <br />
 <pre>
 sudo -u gdm gconftool-2 \
-     --type string \
-     --set /apps/gdm/simple-greeter/banner_message_text \
-     "Text of the warning banner here"
+  --type string \
+  --set /apps/gdm/simple-greeter/banner_message_text \
+  "Text of the warning banner here"
 </pre>
 When entering a warning banner that spans several lines, remember
 to begin and end the string with <tt>"</tt>. This command writes
@@ -103,8 +103,8 @@ directly to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml<
 and this file can later be edited directly if necessary.
 </description>
 <rationale>
-Although unlikely to dissuade a serious attacker, the warning message 
-reinforces policy awareness during the logon process. 
+Although unlikely to dissuade a serious attacker, the warning message
+reinforces policy awareness during the logon process.
 </rationale>
 <ident cce="4188-9" />
 <oval id="banner_gui_text_set" value="login_banner_text" />
@@ -123,8 +123,8 @@ Run the following command to disable the user list:
 <br />
 <pre>
 sudo -u gdm gconftool-2 \
-     --type bool \
-     --set /apps/gdm/simple-greeter/disable_user_list true
+  --type bool \
+  --set /apps/gdm/simple-greeter/disable_user_list true
 
 </pre>
 Leaving the user list enabled is a security risk since it allows anyone

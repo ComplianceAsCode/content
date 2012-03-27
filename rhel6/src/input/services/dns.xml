@@ -2,8 +2,8 @@
 <title>DNS Server</title>
 <description>Most organizations have an operational need to run at
 least one nameserver. However, there are many common attacks
-involving DNS server software, and this server software should 
-be disabled on any system 
+involving DNS server software, and this server software should
+be disabled on any system
 on which it is not needed.</description>
 
 <Group id="disabling_dns_server">
@@ -35,14 +35,14 @@ implementation flaws and should be disabled if possible.
 
 <Rule id="uninstall_bind">
 <title>Uninstall bind Package</title>
-<description>To remove the <tt>bind</tt> package, which contains the <tt>named</tt> service, 
+<description>To remove the <tt>bind</tt> package, which contains the <tt>named</tt> service,
 run the following command:
 <pre>
 # yum erase bind
 </pre>
 </description>
 <rationale>
-If there is no need to make DNS server software available, 
+If there is no need to make DNS server software available,
 removing it provides a safeguard against its activation.
 </rationale>
 <ident cce="4219-2" />
@@ -243,9 +243,9 @@ zone "example.com " IN {
   ...
 };</pre>
 </description>
-<rationale>The BIND transaction signature (TSIG) functionality allows primary and secondary nameservers to use a shared secret to verify authorization to perform zone transfers. This method is more secure than using IP-based limiting to restrict nameserver access, since IP addresses can be easily spoofed.  However, if you cannot configure TSIG between your servers because, for instance, the secondary nameserver is not under your control and its administrators are unwilling to configure TSIG, you can configure an allow-transfer directive with numerical IP addresses or ACLs as a last resort.
+<rationale>The BIND transaction signature (TSIG) functionality allows primary and secondary nameservers to use a shared secret to verify authorization to perform zone transfers. This method is more secure than using IP-based limiting to restrict nameserver access, since IP addresses can be easily spoofed. However, if you cannot configure TSIG between your servers because, for instance, the secondary nameserver is not under your control and its administrators are unwilling to configure TSIG, you can configure an allow-transfer directive with numerical IP addresses or ACLs as a last resort.
 </rationale>
-<warning category="general">The purpose of the dnssec-keygen command is to create the shared secret string base64-key-string.  Once this secret has been obtained and inserted into named.conf on the primary and secondary servers, the key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM .private are no longer needed, and may safely be deleted.</warning>
+<warning category="general">The purpose of the dnssec-keygen command is to create the shared secret string base64-key-string. Once this secret has been obtained and inserted into named.conf on the primary and secondary servers, the key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM .private are no longer needed, and may safely be deleted.</warning>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_authenticate_zone_transfers" />-->
 <!--<ref nist="CM-6, CM-7" />-->
