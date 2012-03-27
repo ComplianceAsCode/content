@@ -114,16 +114,16 @@ This will prevent remote users from printing to locally configured printers whil
 </description>
 <rationale>By default, locally configured printers will not be shared over the network, but if this functionality has somehow been enabled, these recommendations will disable it again. Be sure to disable outgoing printer list broadcasts, or remote users will still be able to see the locally configured printers, even if they cannot actually print to them. To limit print serving to a particular set of users, use the Policy directive.
 </rationale>
-<!--<ident cce="CCE-4420-6, CCE-4407-3" /> TODO:CCE  -->
+<!--<ident cce="CCE-4420-6, CCE-4407-3" /> TODO:CCE -->
 <oval id="cups_disable_printserver" />
 <ref nist="TODO:NIST" />
 </Rule>
 
 <Rule id="cups_limit_web_interface">
 <title>Limit Access to the Web Administration Interface</title>
-<description>By default, access to the CUPS web administration interface is limited to the local machine. It is recommended that this not be changed, especially since the authentication mechanisms that CUPS provides are limited in their effectiveness.  Host-based authentication has known limitations, especially since IP addresses are easy to spoof. Requiring users to authenticate themselves can alleviate this problem, but it cannot eliminate it.
+<description>By default, access to the CUPS web administration interface is limited to the local machine. It is recommended that this not be changed, especially since the authentication mechanisms that CUPS provides are limited in their effectiveness. Host-based authentication has known limitations, especially since IP addresses are easy to spoof. Requiring users to authenticate themselves can alleviate this problem, but it cannot eliminate it.
 </description>
-<!--<ident cce="CCE-4420-6, CCE-4407-3" /> TODO:CCE  -->
+<!--<ident cce="CCE-4420-6, CCE-4407-3" /> TODO:CCE -->
 <oval id="cups_limit_web_interface" />
 <!--<ref nist="TODO:NIST" />-->
 </Rule>

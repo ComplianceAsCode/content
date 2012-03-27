@@ -38,8 +38,7 @@ logical volume.
 <rationale>
 The <tt>/tmp</tt> partition is used as temporary storage
 by many programs.
-Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive 
-mount options, which can help protect programs which use it.
+Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive mount options, which can help protect programs which use it.
 </rationale>
 <ident cce="14161-4" cci="1234"/>
 <oval id="mount_tmp_own_partition" />
@@ -49,15 +48,14 @@ mount options, which can help protect programs which use it.
 <Rule id="partition_for_var">
 <title>Ensure /var Located On Separate Partition</title>
 <description>The <tt>/var</tt> directory is used by daemons and other system
-services to store frequently-changing data. 
-Ensure that <tt>/var</tt> has its own partition
+services to store frequently-changing data. Ensure that <tt>/var</tt> has its own partition
 or logical volume.</description>
 <rationale>
 Ensuring that <tt>/var</tt> is mounted on its own partition enables the
-setting of more restrictive mount options.  This helps protect 
+setting of more restrictive mount options. This helps protect
 system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
-world-writable directories, installed by other software packages. 
+world-writable directories, installed by other software packages.
 </rationale>
 <ident cce="14777-7" cci="5678"/>
 <oval id="mount_var_own_partition" />
@@ -72,9 +70,9 @@ Ensure that it has its own partition or logical
 volume.
 </description>
 <rationale>
-Placing <tt>/var/log</tt> in its own partition 
+Placing <tt>/var/log</tt> in its own partition
 enables better separation between log files
-and other files in <tt>/var/</tt>.  
+and other files in <tt>/var/</tt>.
 </rationale>
 <ident cce="14011-1" />
 <oval id="mount_var_log_own_partition" />
@@ -90,9 +88,9 @@ absolutely certain that it is large enough to store all audit logs
 that will be created by the auditing daemon.
 </description>
 <rationale>
-Placing <tt>/var/log/audit</tt> in its own partition 
+Placing <tt>/var/log/audit</tt> in its own partition
 enables better separation between audit files
-and other files, and helps ensure that 
+and other files, and helps ensure that
 auditing cannot be halted due to the partition running out
 of space.
 </rationale>

@@ -21,7 +21,7 @@ The <tt>snmpd</tt> service can be disabled with the following command:
 <pre># chkconfig snmpd off</pre>
 </description>
 <rationale>
-Running SNMP software provides a network-based avenue of attack, and 
+Running SNMP software provides a network-based avenue of attack, and
 should be disabled if not needed.
 </rationale>
 <ident cce="3765-5" />
@@ -30,14 +30,14 @@ should be disabled if not needed.
 
 <Rule id="uninstall_net-snmp">
 <title>Uninstall <tt>net-snmp</tt> Package</title>
-<description>The <tt>net-snmp</tt> package, which provides the snmpd service, 
+<description>The <tt>net-snmp</tt> package, which provides the snmpd service,
 can be uninstalled with the following command:
 <pre># yum erase net-snmpd</pre>
 </description>
 <rationale>
-If there is no need to run SNMP server software, 
-removing the package provides a safeguard against its 
-activation. 
+If there is no need to run SNMP server software,
+removing the package provides a safeguard against its
+activation.
 </rationale>
 <ident cce="14081-4" />
 <oval id="package_net-snmp_removed" />

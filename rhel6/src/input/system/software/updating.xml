@@ -15,9 +15,9 @@ to date with the latest security patches.</description>
 
 <Rule id="ensure_redhat_gpgkey_installed">
 <title>Ensure Red Hat GPG Key Installed</title>
-<description> 
-To ensure that the system can cryptographically verify update packages 
-(and connect to the Red Hat Network to receive them if desired), 
+<description>
+To ensure that the system can cryptographically verify update packages
+(and connect to the Red Hat Network to receive them if desired),
 run the following command to verify that the system has the Red Hat GPG key properly installed:
 <pre>
 $ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey
@@ -28,7 +28,7 @@ gpg(Red Hat, Inc. (release key &lt;security@redhat.com&gt;)
 </pre>
 </description>
 <rationale>
-This key is necessary to cryptographically verify that packages 
+This key is necessary to cryptographically verify that packages
 are from Red Hat.
 </rationale>
 <ident cce="14440-2"/>
@@ -46,8 +46,8 @@ the service be disabled with the following command:
 </pre>
 </description>
 <rationale>
-This utility is not required for the system to be able to access and 
-install system updates.  The service should be disabled if 
+This utility is not required for the system to be able to access and
+install system updates. The service should be disabled if
 there is no need for the system to run actions scheduled through RHN.
 </rationale>
 <ident cce="3416-5" />
@@ -70,7 +70,7 @@ To actually install these updates, run:
 # yum update</pre>
 </description>
 <rationale>
-Installing software updates is a fundamental mitigation against 
+Installing software updates is a fundamental mitigation against
 the exploitation of publicly-known vulnerabilities.
 </rationale>
 <ref nist="SI-2"/>
@@ -101,8 +101,8 @@ the <tt>[main]</tt> section:
 gpgcheck=1</pre>
 </description>
 <rationale>
-Ensuring the validity of packages' cryptographic signatures prior to 
-installation ensures the provenance of the software and 
+Ensuring the validity of packages' cryptographic signatures prior to
+installation ensures the provenance of the software and
 protects against malicious tampering.
 </rationale>
 <ident cce="14914-6" />
@@ -120,8 +120,8 @@ repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:
 gpgcheck=0</pre>
 </description>
 <rationale>
-Ensuring that all packages' cryptographic signatures are valid prior to 
-installation ensures the provenance of the software and 
+Ensuring that all packages' cryptographic signatures are valid prior to
+installation ensures the provenance of the software and
 protects against malicious tampering.
 </rationale>
 <ident cce="14813-0" />

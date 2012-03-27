@@ -6,17 +6,17 @@ system is called X.org.</description>
 <Group id="disabling_xwindows">
 <title>Disable X Windows if Possible</title>
 <description>Unless there is a mission-critical reason for the
-system to run a graphical user interface, ensure that X is not set to start 
-automatically at boot and remove the X Windows software packages. 
+system to run a graphical user interface, ensure that X is not set to start
+automatically at boot and remove the X Windows software packages.
 There is usually no reason to run X Windows
-on a dedicated server machine, as it increases the system's attack surface and consumes 
-system resources.  Administrators of server systems should instead login via
+on a dedicated server machine, as it increases the system's attack surface and consumes
+system resources. Administrators of server systems should instead login via
 SSH or on the text console.</description>
 
 <Rule id="disable_xwindows_with_runlevel">
 <title>Disable X Windows Startup By Setting Runlevel</title>
 <description>Setting the system's runlevel to 3 will prevent automatic startup
-of the X server.  To do so, ensure that the following line in <tt>/etc/inittab</tt> 
+of the X server. To do so, ensure that the following line in <tt>/etc/inittab</tt>
 features a <tt>3</tt> as shown:
 <pre>
 id:3:initdefault:
@@ -29,7 +29,7 @@ id:3:initdefault:
 
 <Rule id="packagegroup_xwindows_remove">
 <title>Remove the X Windows Package Group if Possible</title>
-<description>Removing all packages which constitute the X Window System 
+<description>Removing all packages which constitute the X Window System
 ensures that users or malicious software cannot start X.
 To do so, run the following command:
 <pre>
@@ -68,7 +68,7 @@ disabled. However, if X is started from the command line with the
 on X's default port, 6000.
 <br /><br />
 See the <tt>xinit(1)</tt>, <tt>startx(1)</tt>, and <tt>Xserver(1)</tt>
- man pages for more information.</description>
+man pages for more information.</description>
 
 <Rule id="xwindows_remote_listening">
 <title>Disable X Window System Listening</title>
@@ -99,8 +99,8 @@ edit the file <tt>/etc/gdm/custom.conf</tt>. Locate the
 [greeter]
 InfoMsgFile=/etc/issue
 </pre>
-This setting will cause the system greeting banner to be displayed in a box 
-prior to GUI login. If the default banner font is inappropriate, it can be 
+This setting will cause the system greeting banner to be displayed in a box
+prior to GUI login. If the default banner font is inappropriate, it can be
 changed by specifying the <tt>InfoMsgFont</tt> directive as well, for instance:
 <br />
 <pre>
