@@ -18,18 +18,17 @@ Options it can pass to the kernel include <i>single-user mode</i>, which
 provides root access without any authentication, and the ability to
 disable SELinux. To prevent local users from modifying the boot
 parameters and endangering security, the boot loader configuration
-should be protected with a password and its configuration file's permissions 
+should be protected with a password and its configuration file's permissions
 should be set properly.
-<br/>
-If any correction is needed for the permissions on <tt>/etc/grub.conf</tt>,
- (which is a symlink to
+<br/><br />
+If any correction is needed for the permissions on <tt>/etc/grub.conf</tt>, (which is a symlink to
 <tt>../boot/grub/grub.conf</tt>) the following commands can be used:
 <br />
 <pre>
 # chown root:root /etc/grub.conf
 # chmod 600 /etc/grub.conf
-</pre>
 
+</pre>
 </description>
 
 <Rule id="user_owner_grub_conf">
@@ -49,7 +48,7 @@ Only root should be able to modify important boot parameters.
 <description>The file <tt>/etc/grub.conf</tt> is a symbolic link to <tt>/boot/grub/grub.conf</tt> which
 should be group-owned by the <tt>root</tt> group to prevent destruction or modification of the file.</description>
 <rationale>
-The <tt>root</tt> group is a highly-privileged group.  Furthermore, the group-owner of this 
+The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
 <ident cce="4197-0" />
@@ -62,7 +61,7 @@ file should not have any access privileges anyway.
 <description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
 is the default.</description>
 <rationale>
-This ensures that only the root user should be able to modify important boot parameters contained in 
+This ensures that only the root user should be able to modify important boot parameters contained in
 this file.
 </rationale>
 <ident cce="3923-0" />
@@ -73,7 +72,7 @@ this file.
 <Rule id="bootloader_password" severity="high">
 <title>Set Boot Loader Password</title>
 <description>The grub boot loader should have password protection
-enabled to protect boot-time settings.  
+enabled to protect boot-time settings.
 To do so, select a password and then generate a hash from it by running:
 <br />
 <pre>
@@ -88,9 +87,9 @@ password --md5 <b>password-hash</b>
 </pre>
 </description>
 <rationale>
-Password protection on the boot loader configuration ensures that 
-users with physical access cannot trivially alter 
-important bootloader settings.  These include which kernel to use, 
+Password protection on the boot loader configuration ensures that
+users with physical access cannot trivially alter
+important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
 </rationale>
 <ident cce="3818-2" />
@@ -105,7 +104,7 @@ and whether to enter single-user mode.
 <description>Single-user mode is intended as a system recovery
 method, providing a single user root access to the system by
 providing a boot option at startup. By default, no authentication
-is performed if single-user mode is selected. 
+is performed if single-user mode is selected.
 <br /><br />
 To require entry of the root password even if the system is
 started in single-user mode, add or correct the following line in the
@@ -115,8 +114,8 @@ file <tt>/etc/sysconfig/init</tt>:
 SINGLE=/sbin/sulogin</pre>
 </description>
 <rationale>
-This prevents attackers with physical access from trivially bypassing security 
-on the machine and gaining root access.  Such accesses are further prevented 
+This prevents attackers with physical access from trivially bypassing security
+on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
 <ident cce="4241-6" />
@@ -129,7 +128,7 @@ by configuring the bootloader password.
 <title>Disable Interactive Boot</title>
 <description>
 To disable the ability for users to perform interactive startups,
-edit the file <tt>/etc/sysconfig/init</tt>. 
+edit the file <tt>/etc/sysconfig/init</tt>.
 Add or correct the line:
 <br />
 <pre>
@@ -137,7 +136,7 @@ PROMPT=no
 </pre>
 The <tt>PROMPT</tt> option allows the console user to perform an
 interactive system startup, in which it is possible to select the
-set of services which are started on boot. 
+set of services which are started on boot.
 </description>
 <rationale>
 Using interactive boot,
@@ -167,7 +166,7 @@ those cases where a user forgot to lock the screen.</description>
 by choosing <b>Lock Screen</b> from the <b>System</b> menu.
 <br /><br />
 The <tt>gconftool-2</tt> program can be used to enforce mandatory
-screen locking settings for the default GNOME environment. 
+screen locking settings for the default GNOME environment.
 The
 following sections detail commands to enforce idle activation of the screen saver,
 screen locking, a blank-screen screensaver, and an idle
@@ -181,8 +180,7 @@ also be dragged to the taskbar in order to facilitate even more
 convenient screen-locking.
 <br /><br />
 The root account cannot be screen-locked, but this should
-<!-- TODO: is this still true? -->
-have no practical effect as the root account should <i>never</i> be used
+<!-- TODO: is this still true? -->have no practical effect as the root account should <i>never</i> be used
 to log into an X Windows environment, and should only be used to
 for direct login via console in emergency circumstances.
 <br /><br />
@@ -215,7 +213,7 @@ desktop lockout should be 15 minutes.
 </pre>
 </description>
 <rationale>
-Setting the idle delay controls when the 
+Setting the idle delay controls when the
 screensaver will start, and can be combined with
 screen locking to prevent access from passersby.
 </rationale>
@@ -237,7 +235,7 @@ enabled
 </description>
 <rationale>
 Enabling idle activation of the screen saver ensures that the
-screensaver will be activated after the idle delay.  
+screensaver will be activated after the idle delay.
 </rationale>
 <ident cce="14604-3" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
@@ -257,7 +255,7 @@ enabled
 </description>
 <rationale>
 Enabling the activation of the screen lock after an idle period
-ensures that password entry will be required in order to 
+ensures that password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
 <ident cce="14023-6" />
@@ -278,7 +276,7 @@ The screen saver should be blank
 </pre>
 </description>
 <rationale>
-Setting the screensaver mode to blank-only conceals the 
+Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
 <ident cce="14735-5" />
@@ -293,7 +291,7 @@ contents of the display from passersby.
 <title>Configure Console Screen Locking</title>
 <description>
 A console screen locking mechanism is provided in the
-<tt>vlock package</tt>, which is not installed by default. 
+<tt>vlock package</tt>, which is not installed by default.
 </description>
 
 <Rule id="install_vlock_package">

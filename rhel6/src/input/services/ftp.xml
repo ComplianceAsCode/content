@@ -24,10 +24,10 @@ The <tt>vsftpd</tt> service can be disabled with the following command:
 </pre>
 </description>
 <rationale>
-Running FTP server software provides a network-based avenue 
+Running FTP server software provides a network-based avenue
 of attack, and should be disabled if not needed.
-Furthermore, the FTP protocol is unencrypted and creates 
-a risk of compromising sensitive information.  
+Furthermore, the FTP protocol is unencrypted and creates
+a risk of compromising sensitive information.
 </rationale>
 <ident cce="3919-8" />
 <oval id="service_vsftpd_disabled" />
@@ -36,7 +36,7 @@ a risk of compromising sensitive information.
 
 <Rule id="uninstall_vsftpd">
 <title>Uninstall vsftpd Package</title>
-<description>The <tt>vsftpd</tt> package can be 
+<description>The <tt>vsftpd</tt> package can be
 uninstalled with the following command:
 <pre>
 # yum erase vsftpd
@@ -120,7 +120,7 @@ these logins as much as possible.</description>
 
 <Rule id="ftp_limit_users">
 <title>Limit Users Allowed FTP Access if Necessary</title>
-<description>If there is a mission-critical reason for users to access their accounts via the insecure FTP protocol, limit the set of users who are allowed this access.  Edit the vsftpd configuration file. Add or correct the following configuration options:
+<description>If there is a mission-critical reason for users to access their accounts via the insecure FTP protocol, limit the set of users who are allowed this access. Edit the vsftpd configuration file. Add or correct the following configuration options:
 <pre>userlist_enable=YES
 userlist_file=/etc/vsftp.ftpusers
 userlist_deny=NO</pre>
@@ -130,7 +130,7 @@ If anonymous access is also required, add the anonymous usernames to <tt>/etc/vs
 <pre>anonymous
 ftp</pre>
 </description>
-<rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via ftp.  It was used to prevent system users such as the root user from logging in via the insecure ftp protocol.  However, when the configuration option userlist deny=NO is set, vsftpd interprets ftpusers as the set of users who are allowed to login via ftp. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous ftp access can be limited to legacy users who have been explicitly identified.</rationale>
+<rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via ftp. It was used to prevent system users such as the root user from logging in via the insecure ftp protocol. However, when the configuration option userlist deny=NO is set, vsftpd interprets ftpusers as the set of users who are allowed to login via ftp. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous ftp access can be limited to legacy users who have been explicitly identified.</rationale>
 <!--<ident cce="4443-8" />-->
 <!--<oval id="ftp_limit_users" />-->
 <!--<ref nist="CM-6, CM-7" /> -->

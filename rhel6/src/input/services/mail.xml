@@ -2,26 +2,25 @@
 <title>Mail Server Software</title>
 <description>
 Mail servers are used to send and receive email over the network.
-Mail is a very common service, and Mail Transfer Agents (MTAs) are obvious 
-targets of network attack. 
-Ensure that machines are not running MTAs unnecessarily, 
+Mail is a very common service, and Mail Transfer Agents (MTAs) are obvious
+targets of network attack.
+Ensure that machines are not running MTAs unnecessarily,
 and configure needed MTAs as defensively as possible.
-
-Very few systems at any site should be configured to directly receive email over the 
-network.  Users should instead use mail clients programs to retrieve email  
-from a central server that support protocols such as IMAP or POP3.  
-However, it is normal for most systems to be independently capable of sending email, 
-for instance so that cron jobs can report output to an administrator. 
-Most MTAs, including Postfix, support a submission-only mode in which mail can be sent from 
-the local system to a central site MTA (or directly delivered to a local account), 
+<br /><br />
+Very few systems at any site should be configured to directly receive email over the
+network. Users should instead use mail clients programs to retrieve email
+from a central server that support protocols such as IMAP or POP3.
+However, it is normal for most systems to be independently capable of sending email,
+for instance so that cron jobs can report output to an administrator.
+Most MTAs, including Postfix, support a submission-only mode in which mail can be sent from
+the local system to a central site MTA (or directly delivered to a local account),
 but the system still cannot receive mail directly over a network.
-
-The <tt>alternatives</tt> program in RHEL permits selection of other mail server software 
+<br /><br />
+The <tt>alternatives</tt> program in RHEL permits selection of other mail server software
 (such as Sendmail), but Postfix is the default and is preferred.
-Postfix was coded with security in mind and can also be more effectively contained by 
-SELinux as its modular design has resulted in separate processes performing specific actions. 
+Postfix was coded with security in mind and can also be more effectively contained by
+SELinux as its modular design has resulted in separate processes performing specific actions.
 More information is available on its website, http://www.postfix.org.</description>
-
 
 
 <Group id="postfix_client">
@@ -29,14 +28,14 @@ More information is available on its website, http://www.postfix.org.</descripti
 <description>This section discusses settings for Postfix in a submission-only e-mail configuration.</description>
 
 <!-- postfix is installed by default on RHEL 6,
-     but sendmail was the default on RHEL 5. -->
+but sendmail was the default on RHEL 5. -->
 
 <!-- <Rule id="postfix_package_installation">
 <title>The postfix package should be installed</title>
-<description>If this machine does not need to operate as a mail server, follow the remaining 
-instructions in this section to ensure this software run only in a submission-only mode. 
-MTA software must still be installed in order to ensure local mail delivery for services 
-such as cron.  
+<description>If this machine does not need to operate as a mail server, follow the remaining
+instructions in this section to ensure this software run only in a submission-only mode.
+MTA software must still be installed in order to ensure local mail delivery for services
+such as cron.
 
 If the machine must operate as a mail server, follow the remaining instructions in this section for
  strategies for MTA configuration. Then apply both the MTA-independent operating system
@@ -44,7 +43,7 @@ configuration guidance, and the specific guidance for your MTA in this section.
 </description>
 <ident cce="14068-1" />
 <oval id="package_postfix_installed" />
-</Rule> 
+</Rule>
 -->
 
 <Rule id="postfix_network_listening">
@@ -57,8 +56,8 @@ inet_interfaces = localhost
 </pre>
 </description>
 <rationale>
-This ensures that <tt>postfix</tt> accepts mail messages 
-(such as cron job reports) from the local system only, 
+This ensures that <tt>postfix</tt> accepts mail messages
+(such as cron job reports) from the local system only,
 and not from the network, which protects it from network attack.
 </rationale>
 <ident cce="15018-5" />
@@ -87,9 +86,9 @@ mail, then forwards internal mail to a separate machine from which users can acc
 
 <Rule id="postfix_restrict_user_access">
 <title>Protect the MTA Host from User Access</title>
-<description>The mail server contains privileged data belonging to all users and performs a 
-vital network function. Preventing users from logging into this server is a precaution against 
-privilege escalation or denial of service attacks which might compromise the mail service. Take 
+<description>The mail server contains privileged data belonging to all users and performs a
+vital network function. Preventing users from logging into this server is a precaution against
+privilege escalation or denial of service attacks which might compromise the mail service. Take
 steps to ensure that only system administrators are allowed shell access to the MTA host.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
@@ -98,9 +97,9 @@ steps to ensure that only system administrators are allowed shell access to the 
 
 <Rule id="postfix_restrict_mail_spool_access">
 <title>Restrict Remote Access to the Mail Spool</title>
-<description>The mail server contains privileged data belonging to all users and performs a vital 
-network function. Preventing users from logging into this server is a precaution against privilege 
-escalation or denial of service attacks which might compromise the mail service. Take steps to 
+<description>The mail server contains privileged data belonging to all users and performs a vital
+network function. Preventing users from logging into this server is a precaution against privilege
+escalation or denial of service attacks which might compromise the mail service. Take steps to
 ensure that only system administrators are allowed shell access to the MTA host.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
@@ -145,9 +144,9 @@ Ensure log will be rotated as appropriate by adding or correcting the following 
 
 <Group id="postfix_configure_ssl_certs">
 <title>Configure SSL Certificates for Use with SMTP AUTH</title>
-<description>If SMTP AUTH is to be used, the use of SSL to protect credentials in transit is strongly recommended. 
-There are also configurations for which it may be desirable to encrypt all mail in transit from one MTA to another, 
-though such configurations are beyond the scope of this guide. In either event, the steps for creating and installing 
+<description>If SMTP AUTH is to be used, the use of SSL to protect credentials in transit is strongly recommended.
+There are also configurations for which it may be desirable to encrypt all mail in transit from one MTA to another,
+though such configurations are beyond the scope of this guide. In either event, the steps for creating and installing
 an SSL certificate are independent of the MTA in use, and are described here.
 </description>
 
@@ -239,9 +238,9 @@ smtpd_recipient_limit = 100
 </pre>
 </description>
 <rationale>These configuration options serve to make it more difficult for attackers to consume resources on the MTA host.
-The default process limit parameter controls how many smtpd processes can exist at a time, while smtpd 
-client connection count limit controls the number of those which can be occupied by any one 
-remote sender, and smtpd client connection rate limit controls the number of connections any one client 
+The default process limit parameter controls how many smtpd processes can exist at a time, while smtpd
+client connection count limit controls the number of those which can be occupied by any one
+remote sender, and smtpd client connection rate limit controls the number of connections any one client
 can make per minute. By default, local hosts (those in mynetworks) are exempted from per-client rate limiting.
 The queue minfree parameter establishes a free space threshold, in order to stop e-mail receipt before the
 queue filesystem is entirely full. The header size limit, message size limit, and smtpd recipient limit
@@ -264,7 +263,7 @@ banner information if you prefer:
 smtpd_banner = $myhostname ESMTP
 </pre>
 </description>
-<rationale>The default greeting banner discloses that the listening mail process is Postfix.  
+<rationale>The default greeting banner discloses that the listening mail process is Postfix.
 When remote mail senders connect to the MTA on port 25, they are greeted by an initial banner as part of
 the SMTP dialogue. This banner is necessary, but it frequently gives away too much information, including
 the MTA software which is in use, and sometimes also its version number. Remote mail senders do not need

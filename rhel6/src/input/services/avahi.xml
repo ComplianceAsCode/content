@@ -10,8 +10,8 @@ of Zeroconf networking. </description>
 
 <Group id="disable_avahi_group">
 <title>Disable Avahi Server if Possible</title>
-<description>Because the Avahi daemon service keeps an open network 
-port, it is subject to network attacks. 
+<description>Because the Avahi daemon service keeps an open network
+port, it is subject to network attacks.
 Disabling it can reduce the system’s vulnerability to such attacks.
 </description>
 
@@ -25,8 +25,8 @@ To disable the <tt>avahi-daemon</tt> service, issue the command:
 </description>
 <rationale>
 Because the Avahi daemon service keeps an open network
-port, it is subject to network attacks.  Its functionality 
-is convenient but is only appropriate if the local network 
+port, it is subject to network attacks. Its functionality
+is convenient but is only appropriate if the local network
 can be trusted.
 </rationale>
 <ident cce="4365-3" />
@@ -40,18 +40,18 @@ can be trusted.
 <Group id="avahi_configuration">
 <title>Configure Avahi if Necessary</title>
 <description>
-If your system requires the Avahi daemon, its configuration can be restricted 
-to improve security. The Avahi daemon configuration file is 
-<tt>/etc/avahi/avahi-daemon.conf</tt>. The following security recommendations 
-should be applied to this file. 
-See the avahi-daemon.conf(5) man page or documentation at 
+If your system requires the Avahi daemon, its configuration can be restricted
+to improve security. The Avahi daemon configuration file is
+<tt>/etc/avahi/avahi-daemon.conf</tt>. The following security recommendations
+should be applied to this file.
+See the avahi-daemon.conf(5) man page or documentation at
 http://www.avahi.org for more detailed information about the configuration options.
 </description>
 
 <Rule id="avahi_ip_only">
 <title>Serve Avahi Only via Required Protocol</title>
 <description>
-If you are using only IPv4, edit <tt>/etc/avahi/avahi-daemon.conf</tt> and ensure 
+If you are using only IPv4, edit <tt>/etc/avahi/avahi-daemon.conf</tt> and ensure
 the following line exists in the <tt>[server]</tt> section:
 <pre>use-ipv6=no</pre>
 Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
@@ -63,17 +63,17 @@ Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
 <Rule id="avahi_check_ttl">
 <title>Check Avahi Responses' TTL Field</title>
 <description>
-To make Avahi ignore packets unless the TTL field is 255, edit 
-<tt>/etc/avahi/avahi-daemon.conf</tt> and ensure the following line 
+To make Avahi ignore packets unless the TTL field is 255, edit
+<tt>/etc/avahi/avahi-daemon.conf</tt> and ensure the following line
 appears in the <tt>[server]</tt> section:
 <pre>check-response-ttl=yes</pre>
 </description>
 <rationale>
-This helps to ensure that only mDNS responses from the local network are 
-processed, because the TTL field in a packet is decremented from its initial 
-value of 255 whenever it is routed from one network to another. Although a 
-properly-configured router or firewall should not allow mDNS packets into 
-the local network at all, this option provides another check to ensure they 
+This helps to ensure that only mDNS responses from the local network are
+processed, because the TTL field in a packet is decremented from its initial
+value of 255 whenever it is routed from one network to another. Although a
+properly-configured router or firewall should not allow mDNS packets into
+the local network at all, this option provides another check to ensure they
 are not permitted.
 </rationale>
 </Rule>
@@ -82,12 +82,12 @@ are not permitted.
 <Rule id="avahi_prevent_port_sharing">
 <title>Prevent Other Programs from Using Avahi's Port</title>
 <description>
-To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt> 
+To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
 and ensure the following line appears in the <tt>[server]</tt> section:
 <pre>disallow-other-stacks=yes</pre>
 </description>
 <rationale>
-This helps ensure that only Avahi is responsible for mDNS traffic coming from 
+This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
 </Rule>
@@ -96,12 +96,12 @@ that port on the system.
 <Rule id="avahi_disable_publishing">
 <title>Disable Avahi Publishing</title>
 <description>
-To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt> 
+To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
 and ensure the following line appears in the <tt>[server]</tt> section:
 <pre>disallow-other-stacks=yes</pre>
 </description>
 <rationale>
-This helps ensure that only Avahi is responsible for mDNS traffic coming from 
+This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
 </Rule>
@@ -110,13 +110,13 @@ that port on the system.
 <Rule id="avahi_restrict_published_information">
 <title>Restrict Information Published by Avahi</title>
 <description>
-If it is necessary to publish some information to the network, it should not be joined 
-by any extraneous information, or by information supplied by a non-trusted source 
+If it is necessary to publish some information to the network, it should not be joined
+by any extraneous information, or by information supplied by a non-trusted source
 on the system.
-Prevent user applications from using Avahi to publish services by adding or 
+Prevent user applications from using Avahi to publish services by adding or
 correcting the following line in the <tt>[publish]</tt> section:
 <pre>disable-user-service-publishing=yes</pre>
-Implement as many of the following lines as possible, to restrict the information 
+Implement as many of the following lines as possible, to restrict the information
 published by Avahi:
 <pre>
 publish-addresses=no
@@ -124,14 +124,14 @@ publish-hinfo=no
 publish-workstation=no
 publish-domain=no
 </pre>
-Inspect the files in the directory <tt>/etc/avahi/services/</tt>. Unless there 
-is an operational need to publish information about each of these services, 
+Inspect the files in the directory <tt>/etc/avahi/services/</tt>. Unless there
+is an operational need to publish information about each of these services,
 delete the corresponding file.
 </description>
 <rationale>
-These options prevent publishing attempts from succeeding, 
-and can be applied even if publishing is disabled entirely via 
-disable-publishing.  Alternatively, these can be used to restrict 
+These options prevent publishing attempts from succeeding,
+and can be applied even if publishing is disabled entirely via
+disable-publishing. Alternatively, these can be used to restrict
 the types of published information in the event that some information
 must be published.
 </rationale>
