@@ -59,18 +59,32 @@ be used for system auditing it is recommended that auditd be enabled.
 <oval id="service_auditd_enabled" />
 </Rule>
 
-<!--<Rule id="service_bluetooth_disabled">
-<title>Disable Certmonger Service (certmonger)</title>
-<description>Certmonger is a D-Bus based service that attempts to simplify interaction
-with certifying authorities on networks which use public-key infrastructure. It is often
-combined with Red Hat's IPA (Identity Policy Audit) security information management
-solution to aid in the management of certificates. Unless IPA is used to help administer
-the LAN this service should be disabled.
+<Group id="base_bluetooth">
+<title>Bluetooth</title>
+<description>Bluetooth provides a way to transfer information between devices such as mobile phones, laptops, PCs, printers, digital cameras, and video game consoles over a short-range wireless link. Any wireless communication presents a serious security risk to sensitive or classified systems.
+Removal of hardware is the only way to ensure that the Bluetooth wireless capability remains disabled. If it is completely impractical to remove the Bluetooth hardware module, and site policy still allows the device to enter sensitive spaces, every effort to disable the capability via software should be made. In general, acquisition policy should include provisions to prevent the purchase of equipment that will be used in sensitive spaces and includes Bluetooth capabilities.
+</description>
+
+<Rule id="service_bluetooth_disabled">
+<title>Bluetooth Host Controller Interface Daemon (bluetooth)</title>
+<description>If the system requires no Bluetooth devices, disable this service:
 <pre># chkconfig bluetooth off</pre>
 </description>
-<ident cce="TODO" />
+<ident cce="4355-4" />
 <oval id="service_bluetooth_disabled" />
-</Rule>-->
+</Rule>
+
+<Rule id="kernel_module_bluetooth_disabled">
+<title>Disable Bluetooth Kernel Modules</title>
+<description>The kernel’s module loading system can be configured to prevent loading of the Bluetooth module.  Add the following to <tt>/etc/modprobe.conf</tt> to prevent the loading of the Bluetooth module:
+<pre>alias net-pf-31 off
+alias bluetooth off</pre>
+</description>
+<ident cce="14948-4" />
+<oval id="kernel_module_bluetooth_disabled" />
+</Rule>
+
+</Group> <!-- <Group id="base_bluetooth"> -->
 
 <Rule id="service_certmonger_disabled">
 <title>Disable Certmonger Service (certmonger)</title>
