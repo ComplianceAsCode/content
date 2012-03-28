@@ -1,8 +1,7 @@
 <Group id="auditing">
 <title>System Accounting with <tt>auditd</tt></title>
 <description>The audit service provides substantial capabilities
-for recording system activities. 
-By default, the service audits about
+for recording system activities. By default, the service audits about
 SELinux AVC denials and certain types of security-relevant events
 such as system logins, account modifications, and authentication
 events performed by programs such as sudo.
@@ -128,7 +127,7 @@ that can be passed to <tt>auditctl</tt> and can be individually tested
 during runtime. See documentation in <tt>/usr/share/doc/audit-VERSION</tt> and
 in the related man pages for more details.
 <br /><br />
-If copying any example audit rulesets from <tt>/usr/share/doc/audit-VERSION</tt>, 
+If copying any example audit rulesets from <tt>/usr/share/doc/audit-VERSION</tt>,
 be sure to comment out the
 lines containing <tt>arch=</tt> which are not appropriate for your system’s
 architecture. Then review and understand the following rules,
@@ -231,7 +230,7 @@ appropriate for your system:
 <pre>
 -a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat \
     -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=ARCH -S chown -S fchown -S fchownat \ 
+-a always,exit -F arch=ARCH -S chown -S fchown -S fchownat \
     -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
 -a always,exit -F arch=ARCH -S setxattr -S lsetxattr \
     -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr \
@@ -254,7 +253,7 @@ to <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
 <br />
 <pre>
--a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate \ 
+-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate \
     -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
 -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate \
     -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>

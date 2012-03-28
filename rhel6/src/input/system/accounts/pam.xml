@@ -2,15 +2,15 @@
 <title>Protect Accounts by Configuring PAM</title>
 <description>PAM, or Pluggable Authentication Modules, is a system
 which implements modular authentication for Linux programs. PAM provides
-a flexible and configurable architecture for authentication, and it should be configured 
+a flexible and configurable architecture for authentication, and it should be configured
 to minimize exposure to unnecessary risk. This section contains
-guidance on how to accomplish that.  
+guidance on how to accomplish that.
 <br /><br />
 PAM is implemented as a set of shared objects which are
 loaded and invoked whenever an application wishes to authenticate a
 user. Typically, the application must be running as root in order
-to take advantage of PAM, because PAM's modules often need to be able 
-to access sensitive stores of account information, such as /etc/shadow. 
+to take advantage of PAM, because PAM's modules often need to be able
+to access sensitive stores of account information, such as /etc/shadow.
 Traditional privileged network listeners
 (e.g. sshd) or SUID programs (e.g. sudo) already meet this
 requirement. An SUID root application, userhelper, is provided so
@@ -62,7 +62,7 @@ each.</description>
 <title>Set Password Quality Requirements, if using
 pam_cracklib</title>
 <description>The <tt>pam_cracklib</tt> PAM module can be configured to meet
-requirements for a variety of policies.  
+requirements for a variety of policies.
 <br /><br />
 For example, to configure <tt>pam_cracklib</tt> to require at least one uppercase
 character, lowercase character, digit, and other (special)
@@ -79,7 +79,7 @@ password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 uc
 
 </pre>
 The arguments can be modified to ensure compliance with
-your organization’s security policy.  Discussion of each parameter follows.
+your organization’s security policy. Discussion of each parameter follows.
 </description>
 <warning category="general">Note that the password quality
 requirements are not enforced for the root account for some
@@ -164,9 +164,9 @@ passwords</warning>
 will re-prompt a user after an incorrect password entry, on a per-session basis.
 </description>
 <rationale>
-Setting the password retry prompts that are permitted on a per-session basis to a low value 
-requires some software, such as SSH, to re-connect.  This can slow down and
-draw additional attention to some types of password-guessing attacks.  Note that this 
+Setting the password retry prompts that are permitted on a per-session basis to a low value
+requires some software, such as SSH, to re-connect. This can slow down and
+draw additional attention to some types of password-guessing attacks. Note that this
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident cce="15054-0" />
@@ -177,13 +177,13 @@ is different from account lockout, which is provided by the pam_faillock module.
 <Rule id="password_require_digits">
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_cracklib module's <tt>dcredit=</tt> parameter controls requirements for
-usage of digits in a password.  When set to a negative number, any password will be required to
-contain that many digits.  When set to a positive number, pam_cracklib will grant +1 additional 
+usage of digits in a password. When set to a negative number, any password will be required to
+contain that many digits. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each digit.
 </description>
 <rationale>
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
-search space. 
+search space.
 </rationale>
 <ident cce="14113-5" />
 <oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
@@ -193,13 +193,13 @@ search space.
 <Rule id="password_require_uppercases">
 <title>Set Password Strength Minimum Uppercase Characters</title>
 <description>The pam_cracklib module's <tt>ucredit=</tt> parameter controls requirements for
-usage of uppercase letters in a password.  When set to a negative number, any password will be required to
-contain that many uppercase characters.  When set to a positive number, pam_cracklib will grant +1 additional 
+usage of uppercase letters in a password. When set to a negative number, any password will be required to
+contain that many uppercase characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each uppercase character.
 </description>
 <rationale>
-Requiring a minimum number of uppercase characters makes password guessing attacks 
-more difficult by ensuring a larger search space. 
+Requiring a minimum number of uppercase characters makes password guessing attacks
+more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="14672-0" />
 <oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
@@ -209,13 +209,13 @@ more difficult by ensuring a larger search space.
 <Rule id="password_require_specials">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_cracklib module's <tt>ocredit=</tt> parameter controls requirements for
-usage of special (or ``other'') characters in a password.  When set to a negative number, any password will be required to
-contain that many special characters.  When set to a positive number, pam_cracklib will grant +1 additional 
+usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
+contain that many special characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each special character.
 </description>
 <rationale>
-Requiring a minimum number of special characters makes password guessing attacks 
-more difficult by ensuring a larger search space. 
+Requiring a minimum number of special characters makes password guessing attacks
+more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="14122-6" />
 <oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
@@ -225,13 +225,13 @@ more difficult by ensuring a larger search space.
 <Rule id="password_require_lowercases">
 <title>Set Password Strength Minimum Lowercase Characters</title>
 <description>The pam_cracklib module's <tt>lcredit=</tt> parameter controls requirements for
-usage of lowercase letters in a password.  When set to a negative number, any password will be required to
-contain that many lowercase characters.  When set to a positive number, pam_cracklib will grant +1 additional 
+usage of lowercase letters in a password. When set to a negative number, any password will be required to
+contain that many lowercase characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each lowercase character.
 </description>
 <rationale>
-Requiring a minimum number of lowercase characters makes password guessing attacks 
-more difficult by ensuring a larger search space. 
+Requiring a minimum number of lowercase characters makes password guessing attacks
+more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="14712-4" />
 <oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
@@ -241,12 +241,12 @@ more difficult by ensuring a larger search space.
 <Rule id="password_require_diffchars">
 <title>Set Password Strength Minimum Different Characters</title>
 <description>The pam_cracklib module's <tt>difok=</tt> parameter controls requirements for
-usage of different characters during a password change.  
+usage of different characters during a password change.
 </description>
 <rationale>
-Requiring a minimum number of different characters during password changes ensures that 
+Requiring a minimum number of different characters during password changes ensures that
 newly changed passwords should not resemble previously compromised ones.
-Note that passwords which are changed on compromised systems will still be compromised, however. 
+Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
 <ident cce="14701-7" />
 <oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
@@ -264,30 +264,30 @@ documentation is available in
 <br /><br />
 </description>
 <warning category="general">Locking out user accounts presents the
-risk of a denial-of-service attack. The lockout policy 
+risk of a denial-of-service attack. The lockout policy
 must weigh whether the risk of such a
 denial-of-service attack outweighs the benefits of thwarting
 password guessing attacks.</warning>
 
-<!-- This should probably be two rules: 
+<!-- This should probably be two rules:
 one to use pam_faillock,
 and a second to use unlock_time and set it to a Value
 -->
 
 <Rule id="deny_password_attempts">
 <title>Set Deny For Failed Password Attempts</title>
-<!-- TODO JB: there needs to be a comprehensive discussion of 
+<!-- TODO JB: there needs to be a comprehensive discussion of
 this, to explain meaning of "PAM-aware", for all PAM module changes.
-These include 
-<tt>login</tt>, <tt>sshd</tt>, and <tt>vsftpd</tt>. 
+These include
+<tt>login</tt>, <tt>sshd</tt>, and <tt>vsftpd</tt>.
 
 By default, all individual programs' configuration files in <tt>/etc/pam.d</tt>
-include <tt>system-auth</tt> or <tt>password-auth</tt>. 
+include <tt>system-auth</tt> or <tt>password-auth</tt>.
 -->
 <description>
-To configure 
+To configure
 the system to lock out accounts after a number of incorrect login
-attempts using 
+attempts using
 <tt>pam_faillock.so</tt>,
 <br /><br />
 Find the following line in <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
@@ -322,8 +322,8 @@ auth     sufficient     pam_faillock.so authsucc audit deny=5 unlock_time=900
 </pre>
 </description>
 <rationale>
-Locking out user accounts after a number of incorrect attempts 
-prevents direct password guessing attacks.  
+Locking out user accounts after a number of incorrect attempts
+prevents direct password guessing attacks.
 </rationale>
 <ident cce="3410-8" />
 <oval id="accounts_passwords_pam_faillock_deny" />
@@ -336,13 +336,13 @@ prevents direct password guessing attacks.
 <Rule id="set_password_hashing_algorithm">
 <title>Set Password Hashing Algorithm</title>
 <description>The system's default algorithm for storing password hashes in
-<tt>/etc/shadow</tt> is SHA-512. 
+<tt>/etc/shadow</tt> is SHA-512.
 In order to ensure the system is still configured to use SHA-512 algorithm,
 ensure that the following line appears in <tt>/etc/login.defs</tt>:
 <pre>
 ENCRYPT_METHOD SHA512
 </pre>
-Also ensure that the <tt>pam_unix.so</tt> module in the <tt>password</tt> section in 
+Also ensure that the <tt>pam_unix.so</tt> module in the <tt>password</tt> section in
 <tt>/etc/pam.d/system-auth</tt> includes the argument <tt>sha512</tt>.
 <br/>
 If this is not the case, the following command can be run to fix:
@@ -350,7 +350,7 @@ If this is not the case, the following command can be run to fix:
 # /usr/sbin/authconfig --passalgo=sha512 --update
 </pre>
 This ensures that when users change their passwords, hashes for the new passwords
-will be generated using the SHA-512 algorithm. 
+will be generated using the SHA-512 algorithm.
 <!-- All accounts will
 need to perform a password change in order to upgrade the stored
 hashes to the stronger algorithm. -->
@@ -398,7 +398,7 @@ frequently.</description>
 The passwords to remember should be set to:
 <sub idref="password_history_retain_number" /></description>
 <rationale>
-Allowing users to reuse passwords means that a password which was once 
+Allowing users to reuse passwords means that a password which was once
 compromised could be used yet again by an attacker.
 </rationale>
 <ident cce="14939-3" />
