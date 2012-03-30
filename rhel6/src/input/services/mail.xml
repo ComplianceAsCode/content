@@ -51,9 +51,7 @@ configuration guidance, and the specific guidance for your MTA in this section.
 <description>
 Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following
 <tt>inet_interfaces</tt> line appears:
-<pre>
-inet_interfaces = localhost
-</pre>
+<pre>inet_interfaces = localhost</pre>
 </description>
 <rationale>
 This ensures that <tt>postfix</tt> accepts mail messages
@@ -110,8 +108,7 @@ ensure that only system administrators are allowed shell access to the MTA host.
 <title>Configure iptables to Allow Access to the Mail Server</title>
 <description>Edit <tt>/etc/sysconfig/iptables</tt>. Add the following line, ensuring that it appears before the final LOG and
 DROP lines for the RH-Firewall-1-INPUT chain:
-<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 25 -j ACCEPT
-</pre>
+<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 25 -j ACCEPT</pre>
 </description>
 <rationale>The default Iptables configuration does not allow inbound access to the SMTP service. This modification allows
 that access, while keeping other ports on the server in their default protected state.
@@ -124,18 +121,12 @@ that access, while keeping other ports on the server in their default protected 
 <Rule id="postfix_logging">
 <title>Verify System Logging and Log Permissions for Mail</title>
 <description>Edit the file /etc/syslog.conf. Add or correct the following line if necessary (this is the default):
-<pre>
-mail.*					-/var/log/maillog
-</pre>
+<pre>mail.*					-/var/log/maillog</pre>
 Run the following commands to ensure correct permissions on the mail log:
-<pre>
-# chown root:root /var/log/maillog
-# chmod 600 /var/log/maillog
-</pre>
+<pre># chown root:root /var/log/maillog
+# chmod 600 /var/log/maillog</pre>
 Ensure log will be rotated as appropriate by adding or correcting the following line if needed into the list on the first line of <tt>/etc/logrotate.d/syslog</tt> (this is the default):
-<pre>
-/var/log/maillog
-</pre>
+<pre>/var/log/maillog</pre>
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <oval id="postfix_logging" />
@@ -154,22 +145,16 @@ an SSL certificate are independent of the MTA in use, and are described here.
 <title>Create an SSL Certificate</title>
 <description>
 Change into the CA certificate directory:
-# cd /etc/pki/tls/certs
+<pre># cd /etc/pki/tls/certs</pre>
 Generate a key pair for the mail server:
-<pre>
-# openssl genrsa -out mailserverkey.pem 2048
-</pre>
+<pre># openssl genrsa -out mailserverkey.pem 2048</pre>
 Next, generate a certificate signing request (CSR) for the CA to sign, making sure to supply your mail
 server’s fully qualified domain name as the Common Name:
-<pre>
-# openssl req -new -key mailserverkey.pem -out mailserver.csr
-</pre>
+<pre># openssl req -new -key mailserverkey.pem -out mailserver.csr</pre>
 Next, the mail server CSR must be signed to create the mail server certificate. You can either send the CSR
 to an established CA or sign it with your CA.
 To sign mailserver.csr using your CA:
-<pre>
-# openssl ca -in mailserver.csr -out mailservercert.pem
-</pre>
+<pre># openssl ca -in mailserver.csr -out mailservercert.pem</pre>
 </description>
 <rationale>This step creates a private key, mailserverkey.pem, and a public certificate, mailservercert.pem. The mail
 server will use these to prove its identity by demonstrating that it has a certificate which has been signed by a
@@ -185,17 +170,13 @@ purpose.</warning>
 <Rule id="postfix_install_ssl_cert">
 <title>Install the SSL Certificate</title>
 <description>Create the PKI directory for mail certificates, if it does not already exist:
-<pre>
-# mkdir /etc/pki/tls/mail
+<pre># mkdir /etc/pki/tls/mail
 # chown root:root /etc/pki/tls/mail
-# chmod 755 /etc/pki/tls/mail
-</pre>
+# chmod 755 /etc/pki/tls/mail</pre>
 Using removable media or some other secure transmission format, install the files generated in the previous
 step onto the mail server:
-<pre>
-/etc/pki/tls/mail/serverkey.pem: the private key mailserverkey.pem
-/etc/pki/tls/mail/servercert.pem: the certificate file mailservercert.pem
-</pre>
+<pre>/etc/pki/tls/mail/serverkey.pem: the private key mailserverkey.pem
+/etc/pki/tls/mail/servercert.pem: the certificate file mailservercert.pem</pre>
 Verify the ownership and permissions of these files:
 <pre>
 # chown root:root /etc/pki/tls/mail/serverkey.pem
@@ -205,10 +186,8 @@ Verify the ownership and permissions of these files:
 </pre>
 Verify that the CA’s public certificate file has been installed as /etc/pki/tls/CA/cacert.pem, and has the
 correct permissions:
-<pre>
-# chown root:root /etc/pki/tls/CA/cacert.pem
-# chmod 644 /etc/pki/tls/CA/cacert.pem
-</pre>
+<pre># chown root:root /etc/pki/tls/CA/cacert.pem
+# chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <oval id="postfix_certificate_files" />
@@ -227,15 +206,13 @@ correct permissions:
 <Rule id="postfix_server_denial_of_service">
 <title>Limit Denial of Service Attacks</title>
 <description>Edit <tt>/etc/postfix/main.cf</tt>. Add or correct the following lines:
-<pre>
-default_process_limit = 100
+<pre>default_process_limit = 100
 smtpd_client_connection_count_limit = 10
 smtpd_client_connection_rate_limit = 30
 queue_minfree = 20971520
 header_size_limit = 51200
 message_size_limit = 10485760
-smtpd_recipient_limit = 100
-</pre>
+smtpd_recipient_limit = 100</pre>
 </description>
 <rationale>These configuration options serve to make it more difficult for attackers to consume resources on the MTA host.
 The default process limit parameter controls how many smtpd processes can exist at a time, while smtpd
@@ -259,9 +236,7 @@ typical at your site, look in <tt>/var/log/maillog</tt> for lines with the daemo
 <title>Configure SMTP Greeting Banner</title>
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the following line, substituting some other wording for the
 banner information if you prefer:
-<pre>
-smtpd_banner = $myhostname ESMTP
-</pre>
+<pre>smtpd_banner = $myhostname ESMTP</pre>
 </description>
 <rationale>The default greeting banner discloses that the listening mail process is Postfix.
 When remote mail senders connect to the MTA on port 25, they are greeted by an initial banner as part of
@@ -291,20 +266,13 @@ with SSL support.
 ways:
 <br />
 If any machine in the subnet containing the MTA may be trusted to relay messages, add or correct the line:
-<pre>
-mynetworks_style = <tt>subnet</tt>
+<pre>mynetworks_style = subnet
 </pre>
-<br />
 If only the MTA host itself is trusted to relay messages, add or correct:
-<pre>
-mynetworks_style = <tt>host</tt>
-</pre>
-<br />
+<pre>mynetworks_style = host</pre>
 If the set of machines which can relay is more complicated, manually specify an entry for each netblock
 or IP address which is trusted to relay by setting the mynetworks variable directly:
-<pre>
-mynetworks = 10.0.0.0/16 , 192.168.1.0/24 , 127.0.0.1
-</pre>
+<pre>mynetworks = 10.0.0.0/16 , 192.168.1.0/24 , 127.0.0.1</pre>
 </description>
 <rationale>The mynetworks variable must contain only the set of machines for which this MTA should unconditionally
 relay mail. This is a trust relationship — if spammers gain access to these machines, your site will effectively
@@ -321,13 +289,11 @@ mail.
 <title>Allow Unlimited Relaying for Trusted Networks Only</title>
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the smtpd recipient restrictions definition so that it
 contains at least:
-<pre>
-smtpd_recipient_restrictions =
+<pre>smtpd_recipient_restrictions =
     ...
     permit_mynetworks,
     reject_unauth_destination,
-    ...
-</pre>
+    ...</pre>
 </description>
 <rationale>The full contents of smtpd recipient restrictions will vary by site, since this is a common place to put spam
 restrictions and other site-specific options. The permit mynetworks option allows all mail to be relayed from
@@ -349,24 +315,18 @@ discussion of other options.
 <br />
 To enable the use of SASL authentication, edit <tt>/etc/postfix/main.cf</tt> and add or correct the following
 settings:
-<pre>
-smtpd_sasl_auth_enable = yes
+<pre>smtpd_sasl_auth_enable = yes
 smtpd_recipient_restrictions =
     ...
     permit_mynetworks,
     permit_sasl_authenticated,
     reject_unauth_destination,
-    ...
-</pre>
+    ...</pre>
 Then edit <tt>/usr/lib/sasl2/smtpd.conf</tt> and add or correct the following line with the correct authentication
 mechanism for SASL to use:
-<pre>
-pwcheck_method: saslauthd
-</pre>
+<pre>pwcheck_method: saslauthd</pre>
 Enable the saslauthd daemon:
-<pre>
-# chkconfig saslauthd on
-</pre>
+<pre># chkconfig saslauthd on</pre>
 </description>
 <rationale>Postfix can use either the Cyrus library or Dovecot as a source for SASL authentication. If this host is running
 Dovecot for some other reason, it is recommended that Dovecot’s SASL support be used instead of running the
@@ -390,14 +350,12 @@ work via PAM, look at the saslauthd(8) manpage to find out how to configure sasl
 <Rule id="postfix_server_mail_relay_require_tls_for_smtp_auth">
 <title>Require TLS for SMTP AUTH</title>
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the following lines:
-<pre>
-smtpd_tls_CApath = /etc/pki/tls/CA
+<pre>smtpd_tls_CApath = /etc/pki/tls/CA
 smtpd_tls_CAfile = /etc/pki/tls/CA/cacert.pem
 smtpd_tls_cert_file = /etc/pki/tls/mail/servercert.pem
 smtpd_tls_key_file = /etc/pki/tls/mail/serverkey.pem
 smtpd_tls_security_level = may
-smtpd_tls_auth_only = yes
-</pre>
+smtpd_tls_auth_only = yes</pre>
 </description>
 <rationale>These options tell Postfix to protect all SMTP AUTH transactions using TLS. The first four options describe
 the locations of the necessary TLS key files.

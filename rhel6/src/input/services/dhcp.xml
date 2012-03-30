@@ -38,9 +38,7 @@ and removed.
 <description>The <tt>dhcpd</tt> service should be disabled on
 any system that does not need to act as a DHCP server.
 To do so, run the command:
-<pre>
-# chkconfig dhcpd off
-</pre>
+<pre># chkconfig dhcpd off</pre>
 </description>
 <rationale>
 Unmanaged or unintentionally activate DHCP servers may provide faulty information
@@ -57,9 +55,7 @@ DHCP server if there is one.
 <description>If the system does not need to act as a DHCP server,
 the dhcp package can be uninstalled.
 To do so, run the command:
-<pre>
-# yum erase dhcp
-</pre>
+<pre># yum erase dhcp</pre>
 </description>
 <rationale>
 Removing the DHCP server ensures that it cannot be easily or
@@ -172,11 +168,9 @@ edit <tt>/etc/sysconfig/network-scripts/ifcfg-<i>IFACE</i></tt> and make the fol
 </li>
 <li> Add or correct the following lines, substituting the appropriate
 values based on your site’s addressing scheme:
-<pre>
-NETMASK=255.255.255.0
+<pre>NETMASK=255.255.255.0
 IPADDR=192.168.1.2
-GATEWAY=192.168.1.1
-</pre>
+GATEWAY=192.168.1.1</pre>
 </li>
 </ul>
 </description>

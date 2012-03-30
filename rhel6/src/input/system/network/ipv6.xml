@@ -20,10 +20,7 @@ instruct the IPv6 kernel module not to load it.</description>
 loading the IPv6 networking stack, add the following line to
 <tt>/etc/modprobe.d/disabled.conf</tt> (or another file in
 <tt>/etc/modprobe.d</tt>):
-<br />
-<pre>
-options ipv6 disable=1
-</pre>
+<pre>options ipv6 disable=1</pre>
 This permits the IPv6 module to be loaded (and thus satisfy other modules that depend on it),
 while disabling support for the IPv6 protocol.
 </description>
@@ -41,12 +38,8 @@ to exploitation of any implementation flaws.
 <Group id="disabling_ipv6_rpc">
 <title>Disable Support for RPC IPv6 unless Needed</title>
 <description>RPC services for NFSv4 try to load transport modules for <tt>udp6</tt> and <tt>tcp6</tt> by default, even if IPv6 has been disabled in <tt>/etc/modprobe.d</tt>. To prevent RPC services such as <tt>rpc.mountd</tt> from attempting to start IPv6 network listeners, remove or comment out the following two lines in <tt>/etc/netconfig</tt>:
-<br />
-<pre>
-udp6       tpi_clts      v     inet6    udp     -       -
-tcp6       tpi_cots_ord  v     inet6    tcp     -       -
-
-</pre>
+<pre>udp6       tpi_clts      v     inet6    udp     -       -
+tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
 </description>
 
 <Rule id="disable_ipv6_nfs_listeners">
@@ -73,9 +66,7 @@ in an unauthenticated fashion.</description>
 advertisements and redirects by adding or correcting the following
 line in <tt>/etc/sysconfig/network</tt> (note that this does not disable
 sending router solicitations):
-<br />
-<pre>
-IPV6_AUTOCONF=no</pre>
+<pre>IPV6_AUTOCONF=no</pre>
 </description>
 
 <Value id="sysconfig_network_IPV6_AUTOCONF_value" type="string"

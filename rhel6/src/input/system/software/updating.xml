@@ -19,13 +19,9 @@ to date with the latest security patches.</description>
 To ensure that the system can cryptographically verify update packages
 (and connect to the Red Hat Network to receive them if desired),
 run the following command to verify that the system has the Red Hat GPG key properly installed:
-<pre>
-$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey
-</pre>
+<pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
 The command should return the string:
-<pre>
-gpg(Red Hat, Inc. (release key &lt;security@redhat.com&gt;)
-</pre>
+<pre>gpg(Red Hat, Inc. (release key &lt;security@redhat.com&gt;)</pre>
 </description>
 <rationale>
 This key is necessary to cryptographically verify that packages
@@ -41,9 +37,7 @@ are from Red Hat.
 <description>The <tt>rhnsd</tt> daemon polls the Red Hat Network web site
 for scheduled actions. Unless needed, it is recommended that
 the service be disabled with the following command:
-<pre>
-#chkconfig rhnsd off
-</pre>
+<pre>#chkconfig rhnsd off</pre>
 </description>
 <rationale>
 This utility is not required for the system to be able to access and
@@ -59,15 +53,9 @@ there is no need for the system to run actions scheduled through RHN.
 <title>Ensure Software Patches Installed</title>
 <description>The following command prints a list of packages that
 need to be updated:
-<br />
-<pre>
-# yum check-update
-
-</pre>
+<pre># yum check-update</pre>
 To actually install these updates, run:
-<br />
-<pre>
-# yum update</pre>
+<pre># yum update</pre>
 </description>
 <rationale>
 Installing software updates is a fundamental mitigation against
@@ -96,9 +84,7 @@ installation.
 To force yum to check package signatures before installing
 them, ensure that the following line appears in <tt>/etc/yum.conf</tt> in
 the <tt>[main]</tt> section:
-<br /><br />
-<pre>
-gpgcheck=1</pre>
+<pre>gpgcheck=1</pre>
 </description>
 <rationale>
 Ensuring the validity of packages' cryptographic signatures prior to
@@ -115,9 +101,7 @@ protects against malicious tampering.
 <description>To ensure that signature checking is not disabled for
 any repos, ensure that the following line DOES NOT appear in any
 repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:
-<br />
-<pre>
-gpgcheck=0</pre>
+<pre>gpgcheck=0</pre>
 </description>
 <rationale>
 Ensuring that all packages' cryptographic signatures are valid prior to

@@ -20,9 +20,7 @@ nameservers.
 <title>Disable DNS Server</title>
 <description>
 The <tt>named</tt> service can be disabled with following command:
-<pre>
-# chkconfig named off
-</pre>
+<pre># chkconfig named off</pre>
 </description>
 <rationale>
 All network services involve some risk of compromise due to
@@ -37,9 +35,7 @@ implementation flaws and should be disabled if possible.
 <title>Uninstall bind Package</title>
 <description>To remove the <tt>bind</tt> package, which contains the <tt>named</tt> service,
 run the following command:
-<pre>
-# yum erase bind
-</pre>
+<pre># yum erase bind</pre>
 </description>
 <rationale>
 If there is no need to make DNS server software available,
