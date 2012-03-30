@@ -17,6 +17,7 @@ disable the capability via software should be made. In general,
 acquisition policy should include provisions to prevent the
 purchase of equipment that will be used in sensitive spaces and
 includes wireless capabilities.</description>
+
 <Group id="wireless_software">
 <title>Disable Wireless Through Software Configuration</title>
 <description>If it is impossible to remove the wireless hardware
@@ -25,49 +26,55 @@ through software. The following methods can disable software
 support for wireless networking, but note that these methods do not
 prevent malicious software or careless users from re-activating the
 devices.</description>
-<Group id="wireless_interface_deactivation">
+
+<Rule id="wireless_disable_in_bios">
+<title>Disable Wireless in BIOS</title>
+<description>Some systems that include built-in wireless support offer the ability to disable the device through the BIOS. This is system-specific; consult your hardware manual or explore the BIOS setup during boot.</description>
+<ident cce="3628-5" />
+<!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="deactivate_wireless_interfaces">
 <title>Deactivate Wireless Interfaces</title>
 <description>Deactivating the wireless interfaces should prevent
 normal usage of the wireless capability.
 <br /><br />
 First, identify the interfaces available with the command:
 <br />
-<pre>
-# ifconfig -a
-
-</pre>
+<pre># ifconfig -a</pre>
 >Additionally,the following command may also be used to
 determine whether wireless support ('extensions') is included for a
 particular interface, though this may not always be a clear
 indicator:
 <br />
-<pre>
-# iwconfig
-
-</pre>
+<pre># iwconfig</pre>
 After identifying any wireless interfaces (which may have
 names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
 <tt>eth0</tt>), deactivate the interface with the command:
 <br />
-<pre>
-# ifdown interface
-
-</pre>
+<pre># ifdown interface</pre>
 These changes will only last until the next reboot. To
 disable the interface for future boots, remove the appropriate
 interface file from <tt>/etc/sysconfig/network-scripts</tt>:
 <br />
-<pre>
-# rm /etc/sysconfig/network-scripts/ifcfg-interface</pre>
+<pre># rm /etc/sysconfig/network-scripts/ifcfg-interface</pre>
 </description>
-<Rule id="deactivate_wireless_interfaces">
-<title>Deactivate Wireless Interfaces</title>
-<description>All wireless interfaces should be
-disabled.</description>
 <ident cce="4276-2" />
 <oval id="wireless_disable_interfaces" />
 <ref nist="CM-7" />
 </Rule>
-</Group>
-</Group>
-</Group>
+
+<Rule id="wireless_disable_drivers">
+<title>Disable Wireless Drivers</title>
+<description>Removing the kernel drivers that provide support for wireless Ethernet devices will prevent users from easily activating the devices. To remove the wireless drivers from the system:
+<pre># rm -r /lib/modules/<i>kernelversion(s)</i>/kernel/drivers/net/wireless</pre>
+</description>
+<warning category="general">This command must also be repeated every time the kernel is upgraded.</warning>
+<ident cce="4170-7" />
+<oval id="wireless_disable_drivers" />
+<ref nist="CM-7" />
+</Rule>
+
+</Group><!--<Group id="wireless_software">-->
+</Group><!--<Group id="network-wireless">-->
