@@ -23,8 +23,7 @@ safer to use LDAP only for services to which it is relevant in your
 environment.</description>
 <warning category="general">Before configuring any machine to be an
 LDAP client, ensure that a working LDAP server is present on the
-network. See Section 3.12.3 for instructions on configuring an LDAP
-server.</warning>
+network.</warning>
 
 <Rule id="ldap_client_tls_checkpeer">
 <title>LDAP Uses TLS For All Transactions</title>
@@ -90,16 +89,12 @@ edit the ldap configuration file at
 to include suffix information relevant to your domain.
 <br />
 <pre>
-Edit the ldap configuration file at
-/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
-to include suffix information relevant to your domain.
 olcSuffix: "dc=example,dc=com "
 olcRootDN: "cn=Manager,dc=example,dc=com "
-where dc=example,dc=com is the same root you will use on the LDAP clients.
 </pre>
-These are basic LDAP configuration directives. The suffix parameter gives the root name of all information
-served by this LDAP server, and should be some name related to your domain. The rootdn parameter names
-LDAP’s privileged user, who is allowed to read or write all data managed by this LDAP server.
+where dc=example,dc=com is the same root you will use on the LDAP clients.
+<br />
+These are basic LDAP configuration directives. The suffix parameter gives the root name of all information served by this LDAP server, and should be some name related to your domain. The rootdn parameter names LDAP’s privileged user, who is allowed to read or write all data managed by this LDAP server.
 </description>
 <ident cce="3501-4" />
 <oval id="ldap_server_config_olcsuffix" />
