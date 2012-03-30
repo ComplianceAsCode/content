@@ -178,12 +178,10 @@ step onto the mail server:
 <pre>/etc/pki/tls/mail/serverkey.pem: the private key mailserverkey.pem
 /etc/pki/tls/mail/servercert.pem: the certificate file mailservercert.pem</pre>
 Verify the ownership and permissions of these files:
-<pre>
-# chown root:root /etc/pki/tls/mail/serverkey.pem
+<pre># chown root:root /etc/pki/tls/mail/serverkey.pem
 # chown root:root /etc/pki/tls/mail/servercert.pem
 # chmod 600 /etc/pki/tls/mail/serverkey.pem
-# chmod 644 /etc/pki/tls/mail/servercert.pem
-</pre>
+# chmod 644 /etc/pki/tls/mail/servercert.pem</pre>
 Verify that the CA’s public certificate file has been installed as /etc/pki/tls/CA/cacert.pem, and has the
 correct permissions:
 <pre># chown root:root /etc/pki/tls/CA/cacert.pem

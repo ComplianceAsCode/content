@@ -116,12 +116,10 @@ correcting the following line in the <tt>[publish]</tt> section:
 <pre>disable-user-service-publishing=yes</pre>
 Implement as many of the following lines as possible, to restrict the information
 published by Avahi:
-<pre>
-publish-addresses=no
+<pre>publish-addresses=no
 publish-hinfo=no
 publish-workstation=no
-publish-domain=no
-</pre>
+publish-domain=no</pre>
 Inspect the files in the directory <tt>/etc/avahi/services/</tt>. Unless there
 is an operational need to publish information about each of these services,
 delete the corresponding file.
