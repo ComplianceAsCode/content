@@ -162,11 +162,7 @@ x86 kernel already includes this support. However, if the system is
 32-bit and also supports the PAE and NX features as
 determined in the previous section, the kernel-PAE package should
 be installed to enable XD or NX support:
-<br />
-<pre>
-# yum install kernel-PAE
-
-</pre>
+<pre># yum install kernel-PAE</pre>
 The installation process should also have configured the
 bootloader to load the new kernel at boot. Verify this at reboot
 and modify <tt>/etc/grub.conf</tt> if necessary.</description>

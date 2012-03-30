@@ -212,11 +212,7 @@ owner of the file. The presence of these files should be strictly controlled on 
 <description>The following command will discover and print any
 files on local partitions which do not belong to a valid user and a
 valid group. Run it once for each local partition PART:
-<br />
-<pre>
-# find PART -xdev \( -nouser -o -nogroup \) -print
-
-</pre>
+<pre># find PART -xdev \( -nouser -o -nogroup \) -print</pre>
 If this command prints any results, investigate each reported file and
 either assign it to an appropriate user and group or remove it.
 </description>
@@ -239,11 +235,7 @@ and the cause should be discovered and addressed.
 <description>The following command will discover and print any
 files on local partitions which do not belong to a valid user and a
 valid group. Run it once for each local partition PART:
-<br />
-<pre>
-# find PART -xdev \( -nouser -o -nogroup \) -print
-
-</pre>
+<pre># find PART -xdev \( -nouser -o -nogroup \) -print</pre>
 If this command prints any results, investigate each reported file and
 either assign it to an appropriate user and group or remove it.
 </description>
@@ -269,11 +261,7 @@ world-writable and ensure that they are owned by root or another
 system account. The following command will discover and print these
 (assuming only system accounts have a uid lower than 500). Run it
 once for each local partition PART:
-<br />
-<pre>
-# find PART -xdev -type d -perm -0002 -uid +500 -print
-
-</pre>
+<pre># find PART -xdev -type d -perm -0002 -uid +500 -print</pre>
 If this command produces any output, investigate why the
 current owner is not root or another system account.
 </description>

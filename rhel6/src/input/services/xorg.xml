@@ -18,9 +18,7 @@ SSH or on the text console.</description>
 <description>Setting the system's runlevel to 3 will prevent automatic startup
 of the X server. To do so, ensure that the following line in <tt>/etc/inittab</tt>
 features a <tt>3</tt> as shown:
-<pre>
-id:3:initdefault:
-</pre>
+<pre>id:3:initdefault:</pre>
 </description>
 <ident cce="4462-8" />
 <oval id="xwindows_runlevel_setting" />
@@ -32,9 +30,7 @@ id:3:initdefault:
 <description>Removing all packages which constitute the X Window System
 ensures that users or malicious software cannot start X.
 To do so, run the following command:
-<pre>
-# yum groupremove "X Window System"
-</pre>
+<pre># yum groupremove "X Window System"</pre>
 </description>
 <ident cce="4422-2" />
 <oval id="package_xorg-x11-server-common_removed" />
@@ -54,11 +50,7 @@ configuration.</description>
 <description>To prevent X.org from listening for remote
 connections, create the file <tt>/etc/X11/xinit/xserverrc</tt> and
 fill it with the following line:
-<br />
-<pre>
-exec X :0 -nolisten tcp $@
-
-</pre>
+<pre>exec X :0 -nolisten tcp $@</pre>
 One of X.org's features is the ability to provide remote
 graphical display. This feature should be disabled unless it is
 required. If the system uses <tt>runlevel 5</tt>, which is the default,
@@ -94,17 +86,12 @@ Users</title>
 <description>To ensure the GNOME display manager displays a warning banner prior to login,
 edit the file <tt>/etc/gdm/custom.conf</tt>. Locate the
 <tt>[greeter]</tt> section, and correct that section to contain the lines:
-<br />
-<pre>
-[greeter]
-InfoMsgFile=/etc/issue
-</pre>
+<pre>[greeter]
+InfoMsgFile=/etc/issue</pre>
 This setting will cause the system greeting banner to be displayed in a box
 prior to GUI login. If the default banner font is inappropriate, it can be
 changed by specifying the <tt>InfoMsgFont</tt> directive as well, for instance:
-<br />
-<pre>
-InfoMsgFont=Sans 12</pre>
+<pre>InfoMsgFont=Sans 12</pre>
 </description>
 <ident cce="3717-6" />
 <oval id="banner_gui_gdm" />

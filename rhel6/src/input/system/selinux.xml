@@ -26,20 +26,12 @@ appropriate.
 <title>Enable SELinux</title>
 <description>Edit the file <tt>/etc/selinux/config</tt>. Add or correct the
 following lines:
-<br />
-<pre>
-SELINUX=enforcing
-SELINUXTYPE=targeted
-
-</pre>
+<pre>SELINUX=enforcing
+SELINUXTYPE=targeted</pre>
 Edit the file <tt>/etc/grub.conf</tt>. Ensure that the following
 arguments DO NOT appear on any kernel command line in the file:
-<br />
-<pre>
-selinux=0
-enforcing=0
-
-</pre>
+<pre>selinux=0
+enforcing=0</pre>
 The directive <tt>SELINUX=enforcing</tt> enables SELinux at boot time.
 If SELinux is suspected of involvement with boot-time problems
 (unlikely), it is possible to boot into the warning-only mode
@@ -112,9 +104,7 @@ the chances that it remain off during system operation.
 normal system operation. To ensure the system is configured to
 boot into enforcing mode, add or correct the following line in
 <tt>/etc/selinux/config</tt>:
-<pre>
-SELINUX=enforcing
-</pre>
+<pre>SELINUX=enforcing</pre>
 </description>
 <rationale>
 Setting the SELinux state to enforcing ensures that SELinux is able to confine
@@ -134,9 +124,7 @@ general-purpose desktops and servers, as well as systems in many other roles.
 To configure the system to use this policy,
 add or correct the following line in
 <tt>/etc/selinux/config</tt>:
-<pre>
-SELINUXTYPE=targeted
-</pre>
+<pre>SELINUXTYPE=targeted</pre>
 Other policies, such as <tt>mls</tt>, provide additional security labeling
 and greater confinement.
 </description>
@@ -165,11 +153,7 @@ Possible</title>
 <description>Unless there is some overriding need for the
 convenience of category label translation, disable the MCS
 translation service:
-<br />
-<pre>
-# chkconfig mcstrans off
-
-</pre>
+<pre># chkconfig mcstrans off</pre>
 The mcstransd daemon provides the category label translation
 information defined in <tt>/etc/selinux/targeted/setrans.conf</tt> to
 client processes which request this information.
@@ -200,9 +184,7 @@ startup and descend from the <tt>init</tt> process, they inherit the <tt>initrc_
 <br/>
 <br/>
 To check for unconfined daemons, run the following command:
-<pre>
-# ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'
-</pre>
+<pre># ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'</pre>
 It should produce no output in a well-configured system.
 </description>
 <rationale>
@@ -218,10 +200,7 @@ Device files are used for communication with important
 system resources. SELinux contexts should exist for these.
 <br /><br />
 To check for unlabeled device files, run the following command:
-<br />
-<pre>
-# ls -Z | grep unlabeled_t
-</pre>
+<pre># ls -Z | grep unlabeled_t</pre>
 It should produce no output in a well-configured system.
 </description>
 <rationale>

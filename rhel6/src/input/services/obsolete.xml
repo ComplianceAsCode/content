@@ -21,11 +21,7 @@ need to use it.</description>
 <description>Is there an operational need to run the deprecated
 inetd or xinetd software packages? If not, ensure that they are
 removed from the system:
-<br />
-<pre>
-# yum erase inetd xinetd
-
-</pre>
+<pre># yum erase inetd xinetd</pre>
 Beginning with Red Hat Enterprise Linux 5, the <tt>xinetd</tt> service
 is no longer installed by default. This change represents increased
 awareness that the dedicated network listener model does not
@@ -70,11 +66,7 @@ options.</description>
 the system via the insecure telnet protocol, rather than the more
 secure SSH protocol? If not, ensure that the telnet server is
 removed from the system:
-<br />
-<pre>
-# yum erase telnet-server
-
-</pre>
+<pre># yum erase telnet-server</pre>
 The telnet protocol uses unencrypted network communication,
 which means that data from the login session, including passwords
 and all other information transmitted during the session, can be
@@ -90,9 +82,7 @@ See Section 3.5 for information about the SSH service.</description>
 <title>Disable telnet service</title>
 <description>
 To disable the telnet service, run the following command:
-<pre>
-# chkconfig telnet off
-</pre>
+<pre># chkconfig telnet off</pre>
 </description>
 <rationale>
 The telnet protocol uses unencrypted network communication, which
@@ -167,19 +157,11 @@ uninstalled.</description>
 <description>The NIS client service <tt>ypbind</tt> is not activated by
 default. In the event that it was activated at some point, disable
 it by executing the command:
-<br />
-<pre>
-# chkconfig ypbind off
-
-</pre>
+<pre># chkconfig ypbind off</pre>
 The NIS server package is not installed by default. In the
 event that it was installed at some point, remove it from the
 system by executing the command:
-<br />
-<pre>
-# yum erase ypserv
-
-</pre>
+<pre># yum erase ypserv</pre>
 The Network Information Service (NIS), also known as 'Yellow
 Pages' (YP), and its successor NIS+ have been made obsolete by
 Kerberos, LDAP, and other modern centralized authentication
@@ -208,11 +190,7 @@ uninstalled.</description>
 <description>Is there an operational need to run the deprecated
 TFTP server software? If not, ensure that it is removed from the
 system:
-<br />
-<pre>
-# yum erase tftp-server
-
-</pre>
+<pre># yum erase tftp-server</pre>
 TFTP is a lightweight version of the FTP protocol which has
 traditionally been used to configure networking equipment. However,
 TFTP provides little security, and modern versions of networking

@@ -67,10 +67,7 @@ data if the system is busy.
 <title>Enable auditd Service</title>
 <description>Ensure that the <tt>auditd</tt> service is enabled (this is the
 default):
-<br />
-<pre>
-# chkconfig auditd on
-</pre>
+<pre># chkconfig auditd on</pre>
 </description>
 <rationale>
 </rationale>
@@ -84,9 +81,7 @@ default):
 <description>To ensure that all processes can be audited, even
 those which start prior to the audit daemon, add the argument
 <tt>audit=1</tt> to the kernel line in <tt>/etc/grub.conf</tt>, in the manner below:
-<br />
-<pre>kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1
-</pre>
+<pre>kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1</pre>
 </description>
 <rationale>
 Each process on the system carries an "auditable" ﬂag which
@@ -136,14 +131,12 @@ architecture.
 <br /><br />
 After reviewing all the rules, reading the following sections, and
 editing as needed, activate the new rules:
-<br />
 <pre># service auditd restart</pre>
 </description>
 
 <Rule id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
 <description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
-<br />
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -S clock_settime -k audit_time_rules
 -w /etc/localtime -p wa -k audit_time_rules</pre>
@@ -165,14 +158,12 @@ upon an accurate system time (such as sshd). All changes to the system time shou
 <title>Record Events that Modify User/Group Information</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, in order
 to capture events that modify account changes:
-<br />
 <pre># audit_account_changes
 -w /etc/group -p wa -k audit_account_changes
 -w /etc/passwd -p wa -k audit_account_changes
 -w /etc/gshadow -p wa -k audit_account_changes
 -w /etc/shadow -p wa -k audit_account_changes
--w /etc/security/opasswd -p wa -k audit_account_changes
-</pre>
+-w /etc/security/opasswd -p wa -k audit_account_changes</pre>
 </description>
 <rationale>In addition to auditing new user and group accounts, these watches will alert the system administrator(s) to any modifications. It is recommended that any unexpected users, groups, or modifications be investigated for legitimacy.</rationale>
 <ident cce="14829-6" />
@@ -185,14 +176,12 @@ to capture events that modify account changes:
 <title>Record Events that Modify the System’s Network Environment</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
-<br />
 <pre># audit_network_modifications
 -a exit,always -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
 -w /etc/issue -p wa -k audit_network_modifications
 -w /etc/issue.net -p wa -k audit_network_modifications
 -w /etc/hosts -p wa -k audit_network_modifications
--w /etc/sysconfig/network -p wa -k audit_network_modifications
-</pre>
+-w /etc/sysconfig/network -p wa -k audit_network_modifications</pre>
 </description>
 <rationale>The network environment should not be modified by anything other than
 administrator action. Any change to network parameters should be audited.</rationale>
@@ -206,9 +195,7 @@ administrator action. Any change to network parameters should be audited.</ratio
 <title>Record Events that Modify the System’s Mandatory Access
 Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
-<br />
-<pre>
--w /etc/selinux/ -p wa -k MAC-policy</pre>
+<pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
 </description>
 <!-- TODO add info for selinux system calls which load new policy? -->
 <rationale>The system's mandatory access policy (SELinux) should not be arbitrarily changed by
@@ -226,9 +213,7 @@ Permission Modification Events</title>
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br />
-<pre>
--a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat \
+<pre>-a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat \
     -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
 -a always,exit -F arch=ARCH -S chown -S fchown -S fchownat \
     -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
@@ -251,9 +236,7 @@ unauthorized users.</rationale>
 unauthorized file accesses for all users and root. Add the following
 to <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br />
-<pre>
--a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate \
+<pre>-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate \
     -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
 -a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate \
     -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
@@ -270,9 +253,7 @@ these events could serve as evidence of potential system compromise.</rationale>
 <description>At a minimum the audit system should collect the
 execution of privileged commands for all users and root. Add the
 following to <tt>/etc/audit/audit.rules</tt>:
-<br />
-<pre>
--a always,exit -F path=/bin/ping -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
+<pre>-a always,exit -F path=/bin/ping -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
 </description>
 
 <ident cce="14296-8" />
@@ -287,9 +268,7 @@ following to <tt>/etc/audit/audit.rules</tt>:
 exportation events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br />
-<pre>
--a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export</pre>
+<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export</pre>
 </description>
 <rationale>The unauthorized exportation of data to external media could result in an information leak
 where classified information, Privacy Act information, and intellectual property could be lost. An audit
@@ -306,11 +285,8 @@ loss.</rationale>
 deletion events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<br />
-<pre>
--a always,exit -F arch=ARCH -S unlink -S unlinkat -S rename -S renameat \
-    -F auid&gt;=500 -F auid!=4294967295 -k delete
-</pre>
+<pre>-a always,exit -F arch=ARCH -S unlink -S unlinkat -S rename -S renameat \
+    -F auid&gt;=500 -F auid!=4294967295 -k delete</pre>
 </description>
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting as well as detecting
@@ -325,9 +301,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <description>At a minimum the audit system should collect
 administrator actions for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<br />
-<pre>
--w /etc/sudoers -p wa -k actions</pre>
+<pre>-w /etc/sudoers -p wa -k actions</pre>
 </description>
 <rationale>The actions taken by system administrators should be audited to keep a record
 of what was executed on the system as well as for accountability purposes.</rationale>
@@ -341,9 +315,7 @@ of what was executed on the system as well as for accountability purposes.</rati
 and Unloading</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to capture kernel module loading and unloading events:
-<br />
-<pre>
--w /sbin/insmod -p x -k modules
+<pre>-w /sbin/insmod -p x -k modules
 -w /sbin/rmmod -p x -k modules
 -w /sbin/modprobe -p x -k modules
 -a always,exit -S init_module -S delete_module -k modules</pre>
@@ -360,10 +332,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <title>Make the <tt>auditd</tt> Configuration Immutable</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to make the configuration immutable:
-<br />
-<pre>
--e 2
-</pre>
+<pre>-e 2</pre>
 With this setting, a reboot will be required to change any
 audit rules.</description>
 <rationale>Making the audit configuration immutable prevents the accidential as
