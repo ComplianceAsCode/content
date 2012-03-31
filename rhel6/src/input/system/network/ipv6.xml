@@ -27,11 +27,10 @@ Any networking stack, including IPv6, that does not need to be active should be
 disabled in order to reduce the system's vulnerability
 to exploitation of any implementation flaws.
 </rationale>
-<ident cce="3562-6" />
+<ident cce="CCE-3562-6" />
 <oval id="kernel_module_ipv6_option_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
-</Group><!--<Group id="disabling_ipv6">-->
 
 <Rule id="network_ipv6_disable_interfaces">
 <title>Disable Interface Usage of IPv6</title>
@@ -41,9 +40,6 @@ IPV6INIT=no</pre>
 For each network interface IFACE , add or correct the following lines in <tt>/etc/sysconfig/network-scripts/</tt> ifcfg-IFACE as an additional prevention mechanism:
 <pre>IPV6INIT=no</pre>
 </description>
-<ident cce="3377-9, 4296-0, 3381-1"/>
-<oval id="network_ipv6_disable_interfaces" />
-<ref />
 </Rule>
 
 <Rule id="network_ipv6_disable_rpc">
@@ -56,6 +52,7 @@ tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
 <oval id="network_ipv6_disable_rpc" />
 <ref nist="CM-6, CM-7" />
 </Rule>
+</Group><!--<Group id="disabling_ipv6">-->
 
 <Group id="configuring_ipv6">
 <title>Configure IPv6 Settings if Necessary</title>
@@ -136,11 +133,11 @@ Manually assigning an IP address is preferable to accepting one from routers or 
 </Rule>
 
 <Rule id="network_ipv6_privacy_extensions">
-<title>Manually Assign Global IPv6 Address</title>
+<title>Use Privacy Extensions for Address</title>
 <description>To introduce randomness into the automatic generation of IPv6 addresses, add or correct the following line in <tt>/etc/sysconfig/network-scripts/ifcfg-IFACE</tt>:
 <pre>IPV6_PRIVACY=rfc3041</pre>
 Automatically-generated IPv6 addresses are based on the underlying hardware (e.g. Ethernet) address, and so it becomes possible to track a piece of hardware over its lifetime using its traffic. If it is important for a system's IP address to not trivially reveal its hardware address, this setting should be applied.</description>
-<ident cce="3842-2" />
+<ident cce="CCE-3842-2" />
 <oval id="network_ipv6_privacy_extensions" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -150,7 +147,7 @@ Automatically-generated IPv6 addresses are based on the underlying hardware (e.g
 <description>Edit the file <tt>/etc/sysconfig/network-scripts/ifcfg-IFACE</tt>, and add or correct the following line (substituting your gateway IP as appropriate):
 <pre>IPV6_DEFAULTGW=2001:0DB8::0001</pre>
 Router addresses should be manually set and not accepted via any autoconfiguration or router advertisement.</description>
-<!--<ident cce="3842-2" />-->
+<!--<ident cce="CCE-3842-2" />-->
 <oval id="network_ipv6_default_gateway" />
 <ref nist="CM-6, CM-7" />
 </Rule>
