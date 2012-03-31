@@ -32,8 +32,7 @@ provided in its documentation available in
 <title>Install AIDE</title>
 <description>
 Install the AIDE package with the command:
-<pre>
-# yum install aide</pre>
+<pre># yum install aide</pre>
 </description>
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
@@ -49,13 +48,9 @@ The AIDE package must be installed if it is to be available for integrity checki
 The prelinking feature
 changes binaries in an attempt to decrease their startup time.
 In order to disable it, change or add the following line inside the file <tt>/etc/sysconfig/prelink</tt>:
-<pre>
-PRELINKING=no
-</pre>
+<pre>PRELINKING=no</pre>
 Next, run the command
-<pre>
-# /usr/sbin/prelink -ua
-</pre>
+<pre># /usr/sbin/prelink -ua</pre>
 to restore binaries to a normal, non-prelinked state.
 </description>
 <rationale>
@@ -67,17 +62,14 @@ of AIDE, because it changes binaries.
 <Rule id="aide_build_database">
 <title>Build and Test AIDE Database</title>
 <description>Run the following command to generate a new database:
-<pre>
-# /usr/sbin/aide --init</pre>
+<pre># /usr/sbin/aide --init</pre>
 By default, the database will be written to the file <tt>/var/lib/aide/aide.db.new.gz</tt>.
 Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
 <tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
 The newly-generated database can be installed as follows:
-<pre>
-# cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+<pre># cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
 To initiate a manual check, run the following command:
-<pre>
-# /usr/sbin/aide --check</pre>
+<pre># /usr/sbin/aide --check</pre>
 If this check produces any unexpected output, investigate.
 </description>
 <rationale>
@@ -91,9 +83,7 @@ must be captured and it should be able to be verified against the installed file
 <description>
 AIDE should be executed on a periodic basis to check for changes.
 To implement a daily execution of AIDE at 4:05am using cron, add the following line to /etc/crontab:
-<pre>
-05 4 * * * root /usr/sbin/aide --check
-</pre>
+<pre>05 4 * * * root /usr/sbin/aide --check</pre>
 AIDE can be executed periodically through other means; this is merely one example.
 </description>
 <rationale>
@@ -141,8 +131,7 @@ package metadata stored in the RPM database. Although an attacker
 could corrupt the RPM database (analogous to attacking the AIDE
 database as described above), this check can still reveal
 modification of important files. To list which files on the system differ from what is expected by the RPM database:
-<pre>
-# rpm -qVa</pre>
+<pre># rpm -qVa</pre>
 See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 </description>
 
@@ -152,8 +141,7 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 thousands of installed files, including many that are important to system
 security. The following command will list which files on the system have
 permissions that are different from what is expected by the RPM database:
-<pre>
-# rpm -Va | grep '^.M'</pre>
+<pre># rpm -Va | grep '^.M'</pre>
 </description>
 <rationale>
 Permissions on system binaries and configuration files that are too generous
@@ -172,9 +160,7 @@ can check the hashes of thousands of installed files, including
 many that are important to system security.
 To list which files on the system have hashes that differ from what is expected by the
 RPM database (except for configuration files, which may be expected to change):
-<pre>
-# rpm -Va | grep '^..5'
-</pre>
+<pre># rpm -Va | grep '^..5'</pre>
 A “c” in the second column indicates that a file is a configuration file.
 </description>
 <rationale>

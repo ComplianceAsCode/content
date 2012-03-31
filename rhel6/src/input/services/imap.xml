@@ -15,9 +15,7 @@ POP3 server, the dovecot software should be disabled and removed.
 <Rule id="disable_dovecot">
 <title>Disable Dovecot Service</title>
 <description>The <tt>dovecot</tt> service can be disabled with the following command:
-<pre>
-# chkconfig dovecot off
-</pre>
+<pre># chkconfig dovecot off</pre>
 </description>
 <rationale>
 Running an IMAP or POP3 server provides a network-based
@@ -31,8 +29,7 @@ avenue of attack, and should be disabled if not needed.
 <title>Uninstall dovecot RPM Package</title>
 <description>The <tt>dovecot</tt> package can be uninstalled
 with the following command:
-<pre>
-# yum erase dovecot</pre>
+<pre># yum erase dovecot</pre>
 </description>
 
 <rationale>

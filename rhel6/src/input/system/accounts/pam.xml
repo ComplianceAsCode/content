@@ -67,17 +67,9 @@ requirements for a variety of policies.
 For example, to configure <tt>pam_cracklib</tt> to require at least one uppercase
 character, lowercase character, digit, and other (special)
 character, locate the following line in <tt>/etc/pam.d/system-auth</tt>:
-<br />
-<pre>
-password requisite pam_cracklib.so try_first_pass retry=3
-
-</pre>
+<pre>password requisite pam_cracklib.so try_first_pass retry=3</pre>
 and then alter it to read:
-<br />
-<pre>
-password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=0
-
-</pre>
+<pre>password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=0</pre>
 The arguments can be modified to ensure compliance with
 your organization’s security policy. Discussion of each parameter follows.
 </description>
@@ -291,35 +283,20 @@ attempts using
 <tt>pam_faillock.so</tt>,
 <br /><br />
 Find the following line in <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<br />
-<pre>
-auth sufficient pam_unix.so nullok try_first_pass
-</pre>
+<pre>auth sufficient pam_unix.so nullok try_first_pass</pre>
 and then change it so that it reads as follows:
-<br />
-<pre>
-auth required pam_unix.so nullok try_first_pass
-</pre>
+<pre>auth required pam_unix.so nullok try_first_pass</pre>
 In the same file, comment out or delete the lines:
-<br />
-<pre>
-auth requisite pam_succeed_if.so uid &gt;= 500 quiet
-auth required pam_deny.so
-</pre>
+<pre>auth requisite pam_succeed_if.so uid &gt;= 500 quiet
+auth required pam_deny.so</pre>
 To enforce password
 lockout, add the following to <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>.
 First, add the following just before the pam_unix.so auth line:
-<br />
-<pre>
-auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900
-</pre>
+<pre>auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900</pre>
 <!-- TOOD: this implies we need to create a Value and associated refine-value -->
 Second, add the following two lines just after the pam_unix.so auth line:
-<br />
-<pre>
-auth     [default=die]  pam_faillock.so authfail audit deny=5 unlock_time=900
-auth     sufficient     pam_faillock.so authsucc audit deny=5 unlock_time=900
-</pre>
+<pre>auth     [default=die]  pam_faillock.so authfail audit deny=5 unlock_time=900
+auth     sufficient     pam_faillock.so authsucc audit deny=5 unlock_time=900</pre>
 </description>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -339,16 +316,12 @@ prevents direct password guessing attacks.
 <tt>/etc/shadow</tt> is SHA-512.
 In order to ensure the system is still configured to use SHA-512 algorithm,
 ensure that the following line appears in <tt>/etc/login.defs</tt>:
-<pre>
-ENCRYPT_METHOD SHA512
-</pre>
+<pre>ENCRYPT_METHOD SHA512</pre>
 Also ensure that the <tt>pam_unix.so</tt> module in the <tt>password</tt> section in
 <tt>/etc/pam.d/system-auth</tt> includes the argument <tt>sha512</tt>.
 <br/>
 If this is not the case, the following command can be run to fix:
-<pre>
-# /usr/sbin/authconfig --passalgo=sha512 --update
-</pre>
+<pre># /usr/sbin/authconfig --passalgo=sha512 --update</pre>
 This ensures that when users change their passwords, hashes for the new passwords
 will be generated using the SHA-512 algorithm.
 <!-- All accounts will
@@ -370,11 +343,7 @@ be accomplished by using the remember option for the <tt>pam_unix</tt> PAM
 module. For example, in order to prevent a user from re-using any of his or her
 last 5 passwords, append <tt>remember=5</tt> to the password line which uses
 the <tt>pam_unix</tt> module in the file <tt>/etc/pam.d/system-auth</tt>, as shown:
-<br />
-<pre>
-password sufficient pam_unix.so existing_options remember=5
-
-</pre>
+<pre>password sufficient pam_unix.so existing_options remember=5</pre>
 Old (and thus no longer valid) passwords are stored in the
 file <tt>/etc/security/opasswd</tt>.</description>
 

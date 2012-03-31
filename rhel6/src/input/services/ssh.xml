@@ -22,10 +22,7 @@ operator="equals" interactive="0">
 <title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
 However, if it can be disabled, do so with the command:
-<br />
-<pre>
-# chkconfig sshd off
-</pre>
+<pre># chkconfig sshd off</pre>
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>
@@ -105,9 +102,7 @@ automatically logged out.
 <br /><br />
 To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
 follows:
-<br />
-<pre>ClientAliveInterval <b>interval</b>
-</pre>
+<pre>ClientAliveInterval <b>interval</b></pre>
 The timeout <b>interval</b> is given in seconds. To have a timeout
 of 15 minutes, set <b>interval</b> to 900.
 <br /><br />
@@ -131,10 +126,7 @@ to compromises on another.
 <description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveInterval</tt> is set,
 edit <tt>/etc/ssh/sshd_config</tt> as
 follows:
-<br />
-<pre>
-ClientAliveCountMax 0</pre>
-<br /><br />
+<pre>ClientAliveCountMax 0</pre>
 </description>
 <rationale>
 This ensures that a user login will be terminated as soon as the <tt>ClientAliveInternal</tt>
@@ -153,9 +145,7 @@ accounts via <tt>.rhosts</tt> files.
 <br /><br />
 To ensure that this behavior is disabled, add or correct the
 following line:
-<br />
-<pre>
-IgnoreRhosts yes</pre>
+<pre>IgnoreRhosts yes</pre>
 </description>
 <rationale>
 SSH trust relationships mean that a compromise on one host
@@ -176,9 +166,7 @@ within an organization.
 <br /><br />
 To disable host-based authentication, add or correct the
 following line:
-<br />
-<pre>
-HostbasedAuthentication no</pre>
+<pre>HostbasedAuthentication no</pre>
 </description>
 <rationale>
 SSH trust relationships mean that a compromise on one host
@@ -194,9 +182,7 @@ can allow an attacker to move trivially to other hosts.
 <description>The root user should never be allowed to login to a
 system directly over a network.
 To disable root login via SSH, add or correct the following line:
-<br />
-<pre>
-PermitRootLogin no</pre>
+<pre>PermitRootLogin no</pre>
 </description>
 <rationale>
 Permitting direct root login reduces auditable information about who ran
@@ -212,10 +198,7 @@ and also allows direct attack attempts on root’s password.
 <title>Disable SSH Access via Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
 empty passwords, add or correct the following line:
-<br />
-<pre>
-PermitEmptyPasswords no
-</pre>
+<pre>PermitEmptyPasswords no</pre>
 Any accounts with empty passwords should be disabled immediately, and PAM configuration
 should prevent users from being able to assign themselves empty passwords.
 </description>
@@ -233,11 +216,7 @@ even in the event of misconfiguration elsewhere.
 <description>
 To enable the warning banner and ensure it is consistent
 across the system, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
-
-<br />
-<pre>
-Banner /etc/issue</pre>
-<br /><br />
+<pre>Banner /etc/issue</pre>
 Another section contains information on how to create an
 appropriate system-wide warning banner.
 </description>
@@ -257,9 +236,7 @@ should ensure usage of a banner that does not provide easy attribution.
 <description>To ensure users are not able to present
 environment options to the SSH daemon, add or correct the following line
 in <tt>/etc/ssh/sshd_config</tt>:
-<br />
-<pre>
-PermitUserEnvironment no</pre>
+<pre>PermitUserEnvironment no</pre>
 </description>
 <rationale>
 SSH environment options potentially allow users to bypass
@@ -275,9 +252,7 @@ access restriction in some configurations.
 Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
 The following line in <tt>/etc/ssh/sshd_config</tt>
 demonstrates use of FIPS-approved ciphers in CTR mode:
-<pre>
-Ciphers aes128-ctr,aes192-ctr,aes256-ctr
-</pre>
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
 The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 Note that older or less capable versions of SSH client or server software
 may still be found on systems such as networking equipment, and these
