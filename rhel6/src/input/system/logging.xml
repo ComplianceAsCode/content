@@ -22,13 +22,9 @@ monitor logs.</description>
 <description>
 Rsyslog is installed by default. Ensure that it is installed
 by running:
-<pre>
-$ rpm -q rsyslog
-</pre>
+<pre>$ rpm -q rsyslog</pre>
 If it is not installed, install it by running:
-<pre>
-# yum install rsyslog
-</pre>
+<pre># yum install rsyslog</pre>
 </description>
 <rationale>
 The rsyslog package provides the rsyslog daemon, which provides
@@ -43,15 +39,11 @@ system logging services.
 <title>Configure Rsyslog</title>
 <description>
 To ensure that the rsyslog service is activated, run the following command:
-<pre>
-$ chkconfig --list rsyslog
-</pre>
+<pre>$ chkconfig --list rsyslog</pre>
 The service should be <tt>on</tt> for runlevels 2 through 5.
 <br/>
 If not, activate it with the command:
-<pre>
-$ chkconfig rsyslog on
-</pre>
+<pre>$ chkconfig rsyslog on</pre>
 </description>
 <rationale>
 The rsyslog service must be running in order to provide
@@ -66,13 +58,9 @@ logging services.
 <title>Confirm Existence and Permissions of System Log Files</title>
 <description>For each log file LOGFILE referenced in
 <tt>/etc/rsyslog.conf</tt>, run the commands:
-<br />
-<pre>
-# touch LOGFILE
+<pre># touch LOGFILE
 # chown root:root LOGFILE
-# chmod 0600 LOGFILE
-
-</pre>
+# chmod 0600 LOGFILE</pre>
 Rsyslog will refuse to log to a file which does not exist.
 All messages intended for that file will be silently discarded, so
 it is important to verify that all log files exist. Some logs may
@@ -137,11 +125,7 @@ protected from unauthorized access.</rationale>
 <Group id="rsyslog_sending_messages">
 <title>Rsyslog Logs Sent To Remote Host</title>
 <description>Edit <tt>/etc/rsyslog.conf</tt>. Add or correct the line:
-<br />
-<pre>
-*.* @loghost.example.com
-
-</pre>
+<pre>*.* @loghost.example.com</pre>
 where <tt>loghost.example.com</tt> is the name of your central log server.
 <br /><br />
 If system logs are to be useful in detecting malicious
@@ -194,20 +178,12 @@ should remain commented out.
 <!--<description>Is this machine the central log server for your
 organization? If so, edit the file <tt>/etc/sysconfig/rsyslog</tt>. Add
 or correct the following line:
-<br />
-<pre>
-SYSLOGD_OPTIONS="-m 0 -r -s example.com "
-
-</pre>
+<pre>SYSLOGD_OPTIONS="-m 0 -r -s example.com "</pre>
 where <tt>example.com</tt> is the name of your domain.
 <br /><br />
 If the machine is not a log server, edit <tt>/etc/sysconfig/syslog</tt>,
 and instead add or correct the line:
-<br />
-<pre>
-SYSLOGD_OPTIONS="-m 0"
-
-</pre>
+<pre>SYSLOGD_OPTIONS="-m 0"</pre>
 By default, RHEL6's <tt>rsyslog</tt> does not listen over the network
 for log messages. The <tt>-r</tt> flag enables <tt>rsyslogd</tt> to listen over a
 network, and should be used only if necessary. The <tt>-s example.com</tt>
@@ -226,14 +202,12 @@ TODO: See how /etc/sysconfig/rsyslog plays or interferes or overwrites here.
 <br/>
 To ensure that it is not listening on the network, ensure the following lines are
 <i>not</i> found in <tt>/etc/rsyslog.conf</tt>:
-<pre>
-$ModLoad imtcp.so
+<pre>$ModLoad imtcp.so
 $InputTCPServerRun <i>port</i>
 $ModLoad imudp.so
 $InputUDPServerRun <i>port</i>
 $ModLoad imrelp.so
-$InputRELPServerRun <i>port</i>
-</pre>
+$InputRELPServerRun <i>port</i></pre>
 </description>
 <rationale>
 Any process which receives messages from the network incurs some risk
@@ -254,10 +228,8 @@ TODO: See how /etc/sysconfig/rsyslog plays or interferes or overwrites here.
 <br/>
 If the system needs to act as a central log server, add the following lines to
 <tt>/etc/rsyslog.conf</tt> to enable reception of messages over TCP:
-<pre>
-$ModLoad imtcp.so
-$InputTCPServerRun 514
-</pre>
+<pre>$ModLoad imtcp.so
+$InputTCPServerRun 514</pre>
 </description>
 <rationale>
 If the system needs to act as a log server, this ensures that it can receive
@@ -275,10 +247,8 @@ messages over a reliable TCP connection.
 If the system needs to act as a central log server, and it also must receive
 messages from systems which can only send them in the traditional UDP
 format, then ensure the following lines exist in <tt>/etc/syslog.conf</tt>:
-<pre>
-$ModLoad imudp.so
-$InputUDPServerRun 514
-</pre>
+<pre>$ModLoad imudp.so
+$InputUDPServerRun 514</pre>
 </description>
 <rationale>
 Many devices, such as switches, routers, and other Unix-like systems, may only support
@@ -296,12 +266,8 @@ this enables it to receive their messages as well.
 <title>Ensure All Logs are Rotated by <tt>logrotate</tt></title>
 <description>Edit the file <tt>/etc/logrotate.d/syslog</tt>. Find the first
 line, which should look like this (wrapped for clarity):
-<br />
-<pre>
-/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler \
-  /var/log/boot.log /var/log/cron {
-
-</pre>
+<pre>/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler \
+  /var/log/boot.log /var/log/cron {</pre>
 Edit this line so that it contains a one-space-separated
 listing of each log file referenced in <tt>/etc/rsyslog.conf</tt>.
 <br /><br />

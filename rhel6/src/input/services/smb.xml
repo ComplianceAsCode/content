@@ -24,10 +24,7 @@ sharing functionality.
 <title>Disable Samba</title>
 <description>
 The <tt>smb</tt> service can be disabled with the following command:
-<br />
-<pre>
-# chkconfig smb off
-</pre>
+<pre># chkconfig smb off</pre>
 </description>
 <rationale>
 Running a Samba server provides a network-based avenue of attack, and
@@ -144,7 +141,6 @@ It is also possible to limit read and write access to particular users with the 
 To require samba clients running <tt>smbclient</tt> to use
 packet signing, add the following to the <tt>[global]</tt> section
 of the Samba configuration file:
-<br />
 <pre>client signing = mandatory</pre>
 Requiring samba clients such as <tt>smbclient</tt> to use packet
 signing ensures that they can

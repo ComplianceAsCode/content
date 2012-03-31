@@ -23,12 +23,8 @@ should be set properly.
 <br/><br />
 If any correction is needed for the permissions on <tt>/etc/grub.conf</tt>, (which is a symlink to
 <tt>../boot/grub/grub.conf</tt>) the following commands can be used:
-<br />
-<pre>
-# chown root:root /etc/grub.conf
-# chmod 600 /etc/grub.conf
-
-</pre>
+<pre># chown root:root /etc/grub.conf
+# chmod 600 /etc/grub.conf</pre>
 </description>
 
 <Rule id="user_owner_grub_conf">
@@ -74,17 +70,11 @@ this file.
 <description>The grub boot loader should have password protection
 enabled to protect boot-time settings.
 To do so, select a password and then generate a hash from it by running:
-<br />
-<pre>
-# grub-md5-crypt
-</pre>
+<pre># grub-md5-crypt</pre>
 Insert the following line into <tt>/etc/grub.conf</tt> immediately
 after the header comments. (Use the output from <tt>grub-md5-crypt</tt> as the
 value of <b>password-hash</b>):
-<br />
-<pre>
-password --md5 <b>password-hash</b>
-</pre>
+<pre>password --md5 <b>password-hash</b></pre>
 </description>
 <rationale>
 Password protection on the boot loader configuration ensures that
@@ -109,9 +99,7 @@ is performed if single-user mode is selected.
 To require entry of the root password even if the system is
 started in single-user mode, add or correct the following line in the
 file <tt>/etc/sysconfig/init</tt>:
-<br />
-<pre>
-SINGLE=/sbin/sulogin</pre>
+<pre>SINGLE=/sbin/sulogin</pre>
 </description>
 <rationale>
 This prevents attackers with physical access from trivially bypassing security
@@ -130,10 +118,7 @@ by configuring the bootloader password.
 To disable the ability for users to perform interactive startups,
 edit the file <tt>/etc/sysconfig/init</tt>.
 Add or correct the line:
-<br />
-<pre>
-PROMPT=no
-</pre>
+<pre>PROMPT=no</pre>
 The <tt>PROMPT</tt> option allows the console user to perform an
 interactive system startup, in which it is possible to select the
 set of services which are started on boot.
@@ -204,13 +189,11 @@ the man page <tt>gconftool-2(1)</tt>.</description>
 <description>
 The idle time-out value for period of inactivity GNOME
 desktop lockout should be 15 minutes.
-<pre>
-# gconftool-2 \
+<pre># gconftool-2 \
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type int \
-  --set /apps/gnome-screensaver/idle_delay 15
-</pre>
+  --set /apps/gnome-screensaver/idle_delay 15</pre>
 </description>
 <rationale>
 Setting the idle delay controls when the
@@ -226,12 +209,10 @@ screen locking to prevent access from passersby.
 <title>GNOME Desktop Screensaver Mandatory Use</title>
 <description>Idle activation of the screen saver should be
 enabled
-<pre>
-# gconftool-2 --direct \
+<pre># gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
-  --set /apps/gnome-screensaver/idle_activation_enabled true
-</pre>
+  --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
 </description>
 <rationale>
 Enabling idle activation of the screen saver ensures that the
@@ -246,12 +227,10 @@ screensaver will be activated after the idle delay.
 <title>Enable Screen Lock Activation After Idle Period</title>
 <description>Idle activation of the screen lock should be
 enabled
-<pre>
-# gconftool-2 --direct \
+<pre># gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
-  --set /apps/gnome-screensaver/lock_enabled true
-</pre>
+  --set /apps/gnome-screensaver/lock_enabled true</pre>
 </description>
 <rationale>
 Enabling the activation of the screen lock after an idle period
@@ -267,13 +246,11 @@ access the system, preventing access by passersby.
 <title>Implement Blank Screen Saver</title>
 <description>
 The screen saver should be blank
-<pre>
-# gconftool-2
+<pre># gconftool-2
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type string \
-  --set /apps/gnome-screensaver/mode blank-only
-</pre>
+  --set /apps/gnome-screensaver/mode blank-only</pre>
 </description>
 <rationale>
 Setting the screensaver mode to blank-only conceals the
@@ -298,16 +275,10 @@ A console screen locking mechanism is provided in the
 <title>Install the vlock Package</title>
 <description>
 To enable console screen locking, install the vlock package:
-<br />
-<pre>
-# yum install vlock
-</pre>
+<pre># yum install vlock</pre>
 Instruct users to invoke the program when necessary, in order
 to prevent passersby from abusing their login:
-<br />
-<pre>
-$ vlock
-</pre>
+<pre>$ vlock</pre>
 The <tt>-a</tt> option can be used to prevent switching to other
 virtual consoles.
 </description>

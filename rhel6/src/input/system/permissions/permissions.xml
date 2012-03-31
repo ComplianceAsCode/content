@@ -17,11 +17,7 @@ repeatedly, with the name of each local partition substituted for
 <br /><br />
 The following command prints a list of ext4 partitions on the local
 machine:
-<br />
-<pre>
-$ mount -t ext4 | awk '{print $3}'
-
-</pre>
+<pre>$ mount -t ext4 | awk '{print $3}'</pre>
 If your site uses a local filesystem type other than ext4 then you
 will need to modify this command.</description>
 </Group>

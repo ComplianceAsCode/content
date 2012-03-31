@@ -41,23 +41,19 @@ devices.</description>
 normal usage of the wireless capability.
 <br /><br />
 First, identify the interfaces available with the command:
-<br />
 <pre># ifconfig -a</pre>
 >Additionally,the following command may also be used to
 determine whether wireless support ('extensions') is included for a
 particular interface, though this may not always be a clear
 indicator:
-<br />
 <pre># iwconfig</pre>
 After identifying any wireless interfaces (which may have
 names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
 <tt>eth0</tt>), deactivate the interface with the command:
-<br />
 <pre># ifdown interface</pre>
 These changes will only last until the next reboot. To
 disable the interface for future boots, remove the appropriate
 interface file from <tt>/etc/sysconfig/network-scripts</tt>:
-<br />
 <pre># rm /etc/sysconfig/network-scripts/ifcfg-interface</pre>
 </description>
 <ident cce="4276-2" />
