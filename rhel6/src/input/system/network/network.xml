@@ -32,8 +32,19 @@ If the system is a standalone machine with no need for network access or even co
 <pre>NOZEROCONF=yes</pre>
 </description>
 <rationale>Zeroconf addresses are in the network 169.254.0.0. The networking scripts add entries to the system’s routing table for these addresses. Zeroconf address assignment commonly occurs when the system is configured to use DHCP but fails to receive an address assignment from the DHCP server.</rationale>
-<ident cce="14054-1" />
+<ident cce="CCE-14054-1" />
 <!--<oval id="network_disable_zeroconf" />-->
+</Rule>
+
+<Rule id="network_sniffer_disabled">
+<title>Ensure System is Not Acting as a Network Sniffer</title>
+<description>The system should not be acting as a network sniffer, which can capture all traffic on the network to which it is connected.  Run the following to determine if any interface is running in promiscuous mode:
+<pre>$ ip link | grep PROMISC</pre>
+</description>
+<rationale>If any results are returned then a sniffing process (such as tcpdump or wireshark) is likely to be using the interface and this should be investigated.
+</rationale>
+<ident cce="CCE-15013-6" />
+<oval id="network_sniffer_disabled" />
 </Rule>
 
 </Group>
