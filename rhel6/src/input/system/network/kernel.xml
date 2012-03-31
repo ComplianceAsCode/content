@@ -12,12 +12,9 @@ gateway to pass IP traffic between different networks?
 <br />If not, edit the file <tt>/etc/sysctl.conf</tt> and add or
 correct the following lines:
 <br />
-<pre>
-net.ipv4.ip_forward = 0
+<pre>net.ipv4.ip_forward = 0
 net.ipv4.conf.all.send_redirects = 0
-net.ipv4.conf.default.send_redirects = 0
-
-</pre>
+net.ipv4.conf.default.send_redirects = 0</pre>
 These settings disable hosts from performing network
 functionality which is only appropriate for routers.</description>
 
