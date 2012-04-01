@@ -67,12 +67,9 @@ banner.
 <description>
 To enable displaying a login warning banner in the GNOME
 Display Manager's login screen, run the following command:
-<br />
-<pre>
-sudo -u gdm gconftool-2 \
+<pre>sudo -u gdm gconftool-2 \
   --type bool \
-  --set /apps/gdm/simple-greeter/banner_message_enable true
-</pre>
+  --set /apps/gdm/simple-greeter/banner_message_enable true</pre>
 To display a banner, this setting must be enabled and then
 banner text must also be set.
 </description>
@@ -90,13 +87,10 @@ reinforces policy awareness during the logon process.
 <description>
 To set the text shown by the GNOME Display Manager
 in the login screen, run the following command:
-<br />
-<pre>
-sudo -u gdm gconftool-2 \
+<pre>sudo -u gdm gconftool-2 \
   --type string \
   --set /apps/gdm/simple-greeter/banner_message_text \
-  "Text of the warning banner here"
-</pre>
+  "Text of the warning banner here"</pre>
 When entering a warning banner that spans several lines, remember
 to begin and end the string with <tt>"</tt>. This command writes
 directly to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</tt>,
@@ -120,13 +114,9 @@ directly into the system are greeted with a login screen that displays
 all known users. This functionality should be disabled.
 <br /><br />
 Run the following command to disable the user list:
-<br />
-<pre>
-sudo -u gdm gconftool-2 \
+<pre>sudo -u gdm gconftool-2 \
   --type bool \
-  --set /apps/gdm/simple-greeter/disable_user_list true
-
-</pre>
+  --set /apps/gdm/simple-greeter/disable_user_list true</pre>
 Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.

@@ -11,13 +11,9 @@ configuration options in this section are recommended.</description>
 gateway to pass IP traffic between different networks?
 <br />If not, edit the file <tt>/etc/sysctl.conf</tt> and add or
 correct the following lines:
-<br />
-<pre>
-net.ipv4.ip_forward = 0
+<pre>net.ipv4.ip_forward = 0
 net.ipv4.conf.all.send_redirects = 0
-net.ipv4.conf.default.send_redirects = 0
-
-</pre>
+net.ipv4.conf.default.send_redirects = 0</pre>
 These settings disable hosts from performing network
 functionality which is only appropriate for routers.</description>
 
@@ -55,9 +51,7 @@ should be disabled on all other systems.</rationale>
 <title>Set Network Related Kernel Runtime Parameters</title>
 <description>Edit the file <tt>/etc/sysctl.conf</tt> and add or correct the
 following lines:
-<br />
-<pre>
-net.ipv4.conf.all.accept_source_route = 0
+<pre>net.ipv4.conf.all.accept_source_route = 0
 net.ipv4.conf.all.accept_redirects = 0
 net.ipv4.conf.all.secure_redirects = 0
 net.ipv4.conf.all.log_martians = 1
@@ -68,9 +62,7 @@ net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv4.icmp_ignore_bogus_error_messages = 1
 net.ipv4.tcp_syncookies = 1
 net.ipv4.conf.all.rp_filter = 1
-net.ipv4.conf.default.rp_filter = 1
-
-</pre>
+net.ipv4.conf.default.rp_filter = 1</pre>
 These options improve Linux's ability to defend against
 certain types of IPv4 protocol attacks.
 </description>

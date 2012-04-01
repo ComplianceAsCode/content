@@ -157,10 +157,7 @@ should not be able to execute suid or sgid binaries from temporary storage parti
 in order to consolidate temporary storage into one location protected by the same
 techniques as <tt>/tmp</tt>. This is done by editing <tt>/etc/fstab</tt> and adding
 the following line if needed:
-<pre>
-/tmp     /var/tmp     none     rw,nodev,noexec,nosuid,bind     0 0
-
-</pre>
+<pre>/tmp     /var/tmp     none     rw,nodev,noexec,nosuid,bind     0 0</pre>
 See the mount(8) man page for further explanation of bind mounting.
 </description>
 <rationale>Having multiple locations for temporary storage is not required. Unless absolutely
