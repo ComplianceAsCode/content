@@ -19,13 +19,9 @@ administrators.
 <title>Ensure that No Dangerous Directories Exist in Root's Path</title>
 <description>The active path of the root account can be obtained by
 starting a new root shell and running:
-<br />
-<pre>
-# echo $PATH
-</pre>
+<pre># echo $PATH</pre>
 This will produce a colon-separated list of
 directories in the path.
-<br /><br />
 <br /><br />
 Certain path elements could be considered dangerous, as they could lead
 to root executing unknown or
@@ -51,11 +47,9 @@ Ensure that none of the directories in root's path is equal to a single
 that it contains any instances that lead to relative path traversal, such as
 <tt>..</tt> or beginning a path without the slash (<tt>/</tt>) character.
 Also ensure that there are no "empty" elements in the path, such as in these examples:
-<pre>
-PATH=:/bin
+<pre>PATH=:/bin
 PATH=/bin:
-PATH=/bin::/sbin
-</pre>
+PATH=/bin::/sbin</pre>
 These empty elements have the same effect as a single <tt>.</tt> character.
 </description>
 <rationale>
@@ -73,10 +67,7 @@ Ensure that Root's Path Does Not Include World or Group-Writable Directories
 </title>
 <description>
 For each element in root's path, run:
-<br />
-<pre>
-# ls -ld DIR
-</pre>
+<pre># ls -ld DIR</pre>
 and ensure that write permissions are disabled for group and
 other.
 </description>
@@ -97,17 +88,11 @@ Ensure that User Home Directories are not Group-Writable or World-Readable
 </title>
 <description>For each human user USER of the system, view the
 permissions of the user's home directory:
-<br />
-<pre>
-# ls -ld /home/USER
-</pre>
+<pre># ls -ld /home/USER</pre>
 Ensure that the directory is not group-writable and that it
 is not world-readable. If necessary, repair the permissions:
-<br />
-<pre>
-# chmod g-w /home/USER
-# chmod o-rwx /home/USER
-</pre>
+<pre># chmod g-w /home/USER
+# chmod o-rwx /home/USER</pre>
 </description>
 <warning category="general">This action may involve
 modifying user home directories. Notify your user community, and
@@ -169,10 +154,7 @@ It seems unlikely to ever be misconfigured.
 Edit the root shell configuration files <tt>/root/.bashrc</tt>,
 <tt>/root/.bash profile</tt>, <tt>/root/.cshrc</tt>, and <tt>/root/.tcshrc</tt>. Add or
 correct the line:
-<br />
-<pre>
-umask 077
-</pre>
+<pre>umask 077</pre>
 </li>
 -->
 <Value id="umask_user_value" type="string"
@@ -193,11 +175,7 @@ Ensure the Default Bash Umask is Set Correctly
 <description>
 To ensure the default umask for users of the Bash shell is set properly,
 add or correct in <tt>/etc/bashrc</tt> the line:
-<br />
-<pre>
-umask 077
-<!-- <sub idref="umask_user_value" /> -->
-</pre>
+<pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and/or
@@ -214,11 +192,7 @@ Ensure the Default C Shell Umask is Set Correctly
 <description>
 To ensure the default umask for users of the C shell is set properly,
 add or correct in <tt>/etc/csh.cshrc</tt> the line:
-<br />
-<pre>
-umask 077
-<!-- <sub idref="umask_user_value" /> -->
-</pre>
+<pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and/or
@@ -236,11 +210,7 @@ Ensure the Default Umask is Set Correctly in /etc/profile
 <description>
 To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
 add or correct the line:
-<br />
-<pre>
-umask 077
-<!--<sub idref="umask_user_value" /> -->
-</pre>
+<pre>umask 077<!--<sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and/or
@@ -258,11 +228,7 @@ Ensure the Default Umask is Set Correctly in login.defs
 <description>
 To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
 add or correct the line:
-<br />
-<pre>
-UMASK 077
-<!-- <sub idref="umask_user_value" /> -->
-</pre>
+<pre>UMASK 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and/or

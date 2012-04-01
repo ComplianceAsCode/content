@@ -43,10 +43,7 @@ The NTP server configuration file is located at <tt>/etc/ntp.conf</tt>.</descrip
 <Rule id="enable_ntpd">
 <title>Enable the NTP Daemon</title>
 <description>The <tt>ntpd</tt> service should be enabled.
-<pre>
-# chkconfig ntpd on
-
-</pre>
+<pre># chkconfig ntpd on</pre>
 </description>
 <rationale>
 Enabling the <tt>ntpd</tt> service ensures that the local system time will be the same on all computers. This is essential for authentication services such as Kerberos, but it is also important for maintaining accurate logs and auditing possible security breaches.
@@ -62,11 +59,8 @@ Enabling the <tt>ntpd</tt> service ensures that the local system time will be th
 <Rule id="ntpd_specify_remote_server">
 <title>Specify a Remote NTP Server for Time Data</title>
 <description>A remote NTP Server for time synchronization should be specified. Edit the file <tt>/etc/ntp.conf</tt>, and add or correct the following lines, substituting the IP address of a remote NTP server for <em>server-ip</em>:
-<pre>
-restrict server-ip mask 255.255.255.255 nomodify notrap noquery
-server server-ip
-
-</pre>
+<pre>restrict server-ip mask 255.255.255.255 nomodify notrap noquery
+server server-ip</pre>
 This NTP server must contact a remote server to obtain accurate data, so NTP's configuration must allow that remote data to be used to modify the system clock. The restrict line changes the default access permissions for that remote server. The server line specifies the remote server as the preferred NTP server for time data. If you intend to synchronize to more than one server, specify restrict and server lines for each server.
 <br /><br />
 Note: It would be possible to specify a hostname, rather than an IP address, for the server field. However, the restrict setting applies only to network blocks of IP addresses, so it is considered more maintainable to use the IP address in both fields.</description>

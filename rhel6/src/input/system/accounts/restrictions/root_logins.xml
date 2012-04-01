@@ -27,35 +27,23 @@ contains only the following lines:
 <br />
 <ul>
 <li>The primary system console device:
-<br />
-<pre>
-console
-
-</pre></li>
+<pre>console</pre></li>
 <li>The virtual console devices:
-<br />
-<pre>
-tty1 tty2 tty3 tty4 tty5 tty6 ...
-
-</pre></li>
+<pre>tty1 tty2 tty3 tty4 tty5 tty6 ...</pre></li>
 <li>If required by your organization, the deprecated virtual
 console interface may be retained for backwards compatibility:
-<br />
-<pre>
-vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...
-
+<pre>vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...</pre></li>
+</ul>
 -->
 <Rule id="restrict_root_console_logins">
 <title>Restrict Virtual Console Root Logins</title>
 <description>
 To restrict root logins through the (deprecated) virtual console devices,
 ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
-<pre>
-vc/1
+<pre>vc/1
 vc/2
 vc/3
-vc/4
-</pre>
+vc/4</pre>
 <!-- TODO: discussion/description of virtual consoles-->
 </description>
 <rationale>
@@ -72,10 +60,7 @@ using the root account.
 <title>Restrict Serial Port Root Logins</title>
 <description>To restrict root logins on serial ports,
 ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
-<br />
-<pre>
-ttyS0 ttyS1
-</pre>
+<pre>ttyS0 ttyS1</pre>
 <!-- TODO: discussion/description of serial port -->
 </description>
 <rationale>
@@ -95,30 +80,20 @@ Some accounts are not associated with a human
 user of the system, and exist to perform some administrative
 function. Should an attacker be able to log into these accounts,
 he or she should not be granted access to a shell.
-<br />
-<br />
+<br /><br />
 Ensure that no shells are granted to system accounts.
 First, obtain a listing of all users,
 their UIDs, and their shells, by running:
-<br />
-<pre>
-$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd
-</pre>
+<pre>$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd</pre>
 Identify the system accounts from this listing. These will
 primarily be the accounts with UID numbers less than 500, other
 than root.
 <br /><br />
 <!--For each identified system account SYSACCT, lock the account:
-<br />
-<pre>
-# usermod -L SYSACCT
-</pre>-->
+<pre># usermod -L SYSACCT</pre>-->
 If any account <i>SYSACCT</i> has a login shell,
 disable it with the command:
-<br />
-<pre>
-# usermod -s /sbin/nologin SYSACCT
-</pre>
+<pre># usermod -s /sbin/nologin SYSACCT</pre>
 The RHEL6 default is <tt>/sbin/nologin</tt>, but any command which will
 exit with a failure
 status and disallow execution of any further commands, such as
@@ -145,11 +120,7 @@ become inaccessible.
 <description>
 This command will print all password file entries for
 accounts with UID 0:
-<br />
-<pre>
-# awk -F: '($3 == "0") {print}' /etc/passwd
-
-</pre>
+<pre># awk -F: '($3 == "0") {print}' /etc/passwd</pre>
 This should print only one line, for the user root. If any
 other lines appear, ensure that these additional UID-0 accounts are
 authorized, and that there is a good reason for them to exist.
@@ -185,18 +156,12 @@ in dictating others' account privilege choices.
 <li>Ensure that the group <tt>wheel</tt> exists, and that the usernames of
 all administrators who should be allowed to execute commands as
 root are members of that group.
-<br />
-<pre>
-# grep ^wheel /etc/group
-
-</pre></li>
+<pre># grep ^wheel /etc/group</pre>
+</li>
 <li>Edit the file <tt>/etc/pam.d/su</tt>. Add, uncomment, or correct the
 line:
-<br />
-<pre>
-auth required pam_wheel.so use_uid
-
-</pre></li>
+<pre>auth required pam_wheel.so use_uid</pre>
+</li>
 </ol>The <tt>su</tt> command allows a user to gain the privileges of another
 user by entering the password for that user's account. It is
 desirable to restrict the root user so that only known
