@@ -120,7 +120,7 @@ that access, while keeping other ports on the server in their default protected 
 
 <Rule id="postfix_logging">
 <title>Verify System Logging and Log Permissions for Mail</title>
-<description>Edit the file /etc/syslog.conf. Add or correct the following line if necessary (this is the default):
+<description>Edit the file <tt>/etc/rsyslog.conf</tt>. Add or correct the following line if necessary (this is the default):
 <pre>mail.*					-/var/log/maillog</pre>
 Run the following commands to ensure correct permissions on the mail log:
 <pre># chown root:root /var/log/maillog
@@ -156,8 +156,8 @@ to an established CA or sign it with your CA.
 To sign mailserver.csr using your CA:
 <pre># openssl ca -in mailserver.csr -out mailservercert.pem</pre>
 </description>
-<rationale>This step creates a private key, mailserverkey.pem, and a public certificate, mailservercert.pem. The mail
-server will use these to prove its identity by demonstrating that it has a certificate which has been signed by a
+<rationale>This step creates a private key, <tt>mailserverkey.pem</tt>, and a public certificate, <tt>mailservercert.pem</tt>.
+The mail server will use these to prove its identity by demonstrating that it has a certificate which has been signed by a
 CA. Mail clients at your site should be willing to send their mail only to a server they can authenticate.
 </rationale>
 <warning category="general">Note: This step must be performed on your CA system, not on the MTA host itself. If you will have a commercial
@@ -182,7 +182,7 @@ Verify the ownership and permissions of these files:
 # chown root:root /etc/pki/tls/mail/servercert.pem
 # chmod 600 /etc/pki/tls/mail/serverkey.pem
 # chmod 644 /etc/pki/tls/mail/servercert.pem</pre>
-Verify that the CA’s public certificate file has been installed as /etc/pki/tls/CA/cacert.pem, and has the
+Verify that the CA’s public certificate file has been installed as <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the
 correct permissions:
 <pre># chown root:root /etc/pki/tls/CA/cacert.pem
 # chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
@@ -213,12 +213,12 @@ message_size_limit = 10485760
 smtpd_recipient_limit = 100</pre>
 </description>
 <rationale>These configuration options serve to make it more difficult for attackers to consume resources on the MTA host.
-The default process limit parameter controls how many smtpd processes can exist at a time, while smtpd
-client connection count limit controls the number of those which can be occupied by any one
-remote sender, and smtpd client connection rate limit controls the number of connections any one client
-can make per minute. By default, local hosts (those in mynetworks) are exempted from per-client rate limiting.
-The queue minfree parameter establishes a free space threshold, in order to stop e-mail receipt before the
-queue filesystem is entirely full. The header size limit, message size limit, and smtpd recipient limit
+The <tt>default_process_limit</tt> parameter controls how many <tt>smtpd</tt> processes can exist at a time, while
+<tt>smtpd_client_connection_count_limit</tt> controls the number of those which can be occupied by any one
+remote sender, and <tt>smtpd_client_connection_rate_limit</tt> controls the number of connections any one client
+can make per minute. By default, local hosts (those in <tt>mynetworks</tt>) are exempted from per-client rate limiting.
+The <tt>queue_minfree</tt> parameter establishes a free space threshold, in order to stop e-mail receipt before the
+queue filesystem is entirely full. The <tt>header_size_limit</tt>, <tt>message_size_limit</tt>, and <tt>smtpd_recipient_limit</tt>
 parameters place bounds on the legal sizes of messages received via SMTP.
 </rationale>
 <warning category="general">Note: The values given here are examples, and may need to be modified for any particular site. By default, the
@@ -262,17 +262,17 @@ with SSL support.
 <title>Configure Trusted Networks and Hosts</title>
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and configure the contents of the mynetworks variable in one of the following
 ways:
-<br />
-If any machine in the subnet containing the MTA may be trusted to relay messages, add or correct the line:
-<pre>mynetworks_style = subnet
-</pre>
-If only the MTA host itself is trusted to relay messages, add or correct:
-<pre>mynetworks_style = host</pre>
-If the set of machines which can relay is more complicated, manually specify an entry for each netblock
+<ul>
+<li>If any machine in the subnet containing the MTA may be trusted to relay messages, add or correct the line:
+<pre>mynetworks_style = subnet</pre></li>
+<li>If only the MTA host itself is trusted to relay messages, add or correct:
+<pre>mynetworks_style = host</pre></li>
+<li>If the set of machines which can relay is more complicated, manually specify an entry for each netblock
 or IP address which is trusted to relay by setting the mynetworks variable directly:
-<pre>mynetworks = 10.0.0.0/16 , 192.168.1.0/24 , 127.0.0.1</pre>
+<pre>mynetworks = 10.0.0.0/16 , 192.168.1.0/24 , 127.0.0.1</pre></li>
+</ul>
 </description>
-<rationale>The mynetworks variable must contain only the set of machines for which this MTA should unconditionally
+<rationale>The <tt>mynetworks</tt> variable must contain only the set of machines for which this MTA should unconditionally
 relay mail. This is a trust relationship — if spammers gain access to these machines, your site will effectively
 become an open relay. It is recommended that only machines which are managed by you or by another trusted
 organization be placed in mynetworks, and users of all other machines be required to use SMTP AUTH to send
@@ -285,7 +285,7 @@ mail.
 
 <Rule id="postfix_server_mail_relay_for_trusted_networks">
 <title>Allow Unlimited Relaying for Trusted Networks Only</title>
-<description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the smtpd recipient restrictions definition so that it
+<description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the <tt>smtpd_recipient_restrictions</tt> definition so that it
 contains at least:
 <pre>smtpd_recipient_restrictions =
     ...
@@ -293,10 +293,10 @@ contains at least:
     reject_unauth_destination,
     ...</pre>
 </description>
-<rationale>The full contents of smtpd recipient restrictions will vary by site, since this is a common place to put spam
-restrictions and other site-specific options. The permit mynetworks option allows all mail to be relayed from
-the machines in mynetworks. Then, the reject unauth destination option denies all mail whose destination
-address is not local, preventing any other machines from relaying. These two options should always appear in
+<rationale>The full contents of <tt>smtpd_recipient_restrictions</tt> will vary by site, since this is a common place
+to put spam restrictions and other site-specific options. The <tt>permit_mynetworks</tt> option allows all mail to be
+relayed from the machines in <tt>mynetworks</tt>. Then, the <tt>reject_unauth_destination</tt> option denies all mail
+whose destination address is not local, preventing any other machines from relaying. These two options should always appear in
 this order, and should usually follow one another immediately unless SMTP AUTH is used.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
@@ -310,7 +310,7 @@ this order, and should usually follow one another immediately unless SMTP AUTH i
 ting mail. Postfix’s SMTP AUTH uses an authentication library called SASL, which is not part of Postfix itself.
 This section describes how to configure authentication using the Cyrus-SASL implementation. See below for a
 discussion of other options.
-<br />
+<br /><br />
 To enable the use of SASL authentication, edit <tt>/etc/postfix/main.cf</tt> and add or correct the following
 settings:
 <pre>smtpd_sasl_auth_enable = yes
@@ -330,15 +330,16 @@ Enable the saslauthd daemon:
 Dovecot for some other reason, it is recommended that Dovecot’s SASL support be used instead of running the
 Cyrus code as well. See http://www.postfix.org/SASL_README.html for instructions on implementing that
 configuration, which is not described in this guide.
-In Postfix’s configuration, the directive smtpd sasl auth enable tells smtpd to allow the use of the SMTP AUTH
+<br /><br />
+In Postfix’s configuration, the directive <tt>smtpd_sasl_auth_enable</tt> tells <tt>smtpd</tt> to allow the use of the SMTP AUTH
 command during the SMTP dialogue, and to support that command by getting authentication information from
-SASL. The smtpd recipient restrictions directive is changed so that, if the client is not connecting from a
-trusted address, it is allowed to attempt authentication (permit sasl authenticated) in order to relay mail.
-The file /usr/lib/sasl2/smtpd.conf is the Cyrus-SASL configuration file. The pwcheck method directive tells
+SASL. The <tt>smtpd_recipient_restrictions</tt> directive is changed so that, if the client is not connecting from a
+trusted address, it is allowed to attempt authentication (<tt>permit_sasl_authenticated</tt>) in order to relay mail.
+The file <tt>/usr/lib/sasl2/smtpd.conf</tt> is the Cyrus-SASL configuration file. The <tt>pwcheck_method</tt> directive tells
 SASL how to find passwords. The simplest method, described above, is to run a separate authentication daemon,
-saslauthd, which is able to communicate with the system authentication system. On RHEL6, saslauthd uses
+<tt>saslauthd</tt>, which is able to communicate with the system authentication system. On RHEL6, <tt>saslauthd</tt> uses
 PAM by default, which should work in most cases. If you have a centralized authentication system which does not
-work via PAM, look at the saslauthd(8) manpage to find out how to configure saslauthd for your environment.
+work via PAM, look at the <tt>saslauthd(8)</tt> manpage to find out how to configure <tt>saslauthd</tt> for your environment.
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <oval id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks" />
@@ -357,11 +358,11 @@ smtpd_tls_auth_only = yes</pre>
 </description>
 <rationale>These options tell Postfix to protect all SMTP AUTH transactions using TLS. The first four options describe
 the locations of the necessary TLS key files.
-The smtpd tls security level directive tells smtpd to allow the STARTTLS command during the SMTP protocol
+The <tt>smtpd_tls_security_level</tt> directive tells <tt>smtpd</tt> to allow the STARTTLS command during the SMTP protocol
 exchange, but not to require it for mail senders. (Unless your site receives mail only from other trusted sites
 whose sysadmins can be asked to maintain a copy of your site certificate, you do not want to require TLS for all
 SMTP exchanges.)
-The smtpd tls auth only directive tells smtpd to require the STARTTLS command before allowing the client to
+The <tt>smtpd_tls_auth_only</tt> directive tells <tt>smtpd</tt> to require the STARTTLS command before allowing the client to
 attempt to authenticate for relaying using SMTP AUTH. It may not be possible to use this directive if you must
 allow relaying from non-TLS-capable client software. If this is the case, simply omit that line.
 </rationale>
