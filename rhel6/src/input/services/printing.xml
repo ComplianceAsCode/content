@@ -24,7 +24,8 @@ open source printing system</reference>
 </description>
 <rationale>Turn off unneeded services to reduce attack surface.
 </rationale>
-<ident cce="CCE-4112-9, CCE-3755-6" />
+<ident cce="CCE-4112-9" />
+<ident cce="CCE-3755-6" />
 <oval id="service_cups_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -63,7 +64,8 @@ BrowseAllow none</pre>
 </description>
 <rationale>The CUPS print service can be configured to broadcast a list of available printers to the network. Other machines on the network, also running the CUPS print service, can be configured to listen to these broadcasts and add and configure these printers for immediate use. By disabling this browsing capability, the machine will no longer generate or receive such broadcasts.
 </rationale>
-<ident cce="CCE-4420-6, CCE-4407-3" />
+<ident cce="CCE-4420-6" />
+<ident cce="CCE-4407-3" />
 <oval id="cups_disable_browsing" />
 <!--<ref nist="TODO:NIST" />-->
 </Rule>
