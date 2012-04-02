@@ -158,7 +158,18 @@ that certificate is encrypted, and to the public certificate file belonging to t
 for the key to be protected further, so that processes running as ldap could not read it. If this were done, the
 LDAP server process would need to be restarted manually whenever the server rebooted.
 </description>
-<ident cce="4360-4,4378-6,4492-5,4263-0,3502-2,4449-5,4361-2,4427-1,4321-6,4339-8,4105-3,3718-4" />
+<ident cce="4360-4" />
+<ident cce="4378-6" />
+<ident cce="4492-5" />
+<ident cce="4263-0" />
+<ident cce="3502-2" />
+<ident cce="4449-5" />
+<ident cce="4361-2" />
+<ident cce="4427-1" />
+<ident cce="4321-6" />
+<ident cce="4339-8" />
+<ident cce="4105-3" />
+<ident cce="3718-4" />
 <oval id="ldap_server_config_certificate_files" />
 <ref nist="AC-6, CM-7, SC-11, SC-12, SC-13, SC-17" />
 </Rule>
@@ -310,7 +321,8 @@ be able to change data without an explicit access statement.
 Some manual methods of inserting information into the LDAP database may leave these files with incorrect
 permissions. This will prevent slapd from starting correctly.
 </description>
-<ident cce="4484-2, 4502-1" />
+<ident cce="4484-2" />
+<ident cce="4502-1" />
 <oval id="ldap_server_config_directory_file_security" />
 <ref nist="AC-6, CM-7" />
 </Rule>
