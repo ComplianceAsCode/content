@@ -33,7 +33,7 @@ If the system is a standalone machine with no need for network access or even co
 </description>
 <rationale>Zeroconf addresses are in the network 169.254.0.0. The networking scripts add entries to the system’s routing table for these addresses. Zeroconf address assignment commonly occurs when the system is configured to use DHCP but fails to receive an address assignment from the DHCP server.</rationale>
 <ident cce="CCE-14054-1" />
-<!--<oval id="network_disable_zeroconf" />-->
+<oval id="sysconfig_nozeroconf_yes" />
 </Rule>
 
 <Rule id="network_sniffer_disabled">

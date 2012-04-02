@@ -18,6 +18,7 @@ the iptables and ip6tables configurations included with the system.
 For more complete information that may allow the construction of a
 sophisticated ruleset tailored to your environment, please consult
 the references at the end of this section.</description>
+
 <Group id="iptables_activation">
 <title>Inspect and Activate Default Rules</title>
 <description>View the currently-enforced iptables rules by running
@@ -95,7 +96,7 @@ capability for IPv4 and ICMP.
 <oval id="service_iptables_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
-</Group>
+</Group><!--<Group id="iptables_activation">-->
 
 <Group id="ruleset_modifications">
 <title>Strengthen the Default Ruleset</title>
@@ -127,6 +128,7 @@ is only useful if the default ruleset meets your security
 requirements. Otherwise, this program should not be used to make
 changes to the firewall configuration because it re-writes the
 saved configuration file.</warning>
+
 <Group id="default_iptables_policies">
 <title>Change the Default Policies</title>
 <description>Change the default policy to DROP (from ACCEPT) for
@@ -148,6 +150,80 @@ are examined for a match. Connection attempts that are not explicitly authorized
 <oval id="iptables_default_policy_drop" />
 <ref nist="AC-4, CM-6" />
 </Rule>
-</Group>
-</Group>
-</Group>
+</Group><!--<Group id="default_iptables_policies">-->
+
+<Rule id="iptables_icmp_disabled">
+<title>Restrict ICMP Message Types</title>
+<description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages types can be restricted. To accept only ICMP echo reply, destination unreachable, and time exceeded messages, remove the line:<br />
+<pre>-A RH-Firewall-1-INPUT -p icmp --icmp-type any -j ACCEPT</pre>
+and insert the lines:
+<pre>-A RH-Firewall-1-INPUT -p icmp --icmp-type echo-reply -j ACCEPT
+-A RH-Firewall-1-INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+-A RH-Firewall-1-INPUT -p icmp --icmp-type time-exceeded -j ACCEPT</pre>
+To allow the system to respond to pings, also insert the following line:
+<pre>-A RH-Firewall-1-INPUT -p icmp --icmp-type echo-request -j ACCEPT</pre>
+Ping responses can also be limited to certain networks or hosts by using the -s option in the previous rule.
+Because IPv6 depends so heavily on ICMPv6, it is preferable to deny the ICMPv6 packets you know you
+don’t need (e.g. ping requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else through:
+<pre>-A RH-Firewall-1-INPUT -p icmpv6 --icmpv6-type echo-request -j DROP</pre>
+If you are going to statically configure the machine’s address, it should ignore Router Advertisements which
+could add another IPv6 address to the interface or alter important network settings:
+<pre>-A RH-Firewall-1-INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>
+</description>
+<rationale>Restricting other ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not recommended because the oper-
+ation of IPv6 depends heavily on ICMPv6. Thus, more care must be taken when blocking ICMPv6 types.</rationale>
+<!--<ident cce="14264-6" />-->
+<oval id="iptables_icmp_disabled" />
+<ref nist="AC-4, CM-6" />
+</Rule>
+
+<Rule id="iptables_log_and_drop_suspicious">
+<title>Log and Drop Packets with Suspicious Source Addresses</title>
+<description>Packets with non-routable source addresses should be rejected, as they may indicate spoofing. Because the
+modified policy will reject non-matching packets, you only need to add these rules if you are interested in also
+logging these spoofing or suspicious attempts before they are dropped. If you do choose to log various suspicious
+traffic, add identical rules with a target of DROP after each LOG.
+To log and then drop these IPv4 packets, insert the following rules in <tt>/etc/sysconfig/iptables</tt> (excepting
+any that are intentionally used):
+<pre>-A INPUT -i eth0 -s 10.0.0.0/8 -j LOG --log-prefix "IP DROP SPOOF A: "
+-A INPUT -i eth0 -s 172.16.0.0/12 -j LOG --log-prefix "IP DROP SPOOF B: "
+-A INPUT -i eth0 -s 192.168.0.0/16 -j LOG --log-prefix "IP DROP SPOOF C: "
+-A INPUT -i eth0 -s 224.0.0.0/4 -j LOG --log-prefix "IP DROP MULTICAST D: "
+-A INPUT -i eth0 -s 240.0.0.0/5 -j LOG --log-prefix "IP DROP SPOOF E: "
+-A INPUT -i eth0 -d 127.0.0.0/8 -j LOG --log-prefix "IP DROP LOOPBACK: "</pre>
+Similarly, you might wish to log packets containing some IPv6 reserved addresses if they are not expected
+on your network:
+<pre>-A INPUT -i eth0 -s ::1 -j LOG --log-prefix "IPv6 DROP LOOPBACK: "
+-A INPUT -s 2002:E000::/20 -j LOG --log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:7F00::/24 -j LOG --log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:0000::/24 -j LOG --log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:FF00::/24 -j LOG --log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:0A00::/24 -j LOG --log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:AC10::/28 -j LOG --log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:C0A8::/32 -j LOG --log-prefix "IPv6 6to4 TRAFFIC: "</pre>
+If you are not expecting to see site-local multicast or auto-tunneled traffic, you can log those:
+<pre>-A INPUT -s FF05::/16 -j LOG --log-prefix "IPv6 SITE-LOCAL MULTICAST: "
+-A INPUT -s ::0.0.0.0/96 -j LOG --log-prefix "IPv4 COMPATIBLE IPv6 ADDR: "</pre>
+If you wish to block multicasts to all link-local nodes (e.g. if you are not using router autoconfiguration and
+do not plan to have any services that multicast to the entire local network), you can block the link-local
+all-nodes multicast address (before accepting incoming ICMPv6):
+<pre>-A INPUT -d FF02::1 -j LOG --log-prefix "Link-local All-Nodes Multicast: "</pre>
+However, if you’re going to allow IPv4 compatible IPv6 addresses (of the form ::0.0.0.0/96), you should
+then consider logging the non-routable IPv4-compatible addresses:
+<pre>-A INPUT -s ::0.0.0.0/104 -j LOG --log-prefix "IP NON-ROUTABLE ADDR: "
+-A INPUT -s ::127.0.0.0/104 -j LOG --log-prefix "IP DROP LOOPBACK: "
+-A INPUT -s ::224.0.0.0.0/100 -j LOG --log-prefix "IP DROP MULTICAST D: "
+-A INPUT -s ::255.0.0.0/104 -j LOG --log-prefix "IP BROADCAST: "</pre>
+If you are not expecting to see any IPv4 (or IPv4-compatible) traffic on your network, consider logging it before it gets dropped:
+<pre>-A INPUT -s ::FFFF:0.0.0.0/96 -j LOG --log-prefix "IPv4 MAPPED IPv6 ADDR: "
+-A INPUT -s 2002::/16 -j LOG --log-prefix "IPv6 6to4 ADDR: "</pre>
+The following rule will log all traffic originating from a site-local address, which is deprecated address space:
+<pre>-A INPUT -s FEC0::/10 -j LOG --log-prefix "SITE-LOCAL ADDRESS TRAFFIC: "</pre>
+</description>
+<!--<ident cce="14264-6" />-->
+<!--MANUAL<oval id="iptables_log_and_drop_suspicious" />-->
+<!--<ref nist="AC-4, CM-6" />-->
+</Rule>
+
+</Group><!--<Group id="ruleset_modifications">-->
+</Group><!--<Group id="network-iptables">-->
