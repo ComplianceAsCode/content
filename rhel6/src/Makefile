@@ -2,9 +2,9 @@ IN=input
 OUT=output
 TRANS=transforms
 REFS=references
-DIST=dist
+DIST=scap-security-guide-alpha
 
-all: shorthand-guide shorthand2xccdf tables guide checks content dist
+all: shorthand-guide shorthand2xccdf tables guide checks content dist rpm
 
 shorthand-guide:
 	xsltproc -o ${OUT}/rhel6-shorthand.xml ${IN}/guide.xslt ${IN}/guide.xml
@@ -77,6 +77,35 @@ dist: content guide tables
 	cp ${OUT}/rhel6-table-cnssrefs.html ${DIST}/policytables
 	cp ${OUT}/rhel6-table-dcidrefs.html ${DIST}/policytables
 
+rpm: dist
+
+	# A few quick notes on preparing your system to build the SSG RPMs:
+	# (1) May the flies of a thousand horses annoy you for eternity
+	#     if you build an RPM as root. Don't do it!
+	# (2) This build process assumes you have your rpmbuild structure setup
+	# 	$ sudo yum -y install rpm-build
+	# 	$ mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+	# (3) The value if ${DIST} in this Makefile needs to match
+	#     the %{name}-%{version} string from the .spec file, i.e.
+	#     scap-security-guide-alpha
+	# (4) If you're making an RPM, chances are the code has changed. Make
+	#     sure you update the %changelog in the .spec to reflect what's new
+
+	# copy template .spec over to rpmbuild
+	cp ${IN}/rpmbuild/scap-security-guide-alpha.spec ${OUT}/
+
+	# tar up the sources
+	tar -zcvf ${OUT}/scap-security-guide-alpha.tar.gz ${DIST}
+	mv ${OUT}/scap-security-guide-alpha.tar.gz ~/rpmbuild/SOURCES/
+	
+	# let's see if a build works
+	rpmbuild -ba ${OUT}/scap-security-guide-alpha.spec
+
+	# Our RPM(s) will be waiting for us in ${HOMEDIR}, so copy them back
+	mv ~/rpmbuild/RPMS/ ${OUT}/
+
+
 clean:
-	rm -f ${OUT}/*.xml ${OUT}/*.html ${OUT}/*.pdf 
+	rm -f ${OUT}/*.xml ${OUT}/*.html ${OUT}/*.pdf  ${OUT}/*.spec ${OUT}/*.tar ${OUT}/*.gz ${OUT}/*.ini
 	rm -f ${DIST}/policytables/*.html ${DIST}/guide/*.html ${DIST}/content/*.xml
+	rm -rf ${OUT}/RPMS/
