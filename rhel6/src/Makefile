@@ -69,7 +69,7 @@ eval-common:
 	oscap xccdf eval --profile common --results /tmp/results-test.xml ${OUT}/rhel6-xccdf-scap-security-guide.xml
 
 dist: content guide tables
-	cp -r dist/ ${DIST}/
+	cp -r ${IN}/dist_template/ ${DIST}/
 	cp ${OUT}/rhel6-guide.html ${DIST}/guide
 	cp ${OUT}/rhel6-xccdf-scap-security-guide.xml ${DIST}/content
 	cp ${OUT}/rhel6-oval-scap-security-guide.xml ${DIST}/content
@@ -108,5 +108,5 @@ rpm: dist
 
 clean:
 	rm -f ${OUT}/*.xml ${OUT}/*.html ${OUT}/*.pdf  ${OUT}/*.spec ${OUT}/*.tar ${OUT}/*.gz ${OUT}/*.ini
-	rm -f ${DIST}/policytables/*.html ${DIST}/guide/*.html ${DIST}/content/*.xml
+	rm -f ${DIST}/
 	rm -rf ${OUT}/RPMS/
