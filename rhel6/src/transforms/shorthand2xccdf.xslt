@@ -43,17 +43,40 @@ exclude-result-prefixes="xccdf">
   <xsl:template match="Rule/ident">
     <xsl:for-each select="@*">
       <ident>
-        <xsl:attribute name="system">
-          <xsl:if test="name() = 'cce'">
-            <xsl:value-of select="$cceuri" />
-          </xsl:if>
+        <xsl:choose>
+          <xsl:when test="name() = 'cce'">
+            <xsl:attribute name="system">
+              <xsl:value-of select="$cceuri" />
+            </xsl:attribute>
+            <xsl:choose>
+              <xsl:when test="starts-with(translate(., 'ce', 'CE'), 'CCE')">
+                <xsl:value-of select="." />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat('CCE-', .)" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+
           <!-- NOTE: use DISA's OS SRG to see these tied to more-concrete OS settings -->
-          <xsl:if test="name() = 'cci'">
-            <xsl:value-of select="$cciuri" />
-            <!-- <xsl:text>http://iase.disa.mil/cci/index.html</xsl:text> -->
-          </xsl:if>
-        </xsl:attribute>
-        <xsl:value-of select="." />
+          <xsl:when test="name() = 'cci'">
+            <xsl:attribute name="system">
+              <xsl:value-of select="$cciuri" />
+              <!-- <xsl:text>http://iase.disa.mil/cci/index.html</xsl:text> -->
+            </xsl:attribute>
+            <xsl:choose>
+              <xsl:when test="starts-with(translate(., 'ci', 'CI'), 'CCI')">
+                <xsl:value-of select="." />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat('CCI-', .)" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="." />
+          </xsl:otherwise>
+        </xsl:choose>
       </ident>
     </xsl:for-each>
   </xsl:template>
