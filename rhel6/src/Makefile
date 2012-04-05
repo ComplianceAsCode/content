@@ -108,5 +108,5 @@ rpm: dist
 
 clean:
 	rm -f ${OUT}/*.xml ${OUT}/*.html ${OUT}/*.pdf  ${OUT}/*.spec ${OUT}/*.tar ${OUT}/*.gz ${OUT}/*.ini
-	rm -f ${DIST}/
+	rm -rf ${DIST}/
 	rm -rf ${OUT}/RPMS/
