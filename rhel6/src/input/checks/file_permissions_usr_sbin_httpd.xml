@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_usr_sbin_httpd" version="1">
+    <metadata>
+      <title>File /usr/sbin/httpd Permissions</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <reference ref_id="CCE-4029-5" source="CCE" />
+      <description>File permissions for /usr/sbin/httpd should be set to 0511.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_usr_sbin_httpd" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing file permissions" id="test_file_permissions_usr_sbin_httpd" version="1">
+    <unix:object object_ref="object_file_permissions_usr_sbin_httpd" />
+    <unix:state state_ref="state_file_permissions_usr_sbin_httpd" />
+  </unix:file_test>
+
+  <unix:file_object comment="/usr/sbin/httpd" id="object_file_permissions_usr_sbin_httpd" version="1">
+    <unix:path>/usr/sbin</unix:path>
+    <unix:filename>httpd</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_usr_sbin_httpd" version="1">
+    <unix:uread datatype="boolean">true</unix:uread>
+    <unix:uwrite datatype="boolean">false</unix:uwrite>
+    <unix:uexec datatype="boolean">true</unix:uexec>
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">true</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">true</unix:oexec>
+  </unix:file_state>
+</def-group>
