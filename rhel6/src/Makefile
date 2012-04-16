@@ -13,6 +13,8 @@ shorthand-guide:
 shorthand2xccdf:
 	xsltproc -o ${OUT}/rhel6-xccdf-noprofiles.xml ${TRANS}/shorthand2xccdf.xslt ${OUT}/rhel6-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o ${OUT}/rhel6-xccdf.xml ${TRANS}/xccdf-addprofiles.xslt ${OUT}/rhel6-xccdf-noprofiles.xml
+	xsltproc -stringparam fixes "../${IN}/fixes/bash-ks.xml" -o ${OUT}/rhel6-xccdf.xml ${TRANS}/xccdf-addfixes.xslt ${OUT}/rhel6-xccdf.xml
+#	xsltproc -stringparam fixes "../${IN}/fixes/puppet-example.xml" -o ${OUT}/rhel6-xccdf.html ${TRANS}/xccdf-addfixes.xslt ${OUT}/rhel6-xccdf.xml
 	xmllint --format --output ${OUT}/rhel6-xccdf.xml ${OUT}/rhel6-xccdf.xml 
 
 checks:
