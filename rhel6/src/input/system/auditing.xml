@@ -95,6 +95,74 @@ process during boot.
 <ref nist="AU-2" disa="1464" />
 </Rule>
 
+<Group id="configure_auditd_data_retention">
+<title> Configure <tt>auditd</tt> Data Retention</title>
+<description>
+By default, <tt>auditd</tt> retains 4 log files of size 5Mb apiece. For a busy system or a system which is thoroughly
+auditing system activity, this is likely to be insuffcient. 
+The log file size needed will depend heavily on what types of events are being audited. First configure auditing
+to log all the events of interest. Then monitor the log size manually for awhile to determine what file size will
+allow you to keep the required data for the correct time period.
+
+Using a dedicated partition for <tt>/var/log/audit</tt> prevents the <tt>auditd</tt> logs from disrupting system functionality if they fill, and, more importantly, prevents other activity in <tt>/var</tt> from filling the partition and stopping the audit trail. (The audit logs are size-limited and therefore unlikely to grow without bound unless configured to do so.)
+Some machines may have requirements that no actions occur which cannot be audited. If this is the case, then
+<tt>auditd</tt> can be configured to halt the machine if it runs out of space.
+<b>Note:</b> Since older logs are rotated, configuring <tt>auditd</tt> this way does not prevent older logs from being rotated away before they can be viewed.
+
+<i>If your system is configured to halt when logging cannot be performed, make sure this can never
+happen under normal circumstances! Ensure that <tt>/var/log/audit</tt> is on its own partition, and
+that this partition is larger than the maximum amount of data <tt>auditd</tt> will retain normally.</i></description>
+
+<Rule id="configure_auditd_max_log_size">
+<title>Configure auditd Max Log Size</title>
+<description>Determine <i>STOREMB</i>, the amount of audit data (in megabytes) which should be retained in each log
+file. Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line:
+<pre>max_log_file = <i>STOREMB</i></pre>
+ </description>
+<oval id="auditd_retention_max_log" />
+</Rule>
+
+<Group id="auditd_logical_volume">
+<title>Configure auditd to Use Logical Volume</title>
+<description>Use a dedicated partition (or logical volume) for log files. It is straightforward to create such a partition
+or logical volume during system installation time. The partition should be larger than the maximum
+space which <tt>auditd</tt> will ever use, which is the maximum size of each log file (<tt>max_log_file</tt>) multiplied
+by the number of log files (<tt>num_logs</tt>). Ensure the partition is mounted on <tt>/var/log/audit</tt>.</description>
+</Group>
+
+<Rule id="configure_auditd_space_left_action">
+<title>Configure auditd space_left Action on Low Disk Space</title>
+<description> If your site requires that the machine be disabled when auditing cannot be performed, configure <tt>auditd</tt> to halt the system when disk space for auditing runs low. Edit <tt>/etc/audit/auditd.conf</tt>, and add or
+correct the following lines:
+<pre>space_left_action = email</pre> </description>
+<oval id="auditd_retention_space_left" />
+</Rule>
+
+<Rule id="configure_auditd_action_mail_acct">
+<title>Configure auditd mail_acct Action on Low Disk Space</title>
+<description> 
+Add or correct the following line in auditd.conf to ensure that the machine is halted when disk space for auditing runs low.
+<pre>action_mail_acct = root</pre> </description>
+<oval id="auditd_retention_mail_acct" />
+</Rule>
+
+<Rule id="configure_auditd_admin_space_left_action">
+<title>Configure auditd admin_space_left Action on Low Disk Space</title>
+<description> Add or correct the following line in auditd.conf to ensure that the machine is halted when disk space for auditing runs low.
+<pre>admin_space_left_action = halt</pre> </description>
+<oval id="auditd_retention_admin_space_left" />
+</Rule>
+
+<Rule id="configure_auditd_max_log_file_action">
+<title>Configure auditd max_log_file Action to Keep Logs</title>
+<description> The default action to take when the logs reach their maximum size is to rotate the log files, discarding the
+oldest one. If it is more important to retain all possible auditing information, even if that opens the possibility
+of running out of space and taking the action defined by <tt>admin_space_left_action</tt>, add or correct the line:
+<pre>max_log_file_action = keep_logs</pre> </description>
+<oval id="auditd_retention_max_log_file" />
+</Rule>
+</Group>
+
 <Group id="auditd_configure_rules">
 <title>Configure <tt>auditd</tt> Rules for Comprehensive Auditing</title>
 <description>The <tt>auditd</tt> program can perform comprehensive
@@ -171,7 +239,6 @@ to capture events that modify account changes:
 <oval id="audit_rules_usergroup_modification" />
 <ref nist="AU-2(a)" disa="18,1403,1404,1405"/>
 </Rule>
-
 
 <Rule id="audit_network_modifications">
 <title>Record Events that Modify the System’s Network Environment</title>
