@@ -1,9 +1,9 @@
 VERSION := 0.1
 RELEASE := 1
-IN=input
-OUT=output
-TRANS=transforms
-REFS=references
+IN = input
+OUT = output
+TRANS = transforms
+REFS = references
 PKGNAME := scap-security-guide
 DIST := $(PKGNAME)-$(VERSION)
 
@@ -48,23 +48,23 @@ all: shorthand-guide shorthand2xccdf tables guide checks content dist rpm
 
 shorthand-guide:
 	xsltproc -o $(OUT)/rhel6-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
-	xmllint --format --output $(OUT)/rhel6-shorthand.xml $(OUT)/rhel6-shorthand.xml 
+	xmllint --format --output $(OUT)/rhel6-shorthand.xml $(OUT)/rhel6-shorthand.xml
 
 shorthand2xccdf:
 	xsltproc -o $(OUT)/rhel6-xccdf-noprofiles.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addprofiles.xslt $(OUT)/rhel6-xccdf-noprofiles.xml
 	xsltproc -stringparam fixes "../$(IN)/fixes/bash-ks.xml" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
 #	xsltproc -stringparam fixes "../$(IN)/fixes/puppet-example.xml" -o $(OUT)/rhel6-xccdf.html $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
-	xmllint --format --output $(OUT)/rhel6-xccdf.xml $(OUT)/rhel6-xccdf.xml 
+	xmllint --format --output $(OUT)/rhel6-xccdf.xml $(OUT)/rhel6-xccdf.xml
 
 checks:
 	xmlwf $(IN)/checks/*.xml
 	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/rhel6-oval.xml
-	xmllint --format --output $(OUT)/rhel6-oval.xml $(OUT)/rhel6-oval.xml 
+	xmllint --format --output $(OUT)/rhel6-oval.xml $(OUT)/rhel6-oval.xml
 #	SCC might return someday
 
 
-guide: shorthand-guide shorthand2xccdf 
+guide: shorthand-guide shorthand2xccdf
 	oscap xccdf generate guide --profile allrules $(OUT)/rhel6-xccdf.xml > $(OUT)/rhel6-guide.html
 #	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 
@@ -99,9 +99,9 @@ content: shorthand-guide shorthand2xccdf checks
 # 	the relabelids.py script chdirs to ./output, so refer to files from there.
 # 	the second argument controls the IDs, as well as the output filenames.
 # 	thus, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
-	$(TRANS)/relabelids.py rhel6-xccdf.xml scap-security-guide 
+	$(TRANS)/relabelids.py rhel6-xccdf.xml scap-security-guide
 
-validate: 
+validate:
 	oscap xccdf validate-xml $(OUT)/rhel6-xccdf-scap-security-guide.xml
 	oscap oval validate-xml $(OUT)/rhel6-oval-scap-security-guide.xml
 
