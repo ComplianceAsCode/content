@@ -1,6 +1,6 @@
 Name:           scap-security-guide
-Version:        alpha
-Release:        1%{?dist}
+Version:        %{version}
+Release:        %{release}
 Summary:        The scap-security-guide project, or SSG for short, aims to deliver security guidance, baselines, and associated validation mechanisms for Red Hat Enterprise Linux.
 
 Group:          Testing
@@ -10,7 +10,7 @@ URL:            https://fedorahosted.org/scap-security-guide/
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildArch:	noarch
+BuildArch:	%{arch}
 
 BuildRequires:  /bin/rm, /bin/mkdir, /bin/cp
 Requires:       /bin/bash, /bin/date, /usr/bin/oscap
@@ -29,7 +29,7 @@ you will be able to find documentation, support, and information on getting
 involved in the SCAP Security Guide community.
 
 %prep
-%setup -q
+%setup -q 
 
 
 %build
@@ -60,5 +60,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0750,root,root)/usr/local/scap-security-guide/
 
 %changelog
+* Thu Apr 19 2012 Spencer Shimko <sshimko@tresys.com> 1.0-2
+- Minor updates to pass some variables in from build system.
+
 * Mon Apr 02 2012 Shawn Wells <shawn@redhat.com> 1.0-1
 - First attempt at SSG RPM. May ${diety} help us...
