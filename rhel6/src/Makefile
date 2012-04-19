@@ -1,8 +1,48 @@
+VERSION := 0.1
+RELEASE := 1
 IN=input
 OUT=output
 TRANS=transforms
 REFS=references
-DIST=scap-security-guide-alpha
+PKGNAME := scap-security-guide
+DIST := $(PKGNAME)-$(VERSION)
+
+ARCH := noarch
+VENDOR := scap-security-guide
+PACKAGER := scap-security-guide
+
+###################################################
+# Used for rolling an RPM
+
+RPM_SPEC := ${IN}/rpmbuild/scap-security-guide-alpha.spec
+
+ROOT_DIR ?= ${CURDIR}
+OUTPUT_DIR ?= ${ROOT_DIR}
+SRPM_OUTPUT_DIR ?= ${OUTPUT_DIR}
+
+# This file will be created by tar'ing up ${OUT}/
+TARBALL = ${SRPM_OUTPUT_DIR}/${DIST}.tar.gz
+
+# exhaustive list of deps for the RPM, used to determine if RPM needs to be rebuilt
+TAR_DEPS = $(wildcard $(DIST)/*)
+RPM_DEPS := $(TARBALL) $(RPM_SPEC) Makefile
+
+RPM_TMPDIR ?= ${ROOT_DIR}/tmp
+RPM_TOPDIR ?= ${RPM_TMPDIR}/src/redhat
+RPM_BUILDROOT ?= ${RPM_TMPDIR}/rpm-buildroot
+
+MKDIR = test -d $(1) || mkdir -p $(1)
+
+RPMBUILD_ARGS := --define '_topdir ${RPM_TOPDIR}'  --define '_tmppath ${RPM_TMPDIR}'
+
+define rpm-prep
+	 $(call MKDIR,$(RPM_TOPDIR)/SOURCES)
+	 $(call MKDIR,$(RPM_TOPDIR)/SPECS)
+	 $(call MKDIR,$(RPM_TOPDIR)/BUILD)
+	 $(call MKDIR,$(RPM_TOPDIR)/RPMS/$(ARCH))
+	 $(call MKDIR,$(RPM_TOPDIR)/SRPMS)
+endef
+
 
 all: shorthand-guide shorthand2xccdf tables guide checks content dist rpm
 
@@ -21,12 +61,12 @@ checks:
 	xmlwf ${IN}/checks/*.xml
 	${TRANS}/combinechecks.py ${IN}/checks > ${OUT}/rhel6-oval.xml
 	xmllint --format --output ${OUT}/rhel6-oval.xml ${OUT}/rhel6-oval.xml 
-#       SCC might return someday
+#	SCC might return someday
 
 
 guide: shorthand-guide shorthand2xccdf 
 	oscap xccdf generate guide --profile allrules ${OUT}/rhel6-xccdf.xml > ${OUT}/rhel6-guide.html
-#       specifying a nonexistent profile, "allrules," to make oscap print all Rules
+#	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
@@ -75,6 +115,9 @@ eval-common:
 	oscap xccdf eval --profile common --results /tmp/results-test.xml ${OUT}/rhel6-xccdf-scap-security-guide.xml
 
 dist: content guide tables
+	$(call MKDIR,${DIST}/guide)
+	$(call MKDIR,${DIST}/content)
+	$(call MKDIR,${DIST}/policytables)
 	cp -r ${IN}/dist_template/ ${DIST}/
 	cp ${OUT}/rhel6-guide.html ${DIST}/guide
 	cp ${OUT}/rhel6-xccdf-scap-security-guide.xml ${DIST}/content
@@ -84,35 +127,37 @@ dist: content guide tables
 	cp ${OUT}/rhel6-table-cnssrefs.html ${DIST}/policytables
 	cp ${OUT}/rhel6-table-dcidrefs.html ${DIST}/policytables
 
-rpm: dist
+tarball: ${TARBALL}
 
-	# A few quick notes on preparing your system to build the SSG RPMs:
-	# (1) May the flies of a thousand horses annoy you for eternity
-	#     if you build an RPM as root. Don't do it!
-	# (2) This build process assumes you have your rpmbuild structure setup
-	# 	$ sudo yum -y install rpm-build
-	# 	$ mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-	# (3) The value if ${DIST} in this Makefile needs to match
-	#     the %{name}-%{version} string from the .spec file, i.e.
-	#     scap-security-guide-alpha
-	# (4) If you're making an RPM, chances are the code has changed. Make
-	#     sure you update the %changelog in the .spec to reflect what's new
+${TARBALL}: dist $(TAR_DEPS)
+	tar -czf $@ $(TAR_DEPS)
 
-	# copy template .spec over to rpmbuild
-	cp ${IN}/rpmbuild/scap-security-guide-alpha.spec ${OUT}/
+srpm: ${SRPM_OUTPUT_DIR}/${DIST}-${RELEASE}.src.rpm
 
-	# tar up the sources
-	tar -zcvf ${OUT}/scap-security-guide-alpha.tar.gz ${DIST}
-	mv ${OUT}/scap-security-guide-alpha.tar.gz ~/rpmbuild/SOURCES/
-	
-	# let's see if a build works
-	rpmbuild -ba ${OUT}/scap-security-guide-alpha.spec
+${SRPM_OUTPUT_DIR}/${DIST}-${RELEASE}.src.rpm: $(RPM_DEPS)
+	echo "Building ${PKGNAME} SRPM..."
+	$(call rpm-prep)
+	cp ${TARBALL} ${RPM_TOPDIR}/SOURCES/
+	echo -e "%define arch $(ARCH)\n%define pkgname ${PKGNAME}\n%define _sysconfdir /etc\n%define version ${VERSION}\n%define release ${RELEASE}\n%define vendor ${VENDOR}\n%define packager ${PACKAGER}" > ${RPM_TOPDIR}/SPECS/$(notdir ${RPM_SPEC})
+	cat ${RPM_SPEC} >> ${RPM_TOPDIR}/SPECS/$(notdir ${RPM_SPEC})
+	cd ${RPM_TOPDIR} && rpmbuild ${RPMBUILD_ARGS} --target=$(ARCH) -bs SPECS/$(notdir ${RPM_SPEC}) --nodeps
+	mv  ${RPM_TOPDIR}/SRPMS/${DIST}-${RELEASE}.src.rpm ${SRPM_OUTPUT_DIR}
 
-	# Our RPM(s) will be waiting for us in ${HOMEDIR}, so copy them back
-	mv ~/rpmbuild/RPMS/ ${OUT}/
+rpm: ${OUTPUT_DIR}/${DIST}-${RELEASE}.$(ARCH).rpm
 
+${OUTPUT_DIR}/${DIST}-${RELEASE}.$(ARCH).rpm: ${SRPM_OUTPUT_DIR}/${DIST}-${RELEASE}.src.rpm
+	 @echo "Building ${DIST} RPM..."
+	 $(call rpm-prep)
+	 cd ${RPM_TOPDIR}/SRPMS && rpmbuild --rebuild --target=$(ARCH) ${RPMBUILD_ARGS} --buildroot ${RPM_BUILDROOT} -bb $<
+	 mv  ${RPM_TOPDIR}/RPMS/$(ARCH)/${DIST}-${RELEASE}*.rpm ${OUTPUT_DIR}
 
 clean:
 	rm -f ${OUT}/*.xml ${OUT}/*.html ${OUT}/*.pdf  ${OUT}/*.spec ${OUT}/*.tar ${OUT}/*.gz ${OUT}/*.ini
 	rm -rf ${DIST}/
-	rm -rf ${OUT}/RPMS/
+	rm -rf ${RPM_TMPDIR}
+
+bare: clean
+	rm -rf $(TARBALL) $(OUTPUT_DIR)/$(notdir ${OUTPUT_DIR}/${DIST}-${RELEASE}.$(ARCH).rpm)
+	rm -rf $(OUTPUT_DIR)/$(notdir ${SRPM_OUTPUT_DIR}/${DIST}-${RELEASE}.src.rpm)
+
+.PHONY: rpm srpm tarball clean all shorthand-guide shorthand2xccdf checks guide table-profilenistrefs table-refs table-srgmap tables content validate eval-test eval-ftp eval-common
