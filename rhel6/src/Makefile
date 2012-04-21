@@ -122,10 +122,7 @@ dist: content guide tables
 	cp $(OUT)/rhel6-guide.html $(DIST)/guide
 	cp $(OUT)/rhel6-xccdf-scap-security-guide.xml $(DIST)/content
 	cp $(OUT)/rhel6-oval-scap-security-guide.xml $(DIST)/content
-	cp $(OUT)/rhel6-table-nistrefs-delim-sorted.html $(DIST)/policytables
-	cp $(OUT)/rhel6-table-nistrefs.html $(DIST)/policytables
-	cp $(OUT)/rhel6-table-cnssrefs.html $(DIST)/policytables
-	cp $(OUT)/rhel6-table-dcidrefs.html $(DIST)/policytables
+	cp $(OUT)/rhel6-table-* $(DIST)/policytables
 
 tarball: $(TARBALL)
 
