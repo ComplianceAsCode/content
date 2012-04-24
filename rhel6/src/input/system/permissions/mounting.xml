@@ -27,7 +27,7 @@ solve the same problem with less risk.</description>
 <rationale>When a user logs in, the module pam_console.so called via the command login, or by some of the graphics program of logging, such as gdm, kdm, ​​and xdm. If this user is the first to log into the physical console - called the console user - the user module assures the mastery of a wide variety of devices normally belong to root. Administrative privileges should be limited for non-root users. Review the man page for <tt>pam_console</tt> for more information</rationale>
 <ident cce="3685-5" />
 <oval id="console_device_restrict_access_desktop" />
-<!--<ref nist="CM-6, CM-7" />-->
+<ref nist="AC-6, CM-6, CM-7" />
 </Rule>
 
 <Rule id="console_device_restrict_access_server">
@@ -37,7 +37,7 @@ solve the same problem with less risk.</description>
 <rationale>When a user logs in, the module pam_console.so called via the command login, or by some of the graphics program of logging, such as gdm, kdm, ​​and xdm. If this user is the first to log into the physical console - called the console user - the user module assures the mastery of a wide variety of devices normally belong to root. Administrative privileges should be limited for non-root users. Review the man page for <tt>pam_console</tt> for more information</rationale>
 <ident cce="3685-5" />
 <oval id="console_device_restrict_access_server" />
-<!--<ref nist="CM-6, CM-7" />-->
+<ref nist="AC-6, CM-6, CM-7" />
 </Rule>
 
 <Rule id="kernel_module_usb-storage_disabled">
@@ -283,7 +283,7 @@ malicious file would exploit the thumbnailer with the potential for malicious co
 is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
 <ident cce="TODO" />
 <oval id="disable_gnome_thumbnailers" />
-<ref nist="TODO" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 </Group>

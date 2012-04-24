@@ -39,7 +39,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident cce="4209-3" />
 <oval id="package_aide_installed" />
-<ref nist="CM-6, CM-7"/>
+<ref nist="CM-6, CM-7, SC-28, SI-7" />
 </Rule>
 
 <Rule id="disable_prelink">
@@ -57,6 +57,7 @@ to restore binaries to a normal, non-prelinked state.
 The prelinking feature can interfere with the operation
 of AIDE, because it changes binaries.
 </rationale>
+<ref nist="CM-6, SC-28, SI-7" />
 </Rule>
 
 <Rule id="aide_build_database">
@@ -76,6 +77,7 @@ If this check produces any unexpected output, investigate.
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
+<ref nist="SC-28, SI-7" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking">
@@ -90,6 +92,7 @@ AIDE can be executed periodically through other means; this is merely one exampl
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE may reveal unexpected changes in installed files.
 </rationale>
+<ref nist="CM-6, SC-28, SI-7" />
 </Rule>
 
 <Rule id="aide_verify_integrity_manually">
@@ -117,7 +120,7 @@ earlier for this purpose.
 </rationale>
 <!--<ident cce="4209-3" />-->
 <!--<oval id="aide_verify_integrity_manually" />-->
-<!--<ref nist="CM-6, CM-7"/>-->
+<ref nist="SC-28, SI-7" />
 </Rule>
 
 </Group>

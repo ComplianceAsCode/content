@@ -24,6 +24,7 @@ If the system is a standalone machine with no need for network access or even co
 <rationale>The network interfaces expand the attack surface of a system. If they are not needed they should be disabled.</rationale>
 <!--<ident cce="TODO" />-->
 <!--TODO:MANUAL<oval id="network_disable_unused_interfaces" />-->
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="network_disable_zeroconf">
@@ -34,6 +35,7 @@ If the system is a standalone machine with no need for network access or even co
 <rationale>Zeroconf addresses are in the network 169.254.0.0. The networking scripts add entries to the system’s routing table for these addresses. Zeroconf address assignment commonly occurs when the system is configured to use DHCP but fails to receive an address assignment from the DHCP server.</rationale>
 <ident cce="CCE-14054-1" />
 <oval id="sysconfig_nozeroconf_yes" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="network_sniffer_disabled">
@@ -45,6 +47,7 @@ If the system is a standalone machine with no need for network access or even co
 </rationale>
 <ident cce="CCE-15013-6" />
 <oval id="network_sniffer_disabled" />
+<ref nist="CM-6, CM-7, MA-3" />
 </Rule>
 
 </Group>
