@@ -23,8 +23,6 @@ SRPM_OUTPUT_DIR ?= $(OUTPUT_DIR)
 # This file will be created by tar'ing up $(OUT)/
 TARBALL = $(SRPM_OUTPUT_DIR)/$(DIST).tar.gz
 
-# exhaustive list of deps for the RPM, used to determine if RPM needs to be rebuilt
-TAR_DEPS = $(wildcard $(DIST)/*)
 RPM_DEPS := $(TARBALL) $(RPM_SPEC) Makefile
 
 RPM_TMPDIR ?= $(ROOT_DIR)/tmp
@@ -126,8 +124,8 @@ dist: content guide tables
 
 tarball: $(TARBALL)
 
-$(TARBALL): dist $(TAR_DEPS)
-	tar -czf $@ $(TAR_DEPS)
+$(TARBALL): dist $(DIST)
+	tar -czf $@ $(DIST)
 
 srpm: $(SRPM_OUTPUT_DIR)/$(DIST)-$(RELEASE).src.rpm
 
