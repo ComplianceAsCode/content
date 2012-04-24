@@ -86,7 +86,7 @@ mount option should be specified for <tt>/tmp</tt>.</description>
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <ident cce="14412-1" />
 <oval id="mount_option_tmp_nodev" />
-<ref nist="TODO"/>
+<ref nist="CM-7, MP-2"/>
 </Rule>
 
 <Rule id="mount_option_tmp_noexec">
@@ -99,7 +99,7 @@ out of <tt>/tmp</tt>.</description>
 such as /tmp can expose the system to potential compromise.</rationale>
 <ident cce="14927-8" />
 <oval id="mount_option_tmp_noexec" />
-<ref nist="TODO"/>
+<ref nist="CM-7, MP-2"/>
 </Rule>
 
 <Rule id="mount_option_tmp_nosuid">
@@ -111,7 +111,7 @@ should not be required in these world-writeable directories.</description>
 should not be able to execute suid or sgid binaries from temporary storage partitions.</rationale>
 <ident cce="14940-1" />
 <oval id="mount_option_tmp_nosuid" />
-<ref nist="TODO"/>
+<ref nist="CM-7, MP-2"/>
 </Rule>
 
 <Rule id="mount_option_dev_shm_nodev">
@@ -123,7 +123,7 @@ mount option should specified for <tt>/dev/shm</tt>.</description>
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <ident cce="15007-8" />
 <oval id="mount_option_dev_shm_nodev" />
-<ref nist="TODO"/>
+<ref nist="CM-7, MP-2"/>
 </Rule>
 
 <Rule id="mount_option_dev_shm_noexec">
@@ -136,7 +136,7 @@ out of <tt>/dev/shm</tt>.</description>
 such as /dev/shm can expose the system to potential compromise.</rationale>
 <ident cce="14703-3" />
 <oval id="mount_option_dev_shm_noexec" />
-<ref nist="TODO"/>
+<ref nist="CM-7, MP-2"/>
 </Rule>
 
 <Rule id="mount_option_dev_shm_nosuid">
@@ -148,7 +148,7 @@ should not be required in these world-writeable directories.</description>
 should not be able to execute suid or sgid binaries from temporary storage partitions.</rationale>
 <ident cce="14306-5" />
 <oval id="mount_option_dev_shm_nosuid" />
-<ref nist="TODO"/>
+<ref nist="CM-7, MP-2"/>
 </Rule>
 
 <Rule id="mount_option_var_tmp_bind_var">
@@ -165,7 +165,7 @@ necessary to meet requirements, the storage location /var/tmp should be bind mou
 /tmp and thus share the same protections.</rationale>
 <ident cce="14584-7" />
 <oval id="mount_option_var_tmp_bind" />
-<ref nist="TODO"/>
+<ref nist="CM-6"/>
 </Rule>
 
 </Group>
