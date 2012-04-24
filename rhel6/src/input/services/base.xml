@@ -17,6 +17,7 @@ software executing on the local machine. For most deployments this daemon should
 </description>
 <ident cce="TODO" />
 <oval id="service_abrtd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -29,6 +30,7 @@ on the local system this daemon should be disabled.
 </description>
 <ident cce="4298-6" />
 <oval id="service_acpid_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -43,6 +45,7 @@ daemon should be disabled.
 </description>
 <ident cce="TODO" />
 <oval id="service_atd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -57,6 +60,7 @@ be used for system auditing it is recommended that auditd be enabled.
 </description>
 <ident cce="4292-9" />
 <oval id="service_auditd_enabled" />
+<ref nist="AU-3, CM-6" />
 </Rule>
 
 <Group id="base_bluetooth">
@@ -72,6 +76,7 @@ Removal of hardware is the only way to ensure that the Bluetooth wireless capabi
 </description>
 <ident cce="4355-4" />
 <oval id="service_bluetooth_disabled" />
+<ref nist="AC-18, CM-6, CM-7" />
 </Rule>
 
 <Rule id="kernel_module_bluetooth_disabled">
@@ -82,6 +87,7 @@ alias bluetooth off</pre>
 </description>
 <ident cce="14948-4" />
 <oval id="kernel_module_bluetooth_disabled" />
+<ref nist="AC-18, CM-6, CM-7" />
 </Rule>
 
 </Group> <!-- <Group id="base_bluetooth"> -->
@@ -97,6 +103,7 @@ the LAN this service should be disabled.
 </description>
 <ident cce="TODO" />
 <oval id="service_certmonger_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="service_cgconfig_disabled">
@@ -109,6 +116,7 @@ Unless control groups are used to manage system resources this service should be
 </description>
 <ident cce="TODO" />
 <oval id="service_cgconfig_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="service_cgred_disabled">
@@ -120,6 +128,7 @@ if control groups are not needed to manage system resources then this service sh
 </description>
 <ident cce="TODO" />
 <oval id="service_cgred_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="service_cpuspeed_disabled">
@@ -132,6 +141,7 @@ this service should be disabled.
 </description>
 <ident cce="4051-9" />
 <oval id="service_cpuspeed_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -144,6 +154,7 @@ tasks. The daemon should be configured defensively.
 </description>
 <ident cce="4324-0" />
 <oval id="service_crond_enabled" />
+<ref nist="CM-6" />
 </Rule>
 
 
@@ -156,6 +167,7 @@ as a print server then this service should be disabled.
 </description>
 <ident cce="4112-9" />
 <oval id="service_cups_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="service_haldaemon_disabled">
@@ -169,6 +181,7 @@ be disabled.
 </description>
 <ident cce="4364-6" />
 <oval id="service_haldaemon_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="service_ip6tables_enabled">
@@ -182,6 +195,7 @@ networking is enabled on the local machine then this service should be enabled.
 </description>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
+<ref nist="AC-3, CM-6" />
 </Rule>
 
 <Rule id="service_iptables_enabled">
@@ -195,6 +209,7 @@ networking is enabled on the local machine then this service should be enabled.
 </description>
 <ident cce="4189-7" />
 <oval id="service_iptables_enabled" />
+<ref nist="AC-3, CM-6" />
 </Rule>
 
 <Rule id="service_irqbalance_enabled">
@@ -207,6 +222,7 @@ a useful service and should be left enabled.
 </description>
 <ident cce="4123-6" />
 <oval id="service_irqbalance_enabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="service_kdump_disabled">
@@ -219,6 +235,7 @@ system is used for kernel development or testing, disable the service:
 </description>
 <ident cce="3425-6" />
 <oval id="service_kdump_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -233,6 +250,7 @@ mirrored or snapshot logical volumes then this service should be configured and 
 </description>
 <ident cce="TODO" />
 <oval id="service_lvm2-monitor_enabled" />
+<ref nist="SI-11, CM-6" />
 </Rule>
 
 <Rule id="service_mdmonitor_disabled">
@@ -245,6 +263,7 @@ disable this service:
 </description>
 <ident cce="3854-7" />
 <oval id="service_mdmonitor_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -261,6 +280,7 @@ are in use, disable this service:
 </description>
 <ident cce="3822-4" />
 <oval id="service_messagebus_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <Rule id="service_netconsole_disabled">
@@ -274,6 +294,7 @@ this service should be disabled.
 </description>
 <ident cce="TODO" />
 <oval id="service_netconsole_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -287,6 +308,7 @@ this service can be left enabled.
 </description>
 <ident cce="4369-5" />
 <oval id="service_network_enabled" />
+<ref nist="CM-6" />
 </Rule>
 
 
@@ -301,6 +323,7 @@ to leave this service enabled.
 </description>
 <ident cce="4376-0 " />
 <oval id="service_ntpd_enabled" />
+<ref nist="AU-8, CM-6" />
 </Rule>
 
 <Rule id="service_ntpdate_enabled">
@@ -316,6 +339,7 @@ sufficient. For servers it is generally recommended to enable the ntpd service.
 </description>
 <ident cce="TODO" />
 <oval id="service_ntpdate_enabled" />
+<ref nist="AU-8, CM-6" />
 </Rule>
 
 <Rule id="service_oddjobd_disabled">
@@ -326,6 +350,7 @@ applications which communicate with it through the system message bus.
 </description>
 <ident cce="TODO" />
 <oval id="service_oddjobd_disabled" />
+<ref nist="AC-6, CM-6, CM-7" />
 </Rule>
 
 
@@ -336,6 +361,7 @@ applications which communicate with it through the system message bus.
 </description>
 <ident cce="TODO" />
 <oval id="service_portreserve_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -350,6 +376,7 @@ service enabled for local mail delivery.
 </description>
 <ident cce="14068-1" />
 <oval id="service_postfix_enabled" />
+<ref nist="CM-6" />
 </Rule>
 
 
@@ -362,6 +389,7 @@ is recommended that this service be configured and enabled.
 </description>
 <ident cce="TODO" />
 <oval id="service_psacct_enabled" />
+<ref nist="AU-12, CM-6" />
 </Rule>
 
 <Rule id="service_quota_nld_disabled">
@@ -375,6 +403,7 @@ violations are not desired then disable this service.
 </description>
 <ident cce="TODO" />
 <oval id="service_quota_nld_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -391,11 +420,12 @@ configuration information.
 </description>
 <ident cce="TODO" />
 <oval id="service_rdisc_disabled" />
+<ref nist="AC-4, CM-6, CM-7" />
 </Rule>
 
 
 <Rule id="service_restorecond_enabled">
-<title>Disable Restore SELinux Context Service (restorecond)</title>
+<title>Enable Restore SELinux Context Service (restorecond)</title>
 <description>The restorecond service utilizes inotify to look for the creation of new files
 listed in the /etc/selinux/restorecond.conf configuration file. Once the file is created,
 restorecond ensures that the file receives the proper SELinux security context. It is
@@ -404,6 +434,7 @@ recommended that this service be enabled.
 </description>
 <ident cce="4129-3" />
 <oval id="service_restorecond_enabled" />
+<ref nist="AC-3, CM-6" />
 </Rule>
 
 
@@ -418,6 +449,7 @@ service and perform patching in accordance with local configuration management p
 </description>
 <ident cce="TODO" />
 <oval id="service_rhnsd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -430,6 +462,7 @@ recommended to also disable this service.
 </description>
 <ident cce="TODO" />
 <oval id="service_rhsmcertd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -444,6 +477,7 @@ to database formats, and the encryption of log data en route to a central loggin
 </description>
 <ident cce="17698-2" />
 <oval id="service_rsyslog_enabled" />
+<ref nist="AU-12, CM-6" />
 </Rule>
 
 
@@ -457,6 +491,7 @@ understand SASL based authentication. Unless this service is absolutely needed i
 </description>
 <ident cce="TODO" />
 <oval id="service_saslauthd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -470,6 +505,7 @@ system’s hard drives are SMART-capable. Otherwise, disable this service.
 </description>
 <ident cce="3455-3" />
 <oval id="service_smartd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -483,6 +519,7 @@ administration is needed then this service should be enabled. Otherwise, it shou
 </description>
 <ident cce="4268-9" />
 <oval id="service_sshd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -496,6 +533,7 @@ to provide client auditing and policy services for projects like FreeIPA.
 </description>
 <ident cce="TODO" />
 <oval id="service_sssd_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 
@@ -510,6 +548,7 @@ service should be disabled.
 </description>
 <ident cce="TODO" />
 <oval id="service_sysstat_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 <!--
@@ -534,6 +573,7 @@ not be enabled on systems which are not using NIS.
 </description>
 <ident cce="3705-1" />
 <oval id="service_ypbind_disabled" />
+<ref nist="CM-6, CM-7" />
 </Rule>
 
 </Group>
