@@ -98,6 +98,100 @@ If the only services listed are portmapper and status, it is safe to disable rpc
 
 </Group>
 </Group>
+
+<Group id="nfs_configuring_all_machines">
+<title>Configure All Machines which Use NFS</title>
+<description>The steps in this section are appropriate for all machines which run NFS, whether they operate as clients or as servers.</description>
+
+<Group id="nfs_client_or_server_not_both">
+<title>Make Each Machine a Client or a Server, not Both</title>
+<description>If NFS must be used, it should be deployed in the simplest configuration possible to avoid maintainability problems which may lead to unnecessary security exposure. Due to the reliability and security problems caused
+by NFS (specially NFSv3 and NFSv2), it is not a good idea for machines which act as NFS servers to also mount filesystems via NFS. At the least, crossed mounts (the situation in which each of two servers mounts a filesystem from the other) should never be used.
+</description>
+
+</Group> <!-- <Group id="nfs_client_or_server_not_both"> -->
+
+<Group id="nfs_restrict_access_rpcbind">
+<title>Restrict Access to rpcbind</title>
+<description>If using <tt>rpcbind</tt>, its access should be restricted by using TCP Wrappers. The <tt>/etc/hosts.allow</tt> and <tt>/etc/hosts.deny</tt> files are used by TCP Wrappers to determine whether specified remote hosts are allowed to access certain services. The default RPC Bind service shipped with RHEL6 has TCP Wrappers support built in, so this specification can be used to provide some protection against network attacks on <tt>rpcbind</tt>.
+<br /><br />
+Note: This step protects only the RPC Bind service itself. It is still possible for attackers to guess the port numbers of NFS services and attack those services directly, even if they are denied access to <tt>rpcbind</tt>.
+<br /><br />
+Edit the file <tt>/etc/hosts.deny</tt>. Add or correct the line:
+<pre>rpcbind: ALL</pre>
+Edit the file <tt>/etc/hosts.allow</tt>. Add or correct the line:
+<pre>rpcbind: IPADDR1 , IPADDR2 , ...</pre>
+where each <tt>IPADDR</tt> is the IP address of a server or client with which this machine shares NFS filesystems. If the machine is an NFS server, it may be simpler to use an IP netblock specification, such as 10.3.2. (this is the TCP Wrappers syntax representing the netblock 10.3.2.0/24), or a hostname specification, such as
+.subdomain.example.com. The use of hostnames is not recommended.
+</description>
+
+</Group> <!-- <Group id="nfs_restrict_access_rpcbind"> -->
+
+<Group id="nfs_configure_fixed_ports">
+<title>Configure NFS Services to Use Fixed Ports (NFSv3 and NFSv2)</title>
+<description>Firewalling should be done at each host and at the border firewalls to protect the NFS daemons from remote access, since NFS servers should never be accessible from outside the organization. However, by default for NFSv3 and NFSv2, the RPC Bind service assigns each NFS service to a port dynamically at service startup time. Dynamic ports cannot be protected by port filtering firewalls such as iptables.
+<br /><br />
+Therefore, restrict each service to always use a given port, so that firewalling can be done effectively. Note that, because of the way RPC is implemented, it is not possible to disable the RPC Bind service even if ports are assigned statically to all RPC services.
+<br /><br />
+Ports for mountd, statd, and lockd are not required in a pure NFSv4 environment.
+</description>
+
+<Rule id="nfs_fixed_lockd_tcp_port">
+<title>Configure <tt>lockd</tt> to use static TCP port</title>
+<description>Configure the <tt>lockd</tt> daemon to use a static TCP port as opposed to letting the RPC Bind service dynamically assign a port. Edit the file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>LOCKD_TCPPORT=lockd-port</pre>
+Where <tt>lockd-port</tt> is a port which is not used by any other service on your network. 
+</description>
+<rationale>
+Restrict service to always use a given port, so that firewalling can be done effectively.
+</rationale>
+<ident cce="4559-1" />
+<oval id="nfs_fixed_lockd_tcp_port" />
+</Rule>
+
+<Rule id="nfs_fixed_lockd_udp_port">
+<title>Configure <tt>lockd</tt> to use static UDP port</title>
+<description>Configure the <tt>lockd</tt> daemon to use a static UDP port as opposed to letting the RPC Bind service dynamically assign a port. Edit the file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>LOCKD_UDPPORT=lockd-port</pre>
+Where <tt>lockd-port</tt> is a port which is not used by any other service on your network. 
+</description>
+<rationale>
+Restrict service to always use a given port, so that firewalling can be done effectively.
+</rationale>
+<ident cce="4310-9" />
+<oval id="nfs_fixed_lockd_udp_port" />
+</Rule>
+
+<Rule id="nfs_fixed_statd_port">
+<title>Configure <tt>statd</tt> to use static port</title>
+<description>Configure the <tt>statd</tt> daemon to use a static port as opposed to letting the RPC Bind service dynamically assign a port. Edit the file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>STATD_PORT=statd-port</pre>
+Where <tt>statd-port</tt> is a port which is not used by any other service on your network. 
+</description>
+<rationale>
+Restrict service to always use a given port, so that firewalling can be done effectively.
+</rationale>
+<ident cce="3667-3" />
+<oval id="nfs_fixed_statd_port" />
+</Rule>
+
+<Rule id="nfs_fixed_mountd_port">
+<title>Configure <tt>mountd</tt> to use static port</title>
+<description>Configure the <tt>mountd</tt> daemon to use a static port as opposed to letting the RPC Bind service dynamically assign a port. Edit the file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>MOUNTD_PORT=statd-port</pre>
+Where <tt>mountd-port</tt> is a port which is not used by any other service on your network. 
+</description>
+<rationale>
+Restrict service to always use a given port, so that firewalling can be done effectively.
+</rationale>
+<ident cce="4438-8" />
+<oval id="nfs_fixed_mountd_port" />
+</Rule>
+
+</Group> <!-- <Group id="nfs_configure_fixed_ports"> -->
+
+</Group> <!-- <Group id="nfs_configuring_all_machines"> -->
+
 <Group id="nfs_configuring_clients">
 <title>Configure NFS Clients</title>
 <description>The steps in this section are appropriate for machines which operate as NFS clients.</description>
