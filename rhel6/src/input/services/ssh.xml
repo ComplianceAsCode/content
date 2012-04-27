@@ -37,8 +37,7 @@ certain changes should be made to the OpenSSH daemon configuration
 file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
 applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
-<ident cci="CCI-000888" />
-<ident cci="CCI-000197" />
+<ref disa="197,888" />
 
 <Rule id="sshd_allow_only_protocol2" severity="high">
 <title>Allow Only SSH Protocol 2</title>
@@ -268,7 +267,7 @@ implementation. These are also required for compliance.
 </rationale>
 <ident cce="14491-5" />
 <oval id="sshd_use_approved_ciphers" />
-<ident cci="CCI-000803" />
+<ref disa="803" />
 </Rule>
 
 </Group>

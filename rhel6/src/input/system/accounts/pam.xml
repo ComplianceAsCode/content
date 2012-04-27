@@ -179,8 +179,7 @@ search space.
 </rationale>
 <ident cce="14113-5" />
 <oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
-<ref nist="IA-5" />
-<ident cci="CCI-000194" />
+<ref nist="IA-5,194" disa="194"/>
 </Rule>
 
 <Rule id="password_require_uppercases">
@@ -243,9 +242,8 @@ Note that passwords which are changed on compromised systems will still be compr
 </rationale>
 <ident cce="14701-7" />
 <oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
-<ref nist="IA-5" />
+<ref nist="IA-5" disa="195"/>
 </Rule>
-<ident cci="CCI-000195" />
 </Group>
 </Group>
 
@@ -364,9 +362,7 @@ frequently.</description>
 
 <Rule id="limit_password_reuse">
 <title>Limit Password Reuse</title>
-<description>
-
-The passwords to remember should be set to:
+<description>The passwords to remember should be set to:
 <sub idref="password_history_retain_number" /></description>
 <rationale>
 Allowing users to reuse passwords means that a password which was once
@@ -374,10 +370,7 @@ compromised could be used yet again by an attacker.
 </rationale>
 <ident cce="14939-3" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number"/>
-<ref nist="IA-5" />
-<ident cci="CCI-000200" />
+<ref nist="IA-5" disa="200"/>
 </Rule>
 </Group>
-
 </Group>
-

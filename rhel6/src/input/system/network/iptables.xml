@@ -77,9 +77,7 @@ capability for IPv6 and ICMPv6.
 </rationale>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
-<ref nist="CM-6, CM-7" />
-<ident cci="CCI-001115" />
-<ident cci="CCI-001118" />
+<ref nist="CM-6, CM-7" disa="1115,1118"/>
 </Rule>
 
 <Rule id="enable_iptables">
@@ -96,9 +94,7 @@ capability for IPv4 and ICMP.
 </rationale>
 <ident cce="4189-7" />
 <oval id="service_iptables_enabled" />
-<ref nist="CM-6, CM-7" />
-<ident cci="CCI-001115" />
-<ident cci="CCI-001118" />
+<ref nist="CM-6, CM-7" disa="1115,1118" />
 </Rule>
 </Group><!--<Group id="iptables_activation">-->
 
@@ -226,7 +222,7 @@ The following rule will log all traffic originating from a site-local address, w
 </description>
 <!--<ident cce="14264-6" />-->
 <!--MANUAL<oval id="iptables_log_and_drop_suspicious" />-->
-<ref nist="AC-4, AC-17, CM-6" />-->
+<ref nist="AC-4, AC-17, CM-6" />
 </Rule>
 
 </Group><!--<Group id="ruleset_modifications">-->

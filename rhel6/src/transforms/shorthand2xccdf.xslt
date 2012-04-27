@@ -66,7 +66,7 @@ exclude-result-prefixes="xccdf xhtml">
   </xsl:template>
 
   <!-- expand ref attributes to reference tags, one item per reference -->
-  <xsl:template match="Rule/ref"> 
+  <xsl:template match="ref"> 
     <xsl:for-each select="@*">
        <xsl:call-template name="ref-info" >
           <xsl:with-param name="refsource" select="name()" />
