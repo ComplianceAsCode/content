@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
 xmlns:xhtml="http://www.w3.org/1999/xhtml"
-exclude-result-prefixes="xccdf">
+exclude-result-prefixes="xccdf xhtml">
 
 <xsl:include href="constants.xslt"/>
 
@@ -39,7 +39,7 @@ exclude-result-prefixes="xccdf">
     </xsl:copy>
   </xsl:template> 
 
-  <!-- expand reference to CCE ID -->
+  <!-- expand reference to ident types -->
   <xsl:template match="Rule/ident">
     <xsl:for-each select="@*">
       <ident>
@@ -57,22 +57,6 @@ exclude-result-prefixes="xccdf">
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
-
-          <!-- NOTE: use DISA's OS SRG to see these tied to more-concrete OS settings -->
-          <xsl:when test="name() = 'cci'">
-            <xsl:attribute name="system">
-              <xsl:value-of select="$cciuri" />
-              <!-- <xsl:text>http://iase.disa.mil/cci/index.html</xsl:text> -->
-            </xsl:attribute>
-            <xsl:choose>
-              <xsl:when test="starts-with(translate(., 'ci', 'CI'), 'CCI')">
-                <xsl:value-of select="." />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat('CCI-', .)" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="." />
           </xsl:otherwise>
@@ -81,28 +65,67 @@ exclude-result-prefixes="xccdf">
     </xsl:for-each>
   </xsl:template>
 
-  <!-- expand ref attributes to appropriate XCCDF reference bodies -->
+  <!-- expand ref attributes to reference tags, one item per reference -->
   <xsl:template match="Rule/ref"> 
     <xsl:for-each select="@*">
-      <reference>
-        <xsl:attribute name="href">
-        <!-- populate the href attribute with a global reference-->
-          <xsl:if test="name() = 'nist'">
-            <xsl:value-of select="$nist800-53uri" />
-          </xsl:if>
-          <xsl:if test="name() = 'cnss'">
-            <xsl:value-of select="$cnss1253uri" />
-          </xsl:if>
-          <xsl:if test="name() = 'dcid'">
-            <xsl:value-of select="$dcid63uri" />
-          </xsl:if>
-        </xsl:attribute>
-      <!-- the actual string specified -->
-        <xsl:value-of select="." />  
-      </reference>
+       <xsl:call-template name="ref-info" >
+          <xsl:with-param name="refsource" select="name()" />
+          <xsl:with-param name="refitems" select="." />
+       </xsl:call-template>
     </xsl:for-each>
   </xsl:template>
 
+  <!-- expands individual reference source -->
+  <xsl:template name="ref-info">
+      <xsl:param name="refsource"/>
+      <xsl:param name="refitems"/>
+      <xsl:variable name="delim" select="','" />
+       <xsl:choose>
+           <xsl:when test="$delim and contains($refitems, $delim)">
+             <!-- output the reference -->
+             <xsl:call-template name="ref-output" >
+               <xsl:with-param name="refsource" select="$refsource" />
+               <xsl:with-param name="refitem" select="substring-before($refitems, $delim)" />
+             </xsl:call-template>
+             <!-- recurse for additional refs -->
+             <xsl:call-template name="ref-info">
+               <xsl:with-param name="refsource" select="$refsource" />
+               <xsl:with-param name="refitems" select="substring-after($refitems, $delim)" />
+             </xsl:call-template>
+           </xsl:when>
+
+           <xsl:otherwise>
+             <xsl:call-template name="ref-output" >
+               <xsl:with-param name="refsource" select="$refsource" />
+               <xsl:with-param name="refitem" select="$refitems" />
+             </xsl:call-template>
+           </xsl:otherwise>
+       </xsl:choose>
+  </xsl:template>
+
+  <!-- output individual reference -->
+  <xsl:template name="ref-output">
+      <xsl:param name="refsource"/>
+      <xsl:param name="refitem"/>
+      <reference>
+        <xsl:attribute name="href">
+        <!-- populate the href attribute with a global reference-->
+          <xsl:if test="$refsource = 'nist'">
+            <xsl:value-of select="$nist800-53uri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'cnss'">
+            <xsl:value-of select="$cnss1253uri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'dcid'">
+            <xsl:value-of select="$dcid63uri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'disa'">
+            <xsl:value-of select="$disa-cciuri" />
+          </xsl:if>
+        </xsl:attribute>
+        <xsl:value-of select="$refitem" />
+      </reference>
+  </xsl:template>
 
   <!-- expand reference to OVAL ID -->
   <xsl:template match="Rule/oval">

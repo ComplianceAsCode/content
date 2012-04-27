@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
 <!-- this style sheet is designed to take as input the OS SRG and a body of XCCDF content (e.g. draft STIG), 
-     and to map the requirements from the SRG to Rules in the XCCDF (which include CCIs as idents). 
+     and to map the requirements from the SRG to Rules in the XCCDF (which include CCIs as references). 
      The output shows how a body of XCCDF meets SRG requirements. -->
 
 <xsl:include href="constants.xslt"/>
@@ -77,14 +77,17 @@
 		  <td> <xsl:value-of select="$srg_id"/> </td> 
 		  <td> <xsl:value-of select="$srg_cci"/> </td> 
 		  <td> <xsl:value-of select="$srg_title"/> </td>
-		  <td> <xsl:value-of select="$srg_desc"/> </td>
+		  <td> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="$srg_desc"/></xsl:call-template> </td>
 		  <td>
       		<!-- iterate over the Rules in the (externally-provided) XCCDF document -->
 			<xsl:for-each select="$rules">
 				<xsl:variable name="rule" select="."/>
+				<xsl:if test="cdf:reference[@href=$disa-cciuri]" > 
 				<table>
-				<xsl:for-each select="cdf:ident[@system='http://iase.disa.mil/cci/index.html']"> 
-			  		<xsl:if test="self::node()[text()=$srg_cci]" >
+				<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
+				    <xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
+				    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
+			  		<xsl:if test="$cci_expanded=$srg_cci" >
 						<tr>
 						<td> <xsl:value-of select="$rule/cdf:title"/> </td>
 						<td> <xsl:apply-templates select="$rule/cdf:description"/> </td>
@@ -92,10 +95,21 @@
 			  		</xsl:if>
 				</xsl:for-each>
 				</table>
+				</xsl:if>
 			</xsl:for-each>
 			</td>
 		  </tr>
 	</xsl:template>
+
+
+	<!-- return only the text between the "VulnDiscussion" (non-XCCDF) tags -->
+	<!-- this should be removed as soon as SRGs include only a description instead of odd tags -->
+	<xsl:template name="extract-vulndiscussion">
+		<xsl:param name="desc"/>
+		<xsl:variable name="desc_info" select="substring-before($desc, '&lt;/VulnDiscussion&gt;')"/>
+		<xsl:value-of select="substring-after($desc_info, '&lt;VulnDiscussion&gt;')"/>
+	</xsl:template>
+
 
 	<!-- get rid of XHTML namespace since we're outputting to HTML -->
 	<xsl:template match="xhtml:*">
