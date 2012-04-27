@@ -38,9 +38,9 @@ The <tt>/tmp</tt> partition is used as temporary storage
 by many programs.
 Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive mount options, which can help protect programs which use it.
 </rationale>
-<ident cce="14161-4" cci="1234"/>
+<ident cce="14161-4"/>
 <oval id="mount_tmp_own_partition" />
-<ref nist="CM-6" cnss="CNSSexample1.2.3" dcid="DCIDexample1.2.3" />
+<ref nist="CM-6" />
 </Rule>
 
 <Rule id="partition_for_var">
@@ -55,9 +55,9 @@ system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories, installed by other software packages.
 </rationale>
-<ident cce="14777-7" cci="5678"/>
+<ident cce="14777-7"/>
 <oval id="mount_var_own_partition" />
-<ref nist="CM-6" cnss="CNSSexample4.5.6" dcid="DCIDexample4.5.6" />
+<ref nist="CM-6" />
 </Rule>
 
 <Rule id="partition_for_var_log">
@@ -74,8 +74,7 @@ and other files in <tt>/var/</tt>.
 </rationale>
 <ident cce="14011-1" />
 <oval id="mount_var_log_own_partition" />
-<ref nist="CM-6, AU-9" cnss="CNSSexample7.8.9" dcid="DCIDexample7.8.9"/>
-<ident cci="CCI-000143" />
+<ref nist="CM-6, AU-9" cnss="CNSSexample7.8.9" disa="143"/>
 </Rule>
 
 <Rule id="partition_for_var_log_audit">

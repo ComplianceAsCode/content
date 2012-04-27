@@ -61,10 +61,7 @@ full. This minimizes the risk of audit data filling its partition
 and impacting other services. However, it is possible to lose audit
 data if the system is busy.
 </description>
-<!-- <ident cci="CCI-000120" /> -->
-<!-- <ident cci="CCI-000166" /> -->
-<!-- <ident cci="CCI-001338" /> -->
-<!-- <ident cci="CCI-001339" /> -->
+<ref disa="120,166,1338,1339" />
 
 <Rule id="enable_auditd_service">
 <title>Enable auditd Service</title>
@@ -76,16 +73,7 @@ default):
 </rationale>
 <ident cce="4292-9" />
 <oval id="service_auditd_enabled" />
-<ref nist="CM-6, CM-7" />
-<ident cci="CCI-000169" />
-<ident cci="CCI-000172" />
-<ident cci="CCI-000174" />
-<ident cci="CCI-001353" />
-<ident cci="CCI-001462" />
-<ident cci="CCI-001487" />
-<ident cci="CCI-001115" />
-<ident cci="CCI-001454" />
-<ident cci="CCI-000154" />
+<ref nist="CM-6, CM-7" disa="169,172,174,1353,1462,1487,1115,1454,154" />
 </Rule>
 
 <Rule id="enable_auditd_bootloader">
@@ -104,8 +92,7 @@ process during boot.
 </rationale>
 <ident cce="15026-8" />
 <oval id="bootloader_audit_argument" />
-<ref nist="AU-2" />
-<ident cci="CCI-001464" />
+<ref nist="AU-2" disa="1464" />
 </Rule>
 
 <Group id="auditd_configure_rules">
@@ -146,12 +133,7 @@ After reviewing all the rules, reading the following sections, and
 editing as needed, activate the new rules:
 <pre># service auditd restart</pre>
 </description>
-<ident cci="CCI-000171" />
-<ident cci="CCI-000172" />
-<ident cci="CCI-001571" />
-<ident cci="CCI-001487" />
-<ident cci="CCI-001115" />
-<ident cci="CCI-001454" />
+<ref disa="171,172,1115,1454,1487,1571" />
 
 <Rule id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
@@ -187,11 +169,7 @@ to capture events that modify account changes:
 <rationale>In addition to auditing new user and group accounts, these watches will alert the system administrator(s) to any modifications. It is recommended that any unexpected users, groups, or modifications be investigated for legitimacy.</rationale>
 <ident cce="14829-6" />
 <oval id="audit_rules_usergroup_modification" />
-<ref nist="AU-2(a)" />
-<ident cci="CCI-001403" />
-<ident cci="CCI-001404" />
-<ident cci="CCI-001405" />
-<ident cci="CCI-000018" />
+<ref nist="AU-2(a)" disa="18,1403,1404,1405"/>
 </Rule>
 
 
@@ -278,7 +256,6 @@ execution of privileged commands for all users and root. Add the
 following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-a always,exit -F path=/bin/ping -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
 </description>
-
 <ident cce="14296-8" />
 <oval id="audit_rules_privileged_commands" />
 <ref nist="AU-2" />
@@ -365,4 +342,5 @@ well as malicious modification of the audit rules.</rationale>
 <ref nist="AU-2" />
 </Rule>
 </Group>
+
 </Group>
