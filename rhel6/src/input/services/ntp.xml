@@ -40,6 +40,7 @@ The NTP server configuration file is located at <tt>/etc/ntp.conf</tt>.</descrip
 <Group id="enabling_ntpd">
 <title>Enable the NTP Daemon</title>
 <description>If this machine is an NTP server, ensure that <tt>ntpd</tt> is enabled at boot time.</description>
+
 <Rule id="enable_ntpd">
 <title>Enable the NTP Daemon</title>
 <description>The <tt>ntpd</tt> service should be enabled.
@@ -50,8 +51,10 @@ Enabling the <tt>ntpd</tt> service ensures that the local system time will be th
 </rationale>
 <ident cce="4376-0" />
 <oval id="service_ntpd_enabled" />
+<ref disa="160" />
 </Rule>
 </Group>
+
 <Group id="configuring_ntpd_client">
 <title>Specify a Remote NTP Server for Time Data</title>
 <description>Find the IP address of an appropriate remote NTP server and configure <tt>ntpd</tt> to use it to obtain accurate time data. If your site does not require time data to be accurate, but merely to be synchronized among local machines, this step can be omitted, and the NTP server will default to providing time data from the local clock. However, it is a good idea to periodically synchronize the clock to some source of accurate time, even if it is not appropriate to do so automatically.</description>
@@ -69,6 +72,7 @@ Synchonizing <tt>ntpd</tt> with an accurate clock makes it easier to collate sys
 </rationale>
 <ident cce="4385-1" />
 <oval id="ntp_remote_server" />
+<ref disa="160" />
 </Rule>
 </Group>
 </Group>
