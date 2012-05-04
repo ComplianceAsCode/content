@@ -206,6 +206,36 @@ anything other than administrator action. All changes to MAC policy should be au
 <ref nist="AU-2" />
 </Rule>
 
+<Rule id="audit_manual_logon_edits">
+<title> Record Attempts to Alter Logon and Logout Events</title>
+<description> 
+The audit system already collects login info for all users and root. To watch for attempted manual edits of
+files involved in storing logon events, add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre>
+-w /var/log/faillog -p wa -k logins 
+-w /var/log/lastlog -p wa -k logins 
+</pre>
+</description> 
+<ident cce="14904-7" />
+<oval id="audit_rules_login_events" />
+<!--<ref nist="TODO" />-->
+</Rule>
+
+<Rule id="audit_manual_session_edits">
+<title> Record Attempts to Alter Process and Session Initiation Information</title>
+<description>
+The audit system already collects process information for all users and root. To watch for attempted manual
+edits of files involved in storing such process information, add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre>
+-w /var/run/utmp -p wa -k session
+-w /var/log/btmp -p wa -k session
+-w /var/log/wtmp -p wa -k session
+</pre>
+</description>
+<ident cce="14679-5" />
+<oval id="audit_rules_session_events" />
+<!--<ref nist="TODO" />-->
+</Rule>
 
 <Rule id="audit_dac_actions">
 <title>Ensure <tt>auditd</tt> Collects Discretionary Access Control
