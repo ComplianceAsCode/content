@@ -7,9 +7,10 @@
 
 <xsl:include href="constants.xslt"/>
 
-<xsl:variable name="rules" select="document($map-to-rules)//cdf:Rule" />
-<!-- expecting external variable "map-to-rules" is filename to an XCCDF document with Rules -->
-<xsl:variable name="title" select="document($map-to-rules)/cdf:Benchmark/cdf:title" />
+<!-- expecting external variable "map-to-items", a filename to an XCCDF document with Rules and Groups -->
+<!-- put everything in it with a reference into "items" (should only be Rules and Groups) -->
+<xsl:variable name="items" select="document($map-to-items)//*[cdf:reference]" />
+<xsl:variable name="title" select="document($map-to-items)/cdf:Benchmark/cdf:title" />
 
 	<xsl:template match="/">
 		<html>
@@ -79,9 +80,9 @@
 		  <td> <xsl:value-of select="$srg_title"/> </td>
 		  <td> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="$srg_desc"/></xsl:call-template> </td>
 		  <td>
-      		<!-- iterate over the Rules in the (externally-provided) XCCDF document -->
-			<xsl:for-each select="$rules">
-				<xsl:variable name="rule" select="."/>
+      		<!-- iterate over the items (everything with references) in the (externally-provided) XCCDF document -->
+			<xsl:for-each select="$items">
+				<xsl:variable name="item" select="."/>
 				<xsl:if test="cdf:reference[@href=$disa-cciuri]" > 
 				<table>
 				<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
@@ -89,8 +90,8 @@
 				    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 			  		<xsl:if test="$cci_expanded=$srg_cci" >
 						<tr>
-						<td> <xsl:value-of select="$rule/cdf:title"/> </td>
-						<td> <xsl:apply-templates select="$rule/cdf:description"/> </td>
+						<td> <xsl:value-of select="$item/cdf:title"/> </td>
+						<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
 				  		</tr>
 			  		</xsl:if>
 				</xsl:for-each>
