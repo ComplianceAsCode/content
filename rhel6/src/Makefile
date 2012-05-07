@@ -112,7 +112,7 @@ eval-ftp:
 eval-common:
 	oscap xccdf eval --profile common --results /tmp/results-test.xml $(OUT)/rhel6-xccdf-scap-security-guide.xml
 
-dist: content guide tables
+dist: tables guide content
 	$(call MKDIR,$(DIST)/guide)
 	$(call MKDIR,$(DIST)/content)
 	$(call MKDIR,$(DIST)/policytables)
