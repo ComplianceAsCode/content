@@ -54,6 +54,24 @@ logging services.
 <ref nist="AU-2" />
 </Rule>
 
+<Group id="ensure_rsyslog_messages_captured">
+<title> Ensure Important Messages are Captured</title>
+<description>
+Edit the file <tt>/etc/rsyslog.conf</tt>. Add or correct whichever of the following lines are appropriate for your
+environment:
+<pre>
+auth.*,user.*                                                           /var/log/messages
+kern.*                                                                  /var/log/kern.log
+daemon.*                                                                /var/log/daemon.log
+syslog.*                                                                /var/log/syslog
+lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*        /var/log/unused.log
+</pre>
+See the man page <tt>rsyslog.conf(5)</tt> for more information.
+<i>By default,</i> <tt>rsyslog</tt> <i>uses a timestamp format that Logwatch does not understand. If your en-
+vironment uses Logwatch, edit the file <tt>/etc/rsyslog.conf</tt> and add or edit the following line:</i>
+<pre>$ ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat</pre></description>
+</Group>
+
 <Group id="log_file_permissions">
 <title>Confirm Existence and Permissions of System Log Files</title>
 <description>For each log file LOGFILE referenced in
@@ -297,4 +315,57 @@ if the /var/log partition becomes full.</rationale>
 <ref nist="AU-2, AU-9, CM-6" />
 </Rule>
 </Group>
+
+<Group id="configure_logwatch_on_logserver">
+<title> Configure Logwatch on the Central Log Server</title>
+<description> 
+Is this machine the central log server? If so, edit the file <tt>/etc/logwatch/conf/logwatch.conf</tt> as shown below.
+</description>
+
+<Rule id="configure_logwatch_hostlimit">
+<title>Configure Logwatch HostLimit Line</title>
+<description> On a central logserver, you want Logwatch to summarize all syslog entries, including those which did not originate 
+on the logserver itself. The <tt>HostLimit</tt> setting tells Logwatch to report on all hosts, not just the one on which it 
+is running. 
+<pre> HostLimit = no </pre> </description>
+<ident cce="4323-2" />
+<oval id="logwatch_configured_hostlimit" />
+</Rule>
+
+<Rule id="configure_logwatch_splithosts">
+<title>Configure Logwatch SplitHosts Line</title>
+<description>
+If <tt>SplitHosts</tt> is set, Logwatch will separate entries by hostname. This makes the report longer but significantly 
+more usable. If it is not set, then Logwatch will not report which host generated a given log entry, and that 
+information is almost always necessary
+<pre> SplitHosts = yes </pre> </description>
+<ident cce="4323-2" />
+<oval id="logwatch_configured_splithosts" />
+</Rule>
+
+<!--Ensure that <tt>logwatch.pl</tt> is run nightly from <tt>cron</tt>. (This is the default): 
+<pre># cd /etc/cron.daily 
+# ln -s /usr/share/logwatch/scripts/logwatch.pl 0logwatch 
+</pre>
+free disk space. Since all log monitoring is being done on the central logserver, the disk space listing will always be 
+that of the logserver, regardless of which host is being monitored. This is confusing, so disable that service. Note 
+that this does mean that <tt>Logwatch</tt> will not monitor disk usage information. Many workarounds are possible, 
+such as running <tt>df</tt> on each host daily via <tt>cron</tt> and sending the output to <tt>syslog</tt> so that it will be reported to 
+the logserver.</description> -->
+
+</Group> <!-- <Group id="configure_logwatch_on_logserver"> -->
+
+<Rule id="disable_logwatch_for_logserver">
+<title> Disable Logwatch on Clients if a Logserver Exists</title>
+<description> 
+Does your site have a central logserver which has been configured to report on logs received from all systems? 
+If so:
+<pre> 
+# rm /etc/cron.daily/0logwatch 
+</pre>
+If no logserver exists, it will be necessary for each machine to run Logwatch individually. Using a central 
+logserver provides the security and reliability benefits discussed earlier, and also makes monitoring logs easier 
+and less time-intensive for administrators.</description>
+<oval id="logwatch_disabled_for_logserver" />
+</Rule>
 </Group>
