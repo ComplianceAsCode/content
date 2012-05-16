@@ -22,6 +22,13 @@ Red Hat Enterprise Linux meets this requirement by design.
 <ref disa="1686" />
 </Rule>
 
+<Rule id="audit_account_creation">
+<title>The operating system must notify, as required, appropriate individuals when accounts are created.</title>
+<description>Monitoring account creation is critical to ensure only appropriate personnel have access to the operating system.  This reduces the possibility a rogue account will be created.  In order to facilitate the monitoring, the operating system must notify designated personnel when an account is created.</description>
+<rationale>The Red Hat Enterprise Linux Auditing Subsystem provides this functionality natively, placing this information in the audit logs for system administrator review.</rationale>
+<ref disa="1683" />
+</Rule>
+
 
 </Group>
 
