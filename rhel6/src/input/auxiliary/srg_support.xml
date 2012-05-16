@@ -14,6 +14,15 @@ Red Hat Enterprise Linux meets this requirement by design.
      desired here. -->
 </description>
 <ref disa="131" />
+
+<Rule id="audit_account_termination">
+<title>The operating system must notify, as required, appropriate individuals for account termination.</title>
+<description>Monitoring account termination is critical to ensure a denial of service situation does not exist on the operating system.  An unexpected account termination can also be a sign of a rogue administrator account that may be deleting traces of activity.  In order to facilitate the monitoring, the operating system must notify designated personnel when an account is terminated.</description>
+<rationale>The Red Hat Enterprise Linux Auditing Subsystem provides this functionality natively, placing this information in the audit logs for system administrator review.</rationale>
+<ref disa="1686" />
+</Rule>
+
+
 </Group>
 
 <Group id="unmet_impractical_guidance" hidden="true">
