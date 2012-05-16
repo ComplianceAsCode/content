@@ -29,9 +29,14 @@ Red Hat Enterprise Linux meets this requirement by design.
 
 <Rule id="enforce_DAC_per_user">
 <title>The operating system must enforce a Discretionary Access Control (DAC) policy that includes or excludes access to the granularity of a single user</title>
-<rationale>testing....</rationale>
+<rationale>Red Hat Enterprise Linux enables Discretionary Access Control (DAC) policy natively, this functionality does not have to be specifically enabled or configured.</rationale>
 <ref disa="1694" />
 </Rule>
+
+<Rule id="enforce_DAC_access_rights">
+<title>The operating system must enforce a Discretionary Access Control (DAC) policy that limits propagation of access rights.</title>
+<rationale>Red Hat Enterprise Linux enables Discretionary Access Control (DAC) policy natively, this functionality does not have to be specifically enabled or configured.</rationale>
+<ref disa="1693" />
 
 </Group>
 
