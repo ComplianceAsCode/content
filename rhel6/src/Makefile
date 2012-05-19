@@ -63,8 +63,10 @@ checks:
 
 
 guide: shorthand-guide shorthand2xccdf
-	oscap xccdf generate guide --profile allrules $(OUT)/rhel6-xccdf.xml > $(OUT)/rhel6-guide.html
+#	remove auxiliary Groups which are only for use in tables, and not guide output.
 #	specifying a nonexistent profile, "allrules," to make oscap print all Rules
+	xsltproc -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/rhel6-xccdf.xml
+	oscap xccdf generate guide --profile allrules $(OUT)/rhel6-xccdf.xml > $(OUT)/rhel6-guide.html
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
@@ -93,10 +95,10 @@ table-srgmap: shorthand-guide shorthand2xccdf
 
 tables: table-refs table-profilenistrefs table-srgmap
 
-content: shorthand-guide shorthand2xccdf checks
-# 	the relabelids.py script chdirs to ./output, so refer to files from there.
-# 	the second argument controls the IDs, as well as the output filenames.
-# 	thus, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
+content: shorthand-guide shorthand2xccdf guide checks
+#	the relabelids.py script chdirs to ./output, so refer to files from there.
+#	the second argument controls the IDs, as well as the output filenames.
+#	thus, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
 	$(TRANS)/relabelids.py rhel6-xccdf.xml scap-security-guide
 
 validate:
