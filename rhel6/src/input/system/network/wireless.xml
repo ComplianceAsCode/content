@@ -1,22 +1,18 @@
 <Group id="network-wireless">
 <title>Wireless Networking</title>
 <description>Wireless networking (sometimes referred to as 802.11
-or Wi-Fi) presents a serious security risk to sensitive or
+or WiFi) can present a security risk to sensitive or
 classified systems and networks. Wireless networking hardware is
 much more likely to be included in laptop or portable systems than
-desktops or servers. See Section 3.3.14 for information on
-Bluetooth wireless support. Bluetooth serves a different purpose
-and possesses a much shorter range, but it still presents serious
-security risks.
+desktops or servers. 
 <br /><br />
-Removal of hardware is the only way to absolutely ensure that
-the wireless capability remains disabled. If it is completely
-impractical to remove the wireless hardware, and site policy still
-allows the device to enter sensitive spaces, every effort to
-disable the capability via software should be made. In general,
-acquisition policy should include provisions to prevent the
-purchase of equipment that will be used in sensitive spaces and
-includes wireless capabilities.</description>
+Removal of hardware provides the greatest assurance that the wireless
+capability remains disabled.  Acquisition policies often includes provisions to
+prevent the purchase of equipment that will be used in sensitive spaces and
+includes wireless capabilities.  If it is impractical to remove the wireless
+hardware, and policy permits the device to enter sensitive spaces, efforts
+should instead focus on disabling wireless capability via software.
+</description>
 
 <Group id="wireless_software">
 <title>Disable Wireless Through Software Configuration</title>
@@ -29,7 +25,14 @@ devices.</description>
 
 <Rule id="wireless_disable_in_bios">
 <title>Disable Wireless in BIOS</title>
-<description>Some systems that include built-in wireless support offer the ability to disable the device through the BIOS. This is system-specific; consult your hardware manual or explore the BIOS setup during boot.</description>
+<description>Some systems that include built-in wireless support offer the
+ability to disable the device through the BIOS. This is system-specific;
+consult your hardware manual or explore the BIOS setup during
+boot.</description>
+<rationale>Disabling wireless support in the BIOS prevents easy
+activation of the wireless interface, generally requiring administrators
+to reboot the system first.
+</rationale>
 <ident cce="3628-5" />
 <!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
 <ref nist="CM-7" />
@@ -56,6 +59,10 @@ disable the interface for future boots, remove the appropriate
 interface file from <tt>/etc/sysconfig/network-scripts</tt>:
 <pre># rm /etc/sysconfig/network-scripts/ifcfg-interface</pre>
 </description>
+<rationale>Wireless networking allows attackers within physical proximity to
+launch network-based attacks against systems, including those against local LAN
+protocols which were not designed with security in mind.
+</rationale>
 <ident cce="4276-2" />
 <oval id="wireless_disable_interfaces" />
 <ref nist="CM-7" />
@@ -63,9 +70,15 @@ interface file from <tt>/etc/sysconfig/network-scripts</tt>:
 
 <Rule id="wireless_disable_drivers">
 <title>Disable Wireless Drivers</title>
-<description>Removing the kernel drivers that provide support for wireless Ethernet devices will prevent users from easily activating the devices. To remove the wireless drivers from the system:
+<description>Removing the kernel drivers that provide support for wireless
+Ethernet devices will prevent users from easily activating the devices. To
+remove the wireless drivers from the system:
 <pre># rm -r /lib/modules/<i>kernelversion(s)</i>/kernel/drivers/net/wireless</pre>
 </description>
+<rationale>Removing the wireless kernel drivers makes it slightly more difficult for
+an administrator or malware to activate a wireless interface, by introducing
+the need to install such a driver first.
+</rationale>
 <warning category="general">This command must also be repeated every time the kernel is upgraded.</warning>
 <ident cce="4170-7" />
 <oval id="wireless_disable_drivers" />
