@@ -1,13 +1,22 @@
 <Group id="network-ipsec">
-<title>Install the openswan Package</title>
-<description>Ensure openswan is used for IPSec.
-<pre>yum install openswan</pre>
+<title>IPSec Support</title>
+<description>Support for Internet Protocol Security (IPsec)
+is provided in RHEL 6 with Openswan.
 </description>
 
 <Rule id="install_openswan">
-<title>Install OpenSWAN</title>
-<description>OpenSWAN should be installed.</description>
-<ident cce="111111111" />
+<title>Install openswan Package</title>
+<description>The Openswan package provides an implementation of IPsec
+and IKE, which permits the creation of secure tunnels over
+untrusted networks.  The <tt>openswan</tt> package can be installed
+with the following command:
+<pre># yum install openswan</pre>
+</description>
+<rationale>Providing the ability for remote users or systems
+to initiate a secure VPN connection protects information when it is
+transmitted over a wide area network.
+</rationale>
+<!--<ident cce="TODO" />-->
 <oval id="package_openswan_installed" />
 <ref nist="AC-17, MA-4, SC-9" />
 </Rule>
