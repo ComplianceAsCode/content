@@ -4,57 +4,50 @@
 services which have historically caused problems for system
 security, and for which disabling or severely limiting the service
 has been the best available guidance for some time. As a result of
-this consensus, these services are not installed as part of RHEL6
+this, many of these services are not installed as part of RHEL6
 by default.
 <br /><br />
 Organizations which are running these services should
-prioritize switching to more secure services which provide the
-needed functionality. If it is absolutely necessary to run one of
+switch to more secure equivalents as soon as possible.
+If it remains absolutely necessary to run one of
 these services for legacy reasons, care should be taken to restrict
 the service as much as possible, for instance by configuring host
-firewall software (see Section 2.5.5) to restrict access to the
+firewall software such as <tt>iptables</tt> to restrict access to the
 vulnerable service to only those remote hosts which have a known
 need to use it.</description>
 
 <Group id="inetd_and_xinetd">
-<title>Inetd and Xinetd</title>
-<description>Is there an operational need to run the deprecated
-inetd or xinetd software packages? If not, ensure that they are
-removed from the system:
-<pre># yum erase inetd xinetd</pre>
-Beginning with Red Hat Enterprise Linux 5, the <tt>xinetd</tt> service
-is no longer installed by default. This change represents increased
-awareness that the dedicated network listener model does not
-improve security or reliability of services, and that restriction
-of network listeners is better handled using a granular model such
-as SELinux than using <tt>xinetd</tt>'s limited security
-options.</description>
-
-<Rule id="disable_inetd">
-<title>Disable Inetd</title>
-<!-- the inetd service does not appear to be available in RHEL6 -->
-<description>The <tt>inetd</tt> service should be disabled.</description>
-<ident cce="4234-1" />
-<oval id="service_inetd_disabled" />
-</Rule>
+<title>Xinetd</title>
+<description>The <tt>xinetd</tt> service acts as a dedicated listener for some
+network services (mostly, obsolete ones) and can be used to provide access
+controls and perform some logging.  It has been largely obsoleted by other
+features, and it is not installed by default. The older Inetd service
+is not even available as part of RHEL 6.</description>
 
 <Rule id="disable_xinetd">
-<title>Disable Xinetd</title>
-<description>The <tt>xinetd</tt> service should be disabled.</description>
+<title>Disable xinetd Service</title>
+<description>The <tt>xinetd</tt> service can be disabled with the following command:
+<pre># chkconfig xinetd off</pre>
+</description>
+<rationale>
+The xinetd service provides a dedicated listener service for some programs,
+which is no longer necessary for commonly-used network services.  Disabling
+it ensures that these uncommon services are not running, and also prevents
+attacks against xinetd itself.
+</rationale>
 <ident cce="4252-3" />
 <oval id="service_xinetd_disabled" />
 </Rule>
 
-<Rule id="uninstall_inetd">
-<title>Uninstall Inetd</title>
-<description>The <tt>inetd</tt> package should be uninstalled.</description>
-<ident cce="4023-8" />
-<oval id="package_inetd_removed" />
-</Rule>
-
 <Rule id="uninstall_xinetd">
-<title>Uninstall Xinetd</title>
-<description>The <tt>xinetd</tt> package should be uninstalled.</description>
+<title>Uninstall xinetd Package</title>
+<description>The <tt>xinetd</tt> package can be uninstalled with the following command:
+<pre># yum erase xinetd</pre>
+</description>
+<rationale>
+Removing the <tt>xinetd</tt> package decreases the risk of the
+xinetd service's accidental (or intentional) activation.
+</rationale>
 <ident cce="4164-0" />
 <oval id="package_xinetd_removed" />
 </Rule>
@@ -62,26 +55,15 @@ options.</description>
 </Group>
 <Group id="telnet">
 <title>Telnet</title>
-<description>Is there a mission-critical reason for users to access
-the system via the insecure telnet protocol, rather than the more
-secure SSH protocol? If not, ensure that the telnet server is
-removed from the system:
-<pre># yum erase telnet-server</pre>
-The telnet protocol uses unencrypted network communication,
-which means that data from the login session, including passwords
-and all other information transmitted during the session, can be
-stolen by eavesdroppers on the network, and also that outsiders can
-easily hijack the session to gain authenticated access to the
-telnet server. Organizations which use telnet should be actively
-working to migrate to a more secure protocol.
-<br /><br />
-
-See Section 3.5 for information about the SSH service.</description>
+<description>The telnet protocol does not provide confidentiality or integrity
+for information transmitted on the network.  This includes authentication
+information such as passwords.  Organizations which use telnet should be
+actively working to migrate to a more secure protocol.  </description>
 
 <Rule id="disable_telnet_service" severity="high">
-<title>Disable telnet service</title>
+<title>Disable telnet Service</title>
 <description>
-To disable the telnet service, run the following command:
+The <tt>telnet</tt> service can be disabled with the following command:
 <pre># chkconfig telnet off</pre>
 </description>
 <rationale>
@@ -89,7 +71,7 @@ The telnet protocol uses unencrypted network communication, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
-subject to man in the middle attacks.
+subject to man-in-the-middle attacks.
 </rationale>
 <ident cce="3390-2" />
 <oval id="service_telnetd_disabled" />
@@ -97,14 +79,19 @@ subject to man in the middle attacks.
 </Rule>
 
 <Rule id="uninstall_telnet_server">
-<title>Uninstall Telnet server</title>
-<description>The <tt>telnet-server</tt> package should be
-uninstalled.</description>
+<title>Uninstall telnet-server Package</title>
+<description>The <tt>telnet-server</tt> package can be uninstalled with
+the following command:
+<pre># yum erase telnet-server</pre></description>
+<rationale>
+Removing the <tt>telnet-server</tt> package decreases the risk of the
+telnet service's accidental (or intentional) activation.
+</rationale>
 <ident cce="4330-7" />
 <oval id="package_telnet-server_removed" />
 </Rule>
-
 </Group>
+
 
 
 <Group id="r_services">
@@ -113,59 +100,87 @@ uninstalled.</description>
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="no_rsh_trust_files" severity="high">
-<title>Remove Rsh Trust Files</title>
-<description>The files <tt>/etc/hosts.equiv</tt> and <tt>~/.rhosts</tt> list remote hosts and users that are trusted
-by the local system when using the rshd daemon.</description>
-<rationale>These files are not needed and should be removed.</rationale>
-<ident cce="TODO" />
-<oval id="no_rsh_trusted_host_files" />
-</Rule>
-
 <Rule id="uninstall_rsh-server">
-<title>Remove the Rsh Server Commands from the
-System</title>
-<description>The <tt>rsh-server</tt> package should be
-uninstalled.</description>
+<title>Uninstall rsh-server Package</title>
+<description>The <tt>rsh-server</tt> package can be uninstalled with
+the following command:
+<pre># yum erase rsh-server</pre>
+</description>
+<rationale>The <tt>rsh-server</tt> package provides several obsolete and insecure
+network services. Removing it
+decreases the risk of those services' accidental (or intentional)
+activation.
+</rationale>
 <ident cce="4308-3" />
 <oval id="package_rsh-server_removed" />
 </Rule>
 
-<Rule id="disable_rcp" severity="high">
-<title>Disable rexec</title>
-<description>The <tt>rexec</tt> service should be disabled.</description>
+<Rule id="disable_rexec" severity="high">
+<title>Disable rexec Service</title>
+<description>The <tt>rexec</tt> service, which is available with
+the <tt>rsh-server</tt> package and runs as a service through xinetd,
+can be disabled with following command:
+<pre># chkconfig rexec off</pre>
+</description> 
+<rationale>The rexec service uses unencrypted network communications, which
+means that data from the login session, including passwords and
+all other information transmitted during the session, can be
+stolen by eavesdroppers on the network.
+</rationale>
 <ident cce="undefined" />
 <oval id="service_rexec_disabled" />
 </Rule>
 
 <Rule id="disable_rsh" severity="high">
-<title>Disable rsh</title>
-<description>The <tt>rsh</tt> service should be disabled.</description>
+<title>Disable rsh Service</title>
+<description>The <tt>rsh</tt> service, which is available with
+the <tt>rsh-server</tt> package and runs as a service through xinetd,
+can be disabled with following command:
+<pre># chkconfig rsh off</pre>
+</description> 
+<rationale>The rsh service uses unencrypted network communications, which
+means that data from the login session, including passwords and
+all other information transmitted during the session, can be
+stolen by eavesdroppers on the network.
+</rationale>
 <ident cce="4141-8" />
 <oval id="service_rsh_disabled" />
 <ref disa="1436" />
 </Rule>
 
 <Rule id="disable_rlogin">
-<title>Disable rlogin</title>
-<description>The <tt>rlogin</tt> service should be disabled.</description>
+<title>Disable rlogin Service</title>
+<description>The <tt>rlogin</tt> service, which is available with
+the <tt>rsh-server</tt> package and runs as a service through xinetd,
+can be disabled with following command:
+<pre># chkconfig rlogin off</pre>
+</description> 
+<rationale>The rlogin service uses unencrypted network communications, which
+means that data from the login session, including passwords and
+all other information transmitted during the session, can be
+stolen by eavesdroppers on the network.
+</rationale>
 <ident cce="3537-8" />
 <oval id="service_rlogin_disabled" />
 <ref disa="1436" />
 </Rule>
 
+<Rule id="no_rsh_trust_files" severity="high">
+<title>Remove Rsh Trust Files</title>
+<description>The files <tt>/etc/hosts.equiv</tt> and <tt>~/.rhosts</tt> (in
+each user's home directory) list remote hosts and users that are trusted by the
+local system when using the rshd daemon.</description>
+<rationale>These files are not needed and should be removed if they exist.
+When used in conjunction with the R-services, they can allow
+unauthenticated access to a system.</rationale>
+<ident cce="TODO" />
+<oval id="no_rsh_trusted_host_files" />
+</Rule>
+
 </Group>
 <Group id="nis">
 <title>NIS</title>
-<description>The NIS client service <tt>ypbind</tt> is not activated by
-default. In the event that it was activated at some point, disable
-it by executing the command:
-<pre># chkconfig ypbind off</pre>
-The NIS server package is not installed by default. In the
-event that it was installed at some point, remove it from the
-system by executing the command:
-<pre># yum erase ypserv</pre>
-The Network Information Service (NIS), also known as 'Yellow
+<description>The Network Information Service (NIS), also known as 'Yellow
 Pages' (YP), and its successor NIS+ have been made obsolete by
 Kerberos, LDAP, and other modern centralized authentication
 services. NIS should not be used because it suffers from security
@@ -173,16 +188,28 @@ problems inherent in its design, such as inadequate protection of
 important authentication information.</description>
 
 <Rule id="uninstall_ypserv">
-<title>Uninstall NIS</title>
-<description>The <tt>ypserv</tt> package should be
-uninstalled.</description>
+<title>Uninstall ypserv Package</title>
+<description>The <tt>ypserv</tt> package can be uninstalled with
+the following command:
+<pre># yum erase ypserv</pre>
+</description>
+<rationale>Removing the <tt>ypserv</tt> package decreases the risk of the
+accidental (or intentional) activation of NIS or NIS+ services.
+</rationale>
 <ident cce="4348-9" />
 <oval id="package_ypserv_removed" />
 </Rule>
 
 <Rule id="disable_ypbind">
-<title>Disable NIS</title>
-<description>The <tt>ypbind</tt> service should be disabled.</description>
+<title>Disable ypbind Service</title>
+<description>The <tt>ypbind</tt> service, which allows the system to act as a client in
+a NIS or NIS+ domain, can be disabled with the following command:
+<pre># chkconfig ypbind off</pre>
+</description>
+<rationale>
+Disabling the <tt>ypbind</tt> service ensures the system is not acting
+as a client in a NIS or NIS+ domain.
+</rationale>
 <ident cce="3705-1" />
 <oval id="service_ypbind_disabled" />
 </Rule>
@@ -190,10 +217,7 @@ uninstalled.</description>
 
 <Group id="tftp">
 <title>TFTP Server</title>
-<description>Is there an operational need to run the deprecated
-TFTP server software? If not, ensure that it is removed from the
-system:
-<pre># yum erase tftp-server</pre>
+<description>
 TFTP is a lightweight version of the FTP protocol which has
 traditionally been used to configure networking equipment. However,
 TFTP provides little security, and modern versions of networking
@@ -202,28 +226,46 @@ more secure protocols. A TFTP server should be run only if no more
 secure method of supporting existing equipment can be
 found.</description>
 
-<Rule id="uninstall_tftp-server">
-<title>Uninstall TFTP Server</title>
-<description>The tftp-server package should be
-uninstalled.</description>
-<ident cce="3916-4" />
-<oval id="package_tftp-server_removed" />
-</Rule>
-
 <Rule id="disable_tftp">
-<title>Disable TFTP Server</title>
-<description>The tftp service should be disabled.</description>
+<title>Disable tftp Service</title>
+<description>The <tt>tftp</tt> service can be disabled with the following command:
+<pre># chkconfig tftp off</pre>
+</description>
+<rationale>
+Disabling the <tt>tftp</tt> service ensures the system is not acting
+as a tftp server, which does not provide encryption or authentication.
+</rationale>
 <ident cce="4273-9" />
 <oval id="service_tftp_disabled" />
 <ref disa="1436" />
 </Rule>
 
+<Rule id="uninstall_tftp-server">
+<title>Uninstall tftp-server Package</title>
+<description>The <tt>tftp-server</tt> package can be removed with the following
+command:
+<pre># yum erase tftp-server</pre>
+</description>
+<rationale>
+Removing the <tt>tftp-server</tt> package decreases the risk of the
+accidental (or intentional) activation of tftp services.
+</rationale>
+<ident cce="3916-4" />
+<oval id="package_tftp-server_removed" />
+</Rule>
+
 <Rule id="tftpd_uses_secure_mode" severity="high">
-<title>TFTP Daemon Uses Secure Mode</title>
-<description>Should the TFTP service be required for legitimate purposes it should be configured to change
-the root directory on startup using the "-s" command line argument.</description>
-<rationale>Using the "-s" command line argument causes the TFTP service to only serve files from the
-given directory.</rationale>
+<title>Ensure TFTP Daemon Uses Secure Mode</title>
+<description>If running the TFTP service is necessary, it should be configured
+to change its root directory at startup.  To do so, ensure that
+<tt>/etc/xinted.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
+the following example (which is also the default):
+<pre>server_args = -s /var/lib/tftpboot</pre>
+</description>
+<rationale>Using the <tt>-s</tt> option causes the TFTP service to only serve files from the
+given directory. Serving files from an intentionally-specified directory
+reduces the risk of sharing files which should remain private.
+</rationale>
 <ident cce="TODO" />
 <oval id="tftpd_uses_secure_mode" />
 </Rule>
