@@ -10,73 +10,26 @@ not clearly relate.
 <title>Product Meets this Requirement</title>
 <description>
 Red Hat Enterprise Linux meets this requirement by design.
-<!-- We could include discussion of Common Criteria Testing if so 
-     desired here. -->
+<!-- We could include discussion of Common Criteria Testing if so desired here. -->
 </description>
 <ref disa="131" />
+</Group> <!-- end met_inherently -->
 
-<Group id="audit_account_termination">
-<title>The operating system must notify, as required, appropriate individuals for account termination.</title>
-<description>The Red Hat Enterprise Linux Auditing Subsystem provides this functionality natively, placing this information in the audit logs for system administrator review.</description>
-<ref disa="1686" />
-</Group>
-
-<Group id="audit_account_creation">
-<title>The operating system must notify, as required, appropriate individuals when accounts are created.</title>
-<description>The Red Hat Enterprise Linux Auditing Subsystem provides this functionality natively, placing this information in the audit logs for system administrator review.</description>
-<ref disa="1683" />
-</Group>
-
-<Group id="enforce_DAC_per_user">
-<title>The operating system must enforce a Discretionary Access Control (DAC) policy that includes or excludes access to the granularity of a single user</title>
-<description>Red Hat Enterprise Linux enables Discretionary Access Control (DAC) policy natively, this functionality does not have to be specifically enabled or configured.</description>
-<ref disa="1694" />
-</Group>
-
-<Group id="enforce_DAC_access_rights">
-<title>The operating system must enforce a Discretionary Access Control (DAC) policy that limits propagation of access rights.</title>
-<description>Red Hat Enterprise Linux enables Discretionary Access Control (DAC) policy natively, this functionality does not have to be specifically enabled or configured.</description>
-<ref disa="1693" />
-</Group>
-
-<<<<<<< HEAD
-</Group> <!-- end met_inherently --!>
-
-<Group id="unmet_impractical_guidance" hidden="true">
-=======
 <Group id="unmet_impractical_guidance">
->>>>>>> 7e7886f92bf016bbb27940bf1f0af4e12bf1c472
 <title>Guidance Does Not Meet this Requirement Due to Impracticality or Scope</title>
 <description>
 The guidance does not meet this requirement.
 The requirement is impractical or out of scope.
 </description>
 <ref disa="354,1094" />
+</Group> <!-- end unmet_impractical_guidance -->
 
-<Group id="enforce_remote_connections">
-<title>The operating system must enforce requirements for remote connections to the information system</title>
-<description>The technical specifications to meet this policy are organizationally defined, and therefor generic guidance is not availabile.</description>
-<ref disa="66" />
-</Group>
-
-<Group id="central_config_management">
-<title>The operating system must employ automated mechanisms to centrally manage configuration settings</title>
-<description>An organizational configuration management policy is out of scope of this security guide.</description>
-<ref disa="370" />
-</Group>
-
-<<<<<<< HEAD
-</Group> <!-- end unmet_impractical_guidance !-->
-
-<Group id="unmet_impractical_product" hidden="true">
-=======
 <Group id="unmet_impractical_product">
->>>>>>> 7e7886f92bf016bbb27940bf1f0af4e12bf1c472
 <title>Product Does Not Meet this Requirement Due to Impracticality or Scope</title>
 <description>
 The product does not meet this requirement.
 The requirement is impractical or out of scope.
 </description>
+</Group> <!-- end unmet_impractical_product -->
 
-</Group> <!-- end unmet_impractical_product !-->
 </Group>
