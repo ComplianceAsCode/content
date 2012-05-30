@@ -70,11 +70,11 @@ this file.
 <description>The grub boot loader should have password protection
 enabled to protect boot-time settings.
 To do so, select a password and then generate a hash from it by running:
-<pre># grub-md5-crypt</pre>
+<pre># grub-crypt --sha-512</pre>
 Insert the following line into <tt>/etc/grub.conf</tt> immediately
-after the header comments. (Use the output from <tt>grub-md5-crypt</tt> as the
+after the header comments. (Use the output from <tt>grub-crypt</tt> as the
 value of <b>password-hash</b>):
-<pre>password --md5 <b>password-hash</b></pre>
+<pre>password --encrypted <b>password-hash</b></pre>
 </description>
 <rationale>
 Password protection on the boot loader configuration ensures that
