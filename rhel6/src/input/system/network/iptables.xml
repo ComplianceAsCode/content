@@ -64,17 +64,16 @@ incoming udp and tcp packets with a particular destination port
 range. This is because the current Netfilter implementation for
 IPv6 lacks reliable connection-tracking functionality.</description>
 
+
+
+
 <Rule id="enable_ip6tables">
 <title>Verify ip6tables Enabled</title>
-<description>
-The <tt>ip6tables</tt> service should be enabled.
-If it is not enabled, activate it with following commands:
-<pre># service ip6tables restart
-# chkconfig ip6tables on</pre>
+<description> The <tt>ip6tables</tt> service can be enabled with the following
+command: <pre># service ip6tables restart # chkconfig ip6tables on</pre>
 </description>
-<rationale>
-The <tt>ip6tables</tt> service provides the system's host-based firewalling
-capability for IPv6 and ICMPv6.
+<rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
+capability for IPv6 and ICMPv6.  
 </rationale>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
@@ -84,10 +83,9 @@ capability for IPv6 and ICMPv6.
 <Rule id="enable_iptables">
 <title>Verify iptables Enabled</title>
 <description>
-The <tt>iptables</tt> service should be enabled.
-If it is not enabled, activate it with following commands:
-<pre># service iptables restart
-# chkconfig iptables on</pre>
+The <tt>iptables</tt> service can be enabled with the following
+command:<!-- # service iptables restart -->
+<pre># chkconfig iptables on</pre>
 </description>
 <rationale>
 The <tt>iptables</tt> service provides the system's host-based firewalling

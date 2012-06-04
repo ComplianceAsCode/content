@@ -35,24 +35,21 @@ system logging services.
 <ref nist="AU-2, AU-9, CM-6" />
 </Rule>
 
-<Rule id="enable_rsyslog">
-<title>Configure Rsyslog</title>
-<description>
-To ensure that the rsyslog service is activated, run the following command:
-<pre>$ chkconfig --list rsyslog</pre>
-The service should be <tt>on</tt> for runlevels 2 through 5.
-<br/>
-If not, activate it with the command:
-<pre>$ chkconfig rsyslog on</pre>
+
+<Rule id="service_rsyslog_enabled">
+<title>Enable Rsyslog Daemon (rsyslog)</title>
+<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6. 
+The <tt>rsyslog</tt> service can be activated with the following command:
+<pre># chkconfig rsyslog on</pre>
 </description>
-<rationale>
-The rsyslog service must be running in order to provide
-logging services.
+<rationale>The <tt>rsyslog</tt> service must be running in order to provide
+logging services, which are essential to system administration.
 </rationale>
 <ident cce="17698-2" />
 <oval id="service_rsyslog_enabled" />
-<ref nist="AU-2" />
+<ref nist="AU-12, CM-6" />
 </Rule>
+
 
 <Group id="ensure_rsyslog_messages_captured">
 <title> Ensure Important Messages are Captured</title>

@@ -1,7 +1,7 @@
 <Group id="network-wireless">
 <title>Wireless Networking</title>
-<description>Wireless networking (sometimes referred to as 802.11
-or WiFi) can present a security risk to sensitive or
+<description>Wireless networking, such as 802.11
+(WiFi) and Bluetooth, can present a security risk to sensitive or
 classified systems and networks. Wireless networking hardware is
 much more likely to be included in laptop or portable systems than
 desktops or servers. 
@@ -10,9 +10,9 @@ Removal of hardware provides the greatest assurance that the wireless
 capability remains disabled.  Acquisition policies often includes provisions to
 prevent the purchase of equipment that will be used in sensitive spaces and
 includes wireless capabilities.  If it is impractical to remove the wireless
-hardware, and policy permits the device to enter sensitive spaces, efforts
-should instead focus on disabling wireless capability via software.
-</description>
+hardware, and policy permits the device to enter sensitive spaces as long
+as wireless is disabled, efforts instead focus on disabling wireless capability
+via software.</description>
 
 <Group id="wireless_software">
 <title>Disable Wireless Through Software Configuration</title>
@@ -24,7 +24,7 @@ prevent malicious software or careless users from re-activating the
 devices.</description>
 
 <Rule id="wireless_disable_in_bios">
-<title>Disable Wireless in BIOS</title>
+<title>Disable WiFi or Bluetooth BIOS</title>
 <description>Some systems that include built-in wireless support offer the
 ability to disable the device through the BIOS. This is system-specific;
 consult your hardware manual or explore the BIOS setup during
@@ -39,8 +39,8 @@ to reboot the system first.
 </Rule>
 
 <Rule id="deactivate_wireless_interfaces">
-<title>Deactivate Wireless Interfaces</title>
-<description>Deactivating the wireless interfaces should prevent
+<title>Deactivate Wireless Network Interfaces</title>
+<description>Deactivating wireless network interfaces should prevent
 normal usage of the wireless capability.
 <br /><br />
 First, identify the interfaces available with the command:
@@ -69,7 +69,7 @@ protocols which were not designed with security in mind.
 </Rule>
 
 <Rule id="wireless_disable_drivers">
-<title>Disable Wireless Drivers</title>
+<title>Disable Wireless Network Drivers</title>
 <description>Removing the kernel drivers that provide support for wireless
 Ethernet devices will prevent users from easily activating the devices. To
 remove the wireless drivers from the system:
@@ -84,6 +84,40 @@ the need to install such a driver first.
 <oval id="wireless_disable_drivers" />
 <ref nist="CM-7" />
 </Rule>
+
+<Rule id="service_bluetooth_disabled">
+<title>Disable Bluetooth Service</title>
+<description> The <tt>bluetooth</tt> service can be disabled with the following
+command:
+<pre># chkconfig bluetooth off</pre>
+</description>
+<rationale> Disabling the <tt>bluetooth</tt> service prevents the system from attempting
+connections to to Bluetooth devices, which entails some security risk.
+Nevertheless, variation in this risk decision may be expected due to the
+utility of Bluetooth connectivity and its limited range.</rationale>
+<ident cce="4355-4" />
+<oval id="service_bluetooth_disabled" />
+<ref nist="AC-18, CM-6, CM-7" />
+</Rule>
+
+<Rule id="kernel_module_bluetooth_disabled">
+<title>Disable Bluetooth Kernel Modules</title>
+<description>The kernel's module loading system can be configured to prevent
+loading of the Bluetooth module.  Add the following to
+<tt>/etc/modprobe.conf</tt> or a file inside the directory <tt>/etc/modprobe.d</tt>
+to prevent the loading of the Bluetooth module:
+<pre>install net-pf-31 /bin/true
+install bluetooth /bin/true</pre>
+</description>
+<rationale>If Bluetooth functionality must be disabled, preventing the kernel
+from loading the kernel module provides an additional safeguard against its
+activation.</rationale>
+<ident cce="14948-4" />
+<oval id="kernel_module_bluetooth_disabled" />
+<ref nist="AC-18, CM-6, CM-7" />
+</Rule>
+
+
 
 </Group><!--<Group id="wireless_software">-->
 </Group><!--<Group id="network-wireless">-->
