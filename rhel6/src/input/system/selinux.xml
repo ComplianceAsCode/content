@@ -138,6 +138,27 @@ targeted for exploitation, such as network services or system services.
 <ref nist="CM-6, CM-7" />
 </Rule>
 </Group>
+
+
+<Rule id="service_restorecond_enabled">
+<title>Enable the SELinux Context Restoration Service (restorecond)</title>
+<description>The <tt>restorecond</tt> service utilizes <tt>inotify</tt> to look
+for the creation of new files listed in the
+<tt>/etc/selinux/restorecond.conf</tt> configuration file.  When a file is
+created, <tt>restorecond</tt> ensures that the file receives the proper SELinux
+security context.  The <tt>restorecond</tt> service can be enabled with the
+following command:
+<pre># chkconfig restorecond on</pre>
+</description>
+<rationale>The <tt>restorecond</tt> service helps ensure that the default SELinux
+file context is applied to files.  This allows automatic correction
+of file contexts created by some programs.</rationale>
+<ident cce="4129-3" />
+<oval id="service_restorecond_enabled" />
+<ref nist="AC-3, CM-6" />
+</Rule>
+
+
 <!--
 <Group id="selinux_daemons">
 <title>Disable Unnecessary SELinux Daemons</title>

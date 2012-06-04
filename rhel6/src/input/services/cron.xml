@@ -8,13 +8,20 @@ configured defensively.</description>
 
 <Rule id="enable_cron">
 <title>Enable cron Service</title>
-<description>The <tt>crond</tt> service should be enabled.</description>
-<rationale>The cron service allows system administrators to schedule maintenance actions to
-run at a preconfigured interval. This service should be enabled.</rationale>
+<description>The <tt>crond</tt> service is used to execute commands at
+preconfigured times.  It is required by almost all systems to perform necessary
+maintenance tasks, such as notifying root of system activity. The
+<tt>crond</tt> service can be enabled with the following command:
+<pre># chkconfig crond on</pre>
+</description>
+<rationale>Due to its usage for maintenance and security-supporting tasks,
+enabling the cron daemon is essential.
+</rationale>
 <ident cce="4324-0" />
 <oval id="service_crond_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
+
 
 <Rule id="disable_anacron">
 <title>Disable anacron Service</title>

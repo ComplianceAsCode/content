@@ -22,6 +22,23 @@ Postfix was coded with security in mind and can also be more effectively contain
 SELinux as its modular design has resulted in separate processes performing specific actions.
 More information is available on its website, http://www.postfix.org.</description>
 
+<Rule id="service_postfix_enabled">
+<title>Enable Postfix (postfix)</title>
+<description>The Postfix mail transfer agent is used for local mail delivery within
+the system. The default configuration only listens for connections to the default SMTP
+port (port 25) on the loopback interface (127.0.0.1). 
+It is recommended to leave this
+service enabled for local mail delivery.
+The <tt>postfix</tt> service can be enabled with the following command:
+<pre># chkconfig postfix on</pre>
+</description>
+<rationale>Local mail delivery is essential to some system maintenance and
+notification tasks.
+</rationale>
+<ident cce="14068-1" />
+<oval id="service_postfix_enabled" />
+<ref nist="CM-6" />
+</Rule>
 
 <Group id="postfix_client">
 <title>Configure SMTP For Mail Clients</title>
