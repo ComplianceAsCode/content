@@ -12,7 +12,7 @@ to compromise the system.
 This command can be used to list the types of filesystems that are
 available to the currently executing kernel:
 <pre># find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
-If these filesystems are not required then they should be explicitly disabed
+If these filesystems are not required then they should be explicitly disabled
 in the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 <br /><br />
 Use caution when enabling any such facility, and find out
@@ -45,8 +45,8 @@ solve the same problem with less risk.</description>
 <description>
 If USB storage devices should not be used, the <tt>modprobe</tt> program
 used for automatic kernel module loading should be configured to not load
-the USB storage driver upon demand. Add the following line to
-<tt>/etc/modprobe.conf</tt> to prevent loading of the <tt>usb-storage</tt>
+the USB storage driver upon demand. Add the following line to the appropriate
+file in <tt>/etc/modprobe.d/</tt> to prevent loading of the <tt>usb-storage</tt>
 kernel module:
 <pre>install usb-storage /bin/true</pre>
 This will prevent the <tt>modprobe</tt> program from loading the <tt>usb-storage</tt>
@@ -167,7 +167,7 @@ DVDs.
 
 <Rule id="disable_module_cramfs">
 <title>Disable Mounting of <tt>cramfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate .conf file inside<tt>/etc/modprobe.d</tt>
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -181,7 +181,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_freevxfs">
 <title>Disable Mounting of <tt>freevxfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -195,7 +195,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_jffs2">
 <title>Disable Mounting of <tt>jffs2</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -209,7 +209,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_hfs">
 <title>Disable Mounting of <tt>hfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -223,7 +223,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_hfsplus">
 <title>Disable Mounting of <tt>hfsplus</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -237,7 +237,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_squashfs">
 <title>Disable Mounting of <tt>squashfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -251,7 +251,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_udf">
 <title>Disable Mounting of <tt>udf</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon

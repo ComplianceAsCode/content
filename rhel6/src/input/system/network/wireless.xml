@@ -104,7 +104,7 @@ utility of Bluetooth connectivity and its limited range.</rationale>
 <title>Disable Bluetooth Kernel Modules</title>
 <description>The kernel's module loading system can be configured to prevent
 loading of the Bluetooth module.  Add the following to
-<tt>/etc/modprobe.conf</tt> or a file inside the directory <tt>/etc/modprobe.d</tt>
+the appropriate <tt>/etc/modprobe.d</tt> configuration file
 to prevent the loading of the Bluetooth module:
 <pre>install net-pf-31 /bin/true
 install bluetooth /bin/true</pre>
