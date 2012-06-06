@@ -15,7 +15,7 @@ prior to disabling them.
 <Rule id="disable_protocol_dccp" severity="medium">
 <title>Disable DCCP Support</title>
 <description>To prevent the DCCP kernel module from being loaded,
-add the following line to <tt>/etc/modprobe.conf</tt>:
+add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
 <pre>install dccp /bin/true</pre>
 The Datagram Congestion Control Protocol (DCCP) is a
 relatively new transport layer protocol, designed to support
@@ -34,7 +34,7 @@ the system against exploitation of any flaws in its implementation.
 <Rule id="disable_protocol_sctp" severity="medium">
 <title>Disable SCTP Support</title>
 <description>To prevent the SCTP kernel module from being loaded,
-add the following line to <tt>/etc/modprobe.conf</tt>:
+add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
 <pre>install sctp /bin/true</pre>
 The Stream Control Transmission Protocol (SCTP) is a
 transport layer protocol, designed to support the idea of
@@ -54,7 +54,7 @@ the system against exploitation of any flaws in its implementation.
 <Rule id="disable_protocol_rds">
 <title>Disable RDS Support</title>
 <description>To prevent the RDS kernel module from being loaded,
-add the following line to <tt>/etc/modprobe.conf</tt>:
+add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
 <pre>install rds /bin/true</pre>
 The Reliable Datagram Sockets (RDS) protocol is a transport
 layer protocol designed to provide reliable high- bandwidth,
@@ -73,8 +73,8 @@ the system against exploitation of any flaws in its implementation.
 <Rule id="disable_protocol_tipc" severity="medium">
 <title>Disable TIPC Support</title>
 <description>To prevent the TIPC kernel module from being loaded,
-add the following line to <tt>/etc/modprobe.conf</tt>:
-<pre>install rds /bin/true</pre>
+add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
+<pre>install tipc /bin/true</pre>
 The Transparent Inter-Process Communication (TIPC) protocol
 is designed to provide communications between nodes in a
 cluster.
