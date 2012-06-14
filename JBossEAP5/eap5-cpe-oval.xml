@@ -74,6 +74,17 @@
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:59960101" />
 			</criteria>
 		</definition>
+		
+		<definition version="1" class="inventory"
+			id="oval:com.redhat.eap5.scap:def:600001">
+			<metadata>
+				<title>EAP Version Check</title>
+				<description>EAP Version should be 5.0.1</description>
+			</metadata>
+			<criteria operator="AND">
+				<criterion test_ref="oval:com.redhat.eap5.scap:tst:60000101" />
+			</criteria>
+		</definition>	
 	</definitions>
 
 	<tests>
@@ -99,6 +110,11 @@
 			version="1" check="all" comment="Check EAP Version">
 			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:59960101" />
 			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:59960101" />
+		</ind:textfilecontent54_test>
+		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:60000101"
+			version="1" check="all" comment="Check EAP Version">
+			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:59990101" />
+			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:60000101" />
 		</ind:textfilecontent54_test>
 	</tests>
 
@@ -160,6 +176,10 @@
 		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:59960101"
 			version="1">
 			<ind:subexpression>5.0.0</ind:subexpression>
+		</ind:textfilecontent54_state>
+		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:60000101"
+			version="1">
+			<ind:subexpression>5.0.1</ind:subexpression>
 		</ind:textfilecontent54_state>
 	</states>
 

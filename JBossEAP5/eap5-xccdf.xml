@@ -76,6 +76,7 @@
 	</rear-matter>
 
 	<platform idref="cpe:/a:redhat:jboss_enterprise_application_platform:5.0.0"/>
+	<platform idref="cpe:/a:redhat:jboss_enterprise_application_platform:5.0.1"/>
 	<platform idref="cpe:/a:redhat:jboss_enterprise_application_platform:5.1.0"/>
 	<platform idref="cpe:/a:redhat:jboss_enterprise_application_platform:5.1.1"/>
 	<platform idref="cpe:/a:redhat:jboss_enterprise_application_platform:5.1.2"/>
@@ -100,6 +101,58 @@
 		<description>Profile for testing JBoss EAP 5 best practices.</description>
 		<select idref="xccdf_com.redhat.eap5.scap_group_bpGroup" selected="true"/>
 	</Profile>
+	
+	<Profile id="eap5_DOD">
+		<title>JBoss Enterprise Application Platform 5 - Best Practices</title>
+		<description>Profile for testing JBoss EAP 5 in a Department of Defense environment.  This includes the Common Criteria and best practices rules as well.</description>
+		<select idref="xccdf_com.redhat.eap5.scap_group_ccGroup" selected="true"/>
+		<select idref="xccdf_com.redhat.eap5.scap_group_bpGroup" selected="true"/>
+		<select idref="xccdf_com.redhat.eap5.scap_group_DODGroup" selected="true"/>
+		<refine-value idref="warning_banner_text" selector="DoD"/>
+	</Profile>
+
+	<!--
+	<Value id="password_age" type="number" operator="less than or equal">
+		<title>Maximum Password Age</title>
+		<description></description>
+		<value selector="selector_a">120</value>
+		<value selector="selector_b">90</value>
+		<value selector="selector_c">60</value>
+		<value selector="selector_d">30</value>
+		<default>180</default>
+	</Value>
+	
+	<Value id="dod_mac_level" type="string" interactive="1">
+		<title>DoD MAC Level</title>
+		<description></description>
+		<value selector="selector_a">MAC 1</value>
+		<value selector="selector_b">MAC 2</value>
+		<value selector="selector_c">MAC 3</value>
+		<default>MAC 3</default>
+		<choices mustMatch="1">
+			<choice>MAC 1</choice>
+			<choice>MAC 2</choice>
+			<choice>MAC 3</choice>
+		</choices>
+	</Value>-->
+	
+	<Value id="warning_banner_text" type="string">
+		<title>Warning banner content</title>
+		<value selector="DoD">The DoD warning banner should read: "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+			
+			By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+			
+			-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+			
+			-At any time, the USG may inspect and seize data stored on this IS.
+			
+			-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+			
+			-This IS includes security measures (e.g., authentication and access controls) to protect USG interests—not for your personal benefit or privacy.
+			
+			-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants.  Such communications and work product are private and confidential.  See User Agreement for details."</value>
+		<default></default>
+	</Value>
 
 	<Group id="xccdf_com.redhat.eap5.scap_group_ccGroup" selected="false">
 		<title>Red Hat Common Criteria</title>
@@ -286,7 +339,7 @@
 			<profile-note tag="nist_mapping">CM-6</profile-note>
 			<profile-note tag="disa_mapping">DCCS-1,DCCS-2,DCCT-1,ECSC-1,DCSS-1</profile-note>
 			<profile-note tag="validation_text"><xhtml:p>Ensure that all configuration changes and deployments are made to the production server profile.</xhtml:p> </profile-note>
-			<fixtext><xhtml:p>All changes made for Common Criteria configurations must be made to the production server profile, found here: JBOSS_HOME\server\production\</xhtml:p></fixtext>
+			<fixtext><xhtml:p>All changes made for Common Criteria configurations must be made to the production server profile, found here: JBOSS_HOME/server/production/</xhtml:p></fixtext>
 
 			<check system="http://scap.nist.gov/schema/ocil/2">
 				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:200501"/>
@@ -353,10 +406,10 @@
 							JBOSS_HOME/server/production/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml<xhtml:br/>
 							JBOSS_HOME/server/production/deploy/*-jboss-beans.xml</xhtml:p></xhtml:li>
 						
-				<xhtml:li>Next, check the JBOSS_HOME\server\production\deploy\jmx-console.war\WEB-INF\jboss-web.xml file to ensure that a security domain requiring authentication has been referenced (example: &lt;security-domain&gt;java:/jaas/jmx-console&lt;/security-domain&gt;). If no &lt;security-domain&gt; element exists, add it as a child of &lt;jboss-web&gt;.</xhtml:li>
-				<xhtml:li>Next, review the JBOSS_HOME\server\production\deploy\jmx-console.war\WEB-INF\web.xml. The &lt;security-constraint&gt; must not contain limitations on HTTP verbs. For example: &lt;http-method&gt;GET&lt;/http-method&gt; or &lt;http-method&gt;POST&lt;/http-method&gt;.</xhtml:li>
+				<xhtml:li>Next, check the JBOSS_HOME/server/production/deploy/jmx-console.war/WEB-INF/jboss-web.xml file to ensure that a security domain requiring authentication has been referenced (example: &lt;security-domain&gt;java:/jaas/jmx-console&lt;/security-domain&gt;). If no &lt;security-domain&gt; element exists, add it as a child of &lt;jboss-web&gt;.</xhtml:li>
+				<xhtml:li>Next, review the JBOSS_HOME/server/production/deploy/jmx-console.war/WEB-INF/web.xml. The &lt;security-constraint&gt; must not contain limitations on HTTP verbs. For example: &lt;http-method&gt;GET&lt;/http-method&gt; or &lt;http-method&gt;POST&lt;/http-method&gt;.</xhtml:li>
 				
-				<xhtml:li>Finally, configure the usersProperties defined in the application policy to manage accounts. Example editing JBOSS_HOME\server\production\conf\props\jmx-console-users.properties: <xhtml:br/>
+				<xhtml:li>Finally, configure the usersProperties defined in the application policy to manage accounts. Example editing JBOSS_HOME/server/production/conf/props/jmx-console-users.properties: <xhtml:br/>
 				<xhtml:pre><xhtml:code># A sample users.properties file for use with the UsersRolesLoginModule
 admin=1qaz!QAZ2wsx@WSX</xhtml:code></xhtml:pre></xhtml:li>
 				</xhtml:ol>
@@ -3344,7 +3397,7 @@ Additionally, a hash-validated 'Gold' version of the JBoss installation package 
 			<profile-note tag="risk_level">Medium</profile-note>
 			<profile-note tag="risk_formula">(AV:L/AC:H/Au:N/C:P/I:P/A:P)</profile-note>
 			<profile-note tag="nist_mapping">SC-28</profile-note>
-			<profile-note tag="disa_mapping">ECCR-1.ECCR-2,ECCR-3</profile-note>
+			<profile-note tag="disa_mapping">ECCR-1,ECCR-2,ECCR-3</profile-note>
 			<profile-note tag="validation_text"><xhtml:p>Review data source file located within JBOSS_HOME/server/deploy/ and subdirectories. Data sources with encrypted passwords will no longer have &lt;user-name&gt; or &lt;password&gt; elements, and will instead reference a &lt;security-domain&gt;.</xhtml:p> </profile-note>
 			<fixtext><xhtml:p>Following the extensive instructions located within Chapter 17, "Encrypting Data Source Passwords" of the JBoss Enterprise Application Platform Common Criteria Certification 5 Security Guide, 2011. The summarized steps include:</xhtml:p>
 <xhtml:ul><xhtml:li>Encrypt the data source password.</xhtml:li>
@@ -3441,7 +3494,7 @@ Additionally, a hash-validated 'Gold' version of the JBoss installation package 
 			<profile-note tag="risk_level">Medium</profile-note>
 			<profile-note tag="risk_formula">(AV:L/AC:H/Au:N/C:P/I:P/A:P)</profile-note>
 			<profile-note tag="nist_mapping">SC-28</profile-note>
-			<profile-note tag="disa_mapping">ECCR-1.ECCR-2,ECCR-3</profile-note>
+			<profile-note tag="disa_mapping">ECCR-1,ECCR-2,ECCR-3</profile-note>
 			<profile-note tag="validation_text"><xhtml:p>Review JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml for evidence of clear-text passwords in Connectors. These Connectors will contain a &lt;attribute name="KeyStorePass"&gt; or a keystorePass attribute as part of the &lt;Connector&gt; element, with a clear-text password. </xhtml:p></profile-note>
 			<fixtext><xhtml:p>Following the extensive instructions located within Chapter 18, "Encrypting the Keystore Password in a Tomcat Connector" of the JBoss Enterprise Application Platform Common Criteria Certification 5 Security Guide, 2011. The summarized steps include:</xhtml:p>
 <xhtml:ul><xhtml:li>Configure JaasSecurityDomain MBean</xhtml:li>
@@ -3471,14 +3524,14 @@ Additionally, a hash-validated 'Gold' version of the JBoss installation package 
 
 		<Rule id="xccdf_com.redhat.eap5.scap_rule_1165">
 			<title>Eliminate clear-text passwords: XML configuration files</title>
-			<description>Using password masking, eliminate clear-text passwords in: XML configuration files</description>
+			<description>Using password masking, eliminate clear-text passwords in XML configuration files.</description>
 			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
 			<rationale><xhtml:p>Clear-text passwords are an unnecessary security vulnerability.  While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</xhtml:p></rationale>
 			<profile-note tag="risk_score">3.7</profile-note>
 			<profile-note tag="risk_level">Medium</profile-note>
 			<profile-note tag="risk_formula">(AV:L/AC:H/Au:N/C:P/I:P/A:P)</profile-note>
 			<profile-note tag="nist_mapping">SC-28</profile-note>
-			<profile-note tag="disa_mapping">ECCR-1.ECCR-2,ECCR-3</profile-note>
+			<profile-note tag="disa_mapping">ECCR-1,ECCR-2,ECCR-3</profile-note>
 			<profile-note tag="validation_text"><xhtml:p>Review configuration files for evidence of clear-text passwords.  No clear-text passwords should exist in XML configuration files (password masking should be used instead).</xhtml:p></profile-note>
 			<fixtext><xhtml:p>Follow the extensive instructions located within  Chapter 16, "Masking Passwords in XML Configuration" of the JBoss Enterprise Application Platform Common Criteria Certification 5 Security Guide, 2011.</xhtml:p></fixtext>
 			
@@ -3486,7 +3539,286 @@ Additionally, a hash-validated 'Gold' version of the JBoss installation package 
 				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:116501"/>
 			</check>
 		</Rule>
-
 	</Group>
+	
+	<Group id="xccdf_com.redhat.eap5.scap_group_DODGroup" selected="false">
+		<title>Department of Defense rules</title>
+		<description>Profile for testing JBoss EAP 5 in a Department of Defense environment.</description>
+		<!--
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3001">
+			<title>TITLE</title>
+			<description><xhtml:p>DESC</xhtml:p></description>
+			<reference>REF</reference>
+			<rationale><xhtml:p>RATIONALE</xhtml:p></rationale>
+			<profile-note tag="risk_score">0.0</profile-note>
+			<profile-note tag="risk_level">Medium</profile-note>
+			<profile-note tag="risk_formula">(FORMULA)</profile-note> #DELETE THIS LINE IF NOT NEEDED, WILL SHOW UP IN XSL
+			<profile-note tag="nist_mapping">NISTCONTROL</profile-note>
+			<profile-note tag="disa_mapping">DODCONTROLS</profile-note>
+			<profile-note tag="validation_text"><xhtml:p>VALIDATION</xhtml:p></profile-note>
+			<fixtext><xhtml:p>FIXTEXT</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300101"/>
+			</check>
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:300101"/>
+			</check>
+		</Rule>
+		-->
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3006">
+			<title>Deployed applications should display a system use banner upon access</title>
+			<description><xhtml:p>Upon accessing the system, a notification banner, consent to use, or policy warning banner should be displayed to alert system users of the system use details.  This may include items such as implied consent to monitor, privacy practices, or liability waivers.</xhtml:p></description>
+			<reference>REF</reference>
+			<rationale><xhtml:p>Failing to provide adequate notification of system use details to people accessing the system can create legal troubles in the event of a civil lawsuit or criminal investigation.</xhtml:p></rationale>
+			<profile-note tag="risk_score">2.0</profile-note>
+			<profile-note tag="risk_level">Low</profile-note>
+			<profile-note tag="nist_mapping">AC-8</profile-note>
+			<profile-note tag="disa_mapping">ECWM-1</profile-note>
+			<profile-note tag="validation_text"><xhtml:p>Access all deployed applications to determine if a warning banner is displayed.  A code reviewing showing the functional code will also suffice.</xhtml:p><xhtml:p>This warning banner should be presented to the user prior to accessing any deployed application - commercial applications, in-house applications, or applications deployed by JBoss.</xhtml:p></profile-note>
+			<fixtext><xhtml:p>Create a short system use notification message for all users who access the system.  This can be done in a variety of ways, but a simple JavaScript alert(); containing a warning message will suffice.  This warning banner should be presented to the user prior to accessing any deployed application - commercial applications, in-house applications, or applications deployed by JBoss. The contents of the system use notification should be clear, concise, in keeping with the organizational security policy, and should have been reviewed by the organization's legal team.</xhtml:p>
+				<xhtml:p>On DoD systems, the warning banner should read:</xhtml:p>
+				<xhtml:p>You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.</xhtml:p>
+				<xhtml:p>By using this IS (which includes any device attached to this IS), you consent to the following conditions:</xhtml:p>
+				<xhtml:p>-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.</xhtml:p>
+				<xhtml:p>-At any time, the USG may inspect and seize data stored on this IS.</xhtml:p>
+				<xhtml:p>-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.</xhtml:p>
+				<xhtml:p>-This IS includes security measures (e.g., authentication and access controls) to protect USG interests—not for your personal benefit or privacy.</xhtml:p>
+				<xhtml:p>-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants.  Such communications and work product are private and confidential.  See User Agreement for details.</xhtml:p>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-export value-id="warning_banner_text" export-name="ocil:com.redhat.eap5.scap:variable:300601"/>
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300601"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3001">
+			<title>Remove, rename, or comment out the default user accounts from production servers</title>
+			<description><xhtml:p>Remove, rename, or comment out the default user accounts defined in .properties files and login-config.xml.</xhtml:p></description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems.  Removing, renaming, or commenting out default user accounts makes malicious exploitation more complex.</xhtml:p></rationale>
+			<profile-note tag="risk_score">6</profile-note>
+			<profile-note tag="risk_level">Medium</profile-note>
+			<profile-note tag="risk_formula">(AV:N/AC:M/Au:S/C:P/I:P/A:P)</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">IAIA-1,IAIA-2,IATS-1,IATS-2</profile-note>
+			<profile-note tag="validation_text"><xhtml:p>Ensure the  default user accounts in the default &lt;application-policy&gt; elements located within the configuration file: JBOSS_HOME/server/[PROFILE]/conf/login-config.xml have been removed, renamed, or commented out.</xhtml:p>
+				<xhtml:pre><xhtml:code>
+	&lt;module-option name="principal"&gt;sa&lt;/module-option&gt;
+	&lt;module-option name="userName"&gt;sa&lt;/module-option&gt;
+	&lt;module-option name="password"&gt;&lt;/module-option&gt;
+				
+	&lt;module-option name="principal"&gt;guest&lt;/module-option&gt;
+	&lt;module-option name="userName"&gt;guest&lt;/module-option&gt;
+	&lt;module-option name="password"&gt;guest&lt;/module-option&gt;
+				</xhtml:code></xhtml:pre>
+				<xhtml:p>Examine the .properties files located within the JBOSS_HOME/server/[PROFILE]/conf/props/ directory.
+				<xhtml:p>By default, the following files exist:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>jbossws-users.properties</xhtml:li>
+					<xhtml:li>jmx-console-users.properties</xhtml:li>
+					<xhtml:li>messaging-users.properties</xhtml:li>
+				</xhtml:ul>
+					<xhtml:p>Ensure the default user accounts have been removed, renamed, or commented out. This includes:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>admin</xhtml:li>
+					<xhtml:li>kermit</xhtml:li>
+					<xhtml:li>guest</xhtml:li>
+				</xhtml:ul></xhtml:p></profile-note>
+			<fixtext><xhtml:p>Remove, rename, or comment out the default user accounts in the default &lt;application-policy&gt; elements located within the configuration file: JBOSS_HOME/server/[PROFILE]/conf/login-config.xml.
+				<xhtml:pre><xhtml:code>
+	&lt;module-option name="principal"&gt;sa&lt;/module-option&gt;
+	&lt;module-option name="userName"&gt;sa&lt;/module-option&gt;
+	&lt;module-option name="password"&gt;&lt;/module-option&gt;
+				
+	&lt;module-option name="principal"&gt;guest&lt;/module-option&gt;
+	&lt;module-option name="userName"&gt;guest&lt;/module-option&gt;
+	&lt;module-option name="password"&gt;guest&lt;/module-option&gt;
+				</xhtml:code></xhtml:pre>
+				<xhtml:p>Remove, rename, or comment out the default user accounts in properties files: JBOSS_HOME/server/[PROFILE]/conf/props/</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>jbossws-users.properties</xhtml:li>
+					<xhtml:li>jmx-console-users.properties</xhtml:li>
+					<xhtml:li>messaging-users.properties</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>The default user accounts include:</xhtml:p>
+					<xhtml:ul>
+						<xhtml:li>admin</xhtml:li>
+						<xhtml:li>kermit</xhtml:li>
+						<xhtml:li>guest</xhtml:li>
+					</xhtml:ul>
+				
+				NOTE: If access is required to the services protected by the &lt;application-policy&gt;, be sure that valid accounts and roles exist!</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300101"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3002">
+			<title>Remove, rename, or comment out the default roles from production servers</title>
+			<description><xhtml:p>Remove, rename, or comment out the default role definitions in the default &lt;application-policy&gt; elements.</xhtml:p>
+				<xhtml:p>Additionally, remove, rename, or comment out the default role assignments in various properties files from JBOSS_HOME/server/[PROFILE]/conf/props/</xhtml:p></description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems.  Renaming, removing, or commenting out default roles can make exploitation more complex. These steps can also prevent inadvertent assignment of permissions.</xhtml:p></rationale>
+			<profile-note tag="risk_score">6</profile-note>
+			<profile-note tag="risk_level">Medium</profile-note>
+			<profile-note tag="risk_formula">(AV:N/AC:M/Au:S/C:P/I:P/A:P)</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">IAIA-1,IAIA-2,IATS-1,IATS-2</profile-note>
+			<profile-note tag="validation_text"><xhtml:p>Ensure the default role assignments have been removed, renamed, or commented out from the default properties files located in JBOSS_HOME/server/[PROFILE]/conf/props/
+				<xhtml:ul>
+					<xhtml:li>jbossws-roles.properties</xhtml:li>
+					<xhtml:li>jmx-console-roles.properties</xhtml:li>
+					<xhtml:li>messaging-roles.properties</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>The default role assignments are JBossAdmin, HttpInvoker, friend, and guest.</xhtml:p>
+				
+				<xhtml:p>Finally, ensure the default role assignments within application specific deployment descriptors have been removed, renamed, or commented out:</xhtml:p>
+				<xhtml:ul>
+				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/web.xml</xhtml:li>
+				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/admin-console.war/WEB-INF/web.xml</xhtml:li>
+				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/web.xml</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>These role assignments will fall within &lt;auth-constraint&gt; elements and will look similar to the following:</xhtml:p>
+				<xhtml:pre><xhtml:code>	&lt;security-constraint&gt;
+		&lt;web-resource-collection&gt;
+			&lt;web-resource-name&gt;HtmlAdaptor&lt;/web-resource-name&gt;
+				&lt;description&gt;An example security config that only allows users with the role JBossAdmin to access the HTML JMX console web application&lt;/description&gt;
+				&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+		&lt;/web-resource-collection&gt;
+		<xhtml:b>&lt;auth-constraint&gt;
+			&lt;role-name&gt;JBossAdmin&lt;/role-name&gt;
+		&lt;/auth-constraint&gt;</xhtml:b>
+	&lt;/security-constraint&gt;</xhtml:code></xhtml:pre></xhtml:p></profile-note>
+			
+			<fixtext><xhtml:p><xhtml:p>Ensure the default role assignments have been removed, renamed, or commented out from the default properties files located in JBOSS_HOME/server/[PROFILE]/conf/props/
+				<xhtml:ul>
+					<xhtml:li>jbossws-roles.properties</xhtml:li>
+					<xhtml:li>jmx-console-roles.properties</xhtml:li>
+					<xhtml:li>messaging-roles.properties</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>The default role assignments are JBossAdmin, HttpInvoker, friend, and guest.</xhtml:p>
+				
+				<xhtml:p>Finally, ensure the default role assignments within application specific deployment descriptors have been removed, renamed, or commented out:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/web.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/admin-console.war/WEB-INF/web.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/web.xml</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>These role assignments will fall within &lt;auth-constraint&gt; elements and will look similar to the following:</xhtml:p>
+				<xhtml:pre><xhtml:code>	&lt;security-constraint&gt;
+		&lt;web-resource-collection&gt;
+			&lt;web-resource-name&gt;HtmlAdaptor&lt;/web-resource-name&gt;
+			&lt;description&gt;An example security config that only allows users with the role JBossAdmin to access the HTML JMX console web application&lt;/description&gt;
+			&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+		&lt;/web-resource-collection&gt;
+		<xhtml:b>&lt;auth-constraint&gt;
+			&lt;role-name&gt;JBossAdmin&lt;/role-name&gt;
+		&lt;/auth-constraint&gt;</xhtml:b>
+	&lt;/security-constraint&gt;</xhtml:code></xhtml:pre></xhtml:p></xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300201"/>
+			</check>
+			<!--<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:300201"/>
+			</check>-->
+			
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3003">
+			<title>Define an appropriate minimum and maximum password length requirement</title>
+			<description><xhtml:p>Organizations should create an authenticator management policy that defines minimum and maximum password sizes for user accounts accessing JBoss and its deployed applications.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guide to Enterprise Password Management (Draft) (800-118). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>In brute force scenarios, passwords of extended lengths increase password security and the length of time required to decrypt the password.</xhtml:p><xhtml:p>However, there are risks associated with requiring passwords of great lengths, as users may take steps to circumvent policy; such as using repetitive passwords, writing password reminders, or writing down their passwords.</xhtml:p></rationale>
+			<profile-note tag="risk_score">5.0</profile-note>
+			<profile-note tag="risk_level">Medium</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">IAIA-1,IAIA-2,IATS-1,IATS-2</profile-note>
+			<profile-note tag="validation_text"><xhtml:p>Work with JBoss administrators and security team members to identify and review relevant documentation. Minimum and maximum password lengths should be defined.</xhtml:p></profile-note>
+			<fixtext><xhtml:p>JBoss system administrators should work security team members to draft a comprehensive password policy.  Minimum and maximum password lengths should be defined.  Further, accounts may be categorized in order to define varying length requirements for particular types of accounts.</xhtml:p>
+				<xhtml:p>
+				For example:
+				</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>User accounts shall require password lengths of between 8 and 24 characters</xhtml:li>
+					<xhtml:li>Administrator shall require password lengths of 24 characters</xhtml:li>
+					<xhtml:li>Web service accounts shall require password lengths of 24 characters</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>
+				Password storage software and password generation software are recommended for organizations to assist in managing a secure password policy.
+				
+				NIST Special Publication 800-118 (Draft) and NIST Special Publication 800-53 both contain extensive guidance on creating a password policy document.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300301"/>
+			</check>
+		</Rule>
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3004">
+			<title>Define an appropriate minimum password complexity requirement</title>
+			<description><xhtml:p>Organizations should create an authenticator management policy that defines a minimum level of complexity for user accounts accessing JBoss and its deployed applications.  These requirements should also restrict passwords from containing dictionary words and reusing previous passwords.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guide to Enterprise Password Management (Draft) (800-118). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Complex passwords increase password security and the length of time required to decrypt the password.  Additionally, complex passwords are less likely to be found in password dictionaries.</xhtml:p><xhtml:p>However, there are risks associated with requiring overly complex passwords, as users may take steps to circumvent policy; such as using repetitive passwords, writing password reminders, or writing down their passwords.</xhtml:p></rationale>
+			<profile-note tag="risk_score">5.0</profile-note>
+			<profile-note tag="risk_level">Medium</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">IAIA-1,IAIA-2,IATS-1,IATS-2</profile-note>
+			<profile-note tag="validation_text"><xhtml:p>Work with JBoss administrators and security team members to identify and review relevant documentation.  Password complexity requirements should be defined.  The policy should not allow passwords to be reused or contain dictionary words.</xhtml:p></profile-note>
+			<fixtext><xhtml:p>JBoss system administrators should work security team members to draft a comprehensive password policy.  Password complexity requirements should be defined.  The policy should not allow passwords to be reused or contain dictionary words. Further, accounts may be categorized in order to define varying complexity requirements for particular types of accounts.</xhtml:p>
+				<xhtml:p>
+					For example:
+				</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>User accounts shall require passwords containing at least 1 lowercase alphanumeric character, 1 uppercase alphanumeric character, and 1 number</xhtml:li>
+					<xhtml:li>Administrator accounts shall require passwords containing at least 2 lowercase alphanumeric characters, 2 uppercase alphanumeric characters, 2 numbers, and 2 special characters.  Special characters include: !@#$%^&amp;*()</xhtml:li>
+					<xhtml:li>Web service accounts shall require passwords containing at least 3 lowercase alphanumeric characters, 3 uppercase alphanumeric characters, 3 numbers, and 3 special characters.  Special characters include: !@#$%^&amp;*()</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>
+					Password storage software and password generation software are recommended for organizations to assist in managing a secure password policy.
+					
+					NIST Special Publication 800-118 (Draft) and NIST Special Publication 800-53 both contain extensive guidance on creating a password policy document.</xhtml:p></fixtext>			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300401"/>
+			</check>
+		</Rule>
+		
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3005">
+			
+			<title>Define an appropriate minimum password expiration interval</title>
+			<description><xhtml:p>Organizations should create an authenticator management policy that defines a maximum password age for user accounts accessing JBoss and its deployed applications.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guide to Enterprise Password Management (Draft) (800-118). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>In combination with password length and complexity, regularly changing passwords can defeat many attacks.  If a password or password hash is intercepted by a malicious party, changing the password can remove access or render invalid a cracking attempt on the hash.</xhtml:p><xhtml:p>
+				However, there are risks associated with frequently changing passwords. Users may take steps to circumvent policy such as using repetitive passwords or using password derivatives.  Additionally, changing passwords for system or application accounts introduces an element of configuration risk.  Poorly coordinated or documented changes can result in system outages or create other problems.</xhtml:p></rationale>
+			<profile-note tag="risk_score">5.0</profile-note>
+			<profile-note tag="risk_level">Medium</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">IAIA-1,IAIA-2,IATS-1,IATS-2</profile-note>
+			<profile-note tag="validation_text"><xhtml:p>Work with JBoss administrators and security team members to identify and review relevant documentation.  Password complexity requirements should be defined.  The policy should not allow passwords to be reused or contain dictionary words.</xhtml:p></profile-note>
+			<fixtext><xhtml:p>JBoss system administrators should work security team members to draft a comprehensive password policy.  Password expiration requirements should be defined.  Further, accounts may be categorized in order to define varying length requirements for particular types of accounts.</xhtml:p>
+				<xhtml:p>
+					For example:
+				</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>Passwords for user accounts must expire every 90 days</xhtml:li>
+					<xhtml:li>Passwords for administrator accounts must expire every 30 days</xhtml:li>
+					<xhtml:li>Passwords for web service accounts must expire every 180 days</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>
+					Password storage software and password generation software are recommended for organizations to assist in managing a secure password policy.
+					
+					NIST Special Publication 800-118 (Draft) and NIST Special Publication 800-53 both contain extensive guidance on creating a password policy document.</xhtml:p></fixtext>			
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300501"/>
+			</check>
+		</Rule>
+	</Group>
+		
 
 </Benchmark>
