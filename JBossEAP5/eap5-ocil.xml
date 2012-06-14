@@ -711,12 +711,75 @@ Additionally, a hash-validated 'Gold' version of the JBoss installation package 
 		</questionnaire>
 		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:116501">
 			<title>Eliminate clear-text passwords: XML configuration files</title>
-			<description>Using password masking, eliminate clear-text passwords in: XML configuration files</description>
+			<description>Using password masking, eliminate clear-text passwords in XML configuration files.</description>
 			<actions operation="AND">
 				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11650101
 				</test_action_ref>
 			</actions>
 		</questionnaire>
+		
+		<!--
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300101">
+			<title>NOHTMLTITLE</title>
+			<description>NOHTMLDESC</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30010101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		-->
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300601">
+			<title>Deployed applications should display a system use banner upon access</title>
+			<description>Upon accessing the system, a notification banner, consent to use, or policy warning banner should be displayed to alert system users of the system use details.  This may include items such as implied consent to monitor, privacy practices, or liability waivers.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30060101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300401">
+			<title>Define an appropriate minimum password complexity requirement</title>
+			<description>Organizations should create an authenticator management policy that defines a minimum level of complexity for user accounts accessing JBoss and its deployed applications.  These requirements should also restrict passwords from containing dictionary words and reusing previous passwords.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30040101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300501">
+			<title>Define an appropriate minimum password expiration interval</title>
+			<description>Organizations should create an authenticator management policy that defines a maximum password age for user accounts accessing JBoss and its deployed applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30050101</test_action_ref>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30050102</test_action_ref>
+			</actions>
+		</questionnaire>
+		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300301">
+			<title>Define an appropriate minimum and maximum password length requirement</title>
+			<description>Organizations should create an authenticator management policy that defines minimum and maximum password sizes for user accounts accessing JBoss and its deployed applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30030101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300201">
+			<title>Remove, rename, or comment out the default roles from production servers</title>
+			<description>Remove, rename, or comment out the default role definitions in the default &lt;application-policy&gt; elements.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30020101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300101">
+			<title>Remove, rename, or comment out the default user accounts from production servers</title>
+			<description>Remove, rename, or comment out the default user accounts defined in .properties files and login-config.xml.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30010101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		
 	</questionnaires>
 
 	<test_actions>
@@ -1597,7 +1660,75 @@ Additionally, a hash-validated 'Gold' version of the JBoss installation package 
 				<result>FAIL</result>
 			</when_false>
 		</boolean_question_test_action>
+
+		<!--
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30010101" question_ref="ocil:com.redhat.eap5.scap:question:30010101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		-->
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30060101" question_ref="ocil:com.redhat.eap5.scap:question:30060101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30040101" question_ref="ocil:com.redhat.eap5.scap:question:30040101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30050101" question_ref="ocil:com.redhat.eap5.scap:question:30050101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30050102" question_ref="ocil:com.redhat.eap5.scap:question:30050102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30030101" question_ref="ocil:com.redhat.eap5.scap:question:30030101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30020101" question_ref="ocil:com.redhat.eap5.scap:question:30020101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30010101" question_ref="ocil:com.redhat.eap5.scap:question:30010101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
 		
+
 	</test_actions>
 
 	<questions>
@@ -2317,6 +2448,68 @@ Additionally, a hash-validated 'Gold' version of the JBoss installation package 
 				<step><description>No clear-text passwords should exist in XML configuration files (password masking should be used instead).</description></step>
 			</instructions>
 		</boolean_question>
-
+		
+		<!--
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30010101">
+			<question_text>NOHTMLQUESTION     [Please reference Rule ID #300101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>NOTHTMLSTEP1</description></step>
+				<step><description>NOTHTMLSTEP2</description></step>
+			</instructions>
+		</boolean_question>
+		-->
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30060101">
+			<question_text>Do all deployed applications display a system use notification upon access?     <sub var_ref="ocil:com.redhat.eap5.scap:variable:300601"/> [Please reference Rule ID #300601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Access all deployed applications to determine if a warning banner is displayed.  A code reviewing showing the functional code will also suffice.This warning banner should be presented to the user prior to accessing any deployed application - commercial applications, in-house applications, or applications deployed by JBoss.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30040101">
+			<question_text>Has the organization defined password complexity requirements in a policy document?     [Please reference Rule ID #300401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation.  Password complexity requirements should be defined.  The policy should not allow passwords to be reused or contain dictionary words.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30050101">
+			<question_text>Has the organization defined password expiration requirements in a policy document?     [Please reference Rule ID #300501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation. Password expiration requirements should be defined.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30050102">
+			<question_text>Is evidence maintained of password changes for application or system accounts?     [Please reference Rule ID #300501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation. Password expiration requirements should be defined.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30030101">
+			<question_text>Has the organization defined password length requirements in a policy document?     [Please reference Rule ID #300301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation. Minimum and maximum password lengths should be defined.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30020101">
+			<question_text>Have default role assignments been removed, renamed, or commented out from jbossws-roles.properties, jmx-console-roles.properties, and messaging-roles.properties?     [Please reference Rule ID #300201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Ensure the default role assignments have been removed, renamed, or commented out from the default properties files located in JBOSS_HOME/server/[PROFILE]/conf/props/</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30010101">
+			<question_text>Have default user accounts been removed, renamed, or commented out from jbossws-users.properties, jmx-console-users.properties, and messaging-users.properties?     [Please reference Rule ID #300101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Ensure the default user accounts in the default &lt;application-policy&gt; elements located within the configuration file: JBOSS_HOME/server/[PROFILE]/conf/login-config.xml have been removed, renamed, or commented out.</description></step>
+			</instructions>
+		</boolean_question>
 	</questions>
+	<variables>
+		<!--<constant_variable datatype="NUMERIC" id="ocil:com.redhat.eap5.scap:variable:2">
+			<value>1</value>
+		</constant_variable>
+		<external_variable datatype="NUMERIC" id="ocil:com.redhat.eap5.scap:variable:1"/>
+		<local_variable question_ref="ocil:com.redhat.eap5.scap:question:30010101" datatype="NUMERIC" id="ocil:com.redhat.eap5.scap:variable:3">
+			<set>
+			</set>
+		</local_variable>-->
+		<external_variable datatype="TEXT" id="ocil:com.redhat.eap5.scap:variable:300601"/>
+	</variables>
 </ocil>
