@@ -25,25 +25,39 @@ environment.</description>
 LDAP client, ensure that a working LDAP server is present on the
 network.</warning>
 
-<Rule id="ldap_client_tls_checkpeer">
+<Rule id="ldap_client_start_tls">
 <title>LDAP Uses TLS For All Transactions</title>
-<description>
-Ensure a copy of the site's CA certificate has been placed in
-the file <tt>/etc/pki/tls/CA/cacert.pem</tt>.
-Configure LDAP to enforce TLS use and to trust certificates
-signed by the site's CA. First, edit the file <tt>/etc/pam_ldap.conf</tt>,
-and add or correct the following lines:
-<pre>ssl start_tls
-tls_checkpeer yes
-tls_cacertdir /etc/pki/tls/CA
-tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
-Then edit <tt>/etc/openldap/ldap.conf</tt>, and add or correct the
-following lines:
-<pre>TLS_CACERTDIR /etc/pki/tls/CA
-TLS_CACERT /etc/pki/tls/CA/cacert.pem</pre>
+<description>Configure LDAP to enforce TLS use.  First, edit the file 
+<tt>/etc/pam_ldap.conf</tt>, and add or correct the following lines:
+<pre>ssl start_tls</pre>
+Then review the LDAP server and ensure TLS has been configured.
 </description>
+<rationale>The ssl directive specifies whether to use ssl or not.  If
+not specified it will default to no.  It should be set to start_tls rather
+than doing LDAP over SSL.</rationale>
+<ref disa="776,778" />
 <ident cce="14894-0" />
-<oval id="ldap_client_tls_checkpeer" />
+<oval id="ldap_client_start_tls" />
+</Rule>
+
+<Rule id="ldap_client_tls_cacertpath">
+<title>LDAP Uses TLS For All Transactions</title>
+<description>Ensure a copy of the site's CA certificate has been placed in
+the file <tt>/etc/pki/tls/CA/cacert.pem</tt>.  Configure LDAP to enforce TLS 
+use and to trust certificates signed by the site's CA. First, edit the file 
+<tt>/etc/pam_ldap.conf</tt>, and add or correct either of the following lines:
+<pre>tls_cacertdir /etc/pki/tls/CA</pre>
+or
+<pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
+Then review the LDAP server and ensure TLS has been configured.
+</description>
+<rationale>The tls_cacertdir or tls_cacertfile directives are required when
+tls_cheekpeer is configured (which is the default for openldap versions 2.1 and
+up).  These directives define the path to the trust certificates signed by the
+site CA.</rationale>
+<ref disa="776,778" />
+<ident cce="14894-0" />
+<oval id="ldap_client_tls_cacertpath" />
 </Rule>
 
 </Group><!--End <Group id="openldap_client"> -->
@@ -58,7 +72,7 @@ securing an OpenLDAP infrastructure nonetheless.
 </description>
 
 <Rule id="package_openldap-servers_removed">
-<title>Install OpenLDAP Server RPM</title>
+<title>Uninstall the OpenLDAP Server RPM</title>
 <description>The <tt>openldap-servers</tt> package should be removed if not in use.
 Is this machine the OpenLDAP server? If not, remove the package:
 <pre># yum erase openldap-servers</pre>
