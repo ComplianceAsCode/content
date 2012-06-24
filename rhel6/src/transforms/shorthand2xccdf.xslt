@@ -162,6 +162,21 @@ exclude-result-prefixes="xccdf xhtml">
     </xsl:copy>
   </xsl:template>
 
+
+
+  <!-- convenience macros for XCCDF prose -->
+  <xsl:template match="sysctl-desc-macro">
+    The status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
+    by running the following command:
+    <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
+    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
+  </xsl:template>
+
+  <xsl:template match="service-disable-macro">
+    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
+    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
+  </xsl:template>
+
   <!-- CORRECTING TERRIBLE ABUSE OF NAMESPACES BELOW -->
   <!-- (expanding xhtml tags back into the xhtml namespace) -->
   <xsl:template match="br">
