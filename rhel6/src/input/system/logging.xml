@@ -4,7 +4,7 @@
 many years. It has a number of downsides, including inconsistent log format,
 lack of authentication for received messages, and lack of authentication,
 encryption, or reliable transport for messages sent over a network. However,
-due to its long history, syslog is an accepted standard which is supported by
+due to its long history, syslog is a de facto standard which is supported by
 almost all Unix applications.
 <br/>
 <br/>
@@ -37,7 +37,7 @@ system logging services.
 
 
 <Rule id="service_rsyslog_enabled">
-<title>Enable Rsyslog Daemon (rsyslog)</title>
+<title>Enable Rsyslog Service (rsyslog)</title>
 <description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6. 
 The <tt>rsyslog</tt> service can be activated with the following command:
 <pre># chkconfig rsyslog on</pre>
@@ -51,38 +51,31 @@ logging services, which are essential to system administration.
 </Rule>
 
 
-<Group id="ensure_rsyslog_messages_captured">
-<title> Ensure Important Messages are Captured</title>
+<Group id="ensure_rsyslog_log_file_configuration">
+<title>Ensure Proper Configuration of Log Files</title>
 <description>
-Edit the file <tt>/etc/rsyslog.conf</tt>. Add or correct whichever of the following lines are appropriate for your
-environment:
-<pre>
-auth.*,user.*                                                           /var/log/messages
-kern.*                                                                  /var/log/kern.log
-daemon.*                                                                /var/log/daemon.log
-syslog.*                                                                /var/log/syslog
-lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*        /var/log/unused.log
-</pre>
+The file <tt>/etc/rsyslog.conf</tt> controls where log message are written.
+These are controlled by lines called <i>rules</i>, which consist of a
+<i>selector</i> and an <i>action</i>.
+These rules are often customized depending on the role of the system, the
+requirements of the environment, and whatever may enable
+the administrator to most effectively make use of log data.
+The default rules in RHEL 6 are:
+<pre>*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+authpriv.*                                              /var/log/secure
+mail.*                                                  -/var/log/maillog
+cron.*                                                  /var/log/cron
+*.emerg                                                 *
+uucp,news.crit                                          /var/log/spooler
+local7.*                                                /var/log/boot.log</pre>
 See the man page <tt>rsyslog.conf(5)</tt> for more information.
-<i>By default,</i> <tt>rsyslog</tt> <i>uses a timestamp format that Logwatch does not understand. If your en-
-vironment uses Logwatch, edit the file <tt>/etc/rsyslog.conf</tt> and add or edit the following line:</i>
-<pre>$ ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat</pre></description>
-</Group>
+<i>Note that the <tt>rsyslog</tt> daemon can be configured to use a timestamp format that
+some log processing programs may not understand. If this occurs, 
+edit the file <tt>/etc/rsyslog.conf</tt> and add or edit the following line:</i>
+<pre>$ ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat</pre>
+</description>
 
-<Group id="log_file_permissions">
-<title>Confirm Existence and Permissions of System Log Files</title>
-<description>For each log file LOGFILE referenced in
-<tt>/etc/rsyslog.conf</tt>, run the commands:
-<pre># touch LOGFILE
-# chown root:root LOGFILE
-# chmod 0600 LOGFILE</pre>
-Rsyslog will refuse to log to a file which does not exist.
-All messages intended for that file will be silently discarded, so
-it is important to verify that all log files exist. Some logs may
-contain sensitive information, so it is better to restrict
-permissions so that only administrative users can read or write
-logfiles.</description>
-
+<!-- These values are not currently used. -->
 <Value id="file_owner_logfiles_value" type="string"
 operator="equals" interactive="0">
 <title>User who owns log files</title>
@@ -99,10 +92,38 @@ operator="equals" interactive="0">
 <value selector="root">root</value>
 </Value>
 
+<Rule id="rsyslog_logfiles_exist">
+<title>Ensure Log Files Exist</title>
+<description>
+The log files written by <tt>rsyslog</tt> are determined by the second part of each rule line in
+<tt>/etc/rsyslog.conf</tt>.  These typically all appear in <tt>/var/log</tt>. 
+For any log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt> which
+does not already exist the following commands will create it and apply proper
+permissions:
+<pre># touch <i>LOGFILE</i>
+# chown root:root <i>LOGFILE</i>
+# chmod 0600 <i>LOGFILE</i></pre>
+</description>
+<rationale>If a log file referenced by <tt>rsyslog</tt> does not exist, rsyslog
+will not create it and important log messages can be lost.
+</rationale>
+<ident cce="18095-0" />
+<ref nist="AC-3, CM-6" />
+</Rule>
+
 <Rule id="userowner_rsyslog_files">
-<title>RSyslog Log Files Owned By Appropriate User</title>
-<description>All <tt>rsyslog</tt> log files should be owned by the
-appropriate user.</description>
+<title>Ensure Log Files Are Owned By Appropriate User</title>
+<description>The owner of all log files written by
+<tt>rsyslog</tt> should be root.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
+For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
+run the following command to inspect the file's owner:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+If the owner is not <tt>root</tt>, run the following command to
+correct this:
+<pre># chown root <i>LOGFILE</i></pre>
+</description>
 <rationale>The log files generated by rsyslog contain valuable information regarding system
 configuration, user authentication, and other such information. Log files should be
 protected from unauthorized access.</rationale>
@@ -112,9 +133,18 @@ protected from unauthorized access.</rationale>
 </Rule>
 
 <Rule id="groupowner_rsyslog_files">
-<title>RSyslog Log Files Owned By Appropriate Group</title>
-<description>All <tt>rsyslog</tt> log files should be owned by the
-appropriate group.</description>
+<title>Ensure Log Files Are Owned By Appropriate Group</title>
+<description>The group-owner of all log files written by
+<tt>rsyslog</tt> should be root.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
+For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
+run the following command to inspect the file's group owner:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+If the owner is not <tt>root</tt>, run the following command to
+correct this:
+<pre># chgrp root <i>LOGFILE</i></pre>
+</description>
 <rationale>The log files generated by rsyslog contain valuable information regarding system
 configuration, user authentication, and other such information. Log files should be
 protected from unauthorized access.</rationale>
@@ -125,10 +155,20 @@ protected from unauthorized access.</rationale>
 
 
 <Rule id="rsyslog_file_permissions">
-<title>RSyslog Log Files Have Correct Permissions</title>
-<description>File permissions for all <tt>rsyslog</tt> log files should be
-set correctly.</description>
-<rationale>The log files generated by rsyslog contain valuable information regarding system
+<title>Ensure Log Files Have Correct Permissions</title>
+<description>The file permissions for all log files written by
+<tt>rsyslog</tt> should be
+set to 600 or more restrictive.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
+For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
+run the following command to inspect the file's permissions:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+If the permissions are not 600 or more restrictive,
+run the following command to correct this:
+<pre># chmod 0600 <i>LOGFILE</i></pre>
+</description>
+<rationale>Log files can contain valuable information regarding system
 configuration, user authentication, and other such information. Log files should be
 protected from unauthorized access.</rationale>
 <ident cce="18095-0" />
@@ -139,10 +179,7 @@ protected from unauthorized access.</rationale>
 
 <Group id="rsyslog_sending_messages">
 <title>Rsyslog Logs Sent To Remote Host</title>
-<description>Edit <tt>/etc/rsyslog.conf</tt>. Add or correct the line:
-<pre>*.* @loghost.example.com</pre>
-where <tt>loghost.example.com</tt> is the name of your central log server.
-<br /><br />
+<description>
 If system logs are to be useful in detecting malicious
 activities, it is necessary to send logs to a remote server. An
 intruder who has compromised the root account on a machine may
@@ -164,14 +201,36 @@ better to store log messages both centrally and on each host, so
 that they can be correlated if necessary.</description>
 
 <Rule id="rsyslog_send_messages_to_logserver">
-<title>Rsyslog Logs Sent To Remote Host</title>
-<description>Rsyslog logs should be sent to a remote loghost or not
-as appropriate</description>
-<rationale>Forwarding log messages to a remote loghost gives a system administrator a
-centralized place to view the status of hosts within the enterprise. The forwarded
-messages also serve as a backup of sorts should a compromise be dectected. Should a
-compromise occur, the backup log entries could be used to check the host's logs for
-consistency.</rationale>
+<title>Ensure Logs Sent To Remote Host</title>
+<description>
+To configure rsyslog to send logs to a remote log server,
+open <tt>/etc/rsyslog.conf</tt> and read and understand the last section of the file,
+which describes the multiple directives necessary to activate remote
+logging.
+Along with these other directives, the system can be configured
+to forward its logs to a particular log server by
+adding or correcting one of the following lines,
+substituting <tt><i>loghost.example.com</i></tt> appropriately.
+The choice
+of protocol depends on the environment of the system; although TCP and RELP
+provide more reliable message delivery, they may not be supported in all
+environments.
+<br/>
+To use UDP for log message delivery:
+<pre>*.* @<i>loghost.example.com</i></pre>
+<br/>
+To use TCP for log message delivery:
+<pre>*.* @@<i>loghost.example.com</i></pre>
+<br/>
+To use RELP for log message delivery:
+<pre>*.* :omrelp:<i>loghost.example.com</i></pre>
+</description>
+<rationale>A log server (loghost) receives syslog messages from one or more
+systems. This data can be used as an additional log source in the event a
+system is compromised and its local logs are suspect.  Forwarding log messages
+to a remote loghost also provides system administrators with a centralized
+place to view the status of multiple hosts within the enterprise.
+</rationale>
 <ident cce="17248-6" />
 <oval id="rsyslog_remote_loghost" />
 <ref nist="AU-2, AU-9" />
@@ -179,42 +238,21 @@ consistency.</rationale>
 </Group>
 
 <Group id="rsyslog_accepting_remote_messages">
-<title>Configure <tt>rsyslogd</tt> to Accept Remote Messages Only As Needed</title>
+<title>Configure <tt>rsyslogd</tt> to Accept Remote Messages If Acting as a Log Server</title>
 <description>
 By default, RHEL6's <tt>rsyslog</tt> does not listen over the network
-for log messages. If needed, the modules <tt>imtcp.so</tt> and <tt>imudp.so</tt>
-(and others) enable the daemon to receive messages from other systems and for the system
+for log messages. If needed, modules can be enabled to allow
+the rsyslog daemon to receive messages from other systems and for the system
 thus to act as a log server.
 If the machine is not a log server, then lines concerning these modules
 should remain commented out.
 <br /><br />
 </description>
 
-<!--<description>Is this machine the central log server for your
-organization? If so, edit the file <tt>/etc/sysconfig/rsyslog</tt>. Add
-or correct the following line:
-<pre>SYSLOGD_OPTIONS="-m 0 -r -s example.com "</pre>
-where <tt>example.com</tt> is the name of your domain.
-<br /><br />
-If the machine is not a log server, edit <tt>/etc/sysconfig/syslog</tt>,
-and instead add or correct the line:
-<pre>SYSLOGD_OPTIONS="-m 0"</pre>
-By default, RHEL6's <tt>rsyslog</tt> does not listen over the network
-for log messages. The <tt>-r</tt> flag enables <tt>rsyslogd</tt> to listen over a
-network, and should be used only if necessary. The <tt>-s example.com</tt>
-flag strips the domain name <tt>example.com</tt> from each sending machine's
-hostname before logging messages from that host, to reduce the
-amount of redundant information placed in log files. See the
-<tt>rsyslogd(8)</tt> man page for further information.</description>
--->
-
 <Rule id="rsyslog_accept_remote_messages_none">
 <title>Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server</title>
 <description>The <tt>rsyslog</tt> daemon should not accept remote messages
 unless the system acts as a log server.
-<br/>
-TODO: See how /etc/sysconfig/rsyslog plays or interferes or overwrites here.
-<br/>
 To ensure that it is not listening on the network, ensure the following lines are
 <i>not</i> found in <tt>/etc/rsyslog.conf</tt>:
 <pre>$ModLoad imtcp.so
@@ -238,9 +276,6 @@ rsyslog by configuring it not to listen on the network.
 <title>Enable rsyslog to Accept Messages via TCP, if Acting As Log Server</title>
 <description>The <tt>rsyslog</tt> daemon should not accept remote messages
 unless the system acts as a log server.
-<br/>
-TODO: See how /etc/sysconfig/rsyslog plays or interferes or overwrites here.
-<br/>
 If the system needs to act as a central log server, add the following lines to
 <tt>/etc/rsyslog.conf</tt> to enable reception of messages over TCP:
 <pre>$ModLoad imtcp.so
@@ -258,10 +293,10 @@ messages over a reliable TCP connection.
 
 <Rule id="rsyslog_accept_remote_messages_udp">
 <title>Enable rsyslog to Accept Messages via UDP, if Acting As Log Server</title>
-<description>
-If the system needs to act as a central log server, and it also must receive
-messages from systems which can only send them in the traditional UDP
-format, then ensure the following lines exist in <tt>/etc/syslog.conf</tt>:
+<description>The <tt>rsyslog</tt> daemon should not accept remote messages
+unless the system acts as a log server.
+If the system needs to act as a central log server, add the following lines to
+<tt>/etc/rsyslog.conf</tt> to enable reception of messages over UDP:
 <pre>$ModLoad imudp.so
 $InputUDPServerRun 514</pre>
 </description>
@@ -301,13 +336,26 @@ rotated more often than once a day, some other mechanism must be
 used.</description>
 
 <Rule id="ensure_logrotate_activated">
-<title>Ensure Logs Are Rotated</title>
-<description>The <tt>logrotate</tt> (<tt>rsyslog</tt> rotater) service should be
+<title>Ensure Logrotate Runs Periodically</title>
+<description>The <tt>logrotate</tt> service must be configured to run
+periodically in order to perform its log rotation function.</description>
+<rationale>Log files that are not properly rotated run the risk of growing so large
+that they fill up the /var/log partition. Valuable logging information could be lost
+if the /var/log partition becomes full.</rationale>
+<ident cce="4182-2" />
+<!-- TODO: this needs cleanup -->
+<ref nist="AU-2, AU-9, CM-6" />
+</Rule>
+
+<Rule id="ensure_logrotate_rotates_all_files">
+<title>Ensure Logrotate Runs Periodically</title>
+<description>The <tt>logrotate</tt> service should be
 enabled.</description>
 <rationale>Log files that are not properly rotated run the risk of growing so large
 that they fill up the /var/log partition. Valuable logging information could be lost
 if the /var/log partition becomes full.</rationale>
 <ident cce="4182-2" />
+<!-- TODO: this needs cleanup -->
 <oval id="logrotate_rotate_all_files" />
 <ref nist="AU-2, AU-9, CM-6" />
 </Rule>
