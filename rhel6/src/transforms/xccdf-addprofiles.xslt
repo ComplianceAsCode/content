@@ -12,6 +12,7 @@
           <xsl:apply-templates select="document('../input/profiles/desktop.xml')" />
           <xsl:apply-templates select="document('../input/profiles/server.xml')" />
           <xsl:apply-templates select="document('../input/profiles/ftp.xml')" />
+          <xsl:apply-templates select="document('../input/profiles/STIG-server.xml')" />
     </xsl:if>
   </xsl:template>
 
