@@ -74,11 +74,13 @@ guide: shorthand-guide shorthand2xccdf
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
 table-profilenistrefs: shorthand-guide shorthand2xccdf
-#	xsltproc -o $(POLICYMAPPING_OUTPUT_DIR)/rhel6-table-nistrefs.html $(TRANS)/xccdf2table-nistrefs.xslt $(XCCDF_OUTPUT_DIR)/rhel6-xccdf.xml
 	xsltproc -stringparam profile "desktop" -o $(OUT)/rhel6-table-nistrefs-desktop.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
 	xsltproc -stringparam profile "server" -o $(OUT)/rhel6-table-nistrefs-server.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
 	xsltproc -stringparam profile "common" -o $(OUT)/rhel6-table-nistrefs-common.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
 	xsltproc -stringparam profile "ftp" -o $(OUT)/rhel6-table-nistrefs-ftp.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
+
+table-profileccirefs: shorthand-guide shorthand2xccdf
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf.xml
 
 table-refs: shorthand-guide shorthand2xccdf
 	xsltproc -stringparam ref "nist" -o $(OUT)/rhel6-table-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/rhel6-xccdf.xml
@@ -93,11 +95,11 @@ table-srgmap: shorthand-guide shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$(OUT)/rhel6-xccdf.xml" -o $(OUT)/rhel6-table-srgmap.html $(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 
-table-stig:
+table-stig-rhel5:
 	xsltproc -o $(OUT)/rhel5-table-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/rhel5-table-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
 
-tables: table-refs table-profilenistrefs table-srgmap
+tables: table-profilenistrefs table-profileccirefs table-refs table-srgmap table-stig-rhel5
 
 content: shorthand-guide shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
