@@ -55,7 +55,7 @@ and impacting other services.  This also minimizes the risk of the audit
 daemon temporarily disabling the system if it cannot write audit log (which
 it can be configured to do). 
 </description>
-<ref disa="120,166,1338,1339" />
+<ref disa="120,166,1338,1339,157" />
 
 <Rule id="enable_auditd_service">
 <title>Enable auditd Service</title>
@@ -70,7 +70,7 @@ actions will be taken if other obstacles exist.
 </rationale>
 <ident cce="4292-9" />
 <oval id="service_auditd_enabled" />
-<ref nist="CM-6, CM-7" disa="169,172,174,1353,1462,1487,1115,1454,154,067" />
+<ref nist="CM-6, CM-7" disa="169,172,174,1353,1462,1487,1115,1454,154,067,158" />
 </Rule>
 
 <Rule id="enable_auditd_bootloader">
@@ -295,6 +295,7 @@ audit records.  If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
+<ref disa="140" />
 </Rule>
 
 
@@ -352,7 +353,7 @@ After reviewing all the rules, reading the following sections, and
 editing as needed, the new rules can be activated as follows:
 <pre># service auditd restart</pre>
 </description>
-<ref disa="171,172,1115,1454,1487,1571,1589,880" />
+<ref disa="171,172,1115,1454,1487,1571,1589,880,347" />
 
 <Group id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
