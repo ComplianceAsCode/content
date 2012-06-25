@@ -355,25 +355,129 @@ editing as needed, the new rules can be activated as follows:
 </description>
 <ref disa="171,172,1115,1454,1487,1571,1589,880,347" />
 
-<Rule id="audit_time_rules">
+<Group id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
+<description>Arbitrary changes to the system time can be used to obfuscate 
+nefarious activites in log files as well as to confuse network services that 
+are highly dependent upon an accurate system time. All changes to the system 
+time should be audited.</description>
+
+<Rule id="audit_rules_time_adjtimex">
+<title>Record attempts to alter time through adjtimex</title>
 <description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre># audit_time_rules
--a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -S clock_settime -k audit_time_rules
--w /etc/localtime -p wa -k audit_time_rules</pre>
-On a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt> (note the lack
-of <tt>-S stime</tt>, which is not relevant for a 64-bit installation):
+-a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
+On a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre># audit_time_rules
--a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime -k audit_time_rules
--w /etc/localtime -p wa -k audit_time_rules</pre>
+-a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
+The -k option allows for the specification of a key in string form that can 
+be used for better reporting capability through ausearch and aureport.  
+Multiple system calls can be defined on the same line to save space if 
+desired, but is not required.  See an example of multiple combined syscalls:
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
+-k audit_time_rules</pre>
 </description>
-<rationale>Arbitrary changes to the system time can be used to obfuscate nefarious
-activites in log files as well as to confuse network services that are highly dependent
-upon an accurate system time (such as sshd). All changes to the system time should be audited.</rationale>
+<rationale>Arbitrary changes to the system time can be used to obfuscate 
+nefarious activites in log files as well as to confuse network services that 
+are highly dependent upon an accurate system time (such as sshd). All changes 
+to the system time should be audited.</rationale>
 <ident cce="14051-7" />
-<oval id="audit_rules_record_timechange" />
+<oval id="audit_rules_time_adjtimex" />
 <ref nist="AU-2(a)" />
+<ref disa="1487,169" />
 </Rule>
+
+<Rule id="audit_rules_time_settimeofday">
+<title>Record attempts to alter time through settimeofday</title>
+<description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre># audit_time_rules
+-a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
+On a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre># audit_time_rules
+-a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
+The -k option allows for the specification of a key in string form that can 
+be used for better reporting capability through ausearch and aureport.  
+Multiple system calls can be defined on the same line to save space if 
+desired, but is not required.  See an example of multiple combined syscalls:
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
+-k audit_time_rules</pre>
+</description>
+<rationale>Arbitrary changes to the system time can be used to obfuscate 
+nefarious activites in log files as well as to confuse network services that 
+are highly dependent upon an accurate system time (such as sshd). All changes 
+to the system time should be audited.</rationale>
+<ident cce="14051-7" />
+<oval id="audit_rules_time_settimeofday" />
+<ref nist="AU-2(a)" />
+<ref disa="1487,169" />
+</Rule>
+
+<Rule id="audit_rules_time_stime">
+<title>Record attempts to alter time through stime</title>
+<description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre># audit_time_rules
+-a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
+On a 64-bit system, the "-S time" is not necessary.  The -k option allows for 
+the specification of a key in string form that can be used for better 
+reporting capability through ausearch and aureport.  Multiple system calls 
+can be defined on the same line to save space if desired, but is not required.
+See an example of multiple combined syscalls:
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
+-k audit_time_rules</pre>
+</description>
+<rationale>Arbitrary changes to the system time can be used to obfuscate 
+nefarious activites in log files as well as to confuse network services that 
+are highly dependent upon an accurate system time (such as sshd). All changes 
+to the system time should be audited.</rationale>
+<ident cce="14051-7" />
+<oval id="audit_rules_time_stime" />
+<ref nist="AU-2(a)" />
+<ref disa="1487,169" />
+</Rule>
+
+<Rule id="audit_rules_time_clock_settime">
+<title>Record attempts to alter time through clock_settime</title>
+<description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre># audit_time_rules
+-a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
+On a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre># audit_time_rules
+-a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
+The -k option allows for the specification of a key in string form that can 
+be used for better reporting capability through ausearch and aureport.  
+Multiple system calls can be defined on the same line to save space if 
+desired, but is not required.  See an example of multiple combined syscalls:
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
+-k audit_time_rules</pre>
+</description>
+<rationale>Arbitrary changes to the system time can be used to obfuscate 
+nefarious activites in log files as well as to confuse network services that 
+are highly dependent upon an accurate system time (such as sshd). All changes 
+to the system time should be audited.</rationale>
+<ident cce="14051-7" />
+<oval id="audit_rules_time_clock_settime" />
+<ref nist="AU-2(a)" />
+<ref disa="1487,169" />
+</Rule>
+
+<Rule id="audit_rules_time_watch_localtime">
+<title>Record attempts to alter the localtime file</title>
+<description>Add the following to <tt>/etc/audit/audit.rules</tt>:
+<pre>-w /etc/localtime -p wa -k audit_time_rules</pre>
+The -k option allows for the specification of a key in string form that can 
+be used for better reporting capability through ausearch and aureport and
+should always be used.  
+</description>
+<rationale>Arbitrary changes to the system time can be used to obfuscate 
+nefarious activites in log files as well as to confuse network services that 
+are highly dependent upon an accurate system time (such as sshd). All changes 
+to the system time should be audited.</rationale>
+<ident cce="14051-7" />
+<oval id="audit_rules_time_watch_localtime" />
+<ref nist="AU-2(a)" />
+<ref disa="1487,169" />
+</Rule>
+</Group><!--End <Group id="audit_time_rules"> -->
 
 <Rule id="audit_account_changes">
 <title>Record Events that Modify User/Group Information</title>
