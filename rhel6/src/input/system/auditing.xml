@@ -55,7 +55,7 @@ and impacting other services.  This also minimizes the risk of the audit
 daemon temporarily disabling the system if it cannot write audit log (which
 it can be configured to do). 
 </description>
-<ref disa="120,166,1338,1339,157" />
+<ref disa="120,135,136,166,1338,1339,157" />
 
 <Rule id="enable_auditd_service">
 <title>Enable auditd Service</title>
@@ -272,6 +272,7 @@ Setting this to <tt>email</tt> is recommended over the default
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
+<ref disa="140,144" />
 </Rule>
 
 
@@ -295,7 +296,7 @@ audit records.  If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
-<ref disa="140" />
+<ref disa="140,144" />
 </Rule>
 
 
@@ -626,7 +627,7 @@ unusual activity.
 </rationale>
 <ident cce="14296-8" />
 <oval id="audit_rules_privileged_commands" />
-<ref nist="AU-2" />
+<ref nist="AU-2" disa="40" />
 </Rule>
 
 <Rule id="audit_media_exports">
