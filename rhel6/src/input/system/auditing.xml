@@ -535,6 +535,30 @@ MAC policy should be audited.</rationale>
 <ref nist="AU-2" />
 </Rule>
 
+<Rule id="audit_dac_actions">
+<title>Record Events that Modify the System's Discretionary
+Access Controls</title>
+<description>At a minimum the audit system should collect file
+permission changes for all users and root. Add the following to
+<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat \
+    -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=ARCH -S chown -S fchown -S fchownat \
+    -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=ARCH -S setxattr -S lsetxattr \
+    -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr \
+    -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+</description>
+<rationale>The changing of file permissions could indicate that a user is attempting to
+gain access to information that would otherwise be disallowed. Auditing DAC modifications
+can facilitate the identification of patterns of abuse amoung both authorized and
+unauthorized users.</rationale>
+<ident cce="14058-2" />
+<oval id="audit_rules_dac_modification" />
+<ref nist="AU-2" disa="126"/>
+</Rule>
+
 <Rule id="audit_manual_logon_edits">
 <title> Record Attempts to Alter Logon and Logout Events</title>
 <description> 
@@ -565,30 +589,6 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="14679-5" />
 <oval id="audit_rules_session_events" />
 <!--<ref nist="TODO" />-->
-</Rule>
-
-<Rule id="audit_dac_actions">
-<title>Ensure <tt>auditd</tt> Collects Discretionary Access Control
-Permission Modification Events</title>
-<description>At a minimum the audit system should collect file
-permission changes for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
-appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S chmod -S fchmod -S fchmodat \
-    -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=ARCH -S chown -S fchown -S fchownat \
-    -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=ARCH -S setxattr -S lsetxattr \
-    -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr \
-    -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
-</description>
-<rationale>The changing of file permissions could indicate that a user is attempting to
-gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
-unauthorized users.</rationale>
-<ident cce="14058-2" />
-<oval id="audit_rules_dac_modification" />
-<ref nist="AU-2" />
 </Rule>
 
 <Rule id="audit_file_access">
