@@ -144,12 +144,13 @@ the system. Protection of this file is critical for system security.</rationale>
 <Rule id="file_permissions_etc_passwd">
 <title>Verify permissions on <tt>passwd</tt> file</title>
 <description>File permissions for <tt>/etc/passwd</tt> should be set
-correctly.</description>
-<rationale>The /etc/passwd contains information about the users that are configured on
-the system. Protection of this file is critical for system security.</rationale>
+to 0644 or less permissive.</description>
+<rationale>If the passwd file is writable by a group-owner or the world the
+risk of passwd file compromise is increased. The passwd file contains the
+list of acounts on the system and associated information.</rational>
 <ident cce="3566-7" />
 <oval id="file_permissions_etc_passwd" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 </Group>
 
