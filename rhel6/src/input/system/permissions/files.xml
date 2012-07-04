@@ -21,11 +21,14 @@ enabled.</description>
 <title>Verify user who owns <tt>shadow</tt> file</title>
 <description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
-<rationale>The /etc/shadow file stores password hashes. Protection of this file is
-critical for system security.</rationale>
+<rationale>The <tt>/etc/shadow</tt> file contains the list of local
+system accounts and stores password hashes. Protection of this file is
+critical for system security. Failure to give ownership of this file
+to root provides the designated owner with access to sensitive information
+which could weaken the system security posture.</rationale>
 <ident cce="3918-0" />
 <oval id="file_owner_etc_shadow" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="groupowner_shadow_file">
