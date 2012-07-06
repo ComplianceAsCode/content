@@ -93,7 +93,7 @@ AIDE can be executed periodically through other means; this is merely one exampl
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE may reveal unexpected changes in installed files.
 </rationale>
-<ref nist="CM-6, SC-28, SI-7" disa="416,1166,1263"/>
+<ref nist="CM-6, SC-28, SI-7" disa="416,1166,1263,1496"/>
 </Rule>
 
 <Rule id="aide_verify_integrity_manually">
@@ -173,7 +173,7 @@ by the RPM database. Executables with erroneous hashes could be a sign of nefari
 on the system.</rationale>
 <ident cce="TODO" />
 <oval id="rpm_verify_hashes" />
-<ref nist="SI-7"/>
+<ref nist="SI-7" disa="1496" />
 </Rule>
 
 </Group>
