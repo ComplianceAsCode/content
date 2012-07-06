@@ -38,9 +38,8 @@ system logging services.
 
 <Rule id="service_rsyslog_enabled">
 <title>Enable Rsyslog Service (rsyslog)</title>
-<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6. 
-The <tt>rsyslog</tt> service can be activated with the following command:
-<pre># chkconfig rsyslog on</pre>
+<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6.
+<service-enable-macro service="rsyslog" />
 </description>
 <rationale>The <tt>rsyslog</tt> service must be running in order to provide
 logging services, which are essential to system administration.
@@ -96,7 +95,7 @@ operator="equals" interactive="0">
 <title>Ensure Log Files Exist</title>
 <description>
 The log files written by <tt>rsyslog</tt> are determined by the second part of each rule line in
-<tt>/etc/rsyslog.conf</tt>.  These typically all appear in <tt>/var/log</tt>. 
+<tt>/etc/rsyslog.conf</tt>. These typically all appear in <tt>/var/log</tt>. 
 For any log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt> which
 does not already exist the following commands will create it and apply proper
 permissions:
@@ -228,7 +227,7 @@ To use RELP for log message delivery:
 </description>
 <rationale>A log server (loghost) receives syslog messages from one or more
 systems. This data can be used as an additional log source in the event a
-system is compromised and its local logs are suspect.  Forwarding log messages
+system is compromised and its local logs are suspect. Forwarding log messages
 to a remote loghost also provides system administrators with a centralized
 place to view the status of multiple hosts within the enterprise.
 </rationale>
