@@ -21,11 +21,14 @@ enabled.</description>
 <title>Verify user who owns <tt>shadow</tt> file</title>
 <description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
-<rationale>The /etc/shadow file stores password hashes. Protection of this file is
-critical for system security.</rationale>
+<rationale>The <tt>/etc/shadow</tt> file contains the list of local
+system accounts and stores password hashes. Protection of this file is
+critical for system security. Failure to give ownership of this file
+to root provides the designated owner with access to sensitive information
+which could weaken the system security posture.</rationale>
 <ident cce="3918-0" />
 <oval id="file_owner_etc_shadow" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="groupowner_shadow_file">
@@ -42,12 +45,15 @@ critical for system security.</rationale>
 <Rule id="perms_shadow_file">
 <title>Verify permissions on <tt>shadow</tt> file</title>
 <description>File permissions for <tt>/etc/shadow</tt> should be set
-correctly.</description>
-<rationale>The /etc/shadow file stores password hashes. Protection of this file is
-critical for system security.</rationale>
+to 0400 or more restrictive.</description>
+<rationale>The <tt>/etc/shadow</tt> file contains the list of local
+system accounts and stores password hashes. Protection of this file is
+critical for system security. Failure to give ownership of this file
+to root provides the designated owner with access to sensitive information
+which could weaken the system security posture.</rationale>
 <ident cce="4130-1" />
 <oval id="file_permissions_etc_shadow" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="userowner_group_file">
@@ -141,12 +147,13 @@ the system. Protection of this file is critical for system security.</rationale>
 <Rule id="file_permissions_etc_passwd">
 <title>Verify permissions on <tt>passwd</tt> file</title>
 <description>File permissions for <tt>/etc/passwd</tt> should be set
-correctly.</description>
-<rationale>The /etc/passwd contains information about the users that are configured on
-the system. Protection of this file is critical for system security.</rationale>
+to 0644 or less permissive.</description>
+<rationale>If the passwd file is writable by a group-owner or the world the
+risk of passwd file compromise is increased. The passwd file contains the
+list of acounts on the system and associated information.</rationale>
 <ident cce="3566-7" />
 <oval id="file_permissions_etc_passwd" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 </Group>
 

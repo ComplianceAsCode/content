@@ -155,7 +155,7 @@ protected from unauthorized access.</rationale>
 
 
 <Rule id="rsyslog_file_permissions">
-<title>Ensure Log Files Have Correct Permissions</title>
+<title>Ensure System Log Files Have Correct Permissions</title>
 <description>The file permissions for all log files written by
 <tt>rsyslog</tt> should be
 set to 600 or more restrictive.
@@ -169,11 +169,12 @@ run the following command to correct this:
 <pre># chmod 0600 <i>LOGFILE</i></pre>
 </description>
 <rationale>Log files can contain valuable information regarding system
-configuration, user authentication, and other such information. Log files should be
-protected from unauthorized access.</rationale>
+configuratation. If the system log files are not protected unauthorized
+users could change the logged data, eliminaating their foresive value.
+</rationale>
 <ident cce="18095-0" />
 <oval id="rsyslog_files_permissions" />
-<ref nist="AC-3, CM-6" />
+<ref nist="AC-3, CM-6" disa="1314"/>
 </Rule>
 </Group>
 
