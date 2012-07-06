@@ -121,27 +121,19 @@ become inaccessible.
 This command will print all password file entries for
 accounts with UID 0:
 <pre># awk -F: '($3 == "0") {print}' /etc/passwd</pre>
-This should print only one line, for the user root. If any
-other lines appear, ensure that these additional UID-0 accounts are
-authorized, and that there is a good reason for them to exist.
+This should print only one line, for the user root.
 <br /><br />
 </description>
 <rationale>
-Having a UID of 0 means that an account has superuser privileges.
-All actions taken at this privilege level should be accountable.
-The ability to conduct an entire login session with this level of privilege should be
-confined to only the root account (and such logins should be further restricted to only
-certain vectors).
-Best practice for auditing use of the root account involves
-requiring use of su or sudo.
-Some sites choose to have more than one account with UID
-0 in order to differentiate between administrators, but this
-practice may have unexpected side effects, and is therefore not
-recommended.
+An account has root authority if it has a UID of 0. Multiple accounts
+with a UID of 0 afford more opportunity for potential intruders to
+guess a password for a provilieged account. Proper configuration of
+sudo is recommended to afford multiple System Administrators
+access to the root account.
 </rationale>
 <ident cce="4009-7" />
 <oval id="accounts_no_uid_except_zero" />
-<ref nist="AC-3, AC-11, CM-6, CM-7" />
+<ref nist="AC-3, AC-11, CM-6, CM-7" disa="366"/>
 </Rule>
 
 </Group>
