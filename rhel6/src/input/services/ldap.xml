@@ -27,13 +27,13 @@ network.</warning>
 
 <Rule id="ldap_client_start_tls">
 <title>LDAP Uses TLS For All Transactions</title>
-<description>Configure LDAP to enforce TLS use.  First, edit the file 
+<description>Configure LDAP to enforce TLS use. First, edit the file 
 <tt>/etc/pam_ldap.conf</tt>, and add or correct the following lines:
 <pre>ssl start_tls</pre>
 Then review the LDAP server and ensure TLS has been configured.
 </description>
-<rationale>The ssl directive specifies whether to use ssl or not.  If
-not specified it will default to no.  It should be set to start_tls rather
+<rationale>The ssl directive specifies whether to use ssl or not. If
+not specified it will default to no. It should be set to start_tls rather
 than doing LDAP over SSL.</rationale>
 <ref disa="776,778" />
 <ident cce="14894-0" />
@@ -43,7 +43,7 @@ than doing LDAP over SSL.</rationale>
 <Rule id="ldap_client_tls_cacertpath">
 <title>LDAP Uses TLS For All Transactions</title>
 <description>Ensure a copy of the site's CA certificate has been placed in
-the file <tt>/etc/pki/tls/CA/cacert.pem</tt>.  Configure LDAP to enforce TLS 
+the file <tt>/etc/pki/tls/CA/cacert.pem</tt>. Configure LDAP to enforce TLS 
 use and to trust certificates signed by the site's CA. First, edit the file 
 <tt>/etc/pam_ldap.conf</tt>, and add or correct either of the following lines:
 <pre>tls_cacertdir /etc/pki/tls/CA</pre>
@@ -53,7 +53,7 @@ Then review the LDAP server and ensure TLS has been configured.
 </description>
 <rationale>The tls_cacertdir or tls_cacertfile directives are required when
 tls_cheekpeer is configured (which is the default for openldap versions 2.1 and
-up).  These directives define the path to the trust certificates signed by the
+up). These directives define the path to the trust certificates signed by the
 site CA.</rationale>
 <ref disa="776,778" />
 <ident cce="14894-0" />

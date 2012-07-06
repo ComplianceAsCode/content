@@ -23,8 +23,7 @@ sharing functionality.
 <Rule id="disable_smb_server">
 <title>Disable Samba</title>
 <description>
-The <tt>smb</tt> service can be disabled with the following command:
-<pre># chkconfig smb off</pre>
+<service-disable-macro service="smb" />
 </description>
 <rationale>
 Running a Samba server provides a network-based avenue of attack, and

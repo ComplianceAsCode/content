@@ -9,10 +9,9 @@ configured defensively.</description>
 <Rule id="enable_cron">
 <title>Enable cron Service</title>
 <description>The <tt>crond</tt> service is used to execute commands at
-preconfigured times.  It is required by almost all systems to perform necessary
-maintenance tasks, such as notifying root of system activity. The
-<tt>crond</tt> service can be enabled with the following command:
-<pre># chkconfig crond on</pre>
+preconfigured times. It is required by almost all systems to perform necessary
+maintenance tasks, such as notifying root of system activity.
+<service-enable-macro service="crond" />
 </description>
 <rationale>Due to its usage for maintenance and security-supporting tasks,
 enabling the cron daemon is essential.
@@ -114,9 +113,7 @@ access to these files should be disabled.</description>
 <Rule id="disable_at">
 <title>Disable atd Service if Possible</title>
 <description>
-Unless the <tt>at</tt> daemon is required, disable it with the
-following command:
-<pre># chkconfig atd off</pre>
+<service-disable-macro service="at" />
 </description>
 <rationale>
 Many of the periodic or delayed execution features of the at

@@ -30,8 +30,7 @@ The command is analogous for the ip6tables program.
 If the firewall does not appear to be active (i.e., no rules
 appear), activate it and ensure that it starts at boot by issuing
 the following commands (and analogously for ip6tables):
-<pre># service iptables restart
-# chkconfig iptables on</pre>
+<pre># service iptables restart</pre>
 The default iptables rules are:
 <pre>Chain INPUT (policy ACCEPT)
 num target prot opt source destination
@@ -69,13 +68,11 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 
 <Rule id="enable_ip6tables">
 <title>Verify ip6tables Enabled</title>
-<description> The <tt>ip6tables</tt> service can be enabled with the following
-commands:
-<pre># service ip6tables restart
-# chkconfig ip6tables on</pre>
+<description>
+<service-enable-macro service="ip6tables" />
 </description>
 <rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
-capability for IPv6 and ICMPv6.  
+capability for IPv6 and ICMPv6.
 </rationale>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
@@ -85,9 +82,7 @@ capability for IPv6 and ICMPv6.
 <Rule id="enable_iptables">
 <title>Verify iptables Enabled</title>
 <description>
-The <tt>iptables</tt> service can be enabled with the following
-command:<!-- # service iptables restart -->
-<pre># chkconfig iptables on</pre>
+<service-enable-macro service="iptables" />
 </description>
 <rationale>
 The <tt>iptables</tt> service provides the system's host-based firewalling
@@ -139,7 +134,7 @@ add or correct the following line in
 <pre>:INPUT DROP [0:0]</pre>
 </description>
 <rationale>In <tt>iptables</tt> the default policy is applied only after all
-the applicable rules in the table are examined for a match.  Setting the
+the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
@@ -158,7 +153,7 @@ add or correct the following line in
 <pre>:FORWARD DROP [0:0]</pre>
 </description>
 <rationale>In <tt>iptables</tt> the default policy is applied only after all
-the applicable rules in the table are examined for a match.  Setting the
+the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
