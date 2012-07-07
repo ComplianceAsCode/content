@@ -44,8 +44,6 @@ table-profilenistrefs: shorthand-guide shorthand2xccdf
 
 table-refs: shorthand-guide shorthand2xccdf
 	xsltproc -stringparam ref "nist" -o $(OUT)/rhel6-table-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/rhel6-xccdf.xml
-	xsltproc -stringparam ref "cnss" -o $(OUT)/rhel6-table-cnssrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/rhel6-xccdf.xml
-	xsltproc -stringparam ref "dcid" -o $(OUT)/rhel6-table-dcidrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/rhel6-xccdf.xml
 # break apart references by delimiter:
 	xsltproc -stringparam ref "nist" -stringparam delim "," -o $(OUT)/rhel6-table-nistrefs-delim.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/rhel6-xccdf.xml
 # then sort them:
@@ -55,11 +53,13 @@ table-srgmap: shorthand-guide shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$(OUT)/rhel6-xccdf.xml" -o $(OUT)/rhel6-table-srgmap.html $(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 
-table-stig:
+table-stigs:
 	xsltproc -o $(OUT)/rhel5-table-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/rhel5-table-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
+	xsltproc -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/rhel6-xccdf.xml  
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
 
-tables: table-refs table-profilenistrefs table-srgmap
+tables: table-refs table-profilenistrefs table-srgmap table-stigs
 
 content: shorthand-guide shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
