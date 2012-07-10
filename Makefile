@@ -34,12 +34,15 @@ define rpm-prep
 	 $(call MKDIR,$(RPM_TOPDIR)/SRPMS)
 endef
 
-all: rpm
+all: rhel6 rpm
+
+rhel6:
+	cd rhel6/src && $(MAKE)
 
 tarball:
-	cd rhel6/src && $(MAKE) clean
 	$(call rpm-prep)
 	cp -r rhel6 $(RPM_TMPDIR)/$(PKG)	
+	cd $(RPM_TMPDIR)/$(PKG)/rhel6/src && $(MAKE) clean
 	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
 
