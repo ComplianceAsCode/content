@@ -177,6 +177,11 @@ exclude-result-prefixes="xccdf xhtml">
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
   </xsl:template>
 
+  <xsl:template match="service-enable-macro">
+    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
+    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
+  </xsl:template>
+
   <!-- CORRECTING TERRIBLE ABUSE OF NAMESPACES BELOW -->
   <!-- (expanding xhtml tags back into the xhtml namespace) -->
   <xsl:template match="br">

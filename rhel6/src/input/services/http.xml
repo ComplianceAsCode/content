@@ -25,8 +25,7 @@ and removed from the system.
 <Rule id="disable_httpd">
 <title>Disable httpd Service</title>
 <description>
-The <tt>httpd</tt> service can be disabled with the following command:
-<pre># chkconfig httpd off</pre>
+<service-disable-macro service="httpd" />
 </description>
 <rationale>
 Running web server software provides a network-based avenue
@@ -94,14 +93,14 @@ the webserver.
 <title>Secure Apache Configuration</title>
 <description>The <tt>httpd</tt> configuration file is
 <tt>/etc/httpd/conf/httpd.conf</tt>. Apply the recommendations in the remainder
-of this section to this file.  </description>
+of this section to this file.</description>
 
 <Group id="httpd_restrict_info_leakage">
 <title>Restrict Web Server Information Leakage</title>
 <description>
 The <tt>ServerTokens</tt> and <tt>ServerSignature</tt> directives determine how
 much information the web server discloses about the configuration of the
-system.  </description>
+system.</description>
 
 <Rule id="httpd_servertokens_prod">
 <title>Set httpd <tt>ServerTokens</tt> Directive to <tt>Prod</tt></title>
@@ -236,7 +235,7 @@ by limiting the capabilities allowed by the web server.
 <description>
 The <tt>mod_rewrite</tt> module is very powerful and can protect against
 certain classes of web attacks. However, it is also very complex and has a
-significant history of vulnerabilities itself.  If its functionality is
+significant history of vulnerabilities itself. If its functionality is
 unnecessary, comment out the related module:
 <pre>#LoadModule rewrite_module modules/mod_rewrite.so</pre>
 </description>
@@ -292,7 +291,7 @@ by limiting the capabilities allowed by the web server.
 <title>Disable MIME Magic</title>
 <description>
 The <tt>mime_magic</tt> module provides a second layer of MIME support that in most configurations
-is likely extraneous.  If its functionality is unnecessary, comment out the related module:
+is likely extraneous. If its functionality is unnecessary, comment out the related module:
 <pre>#LoadModule mime_magic_module modules/mod_mime_magic.so</pre>
 </description>
 <rationale>
@@ -308,7 +307,7 @@ by limiting the capabilities allowed by the web server.
 <title>Disable WebDAV (Distributed Authoring and Versioning)</title>
 <description>
 WebDAV is an extension of the HTTP protocol that provides distributed and
-collaborative access to web content.  If its functionality is unnecessary,
+collaborative access to web content. If its functionality is unnecessary,
 comment out the related modules:
 <pre>#LoadModule dav_module modules/mod_dav.so
 #LoadModule dav_fs_module modules/mod_dav_fs.so</pre>
@@ -330,7 +329,7 @@ by limiting the capabilities allowed by the web server.
 <description>
 The <tt>status</tt> module provides real-time access to statistics on the internal operation of
 the web server. This may constitute an unnecessary information leak and should be disabled
-unless necessary.  To do so, comment out the related module:
+unless necessary. To do so, comment out the related module:
 <pre>#LoadModule status_module modules/mod_status.so</pre>
 If there is a critical need for this module, ensure that access to the status
 page is properly restricted to a limited set of hosts in the status handler
@@ -385,7 +384,7 @@ by limiting the capabilities allowed by the web server.
 <title>Disable Proxy Support</title>
 <description>
 The <tt>proxy</tt> module provides proxying support, allowing <tt>httpd</tt> to forward requests and
-serve as a gateway for other servers.  If its functionality is unnecessary, comment out the module:
+serve as a gateway for other servers. If its functionality is unnecessary, comment out the module:
 <pre>#LoadModule proxy_module modules/mod_proxy.so</pre>
 <!-- dependencies: #LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
 #LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
@@ -410,7 +409,7 @@ by limiting the capabilities allowed by the web server.
 <title>Disable Cache Support</title>
 <description>
 The <tt>cache</tt> module allows <tt>httpd</tt> to cache data, optimizing access to
-frequently accessed content.  However, it introduces potential security flaws
+frequently accessed content. However, it introduces potential security flaws
 such as the possibility of circumventing <tt>Allow</tt> and
 <tt>Deny</tt> directives.
 <br /><br /> If this functionality is
@@ -656,7 +655,7 @@ unauthorized parties.
 The <tt>security</tt> module provides an application level firewall for <tt>httpd</tt>.
 Following its installation with the base ruleset, specific configuration advice can be found at
 http://www.modsecurity.org/ to design a policy that best matches the security needs of
-the web applications.  Usage of <tt>mod_security</tt> is highly recommended for some environments,
+the web applications. Usage of <tt>mod_security</tt> is highly recommended for some environments,
 but it should be noted this module does not ship with Red Hat Enterprise Linux itself,
 and instead is provided via Extra Packages for Enterprise Linux (EPEL).
 For more information on EPEL please refer to http://fedoraproject.org/wiki/EPEL.
@@ -825,14 +824,14 @@ the RH-Firewall-1-INPUT chain:
 <description>
 Running <tt>httpd</tt> inside a <tt>chroot</tt> jail is designed to isolate the
 web server process to a small section of the filesystem, limiting the damage if
-it is compromised.  Versions of Apache greater than 2.2.10 (such as the one
-included with RHEL 6) provide the <tt>ChrootDir</tt> directive.  To run Apache
+it is compromised. Versions of Apache greater than 2.2.10 (such as the one
+included with RHEL 6) provide the <tt>ChrootDir</tt> directive. To run Apache
 inside a chroot jail in <tt>/chroot/apache</tt>, add the following line to
 <tt>/etc/httpd/conf/httpd.conf</tt>: <pre>ChrootDir /chroot/apache</pre> This
 necessitates placing all files required by <tt>httpd</tt> inside
 <tt>/chroot/apache</tt> , including <tt>httpd</tt>'s binaries, modules,
 configuration files, and served web pages. The details of this configuration
-are beyond the scope of this guide.  This may also require additional SELinux
+are beyond the scope of this guide. This may also require additional SELinux
 configuration.
 </description>
 

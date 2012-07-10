@@ -29,8 +29,7 @@ the system. The default configuration only listens for connections to the defaul
 port (port 25) on the loopback interface (127.0.0.1). 
 It is recommended to leave this
 service enabled for local mail delivery.
-The <tt>postfix</tt> service can be enabled with the following command:
-<pre># chkconfig postfix on</pre>
+<service-enable-macro service="postfix" />
 </description>
 <rationale>Local mail delivery is essential to some system maintenance and
 notification tasks.
@@ -340,8 +339,7 @@ smtpd_recipient_restrictions =
 Then edit <tt>/usr/lib/sasl2/smtpd.conf</tt> and add or correct the following line with the correct authentication
 mechanism for SASL to use:
 <pre>pwcheck_method: saslauthd</pre>
-Enable the saslauthd daemon:
-<pre># chkconfig saslauthd on</pre>
+<service-enable-macro service="saslauthd" />
 </description>
 <rationale>Postfix can use either the Cyrus library or Dovecot as a source for SASL authentication. If this host is running
 Dovecot for some other reason, it is recommended that Dovecot’s SASL support be used instead of running the

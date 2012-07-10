@@ -14,8 +14,8 @@ POP3 server, the dovecot software should be disabled and removed.
 
 <Rule id="disable_dovecot">
 <title>Disable Dovecot Service</title>
-<description>The <tt>dovecot</tt> service can be disabled with the following command:
-<pre># chkconfig dovecot off</pre>
+<description>
+<service-disable-macro service="dovecot" />
 </description>
 <rationale>
 Running an IMAP or POP3 server provides a network-based
