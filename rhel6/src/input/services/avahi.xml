@@ -18,8 +18,7 @@ Disabling it can reduce the system’s vulnerability to such attacks.
 <Rule id="disable_avahi">
 <title>Disable Avahi Server Software</title>
 <description>
-To disable the <tt>avahi-daemon</tt> service, issue the command:
-<pre># chkconfig avahi-daemon off</pre>
+<service-disable-macro service="avahi-daemon" />
 </description>
 <rationale>
 Because the Avahi daemon service keeps an open network

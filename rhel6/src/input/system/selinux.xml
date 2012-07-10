@@ -57,7 +57,7 @@ overridden by command-line arguments passed to the kernel. It is
 necessary to check <tt>grub.conf</tt> to ensure that this has not been done
 and to protect the boot process.
 </description>
-<ref disa="26,1084,1086,1087,1090,1091"/>
+<ref disa="26,1084,1086,1087,1090,1091,1424,1426,802"/>
 
 <Value id="var_selinux_state_name" type="string" operator="equals" interactive="0">
 <title>SELinux state</title>
@@ -145,14 +145,13 @@ targeted for exploitation, such as network services or system services.
 <title>Enable the SELinux Context Restoration Service (restorecond)</title>
 <description>The <tt>restorecond</tt> service utilizes <tt>inotify</tt> to look
 for the creation of new files listed in the
-<tt>/etc/selinux/restorecond.conf</tt> configuration file.  When a file is
+<tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
 created, <tt>restorecond</tt> ensures that the file receives the proper SELinux
-security context.  The <tt>restorecond</tt> service can be enabled with the
-following command:
-<pre># chkconfig restorecond on</pre>
+security context.
+<service-enable-macro service="restorecond" />
 </description>
 <rationale>The <tt>restorecond</tt> service helps ensure that the default SELinux
-file context is applied to files.  This allows automatic correction
+file context is applied to files. This allows automatic correction
 of file contexts created by some programs.</rationale>
 <ident cce="4129-3" />
 <oval id="service_restorecond_enabled" />
@@ -174,9 +173,9 @@ system, they should be disabled.</description>
 Possible</title>
 <description>Unless there is some overriding need for the
 convenience of category label translation, disable the MCS
-translation service:
-<pre># chkconfig mcstrans off</pre>
-The mcstransd daemon provides the category label translation
+translation service.
+<service-disable-macro service="mcstrans" />
+The <tt>mcstransd</tt> daemon provides the category label translation
 information defined in <tt>/etc/selinux/targeted/setrans.conf</tt> to
 client processes which request this information.
 <br /><br />

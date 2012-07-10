@@ -18,9 +18,7 @@ and removed.
 <Rule id="disable_squid">
 <title>Disable Squid if Possible</title>
 <description>
-The <tt>squid</tt> service can be disabled with the following
-command:
-<pre># chkconfig squid off</pre>
+<service-disable-macro service="squid" />
 </description>
 <rationale>
 Running proxy server software provides a network-based avenue
