@@ -20,18 +20,18 @@ need to use it.</description>
 <title>Xinetd</title>
 <description>The <tt>xinetd</tt> service acts as a dedicated listener for some
 network services (mostly, obsolete ones) and can be used to provide access
-controls and perform some logging.  It has been largely obsoleted by other
+controls and perform some logging. It has been largely obsoleted by other
 features, and it is not installed by default. The older Inetd service
 is not even available as part of RHEL 6.</description>
 
 <Rule id="disable_xinetd">
 <title>Disable xinetd Service</title>
-<description>The <tt>xinetd</tt> service can be disabled with the following command:
-<pre># chkconfig xinetd off</pre>
+<description>
+<service-disable-macro service="xinetd" />
 </description>
 <rationale>
 The xinetd service provides a dedicated listener service for some programs,
-which is no longer necessary for commonly-used network services.  Disabling
+which is no longer necessary for commonly-used network services. Disabling
 it ensures that these uncommon services are not running, and also prevents
 attacks against xinetd itself.
 </rationale>
@@ -56,15 +56,14 @@ xinetd service's accidental (or intentional) activation.
 <Group id="telnet">
 <title>Telnet</title>
 <description>The telnet protocol does not provide confidentiality or integrity
-for information transmitted on the network.  This includes authentication
-information such as passwords.  Organizations which use telnet should be
-actively working to migrate to a more secure protocol.  </description>
+for information transmitted on the network. This includes authentication
+information such as passwords. Organizations which use telnet should be
+actively working to migrate to a more secure protocol.</description>
 
 <Rule id="disable_telnet_service" severity="high">
 <title>Disable telnet Service</title>
 <description>
-The <tt>telnet</tt> service can be disabled with the following command:
-<pre># chkconfig telnet off</pre>
+<service-disable-macro service="telnet" />
 </description>
 <rationale>
 The telnet protocol uses unencrypted network communication, which
@@ -119,8 +118,8 @@ activation.
 <title>Disable rexec Service</title>
 <description>The <tt>rexec</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
-can be disabled with following command:
-<pre># chkconfig rexec off</pre>
+should be disabled.
+<service-disable-macro service="rexec" />
 </description> 
 <rationale>The rexec service uses unencrypted network communications, which
 means that data from the login session, including passwords and
@@ -135,8 +134,8 @@ stolen by eavesdroppers on the network.
 <title>Disable rsh Service</title>
 <description>The <tt>rsh</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
-can be disabled with following command:
-<pre># chkconfig rsh off</pre>
+should be disabled.
+<service-disable-macro service="rsh" />
 </description> 
 <rationale>The rsh service uses unencrypted network communications, which
 means that data from the login session, including passwords and
@@ -152,8 +151,8 @@ stolen by eavesdroppers on the network.
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
-can be disabled with following command:
-<pre># chkconfig rlogin off</pre>
+should be disabled.
+<service-disable-macro service="rlogin" />
 </description> 
 <rationale>The rlogin service uses unencrypted network communications, which
 means that data from the login session, including passwords and
@@ -203,8 +202,8 @@ accidental (or intentional) activation of NIS or NIS+ services.
 <Rule id="disable_ypbind">
 <title>Disable ypbind Service</title>
 <description>The <tt>ypbind</tt> service, which allows the system to act as a client in
-a NIS or NIS+ domain, can be disabled with the following command:
-<pre># chkconfig ypbind off</pre>
+a NIS or NIS+ domain, should be disabled.
+<service-disable-macro service="ypbind" />
 </description>
 <rationale>
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
@@ -228,8 +227,8 @@ found.</description>
 
 <Rule id="disable_tftp">
 <title>Disable tftp Service</title>
-<description>The <tt>tftp</tt> service can be disabled with the following command:
-<pre># chkconfig tftp off</pre>
+<description>The <tt>tftp</tt> service should be disabled.
+<service-disable-macro service="tftp" />
 </description>
 <rationale>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
@@ -257,7 +256,7 @@ accidental (or intentional) activation of tftp services.
 <Rule id="tftpd_uses_secure_mode" severity="high">
 <title>Ensure TFTP Daemon Uses Secure Mode</title>
 <description>If running the TFTP service is necessary, it should be configured
-to change its root directory at startup.  To do so, ensure that
+to change its root directory at startup. To do so, ensure that
 <tt>/etc/xinted.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
 the following example (which is also the default):
 <pre>server_args = -s /var/lib/tftpboot</pre>

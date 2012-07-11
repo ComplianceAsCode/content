@@ -40,6 +40,7 @@ files, destroying any manually made changes and replacing them with
 a series of system defaults. One reference to the configuration
 file syntax can be found at
 http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/sag-configuration-file.html.</warning>
+<ref disa="1391,1392" />
 
 <Group id="password_quality">
 <title>Set Password Quality Requirements</title>
@@ -163,7 +164,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident cce="15054-0" />
 <oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
-<ref nist="IA-5" />
+<ref nist="IA-5" disa="1092" />
 </Rule>
 
 <Rule id="password_require_digits">

@@ -30,8 +30,7 @@ The command is analogous for the ip6tables program.
 If the firewall does not appear to be active (i.e., no rules
 appear), activate it and ensure that it starts at boot by issuing
 the following commands (and analogously for ip6tables):
-<pre># service iptables restart
-# chkconfig iptables on</pre>
+<pre># service iptables restart</pre>
 The default iptables rules are:
 <pre>Chain INPUT (policy ACCEPT)
 num target prot opt source destination
@@ -69,23 +68,21 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 
 <Rule id="enable_ip6tables">
 <title>Verify ip6tables Enabled</title>
-<description> The <tt>ip6tables</tt> service can be enabled with the following
-command: <pre># service ip6tables restart # chkconfig ip6tables on</pre>
+<description>
+<service-enable-macro service="ip6tables" />
 </description>
 <rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
-capability for IPv6 and ICMPv6.  
+capability for IPv6 and ICMPv6.
 </rationale>
 <ident cce="4167-3" />
 <oval id="service_ip6tables_enabled" />
-<ref nist="CM-6, CM-7" disa="1115,1118"/>
+<ref nist="CM-6, CM-7" disa="1115,1118,1092,1117,1098,1100,1097,1123,1124"/>
 </Rule>
 
 <Rule id="enable_iptables">
 <title>Verify iptables Enabled</title>
 <description>
-The <tt>iptables</tt> service can be enabled with the following
-command:<!-- # service iptables restart -->
-<pre># chkconfig iptables on</pre>
+<service-enable-macro service="iptables" />
 </description>
 <rationale>
 The <tt>iptables</tt> service provides the system's host-based firewalling
@@ -93,7 +90,7 @@ capability for IPv4 and ICMP.
 </rationale>
 <ident cce="4189-7" />
 <oval id="service_iptables_enabled" />
-<ref nist="CM-6, CM-7" disa="1115,1118" />
+<ref nist="CM-6, CM-7" disa="1115,1118,1092,27,1117,1098,1100,1097,1123,1124" />
 </Rule>
 </Group><!--<Group id="iptables_activation">-->
 
@@ -128,28 +125,41 @@ requirements. Otherwise, this program should not be used to make
 changes to the firewall configuration because it re-writes the
 saved configuration file.</warning>
 
-<Group id="default_iptables_policies">
-<title>Change the Default Policies</title>
-<description>Change the default policy to DROP (from ACCEPT) for
-the INPUT and FORWARD built-in chains:
-<pre>*filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]</pre>
-Changing the default policy in this way implements proper
-design for a firewall, i.e. any packets which are not explicitly
-permitted should not be accepted.</description>
-
 <Rule id="set_iptables_default_rule">
-<title>Set Default Firewall Policy</title>
-<description>Change the default policy to DROP (from ACCEPT) for
-the INPUT built-in chain.</description>
-<rationale>In iptables the default policy is applied only after all the applicable rules in the table
-are examined for a match. Connection attempts that are not explicitly authorized should be denied by default.</rationale>
+<title>Set Default Iptables Policy for Incoming Packets</title>
+<description>To set the default policy to DROP (instead of ACCEPT) for
+the built-in INPUT chain which processes incoming packets,
+add or correct the following line in
+<tt>/etc/sysconfig/iptables</tt>:
+<pre>:INPUT DROP [0:0]</pre>
+</description>
+<rationale>In <tt>iptables</tt> the default policy is applied only after all
+the applicable rules in the table are examined for a match. Setting the
+default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
+any packets which are not explicitly permitted should not be
+accepted.</rationale>
 <ident cce="14264-6" />
 <oval id="iptables_default_policy_drop" />
-<ref nist="AC-4, CM-6" />
+<ref nist="AC-4, CM-6" disa="1109,1154" />
 </Rule>
-</Group><!--<Group id="default_iptables_policies">-->
+
+<Rule id="set_iptables_default_rule_forward">
+<title>Set Default Iptables Policy for Forwarded Packets</title>
+<description>To set the default policy to DROP (instead of ACCEPT) for
+the built-in FORWARD chain which processes packets that will be forwarded from
+one interface to another,
+add or correct the following line in
+<tt>/etc/sysconfig/iptables</tt>:
+<pre>:FORWARD DROP [0:0]</pre>
+</description>
+<rationale>In <tt>iptables</tt> the default policy is applied only after all
+the applicable rules in the table are examined for a match. Setting the
+default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
+any packets which are not explicitly permitted should not be
+accepted.</rationale>
+<ident cce="14264-6" />
+<ref nist="AC-4, CM-6" disa="1109" />
+</Rule>
 
 <Rule id="iptables_icmp_disabled">
 <title>Restrict ICMP Message Types</title>

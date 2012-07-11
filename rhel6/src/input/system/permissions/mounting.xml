@@ -12,7 +12,7 @@ to compromise the system.
 This command can be used to list the types of filesystems that are
 available to the currently executing kernel:
 <pre># find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
-If these filesystems are not required then they should be explicitly disabed
+If these filesystems are not required then they should be explicitly disabled
 in the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 <br /><br />
 Use caution when enabling any such facility, and find out
@@ -45,8 +45,8 @@ solve the same problem with less risk.</description>
 <description>
 If USB storage devices should not be used, the <tt>modprobe</tt> program
 used for automatic kernel module loading should be configured to not load
-the USB storage driver upon demand. Add the following line to
-<tt>/etc/modprobe.conf</tt> to prevent loading of the <tt>usb-storage</tt>
+the USB storage driver upon demand. Add the following line to the appropriate
+file in <tt>/etc/modprobe.d/</tt> to prevent loading of the <tt>usb-storage</tt>
 kernel module:
 <pre>install usb-storage /bin/true</pre>
 This will prevent the <tt>modprobe</tt> program from loading the <tt>usb-storage</tt>
@@ -57,7 +57,7 @@ software and other vulnerabilities. Support for these devices should be disabled
 the devices themselves should be tightly controlled.</rationale>
 <ident cce="4187-1" />
 <oval id="kernel_module_usb-storage_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="kernel_module_usb-storage_removed">
@@ -78,7 +78,7 @@ software and other vulnerabilities. Support for these devices should be disabled
 the devices themselves should be tightly controlled.</rationale>
 <ident cce="4006-3" />
 <oval id="kernel_module_usb-storage_removed" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="bootloader_nousb_argument">
@@ -96,7 +96,7 @@ disable USB storage devices if they are plugged into the sytem. Support for thes
 should be disabled and the devices themselves should be tightly controlled.</rationale>
 <ident cce="4173-1" />
 <oval id="bootloader_nousb_argument" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="bios_disable_usb_boot">
@@ -111,7 +111,7 @@ any security measures offered by the native OS. Attackers could mount partitions
 configuration of the native OS. The BIOS should be configured to disallow booting from USB media.</rationale>
 <ident cce="3944-6" />
 <!-- <oval id="bios_disable_usb_boot" /> -->
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="service_autofs_disabled">
@@ -133,7 +133,7 @@ should be explicitly listed in /etc/fstab by and administrator. New filesystems 
 not be arbitrarily introduced via the automounter.</rationale>
 <ident cce="4072-5" />
 <oval id="service_autofs_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="gconf_gnome_disable_automount">
@@ -162,12 +162,12 @@ DVDs.
 </rationale>
 <ident cce="4231-7" />
 <oval id="gconf_gnome_disable_automount" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="disable_module_cramfs">
 <title>Disable Mounting of <tt>cramfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate .conf file inside<tt>/etc/modprobe.d</tt>
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -181,7 +181,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_freevxfs">
 <title>Disable Mounting of <tt>freevxfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -195,7 +195,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_jffs2">
 <title>Disable Mounting of <tt>jffs2</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -209,7 +209,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_hfs">
 <title>Disable Mounting of <tt>hfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -223,7 +223,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_hfsplus">
 <title>Disable Mounting of <tt>hfsplus</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -237,7 +237,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_squashfs">
 <title>Disable Mounting of <tt>squashfs</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon
@@ -251,7 +251,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_udf">
 <title>Disable Mounting of <tt>udf</tt></title>
-<description>Using the <tt>install</tt> command inside <tt>/etc/modprobe.conf</tt>
+<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
 instructs the kernel module loading system to run the command
 specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
 kernel as normal. This effectively prevents usage of these uncommon

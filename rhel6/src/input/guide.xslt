@@ -51,6 +51,7 @@
       <xsl:apply-templates select="document('system/accounts/restrictions/root_logins.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_storage.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_expiration.xml')" />
+      <xsl:apply-templates select="document('system/accounts/restrictions/account_expiration.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/nis_inclusions.xml')" />
     </xsl:copy>
   </xsl:template>
