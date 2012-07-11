@@ -32,7 +32,7 @@
 		<definition version="1" class="inventory"
 			id="oval:com.redhat.eap5.scap:def:599901">
 			<metadata>
-				<title>EAP Version Check</title>
+				<title>JBoss Enterprise Application Platform 5.1.0</title>
 				<description>EAP Version should be 5.1.0</description>
 			</metadata>
 			<criteria operator="AND">
@@ -43,7 +43,7 @@
 		<definition version="1" class="inventory"
 			id="oval:com.redhat.eap5.scap:def:599801">
 			<metadata>
-				<title>EAP Version Check</title>
+				<title>JBoss Enterprise Application Platform 5.1.2</title>
 				<description>EAP Version should be 5.1.2</description>
 			</metadata>
 			<criteria operator="AND">
@@ -54,7 +54,7 @@
 		<definition version="1" class="inventory"
 			id="oval:com.redhat.eap5.scap:def:599701">
 			<metadata>
-				<title>EAP Version Check</title>
+				<title>JBoss Enterprise Application Platform 5.1.1</title>
 				<description>EAP Version should be 5.1.1</description>
 			</metadata>
 			<criteria operator="AND">
@@ -65,7 +65,7 @@
 		<definition version="1" class="inventory"
 			id="oval:com.redhat.eap5.scap:def:599601">
 			<metadata>
-				<title>EAP Version Check</title>
+				<title>JBoss Enterprise Application Platform 5.0.0</title>
 				<description>EAP Version should be 5.0.0</description>
 			</metadata>
 			<criteria operator="AND">
@@ -74,6 +74,17 @@
 		</definition>
 		
 		<definition version="1" class="inventory"
+			id="oval:com.redhat.eap5.scap:def:600001">
+			<metadata>
+				<title>JBoss Enterprise Application Platform 5.0.1</title>
+				<description>EAP Version should be 5.0.1</description>
+			</metadata>
+			<criteria operator="AND">
+				<criterion test_ref="oval:com.redhat.eap5.scap:tst:60000101" />
+			</criteria>
+		</definition>
+		<!-- Removed for now
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:200101">
 			<metadata>
 				<title>JBoss Enterprise Application Platform should be the correct version</title>
@@ -84,8 +95,8 @@
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20010102" />
 			</criteria>
 		</definition>
-		
-		<definition version="1" class="inventory"
+		-->
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:200601">
 			<metadata>
 				<title>Ensure JMX Console is either secured or removed</title>
@@ -97,7 +108,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:200701">
 			<metadata>
 				<title>Ensure Web Console is either secured or removed</title>
@@ -109,7 +120,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:200801">
 			<metadata>
 				<title>Ensure Admin Console is either secured or removed</title>
@@ -121,7 +132,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:200901">
 			<metadata>
 				<title>SNMP must not be deployed</title>
@@ -132,20 +143,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:201101">
-			<metadata>
-				<title>RMI under IOP must be disabled</title>
-				<description>Disable Remote Method Invocation (RMI) under the Internet Inter-ORB Protocol (IIOP).</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20110101" />
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20110102" />
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20110103" />
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:201201">
 			<metadata>
 				<title>Disable AJP from JBoss Web</title>
@@ -156,7 +154,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:201301">
 			<metadata>
 				<title>Clustering High-Availability must be disabled</title>
@@ -166,19 +164,8 @@
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20130101" />
 			</criteria>
 		</definition>
-		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:201401">
-			<metadata>
-				<title>Clustering High-Availability must be disabled</title>
-				<description>The Clustering High-Availability JNDI service must be disabled.</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20140101" />
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
+			
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:201801">
 			<metadata>
 				<title>Ensure Technology Preview components are disabled</title>
@@ -189,7 +176,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:202401">
 			<metadata>
 				<title>Ensure all required information is displayed in Audit Logger</title>
@@ -199,10 +186,10 @@
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20240101" />
 			</criteria>
 		</definition>
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:203001">
 			<metadata>
-				<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authN</title>
+				<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authentication</title>
 				<description>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authN</description>
 			</metadata>
 			<criteria operator="AND">
@@ -211,11 +198,11 @@
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20300103" />
 			</criteria>
 		</definition>
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:203101">
 			<metadata>
-				<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authZ</title>
-				<description>The jmx-invoker-service.xml is a service that exposes the JMX MBeanServer interface via an RMI compatible interface using the RMI/JRMP detached invoker service. Access control for authenticated users must be configured using the interceptors of either org.JBoss.jmx.connector.invoker.RolesAuthorization or org.JBoss.jmx.connector.invoker.ExternalizableRolesAuthorization.</description>
+				<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authorization</title>
+				<description>The jmx-invoker-service.xml is a service that exposes the JMX MBeanServer interface via an RMI compatible interface using the RMI/JRMP detached invoker service. Access control for authenticated users must be configured using the interceptors of either org.jboss.jmx.connector.invoker.RolesAuthorization or org.jboss.jmx.connector.invoker.ExternalizableRolesAuthorization.</description>
 			</metadata>
 			<criteria operator="AND">
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20310101" />
@@ -224,18 +211,18 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:203201">
 			<metadata>
-				<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authZ</title>
-				<description>The jmx-invoker-service.xml is a service that exposes the JMX MBeanServer interface via an RMI compatible interface using the RMI/JRMP detached invoker service. Access control for authenticated users must be configured using the interceptors of either org.JBoss.jmx.connector.invoker.RolesAuthorization or org.JBoss.jmx.connector.invoker.ExternalizableRolesAuthorization.</description>
+				<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authorization</title>
+				<description>The jmx-invoker-service.xml is a service that exposes the JMX MBeanServer interface via an RMI compatible interface using the RMI/JRMP detached invoker service. Access control for authenticated users must be configured using the interceptors of either org.jboss.jmx.connector.invoker.RolesAuthorization or org.jboss.jmx.connector.invoker.ExternalizableRolesAuthorization.</description>
 			</metadata>
 			<criteria operator="AND">
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20320101" />
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:204501">
 			<metadata>
 				<title>Ensure default HSQLDB is disabled</title>
@@ -249,7 +236,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:204601">
 			<metadata>
 				<title>Ensure HSQLDB Security Domain is removed</title>
@@ -260,7 +247,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:201901">
 			<metadata>
 				<title>Ensure Security Audit Appender is enabled</title>
@@ -271,7 +258,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:202001">
 			<metadata>
 				<title>Ensure Security Audit Provider is enabled</title>
@@ -282,7 +269,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:202101">
 			<metadata>
 				<title>Ensure Configure SecurityInterceptor logging level is set correctly</title>
@@ -294,7 +281,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:202201">
 			<metadata>
 				<title>Ensure logging is enabled for ServerImpl log messages</title>
@@ -306,7 +293,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:202901">
 			<metadata>
 				<title>The JMXInvokerServlet servlet must be secured against web attacks</title>
@@ -318,97 +305,28 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:203301">
-			<metadata>
-				<title>The BASIC authenticator class must not be replaced</title>
-				<description>The BASIC authenticator class must not be replaced</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20330101"/>
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:203401">
-			<metadata>
-				<title>The CLIENT-CERT authenticator class must not be replaced</title>
-				<description>The CLIENT-CERT authenticator class must not be replaced</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20340101"/>
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:203501">
-			<metadata>
-				<title>The DIGEST authenticator class must not be replaced</title>
-				<description>The DIGEST authenticator class must not be replaced</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20350101"/>
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:203601">
-			<metadata>
-				<title>The FORM authenticator class must not be replaced</title>
-				<description>The FORM authenticator class must not be replaced</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20360101"/>
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:203701">
-			<metadata>
-				<title>The NONE authenticator class must not be replaced</title>
-				<description>The NONE authenticator class must not be replaced</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20370101"/>
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:203801">
 			<metadata>
 				<title>The allRolesMode must be configured appropriately</title>
-				<description>The allRolesMode within JBOSS_HOME/server/production/deploy/JBossweb.sar/server.xml must be set to strict. This requires the authenticated user to be assigned to one of the web-app/security-role/role-name roles in order to be authorized.</description>
+				<description>The allRolesMode within JBOSS_HOME/server/production/deploy/jbossweb.sar/server.xml must be set to strict. This requires the authenticated user to be assigned to one of the web-app/security-role/role-name roles in order to be authorized.</description>
 			</metadata>
 			<criteria operator="AND">
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20380101"/>
 			</criteria>
 		</definition>
-		
-		<definition version="1" class="inventory"
-			id="oval:com.redhat.eap5.scap:def:206001">
-			<metadata>
-				<title>Validate JBoss keystore exists and is in use</title>
-				<description>The Common Criteria JBoss keystore should be used in a Common Criteria configuration.</description>
-			</metadata>
-			<criteria operator="AND">
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20600101"/>
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20600102"/>
-			</criteria>
-		</definition>
-		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:204301">
 			<metadata>
-				<title>Configure Java Security Manager to use security_ccpolicy</title>
-				<description>JBoss Enterprise Application Platform has been certified with the use of the Java Security Manager. You must use the policy settings as defined in the JBoss CC Security Policy file, which is located in JBOSS_HOME/bin/security_cc.policy. For security reasons, you must manually specify the policy file in the run.conf (Linux) or run.conf.bat (Windows) file. Users and administrators may add their own permission blocks to the policy file, however the permissions specified for JBoss Enterprise Application Platform must not be changed; doing so will invalidate the certification.</description>
+				<title>Configure Java Security Manager to use an environment specific policy</title>
+				<description>The Java Security Manager is a crucial piece of the Java security infrastructure. JBoss Enterprise Application Platform should be configured to load a Java security policy that has been vetted for use in the environment. This precludes the use of the simple default policy that ships with JBoss, but does not preclude the use of preconfigured policy files like the security policy designed for use in a Common Criteria environment (See JBoss Common Criteria Configuration Guide for details).</description>
 			</metadata>
 			<criteria operator="AND">
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20430101"/>
-				<criterion test_ref="oval:com.redhat.eap5.scap:tst:20430102"/>
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:110301">
 			<metadata>
 				<title>Production applications should not log output to the JBoss console</title>
@@ -419,7 +337,7 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:113001">
 			<metadata>
 				<title>Disable Hot Deployment in production</title>
@@ -430,19 +348,20 @@
 			</criteria>
 		</definition>
 		
-		<definition version="1" class="inventory"
+		<!--Currently, this test only checks to see if the value is 1800-->
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:109601">
 			<metadata>
 				<title>DefaultCacheTimeout must be configured properly</title>
 				<description></description>
 			</metadata>
-			<criteria operator="AND">
+			<criteria>
 				<criterion test_ref="oval:com.redhat.eap5.scap:tst:10960101" />
 			</criteria>
 		</definition>
 		
 		<!--
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:300101">
 			<metadata>
 				<title>NOHTMLTITLE</title>
@@ -454,7 +373,7 @@
 		</definition>
 		-->
 		<!--
-		<definition version="1" class="inventory"
+		<definition version="1" class="compliance"
 			id="oval:com.redhat.eap5.scap:def:300201">
 			<metadata>
 				<title>Remove, rename, or comment out the default roles from production servers</title>
@@ -548,6 +467,12 @@
 			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:59960101" />
 		</ind:textfilecontent54_test>
 		
+		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:60000101"
+			version="1" check="all" comment="Check EAP Version">
+			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:60000101" />
+			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:60000101" />
+		</ind:textfilecontent54_test>
+		
 		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:20010101"
 			version="1" check="all" comment="Check EAP Version 5.1.0">
 			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20010101" />
@@ -597,22 +522,7 @@
 			version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/deploy/snmp-adaptor.sar Should be Deleted">
 			<unx:object object_ref="oval:com.redhat.eap5.scap:obj:20090101"/>
 		</unx:file_test>
-		
-		<unx:file_test id="oval:com.redhat.eap5.scap:tst:20110101"
-			version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/conf/jacorb.properties must be deleted">
-			<unx:object object_ref="oval:com.redhat.eap5.scap:obj:20110101"/>
-		</unx:file_test>
-		
-		<unx:file_test id="oval:com.redhat.eap5.scap:tst:20110102"
-			version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/deploy/iiop-service.xml must be deleted">
-			<unx:object object_ref="oval:com.redhat.eap5.scap:obj:20110102"/>
-		</unx:file_test>
-		
-		<unx:file_test id="oval:com.redhat.eap5.scap:tst:20110103"
-			version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/lib/jacorb.jar must be deleted">
-			<unx:object object_ref="oval:com.redhat.eap5.scap:obj:20110103"/>
-		</unx:file_test>
-		
+						
 		<ind:xmlfilecontent_test check="all"
 			id="oval:com.redhat.eap5.scap:tst:20120101" version="1" comment="AJP Must be Disabled">
 			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20120101" />
@@ -623,13 +533,7 @@
 			version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/deploy/cluster/hajndi-jboss-beans.xml must be deleted">
 			<unx:object object_ref="oval:com.redhat.eap5.scap:obj:20130101"/>
 		</unx:file_test>
-		
-		<ind:xmlfilecontent_test check="all"
-			id="oval:com.redhat.eap5.scap:tst:20140101" version="1" comment="Disable the HA Naming service interface via HTTP">
-			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20140101" />
-			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20140101" />
-		</ind:xmlfilecontent_test>
-		
+				
 		<unx:file_test id="oval:com.redhat.eap5.scap:tst:20180101"
 			version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/../picketlink must be deleted">
 			<unx:object object_ref="oval:com.redhat.eap5.scap:obj:20180101"/>
@@ -758,63 +662,27 @@
 		</ind:xmlfilecontent_test>
 		
 		<ind:xmlfilecontent_test check="all"
-			id="oval:com.redhat.eap5.scap:tst:20330101" version="1" comment="Authenticator must not be replaced">
-			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20330101" />
-			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20330101" />
-		</ind:xmlfilecontent_test>
-		
-		<ind:xmlfilecontent_test check="all"
-			id="oval:com.redhat.eap5.scap:tst:20340101" version="1" comment="Authenticator must not be replaced">
-			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20340101" />
-			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20340101" />
-		</ind:xmlfilecontent_test>
-		
-		<ind:xmlfilecontent_test check="all"
-			id="oval:com.redhat.eap5.scap:tst:20350101" version="1" comment="Authenticator must not be replaced">
-			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20350101" />
-			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20350101" />
-		</ind:xmlfilecontent_test>
-		
-		<ind:xmlfilecontent_test check="all"
-			id="oval:com.redhat.eap5.scap:tst:20360101" version="1" comment="Authenticator must not be replaced">
-			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20360101" />
-			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20360101" />
-		</ind:xmlfilecontent_test>
-		
-		<ind:xmlfilecontent_test check="all"
-			id="oval:com.redhat.eap5.scap:tst:20370101" version="1" comment="Authenticator must not be replaced">
-			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20370101" />
-			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20370101" />
-		</ind:xmlfilecontent_test>
-		
-		<ind:xmlfilecontent_test check="all"
 			id="oval:com.redhat.eap5.scap:tst:20380101" version="1" comment="allRolesMode is strict">
 			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20380101" />
 			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20380101" />
 		</ind:xmlfilecontent_test>
 		
-		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:20600101"
+		<!--<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:20600101"
 			version="1" check="all" comment="Validate JBoss keystore exists and is in use">
 			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20600101" />
 			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20600101" />
-		</ind:textfilecontent54_test>
+		</ind:textfilecontent54_test>-->
 		
-		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:20600102"
+		<!--<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:20600102"
 			version="1" check="all" comment="Validate JBoss keystore exists and is in use">
 			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20600102" />
 			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20600102" />
-		</ind:textfilecontent54_test>
+		</ind:textfilecontent54_test>-->
 		
 		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:20430101"
 			version="1" check="all" comment="Java Security Manager to use security_ccpolicy">
 			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20430101" />
 			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20430101" />
-		</ind:textfilecontent54_test>
-		
-		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:20430102"
-			version="1" check="all" comment="Java Security Manager to use security_ccpolicy">
-			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:20430102" />
-			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:20430102" />
 		</ind:textfilecontent54_test>
 		
 		<ind:xmlfilecontent_test check="all"
@@ -873,7 +741,13 @@
 			<ind:pattern operation="pattern match">Release ID: JBoss \[EAP\] ([0-9\.]{3,5})</ind:pattern>
 			<ind:instance datatype="int">1</ind:instance>
 		</ind:textfilecontent54_object>
-
+		<ind:textfilecontent54_object id="oval:com.redhat.eap5.scap:obj:60000101"
+			version="1">
+			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900101"/>
+			<ind:filename>boot.log</ind:filename>
+			<ind:pattern operation="pattern match">Release ID: JBoss \[EAP\] ([0-9\.]{3,5})</ind:pattern>
+			<ind:instance datatype="int">1</ind:instance>
+		</ind:textfilecontent54_object>
 		<ind:textfilecontent54_object id="oval:com.redhat.eap5.scap:obj:20010101"
 			version="1">
 			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900101"/>
@@ -926,25 +800,7 @@
 			<unx:path var_ref="oval:com.redhat.eap5.scap:var:900103"/>
 			<unx:filename xsi:nil="true" />
 		</unx:file_object>
-		
-		<unx:file_object id="oval:com.redhat.eap5.scap:obj:20110101"
-			version="1">
-			<unx:path var_ref="oval:com.redhat.eap5.scap:var:900108"/>
-			<unx:filename>jacorb.properties</unx:filename>
-		</unx:file_object>
-		
-		<unx:file_object id="oval:com.redhat.eap5.scap:obj:20110102"
-			version="1">
-			<unx:path var_ref="oval:com.redhat.eap5.scap:var:900102"/>
-			<unx:filename>iiop-service.xml</unx:filename>
-		</unx:file_object>
-		
-		<unx:file_object id="oval:com.redhat.eap5.scap:obj:20110103"
-			version="1">
-			<unx:path var_ref="oval:com.redhat.eap5.scap:var:900109"/>
-			<unx:filename>jacorb.jar</unx:filename>
-		</unx:file_object>
-		
+				
 		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20120101"
 			version="1">
 			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900110" />
@@ -964,14 +820,7 @@
 			<unx:path var_ref="oval:com.redhat.eap5.scap:var:900104"/>
 			<unx:filename>hajndi-jboss-beans.xml</unx:filename>
 		</unx:file_object>
-		
-		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20140101"
-			version="1">
-			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900120" />
-			<ind:filename>jboss-service.xml</ind:filename>
-			<ind:xpath>boolean(/server/mbean[@name='jboss:service=invoker,type=http,target=HAJNDI'])</ind:xpath>
-		</ind:xmlfilecontent_object>
-		
+				
 		<unx:file_object id="oval:com.redhat.eap5.scap:obj:20180101"
 			version="1">
 			<unx:path var_ref="oval:com.redhat.eap5.scap:var:900105"/>
@@ -1114,41 +963,6 @@
 			<ind:xpath>boolean(/web-app/security-constraint/web-resource-collection[contains(http-method,'POST')])</ind:xpath>
 		</ind:xmlfilecontent_object>
 		
-		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20330101"
-			version="1">
-			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900113" />
-			<ind:filename>war-deployers-jboss-beans.xml</ind:filename>
-			<ind:xpath>/*[local-name()='deployment']/*[local-name()='bean' and @name="WarDeployer"]/*[local-name()='property' and @name='authenticators']/*[local-name()='map']/*[local-name()='entry' and contains(*,'BASIC')]/*[local-name()='value']/text()</ind:xpath>
-		</ind:xmlfilecontent_object>
-		
-		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20340101"
-			version="1">
-			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900113" />
-			<ind:filename>war-deployers-jboss-beans.xml</ind:filename>
-			<ind:xpath>/*[local-name()='deployment']/*[local-name()='bean' and @name="WarDeployer"]/*[local-name()='property' and @name='authenticators']/*[local-name()='map']/*[local-name()='entry' and contains(*,'CLIENT-CERT')]/*[local-name()='value']/text()</ind:xpath>
-		</ind:xmlfilecontent_object>
-		
-		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20350101"
-			version="1">
-			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900113" />
-			<ind:filename>war-deployers-jboss-beans.xml</ind:filename>
-			<ind:xpath>/*[local-name()='deployment']/*[local-name()='bean' and @name="WarDeployer"]/*[local-name()='property' and @name='authenticators']/*[local-name()='map']/*[local-name()='entry' and contains(*,'DIGEST')]/*[local-name()='value']/text()</ind:xpath>
-		</ind:xmlfilecontent_object>
-		
-		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20360101"
-			version="1">
-			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900113" />
-			<ind:filename>war-deployers-jboss-beans.xml</ind:filename>
-			<ind:xpath>/*[local-name()='deployment']/*[local-name()='bean' and @name="WarDeployer"]/*[local-name()='property' and @name='authenticators']/*[local-name()='map']/*[local-name()='entry' and contains(*,'FORM')]/*[local-name()='value']/text()</ind:xpath>
-		</ind:xmlfilecontent_object>
-		
-		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20370101"
-			version="1">
-			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900113" />
-			<ind:filename>war-deployers-jboss-beans.xml</ind:filename>
-			<ind:xpath>/*[local-name()='deployment']/*[local-name()='bean' and @name="WarDeployer"]/*[local-name()='property' and @name='authenticators']/*[local-name()='map']/*[local-name()='entry' and contains(*,'NONE')]/*[local-name()='value']/text()</ind:xpath>
-		</ind:xmlfilecontent_object>
-		
 		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:20380101"
 			version="1">
 			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900110" />
@@ -1156,7 +970,7 @@
 			<ind:xpath>/Server/Service/Engine[@name="jboss.web"]/Realm/@allRolesMode</ind:xpath>
 		</ind:xmlfilecontent_object>
 		
-		<ind:textfilecontent54_object id="oval:com.redhat.eap5.scap:obj:20600101"
+		<!--<ind:textfilecontent54_object id="oval:com.redhat.eap5.scap:obj:20600101"
 			version="1">
 			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900121"/>
 			<ind:filename>security_cc.policy</ind:filename>
@@ -1170,23 +984,17 @@
 			<ind:filename>security_cc.policy</ind:filename>
 			<ind:pattern operation="pattern match">((?://)?keystorePasswordURL "file:\${jboss\.server\.home\.dir}/cc\.password";)</ind:pattern>
 			<ind:instance datatype="int">1</ind:instance>
-		</ind:textfilecontent54_object>
+		</ind:textfilecontent54_object>-->
 		
 		<ind:textfilecontent54_object id="oval:com.redhat.eap5.scap:obj:20430101"
 			version="1">
 			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900121"/>
 			<ind:filename>run.conf</ind:filename>
-			<ind:pattern operation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS -Djava\.security\.manager -Djava\.security\.policy==\$JBOSS_HOME/bin/security_cc\.policy")</ind:pattern>
+<!--			<ind:pattern operation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS -Djava\.security\.manager -Djava\.security\.policy==\$JBOSS_HOME/bin/security_cc\.policy")</ind:pattern>-->
+			<ind:pattern operation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS -Djava\.security\.manager -Djava\.security\.policy==.*")</ind:pattern>
 			<ind:instance datatype="int">1</ind:instance>
 		</ind:textfilecontent54_object>
 		
-		<ind:textfilecontent54_object id="oval:com.redhat.eap5.scap:obj:20430102"
-			version="1">
-			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900121"/>
-			<ind:filename>run.conf</ind:filename>
-			<ind:pattern operation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS -DJBoss\.home\.dir=\$JBOSS_HOME -DJBoss\.server\.home\.dir=\$JBOSS_HOME/server/production -Djava\.protocol\.handler\.pkgs=org\.JBoss\.handlers\.stub")</ind:pattern>
-			<ind:instance datatype="int">1</ind:instance>
-		</ind:textfilecontent54_object>
 		
 		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:11030101"
 			version="1">
@@ -1201,8 +1009,7 @@
 			<unx:filename>hdscanner-jboss-beans.xml</unx:filename>
 		</unx:file_object>
 		
-		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:10960101"
-			version="1">
+		<ind:xmlfilecontent_object id="oval:com.redhat.eap5.scap:obj:10960101" version="1">
 			<ind:path var_ref="oval:com.redhat.eap5.scap:var:900108" />
 			<ind:filename>jboss-service.xml</ind:filename>
 			<ind:xpath>/server/mbean[@code='org.jboss.security.plugins.JaasSecurityManagerService' and @name='jboss.security:service=JaasSecurityManager']/attribute[@name='DefaultCacheTimeout']/text()</ind:xpath>
@@ -1260,7 +1067,10 @@
 			version="1">
 			<ind:subexpression>5.0.0</ind:subexpression>
 		</ind:textfilecontent54_state>
-		
+		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:60000101"
+			version="1">
+			<ind:subexpression>5.0.1</ind:subexpression>
+		</ind:textfilecontent54_state>	
 		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:20010101"
 			version="1">
 			<ind:subexpression>5.1.0</ind:subexpression>
@@ -1295,12 +1105,7 @@
 			version="1">
 			<ind:value_of datatype="string">true</ind:value_of>
 		</ind:xmlfilecontent_state>
-		
-		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20140101"
-			version="1">
-			<ind:value_of datatype="string">false</ind:value_of>
-		</ind:xmlfilecontent_state>
-		
+				
 		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20240101"
 			version="1">
 			<ind:value_of datatype="string">%d %-5p [%c] (%t:%x) %m%n</ind:value_of>
@@ -1381,37 +1186,12 @@
 			<ind:value_of datatype="string">props/jmx-console-roles.properties</ind:value_of>
 		</ind:xmlfilecontent_state>
 		
-		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20330101"
-			version="1">
-			<ind:value_of datatype="string">org.apache.catalina.authenticator.BasicAuthenticator</ind:value_of>
-		</ind:xmlfilecontent_state>
-		
-		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20340101"
-			version="1">
-			<ind:value_of datatype="string">org.apache.catalina.authenticator.SSLAuthenticator</ind:value_of>
-		</ind:xmlfilecontent_state>
-		
-		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20350101"
-			version="1">
-			<ind:value_of datatype="string">org.apache.catalina.authenticator.DigestAuthenticator</ind:value_of>
-		</ind:xmlfilecontent_state>
-		
-		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20360101"
-			version="1">
-			<ind:value_of datatype="string">org.apache.catalina.authenticator.FormAuthenticator</ind:value_of>
-		</ind:xmlfilecontent_state>
-		
-		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20370101"
-			version="1">
-			<ind:value_of datatype="string">org.apache.catalina.authenticator.NonLoginAuthenticator</ind:value_of>
-		</ind:xmlfilecontent_state>
-		
 		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:20380101"
 			version="1">
 			<ind:value_of datatype="string">strict</ind:value_of>
 		</ind:xmlfilecontent_state>
 		
-		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:20600101"
+		<!--<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:20600101"
 			version="1">
 			<ind:subexpression operation="equals">keystore "file:${jboss.server.home.dir}/cc.keystore";</ind:subexpression>
 		</ind:textfilecontent54_state>
@@ -1419,18 +1199,14 @@
 		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:20600102"
 			version="1">
 			<ind:subexpression operation="equals">keystorePasswordURL "file:${jboss.server.home.dir}/cc.password";</ind:subexpression>
-		</ind:textfilecontent54_state>
+		</ind:textfilecontent54_state>-->
 		
 		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:20430101"
 			version="1">
-			<ind:subexpression operation="equals">JAVA_OPTS="$JAVA_OPTS -Djava.security.manager -Djava.security.policy==$JBOSS_HOME/bin/security_cc.policy"</ind:subexpression>
+			<!--<ind:subexpression operation="pattern match">JAVA_OPTS="$JAVA_OPTS -Djava.security.manager -Djava.security.policy==.*"</ind:subexpression>-->
+			<ind:subexpression operation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS -Djava\.security\.manager -Djava\.security\.policy==.*")</ind:subexpression>
 		</ind:textfilecontent54_state>
-		
-		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:20430102"
-			version="1">
-			<ind:subexpression operation="equals">JAVA_OPTS="$JAVA_OPTS -DJBoss.home.dir=$JBOSS_HOME -DJBoss.server.home.dir=$JBOSS_HOME/server/production -Djava.protocol.handler.pkgs=org.JBoss.handlers.stub"</ind:subexpression>
-		</ind:textfilecontent54_state>
-		
+
 		
 		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:11030101"
 			version="1">
@@ -1439,7 +1215,7 @@
 		
 		<ind:xmlfilecontent_state id="oval:com.redhat.eap5.scap:ste:10960101"
 			version="1">
-			<ind:value_of datatype="int" operation="less than or equal">1800</ind:value_of>
+			<ind:value_of datatype="string">1800</ind:value_of>	<!--Possibly use RegexCaptureFunctionType to search for 1800 or less in the string-->
 		</ind:xmlfilecontent_state>
 		
 	</states>
