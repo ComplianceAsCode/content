@@ -43,14 +43,13 @@ The NTP server configuration file is located at <tt>/etc/ntp.conf</tt>.</descrip
 
 <Rule id="enable_ntpd">
 <title>Enable the NTP Daemon</title>
-<description>The <tt>ntpd</tt> service can be enabled with the following
-command:
-<pre># chkconfig ntpd on</pre>
+<description>
+<service-enable-macro service="ntpd" />
 </description>
 <rationale> Enabling the <tt>ntpd</tt> service ensures that the local system
 time will be the same on all computers. This is essential for authentication
 services such as Kerberos, but it is also important for maintaining accurate
-logs and auditing possible security breaches.  </rationale>
+logs and auditing possible security breaches.</rationale>
 <ident cce="4376-0" />
 <oval id="service_ntpd_enabled" />
 <ref disa="160" />
@@ -86,7 +85,7 @@ blocks of IP addresses, so it is considered more maintainable to use the IP
 address in both fields.</description>
 <rationale> Synchonizing <tt>ntpd</tt> with an accurate clock makes it easier
 to collate system logs from multiple sources or correlate computer events with
-real time events.  </rationale>
+real time events.</rationale>
 <ident cce="4385-1" />
 <oval id="ntp_remote_server" />
 <ref disa="160" />

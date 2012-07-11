@@ -37,8 +37,7 @@ and removed.
 <title>Disable DHCP Service</title>
 <description>The <tt>dhcpd</tt> service should be disabled on
 any system that does not need to act as a DHCP server.
-To do so, run the command:
-<pre># chkconfig dhcpd off</pre>
+<service-disable-macro service="dhcpd" />
 </description>
 <rationale>
 Unmanaged or unintentionally activate DHCP servers may provide faulty information

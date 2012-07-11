@@ -8,7 +8,7 @@ implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
-<ref disa="1453" />
+<ref disa="1453,877" />
 
 <Value id="sshd_idle_timeout_value" type="number"
 operator="equals" interactive="0">
@@ -22,13 +22,33 @@ operator="equals" interactive="0">
 <Rule id="ssh_server_disabled">
 <title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
-However, if it can be disabled, do so with the command:
-<pre># chkconfig sshd off</pre>
+However, if it can be disabled, do so.
+<service-disable-macro service="sshd" />
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>
 <ident cce="4268-9" />
 <oval id="service_sshd_disabled" />
+</Rule>
+
+<Rule id="ssh_server_iptables_exception">
+<title>Remove SSH Server <tt>iptables</tt> Firewall exception (Unusual)</title>
+<description>By default, inbound connections to SSH’s port are allowed. If 
+the SSH server is not being used, this exception should be removed from the
+firewall configuration.
+<br /><br />
+Edit the files <tt>/etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>
+(if IPv6 is in use). In each file, locate and delete the line:
+<pre>-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>
+This is unusual, as SSH is a common method for encrypted and authenticated
+remote access.
+</description>
+<rationale>
+If inbound SSH connections are not expected, disallowing access to the SSH port will 
+avoid possible exploitation of the port by an attacker.
+</rationale>
+<ident cce="4295-2" />
+<oval id="iptables_sshd_disabled" />
 </Rule>
 
 <Group id="ssh_server">
@@ -38,7 +58,7 @@ certain changes should be made to the OpenSSH daemon configuration
 file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
 applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
-<ref disa="68,197,888" />
+<ref disa="68,197,888,1632,779,781" />
 
 <Rule id="sshd_allow_only_protocol2" severity="high">
 <title>Allow Only SSH Protocol 2</title>
@@ -56,6 +76,24 @@ should not be used.
 </rationale>
 <ident cce="4325-7" />
 <oval id="sshd_protocol_2" />
+<ref disa="776,774,1135" />
+</Rule>
+
+<Rule id="sshd_limit_user_access">
+<title>Limit Users' SSH Access</title>
+<description>By default, the SSH configuration allows any user with an account
+to access the system. In order to specify the users that are allowed to login
+via SSH and deny all other users, add or correct the following line in the 
+<tt>/etc/ssh/sshd_config</tt> file:
+<pre>DenyUsers USER1 USER2</pre>
+Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
+</description>
+<rationale>
+Specifying which accounts are allowed SSH access into the system reduces the 
+possibility of unauthorized access to the system.
+</rationale>
+<!-- <ident cce="4325-7" /> -->
+<!-- <oval id="sshd_limit_user_access" /> -->
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
@@ -120,6 +158,7 @@ to compromises on another.
 </rationale>
 <ident cce="3845-5" />
 <oval id="sshd_idle_timeout" value="sshd_idle_timeout_value"/>
+<ref disa="879,1133"/>
 </Rule>
 
 
@@ -193,6 +232,7 @@ and also allows direct attack attempts on root’s password.
 </rationale>
 <ident cce="4387-7" />
 <oval id="sshd_permitrootlogin_no" />
+<ref disa="770" />
 </Rule>
 
 
@@ -268,7 +308,29 @@ implementation. These are also required for compliance.
 </rationale>
 <ident cce="14491-5" />
 <oval id="sshd_use_approved_ciphers" />
-<ref disa="803" />
+<ref disa="803,1144,1145,1146" />
+</Rule>
+
+<Rule id="sshd_strengthen_firewall">
+<title>Strengthen Firewall Configuration if Possible</title>
+<description>If the SSH server is expected to only receive connections from 
+the local network, then strengthen the default firewall rule for the SSH service
+to only accept connections from the appropriate network segment(s).
+<br /><br />
+Determine an appropriate network block, <tt>netwk</tt>, and network mask, <tt>mask</tt>, 
+representing the machines on your network which will be allowed to access this SSH server.
+<br /><br />
+Edit the files <tt>etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>
+(if IPv6 is in use). In each file, locate the line:
+<pre>-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>
+and replace it with:
+<pre>-A RH-Firewall-1-INPUT -s netwk /mask -m state --state NEW -p tcp --dport 22 -j ACCEPT</pre>
+</description>
+<rationale>
+Restricting SSH access to only trusted network segments reduces exposure of the SSH 
+server to attacks from unauthorized networks.</rationale>
+<!-- <ident cce="14491-5" /> -->
+<!-- <oval id="sshd_strengthen_firewall" /> -->
 </Rule>
 
 </Group>

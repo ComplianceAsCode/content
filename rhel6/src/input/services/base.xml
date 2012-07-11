@@ -2,7 +2,7 @@
 <title>Base Services</title>
 <description>This section addresses the base services that are installed on a
 RHEL 6 default installation which are not covered in other
-sections.  Some of these services listen on the network and
+sections. Some of these services listen on the network and
 should be treated with particular discretion. Other services are local
 system utilities that may or may not be extraneous. In general, system services
 should be disabled if not required.</description>
@@ -13,9 +13,8 @@ should be disabled if not required.</description>
 and reports crash data when an application crash is detected. Using a variety
 of plugins, abrtd can email crash reports to system administrators, log crash
 reports to files, or forward crash reports to a centralized issue tracking
-system such as RHTSupport.  The <tt>abrtd</tt> service can be disabled with the
-following command:
-<pre># chkconfig abrtd off</pre>
+system such as RHTSupport.
+<service-disable-macro service="abrtd" />
 </description>
 <rationale> Mishandling crash data could expose sensitive information about
 vulnerablities in software executing on the local machine, as well as sensitive
@@ -30,14 +29,13 @@ information from within a process's address space or registers.</rationale>
 <title>Disable Advanced Configuration and Power Interface (acpid)</title>
 <description>The Advanced Configuration and Power Interface Daemon (<tt>acpid</tt>)
 dispatches ACPI events (such as power/reset button depressed) to userspace
-programs. The <tt>acpid</tt> service can be disabled with the following
-command:
-<pre># chkconfig acpid off</pre>
+programs.
+<service-disable-macro service="acpid" />
 </description>
 <rationale>ACPI support is highly desirable for systems in some network roles,
-such as laptops or desktops.  For other systems, such as servers, it may permit
+such as laptops or desktops. For other systems, such as servers, it may permit
 accidental or trivially achievable denial of service situations and disabling
-it may be prudent.  </rationale>
+it may be prudent.</rationale>
 <ident cce="4298-6" />
 <oval id="service_acpid_disabled" />
 <ref nist="CM-6, CM-7" />
@@ -47,17 +45,16 @@ it may be prudent.  </rationale>
 <Rule id="service_atd_disabled">
 <title>Disable At Service (atd)</title>
 <description>The <tt>at</tt> and <tt>batch</tt> commands can be used to
-schedule tasks that are meant to be executed only once.  This allows delayed
+schedule tasks that are meant to be executed only once. This allows delayed
 execution in a manner similar to cron, except that it is not
 recurring. The daemon <tt>atd</tt> keeps track of tasks scheduled via
-<tt>at</tt> and <tt>batch</tt>, and executes them at the specified time.  The
-<tt>atd</tt> service can be disabled with the following command:
-<pre># chkconfig atd off</pre>
+<tt>at</tt> and <tt>batch</tt>, and executes them at the specified time.
+<service-disable-macro service="atd" />
 </description>
 <rationale>
 The <tt>atd</tt> service could be used by an unsophisticated insider to carry
 out activities outside of a normal login session, which could complicate
-accountability.  Furthermore, the need to schedule tasks with <tt>at</tt> or
+accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
 <tt>batch</tt> is not common.
 </rationale>
 <ident cce="TODO" />
@@ -71,9 +68,8 @@ accountability.  Furthermore, the need to schedule tasks with <tt>at</tt> or
 <description>Certmonger is a D-Bus based service that attempts to simplify interaction
 with certifying authorities on networks which use public-key infrastructure. It is often
 combined with Red Hat's IPA (Identity Policy Audit) security information management
-solution to aid in the management of certificates. 
-The <tt>certmonger</tt> service can be disabled with the following command:
-<pre># chkconfig certmonger off</pre>
+solution to aid in the management of certificates.
+<service-disable-macro service="certmonger" />
 </description>
 <rationale>The services provided by certmonger may be essential for systems
 fulfilling some roles a PKI infrastructure, but its functionality is not necesssary
@@ -89,8 +85,7 @@ for many other use cases.</rationale>
 <description>Control groups allow an administrator to allocate system resources (such as CPU,
 memory, network bandwidth, etc) among a defined group (or groups) of processes executing on
 a system. The <tt>cgconfig</tt> daemon starts at boot and establishes the predefined control groups.
-The <tt>cgconfig</tt> service can be disabled with the following command:
-<pre># chkconfig cgconfig off</pre>
+<service-disable-macro service="cgconfig" />
 </description>
 <rationale>Unless control groups are used to manage system resources, running the cgconfig
 service is not necessary.
@@ -104,8 +99,7 @@ service is not necessary.
 <title>Disable Control Group Rules Engine (cgred)</title>
 <description>The <tt>cgred</tt> service moves tasks into control groups according to
 parameters set in the <tt>/etc/cgrules.conf</tt> configuration file.
-The <tt>cgred</tt> service can be disabled with the following command:
-<pre># chkconfig cgred off</pre>
+<service-disable-macro service="cgred" />
 </description>
 <rationale>Unless control groups are used to manage system resources, running the cgred service
 service is not necessary.
@@ -118,12 +112,11 @@ service is not necessary.
 <Rule id="service_cpuspeed_disabled">
 <title>Disable CPU Speed (cpuspeed)</title>
 <description>The <tt>cpuspeed</tt> service can adjust the clock speed of supported CPUs based upon
-the current processing load thereby conserving power and reducing heat. 
-The <tt>cpuspeed</tt> service can be disabled with the following command:
-<pre># chkconfig cpuspeed off</pre>
+the current processing load thereby conserving power and reducing heat.
+<service-disable-macro service="cpuspeed" />
 </description>
 <rationale>The <tt>cpuspeed</tt> service is only necessary if adjusting the CPU clock speed
-provides benefit.  Traditionally this has included laptops (to enhance battery life),
+provides benefit. Traditionally this has included laptops (to enhance battery life),
 but may also apply to server or desktop environments where conserving power is
 highly desirable or necessary.
 </rationale>
@@ -139,10 +132,8 @@ highly desirable or necessary.
 and maintains information about the system's hardware configuration. 
 This service is required on a workstation
 running a desktop environment, and may be necessary on any system which
-deals with removable media or devices. 
-The <tt>haldaemon</tt> service can be disabled with the following
-command:
-<pre># chkconfig haldaemon off</pre>
+deals with removable media or devices.
+<service-disable-macro service="haldaemon" />
 </description>
 <rationale>The haldaemon provides essential functionality on systems
 that use removable media or devices, but can be disabled for systems
@@ -158,8 +149,8 @@ that do not require these.
 <title>Enable IRQ Balance (irqbalance)</title>
 <description>The <tt>irqbalance</tt> service optimizes the balance between
 power savings and performance through distribution of hardware interrupts across
-multiple processors.  The <tt>irqbalance</tt> service can be enabled with the following command:
-<pre># chkconfig irqbalance on</pre>
+multiple processors.
+<service-enable-macro service="irqbalance" />
 </description>
 <rationale>In an environment with multiple processors (now common), the irqbalance service
 provides potential speedups for handling interrupt requests.</rationale>
@@ -172,9 +163,8 @@ provides potential speedups for handling interrupt requests.</rationale>
 <title>Disable KDump Kernel Crash Analyzer (kdump)</title>
 <description>The <tt>kdump</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
 system call to boot a secondary kernel ("capture" kernel) following a system
-crash, which can load information from the crashed kernel for analysis.  To
-disable the <tt>kdump</tt> service, run the following command:
-<pre># chkconfig kdump off</pre>
+crash, which can load information from the crashed kernel for analysis.
+<service-disable-macro service="kdump" />
 </description>
 <rationale>Unless the system is used for kernel development or testing, there
 is little need to run the kdump service.</rationale>
@@ -193,8 +183,7 @@ or snapshot logical volume with dmeventd, if it is installed. If a device used b
 monitored mirror reports an I/O error, the failure is handled according to "mirror_image_fault_policy"
 and "mirror_log_fault_policy" set in the /etc/lvm/lvm.conf configuration file. If the system utilizes
 mirrored or snapshot logical volumes then this service should be configured and enabled.
-The <tt>lvm2-monitor</tt> service can be activated with the following command:
-<pre># chkconfig lvm2-monitor on</pre>
+<service-disable-macro service="lvm2-monitor" />
 </description>
 <rationale>The <tt>lvm2-monitor</tt> service provides services for mirrored or snapshotted volumes.
 </rationale>
@@ -207,9 +196,8 @@ The <tt>lvm2-monitor</tt> service can be activated with the following command:
 <Rule id="service_mdmonitor_disabled">
 <title>Disable Software RAID Monitor (mdmonitor)</title>
 <description>The mdmonitor service is used for monitoring a software RAID (hardware
-RAID setups do not use this service). 
-The <tt>mdmonitor</tt> service can be disabled with the following command:
-<pre># chkconfig mdmonitor off</pre>
+RAID setups do not use this service).
+<service-disable-macro service="mdmonitor" />
 </description>
 <rationale>If software RAID monitoring is not required (and it is uncommon),
 there is no need to run the service.</rationale>
@@ -225,12 +213,11 @@ there is no need to run the service.</rationale>
 a growing list of programs, such as those used for Gnome, Bluetooth, and Avahi.
 Due to these dependencies, disabling D-Bus may not be practical for
 many systems.
-The <tt>messagebus</tt> service can be disabled with the following command:
-<pre># chkconfig messagebus off</pre>
+<service-disable-macro service="messagebus" />
 </description>
 <rationale>If no services which require D-Bus are needed, then it
 can be disabled. As a broker for IPC between processes of different privilege levels,
-it could be a target for attack.  However, disabling D-Bus is likely to be
+it could be a target for attack. However, disabling D-Bus is likely to be
 impractical for any system which needs to provide
 a graphical login session.
 </rationale>
@@ -244,9 +231,8 @@ a graphical login session.
 <description>The <tt>netconsole</tt> service is responsible for loading the
 netconsole kernel module, which logs kernel printk messages over UDP to a
 syslog server. This allows debugging of problems where disk logging fails and
-serial consoles are impractical.  The <tt>netconsole</tt> service can be
-disabled with the following command:
-<pre># chkconfig netconsole off</pre>
+serial consoles are impractical.
+<service-disable-macro service="netconsole" />
 </description>
 <rationale>The <tt>netconsole</tt> service is not necessary unless there is a need to debug
 kernel panics, which is not common.
@@ -257,36 +243,18 @@ kernel panics, which is not common.
 </Rule>
 
 
-<Rule id="service_network_enabled">
-<title>Enable Network (network)</title>
-<description>The network service is made up of a series of scripts and configuration
-files that are used to configure network interfaces upon system boot. It is very
-unusual for a system to not need any sort of networking.
-The <tt>network</tt> service can be activated with the following command:
-<pre># chkconfig network on</pre>
-</description>
-<rationale>Ensuring automatic activation of the network service at boot helps
-speed recovery and reduce confusion following a system crash and subsequent
-reboot.  </rationale>
-<ident cce="4369-5" />
-<oval id="service_network_enabled" />
-<ref nist="CM-6" />
-</Rule>
-
-
 <Rule id="service_ntpdate_disabled">
 <title>Disable ntpdate Service (ntpdate)</title>
 <description>The ntpdate service sets the local hardware clock by polling NTP servers
 when the system boots. It synchronizes to the NTP servers listed in
 <tt>/etc/ntp/step-tickers</tt> or <tt>/etc/ntp.conf</tt>
 and then sets the local hardware clock to the newly synchronized
-system time. 
-The <tt>ntpdate</tt> service can be disabled with the following command:
-<pre># chkconfig ntpdate off</pre>
+system time.
+<service-disable-macro service="ntpdate" />
 </description>
 <rationale>The <tt>ntpdate</tt> service may only be suitable for systems which
 are rebooted frequently enough that clock drift does not cause problems between
-reboots.  In any event, the functionality of the ntpdate service is now
+reboots. In any event, the functionality of the ntpdate service is now
 available in the ntpd program and should be considered deprecated.</rationale>
 <ident cce="TODO" />
 <!--<oval id="service_ntpdate_disabled" /> -->
@@ -298,9 +266,8 @@ available in the ntpd program and should be considered deprecated.</rationale>
 <description>The <tt>oddjobd</tt> service exists to provide an interface and
 access control mechanism through which
 specified privileged tasks can run tasks for unprivileged client
-applications.  Communication with <tt>oddjobd</tt> through the system message bus.
-The <tt>oddjobd</tt> service can be disabled with the following command:
-<pre># chkconfig oddjobd off</pre>
+applications. Communication with <tt>oddjobd</tt> through the system message bus.
+<service-disable-macro service="oddjobd" />
 </description>
 <rationale>The <tt>oddjobd</tt> service may provide necessary functionality in
 some environments but it can be disabled if it is not needed. Execution of
@@ -316,9 +283,8 @@ been a source of privilege escalation security issues.</rationale>
 <title>Disable Portreserve (portreserve)</title>
 <description>The <tt>portreserve</tt> service is a TCP port reservation utility that can
 be used to prevent portmap from binding to well known TCP ports that are
-required for other services. 
-The <tt>portreserve</tt> service can be disabled with the following command:
-<pre># chkconfig portreserve off</pre>
+required for other services.
+<service-disable-macro service="portreserve" />
 </description>
 <rationale>The <tt>portreserve</tt> service provides helpful functionality by
 preventing conflicting usage of ports in the reserved port range, but it can be
@@ -334,12 +300,11 @@ disabled if not needed.</rationale>
 <title>Enable Process Accounting (psacct)</title>
 <description>The process accounting service (<tt>psacct</tt>) works with programs
 including <tt>acct</tt> and <tt>ac</tt> to allow system administrators to view
-user activity, such as commands issued by users of the system.  The
-<tt>psacct</tt> service can be enabled with the following command:
-<pre># chkconfig psacct on</pre>
+user activity, such as commands issued by users of the system.
+<service-enable-macro service="psacct" />
 </description>
 <rationale>The <tt>psacct</tt> service can provide administrators a convenient
-view into some user activities.  However, it should be noted that the auditing
+view into some user activities. However, it should be noted that the auditing
 system and its audit records provide more authoritative and comprehensive
 records.</rationale>
 <ident cce="TODO" />
@@ -351,16 +316,15 @@ records.</rationale>
 <Rule id="service_quota_nld_disabled">
 <title>Disable Quota Netlink (quota_nld)</title>
 <description>The <tt>quota_nld</tt> service provides notifications to
-users of disk space quota violations.  It listens to the kernel via a netlink
+users of disk space quota violations. It listens to the kernel via a netlink
 socket for disk quota violations and notifies the appropriate user of the
 violation using D-Bus or by sending a message to the terminal that the user has
-last accessed.  
-The <tt>quota_nld</tt> service can be disabled with the following command:
-<pre># chkconfig quota_nld off</pre>
+last accessed.
+<service-disable-macro service="quota_nld" />
 </description>
 <rationale>If disk quotas are enforced on the local system, then the
 <tt>quota_nld</tt> service likely provides useful functionality and should
-remain enabled.  However, if disk quotas are not used or user notification of
+remain enabled. However, if disk quotas are not used or user notification of
 disk quota violation is not desired then there is no need to run this
 service.</rationale>
 <ident cce="TODO" />
@@ -374,12 +338,11 @@ service.</rationale>
 <description>The <tt>rdisc</tt> service implements the client side of the ICMP
 Internet Router Discovery Protocol (IRDP), which allows discovery of routers on
 the local subnet. If a router is discovered then the local routing table is
-updated with a corresponding default route.  By default this daemon is disabled.
-The <tt>rdisc</tt> service can be disabled with the following command:
-<pre># chkconfig rdisc off</pre>
+updated with a corresponding default route. By default this daemon is disabled.
+<service-disable-macro service="rdisc" />
 </description>
 <rationale>General-purpose systems typically have their network and routing
-information configured statically by a system administrator.  Workstations or
+information configured statically by a system administrator. Workstations or
 some special-purpose systems often use DHCP (instead of IRDP) to retrieve
 dynamic network configuration information.</rationale>
 <ident cce="TODO" />
@@ -392,15 +355,14 @@ dynamic network configuration information.</rationale>
 <title>Disable Red Hat Network Service (rhnsd)</title>
 <description>The Red Hat Network service automatically queries Red Hat Network
 servers to determine whether there are any actions that should be executed,
-such as package updates.  This only occurs if the system was registered to an
-RHN server or satellite and managed as such.  The <tt>rhnsd</tt> service can be
-disabled with the following command:
-<pre># chkconfig rhnsd off</pre>
+such as package updates. This only occurs if the system was registered to an
+RHN server or satellite and managed as such.
+<service-disable-macro service="rhnsd" />
 </description>
 <rationale>Although systems management and patching is extremely important to
 system security, management by a system outside the enterprise enclave is not
 desirable for some environments.</rationale>
-<ident cce="TODO" />
+<ident cce="3416-5" />
 <oval id="service_rhnsd_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -410,12 +372,12 @@ desirable for some environments.</rationale>
 <title>Disable Red Hat Subscription Manager Daemon (rhsmcertd)</title>
 <description>The Red Hat Subscription Manager (rhsmcertd) periodically checks for
 changes in the entitlement certificates for a registered system and updates it
-accordingly.  The <tt>rhsmcertd</tt> service can be disabled with following command:
-<pre># chkconfig rhsmcertd off</pre>
+accordingly.
+<service-disable-macro service="rhsmcertd" />
 </description>
 <rationale>The <tt>rhsmcertd</tt> service can provide administrators with some
 additional control over which of their systems are entitled to particular
-subscriptions.  However, for systems that are managed locally or which are not
+subscriptions. However, for systems that are managed locally or which are not
 expected to require remote changes to their subscription status, it is
 unnecessary and can be disabled.</rationale>
 <ident cce="TODO" />
@@ -427,16 +389,15 @@ unnecessary and can be disabled.</rationale>
 <Rule id="service_saslauthd_disabled">
 <title>Disable Cyrus SASL Authentication Daemon (saslauthd)</title>
 <description>The saslauthd service handles plaintext authentication requests on
-behalf of the SASL library.  The service isolates all code requiring superuser
+behalf of the SASL library. The service isolates all code requiring superuser
 privileges for SASL authentication into a single process, and can also be used
 to provide proxy authentication services to clients that do not understand SASL
-based authentication.  The <tt>saslauthd</tt> service can be disabled with the
-following command:
-<pre># chkconfig saslauthd off</pre>
+based authentication.
+<service-disable-macro service="saslauthd" />
 </description>
 <rationale>The <tt>saslauthd</tt> service provides essential functionality for
 performing authentication in some directory environments, such as those which
-use Kerberos and LDAP.  For others, however, in which only local files may be
+use Kerberos and LDAP. For others, however, in which only local files may be
 consulted, it is not necessary and should be disabled.</rationale>
 <ident cce="TODO" />
 <oval id="service_saslauthd_disabled" />
@@ -448,12 +409,11 @@ consulted, it is not necessary and should be disabled.</rationale>
 <title>Disable SMART Disk Monitoring Service (smartd)</title>
 <description>SMART (Self-Monitoring, Analysis, and Reporting Technology) is a
 feature of hard drives that allows them to detect symptoms of disk failure and
-relay an appropriate warning.  The <tt>smartd</tt> service can be disabled with
-the following command:
-<pre># chkconfig smartd off</pre>
+relay an appropriate warning.
+<service-disable-macro service="smartd" />
 </description>
 <rationale>SMART can help protect against denial of
-service due to failing hardware.  Nevertheless, if it is not needed or the
+service due to failing hardware. Nevertheless, if it is not needed or the
 system's drives are not SMART-capable (such as solid state drives), it can be
 disabled.</rationale>
 <ident cce="3455-3" />
@@ -470,13 +430,12 @@ More research needed.
 and authentication mechanisms. It provides an NSS and PAM interface for the system and a
 pluggable backend system to connect to multiple different account sources. It is also the basis
 to provide client auditing and policy services for projects like FreeIPA.
-The <tt>sssd</tt> service can be disabled with the following command:
-<pre># chkconfig sssd off</pre>
+<service-disable-macro service="sssd" />
 </description>
 <rationale>The sssd service provides essential functionality for systems which
-use different backend identity and authentication providers.  However, if
+use different backend identity and authentication providers. However, if
 authentication is only necessary against local account databases (such as
-passwd and shadow), it is not needed.  </rationale>
+passwd and shadow), it is not needed. </rationale>
 <ident cce="TODO" />
 <oval id="service_sssd_disabled" />
 <ref nist="CM-6, CM-7" />
@@ -488,12 +447,11 @@ passwd and shadow), it is not needed.  </rationale>
 <description>The <tt>sysstat</tt> service resets various I/O and CPU
 performance statistics to zero in order to begin counting from a fresh state
 at boot time.
-The <tt>sysstat</tt> service can be disabled with the following command:
-<pre># chkconfig sysstat off</pre>
+<service-disable-macro service="sysstat" />
 </description>
 <rationale>By default the <tt>sysstat</tt> service merely runs a program at
 boot to reset the statistics, which can be retrieved using programs such as
-<tt>sar</tt> and <tt>sadc</tt>.  These may provide useful insight into system
+<tt>sar</tt> and <tt>sadc</tt>. These may provide useful insight into system
 operation, but unless used this service can be disabled.</rationale>
 <ident cce="TODO" />
 <oval id="service_sysstat_disabled" />
@@ -506,7 +464,7 @@ operation, but unless used this service can be disabled.</rationale>
 <description>The udev service serves as the device manager. It maintains a set of
 devices that are normally located in the /dev directory. This service should be
 disabled.
-<pre># chkconfig udev-post off</pre>
+<service-disable-macro service="udev-post" />
 </description>
 <ident cce="TODO" />
 <oval id="service_udev-post_disabled" />

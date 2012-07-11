@@ -16,8 +16,8 @@ and more detailed documentation are available at http://www.cups.org.
 
 <Rule id="service_cups_disabled2"><!-- Redundant w/ base services check but kept for equivalence with the RHEL5 NSA guidance -->
 <title>Disable the CUPS Service if Possible</title>
-<description>Do you need the ability to print from this machine or to allow others to print to it? If not:
-<pre># chkconfig cups off</pre>
+<description>Do you need the ability to print from this machine or to allow others to print to it? If not, disable it.
+<service-disable-macro service="cups" />
 </description>
 <rationale>Turn off unneeded services to reduce attack surface.
 </rationale>

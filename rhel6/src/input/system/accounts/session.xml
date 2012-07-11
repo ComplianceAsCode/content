@@ -15,6 +15,38 @@ particularly those of privileged users such as root or system
 administrators.
 </description>
 
+
+<Value id="max_concurrent_login_sessions_value" type="number"
+operator="equals" interactive="0">
+<title>Maximum concurrent login sessions</title>
+<description>Maximum number of concurrent sessions by a user</description>
+<value selector="">10</value>
+<value selector="5">5</value>
+<value selector="10">10</value>
+<value selector="15">15</value>
+<value selector="20">20</value>
+</Value>
+
+<Rule id="max_concurrent_login_sessions">
+<title>
+Set the number of concurrent login sessions allowed per user
+</title>
+<description>
+Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
+Service attacks. This addresses concurrent sessions for a single account and does not address 
+concurrent sessions by a single user via multiple accounts. To set the number of concurrent
+sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
+<pre>* hard maxlogins <i>MAX</i></pre>
+Where <i>MAX</i> is the maximum number of login sessions allowed.
+</description>
+<rationale>Limiting simultaneous user logins can insulate the system from denial of service 
+problems caused by excessive logins. Automated login processes operating improperly or 
+maliciously may result in an exceptional number of simultaneous login sessions.
+</rationale>
+<!-- <oval id="max_concurrent_login_sessions" value="max_concurrent_login_sessions_value" /> -->
+<ref disa="54"/>
+</Rule>
+
 <Group id="root_paths">
 <title>Ensure that No Dangerous Directories Exist in Root's Path</title>
 <description>The active path of the root account can be obtained by
@@ -238,7 +270,7 @@ written to by unauthorized users.</rationale>
 <ref nist="CM-6, CM-7"/>
 </Rule>
 
-
 </Group>
+
 
 </Group>
