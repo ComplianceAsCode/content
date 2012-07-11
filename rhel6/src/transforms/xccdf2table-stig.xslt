@@ -49,6 +49,7 @@
 		</style>
 		<table>
 			<thead>
+				<td>CCI</td>
 				<td>V-ID</td>
 				<td>GEN-ID</td>
 				<td>Title</td>
@@ -65,12 +66,12 @@
 	<xsl:template name="rule-output">
           <xsl:param name="vulnid"/>
 		<tr>
+			<td> <xsl:value-of select="cdf:Rule/cdf:ident" /></td>
 			<td><xsl:value-of select="@id"/></td> 
-			<!--<td> <xsl:value-of select="cdf:ident" /></td>-->
 			<td> <xsl:value-of select="cdf:title" /></td>
 			<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
 			<td> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="cdf:Rule/cdf:description"/></xsl:call-template> </td>
-			<td> <xsl:apply-templates select="cdf:Rule/cdf:fixtext"/> </td>
+			<td> <xsl:value-of select="cdf:Rule/cdf:fixtext"/> </td>
 			<td> </td>
 		</tr>
         </xsl:template>

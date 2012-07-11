@@ -56,6 +56,7 @@ table-srgmap: shorthand-guide shorthand2xccdf
 table-stigs:
 	xsltproc -o $(OUT)/rhel5-table-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/rhel5-table-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
+	xsltproc --html -o $(OUT)/rhel5-table-stig-manual-ccisorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/rhel5-table-stig-manual.html 
 	xsltproc -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/rhel6-xccdf.xml  
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
 
