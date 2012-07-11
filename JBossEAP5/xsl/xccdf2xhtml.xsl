@@ -207,18 +207,27 @@
                                 <div class="subItem"><span class="itemSubHead">Additional information</span><br />
                                     <p>
                                         <xsl:if test="boolean(cdf:profile-note[@tag='risk_score'])">
-                                            <span class="label">Risk Assesment: </span><xsl:value-of select="normalize-space(cdf:profile-note[@tag='risk_score'])"/>
+                                            <span class="label">CVSSv2 Risk Assessment: </span><xsl:value-of select="normalize-space(cdf:profile-note[@tag='risk_score'])"/>
                                             <xsl:if test="boolean(cdf:profile-note[@tag='risk_level'])">
                                                 / <xsl:value-of select="normalize-space(cdf:profile-note[@tag='risk_level'])"/>
                                             </xsl:if>
                                             <xsl:if test="boolean(cdf:profile-note[@tag='risk_formula'])">
-                                                - Formula: <xsl:value-of select="normalize-space(cdf:profile-note[@tag='risk_formula'])"/>
+                                                - CVSSv2 Formula: <xsl:value-of select="normalize-space(cdf:profile-note[@tag='risk_formula'])"/>
                                             </xsl:if>
                                             <br/>
                                         </xsl:if>
+									</p>
+									<p>
+										<xsl:if test="boolean(cdf:profile-note[@tag='dod_cat'])">
+                                            <span class="label">DoD Risk Category: </span><xsl:value-of select="cdf:profile-note[@tag='dod_cat']"/> <br/>
+                                        </xsl:if>
+									</p>
+									<p>
                                         <xsl:if test="boolean(cdf:profile-note[@tag='nist_mapping'])">
                                             <span class="label">NIST 800.53 Mapping: </span><xsl:value-of select="cdf:profile-note[@tag='nist_mapping']"/> <br/>
                                         </xsl:if>
+									</p>
+									<p>
                                         <xsl:if test="boolean(cdf:profile-note[@tag='disa_mapping'])">
                                             <span class="label">DoD 8500.2 Mapping: </span><xsl:value-of select="cdf:profile-note[@tag='disa_mapping']"/> <br/>
                                         </xsl:if>
