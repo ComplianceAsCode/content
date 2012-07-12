@@ -1,5 +1,3 @@
-
-
 <Group id="nfs_and_rpc">
 <title>NFS and RPC</title>
 <description>The Network File System is the most popular distributed filesystem for the Unix environment, and is very widely deployed. Unfortunately, NFS was not designed with security in mind, and has a number of weaknesses, both in terms of the protocol itself and because any NFS installation must expose several daemons, running on both servers and clients, to network attack.
@@ -72,7 +70,7 @@ If the command did not return any output then disable netfs.
 <title>Disable RPC Bind Service if Possible</title>
 <description>If:
 <ul>
-<li>NFSv3 or NFSv2 is not needed</li>
+<li>NFSv3 or NFSv2 is not needed (NFSv4 implementations do not require the use of the RPC Bind Service)</li>
 <li>The site does not rely on NIS for authentication information,
 and</li>
 <li>The machine does not run any other RPC-based service</li>
@@ -113,7 +111,7 @@ by NFS (specially NFSv3 and NFSv2), it is not a good idea for machines which act
 
 <Group id="nfs_restrict_access_rpcbind">
 <title>Restrict Access to rpcbind</title>
-<description>If using <tt>rpcbind</tt>, its access should be restricted by using TCP Wrappers. The <tt>/etc/hosts.allow</tt> and <tt>/etc/hosts.deny</tt> files are used by TCP Wrappers to determine whether specified remote hosts are allowed to access certain services. The default RPC Bind service shipped with RHEL6 has TCP Wrappers support built in, so this specification can be used to provide some protection against network attacks on <tt>rpcbind</tt>.
+<description>When using NFSv2 or NFSv3 which require <tt>rpcbind</tt>, access to the <tt>rpcbind</tt> service should be restricted by using TCP Wrappers. The <tt>/etc/hosts.allow</tt> and <tt>/etc/hosts.deny</tt> files are used by TCP Wrappers to determine whether specified remote hosts are allowed to access certain services. The default RPC Bind service shipped with RHEL6 has TCP Wrappers support built in, so this specification can be used to provide some protection against network attacks on <tt>rpcbind</tt>.
 <br /><br />
 Note: This step protects only the RPC Bind service itself. It is still possible for attackers to guess the port numbers of NFS services and attack those services directly, even if they are denied access to <tt>rpcbind</tt>.
 <br /><br />
@@ -133,7 +131,7 @@ where each <tt>IPADDR</tt> is the IP address of a server or client with which th
 <br /><br />
 Therefore, restrict each service to always use a given port, so that firewalling can be done effectively. Note that, because of the way RPC is implemented, it is not possible to disable the RPC Bind service even if ports are assigned statically to all RPC services.
 <br /><br />
-Ports for mountd, statd, and lockd are not required in a pure NFSv4 environment.
+In NFSv4, the mounting and locking protocols have been incorporated into the protocol, and the server listens on the the well-known TCP port 2049. As such, NFSv4 does not need to interact with the <tt>rpcbind, lockd, and rpc.statd</tt> daemons, which can and should be disabled in a pure NFSv4 environment. The <tt>rpc.mountd</tt> daemon is still required on the NFS server to setup exports, but is not involved in any over-the-wire operations.
 </description>
 
 <Rule id="nfs_fixed_lockd_tcp_port">
