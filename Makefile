@@ -37,12 +37,12 @@ endef
 all: rhel6 rpm
 
 rhel6:
-	cd rhel6/src && $(MAKE)
+	cd RHEL6 && $(MAKE)
 
 tarball:
 	$(call rpm-prep)
-	cp -r rhel6 $(RPM_TMPDIR)/$(PKG)	
-	cd $(RPM_TMPDIR)/$(PKG)/rhel6/src && $(MAKE) clean
+	cp -r RHEL6 $(RPM_TMPDIR)/$(PKG)	
+	cd $(RPM_TMPDIR)/$(PKG)/RHEL6 && $(MAKE) clean
 	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
 
@@ -58,6 +58,6 @@ rpm: srpm
 
 clean:
 	rm -rf $(RPM_TMPDIR)
-	cd rhel6/src && $(MAKE) clean
+	cd RHEL6 && $(MAKE) clean
 
 .PHONY: rhel6 tarball srpm rpm clean all

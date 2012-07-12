@@ -26,7 +26,7 @@ requirements and specific implementation guidance.
 
 
 %build
-cd rhel6/src && make dist
+cd RHEL6 && make dist
 
 
 %install
@@ -34,7 +34,7 @@ rm -rf $RPM_BUILD_ROOT
 #make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/%{name}/
 
-cp -r rhel6/src/dist/* $RPM_BUILD_ROOT/usr/local/%{name}/
+cp -r RHEL6/dist/* $RPM_BUILD_ROOT/usr/local/%{name}/
 
 
 %clean
