@@ -241,6 +241,61 @@ should be installed to their default location on the local filesystem.</rational
 <oval id="mount_option_nosuid_remote_filesystems" />
 </Rule>
 
+<Group id="nfs_configuring_servers">
+<title>Configure NFS Servers</title>
+<description>The steps in this section are appropriate for machines which operate as NFS servers.</description>
+
+<Group id="configure_exports_restrictively">
+<title>Configure the Exports File Restrictively</title>
+<description>Linux’s NFS implementation uses the file <tt>/etc/exports</tt> to control what filesystems
+and directories may be accessed via NFS. (See the <tt>exports(5)</tt> manpage for more information about the 
+format of this file.)
+<br /><br />
+The syntax of the <tt>exports</tt> file is not necessarily checked fully on reload, and syntax errors 
+can leave your NFS configuration more open than intended. Therefore, exercise caution when modifying 
+the file.
+<br /><br />
+The syntax of each line in <tt>/etc/exports</tt> is
+<pre>/DIR	ipaddr1(opt1,opt2) ipaddr2(opt3)</pre>
+where <tt>/DIR</tt> is a directory or filesystem to export, <tt>ipaddrN</tt> is an IP address, netblock, 
+hostname, domain, or netgroup to which to export, and <tt>optN</tt> is an option.
+</description>
+</Group> <!-- configure_exports_restrictively -->
+
+<Group id="use_acl_enforce_auth_restrictions">
+<title>Use Access Lists to Enforce Authorization Restrictions</title>
+<description>When configuring NFS exports, ensure that each export line in <tt>/etc/exports</tt> contains 
+a list of hosts which are allowed to access that export. If no hosts are specified on an export line, 
+then that export is available to any remote host which requests it. All lines of the exports file should 
+specify the hosts (or subnets, if needed) which are allowed to access the exported directory, so that 
+unknown or remote hosts will be denied.
+<br /><br />
+Authorized hosts can be specified in several different formats:
+<ul>
+<li>Name or alias that is recognized by the resolver</li>
+<li>Fully qualified domain name</li>
+<li>IP address</li>
+<li>IP subnets in the format <tt>address/netmask</tt></li>
+</ul>
+</description>
+</Group> <!-- use_acl_enforce_auth_restrictions -->
+
+<Rule id="use_root_squashing_all_exports">
+<title>Use Root-Squashing on All Exports</title>
+<description>If a filesystem is exported using root squashing, requests from root on the client 
+are considered to be unprivileged (mapped to a user such as nobody). This provides some mild 
+protection against remote abuse of an NFS server. Root squashing is enabled by default, and 
+should not be disabled.
+
+Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>no_root_squash</tt>
+</description>
+<rationale>If the NFS server allows root access to local file systems from remote hosts, this access could be used to compromise the system.</rationale>
+<ident cce="4544-3" />
+<oval id="TO:DO" />
+</Rule>
+
+</Group> <!-- nfs_configuring_servers -->
+
 </Group>
 </Group>
 </Group>
