@@ -33,22 +33,6 @@ are from Red Hat.
 <ref nist="SI-2, SI-7, SC-13"/>
 </Rule>
 
-<Rule id="service_rhnsd_disabled">
-<title>Disable Red Hat Network Service (rhnsd)</title>
-<description>The Red Hat Network service automatically queries Red Hat Network
-servers to determine whether there are any actions that should be executed,
-such as package updates. This only occurs if the system was registered to an
-RHN server or satellite and managed as such.
-<service-disable-macro service="rhnsd" />
-</description>
-<rationale>Although systems management and patching is extremely important to
-system security, management by a system outside the enterprise enclave is not
-desirable for some environments.</rationale>
-<ident cce="3416-5" />
-<oval id="service_rhnsd_disabled" />
-<ref nist="CM-6, CM-7" />
-</Rule>
-
 <Rule id="security_patches_up_to_date">
 <title>Ensure Software Patches Installed</title>
 <description>The following command prints a list of packages that
