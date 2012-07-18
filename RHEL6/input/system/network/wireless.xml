@@ -35,7 +35,7 @@ to reboot the system first.
 </rationale>
 <ident cce="3628-5" />
 <!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
-<ref nist="CM-7" />
+<ref nist="CM-7" disa="85" />
 </Rule>
 
 <Rule id="deactivate_wireless_interfaces">
@@ -65,7 +65,7 @@ protocols which were not designed with security in mind.
 </rationale>
 <ident cce="4276-2" />
 <oval id="wireless_disable_interfaces" />
-<ref nist="CM-7" />
+<ref nist="CM-7" disa="85" />
 </Rule>
 
 <Rule id="wireless_disable_drivers">
@@ -82,7 +82,7 @@ the need to install such a driver first.
 <warning category="general">This command must also be repeated every time the kernel is upgraded.</warning>
 <ident cce="4170-7" />
 <oval id="wireless_disable_drivers" />
-<ref nist="CM-7" />
+<ref nist="CM-7" disa=85" />
 </Rule>
 
 <Rule id="service_bluetooth_disabled">
@@ -96,7 +96,7 @@ Nevertheless, variation in this risk decision may be expected due to the
 utility of Bluetooth connectivity and its limited range.</rationale>
 <ident cce="4355-4" />
 <oval id="service_bluetooth_disabled" />
-<ref nist="AC-18, CM-6, CM-7" />
+<ref nist="AC-18, CM-6, CM-7" disa="85" />
 </Rule>
 
 <Rule id="kernel_module_bluetooth_disabled">
@@ -113,7 +113,7 @@ from loading the kernel module provides an additional safeguard against its
 activation.</rationale>
 <ident cce="14948-4" />
 <oval id="kernel_module_bluetooth_disabled" />
-<ref nist="AC-18, CM-6, CM-7" />
+<ref nist="AC-18, CM-6, CM-7" disa="85" />
 </Rule>
 
 
