@@ -292,5 +292,42 @@ for users who may need to suspend console logins.
 <ref nist="CM-6, CM-7" disa="56,58" />
 </Rule>
 </Group>
+
+<Group id="smart_card_login">
+<title>Using Smart Cards for System Login</title>
+<description>
+The use of Smart Cards, like Common Access Cards (CAC), for system login
+provides stronger, two-factor authentication than using a username/password.
+Smart Cards take advantage of Public Key Infrastructure (PKI) to store
+encrypted digital certificates that can be used to authenticate the card
+owner.
+<br /><br />
+In Red Hat Enterprise Linux servers and workstations, Smart Card login
+is not enabled by default and must be enabled in the system settings.
+Detailed procedures on how to configure a system to use Smart Card
+authentication for login can be found in the Red Hat Documentation web site:
+<ul>
+<li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Smart_Cards/enabling-smart-card-login.html</li>
+</ul>
+The following packages are required in order to enable use of Smart Cards
+on RHEL:
+<ul>
+<li>nss-tools</li>
+<li>esc</li>
+<li>pam_pkcs11</li>
+<li>coolkey</li>
+<li>ccid</li>
+<li>gdm</li>
+<li>authconfig</li>
+<li>authconfig-gtk</li>
+<li>krb5-libs</li>
+<li>krb5-workstation</li>
+<li>krb5-auth-dialog</li>
+<li>krb5-pkinit-openssl</li>
+</ul>
+</description>
+<ref disa="" />
+</Group>
+
 </Group>
 </Group>
