@@ -166,7 +166,10 @@ these should likely be moved out of common.
 <select idref="disable_snmpd" selected="true"/>
 <select idref="uninstall_net-snmp" selected="true"/>
 <!-- Refine Values -->
+<!-- Password history -->
+<refine-value idref="password_history_retain_number" selector="5"/>
 <!-- Permissions for passwd -->
+<refine-value idref="var_umask_for_daemons" selector="027"/>
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <!-- daemon umask -->
 <refine-value idref="var_password_min_len" selector="14"/>
