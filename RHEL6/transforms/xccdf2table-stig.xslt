@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-<!-- this style sheet expects parameter $ref, which is the abbreviation of the ref to be shown -->
+<!-- setting the external variable $notes identifies a file from which to add notes,
+	 but set to nothing by default -->
+<xsl:param name="notes" select="''" />
 
-<!-- optionally, the style sheet can receive parameter $delim, will result in splitting of references onto 
-     separate rows of output -->
-
-<xsl:param name="delim"/>
+<xsl:variable name="notegroup" select="document($notes)/notegroup" />
 
 <xsl:include href="constants.xslt"/>
 
 	<xsl:template match="/">
 		<html>
 		<head>
-			<title>Rules In <xsl:value-of select="/cdf:Benchmark/cdf:title" /> with Notes for Transition to RHEL 6 Consensus</title>
+			<title>Rules In <xsl:value-of select="/cdf:Benchmark/cdf:title" /><xsl:if test="$notes"> with Notes for Transition to RHEL 6 Consensus</xsl:if></title>
 		</head>
 		<body>
 			<br/>
 			<br/>
 			<div style="text-align: center; font-size: x-large; font-weight:bold">
-			Rules In <i><xsl:value-of select="/cdf:Benchmark/cdf:title" /></i> with Notes for Transition to RHEL 6 Consensus
+			Rules In <i><xsl:value-of select="/cdf:Benchmark/cdf:title" /></i><xsl:if test="$notes"> with Notes for Transition to RHEL 6 Consensus</xsl:if>
 			</div>
 			<br/>
 			<br/>
@@ -49,13 +48,16 @@
 		</style>
 		<table>
 			<thead>
-				<td>CCI</td>
 				<td>V-ID</td>
 				<td>GEN-ID</td>
+				<td>CAT</td>
 				<td>Title</td>
 				<td>Description</td>
+				<td>Check Procedures</td>
 				<td>Fixtext</td>
+			<xsl:if test='$notes'>
 				<td>Notes</td>
+			</xsl:if>
 			</thead>
 
                 <xsl:apply-templates select=".//cdf:Group" />
@@ -66,15 +68,19 @@
 	<xsl:template name="rule-output">
           <xsl:param name="vulnid"/>
 		<tr>
-			<td> <xsl:value-of select="cdf:Rule/cdf:ident" /></td>
 			<td><xsl:value-of select="@id"/></td> 
+			<!--<td> <xsl:value-of select="cdf:ident" /></td>-->
 			<td> <xsl:value-of select="cdf:title" /></td>
+			<td> <xsl:value-of select="cdf:Rule/@severity" /></td>
 			<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
 			<td> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="cdf:Rule/cdf:description"/></xsl:call-template> </td>
+			<td> <xsl:value-of select="cdf:Rule/cdf:check/cdf:check-content"/> </td>
 			<td> <xsl:value-of select="cdf:Rule/cdf:fixtext"/> </td>
-			<td> </td>
+			<xsl:if test='$notes'>
+				<td> <xsl:call-template name="print-notes"><xsl:with-param name="vulnid" select="@id"/></xsl:call-template> </td>
+			</xsl:if>
 		</tr>
-        </xsl:template>
+     </xsl:template>
 
 
 	<xsl:template match="cdf:Group">
@@ -82,6 +88,62 @@
 		    <xsl:with-param name="vulnid" select="@id" />
         </xsl:call-template>
 	</xsl:template>
+
+
+    <xsl:template name="print-notes">
+            <xsl:param name="vulnid"/>
+		<xsl:for-each select="$notegroup/note">
+			<table>
+        	<xsl:call-template name="search_vulnidlist" select="note">
+		    	<xsl:with-param name="vulnid_sought" select="$vulnid" />
+		    	<xsl:with-param name="vulnid_list" select="@ref" />
+        	</xsl:call-template>
+			</table>
+		</xsl:for-each>
+
+    </xsl:template>
+
+
+  <xsl:template name="search_vulnidlist">
+     <xsl:param name="vulnid_sought"/>
+     <xsl:param name="vulnid_list"/>
+     <xsl:variable name="delim" select="','" />
+      <xsl:choose>
+        <xsl:when test="$delim and contains($vulnid_list, $delim)">
+			<xsl:call-template name="note-output" >
+      			<xsl:with-param name="vulnid_sought" select="$vulnid_sought" />
+   				<xsl:with-param name="vulnid_found" select="substring-before($vulnid_list, $delim)" />
+			</xsl:call-template>
+
+         <!-- recurse for additional vuln ids in list -->
+			<xsl:call-template name="search_vulnidlist">
+				<xsl:with-param name="vulnid_sought" select="$vulnid_sought" />
+				<xsl:with-param name="vulnid_list" select="substring-after($vulnid_list, $delim)" />
+			</xsl:call-template>
+		</xsl:when>
+
+		<xsl:otherwise>
+			<xsl:call-template name="note-output" >
+      			<xsl:with-param name="vulnid_sought" select="$vulnid_sought" />
+   				<xsl:with-param name="vulnid_found" select="$vulnid_list" />
+			</xsl:call-template>
+		</xsl:otherwise>
+
+	</xsl:choose>
+  </xsl:template>
+
+
+ <!-- output note text if vuln ID matches -->
+  <xsl:template name="note-output">
+     <xsl:param name="vulnid_sought"/>
+     <xsl:param name="vulnid_found"/>
+
+	 <xsl:variable name="vulnid_expanded" select="concat('V-', $vulnid_found)"  />
+	 <xsl:if test="$vulnid_sought=$vulnid_expanded">
+		<tr><td><xsl:value-of select="@auth"/>: <xsl:value-of select="." /></td></tr>
+	 </xsl:if>
+
+ </xsl:template>
 
 
     <!-- return only the text between the "VulnDiscussion" (non-XCCDF) tags -->
