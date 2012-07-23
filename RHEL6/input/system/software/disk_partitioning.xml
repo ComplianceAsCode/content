@@ -115,4 +115,37 @@ users cannot trivially fill partitions used for log or audit data storage.
 <oval id="mount_home_own_partition" />
 <ref nist="CM-6"/>
 </Rule>
+
+<Group id="partition_encryption" >
+<title>Encrypting Partitions</title>
+<description>
+One of the best ways to protect data at rest is by using partition encryption. In
+Red Hat Enterprise Linux 6, encrypting partitions is natively supported with
+Linux Unified Key Setup-on-disk-format (LUKS). The easiest way to encrypt a
+partition is during install time.
+<br /><br />
+For manual installations, selecting the <tt>Encrypt</tt> checkbox during
+partition creation is all that is needed to encrypt the partition. When this
+option is selected the system will prompt for a passphrase to use in
+decrypting the partition. The passphrase will need to be entered manually
+every time the system boots.
+<br /><br />
+For automated/unattended installations using Kickstart add the <tt>--encrypted</tt>
+and <tt>--passphrase=</tt> options to the definition of each partition you want
+encrypted. For example:
+<pre>part / --fstype=ext3 --size=100 --onpart=hda1 --encrypted --passphrase=<i>yourpassphrase</i></pre>
+Where <i>yourpassphrase</i> is a passphrase of your choosing. The passphrase is
+stored in the Kickstart file in clear-text. If that is of concern, leaving the
+<tt>--passphrase=</tt> option off the partition definition will cause the
+installer to pause and interactively ask for the passphrase during the install.
+<br /><br />
+Detailed information on encrypting partitions using LUKS can be found on
+the Red Had Documentation web site:
+<ul>
+<li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/sect-Security_Guide-LUKS_Disk_Encryption.html</li>
+</ul>
+</description>
+<ref disa="1199,1350,1200" />
+</Group>
+
 </Group>
