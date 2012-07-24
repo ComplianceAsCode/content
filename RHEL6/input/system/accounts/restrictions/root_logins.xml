@@ -20,6 +20,7 @@ These are likely to be deprecated in most environments, but may be retained
 for compatibility. Root should also be prohibited from connecting
 via network protocols. Other sections of this document
 include guidance describing how to prevent root from logging in via SSH.</description>
+<ref disa="770" />
 
 <!--
 Ensure that the file
@@ -53,7 +54,7 @@ using the root account.
 </rationale>
 <ident cce="3485-0" />
 <oval id="securetty_root_login_console_only" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="770" />
 </Rule>
 
 <Rule id="restrict_serial_port_logins">
@@ -70,7 +71,7 @@ using the root account.
 </rationale>
 <ident cce="4256-4" />
 <oval id="securetty_no_serial" />
-<ref nist="AC-3, AC-6" />
+<ref nist="AC-3, AC-6" disa="770" />
 </Rule>
 
 <Rule id="no_shelllogin_for_systemaccounts">
