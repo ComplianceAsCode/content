@@ -337,17 +337,6 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 <ref nist="IA-5" />
 </Rule>
 
-<Group id="limiting_password_reuse">
-<title>Limit Password Reuse</title>
-<description>Do not allow users to reuse recent passwords. This can
-be accomplished by using the remember option for the <tt>pam_unix</tt> PAM
-module. For example, in order to prevent a user from re-using any of his or her
-last 5 passwords, append <tt>remember=5</tt> to the password line which uses
-the <tt>pam_unix</tt> module in the file <tt>/etc/pam.d/system-auth</tt>, as shown:
-<pre>password sufficient pam_unix.so existing_options remember=5</pre>
-Old (and thus no longer valid) passwords are stored in the
-file <tt>/etc/security/opasswd</tt>.</description>
-
 <Value id="password_history_retain_number" type="number"
 operator="equals" interactive="0">
 <title>remember</title>
@@ -361,17 +350,21 @@ frequently.</description>
 <value selector="10">10</value>
 </Value>
 
-<Rule id="limit_password_reuse">
+<Group id="limiting_password_reuse">
 <title>Limit Password Reuse</title>
-<description>The passwords to remember should be set to:
-<sub idref="password_history_retain_number" /></description>
-<rationale>
-Allowing users to reuse passwords means that a password which was once
-compromised could be used yet again by an attacker.
-</rationale>
+<description>Do not allow users to reuse recent passwords. This can
+be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
+module. In order to prevent a user from re-using any of their
+last <sub idref="password_history_retain_number" /> passwords, 
+append <tt>remember=<sub idref="password_history_retain_number" /></tt> to
+the password line which uses the <tt>pam_unix</tt> module in the file
+<tt>/etc/pam.d/system-auth</tt>, as shown:
+<pre>password sufficient pam_unix.so existing_options remember=<sub idref="password_history_retain_number" /></pre>
+Old (and thus no longer valid) passwords are stored in the
+file <tt>/etc/security/opasswd</tt>.</description>
 <ident cce="14939-3" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number"/>
 <ref nist="IA-5" disa="200"/>
-</Rule>
 </Group>
+
 </Group>
