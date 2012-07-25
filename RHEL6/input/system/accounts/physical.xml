@@ -84,7 +84,7 @@ and whether to enter single-user mode.
 </rationale>
 <ident cce="3818-2" />
 <oval id="bootloader_password" />
-<ref nist="CM-7, IA-5, AC-3"/>
+<ref nist="CM-7, IA-5, AC-3" disa="213" />
 </Rule>
 
 </Group>
@@ -108,7 +108,7 @@ by configuring the bootloader password.
 </rationale>
 <ident cce="4241-6" />
 <oval id="singleuser_password" />
-<ref nist="AC-6, IA-5"/>
+<ref nist="AC-6, IA-5" disa="213" />
 </Rule>
 
 
@@ -174,7 +174,6 @@ http://live.gnome.org/GnomeScreensaver. For more information about
 enforcing preferences in the GNOME environment using the GConf
 configuration system, see http://projects.gnome.org/gconf and
 the man page <tt>gconftool-2(1)</tt>.</description>
-<ref disa="56,57,60" />
 
 <Value id="inactivity_timeout_value" type="string" operator="equals">
 <title>Inactivity timeout</title>
@@ -203,7 +202,7 @@ screen locking to prevent access from passersby.
 </rationale>
 <ident cce="3315-9" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-3, CM-6, CM-7, AC-11" />
+<ref nist="AC-3, CM-6, CM-7, AC-11" disa="57"/>
 </Rule>
 
 <Rule id="enable_screensaver_after_idle">
@@ -221,7 +220,7 @@ screensaver will be activated after the idle delay.
 </rationale>
 <ident cce="14604-3" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="57" />
 </Rule>
 
 <Rule id="enable_screensaver_password_lock">
@@ -240,7 +239,7 @@ access the system, preventing access by passersby.
 </rationale>
 <ident cce="14023-6" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-3, CM-6, CM-7, AC-11" />
+<ref nist="AC-3, CM-6, CM-7, AC-11" disa="57" />
 </Rule>
 
 <Rule id="set_blank_screensaver">
@@ -259,7 +258,7 @@ contents of the display from passersby.
 </rationale>
 <ident cce="14735-5" />
 <oval id="gconf_gnome_screensaver_mode_blank" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="60" />
 </Rule>
 
 </Group>
@@ -289,7 +288,7 @@ for users who may need to suspend console logins.
 </rationale>
 <ident cce="3910-7" />
 <oval id="package_vlock_installed" />
-<ref nist="CM-6, CM-7" disa="56,58" />
+<ref nist="CM-6, CM-7" disa="58" />
 </Rule>
 </Group>
 
