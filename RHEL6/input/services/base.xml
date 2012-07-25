@@ -312,6 +312,23 @@ records.</rationale>
 <ref nist="AU-12, CM-6" />
 </Rule>
 
+<Rule id="service_qpidd_disabled">
+<title>Disable Apache Qpid (qpidd)</title>
+<description>The <tt>qpidd</tt> service provides high speed, secure,
+guaranteed delivery services.  It is an implementation of the Advanced Message
+Queuing Protocol.  By default the qpidd service will bind to port 5672 and
+listen for connection attempts.
+<service-disable-macro service="qpidd" />
+</description>
+<rationale>The qpidd service is automatically installed when the "base" 
+package selection is selected during installation.  The qpidd service listens 
+for network connections which increases the attack surface of the system.  If 
+the system is not intended to receive AMQP traffic then the <tt>qpidd</tt> 
+service is not needed and should be disabled or removed.</rationale>
+<ident cce="3854-7" />
+<oval id="service_qpidd_disabled" />
+<ref nist="CM-6, CM-7" disa="382" />
+</Rule>
 
 <Rule id="service_quota_nld_disabled">
 <title>Disable Quota Netlink (quota_nld)</title>
