@@ -241,6 +241,9 @@ should be installed to their default location on the local filesystem.</rational
 <oval id="mount_option_nosuid_remote_filesystems" />
 </Rule>
 
+</Group>
+</Group>
+
 <Group id="nfs_configuring_servers">
 <title>Configure NFS Servers</title>
 <description>The steps in this section are appropriate for machines which operate as NFS servers.</description>
@@ -334,8 +337,27 @@ attacker could gain access to data on the NFS server.</rationale>
 <oval id="TO:DO" />
 </Rule>
 
+<Rule id="no_insecure_locks_exports">
+<title>Ensure Insecure File Locking is Not Allowed</title>
+<description>By default the NFS server requires secure file-lock requests, which require credentials
+from the client in order to lock a file. Most NFS clients send credentials with file lock requests,
+however, there are a few clients that do not send credentials when requesting a file-lock, allowing
+the client to only be able to lock world-readable files. To get around this, the <tt>insecure_locks</tt>
+option can be used so these clients can access the desired export. This poses a security risk by
+potentially allowing the client access to data for which it does not have authorization.
+<br /><br />
+This configuration is not recommended and strongly discouraged.
+<br /><br />
+Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>insecure_locks</tt>.
+</description>
+<rationale>Allowing insecure file locking could allow for sensitive data to be viewed or edited by
+an unauthorized user.
+</rationale>
+<ident cce="TO:DO" />
+<oval id="TO:DO" />
+<ref disa="764" />
+</Rule>
+
 </Group> <!-- nfs_configuring_servers -->
 
-</Group>
-</Group>
 </Group>
