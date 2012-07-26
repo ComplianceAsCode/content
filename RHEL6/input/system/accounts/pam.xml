@@ -42,6 +42,19 @@ file syntax can be found at
 http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/sag-configuration-file.html.</warning>
 <ref disa="1391,1392" />
 
+<Value id="password_history_retain_number" type="number"
+operator="equals" interactive="0">
+<title>remember</title>
+<description>The last n passwords for each user are saved in
+<tt>/etc/security/opasswd</tt> in order to force password change history and
+keep the user from alternating between the same password too
+frequently.</description>
+<value selector="">5</value>
+<value selector="0">0</value>
+<value selector="5">5</value>
+<value selector="10">10</value>
+</Value>
+
 <Group id="password_quality">
 <title>Set Password Quality Requirements</title>
 <description>The default <tt>pam_cracklib</tt> PAM module provides strength
@@ -337,20 +350,7 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 <ref nist="IA-5" />
 </Rule>
 
-<Value id="password_history_retain_number" type="number"
-operator="equals" interactive="0">
-<title>remember</title>
-<description>The last n passwords for each user are saved in
-<tt>/etc/security/opasswd</tt> in order to force password change history and
-keep the user from alternating between the same password too
-frequently.</description>
-<value selector="">5</value>
-<value selector="0">0</value>
-<value selector="5">5</value>
-<value selector="10">10</value>
-</Value>
-
-<Group id="limiting_password_reuse">
+<Rule id="limiting_password_reuse">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
@@ -365,6 +365,5 @@ file <tt>/etc/security/opasswd</tt>.</description>
 <ident cce="14939-3" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
 <ref nist="IA-5" disa="200" />
-</Group>
-
+</Rule>
 </Group>
