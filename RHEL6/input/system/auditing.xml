@@ -70,7 +70,7 @@ actions will be taken if other obstacles exist.
 </rationale>
 <ident cce="4292-9" />
 <oval id="service_auditd_enabled" />
-<ref nist="CM-6, CM-7" disa="169,172,174,1353,1462,1487,1115,1454,154,067,158,831,1123,1190,1312,1263,130" />
+<ref nist="CM-6, CM-7" disa="169,172,174,1353,1462,1487,1115,1454,067,158,831,1123,1190,1312,1263,130" />
 </Rule>
 
 <Rule id="enable_auditd_bootloader">
@@ -274,7 +274,7 @@ Setting this to <tt>email</tt> is recommended over the default
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
-<ref disa="140,144" />
+<ref disa="140,143,144" />
 </Rule>
 
 
@@ -298,7 +298,7 @@ audit records. If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
-<ref disa="140,144,1343" />
+<ref disa="140,143,144,1343" />
 </Rule>
 
 
