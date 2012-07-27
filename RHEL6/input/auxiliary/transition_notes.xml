@@ -123,4 +123,131 @@ NIS/NIS+/yp should be disabled, as stated in a Rule in the RHEL 6 content.
 NIS/NIS+/yp are obsolete and should not be running on any modern system.
 </note>
 
+<note ref="756" auth"1augDCM">
+Note that sulogin may be going away in RHEL7. Shawn/Steve to followup.
+Also, need to add in architecture specific details e.g. s390x
+</note>
+
+<note ref="1" auth="1augDCM">
+Current mapping does not meet requirement as it works for passwords, not keys
+Per Steve Grubb there is a patch coming to enable this through PAM, so we can map to met_inherently in RHEL 6.4
+Put more mappings
+Where reqirement says "must provide.." that is a yes/no. We can map to met_inherently.
+Poor CCI that can be restructured -- consider removing
+Perhaps move this to OCIL as interview question
+</note>
+
+<note ref="1372,1373,21" auth="1augDCM">
+Valid requirement but not applicable to STIG-server.
+</note>
+
+<note ref="765" auth="1augDCM">
+Change check proceedure to check audit logs, not lastlog
+</note>
+
+<note ref="769" auth="1augDCM">
+/etc/pam.d/gdm can enforce this, update the check
+</note>
+
+<note ref="774" auth="1augDCM">
+Update guidance to say "don't change from default homedir"
+</note>
+
+<note ref="775" auth="1augDCM">
+chmod to 550 or more restrictive, not 700
+</note>
+
+<note ref="776" auth="1augDCM">
+Reword to allow changes, but ensure we audit them. Language around MUST have absolute paths needs to stay. Path order must be vendor default.
+</note>
+
+<note ref="784" auth="1augDCM">
+This is now default behavior, can be removed
+</note>
+
+
+<note ref="786" auth="1augDCM">
+For filepermission checks, defer to common criteria accepted values
+Need to ensure rpm verify flags such files
+</note>
+
+<note ref="22297" auth="1augDCM">
+for all ACL content we will change to allow ACLs (via group prose) then mandate their audit (via a rule)
+</note>
+
+<note ref="366" auth="1augDCM">
+change chkconfig off to chkconfig --del
+</note>
+
+<note ref="366" auth="1augDCM">
+revisit polyinstantiation for RHEL7
+</note>
+
+<note ref="790" auth="1augDCM">
+Installation of NIS will now be a CAT I finding. NIS to be added to banned package list
+</note>
+
+<note ref="24347" auth="1augDCM">
+Language to be broadened to beyond just CAC cards per PKI-e
+</note>
+
+<note ref="984" auth="1augDCM">
+Disablement of at service to be implimented in RHEL6 STIG
+</note>
+
+<note ref="1023" auth="1augDCM">
+News server content can be removed
+</note>
+
+<note ref="22291,22459,22460" auth="1augDCM">
+This requirement can be removed
+</note>
+
+<note ref="22298" auth="1augDCM">
+value of 10 is fine
+</note>
+
+<note ref="205" auth="1augDCM">
+change value to 15
+</note>
+
+<note ref="199" auth="1augDCM">
+DoD - 60
+IC - 90 days
+</note>
+
+<note ref="1092" auth="1augDCM">
+Update prose to 3
+</note>
+
+<note ref="22299" auth="1augDCM">
+pam lastlog.so noupdate showfailed
+touch /etc/hushlogins
+</note>
+
+<note ref="27276" auth="1augDCM">
+disable account, not remove
+set shell to nologin
+</note>
+
+<note ref="23953" auth="1augDCM">
+met_inherently
+</note>
+
+<note ref="24357" auth="1augDCM">
+change to audit dispatch not rsyslog audsp-auremote
+</note>
+
+<note ref="12049" auth="1augDCM">
+update tool listing
+allow install but allow access by priv users (root, chmod 700)
+</note>
+
+<note ref="12765" auth="1augDCM">
+update to remove vendor specific language
+</note>
+
+<note ref="22355" auth="1augDCM">
+also watch for LD_AUDIT
+</note>
 </notegroup>
