@@ -137,8 +137,8 @@
   <xsl:template name="note-output">
      <xsl:param name="vulnid_sought"/>
      <xsl:param name="vulnid_found"/>
-
-	 <xsl:variable name="vulnid_expanded" select="concat('V-', $vulnid_found)"  />
+	 <xsl:variable name="vulnid_found_normal" select="normalize-space($vulnid_found)"  />
+	 <xsl:variable name="vulnid_expanded" select="concat('V-', $vulnid_found_normal)"  />
 	 <xsl:if test="$vulnid_sought=$vulnid_expanded">
 		<tr><td><xsl:value-of select="@auth"/>: <xsl:value-of select="." /></td></tr>
 	 </xsl:if>
