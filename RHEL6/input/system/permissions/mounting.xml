@@ -59,6 +59,7 @@ the devices themselves should be tightly controlled.</rationale>
 <oval id="kernel_module_usb-storage_disabled" />
 <ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
+<!-- Considering removal of this entirely, in favor of previous Rule
 
 <Rule id="kernel_module_usb-storage_removed">
 <title>Remove USB Storage Driver</title>
@@ -66,7 +67,7 @@ the devices themselves should be tightly controlled.</rationale>
 supporting driver can be permanently removed. Though more effective than disabling the
 module within modprobe, this solution is less elegant than the modprobe method described
 in "Disable Modprobe Loading of USB". The technique described here will cause the
-command <tt>rpm -q --verify kernel</tt> to fail which may be an undesirable side effect.
+command <tt>rpm -V kernel</tt> to fail which may be an undesirable side effect.
 <br /><br />
 To permanently remove the USB storage driver from the system execute this command:
 <pre># rm /lib/modules/<i>KERNEL-VERSION</i>/kernel/drivers/usb/storage/usb-storage.ko</pre>
@@ -80,6 +81,7 @@ the devices themselves should be tightly controlled.</rationale>
 <oval id="kernel_module_usb-storage_removed" />
 <ref nist="CM-6, CM-7" disa="1250,85" />
 </Rule>
+-->
 
 <Rule id="bootloader_nousb_argument">
 <title>Disable Kernel Support for USB via Bootloader Configuration</title>
