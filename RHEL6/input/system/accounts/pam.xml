@@ -53,6 +53,7 @@ frequently.</description>
 <value selector="0">0</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
+<value selector="24">24</value>
 </Value>
 
 <Group id="password_quality">
@@ -361,7 +362,10 @@ the password line which uses the <tt>pam_unix</tt> module in the file
 <tt>/etc/pam.d/system-auth</tt>, as shown:
 <pre>password sufficient pam_unix.so existing_options remember=<sub idref="password_history_retain_number" /></pre>
 Old (and thus no longer valid) passwords are stored in the
-file <tt>/etc/security/opasswd</tt>.</description>
+file <tt>/etc/security/opasswd</tt>.  The DoD requirement is currently 24 passwords.</description>
+<rationale>
+Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
+</rationale>
 <ident cce="14939-3" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
 <ref nist="IA-5" disa="200" />
