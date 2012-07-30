@@ -2,34 +2,103 @@
 <!-- This file enables documentation of how the RHEL 5 STIG requirements
      will be migrated to consensus for RHEL 6. -->
 
-<note ref="792,821,822,828,829,831,832,837,838,840,841,842,843,848,849,
+<note ref="775,786,792,821,822,828,829,831,832,837,838,840,841,842,843,848,849,
 928,929,974,975,978,979,980,981,987,988,989,994,1025,1027,1028,1029,1054,
 1055,1056,1058,1059,4335,4334,4336,4339,4089,4090,4091,4358,4361,4364,
 4365,4367,4368,4369,4370,4371,4393,4394,4430,11997,12019,12038,12039,12040,
 22294,22295,22296,22323,22324,22325,22327,22328,22329,22332,22333,22335,
-22336,22337,22339,22342,22343,22392,22394,22396,22398,22406,22423,22425,
+22336,22337,22342,22343,22392,22394,22396,22398,22406,22423,22425,
 22427,22435,22438,22444,22451,22453,22451,22492,22496,22559,22560,22561" auth="WS">
 This is superceded by the system-wide check for improper permissions provided
 by the package manager. Automating this check became possible with OVAL 5.8.
 </note>
 
-<note ref="" auth="JB">
+<note ref="774,784,788,4342,4385,22319,22320,22321,22322,23953,27275,27276,27279" auth="JB">
 The security argument is not apparent or salient.
 </note>
 
-<note ref="" auth="">
+<note ref="22297,22309,22313,22314,22315,22316,22317,22318,22322,22326,22330,
+22334,22338,22340,22344,22350,22352,22353,22356,22357,22362,22366,22367,
+22373,22384,22386,22387,22388,22389,22390,22393,22395,22407,22424,22426,
+22428,22436,22437,22439,22441,22442,22445,22446,22450,22452,22454,22489,22493,
+22497,22498,22502,22503,22504,22505,22562,22566,22570,22574,22585,22595,22596" auth="JB">
+Existence of an ACL is not necessarily a problem, and checking for existence of ACLs on a random selection of
+files does not achieve any security goals. Alternatives include denying use of any ACLs unless documented, or simply dropping these rules entirely (preferred).
+</note>
+
+<note ref="756,763,773,783,785,4687,4688,11945,11947,11948,11972,11973,12003,22290,22341,22342,22343,24386" auth="JB">
 This is covered in the RHEL6 content.
 </note>
 
-<note ref="" auth="">
+<note ref="11945" auth="JB">
+What is the distinction and purpose of different MAC levels?
+</note>
+
+<note ref="22292" auth="JB">
+This is desirable but not practical in many environments.  Notably, many other OSes
+do not even support this capability.
+</note>
+
+<note ref="761,776,777,780,781,782,4382,11975,12765" auth="JB">
+This needs to be added to the RHEL6 content.
+</note>
+
+<note ref="770,918" auth="JB">
 This is covered in the RHEL6 content in a slightly different manner.
 </note>
 
-<note ref="" auth="">
-The intent of the check procedure is not clear.
+<note ref="12022" auth="JB">
+This is covered in the RHEL6 content in a slightly different manner: iptables is required.
 </note>
 
-<note ref="789,790,791" auth="JB">
+<note ref="12005" auth="JB">
+This is covered in the RHEL6 content in a slightly different manner: xinetd is required to be disabled, and inetd is not available as part of RHEL6.
+</note>
+
+<note ref="11940" auth="JB">
+This could be covered in the RHEL6 content itself, though it seems more like something appropriate for a CTO
+upon retirement of major OS releases?
+</note>
+
+<note ref="4688,4701" auth="JB">
+This is covered in the RHEL6 content in a slightly different manner: xinetd services are not permitted.
+</note>
+
+<note ref="4701" auth="JB">
+Finger is still part of RHEL, and so a separate rule could be created for this if we were so inclined.
+</note>
+
+<note ref="4692,4694,12006" auth="JB">
+Postfix is the mail server on RHEL 6, and items peculiar to sendmail no longer apply.
+</note>
+
+<note ref="4693" auth="JB">
+This needs to be added, but adjusting for Postfix as the mail server on RHEL 6.
+</note>
+
+<note ref="4689" auth="JB">
+Is this not redundant to the system-wide requirement for keeping patches up to date (V-783)?
+</note>
+
+<note ref="4696" auth="JB">
+This package is only available in EPEL.  I suggest that this makes it out of scope.
+</note>
+
+<note ref="803,804" auth="JB">
+Is this not redundant to the system-wide aide check (V-11945)?
+</note>
+
+<note ref="801,802" auth="JB">
+Suggest that this be covered in the RHEL6 content in a slightly different manner: ensuring all setuid programs
+are packaged (which implies vendor provenance).  Also, what is the goal of the documentation?
+</note>
+
+<note ref="769,794,795,796,11946,11977,11979,12024,12025,12049" auth="JB">
+The intent or utility of the check procedure is not clear or not actionable.
+</note>
+
+
+<note ref="789,790,791,12026" auth="JB">
 NIS/NIS+/yp should be disabled, as stated in a Rule in the RHEL 6 content.
 NIS/NIS+/yp are obsolete and should not be running on any modern system.
 </note>
