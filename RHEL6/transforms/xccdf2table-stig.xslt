@@ -34,12 +34,14 @@
 		{
 			border-collapse:collapse;
 		}
-		table,th, td
+		table,th,td
 		{
 			border: 1px solid black;
 			vertical-align: top;
 			padding: 3px;
 		}
+		.bl, table.bl tr td { border:none; }
+		.bbl, table.bbl tr td { border:none; font-weight: bold;}
 		thead
 		{
 			display: table-header-group;
@@ -48,10 +50,24 @@
 		</style>
 		<table>
 			<thead>
+			<xsl:choose>
+			<xsl:when test="$notes">
+			<td>
+			<table class="bbl">
+				<tr><td class="bl">Title</td></tr>
+				<tr><td>V-ID</td></tr>
+				<tr><td>GEN-ID</td></tr>
+				<tr><td>CAT</td></tr>
+			</table>
+			</td>
+			</xsl:when>
+			<xsl:otherwise>
 				<td>V-ID</td>
 				<td>GEN-ID</td>
 				<td>CAT</td>
 				<td>Title</td>
+			</xsl:otherwise>
+			</xsl:choose>
 				<td>Description</td>
 				<td>Check Procedures</td>
 				<td>Fixtext</td>
@@ -68,11 +84,25 @@
 	<xsl:template name="rule-output">
           <xsl:param name="vulnid"/>
 		<tr>
-			<td><xsl:value-of select="@id"/></td> 
-			<!--<td> <xsl:value-of select="cdf:ident" /></td>-->
-			<td> <xsl:value-of select="cdf:title" /></td>
-			<td> <xsl:value-of select="cdf:Rule/@severity" /></td>
-			<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
+			<xsl:choose>
+			<xsl:when test="$notes">
+			<td>
+			<table class="bl">
+					<tr><td><xsl:value-of select="cdf:Rule/cdf:title" /></td></tr>
+					<tr><td><xsl:value-of select="@id"/></td></tr>
+					<tr><td><xsl:value-of select="cdf:title" /></td></tr>
+					<tr><td><xsl:value-of select="cdf:Rule/@severity" /></td></tr>
+			</table>
+			</td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td><xsl:value-of select="@id"/></td> 
+				<!--<td> <xsl:value-of select="cdf:ident" /></td>-->
+				<td> <xsl:value-of select="cdf:title" /></td>
+				<td> <xsl:value-of select="cdf:Rule/@severity" /></td>
+				<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
+			</xsl:otherwise>
+			</xsl:choose>
 			<td> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="cdf:Rule/cdf:description"/></xsl:call-template> </td>
 			<td> <xsl:value-of select="cdf:Rule/cdf:check/cdf:check-content"/> </td>
 			<td> <xsl:value-of select="cdf:Rule/cdf:fixtext"/> </td>
