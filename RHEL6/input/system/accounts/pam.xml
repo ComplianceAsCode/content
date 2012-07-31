@@ -164,6 +164,15 @@ passwords</warning>
 <value selector="4">4</value>
 <value selector="5">5</value>
 </Value>
+<Value id="var_accounts_passwords_pam_faillock_deny" type="number"
+operator="equals" interactive="0">
+<title>fail_deny</title>
+<description>Number of failed login attempts before account lockout</description>
+<value selector="">5</value>
+<value selector="3">3</value>
+<value selector="5">5</value>
+<value selector="10">10</value>
+</Value>
 
 <Rule id="password_retry">
 <title>Set Password Retry Prompts Permitted Per-session</title>
@@ -298,9 +307,9 @@ attempts using
 <tt>pam_faillock.so</tt>,
 <br /><br />
 Find the following line in <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth sufficient pam_unix.so nullok try_first_pass</pre>
+<pre>auth sufficient pam_unix.so try_first_pass</pre>
 and then change it so that it reads as follows:
-<pre>auth required pam_unix.so nullok try_first_pass</pre>
+<pre>auth required pam_unix.so try_first_pass</pre>
 In the same file, comment out or delete the lines:
 <pre>auth requisite pam_succeed_if.so uid &gt;= 500 quiet
 auth required pam_deny.so</pre>
@@ -308,17 +317,19 @@ To enforce password
 lockout, add the following to <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>.
 First, add the following just before the pam_unix.so auth line:
 <pre>auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900</pre>
-<!-- TOOD: this implies we need to create a Value and associated refine-value -->
 Second, add the following two lines just after the pam_unix.so auth line:
 <pre>auth     [default=die]  pam_faillock.so authfail audit deny=5 unlock_time=900
 auth     sufficient     pam_faillock.so authsucc audit deny=5 unlock_time=900</pre>
+<ul><li>NOTE: The DoD requires accounts be locked out after 3 failed login attempts,
+accomplished by changing the value of the <tt>deny</tt> option to <i>3</i> in the example
+above.</li></ul>
 </description>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
 <ident cce="3410-8" />
-<oval id="accounts_passwords_pam_faillock_deny" />
+<oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
 <ref nist="AC-7, CM-6" disa="1452,44,47" />
 </Rule>
 
