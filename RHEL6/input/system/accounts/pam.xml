@@ -316,10 +316,10 @@ auth required pam_deny.so</pre>
 To enforce password
 lockout, add the following to <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>.
 First, add the following just before the pam_unix.so auth line:
-<pre>auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900</pre>
+<pre>auth required pam_faillock.so preauth audit silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=900</pre>
 Second, add the following two lines just after the pam_unix.so auth line:
-<pre>auth     [default=die]  pam_faillock.so authfail audit deny=5 unlock_time=900
-auth     sufficient     pam_faillock.so authsucc audit deny=5 unlock_time=900</pre>
+<pre>auth     [default=die]  pam_faillock.so authfail audit deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=900
+auth     sufficient     pam_faillock.so authsucc audit deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=900</pre>
 <ul><li>NOTE: The DoD requires accounts be locked out after 3 failed login attempts,
 accomplished by changing the value of the <tt>deny</tt> option to <i>3</i> in the example
 above.</li></ul>
