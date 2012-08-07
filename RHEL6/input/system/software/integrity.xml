@@ -180,16 +180,31 @@ on the system.</rationale>
 
 <Group id="antivirus">
 <title>Virus Scanning</title>
-<description>Virus scanning software should be used to protect a system from penetration from
-computer viruses and to limit their spread through intermediate systems. The virus scanning
-software should be configured to perform scans dynamically on accessed files. If this capability
-is not available, the system should be configured to scan, at a minimum, all altered files on
-the system on a daily basis.
+<description>In order to minimize potential negative impact to the organization that can
+be caused by malicious code, it is imperative that malicious code is identified and
+eradicated. Virus scanning software should be used to protect a system from penetration
+from computer viruses and to limit their spread through intermediate systems. 
+</description>
+
+<Rule id="install_antivirus">
+<title>Install Virus Scanning Software</title>
+<description>Virus scanning software should be installed and configured to perform scans
+dynamically on accessed files. If this capability is not available, the system should be
+configured to scan, at a minimum, all altered files on the system on a daily basis.
 <br /><br />
 Virus signature definition files should be updated frequently. It is recommended that definition
 files be updated at least every 7 days.
 </description>
-<ref disa="1668"/>
+<rationale>
+In order to minimize potential negative impact to the organization caused by malicious
+code, it is imperative that malicious code is identified and eradicated prior to entering
+protected enclaves.
+</rationale>
+<ident cce="TODO" />
+<oval id="TODO" />
+<ref disa="1239,1668"/>
+</Rule>
+
 </Group>
 
 </Group>
