@@ -1,62 +1,63 @@
 <Group id="restrictions">
 <title>Restrict Programs from Dangerous Execution Patterns</title>
-<description>The recommendations in this section provide broad
-protection against information disclosure or other misbehavior.
+<description>The recommendations in this section are designed to
+ensure that the system's features to protect against potentially
+dangerous program execution are activated.
 These protections are applied at the system initialization or
 kernel level, and defend against certain types of badly-configured
 or compromised programs.</description>
 
+
+
 <Group id="daemon_umask">
-<title>Set Daemon umask</title>
-<description>The settings file <tt>/etc/sysconfig/init</tt> contains
-settings which apply to all processes started at boot time. The
-system umask must be set to at least 022, or daemon processes may
-create world-writable files. The more restrictive setting 027
-protects files, including temporary files and log files, from
-unauthorized reading by unprivileged users on the system.
-<br /><br />
-If a particular daemon needs a less restrictive umask,
-consider editing the startup script or sysconfig file of that
-daemon to make a specific exception.</description>
+<title>Daemon Umask</title>
+<description>The umask is a per-process setting which limits
+the default permissions for creation of new files and directories.
+The system includes initialization scripts which set the default umask
+for system daemons.
+</description>
 
 <Value id="var_umask_for_daemons" type="string" operator="equals" interactive="0">
 <title>daemon umask</title>
 <description>Enter umask for daemons</description>
-<value selector="">027</value>
+<value selector="">022</value>
 <value selector="022">022</value>
 <value selector="027">027</value>
 </Value>
 
 <Rule id="set_daemon_umask">
-<title>Set Daemon umask</title>
-<description>The daemon umask should be set as appropriate</description>
-<rationale>The umask influences the permissions assigned to files created by a process at run time.
-A misconfigured umask could result in files being assigned extremely generous permissions upon creation.</rationale>
+<title>Set Daemon Umask</title>
+<description>The file <tt>/etc/init.d/functions</tt> includes initialization
+parameters for most or all daemons started at boot time.  The default umask of
+022 prevents creation of group- or world-writable files.  To set the default
+umask for daemons, edit the following line, inserting 022 or 027 for
+<i>UMASK</i> appropriately:
+<pre>umask <i>UMASK</i></pre>
+Setting the umask to too restrictive a setting can cause serious errors at
+runtime.  Many daemons on the system already individually restrict themselves to
+a umask of 077 in their own init scripts.
+</description>
+<rationale>The umask influences the permissions assigned to files created by a
+process at run time.  An unnecessarily permissive umask could result in files
+being created with insecure permissions.</rationale>
 <ident cce="4220-0" />
 <oval id="umask_for_daemons" value="var_umask_for_daemons"/>
 <ref nist="AC-3, CM-6"/>
 </Rule>
+
 </Group>
 
 <Group id="coredumps">
 <title>Disable Core Dumps</title>
 <description>A core dump file is the memory image of an executable
 program when it was terminated by the operating system due to
-errant behavior. In most cases, only software developers would
+errant behavior. In most cases, only software developers
 legitimately need to access these files. The core dump files may
 also contain sensitive information, or unnecessarily occupy large
 amounts of disk space.
 <br /><br />
-By default, the system sets a soft limit to stop the creation
-of core dump files for all users. This is accomplished in
-<tt>/etc/profile</tt> with the line: <tt>ulimit -S -c 0 &gt; /dev/null
-2$gt;&amp;1</tt>. However, compliance with this limit is voluntary; it is
-a default intended only to protect users from the annoyance of
-generating unwanted core files. Users can increase the allowed core
-file size up to the hard limit, which is unlimited by default.
-<br /><br />
-Once a hard limit is set in <tt>/etc/security/limits.conf</tt>, the
-user cannot increase that limit within his own session. If access
+Once a hard limit is set in <tt>/etc/security/limits.conf</tt>, a
+user cannot increase that limit within his or her own session. If access
 to core dumps is required, consider restricting them to only
 certain users or groups. See the <tt>limits.conf</tt> man page for more
 information.
@@ -68,10 +69,12 @@ value of 0 is recommended.</description>
 
 <Rule id="disable_users_coredumps">
 <title>Disable Core Dumps for all users</title>
-<description>Core dumps for all users should be disabled.</description>
-<rationale>The core dump includes a memory image taken at the time the operating system
-terminates an application. The memory image often contains sensitive data. The creation
-of these files should be prevented.</rationale>
+<description>To disable core dumps for all users, add the following line to <tt>/etc/security/limits.conf</tt>:
+<pre>*     hard   core    0</pre>
+</description>
+<rationale>A core dump includes a memory image taken at the time the operating system
+terminates an application. The memory image could contain sensitive data and is generally useful
+only for developers trying to debug problems.</rationale>
 <ident cce="4225-9" />
 <oval id="core_dumps_limitsconf" />
 <ref nist="SC-5" />
@@ -80,10 +83,12 @@ of these files should be prevented.</rationale>
 
 <Rule id="disable_setuid_coredumps">
 <title>Disable Core Dumps for SUID programs</title>
-<description>Core dumps for setuid programs should be disabled.</description>
-<rationale>The core dump includes a memory image taken at the time the operating system
-terminates an application. The memory image often contains sensitive data. The creation
-of these files should be prevented.</rationale>
+<description><sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" /></description>
+<rationale>The core dump of a setuid program is more likely to contain
+sensitive data, as the program itself runs with greater privileges than the
+user who initiated execution of the program.  Disabling the ability for any
+setuid program to write a core file decreases the risk of unauthorized access
+of such data.</rationale>
 <ident cce="4247-3" />
 <oval id="core_dump_suid_progs_limits_conf" />
 <ref nist="SI-11" />
@@ -92,51 +97,44 @@ of these files should be prevented.</rationale>
 
 <Group id="enable_execshield_settings">
 <title>Enable ExecShield</title>
-<description>ExecShield comprises a number of kernel features to
-provide protection against buffer overflows. These features include
-random placement of the stack and other memory regions, prevention
-of execution in memory that should only hold data, and special
-handling of text buffers. This protection is enabled by default,
-but the <tt>sysctl</tt> variables <tt>kernel.exec-shield</tt> and
-<tt>kernel.randomize_va_space</tt> should be checked to ensure that it
-has not been disabled.
-<br /><br />
-ExecShield uses the segmentation feature on all x86 systems
+<description>ExecShield describes kernel features that provide
+protection against exploitation of memory corruption errors such as buffer
+overflows. These features include random placement of the stack and other
+memory regions, prevention of execution in memory that should only hold data,
+and special handling of text buffers. These protections are enabled by default and
+controlled through <tt>sysctl</tt> variables <tt>kernel.exec-shield</tt> and
+<tt>kernel.randomize_va_space</tt>.
+</description>
+
+<Rule id="enable_execshield">
+<title>Enable ExecShield</title>
+<description><sysctl-desc-macro sysctl="kernel.exec-shield" value="1" /></description>
+<rationale>ExecShield uses the segmentation feature on all x86 systems
 to prevent execution in memory higher than a certain address. It
 writes an address as a limit in the code segment descriptor, to
 control where code can be executed, on a per-process basis. When
 the kernel places a process's memory regions such as the stack and
-heap higher than this address, the hardware prevents execution
-there. However, this cannot always be done for all memory regions
-in which execution should not occur, so follow guidance in Section
-2.2.4.4 to further protect the system.</description>
-
-<Rule id="enable_execshield">
-<title>Enable ExecShield</title>
-<description>ExecShield should be enabled</description>
-<rationale>The ExecShield feature can be used to render malware harmless. It should be enabled.</rationale>
+heap higher than this address, the hardware prevents execution in that
+address range.</rationale>
 <ident cce="4168-1" />
 <oval id="sysctl_kernel_exec_shield" />
 <ref nist="CM-7" />
 </Rule>
 
 <Rule id="enable_randomize_va_space">
-<title>Enable ExecShield randomized placement of virtual
-memory regions</title>
-<description>ExecShield randomized placement of virtual memory
-regions should be enabled</description>
-<rationale>
-This makes it more difficult for an attacker to predict the location of
-attack code they've introduced into the address space. It also makes it
-more difficult for an attacker to know the
-location of existing code in order to re-purpose it via ROP.
+<title>Enable Randomized Layout of Virtual Address Space</title>
+<description><sysctl-desc-macro sysctl="kernel.randomize_va_space" value="1" /></description>
+<rationale> Address space layout randomization (ASLR) makes it more difficult
+for an attacker to predict the location of attack code he or she has introduced
+into a process's address space during an attempt at exploitation.  ASLR also
+makes it more difficult for an attacker to know the location of existing code
+in order to re-purpose it using return oriented programming (ROP) techniques.
 </rationale>
 <ident cce="4146-7" />
 <oval id="sysctl_kernel_randomize_va_space" />
 <ref nist="AC-3, CM-6" />
 </Rule>
 </Group>
-
 
 
 <Group id="enable_nx">
@@ -177,9 +175,9 @@ PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) 
 
 <Rule id="bios_enable_execution_restrictions">
 <title>Enable NX or XD Support in the BIOS</title>
-<description>Reboot the system and enter the BIOS or “Setup” configuration menu.
+<description>Reboot the system and enter the BIOS or Setup configuration menu.
 Navigate the BIOS configuration menu and make sure that the option is enabled. The setting may be located
-under a “Security” section. Look for Execute Disable (XD) on Intel-based systems and No Execute (NX)
+under a Security section. Look for Execute Disable (XD) on Intel-based systems and No Execute (NX)
 on AMD-based systems.</description>
 <rationale>Computers with the ability to prevent this type of code execution frequently put an option in the BIOS that will
 allow users to turn the feature on or off at will.</rationale>
