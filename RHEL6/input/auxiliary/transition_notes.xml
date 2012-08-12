@@ -261,4 +261,311 @@ update to remove vendor specific language
 <note ref="22355" auth="1augDCM">
 also watch for LD_AUDIT
 </note>
+
+<note ref="814" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
+appears to already exist. 
+rule=audit_file_access manual=no
+</note>
+
+<note ref="815" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
+appears to already exist. 
+rule=audit_rules_file_deletion_events manual=no
+</note>
+
+<note ref="818" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
+appears to already exist. 
+rule=audit_manual_logon_edits manual=no
+Has no NIST controls associated
+</note>
+
+<note ref="819" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
+appears to already exist. 
+rule=audit_rules_dac_modification manual=no
+</note>
+
+<note ref="833" auth="KS">
+Sendmail is no longer shipped by default.  Postfix is the default instead.
+Equivilent check does not exist in the RHEL6 prose, it can be automated and 
+the OVAL for it does not appear to already exist. 
+rule=null manual=no
+</note>
+
+<note ref="834" auth="KS">
+Sendmail is no longer shipped by default.  Postfix is the default instead.
+Equivilent check does not exist in the RHEL6 prose, it can be automated and 
+the OVAL for it does not appear to already exist. 
+rule=null manual=no
+</note>
+
+<note ref="836" auth="KS">
+Sendmail is no longer shipped by default.  Postfix is the default instead.
+rsyslog is used instead of syslog
+Check exists in multiple places in the RHEL6 prose, it can be automated and 
+the OVAL for it appears to already exist. 
+rule=postfix_logging manual=no
+group=ensure_rsyslog_log_file_configuration (redundant?)
+Has no cce associated
+</note>
+
+<note ref="845,850,903,913" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist. 
+rule=null manual=no
+</note>
+
+<note ref="846" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist. 
+rule=null manual=no
+At the same time, does this check make sense?  Given the many security issues
+present in ftp, does requiring credentials really provide authentication of
+the user?
+</note>
+
+<note ref="901" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist. 
+rule=null manual=no
+By default new home directories will be given 700 perms.
+</note>
+
+<note ref="904,905,914,915,924,986,993,995,1021,1022,1046,4087,4268, 
+4346,4357,4360,4366" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist. 
+rule=null manual=no
+</note>
+
+<note ref="906" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for
+it does not appear to already exist. 
+rule=null manual=no
+This check should be superceeded by the system-wide check for improper 
+permissions provided by the package manager. Automating this check became 
+possible with OVAL 5.8
+</note>
+
+<note ref="907" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist. 
+rule=null manual=no
+This should not occur.  If such a case is identified it should be brought to
+the vendor for correction as a bug in the product.
+</note>
+
+<note ref="923" auth="KS">
+Check does not exist in the RHEL6 prose, it cannot be entirely automated and 
+the OVAL for it does not appear to already exist. r
+ule=null manual=yes
+A simple example, a cronjob can be made to look for devices and compare to 
+previous lists but still requires someone to review it which is a manual 
+process
+</note>
+
+<note ref="925" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist. 
+rule=null manual=no
+Check seems redundant with V-924
+</note>
+
+<note ref="932" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+does not appear to already exist.
+group=specify_anonymous_uid_gid manual=no
+</note>
+
+<note ref="933" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+does not appear to already exist.
+group=export_filesystems_read_only manual=no
+</note>
+
+<note ref="935" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+does not appear to already exist.
+rule=use_root_squashing_all_exports manual=no
+</note>
+
+<note ref="936" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+appears to already exist.
+rule=use_nosuid_option_on_nfs_mounts manual=no
+</note>
+
+<note ref="940" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist.
+rule=blank manual=no
+There are some mentions in the RHEL6 prose (group=nfs_restrict_access_rpcbind) 
+of using TCP Wrappers to protect certain versions of NFS but nothing specific 
+which may be the intent as this check is not at all specific either.
+</note>
+
+<note ref="941,982" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+appears to already exist.
+rule=ensure_rsyslog_log_file_configuration manual=no
+</note>
+
+<note ref="974" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+appears to already exist.
+group=restrict_at_cron_users manual=no
+</note>
+
+<note ref="976,1010" auth="KS">
+Partial check exists in the RHEL6 prose, it can be automated and the OVAL for it
+appears to already exist.
+rule=world_writable_files manual=no
+Check is addressed by the world_writable_files_system_ownership rule to find
+any files that are world writable but not system owned.  System file 
+permissions are addressed through the rpm verification check
+</note>
+
+<note ref="977" auth="KS">
+Partial check exists in the RHEL6 prose, it can be automated and the OVAL for it
+appears to already exist.
+rule=world_writable_files_system_ownership manual=no
+Check is addressed by the world_writable_files_system_ownership rule to find
+any files that are world writable but not system owned.  System file 
+permissions are addressed through the rpm verification check
+</note>
+
+<note ref="983,1048,1049,1061" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for it
+does not appear to already exist.
+rule=null manual=no
+This and others like it should be covered under a new section targeting 
+permissions in key directories
+</note>
+
+<note ref="984,985" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it
+does not appear to exist.
+rule=restrict_at_cron_users manual=no
+This and others like it should be covered under a new section targeting 
+permissions in key directories
+</note>
+
+<note ref="1013" auth="KS">
+Check exists in the RHEL6 prose, it cannot be automated and the OVAL/OCIL for
+it does not exist.
+rule=bios_disable_usb_boot manual=yes
+</note>
+
+<note ref="1030" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+does not appear to exist.
+rule=smb_restrict_file_sharing manual=no
+</note>
+
+<note ref="1030" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+does not appear to exist.
+rule=password_min_age manual=no
+</note>
+
+<note ref="1032" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it
+partially exists.
+rule=password_min_age manual=no
+Guide and oval address changing the defaults but don't address the current
+values
+</note>
+
+<note ref="1062" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for it 
+not exist.
+rule=null manual=no
+Not sure what the argument is for singling these specific things out.
+</note>
+
+<note ref="4083" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=enable_screensaver_after_idle manual=no
+</note>
+
+<note ref="4084" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=limiting_password_reuse manual=no
+</note>
+
+<note ref="4249" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=bootloader_password manual=no
+</note>
+
+<note ref="4250" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does not exist.
+rule=null manual=no
+System file permissions will be addressed through the rpm verification check
+</note>
+
+<note ref="4269" auth="KS">
+Check does not exist in the RHEL6 prose, it cannot be automated and the OVAL 
+for it does not exist.
+rule=null manual=yes
+</note>
+
+<note ref="4273,4274,4275,4276,4277,4278" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL 
+for it does not exist.
+rule=null manual=yes
+This no longer ships in the default repo's.  Should be removed.
+</note>
+
+<note ref="4295" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=sshd_allow_only_protocol2 manual=no
+</note>
+
+<note ref="4298" auth="KS">
+Check does not exists in the RHEL6 prose, it can be automated and the OVAL for 
+it does not exist.
+rule=null manual=no
+We do have a section for addressing these sorts of items under the group 
+root_logins, but this particular concern is not addressed.
+</note>
+
+<note ref="4301" auth="KS">
+Check does not exists in the RHEL6 prose, it cannot be automated and the OVAL 
+for it does not exist.
+rule=null manual=yes
+Cannot programmatically determine if a server is a "valid" DoD time source
+without maintaining a exhaustive list of potentially sensitive information
+</note>
+
+<note ref="4304" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for
+it does not exist.
+rule=null manual=no
+This check doesn't actually determine if the file system is making use of 
+journaling.  Is it necessary to carry this forward?
+</note>
+
+<note ref="4321" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=disable_smb_server manual=no
+</note>
+
+<note ref="4384" auth="KS">
+Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=postfix_server_banner manual=no
+</note>
+
+
+
+
 </notegroup>
