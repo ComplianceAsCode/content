@@ -3,14 +3,45 @@
      will be migrated to consensus for RHEL 6. -->
 
 
-<note ref="4246,4247,4248,4255" auth="JB">
+<note ref="760,923,925,4246,4247,4248,4255,4357,4398,11986,12018,12020,12021,
+22310,22311,22578,22579,27251,22579,22580,27251" auth="JB">
 This is a manual/procedural check that requires human intervention.
 How to handle this for a specific OS's STIG is currently under consideration.
+</note>
+
+<note ref="22363,22354,22355,22359,22360,22364" auth="JB">
+This needs to be considered for a new group that involves ensuring LD_LIBRARY_PATH,
+LD_PRELOAD, LD_AUDIT, and relative paths do not occur in a particular set of initialization files.
+At the same time, this represents a level of misconfiguration-checking
+that may not be appropriate for a baseline.
+</note>
+
+<note ref="22361" auth="JB">
+Isn't this redundant to V-914 and V-915?
+</note>
+
+<note ref="12024" auth="JB">
+This rule is made irrelevant by the advent of browser-based IM clients.
+</note>
+
+
+<note ref="12025" auth="JB">
+The intent of the check is addressed effectively only by network traffic filtering/inspection.
+</note>
+
+
+<note ref="27285" auth="JB">
+We are manually inspecting the well-formedness of certain configuration files? What?
 </note>
 
 <note ref="793,787,901,902,903,904,905,906,750,924,925,11982" auth="JB">
 This will be superceded by a new section describing expectations for permissions
 contained in certain important directories.
+</note>
+
+<note ref="22370,22371,22372,22365" auth="JB">
+This is superceded by the system-wide check for improper permissions provided
+by the package manager. Automating this check became possible with OVAL 5.8.
 </note>
 
 <note ref="775,786,792,821,822,828,829,831,832,837,838,840,841,842,843,848,849,
@@ -37,7 +68,7 @@ Existence of an ACL is not necessarily a problem, and checking for existence of 
 files does not achieve any security goals. Alternatives include denying use of any ACLs unless documented, or simply dropping these rules entirely (preferred).
 </note>
 
-<note ref="756,763,773,783,785,797,798,800,806,807,847,867,4687,4688,11945,11947,11948,11972,11973,12003,22290,22341,22342,22343,24386" auth="JB">
+<note ref="756,763,773,783,785,797,798,800,806,807,847,867,4687,4688,11945,11947,11948,11972,11973,12003,22290,22341,22342,22343,22576,22584,24386" auth="JB">
 This is covered in the RHEL6 content.
 </note>
 
@@ -182,7 +213,11 @@ For filepermission checks, defer to common criteria accepted values
 Need to ensure rpm verify flags such files
 </note>
 
-<note ref="22297" auth="1augDCM">
+<note ref="22297,22309,22313,22314,22315,22316,22317,22318,22322,22326,22330,
+22334,22338,22340,22344,22350,22352,22353,22356,22357,22362,22366,22367,
+22373,22384,22386,22387,22388,22389,22390,22393,22395,22407,22424,22426,
+22428,22436,22437,22439,22441,22442,22445,22446,22450,22452,22454,22489,22493,
+22497,22498,22502,22503,22504,22505,22562,22566,22570,22574,22585,22595,22596" auth="1augDCM">
 for all ACL content we will change to allow ACLs (via group prose) then mandate their audit (via a rule)
 </note>
 
@@ -203,7 +238,7 @@ Language to be broadened to beyond just CAC cards per PKI-e
 </note>
 
 <note ref="984" auth="1augDCM">
-Disablement of at service to be implimented in RHEL6 STIG
+Disablement of at service to be implemented in RHEL6 STIG
 </note>
 
 <note ref="1023" auth="1augDCM">
@@ -236,7 +271,7 @@ pam lastlog.so noupdate showfailed
 touch /etc/hushlogins
 </note>
 
-<note ref="27276" auth="1augDCM">
+<note ref="810,27276" auth="1augDCM">
 disable account, not remove
 set shell to nologin
 </note>
