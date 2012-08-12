@@ -3,6 +3,7 @@ OUT = output
 TRANS = transforms
 REFS = references
 DIST = dist
+ID = scap-security-guide
 
 all: shorthand-guide shorthand2xccdf tables guide checks content dist
 
@@ -65,29 +66,34 @@ tables: table-refs table-profilenistrefs table-srgmap table-stigs
 
 content: shorthand-guide shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
-#	the second argument controls the IDs, as well as the output filenames.
-#	thus, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
-	$(TRANS)/relabelids.py rhel6-xccdf.xml scap-security-guide
+#	its second argument controls the IDs, as well as the output filenames.
+#	thus, with ID set to scap-security-guide, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
+	$(TRANS)/cpe_generate.py $(OUT)/rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml $(ID)
+	$(TRANS)/relabelids.py rhel6-xccdf.xml $(ID)
+
 
 validate:
-	oscap xccdf validate-xml $(OUT)/rhel6-xccdf-scap-security-guide.xml
-	oscap oval validate-xml $(OUT)/rhel6-oval-scap-security-guide.xml
+	oscap xccdf validate-xml $(OUT)/rhel6-xccdf-$(ID).xml
+	oscap oval validate-xml $(OUT)/rhel6-oval-$(ID).xml
+	oscap oval validate-xml $(OUT)/rhel6-cpe-oval-$(ID).xml
 
 eval-test:
-	oscap xccdf eval --profile test $(OUT)/rhel6-xccdf-scap-security-guide.xml
+	oscap xccdf eval --profile test $(OUT)/rhel6-xccdf-$(ID).xml
 
 eval-ftp:
-	oscap xccdf eval --profile ftp $(OUT)/rhel6-xccdf-scap-security-guide.xml
+	oscap xccdf eval --profile ftp $(OUT)/rhel6-xccdf-$(ID).xml
 
 eval-common:
-	oscap xccdf eval --profile common --results /tmp/results-test.xml $(OUT)/rhel6-xccdf-scap-security-guide.xml
+	oscap xccdf eval --profile common --results /tmp/results-test.xml $(OUT)/rhel6-xccdf-$(ID).xml
 
 # items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/guide $(DIST)/content $(DIST)/policytables
 	cp $(OUT)/rhel6-guide.html $(DIST)/guide
-	cp $(OUT)/rhel6-xccdf-scap-security-guide.xml $(DIST)/content
-	cp $(OUT)/rhel6-oval-scap-security-guide.xml $(DIST)/content
+	cp $(OUT)/rhel6-xccdf-$(ID).xml $(DIST)/content
+	cp $(OUT)/rhel6-oval-$(ID).xml $(DIST)/content
+	cp $(OUT)/rhel6-cpe-dictionary-$(ID).xml $(DIST)/content
+	cp $(OUT)/rhel6-cpe-oval-$(ID).xml $(DIST)/content
 	cp $(OUT)/rhel6-table-* $(DIST)/policytables
 
 #install:
