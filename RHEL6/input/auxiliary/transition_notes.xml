@@ -324,14 +324,14 @@ rule=audit_rules_dac_modification manual=no
 
 <note ref="833" auth="KS">
 Sendmail is no longer shipped by default.  Postfix is the default instead.
-Equivilent check does not exist in the RHEL6 prose, it can be automated and 
+Equivalent check does not exist in the RHEL6 prose, it can be automated and 
 the OVAL for it does not appear to already exist. 
 rule=null manual=no
 </note>
 
 <note ref="834" auth="KS">
 Sendmail is no longer shipped by default.  Postfix is the default instead.
-Equivilent check does not exist in the RHEL6 prose, it can be automated and 
+Equivalent check does not exist in the RHEL6 prose, it can be automated and 
 the OVAL for it does not appear to already exist. 
 rule=null manual=no
 </note>
@@ -369,7 +369,9 @@ By default new home directories will be given 700 perms.
 </note>
 
 <note ref="904,905,914,915,924,986,993,995,1021,1022,1046,4087,4268, 
-4346,4357,4360,4366" auth="KS">
+4346,4357,4360,4366,11985,11986,11989,11995,12030,22302,22304,22308,
+22348,22349,22374,22378,22382,22408,22415,22421,22430,22447,22448,
+22449,22473,22475,22485,22486,22487,22488" auth="KS">
 Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
 it does not appear to already exist. 
 rule=null manual=no
@@ -394,8 +396,8 @@ the vendor for correction as a bug in the product.
 
 <note ref="923" auth="KS">
 Check does not exist in the RHEL6 prose, it cannot be entirely automated and 
-the OVAL for it does not appear to already exist. r
-ule=null manual=yes
+the OVAL for it does not appear to already exist. 
+rule=null manual=yes
 A simple example, a cronjob can be made to look for devices and compare to 
 previous lists but still requires someone to review it which is a manual 
 process
@@ -441,10 +443,10 @@ of using TCP Wrappers to protect certain versions of NFS but nothing specific
 which may be the intent as this check is not at all specific either.
 </note>
 
-<note ref="941,982" auth="KS">
+<note ref="941,982,1204" auth="KS">
 Check exists in the RHEL6 prose, it can be automated and the OVAL for it
-appears to already exist.
-rule=ensure_rsyslog_log_file_configuration manual=no
+does not appear to exist.
+group=ensure_rsyslog_log_file_configuration manual=no
 </note>
 
 <note ref="974" auth="KS">
@@ -471,12 +473,13 @@ any files that are world writable but not system owned.  System file
 permissions are addressed through the rpm verification check
 </note>
 
-<note ref="983,1048,1049,1061" auth="KS">
-Check does not exist in the RHEL6 prose, it can be automated and the OVAL for it
-does not appear to already exist.
+<note ref="983,1048,1049,1061,11981,11983,11984,11990,11994,12014,22351,
+22369,22385,22391,22397,22405,22440,22471,22472,22567,22568,22569,22571,
+22572,22573,22586,22587,22702,29289" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not appear to already exist.
 rule=null manual=no
-This and others like it should be covered under a new section targeting 
-permissions in key directories
+A new section targeting permissions in key directories will be added.
 </note>
 
 <note ref="984,985" auth="KS">
@@ -580,7 +583,7 @@ Cannot programmatically determine if a server is a "valid" DoD time source
 without maintaining a exhaustive list of potentially sensitive information
 </note>
 
-<note ref="4304" auth="KS">
+<note ref="4304,22422" auth="KS">
 Check does not exist in the RHEL6 prose, it can be automated and the OVAL for
 it does not exist.
 rule=null manual=no
@@ -600,7 +603,313 @@ does exist.
 rule=postfix_server_banner manual=no
 </note>
 
+<note ref="4387" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not exist.
+rule=null manual=no
+If we must include a section on ftp we should at least require it be done over
+SSH.
+</note>
+
+<note ref="4392" auth="KS">
+Check does not exist in the RHEL6 prose, it cannot be automated and the OVAL 
+for it does not exist.
+rule=null manual=yes
+This is not really feasible without maintaining an exhaustive list which 
+constantly changes.  Also, why NMS?  We're allowed to run unauthorized s/w
+on non-NMS systems?
+</note>
+
+<note ref="4395,22455" auth="KS">
+Partial check does exists in the RHEL6 prose, it cannot be entirely automated 
+and partial OVAL check for it does exist.
+rule=rsyslog_send_messages_to_logserver manual=yes
+We can verify that logs are sent to a remote server but we cannot determine in 
+an automated fashion if it is "justified and documented using site-defined 
+procedures."
+</note>
+
+<note ref="4397" auth="KS">
+Partial check does exists in the RHEL6 prose, it can be automated an OVAL check 
+for it appears to exist.
+rule=disable_dhcp_client manual=no
+</note>
+
+<note ref="4399,11987,11988" auth="KS">
+Check in the RHEL6 prose requires NIS not be installed, it can be automated and 
+an OVAL check for it appears to exist.
+rule=uninstall_ypserv manual=no
+Let NIS die.
+</note>
+
+<note ref="4427,4428" auth="KS">
+Check in the RHEL6 prose requires most if not all of these files be removed, 
+it can be automated and an OVAL check for it appears to exist.
+rule=no_rsh_trust_files manual=no
+What "r-commands" are we suggesting be used with these? V-11988 wants these 
+removed anyway.
+</note>
+
+<note ref="4430" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not exist.
+rule=null manual=no
+This is root:root by default.  A new section will be added discussing 
+permissions on key files.
+</note>
 
 
+<note ref="4689" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not exist.
+rule=null manual=no
+Wouldn't this also be covered by V-783 on keeping the system patched?
+</note>
+
+<note ref="4689,4691" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
+it does not exist.
+rule=null manual=no
+Wouldn't this also be covered by V-783 on keeping the system patched?
+</note>
+
+<note ref="4695" auth="KS">
+Check does exist in the RHEL6 prose to deny use of TFTP, it can be automated 
+and the OVAL for it does exist.
+rule=tftp-server manual=no
+Is it not necessary for other software on the system to be authorized and 
+approved? 
+</note>
+
+<note ref="4697,12016,12017" auth="KS">
+Check does not exist in the RHEL6 prose, it cannot be automated 
+and the OVAL for it does not exist.
+rule=null manual=yes
+Without knowing what hosts should be trusted we can't do this, we don't really
+want to either.  X has numerous issues.  If remote connections to X must be 
+used it should be tunneled over something such as SSH.
+</note>
+
+<note ref="4702" auth="KS">
+Check does not exist in the RHEL6 prose, it cannot be automated
+and the OVAL for it does not exist.
+rule=null manual=yes
+No automated means to determine presence in DMZ. We should not be allowing FTP.
+</note>
+
+<note ref="11976" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=password_max_age manual=yes
+</note>
+
+<note ref="11980" auth="KS">
+Partial check for authpriv does exist in the RHEL6 prose, it can be automated 
+and the OVAL for it does exist.
+group=ensure_rsyslog_log_file_configuration manual=no
+The authpriv portion seems to be covered in several different places (V-12004,
+V-941).  The value provided by the second half of this is not apparent and not
+in the RHEL6 prose.
+</note>
+
+<note ref="11996" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+appears to exist.
+rule=disable_users_coredumps manual=no
+</note>
+
+<note ref="11999" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=enable_execshield manual=no
+</note>
+
+<note ref="12002" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=set_sysctl_net_ipv4_conf_all_accept_source_route manual=no
+This check is split in the RHEL6 prose and addressed in the rule listed above 
+and the set_sysctl_net_ipv4_conf_default_accept_source_route rule
+</note>
+
+<note ref="846,12010,12011,23732" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+appears to exist.
+rule=uninstall_vsftpd manual=no
+Per V-12010 don't allow FTP.  Lets get rid of these other random FTP rules.
+</note>
+
+<note ref="12023" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=disable_sysctl_ipv4_ip_forward manual=no
+</note>
+
+<note ref="12028" auth="KS">
+Check does not exist in the RHEL6 prose, it cannot be automated and the OVAL 
+for it does not exist.
+rule=null manual=yes
+Any automated effort to check this is at best a token effort.
+</note>
+
+<note ref="22301" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=set_blank_screensaver manual=no
+</note>
+
+<note ref="22303" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=set_password_hashing_algorithm manual=no
+</note>
+
+<note ref="22305,22306,22307" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+group=password_quality_pamcracklib manual=no
+The cracklib checks are in the RHEL6 prose.
+</note>
+
+<note ref="22312" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=no_files_unowned_by_group manual=no
+</note>
+
+<note ref="22339" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=userowner_shadow_file manual=no
+</note>
+
+<note ref="22347" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=no_hashes_outside_shadow manual=no
+</note>
+
+<note ref="22375" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
+does exist.
+rule=configure_auditd_space_left_action manual=no
+</note>
+
+<note ref="22376,22377" auth="KS">
+Partial check does exist in the RHEL6 prose, it can be automated and a partial
+OVAL for it does exist.
+rule=audit_account_changes manual=no
+Auditing of the files is in place but not the commands.
+</note>
+
+<note ref="22383" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=audit_kernel_module_loading manual=no
+</note>
+
+<note ref="22404" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=service_kdump_disabled manual=no
+</note>
+
+<note ref="22409" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=iptables_icmp_disabled manual=no
+This is accomplished by whitelisting specific types of icmp traffic.
+</note>
+
+<note ref="22410,22411" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts manual=no
+V-22410 and V-22411 are the same.
+</note>
+
+<note ref="22414" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=set_sysctl_net_ipv4_conf_all_accept_source_route manual=no
+This check is split in the RHEL6 prose into the above and the 
+set_sysctl_net_ipv4_conf_default_accept_source_route rule.
+</note>
+
+<note ref="22416" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=set_sysctl_net_ipv4_conf_all_accept_redirects manual=no
+This check is split in the RHEL6 prose into the above and the 
+set_sysctl_net_ipv4_conf_default_accept_redirects rule.
+</note>
+
+<note ref="22417" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=disable_sysctl_ipv4_all_send_redirects manual=no
+This check is split in the RHEL6 prose into the above and the 
+disable_sysctl_ipv4_default_send_redirects rule.
+</note>
+
+<note ref="22418" auth="KS">
+Partial check does exist in the RHEL6 prose, it can be automated and partial 
+OVAL for it does exist.
+rule=set_sysctl_net_ipv4_conf_all_log_martians manual=no
+This check is split in the RHEL6 prose into the above but no equivalent rule 
+exists for "default."
+</note>
+
+<note ref="22419" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=set_sysctl_net_ipv4_tcp_syncookies manual=no
+</note>
+
+<note ref="22429" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=service_rpcbind_disabled manual=no
+</note>
+
+<note ref="22431,22432,22433,22434" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=uninstall_rsh-server manual=no
+</note>
+
+<note ref="22456,22461,22462,22463,22474" auth="KS">
+Check does not exist in the RHEL6 prose, it can be automated and OVAL for it 
+does not exist.
+rule=null manual=no
+No check exists for the client side.
+</note>
+
+<note ref="22457" auth="KS">
+Check does not exist in the RHEL6 prose, it cannot be automated and OVAL for 
+it does not exist.
+rule=null manual=yes
+No automated way to determine the management interface.
+</note>
+
+<note ref="22458,22459" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=sshd_use_approved_ciphers manual=no
+V-22458 and V-22459 are essentially the same.
+</note>
+
+<note ref="22470" auth="KS">
+Partial check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=sshd_limit_user_access manual=no
+Prose focuses on blacklisting where we should prefer a whitelist.
+</note>
+
+<note ref="22489" auth="KS">
+Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
+exist.
+rule=sshd_enable_warning_banner manual=no
+</note>
 
 </notegroup>
