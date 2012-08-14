@@ -16,81 +16,77 @@ prevent certain types of attacks. If your network does not have
 synchronized time, these protocols may be unreliable or even
 unusable.
 <br /><br />
-Depending on the specifics of the network, global time
-accuracy may be just as important as local synchronization, or not
-very important at all. If your network is connected to the
-Internet, it is recommended that you make use of a public
-timeserver, since globally accurate timestamps may be necessary if
-you need to investigate or respond to an attack which originated
-outside of your network.
+Depending on the specifics of the network, global time accuracy may be just as
+important as local synchronization, or not very important at all. If your
+network is connected to the Internet, it is recommended that you make use of a
+public timeserver or one provided by your enterprise or agency, since globally
+accurate timestamps may be necessary if you need to investigate or respond to
+an attack which originated outside of your network.
 <br /><br />
-Whether or not you use an outside timeserver, configure the
-network to have a small number of machines operating as NTP
+A typical network setup involves a small number of internal systems operating as NTP
 servers, and the remainder obtaining time information from those
-internal servers.</description>
-
-<Group id="configuring_ntpd">
-<title>Configure an NTP Server</title>
-<description>The site's NTP server contacts a central NTP server,
-probably either one provided by your ISP or a public time server,
-to obtain accurate time data. The server then allows other machines
-on your network to request the time data.
+internal servers.
 <br /><br />
-The NTP server configuration file is located at <tt>/etc/ntp.conf</tt>.</description>
-<Group id="enabling_ntpd">
-<title>Enable the NTP Daemon</title>
-<description>If this machine is an NTP server, ensure that <tt>ntpd</tt> is enabled at boot time.</description>
+More information on how to configure the NTP server software,
+including configuration of cryptographic authentication for
+time data, is available at http://www.ntp.org.
+</description>
 
 <Rule id="enable_ntpd">
 <title>Enable the NTP Daemon</title>
 <description>
 <service-enable-macro service="ntpd" />
 </description>
-<rationale> Enabling the <tt>ntpd</tt> service ensures that the local system
-time will be the same on all computers. This is essential for authentication
+<rationale>Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>
+service will be running and that the system will synchronize its time to
+any servers specified. This is important whether the system is configured to be
+a client (and synchronize only its own clock) or it is also acting as an NTP
+server to other systems.  Synchronizing time is essential for authentication
 services such as Kerberos, but it is also important for maintaining accurate
 logs and auditing possible security breaches.</rationale>
 <ident cce="4376-0" />
 <oval id="service_ntpd_enabled" />
 <ref disa="160" />
 </Rule>
-</Group>
-
-<Group id="configuring_ntpd_client">
-<title>Specify a Remote NTP Server for Time Data</title>
-<description>Find the IP address of an appropriate remote NTP server and
-configure <tt>ntpd</tt> to use it to obtain accurate time data. If your site
-does not require time data to be accurate, but merely to be synchronized among
-local machines, this step can be omitted, and the NTP server will default to
-providing time data from the local clock. However, it is a good idea to
-periodically synchronize the clock to some source of accurate time, even if it
-is not appropriate to do so automatically.</description>
 
 <Rule id="ntpd_specify_remote_server">
-<title>Specify a Remote NTP Server for Time Data</title>
-<description>A remote NTP Server for time synchronization should be specified.
-Edit the file <tt>/etc/ntp.conf</tt>, and add or correct the following lines,
-substituting the IP address of a remote NTP server for <em>server-ip</em>:
-<pre>restrict server-ip mask 255.255.255.255 nomodify notrap noquery server
-server-ip</pre> This NTP server must contact a remote server to obtain accurate
-data, so NTP's configuration must allow that remote data to be used to modify
-the system clock. The restrict line changes the default access permissions for
-that remote server. The server line specifies the remote server as the
-preferred NTP server for time data. If you intend to synchronize to more than
-one server, specify restrict and server lines for each server.
-<br /><br />
-Note: It would be possible to specify a hostname, rather than an IP address,
-for the server field. However, the restrict setting applies only to network
-blocks of IP addresses, so it is considered more maintainable to use the IP
-address in both fields.</description>
-<rationale> Synchonizing <tt>ntpd</tt> with an accurate clock makes it easier
+<title>Specify a Remote NTP Server</title>
+<description>To specify a remote NTP server for time synchronization, edit
+the file <tt>/etc/ntp.conf</tt>. Add or correct the following lines,
+substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>:
+<pre>server <i>ntpserver</i></pre>
+This instructs the NTP software to contact that remote server to obtain time
+data.
+</description>
+<rationale> Synchronizing with an NTP server makes it possible
 to collate system logs from multiple sources or correlate computer events with
-real time events.</rationale>
+real time events. Using a trusted NTP server provided by your organization is
+recommended.</rationale>
 <ident cce="4385-1" />
 <oval id="ntp_remote_server" />
 <ref disa="160" />
 </Rule>
-</Group>
-</Group>
+
+
+<Rule id="ntpd_specify_multiple_servers">
+<title>Specify Additional Remote NTP Servers</title>
+<description>Additional NTP servers can be specified for time synchronization
+in the file <tt>/etc/ntp.conf</tt>.  To do so, add additional lines of the
+following form, substituting the IP address or hostname of a remote NTP server for
+<em>ntpserver</em>:
+<pre>server <i>ntpserver</i></pre>
+</description>
+<rationale>Specifying additional NTP servers increases the availability of
+accurate time data, in the event that one of the specified servers becomes
+unavailable. This is typical for a system acting as an NTP server for
+other systems.
+</rationale>
+</Rule>
+
+<!-- future Rules (for later profiles/enhancements):
+ensuring use of the restrict keyword
+enabling cryptographic authentication (multiple options)
+-->
+
 </Group>
 
