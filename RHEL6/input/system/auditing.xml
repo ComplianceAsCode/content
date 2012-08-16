@@ -5,62 +5,22 @@ for recording system activities. By default, the service audits about
 SELinux AVC denials and certain types of security-relevant events
 such as system logins, account modifications, and authentication
 events performed by programs such as sudo.
-<br /><br />
 Under its default configuration, <tt>auditd</tt> has modest disk space
 requirements, and should not noticeably impact system performance.
 <br /><br />
 Government networks often have substantial auditing
 requirements and <tt>auditd</tt> can be configured to meet these
 requirements.
-<br /><br />
-Example requirements include:
-<br /><br />
-
-<ul><li>
-Ensure Auditing is Configured to Collect Certain System Events
-<ul>
-<li>Information on the Use of Print Command (unsuccessful and successful)</li>
-<li>Startup and Shutdown Events (unsuccessful and successful)</li>
-<li>System Administrator Actions</li>
-</ul>
-</li></ul>
-
-<ul><li>
-Ensure the auditing software can record the following for each
-audit event:
-<ul>
-<li>Date and time of the event</li>
-<li>Userid that initiated the event</li>
-<li>Type of event</li>
-<li>Success or failure of the event</li>
-<li>For I&amp;A events, the origin of the request (e.g., terminal ID)</li>
-<li>For events that introduce an object into a user’s address space, and
-for object deletion events, the name of the object, and in MLS systems,
-the objects security level.</li>
-</ul></li>
-</ul>
-
-<br /><br />
-By default, <tt>auditd</tt> logs only SELinux denials, which are
-helpful for debugging SELinux and discovering intrusion attempts,
-and certain types of security events, such as modifications to user
-accounts (<tt>useradd</tt>, <tt>passwd</tt>, etc), login events, and
-calls to <tt>sudo</tt>.
-<br /><br />
-The audit system stores data in <tt>/var/log/audit/audit.log</tt>. By default,
-<tt>auditd</tt> rotates 5 logs by size (6MB), retaining a maximum of 30MB of
-data in total, and refuses to write entries when the disk is too
-full. This minimizes the risk of audit data filling its partition
-and impacting other services. This also minimizes the risk of the audit
-daemon temporarily disabling the system if it cannot write audit log (which
-it can be configured to do).
-<br /><br />
-The following is an example of a typical "raw" audit message and a breakdown of
-what the most important fields mean. In this example the message is SELinux
-related and reports an AVC denial (and the associated system call) that occurred
-when the Apache HTTP Server (running in the <tt>httpd_t</tt> domain)
-attempted to access the <tt>/var/www/html/file1</tt> file (labeled with the
-<tt>samba_share_t</tt> type):
+Examining some example audit records demonstrates how the Linux audit system
+satisfies common requirements.  
+The following example from Fedora Documentation available at 
+<tt>http://docs.fedoraproject.org/en-US/Fedora/13/html/Security-Enhanced_Linux/sect-Security-Enhanced_Linux-Fixing_Problems-Raw_Audit_Messages.html</tt>
+shows the substantial amount of information captured in a
+two typical "raw" audit messages, followed by a breakdown of the most important
+fields. In this example the message is SELinux-related and reports an AVC
+denial (and the associated system call) that occurred when the Apache HTTP
+Server attempted to access the <tt>/var/www/html/file1</tt> file (labeled with
+the <tt>samba_share_t</tt> type):
 <pre>type=AVC msg=audit(1226874073.147:96): avc:  denied  { getattr } for pid=2465 comm="httpd"
 path="/var/www/html/file1" dev=dm-0 ino=284133 scontext=unconfined_u:system_r:httpd_t:s0 
 tcontext=unconfined_u:object_r:samba_share_t:s0 tclass=file
@@ -72,12 +32,9 @@ exe="/usr/sbin/httpd" subj=unconfined_u:system_r:httpd_t:s0 key=(null)
 </pre>
 <ul>
 <li><tt>msg=audit(1226874073.147:96)</tt>
-<ul><li>The number in parentheses is the unformatted current time (Epoch time) or
-time stamp for the event. It can be converted to standard time by using the
-<tt>date</tt> command:
-<pre># date -d @1226874073.147
-<i>Sun Nov 16 17:21:13 EST 2008</i>
-</pre>
+<ul><li>The number in parentheses is the unformatted time stamp (Epoch time)
+for the event, which can be converted to standard time by using the
+<tt>date</tt> command.
 </li></ul>
 </li>
 <li><tt>{ getattr }</tt>
@@ -107,13 +64,7 @@ in the <tt>httpd_t</tt> domain.
 <ul><li>The SELinux context of the object (target) the process attempted to access.
 In this case, it is the SELinux context of <tt>file1</tt>. Note: the <tt>samba_share_t</tt>
 type is not accessible to processes running in the <tt>httpd_t</tt> domain.</li>
-<li>In certain situations, the <tt>tcontext</tt> may match the <tt>scontext</tt>,
-for example, when a process attempts to execute a system service that will change
-characteristics of that running process, such as the user ID. Also, the <tt>tcontext</tt>
-may match the <tt>scontext</tt> when a process tries to use more resources (such as
-memory) than normal limits allow, resulting in a security check to see if that
-process is allowed to break those limits.
-</li></ul>
+</ul>
 </li>
 <li> From the system call (<tt>SYSCALL</tt>) message, two items are of interest:
 <ul><li><tt>success=no</tt>: indicates whether the denial (AVC) was enforced or not.
@@ -164,16 +115,27 @@ process during boot.
 <ref nist="AU-2" disa="1464,130" />
 </Rule>
 
+<br /><br />
+
 <Group id="configure_auditd_data_retention">
 <title> Configure <tt>auditd</tt> Data Retention</title>
 <description>
-By default, <tt>auditd</tt> retains 5 log files of size 6MB apiece. For a busy
-system or a system which is thoroughly auditing system activity, this may be
+The audit system writes data to <tt>/var/log/audit/audit.log</tt>. By default,
+<tt>auditd</tt> rotates 5 logs by size (6MB), retaining a maximum of 30MB of
+data in total, and refuses to write entries when the disk is too
+full. This minimizes the risk of audit data filling its partition
+and impacting other services. This also minimizes the risk of the audit
+daemon temporarily disabling the system if it cannot write audit log (which
+it can be configured to do).
+
+For a busy
+system or a system which is thoroughly auditing system activity, the default settings
+for data retention may be
  insuffcient. The log file size needed will depend heavily on what types
 of events are being audited. First configure auditing to log all the events of
 interest. Then monitor the log size manually for awhile to determine what file
 size will allow you to keep the required data for the correct time period.
-
+<br/><br/>
 Using a dedicated partition for <tt>/var/log/audit</tt> prevents the
 <tt>auditd</tt> logs from disrupting system functionality if they fill, and,
 more importantly, prevents other activity in <tt>/var</tt> from filling the
