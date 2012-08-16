@@ -1,9 +1,6 @@
 <Group id="accounts-session">
-<title>
-Secure Session Configuration Files for Login Accounts
-</title>
-<description>
-When a user logs into a Unix account, the system
+<title>Secure Session Configuration Files for Login Accounts</title>
+<description>When a user logs into a Unix account, the system
 configures the user's session by reading a number of files. Many of
 these files are located in the user's home directory, and may have
 weak permissions as a result of user error or misconfiguration. If
@@ -12,9 +9,7 @@ configuration information, he can often gain full access to the
 affected user's account. Therefore, it is important to test and
 correct configuration file permissions for interactive accounts,
 particularly those of privileged users such as root or system
-administrators.
-</description>
-
+administrators.</description>
 
 <Value id="max_concurrent_login_sessions_value" type="number"
 operator="equals" interactive="0">
@@ -28,9 +23,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="max_concurrent_login_sessions">
-<title>
-Set the number of concurrent login sessions allowed per user
-</title>
+<title>Set the number of concurrent login sessions allowed per user</title>
 <description>
 Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
 Service attacks. This addresses concurrent sessions for a single account and does not address 
@@ -70,9 +63,7 @@ privileged commands by typing the full path to the
 command.</description>
 
 <Rule id="root_path_no_dot">
-<title>
-Ensure that Root's Path Does Not Include Relative Paths or Null Directories
-</title>
+<title>Ensure that Root's Path Does Not Include Relative Paths or Null Directories</title>
 <description>
 Ensure that none of the directories in root's path is equal to a single
 <tt>.</tt> character, or
@@ -94,9 +85,7 @@ execute code from an untrusted location.
 </Rule>
 
 <Rule id="root_path_no_groupother_writable">
-<title>
-Ensure that Root's Path Does Not Include World or Group-Writable Directories
-</title>
+<title>Ensure that Root's Path Does Not Include World or Group-Writable Directories</title>
 <description>
 For each element in root's path, run:
 <pre># ls -ld DIR</pre>
@@ -115,9 +104,7 @@ and potentially malicious code.
 </Group>
 
 <Rule id="homedir_perms_no_groupwrite_worldread">
-<title>
-Ensure that User Home Directories are not Group-Writable or World-Readable
-</title>
+<title>Ensure that User Home Directories are not Group-Writable or World-Readable</title>
 <description>For each human user USER of the system, view the
 permissions of the user's home directory:
 <pre># ls -ld /home/USER</pre>
@@ -201,9 +188,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="user_umask_bashrc">
-<title>
-Ensure the Default Bash Umask is Set Correctly
-</title>
+<title>Ensure the Default Bash Umask is Set Correctly</title>
 <description>
 To ensure the default umask for users of the Bash shell is set properly,
 add or correct in <tt>/etc/bashrc</tt> the line:
@@ -218,9 +203,7 @@ written to by unauthorized users.</rationale>
 </Rule>
 
 <Rule id="user_umask_cshrc">
-<title>
-Ensure the Default C Shell Umask is Set Correctly
-</title>
+<title>Ensure the Default C Shell Umask is Set Correctly</title>
 <description>
 To ensure the default umask for users of the C shell is set properly,
 add or correct in <tt>/etc/csh.cshrc</tt> the line:
@@ -236,9 +219,7 @@ written to by unauthorized users.</rationale>
 
 
 <Rule id="user_umask_profile">
-<title>
-Ensure the Default Umask is Set Correctly in /etc/profile
-</title>
+<title>Ensure the Default Umask is Set Correctly in /etc/profile</title>
 <description>
 To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
 add or correct the line:
@@ -254,9 +235,7 @@ written to by unauthorized users.</rationale>
 
 
 <Rule id="user_umask_logindefs">
-<title>
-Ensure the Default Umask is Set Correctly in login.defs
-</title>
+<title>Ensure the Default Umask is Set Correctly in login.defs</title>
 <description>
 To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
 add or correct the line:
