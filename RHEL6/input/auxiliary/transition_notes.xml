@@ -2,6 +2,672 @@
 <!-- This file enables documentation of how the RHEL 5 STIG requirements
      will be migrated to consensus for RHEL 6. -->
 
+<note ref="931" auth="VP">
+This is not in the RHEL 6 content.  Nosuid / nodev checks address perms on NFS shares.
+</note>
+
+<note ref="1026" auth="VP">
+This is not in the RHEL 6 content.  The requirements SSL / Localhost will be addressed via the Web Stig, there is no need (IMHO) to require this twice.
+</note>
+
+<note ref="1047" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="4387" auth="VP">
+This is covered in the RHEL 6 content. The check CCE-3987-5 meets this requirement
+</note>
+
+<note ref="4392" auth="VP">
+This is not covered in the RHEL 6 content.  This check is entirely manual and shouldn't be added to RHEL 6 content
+</note>
+
+<note ref="4395" auth="VP">
+This is covered in the RHEL 6 content.
+</note>
+
+<note ref="4397" auth="VP">
+This is covered in the RHEL 6 content.  CCE-4191-3
+</note>
+
+<note ref="4399" auth="VP">
+This is covered in the RHEL 6 content by setting NIS to disabled.
+</note>
+
+<note ref="4427" auth="VP">
+This is covered in the RHEL 6 content.
+</note>
+
+<note ref="4428" auth="VP">
+This is covered in the RHEL 6 content.
+</note>
+
+<note ref="4690" auth="VP">
+This is covered in the RHEL 6 content.  By applying patches, this requirement will be addressed
+</note>
+
+<note ref="4691" auth="VP">
+This is covered in the RHEL 6 content.  By applying patches, this requirement will be addressed
+</note>
+
+<note ref="4695" auth="VP">
+This is covered in the RHEL 6 content.
+</note>
+
+<note ref="4697" auth="VP">
+This is not covered in the RHEL 6 content.  There is a check to disable a GUI, but a GUI is sometimes required for install of 3rd party apps (Oracle, Weblogic, etc)
+</note>
+
+<note ref="4702" auth="VP">
+This is covered in the RHEL 6 content in a slightly different manner.  CCE-3919-8 is set vsftpd to off
+</note>
+
+<note ref="11976" auth="VP">
+This is covered in RHEL 6 content in a slightly different manner. CCE-4092-3 sets pass max days in /etc/login.defs, not shadow.
+</note>
+
+<note ref="11980" auth="VP">
+This is covered in RHEL 6 content in a slightly different manner.  CCE-17248-6 states a *.*, which would include the authpriv being submitted to the loghost.  The audit.rules settings are not called out
+</note>
+
+<note ref="11980" auth="VP">
+This is not covered in the RHEL 6 content.
+</note>
+
+<note ref="11983" auth="VP">
+This is not covered in the RHEL 6 content.  This will have to be a manual check IF it is to be included.
+</note>
+
+<note ref="11984" auth="VP">
+This is not covered in the RHEL 6 content.  Default settings from RH should be acceptable for this and should be covered in the rpm verify check.
+</note>
+
+<note ref="11985" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="11987" auth="VP">
+This is covered in the RHEL 6 content in a slightly different manner.  NIS+ is to be set to disable / erased.
+</note>
+
+<note ref="11988" auth="VP">
+This is covered in the RHEL 6 content in a slightly different manner.  CCE-TODO requires .rhosts file to be removed.
+</note>
+
+<note ref="11989" auth="VP">
+This is covered in the RHEL 6 content in a slightly different manner.  CCE-TODO requires .rhosts file to be removed.
+</note>
+
+<note ref="11990" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="11995" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="11996" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="11999" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="12002" auth="VP">
+This is covered in the RHEL 6 content.  CCE-4236-6
+</note>
+
+<note ref="12004" auth="VP">
+This is covered in RHEL 6 content in a slightly different manner.  CCE-17248-6 states a *.*, which would include the authpriv being submitted to the loghost.  The audit.rules settings are not called out
+</note>
+
+<note ref="12010" auth="VP">
+This is covered in the RHEL 6 content.  CCE-4236-6
+</note>
+
+<note ref="12011" auth="VP">
+This is not covered in the RHEL 6 content.  The RHEL 6 requirement is to disable FTP
+</note>
+
+<note ref="12014" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="12017" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="12023" auth="VP">
+This is covered in the RHEL 6 content.  
+</note>
+
+<note ref="12028" auth="VP">
+This is covered in the RHEL 6 content.  This is a manual check.  Previously have addressed this with DISA about this that HBSS (which is required on systems) meets this requirement.
+</note>
+
+<note ref="12030" auth="VP">
+This is not covered in the RHEL 6 content. 
+</note>
+
+<note ref="22301" auth="VP">
+This is covered in the RHEL 6 content. CCE-14735-5
+</note>
+
+<note ref="22302" auth="VP">
+This is covered in the RHEL 6 content. CCE-14063-2
+</note>
+
+<note ref="22303" auth="VP">
+This is covered in the RHEL 6 content. CCE-14063-2
+</note>
+
+<note ref="22304" auth="VP">
+This is covered in the RHEL 6 content. CCE-14063-2
+</note>
+
+<note ref="22305" auth="VP">
+This is covered in the RHEL 6 content. CCE-14063-2
+</note>
+
+<note ref="22306" auth="VP">
+This is covered in the RHEL 6 content. CCE-14701-7
+</note>
+
+<note ref="22307" auth="VP">
+This is covered in the RHEL 6 content. 
+</note>
+
+<note ref="22308" auth="VP">
+This is not covered in the RHEL 6 content. 
+</note>
+
+<note ref="22312" auth="VP">
+This is not covered in the RHEL 6 content. This is a manual check.
+</note>
+
+<note ref="22339" auth="VP">
+This is covered in the RHEL 6 content. 
+</note>
+
+<note ref="22347" auth="VP">
+This is covered in the RHEL 6 content. CCE-14300-8
+</note>
+
+<note ref="22348" auth="VP">
+This is not covered in the RHEL 6 content. 
+</note>
+
+<note ref="22349" auth="VP">
+This is not covered in the RHEL 6 content. 
+</note>
+
+<note ref="22351" auth="VP">
+This is not covered in the RHEL 6 content.  This is a manual check.  This check typically fails with accounts for Oracle (ora:dba) is a good example of this.
+</note>
+
+<note ref="22358" auth="VP">
+This is not covered in the RHEL 6 content.
+</note>
+
+<note ref="22369" auth="VP">
+This is not covered in the RHEL 6 content.
+</note>
+
+<note ref="22374" auth="VP">
+This is covered in the RHEL 6 content in a slightly different mannger.  RHEL 6 admin_space_left_action = ACTION
+</note>
+
+<note ref="22375" auth="VP">
+This is covered in the RHEL 6 content in a slightly different mannger.  RHEL 6 admin_space_left_action = ACTION
+</note>
+
+<note ref="22376" auth="VP">
+-w /usr/sbin/useradd -p x -k useradd - Not in RHEL 6 
+-w /usr/sbin/groupadd -p x -k groupadd - Not in RHEL 6
+-w /etc/passwd -p a -k passwd  - Is in RHEL 6
+-w /etc/shadow -p a -k shadow  - Is in RHEL 6
+-w /etc/group -p a -k group    - Is in RHEL 6
+-w /etc/gshadow -p a -k gshadow - Is in RHEL 6
+</note>
+
+<note ref="22377" auth="VP">
+-w /usr/sbin/usermod -p x -k usermod - Not in RHEL 6
+-w /usr/sbin/groupmod -p x -k groupmod - Not in RHEL 6 
+-w /etc/passwd -p w -k passwd - Is in RHEL 6
+-w /etc/shadow -p w -k shadow - Is in RHEL 6
+-w /etc/group -p w -k group   - Is in RHEL 6
+-w /etc/gshadow -p w -k gshadow - Is in RHEL 6 
+</note>
+
+<note ref="22378" auth="VP">
+-w /usr/bin/passwd -p x -k passwd - Not in RHEL 6
+</note>
+
+<note ref="22382" auth="VP">
+-w /usr/sbin/userdel -p x - Not in RHEL 6 
+-w /usr/sbin/groupdel -p x - Not in RHEL 6
+</note>
+
+<note ref="22383" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22385" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22391" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22397" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22404" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22405" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22408" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22409" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22410" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22411" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22414" auth="VP">
+This is covered in RHEL 6 content 
+</note>
+
+<note ref="22415" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22416" auth="VP">
+This is covered in RHEL 6 content 
+</note>
+
+<note ref="22417" auth="VP">
+This is covered in RHEL 6 content 
+</note>
+
+<note ref="22418" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22419" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22421" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22422" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22429" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22430" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22431" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22432" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22433" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22434" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22440" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22447" auth="VP">
+This is covered in RHEL 6  content in a slightly different manner.  CCE-3765-5 sets SNMP to disabled
+</note>
+
+<note ref="22448" auth="VP">
+This is covered in RHEL 6 content in a slightly different manner.  CCE-3765-5 sets SNMP to disabled
+</note>
+
+<note ref="22449" auth="VP">
+This is covered in RHEL 6 content in a slightly different manner.  CCE-3765-5 sets SNMP to disabled
+</note>
+
+<note ref="22455" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22456" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22457" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22458" auth="VP">
+This is not covered in RHEL 6 content.  This is a manual check
+</note>
+
+<note ref="22461" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22462" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22463" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22470" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22471" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22472" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22473" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22474" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22475" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22485" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22486" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22487" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22488" auth="VP">
+This is not covered in RHEL 6 content
+</note>
+
+<note ref="22490" auth="VP">
+This is not covered in RHEL 6 content.  IPV6 is set to disabled in RHEL 6 content
+</note>
+
+<note ref="22491" auth="VP">
+This is not covered in RHEL 6 content.  IPV6 is set to disabled in RHEL 6 content
+</note>
+
+<note ref="22499" auth="VP">
+This is not covered in RHEL 6 content.  
+</note>
+
+<note ref="22500" auth="VP">
+This is not covered in RHEL 6 content.  
+</note>
+
+<note ref="22501" auth="VP">
+This is not covered in RHEL 6 content.  
+</note>
+
+<note ref="22506" auth="VP">
+This is not covered in RHEL 6 content.  This is a manual check
+</note>
+
+<note ref="22507" auth="VP">
+This is not covered in RHEL 6 content.  AIDE is set to be installed, but not configuration changes are set for the aide.conf in RHEL 6 content.
+</note>
+
+<note ref="22508" auth="VP">
+This is not covered in RHEL 6 content.  AIDE is set to be installed, but not configuration changes are set for the aide.conf in RHEL 6 content.
+</note>
+
+<note ref="22511" auth="VP">
+This is covered in RHEL 6 content. 
+</note>
+
+<note ref="22514" auth="VP">
+This is covered in RHEL 6 content. 
+</note>
+
+<note ref="22524" auth="VP">
+This is not covered in RHEL 6 content. 
+</note>
+
+<note ref="22530" auth="VP">
+This is covered in RHEL 6 content. 
+</note>
+
+<note ref="22533" auth="VP">
+This is covered in RHEL 6 content. 
+</note>
+
+<note ref="22539" auth="VP">
+This is not covered in RHEL 6 content. 
+</note>
+
+<note ref="22541" auth="VP">
+This is not covered in RHEL 6 content. IPV6 is set to be disabled
+</note>
+
+<note ref="22542" auth="VP">
+This is not covered in RHEL 6 content. IPV6 is set to be disabled
+</note>
+
+<note ref="22545" auth="VP">
+This is not covered in RHEL 6 content.  IPV6 is set to be disabled
+</note>
+
+<note ref="22546" auth="VP">
+This is not covered in RHEL 6 content.  IPV6 is set to be disabled
+</note>
+
+<note ref="22547" auth="VP">
+This is not covered in RHEL 6 content.  IPV6 is set to be disabled
+</note>
+
+<note ref="22548" auth="VP">
+This is covered in RHEL 6 content in a slightly different way.
+</note>
+
+<note ref="22549" auth="VP">
+This is covered in RHEL 6 content in a slightly different way.
+</note>
+
+<note ref="22550" auth="VP">
+This is covered in RHEL 6 content
+</note>
+
+<note ref="22553" auth="VP">
+This is not covered in RHEL 6 content.  IPV6 is set to be disabled
+</note>
+
+<note ref="22555" auth="VP">
+This is covered in RHEL 6 content. 
+</note>
+
+<note ref="22556" auth="VP">
+This is covered in RHEL 6 content. This is a manual check
+</note>
+
+<note ref="22557" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22558" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22563" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22564" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22565" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22567" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22568" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22569" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22571" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22572" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22573" auth="VP">
+This is not covered in RHEL 6 content.
+</note>
+
+<note ref="22575" auth="VP">
+This is not covered in RHEL 6 content.  *note* DISA FSO stated HBSS meets this requirement
+</note>
+
+<note ref="22577" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22582" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22583" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22586" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22587" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22588" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22589" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22598" auth="VP">
+This is covered in the RHEL 6 content
+</note>
+
+<note ref="22665" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="22702" auth="VP">
+This is not covered in the RHEL 6 content
+</note>
+
+<note ref="23732" auth="VP">
+This is not covered in the RHEL 6 content.  FTP is set to be disabled in RHEL 6
+</note>
+
+<note ref="23736" auth="VP">
+This is covered in the RHEL 6 content.
+</note>
+
+<note ref="23738" auth="VP">
+This is covered in the RHEL 6 content.
+</note>
+
+<note ref="23739" auth="VP">
+This is covered in the RHEL 6 content.
+</note>
+
+<note ref="23741" auth="VP">
+This is not covered in the RHEL 6 content.
+</note>
+
+<note ref="23952" auth="VP">
+This is not covered in the RHEL 6 content.
+</note>
+
+<note ref="23972" auth="VP">
+This is not covered in the RHEL 6 content.  IPV6 is set to be disabled
+</note>
+
+<note ref="24331" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="24384" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="24624" auth="VP">
+This is covered in the RHEL 6 content.  
+</note>
+
+<note ref="27250" auth="VP">
+This is not covered in the RHEL 6 content.  
+</note>
+
+<note ref="27283" auth="VP">
+This is covered in the RHEL 6 content.  
+</note>
+
+<note ref="27284" auth="VP">
+This is covered in the RHEL 6 content.  
+</note>
 
 <note ref="760,923,925,4246,4247,4248,4255,4357,4398,11986,12018,12020,12021,
 22310,22311,22578,22579,27251,22579,22580,27251" auth="JB">
