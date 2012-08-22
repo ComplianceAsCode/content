@@ -71,7 +71,8 @@ and for consistency with future Red Hat releases, the use of vsftpd is recommend
 <Rule id="ftp_log_transactions">
 <title>Enable Logging of All FTP Transactions</title>
 <description>Edit the vsftpd configuration file. Add or correct the following configuration options:
-<pre>xferlog_std_format=NO
+<pre>xferlog_enable=YES
+xferlog_std_format=NO
 log_ftp_protocol=YES</pre>
 </description>
 <rationale>The modifications above ensure that all commands sent to the ftp server are logged using the verbose vsftpd log
