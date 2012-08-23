@@ -50,6 +50,11 @@ table-refs: shorthand-guide shorthand2xccdf
 # then sort them:
 	xsltproc --html -o $(OUT)/rhel6-table-nistrefs-delim-sorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/rhel6-table-nistrefs-delim.html
 
+table-idents: shorthand-guide shorthand2xccdf
+	xsltproc -o $(OUT)/rhel6-table-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/rhel6-xccdf.xml
+	xsltproc -stringparam ref "../$(REFS)/cce-rhel5.xml" -o $(OUT)/rhel6-table-cces-rhel5.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/rhel6-xccdf.xml
+
+
 table-srgmap: shorthand-guide shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$(OUT)/rhel6-xccdf.xml" -o $(OUT)/rhel6-table-srgmap.html $(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
@@ -62,7 +67,7 @@ table-stigs:
 	xsltproc -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/rhel6-xccdf.xml 
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
 
-tables: table-refs table-profilenistrefs table-srgmap table-stigs
+tables: table-idents table-refs table-profilenistrefs table-srgmap table-stigs
 
 content: shorthand-guide shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
@@ -70,7 +75,6 @@ content: shorthand-guide shorthand2xccdf guide checks
 #	thus, with ID set to scap-security-guide, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
 	$(TRANS)/cpe_generate.py $(OUT)/rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml $(ID)
 	$(TRANS)/relabelids.py rhel6-xccdf.xml $(ID)
-
 
 validate:
 	oscap xccdf validate-xml $(OUT)/rhel6-xccdf-$(ID).xml
