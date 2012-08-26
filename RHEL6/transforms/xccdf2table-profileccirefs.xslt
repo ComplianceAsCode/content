@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="http://iase.disa.mil/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
+
+<xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
 
 <xsl:include href="constants.xslt"/>
 
@@ -49,7 +51,7 @@
 				<td>Discussion (Rationale)</td>
 				<td>Fix Text (Description)</td>
 				<!-- <td>Variable Setting</td> -->
-				<td>CCI Ref</td>
+				<td>CCI Ref<br/>(800-53 Origin)</td>
 			</thead>
 
 		<xsl:call-template name="profileplate">
@@ -123,6 +125,17 @@
             	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 				<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 				<xsl:value-of select="$cci_expanded"/>
+				<xsl:text> (</xsl:text>
+				<xsl:for-each select="$cci_list/cci:cci_items/cci:cci_item">
+					<xsl:if test="@id=$cci_expanded">
+						<xsl:for-each select="cci:references/cci:reference">
+							<xsl:if test="@title='NIST SP 800-53'">
+								<xsl:value-of select="@index"/>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:if>
+				</xsl:for-each>
+				<xsl:text>)</xsl:text>
 				<br/>
 			</xsl:for-each>
 			</td> 
