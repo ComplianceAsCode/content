@@ -4,29 +4,25 @@
 Both the AIDE (Advanced Intrusion Detection Environment)
 software and the RPM package management system provide
 mechanisms for verifying the integrity of installed software.
-AIDE is designed to be a replacement for the well-known
-Tripwire integrity checker. The RPM package management system can
-conduct integrity checks by comparing information in its
-metadata database with files installed on the system.
+AIDE is the successor to the well-known Tripwire integrity
+checker. The RPM package management system can conduct integrity
+checks by comparing information in its metadata database with
+files installed on the system.
 <br /><br />
-Integrity checking cannot
-<i>prevent</i> intrusions into your system, but can detect that
-they have occurred. Requirements for software integrity checking may be
-highly dependent on the environment
-in which the system will be used.
+Integrity checking cannot <i>prevent</i> intrusions into your
+system, but can detect that they have occurred. Requirements
+for software integrity checking may be highly dependent on
+the environment in which the system will be used.
 </description>
 
 <Group id="aide">
 <title>Verify Integrity with AIDE</title>
 <description>AIDE conducts integrity checks by comparing information
-about files with previously-gathered information, which it stores in a
-database (to use the term loosely; it's really just data inside a file).
-Ideally, the AIDE database would be built before the
-system is connected to any network, though this may prove
-impractical due to registration and software updates.
-AIDE is highly configurable. This advice is based on information
-provided in its documentation available in
-<tt>/usr/share/doc/aide-VERSION</tt></description>
+about files with previously-gathered information. Ideally, the AIDE
+database should be created immediately after your system is built,
+and before the system is connected to any network. AIDE is highly
+configurable, with further configuration information located in
+<tt>/usr/share/doc/aide-<i>VERSION</i></tt></description>
 <ref disa="374,1069,1297,1589"/>
 
 <Rule id="install_aide">
@@ -50,9 +46,8 @@ The prelinking feature
 changes binaries in an attempt to decrease their startup time.
 In order to disable it, change or add the following line inside the file <tt>/etc/sysconfig/prelink</tt>:
 <pre>PRELINKING=no</pre>
-Next, run the command
+Next,  the following command to return binaries to a normal, non-prelinked state:
 <pre># /usr/sbin/prelink -ua</pre>
-to restore binaries to a normal, non-prelinked state.
 </description>
 <rationale>
 The prelinking feature can interfere with the operation
@@ -141,10 +136,11 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 
 <Rule id="rpm_verify_permissions">
 <title>Verify File Permissions with RPM</title>
-<description>The RPM package management system can check the permissions of
-thousands of installed files, including many that are important to system
-security. The following command will list which files on the system have
-permissions that are different from what is expected by the RPM database:
+<description>The RPM package management system can check file access
+permissions of installed software packages, including many that are
+important to system security. The following command will list which
+files on the system have permissions that are different from what
+is expected by the RPM database:
 <pre># rpm -Va | grep '^.M'</pre>
 </description>
 <rationale>
@@ -159,13 +155,13 @@ this baseline should be investigated.</rationale>
 
 <Rule id="rpm_verify_hashes">
 <title>Verify File Hashes with RPM</title>
-<description>The RPM package management system
-can check the hashes of thousands of installed files, including
-many that are important to system security.
-To list which files on the system have hashes that differ from what is expected by the
-RPM database (except for configuration files, which may be expected to change):
+<description>The RPM package management system can check the hashes of
+installed software packages, including many that are important to system
+security. Run the following command to list which files on the system
+have hashes that differ from what is expected by the RPM database:
 <pre># rpm -Va | grep '^..5'</pre>
-A “c” in the second column indicates that a file is a configuration file.
+A “c” in the second column indicates that a file is a configuration file,
+which may appropriately be expected to change.
 </description>
 <rationale>
 The MD5 hash on important files like system executables should match the information given
