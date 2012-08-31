@@ -1,8 +1,7 @@
 <Group id="updating">
 <title>Updating Software</title>
 <description>The <tt>yum</tt> command line tool is used to install and
-update software packages. Yum replaces the <tt>up2date</tt> utility used in
-previous system releases. The system also provides two graphical
+update software packages. The system also provides two graphical
 package managers, <tt>pirut</tt> and <tt>pup</tt>. The <tt>pirut</tt>
 tool is a graphical front-end for <tt>yum</tt> that allows users to install
 and update packages while <tt>pup</tt> is a simple update tool for packages
@@ -10,16 +9,25 @@ that are already installed. In the <b>Applications</b> menu, <tt>pirut</tt>
 is labeled <b>Add/Remove Software</b> and pup is labeled
 <b>Software Updater</b>.
 <br /><br />
-It is recommended that these tools be used to keep systems up
-to date with the latest security patches.</description>
+Red Hat Enteprise Linux systems contain an embedded Installed Software
+Catalog, or "RPM Database," which records metadata of installed packages.
+The <tt>yum</tt>, <tt>pirut</tt>, and <tt>pup</tt> tools interface
+with the Installed Software Catalog to ensure all system metadata is
+accurate with regard to installed software and security patches, and
+for this reason, their use is strongly encouraged.
+</description>
 <ref disa="1233" />
 
 <Rule id="ensure_redhat_gpgkey_installed">
 <title>Ensure Red Hat GPG Key Installed</title>
 <description>
-To ensure that the system can cryptographically verify update packages
-(and connect to the Red Hat Network to receive them if desired),
-run the following command to verify that the system has the Red Hat GPG key properly installed:
+To ensure that the system can cryptographically verify base
+software packages come from Red Hat (and to connect to the Red
+Hat Network to receive them if desired), the Red Hat GPG key
+must properly be installed. Run the following command to
+install the Red Hat GPG key, of which Red Hat uses to sign
+publically released software:
+
 <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
 The command should return the string:
 <pre>gpg(Red Hat, Inc. (release key &lt;security@redhat.com&gt;)</pre>
@@ -32,6 +40,10 @@ are from Red Hat.
 <oval id="package_rhn_gpgkey_installed" />
 <ref nist="SI-2, SI-7, SC-13"/>
 </Rule>
+
+<!-- REMINDER: Before telling people to update their systems
+     via the security_patches_up_to_date rule, we must
+     ensure they have configured an update source! -->
 
 <Rule id="security_patches_up_to_date">
 <title>Ensure Software Patches Installed</title>
@@ -47,25 +59,11 @@ the exploitation of publicly-known vulnerabilities.
 </rationale>
 <ref nist="SI-2" disa="1232"/>
 </Rule>
-<!-- yum-updatesd is not part of RHEL 6 -->
-<!--<Rule id="disable_yum-updatesd">
-<title>Disable yum-updatesd Service</title>
-<description>The <tt>yum-updatesd</tt> service is not mature enough for
-an enterprise environment, and the service may introduce unnecessary
-overhead. When possible, replace this service with a <tt>cron</tt> job
-that calls <tt>yum</tt> directly.</description>
-<ident cce="4218-4" />
-<oval id="service_yum-updatesd_disabled" />
-<ref nist="CM-6, CM-7, SI-2"/>
-</Rule>
--->
 <Rule id="ensure_gpgcheck_globally_activated">
 <title>Ensure "gpgcheck" Enabled In Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option should be used to ensure that
 checking of an RPM package’s signature always occurs prior to its
-installation.
-<br /><br />
-To force yum to check package signatures before installing
+installation. To force yum to check package signatures before installing
 them, ensure that the following line appears in <tt>/etc/yum.conf</tt> in
 the <tt>[main]</tt> section:
 <pre>gpgcheck=1</pre>
