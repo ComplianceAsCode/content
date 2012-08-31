@@ -1,12 +1,10 @@
 <Group id="disk_partitioning">
 <title>Disk Partitioning</title>
-<description>Some system directories should be placed on their own
-partitions (or logical volumes). This allows for better separation
-and protection of data.
-<br />
-The installer’s default partitioning scheme creates separate
-partitions (or logical volumes) for <tt>/</tt>, <tt>/boot</tt>, and
-<tt>swap</tt>.
+<description>To ensure separation and protection of data there
+are top-level system directories which should be placed on their
+own physical partition or logical volume. The installer’s default
+partitioning scheme creates separate logical volumes for 
+<tt>/</tt>, <tt>/boot</tt>, and <tt>swap</tt>.
 <ul>
 <li>If starting with any of the default layouts, check the box to
 "Review and modify partitioning." This allows for the easy creation
@@ -120,9 +118,9 @@ users cannot trivially fill partitions used for log or audit data storage.
 <title>Encrypting Partitions</title>
 <description>
 One of the best ways to protect data at rest is by using partition encryption. In
-Red Hat Enterprise Linux 6, encrypting partitions is natively supported with
-Linux Unified Key Setup-on-disk-format (LUKS). The easiest way to encrypt a
-partition is during install time.
+Red Hat Enterprise Linux 6 partition encryption is natively supported through the
+Linux Unified Key Setup-on-disk-format (LUKS) technology. The easiest way to 
+encrypt a partition is during install time.
 <br /><br />
 For manual installations, selecting the <tt>Encrypt</tt> checkbox during
 partition creation is all that is needed to encrypt the partition. When this
@@ -140,10 +138,8 @@ stored in the Kickstart file in clear-text. If that is of concern, leaving the
 installer to pause and interactively ask for the passphrase during the install.
 <br /><br />
 Detailed information on encrypting partitions using LUKS can be found on
-the Red Had Documentation web site:
-<ul>
-<li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/sect-Security_Guide-LUKS_Disk_Encryption.html</li>
-</ul>
+the Red Had Documentation web site:<br />
+https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/sect-Security_Guide-LUKS_Disk_Encryption.html</li>
 </description>
 <ref disa="1199,1350,1200" />
 </Group>
