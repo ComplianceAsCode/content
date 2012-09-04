@@ -7,14 +7,14 @@
 # NOTE: The file 'template_permissions' should be located in the same working directory as this script. The
 # template contains tags that *must* be replaced successfully in order for the checks to work.
 #
-#	  directory path,file name,owner uid (numeric),group owner gid (numeric),mode,CCE
+#	  directory path,file name,owner uid (numeric),group owner gid (numeric),mode
 
 import sys, csv, re
 
 def output_check(path_info):
 	# the csv file contains lines that match the following layout:
-	#	directory,file_name,uid,gid,mode,cce
-	dir_path, file_name, uid, gid, mode, cce = path_info
+	#	directory,file_name,uid,gid,mode
+	dir_path, file_name, uid, gid, mode = path_info
 
 	# build a string out of the path that is suitable for use in id tags
 	# example:	/etc/resolv.conf --> _etc_resolv_conf
@@ -51,7 +51,6 @@ def output_check(path_info):
 		filestring = filestring.replace("FILEID", path_id)
 		filestring = filestring.replace("FILEPATH", full_path)
 		filestring = filestring.replace("FILEDIR", dir_path)
-		filestring = filestring.replace("CCEID", cce if cce else "TODO")
 		filestring = filestring.replace("FILEUID", uid)
 		filestring = filestring.replace("FILEGID", gid)
 		filestring = filestring.replace("FILEMODE", mode)
@@ -70,7 +69,7 @@ def output_check(path_info):
 def main():
 	if len(sys.argv) < 2:
 		print "\nERROR: you must provide the path to a CSV file that contains lines like so:"
-		print "   directory path,file name,owner uid (numeric),group owner gid (numeric),mode,CCE"
+		print "   directory path,file name,owner uid (numeric),group owner gid (numeric),mode"
 		sys.exit(1)
 
 	# open and read the csv file
