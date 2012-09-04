@@ -9,18 +9,16 @@
 #
 # SERVICENAME - the name of the service that should be enabled
 # PACKAGENAME - the name of the package that installs the service
-# CCE_ID - the corresponding CCE reference (optional)
 #
 
 import sys, csv, re
 
 def output_checkfile(serviceinfo):
     # get the items out of the list
-    servicename, packagename, cce = serviceinfo
+    servicename, packagename = serviceinfo
     with open("./template_service_enabled", 'r') as templatefile:
         filestring = templatefile.read()
         filestring = filestring.replace("SERVICENAME", servicename)
-        filestring = filestring.replace("CCE_ID", cce if cce else "TODO")
         if packagename:
             filestring = filestring.replace("PACKAGENAME", packagename)
         else:
@@ -32,7 +30,7 @@ def output_checkfile(serviceinfo):
 
 def main():
     if len(sys.argv) < 2:
-        print "Provide a CSV file containing lines of the format: servicename,packagename,CCE"
+        print "Provide a CSV file containing lines of the format: servicename,packagename"
         sys.exit(1)
     with open(sys.argv[1], 'r') as f:
         # put the CSV line's items into a list
