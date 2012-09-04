@@ -116,7 +116,7 @@ def main():
 
         # content requires OVAL 5.8 support, which is only supported by openscap 0.8 or later
         # for RHEL 6, this implies installing openscap from source until RPM is released
-        subprocess.call("oscap oval eval --results "+ fname + "-results " + fname, shell=True)
+        subprocess.call("oscap oval eval --oval-results --results "+ fname + "-results " + fname, shell=True)
         # perhaps delete tempfile?
         definitions = ET.Element("definitions")
         tests = ET.Element("tests")
