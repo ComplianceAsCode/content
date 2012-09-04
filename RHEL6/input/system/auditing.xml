@@ -116,7 +116,7 @@ process during boot.
 </Rule>
 
 <Group id="configure_auditd_data_retention">
-<title> Configure <tt>auditd</tt> Data Retention</title>
+<title>Configure <tt>auditd</tt> Data Retention</title>
 <description>
 The audit system writes data to <tt>/var/log/audit/audit.log</tt>. By default,
 <tt>auditd</tt> rotates 5 logs by size (6MB), retaining a maximum of 30MB of
@@ -448,7 +448,7 @@ to the system time should be audited.</rationale>
 </Rule>
 
 <Rule id="audit_rules_time_stime">
-<title>Record attempts to alter time through stime</title>
+<title>Record Attempts to Alter Time Through stime</title>
 <description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
@@ -471,7 +471,7 @@ to the system time should be audited.</rationale>
 </Rule>
 
 <Rule id="audit_rules_time_clock_settime">
-<title>Record attempts to alter time through clock_settime</title>
+<title>Record Attempts to Alter Time Through clock_settime</title>
 <description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
@@ -496,7 +496,7 @@ to the system time should be audited.</rationale>
 </Rule>
 
 <Rule id="audit_rules_time_watch_localtime">
-<title>Record attempts to alter the localtime file</title>
+<title>Record Attempts to Alter the localtime File</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/localtime -p wa -k audit_time_rules</pre>
 The -k option allows for the specification of a key in string form that can 
@@ -535,7 +535,7 @@ legitimacy.</rationale>
 </Rule>
 
 <Rule id="audit_network_modifications">
-<title>Record Events that Modify the System’s Network Environment</title>
+<title>Record Events that Modify the System's Network Environment</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
 <pre># audit_network_modifications
@@ -555,7 +555,7 @@ audited.</rationale>
 
 
 <Rule id="audit_mac_changes">
-<title>Record Events that Modify the System’s Mandatory Access
+<title>Record Events that Modify the System's Mandatory Access
 Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
@@ -1014,8 +1014,7 @@ unusual activity.
 </Rule>
 
 <Rule id="audit_media_exports">
-<title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media
-(successful)</title>
+<title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
 <description>At a minimum the audit system should collect media
 exportation events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
@@ -1032,7 +1031,7 @@ loss.</rationale>
 </Rule>
 
 <Rule id="audit_file_deletions">
-<title>Ensure <tt>auditd</tt> Collects Files Deletion Events by User</title>
+<title>Ensure <tt>auditd</tt> Collects File Deletion Events by User</title>
 <description>At a minimum the audit system should collect file
 deletion events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as

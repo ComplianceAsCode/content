@@ -60,7 +60,7 @@ the exploitation of publicly-known vulnerabilities.
 <ref nist="SI-2" disa="1232"/>
 </Rule>
 <Rule id="ensure_gpgcheck_globally_activated">
-<title>Ensure "gpgcheck" Enabled In Yum Configuration</title>
+<title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option should be used to ensure that
 checking of an RPM package’s signature always occurs prior to its
 installation. To force yum to check package signatures before installing
@@ -79,7 +79,7 @@ protects against malicious tampering.
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled">
-<title>Ensure "gpgcheck" Enabled For All Yum Package Repositories</title>
+<title>Ensure gpgcheck Enabled For All Yum Package Repositories</title>
 <description>To ensure that signature checking is not disabled for
 any repos, ensure that the following line DOES NOT appear in any
 repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:

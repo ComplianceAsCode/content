@@ -6,7 +6,7 @@ contains more detailed information about Dovecot
 configuration.</description>
 
 <Group id="disabling_dovecot">
-<title>Disable Dovecot if Possible</title>
+<title>Disable Dovecot</title>
 <description>If the system does not need to operate as an IMAP or
 POP3 server, the dovecot software should be disabled and removed.
 </description>
@@ -26,12 +26,11 @@ avenue of attack, and should be disabled if not needed.
 </Rule>
 
 <Rule id="uninstall_dovecot">
-<title>Uninstall dovecot RPM Package</title>
+<title>Uninstall dovecot Package</title>
 <description>The <tt>dovecot</tt> package can be uninstalled
 with the following command:
 <pre># yum erase dovecot</pre>
 </description>
-
 <rationale>
 If there is no need to make the Dovecot software available,
 removing it provides a safeguard against its activation.

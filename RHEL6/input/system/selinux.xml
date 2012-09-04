@@ -100,7 +100,7 @@ the chances that it remain off during system operation.
 </Rule>
 
 <Rule id="set_selinux_state">
-<title>Check SELinux State</title>
+<title>Ensure SELinux State is Enforcing</title>
 <description>The SELinux state should be set to <tt>enforcing</tt> during
 normal system operation. To ensure the system is configured to
 boot into enforcing mode, add or correct the following line in
@@ -119,7 +119,7 @@ privileges.
 </Rule>
 
 <Rule id="set_selinux_policy">
-<title>Check SELinux Policy</title>
+<title>Configure SELinux Policy</title>
 <description>The SELinux <tt>targeted</tt> policy is appropriate for
 general-purpose desktops and servers, as well as systems in many other roles.
 To configure the system to use this policy,

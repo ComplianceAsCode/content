@@ -9,16 +9,16 @@ to ensure that no harmful discrepancies have
 arisen.</description>
 
 <Group id="permissions_important_account_files">
-<title>Verify Permissions on <tt>passwd</tt>, <tt>shadow</tt>,
-<tt>group</tt> and <tt>gshadow</tt> Files</title>
-<description>Default permissions for the <tt>passwd</tt>, <tt>shadow</tt>,
-<tt>group</tt>, and <tt>gshadow</tt> files should be maintained.  Many
-utilities need read access to the <tt>passwd</tt> file in order to function
-properly, but read access to the <tt>shadow</tt> file allows malicious attacks
-against system passwords, and should never be enabled.</description>
+<title>Verify Permissions on Files with Local Account Information and Credentials</title>
+<description>The default restritctive permissions for files which act as
+important security databases such as <tt>passwd</tt>, <tt>shadow</tt>,
+<tt>group</tt>, and <tt>gshadow</tt> files must be maintained.  Many utilities
+need read access to the <tt>passwd</tt> file in order to function properly, but
+read access to the <tt>shadow</tt> file allows malicious attacks against system
+passwords, and should never be enabled.</description>
 
 <Rule id="userowner_shadow_file">
-<title>Verify user who owns <tt>shadow</tt> file</title>
+<title>Verify User Who Owns <tt>shadow</tt> File</title>
 <description>The <tt>/etc/shadow</tt> file should be owned by
 root.</description>
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
@@ -32,10 +32,10 @@ which could weaken the system security posture.</rationale>
 </Rule>
 
 <Rule id="groupowner_shadow_file">
-<title>Verify group who owns <tt>shadow</tt> file</title>
+<title>Verify Group Who Owns <tt>shadow</tt> File</title>
 <description>The <tt>/etc/shadow</tt> file should be group-owned by
 root.</description>
-<rationale>The /etc/shadow file stores password hashes. Protection of this file is
+<rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
 <ident cce="3988-3" />
 <oval id="file_groupowner_etc_shadow" />
@@ -43,9 +43,9 @@ critical for system security.</rationale>
 </Rule>
 
 <Rule id="perms_shadow_file">
-<title>Verify permissions on <tt>shadow</tt> file</title>
+<title>Verify Permissions on <tt>shadow</tt> File</title>
 <description>File permissions for <tt>/etc/shadow</tt> should be set
-to 0400 or more restrictive.</description>
+to 0000.</description>
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
 system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
@@ -57,10 +57,10 @@ which could weaken the system security posture.</rationale>
 </Rule>
 
 <Rule id="userowner_group_file">
-<title>Verify user who owns <tt>group</tt> file</title>
+<title>Verify User Who Owns <tt>group</tt> File</title>
 <description>The <tt>/etc/group</tt> file should be owned by
 root.</description>
-<rationale>The /etc/group file contains information regarding groups that are configured
+<rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3276-3" />
 <oval id="file_owner_etc_group" />
@@ -68,10 +68,10 @@ on the system. Protection of this file is important for system security.</ration
 </Rule>
 
 <Rule id="groupowner_group_file">
-<title>Verify group who owns <tt>group</tt> file</title>
+<title>Verify Group Who Owns <tt>group</tt> File</title>
 <description>The <tt>/etc/group</tt> file should be group-owned by
 root.</description>
-<rationale>The /etc/group file contains information regarding groups that are configured
+<rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3883-6" />
 <oval id="file_groupowner_etc_group" />
@@ -79,10 +79,10 @@ on the system. Protection of this file is important for system security.</ration
 </Rule>
 
 <Rule id="perms_group_file">
-<title>Verify permissions on <tt>group</tt> file</title>
+<title>Verify Permissions on <tt>group</tt> File</title>
 <description>File permissions for <tt>/etc/group</tt> should be set
 correctly.</description>
-<rationale>The /etc/group file contains information regarding groups that are configured
+<rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3967-7" />
 <oval id="file_permissions_etc_group" />
@@ -90,10 +90,10 @@ on the system. Protection of this file is important for system security.</ration
 </Rule>
 
 <Rule id="userowner_gshadow_file">
-<title>Verify user who owns <tt>gshadow</tt> file</title>
+<title>Verify User Who Owns <tt>gshadow</tt> File</title>
 <description>The <tt>/etc/gshadow</tt> file should be group-owned by
 root.</description>
-<rationale>The /etc/gshadow file contains group password hashes. Protection of this file
+<rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
 <ident cce="4210-1" />
 <oval id="file_owner_etc_gshadow" />
@@ -101,10 +101,10 @@ is critical for system security.</rationale>
 </Rule>
 
 <Rule id="groupowner_gshadow_file">
-<title>Verify group who owns <tt>gshadow</tt> file</title>
+<title>Verify Group Who Owns <tt>gshadow</tt> File</title>
 <description>The <tt>/etc/gshadow</tt> file should be group-owned by
 root.</description>
-<rationale>The /etc/gshadow file contains group password hashes. Protection of this file
+<rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
 <ident cce="4064-2" />
 <oval id="file_groupowner_etc_gshadow" />
@@ -112,7 +112,7 @@ is critical for system security.</rationale>
 </Rule>
 
 <Rule id="perms_gshadow_file">
-<title>Verify permissions on <tt>gshadow</tt> file</title>
+<title>Verify Permissions on <tt>gshadow</tt> File</title>
 <description>File permissions for <tt>/etc/gshadow</tt> should be set
 correctly.</description>
 <rationale>The /etc/gshadow file contains group password hashes. Protection of this file
@@ -123,10 +123,10 @@ is critical for system security.</rationale>
 </Rule>
 
 <Rule id="userowner_passwd_file">
-<title>Verify user who owns <tt>passwd</tt> file</title>
+<title>Verify User Who Owns <tt>passwd</tt> File</title>
 <description>The <tt>/etc/passwd</tt> file should be owned by
 root.</description>
-<rationale>The /etc/passwd contains information about the users that are configured on
+<rationale>The <tt>/etc/passwd</tt> contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3958-6" />
 <oval id="file_owner_etc_passwd" />
@@ -134,10 +134,10 @@ the system. Protection of this file is critical for system security.</rationale>
 </Rule>
 
 <Rule id="groupowner_passwd_file">
-<title>Verify group who owns <tt>passwd</tt> file</title>
+<title>Verify Group Who Owns <tt>passwd</tt> File</title>
 <description>The <tt>/etc/passwd</tt> file should be group-owned by
 root.</description>
-<rationale>The /etc/passwd contains information about the users that are configured on
+<rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3495-9" />
 <oval id="file_groupowner_etc_passwd" />
@@ -145,12 +145,13 @@ the system. Protection of this file is critical for system security.</rationale>
 </Rule>
 
 <Rule id="file_permissions_etc_passwd">
-<title>Verify permissions on <tt>passwd</tt> file</title>
+<title>Verify Permissions on <tt>passwd</tt> File</title>
 <description>File permissions for <tt>/etc/passwd</tt> should be set
 to 0644 or less permissive.</description>
-<rationale>If the passwd file is writable by a group-owner or the world the
-risk of passwd file compromise is increased. The passwd file contains the
-list of acounts on the system and associated information.</rationale>
+<rationale>If the <tt>/etc/passwd</tt> file is writable by a group-owner or the
+world the risk of its compromise is increased. The file contains the list of
+acounts on the system and associated information, and protection of this file
+is critical for system security.</rationale>
 <ident cce="3566-7" />
 <oval id="file_permissions_etc_passwd" />
 <ref nist="AC-3, CM-6" disa="225"/>
@@ -267,7 +268,7 @@ changing modes.</description>
 </Rule>
 
 <Rule id="world_writeable_files">
-<title>Find Unauthorized World-Writable Files</title>
+<title>Ensure No World-Writable Files Exist</title>
 <description>Data in world-writable files can be modified by any
 user on the system. In almost all circumstances, files can be
 configured using a combination of user and group permissions to
@@ -281,25 +282,38 @@ Also, monitor for recurring world-writable files, as these may be
 symptoms of a misconfigured application or user
 account.</description>
 <ident cce="3795-2" />
-<oval id="dir_perms_world_writable_system_owned" />
 <ref nist="CM-6"/>
 </Rule>
 
 <Rule id="no_unpackaged_sgid_files">
-<title>Find Unauthorized SGID System Executables</title>
-<description>The sgid bit should not be set for all files.</description>
-<rationale>Executable files with the SGID permission allow users to gain permissions commensurate with the
-group owner of the file. The presence of these files should be strictly controlled on the system.</rationale>
+<title>Ensure All Setgid Executables Are Authorized</title>
+<description>The SGID (set group id) bit should be set only on files that were
+installed via authorized means. A straightforward means of identifying
+unauthorized SGID files is determine if any were not installed as part of an
+RPM package, which is cryptographically verified. Investigate the origin
+of any unpackaged SGID files. 
+</description>
+<rationale>Executable files with the SGID permission run with the privileges of
+the owner of the file. SGID files of uncertain provenance could allow for
+unprivileged users to elevate privileges. The presence of these files should be
+strictly controlled on the system.</rationale>
 <ident cce="14970-8" />
 <oval id="file_permissions_unauthorized_sgid" />
 <ref nist="CM-6"/>
 </Rule>
 
 <Rule id="no_unpackaged_suid_files">
-<title>Find Unauthorized SUID System Executables</title>
-<description>The suid bit should not be set for all files.</description>
-<rationale>Executable files with the SUID permission allow users to gain permissions commensurate with the
-owner of the file. The presence of these files should be strictly controlled on the system.</rationale>
+<title>Ensure All SUID Executables Are Authorized</title>
+<description>The SUID (set user id) bit should be set only on files that were
+installed via authorized means. A straightforward means of identifying
+unauthorized SGID files is determine if any were not installed as part of an
+RPM package, which is cryptographically verified. Investigate the origin
+of any unpackaged SUID files. 
+</description>
+<rationale>Executable files with the SUID permission run with the privileges of
+the owner of the file. SUID files of uncertain provenance could allow for
+unprivileged users to elevate privileges. The presence of these files should be
+strictly controlled on the system.</rationale>
 <ident cce="14340-4" />
 <oval id="file_permissions_unauthorized_suid" />
 <ref nist="AC-3, CM-6"/>
@@ -307,7 +321,7 @@ owner of the file. The presence of these files should be strictly controlled on 
 
 
 <Rule id="no_files_unowned_by_user">
-<title>Find files unowned by a user</title>
+<title>Ensure All Files Are Owned by a User</title>
 <description>The following command will discover and print any
 files on local partitions which do not belong to a valid user and a
 valid group. Run it once for each local partition PART:
@@ -330,7 +344,7 @@ and the cause should be discovered and addressed.
 </Rule>
 
 <Rule id="no_files_unowned_by_group">
-<title>Find files unowned by a group</title>
+<title>Ensure All Files Are Owned by a Group</title>
 <description>The following command will discover and print any
 files on local partitions which do not belong to a valid user and a
 valid group. Run it once for each local partition PART:
@@ -353,8 +367,7 @@ and the cause should be discovered and addressed.
 </Rule>
 
 <Rule id="world_writable_files_system_ownership">
-<title>Find world writable directories not owned by a
-system account</title>
+<title>Ensure All World-Writable Directories Are Owned by a System Account</title>
 <description>Locate any directories in local partitions which are
 world-writable and ensure that they are owned by root or another
 system account. The following command will discover and print these
