@@ -1,0 +1,455 @@
+<?xml version="1.0"?>
+<titles xmlns="http://checklists.nist.gov/xccdf/1.1" id="stig">
+<!-- This file can be used to specify alternative titles.
+     The rule attribute is used to identify the Rule with which to associate the title.
+     The shorttitle attribute is provided as an aide to data entry. 
+     The xccdf-alt-titles.xslt transform can be used to synchronize the rule and
+     shorttitle attributes with a particular XCCDF profile automatically. -->
+<title rule="partition_for_tmp" shorttitle="Ensure /tmp Located On Separate Partition">
+It is required that the /tmp partition is located on a separate partition.
+</title>
+<title rule="partition_for_var" shorttitle="Ensure /var Located On Separate Partition">
+It is required that the /var partition is located on a separate partition.
+</title>
+<title rule="partition_for_var_log" shorttitle="Ensure /var/log Located On Separate Partition">
+It is required that the /var/log partition is located on a separate partition.
+</title>
+<title rule="partition_for_var_log_audit" shorttitle="Ensure /var/log/audit Located On Separate Partition">
+</title>
+<title rule="partition_for_home" shorttitle="Ensure /home Located On Separate Partition">
+</title>
+<title rule="partition_for_tmp" shorttitle="Ensure /tmp Located On Separate Partition">
+</title>
+<title rule="partition_for_var" shorttitle="Ensure /var Located On Separate Partition">
+</title>
+<title rule="partition_for_var_log" shorttitle="Ensure /var/log Located On Separate Partition">
+</title>
+<title rule="partition_for_var_log_audit" shorttitle="Ensure /var/log/audit Located On Separate Partition">
+</title>
+<title rule="partition_for_home" shorttitle="Ensure /home Located On Separate Partition">
+</title>
+<title rule="ensure_redhat_gpgkey_installed" shorttitle="Ensure Red Hat GPG Key Installed">
+</title>
+<title rule="security_patches_up_to_date" shorttitle="Ensure Software Patches Installed">
+</title>
+<title rule="ensure_gpgcheck_globally_activated" shorttitle="Ensure gpgcheck Enabled In Main Yum Configuration">
+</title>
+<title rule="ensure_gpgcheck_never_disabled" shorttitle="Ensure gpgcheck Enabled For All Yum Package Repositories">
+</title>
+<title rule="install_aide" shorttitle="Install AIDE">
+</title>
+<title rule="aide_periodic_cron_checking" shorttitle="Configure Periodic Execution of AIDE">
+</title>
+<title rule="rpm_verify_permissions" shorttitle="Verify File Permissions with RPM">
+</title>
+<title rule="kernel_module_usb-storage_disabled" shorttitle="Disable Modprobe Loading of USB Storage Driver">
+</title>
+<title rule="service_autofs_disabled" shorttitle="Disable the Automounter">
+</title>
+<title rule="userowner_shadow_file" shorttitle="Verify User Who Owns shadow File">
+</title>
+<title rule="groupowner_shadow_file" shorttitle="Verify Group Who Owns shadow File">
+</title>
+<title rule="perms_shadow_file" shorttitle="Verify Permissions on shadow File">
+</title>
+<title rule="userowner_gshadow_file" shorttitle="Verify User Who Owns gshadow File">
+</title>
+<title rule="groupowner_gshadow_file" shorttitle="Verify Group Who Owns gshadow File">
+</title>
+<title rule="perms_gshadow_file" shorttitle="Verify Permissions on gshadow File">
+</title>
+<title rule="userowner_passwd_file" shorttitle="Verify User Who Owns passwd File">
+</title>
+<title rule="groupowner_passwd_file" shorttitle="Verify Group Who Owns passwd File">
+</title>
+<title rule="file_permissions_etc_passwd" shorttitle="Verify Permissions on passwd File">
+</title>
+<title rule="file_permissions_library_dirs" shorttitle="Verify that Shared Library Files Have Restrictive Permissions">
+</title>
+<title rule="file_ownership_library_dirs" shorttitle="Verify that Shared Library Files Have Root Ownership">
+</title>
+<title rule="file_permissions_binary_dirs" shorttitle="Verify that System Executables Have Restrictive Permissions">
+</title>
+<title rule="file_ownership_binary_dirs" shorttitle="Verify that System Executables Have Root Ownership">
+</title>
+<title rule="sticky_world_writable_dirs" shorttitle="Verify that All World-Writable Directories Have Sticky Bits Set">
+</title>
+<title rule="no_files_unowned_by_user" shorttitle="Ensure All Files Are Owned by a User">
+</title>
+<title rule="world_writable_files_system_ownership" shorttitle="Ensure All World-Writable Directories Are Owned by a System Account">
+</title>
+<title rule="disable_users_coredumps" shorttitle="Disable Core Dumps for All Users">
+</title>
+<title rule="enable_execshield" shorttitle="Enable ExecShield">
+</title>
+<title rule="enable_randomize_va_space" shorttitle="Enable Randomized Layout of Virtual Address Space">
+</title>
+<title rule="enable_selinux_bootloader" shorttitle="Ensure SELinux Not Disabled in /etc/grub.conf">
+</title>
+<title rule="set_selinux_state" shorttitle="Ensure SELinux State is Enforcing">
+</title>
+<title rule="set_selinux_policy" shorttitle="Configure SELinux Policy">
+</title>
+<title rule="selinux_unlabeled_device_files" shorttitle="Ensure No Device Files are Unlabeled by SELinux">
+</title>
+<title rule="restrict_root_console_logins" shorttitle="Restrict Virtual Console Root Logins">
+</title>
+<title rule="restrict_serial_port_logins" shorttitle="Restrict Serial Port Root Logins">
+</title>
+<title rule="no_shelllogin_for_systemaccounts" shorttitle="Ensure that System Accounts Do Not Run a Shell Upon Login">
+</title>
+<title rule="no_uidzero_except_root" shorttitle="Verify Only Root Has UID 0">
+</title>
+<title rule="no_empty_passwords" shorttitle="Prevent Log In to Accounts With Empty Password">
+</title>
+<title rule="no_hashes_outside_shadow" shorttitle="Verify All Account Password Hashes are Shadowed">
+</title>
+<title rule="no_netrc_files" shorttitle="Verify No netrc Files Exist">
+</title>
+<title rule="password_min_len" shorttitle="Set Password Minimum Length in login.defs">
+</title>
+<title rule="password_min_age" shorttitle="Set Password Minimum Age">
+</title>
+<title rule="password_max_age" shorttitle="Set Password Maximum Age">
+</title>
+<title rule="password_warn_age" shorttitle="Set Password Warning Age">
+</title>
+<title rule="account_disable_post_pw_expiration" shorttitle="Set Account Expiration Following Inactivity">
+</title>
+<title rule="no_nis_inclusions_shadow" shorttitle="Remove Legacy + Entries From /etc/shadow">
+</title>
+<title rule="no_nis_inclusions_group" shorttitle="Remove Legacy + Entries From /etc/group">
+</title>
+<title rule="no_nis_inclusions_passwd" shorttitle="Remove Legacy + Entries From /etc/passwd">
+</title>
+<title rule="password_retry" shorttitle="Set Password Retry Prompts Permitted Per-session">
+</title>
+<title rule="password_require_digits" shorttitle="Set Password Strength Minimum Digit Characters">
+</title>
+<title rule="password_require_uppercases" shorttitle="Set Password Strength Minimum Uppercase Characters">
+</title>
+<title rule="password_require_specials" shorttitle="Set Password Strength Minimum Special Characters">
+</title>
+<title rule="password_require_lowercases" shorttitle="Set Password Strength Minimum Lowercase Characters">
+</title>
+<title rule="password_require_diffchars" shorttitle="Set Password Strength Minimum Different Characters">
+</title>
+<title rule="deny_password_attempts" shorttitle="Set Deny For Failed Password Attempts">
+</title>
+<title rule="set_password_hashing_algorithm" shorttitle="Set Password Hashing Algorithm">
+</title>
+<title rule="limiting_password_reuse" shorttitle="Limit Password Reuse">
+</title>
+<title rule="max_concurrent_login_sessions" shorttitle="Limit the Number of Concurrent Login Sessions Allowed Per User">
+</title>
+<title rule="user_umask_bashrc" shorttitle="Ensure the Default Bash Umask is Set Correctly">
+</title>
+<title rule="user_umask_cshrc" shorttitle="Ensure the Default C Shell Umask is Set Correctly">
+</title>
+<title rule="user_umask_profile" shorttitle="Ensure the Default Umask is Set Correctly in /etc/profile">
+</title>
+<title rule="user_umask_logindefs" shorttitle="Ensure the Default Umask is Set Correctly in login.defs">
+</title>
+<title rule="user_owner_grub_conf" shorttitle="Verify /boot/grub/grub.conf User Ownership">
+</title>
+<title rule="group_owner_grub_conf" shorttitle="Verify /boot/grub/grub.conf Group Ownership">
+</title>
+<title rule="permissions_grub_conf" shorttitle="Verify /boot/grub/grub.conf Permissions">
+</title>
+<title rule="bootloader_password" shorttitle="Set Boot Loader Password">
+</title>
+<title rule="require_singleuser_auth" shorttitle="Require Authentication for Single User Mode">
+</title>
+<title rule="disable_interactive_boot" shorttitle="Disable Interactive Boot">
+</title>
+<title rule="set_screensaver_inactivity_timeout" shorttitle="Set GNOME Login Inactivity Timeout">
+</title>
+<title rule="enable_screensaver_after_idle" shorttitle="GNOME Desktop Screensaver Mandatory Use">
+</title>
+<title rule="enable_screensaver_password_lock" shorttitle="Enable Screen Lock Activation After Idle Period">
+</title>
+<title rule="set_blank_screensaver" shorttitle="Implement Blank Screen Saver">
+</title>
+<title rule="install_vlock_package" shorttitle="Install the vlock Package">
+</title>
+<title rule="set_system_login_banner" shorttitle="Modify the System Login Banner">
+</title>
+<title rule="enable_gdm_login_banner" shorttitle="Enable GUI Warning Banner">
+</title>
+<title rule="set_gdm_login_banner_text" shorttitle="Set GUI Warning Banner Text">
+</title>
+<title rule="disable_sysctl_ipv4_default_send_redirects" shorttitle="Disable Kernel Parameter for Sending ICMP Redirects by Default">
+</title>
+<title rule="disable_sysctl_ipv4_all_send_redirects" shorttitle="Disable Kernel Parameter for Sending ICMP Redirects for All Interfaces">
+</title>
+<title rule="disable_sysctl_ipv4_ip_forward" shorttitle="Disable Kernel Parameter for IP Forwarding">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_accept_source_route" shorttitle="Disable Kernel Parameter for Accepting Source-Routed Packets for All Interfaces">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_accept_redirects" shorttitle="Disable Kernel Parameter for Accepting ICMP Redirects for All Interfaces">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_secure_redirects" shorttitle="Disable Kernel Parameter for Accepting Secure Redirects for All Interfaces">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_log_martians" shorttitle="Enable Kernel Parameter to Log Martian Packets">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_accept_source_route" shorttitle="Disable Kernel Parameter for Accepting Source-Routed Packets By Default">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_secure_redirects" shorttitle="Disable Kernel Parameter for Accepting Secure Redirects By Default">
+</title>
+<title rule="set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts" shorttitle="Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests">
+</title>
+<title rule="set_sysctl_net_ipv4_icmp_ignore_bogus_error_responses" shorttitle="Enable Kernel Parameter to Ignore Bogus ICMP Error Responses">
+</title>
+<title rule="set_sysctl_net_ipv4_tcp_syncookies" shorttitle="Enable Kernel Parameter to Use TCP Syncookies">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_rp_filter" shorttitle="Enable Kernel Parameter to Use Reverse Path Filtering for All Interfaces">
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_rp_filter" shorttitle="Enable Kernel Parameter to Use Reverse Path Filtering by Default">
+</title>
+<title rule="service_bluetooth_disabled" shorttitle="Disable Bluetooth Service">
+</title>
+<title rule="kernel_module_bluetooth_disabled" shorttitle="Disable Bluetooth Kernel Modules">
+</title>
+<title rule="disable_ipv6_module_loading" shorttitle="Disable IPv6 Networking Support Automatic Loading">
+</title>
+<title rule="set_sysctl_ipv6_default_accept_redirects" shorttitle="Disable Accepting IPv6 Redirects">
+</title>
+<title rule="enable_ip6tables" shorttitle="Verify ip6tables Enabled">
+</title>
+<title rule="enable_iptables" shorttitle="Verify iptables Enabled">
+</title>
+<title rule="set_iptables_default_rule" shorttitle="Set Default Iptables Policy for Incoming Packets">
+</title>
+<title rule="set_iptables_default_rule_forward" shorttitle="Set Default Iptables Policy for Forwarded Packets">
+</title>
+<title rule="disable_protocol_dccp" shorttitle="Disable DCCP Support">
+</title>
+<title rule="disable_protocol_sctp" shorttitle="Disable SCTP Support">
+</title>
+<title rule="disable_protocol_rds" shorttitle="Disable RDS Support">
+</title>
+<title rule="disable_protocol_tipc" shorttitle="Disable TIPC Support">
+</title>
+<title rule="install_openswan" shorttitle="Install openswan Package">
+</title>
+<title rule="package_rsyslog_installed" shorttitle="Ensure rsyslog is Installed">
+</title>
+<title rule="service_rsyslog_enabled" shorttitle="Enable Rsyslog Service (rsyslog)">
+</title>
+<title rule="userowner_rsyslog_files" shorttitle="Ensure Log Files Are Owned By Appropriate User">
+</title>
+<title rule="groupowner_rsyslog_files" shorttitle="Ensure Log Files Are Owned By Appropriate Group">
+</title>
+<title rule="rsyslog_file_permissions" shorttitle="Ensure System Log Files Have Correct Permissions">
+</title>
+<title rule="rsyslog_send_messages_to_logserver" shorttitle="Ensure Logs Sent To Remote Host">
+</title>
+<title rule="ensure_logrotate_activated" shorttitle="Ensure Logrotate Runs Periodically">
+</title>
+<title rule="enable_auditd_service" shorttitle="Enable auditd Service">
+</title>
+<title rule="enable_auditd_bootloader" shorttitle="Enable Auditing for Processes Which Start Prior to the Audit Daemon">
+</title>
+<title rule="configure_auditd_num_logs" shorttitle="Configure auditd Number of Logs Retained">
+</title>
+<title rule="configure_auditd_max_log_file" shorttitle="Configure auditd Max Log File Size">
+</title>
+<title rule="configure_auditd_max_log_file_action" shorttitle="Configure auditd max_log_file_action Upon Reaching Maximum Log Size">
+</title>
+<title rule="configure_auditd_space_left_action" shorttitle="Configure auditd space_left Action on Low Disk Space">
+</title>
+<title rule="configure_auditd_admin_space_left_action" shorttitle="Configure auditd admin_space_left Action on Low Disk Space">
+</title>
+<title rule="configure_auditd_action_mail_acct" shorttitle="Configure auditd mail_acct Action on Low Disk Space">
+</title>
+<title rule="audit_rules_time_adjtimex" shorttitle="Record attempts to alter time through adjtimex">
+</title>
+<title rule="audit_rules_time_settimeofday" shorttitle="Record attempts to alter time through settimeofday">
+</title>
+<title rule="audit_rules_time_stime" shorttitle="Record Attempts to Alter Time Through stime">
+</title>
+<title rule="audit_rules_time_clock_settime" shorttitle="Record Attempts to Alter Time Through clock_settime">
+</title>
+<title rule="audit_rules_time_watch_localtime" shorttitle="Record Attempts to Alter the localtime File">
+</title>
+<title rule="audit_account_changes" shorttitle="Record Events that Modify User/Group Information">
+</title>
+<title rule="audit_network_modifications" shorttitle="Record Events that Modify the System's Network Environment">
+</title>
+<title rule="audit_mac_changes" shorttitle="Record Events that Modify the System's Mandatory Access&#10;Controls">
+</title>
+<title rule="audit_rules_dac_modification_chmod" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - chmod">
+</title>
+<title rule="audit_rules_dac_modification_chown" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - chown">
+</title>
+<title rule="audit_rules_dac_modification_fchmod" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - fchmod">
+</title>
+<title rule="audit_rules_dac_modification_fchmodat" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - fchmodat">
+</title>
+<title rule="audit_rules_dac_modification_fchown" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - fchown">
+</title>
+<title rule="audit_rules_dac_modification_fchownat" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - fchownat">
+</title>
+<title rule="audit_rules_dac_modification_fremovexattr" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - fremovexattr">
+</title>
+<title rule="audit_rules_dac_modification_fsetxattr" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - fsetxattr">
+</title>
+<title rule="audit_rules_dac_modification_lchown" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - lchown">
+</title>
+<title rule="audit_rules_dac_modification_lremovexattr" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - lremovexattr">
+</title>
+<title rule="audit_rules_dac_modification_lsetxattr" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - lsetxattr">
+</title>
+<title rule="audit_rules_dac_modification_removexattr" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - removexattr">
+</title>
+<title rule="audit_rules_dac_modification_setxattr" shorttitle="Record Events that Modify the System's Discretionary&#10;Access Controls - setxattr">
+</title>
+<title rule="audit_file_access" shorttitle="Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful)">
+</title>
+<title rule="audit_privileged_commands" shorttitle="Ensure auditd Collects Information on the Use of Privileged Commands">
+</title>
+<title rule="audit_media_exports" shorttitle="Ensure auditd Collects Information on Exporting to Media (successful)">
+</title>
+<title rule="audit_file_deletions" shorttitle="Ensure auditd Collects File Deletion Events by User">
+</title>
+<title rule="audit_sysadmin_actions" shorttitle="Ensure auditd Collects System Administrator Actions">
+</title>
+<title rule="audit_kernel_module_loading" shorttitle="Ensure auditd Collects Information on Kernel Module Loading&#10;and Unloading">
+</title>
+<title rule="disable_xinetd" shorttitle="Disable xinetd Service">
+</title>
+<title rule="uninstall_xinetd" shorttitle="Uninstall xinetd Package">
+</title>
+<title rule="disable_telnet_service" shorttitle="Disable telnet Service">
+</title>
+<title rule="uninstall_telnet_server" shorttitle="Uninstall telnet-server Package">
+</title>
+<title rule="uninstall_rsh-server" shorttitle="Uninstall rsh-server Package">
+</title>
+<title rule="disable_rexec" shorttitle="Disable rexec Service">
+</title>
+<title rule="disable_rsh" shorttitle="Disable rsh Service">
+</title>
+<title rule="disable_rlogin" shorttitle="Disable rlogin Service">
+</title>
+<title rule="no_rsh_trust_files" shorttitle="Remove Rsh Trust Files">
+</title>
+<title rule="uninstall_ypserv" shorttitle="Uninstall ypserv Package">
+</title>
+<title rule="disable_ypbind" shorttitle="Disable ypbind Service">
+</title>
+<title rule="disable_tftp" shorttitle="Disable tftp Service">
+</title>
+<title rule="uninstall_tftp-server" shorttitle="Uninstall tftp-server Package">
+</title>
+<title rule="tftpd_uses_secure_mode" shorttitle="Ensure TFTP Daemon Uses Secure Mode">
+</title>
+<title rule="service_abrtd_disabled" shorttitle="Disable Automatic Bug Reporting Tool (abrtd)">
+</title>
+<title rule="service_atd_disabled" shorttitle="Disable At Service (atd)">
+</title>
+<title rule="service_ntpdate_disabled" shorttitle="Disable ntpdate Service (ntpdate)">
+</title>
+<title rule="service_oddjobd_disabled" shorttitle="Disable Odd Job Daemon (oddjobd)">
+</title>
+<title rule="service_qpidd_disabled" shorttitle="Disable Apache Qpid (qpidd)">
+</title>
+<title rule="service_rdisc_disabled" shorttitle="Disable Network Router Discovery Daemon (rdisc)">
+</title>
+<title rule="service_rhnsd_disabled" shorttitle="Disable Red Hat Network Service (rhnsd)">
+</title>
+<title rule="service_sysstat_disabled" shorttitle="Disable System Statistics Reset Service (sysstat)">
+</title>
+<title rule="enable_cron" shorttitle="Enable cron Service">
+</title>
+<title rule="disable_at" shorttitle="Disable atd Service">
+</title>
+<title rule="sshd_allow_only_protocol2" shorttitle="Allow Only SSH Protocol 2">
+</title>
+<title rule="sshd_set_idle_timeout" shorttitle="Set SSH Idle Timeout Interval">
+</title>
+<title rule="sshd_set_keepalive" shorttitle="Set SSH Client Alive Count">
+</title>
+<title rule="sshd_disable_rhosts" shorttitle="Disable SSH Support for .rhosts Files">
+</title>
+<title rule="disable_host_auth" shorttitle="Disable Host-Based Authentication">
+</title>
+<title rule="sshd_disable_root_login" shorttitle="Disable SSH Root Login">
+</title>
+<title rule="sshd_disable_empty_passwords" shorttitle="Disable SSH Access via Empty Passwords">
+</title>
+<title rule="sshd_enable_warning_banner" shorttitle="Enable SSH Warning Banner">
+</title>
+<title rule="sshd_do_not_permit_user_env" shorttitle="Do Not Allow SSH Environment Options">
+</title>
+<title rule="sshd_use_approved_ciphers" shorttitle="Use Only Approved Ciphers">
+</title>
+<title rule="disable_xwindows_with_runlevel" shorttitle="Disable X Windows Startup By Setting Runlevel">
+</title>
+<title rule="packagegroup_xwindows_remove" shorttitle="Remove the X Windows Package Group">
+</title>
+<title rule="xwindows_remote_listening" shorttitle="Disable X Window System Listening">
+</title>
+<title rule="disable_avahi" shorttitle="Disable Avahi Server Software">
+</title>
+<title rule="disable_dhcp_server" shorttitle="Disable DHCP Service">
+</title>
+<title rule="uninstall_dhcp_server" shorttitle="Uninstall DHCP Server Package">
+</title>
+<title rule="disable_dhcp_client" shorttitle="Disable DHCP Client">
+</title>
+<title rule="enable_ntpd" shorttitle="Enable the NTP Daemon">
+</title>
+<title rule="ntpd_specify_remote_server" shorttitle="Specify a Remote NTP Server">
+</title>
+<title rule="postfix_network_listening" shorttitle="Disable Postfix Network Listening">
+</title>
+<title rule="ldap_client_start_tls" shorttitle="Configure LDAP to Use TLS For All Transactions">
+</title>
+<title rule="ldap_client_tls_cacertpath" shorttitle="Configure Certificate Directives for LDAP Use of TLS">
+</title>
+<title rule="package_openldap-servers_removed" shorttitle="Uninstall openldap-servers Package">
+</title>
+<title rule="service_nfs_disabled" shorttitle="Disable Network File System (nfs)">
+</title>
+<title rule="service_rpcsvcgssd_disabled" shorttitle="Disable Secure RPC Server Service (rpcsvcgssd)">
+</title>
+<title rule="use_nodev_option_on_nfs_mounts" shorttitle="Mount Remote Filesystems with nodev">
+</title>
+<title rule="use_nosuid_option_on_nfs_mounts" shorttitle="Mount Remote Filesystems with nosuid">
+</title>
+<title rule="no_insecure_locks_exports" shorttitle="Ensure Insecure File Locking is Not Allowed">
+</title>
+<title rule="disable_dns_server" shorttitle="Disable DNS Server">
+</title>
+<title rule="uninstall_bind" shorttitle="Uninstall bind Package">
+</title>
+<title rule="disable_vsftpd" shorttitle="Disable vsftpd Service">
+</title>
+<title rule="uninstall_vsftpd" shorttitle="Uninstall vsftpd Package">
+</title>
+<title rule="ftp_present_banner" shorttitle="Create Warning Banners for All FTP Users">
+</title>
+<title rule="disable_httpd" shorttitle="Disable httpd Service">
+</title>
+<title rule="uninstall_httpd" shorttitle="Uninstall httpd Package">
+</title>
+<title rule="disable_dovecot" shorttitle="Disable Dovecot Service">
+</title>
+<title rule="uninstall_dovecot" shorttitle="Uninstall dovecot Package">
+</title>
+<title rule="disable_smb_server" shorttitle="Disable Samba">
+</title>
+<title rule="require_smb_client_signing" shorttitle="Require Client SMB Packet Signing, if using&#10;smbclient">
+</title>
+<title rule="require_smb_client_signing_mount.cifs" shorttitle="Require Client SMB Packet Signing, if using&#10;mount.cifs">
+</title>
+<title rule="disable_squid" shorttitle="Disable Squid">
+</title>
+<title rule="uninstall_squid" shorttitle="Uninstall squid Package">
+</title>
+<title rule="disable_snmpd" shorttitle="Disable snmpd Service">
+</title>
+<title rule="uninstall_net-snmp" shorttitle="Uninstall net-snmp Package">
+</title>
+</titles>
