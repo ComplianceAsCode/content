@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
-xmlns:xhtml="http://www.w3.org/1999/xhtml"
+xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
 exclude-result-prefixes="xccdf xhtml">
 
 <xsl:include href="constants.xslt"/>
@@ -19,6 +19,13 @@ exclude-result-prefixes="xccdf xhtml">
       </xsl:attribute>
       <xsl:apply-templates select="@*|node()" />
     </xsl:copy>
+  </xsl:template>
+
+  <!-- insert current date -->
+  <xsl:template match="Benchmark/status/@date">
+    <xsl:attribute name="date">
+       <xsl:value-of select="date:date()"/>
+    </xsl:attribute>
   </xsl:template>
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
