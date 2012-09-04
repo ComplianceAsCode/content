@@ -7,7 +7,7 @@ be disabled on any system
 on which it is not needed.</description>
 
 <Group id="disabling_dns_server">
-<title>Disable DNS Server if Possible</title>
+<title>Disable DNS Server</title>
 <description>
 DNS software should be disabled on any machine which does not
 need to be a nameserver. Note that the BIND DNS server software is
@@ -49,12 +49,16 @@ removing it provides a safeguard against its activation.
 
 <Group id="dns_server_isolation">
 <title>Isolate DNS from Other Services</title>
-<description>This section discusses mechanisms for preventing the DNS server from interfering with other services. This is done both to protect the remainder of the network should a nameserver be compromised, and to make direct attacks on nameservers more difficult.</description>
+<description>This section discusses mechanisms for preventing the DNS server
+from interfering with other services. This is done both to protect the
+remainder of the network should a nameserver be compromised, and to make direct
+attacks on nameservers more difficult.</description>
 
 <Rule id="dns_server_dedicated">
-<title>Run DNS Software on Dedicated Servers if Possible</title>
-<description>Since DNS is a high-risk service which must frequently be made available to the entire Internet, it is strongly
-recommended that no other services be offered by machines which act as organizational DNS servers.</description>
+<title>Run DNS Software on Dedicated Servers</title> <description>Since DNS is
+a high-risk service which must frequently be made available to the entire
+Internet, it is strongly recommended that no other services be offered by
+machines which act as organizational DNS servers.</description>
 <!--<ident cce="4219-2" />-->
 <!--<oval id="dns_server_dedicated" />-->
 <!--<ref nist="CM-6, CM-7" />-->

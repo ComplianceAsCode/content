@@ -25,7 +25,7 @@ changes – and should therefore be used with caution.</description>
 
 
 <Group id="disabling_dhcp_server">
-<title>Disable DHCP Server if Possible</title>
+<title>Disable DHCP Server</title>
 <description>
 The DHCP server <tt>dhcpd</tt> is not installed or activated by
 default. If the software was installed and activated, but the
@@ -68,7 +68,7 @@ accidentally reactivated and disrupt network operation.
 </Group> <!-- <Group id="disabling_dhcp_server"> -->
 
 <Group id="dhcp_server_configuration">
-<title>Disable DHCP Server if Possible</title>
+<title>Disable DHCP Server</title>
 <description>If the system must act as a DHCP server, the configuration information it serves should be minimized. Also, support for other protocols and DNS-updating schemes should be explicitly disabled unless needed. The configuration file for dhcpd is called <tt>/etc/dhcpd.conf</tt>. The file begins with a number of global configuration options. The remainder of the file is divided into sections, one for each block of addresses offered by dhcpd, each of which contains configuration options specific to that address block.</description>
 
 <Rule id="dhcp_server_disable_ddns">
@@ -154,7 +154,7 @@ process.</description>
 </Group> <!-- <Group id="dhcp_server_configuration"> -->
 
 <Group id="disabling_dhcp_client">
-<title>Disable DHCP Client if Possible</title>
+<title>Disable DHCP Client</title>
 <description>
 DHCP is the default network configuration method provided by the system
 installer, and common on many networks. Nevertheless, manual management
