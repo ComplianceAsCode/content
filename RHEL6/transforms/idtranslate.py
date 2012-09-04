@@ -68,10 +68,18 @@ class idtranslator:
         str_id = "%s:%s:%d" % (pre, tagname_to_abbrev(tagname), i)
         return str_id
 
-    def translate(self, tree):
+    def translate(self, tree, store_defname=False, refsource=""):
         for element in tree.getiterator():
-            if element.get("id"):
-                element.set("id", self.assign_id(element.tag, element.get("id")))
+            idname = element.get("id")
+            if idname:
+                # store the old name if requested (for OVAL definitions)
+                if store_defname and element.tag == ovalns + "definition":
+                    metadata = element.find(ovalns + "metadata")
+                    if metadata is None:
+                        metadata = ET.SubElement(element, "metadata")
+                    defnam = ET.SubElement(metadata, "reference", ref_id=idname, source=refsource) 
+                # set the element to the new identifier 
+                element.set("id", self.assign_id(element.tag, idname))
                 continue
             if element.tag == ovalns + "filter":
                 element.text = self.assign_id("state", element.text)
