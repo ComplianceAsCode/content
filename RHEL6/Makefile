@@ -2,6 +2,7 @@ IN = input
 OUT = output
 TRANS = transforms
 REFS = references
+UTILS = utils
 DIST = dist
 ID = scap-security-guide
 
@@ -14,7 +15,7 @@ shorthand-guide:
 shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/rhel6-xccdf-noprofiles.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addprofiles.xslt $(OUT)/rhel6-xccdf-noprofiles.xml
-	xsltproc -stringparam fixes "../$(IN)/fixes/bash-ks.xml" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
+#	xsltproc -stringparam fixes "../$(IN)/fixes/bash-ks.xml" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
 #	xsltproc -stringparam fixes "../$(IN)/fixes/puppet-example.xml" -o $(OUT)/rhel6-xccdf.html $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/rhel6-xccdf.xml $(OUT)/rhel6-xccdf.xml
 
@@ -22,7 +23,6 @@ checks:
 	xmlwf $(IN)/checks/*.xml
 	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/rhel6-oval.xml
 	xmllint --format --output $(OUT)/rhel6-oval.xml $(OUT)/rhel6-oval.xml
-#	SCC might return someday
 
 
 guide: shorthand-guide shorthand2xccdf
@@ -65,9 +65,16 @@ table-stigs:
 	xsltproc --html -o $(OUT)/rhel5-table-stig-manual-ccisorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/rhel5-table-stig-manual.html 
 	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/rhel5-table-stig-manual-withnotes.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 	xsltproc -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/rhel6-xccdf.xml 
+#	temporarily retain an output file showing the short titles as well, for convenience
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server-shorttitles.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
+	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf-alt-titles.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
 
 tables: table-idents table-refs table-profilenistrefs table-srgmap table-stigs
+
+alt-titles: shorthand2xccdf
+	$(UTILS)/sync-alt-titles.py -p stig-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/rhel6-xccdf.xml
+	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml 
 
 content: shorthand-guide shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
