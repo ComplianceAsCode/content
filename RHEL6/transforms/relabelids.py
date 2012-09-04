@@ -56,7 +56,7 @@ def main():
     # rename all IDs in the oval file
     ovaltree = parse_xml_file(ovalfile) 
     translator = idtranslate.idtranslator(idname+".ini", "oval:"+idname)
-    ovaltree = translator.translate(ovaltree)
+    ovaltree = translator.translate(ovaltree, store_defname=True, refsource="scap-security-guide")
 
     newovalfile = ovalfile.replace(".xml", "-" + idname + ".xml")
     ET.ElementTree(ovaltree).write(newovalfile)
