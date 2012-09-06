@@ -28,8 +28,8 @@ def get_ovalfiles(checks):
         if check.get("system") == oval_ns:
             checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
             ovalfiles.add(checkcontentref.get("href"))
-        else:
-            print "Non-OVAL checking system found: " + check.get("system")
+#        else:
+#            print "Non-OVAL checking system found: " + check.get("system")
     return ovalfiles
 
 
@@ -64,6 +64,8 @@ def main():
     # rename all IDs and file refs in the xccdf file
     for check in checks:
         checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
+        if checkcontentref is None:
+            continue
         checkid = translator.assign_id("definition", checkcontentref.get("name"))
         checkcontentref.set("name", checkid)
         checkcontentref.set("href", newovalfile)

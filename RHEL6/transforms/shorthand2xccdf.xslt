@@ -42,7 +42,9 @@ exclude-result-prefixes="xccdf xhtml">
       <xsl:apply-templates select="description"/>
       <xsl:apply-templates select="warning"/> 
       <xsl:apply-templates select="ref"/> 
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref)]"/>
+      <xsl:apply-templates select="rationale"/> 
+      <xsl:apply-templates select="ident"/> 
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ident)]"/>
     </xsl:copy>
   </xsl:template> 
 
@@ -163,6 +165,20 @@ exclude-result-prefixes="xccdf xhtml">
     </check>
   </xsl:template>
 
+
+  <!-- expand reference to OCIL (inline) -->
+  <xsl:template match="Rule/ocil">
+      <check>
+        <xsl:attribute name="system">
+            <xsl:value-of select="$ociluri" />
+        </xsl:attribute>
+        <check-content>
+        <xsl:apply-templates select="node()"/>
+        </check-content>
+      </check>
+   </xsl:template>
+
+
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
@@ -187,6 +203,26 @@ exclude-result-prefixes="xccdf xhtml">
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="partition-check-macro">
+    Run the following command to verify that <xhtml:code><xsl:value-of select="@part"/></xhtml:code> lives on its own partition:
+  <xhtml:pre># df -h <xsl:value-of select="@part"/> | grep "<xsl:value-of select="@part"/>"</xhtml:pre>
+    It will return a line for "<xsl:value-of select="@part"/>" if it is on its own partition. 
+  </xsl:template>
+
+  <xsl:template match="service-disable-check-macro">
+    Run the following command to determine the current status of the
+<xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
+  <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
+    If the service is disabled, it should return: <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="service-enable-check-macro">
+    Run the following command to determine the current status of the
+<xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
+  <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
+    If the service is enabled, it should return: <xhtml:pre><xsl:value-of select="@service"/> is running...</xhtml:pre>
   </xsl:template>
 
   <!-- CORRECTING TERRIBLE ABUSE OF NAMESPACES BELOW -->

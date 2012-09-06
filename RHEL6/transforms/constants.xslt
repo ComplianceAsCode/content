@@ -13,4 +13,5 @@
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/cci/index.html</xsl:variable>
 
 <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
+<xsl:variable name="ociluri">http://www.mitre.org/ocil/2</xsl:variable>
 </xsl:stylesheet>
