@@ -16,6 +16,7 @@ reports to files, or forward crash reports to a centralized issue tracking
 system such as RHTSupport.
 <service-disable-macro service="abrtd" />
 </description>
+<ocil><service-disable-check-macro service="abrtd" /></ocil>
 <rationale> Mishandling crash data could expose sensitive information about
 vulnerablities in software executing on the local machine, as well as sensitive
 information from within a process's address space or registers.</rationale>
@@ -32,6 +33,7 @@ dispatches ACPI events (such as power/reset button depressed) to userspace
 programs.
 <service-disable-macro service="acpid" />
 </description>
+<ocil><service-disable-check-macro service="acpid" /></ocil>
 <rationale>ACPI support is highly desirable for systems in some network roles,
 such as laptops or desktops. For other systems, such as servers, it may permit
 accidental or trivially achievable denial of service situations and disabling
@@ -51,6 +53,7 @@ recurring. The daemon <tt>atd</tt> keeps track of tasks scheduled via
 <tt>at</tt> and <tt>batch</tt>, and executes them at the specified time.
 <service-disable-macro service="atd" />
 </description>
+<ocil><service-disable-check-macro service="atd" /></ocil>
 <rationale>
 The <tt>atd</tt> service could be used by an unsophisticated insider to carry
 out activities outside of a normal login session, which could complicate
@@ -71,6 +74,7 @@ combined with Red Hat's IPA (Identity Policy Audit) security information managem
 solution to aid in the management of certificates.
 <service-disable-macro service="certmonger" />
 </description>
+<ocil><service-disable-check-macro service="certmonger" /></ocil>
 <rationale>The services provided by certmonger may be essential for systems
 fulfilling some roles a PKI infrastructure, but its functionality is not necesssary
 for many other use cases.</rationale>
@@ -87,6 +91,7 @@ memory, network bandwidth, etc) among a defined group (or groups) of processes e
 a system. The <tt>cgconfig</tt> daemon starts at boot and establishes the predefined control groups.
 <service-disable-macro service="cgconfig" />
 </description>
+<ocil><service-disable-check-macro service="cgconfig" /></ocil>
 <rationale>Unless control groups are used to manage system resources, running the cgconfig
 service is not necessary.
 </rationale>
@@ -101,6 +106,7 @@ service is not necessary.
 parameters set in the <tt>/etc/cgrules.conf</tt> configuration file.
 <service-disable-macro service="cgred" />
 </description>
+<ocil><service-disable-check-macro service="cgred" /></ocil>
 <rationale>Unless control groups are used to manage system resources, running the cgred service
 service is not necessary.
 </rationale>
@@ -115,6 +121,7 @@ service is not necessary.
 the current processing load thereby conserving power and reducing heat.
 <service-disable-macro service="cpuspeed" />
 </description>
+<ocil><service-disable-check-macro service="cpuspeed" /></ocil>
 <rationale>The <tt>cpuspeed</tt> service is only necessary if adjusting the CPU clock speed
 provides benefit. Traditionally this has included laptops (to enhance battery life),
 but may also apply to server or desktop environments where conserving power is
@@ -135,6 +142,7 @@ running a desktop environment, and may be necessary on any system which
 deals with removable media or devices.
 <service-disable-macro service="haldaemon" />
 </description>
+<ocil><service-disable-check-macro service="haldaemon" /></ocil>
 <rationale>The haldaemon provides essential functionality on systems
 that use removable media or devices, but can be disabled for systems
 that do not require these.
@@ -152,6 +160,7 @@ power savings and performance through distribution of hardware interrupts across
 multiple processors.
 <service-enable-macro service="irqbalance" />
 </description>
+<ocil><service-disable-check-macro service="irqbalance" /></ocil>
 <rationale>In an environment with multiple processors (now common), the irqbalance service
 provides potential speedups for handling interrupt requests.</rationale>
 <ident cce="4123-6" />
@@ -166,6 +175,7 @@ system call to boot a secondary kernel ("capture" kernel) following a system
 crash, which can load information from the crashed kernel for analysis.
 <service-disable-macro service="kdump" />
 </description>
+<ocil><service-disable-check-macro service="kdump" /></ocil>
 <rationale>Unless the system is used for kernel development or testing, there
 is little need to run the kdump service.</rationale>
 <ident cce="3425-6" />
@@ -199,6 +209,7 @@ mirrored or snapshot logical volumes then this service should be configured and 
 RAID setups do not use this service).
 <service-disable-macro service="mdmonitor" />
 </description>
+<ocil><service-disable-check-macro service="mdmonitor" /></ocil>
 <rationale>If software RAID monitoring is not required (and it is uncommon),
 there is no need to run the service.</rationale>
 <ident cce="3854-7" />
@@ -215,6 +226,7 @@ Due to these dependencies, disabling D-Bus may not be practical for
 many systems.
 <service-disable-macro service="messagebus" />
 </description>
+<ocil><service-disable-check-macro service="messagebus" /></ocil>
 <rationale>If no services which require D-Bus are needed, then it
 can be disabled. As a broker for IPC between processes of different privilege levels,
 it could be a target for attack. However, disabling D-Bus is likely to be
@@ -234,6 +246,7 @@ syslog server. This allows debugging of problems where disk logging fails and
 serial consoles are impractical.
 <service-disable-macro service="netconsole" />
 </description>
+<ocil><service-disable-check-macro service="netconsole" /></ocil>
 <rationale>The <tt>netconsole</tt> service is not necessary unless there is a need to debug
 kernel panics, which is not common.
 </rationale>
@@ -252,6 +265,7 @@ and then sets the local hardware clock to the newly synchronized
 system time.
 <service-disable-macro service="ntpdate" />
 </description>
+<ocil><service-disable-check-macro service="ntpdate" /></ocil>
 <rationale>The <tt>ntpdate</tt> service may only be suitable for systems which
 are rebooted frequently enough that clock drift does not cause problems between
 reboots. In any event, the functionality of the ntpdate service is now
@@ -269,6 +283,7 @@ specified privileged tasks can run tasks for unprivileged client
 applications. Communication with <tt>oddjobd</tt> through the system message bus.
 <service-disable-macro service="oddjobd" />
 </description>
+<ocil><service-disable-check-macro service="oddjobd" /></ocil>
 <rationale>The <tt>oddjobd</tt> service may provide necessary functionality in
 some environments but it can be disabled if it is not needed. Execution of
 tasks by privileged programs, on behalf of unprivileged ones, has traditionally
@@ -286,6 +301,7 @@ be used to prevent portmap from binding to well known TCP ports that are
 required for other services.
 <service-disable-macro service="portreserve" />
 </description>
+<ocil><service-disable-check-macro service="portreserve" /></ocil>
 <rationale>The <tt>portreserve</tt> service provides helpful functionality by
 preventing conflicting usage of ports in the reserved port range, but it can be
 disabled if not needed.</rationale>
@@ -303,6 +319,7 @@ including <tt>acct</tt> and <tt>ac</tt> to allow system administrators to view
 user activity, such as commands issued by users of the system.
 <service-enable-macro service="psacct" />
 </description>
+<ocil><service-disable-check-macro service="psacct" /></ocil>
 <rationale>The <tt>psacct</tt> service can provide administrators a convenient
 view into some user activities. However, it should be noted that the auditing
 system and its audit records provide more authoritative and comprehensive
@@ -320,6 +337,7 @@ Queuing Protocol.  By default the qpidd service will bind to port 5672 and
 listen for connection attempts.
 <service-disable-macro service="qpidd" />
 </description>
+<ocil><service-disable-check-macro service="qpidd" /></ocil>
 <rationale>The qpidd service is automatically installed when the "base" 
 package selection is selected during installation.  The qpidd service listens 
 for network connections which increases the attack surface of the system.  If 
@@ -339,6 +357,7 @@ violation using D-Bus or by sending a message to the terminal that the user has
 last accessed.
 <service-disable-macro service="quota_nld" />
 </description>
+<ocil><service-disable-check-macro service="quota_nld" /></ocil>
 <rationale>If disk quotas are enforced on the local system, then the
 <tt>quota_nld</tt> service likely provides useful functionality and should
 remain enabled. However, if disk quotas are not used or user notification of
@@ -358,6 +377,7 @@ the local subnet. If a router is discovered then the local routing table is
 updated with a corresponding default route. By default this daemon is disabled.
 <service-disable-macro service="rdisc" />
 </description>
+<ocil><service-disable-check-macro service="rdisc" /></ocil>
 <rationale>General-purpose systems typically have their network and routing
 information configured statically by a system administrator. Workstations or
 some special-purpose systems often use DHCP (instead of IRDP) to retrieve
@@ -376,6 +396,7 @@ such as package updates. This only occurs if the system was registered to an
 RHN server or satellite and managed as such.
 <service-disable-macro service="rhnsd" />
 </description>
+<ocil><service-disable-check-macro service="rhnsd" /></ocil>
 <rationale>Although systems management and patching is extremely important to
 system security, management by a system outside the enterprise enclave is not
 desirable for some environments.</rationale>
@@ -392,6 +413,7 @@ changes in the entitlement certificates for a registered system and updates it
 accordingly.
 <service-disable-macro service="rhsmcertd" />
 </description>
+<ocil><service-disable-check-macro service="rhsmcertd" /></ocil>
 <rationale>The <tt>rhsmcertd</tt> service can provide administrators with some
 additional control over which of their systems are entitled to particular
 subscriptions. However, for systems that are managed locally or which are not
@@ -412,6 +434,7 @@ to provide proxy authentication services to clients that do not understand SASL
 based authentication.
 <service-disable-macro service="saslauthd" />
 </description>
+<ocil><service-disable-check-macro service="saslauthd" /></ocil>
 <rationale>The <tt>saslauthd</tt> service provides essential functionality for
 performing authentication in some directory environments, such as those which
 use Kerberos and LDAP. For others, however, in which only local files may be
@@ -429,6 +452,7 @@ feature of hard drives that allows them to detect symptoms of disk failure and
 relay an appropriate warning.
 <service-disable-macro service="smartd" />
 </description>
+<ocil><service-disable-check-macro service="smartd" /></ocil>
 <rationale>SMART can help protect against denial of
 service due to failing hardware. Nevertheless, if it is not needed or the
 system's drives are not SMART-capable (such as solid state drives), it can be
@@ -466,6 +490,7 @@ performance statistics to zero in order to begin counting from a fresh state
 at boot time.
 <service-disable-macro service="sysstat" />
 </description>
+<ocil><service-disable-check-macro service="sysstat" /></ocil>
 <rationale>By default the <tt>sysstat</tt> service merely runs a program at
 boot to reset the statistics, which can be retrieved using programs such as
 <tt>sar</tt> and <tt>sadc</tt>. These may provide useful insight into system

@@ -20,6 +20,7 @@ Disabling it can reduce the system’s vulnerability to such attacks.
 <description>
 <service-disable-macro service="avahi-daemon" />
 </description>
+<ocil><service-disable-check-macro service="avahi-daemon" /></ocil>
 <rationale>
 Because the Avahi daemon service keeps an open network
 port, it is subject to network attacks. Its functionality

@@ -13,6 +13,7 @@ preconfigured times. It is required by almost all systems to perform necessary
 maintenance tasks, such as notifying root of system activity.
 <service-enable-macro service="crond" />
 </description>
+<ocil><service-enable-check-macro service="crond" /></ocil>
 <rationale>Due to its usage for maintenance and security-supporting tasks,
 enabling the cron daemon is essential.
 </rationale>
@@ -115,6 +116,7 @@ access to these files should be disabled.</description>
 <description>
 <service-disable-macro service="at" />
 </description>
+<ocil><service-disable-check-macro service="at" /></ocil>
 <rationale>
 Many of the periodic or delayed execution features of the at
 daemon can be provided through the cron daemon instead.
