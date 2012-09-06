@@ -50,6 +50,7 @@
 				<td>Title</td>
 				<td>Discussion (Rationale)</td>
 				<td>Fix Text (Description)</td>
+				<td>Check Text (OCIL Check)</td>
 				<!-- <td>Variable Setting</td> -->
 				<td>CCI Ref<br/>(800-53 Origin)</td>
 			</thead>
@@ -118,6 +119,7 @@
 			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
 			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
 			<td> <xsl:apply-templates select="cdf:description"/> </td>
+			<td> <xsl:apply-templates select="cdf:check" /> </td>
 			<!-- need to resolve <sub idref=""> here  -->
 			<!-- <td> TODO: print refine-value from profile associated with rule  </td> -->
 			<td> 
@@ -145,6 +147,10 @@
 
 
 	<xsl:template match="cdf:check">
+	    <xsl:if test="@system=$ociluri">
+			<xsl:apply-templates select="cdf:check-content" />
+		</xsl:if>
+	    <xsl:if test="@system=$ovaluri">
 		<xsl:for-each select="cdf:check-export">
 			<xsl:variable name="rulevar" select="@value-id" />
 				<!--<xsl:value-of select="$rulevar" />:-->
@@ -154,6 +160,7 @@
 					</xsl:if>
 				</xsl:for-each>
 		</xsl:for-each>
+		</xsl:if>
 	</xsl:template>
 
 
