@@ -20,7 +20,7 @@
   </unix:file_test>
   <unix:file_object comment="all local files"
   id="object_wireless_disable_drivers" version="1">
-    <unix:path operation="pattern match">/lib/modules/.*/kernel/drivers/net/wireless</unix:path>
+    <unix:path operation="pattern match">^/lib/modules/.*/kernel/drivers/net/wireless</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
   </unix:file_object>
 </def-group>
