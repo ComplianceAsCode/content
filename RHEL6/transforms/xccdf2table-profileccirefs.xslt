@@ -147,7 +147,7 @@
 
 
 	<xsl:template match="cdf:check">
-	    <xsl:if test="@system=$ociluri">
+	    <xsl:if test="@system=$ociltransitional">
 			<xsl:apply-templates select="cdf:check-content" />
 		</xsl:if>
 	    <xsl:if test="@system=$ovaluri">
