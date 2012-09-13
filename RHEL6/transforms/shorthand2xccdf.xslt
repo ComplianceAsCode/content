@@ -166,12 +166,18 @@ exclude-result-prefixes="xccdf xhtml">
   </xsl:template>
 
 
-  <!-- expand reference to OCIL (inline) -->
+  <!-- expand reference to would-be OCIL (inline) -->
   <xsl:template match="Rule/ocil">
       <check>
-        <xsl:attribute name="system">
-            <xsl:value-of select="$ociluri" />
-        </xsl:attribute>
+        <xsl:attribute name="system">ocil-transitional</xsl:attribute>
+        <xsl:if test="@clause">
+          <check-export>
+          <xsl:attribute name="export-name">clause</xsl:attribute>
+          <xsl:attribute name="value-id">
+            <xsl:value-of select="@clause" />
+          </xsl:attribute>
+          </check-export>
+        </xsl:if>
         <check-content>
         <xsl:apply-templates select="node()"/>
         </check-content>
@@ -205,10 +211,20 @@ exclude-result-prefixes="xccdf xhtml">
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
   </xsl:template>
 
+  <xsl:template match="package-install-macro">
+    The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
+    <xhtml:pre># yum install <xsl:value-of select="@package"/></xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="package-remove-macro">
+    The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
+    <xhtml:pre># yum erase <xsl:value-of select="@package"/></xhtml:pre>
+  </xsl:template>
+
   <xsl:template match="partition-check-macro">
     Run the following command to verify that <xhtml:code><xsl:value-of select="@part"/></xhtml:code> lives on its own partition:
-  <xhtml:pre># df -h <xsl:value-of select="@part"/> | grep "<xsl:value-of select="@part"/>"</xhtml:pre>
-    It will return a line for "<xsl:value-of select="@part"/>" if it is on its own partition. 
+  <xhtml:pre># df -h <xsl:value-of select="@part"/> </xhtml:pre>
+    It will return a line for <xhtml:code><xsl:value-of select="@part"/></xhtml:code> if it is on its own partition. 
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
@@ -223,6 +239,11 @@ exclude-result-prefixes="xccdf xhtml">
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
   <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
     If the service is enabled, it should return: <xhtml:pre><xsl:value-of select="@service"/> is running...</xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="package-check-macro">
+    Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed:
+    <xhtml:pre># rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <!-- CORRECTING TERRIBLE ABUSE OF NAMESPACES BELOW -->
