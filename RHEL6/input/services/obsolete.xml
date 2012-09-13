@@ -45,6 +45,7 @@ attacks against xinetd itself.
 <description>The <tt>xinetd</tt> package can be uninstalled with the following command:
 <pre># yum erase xinetd</pre>
 </description>
+<ocil><package-remove-macro package="xinetd" /> </ocil>
 <rationale>
 Removing the <tt>xinetd</tt> package decreases the risk of the
 xinetd service's accidental (or intentional) activation.
@@ -84,6 +85,7 @@ subject to man-in-the-middle attacks.
 <description>The <tt>telnet-server</tt> package can be uninstalled with
 the following command:
 <pre># yum erase telnet-server</pre></description>
+<ocil><package-remove-macro package="telnet-server" /> </ocil>
 <rationale>
 Removing the <tt>telnet-server</tt> package decreases the risk of the
 telnet service's accidental (or intentional) activation.
@@ -107,6 +109,7 @@ model.</description>
 the following command:
 <pre># yum erase rsh-server</pre>
 </description>
+<ocil><package-remove-macro package="rsh-server" /> </ocil>
 <rationale>The <tt>rsh-server</tt> package provides several obsolete and insecure
 network services. Removing it
 decreases the risk of those services' accidental (or intentional)
@@ -197,6 +200,7 @@ important authentication information.</description>
 the following command:
 <pre># yum erase ypserv</pre>
 </description>
+<ocil><package-remove-macro package="ypserv" /> </ocil>
 <rationale>Removing the <tt>ypserv</tt> package decreases the risk of the
 accidental (or intentional) activation of NIS or NIS+ services.
 </rationale>
@@ -252,6 +256,7 @@ as a tftp server, which does not provide encryption or authentication.
 command:
 <pre># yum erase tftp-server</pre>
 </description>
+<ocil><package-remove-macro package="tftp-server" /> </ocil>
 <rationale>
 Removing the <tt>tftp-server</tt> package decreases the risk of the
 accidental (or intentional) activation of tftp services.
