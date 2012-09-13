@@ -8,10 +8,10 @@
       <description>Login access to non-root system accounts should be disabled.</description>
     </metadata>
     <criteria>
-      <criterion comment="check /etc/passwd for /sbin/nologin on non root system accounts" test_ref="test_20068" />
+      <criterion comment="check /etc/passwd for /sbin/nologin on non root system accounts" test_ref="test_accounts_nologin_for_system" />
     </criteria>
   </definition>
-  <unix:password_test check="all" check_existence="none_exist" id="test_20068" comment="no system user unauthorized shell" version="1">
+  <unix:password_test check="none satisfy" id="test_accounts_nologin_for_system" comment="no system user unauthorized shell" version="1">
     <unix:object object_ref="object_accounts_nologin_for_system" />
     <unix:state state_ref="state_sys_user_unauth_shell" />
   </unix:password_test>
