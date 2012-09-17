@@ -13,6 +13,8 @@
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/cci/index.html</xsl:variable>
 
 <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
-<xsl:variable name="ociluri">http://www.mitre.org/ocil/2</xsl:variable>
+
 <xsl:variable name="ociltransitional">ocil-transitional</xsl:variable>
+<xsl:variable name="ocil_cs">http://scap.nist.gov/schema/ocil/2</xsl:variable>
+<xsl:variable name="ocil_ns">http://scap.nist.gov/schema/ocil/2.0</xsl:variable>
 </xsl:stylesheet>

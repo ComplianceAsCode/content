@@ -15,8 +15,11 @@ shorthand-guide:
 shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/rhel6-xccdf-noprofiles.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addprofiles.xslt $(OUT)/rhel6-xccdf-noprofiles.xml
+#   extract manual check instructions from xccdf into an ocil file
+	xsltproc -o $(OUT)/rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/rhel6-xccdf.xml
+	xmllint --format --output $(OUT)/rhel6-ocil.xml $(OUT)/rhel6-ocil.xml 
+	xsltproc -o $(OUT)/rhel6-xccdf-ocilrefs.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/rhel6-xccdf.xml
 #	xsltproc -stringparam fixes "../$(IN)/fixes/bash-ks.xml" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
-#	xsltproc -stringparam fixes "../$(IN)/fixes/puppet-example.xml" -o $(OUT)/rhel6-xccdf.html $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/rhel6-xccdf.xml $(OUT)/rhel6-xccdf.xml
 
 checks:
@@ -82,6 +85,7 @@ content: shorthand-guide shorthand2xccdf guide checks
 #	thus, with ID set to scap-security-guide, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
 	$(TRANS)/cpe_generate.py $(OUT)/rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml $(ID)
 	$(TRANS)/relabelids.py rhel6-xccdf.xml $(ID)
+	$(TRANS)/relabelids.py rhel6-xccdf-ocilrefs.xml $(ID)
 
 validate:
 	oscap xccdf validate-xml $(OUT)/rhel6-xccdf-$(ID).xml
