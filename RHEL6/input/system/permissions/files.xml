@@ -370,13 +370,14 @@ and the cause should be discovered and addressed.
 <title>Ensure All World-Writable Directories Are Owned by a System Account</title>
 <description>Locate any directories in local partitions which are
 world-writable and ensure that they are owned by root or another
-system account. The following command will discover and print these
+system account.</description>
+<ocil> The following command will discover and print these
 (assuming only system accounts have a uid lower than 500). Run it
-once for each local partition PART:
-<pre># find PART -xdev -type d -perm -0002 -uid +500 -print</pre>
+once for each local partition <i>PART</i>:
+<pre># find <i>PART</i> -xdev -type d -perm -0002 -uid +500 -print</pre>
 If this command produces any output, investigate why the
 current owner is not root or another system account.
-</description>
+</ocil>
 <rationale>
 Allowing a user account to own a world-writeable directory is
 undesirable because it allows the owner of that directory to remove
