@@ -220,6 +220,16 @@ exclude-result-prefixes="xccdf xhtml">
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
   </xsl:template>
 
+  <xsl:template match="service-disable-ocil-macro">
+    Run the following command to verify the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been
+    disabled:
+   <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
+   Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been disabled at all runlevels,
+   as shown in the example below:
+   <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
+<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
+  </xsl:template>
+
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
