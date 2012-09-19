@@ -36,6 +36,13 @@ Where <i>MAX</i> is the maximum number of login sessions allowed.
 problems caused by excessive logins. Automated login processes operating improperly or 
 maliciously may result in an exceptional number of simultaneous login sessions.
 </rationale>
+<ocil>Run the following command to ensure the <tt>maxlogins</tt> value is configured for all users
+on the system:
+<pre># grep "maxlogins" /etc/security/limits.conf</pre>
+You should receive output simular to the following:
+<pre>*		hard	maxlogins	<i>MAX</i></pre>
+Where <i>MAX</i> represents the value you have chosen.
+</ocil>
 <!-- <oval id="max_concurrent_login_sessions" value="max_concurrent_login_sessions_value" /> -->
 <ref disa="54"/>
 </Rule>
