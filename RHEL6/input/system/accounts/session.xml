@@ -191,15 +191,25 @@ operator="equals" interactive="0">
 <title>Ensure the Default Bash Umask is Set Correctly</title>
 <description>
 To ensure the default umask for users of the Bash shell is set properly,
-add or correct in <tt>/etc/bashrc</tt> the line:
+add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
+as follows:
 <pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and/or
 written to by unauthorized users.</rationale>
+<ocil>Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
+running the following command:
+<pre># grep "umask" /etc/bashrc</pre>
+All output must show the value of <tt>umask</tt> set to 077, as shown below:
+<pre># grep "umask" /etc/bashrc
+umask 077
+umask 077</pre>
+</ocil>
+
 <ident cce="3844-8" />
 <oval id="accounts_umask_bash_users" value="umask_user_value"/>
-<ref nist="CM-6, CM-7"/>
+<ref nist="CM-6, CM-7" disa="366"/>
 </Rule>
 
 <Rule id="user_umask_cshrc">
