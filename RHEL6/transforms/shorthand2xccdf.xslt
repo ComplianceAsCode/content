@@ -220,16 +220,6 @@ exclude-result-prefixes="xccdf xhtml">
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
   </xsl:template>
 
-  <xsl:template match="service-disable-ocil-macro">
-    Run the following command to verify the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been
-    disabled:
-   <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
-   Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been disabled at all runlevels,
-   as shown in the example below:
-   <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
-  </xsl:template>
-
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
@@ -252,10 +242,24 @@ exclude-result-prefixes="xccdf xhtml">
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
-    Run the following command to determine the current status of the
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
-  <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
-    If the service is disabled, it should return: <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
+    It is prudent to check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot
+    configuration via <tt>chkconfig</tt> and not currently running on the system (runtime configuration).
+
+    Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through current
+    runtime configuration:
+    <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
+
+    If the service is disabled, the command will return:
+    <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
+
+    Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through system
+    boot configuration:
+    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
+ 
+    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been disabled at all runlevels,
+    as shown in the example below:
+    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
+<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-check-macro">
