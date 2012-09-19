@@ -157,6 +157,11 @@ the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
+<ocil>Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
+<pre>grep ":FORWARD" /etc/sysconfig/iptables</pre>
+The output should be simular to the following:
+<pre># grep ":FORWARD" /etc/sysconfig/iptables
+:FORWARD DROP [0:0</pre></ocil>
 <ident cce="14264-6" />
 <ref nist="AC-4, CM-6" disa="1109" />
 </Rule>
