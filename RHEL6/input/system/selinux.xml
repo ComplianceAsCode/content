@@ -89,6 +89,14 @@ in <tt>/etc/grub.conf</tt>.
 To ensure that SELinux is not disabled at boot time, ensure that <tt>selinux=0</tt> is not
 found in the kernel arguments in that file.
 </description>
+<ocil>
+Run the following command to determine if SELinux has been
+disabled at boot time:
+<pre># grep selinux=0 /etc/grub.conf</pre>
+If it doesn't reurn a value, then it hasn't been disabled. ex:
+<pre># grep selinux=0 /etc/grub.conf</pre>
+<pre># &lt;---Flashing cursor</pre>
+</ocil>
 <rationale>
 Disabling a major host protection feature such as SELinux at boot time prevents
 it from confining system services at boot time, and increases
