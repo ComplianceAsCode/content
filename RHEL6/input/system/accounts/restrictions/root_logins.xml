@@ -47,6 +47,14 @@ vc/3
 vc/4</pre>
 <!-- TODO: discussion/description of virtual consoles-->
 </description>
+<ocil>To check for these entries from the command prompt, issue the
+following command:
+<pre># grep ^vc/[0-9] /etc/securetty</pre>
+If any values are returned, you need to remove them by manipulating the file.
+To remove any occurance of the virtual consoles in one command
+type the following:
+<pre># sed -i '/^vc/d' /etc/securetty</pre>
+</ocil>
 <rationale>
 Preventing direct root login to virtual console devices
 helps ensure accountability for actions taken on the system
@@ -61,12 +69,21 @@ using the root account.
 <title>Restrict Serial Port Root Logins</title>
 <description>To restrict root logins on serial ports,
 ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
-<pre>ttyS0 ttyS1</pre>
+<pre>ttyS0
+ttyS1</pre>
 <!-- TODO: discussion/description of serial port -->
 </description>
+<ocil>To check for these entries from the command prompt,
+issue the following command:
+<pre># grep ^ttyS/[0-9] /etc/securetty</pre>
+If any values are returned, you need to remove them by manipulating
+the file. To remove any occurance of the virtual consoles in one
+command type the following:
+<pre># sed -i '/^ttyS/d' /etc/securetty</pre>
+</ocil>
 <rationale>
 Preventing direct root login to serial port interfaces
-helps ensure accountability for actions taken on the system
+helps ensure accountability for actions taken on the systems
 using the root account.
 </rationale>
 <ident cce="4256-4" />
@@ -89,17 +106,15 @@ their UIDs, and their shells, by running:
 Identify the system accounts from this listing. These will
 primarily be the accounts with UID numbers less than 500, other
 than root.
-<br /><br />
+</description>
 <!--For each identified system account SYSACCT, lock the account:
 <pre># usermod -L SYSACCT</pre>-->
-If any account <i>SYSACCT</i> has a login shell,
+<ocil>If any account <i>SYSACCT</i> has a login shell,
 disable it with the command:
 <pre># usermod -s /sbin/nologin SYSACCT</pre>
 The RHEL6 default is <tt>/sbin/nologin</tt>, but any command which will
-exit with a failure
-status and disallow execution of any further commands, such as
-<tt>/bin/false</tt> or <tt>/dev/null</tt>, will work.
-</description>
+exit with a failure status and disallow execution of any further
+commands, such as <tt>/bin/false</tt> or <tt>/dev/null</tt>, will work.</ocil>
 <rationale>
 Ensuring shells are not given to system accounts upon login
 makes it more difficult for attackers to make use of
