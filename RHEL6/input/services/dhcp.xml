@@ -190,11 +190,13 @@ DHCP is inherently insecure and should not be used unless it presents an unaccep
 
 <Group id="dhcp_client_configuration">
 <title>Configure DHCP Client if Necessary</title>
-<description>If DHCP must be used, then certain configuration changes can minimize the amount of information it receives and applies from the network, and thus the amount of incorrect information a rogue DHCP server could successfully distribute.
-For more information on configuring dhclient, see the dhclient(8) and dhclient.conf(5) man pages.
-</description>
+<description>If DHCP must be used, then certain configuration changes can
+minimize the amount of information it receives and applies from the network,
+and thus the amount of incorrect information a rogue DHCP server could
+successfully distribute.  For more information on configuring dhclient, see the
+dhclient(8) and dhclient.conf(5) man pages.  </description>
 
-<Rule id="dhcp_client_restrict_options">
+<Group id="dhcp_client_restrict_options">
 <title>Minimize the DHCP-Configured Options</title>
 <description>Create the file <tt>/etc/dhclient.conf</tt>, and add an appropriate setting for each of the ten configuration settings which can be obtained via DHCP. For each setting, setting , do one of the following:
 If the setting should not be configured remotely by the DHCP server, select an appropriate static value, and add the line:
@@ -213,20 +215,29 @@ supersede routers 192.168.1.1;
 supersede time-offset -18000;
 request subnet-mask;
 require subnet-mask;</pre></description>
-<rationale>By default, the DHCP client program, dhclient, requests and applies ten configuration options (in addition to the
-IP address) from the DHCP server: subnet-mask, broadcast-address, time-offset, routers, domain-name,
-domain-name-servers, host-name, nis-domain, nis-servers, and ntp-servers.
-Many of the options requested and applied by dhclient may be the same for every system on a network. It is
-recommended that almost all configuration options be assigned statically, and only options which must vary on
-a host-by-host basis be assigned via DHCP. This limits the damage which can be done by a rogue DHCP server.
-If appropriate for your site, it is also possible to supersede the host-name directive in <tt>/etc/dhclient.conf</tt>,
-establishing a static hostname for the machine. However, dhclient does not use the host name option provided
-by the DHCP server (instead using the value provided by a reverse DNS lookup).</rationale>
-<warning category="general">In this example, the options nis-servers and nis-domain are set to empty strings, on the assumption that the deprecated NIS protocol is not in use. It is necessary to supersede settings for unused services so that they cannot be set by a hostile DHCP server. If an option is set to an empty string, dhclient will typically not attempt to configure the service.</warning>
+<rationale>By default, the DHCP client program, dhclient, requests and applies
+ten configuration options (in addition to the IP address) from the DHCP server:
+subnet-mask, broadcast-address, time-offset, routers, domain-name,
+domain-name-servers, host-name, nis-domain, nis-servers, and ntp-servers.  Many
+of the options requested and applied by dhclient may be the same for every
+system on a network. It is recommended that almost all configuration options be
+assigned statically, and only options which must vary on a host-by-host basis
+be assigned via DHCP. This limits the damage which can be done by a rogue DHCP
+server.  If appropriate for your site, it is also possible to supersede the
+host-name directive in <tt>/etc/dhclient.conf</tt>, establishing a static
+hostname for the machine. However, dhclient does not use the host name option
+provided by the DHCP server (instead using the value provided by a reverse DNS
+lookup).</rationale>
+<warning category="general">In this example, the options nis-servers and
+nis-domain are set to empty strings, on the assumption that the deprecated NIS
+protocol is not in use. It is necessary to supersede settings for unused
+services so that they cannot be set by a hostile DHCP server. If an option is
+set to an empty string, dhclient will typically not attempt to configure the
+service.</warning>
 <!--<ident cce="4464-4" /> -->
 <!--<oval id="dhcp_client_restrict_options" /> -->
 <!--<ref nist="CM-6, CM-7" /> -->
-</Rule>
+</Group>
 
 </Group> <!-- <Group id="dhcp_client_configuration"> -->
 
