@@ -110,11 +110,12 @@ the chances that it remain off during system operation.
 <Rule id="set_selinux_state">
 <title>Ensure SELinux State is Enforcing</title>
 <description>The SELinux state should be set to <tt>enforcing</tt> during
-normal system operation. To ensure the system is configured to
-boot into enforcing mode, add or correct the following line in
-<tt>/etc/selinux/config</tt>:
-<pre>SELINUX=enforcing</pre>
-</description>
+normal system operation.</description>
+<ocil>To ensure the system is configured to boot into enforcing mode, add
+or correct the following line in: <tt>/etc/selinux/config</tt> by ensuring the 
+following text is present: <tt>SELINUX=enforcing</tt>
+<pre># grep "SELINUX=enforcing" /etc/selinux/config</pre>
+If needed add the text to the file, and save it.</ocil>
 <rationale>
 Setting the SELinux state to enforcing ensures that SELinux is able to confine
 potentially compromised processes to the security policy, which is designed to
@@ -130,13 +131,17 @@ privileges.
 <title>Configure SELinux Policy</title>
 <description>The SELinux <tt>targeted</tt> policy is appropriate for
 general-purpose desktops and servers, as well as systems in many other roles.
-To configure the system to use this policy,
-add or correct the following line in
-<tt>/etc/selinux/config</tt>:
+To configure the system to use this policy, add or correct the following line
+in <tt>/etc/selinux/config</tt>:
 <pre>SELINUXTYPE=targeted</pre>
 Other policies, such as <tt>mls</tt>, provide additional security labeling
 and greater confinement.
 </description>
+<ocil>To ensure the system is configured to boot into targeted mode, add
+or correct the following line in: <tt>/etc/selinux/config</tt> by ensuring the 
+following text is present: <tt>SELINUX=targeted</tt>
+<pre># grep "SELINUX=targeted" /etc/selinux/config</pre>
+If needed add the text to the file, and save it.</ocil>
 <rationale>
 Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
 ensures that the system will confine processes that are likely to be
@@ -225,14 +230,13 @@ or allow privileges that the daemon does not require.
 
 <Rule id="selinux_unlabeled_device_files">
 <title>Ensure No Device Files are Unlabeled by SELinux</title>
-<description>
-Device files are used for communication with important
-system resources. SELinux contexts should exist for these.
-<br /><br />
-To check for unlabeled device files, run the following command:
+<description>Device files are used for communication with important system resources.
+SELinux contexts should exist for these.  By checking for <tt>unlabeled_t</tt> file
+contexts, we can determine if the system is optimally configured.</description>
+<ocil>To check for unlabeled device files, run the following command in
+the directory that you want to check the SELinux contexts:
 <pre># ls -Z | grep unlabeled_t</pre>
-It should produce no output in a well-configured system.
-</description>
+It should produce no output in a well-configured system.</ocil>
 <rationale>
 If a device file is not labeled, then misconfiguration is likely.
 </rationale>
