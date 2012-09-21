@@ -176,14 +176,19 @@ stolen by eavesdroppers on the network.
 <title>Remove Rsh Trust Files</title>
 <description>The files <tt>/etc/hosts.equiv</tt> and <tt>~/.rhosts</tt> (in
 each user's home directory) list remote hosts and users that are trusted by the
-local system when using the rshd daemon.</description>
-<ocil>cd to the directories in question, and delete them one at a time, or
-perform the following commands to delete them from any location:
-<pre> # rm /etc/hosts.equiv</pre>
-<pre> $ rm ~/.rhosts</pre></ocil>
-The output will 
-<rationale>These files are not needed and should be removed if they exist.
-When used in conjunction with the R-services, they can allow
+local system when using the rshd daemon.
+To remove these files, run the following command to delete them from any
+location:
+<pre># rm /etc/hosts.equiv</pre>
+<pre>$ rm ~/.rhosts</pre>
+</description>
+<ocil>
+The existence of the file <tt>/etc/hosts.equiv</tt> or a file named
+<tt>.rhosts</tt> inside a user home directory indicates the presence
+of an Rsh trust relationship.
+</ocil>
+<rationale>Trust files are convenient, but when
+used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
 <ident cce="TODO" />
 <oval id="no_rsh_trusted_host_files" />
