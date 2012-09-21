@@ -312,7 +312,7 @@ implementation. These are also required for compliance.
 <ref disa="803,1144,1145,1146,196" />
 </Rule>
 
-<Rule id="sshd_strengthen_firewall">
+<Group id="sshd_strengthen_firewall">
 <title>Strengthen Firewall Configuration if Possible</title>
 <description>If the SSH server is expected to only receive connections from 
 the local network, then strengthen the default firewall rule for the SSH service
@@ -332,7 +332,7 @@ Restricting SSH access to only trusted network segments reduces exposure of the 
 server to attacks from unauthorized networks.</rationale>
 <!-- <ident cce="14491-5" /> -->
 <!-- <oval id="sshd_strengthen_firewall" /> -->
-</Rule>
+</Group>
 
 </Group>
 </Group>
