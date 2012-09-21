@@ -48,6 +48,20 @@ exclude-result-prefixes="xccdf xhtml">
     </xsl:copy>
   </xsl:template> 
 
+
+  <xsl:template match="Group">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:apply-templates select="title"/>
+      <xsl:apply-templates select="description"/>
+      <xsl:apply-templates select="warning"/> 
+      <xsl:apply-templates select="ref"/> 
+      <xsl:apply-templates select="rationale"/> 
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale)]"/>
+    </xsl:copy>
+  </xsl:template> 
+
+
   <!-- expand reference to ident types -->
   <xsl:template match="Rule/ident">
     <xsl:for-each select="@*">
