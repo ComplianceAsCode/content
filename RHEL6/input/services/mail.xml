@@ -87,7 +87,7 @@ and not from the network, which protects it from network attack.
 <description>The guidance in this section is appropriate for any host which is operating as a site MTA, whether the mail server runs using Sendmail, Postfix, or some other software.
 </description>
 
-<Rule id="postfix_seperate_internal_external">
+<Group id="postfix_seperate_internal_external">
 <title>Use Separate Hosts for External and Internal Mail if Possible</title>
 <description>The mail server is a frequent target of network attack from the outside. However, since all site users receive mail,
 the mail server must be open to some connection from each inside users. It is strongly recommended that these
@@ -96,9 +96,9 @@ mail, then forwards internal mail to a separate machine from which users can acc
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <ref nist="CM-7, SC-5, SC-7" />
-</Rule>
+</Group>
 
-<Rule id="postfix_restrict_user_access">
+<Group id="postfix_restrict_user_access">
 <title>Protect the MTA Host from User Access</title>
 <description>The mail server contains privileged data belonging to all users and performs a
 vital network function. Preventing users from logging into this server is a precaution against
@@ -107,9 +107,9 @@ steps to ensure that only system administrators are allowed shell access to the 
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <ref nist="AC-6, SC-2" />
-</Rule>
+</Group>
 
-<Rule id="postfix_restrict_mail_spool_access">
+<Group id="postfix_restrict_mail_spool_access">
 <title>Restrict Remote Access to the Mail Spool</title>
 <description>The mail server contains privileged data belonging to all users and performs a vital
 network function. Preventing users from logging into this server is a precaution against privilege
@@ -118,7 +118,7 @@ ensure that only system administrators are allowed shell access to the MTA host.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <ref nist="AC-2, AC-4, CM-7, SC-2" />
-</Rule>
+</Group>
 
 <Rule id="iptables_smtp_enabled">
 <title>Configure iptables to Allow Access to the Mail Server</title>
@@ -157,7 +157,7 @@ though such configurations are beyond the scope of this guide. In either event, 
 an SSL certificate are independent of the MTA in use, and are described here.
 </description>
 
-<Rule id="postfix_create_cert">
+<Group id="postfix_create_cert">
 <title>Create an SSL Certificate</title>
 <description>
 Change into the CA certificate directory:
@@ -181,7 +181,7 @@ CA sign certificates, then this step should be performed on a separate, physical
 purpose.</warning>
 <!-- <ident cce="TODO:CCE" /> -->
 <ref nist="CM-7, SC-12" />
-</Rule>
+</Group>
 
 <Rule id="postfix_install_ssl_cert">
 <title>Install the SSL Certificate</title>
