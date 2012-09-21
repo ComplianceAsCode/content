@@ -44,11 +44,12 @@ activation.
 
 </Group> <!-- <Group id="disabling_snmp_service"> -->
 
-<Rule id="snmp_configure_server">
+<Group id="snmp_configure_server">
 <title>Configure SNMP Server if Necessary</title>
-<description>If it is necessary to run the snmpd agent on the system, some best practices should be followed to minimize the
-security risk from the installation. The multiple security models implemented by SNMP cannot be fully covered
-here so only the following general configuration advice can be offered:
+<description>If it is necessary to run the snmpd agent on the system, some best
+practices should be followed to minimize the security risk from the
+installation. The multiple security models implemented by SNMP cannot be fully
+covered here so only the following general configuration advice can be offered:
 <ul>
 <li>use only SNMP version 3 security models and enable the use of authentication and encryption</li>
 <li>write access to the MIB (Management Information Base) should be allowed only if necessary</li>
@@ -62,6 +63,6 @@ stations</li>
 </description>
 <!--<ident cce="14081-4" /> -->
 <!--<oval id="snmp_configure_server" /> -->
-</Rule>
+</Group>
 
 </Group> <!-- <Group id="snmp"> -->
