@@ -276,10 +276,10 @@ accidental (or intentional) activation of tftp services.
 </Rule>
 
 <Rule id="tftpd_uses_secure_mode" severity="high">
-<title>Ensure TFTP Daemon Uses Secure Mode</title>
-<description>If running the TFTP service is necessary, it should be configured
+<title>Ensure <tt>tftp</tt> Daemon Uses Secure Mode</title>
+<description>If running the <tt>tftp</tt> service is necessary, it should be configured
 to change its root directory at startup. To do so, ensure that
-<tt>/etc/xinted.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
+<tt>/etc/xinetd.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
 the following example (which is also the default):
 <pre>server_args = -s /var/lib/tftpboot</pre>
 </description>
@@ -287,6 +287,14 @@ the following example (which is also the default):
 given directory. Serving files from an intentionally-specified directory
 reduces the risk of sharing files which should remain private.
 </rationale>
+<ocil>Verify that <tt>tftp</tt> is configured by with the <tt>-s</tt> option by running the
+following command:
+<pre>grep "server_args" /etc/xinetd.d/tftpboot</pre>
+The output should indicate the <tt>server_args</tt> variable is configured with the <tt>-s</tt>
+flag, matching the example below:
+<pre> # grep "server_args" /etc/xinetd.d/tftpboot
+server_args = -s /var/lib/tftpboot</pre>
+</ocil>
 <ident cce="TODO" />
 <oval id="tftpd_uses_secure_mode" />
 </Rule>

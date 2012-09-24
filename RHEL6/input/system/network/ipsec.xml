@@ -8,8 +8,7 @@ is provided in RHEL 6 with Openswan.
 <title>Install openswan Package</title>
 <description>The Openswan package provides an implementation of IPsec
 and IKE, which permits the creation of secure tunnels over
-untrusted networks.
-<package-install-macro package="openswan" />
+untrusted networks. <package-install-macro package="openswan"/> 
 </description>
 <ocil>
 <package-check-macro package="openswan" />
@@ -18,6 +17,7 @@ untrusted networks.
 to initiate a secure VPN connection protects information when it is
 transmitted over a wide area network.
 </rationale>
+<ocil><package-check-macro package="openswan"/></ocil>
 <!--<ident cce="TODO" />-->
 <oval id="package_openswan_installed" />
 <ref nist="AC-17, MA-4, SC-9" disa="1130,1131,1135" />
