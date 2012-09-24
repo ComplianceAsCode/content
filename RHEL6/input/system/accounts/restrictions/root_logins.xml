@@ -134,12 +134,16 @@ become inaccessible.
 <Rule id="no_uidzero_except_root">
 <title>Verify Only Root Has UID 0</title>
 <description>
-This command will print all password file entries for
+If any account other than root has a UID of 0,
+this misconfiguration should be investigated and the
+accounts other than root should be removed or have their UID changed.
+</description>
+<ocil>
+To list all password file entries for
 accounts with UID 0:
 <pre># awk -F: '($3 == "0") {print}' /etc/passwd</pre>
 This should print only one line, for the user root.
-<br /><br />
-</description>
+</ocil>
 <rationale>
 An account has root authority if it has a UID of 0. Multiple accounts
 with a UID of 0 afford more opportunity for potential intruders to

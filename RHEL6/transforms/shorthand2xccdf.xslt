@@ -11,6 +11,7 @@ exclude-result-prefixes="xccdf xhtml">
 
 <xsl:variable name="defaultseverity" select="'low'" />
 
+
   <!-- Content:template -->
   <xsl:template match="Benchmark">
     <xsl:copy>
@@ -47,6 +48,20 @@ exclude-result-prefixes="xccdf xhtml">
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ident)]"/>
     </xsl:copy>
   </xsl:template> 
+
+
+  <xsl:template match="Group">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:apply-templates select="title"/>
+      <xsl:apply-templates select="description"/>
+      <xsl:apply-templates select="warning"/> 
+      <xsl:apply-templates select="ref"/> 
+      <xsl:apply-templates select="rationale"/> 
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale)]"/>
+    </xsl:copy>
+  </xsl:template> 
+
 
   <!-- expand reference to ident types -->
   <xsl:template match="Rule/ident">
@@ -195,20 +210,61 @@ exclude-result-prefixes="xccdf xhtml">
 
   <!-- convenience macros for XCCDF prose -->
   <xsl:template match="sysctl-desc-macro">
+    To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
+    run the following command:
+    <xhtml:pre># sysctl -w <xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="sysctl-check-macro">
     The status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
     by running the following command:
     <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
     The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
+    If this value is not the default value, investigate how it could have been adjusted at runtime, and verify
+    that it is not set improperly in <tt>/etc/sysctl.conf</tt>.
   </xsl:template>
 
-  <xsl:template match="service-disable-macro">
-    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
-    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
+  <xsl:template match="fileperms-desc-macro">
+    To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
+    <xhtml:pre xml:space="preserve"># chmod <xsl:value-of select="@file"/> <xsl:value-of select="@perms"/></xhtml:pre>
   </xsl:template>
 
-  <xsl:template match="service-enable-macro">
-    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
-    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
+  <xsl:template match="fileowner-desc-macro">
+    To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
+    <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@file"/> <xsl:value-of select="@owner"/></xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="filegroupowner-desc-macro">
+    To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
+    <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@file"/> <xsl:value-of select="@group"/></xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="fileperms-check-macro">
+    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
+    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    If properly configured, the output should indicate the following permissions:
+    <xhtml:code><xsl:value-of select="@perms"/></xhtml:code>
+  </xsl:template>
+
+  <xsl:template match="fileowner-check-macro">
+    To check the ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
+    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    If properly configured, the output should indicate the following owner:
+    <xhtml:code><xsl:value-of select="@owner"/></xhtml:code>
+  </xsl:template>
+
+  <xsl:template match="filegroupowner-check-macro">
+    To check the group ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
+    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    If properly configured, the output should indicate the following group-owner:
+    <xhtml:code><xsl:value-of select="@group"/></xhtml:code>
+  </xsl:template>
+
+  <xsl:template match="fileperms-check-macro">
+    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
+    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    If properly configured, the output should indicate the following permissions:
+    <xhtml:code><xsl:value-of select="@perms"/></xhtml:code>
   </xsl:template>
 
   <xsl:template match="package-install-macro">
@@ -225,6 +281,16 @@ exclude-result-prefixes="xccdf xhtml">
     Run the following command to verify that <xhtml:code><xsl:value-of select="@part"/></xhtml:code> lives on its own partition:
   <xhtml:pre># df -h <xsl:value-of select="@part"/> </xhtml:pre>
     It will return a line for <xhtml:code><xsl:value-of select="@part"/></xhtml:code> if it is on its own partition. 
+  </xsl:template>
+
+  <xsl:template match="service-disable-macro">
+    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
+    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="service-enable-macro">
+    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
+    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
@@ -245,6 +311,33 @@ exclude-result-prefixes="xccdf xhtml">
     Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed:
     <xhtml:pre># rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
+
+
+  <xsl:template match="module-disable-macro">
+To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
+kernel module from being loaded, add the following line to a file in the directory <tt>/etc/modprobe.d</tt>:
+<pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</pre>
+  </xsl:template>
+
+  <xsl:template match="module-disable-check-macro">
+If the system is configured to prevent the loading of the
+<xhtml:code><xsl:value-of select="@module"/></xhtml:code> kernel module,
+it will contain lines inside any file in <tt>/etc/modprobe.d</tt> or the deprecated<tt>/etc/modprobe.conf</tt>.
+These lines instruct the module loading system to run another program (such as
+<tt>/bin/true</tt>) upon a module <tt>install</tt> event.
+Run the following command to search for such lines in all files in <tt>/etc/modprobe.d</tt>
+and the deprecated <tt>/etc/modprobe.conf</tt>:
+<pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</pre>
+  </xsl:template>
+
+  <xsl:template match="audit-syscall-check-macro">
+To determine if the system is configured to audit calls to
+the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
+system call, run the following command:
+<pre xml:space="preserve"># auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></pre>
+If the system is configured to audit this activity, it will return a line.
+  </xsl:template>
+
 
   <!-- CORRECTING TERRIBLE ABUSE OF NAMESPACES BELOW -->
   <!-- (expanding xhtml tags back into the xhtml namespace) -->

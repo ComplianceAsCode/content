@@ -1,117 +1,93 @@
 <Group id="printing">
 <title>Print Support</title>
-<description>The Common Unix Printing System (CUPS) service provides both local and network printing support. A system running
-the CUPS service can accept print jobs from other systems, process them, and send them to the appropriate printer. It also provides an
-interface for remote administration through a web browser. The CUPS service is installed and activated by default. The project homepage
-and more detailed documentation are available at http://www.cups.org.
-<br /><br />
-</description>
+<description>The Common Unix Printing System (CUPS) service provides both local
+and network printing support. A system running the CUPS service can accept
+print jobs from other systems, process them, and send them to the appropriate
+printer. It also provides an interface for remote administration through a web
+browser. The CUPS service is installed and activated by default. The project
+homepage and more detailed documentation are available at http://www.cups.org.
+<br /><br /> </description>
 
-
-
-
-<Group id="disable_printing">
-<title>Disable CUPS if Possible</title>
-<description>If not needed, CUPS should be disabled to reduce attack surface.</description>
-
-<Rule id="service_cups_disabled2"><!-- Redundant w/ base services check but kept for equivalence with the RHEL5 NSA guidance -->
-<title>Disable the CUPS Service if Possible</title>
-<description>Do you need the ability to print from this machine or to allow others to print to it? If not, disable it.
+<Rule id="service_cups_disabled">
+<title>Disable the CUPS Service</title>
+<description>
 <service-disable-macro service="cups" />
 </description>
 <ocil><service-disable-check-macro service="cups" /></ocil>
 <rationale>Turn off unneeded services to reduce attack surface.
 </rationale>
-<ident cce="CCE-4112-9" />
-<ident cce="CCE-3755-6" />
+<ident cce="3755-6" />
 <oval id="service_cups_disabled" />
 <ref nist="CM-7" />
 </Rule>
 
 <Rule id="iptables_cupsd_disabled">
 <title>Disable Firewall Access to Printing Service</title>
-<description>Does this system need to operate as a network print server? If not, edit the files <tt>/etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt> (if IPv6 is in use). In each file, locate and delete the lines:
+<description>If the system does not need to act as a network print server, edit
+the files <tt>/etc/sysconfig/iptables</tt> and
+<tt>/etc/sysconfig/ip6tables</tt> (if IPv6 is in use). In each file, locate and
+delete the lines:
 <pre>-A RH-Firewall-1-INPUT -p udp -m udp --dport 631 -j ACCEPT
 -A RH-Firewall-1-INPUT -p tcp -m tcp --dport 631 -j ACCEPT</pre>
 </description>
-<rationale>By default, inbound connections to the Internet Printing Protocol port are allowed. If the print server does not need to be accessed, either because the machine is not running the print service at all or because the machine is not providing a remote network printer to other machines, this exception should be removed from the firewall configuration.
+<rationale>By default, inbound connections to the Internet Printing Protocol
+port are allowed. If the print server does not need to be accessed, either
+because the machine is not running the print service at all or because the
+machine is not providing a remote network printer to other machines, this
+exception should be removed from the firewall configuration.
 </rationale>
-<ident cce="CCE-3649-1" />
+<ident cce="3649-1" />
 <oval id="iptables_cupsd_disabled" />
 <ref nist="CM-7" />
 </Rule>
 
-</Group><!--End <Group id="disable_printing"> -->
 
 <Group id="configure_printing">
 <title>Configure the CUPS Service if Necessary</title>
 <description>CUPS provides the ability to easily share local printers with other machines over the network. It does this by allowing machines to share lists of available printers. Additionally, each machine that runs the CUPS service can potentially act as a print server. Whenever possible, the printer sharing and print server capabilities of CUPS should be limited or disabled. The following recommendations should demonstrate how to do just that.
 </description>
 
-<Group id="limit_printer_browsing">
-<title>Limit Printer Browsing</title>
-<description>By default, CUPS listens on the network for printer list broadcasts on UDP port 631. This functionality is called
-printer browsing.
-</description>
-
 <Rule id="cups_disable_browsing">
 <title>Disable Printer Browsing Entirely if Possible</title>
-<description>To disable printer browsing entirely, edit the CUPS configuration file, located at <tt>/etc/cups/cupsd.conf</tt>, to include the following:
-<pre>Browsing Off
-BrowseAllow none</pre>
+<description>By default, CUPS listens on the network for printer list
+broadcasts on UDP port 631. This functionality is called printer browsing.
+To disable printer browsing entirely, edit the CUPS configuration
+file, located at <tt>/etc/cups/cupsd.conf</tt>, to include the following:
+<pre>Browsing Off</pre>
 </description>
-<rationale>The CUPS print service can be configured to broadcast a list of available printers to the network. Other machines on the network, also running the CUPS print service, can be configured to listen to these broadcasts and add and configure these printers for immediate use. By disabling this browsing capability, the machine will no longer generate or receive such broadcasts.
+<rationale>The CUPS print service can be configured to broadcast a list of
+available printers to the network. Other machines on the network, also running
+the CUPS print service, can be configured to listen to these broadcasts and add
+and configure these printers for immediate use. By disabling this browsing
+capability, the machine will no longer generate or receive such broadcasts.
 </rationale>
-<ident cce="CCE-4420-6" />
-<ident cce="CCE-4407-3" />
+<ident cce="4420-6" />
 <oval id="cups_disable_browsing" />
-<!--<ref nist="TODO:NIST" />-->
 </Rule>
-
-<Rule id="cups_limit_browsing">
-<title>Limit Printer Browsing to a Particular Subnet if Necessary</title>
-<description>It is possible to disable outgoing printer list broadcasts without affecting incoming broadcasts from other machines. To do so, open the CUPS configuration file, located at <tt>/etc/cups/cupsd.conf</tt>. Look for the line that begins with BrowseAddress and remove it. The line will look like the following:
-<pre>BrowseAddress @LOCAL</pre>
-If the intent is not to block printer sharing, but to limit it to a particular set of machines, you can limit the UDP printer broadcasts to trusted network addresses.
-<pre>BrowseAddress ip-address :631</pre>
-Likewise, to ignore incoming UDP printer list broadcasts, or to limit the set of machines to listen to, use the BrowseAllow and BrowseDeny directives.
-<pre>BrowseDeny all
-BrowseAllow ip-address</pre>
-This combination will deny incoming broadcasts from any machine except those that are explicitly allowed with BrowseAllow.
-</description>
-<rationale>By default, when printer sharing is enabled, CUPS will broadcast to every network that its host machine is connected to through all available network interfaces on port 631. It will also listen to incoming broadcasts from other machines on the network. Either list one BrowseAddress line for each client machine and one BrowseAllow line for each print server or use one of the supported shorthand notations that the CUPS service recognizes. Please see the cupsd.conf(5) man page or the documentation provided at http://www.cups.org for more information on other ways to format these directives.
-</rationale>
-<!--<ident cce="TODO:CCE" />-->
-<oval id="cups_limit_browsing" />
-<!--<ref nist="TODO:NIST" />-->
-</Rule>
-
-</Group><!--End <Group id="limit_printer_browsing"> -->
 
 <Rule id="cups_disable_printserver">
-<title>Disable Printer Server Capabilities if Possible</title>
-<description>To prevent remote users from potentially connecting to and using locally configured printers, disable the CUPS print server sharing capabilities. To do so, limit how the server will listen for print jobs by removing the more generic port directive from /etc/cups/cupsd.conf:
+<title>Disable Print Server Capabilities</title>
+<description>To prevent remote users from potentially connecting to and using
+locally configured printers, disable the CUPS print server sharing
+capabilities. To do so, limit how the server will listen for print jobs by
+removing the more generic port directive from /etc/cups/cupsd.conf:
 <pre>Port 631</pre>
 and replacing it with the Listen directive:
 <pre>Listen localhost:631</pre>
-This will prevent remote users from printing to locally configured printers while still allowing local users on the machine to print normally.
+This will prevent remote users from printing to locally configured printers
+while still allowing local users on the machine to print normally.
 </description>
-<rationale>By default, locally configured printers will not be shared over the network, but if this functionality has somehow been enabled, these recommendations will disable it again. Be sure to disable outgoing printer list broadcasts, or remote users will still be able to see the locally configured printers, even if they cannot actually print to them. To limit print serving to a particular set of users, use the Policy directive.
+<rationale>By default, locally configured printers will not be shared over the
+network, but if this functionality has somehow been enabled, these
+recommendations will disable it again. Be sure to disable outgoing printer list
+broadcasts, or remote users will still be able to see the locally configured
+printers, even if they cannot actually print to them. To limit print serving to
+a particular set of users, use the Policy directive.
 </rationale>
-<!--<ident cce="CCE-4420-6, CCE-4407-3" /> TODO:CCE -->
+<ident cce="4407-3" /> 
 <oval id="cups_disable_printserver" />
 <ref nist="TODO:NIST" />
 </Rule>
+</Group>
 
-<Rule id="cups_limit_web_interface">
-<title>Limit Access to the Web Administration Interface</title>
-<description>By default, access to the CUPS web administration interface is limited to the local machine. It is recommended that this not be changed, especially since the authentication mechanisms that CUPS provides are limited in their effectiveness. Host-based authentication has known limitations, especially since IP addresses are easy to spoof. Requiring users to authenticate themselves can alleviate this problem, but it cannot eliminate it.
-</description>
-<!--<ident cce="CCE-4420-6, CCE-4407-3" /> TODO:CCE -->
-<oval id="cups_limit_web_interface" />
-<!--<ref nist="TODO:NIST" />-->
-</Rule>
-
-</Group><!--End <Group id="configure_printing"> -->
-
-</Group><!--End <Group id="printing"> -->
+</Group>

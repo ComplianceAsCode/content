@@ -29,8 +29,12 @@ If any correction is needed for the permissions on <tt>/etc/grub.conf</tt>, (whi
 
 <Rule id="user_owner_grub_conf">
 <title>Verify /boot/grub/grub.conf User Ownership</title>
-<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to <tt>/boot/grub/grub.conf</tt> which
-should be owned by the <tt>root</tt> user to prevent destruction or modification of the file.</description>
+<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to
+<tt>/boot/grub/grub.conf</tt> which should be owned by the <tt>root</tt> user
+to prevent destruction or modification of the file.
+<fileowner-desc-macro file="/boot/grub/grub.conf" owner="root"/>
+</description>
+<ocil><fileowner-check-macro file="/boot/grub/grub.conf" owner="root"/></ocil>
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
@@ -41,8 +45,12 @@ Only root should be able to modify important boot parameters.
 
 <Rule id="group_owner_grub_conf">
 <title>Verify /boot/grub/grub.conf Group Ownership</title>
-<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to <tt>/boot/grub/grub.conf</tt> which
-should be group-owned by the <tt>root</tt> group to prevent destruction or modification of the file.</description>
+<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to
+<tt>/boot/grub/grub.conf</tt> which should be group-owned by the <tt>root</tt>
+group to prevent destruction or modification of the file.
+<filegroupowner-desc-macro file="/boot/grub/grub.conf" owner="root"/>
+</description>
+<ocil><filegroupowner-check-macro file="/boot/grub/grub.conf" owner="root"/></ocil>
 <rationale>
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
@@ -55,10 +63,13 @@ file should not have any access privileges anyway.
 <Rule id="permissions_grub_conf">
 <title>Verify /boot/grub/grub.conf Permissions</title>
 <description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
-is the default.</description>
+is the default.
+<fileperms-desc-macro file="/boot/grub/grub.conf" owner="600"/>
+</description>
+<ocil><fileperms-check-macro file="/boot/grub/grub.conf" owner="-rw-------"/></ocil>
 <rationale>
-This ensures that only the root user should be able to modify important boot parameters contained in
-this file.
+Proper permissions ensure that only the root user can modify important boot
+parameters.
 </rationale>
 <ident cce="3923-0" />
 <oval id="file_permissions_grub_conf" />

@@ -84,18 +84,15 @@ and to protect the boot process.
 
 <Rule id="enable_selinux_bootloader">
 <title>Ensure SELinux Not Disabled in /etc/grub.conf</title>
-<description>SELinux can be disabled at boot time by an argument
-in <tt>/etc/grub.conf</tt>.
-To ensure that SELinux is not disabled at boot time, ensure that <tt>selinux=0</tt> is not
-found in the kernel arguments in that file.
+<description>SELinux can be disabled at boot time by an argument in
+<tt>/etc/grub.conf</tt>.
+Remove any instances of <tt>selinux=0</tt> from the kernel arguments in that
+file to prevent SELinux from being being disabled at boot.
 </description>
 <ocil>
-Run the following command to determine if SELinux has been
-disabled at boot time:
-<pre># grep selinux=0 /etc/grub.conf</pre>
-If it doesn't reurn a value, then it hasn't been disabled. ex:
-<pre># grep selinux=0 /etc/grub.conf</pre>
-<pre># &lt;---Flashing cursor</pre>
+Inspect <tt>/etc/grub.conf</tt> for any instances of <tt>selinux=0</tt>
+in the kernel boot arguments.  Presences of <tt>selinux=0</tt> indicates
+that SELinux is disabled at boot time.
 </ocil>
 <rationale>
 Disabling a major host protection feature such as SELinux at boot time prevents
@@ -109,13 +106,15 @@ the chances that it remain off during system operation.
 
 <Rule id="set_selinux_state">
 <title>Ensure SELinux State is Enforcing</title>
-<description>The SELinux state should be set to <tt>enforcing</tt> during
-normal system operation.</description>
-<ocil>To ensure the system is configured to boot into enforcing mode, add
-or correct the following line in: <tt>/etc/selinux/config</tt> by ensuring the 
-following text is present: <tt>SELINUX=enforcing</tt>
-<pre># grep "SELINUX=enforcing" /etc/selinux/config</pre>
-If needed add the text to the file, and save it.</ocil>
+<description>The SELinux state should be set to <tt>enforcing</tt> at
+system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
+line <tt>SELINUX=enforcing</tt> to configure the system to boot into enforcing
+mode.
+</description>
+<ocil>
+Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+<pre>SELINUX=enforcing</pre>
+</ocil>
 <rationale>
 Setting the SELinux state to enforcing ensures that SELinux is able to confine
 potentially compromised processes to the security policy, which is designed to
@@ -135,13 +134,13 @@ To configure the system to use this policy, add or correct the following line
 in <tt>/etc/selinux/config</tt>:
 <pre>SELINUXTYPE=targeted</pre>
 Other policies, such as <tt>mls</tt>, provide additional security labeling
-and greater confinement.
+and greater confinement but are not compatible with many general-purpose
+use cases.
 </description>
-<ocil>To ensure the system is configured to boot into targeted mode, add
-or correct the following line in: <tt>/etc/selinux/config</tt> by ensuring the 
-following text is present: <tt>SELINUX=targeted</tt>
-<pre># grep "SELINUX=targeted" /etc/selinux/config</pre>
-If needed add the text to the file, and save it.</ocil>
+<ocil>
+Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+<pre>SELINUXTYPE=targeted</pre>
+</ocil>
 <rationale>
 Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
 ensures that the system will confine processes that are likely to be

@@ -22,6 +22,18 @@ instruct the IPv6 kernel module not to load it.</description>
 This permits the IPv6 module to be loaded (and thus satisfy other modules that depend on it),
 while disabling support for the IPv6 protocol.
 </description>
+<ocil>
+If the system is configured to prevent the loading of the
+<tt>ipv6</tt> kernel module, it will contain a line
+of the form
+<pre>options ipv6 disable=1</pre>
+inside any file in <tt>/etc/modprobe.d</tt> or the deprecated<tt>/etc/modprobe.conf</tt>.
+This permits insertion of the IPv6 kernel module (which other parts of the system
+expect to be present), but otherwise keeps it inactive.
+Run the following command to search for such lines in all files in <tt>/etc/modprobe.d</tt>
+and the deprecated <tt>/etc/modprobe.conf</tt>:
+<pre xml:space="preserve">$ grep -r ipv6 /etc/modprobe.conf /etc/modprobe.d</pre>
+</ocil>
 <rationale>
 Any networking stack, including IPv6, that does not need to be active should be
 disabled in order to reduce the system's vulnerability
