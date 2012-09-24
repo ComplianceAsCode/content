@@ -17,6 +17,9 @@ POP3 server, the dovecot software should be disabled and removed.
 <description>
 <service-disable-macro service="dovecot" />
 </description>
+<ocil>
+<service-disable-check-macro service="dovecot" />
+</ocil>
 <rationale>
 Running an IMAP or POP3 server provides a network-based
 avenue of attack, and should be disabled if not needed.
@@ -31,6 +34,9 @@ avenue of attack, and should be disabled if not needed.
 with the following command:
 <pre># yum erase dovecot</pre>
 </description>
+<ocil>
+<package-check-macro package="dovecot" />
+</ocil>
 <rationale>
 If there is no need to make the Dovecot software available,
 removing it provides a safeguard against its activation.

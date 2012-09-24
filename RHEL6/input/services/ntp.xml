@@ -37,6 +37,7 @@ time data, is available at http://www.ntp.org.
 <description>
 <service-enable-macro service="ntpd" />
 </description>
+<ocil><service-enable-check-macro service="ntpd" /></ocil>
 <rationale>Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>
 service will be running and that the system will synchronize its time to
 any servers specified. This is important whether the system is configured to be

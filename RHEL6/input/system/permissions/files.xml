@@ -19,8 +19,8 @@ passwords, and should never be enabled.</description>
 
 <Rule id="userowner_shadow_file">
 <title>Verify User Who Owns <tt>shadow</tt> File</title>
-<description>The <tt>/etc/shadow</tt> file should be owned by
-root.</description>
+<description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
 system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
@@ -33,8 +33,8 @@ which could weaken the system security posture.</rationale>
 
 <Rule id="groupowner_shadow_file">
 <title>Verify Group Who Owns <tt>shadow</tt> File</title>
-<description>The <tt>/etc/shadow</tt> file should be group-owned by
-root.</description>
+<description><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
 <ident cce="3988-3" />
@@ -44,8 +44,8 @@ critical for system security.</rationale>
 
 <Rule id="perms_shadow_file">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
-<description>File permissions for <tt>/etc/shadow</tt> should be set
-to 0000.</description>
+<description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
+<ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
 system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
@@ -58,8 +58,8 @@ which could weaken the system security posture.</rationale>
 
 <Rule id="userowner_group_file">
 <title>Verify User Who Owns <tt>group</tt> File</title>
-<description>The <tt>/etc/group</tt> file should be owned by
-root.</description>
+<description><fileowner-desc-macro file="/etc/group" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3276-3" />
@@ -69,8 +69,8 @@ on the system. Protection of this file is important for system security.</ration
 
 <Rule id="groupowner_group_file">
 <title>Verify Group Who Owns <tt>group</tt> File</title>
-<description>The <tt>/etc/group</tt> file should be group-owned by
-root.</description>
+<description><filegroupowner-desc-macro file="/etc/group" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3883-6" />
@@ -80,8 +80,8 @@ on the system. Protection of this file is important for system security.</ration
 
 <Rule id="perms_group_file">
 <title>Verify Permissions on <tt>group</tt> File</title>
-<description>File permissions for <tt>/etc/group</tt> should be set
-correctly.</description>
+<description><fileperms-desc-macro file="/etc/group" perms="644"/></description>
+<ocil><fileowner-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3967-7" />
@@ -91,8 +91,8 @@ on the system. Protection of this file is important for system security.</ration
 
 <Rule id="userowner_gshadow_file">
 <title>Verify User Who Owns <tt>gshadow</tt> File</title>
-<description>The <tt>/etc/gshadow</tt> file should be group-owned by
-root.</description>
+<description><fileowner-desc-macro file="/etc/gshadow" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
 <ident cce="4210-1" />
@@ -102,8 +102,8 @@ is critical for system security.</rationale>
 
 <Rule id="groupowner_gshadow_file">
 <title>Verify Group Who Owns <tt>gshadow</tt> File</title>
-<description>The <tt>/etc/gshadow</tt> file should be group-owned by
-root.</description>
+<description><filegroupowner-desc-macro file="/etc/gshadow" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/gshadow" group="root"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
 <ident cce="4064-2" />
@@ -113,8 +113,8 @@ is critical for system security.</rationale>
 
 <Rule id="perms_gshadow_file">
 <title>Verify Permissions on <tt>gshadow</tt> File</title>
-<description>File permissions for <tt>/etc/gshadow</tt> should be set
-correctly.</description>
+<description><fileperms-desc-macro file="/etc/gshadow" perms="0000"/></description>
+<ocil><fileperms-check-macro file="/etc/gshadow" perms="----------"/></ocil>
 <rationale>The /etc/gshadow file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
 <ident cce="3932-1" />
@@ -124,6 +124,8 @@ is critical for system security.</rationale>
 
 <Rule id="userowner_passwd_file">
 <title>Verify User Who Owns <tt>passwd</tt> File</title>
+<description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
 <description>The <tt>/etc/passwd</tt> file should be owned by
 root.</description>
 <rationale>The <tt>/etc/passwd</tt> contains information about the users that are configured on
@@ -135,8 +137,8 @@ the system. Protection of this file is critical for system security.</rationale>
 
 <Rule id="groupowner_passwd_file">
 <title>Verify Group Who Owns <tt>passwd</tt> File</title>
-<description>The <tt>/etc/passwd</tt> file should be group-owned by
-root.</description>
+<description><filegroupowner-desc-macro file="/etc/passwd" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
 <rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3495-9" />
@@ -146,8 +148,8 @@ the system. Protection of this file is critical for system security.</rationale>
 
 <Rule id="file_permissions_etc_passwd">
 <title>Verify Permissions on <tt>passwd</tt> File</title>
-<description>File permissions for <tt>/etc/passwd</tt> should be set
-to 0644 or less permissive.</description>
+<description><fileperms-desc-macro file="/etc/passwd" perms="0644"/></description>
+<ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/></ocil>
 <rationale>If the <tt>/etc/passwd</tt> file is writable by a group-owner or the
 world the risk of its compromise is increased. The file contains the list of
 acounts on the system and associated information, and protection of this file
@@ -184,6 +186,11 @@ Kernel modules, which can be added to the kernel during runtime, are
 stored in <tt>/lib/modules</tt>. All files in these directories should not be
 group-writable or world-writable.
 </description>
+<ocil>
+To find shared libraries that are group-writable or world-writable,
+run the following command for each directory <i>DIR</i> which contains shared libraries:
+<pre>$ find <i>DIR</i> -perm /022</pre>
+</ocil>
 <rationale>Files from shared library directories are loaded into the address
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Restrictive permissions are necessary to protect the integrity of the system.
@@ -204,6 +211,11 @@ Kernel modules, which can be added to the kernel during runtime, are also
 stored in <tt>/lib/modules</tt>.  All files in these directories should be
 owned by the <tt>root</tt> user.
 </description>
+<ocil>
+To find shared libraries that are not owned by <tt>root</tt>,
+run the following command for each directory <i>DIR</i> which contains shared libraries:
+<pre>$ find <i>DIR</i> \! -user root</pre>
+</ocil>
 <rationale>Files from shared library directories are loaded into the address
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Proper ownership is necessary to protect the integrity of the system.
@@ -223,6 +235,11 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 All files in these directories should not be group-writable or world-writable.
 </description>
+<ocil>
+To find system executables that are group-writable or world-writable,
+run the following command for each directory <i>DIR</i> which contains system executables:
+<pre>$ find <i>DIR</i> -perm /022</pre>
+</ocil>
 <rationale>System binaries are executed by privileged users as well as system services,
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
@@ -241,6 +258,11 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 All files in these directories should be owned by the <tt>root</tt> user.
 </description>
+<ocil>
+To find system executables that are not owned by <tt>root</tt>,
+run the following command for each directory <i>DIR</i> which contains system executables:
+<pre>$ find <i>DIR</i> \! -user root</pre>
+</ocil>
 <rationale>System binaries are executed by privileged users as well as system services,
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
@@ -261,7 +283,16 @@ there is no reason for a directory to be world-writable, a better
 solution is to remove that permission rather than to set the sticky
 bit. However, if a directory is used by a particular application,
 consult that application's documentation instead of blindly
-changing modes.</description>
+changing modes.
+<br/>
+To set the sticky bit on a world-writable directory <i>DIR</i>, run the
+following command:
+<pre># chmod +t <i>DIR</i></pre>
+</description>
+<ocil>
+To find world-writable directories that lack the sticky bit, run the following command:
+<pre># find / -type d -perm -002 ! -perm -1000</pre>
+</ocil>
 <ident cce="3399-3" />
 <oval id="dir_perms_world_writable_sticky_bits" />
 <ref nist="CM-6"/>
@@ -281,6 +312,10 @@ documentation for specific applications before making changes.
 Also, monitor for recurring world-writable files, as these may be
 symptoms of a misconfigured application or user
 account.</description>
+<ocil>
+To find world-writable files, run the following command:
+<pre># find / -type f -perm -002</pre>
+</ocil>
 <ident cce="3795-2" />
 <ref nist="CM-6"/>
 </Rule>
@@ -293,6 +328,10 @@ unauthorized SGID files is determine if any were not installed as part of an
 RPM package, which is cryptographically verified. Investigate the origin
 of any unpackaged SGID files. 
 </description>
+<ocil>
+To find world-writable files, run the following command:
+<pre># find / -type f -perm -002</pre>
+</ocil>
 <rationale>Executable files with the SGID permission run with the privileges of
 the owner of the file. SGID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
@@ -310,6 +349,10 @@ unauthorized SGID files is determine if any were not installed as part of an
 RPM package, which is cryptographically verified. Investigate the origin
 of any unpackaged SUID files. 
 </description>
+<ocil>
+To find world-writable files, run the following command:
+<pre># find / -type f -perm -002</pre>
+</ocil>
 <rationale>Executable files with the SUID permission run with the privileges of
 the owner of the file. SUID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
@@ -322,16 +365,20 @@ strictly controlled on the system.</rationale>
 
 <Rule id="no_files_unowned_by_user">
 <title>Ensure All Files Are Owned by a User</title>
-<description>The following command will discover and print any
-files on local partitions which do not belong to a valid user and a
-valid group. Run it once for each local partition PART:
-<pre># find PART -xdev \( -nouser -o -nogroup \) -print</pre>
-If this command prints any results, investigate each reported file and
-either assign it to an appropriate user and group or remove it.
+<description>If any files are not owned by a user, then the
+cause of their lack of ownership should be investigated.
+Following this, the files should be deleted or assigned to an
+appropriate user.
 </description>
+<ocil>
+The following command will discover and print any
+files on local partitions which do not belong to a valid user.
+Run it once for each local partition <i>PART</i>:
+<pre># find <i>PART</i> -xdev -nouser -print</pre>
+</ocil>
 <rationale>
 Unowned files do not directly imply a security problem, but they are generally
-a sign that something is wrong with some system process. They may
+a sign that something is amiss. They may
 be caused by an intruder, by incorrect software installation or
 draft software removal, or by failure to remove all files belonging
 to a deleted account. The files should be repaired so that they
@@ -345,16 +392,20 @@ and the cause should be discovered and addressed.
 
 <Rule id="no_files_unowned_by_group">
 <title>Ensure All Files Are Owned by a Group</title>
-<description>The following command will discover and print any
-files on local partitions which do not belong to a valid user and a
-valid group. Run it once for each local partition PART:
-<pre># find PART -xdev \( -nouser -o -nogroup \) -print</pre>
-If this command prints any results, investigate each reported file and
-either assign it to an appropriate user and group or remove it.
+<description>If any files are not owned by a group, then the
+cause of their lack of group-ownership should be investigated.
+Following this, the files should be deleted or assigned to an
+appropriate group.
 </description>
+<ocil>
+The following command will discover and print any
+files on local partitions which do not belong to a valid group.
+Run it once for each local partition <i>PART</i>:
+<pre># find <i>PART</i> -xdev -nogroup -print</pre>
+</ocil>
 <rationale>
 Unowned files do not directly imply a security problem, but they are generally
-a sign that something is wrong with some system process. They may
+a sign that something is amiss. They may
 be caused by an intruder, by incorrect software installation or
 draft software removal, or by failure to remove all files belonging
 to a deleted account. The files should be repaired so that they
@@ -368,15 +419,18 @@ and the cause should be discovered and addressed.
 
 <Rule id="world_writable_files_system_ownership">
 <title>Ensure All World-Writable Directories Are Owned by a System Account</title>
-<description>Locate any directories in local partitions which are
-world-writable and ensure that they are owned by root or another
-system account.</description>
-<ocil> The following command will discover and print these
-(assuming only system accounts have a uid lower than 500). Run it
-once for each local partition <i>PART</i>:
+<description>All directories in local partitions which are
+world-writable should be owned by root or another
+system account.  If any world-writable directories are not
+owned by a system account, this should be investigated.
+Following this, the files should be deleted or assigned to an
+appropriate group.
+</description>
+<ocil>
+The following command will discover and print world-writable directories that
+are not owned by a system account, given the assumption that only system
+accounts have a uid lower than 500.  Run it once for each local partition <i>PART</i>:
 <pre># find <i>PART</i> -xdev -type d -perm -0002 -uid +500 -print</pre>
-If this command produces any output, investigate why the
-current owner is not root or another system account.
 </ocil>
 <rationale>
 Allowing a user account to own a world-writeable directory is

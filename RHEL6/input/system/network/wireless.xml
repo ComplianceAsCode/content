@@ -90,6 +90,9 @@ the need to install such a driver first.
 <description>
 <service-disable-macro service="bluetooth" />
 </description>
+<ocil>
+<service-disable-check-macro service="bluetooth" />
+</ocil>
 <rationale>Disabling the <tt>bluetooth</tt> service prevents the system from attempting
 connections to to Bluetooth devices, which entails some security risk.
 Nevertheless, variation in this risk decision may be expected due to the
@@ -109,6 +112,7 @@ to prevent the loading of the Bluetooth module:
 <pre>install net-pf-31 /bin/true
 install bluetooth /bin/true</pre>
 </description>
+
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
 activation.</rationale>
