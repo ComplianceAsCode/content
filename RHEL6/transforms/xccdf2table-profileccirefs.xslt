@@ -149,6 +149,10 @@
 	<xsl:template match="cdf:check">
 	    <xsl:if test="@system=$ociltransitional">
 			<xsl:apply-templates select="cdf:check-content" />
+			<!-- print clause with "finding" text -->
+			 <xsl:if test="cdf:check-export">
+			 <br/>If <xsl:value-of select="cdf:check-export/@export-name" />, this is a finding. 
+			 </xsl:if>
 		</xsl:if>
 	    <xsl:if test="@system=$ovaluri">
 		<xsl:for-each select="cdf:check-export">
