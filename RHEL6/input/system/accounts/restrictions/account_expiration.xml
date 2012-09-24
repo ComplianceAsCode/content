@@ -46,6 +46,12 @@ period of inactivity for users in the particular environment. Setting
 the timeout too low incurs support costs and also has the potential to impact
 availability of the system to legitimate users.
 </description>
+<ocil>To verify the <tt>INACTIVE</tt> setting, run the following command:
+<pre>grep "INACTIVE" /etc/defaults/useradd</pre>
+The output should indicate the <tt>INACTIVE</tt> configuration option is set
+to an appropriate integer as shown in the example below:
+<pre># grep "INACTIVE" /etc/defaults/useradd
+INACTIVE=35</pre></ocil>
 <rationale>
 Disabling inactive accounts ensures that accounts which may not
 have been responsibly removed are not available to attackers
