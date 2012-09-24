@@ -14,13 +14,15 @@ prior to disabling them.
 
 <Rule id="disable_protocol_dccp" severity="medium">
 <title>Disable DCCP Support</title>
-<description>To prevent the DCCP kernel module from being loaded,
-add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
-<pre>install dccp /bin/true</pre>
+<description>
 The Datagram Congestion Control Protocol (DCCP) is a
 relatively new transport layer protocol, designed to support
 streaming media and telephony.
+<module-disable-macro module="dccp" />
 </description>
+<ocil>
+<module-disable-check-macro module="dccp" />
+</ocil>
 <rationale>
 Disabling DCCP protects
 the system against exploitation of any flaws in its implementation.
@@ -33,14 +35,16 @@ the system against exploitation of any flaws in its implementation.
 
 <Rule id="disable_protocol_sctp" severity="medium">
 <title>Disable SCTP Support</title>
-<description>To prevent the SCTP kernel module from being loaded,
-add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
-<pre>install sctp /bin/true</pre>
+<description>
 The Stream Control Transmission Protocol (SCTP) is a
 transport layer protocol, designed to support the idea of
 message-oriented communication, with several streams of messages
 within one connection.
+<module-disable-macro module="sctp" />
 </description>
+<ocil>
+<module-disable-check-macro module="sctp" />
+</ocil>
 <rationale>
 Disabling SCTP protects
 the system against exploitation of any flaws in its implementation.
@@ -53,13 +57,15 @@ the system against exploitation of any flaws in its implementation.
 
 <Rule id="disable_protocol_rds">
 <title>Disable RDS Support</title>
-<description>To prevent the RDS kernel module from being loaded,
-add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
-<pre>install rds /bin/true</pre>
+<description>
 The Reliable Datagram Sockets (RDS) protocol is a transport
 layer protocol designed to provide reliable high- bandwidth,
 low-latency communications between nodes in a cluster.
+<module-disable-macro module="rds" />
 </description>
+<ocil>
+<module-disable-check-macro module="rds" />
+</ocil>
 <rationale>
 Disabling RDS protects
 the system against exploitation of any flaws in its implementation.
@@ -72,13 +78,15 @@ the system against exploitation of any flaws in its implementation.
 
 <Rule id="disable_protocol_tipc" severity="medium">
 <title>Disable TIPC Support</title>
-<description>To prevent the TIPC kernel module from being loaded,
-add the following line to the appropriate <tt>/etc/modprobe.d</tt> configuration file.:
-<pre>install tipc /bin/true</pre>
+<description>
 The Transparent Inter-Process Communication (TIPC) protocol
 is designed to provide communications between nodes in a
 cluster.
+<module-disable-macro module="tipc" />
 </description>
+<ocil>
+<module-disable-check-macro module="tipc" />
+</ocil>
 <rationale>
 Disabling TIPC protects
 the system against exploitation of any flaws in its implementation.
