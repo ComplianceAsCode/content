@@ -187,10 +187,8 @@ exclude-result-prefixes="xccdf xhtml">
         <xsl:attribute name="system">ocil-transitional</xsl:attribute>
         <xsl:if test="@clause">
           <check-export>
-          <xsl:attribute name="export-name">clause</xsl:attribute>
-          <xsl:attribute name="value-id">
-            <xsl:value-of select="@clause" />
-          </xsl:attribute>
+          <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
+          <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
           </check-export>
         </xsl:if>
         <check-content>
@@ -221,7 +219,7 @@ exclude-result-prefixes="xccdf xhtml">
     <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
     The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
     If this value is not the default value, investigate how it could have been adjusted at runtime, and verify
-    that it is not set improperly in <tt>/etc/sysctl.conf</tt>.
+    that it is not set improperly in <xhtml:code>/etc/sysctl.conf</xhtml:code>.
   </xsl:template>
 
   <xsl:template match="fileperms-desc-macro">
@@ -295,7 +293,7 @@ exclude-result-prefixes="xccdf xhtml">
 
   <xsl:template match="service-disable-check-macro">
     It is prudent to check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot
-    configuration via <tt>chkconfig</tt> and not currently running on the system (runtime configuration).
+    configuration via <xhtml:code>chkconfig</xhtml:code> and not currently running on the system (runtime configuration).
 
     Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through current
     runtime configuration:
@@ -329,26 +327,26 @@ exclude-result-prefixes="xccdf xhtml">
 
   <xsl:template match="module-disable-macro">
 To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
-kernel module from being loaded, add the following line to a file in the directory <tt>/etc/modprobe.d</tt>:
-<pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</pre>
+kernel module from being loaded, add the following line to a file in the directory <xhtml:code>/etc/modprobe.d</xhtml:code>:
+<xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="module-disable-check-macro">
 If the system is configured to prevent the loading of the
 <xhtml:code><xsl:value-of select="@module"/></xhtml:code> kernel module,
-it will contain lines inside any file in <tt>/etc/modprobe.d</tt> or the deprecated<tt>/etc/modprobe.conf</tt>.
+it will contain lines inside any file in <xhtml:code>/etc/modprobe.d</xhtml:code> or the deprecated<xhtml:code>/etc/modprobe.conf</xhtml:code>.
 These lines instruct the module loading system to run another program (such as
-<tt>/bin/true</tt>) upon a module <tt>install</tt> event.
-Run the following command to search for such lines in all files in <tt>/etc/modprobe.d</tt>
-and the deprecated <tt>/etc/modprobe.conf</tt>:
-<pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</pre>
+<xhtml:code>/bin/true</xhtml:code>) upon a module <xhtml:code>install</xhtml:code> event.
+Run the following command to search for such lines in all files in <xhtml:code>/etc/modprobe.d</xhtml:code>
+and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
+<xhtml:pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="audit-syscall-check-macro">
 To determine if the system is configured to audit calls to
 the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
 system call, run the following command:
-<pre xml:space="preserve"># auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></pre>
+<xhtml:pre xml:space="preserve"># auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 

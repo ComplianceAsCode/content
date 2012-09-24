@@ -4,6 +4,12 @@
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+       <Value id="conditional_clause" type="string" operator="equals">
+                 <title>A conditional clause for check statements.</title>
+                 <description>A conditional clause for check statements.</description>
+                 <value>This is a placeholder.</value>
+       </Value>
+
       <xsl:apply-templates select="document('intro/intro.xml')" />
       <xsl:apply-templates select="document('system/system.xml')" />
       <xsl:apply-templates select="document('services/services.xml')" />
