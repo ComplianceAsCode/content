@@ -19,6 +19,9 @@ installed and activated, the software should be disabled and removed.
 <description>
 <service-disable-macro service="snmpd" />
 </description>
+<ocil>
+<service-disable-check-macro service="snmpd" />
+</ocil>
 <rationale>
 Running SNMP software provides a network-based avenue of attack, and
 should be disabled if not needed.
@@ -29,10 +32,12 @@ should be disabled if not needed.
 
 <Rule id="uninstall_net-snmp">
 <title>Uninstall <tt>net-snmp</tt> Package</title>
-<description>The <tt>net-snmp</tt> package, which provides the snmpd service,
-can be uninstalled with the following command:
-<pre># yum erase net-snmpd</pre>
+<description>The <tt>net-snmp</tt> package provides the snmpd service.
+<package-remove-macro package="net-snmpd" />
 </description>
+<ocil>
+<package-check-macro package="net-snmpd" />
+</ocil>
 <rationale>
 If there is no need to run SNMP server software,
 removing the package provides a safeguard against its
