@@ -188,7 +188,7 @@ LDAP server process would need to be restarted manually whenever the server rebo
 <ref nist="AC-6, CM-7, SC-11, SC-12, SC-13, SC-17" />
 </Rule>
 
-<Rule id="ldap_server_config_directory_domain">
+<Group id="ldap_server_config_directory_domain">
 <title>Create Top-level LDAP Structure for Domain</title>
 <description>Create a structure for the domain itself with at least the following attributes:
 <pre>dn: dc=example,dc=com
@@ -202,9 +202,9 @@ any other entries for the domain.
 <!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2" />
-</Rule>
+</Group>
 
-<Rule id="ldap_server_config_directory_users_groups">
+<Group id="ldap_server_config_directory_users_groups">
 <title>Create LDAP Structures for Users and Groups</title>
 <description>Create LDAP structures for people (users) and for groups with at least the following attributes:
 <pre>dn: ou=people,dc=example,dc=com
@@ -221,9 +221,9 @@ These organizational units are used to identify the two categories within LDAP.
 <!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, AC-6, SC-2" />
-</Rule>
+</Group>
 
-<Rule id="ldap_server_config_directory_accounts">
+<Group id="ldap_server_config_directory_accounts">
 <title>Create Unix Accounts</title>
 <description>For each Unix user, create an LDAP entry with at least the following attributes (others may be appropriate
 for your site as well), using variable values appropriate to that user.
@@ -251,9 +251,9 @@ but only for user accounts which are to be shared across machines, and which hav
 <!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, CM-7, SC-2" />
-</Rule>
+</Group>
 
-<Rule id="ldap_server_config_directory_groups">
+<Group id="ldap_server_config_directory_groups">
 <title>Create Unix Groups</title>
 <description>For each Unix group, create an LDAP entry with at least the following attributes:
 <pre>dn: cn=groupname ,ou=groups,dc=example,dc=com
@@ -274,11 +274,11 @@ or which are shared across systems.
 <!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, CM-7, SC-2" />
-</Rule>
+</Group>
 
-<Rule id="ldap_server_config_directory_admin_group">
+<Group id="ldap_server_config_directory_admin_group">
 <title>Create Groups to Administer LDAP</title>
-<description>If a group of LDAP administrators, admins , is desired, that group must be created somewhat differently.
+<description>If a group of LDAP administrators is desired, that group must be created somewhat differently.
 The specification should have these attributes:
 <pre>dn: cn=admins ,ou=groups,dc=example,dc=com
 cn: admins
@@ -297,7 +297,7 @@ auditing and error detection, it is recommended that LDAP administrators have un
 <!--<ident cce="TODO:CCE" />-->
 <!--oval id="MANUAL AUDIT" /-->
 <ref nist="AC-2, CM-7, SC-2" />
-</Rule>
+</Group>
 
 <Rule id="ldap_server_config_olcaccess">
 <title>Configure slapd to Protect Authentication Information</title>

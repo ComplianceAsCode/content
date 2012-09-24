@@ -19,6 +19,9 @@ data available to the public.</description>
 <description>
 <service-disable-macro service="vsftpd" />
 </description>
+<ocil>
+<service-disable-macro service="vsftpd" />
+</ocil>
 <rationale>
 Running FTP server software provides a network-based avenue
 of attack, and should be disabled if not needed.
@@ -32,10 +35,12 @@ a risk of compromising sensitive information.
 
 <Rule id="uninstall_vsftpd">
 <title>Uninstall vsftpd Package</title>
-<description>The <tt>vsftpd</tt> package can be
-uninstalled with the following command:
-<pre># yum erase vsftpd</pre>
+<description>
+<package-remove-macro service="vsftpd" />
 </description>
+<ocil>
+<package-check-macro service="vsftpd" />
+</ocil>
 <rationale>
 Removing the vsftpd package decreases the risk of its
 accidental activation.
@@ -114,7 +119,7 @@ these logins as much as possible.</description>
 <!--<ref nist="CM-6, CM-7" /> -->
 </Rule>
 
-<Rule id="ftp_limit_users">
+<Group id="ftp_limit_users">
 <title>Limit Users Allowed FTP Access if Necessary</title>
 <description>If there is a mission-critical reason for users to access their accounts via the insecure FTP protocol, limit the set of users who are allowed this access. Edit the vsftpd configuration file. Add or correct the following configuration options:
 <pre>userlist_enable=YES
@@ -130,7 +135,7 @@ ftp</pre>
 <!--<ident cce="4443-8" />-->
 <!--<oval id="ftp_limit_users" />-->
 <!--<ref nist="CM-6, CM-7" /> -->
-</Rule>
+</Group>
 
 </Group> <!-- <Group id="ftp_restrict_users"> -->
 
@@ -161,7 +166,7 @@ these users from filling a disk used by other services.</rationale>
 <!--<ref nist="CM-6, CM-7" /> -->
 </Rule>
 
-<Rule id="ftp_configure_firewall">
+<Group id="ftp_configure_firewall">
 <title>Configure Firewalls to Protect the FTP Server</title>
 <description>Edit the file <tt>/etc/sysconfig/iptables</tt>. Add the following lines, ensuring that they appear before the final
 LOG and DROP lines for the RH-Firewall-1-INPUT chain:
@@ -178,7 +183,7 @@ FTP server to operate on a machine which is running a firewall.</rationale>
 <!--<ident cce="4443-8" />-->
 <!--<oval id="ftp_configure_firewall" />-->
 <!--<ref nist="CM-6, CM-7" /> -->
-</Rule>
+</Group>
 
 </Group> <!-- <Group id="ftp_configure_vsftpd"> -->
 </Group> <!-- <Group id="ftp"> -->

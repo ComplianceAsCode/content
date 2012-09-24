@@ -69,7 +69,8 @@ value of 0 is recommended.</description>
 
 <Rule id="disable_users_coredumps">
 <title>Disable Core Dumps for All Users</title>
-<description>To disable core dumps for all users, add the following line to <tt>/etc/security/limits.conf</tt>:
+<description>To disable core dumps for all users, add the following line to
+<tt>/etc/security/limits.conf</tt>:
 <pre>*     hard   core    0</pre>
 </description>
 <rationale>A core dump includes a memory image taken at the time the operating system
@@ -84,6 +85,7 @@ only for developers trying to debug problems.</rationale>
 <Rule id="disable_setuid_coredumps">
 <title>Disable Core Dumps for SUID programs</title>
 <description><sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" /></description>
+<ocil><sysctl-check-macro sysctl="fs.suid_dumpable" value="0" /></ocil>
 <rationale>The core dump of a setuid program is more likely to contain
 sensitive data, as the program itself runs with greater privileges than the
 user who initiated execution of the program.  Disabling the ability for any
@@ -109,6 +111,7 @@ controlled through <tt>sysctl</tt> variables <tt>kernel.exec-shield</tt> and
 <Rule id="enable_execshield">
 <title>Enable ExecShield</title>
 <description><sysctl-desc-macro sysctl="kernel.exec-shield" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.exec-shield" value="1" /></ocil>
 <rationale>ExecShield uses the segmentation feature on all x86 systems
 to prevent execution in memory higher than a certain address. It
 writes an address as a limit in the code segment descriptor, to
@@ -124,6 +127,7 @@ address range.</rationale>
 <Rule id="enable_randomize_va_space">
 <title>Enable Randomized Layout of Virtual Address Space</title>
 <description><sysctl-desc-macro sysctl="kernel.randomize_va_space" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.randomize_va_space" value="1" /></ocil>
 <rationale> Address space layout randomization (ASLR) makes it more difficult
 for an attacker to predict the location of attack code he or she has introduced
 into a process's address space during an attempt at exploitation.  ASLR also

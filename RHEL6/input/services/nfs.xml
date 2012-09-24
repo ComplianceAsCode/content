@@ -345,11 +345,12 @@ however, there are a few clients that do not send credentials when requesting a 
 the client to only be able to lock world-readable files. To get around this, the <tt>insecure_locks</tt>
 option can be used so these clients can access the desired export. This poses a security risk by
 potentially allowing the client access to data for which it does not have authorization.
-<br /><br />
-This configuration is not recommended and strongly discouraged.
-<br /><br />
-Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>insecure_locks</tt>.
+Remove any instances of the 
+<tt>insecure_locks</tt> option from the file <tt>/etc/exports</tt>.
 </description>
+<ocil>
+Check the file <tt>/etc/exports</tt> for any instances of the <tt>insecure_locks</tt>.
+</ocil>
 <rationale>Allowing insecure file locking could allow for sensitive data to be viewed or edited by
 an unauthorized user.
 </rationale>

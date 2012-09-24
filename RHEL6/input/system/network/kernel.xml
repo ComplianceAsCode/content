@@ -16,6 +16,9 @@ of network traffic.</description>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />
+</ocil>
 <rationale>Sending ICMP redirects permits the system to instruct other systems
 to update their routing information.  The ability to send ICMP redirects is
 only appropriate for routers.</rationale>
@@ -29,6 +32,9 @@ only appropriate for routers.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.send_redirects" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.all.send_redirects" value="0" />
+</ocil>
 <rationale>Sending ICMP redirects permits the system to instruct other systems
 to update their routing information.  The ability to send ICMP redirects is
 only appropriate for routers.</rationale>
@@ -42,6 +48,9 @@ only appropriate for routers.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.ip_forward" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.ip_forward" value="0" />
+</ocil>
 <rationale>IP forwarding permits the kernel to forward packets from one network
 interface to another. The ability to forward packets between two networks is
 only appropriate for routers.</rationale>
@@ -190,6 +199,9 @@ operator="equals" interactive="0">
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.accept_source_route" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.all.accept_source_route" value="0" />
+</ocil>
 <rationale>Accepting source-routed packets in the IPv4 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4236-6" />
@@ -202,6 +214,9 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.accept_redirects" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.all.accept_redirects" value="0" />
+</ocil>
 <rationale>Accepting ICMP redirects has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4217-6" />
@@ -215,6 +230,9 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />
+</ocil>
 <rationale>Accepting "secure" ICMP redirects (from those gateways listed as
 default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
@@ -228,6 +246,9 @@ absolutely required.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />
+</ocil>
 <rationale>The presence of "martian" packets (which have impossible addresses)
 as well as spoofed packets, source-routed packets, and redirects could be a
 sign of nefarious network activity. Logging these packets enables this activity
@@ -243,6 +264,9 @@ to be detected.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_source_route" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.default.accept_source_route" value="0" />
+</ocil>
 <rationale>Accepting source-routed packets in the IPv4 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4091-5" />
@@ -256,6 +280,9 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />
+</ocil>
 <rationale>This feature of the IPv4 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4186-3" />
@@ -269,6 +296,9 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.secure_redirects" value="0" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.default.secure_redirects" value="0" />
+</ocil>
 <rationale>Accepting "secure" ICMP redirects (from those gateways listed as
 default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
@@ -283,6 +313,9 @@ absolutely required.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />
+</ocil>
 <rationale>Ignoring ICMP echo requests (pings) sent to broadcast or multicast
 addresses makes the system slightly more difficult to enumerate on the network.
 </rationale>
@@ -297,6 +330,9 @@ addresses makes the system slightly more difficult to enumerate on the network.
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.icmp_ignore_bogus_error_responses" value="1" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.icmp_ignore_bogus_error_responses" value="1" />
+</ocil>
 <rationale>Ignoring bogus ICMP error responses reduces
 log size, although some activity would not be logged.</rationale>
 <ident cce="4133-5" />
@@ -309,6 +345,9 @@ log size, although some activity would not be logged.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.tcp_syncookies" value="1" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.tcp_syncookies" value="1" />
+</ocil>
 <rationale> A TCP SYN flood attack can cause a denial of service by filling a
 system's TCP connection table with connections in the SYN_RCVD state.
 Syncookies can be used to track a connection when a subsequent ACK is received,
@@ -326,6 +365,9 @@ enables the system to continue servicing valid connection requests.
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.rp_filter" value="1" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.all.rp_filter" value="1" />
+</ocil>
 <rationale>Enabling reverse path filtering drops packets with source addresses
 that should not have been able to be received on the interface they were
 received on. It should not be used on systems which are routers for
@@ -341,6 +383,9 @@ networks.</rationale>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.rp_filter" value="1" />
 </description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv4.conf.default.rp_filter" value="1" />
+</ocil>
 <rationale>Enabling reverse path filtering drops packets with source addresses
 that should not have been able to be received on the interface they were
 received on. It should not be used on systems which are routers for

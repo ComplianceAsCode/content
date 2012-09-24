@@ -45,44 +45,23 @@ are from Red Hat.
 <!-- REMINDER: Before telling people to update their systems
      via the security_patches_up_to_date rule, we must
      ensure they have configured an update source! -->
-
-<Rule id="security_patches_up_to_date">
-<title>Ensure Software Patches Installed</title>
-<description>The following command prints a list of packages that
-need to be updated:
-<pre># yum check-update</pre>
-To actually install these updates, run:
-<pre># yum update</pre>
-</description>
-<ocil>
-After running the update command, you can reinvoke the same command
-to determine if updates were applied. If you run the command and
-nothing comes back as needing to be updated, then your system is up
-to date.
-<pre># yum update</pre>
-</ocil>
-<rationale>
-Installing software updates is a fundamental mitigation against
-the exploitation of publicly-known vulnerabilities.
-</rationale>
-<ref nist="SI-2" disa="1232"/>
-</Rule>
 <Rule id="ensure_gpgcheck_globally_activated">
 <title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option should be used to ensure that
 checking of an RPM package’s signature always occurs prior to its
-installation. To force yum to check package signatures before installing
+installation. To configure yum to check package signatures before installing
 them, ensure that the following line appears in <tt>/etc/yum.conf</tt> in
 the <tt>[main]</tt> section:
 <pre>gpgcheck=1</pre>
 </description>
 <ocil>
-By performing a simple grep, one can determine if the value is set in
-the file or not. Run the following command to deterine the status of
-the variable in the file.
-<pre># grep gpgcheck=1 /etc/yum.conf</pre>
-If it reurns a value, then it is enabled. ex:
-<pre># gpgcheck=1 &lt;--- Returned value from the grep command</pre>
+To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
+inspect <tt>/etc/yum.conf</tt> and ensure that the following appears in the
+<tt>[main]</tt> section:
+<pre>gpgcheck=1</pre>
+A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
+<tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
+disabled.
 </ocil>
 <rationale>
 Ensuring the validity of packages' cryptographic signatures prior to
@@ -97,18 +76,16 @@ protects against malicious tampering.
 <Rule id="ensure_gpgcheck_never_disabled">
 <title>Ensure gpgcheck Enabled For All Yum Package Repositories</title>
 <description>To ensure that signature checking is not disabled for
-any repos, ensure that the following line DOES NOT appear in any
-repo configuration files in <tt>/etc/yum.repos.d</tt> or elsewhere:
+any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
 <pre>gpgcheck=0</pre>
 </description>
 <ocil>
-By performing a simple grep, one can determine if the value is set
-in the file or not. Run the following command to deterine the status
-of the variable in the file.
-<pre># grep gpgcheck=0 /etc/yum.conf</pre>
-If it doesn't reurn a value, then it hasn't been disabled. ex:
-<pre># grep gpgcheck=0 /etc/yum.conf</pre>
-<pre># &lt;---Flashing cursor</pre>
+To determine whether <tt>yum</tt> has been configured to disable
+<tt>gpgcheck</tt> for any repos,  inspect all files in
+<tt>/etc/yum.repos.d</tt> and ensure that the following does not appear in any
+sections:
+<pre>gpgcheck=0</pre>
+A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo. 
 </ocil>
 <rationale>
 Ensuring that all packages' cryptographic signatures are valid prior to
@@ -118,5 +95,26 @@ protects against malicious tampering.
 <ident cce="14813-0" />
 <oval id="yum_gpgcheck_never_disabled" />
 <ref nist="SI-2" disa="352,663"/>
+</Rule>
+
+<Rule id="security_patches_up_to_date">
+<title>Ensure Software Patches Installed</title>
+<description>The following command prints a list of packages that
+need to be updated:
+<pre># yum check-update</pre>
+To actually install these updates, run:
+<pre># yum update</pre>
+</description>
+<ocil>
+After running the update command, invoking the update command again can be used
+to determine success of the updates. If nothing is returned, the update was
+successful.
+<pre># yum update</pre>
+</ocil>
+<rationale>
+Installing software updates is a fundamental mitigation against
+the exploitation of publicly-known vulnerabilities.
+</rationale>
+<ref nist="SI-2" disa="1232"/>
 </Rule>
 </Group>
