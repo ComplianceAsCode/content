@@ -20,12 +20,12 @@ monitor logs.</description>
 <Rule id="package_rsyslog_installed">
 <title>Ensure rsyslog is Installed</title>
 <description>
-Rsyslog is installed by default. Ensure that it is installed
-by running:
-<pre>$ rpm -q rsyslog</pre>
-If it is not installed, install it by running:
-<pre># yum install rsyslog</pre>
+Rsyslog is installed by default. 
+<package-install-macro service="rsyslog" />
 </description>
+<ocil>
+<package-check-macro package="rsyslog" />
+</ocil>
 <rationale>
 The rsyslog package provides the rsyslog daemon, which provides
 system logging services.
@@ -41,6 +41,9 @@ system logging services.
 <description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6.
 <service-enable-macro service="rsyslog" />
 </description>
+<ocil>
+<service-enable-check-macro service="rsyslog" />
+</ocil>
 <rationale>The <tt>rsyslog</tt> service must be running in order to provide
 logging services, which are essential to system administration.
 </rationale>

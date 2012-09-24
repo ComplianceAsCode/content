@@ -71,6 +71,7 @@ IPv6 lacks reliable connection-tracking functionality.</description>
 <description>
 <service-enable-macro service="ip6tables" />
 </description>
+<ocil><service-enable-check-macro service="ip6tables" /></ocil>
 <rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
 capability for IPv6 and ICMPv6.
 </rationale>
@@ -84,6 +85,7 @@ capability for IPv6 and ICMPv6.
 <description>
 <service-enable-macro service="iptables" />
 </description>
+<ocil><service-enable-check-macro service="iptables" /></ocil>
 <rationale>
 The <tt>iptables</tt> service provides the system's host-based firewalling
 capability for IPv4 and ICMP.
@@ -133,6 +135,9 @@ add or correct the following line in
 <tt>/etc/sysconfig/iptables</tt>:
 <pre>:INPUT DROP [0:0]</pre>
 </description>
+<ocil>Inspect the file <tt>/etc/sysconfig/iptables</tt> to determine
+the default policy for the INPUT chain. It should be set to DROP.
+</ocil>
 <rationale>In <tt>iptables</tt> the default policy is applied only after all
 the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
