@@ -471,7 +471,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 -k audit_time_rules</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="adjtimex" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
 nefarious activites in log files as well as to confuse network services that 
@@ -499,7 +499,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 -k audit_time_rules</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="settimeofday" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
 nefarious activites in log files as well as to confuse network services that 
@@ -525,7 +525,7 @@ See an example of multiple combined syscalls:
 -k audit_time_rules</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
 nefarious activites in log files as well as to confuse network services that 
@@ -553,7 +553,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 -k audit_time_rules</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="clock_settime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
 nefarious activites in log files as well as to confuse network services that 
