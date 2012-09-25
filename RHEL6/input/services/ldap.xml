@@ -32,6 +32,10 @@ network.</warning>
 <pre>ssl start_tls</pre>
 Then review the LDAP server and ensure TLS has been configured.
 </description>
+<ocil clause="no lines are returned">
+To ensure LDAP is configured to use TLS for all transactions, run the following command:
+<pre>$ grep start_tls /etc/pam_ldap.conf</pre>
+</ocil>
 <rationale>The ssl directive specifies whether to use ssl or not. If
 not specified it will default to no. It should be set to start_tls rather
 than doing LDAP over SSL.</rationale>
