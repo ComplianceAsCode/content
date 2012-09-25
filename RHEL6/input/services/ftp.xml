@@ -20,7 +20,7 @@ data available to the public.</description>
 <service-disable-macro service="vsftpd" />
 </description>
 <ocil>
-<service-disable-macro service="vsftpd" />
+<service-disable-check-macro service="vsftpd" />
 </ocil>
 <rationale>
 Running FTP server software provides a network-based avenue
@@ -36,10 +36,10 @@ a risk of compromising sensitive information.
 <Rule id="uninstall_vsftpd">
 <title>Uninstall vsftpd Package</title>
 <description>
-<package-remove-macro service="vsftpd" />
+<package-remove-macro package="vsftpd" />
 </description>
 <ocil>
-<package-check-macro service="vsftpd" />
+<package-check-macro package="vsftpd" />
 </ocil>
 <rationale>
 Removing the vsftpd package decreases the risk of its

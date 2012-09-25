@@ -28,7 +28,7 @@ and removed from the system.
 <service-disable-macro service="httpd" />
 </description>
 <ocil>
-<service-disable-macro service="httpd" />
+<service-disable-check-macro service="httpd" />
 </ocil>
 <rationale>
 Running web server software provides a network-based avenue
@@ -42,10 +42,10 @@ of attack, and should be disabled if not needed.
 <Rule id="uninstall_httpd">
 <title>Uninstall httpd Package</title>
 <description>
-<package-remove-macro service="httpd" />
+<package-remove-macro package="httpd" />
 </description>
 <ocil>
-<package-check-macro service="httpd" />
+<package-check-macro package="httpd" />
 </ocil>
 <rationale>
 If there is no need to make the web server software available,
