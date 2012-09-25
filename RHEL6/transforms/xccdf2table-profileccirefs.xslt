@@ -154,17 +154,16 @@
 			 <br/>If <xsl:value-of select="cdf:check-export/@export-name" />, this is a finding. 
 			 </xsl:if>
 		</xsl:if>
-	    <xsl:if test="@system=$ovaluri">
+<!--	    <xsl:if test="@system=$ovaluri">
 		<xsl:for-each select="cdf:check-export">
 			<xsl:variable name="rulevar" select="@value-id" />
-				<!--<xsl:value-of select="$rulevar" />:-->
 				<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:refine-value">
 					<xsl:if test="@idref=$rulevar">
 						<xsl:value-of select="@selector" />
 					</xsl:if>
 				</xsl:for-each>
 		</xsl:for-each>
-		</xsl:if>
+		</xsl:if> -->
 	</xsl:template>
 
 
