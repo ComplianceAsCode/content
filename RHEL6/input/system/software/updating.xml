@@ -28,7 +28,7 @@ Run the following command to install the Red Hat GPG key, of which Red Hat
 uses to sign. To ensure that the GPG Key is isntalled, run:
 <pre># rhn_register</pre>
 </description>
-<ocil>To ensure that the GPG Key is isntalled, run:
+<ocil clause="the Red Hat GPG Key isn't installed">To ensure that the GPG Key is isntalled, run:
 <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
 The command should return the string:
 <pre>gpg(Red Hat, Inc. (release key &lt;security@redhat.com&gt;)</pre>
@@ -54,7 +54,7 @@ them, ensure that the following line appears in <tt>/etc/yum.conf</tt> in
 the <tt>[main]</tt> section:
 <pre>gpgcheck=1</pre>
 </description>
-<ocil>
+<ocil clause="GPG checking isn't enabled">
 To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
 inspect <tt>/etc/yum.conf</tt> and ensure that the following appears in the
 <tt>[main]</tt> section:
@@ -79,7 +79,7 @@ protects against malicious tampering.
 any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
 <pre>gpgcheck=0</pre>
 </description>
-<ocil>
+<ocil clause="GPG checking is disabled">
 To determine whether <tt>yum</tt> has been configured to disable
 <tt>gpgcheck</tt> for any repos,  inspect all files in
 <tt>/etc/yum.repos.d</tt> and ensure that the following does not appear in any
@@ -105,7 +105,7 @@ need to be updated:
 To actually install these updates, run:
 <pre># yum update</pre>
 </description>
-<ocil>
+<ocil clause="Updates are not installed">
 After running the update command, invoking the update command again can be used
 to determine success of the updates. If nothing is returned, the update was
 successful.

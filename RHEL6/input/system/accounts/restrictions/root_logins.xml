@@ -47,7 +47,7 @@ vc/3
 vc/4</pre>
 <!-- TODO: discussion/description of virtual consoles-->
 </description>
-<ocil>To check for these entries from the command prompt, issue the
+<ocil clause="the user root hasn't been restricted from VCD's">To check for these entries from the command prompt, issue the
 following command:
 <pre># grep ^vc/[0-9] /etc/securetty</pre>
 If any values are returned, you need to remove them by manipulating the file.
@@ -73,7 +73,7 @@ ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
 ttyS1</pre>
 <!-- TODO: discussion/description of serial port -->
 </description>
-<ocil>To check for these entries from the command prompt,
+<ocil clause="the user root hasn't been restricted from Serial Ports">To check for these entries from the command prompt,
 issue the following command:
 <pre># grep ^ttyS/[0-9] /etc/securetty</pre>
 If any values are returned, you need to remove them by manipulating
@@ -109,7 +109,7 @@ than root.
 </description>
 <!--For each identified system account SYSACCT, lock the account:
 <pre># usermod -L SYSACCT</pre>-->
-<ocil>If any account <i>SYSACCT</i> has a login shell,
+<ocil clause="any SYSACCTs have a login shell">If any account <i>SYSACCT</i> has a login shell,
 disable it with the command:
 <pre># usermod -s /sbin/nologin SYSACCT</pre>
 The RHEL6 default is <tt>/sbin/nologin</tt>, but any command which will

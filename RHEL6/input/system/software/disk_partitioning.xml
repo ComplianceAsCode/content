@@ -31,9 +31,7 @@ The <tt>/tmp</tt> directory is a world-writable directory used
 for temporary file storage. Ensure that it has its own partition or
 logical volume at installation time, or migrate it using LVM.
 </description>
-<ocil clause="no line is returned">
-<partition-check-macro part="/tmp"/>
-</ocil>
+<ocil><partition-check-macro part="/tmp"/></ocil>
 <rationale>
 The <tt>/tmp</tt> partition is used as temporary storage by many programs.
 Placing <tt>/tmp</tt> in its own partition enables the setting of more
