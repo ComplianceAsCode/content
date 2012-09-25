@@ -185,12 +185,28 @@ exclude-result-prefixes="xccdf xhtml">
   <xsl:template match="Rule/ocil">
       <check>
         <xsl:attribute name="system">ocil-transitional</xsl:attribute>
-        <xsl:if test="@clause">
           <check-export>
-          <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
+
+          <xsl:attribute name="export-name">
+          <!-- add clauses if specific macros are found within -->
+            <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
+            <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
+            <xsl:if test="partition-check-macro">no line is returned</xsl:if>
+            <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
+            <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
+            <xsl:if test="package-check-macro">the package is installed</xsl:if>
+            <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
+            <xsl:if test="audit-syscall-check-macro">no line is returned</xsl:if>
+          </xsl:attribute>
+
+          <!-- add clause if explicitly specified (and also override any above) -->
+          <xsl:if test="@clause">
+            <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
+          </xsl:if>
+
           <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
           </check-export>
-        </xsl:if>
+        <!-- add the actual manual checking text -->
         <check-content>
         <xsl:apply-templates select="node()"/>
         </check-content>
@@ -224,17 +240,17 @@ exclude-result-prefixes="xccdf xhtml">
 
   <xsl:template match="fileperms-desc-macro">
     To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chmod <xsl:value-of select="@file"/> <xsl:value-of select="@perms"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve"># chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileowner-desc-macro">
     To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@file"/> <xsl:value-of select="@owner"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@owner"/> <xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="filegroupowner-desc-macro">
     To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@file"/> <xsl:value-of select="@group"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve"># chgrp <xsl:value-of select="@group"/> <xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">
