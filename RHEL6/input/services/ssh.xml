@@ -69,6 +69,11 @@ verified by ensuring that the following
 line appears:
 <pre>Protocol 2</pre>
 </description>
+<ocil clause="it is not">
+To check which SSH protocol version is allowed, run the following command:
+<pre># grep Protocol /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>Protocol 2</pre>
+</ocil>
 <rationale>
 SSH protocol version 1 suffers from design flaws that
 result in security vulnerabilities and
@@ -151,6 +156,12 @@ shell, that value will preempt any SSH
 setting made here. Keep in mind that some processes may stop SSH
 from correctly detecting that the user is idle.
 </description>
+<ocil clause="it is not">
+Run the following command to see what the timeout interval is:
+<pre># grep ClientAliveInterval /etc/ssh/sshd_config</pre>
+If properly configured, the output should be:
+<pre>ClientAliveInterval 900</pre>
+</ocil>
 <rationale>
 Causing idle users to be automatically logged out
 guards against compromises one system leading trivially
@@ -169,6 +180,12 @@ edit <tt>/etc/ssh/sshd_config</tt> as
 follows:
 <pre>ClientAliveCountMax 0</pre>
 </description>
+<ocil clause="it is not">
+To ensure the SSH idle timeout will occur when the <tt>ClientAliveInterval</tt> is set, run the following command:
+<pre># grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+If properly configured, output should be:
+<pre>ClientAliveCountMax 0</pre>
+</ocil>
 <rationale>
 This ensures that a user login will be terminated as soon as the <tt>ClientAliveInternal</tt>
 is reached.
@@ -281,6 +298,12 @@ environment options to the SSH daemon, add or correct the following line
 in <tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitUserEnvironment no</pre>
 </description>
+<ocil clause="it is not">
+To ensure users are not able to present environment daemons, run the following command:
+<pre># grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
+If properly configured, output should be:
+<pre>PermitUserEnvironment no</pre>
+</ocil>
 <rationale>
 SSH environment options potentially allow users to bypass
 access restriction in some configurations.

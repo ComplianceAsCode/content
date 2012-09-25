@@ -69,6 +69,11 @@ Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following
 <tt>inet_interfaces</tt> line appears:
 <pre>inet_interfaces = localhost</pre>
 </description>
+<ocil clause="it does not">
+Run the following command to ensure postfix accepts mail messages from only the local system:
+<pre>$ grep inet_interfaces /etc/postfix/main.cf</pre>
+If properly configured, the output should show only <tt>localhost</tt>.
+</ocil>
 <rationale>
 This ensures that <tt>postfix</tt> accepts mail messages
 (such as cron job reports) from the local system only,
