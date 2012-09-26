@@ -22,10 +22,14 @@ instruct the IPv6 kernel module not to load it.</description>
 This permits the IPv6 module to be loaded (and thus satisfy other modules that depend on it),
 while disabling support for the IPv6 protocol.
 </description>
+<<<<<<< HEAD
 <ocil clause="the ipv6 kernel module is loaded">
+=======
+<ocil clause="there are no such lines">
+>>>>>>> 8194cb7849332df93b3f475d180cb3f8c484abae
 If the system is configured to prevent the loading of the
 <tt>ipv6</tt> kernel module, it will contain a line
-of the form
+of the form:
 <pre>options ipv6 disable=1</pre>
 inside any file in <tt>/etc/modprobe.d</tt> or the deprecated<tt>/etc/modprobe.conf</tt>.
 This permits insertion of the IPv6 kernel module (which other parts of the system
@@ -128,6 +132,10 @@ advertisements should be: <tt><sub idref="sysctl_net_ipv6_conf_default_accept_ra
 <description>The setting for accepting IPv6 redirects should be: <tt><sub idref="sysctl_net_ipv6_conf_default_accept_redirects_value" /></tt> for all interfaces.  To do so add the following lines to <tt>/etc/sysctl.conf</tt> to limit the configuration information requested from other systems, and accepted from the network:
 <pre>net.ipv6.conf.default.accept_redirects = <sub idref="sysctl_net_ipv6_conf_default_accept_redirects_value" /></pre>
 </description>
+<ocil clause="there is not output">
+To ensure IPv6 redirects are disabled, run the following command:
+<pre># grep ipv6 /etc/sysctl.conf</pre>
+</ocil>
 <ident cce="CCE-4313-3" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-6, CM-7" />
