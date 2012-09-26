@@ -138,7 +138,7 @@ If any account other than root has a UID of 0,
 this misconfiguration should be investigated and the
 accounts other than root should be removed or have their UID changed.
 </description>
-<ocil>
+<ocil clause="any other accounts, other than root have an ID of 0">
 To list all password file entries for
 accounts with UID 0:
 <pre># awk -F: '($3 == "0") {print}' /etc/passwd</pre>
