@@ -21,7 +21,7 @@ monitor logs.</description>
 <title>Ensure rsyslog is Installed</title>
 <description>
 Rsyslog is installed by default. 
-<package-install-macro service="rsyslog" />
+<package-install-macro package="rsyslog" />
 </description>
 <ocil>
 <package-check-macro package="rsyslog" />
@@ -37,14 +37,14 @@ system logging services.
 
 
 <Rule id="service_rsyslog_enabled">
-<title>Enable Rsyslog Service (rsyslog)</title>
-<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6.
+<title>Enable rsyslog Service</title>
+<description>The rsyslog service provides syslog-style logging by default on RHEL 6.
 <service-enable-macro service="rsyslog" />
 </description>
 <ocil>
 <service-enable-check-macro service="rsyslog" />
 </ocil>
-<rationale>The <tt>rsyslog</tt> service must be running in order to provide
+<rationale>The rsyslog service must be running in order to provide
 logging services, which are essential to system administration.
 </rationale>
 <ident cce="17698-2" />
@@ -97,7 +97,7 @@ operator="equals" interactive="0">
 <Rule id="rsyslog_logfiles_exist">
 <title>Ensure Log Files Exist</title>
 <description>
-The log files written by <tt>rsyslog</tt> are determined by the second part of each rule line in
+The log files written by rsyslog are determined by the second part of each rule line in
 <tt>/etc/rsyslog.conf</tt>. These typically all appear in <tt>/var/log</tt>. 
 For any log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt> which
 does not already exist the following commands will create it and apply proper
@@ -106,7 +106,7 @@ permissions:
 # chown root:root <i>LOGFILE</i>
 # chmod 0600 <i>LOGFILE</i></pre>
 </description>
-<rationale>If a log file referenced by <tt>rsyslog</tt> does not exist, rsyslog
+<rationale>If a log file referenced by rsyslog does not exist, rsyslog
 will not create it and important log messages can be lost.
 </rationale>
 <ident cce="18095-0" />
@@ -116,7 +116,7 @@ will not create it and important log messages can be lost.
 <Rule id="userowner_rsyslog_files">
 <title>Ensure Log Files Are Owned By Appropriate User</title>
 <description>The owner of all log files written by
-<tt>rsyslog</tt> should be root.
+rsyslog should be root.
 These log files are determined by the second part of each Rule line in
 <tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
 For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
@@ -141,7 +141,7 @@ protected from unauthorized access.</rationale>
 <Rule id="groupowner_rsyslog_files">
 <title>Ensure Log Files Are Owned By Appropriate Group</title>
 <description>The group-owner of all log files written by
-<tt>rsyslog</tt> should be root.
+rsyslog should be root.
 These log files are determined by the second part of each Rule line in
 <tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
 For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
@@ -167,8 +167,7 @@ protected from unauthorized access.</rationale>
 <Rule id="rsyslog_file_permissions">
 <title>Ensure System Log Files Have Correct Permissions</title>
 <description>The file permissions for all log files written by
-<tt>rsyslog</tt> should be
-set to 600 or more restrictive.
+rsyslog should be set to 600, or more restrictive.
 These log files are determined by the second part of each Rule line in
 <tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
 For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
@@ -194,7 +193,7 @@ users could change the logged data, eliminaating their foresive value.
 </Group>
 
 <Group id="rsyslog_sending_messages">
-<title>Rsyslog Logs Sent To Remote Host</title>
+<title>rsyslog Logs Sent To Remote Host</title>
 <description>
 If system logs are to be useful in detecting malicious
 activities, it is necessary to send logs to a remote server. An
@@ -204,11 +203,11 @@ before they are seen by an administrator.
 <br /><br />
 However, it is recommended that logs be stored on the local
 host in addition to being sent to the loghost, especially if
-<tt>rsyslog</tt> has been configured to use the UDP protocol to send
+rsyslog has been configured to use the UDP protocol to send
 messages over a network. UDP does not guarantee reliable delivery,
 and moderately busy sites will lose log messages occasionally,
 especially in periods of high traffic which may be the result of an
-attack. In addition, remote <tt>rsyslog</tt> messages are not
+attack. In addition, remote rsyslog messages are not
 authenticated in any way by default, so it is easy for an attacker to
 introduce spurious messages to the central log server. Also, some
 problems cause loss of network connectivity, which will prevent the
@@ -227,10 +226,9 @@ Along with these other directives, the system can be configured
 to forward its logs to a particular log server by
 adding or correcting one of the following lines,
 substituting <tt><i>loghost.example.com</i></tt> appropriately.
-The choice
-of protocol depends on the environment of the system; although TCP and RELP
-provide more reliable message delivery, they may not be supported in all
-environments.
+The choice of protocol depends on the environment of the system; 
+although TCP and RELP provide more reliable message delivery, 
+they may not be supported in all environments.
 <br/>
 To use UDP for log message delivery:
 <pre>*.* @<i>loghost.example.com</i></pre>
@@ -264,9 +262,9 @@ place to view the status of multiple hosts within the enterprise.
 </Group>
 
 <Group id="rsyslog_accepting_remote_messages">
-<title>Configure <tt>rsyslogd</tt> to Accept Remote Messages If Acting as a Log Server</title>
+<title>Configure rsyslogd to Accept Remote Messages If Acting as a Log Server</title>
 <description>
-By default, RHEL6's <tt>rsyslog</tt> does not listen over the network
+By default, RHEL6's rsyslog does not listen over the network
 for log messages. If needed, modules can be enabled to allow
 the rsyslog daemon to receive messages from other systems and for the system
 thus to act as a log server.
@@ -277,8 +275,7 @@ should remain commented out.
 
 <Rule id="rsyslog_accept_remote_messages_none">
 <title>Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server</title>
-<description>The <tt>rsyslog</tt> daemon should not accept remote messages
-unless the system acts as a log server.
+<description>The rsyslog daemon should not accept remote messages unless the system acts as a log server.
 To ensure that it is not listening on the network, ensure the following lines are
 <i>not</i> found in <tt>/etc/rsyslog.conf</tt>:
 <pre>$ModLoad imtcp.so

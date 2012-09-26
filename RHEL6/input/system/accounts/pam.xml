@@ -177,10 +177,13 @@ operator="equals" interactive="0">
 <Rule id="password_retry">
 <title>Set Password Retry Prompts Permitted Per-session</title>
 <description>The pam_cracklib module's <tt>retry=</tt> parameter controls how many times a program
-will re-prompt a user after an incorrect password entry, on a per-session basis.
+will re-prompt a user after an incorrect password entry, on a per-session basis.  To configure this, open:
+<pre>/etc/pam.d/system-auth</pre>
+Locate the <tt>retry=</tt> parameter, the DoD required value is 3.
 </description>
 <ocil clause="it is not the required value">
-To check the number of password retry attempts permitted, run the following command:
+The system must disable after three consecutive and unsuccessful login attempts.
+To ensure this is the case, run the following command:
 <pre>$ grep retry /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
@@ -202,7 +205,8 @@ contain that many digits. When set to a positive number, pam_cracklib will grant
 length credit for each digit.
 </description>
 <ocil clause="it is not the required value">
-To check the minimum required number of digits, run the following command:
+The DoD requires at least one digit in a password.
+To verify this requirement is being met, run the following command:
 <pre>$ grep dcredit /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
@@ -222,7 +226,8 @@ contain that many uppercase characters. When set to a positive number, pam_crack
 length credit for each uppercase character.
 </description>
 <ocil clause="it is not the required value">
-To check the required number of uppercase characters, run the following command:
+The DoD requires at least one uppercase character in a password.
+To verify this requirement is being met, run the following command:
 <pre>$ grep ucredit /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
@@ -242,7 +247,8 @@ contain that many special characters. When set to a positive number, pam_crackli
 length credit for each special character.
 </description>
 <ocil clause="it is not the required value">
-To check the required number of special characters, run the following command:
+The DoD requires at least one special character in a password.
+To verify this requirement is being met, run the following command:
 <pre>$ grep ocredit /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
@@ -262,7 +268,8 @@ contain that many lowercase characters. When set to a positive number, pam_crack
 length credit for each lowercase character.
 </description>
 <ocil clause="it is not the required value">
-To check the required number of lowercase characters, run the following command:
+The DoD requires at least one lowercase character in a password.
+To verify this requirement is being met, run the following command:
 <pre>$ grep lcredit /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
@@ -280,7 +287,8 @@ more difficult by ensuring a larger search space.
 usage of different characters during a password change.
 </description>
 <ocil clause="it is not the required value">
-To check the required number of minimum different characters, run the following command:
+During a password change, the DoD requires at least four characters be different between the old and new passwords.
+To verify this requirement is being met, run the following command:
 <pre>$ grep difok /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
@@ -365,7 +373,7 @@ prevents direct password guessing attacks.
 <description>The system's default algorithm for storing password hashes in
 <tt>/etc/shadow</tt> is SHA-512.
 In order to ensure the system is still configured to use SHA-512 algorithm,
-ensure that the following line appears in <tt>/etc/login.defs</tt>:
+the following line must appear in <tt>/etc/login.defs</tt>:
 <pre>ENCRYPT_METHOD SHA512</pre>
 Also ensure that the <tt>pam_unix.so</tt> module in the <tt>password</tt> section in
 <tt>/etc/pam.d/system-auth</tt> includes the argument <tt>sha512</tt>.
@@ -378,6 +386,13 @@ will be generated using the SHA-512 algorithm.
 need to perform a password change in order to upgrade the stored
 hashes to the stronger algorithm. -->
 </description>
+<ocil clause="either of these are not the case">
+To ensure the system is configured to store password hashes using the SHA-512 algorithm, two conditions must be met.
+First, ensure the following line appears in <tt>/etc/login.defs</tt>:
+<pre>ENCRYPT_METHOD SHA512</pre>
+Also, ensure the <tt>pam_unix.so</tt> module in the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt> includes 
+the argument <tt>sha512</tt>.
+</ocil>
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>

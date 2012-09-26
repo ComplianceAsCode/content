@@ -86,6 +86,12 @@ Display Manager's login screen, run the following command:
 To display a banner, this setting must be enabled and then
 banner text must also be set.
 </description>
+<ocil clause="it is not">
+To ensure a login warning banner is enabled, open the following file:
+<pre>/etc/gconf/schemas/gdm-simple-greeter.schemas</pre>
+Search for the <tt>banner_message_enable</tt> schema.
+If properly configured, the <tt>default</tt> value should be <tt>true</tt>.
+</ocil>
 <rationale>
 Although unlikely to dissuade a serious attacker, the warning message
 reinforces policy awareness during the logon process.
@@ -109,6 +115,12 @@ to begin and end the string with <tt>"</tt>. This command writes
 directly to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</tt>,
 and this file can later be edited directly if necessary.
 </description>
+<ocil clause="it does not">
+To ensure login warning banner text is properly set, open the following file:
+<pre>/etc/gconf/schemas/gdm-simple-greeter.schemas</pre>
+Search for the <tt>banner_message_text</tt> schema.
+If properly configured, the proper banner text will appear within this schema.
+</ocil>
 <rationale>
 Although unlikely to dissuade a serious attacker, the warning message
 reinforces policy awareness during the logon process.

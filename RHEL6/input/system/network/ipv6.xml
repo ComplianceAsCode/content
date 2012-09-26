@@ -39,9 +39,7 @@ and the deprecated <tt>/etc/modprobe.conf</tt>:
 <pre xml:space="preserve">$ grep -r ipv6 /etc/modprobe.conf /etc/modprobe.d</pre>
 </ocil>
 <rationale>
-Any networking stack, including IPv6, that does not need to be active should be
-disabled in order to reduce the system's vulnerability
-to exploitation of any implementation flaws.
+Any unnecessary network stacks - including IPv6 - should be disabled, to reduce the vulnerability to exploitation.
 </rationale>
 <ident cce="CCE-3562-6" />
 <oval id="kernel_module_ipv6_option_disabled" />
@@ -53,7 +51,7 @@ to exploitation of any implementation flaws.
 <description>To prevent configuration of IPv6 for all interfaces, add or correct the following lines in <tt>/etc/sysconfig/network</tt>:
 <pre>NETWORKING_IPV6=no
 IPV6INIT=no</pre>
-For each network interface IFACE , add or correct the following lines in <tt>/etc/sysconfig/network-scripts/</tt> ifcfg-IFACE as an additional prevention mechanism:
+For each network interface <i>IFACE</i> , add or correct the following lines in <tt>/etc/sysconfig/network-scripts/</tt> ifcfg-<i>IFACE</i> as an additional prevention mechanism:
 <pre>IPV6INIT=no</pre>
 </description>
 <ref nist="CM-6, CM-7" />
@@ -136,6 +134,9 @@ advertisements should be: <tt><sub idref="sysctl_net_ipv6_conf_default_accept_ra
 To ensure IPv6 redirects are disabled, run the following command:
 <pre># grep ipv6 /etc/sysctl.conf</pre>
 </ocil>
+<rationale>
+An illicit ICMP redirect message could result in a man-in-the-middle attack.
+</rationale>
 <ident cce="CCE-4313-3" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-6, CM-7" />
@@ -165,7 +166,7 @@ Automatically-generated IPv6 addresses are based on the underlying hardware (e.g
 
 <Rule id="network_ipv6_default_gateway">
 <title>Manually Assign IPv6 Router Address</title>
-<description>Edit the file <tt>/etc/sysconfig/network-scripts/ifcfg-IFACE</tt>, and add or correct the following line (substituting your gateway IP as appropriate):
+<description>Edit the file <tt>/etc/sysconfig/network-scripts/ifcfg-<i>IFACE</i></tt>, and add or correct the following line (substituting your gateway IP as appropriate):
 <pre>IPV6_DEFAULTGW=2001:0DB8::0001</pre>
 Router addresses should be manually set and not accepted via any autoconfiguration or router advertisement.</description>
 <!--<ident cce="CCE-3842-2" />-->
