@@ -51,6 +51,11 @@ Edit <tt>/etc/issue</tt>. Replace the default text with a message
 compliant with the local site policy or a legal disclaimer.
 <!--<sub idref="login_banner_text" />-->
 </description>
+<ocil clause="it does not display a message compliant with the environment">
+To ensure the system login banner is compliant with the needs of the system environment,
+ run the following command:
+<pre>$ cat /etc/issue</pre>
+</ocil>
 <rationale>
 Although unlikely to dissuade a serious attacker, the warning message
 reinforces policy awareness during the logon process.

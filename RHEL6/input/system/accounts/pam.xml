@@ -179,6 +179,10 @@ operator="equals" interactive="0">
 <description>The pam_cracklib module's <tt>retry=</tt> parameter controls how many times a program
 will re-prompt a user after an incorrect password entry, on a per-session basis.
 </description>
+<ocil clause="it is not the required value">
+To check the number of password retry attempts permitted, run the following command:
+<pre>$ grep retry /etc/pam.d/system-auth</pre>
+</ocil>
 <rationale>
 Setting the password retry prompts that are permitted on a per-session basis to a low value
 requires some software, such as SSH, to re-connect. This can slow down and
@@ -197,6 +201,10 @@ usage of digits in a password. When set to a negative number, any password will 
 contain that many digits. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each digit.
 </description>
+<ocil clause="it is not the required value">
+To check the minimum required number of digits, run the following command:
+<pre>$ grep dcredit /etc/pam.d/system-auth</pre>
+</ocil>
 <rationale>
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
@@ -213,6 +221,10 @@ usage of uppercase letters in a password. When set to a negative number, any pas
 contain that many uppercase characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each uppercase character.
 </description>
+<ocil clause="it is not the required value">
+To check the required number of uppercase characters, run the following command:
+<pre>$ grep ucredit /etc/pam.d/system-auth</pre>
+</ocil>
 <rationale>
 Requiring a minimum number of uppercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
@@ -229,6 +241,10 @@ usage of special (or ``other'') characters in a password. When set to a negative
 contain that many special characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each special character.
 </description>
+<ocil clause="it is not the required value">
+To check the required number of special characters, run the following command:
+<pre>$ grep ocredit /etc/pam.d/system-auth</pre>
+</ocil>
 <rationale>
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
@@ -245,6 +261,10 @@ usage of lowercase letters in a password. When set to a negative number, any pas
 contain that many lowercase characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each lowercase character.
 </description>
+<ocil clause="it is not the required value">
+To check the required number of lowercase characters, run the following command:
+<pre>$ grep lcredit /etc/pam.d/system-auth</pre>
+</ocil>
 <rationale>
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
@@ -259,6 +279,10 @@ more difficult by ensuring a larger search space.
 <description>The pam_cracklib module's <tt>difok=</tt> parameter controls requirements for
 usage of different characters during a password change.
 </description>
+<ocil clause="it is not the required value">
+To check the required number of minimum different characters, run the following command:
+<pre>$ grep difok /etc/pam.d/system-auth</pre>
+</ocil>
 <rationale>
 Requiring a minimum number of different characters during password changes ensures that
 newly changed passwords should not resemble previously compromised ones.
