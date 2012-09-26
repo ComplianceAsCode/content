@@ -135,7 +135,7 @@ add or correct the following line in
 <tt>/etc/sysconfig/iptables</tt>:
 <pre>:INPUT DROP [0:0]</pre>
 </description>
-<ocil>Inspect the file <tt>/etc/sysconfig/iptables</tt> to determine
+<ocil clause="the default policy for the INPUT chain isn't set to DROP">Inspect the file <tt>/etc/sysconfig/iptables</tt> to determine
 the default policy for the INPUT chain. It should be set to DROP.
 </ocil>
 <rationale>In <tt>iptables</tt> the default policy is applied only after all
