@@ -104,7 +104,7 @@ those which start prior to the audit daemon, add the argument
 <tt>audit=1</tt> to the kernel line in <tt>/etc/grub.conf</tt>, in the manner below:
 <pre>kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1</pre>
 </description>
-<ocil>
+<ocil clause="any processes aren't able to be monitored and logged">
 Inspect the kernel boot arguments (which follow the word <tt>kernel</tt>) in
 <tt>/etc/grub.conf</tt> to ensure that they include <tt>audit=1</tt>.
 </ocil>
@@ -235,7 +235,7 @@ line, substituting <i>NUMLOGS</i> with the correct value:
 <pre>num_logs = <i>NUMLOGS</i></pre>
 Set the value to 5 for general-purpose systems. 
 Note that values less than 2 result in no log rotation.</description>
-<ocil>
+<ocil clause="the overall system log file(s) retention hasn't been properly set up">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how many logs the system is configured to retain after rotation:
 <pre>num_logs = 5</pre>
@@ -257,7 +257,7 @@ the correct value for <i>STOREMB</i>:
 Set the value to <tt>6</tt> (MB) or higher for general-purpose systems.
 Larger values, of course,
 support retention of even more audit data.</description>
-<ocil>
+<ocil clause="the system audit data threshold hasn't been properly set up">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how much data the system will retain in each audit log file:
 <pre>max_log_file = 6</pre>
@@ -287,7 +287,7 @@ page. These include:
 Set the <tt><i>ACTION</i></tt> to <tt>rotate</tt> to ensure log rotation
 occurs.  This is the default.  The setting is case-insensitive.
 </description>
-<ocil>
+<ocil clause="the system hasn't been properly set up to rotate audit logs">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
 maximum size: <pre>max_log_file_action <tt>rotate</tt></pre>
@@ -335,7 +335,8 @@ These include:
 Set this to <tt>email</tt> (instead of the default,
 which is <tt>suspend</tt>) as it is more likely to get prompt attention.
 </description>
-<ocil>
+<ocil clause="the system isn't configured to send an email to the system administrator when
+disk space is starting to run low">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to email the administrator when
 disk space is starting to run low:
@@ -371,7 +372,8 @@ mode for corrective action.  For certain systems, the need for availability
 outweighs the need to log all actions, and a different setting should be
 determined.
 </description>
-<ocil>
+<ocil clause="the system isn't properly configured to swtich to single user
+mode for corrective action">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to switch to single user mode
 when disk space has run low:
@@ -394,7 +396,7 @@ in <tt>/etc/audit/auditd.conf</tt> to ensure that administrators are notified
 via email for those situations:
 <pre>action_mail_acct = root</pre>
 </description>
-<ocil>
+<ocil clause="auditd isn't configured to send emails per identified actions">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to send email to an
 account when it needs to notify an administrator:
@@ -470,7 +472,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil>
+<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
 <audit-syscall-check-macro syscall="adjtimex" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -498,7 +500,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil>
+<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
 <audit-syscall-check-macro syscall="settimeofday" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -524,7 +526,7 @@ See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil>
+<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -552,7 +554,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil>
+<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
 <audit-syscall-check-macro syscall="clock_settime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -573,7 +575,7 @@ The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport and
 should always be used.
 </description>
-<ocil>
+<ocil clause="the system hasn't been properly set up to audit time rules logging">
 To determine if the system is configured to audit attempts to
 alter time via the /etc/localtime file, run the following
 command:
@@ -602,7 +604,7 @@ to capture events that modify account changes:
 -w /etc/shadow -p wa -k audit_account_changes
 -w /etc/security/opasswd -p wa -k audit_account_changes</pre>
 </description>
-<ocil>
+<ocil clause="the system hasn't been properly set up to audit (and log) account changes">
 To determine if the system is configured to audit account changes,
 run the following command:
 <pre>auditctl -l | egrep '(/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow|/etc/security/opasswd)'</pre>
@@ -629,7 +631,7 @@ ARCH to either b32 or b64 as appropriate for your system:
 -w /etc/hosts -p wa -k audit_network_modifications
 -w /etc/sysconfig/network -p wa -k audit_network_modifications</pre>
 </description>
-<ocil>
+<ocil clause="the system isn't congfigured to audit changes of the network configuration">
 To determine if the system is configured to audit changes to its network configuration,
 run the following command:
 <pre>auditctl -l | egrep '(/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow|/etc/security/opasswd)'</pre>
@@ -651,7 +653,7 @@ Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
 </description>
-<ocil>
+<ocil clause="the system isn't properly set up to notify an admin when attemps to change the MAC tables occur">
 To determine if the system is configured to audit changes to its SELinux
 configuration files, run the following command:
 <pre># auditctl -l | grep "dir=selinux"</pre>
@@ -716,7 +718,7 @@ If the system is 64 bit then also add the following:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse amoung both authorized and
 unauthorized users.</rationale>
-<ocil>
+<ocil clause="the system hasn't been properly set up to audit permission changes">
 <audit-syscall-check-macro syscall="fchmod" />
 </ocil>
 <warning category="general">Note that these rules can be configured in a 
