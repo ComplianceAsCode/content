@@ -112,6 +112,12 @@ started in single-user mode, add or correct the following line in the
 file <tt>/etc/sysconfig/init</tt>:
 <pre>SINGLE=/sbin/sulogin</pre>
 </description>
+<ocil clause="the output is different">
+To ensure authentication is required for single-user mode, run the following command:
+<pre>$ grep SINGLE /etc/sysconfig/init</pre>
+The output should be:
+<pre>SINGLE=/sbin/sulogin</pre>
+</ocil>
 <rationale>
 This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
@@ -134,6 +140,12 @@ The <tt>PROMPT</tt> option allows the console user to perform an
 interactive system startup, in which it is possible to select the
 set of services which are started on boot.
 </description>
+<ocil clause="it does not">
+To check whether interactive boot is disabled, run the following command:
+<pre>$ grep PROMPT /etc/sysconfig/init</pre>
+The output should show:
+<pre>PROMPT=yes</pre>
+</ocil>
 <rationale>
 Using interactive boot,
 the console user could disable auditing, firewalls, or other
@@ -206,6 +218,12 @@ desktop lockout should be 15 minutes.
   --type int \
   --set /apps/gnome-screensaver/idle_delay 15</pre>
 </description>
+<ocil clause="it is not">
+To check the current idle time-out value, open the following
+file:<pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the
+<tt>idle_delay</tt> schema.  If properly configured, the value
+should be <tt>15</tt>. 
+</ocil>
 <rationale>
 Setting the idle delay controls when the
 screensaver will start, and can be combined with
@@ -225,6 +243,8 @@ enabled
   --type bool \
   --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
 </description>
+<ocil>To check the screensaver mandatory use status, open the following file: <pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the <tt>idle_activation_enabled</tt> schema.  If properly configured, the <tt>default</tt> value should be <tt>TRUE</tt>.  If it is not, this is a finding.
+</ocil>
 <rationale>
 Enabling idle activation of the screen saver ensures that the
 screensaver will be activated after the idle delay.
@@ -243,6 +263,8 @@ enabled
   --type bool \
   --set /apps/gnome-screensaver/lock_enabled true</pre>
 </description>
+<ocil>To check the status of the idle screen lock activation, open the following file: <pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the <tt>lock_enabled</tt> schema.  If properly configured, the <tt>default</tt> value should be <tt>TRUE</tt>.  If it is not, this is a finding.
+</ocil>
 <rationale>
 Enabling the activation of the screen lock after an idle period
 ensures that password entry will be required in order to
@@ -263,6 +285,12 @@ The screen saver should be blank
   --type string \
   --set /apps/gnome-screensaver/mode blank-only</pre>
 </description>
+<ocil clause="it is not">
+To ensure the screensaver is configured to be blank, open the following
+file: <pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the
+<tt>mode</tt> schema.  If properly configured, the <tt>default</tt> value
+should be <tt>blank-only</tt>. 
+</ocil>
 <rationale>
 Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
