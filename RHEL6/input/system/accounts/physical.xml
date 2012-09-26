@@ -82,6 +82,7 @@ parameters.
 enabled to protect boot-time settings.
 To do so, select a password and then generate a hash from it by running:
 <pre># grub-crypt --sha-512</pre>
+You will then be prompted to enter a password.
 Insert the following line into <tt>/etc/grub.conf</tt> immediately
 after the header comments. (Use the output from <tt>grub-crypt</tt> as the
 value of <b>password-hash</b>):
@@ -243,7 +244,10 @@ enabled
   --type bool \
   --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
 </description>
-<ocil>To check the screensaver mandatory use status, open the following file: <pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the <tt>idle_activation_enabled</tt> schema.  If properly configured, the <tt>default</tt> value should be <tt>TRUE</tt>.  If it is not, this is a finding.
+<ocil>To check the screensaver mandatory use status, open the following file:
+<pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> 
+Search for the <tt>idle_activation_enabled</tt> schema. 
+If properly configured, the <tt>default</tt> value should be <tt>TRUE</tt>.  If it is not, this is a finding.
 </ocil>
 <rationale>
 Enabling idle activation of the screen saver ensures that the
@@ -257,7 +261,7 @@ screensaver will be activated after the idle delay.
 <Rule id="enable_screensaver_password_lock">
 <title>Enable Screen Lock Activation After Idle Period</title>
 <description>Idle activation of the screen lock should be
-enabled
+enabled.
 <pre># gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
@@ -278,7 +282,7 @@ access the system, preventing access by passersby.
 <Rule id="set_blank_screensaver">
 <title>Implement Blank Screen Saver</title>
 <description>
-The screen saver should be blank
+The screen saver should be blank.
 <pre># gconftool-2
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
@@ -307,7 +311,7 @@ contents of the display from passersby.
 <title>Configure Console Screen Locking</title>
 <description>
 A console screen locking mechanism is provided in the
-<tt>vlock package</tt>, which is not installed by default.
+vlock package, which is not installed by default.
 </description>
 
 <Rule id="install_vlock_package">
@@ -321,6 +325,9 @@ to prevent passersby from abusing their login:
 The <tt>-a</tt> option can be used to prevent switching to other
 virtual consoles.
 </description>
+<ocil clause="there is a command not found error">
+To check whether vlock has been installed, simply invoke the <tt>vlock</tt> command.
+</ocil>
 <rationale>
 Installing vlock ensures that a console locking capability is available
 for users who may need to suspend console logins.
@@ -334,21 +341,21 @@ for users who may need to suspend console logins.
 <Group id="smart_card_login">
 <title>Using Smart Cards for System Login</title>
 <description>
-The use of Smart Cards, like Common Access Cards (CAC), for system login
+The use of smart cards, like Common Access Cards (CAC), for system login
 provides stronger, two-factor authentication than using a username/password.
-Smart Cards take advantage of Public Key Infrastructure (PKI) to store
+Smart cards take advantage of Public Key Infrastructure (PKI) to store
 encrypted digital certificates that can be used to authenticate the card
 owner.
 <br /><br />
-In Red Hat Enterprise Linux servers and workstations, Smart Card login
+In Red Hat Enterprise Linux servers and workstations, smart card login
 is not enabled by default and must be enabled in the system settings.
-Detailed procedures on how to configure a system to use Smart Card
+Detailed procedures on how to configure a system to use smart card
 authentication for login can be found in the Red Hat Documentation web site:
 <ul>
 <li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Smart_Cards/enabling-smart-card-login.html</li>
 </ul>
-It is recommended to use Smart Cards wherever feasible as part of a multifactor
-authentication system
+It is recommended to use smart cards wherever feasible as part of a multifactor
+authentication system.
 </description>
 <ref disa="765,766,767,768,771,772,884" />
 </Group>
