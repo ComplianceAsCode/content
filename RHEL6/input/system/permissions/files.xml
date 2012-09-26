@@ -186,7 +186,7 @@ Kernel modules, which can be added to the kernel during runtime, are
 stored in <tt>/lib/modules</tt>. All files in these directories should not be
 group-writable or world-writable.
 </description>
-<ocil>
+<ocil clause="there is output">
 To find shared libraries that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> -perm /022</pre>
@@ -211,7 +211,7 @@ Kernel modules, which can be added to the kernel during runtime, are also
 stored in <tt>/lib/modules</tt>.  All files in these directories should be
 owned by the <tt>root</tt> user.
 </description>
-<ocil>
+<ocil clause="there is output">
 To find shared libraries that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> \! -user root</pre>
@@ -235,7 +235,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 All files in these directories should not be group-writable or world-writable.
 </description>
-<ocil>
+<ocil clause="there is output">
 To find system executables that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> -perm /022</pre>
@@ -258,7 +258,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 All files in these directories should be owned by the <tt>root</tt> user.
 </description>
-<ocil>
+<ocil clause="there is output">
 To find system executables that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> \! -user root</pre>
@@ -289,7 +289,7 @@ To set the sticky bit on a world-writable directory <i>DIR</i>, run the
 following command:
 <pre># chmod +t <i>DIR</i></pre>
 </description>
-<ocil>
+<ocil clause="there is output">
 To find world-writable directories that lack the sticky bit, run the following command:
 <pre># find / -type d -perm -002 ! -perm -1000</pre>
 </ocil>
@@ -312,7 +312,7 @@ documentation for specific applications before making changes.
 Also, monitor for recurring world-writable files, as these may be
 symptoms of a misconfigured application or user
 account.</description>
-<ocil>
+<ocil clause="there is output">
 To find world-writable files, run the following command:
 <pre># find / -type f -perm -002</pre>
 </ocil>
@@ -328,7 +328,7 @@ unauthorized SGID files is determine if any were not installed as part of an
 RPM package, which is cryptographically verified. Investigate the origin
 of any unpackaged SGID files. 
 </description>
-<ocil>
+<ocil clause="there is output">
 To find world-writable files, run the following command:
 <pre># find / -type f -perm -002</pre>
 </ocil>
@@ -370,7 +370,7 @@ cause of their lack of ownership should be investigated.
 Following this, the files should be deleted or assigned to an
 appropriate user.
 </description>
-<ocil>
+<ocil clause="there is output">
 The following command will discover and print any
 files on local partitions which do not belong to a valid user.
 Run it once for each local partition <i>PART</i>:
@@ -397,7 +397,7 @@ cause of their lack of group-ownership should be investigated.
 Following this, the files should be deleted or assigned to an
 appropriate group.
 </description>
-<ocil>
+<ocil clause="there is output">
 The following command will discover and print any
 files on local partitions which do not belong to a valid group.
 Run it once for each local partition <i>PART</i>:
@@ -426,7 +426,7 @@ owned by a system account, this should be investigated.
 Following this, the files should be deleted or assigned to an
 appropriate group.
 </description>
-<ocil>
+<ocil clause="there is output">
 The following command will discover and print world-writable directories that
 are not owned by a system account, given the assumption that only system
 accounts have a uid lower than 500.  Run it once for each local partition <i>PART</i>:
