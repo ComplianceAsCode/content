@@ -59,6 +59,14 @@ substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>:
 This instructs the NTP software to contact that remote server to obtain time
 data.
 </description>
+<ocil clause="this is not the case">
+A remote NTP server should be configured for time synchronization.  To verify that 
+one is configured, open the following file:
+<pre>/etc/ntp.conf</pre>
+In the file, there should be a section similar to the following:
+<pre># --- OUR TIMESERVERS -----
+server <i>ntpserver</i></pre>
+</ocil>
 <rationale> Synchronizing with an NTP server makes it possible
 to collate system logs from multiple sources or correlate computer events with
 real time events. Using a trusted NTP server provided by your organization is
