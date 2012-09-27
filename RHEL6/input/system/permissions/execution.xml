@@ -73,6 +73,12 @@ value of 0 is recommended.</description>
 <tt>/etc/security/limits.conf</tt>:
 <pre>*     hard   core    0</pre>
 </description>
+<ocil clause="it is not">
+To verify that core dumps are disabled for all users, run the following command:
+<pre>$ grep core /etc/security/limits.conf</pre>
+The output should be:
+<pre>*     hard   core    0</pre>
+</ocil>
 <rationale>A core dump includes a memory image taken at the time the operating system
 terminates an application. The memory image could contain sensitive data and is generally useful
 only for developers trying to debug problems.</rationale>

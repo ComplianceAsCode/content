@@ -190,6 +190,12 @@ Requiring samba clients such as <tt>smbclient</tt> to use packet
 signing ensures that they can
 only communicate with servers that support packet signing.
 </description>
+<ocil clause="it is not">
+To verify that Samba clients running smbclient must use packet signing, run the following command:
+<pre># grep signing /etc/samba/smb.conf</pre>
+The output should show:
+<pre>client signing = mandatory</pre>
+</ocil>
 <rationale>
 Packet signing can prevent
 man-in-the-middle attacks which modify SMB packets in
@@ -211,6 +217,11 @@ See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
 client should only communicate with servers who can support SMB
 packet signing.
 </description>
+<ocil clause="it does not">
+To verify that Samba clients using mount.cifs must use packet signing, run the following command:
+<pre># grep sec /etc/fstab</pre>
+The output should show either <tt>krb5i</tt> or <tt>ntlmv2i</tt> in use.
+</ocil>
 <rationale>
 Packet signing can prevent man-in-the-middle
 attacks which modify SMB packets in transit.

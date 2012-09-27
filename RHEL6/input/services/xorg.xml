@@ -20,6 +20,12 @@ of the X server. To do so, ensure that the following line in <tt>/etc/inittab</t
 features a <tt>3</tt> as shown:
 <pre>id:3:initdefault:</pre>
 </description>
+<ocil clause="it does not">
+To verify that the default runlevel is 3, run the following command:
+<pre># grep initdefault /etc/inittab</pre>
+The output should show the following:
+<pre>id:3:initdefault:</pre>
+</ocil>
 <ident cce="4462-8" />
 <oval id="xwindows_runlevel_setting" />
 </Rule>
@@ -32,6 +38,10 @@ ensures that users or malicious software cannot start X.
 To do so, run the following command:
 <pre># yum groupremove "X Window System"</pre>
 </description>
+<ocil clause="there is output">
+To ensure the X Windows package group is removed, run the following command:
+<pre>$ rpm -qi xorg-x11-server-common</pre>
+</ocil>
 <ident cce="4422-2" />
 <oval id="package_xorg-x11-server-common_removed" />
 </Rule>

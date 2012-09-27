@@ -52,6 +52,9 @@ kernel module:
 This will prevent the <tt>modprobe</tt> program from loading the <tt>usb-storage</tt>
 module, but will not prevent an administrator (or another program) from using the
 <tt>insmod</tt> program to load the module manually.</description>
+<ocil>
+<module-disable-check-macro module="usb-storage" />
+</ocil>
 <rationale>USB storage devices such as thumb drives can be used to introduce unauthorized
 software and other vulnerabilities. Support for these devices should be disabled and
 the devices themselves should be tightly controlled.</rationale>

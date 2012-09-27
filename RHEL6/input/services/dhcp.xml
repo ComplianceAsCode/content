@@ -212,6 +212,16 @@ GATEWAY=192.168.1.1</pre>
 </li>
 </ul>
 </description>
+<ocil clause="it does not">
+To verify that DHCP is not being used, examine the following file for each interface:
+<pre># /etc/sysconfig/network-scripts/ifcfg-<i>IFACE</i></pre>
+Look for the following:
+<pre>BOOTPROTO=static</pre>
+and the following, substituting the appropriate values based on your site's addressing scheme:
+<pre>NETMASK=255.255.255.0
+IPADDR=192.168.1.2
+GATEWAY=192.168.1.1</pre>
+</ocil>
 <rationale>
 DHCP relies on trusting the local network. If the local network is not trusted,
 then it should not be used.  However, the automatic configuration provided by
