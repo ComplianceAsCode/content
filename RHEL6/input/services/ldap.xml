@@ -85,6 +85,13 @@ machines. It is needed only by the OpenLDAP server, not by the
 clients which use LDAP for authentication. If the system is not
 intended for use as an LDAP Server it should be removed.
 </description>
+<ocil clause="it does not">
+To verify the <tt>openldap-servers</tt> package is not installed, 
+run the following command:
+<pre>$ rpm -q openldap-servers</pre>
+The output should show:
+<pre>package openldap-servers is not installed</pre>
+</ocil>
 <ident cce="3501-4" />
 <oval id="package_openldap-servers_removed" />
 <ref nist="CM-6, CM-7" />

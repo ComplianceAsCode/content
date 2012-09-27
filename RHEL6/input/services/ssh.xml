@@ -341,6 +341,12 @@ may not support CTR mode. This may become an issue if, for example,
 these systems need to retrieve files from your SSH server using SFTP.
 TODO: Need to investigate current status of this. Earlier issues with
 CBC were supposed to be fixed.</description>
+<ocil clause="that is not the case">
+Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+ciphers are in use, run the following command:
+<pre>$ grep Ciphers /etc/ssh/sshd_config</pre>
+The output should contain only those ciphers which are FIPS-approved.
+</ocil>
 <rationale>
 Approved algorithms should impart some level of confidence in their
 implementation. These are also required for compliance.
