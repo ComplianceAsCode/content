@@ -220,10 +220,9 @@ desktop lockout should be 15 minutes.
   --set /apps/gnome-screensaver/idle_delay 15</pre>
 </description>
 <ocil clause="it is not">
-To check the current idle time-out value, open the following
-file:<pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the
-<tt>idle_delay</tt> schema.  If properly configured, the value
-should be <tt>15</tt>. 
+To check the current idle time-out value, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_delay</pre>
+If properly configured, the output should be <tt>15</tt>. 
 </ocil>
 <rationale>
 Setting the idle delay controls when the
@@ -244,10 +243,9 @@ enabled
   --type bool \
   --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
 </description>
-<ocil>To check the screensaver mandatory use status, open the following file:
-<pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> 
-Search for the <tt>idle_activation_enabled</tt> schema. 
-If properly configured, the <tt>default</tt> value should be <tt>TRUE</tt>.  If it is not, this is a finding.
+<ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_activation_enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
 </ocil>
 <rationale>
 Enabling idle activation of the screen saver ensures that the
@@ -267,7 +265,10 @@ enabled.
   --type bool \
   --set /apps/gnome-screensaver/lock_enabled true</pre>
 </description>
-<ocil>To check the status of the idle screen lock activation, open the following file: <pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the <tt>lock_enabled</tt> schema.  If properly configured, the <tt>default</tt> value should be <tt>TRUE</tt>.  If it is not, this is a finding.
+<ocil clause="it is not">
+To check the status of the idle screen lock activation, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/lock_enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
 </ocil>
 <rationale>
 Enabling the activation of the screen lock after an idle period
@@ -290,10 +291,9 @@ The screen saver should be blank.
   --set /apps/gnome-screensaver/mode blank-only</pre>
 </description>
 <ocil clause="it is not">
-To ensure the screensaver is configured to be blank, open the following
-file: <pre>/etc/gconf/schemas/gnome-screensaver.schemas</pre> Search for the
-<tt>mode</tt> schema.  If properly configured, the <tt>default</tt> value
-should be <tt>blank-only</tt>. 
+To ensure the screensaver is configured to be blank, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/mode</pre>
+If properly configured, the output should be <tt>blank-only</tt> 
 </ocil>
 <rationale>
 Setting the screensaver mode to blank-only conceals the
