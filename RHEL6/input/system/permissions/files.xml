@@ -186,11 +186,7 @@ Kernel modules, which can be added to the kernel during runtime, are
 stored in <tt>/lib/modules</tt>. All files in these directories should not be
 group-writable or world-writable.
 </description>
-<<<<<<< HEAD
 <ocil clause="any of the modules are group-writable">
-=======
-<ocil clause="there is output">
->>>>>>> 8194cb7849332df93b3f475d180cb3f8c484abae
 To find shared libraries that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> -perm /022</pre>
@@ -215,11 +211,7 @@ Kernel modules, which can be added to the kernel during runtime, are also
 stored in <tt>/lib/modules</tt>.  All files in these directories should be
 owned by the <tt>root</tt> user.
 </description>
-<<<<<<< HEAD
 <ocil clause="any of the shared modules aren't owned by root">
-=======
-<ocil clause="there is output">
->>>>>>> 8194cb7849332df93b3f475d180cb3f8c484abae
 To find shared libraries that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> \! -user root</pre>
@@ -243,11 +235,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 All files in these directories should not be group-writable or world-writable.
 </description>
-<<<<<<< HEAD
 <ocil clause="any system executables are found to be group, or world writable">
-=======
-<ocil clause="there is output">
->>>>>>> 8194cb7849332df93b3f475d180cb3f8c484abae
 To find system executables that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> -perm /022</pre>
@@ -270,11 +258,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 All files in these directories should be owned by the <tt>root</tt> user.
 </description>
-<<<<<<< HEAD
 <ocil clause="any system executables are found to not be owned by root">
-=======
-<ocil clause="there is output">
->>>>>>> 8194cb7849332df93b3f475d180cb3f8c484abae
 To find system executables that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> \! -user root</pre>
@@ -305,11 +289,7 @@ To set the sticky bit on a world-writable directory <i>DIR</i>, run the
 following command:
 <pre># chmod +t <i>DIR</i></pre>
 </description>
-<<<<<<< HEAD
 <ocil clause="any world-writable directories are missing the sticky bit">
-=======
-<ocil clause="there is output">
->>>>>>> 8194cb7849332df93b3f475d180cb3f8c484abae
 To find world-writable directories that lack the sticky bit, run the following command:
 <pre># find / -type d -perm -002 ! -perm -1000</pre>
 </ocil>
@@ -390,11 +370,7 @@ cause of their lack of ownership should be investigated.
 Following this, the files should be deleted or assigned to an
 appropriate user.
 </description>
-<<<<<<< HEAD
 <ocil clause="files exist that aren't owned by a valid user">
-=======
-<ocil clause="there is output">
->>>>>>> 8194cb7849332df93b3f475d180cb3f8c484abae
 The following command will discover and print any
 files on local partitions which do not belong to a valid user.
 Run it once for each local partition <i>PART</i>:
