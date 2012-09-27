@@ -205,6 +205,9 @@ To ensure that this behavior is disabled, add or correct the
 following line:
 <pre>IgnoreRhosts yes</pre>
 </description>
+<ocil>
+<sshd-check-macro option="IgnoreRhosts" value="yes" default="yes" />
+</ocil>
 <rationale>
 SSH trust relationships mean that a compromise on one host
 can allow an attacker to move trivially to other hosts.
@@ -226,6 +229,9 @@ To disable host-based authentication, add or correct the
 following line:
 <pre>HostbasedAuthentication no</pre>
 </description>
+<ocil>
+<sshd-check-macro option="HostbasedAuthentication" value="no" default="yes" />
+</ocil>
 <rationale>
 SSH trust relationships mean that a compromise on one host
 can allow an attacker to move trivially to other hosts.
@@ -242,6 +248,9 @@ system directly over a network.
 To disable root login via SSH, add or correct the following line:
 <pre>PermitRootLogin no</pre>
 </description>
+<ocil>
+<sshd-check-macro option="PermitRootLogin" value="no" default="no" />
+</ocil>
 <rationale>
 Permitting direct root login reduces auditable information about who ran
 privileged commands on the system
@@ -261,6 +270,9 @@ empty passwords, add or correct the following line:
 Any accounts with empty passwords should be disabled immediately, and PAM configuration
 should prevent users from being able to assign themselves empty passwords.
 </description>
+<ocil>
+<sshd-check-macro option="PermitEmptyPasswords" value="no" default="yes" />
+</ocil>
 <rationale>
 Configuring this setting for the SSH daemon provides additional assurance that
 remote login via SSH will require a password,
@@ -279,6 +291,9 @@ across the system, add or correct the following line in <tt>/etc/ssh/sshd_config
 Another section contains information on how to create an
 appropriate system-wide warning banner.
 </description>
+<ocil>
+<sshd-check-macro option="Banner" value="/etc/issue" default="no" />
+</ocil>
 <rationale>
 Although unlikely to dissuade a serious attacker, the warning message
 reinforces policy awareness during the logon process. Alternatively,
