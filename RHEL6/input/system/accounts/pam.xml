@@ -332,7 +332,7 @@ These include
 By default, all individual programs' configuration files in <tt>/etc/pam.d</tt>
 include <tt>system-auth</tt> or <tt>password-auth</tt>.
 -->
-<description>
+<!-- <description>
 To configure
 the system to lock out accounts after a number of incorrect login
 attempts using
@@ -355,7 +355,13 @@ auth     sufficient     pam_faillock.so authsucc audit deny=<sub idref="var_acco
 <ul><li>NOTE: The DoD requires accounts be locked out after 3 failed login attempts,
 accomplished by changing the value of the <tt>deny</tt> option to <i>3</i> in the example
 above.</li></ul>
+</description> -->
+<description>
+This requires further investigation.
 </description>
+<ocil>
+This requires further investigation.
+</ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.

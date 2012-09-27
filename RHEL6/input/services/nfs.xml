@@ -226,16 +226,8 @@ If properly configured, the output should look like:
 <description>The rpcsvcgssd service manages RPCSEC GSS contexts required to secure protocols that use RPC (most often Kerberos and NFS). The rpcsvcgssd service is the server-side of RPCSEC GSS. If the system does not require secure RPC then this service should be disabled.
 <service-disable-macro service="rpcsvcgssd" />
 </description>
-<ocil clause="it does not">
-It is prudent to ensure the <tt>rpcsvcgssd</tt> service is disabled in system boot, as well as 
-not currently running.  First, run the following to verify the service is stopped:
-<pre>$ service rpcsvcgssd status</pre>
-If the service is stopped or disabled, it will return the following:
-<pre>rpc.svcgssd is stopped</pre>
-To verify that the <tt>rpcsvcgssd</tt> service is disabled, run the following command:
-<pre>$ chkconfig --list rpcsvcgssd</pre>
-If properly configured, the output should look like:
-<pre>rpcsvcgssd            	0:off	1:off	2:off	3:off	4:off	5:off	6:off</pre>
+<ocil>
+<service-disable-check-macro service="rpcsvcgssd" />
 </ocil>
 <ident cce="4491-7" />
 <oval id="service_rpcsvcgssd_disabled" />

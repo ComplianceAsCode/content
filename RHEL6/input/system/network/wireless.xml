@@ -111,7 +111,10 @@ to prevent the loading of the Bluetooth module:
 <pre>install net-pf-31 /bin/true
 install bluetooth /bin/true</pre>
 </description>
-
+<ocil>
+<module-disable-check-macro module="bluetooth" />
+<module-disable-check-macro module="net-pf-31" />
+</ocil>
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
 activation.</rationale>

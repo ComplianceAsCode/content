@@ -144,6 +144,11 @@ files on the system have permissions that are different from what
 is expected by the RPM database:
 <pre># rpm -Va | grep '^.M'</pre>
 </description>
+<ocil clause="there is output">
+The following command will list which files on the system have permissions that are different from what
+is expected by the RPM database:
+<pre># rpm -Va | grep '^.M'</pre>
+</ocil>
 <rationale>
 Permissions on system binaries and configuration files that are too generous
 could allow an unauthorized user to gain privileges that they should not have.
