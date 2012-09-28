@@ -240,6 +240,9 @@ exclude-result-prefixes="xccdf xhtml">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     run the following command:
     <xhtml:pre># sysctl -w <xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
+
+    To persist this configuration, the following line must be added to <tt>/etc/sysctl.conf</tt>:
+    <xhtml:pre><xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="sysctl-check-macro">
