@@ -291,11 +291,12 @@ following command:
 </description>
 <ocil clause="any world-writable directories are missing the sticky bit">
 To find world-writable directories that lack the sticky bit, run the following command:
-<pre># find / -type d -perm -002 ! -perm -1000</pre>
+<pre># find / -type d -perm 002 ! -perm 1000</pre>
 </ocil>
 <ident cce="3399-3" />
 <oval id="dir_perms_world_writable_sticky_bits" />
 <ref nist="CM-6"/>
+<tested by="swells" on="20120929"/>
 </Rule>
 
 <Rule id="world_writeable_files">
