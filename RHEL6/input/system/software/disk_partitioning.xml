@@ -38,8 +38,9 @@ Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
 <ident cce="14161-4"/>
-<oval id="mount_tmp_own_partition" />
+<oval id="mount_tmp_own_partition"/>
 <ref nist="CM-6" />
+<tested by="MM" on="20120928"/>
 </Rule>
 
 <Rule id="partition_for_var">
@@ -59,6 +60,7 @@ world-writable directories, installed by other software packages.
 <ident cce="14777-7"/>
 <oval id="mount_var_own_partition" />
 <ref nist="CM-6" />
+<tested by="MM" on="20120928"/>
 </Rule>
 
 <Rule id="partition_for_var_log">
@@ -77,6 +79,7 @@ and other files in <tt>/var/</tt>.
 <ident cce="14011-1" />
 <oval id="mount_var_log_own_partition" />
 <ref nist="CM-6, AU-9" />
+<tested by="MM" on="20120928"/>
 </Rule>
 
 <Rule id="partition_for_var_log_audit">
@@ -98,6 +101,7 @@ of space.
 <ident cce="14171-3" />
 <oval id="mount_var_log_audit_own_partition" />
 <ref nist="CM-6, AU-9" disa="137"/>
+<tested by="MM" on="20120928"/>
 </Rule>
 
 <Rule id="partition_for_home">
@@ -118,6 +122,7 @@ users cannot trivially fill partitions used for log or audit data storage.
 <ident cce="14559-9" />
 <oval id="mount_home_own_partition" />
 <ref nist="CM-6"/>
+<tested by="MM" on="20120928"/>
 </Rule>
 
 <Group id="partition_encryption" >
