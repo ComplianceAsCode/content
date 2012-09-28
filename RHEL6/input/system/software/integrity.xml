@@ -85,6 +85,10 @@ To implement a daily execution of AIDE at 4:05am using cron, add the following l
 <pre>05 4 * * * root /usr/sbin/aide --check</pre>
 AIDE can be executed periodically through other means; this is merely one example.
 </description>
+<ocil clause="there is no output">
+To determine that periodic AIDE execution has been scheduled, run the following command:
+<pre># grep aide /etc/crontab</pre>
+</ocil>
 <rationale>
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE may reveal unexpected changes in installed files.

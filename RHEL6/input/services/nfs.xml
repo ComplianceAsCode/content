@@ -375,8 +375,9 @@ potentially allowing the client access to data for which it does not have author
 Remove any instances of the 
 <tt>insecure_locks</tt> option from the file <tt>/etc/exports</tt>.
 </description>
-<ocil>
-Check the file <tt>/etc/exports</tt> for any instances of the <tt>insecure_locks</tt>.
+<ocil clause="there is no output">
+To verify that insecure file lockin has been disabled, run the following command:
+<pre># grep insecure_locks /etc/exports</pre>
 </ocil>
 <rationale>Allowing insecure file locking could allow for sensitive data to be viewed or edited by
 an unauthorized user.

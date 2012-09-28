@@ -419,6 +419,12 @@ the password line which uses the <tt>pam_unix</tt> module in the file
 <pre>password sufficient pam_unix.so existing_options remember=<sub idref="password_history_retain_number" /></pre>
 Old (and thus no longer valid) passwords are stored in the
 file <tt>/etc/security/opasswd</tt>.  The DoD requirement is currently 24 passwords.</description>
+<ocil clause="it does not">
+To verify that the password reuse setting is compliant, run the following command:
+<pre>$ grep remember /etc/pam.d/system-auth</pre>
+The output should show the following at the end of the line:
+<pre>remember=24</pre>
+</ocil>
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
