@@ -55,6 +55,10 @@ or
 <pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
 Then review the LDAP server and ensure TLS has been configured.
 </description>
+<ocil clause="there is no output, or the lines are commented out">
+To ensure TLS is configured with trust certificates, run the following command:
+<pre># grep cert /etc/pam_ldap.conf</pre>
+</ocil>
 <rationale>The tls_cacertdir or tls_cacertfile directives are required when
 tls_cheekpeer is configured (which is the default for openldap versions 2.1 and
 up). These directives define the path to the trust certificates signed by the

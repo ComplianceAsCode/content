@@ -38,9 +38,11 @@ ensures that users or malicious software cannot start X.
 To do so, run the following command:
 <pre># yum groupremove "X Window System"</pre>
 </description>
-<ocil clause="there is output">
+<ocil clause="it is not">
 To ensure the X Windows package group is removed, run the following command:
 <pre>$ rpm -qi xorg-x11-server-common</pre>
+The output should be:
+<pre>package xorg-x11-server-common is not installed</pre>
 </ocil>
 <ident cce="4422-2" />
 <oval id="package_xorg-x11-server-common_removed" />
