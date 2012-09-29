@@ -369,7 +369,7 @@ Edit the files <tt>etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables<
 (if IPv6 is in use). In each file, locate the line:
 <pre>-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>
 and replace it with:
-<pre>-A RH-Firewall-1-INPUT -s netwk /mask -m state --state NEW -p tcp --dport 22 -j ACCEPT</pre>
+<pre>-A RH-Firewall-1-INPUT -s netwk/mask -m state --state NEW -p tcp --dport 22 -j ACCEPT</pre>
 </description>
 <rationale>
 Restricting SSH access to only trusted network segments reduces exposure of the SSH 
