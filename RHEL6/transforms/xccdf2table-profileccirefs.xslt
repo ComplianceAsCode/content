@@ -5,6 +5,8 @@
 
 <xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
 
+<xsl:param name="testinfo" select="''" />
+
 <xsl:include href="constants.xslt"/>
 
 	<xsl:template match="/">
@@ -119,7 +121,26 @@
 			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
 			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
 			<td> <xsl:apply-templates select="cdf:description"/> </td>
-			<td> <xsl:apply-templates select="cdf:check" /> </td>
+
+
+			<td>
+			<!-- print pretty visual indication of testing data -->
+			<xsl:if test="$testinfo and cdf:reference[@href='test_attestation']">
+				<!-- add green border on left if test attestation found -->
+				<xsl:attribute name="style">border-left:solid thick lime</xsl:attribute>
+			</xsl:if>
+
+			<!-- print the manual check text -->
+			<xsl:apply-templates select="cdf:check" /> 
+
+			<!-- print the test attestation info -->
+			<xsl:if test="$testinfo">
+				<xsl:for-each select="cdf:reference[@href='test_attestation']">
+					<br/><br/><i>Tested on <xsl:value-of select="dc:date"/> by <xsl:value-of select="dc:contributor"/>.</i>
+				</xsl:for-each>
+			</xsl:if>
+			</td>
+
 			<!-- need to resolve <sub idref=""> here  -->
 			<!-- <td> TODO: print refine-value from profile associated with rule  </td> -->
 			<td> 
