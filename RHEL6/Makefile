@@ -40,7 +40,6 @@ guide: shorthand-guide shorthand2xccdf
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
 table-profilenistrefs: shorthand-guide shorthand2xccdf
-#	xsltproc -o $(POLICYMAPPING_OUTPUT_DIR)/rhel6-table-nistrefs.html $(TRANS)/xccdf2table-nistrefs.xslt $(XCCDF_OUTPUT_DIR)/rhel6-xccdf.xml
 	xsltproc -stringparam profile "desktop" -o $(OUT)/rhel6-table-nistrefs-desktop.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
 	xsltproc -stringparam profile "server" -o $(OUT)/rhel6-table-nistrefs-server.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
 	xsltproc -stringparam profile "common" -o $(OUT)/rhel6-table-nistrefs-common.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
@@ -69,9 +68,15 @@ table-stigs: shorthand2xccdf
 	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/rhel5-table-stig-manual-withnotes.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 	xsltproc -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/rhel6-xccdf.xml 
 #	temporarily retain an output file showing the short titles as well, for convenience
-	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server-shorttitles.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
-	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf-alt-titles.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
-	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html $(TRANS)/xccdf2table-profileccirefs.xslt $(OUT)/rhel6-xccdf-stigformat.xml  
+	xsltproc -stringparam profile "stig-server" -stringparam testinfo "y" -o $(OUT)/rhel6-table-stig-server-shorttitles.html \
+		$(TRANS)/xccdf2table-profileccirefs.xslt \
+		$(OUT)/rhel6-xccdf-stigformat.xml  
+	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/rhel6-xccdf-stigformat.xml \
+		$(TRANS)/xccdf-alt-titles.xslt \
+		$(OUT)/rhel6-xccdf-stigformat.xml  
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html \
+		$(TRANS)/xccdf2table-profileccirefs.xslt \
+		$(OUT)/rhel6-xccdf-stigformat.xml  
 
 tables: table-idents table-refs table-profilenistrefs table-srgmap table-stigs
 
