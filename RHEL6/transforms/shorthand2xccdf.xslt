@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
-xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
+xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+xmlns:dc="http://purl.org/dc/elements/1.1/" 
+xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
 exclude-result-prefixes="xccdf xhtml">
 
 <xsl:include href="constants.xslt"/>
@@ -43,11 +45,12 @@ exclude-result-prefixes="xccdf xhtml">
       <xsl:apply-templates select="description"/>
       <xsl:apply-templates select="warning"/> 
       <xsl:apply-templates select="ref"/> 
+      <xsl:apply-templates select="tested"/> 
       <xsl:apply-templates select="rationale"/> 
       <xsl:apply-templates select="ident"/> 
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/> 
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ident|self::oval)]"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::tested|self::rationale|self::ident|self::oval)]"/>
     </xsl:copy>
   </xsl:template> 
 
@@ -216,6 +219,13 @@ exclude-result-prefixes="xccdf xhtml">
       </check>
    </xsl:template>
 
+   <xsl:template match="tested">
+      <reference>
+        <xsl:attribute name="href">test_attestation</xsl:attribute>
+            <dc:contributor><xsl:value-of select="@by" /></dc:contributor>
+            <dc:date><xsl:value-of select="@on" /></dc:date>
+      </reference>
+   </xsl:template>
 
   <xsl:template match="@*|node()">
     <xsl:copy>
