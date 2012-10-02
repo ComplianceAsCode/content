@@ -362,8 +362,8 @@ permissions. This will prevent slapd from starting correctly.
 your network which will synchronize to this server.
 Edit /etc/sysconfig/iptables. Add the following lines, ensuring that they appear before the final LOG and
 DROP lines for the RH-Firewall-1-INPUT chain:
-<pre>-A RH-Firewall-1-INPUT -s netwk /mask -m state --state NEW -p tcp --dport 389 -j ACCEPT
--A RH-Firewall-1-INPUT -s netwk /mask -m state --state NEW -p tcp --dport 636 -j ACCEPT</pre>
+<pre>-A RH-Firewall-1-INPUT -s netwk/mask -m state --state NEW -p tcp --dport 389 -j ACCEPT
+-A RH-Firewall-1-INPUT -s netwk/mask -m state --state NEW -p tcp --dport 636 -j ACCEPT</pre>
 The default Iptables configuration does not allow inbound access to any services. These modifications allow
 access to the LDAP primary (389) and encrypted-only (636) ports, while keeping all other ports on the server
 in their default protected state.
