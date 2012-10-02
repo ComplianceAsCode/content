@@ -17,7 +17,6 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-rhel6-xccdf.xml \
 		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-resolved-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
 		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file
@@ -103,6 +102,7 @@ content: shorthand-guide shorthand2xccdf guide checks
 
 # not ready until oscap resolve behavior resolved
 content-stig: shorthand-guide shorthand2xccdf guide checks
+	oscap xccdf resolve -o $(OUT)/unlinked-resolved-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/unlinked-resolved-rhel6-xccdf.xml 
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml disa-predraft
 	$(TRANS)/relabelids.py unlinked-stig-rhel6-xccdf.xml disa-predraft
