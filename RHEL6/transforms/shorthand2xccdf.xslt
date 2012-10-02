@@ -195,7 +195,7 @@ exclude-result-prefixes="xccdf xhtml dc">
           <!-- add clauses if specific macros are found within -->
             <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
             <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
-            <xsl:if test="partition-check-macro">no line is returned</xsl:if>
+            <xsl:if test="partition-check-macro">the directory in question does not reside on it's own partition or volume group</xsl:if>
             <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
             <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
             <xsl:if test="package-check-macro">the package is installed</xsl:if>
@@ -308,9 +308,10 @@ exclude-result-prefixes="xccdf xhtml dc">
   </xsl:template>
 
   <xsl:template match="partition-check-macro">
-    Run the following command to verify that <xhtml:code><xsl:value-of select="@part"/></xhtml:code> lives on its own partition:
+    After running the following command verify that <xhtml:code><xsl:value-of select="@part"/></xhtml:code> is in fact on its own partition, or logical volume:
   <xhtml:pre># df -h <xsl:value-of select="@part"/> </xhtml:pre>
-    It will return a line for <xhtml:code><xsl:value-of select="@part"/></xhtml:code> if it is on its own partition. 
+  To verify if <xhtml:code><xsl:value-of select="@part"/></xhtml:code> lives on its own partition, or volume group simply review the output of the above command.
+  Often times, people forget to assign important system filesystems to individual slices while building the core system.  This results in everything "living" under the root volume group -- which in many enterprise environments is not the preferred method.
   </xsl:template>
 
   <xsl:template match="service-disable-macro">
