@@ -4,7 +4,8 @@ TRANS = transforms
 REFS = references
 UTILS = utils
 DIST = dist
-ID = scap-security-guide
+
+ID = ssg
 
 all: shorthand-guide shorthand2xccdf tables guide checks content dist
 
@@ -13,26 +14,29 @@ shorthand-guide:
 	xmllint --format --output $(OUT)/rhel6-shorthand.xml $(OUT)/rhel6-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
-	xsltproc -o $(OUT)/rhel6-xccdf-noprofiles.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
-	xsltproc -stringparam profile "allprofiles" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addprofiles.xslt $(OUT)/rhel6-xccdf-noprofiles.xml
+	xsltproc -o $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
+	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-rhel6-xccdf.xml \
+		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml
+	oscap xccdf resolve -o $(OUT)/unlinked-resolved-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
+		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file
-	xsltproc -o $(OUT)/rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/rhel6-xccdf.xml
-	xmllint --format --output $(OUT)/rhel6-ocil.xml $(OUT)/rhel6-ocil.xml 
-	xsltproc -o $(OUT)/rhel6-xccdf-ocilrefs.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/rhel6-xccdf.xml
-#	xsltproc -stringparam fixes "../$(IN)/fixes/bash-ks.xml" -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/rhel6-xccdf.xml
-	xmllint --format --output $(OUT)/rhel6-xccdf.xml $(OUT)/rhel6-xccdf.xml
+	xsltproc -o $(OUT)/unlinked-rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	xmllint --format --output $(OUT)/unlinked-rhel6-ocil.xml $(OUT)/unlinked-rhel6-ocil.xml 
+	xsltproc -o $(OUT)/unlinked-ocilrefs-rhel6-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+#	xsltproc -stringparam fixes "../$(IN)/fixes/bash-ks.xml" -o $(OUT)/unlinked-rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	xmllint --format --output $(OUT)/unlinked-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
 
 checks:
 	xmlwf $(IN)/checks/*.xml
-	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/rhel6-oval.xml
-	xmllint --format --output $(OUT)/rhel6-oval.xml $(OUT)/rhel6-oval.xml
-
+	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/unlinked-rhel6-oval.xml
+	xmllint --format --output $(OUT)/unlinked-rhel6-oval.xml $(OUT)/unlinked-rhel6-oval.xml
 
 guide: shorthand-guide shorthand2xccdf
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
 #	specifying a nonexistent profile, "allrules," to make oscap print all Rules
-	xsltproc -o $(OUT)/rhel6-xccdf.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/rhel6-xccdf.xml
-	oscap xccdf generate guide --profile allrules $(OUT)/rhel6-xccdf.xml > $(OUT)/rhel6-guide.html
+	xsltproc -o $(OUT)/unlinked-rhel6-xccdf.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-rhel6-xccdf.xml > $(OUT)/rhel6-guide.html
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
@@ -40,68 +44,82 @@ guide: shorthand-guide shorthand2xccdf
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
 table-profilenistrefs: shorthand-guide shorthand2xccdf
-	xsltproc -stringparam profile "desktop" -o $(OUT)/rhel6-table-nistrefs-desktop.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
-	xsltproc -stringparam profile "server" -o $(OUT)/rhel6-table-nistrefs-server.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
-	xsltproc -stringparam profile "common" -o $(OUT)/rhel6-table-nistrefs-common.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
-	xsltproc -stringparam profile "ftp" -o $(OUT)/rhel6-table-nistrefs-ftp.html $(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/rhel6-xccdf.xml
+	xsltproc -stringparam profile "desktop" -o $(OUT)/table-rhel6-nistrefs-desktop.html \
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	xsltproc -stringparam profile "server" -o $(OUT)/table-rhel6-nistrefs-server.html \
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	xsltproc -stringparam profile "common" -o $(OUT)/table-rhel6-nistrefs-common.html \
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	xsltproc -stringparam profile "ftp" -o $(OUT)/table-rhel6-nistrefs-ftp.html \
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 
 table-refs: shorthand-guide shorthand2xccdf
-	xsltproc -stringparam ref "nist" -o $(OUT)/rhel6-table-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/rhel6-xccdf.xml
+	xsltproc -stringparam ref "nist" -o $(OUT)/table-rhel6-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 # break apart references by delimiter:
-	xsltproc -stringparam ref "nist" -stringparam delim "," -o $(OUT)/rhel6-table-nistrefs-delim.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/rhel6-xccdf.xml
+	xsltproc -stringparam ref "nist" -stringparam delim "," -o $(OUT)/table-rhel6-nistrefs-delim.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 # then sort them:
-	xsltproc --html -o $(OUT)/rhel6-table-nistrefs-delim-sorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/rhel6-table-nistrefs-delim.html
+	xsltproc --html -o $(OUT)/table-rhel6-nistrefs-delim-sorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/table-rhel6-nistrefs-delim.html
 
 table-idents: shorthand-guide shorthand2xccdf
-	xsltproc -o $(OUT)/rhel6-table-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/rhel6-xccdf.xml
-	xsltproc -stringparam ref "../$(REFS)/cce-rhel5.xml" -o $(OUT)/rhel6-table-cces-rhel5.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/rhel6-xccdf.xml
-
+	xsltproc -o $(OUT)/table-rhel6-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	xsltproc -stringparam ref "../$(REFS)/cce-rhel5.xml" -o $(OUT)/table-rhel6-cces-rhel5.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 
 table-srgmap: shorthand-guide shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
-	xsltproc -stringparam map-to-items "../$(OUT)/rhel6-xccdf.xml" -o $(OUT)/rhel6-table-srgmap.html $(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-rhel6-xccdf.xml" -o $(OUT)/table-rhel6-srgmap.html \
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 
 table-stigs: shorthand2xccdf
-	xsltproc -o $(OUT)/rhel5-table-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
-	xsltproc -o $(OUT)/rhel5-table-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
-	xsltproc --html -o $(OUT)/rhel5-table-stig-manual-ccisorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/rhel5-table-stig-manual.html 
-	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/rhel5-table-stig-manual-withnotes.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
-	xsltproc -o $(OUT)/rhel6-xccdf-stigformat.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/rhel6-xccdf.xml 
-#	temporarily retain an output file showing the short titles as well, for convenience
-	xsltproc -stringparam profile "stig-server" -stringparam testinfo "y" -o $(OUT)/rhel6-table-stig-server-shorttitles.html \
+	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
+	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
+	xsltproc --html -o $(OUT)/table-rhel5-stig-manual-ccisorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/table-rhel5-stig-manual.html 
+	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
+		$(TRANS)/xccdf2table-stig.xslt \
+		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+#	temporarily retain an output file showing the short titles as well
+	xsltproc -stringparam profile "stig-server" -stringparam testinfo "y" -o $(OUT)/table-rhel6-stig-server-shorttitles.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
-		$(OUT)/rhel6-xccdf-stigformat.xml  
-	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/rhel6-xccdf-stigformat.xml \
+		$(OUT)/unlinked-rhel6-xccdf.xml  
+	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
 		$(TRANS)/xccdf-alt-titles.xslt \
-		$(OUT)/rhel6-xccdf-stigformat.xml  
-	xsltproc -stringparam profile "stig-server" -o $(OUT)/rhel6-table-stig-server.html \
+		$(OUT)/unlinked-rhel6-xccdf.xml
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/table-rhel6-stig-server.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
-		$(OUT)/rhel6-xccdf-stigformat.xml  
+		$(OUT)/unlinked-rhel6-xccdf.xml  
 
-tables: table-idents table-refs table-profilenistrefs table-srgmap table-stigs
+tables: table-refs table-profilenistrefs table-srgmap table-stigs
 
 alt-titles: shorthand2xccdf
-	$(UTILS)/sync-alt-titles.py -p stig-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/rhel6-xccdf.xml
+	$(UTILS)/sync-alt-titles.py -p stig-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/unlinked-rhel6-xccdf.xml
 	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml 
 
 content: shorthand-guide shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
 #	its second argument controls the IDs, as well as the output filenames.
-#	thus, with ID set to scap-security-guide, this creates rhel6-xccdf-scap-security-guide.xml and rhel6-oval-scap-security-guide.xml.
-	$(TRANS)/cpe_generate.py $(OUT)/rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml $(ID)
-	$(TRANS)/relabelids.py rhel6-xccdf.xml $(ID)
-	$(TRANS)/relabelids.py rhel6-xccdf-ocilrefs.xml $(ID)
+#	thus, with ID set to ssg, this creates ssg-rhel6-xccdf.xml and ssg-rhel6-oval.xml.
+	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml $(ID)
+	$(TRANS)/relabelids.py unlinked-rhel6-xccdf.xml $(ID)
+	$(TRANS)/relabelids.py unlinked-ocilrefs-rhel6-xccdf.xml $(ID)
+
+# not ready until oscap resolve behavior resolved
+content-stig: shorthand-guide shorthand2xccdf guide checks
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/unlinked-resolved-rhel6-xccdf.xml 
+	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml disa-predraft
+	$(TRANS)/relabelids.py unlinked-stig-rhel6-xccdf.xml disa-predraft
+	xmllint --format --output $(OUT)/disa-predraft-stig-rhel6-xccdf.xml $(OUT)/disa-predraft-stig-rhel6-xccdf.xml
+
+# content-usgcb: coming soon
 
 validate:
-	oscap xccdf validate-xml $(OUT)/rhel6-xccdf-$(ID).xml
-	oscap oval validate-xml $(OUT)/rhel6-oval-$(ID).xml
-	oscap oval validate-xml $(OUT)/rhel6-cpe-oval-$(ID).xml
+	oscap xccdf validate-xml $(OUT)/$(ID)-rhel6-xccdf.xml
+	oscap oval validate-xml $(OUT)/$(ID)-rhel6-oval.xml
+	oscap oval validate-xml $(OUT)/$(ID)-rhel6-cpe-oval.xml
 
 eval-test:
-	oscap xccdf eval --profile test $(OUT)/rhel6-xccdf-$(ID).xml
+	oscap xccdf eval --profile test $(OUT)/$(ID)-rhel6-xccdf.xml
 
 eval-ftp:
-	oscap xccdf eval --profile ftp $(OUT)/rhel6-xccdf-$(ID).xml
+	oscap xccdf eval --profile ftp $(OUT)/$(ID)-rhel6-xccdf.xml
 
 eval-common:
 	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/rhel6-xccdf-$(ID).xml
@@ -110,11 +128,11 @@ eval-common:
 dist: tables guide content
 	mkdir -p $(DIST)/guide $(DIST)/content $(DIST)/policytables
 	cp $(OUT)/rhel6-guide.html $(DIST)/guide
-	cp $(OUT)/rhel6-xccdf-$(ID).xml $(DIST)/content
-	cp $(OUT)/rhel6-oval-$(ID).xml $(DIST)/content
-	cp $(OUT)/rhel6-cpe-dictionary-$(ID).xml $(DIST)/content
-	cp $(OUT)/rhel6-cpe-oval-$(ID).xml $(DIST)/content
-	cp $(OUT)/rhel6-table-* $(DIST)/policytables
+	cp $(OUT)/$(ID)-rhel6-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-rhel6-oval.xml $(DIST)/content
+	cp $(OUT)/$(ID)-rhel6-cpe-dictionary.xml $(DIST)/content
+	cp $(OUT)/$(ID)-rhel6-cpe-oval.xml $(DIST)/content
+	cp $(OUT)/table-rhel6-* $(DIST)/policytables
 
 #install:
 #	cp -r rhel6/src/dist/* /usr/share/scap-security-guide/rhel6
