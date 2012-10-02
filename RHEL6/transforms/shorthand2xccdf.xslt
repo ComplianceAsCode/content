@@ -4,12 +4,11 @@ xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
 xmlns:xhtml="http://www.w3.org/1999/xhtml" 
 xmlns:dc="http://purl.org/dc/elements/1.1/" 
 xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
-exclude-result-prefixes="xccdf xhtml">
+exclude-result-prefixes="xccdf xhtml dc">
 
 <xsl:include href="constants.xslt"/>
 
-<xsl:variable name="ovalpath">oval:org.scap-security-guide.rhel:def:</xsl:variable>
-<xsl:variable name="ovalfile">rhel6-oval.xml</xsl:variable>
+<xsl:variable name="ovalfile">unlinked-rhel6-oval.xml</xsl:variable>
 
 <xsl:variable name="defaultseverity" select="'low'" />
 
@@ -239,19 +238,19 @@ exclude-result-prefixes="xccdf xhtml">
   <xsl:template match="sysctl-desc-macro">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     run the following command:
-    <xhtml:pre># sysctl -w <xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve"># sysctl -w <xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
 
-    To persist this configuration, the following line must be added to <tt>/etc/sysctl.conf</tt>:
-    <xhtml:pre><xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
+    To persist this configuration, the following line must be added to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
+    <xhtml:pre xml:space="preserve"><xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="sysctl-check-macro">
     The runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
     by running the following command:
     <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
-    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.<br />
+    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.<xhtml:br />
     To verify persistent configuration of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter, 
-    verify that the following line is present in <tt>/etc/sysctl.conf</tt>:
+    verify that the following line is present in <xhtml:code>/etc/sysctl.conf</xhtml:code>:
     <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    
   </xsl:template>
 
