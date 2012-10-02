@@ -240,15 +240,19 @@ exclude-result-prefixes="xccdf xhtml">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     run the following command:
     <xhtml:pre># sysctl -w <xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
+
+    To persist this configuration, the following line must be added to <tt>/etc/sysctl.conf</tt>:
+    <xhtml:pre><xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="sysctl-check-macro">
-    The status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
+    The runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
     by running the following command:
     <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
-    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
-    If this value is not the default value, investigate how it could have been adjusted at runtime, and verify
-    that it is not set improperly in <xhtml:code>/etc/sysctl.conf</xhtml:code>.
+    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.<br />
+    To verify persistent configuration of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter, 
+    verify that the following line is present in <tt>/etc/sysctl.conf</tt>:
+    <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    
   </xsl:template>
 
   <xsl:template match="fileperms-desc-macro">
