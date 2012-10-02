@@ -19,7 +19,7 @@
        to create a reference name -->
   <xsl:template match="xccdf:check-content">
 	<xsl:element name="check-content-ref" namespace="http://checklists.nist.gov/xccdf/1.1">
-		<xsl:attribute name="href">rhel6-ocil.xml</xsl:attribute>
+		<xsl:attribute name="href">unlinked-rhel6-ocil.xml</xsl:attribute>
 		<xsl:attribute name="name"><xsl:value-of select="../../@id"/>_ocil</xsl:attribute>
 	</xsl:element>
   </xsl:template>
