@@ -4,10 +4,11 @@ import sys, os
 import idtranslate
 import lxml.etree as ET
 
-# This script requires two arguments: an XCCDF file and an ID name scheme.
+# This script requires two arguments: an "unlinked" XCCDF file and an ID name scheme.
 # This script is designed to convert and synchronize check IDs referenced from
 # the XCCDF document for the supported checksystems, which are currently OVAL
 # and OCIL.  The IDs are to be converted from strings to meaningless numbers.
+
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 oval_cs = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
@@ -64,14 +65,14 @@ def main():
 	if ovalfile:
 		ovaltree = parse_xml_file(ovalfile) 
 		ovaltree = translator.translate(ovaltree, store_defname=True)
-		newovalfile = ovalfile.replace(".xml", "-" + idname + ".xml")
+		newovalfile = ovalfile.replace("unlinked", idname)
 		ET.ElementTree(ovaltree).write(newovalfile)
 
 	# rename all IDs in the ocil file
 	if ocilfile:
 		ociltree = parse_xml_file(ocilfile) 
 		ociltree = translator.translate(ociltree)
-		newocilfile = ocilfile.replace(".xml", "-" + idname + ".xml")
+		newocilfile = ocilfile.replace("unlinked", idname)
 		ET.ElementTree(ociltree).write(newocilfile)
 
 	# rename all IDs and file refs in the xccdf file
@@ -98,7 +99,7 @@ def main():
 				newexportname = translator.assign_id("{"+ oval_ns + "}variable", checkexport.get("export-name"))
 				checkexport.set("export-name", newexportname) 
 
-	newxccdffile = xccdffile.replace(".xml", "-" + idname + ".xml")
+	newxccdffile = xccdffile.replace("unlinked", idname)
 	#ET.dump(xccdftree)
 	ET.ElementTree(xccdftree).write(newxccdffile)
 	sys.exit(0)
