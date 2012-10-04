@@ -105,7 +105,7 @@ reason.</warning>
 operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
-<value selector="">12</value>
+<value selector="">14</value>
 <value selector="6">6</value>
 <!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
 <value selector="8">8</value>
@@ -158,7 +158,7 @@ operator="equals" interactive="0">
 password</description>
 <warning category="general">Keep this high for short
 passwords</warning>
-<value selector="">3</value>
+<value selector="">4</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
 <value selector="4">4</value>
@@ -168,7 +168,7 @@ passwords</warning>
 operator="equals" interactive="0">
 <title>fail_deny</title>
 <description>Number of failed login attempts before account lockout</description>
-<value selector="">5</value>
+<value selector="">3</value>
 <value selector="3">3</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
@@ -404,7 +404,7 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 </rationale>
 <ident cce="14063-2" />
 <oval id="accounts_password_hashing_algorithm" />
-<ref nist="IA-5" />
+<ref nist="IA-5" disa="803"/>
 </Rule>
 
 <Rule id="limiting_password_reuse">
