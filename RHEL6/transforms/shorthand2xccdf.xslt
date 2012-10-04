@@ -195,7 +195,7 @@ exclude-result-prefixes="xccdf xhtml dc">
           <!-- add clauses if specific macros are found within -->
             <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
             <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
-            <xsl:if test="partition-check-macro">the directory in question does not reside on it's own partition or volume group</xsl:if>
+            <xsl:if test="partition-check-macro">the directory in question does not reside on its own partition or volume group</xsl:if>
             <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
             <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
             <xsl:if test="package-check-macro">the package is installed</xsl:if>
