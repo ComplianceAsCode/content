@@ -32,7 +32,7 @@ system logging services.
 </rationale>
 <ident cce="17742-8" />
 <oval id="package_rsyslog_installed" />
-<ref nist="AU-2, AU-9, CM-6" />
+<ref nist="AU-2, AU-9, CM-6" disa="1311,1312"/>
 </Rule>
 
 
@@ -135,7 +135,7 @@ configuration, user authentication, and other such information. Log files should
 protected from unauthorized access.</rationale>
 <ident cce="17857-4" />
 <oval id="rsyslog_files_ownership" />
-<ref nist="AC-3, CM-6" />
+<ref nist="AC-3, CM-6" disa="1314"/>
 </Rule>
 
 <Rule id="groupowner_rsyslog_files">
@@ -160,7 +160,7 @@ configuration, user authentication, and other such information. Log files should
 protected from unauthorized access.</rationale>
 <ident cce="18240-2" />
 <oval id="rsyslog_files_groupownership" />
-<ref nist="AC-3, CM-6" />
+<ref nist="AC-3, CM-6" disa="1314"/>
 </Rule>
 
 
@@ -257,7 +257,7 @@ place to view the status of multiple hosts within the enterprise.
 </rationale>
 <ident cce="17248-6" />
 <oval id="rsyslog_remote_loghost" />
-<ref nist="AU-2, AU-9" disa="1348, 136, 1352" />
+<ref nist="AU-2, AU-9" disa="1348, 136" />
 </Rule>
 </Group>
 
@@ -358,7 +358,8 @@ Note that <tt>logrotate</tt> is run nightly by the cron job
 rotated more often than once a day, some other mechanism must be
 used.</description>
 
-<!-- <Rule id="ensure_logrotate_activated">
+<!-- TODO: this needs cleanup 
+<Rule id="ensure_logrotate_activated">
 <title>Ensure Logrotate Runs Periodically</title>
 <description>The <tt>logrotate</tt> service must be configured to run
 periodically in order to perform its log rotation function.</description>
@@ -366,8 +367,8 @@ periodically in order to perform its log rotation function.</description>
 that they fill up the /var/log partition. Valuable logging information could be lost
 if the /var/log partition becomes full.</rationale>
 <ident cce="4182-2" />
-<ref nist="AU-2, AU-9, CM-6" />
-</Rule> -->
+<ref nist="AU-2, AU-9, CM-6" disa="366"/>
+</Rule>
 
 <Rule id="ensure_logrotate_rotates_all_files">
 <title>Ensure Logrotate Runs Periodically</title>
@@ -377,7 +378,6 @@ enabled.</description>
 that they fill up the /var/log partition. Valuable logging information could be lost
 if the /var/log partition becomes full.</rationale>
 <ident cce="4182-2" />
-<!-- TODO: this needs cleanup -->
 <oval id="logrotate_rotate_all_files" />
 <ref nist="AU-2, AU-9, CM-6" />
 </Rule>
@@ -410,7 +410,7 @@ information is almost always necessary
 <oval id="logwatch_configured_splithosts" />
 </Rule>
 
-<!--Ensure that <tt>logwatch.pl</tt> is run nightly from <tt>cron</tt>. (This is the default): 
+Ensure that <tt>logwatch.pl</tt> is run nightly from <tt>cron</tt>. (This is the default): 
 <pre># cd /etc/cron.daily 
 # ln -s /usr/share/logwatch/scripts/logwatch.pl 0logwatch 
 </pre>

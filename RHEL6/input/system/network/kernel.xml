@@ -24,7 +24,7 @@ to update their routing information.  The ability to send ICMP redirects is
 only appropriate for routers.</rationale>
 <ident cce="4151-7" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
-<ref nist="AC-4, SC-5, SC-7" />
+<ref nist="AC-4, SC-5, SC-7" disa="1551"/>
 </Rule>
 
 <Rule id="disable_sysctl_ipv4_all_send_redirects">
@@ -40,7 +40,7 @@ to update their routing information.  The ability to send ICMP redirects is
 only appropriate for routers.</rationale>
 <ident cce="4155-8" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
-<ref nist="CM-6" />
+<ref nist="CM-6" disa="1551"/>
 </Rule>
 
 <Rule id="disable_sysctl_ipv4_ip_forward">
@@ -56,7 +56,7 @@ interface to another. The ability to forward packets between two networks is
 only appropriate for routers.</rationale>
 <ident cce="3561-8" />
 <oval id="sysctl_net_ipv4_ip_forward" />
-<ref nist="AC-3, CM-6, CM-7, SC-5" />
+<ref nist="AC-3, CM-6, CM-7, SC-5" disa="366"/>
 </Rule>
 </Group>
 
@@ -206,7 +206,7 @@ operator="equals" interactive="0">
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4236-6" />
 <oval id="sysctl_net_ipv4_conf_all_accept_source_route" value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
-<ref nist="CM-7" />
+<ref nist="CM-7" disa="1551"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_conf_all_accept_redirects">
@@ -221,7 +221,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4217-6" />
 <oval id="sysctl_net_ipv4_conf_all_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
-<ref nist="CM-7" />
+<ref nist="CM-7" disa="1503,1551"/>
 </Rule>
 
 
@@ -238,7 +238,7 @@ default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
 <ident cce="3472-8" />
 <oval id="sysctl_net_ipv4_conf_all_secure_redirects" value="sysctl_net_ipv4_conf_all_secure_redirects_value" />
-<ref nist="CM-7, AC-4" />
+<ref nist="CM-7, AC-4" disa="1503,1551"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_conf_all_log_martians">
@@ -255,7 +255,7 @@ sign of nefarious network activity. Logging these packets enables this activity
 to be detected.</rationale>
 <ident cce="4320-8" />
 <oval id="sysctl_net_ipv4_conf_all_log_martians" value="sysctl_net_ipv4_conf_all_log_martians_value" />
-<ref nist="CM-7" />
+<ref nist="CM-7" disa="126"/>
 </Rule>
 
 
@@ -271,7 +271,7 @@ to be detected.</rationale>
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4091-5" />
 <oval id="sysctl_net_ipv4_conf_all_accept_source_route" value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
-<ref nist="AC-4, SC-5, SC-7" />
+<ref nist="AC-4, SC-5, SC-7" disa="1551"/>
 </Rule>
 
 
@@ -287,7 +287,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4186-3" />
 <oval id="sysctl_net_ipv4_conf_default_accept_redirects" />
-<ref nist="AC-4, SC-5, SC-7" />
+<ref nist="AC-4, SC-5, SC-7" disa="1551"/>
 </Rule>
 
 
@@ -304,7 +304,7 @@ default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
 <ident cce="3339-9" />
 <oval id="sysctl_net_ipv4_conf_default_secure_redirects" value="sysctl_net_ipv4_conf_default_secure_redirects_value" />
-<ref nist="AC-4, SC-5, SC-7" />
+<ref nist="AC-4, SC-5, SC-7" disa="1551"/>
 </Rule>
 
 
@@ -321,7 +321,7 @@ addresses makes the system slightly more difficult to enumerate on the network.
 </rationale>
 <ident cce="3644-2" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
-<ref nist="AC-3, CM-6, CM-7, SC-5" />
+<ref nist="AC-3, CM-6, CM-7, SC-5" disa="1551"/>
 </Rule>
 
 
@@ -375,7 +375,7 @@ complicated networks, but is helpful for end hosts and routers serving small
 networks.</rationale>
 <ident cce="4080-8" />
 <oval id="sysctl_net_ipv4_conf_all_rp_filter" value="sysctl_net_ipv4_conf_all_rp_filter_value" />
-<ref nist="AC-4, SC-5, SC-7" />
+<ref nist="AC-4, SC-5, SC-7" disa="1551"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_conf_default_rp_filter">

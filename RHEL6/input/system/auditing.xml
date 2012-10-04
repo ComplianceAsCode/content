@@ -648,8 +648,7 @@ audited.</rationale>
 
 
 <Rule id="audit_mac_changes">
-<title>Record Events that Modify the System's Mandatory Access
-Controls</title>
+<title>Record Events that Modify the System's Mandatory Access Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
 </description>
@@ -670,8 +669,7 @@ MAC policy should be audited.</rationale>
 </Rule>
 
 <Group id="audit_dac_actions">
-<title>Record Events that Modify the System's Discretionary
-Access Controls</title>
+<title>Record Events that Modify the System's Discretionary Access Controls</title>
 <description>At a minimum the audit system should collect file permission 
 changes for all users and root.  Note that the "-F arch=b32" lines should be 
 present even on a 64 bit system.  These commands identify system calls for 
@@ -1182,7 +1180,7 @@ trail should be created each time a filesystem is mounted to help identify and g
 loss.</rationale>
 <ident cce="14569-8" />
 <oval id="audit_rules_media_export" />
-<ref nist="AU-2" />
+<ref nist="AU-2" disa="126"/>
 </Rule>
 
 <Rule id="audit_file_deletions">
@@ -1223,7 +1221,7 @@ To verify that auditing is configured for system administrator actions, run the 
 of what was executed on the system as well as for accountability purposes.</rationale>
 <ident cce="14824-7" />
 <oval id="audit_rules_sysadmin_actions" />
-<ref nist="AU-2" />
+<ref nist="AU-2" disa="126"/>
 </Rule>
 
 <Rule id="audit_kernel_module_loading">
@@ -1245,7 +1243,7 @@ the kernel and potentially introduce malicious code into kernel space. It is imp
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident cce="14688-6" />
 <oval id="audit_rules_kernel_module_loading" />
-<ref nist="AU-2" />
+<ref nist="AU-2" disa="126"/>
 </Rule>
 
 <Rule id="audit_config_immutable">

@@ -39,7 +39,7 @@ which could weaken the system security posture.</rationale>
 critical for system security.</rationale>
 <ident cce="3988-3" />
 <oval id="file_groupowner_etc_shadow" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="perms_shadow_file">
@@ -75,7 +75,7 @@ on the system. Protection of this file is important for system security.</ration
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3883-6" />
 <oval id="file_groupowner_etc_group" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="perms_group_file">
@@ -86,7 +86,7 @@ on the system. Protection of this file is important for system security.</ration
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="3967-7" />
 <oval id="file_permissions_etc_group" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="userowner_gshadow_file">
@@ -97,7 +97,7 @@ on the system. Protection of this file is important for system security.</ration
 is critical for system security.</rationale>
 <ident cce="4210-1" />
 <oval id="file_owner_etc_gshadow" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="groupowner_gshadow_file">
@@ -108,7 +108,7 @@ is critical for system security.</rationale>
 is critical for system security.</rationale>
 <ident cce="4064-2" />
 <oval id="file_groupowner_etc_gshadow" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="perms_gshadow_file">
@@ -119,7 +119,7 @@ is critical for system security.</rationale>
 is critical for system security.</rationale>
 <ident cce="3932-1" />
 <oval id="file_permissions_etc_gshadow" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="userowner_passwd_file">
@@ -130,7 +130,7 @@ is critical for system security.</rationale>
 the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3958-6" />
 <oval id="file_owner_etc_passwd" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="groupowner_passwd_file">
@@ -141,7 +141,7 @@ the system. Protection of this file is critical for system security.</rationale>
 the system. Protection of this file is critical for system security.</rationale>
 <ident cce="3495-9" />
 <oval id="file_groupowner_etc_passwd" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="file_permissions_etc_passwd">
@@ -193,6 +193,7 @@ run the following command for each directory <i>DIR</i> which contains shared li
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Restrictive permissions are necessary to protect the integrity of the system.
 </rationale>
+<ref disa="1499"/>
 </Rule>
 
 <Rule id="file_ownership_library_dirs">
@@ -218,6 +219,7 @@ run the following command for each directory <i>DIR</i> which contains shared li
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Proper ownership is necessary to protect the integrity of the system.
 </rationale>
+<ref disa="1499"/>
 </Rule>
 
 
@@ -242,6 +244,7 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
 </rationale>
+<ref disa="1499"/>
 </Rule>
 
 <Rule id="file_ownership_binary_dirs">
@@ -265,6 +268,7 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
 </rationale>
+<ref disa="1499"/>
 </Rule>
 
 
@@ -432,7 +436,7 @@ accounts have a uid lower than 500.  Run it once for each local partition <i>PAR
 <pre># find <i>PART</i> -xdev -type d -perm 0002 -uid +500 -print</pre>
 </ocil>
 <rationale>
-Allowing a user account to own a world-writeable directory is
+Allowing a user account to own a world-writable directory is
 undesirable because it allows the owner of that directory to remove
 or replace any files that may be placed in the directory by other
 users.

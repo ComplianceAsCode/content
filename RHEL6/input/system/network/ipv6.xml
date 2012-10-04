@@ -39,7 +39,7 @@ Any unnecessary network stacks - including IPv6 - should be disabled, to reduce 
 </rationale>
 <ident cce="CCE-3562-6" />
 <oval id="kernel_module_ipv6_option_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1551"/>
 </Rule>
 
 <Rule id="network_ipv6_disable_interfaces">
@@ -135,7 +135,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
 <ident cce="CCE-4313-3" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6, CM-7" disa="1551"/>
 </Rule>
 
 </Group><!--<Group id="disabling_ipv6_autoconfig">-->

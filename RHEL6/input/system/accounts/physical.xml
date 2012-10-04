@@ -40,7 +40,7 @@ Only root should be able to modify important boot parameters.
 </rationale>
 <ident cce="4144-2" />
 <oval id="file_user_owner_grub_conf" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="group_owner_grub_conf">
@@ -57,7 +57,7 @@ file should not have any access privileges anyway.
 </rationale>
 <ident cce="4197-0" />
 <oval id="file_group_owner_grub_conf" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="permissions_grub_conf">
@@ -73,7 +73,7 @@ parameters.
 </rationale>
 <ident cce="3923-0" />
 <oval id="file_permissions_grub_conf" />
-<ref nist="AC-3, CM-6"/>
+<ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
 <Rule id="bootloader_password" severity="high">
@@ -160,7 +160,7 @@ services, weakening system security.
 </rationale>
 <ident cce="4245-7" />
 <oval id="interactive_boot_disable" />
-<ref nist="CM-7, IA-4, SC-2"/>
+<ref nist="CM-7, IA-4, SC-2" disa="213"/>
 </Rule>
 
 
@@ -255,7 +255,7 @@ If properly configured, the output should be <tt>true</tt>.
 </ocil>
 <rationale>
 Enabling idle activation of the screen saver ensures that the
-screensaver will be activated after the idle delay.
+screensaver will be activated after the idle delay.  Applications requiring continuous, real-time screen display (i.e., network management products) require the following and need to be documented with the IAO:  the login session does not have administrator rights; and, the display station (i.e., keyboard, monitor, etc.) is located in a controlled-access area.
 </rationale>
 <ident cce="14604-3" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
