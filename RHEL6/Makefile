@@ -84,7 +84,7 @@ table-stigs: shorthand2xccdf
 		$(OUT)/unlinked-rhel6-xccdf.xml
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/table-rhel6-stig-server.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
-		$(OUT)/unlinked-rhel6-xccdf.xml  
+		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
 
 tables: table-refs table-profilenistrefs table-srgmap table-stigs
 
