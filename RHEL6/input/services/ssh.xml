@@ -81,7 +81,7 @@ should not be used.
 </rationale>
 <ident cce="4325-7" />
 <oval id="sshd_protocol_2" />
-<ref disa="776,774,1135" />
+<ref disa="776,774,1135,1436" />
 </Rule>
 
 <Rule id="sshd_limit_user_access">
@@ -187,11 +187,12 @@ If properly configured, output should be:
 <pre>ClientAliveCountMax 0</pre>
 </ocil>
 <rationale>
-This ensures that a user login will be terminated as soon as the <tt>ClientAliveInternal</tt>
+This ensures that a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>
 is reached.
 </rationale>
 <ident cce="14061-6" />
 <oval id="sshd_clientalivecountmax" />
+<ref disa="879,1133"/>
 </Rule>
 
 
@@ -214,6 +215,7 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="4475-0" />
 <oval id="sshd_rsh_emulation_disabled" />
+<ref disa="765,766"/>
 </Rule>
 
 
@@ -238,6 +240,7 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="4370-3" />
 <oval id="sshd_hostbasedauthentication" />
+<ref disa="765,766"/>
 </Rule>
 
 
@@ -280,6 +283,7 @@ even in the event of misconfiguration elsewhere.
 </rationale>
 <ident cce="3660-8" />
 <oval id="sshd_permitemptypasswords_no" />
+<ref disa="765,766"/>
 </Rule>
 
 <Rule id="sshd_enable_warning_banner">
@@ -325,6 +329,7 @@ access restriction in some configurations.
 </rationale>
 <ident cce="4422-2" />
 <oval id="sshd_no_user_envset" />
+<ref disa="1414" />
 </Rule>
 
 <Rule id="sshd_use_approved_ciphers">
