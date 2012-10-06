@@ -12,8 +12,8 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildArch:	%{arch}
 
-BuildRequires:  /bin/rm, /bin/mkdir, /bin/cp
-Requires:       /bin/bash, /bin/date, /usr/bin/oscap
+BuildRequires:  coreutils, libxslt, expat, python, openscap-utils
+Requires:       filesystem
 
 %description
 The scap-security-guide project provides security configuration guidance in
@@ -32,9 +32,9 @@ cd RHEL6 && make dist
 %install
 rm -rf $RPM_BUILD_ROOT
 #make install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/%{name}/
+mkdir -p $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
 
-cp -r RHEL6/dist/* $RPM_BUILD_ROOT/usr/local/%{name}/
+cp -r RHEL6/dist/* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
 
 
 %clean
@@ -43,10 +43,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(0644,root,root,0755)
-%attr(0755,root,root) /usr/local/scap-security-guide/
+%attr(0755,root,root) /usr/share/xml/scap/ssg
 
 
 %changelog
+* Fri Oct 5  2012 Jeffrey Blank <blank@eclipse.ncsc.mil> 1.0-5
+- Adjusted installation directory to /usr/share/xml/scap.
+
+* Tue Aug 28  2012 Spencer Shimko <sshimko@tresys.com> 1.0-4
+- Fix BuildRequires and Requires.
+
 * Wed Jul 3 2012 Jeffrey Blank <blank@eclipse.ncsc.mil> 1.0-3
 - Modified install section, made description more concise.
 
