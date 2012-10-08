@@ -277,7 +277,7 @@ should be installed to their default location on the local filesystem.</rational
 
 <Group id="configure_exports_restrictively">
 <title>Configure the Exports File Restrictively</title>
-<description>Linux’s NFS implementation uses the file <tt>/etc/exports</tt> to control what filesystems
+<description>Linux's NFS implementation uses the file <tt>/etc/exports</tt> to control what filesystems
 and directories may be accessed via NFS. (See the <tt>exports(5)</tt> manpage for more information about the
 format of this file.)
 <br /><br />
@@ -350,7 +350,7 @@ access could be used to compromise the system.</rationale>
 
 <Rule id="restrict_nfs_clients_to_privileged_ports">
 <title>Restrict NFS Clients to Privileged Ports</title>
-<description>By default, Linux’s NFS implementation requires that all client requests be made
+<description>By default, Linux's NFS implementation requires that all client requests be made
 from ports less than 1024. If your organization has control over machines connected to its
 network, and if NFS requests are prohibited at the border firewall, this offers some protection
 against malicious requests from unprivileged users. Therefore, the default should not be changed.

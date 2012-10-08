@@ -33,7 +33,7 @@ remote access.
 
 <Rule id="ssh_server_iptables_exception">
 <title>Remove SSH Server <tt>iptables</tt> Firewall exception (Unusual)</title>
-<description>By default, inbound connections to SSH’s port are allowed. If 
+<description>By default, inbound connections to SSH's port are allowed. If 
 the SSH server is not being used, this exception should be removed from the
 firewall configuration.
 <br /><br />
@@ -257,7 +257,7 @@ To disable root login via SSH, add or correct the following line:
 <rationale>
 Permitting direct root login reduces auditable information about who ran
 privileged commands on the system
-and also allows direct attack attempts on root’s password.
+and also allows direct attack attempts on root's password.
 </rationale>
 <ident cce="4387-7" />
 <oval id="sshd_permitrootlogin_no" />

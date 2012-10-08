@@ -109,7 +109,7 @@ Inspect the kernel boot arguments (which follow the word <tt>kernel</tt>) in
 <tt>/etc/grub.conf</tt> to ensure that they include <tt>audit=1</tt>.
 </ocil>
 <rationale>
-Each process on the system carries an "auditable" ﬂag which
+Each process on the system carries an "auditable" flag which
 indicates whether its activities can be audited. Although <tt>auditd</tt>
 takes care of enabling this for all processes which launch after it
 does, adding the kernel argument ensures that it is set for every
@@ -415,7 +415,7 @@ administrators of the system, who can take appropriate action.</rationale>
 <description>The <tt>auditd</tt> program can perform comprehensive
 monitoring of system activity. This section describes recommended
 configuration settings for comprehensive auditing, but a full
-description of the auditing system’s capabilities is beyond the
+description of the auditing system's capabilities is beyond the
 scope of this guide. The mailing list <i>linux-audit@redhat.com</i> exists
 to facilitate community discussion of the auditing system.
 <br /><br />
@@ -426,7 +426,7 @@ The audit subsystem supports extensive collection of events, including:
 on entry or exit.</li>
 <li>Filtering by PID, UID, call success, system call argument (with
 some limitations), etc.</li>
-<li>Monitoring of specific files for modifications to the file’s
+<li>Monitoring of specific files for modifications to the file's
 contents or metadata.</li>
 </ul>
 <br />
@@ -439,7 +439,7 @@ in the related man pages for more details.
 <br /><br />
 If copying any example audit rulesets from <tt>/usr/share/doc/audit-VERSION</tt>,
 be sure to comment out the
-lines containing <tt>arch=</tt> which are not appropriate for your system’s
+lines containing <tt>arch=</tt> which are not appropriate for your system's
 architecture. Then review and understand the following rules,
 ensuring rules are activated as needed for the appropriate
 architecture.

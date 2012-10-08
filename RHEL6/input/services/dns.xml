@@ -87,7 +87,7 @@ Edit the file <tt>/etc/sysconfig/named</tt>. Add or correct the line:
 </description>
 <rationale>Chroot jails are not foolproof. However, they serve to make it more
 difficult for a compromised program to be used to attack the entire host. They
-do this by restricting a program’s ability to traverse the directory upward, so
+do this by restricting a program's ability to traverse the directory upward, so
 that files outside the jail are not visible to the chrooted process. Since RHEL
 supports a standard mechanism for placing BIND in a chroot jail, you should
 take advantage of this feature.</rationale>
@@ -161,7 +161,7 @@ zone "internal.example.com " IN {
 <rationale>Enterprise nameservers generally serve two functions. One is to
 provide public information about the machines in a domain for the benefit of
 outside users who wish to contact those machines, for instance in order to send
-mail to users in the enterprise, or to visit the enterprise’s external web
+mail to users in the enterprise, or to visit the enterprise's external web
 page. The other is to provide nameservice to client machines within the
 enterprise. Client machines require both private information about enterprise
 machines (which may be different from the public information served to the rest
@@ -169,7 +169,7 @@ of the world) and public information about machines outside the enterprise,
 which is used to send mail or visit websites outside of the organization.
 <br />
 In order to provide the public nameservice function, it is necessary to share
-data with untrusted machines which request it — otherwise, the enterprise
+data with untrusted machines which request it - otherwise, the enterprise
 cannot be conveniently contacted by outside users. However, internal data
 should be protected from disclosure, and serving irrelevant public name queries
 for outside domains leaves the DNS server open to cache poisoning and other

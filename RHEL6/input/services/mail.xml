@@ -170,7 +170,7 @@ Change into the CA certificate directory:
 Generate a key pair for the mail server:
 <pre># openssl genrsa -out mailserverkey.pem 2048</pre>
 Next, generate a certificate signing request (CSR) for the CA to sign, making sure to supply your mail
-server’s fully qualified domain name as the Common Name:
+server's fully qualified domain name as the Common Name:
 <pre># openssl req -new -key mailserverkey.pem -out mailserver.csr</pre>
 Next, the mail server CSR must be signed to create the mail server certificate. You can either send the CSR
 to an established CA or sign it with your CA.
@@ -203,7 +203,7 @@ Verify the ownership and permissions of these files:
 # chown root:root /etc/pki/tls/mail/servercert.pem
 # chmod 600 /etc/pki/tls/mail/serverkey.pem
 # chmod 644 /etc/pki/tls/mail/servercert.pem</pre>
-Verify that the CA’s public certificate file has been installed as <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the
+Verify that the CA's public certificate file has been installed as <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the
 correct permissions:
 <pre># chown root:root /etc/pki/tls/CA/cacert.pem
 # chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
@@ -272,7 +272,7 @@ supported.
 
 <Group id="postfix_server_mail_relay">
 <title>Control Mail Relaying</title>
-<description>Postfix’s mail relay controls are implemented with the help of the smtpd recipient restrictions option, which
+<description>Postfix's mail relay controls are implemented with the help of the smtpd recipient restrictions option, which
 controls the restrictions placed on the SMTP dialogue once the sender and recipient envelope addresses are known.
 The guidance in the following sections should be applied to all machines. If there are machines which
 must be allowed to relay mail, but which cannot be trusted to relay unconditionally, configure SMTP AUTH
@@ -294,7 +294,7 @@ or IP address which is trusted to relay by setting the mynetworks variable direc
 </ul>
 </description>
 <rationale>The <tt>mynetworks</tt> variable must contain only the set of machines for which this MTA should unconditionally
-relay mail. This is a trust relationship — if spammers gain access to these machines, your site will effectively
+relay mail. This is a trust relationship - if spammers gain access to these machines, your site will effectively
 become an open relay. It is recommended that only machines which are managed by you or by another trusted
 organization be placed in mynetworks, and users of all other machines be required to use SMTP AUTH to send
 mail.
@@ -328,7 +328,7 @@ this order, and should usually follow one another immediately unless SMTP AUTH i
 <Rule id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks">
 <title>Require SMTP AUTH Before Relaying from Untrusted Clients</title>
 <description>SMTP authentication allows remote clients to relay mail safely by requiring them to authenticate before submit-
-ting mail. Postfix’s SMTP AUTH uses an authentication library called SASL, which is not part of Postfix itself.
+ting mail. Postfix's SMTP AUTH uses an authentication library called SASL, which is not part of Postfix itself.
 This section describes how to configure authentication using the Cyrus-SASL implementation. See below for a
 discussion of other options.
 <br /><br />
@@ -347,11 +347,11 @@ mechanism for SASL to use:
 <service-enable-macro service="saslauthd" />
 </description>
 <rationale>Postfix can use either the Cyrus library or Dovecot as a source for SASL authentication. If this host is running
-Dovecot for some other reason, it is recommended that Dovecot’s SASL support be used instead of running the
+Dovecot for some other reason, it is recommended that Dovecot's SASL support be used instead of running the
 Cyrus code as well. See http://www.postfix.org/SASL_README.html for instructions on implementing that
 configuration, which is not described in this guide.
 <br /><br />
-In Postfix’s configuration, the directive <tt>smtpd_sasl_auth_enable</tt> tells <tt>smtpd</tt> to allow the use of the SMTP AUTH
+In Postfix's configuration, the directive <tt>smtpd_sasl_auth_enable</tt> tells <tt>smtpd</tt> to allow the use of the SMTP AUTH
 command during the SMTP dialogue, and to support that command by getting authentication information from
 SASL. The <tt>smtpd_recipient_restrictions</tt> directive is changed so that, if the client is not connecting from a
 trusted address, it is allowed to attempt authentication (<tt>permit_sasl_authenticated</tt>) in order to relay mail.

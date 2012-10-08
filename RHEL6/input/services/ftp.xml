@@ -71,8 +71,10 @@ and for consistency with future Red Hat releases, the use of vsftpd is recommend
 
 <Group id="ftp_configure_vsftpd">
 <title>Use vsftpd to Provide FTP Service if Necessary</title>
-<description>The primary vsftpd configuration file is <tt>/etc/vsftpd.conf</tt>, if that file exists, or <tt>/etc/vsftpd/vsftpd.conf</tt> if it does not. For the remainder of this section, the phrase “the configuration file” will refer to whichever of those files is appropriate for your environment.</description>
-
+<description>The primary vsftpd configuration file is
+<tt>/etc/vsftpd.conf</tt>, if that file exists, or
+<tt>/etc/vsftpd/vsftpd.conf</tt> if it does not. 
+</description>
 <Rule id="ftp_log_transactions">
 <title>Enable Logging of All FTP Transactions</title>
 <description>Edit the vsftpd configuration file. Add or correct the following configuration options:
@@ -134,7 +136,7 @@ these logins as much as possible.</description>
 <pre>userlist_enable=YES
 userlist_file=/etc/vsftp.ftpusers
 userlist_deny=NO</pre>
-Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via ftp, add a line containing that user’s name.
+Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via ftp, add a line containing that user's name.
 <pre>USERNAME</pre>
 If anonymous access is also required, add the anonymous usernames to <tt>/etc/vsftp.ftpusers</tt> as well:
 <pre>anonymous
