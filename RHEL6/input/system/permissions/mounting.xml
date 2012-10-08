@@ -21,10 +21,19 @@ solve the same problem with less risk.</description>
 
 <Rule id="console_device_restrict_access_desktop">
 <title>Restrict Console Device Access to Desktop Workstations</title>
-<description>If the display manager has been altered to allow remote users to log in and the host is configured to run at runlevel 5, change console as well as the xconsole directive in the <tt>/etc/security/console.perms</tt> to the following:
+<description>If the display manager has been altered to allow remote users to
+log in and the host is configured to run at runlevel 5, change console as well
+as the xconsole directive in the <tt>/etc/security/console.perms</tt> to the
+following:
 <pre>&lt;console&gt;=tty[0-9][0-9]* vc/[0-9][0-9]* :0\.[0-9] :0
 &lt;xconsole&gt;=:0\.[0-9] :0</pre></description>
-<rationale>When a user logs in, the module pam_console.so called via the command login, or by some of the graphics program of logging, such as gdm, kdm, ​​and xdm. If this user is the first to log into the physical console - called the console user - the user module assures the mastery of a wide variety of devices normally belong to root. Administrative privileges should be limited for non-root users. Review the man page for <tt>pam_console</tt> for more information</rationale>
+<rationale>When a user logs in, the module pam_console.so called via the
+command login, or by some of the graphics program of logging, such as gdm, kdm,
+and xdm. If this user is the first to log into the physical console
+- called the console user - the user module assures the mastery of a wide
+variety of devices normally belong to root. Administrative privileges should be
+limited for non-root users. Review the man page for <tt>pam_console</tt> for
+more information</rationale>
 <ident cce="3685-5" />
 <oval id="console_device_restrict_access_desktop" />
 <ref nist="AC-6, CM-6, CM-7" />
@@ -32,9 +41,18 @@ solve the same problem with less risk.</description>
 
 <Rule id="console_device_restrict_access_server">
 <title>Restrict Console Device Access to Servers</title>
-<description>If the display manager has been altered to allow remote users to log in and the host is configured to run at runlevel 5, change console as well as the xconsole directive in the <tt>/etc/security/console.perms</tt> to the following:
+<description>If the display manager has been altered to allow remote users to
+log in and the host is configured to run at runlevel 5, change console as well
+as the xconsole directive in the <tt>/etc/security/console.perms</tt> to the
+following:
 <pre>&lt;console&gt;=tty[0-9][0-9]* vc/[0-9][0-9]*</pre></description>
-<rationale>When a user logs in, the module pam_console.so called via the command login, or by some of the graphics program of logging, such as gdm, kdm, ​​and xdm. If this user is the first to log into the physical console - called the console user - the user module assures the mastery of a wide variety of devices normally belong to root. Administrative privileges should be limited for non-root users. Review the man page for <tt>pam_console</tt> for more information</rationale>
+<rationale>When a user logs in, the module pam_console.so called via the
+command login, or by some of the graphics program of logging, such as gdm, kdm,
+and xdm. If this user is the first to log into the physical console
+- called the console user - the user module assures the mastery of a wide
+variety of devices normally belong to root. Administrative privileges should be
+limited for non-root users. Review the man page for <tt>pam_console</tt> for
+more information</rationale>
 <ident cce="3685-5" />
 <oval id="console_device_restrict_access_server" />
 <ref nist="AC-6, CM-6, CM-7" />
@@ -91,8 +109,8 @@ the devices themselves should be tightly controlled.</rationale>
 <description>
 Another means of disabling USB storage is to disable all USB support provided
 by the operating system. This can be accomplished by adding the <tt>nousb</tt>
-argument to the kernel’s boot loader configuration. To disable kernel support
-for USB, append “nousb” to the kernel line in /etc/grub.conf as follows:
+argument to the kernel's boot loader configuration. To disable kernel support
+for USB, append "nousb" to the kernel line in /etc/grub.conf as follows:
 <pre>kernel /vmlinuz-<i>VERSION</i> ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet nousb</pre>
 <i><b>WARNING:</b> Disabling all kernel support for USB will cause problems for systems with USB-based keyboards,
 mice, or printers. This guidance is inappropriate for systems which require USB connectivity.</i></description>
@@ -107,8 +125,8 @@ should be disabled and the devices themselves should be tightly controlled.</rat
 <Rule id="bios_disable_usb_boot">
 <title>Disable Booting from USB Devices</title>
 <description>An attacker with physical access could try to boot the system from a USB
-flash drive and then access any data on the system’s hard drive, circumventing the normal
-operating system’s access controls. To prevent this, configure the BIOS to disallow
+flash drive and then access any data on the system's hard drive, circumventing the normal
+operating system's access controls. To prevent this, configure the BIOS to disallow
 booting from USB drives. Also configure the BIOS or firmware password as described in
 the section titled "Set BIOS Password" to prevent unauthorized configuration changes.</description>
 <rationale>Booting a system from a USB device would allow an attacker to circumvent
@@ -149,7 +167,7 @@ not be arbitrarily introduced via the automounter.</rationale>
 
 <Rule id="gconf_gnome_disable_automount">
 <title>Disable GNOME Automounting</title>
-<description>The system’s default desktop environment, GNOME, will mount devices and removable media (such as DVDs, CDs and USB flash drives) whenever they are inserted into the system. Disable automount and autorun within GNOME by running the following:
+<description>The system's default desktop environment, GNOME, will mount devices and removable media (such as DVDs, CDs and USB flash drives) whenever they are inserted into the system. Disable automount and autorun within GNOME by running the following:
 <pre># gconftool-2 --direct \
 	--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
 	--type bool \
@@ -166,7 +184,7 @@ $ gconftool-2 --direct \
 	--config-source xml:read:/etc/gconf/gconf.xml.mandatory \
 	--get /apps/nautilus/preferences/media_autorun_never</pre>
 </description>
-<rationale>The system’s capabilities for automatic mounting should be configured to match whatever is defined by security
+<rationale>The system's capabilities for automatic mounting should be configured to match whatever is defined by security
 policy. Disabling USB storage as described in the USB section will prevent the use of USB storage devices, but
 this step should also be taken as an additional layer of protection to prevent automatic mounting of CDs and
 DVDs.
@@ -276,7 +294,7 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_gnome_thumbnailers">
 <title>Disable All GNOME Thumbnailers</title>
-<description>The system’s default desktop environment, GNOME, uses
+<description>The system's default desktop environment, GNOME, uses
 a number of different thumbnailer programs to generate thumbnails
 for any new or modified content in an opened folder. The following
 command can disable the execution of these thumbnail applications:
@@ -285,7 +303,7 @@ command can disable the execution of these thumbnail applications:
   --type bool \
   --set /desktop/gnome/thumbnailers/disable_all true</pre>
 This effectively prevents an attacker from gaining access to a
-system through a flaw in GNOME’s Nautilus thumbnail creators.
+system through a flaw in GNOME's Nautilus thumbnail creators.
 </description>
 <rationale>An attacker with knowledge of a flaw in a GNOME thumbnailer application could craft a malicious
 file to exploit this flaw. Assuming the attacker could place the malicious file on the local filesystem

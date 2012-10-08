@@ -103,7 +103,7 @@ scripts that activate the firewall rules expect them to be defined
 in the configuration files iptables and ip6tables in the directory
 <tt>/etc/sysconfig</tt>. Many of the lines in these files are similar
 to the command line arguments that would be provided to the programs
-<tt>/sbin/iptables</tt> or <tt>/sbin/ip6tables</tt> – but some are quite
+<tt>/sbin/iptables</tt> or <tt>/sbin/ip6tables</tt> - but some are quite
 different.
 <br /><br />
 The following recommendations describe how to strengthen the
@@ -183,9 +183,9 @@ To allow the system to respond to pings, also insert the following line:
 <pre>-A RH-Firewall-1-INPUT -p icmp --icmp-type echo-request -j ACCEPT</pre>
 Ping responses can also be limited to certain networks or hosts by using the -s option in the previous rule.
 Because IPv6 depends so heavily on ICMPv6, it is preferable to deny the ICMPv6 packets you know you
-don’t need (e.g. ping requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else through:
+don't need (e.g. ping requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else through:
 <pre>-A RH-Firewall-1-INPUT -p icmpv6 --icmpv6-type echo-request -j DROP</pre>
-If you are going to statically configure the machine’s address, it should ignore Router Advertisements which
+If you are going to statically configure the machine's address, it should ignore Router Advertisements which
 could add another IPv6 address to the interface or alter important network settings:
 <pre>-A RH-Firewall-1-INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>
 </description>
@@ -227,7 +227,7 @@ If you wish to block multicasts to all link-local nodes (e.g. if you are not usi
 do not plan to have any services that multicast to the entire local network), you can block the link-local
 all-nodes multicast address (before accepting incoming ICMPv6):
 <pre>-A INPUT -d FF02::1 -j LOG --log-prefix "Link-local All-Nodes Multicast: "</pre>
-However, if you’re going to allow IPv4 compatible IPv6 addresses (of the form ::0.0.0.0/96), you should
+However, if you're going to allow IPv4 compatible IPv6 addresses (of the form ::0.0.0.0/96), you should
 then consider logging the non-routable IPv4-compatible addresses:
 <pre>-A INPUT -s ::0.0.0.0/104 -j LOG --log-prefix "IP NON-ROUTABLE ADDR: "
 -A INPUT -s ::127.0.0.0/104 -j LOG --log-prefix "IP DROP LOOPBACK: "

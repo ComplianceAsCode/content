@@ -161,7 +161,7 @@ Following each DSO removal, the configuration can be tested with the following c
 to check if everything still works:
 <pre># service httpd configtest</pre>
 The purpose of each of the modules loaded by default will now be addressed one at a time.
-If none of a module’s directives are being used, remove it.
+If none of a module's directives are being used, remove it.
 </description>
 
 <Group id="httpd_core_modules">
@@ -195,7 +195,7 @@ be restricted by a password.
 <br /><br />
 Authentication can be performed using local plain text password files (<tt>authn_file</tt>),
 local DBM password files (<tt>authn_dbm</tt>) or an LDAP directory. The only module required by
-the web server depends on your choice of authentication. Comment out the modules you don’t
+the web server depends on your choice of authentication. Comment out the modules you don't
 need from the following:
 <pre>LoadModule authn_file_module modules/mod_authn_file.so
 LoadModule authn_dbm_module modules/mod_authn_dbm.so</pre>
@@ -446,7 +446,7 @@ If the web server requires the use of CGI, enable <tt>mod_cgi</tt>.
 CGI functionality is required, include the appropriate modules. <tt>env</tt> allows for
 control of the environment passed to CGI scripts. <tt>actions</tt> allows CGI events
 to be triggered when files of a certain type are requested. <tt>su exec</tt> allows
-CGI scripts to run as a specified user/group instead of as the server’s user/group. -->
+CGI scripts to run as a specified user/group instead of as the server's user/group. -->
 </description>
 <rationale>
 Minimizing the number of loadable modules available to the web server reduces risk

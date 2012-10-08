@@ -112,7 +112,7 @@ to include suffix information relevant to your domain.
 olcRootDN: "cn=Manager,dc=example,dc=com "</pre>
 where dc=example,dc=com is the same root you will use on the LDAP clients.
 <br />
-These are basic LDAP configuration directives. The suffix parameter gives the root name of all information served by this LDAP server, and should be some name related to your domain. The rootdn parameter names LDAP’s privileged user, who is allowed to read or write all data managed by this LDAP server.
+These are basic LDAP configuration directives. The suffix parameter gives the root name of all information served by this LDAP server, and should be some name related to your domain. The rootdn parameter names LDAP's privileged user, who is allowed to read or write all data managed by this LDAP server.
 </description>
 <ident cce="3501-4" />
 <oval id="ldap_server_config_olcsuffix" />
@@ -177,7 +177,7 @@ Verify the ownership and permissions of these files:
 # chown root:ldap /etc/pki/tls/ldap/servercert.pem
 # chmod 640 /etc/pki/tls/ldap/serverkey.pem
 # chmod 640 /etc/pki/tls/ldap/servercert.pem</pre>
-Verify that the CA’s public certificate file has been installed as <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the
+Verify that the CA's public certificate file has been installed as <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the
 correct permissions:
 <pre># mkdir /etc/pki/tls/CA
 # chown root:root /etc/pki/tls/CA/cacert.pem
@@ -211,7 +211,7 @@ objectClass: dcObject
 objectClass: organization
 dc: example
 o: Organization Description</pre>
-This is a placeholder for the root of the domain’s LDAP tree. Without this entry, LDAP will not be able to find
+This is a placeholder for the root of the domain's LDAP tree. Without this entry, LDAP will not be able to find
 any other entries for the domain.
 </description>
 <!--<ident cce="TODO:CCE" />-->
@@ -280,7 +280,7 @@ memberUid: username1
 memberUid: username2
 ...
 memberUid: usernameN</pre>
-Note that each user has a primary group, identified by the gidNumber field in the user’s account entry. That
+Note that each user has a primary group, identified by the gidNumber field in the user's account entry. That
 group must be created, but it is not necessary to list the user as a memberUid of the group. This behavior should
 be familiar to administrators, since it is identical to the handling of the /etc/passwd and /etc/group files.
 Do not create entries for the root group or for system groups, but only for groups which contain human users
@@ -304,8 +304,8 @@ uniqueMember: uid=admin1-username ,ou=people,dc=example,dc=com
 uniqueMember: uid=admin2-username ,ou=people,dc=example,dc=com
 ...
 uniqueMember: uid=adminN-username ,ou=people,dc=example,dc=com</pre>
-LDAP cannot use Posix groups for its own internal authentication — it needs to compare the username specified
-in an authenticated bind to some internal groupOfUniqueNames. If you do not specify an LDAP administrators’
+LDAP cannot use Posix groups for its own internal authentication - it needs to compare the username specified
+in an authenticated bind to some internal groupOfUniqueNames. If you do not specify an LDAP administrators'
 group, then all LDAP management will need to be done using the LDAP root user (Manager). For reasons of
 auditing and error detection, it is recommended that LDAP administrators have unique identities.
 </description>
@@ -317,7 +317,7 @@ auditing and error detection, it is recommended that LDAP administrators have un
 <Rule id="ldap_server_config_olcaccess">
 <title>Configure slapd to Protect Authentication Information</title>
 <description>Use ldapmodify to add these entries to the database. Add or correct the following access specifications:
-1. Protect the user’s password by allowing the user himself or the LDAP administrators to change it,
+1. Protect the user's password by allowing the user himself or the LDAP administrators to change it,
 allowing the anonymous user to authenticate against it, and allowing no other access:
 <pre>olcAccess: to attrs=userPassword
     by self write
@@ -345,7 +345,7 @@ be able to change data without an explicit access statement.
 
 <Rule id="ldap_server_config_directory_file_security">
 <title>Correct Permissions on LDAP Server Files</title>
-<description>Correct the permissions on the ldap server’s files:
+<description>Correct the permissions on the ldap server's files:
 <pre># chown ldap:root /var/lib/ldap/*</pre>
 Some manual methods of inserting information into the LDAP database may leave these files with incorrect
 permissions. This will prevent slapd from starting correctly.
@@ -400,9 +400,9 @@ parameters, such as:
 OpenLDAP sends its log data to the syslog facility local4 at priority debug. By default, RHEL5 does not store
 this facility at all. The syslog configuration suggested here will store any output logged by slapd in the file
 <tt>/var/log/ldap.log</tt>, and will include that file in the standard log rotation for syslog files.
-By default, LDAP’s logging is quite verbose. The loglevel parameter is a space-separated list of items to be
+By default, LDAP's logging is quite verbose. The loglevel parameter is a space-separated list of items to be
 logged. Specifying <tt>stats2</tt> will reduce the log output somewhat, but this level will still produce some logging
-every time an LDAP query is made. (This may be appropriate, depending on your site’s auditing requirements.)
+every time an LDAP query is made. (This may be appropriate, depending on your site's auditing requirements.)
 In order to capture only <tt>slapd</tt> startup messages, specify <tt>loglevel none</tt>.
 See <tt>slapd.conf(5)</tt> for detailed information about the loglevel parameter.
 </description>
