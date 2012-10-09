@@ -176,15 +176,21 @@ operator="equals" interactive="0">
 
 <Rule id="password_retry">
 <title>Set Password Retry Prompts Permitted Per-session</title>
-<description>The pam_cracklib module's <tt>retry=</tt> parameter controls how many times a program
-will re-prompt a user after an incorrect password entry, on a per-session basis.  To configure this, open:
-<pre>/etc/pam.d/system-auth</pre>
-Locate the <tt>retry=</tt> parameter, the DoD required value is 3.
+<description>The pam_cracklib module's <tt>retry=</tt> parameter
+controls how many times a program will re-prompt a user after an incorrect
+password entry, on a per-session basis.  To configure this, open
+<tt>/etc/pam.d/system-auth</tt> and locate the <tt>retry=</tt> parameter for
+<tt>pam_cracklib</tt> in the <tt>password</tt> portion of the PAM stack.
+The system default is 3.  
+The DoD required value is 3.
+Add or correct<tt>retry=3</tt> after pam_cracklib.so to allow 3 retries.
 </description>
 <ocil clause="it is not the required value">
-The system must disable after three consecutive and unsuccessful login attempts.
-To ensure this is the case, run the following command:
-<pre>$ grep retry /etc/pam.d/system-auth</pre>
+To check how many retry attempts are permitted on a per-session basis, run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+The <tt>retry</tt> parameter will indicate how many attempts are permitted.
+The DoD required value is 3.
+This would appear as <tt>retry=3</tt>.
 </ocil>
 <rationale>
 Setting the password retry prompts that are permitted on a per-session basis to a low value
@@ -199,15 +205,18 @@ is different from account lockout, which is provided by the pam_faillock module.
 
 <Rule id="password_require_digits">
 <title>Set Password Strength Minimum Digit Characters</title>
-<description>The pam_cracklib module's <tt>dcredit=</tt> parameter controls requirements for
+<description>The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
 contain that many digits. When set to a positive number, pam_cracklib will grant +1 additional
-length credit for each digit.
+length credit for each digit.  
+Add <tt>dcredit=-1</tt> after pam_cracklib.so to require use of a digit in passwords.
 </description>
-<ocil clause="it is not the required value">
+<ocil clause="dcredit is not found or not set to the required value">
+To check how many digits are required in a password, run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+The <tt>dcredit</tt> parameter (as a negative number) will indicate how many digits are required.
 The DoD requires at least one digit in a password.
-To verify this requirement is being met, run the following command:
-<pre>$ grep dcredit /etc/pam.d/system-auth</pre>
+This would appear as <tt>dcredit=-1</tt>.
 </ocil>
 <rationale>
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
@@ -224,11 +233,14 @@ search space.
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
 contain that many uppercase characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each uppercase character.
+Add <tt>ucredit=-1</tt> after pam_cracklib.so to require use of a digit in passwords.
 </description>
-<ocil clause="it is not the required value">
+<ocil clause="ucredit is not found or not set to the required value">
+To check how many uppercase characters are required in a password, run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
 The DoD requires at least one uppercase character in a password.
-To verify this requirement is being met, run the following command:
-<pre>$ grep ucredit /etc/pam.d/system-auth</pre>
+This would appear as <tt>ucredit=-1</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of uppercase characters makes password guessing attacks
@@ -245,11 +257,14 @@ more difficult by ensuring a larger search space.
 usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
 contain that many special characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each special character.
+Add <tt>ocredit=-1</tt> after pam_cracklib.so to require use of a special character in passwords.
 </description>
-<ocil clause="it is not the required value">
+<ocil clause="ocredit is not found or not set to the required value">
+To check how many special characters are required in a password, run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
 The DoD requires at least one special character in a password.
-To verify this requirement is being met, run the following command:
-<pre>$ grep ocredit /etc/pam.d/system-auth</pre>
+This would appear as <tt>ocredit=-1</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of special characters makes password guessing attacks
@@ -266,11 +281,14 @@ more difficult by ensuring a larger search space.
 usage of lowercase letters in a password. When set to a negative number, any password will be required to
 contain that many lowercase characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each lowercase character.
+Add <tt>lcredit=-1</tt> after pam_cracklib.so to require use of a lowercase character in passwords.
 </description>
-<ocil clause="it is not the required value">
+<ocil clause="lcredit is not found or not set to the required value">
+To check how many lowercase characters are required in a password, run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+The <tt>lcredit</tt> parameter (as a negative number) will indicate how many special characters are required.
 The DoD requires at least one lowercase character in a password.
-To verify this requirement is being met, run the following command:
-<pre>$ grep lcredit /etc/pam.d/system-auth</pre>
+This would appear as <tt>lcredit=-1</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of lowercase characters makes password guessing attacks
@@ -283,13 +301,18 @@ more difficult by ensuring a larger search space.
 
 <Rule id="password_require_diffchars">
 <title>Set Password Strength Minimum Different Characters</title>
-<description>The pam_cracklib module's <tt>difok=</tt> parameter controls requirements for
+<description>The pam_cracklib module's <tt>difok</tt> parameter controls requirements for
 usage of different characters during a password change.
+Add <tt>difok=<i>NUM</i></tt> after pam_cracklib.so to require differing
+characters when changing passwords, substituting <i>NUM</i> appropriately.
+The DoD requirement is 4.
 </description>
-<ocil clause="it is not the required value">
-During a password change, the DoD requires at least four characters be different between the old and new passwords.
-To verify this requirement is being met, run the following command:
-<pre>$ grep difok /etc/pam.d/system-auth</pre>
+<ocil clause="difok is not found or not set to the required value">
+To check how many characters must differ during a password change, run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+The <tt>difok</tt> parameter will indicate how many characters must differ.
+The DoD requires 4 character differ during a password change.
+This would appear as <tt>difok=4</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of different characters during password changes ensures that
