@@ -195,7 +195,7 @@ exclude-result-prefixes="xccdf xhtml dc">
           <!-- add clauses if specific macros are found within -->
             <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
             <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
-            <xsl:if test="partition-check-macro">the directory in question does not reside on its own partition or volume group</xsl:if>
+            <xsl:if test="partition-check-macro">no line is returned</xsl:if>
             <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
             <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
             <xsl:if test="package-check-macro">the package is installed</xsl:if>
@@ -240,18 +240,29 @@ exclude-result-prefixes="xccdf xhtml dc">
     run the following command:
     <xhtml:pre xml:space="preserve"># sysctl -w <xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
 
-    To persist this configuration, the following line must be added to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
+	<!-- The following text could also be included conditionally, if the defaultness of the sysctl were indicated. -->
+    If this is not the system's default value, add the following line to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
     <xhtml:pre xml:space="preserve"><xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="sysctl-check-macro">
-    The runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
+    The status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
     by running the following command:
-    <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
-    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.<xhtml:br />
+    <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
+    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
+    If this value is not the default value, investigate how it could have been
+    adjusted at runtime, and verify that it is not set improperly in
+    <xhtml:code>/etc/sysctl.conf</xhtml:code>.
+    <!--
+	The following text could be conditionally added, for any cases where the default sysctl value
+	is not the required one. We could indicate this with an additional attribute
+	in the macro.  (Adding default values to sysctl.conf just increases C&A cost with no benefit; it makes default
+	systems fail compliance checks when they shouldn't.)
+
+    <xhtml:br />
     To verify persistent configuration of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter, 
     verify that the following line is present in <xhtml:code>/etc/sysctl.conf</xhtml:code>:
-    <xhtml:pre>$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    
+    <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    -->
   </xsl:template>
 
   <xsl:template match="fileperms-desc-macro">
@@ -308,10 +319,11 @@ exclude-result-prefixes="xccdf xhtml dc">
   </xsl:template>
 
   <xsl:template match="partition-check-macro">
-    After running the following command verify that <xhtml:code><xsl:value-of select="@part"/></xhtml:code> is in fact on its own partition, or logical volume:
-  <xhtml:pre># df -h <xsl:value-of select="@part"/> </xhtml:pre>
-  To verify if <xhtml:code><xsl:value-of select="@part"/></xhtml:code> lives on its own partition, or volume group simply review the output of the above command.
-  Often times, people forget to assign important system filesystems to individual slices while building the core system.  This results in everything "living" under the root volume group -- which in many enterprise environments is not the preferred method.
+    Run the following command to determine if  <xhtml:code><xsl:value-of select="@part"/></xhtml:code>
+    is on its own partition or logical volume:
+  <xhtml:pre>$ mount | grep "on <xsl:value-of select="@part"/>"</xhtml:pre>
+  If <xhtml:code><xsl:value-of select="@part"/></xhtml:code> has its own partition or volume group, a line
+  will be returned.
   </xsl:template>
 
   <xsl:template match="service-disable-macro">
