@@ -89,9 +89,9 @@ and to protect the boot process.
 Remove any instances of <tt>selinux=0</tt> from the kernel arguments in that
 file to prevent SELinux from being being disabled at boot.
 </description>
-<ocil clause="SELinux is Disabled at boot time">
+<ocil clause="SELinux is disabled at boot time">
 Inspect <tt>/etc/grub.conf</tt> for any instances of <tt>selinux=0</tt>
-in the kernel boot arguments.  Presences of <tt>selinux=0</tt> indicates
+in the kernel boot arguments.  Presence of <tt>selinux=0</tt> indicates
 that SELinux is disabled at boot time.
 </ocil>
 <rationale>
@@ -108,10 +108,10 @@ the chances that it will remain off during system operation.
 <title>Ensure SELinux State is Enforcing</title>
 <description>The SELinux state should be set to <tt>enforcing</tt> at
 system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
-line <tt>SELINUX=enforcing</tt> to configure the system to boot into enforcing
-mode.
+following line to configure the system to boot into enforcing mode:
+<pre>SELINUX=enforcing</pre>
 </description>
-<ocil clause="SELINUX=enforcing is not set properly">
+<ocil clause="SELINUX is not set to enforcing">
 Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
 <pre>SELINUX=enforcing</pre>
 </ocil>
@@ -137,7 +137,7 @@ Other policies, such as <tt>mls</tt>, provide additional security labeling
 and greater confinement but are not compatible with many general-purpose
 use cases.
 </description>
-<ocil clause="SELINUX=targeted is not set properly">
+<ocil clause="it does not">
 Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
 <pre>SELINUXTYPE=targeted</pre>
 </ocil>
@@ -232,9 +232,9 @@ or allow privileges that the daemon does not require.
 <description>Device files are used for communication with important system resources.
 SELinux contexts should exist for these.  By checking for <tt>unlabeled_t</tt> file
 contexts, we can determine if the system is optimally configured.</description>
-<ocil clause="unlabeled_t file contexts exist">To check for unlabeled device files, run the following command in
+<ocil clause="there is output">To check for unlabeled device files, run the following command in
 the directory that you want to check the SELinux contexts:
-<pre># ls -Z | grep unlabeled_t</pre>
+<pre># ls -Z /dev | grep unlabeled_t</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
 If a device file is not labeled, then misconfiguration is likely.

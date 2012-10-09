@@ -41,19 +41,41 @@ be expressed by the '\n' character.</description>
 The contents of the file <tt>/etc/issue</tt> are
 displayed on the screen just above the login prompt for users
 logging directly into a terminal. Remote login programs such as
-SSH or FTP can be configured to display <tt>/etc/issue</tt> as well.
-Instructions for configuring these daemons are available later.
+SSH or FTP can be configured to display <tt>/etc/issue</tt>, and
+instructions for configuring these daemons is available elsewhere in this guidance.
 <br /><br />
 By default, the system will display the version of the OS,
 the kernel version, and the host name.
 <br /><br />
 Edit <tt>/etc/issue</tt>. Replace the default text with a message
 compliant with the local site policy or a legal disclaimer.
-<!--<sub idref="login_banner_text" />-->
+
+The DoD required text is either:<br/>
+You are accessing a U.S. Government (USG) Information System (IS) that is
+provided for USG-authorized use only. By using this IS (which includes any
+device attached to this IS), you consent to the following conditions: -The USG
+routinely intercepts and monitors communications on this IS for purposes
+including, but not limited to, penetration testing, COMSEC monitoring, network
+operations and defense, personnel misconduct (PM), law enforcement (LE), and
+counterintelligence (CI) investigations. -At any time, the USG may inspect and
+seize data stored on this IS. -Communications using, or data stored on, this IS
+are not private, are subject to routine monitoring, interception, and search,
+and may be disclosed or used for any USG-authorized purpose. -This IS includes
+security measures (e.g., authentication and access controls) to protect USG
+interests- -not for your personal benefit or privacy. -Notwithstanding the
+above, using this IS does not constitute consent to PM, LE or CI investigative
+searching or monitoring of the content of privileged communications, or work
+product, related to personal representation or services by attorneys,
+psychotherapists, or clergy, and their assistants. Such communications and work
+product are private and confidential. See User Agreement for details. 
+<br/>
+or:
+<br/>
+I've read &amp; consent to terms in IS user agreement.
 </description>
-<ocil clause="it does not display a message compliant with the environment">
-To ensure the system login banner is compliant with the needs of the system environment,
- run the following command:
+<ocil clause="it does not display the required banner">
+To check if the system login banner is compliant,
+run the following command:
 <pre>$ cat /etc/issue</pre>
 </ocil>
 <rationale>

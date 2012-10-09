@@ -182,7 +182,11 @@ by default:
 </pre>
 Kernel modules, which can be added to the kernel during runtime, are
 stored in <tt>/lib/modules</tt>. All files in these directories should not be
-group-writable or world-writable.
+group-writable or world-writable. 
+If any file <i>FILE</i> in these directories is found
+to be group-writable or world-writeable, correct its permission with the
+following command:
+<pre># chmod go-w <i>FILE</i></pre>
 </description>
 <ocil clause="any of the modules are group-writable">
 To find shared libraries that are group-writable or world-writable,
@@ -209,6 +213,10 @@ by default:
 Kernel modules, which can be added to the kernel during runtime, are also
 stored in <tt>/lib/modules</tt>.  All files in these directories should be
 owned by the <tt>root</tt> user.
+If any file <i>FILE</i> in these directories is found
+to be owned by a user other than root, correct its ownership with the
+following command:
+<pre># chown root <i>FILE</i></pre>
 </description>
 <ocil clause="any of the shared modules aren't owned by root">
 To find shared libraries that are not owned by <tt>root</tt>,
@@ -234,6 +242,10 @@ System executables are stored in the following directories by default:
 /usr/sbin
 /usr/local/sbin</pre>
 All files in these directories should not be group-writable or world-writable.
+If any file <i>FILE</i> in these directories is found
+to be group-writable or world-writeable, correct its permission with the
+following command:
+<pre># chmod go-w <i>FILE</i></pre>
 </description>
 <ocil clause="any system executables are found to be group, or world writable">
 To find system executables that are group-writable or world-writable,
@@ -258,6 +270,10 @@ System executables are stored in the following directories by default:
 /usr/sbin
 /usr/local/sbin</pre>
 All files in these directories should be owned by the <tt>root</tt> user.
+If any file <i>FILE</i> in these directories is found
+to be owned by a user other than root, correct its ownership with the
+following command:
+<pre># chown root <i>FILE</i></pre>
 </description>
 <ocil clause="any system executables are found to not be owned by root">
 To find system executables that are not owned by <tt>root</tt>,

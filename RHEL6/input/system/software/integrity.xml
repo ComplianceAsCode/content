@@ -31,7 +31,9 @@ configurable, with further configuration information located in
 Install the AIDE package with the command:
 <pre># yum install aide</pre>
 </description>
-<ocil><package-check-macro package="aide"/></ocil>
+<ocil clause="the package is not installed">
+<package-check-macro package="aide"/>
+</ocil>
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
@@ -174,7 +176,7 @@ A "c" in the second column indicates that a file is a configuration file,
 which may appropriately be expected to change.
 </description>
 <rationale>
-The MD5 hash on important files like system executables should match the information given
+The hash on important files like system executables should match the information given
 by the RPM database. Executables with erroneous hashes could be a sign of nefarious activity
 on the system.</rationale>
 <ident cce="TODO" />

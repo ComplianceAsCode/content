@@ -372,7 +372,7 @@ mode for corrective action.  For certain systems, the need for availability
 outweighs the need to log all actions, and a different setting should be
 determined.
 </description>
-<ocil clause="the system isn't properly configured to swtich to single user
+<ocil clause="the system isn't configured to switch to single user
 mode for corrective action">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to switch to single user mode
@@ -472,7 +472,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
+<ocil clause="the system isn't configured to audit time changes">
 <audit-syscall-check-macro syscall="adjtimex" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -500,7 +500,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
+<ocil clause="the system isn't configured to audit time changes">
 <audit-syscall-check-macro syscall="settimeofday" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -526,7 +526,7 @@ See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
+<ocil clause="the system isn't configured to audit time changes">
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -554,7 +554,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
 -k audit_time_rules</pre>
 </description>
-<ocil clause="the system hasn't been properly set up to audit time changes, rules, or usage flags">
+<ocil clause="the system isn't configured to audit time changes">
 <audit-syscall-check-macro syscall="clock_settime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -575,7 +575,7 @@ The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport and
 should always be used.
 </description>
-<ocil clause="the system hasn't been properly set up to audit time rules logging">
+<ocil clause="the system isn't configured to audit time changes">
 To determine if the system is configured to audit attempts to
 alter time via the /etc/localtime file, run the following
 command:
@@ -604,7 +604,7 @@ to capture events that modify account changes:
 -w /etc/shadow -p wa -k audit_account_changes
 -w /etc/security/opasswd -p wa -k audit_account_changes</pre>
 </description>
-<ocil clause="the system hasn't been properly set up to audit (and log) account changes">
+<ocil clause="the system isn't configured to audit account changes">
 To determine if the system is configured to audit account changes,
 run the following command:
 <pre>auditctl -l | egrep '(/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow|/etc/security/opasswd)'</pre>
@@ -631,7 +631,7 @@ ARCH to either b32 or b64 as appropriate for your system:
 -w /etc/hosts -p wa -k audit_network_modifications
 -w /etc/sysconfig/network -p wa -k audit_network_modifications</pre>
 </description>
-<ocil clause="the system isn't congfigured to audit changes of the network configuration">
+<ocil clause="the system isn't configured to audit changes of the network configuration">
 To determine if the system is configured to audit changes to its network configuration,
 run the following command:
 <pre>auditctl -l | egrep '(/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow|/etc/security/opasswd)'</pre>
@@ -652,7 +652,7 @@ audited.</rationale>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
 </description>
-<ocil clause="the system isn't properly set up to notify an admin when attemps to change the MAC tables occur">
+<ocil clause="the system isn't configured to audit attempts to change the MAC policy">
 To determine if the system is configured to audit changes to its SELinux
 configuration files, run the following command:
 <pre># auditctl -l | grep "dir=selinux"</pre>
@@ -716,7 +716,7 @@ If the system is 64 bit then also add the following:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse amoung both authorized and
 unauthorized users.</rationale>
-<ocil clause="the system hasn't been properly set up to audit permission changes">
+<ocil clause="the system isn't configured to audit permission changes">
 <audit-syscall-check-macro syscall="fchmod" />
 </ocil>
 <warning category="general">Note that these rules can be configured in a 

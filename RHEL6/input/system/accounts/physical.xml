@@ -48,9 +48,9 @@ Only root should be able to modify important boot parameters.
 <description>The file <tt>/etc/grub.conf</tt> is a symbolic link to
 <tt>/boot/grub/grub.conf</tt> which should be group-owned by the <tt>root</tt>
 group to prevent destruction or modification of the file.
-<filegroupowner-desc-macro file="/boot/grub/grub.conf" owner="root"/>
+<filegroupowner-desc-macro file="/boot/grub/grub.conf" group="root"/>
 </description>
-<ocil><filegroupowner-check-macro file="/boot/grub/grub.conf" owner="root"/></ocil>
+<ocil><filegroupowner-check-macro file="/boot/grub/grub.conf" group="root"/></ocil>
 <rationale>
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
@@ -64,9 +64,9 @@ file should not have any access privileges anyway.
 <title>Verify /boot/grub/grub.conf Permissions</title>
 <description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
 is the default.
-<fileperms-desc-macro file="/boot/grub/grub.conf" owner="600"/>
+<fileperms-desc-macro file="/boot/grub/grub.conf" perms="600"/>
 </description>
-<ocil><fileperms-check-macro file="/boot/grub/grub.conf" owner="-rw-------"/></ocil>
+<ocil><fileperms-check-macro file="/boot/grub/grub.conf" perms="-rw-------"/></ocil>
 <rationale>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
@@ -120,7 +120,7 @@ file <tt>/etc/sysconfig/init</tt>:
 <pre>SINGLE=/sbin/sulogin</pre>
 </description>
 <ocil clause="the output is different">
-To ensure authentication is required for single-user mode, run the following command:
+To check if authentication is required for single-user mode, run the following command:
 <pre>$ grep SINGLE /etc/sysconfig/init</pre>
 The output should be:
 <pre>SINGLE=/sbin/sulogin</pre>
@@ -150,8 +150,8 @@ set of services which are started on boot.
 <ocil clause="it does not">
 To check whether interactive boot is disabled, run the following command:
 <pre>$ grep PROMPT /etc/sysconfig/init</pre>
-The output should show:
-<pre>PROMPT=yes</pre>
+If interactive boot is disabled, the output will show:
+<pre>PROMPT=no</pre>
 </ocil>
 <rationale>
 Using interactive boot,
@@ -332,7 +332,9 @@ The <tt>-a</tt> option can be used to prevent switching to other
 virtual consoles.
 </description>
 <ocil clause="there is a command not found error">
-To check whether vlock has been installed, simply invoke the <tt>vlock</tt> command.
+To check whether vlock has been installed, run the following command:
+<pre>$ vlock</pre>
+If vlock is available, then the terminal will lock.
 </ocil>
 <rationale>
 Installing vlock ensures that a console locking capability is available
