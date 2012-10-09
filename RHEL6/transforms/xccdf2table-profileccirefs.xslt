@@ -48,7 +48,7 @@
 		<table>
 			<thead>
 				<td>Vuln ID</td>
-				<td>GEN ID</td>
+				<!-- <td>GEN ID</td> -->
 				<td>Title</td>
 				<td>Discussion (Rationale)</td>
 				<td>Fix Text (Description)</td>
@@ -116,7 +116,7 @@
 		<xsl:if test="@id=$idreference and $enabletest='true'">
 		<tr>
 			<td> TBD<!--extract value of Vuln-ID (stored as reference or note or ident) when mapping is available --></td>
-			<td> TBD<!--extract value of GEN-ID (stored as reference or note or ident) when mapping is available --></td>
+			<!-- <td> TBD</td> --> <!--extract value of GEN-ID (stored as reference or note or ident) when mapping is available -->
 			<td> <xsl:value-of select="cdf:title" /></td>
 			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
 			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
