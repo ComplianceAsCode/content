@@ -61,4 +61,20 @@ who may have compromised their credentials.
 <ref disa="15,16,17,795"/>
 </Rule>
 
+<Rule id="account_unique_name">
+<title>All Accounts on the System Must Have Unique User or Account Names</title>
+<description>
+Change usernames, or delete accounts, so each has a unique name.
+</description>
+<ocil clause="a line is returned">
+Run the following command to check for duplicate account names:
+<pre># pwck -r</pre>
+If there are no duplicate names, no line will be returned.
+</ocil>
+<rationale>
+Unique usernames allow for accountability on the system.
+</rationale>
+<ref disa="770,804"/>
+</Rule>
+
 </Group>
