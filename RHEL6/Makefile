@@ -102,11 +102,21 @@ content: shorthand-guide shorthand2xccdf guide checks
 
 # not ready until oscap resolve behavior resolved
 content-stig: shorthand-guide shorthand2xccdf guide checks
+	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/unlinked-rhel6-xccdf.xml \
+		$(TRANS)/xccdf-alt-titles.xslt \
+		$(OUT)/unlinked-rhel6-xccdf.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-resolved-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml $(TRANS)/xccdf2stigformat.xslt $(OUT)/unlinked-resolved-rhel6-xccdf.xml 
+	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
+		$(TRANS)/xccdf2stigformat.xslt $(OUT)/unlinked-resolved-rhel6-xccdf.xml 
+	xsltproc -o $(OUT)/table-rhel6-stig-server-stigformat.html \
+		$(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml
+	xmllint --format --output $(OUT)/disa-predraft-stig-rhel6-xccdf.xml $(OUT)/unlinked-stig
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml disa-predraft
 	$(TRANS)/relabelids.py unlinked-stig-rhel6-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-rhel6-xccdf.xml $(OUT)/disa-predraft-stig-rhel6-xccdf.xml
+
+submission-stig: content-stig
+	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-rhel6-xccdf.xml > $(OUT)/table-rhel6-stig.csv
 
 # content-usgcb: coming soon
 

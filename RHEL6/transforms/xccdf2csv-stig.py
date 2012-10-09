@@ -33,12 +33,8 @@ def main():
 		sys.exit(1)
 
 	xccdffile = sys.argv[1]
-
-	# step over xccdf file, and find referenced check files
 	xccdftree = parse_xml_file(xccdffile)
-
 	rules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
-
 	rulewriter = csv.writer(sys.stdout, quoting=csv.QUOTE_ALL)
 
 	for rule in rules:
