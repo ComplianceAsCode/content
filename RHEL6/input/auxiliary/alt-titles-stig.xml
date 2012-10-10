@@ -99,7 +99,7 @@ All public directories must be owned by a system account.
 Process core dumps must be disabled unless needed.
 </title>
 <title rule="enable_execshield" shorttitle="Enable ExecShield">
-The system must implement take measures to limit the ability of processes to have write and execute access to memory.
+The system must limit the ability of processes to have simultaneous write and execute access to memory.
 </title>
 <title rule="enable_randomize_va_space" shorttitle="Enable Randomized Layout of Virtual Address Space">
 The system must implement virtual address space randomization.
@@ -129,7 +129,7 @@ System accounts must not have a working shell, unless needed.
 The root account must be the only account having a UID of 0.
 </title>
 <title rule="no_empty_passwords" shorttitle="Prevent Log In to Accounts With Empty Password">
-The system must not have acocunts configured with blank or null passwords.
+The system must not have accounts configured with blank or null passwords.
 </title>
 <title rule="no_hashes_outside_shadow" shorttitle="Verify All Account Password Hashes are Shadowed">
 The /etc/passwd file must not contain password hashes.
@@ -231,7 +231,7 @@ The graphical desktop environment must automatically lock after 15 minutes of in
 The graphical desktop environment must have automatic lock enabled.
 </title>
 <title rule="set_blank_screensaver" shorttitle="Implement Blank Screen Saver">
-The system must display a publicly-viewable pattern diruing a graphical desktop environment session lock.
+The system must display a publicly-viewable pattern during a graphical desktop environment session lock.
 </title>
 <title rule="install_vlock_package" shorttitle="Install the vlock Package">
 The system must allow locking of the console screen.
@@ -300,16 +300,16 @@ The IPv6 protocol handler must not be bound to the network stack unless needed.
 The system must ignore ICMPv6 redirects by default.
 </title>
 <title rule="enable_ip6tables" shorttitle="Verify ip6tables Enabled">
-The system just employ a local IPv6 firewall.
+The system must employ a local IPv6 firewall.
 </title>
 <title rule="enable_iptables" shorttitle="Verify iptables Enabled">
-The system just employ a local IPv4 firewall.
+The system must employ a local IPv4 firewall.
 </title>
 <title rule="set_iptables_default_rule" shorttitle="Set Default Iptables Policy for Incoming Packets">
-The system's local firewall must timplement a deny-all, allow-by-exception policy for inbound packets.
+The system's local firewall must implement a deny-all, allow-by-exception policy for inbound packets.
 </title>
 <title rule="set_iptables_default_rule_forward" shorttitle="Set Default Iptables Policy for Forwarded Packets">
-The system's local firewall must timplement a deny-all, allow-by-exception policy for forwarded packets.
+The system's local firewall must implement a deny-all, allow-by-exception policy for forwarded packets.
 </title>
 <title rule="disable_protocol_dccp" shorttitle="Disable DCCP Support">
 The Datagram Congestion Control Protocol (DCCP) must be disabled unless required.
