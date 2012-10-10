@@ -12,6 +12,23 @@ in your network environment by ensuring they are not needed
 prior to disabling them.
 </warning>
 
+<Rule id="disable_protocol_appletalk" severity="medium">
+<title>Disable AppleTalk Support</title>
+<description>
+The AppleTalk protocol suite is no longer in common use.
+<module-disable-macro module="appletalk" />
+</description>
+<ocil>
+<module-disable-check-macro module="appletalk" />
+</ocil>
+<rationale>
+Disabling AppleTalk protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident cce="14268-7" />
+<ref nist="CM-6, CM-7" disa="382"/>
+</Rule>
+
 <Rule id="disable_protocol_dccp" severity="medium">
 <title>Disable DCCP Support</title>
 <description>
