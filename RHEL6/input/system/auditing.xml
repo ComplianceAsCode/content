@@ -648,12 +648,11 @@ audited.</rationale>
 
 <Rule id="audit_logs_rootowner">
 <title>System Audit Logs Must Be Owned By Root</title>
-<description>Change the ownership of the audit log file(s) with the following:
-<pre># chown root <i>audit log file</i></pre>
+<description>
+<fileowner-desc-macro file="/var/log" owner="root"/>
 </description>
-<ocil clause="there are log files with an owner other than root">
-To determine the location and ownership of audit log files, run the following command:
-<pre># grep "^log_file" /etc/audit/auditd.conf|sed s/^[^\/]*//|xargs stat -c %U:%n</pre>
+<ocil>
+<fileowner-check-macro file="/var/log" owner="root"/>
 </ocil>
 <rationale>Failure to give ownership of the audit log file(s) to root allows the designated 
 owner, and unauthorized users, potential access to sensitive information.</rationale>

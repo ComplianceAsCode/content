@@ -25,6 +25,21 @@ configurable, with further configuration information located in
 <tt>/usr/share/doc/aide-<i>VERSION</i></tt></description>
 <ref disa="374,1069,1297,1589"/>
 
+<Rule id="install_hids">
+<title>System Must Have a Host-Based Intrusion Detection Tool Installed </title>
+<description>
+Install a Host-Based Intrusion Detection Tool
+</description>
+<ocil clause="no host-based intrusion detection systems are installed">
+The preferred host-based intrusion detection system is the McAfee HBSS product.
+<package-check-macro package="mfehiplsm"/>
+</ocil>
+<rationale>
+Host-based intrusion detection tools allow for system-level intrusion defense. 
+</rationale>
+<ref disa="1263"/>
+</Rule>
+
 <Rule id="install_aide">
 <title>Install AIDE</title>
 <description>
