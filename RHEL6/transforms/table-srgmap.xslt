@@ -84,18 +84,18 @@
 			<xsl:for-each select="$items">
 				<xsl:variable name="item" select="."/>
 				<xsl:if test="cdf:reference[@href=$disa-cciuri]" > 
-				<table>
 				<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
 				    <xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 				    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 			  		<xsl:if test="$cci_expanded=$srg_cci" >
+						<table>
 						<tr>
 						<td> <xsl:value-of select="$item/cdf:title"/> </td>
 						<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
 				  		</tr>
+						</table>
 			  		</xsl:if>
 				</xsl:for-each>
-				</table>
 				</xsl:if>
 			</xsl:for-each>
 			</td>
