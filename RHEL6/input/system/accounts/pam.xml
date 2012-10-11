@@ -203,6 +203,24 @@ is different from account lockout, which is provided by the pam_faillock module.
 <ref nist="IA-5" disa="1092" />
 </Rule>
 
+<Rule id="password_require_3consecrepeat">
+<title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
+<description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
+consecutive repeating characters.  Edit the <tt>/etc/pam.d/system-auth</tt> file to include the following 
+line prior to the <tt>password include system-auth-ac</tt> line:
+<pre>password required pam_cracklib.so maxrepeat=3</pre>
+</description>
+<ocil clause="maxrepeat is not found or not set to the required value">
+To check the maximum value for consecutive repeating characters, run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+Look for the value of the <tt>maxrepeat</tt> parameter.  The DoD requirement is 3.
+</ocil>
+<rationale>
+Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
+</rationale>
+<ref disa="366"/>
+</Rule>
+
 <Rule id="password_require_digits">
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements for
