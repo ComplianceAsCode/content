@@ -67,6 +67,8 @@ table-srgmap: shorthand-guide shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-rhel6-xccdf.xml" -o $(OUT)/table-rhel6-srgmap.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-rhel6-xccdf.xml" -o $(OUT)/table-rhel6-srgmap-flat.html \
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 
 table-stigs: shorthand2xccdf
 	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
