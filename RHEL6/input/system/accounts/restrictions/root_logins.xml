@@ -87,6 +87,24 @@ using the root account.
 <ref nist="AC-3, AC-6" disa="770" />
 </Rule>
 
+<Rule id="no_root_webbrowsing">
+<title>Restrict Web Browser Use for Administrative Accounts</title>
+<description>
+Enforce policy requiring administrative accounts use web browsers only for 
+local service administration.
+</description>
+<ocil clause="this is not the case">
+Check the <tt>root</tt> home directory for a <tt>.mozilla</tt> directory.  If 
+one exists, ensure browsing is limited to local service administration.
+</ocil>
+<rationale>
+If a browser vulnerability is exploited while running with administrative privileges, 
+the entire system could be compromised.  Specific exceptions for local service 
+administration should be documented in site-defined policy.
+</rationale>
+<ref disa="366" />
+</Rule>
+
 <Rule id="no_shelllogin_for_systemaccounts">
 <title>Ensure that System Accounts Do Not Run a Shell Upon Login</title>
 <description>
@@ -150,5 +168,47 @@ access to root privileges in an accountable manner.
 <ref nist="AC-3, AC-11, CM-6, CM-7" disa="366" />
 </Rule>
 
+<Rule id="root_path_defaultabsolute">
+<title>Root Path Must Be Vendor Default</title>
+<description>
+Assuming root shell is bash, edit the following files:
+<pre>~/.profile</pre>
+<pre>~/.bashrc</pre>
+Change any <tt>PATH</tt> variables to the vendor default for root and remove any 
+empty <tt>PATH</tt> entries or references to relative paths.
+</description>
+<ocil clause="any of these conditions are not met">
+To view the root user's <tt>PATH</tt>, run the following command:
+<pre># env | grep PATH</pre>
+If correctly configured, the <tt>PATH</tt> must: use vendor default settings, 
+have no empty entries, and have no entries beginning with a character
+other than a slash (/).
+</ocil>
+<rationale>
+The root account's executable search path must be the vendor default, and must 
+contain only absolute paths.
+</rationale>
+<ref disa="366" />
+</Rule>
+
+<Rule id="root_path_no_wwdir">
+<title>Root Path Must Not Contain World-Writable Directories</title>
+<description>
+If a world-writable directory is found in the <tt>PATH</tt>, remove the 
+world-writable permission for that directory with the following command:
+<pre># chmod o-w <i>/dir</i></pre>
+Alternately, remove the world-writable directory from the <tt>PATH</tt>.
+</description>
+<ocil clause="any world-writable directories are found">
+World-writable permissions on directories in root's path can be checked 
+with the following command:
+<pre># ls -ld 'echo $PATH | sed "s/:/ /g"'</pre>
+</ocil>
+<rationale>
+If the root search path contains a world-writable directory, malicious software 
+could be placed in the path.
+</rationale>
+<ref disa="366" />
+</Rule>
 </Group>
 
