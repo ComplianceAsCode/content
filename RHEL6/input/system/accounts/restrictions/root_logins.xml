@@ -87,6 +87,25 @@ using the root account.
 <ref nist="AC-3, AC-6" disa="770" />
 </Rule>
 
+<Rule id="GID_reserved_systemgroups">
+<title>GIDs Reserved for System Accounts Must Not Be Assigned to Non-System Groups</title>
+<description>
+Change the primary group ID numbers for non-system accounts with reserved 
+primary group IDs (those less than or equal to 499).
+</description>
+<ocil clause="any non-system accounts are using a reserved GID">
+Run the following command to confirm all accounts with a GID of 499 
+or below are used by a system account:
+<pre># cut -d: -f 1,4 /etc/passwd|egrep ":[1-4][0-9]{2}$|:[0-9]{1,2}$"</pre>
+</ocil>
+<rationale>
+Reserved GIDs are typically used by system software packages.  If non-system 
+groups have GIDs in this range, they may conflict with system software - possibly leading 
+to the group having permissions to modify system files.
+</rationale>
+<ref disa="366" />
+</Rule>
+
 <Rule id="no_root_webbrowsing">
 <title>Restrict Web Browser Use for Administrative Accounts</title>
 <description>
