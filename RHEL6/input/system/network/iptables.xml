@@ -33,29 +33,19 @@ the following commands (and analogously for ip6tables):
 <pre># service iptables restart</pre>
 The default iptables rules are:
 <pre>Chain INPUT (policy ACCEPT)
-num target prot opt source destination
-1 RH-Firewall-1-INPUT all -- 0.0.0.0/0 0.0.0.0/0
+num  target     prot opt source       destination
+1    ACCEPT     all  --  0.0.0.0/0    0.0.0.0/0    state RELATED,ESTABLISHED 
+2    ACCEPT     icmp --  0.0.0.0/0    0.0.0.0/0
+3    ACCEPT     all  --  0.0.0.0/0    0.0.0.0/0
+4    ACCEPT     tcp  --  0.0.0.0/0    0.0.0.0/0    state NEW tcp dpt:22 
+5    REJECT     all  --  0.0.0.0/0    0.0.0.0/0    reject-with icmp-host-prohibited 
 
 Chain FORWARD (policy ACCEPT)
-num target prot opt source destination
-1 RH-Firewall-1-INPUT all -- 0.0.0.0/0 0.0.0.0/0
+num  target     prot opt source       destination
+1    REJECT     all  --  0.0.0.0/0    0.0.0.0/0    reject-with icmp-host-prohibited 
 
 Chain OUTPUT (policy ACCEPT)
-num target prot opt source destination
-
-Chain RH-Firewall-1-INPUT (2 references)
-num target prot opt source destination
-1 ACCEPT all -- 0.0.0.0/0 0.0.0.0/0
-2 ACCEPT icmp -- 0.0.0.0/0 0.0.0.0/0 icmp type 255
-3 ACCEPT esp -- 0.0.0.0/0 0.0.0.0/0
-4 ACCEPT ah -- 0.0.0.0/0 0.0.0.0/0
-5 ACCEPT udp -- 0.0.0.0/0 224.0.0.251 udp dpt:5353
-6 ACCEPT udp -- 0.0.0.0/0 0.0.0.0/0 udp dpt:631
-7 ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:631
-8 ACCEPT all -- 0.0.0.0/0 0.0.0.0/0 state RELATED,ESTABLISHED
-9 ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 state NEW tcp dpt:22
-10 REJECT all -- 0.0.0.0/0 0.0.0.0/0 reject-with
-icmp-host-prohibited</pre>
+num  target     prot opt source       destination</pre>
 The <tt>ip6tables</tt> default rules are similar, with its rules 2 and
 10 reflecting protocol naming and addressing differences. Instead
 of rule 8, however, <tt>ip6tables</tt> includes two rules that accept all
