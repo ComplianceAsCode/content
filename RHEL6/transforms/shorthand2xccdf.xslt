@@ -265,6 +265,12 @@ exclude-result-prefixes="xccdf xhtml dc">
     <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    -->
   </xsl:template>
 
+  <xsl:template match="mount-desc-macro">
+	Add the <xhtml:code><xsl:value-of select="@option"/></xhtml:code> option to the fourth column of
+	<xhtml:code>/etc/fstab</xhtml:code> for the line which controls mounting of
+	<xhtml:code><xsl:value-of select="@part"/></xhtml:code>.
+  </xsl:template>
+
   <xsl:template match="fileperms-desc-macro">
     To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre xml:space="preserve"># chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
