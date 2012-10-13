@@ -88,7 +88,7 @@ table-stigs: shorthand2xccdf
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
 
-tables: table-refs table-profilenistrefs table-srgmap table-stigs
+tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
 
 alt-titles: shorthand2xccdf
 	$(UTILS)/sync-alt-titles.py -p stig-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/unlinked-rhel6-xccdf.xml
