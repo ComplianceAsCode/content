@@ -646,6 +646,24 @@ audited.</rationale>
 <ref nist="AU-2(a)" />
 </Rule>
 
+<Rule id="audit_logs_permissions">
+<title>System Audit Logs Must Have Mode 0640 or Less Permissive</title>
+<description>
+Change the mode of the audit log files:
+<pre># chmod 0640 <i>audit_file</i></pre>
+</description>
+<ocil clause="any are more permissive">
+Run the following command to check the mode of the system audit logs:
+<pre>grep "^log_file" /etc/audit/auditd.conf|sed s/^[^\/]*//|xargs stat -c %a:%n</pre>
+Audit logs must be mode 0640 or less permissive.
+</ocil>
+<rationale>
+If users can write to audit logs, audit trails can be modified or destroyed.
+</rationale>
+<oval id="file_permissions_var_log_audit" />
+<ref disa="366" />
+</Rule> 
+
 <Rule id="audit_logs_rootowner">
 <title>System Audit Logs Must Be Owned By Root</title>
 <description>
