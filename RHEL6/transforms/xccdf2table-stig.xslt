@@ -123,12 +123,10 @@
     <xsl:template name="print-notes">
             <xsl:param name="vulnid"/>
 		<xsl:for-each select="$notegroup/note">
-			<table>
         	<xsl:call-template name="search_vulnidlist" select="note">
 		    	<xsl:with-param name="vulnid_sought" select="$vulnid" />
 		    	<xsl:with-param name="vulnid_list" select="@ref" />
         	</xsl:call-template>
-			</table>
 		</xsl:for-each>
 
     </xsl:template>
