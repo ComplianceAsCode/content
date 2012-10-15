@@ -242,7 +242,7 @@ See the section titled "Restrict Partition Mount Options" for a description of t
 
 <Rule id="use_nodev_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nodev</title>
-<description>The <tt>nodev</tt> option should be enabled for all NFS mounts</description>
+<description>The <tt>nodev</tt> option should be used for all NFS mounts.</description>
 <ocil clause="the setting does not show">
 To verify that the <tt>nodev</tt> option is configured for all NFS mounts, run the following command:
 <pre>$ mount  | grep nfs</pre>
@@ -256,7 +256,7 @@ should not present device files to users.</rationale>
 
 <Rule id="use_nosuid_option_on_nfs_mounts">
 <title>Mount Remote Filesystems with nosuid</title>
-<description>The <tt>nosuid</tt> option should be enabled for all NFS mounts</description>
+<description>The <tt>nosuid</tt> option should be used for all NFS mounts.</description>
 <ocil clause="the setting does not show">
 To verify that the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command:
 <pre>$ mount  | grep nfs</pre>
