@@ -22,22 +22,18 @@ homepage and more detailed documentation are available at http://www.cups.org.
 </Rule>
 
 <Rule id="iptables_cupsd_disabled">
-<title>Disable Firewall Access to Printing Service</title>
-<description>If the system does not need to act as a network print server, edit
-the files <tt>/etc/sysconfig/iptables</tt> and
-<tt>/etc/sysconfig/ip6tables</tt> (if IPv6 is in use). In each file, locate and
-delete the lines:
-<pre>-A RH-Firewall-1-INPUT -p udp -m udp --dport 631 -j ACCEPT
--A RH-Firewall-1-INPUT -p tcp -m tcp --dport 631 -j ACCEPT</pre>
+<title>Enable Firewall Access to Printing Service</title>
+<description>If the system must act as a network print server then 
+<tt>iptables</tt> should be configured to allow traffic for it through.
+<iptables-desc-macro proto="tcp" port="631" />
+<iptables-desc-macro proto="tcp" port="631" />
 </description>
 <rationale>By default, inbound connections to the Internet Printing Protocol
-port are allowed. If the print server does not need to be accessed, either
-because the machine is not running the print service at all or because the
-machine is not providing a remote network printer to other machines, this
-exception should be removed from the firewall configuration.
+port are not allowed. If the print server does need to be accessed this
+exception should be added to the firewall configuration.
 </rationale>
 <ident cce="3649-1" />
-<oval id="iptables_cupsd_disabled" />
+<!-- Need to invert this check <oval id="iptables_cupsd_disabled" /> -->
 <ref nist="CM-7" />
 </Rule>
 
