@@ -268,7 +268,12 @@ exclude-result-prefixes="xccdf xhtml dc">
   <xsl:template match="mount-desc-macro">
 	Add the <xhtml:code><xsl:value-of select="@option"/></xhtml:code> option to the fourth column of
 	<xhtml:code>/etc/fstab</xhtml:code> for the line which controls mounting of
-	<xhtml:code><xsl:value-of select="@part"/></xhtml:code>.
+	<xsl:if test="starts-with(@part,'/')">
+		<xhtml:code><xsl:value-of select="@part"/></xhtml:code>.
+	</xsl:if>
+	<xsl:if test="not(starts-with(@part,'/'))">
+		<xsl:value-of select="@part"/>.
+	</xsl:if>
   </xsl:template>
 
   <xsl:template match="fileperms-desc-macro">
