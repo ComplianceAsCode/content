@@ -87,24 +87,6 @@ using the root account.
 <ref nist="AC-3, AC-6" disa="770" />
 </Rule>
 
-<Rule id="GID_reserved_systemgroups">
-<title>GIDs Reserved for System Accounts Must Not Be Assigned to Non-System Groups</title>
-<description>
-Change the primary group ID numbers for non-system accounts with reserved 
-primary group IDs (those less than or equal to 499).
-</description>
-<ocil clause="any non-system accounts are using a reserved GID">
-Run the following command to confirm all accounts with a GID of 499 
-or below are used by a system account:
-<pre># cut -d: -f 1,4 /etc/passwd|egrep ":[1-4][0-9]{2}$|:[0-9]{1,2}$"</pre>
-</ocil>
-<rationale>
-Reserved GIDs are typically used by system software packages.  If non-system 
-groups have GIDs in this range, they may conflict with system software - possibly leading 
-to the group having permissions to modify system files.
-</rationale>
-<ref disa="366" />
-</Rule>
 
 <Rule id="no_root_webbrowsing">
 <title>Restrict Web Browser Use for Administrative Accounts</title>
@@ -187,7 +169,7 @@ access to root privileges in an accountable manner.
 <ref nist="AC-3, AC-11, CM-6, CM-7" disa="366" />
 </Rule>
 
-<Rule id="root_path_defaultabsolute">
+<Rule id="root_path_default">
 <title>Root Path Must Be Vendor Default</title>
 <description>
 Assuming root shell is bash, edit the following files:
@@ -210,6 +192,10 @@ contain only absolute paths.
 <ref disa="366" />
 </Rule>
 
+<!--
+     This is redundant to the previous rule, which insists that the
+     root path is the vendor default.
+
 <Rule id="root_path_no_wwdir">
 <title>Root Path Must Not Contain World-Writable Directories</title>
 <description>
@@ -228,6 +214,6 @@ If the root search path contains a world-writable directory, malicious software
 could be placed in the path.
 </rationale>
 <ref disa="366" />
-</Rule>
+</Rule> -->
 </Group>
 
