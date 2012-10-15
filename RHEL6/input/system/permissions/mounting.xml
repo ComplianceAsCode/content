@@ -61,12 +61,9 @@ more information</rationale>
 <Rule id="kernel_module_usb-storage_disabled">
 <title>Disable Modprobe Loading of USB Storage Driver</title>
 <description>
-If USB storage devices should not be used, the <tt>modprobe</tt> program
-used for automatic kernel module loading should be configured to not load
-the USB storage driver upon demand. Add the following line to the appropriate
-file in <tt>/etc/modprobe.d/</tt> to prevent loading of the <tt>usb-storage</tt>
-kernel module:
-<pre>install usb-storage /bin/true</pre>
+To prevent USB storage devices from being used, configure the kernel module loading system
+to prevent automatic loading of the USB storage driver. 
+<module-disable-macro module="usb-storage" />
 This will prevent the <tt>modprobe</tt> program from loading the <tt>usb-storage</tt>
 module, but will not prevent an administrator (or another program) from using the
 <tt>insmod</tt> program to load the module manually.</description>
@@ -196,11 +193,10 @@ DVDs.
 
 <Rule id="disable_module_cramfs">
 <title>Disable Mounting of <tt>cramfs</tt></title>
-<description>Using the <tt>install</tt> command inside the appropriate .conf file inside<tt>/etc/modprobe.d</tt>
-instructs the kernel module loading system to run the command
-specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
-kernel as normal. This effectively prevents usage of these uncommon
-filesystems.</description>
+<description>
+<module-disable-macro module="cramfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <ident cce="14089-7" />
@@ -210,11 +206,10 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_freevxfs">
 <title>Disable Mounting of <tt>freevxfs</tt></title>
-<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
-instructs the kernel module loading system to run the command
-specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
-kernel as normal. This effectively prevents usage of these uncommon
-filesystems.</description>
+<description>
+<module-disable-macro module="freevsfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <ident cce="14457-6" />
@@ -224,11 +219,10 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_jffs2">
 <title>Disable Mounting of <tt>jffs2</tt></title>
-<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
-instructs the kernel module loading system to run the command
-specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
-kernel as normal. This effectively prevents usage of these uncommon
-filesystems.</description>
+<description>
+<module-disable-macro module="jffs2" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <ident cce="14853-6" />
@@ -238,11 +232,10 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_hfs">
 <title>Disable Mounting of <tt>hfs</tt></title>
-<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
-instructs the kernel module loading system to run the command
-specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
-kernel as normal. This effectively prevents usage of these uncommon
-filesystems.</description>
+<description>
+<module-disable-macro module="hfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <ident cce="15087-0" />
@@ -252,11 +245,10 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_hfsplus">
 <title>Disable Mounting of <tt>hfsplus</tt></title>
-<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
-instructs the kernel module loading system to run the command
-specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
-kernel as normal. This effectively prevents usage of these uncommon
-filesystems.</description>
+<description>
+<module-disable-macro module="hfsplus" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <ident cce="14093-9" />
@@ -266,11 +258,10 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_squashfs">
 <title>Disable Mounting of <tt>squashfs</tt></title>
-<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
-instructs the kernel module loading system to run the command
-specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
-kernel as normal. This effectively prevents usage of these uncommon
-filesystems.</description>
+<description>
+<module-disable-macro module="squashfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <ident cce="14118-4" />
@@ -280,11 +271,10 @@ local system should be disabled.</rationale>
 
 <Rule id="disable_module_udf">
 <title>Disable Mounting of <tt>udf</tt></title>
-<description>Using the <tt>install</tt> command inside the appropriate <tt>/etc/modprobe.d</tt> configuration file.
-instructs the kernel module loading system to run the command
-specified (here, <tt>/bin/true</tt>) instead of inserting the module in the
-kernel as normal. This effectively prevents usage of these uncommon
-filesystems.</description>
+<description>
+<module-disable-macro module="udf" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <ident cce="14871-8" />
