@@ -106,11 +106,11 @@ configuration file. That is, when this guide recommends editing
 
 <Group id="dns_server_firewall">
 <title>Configure Firewalls to Protect the DNS Server</title>
-<description>Edit the file <tt>/etc/sysconfig/iptables</tt>. Add the following
-lines, ensuring that they appear before the final LOG and DROP lines for the
-RH-Firewall-1-INPUT chain:
-<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p udp --dport 53 -j ACCEPT
--A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 53 -j ACCEPT</pre>
+<description>
+By default, <tt>iptables</tt> blocks access to the ports used by the DNS 
+server.
+<iptables-desc-macro proto="udp" port="53" />
+<iptables-desc-macro proto="tcp" port="53" />
 </description>
 <rationale>These lines are necessary in order to allow remote machines to
 contact the DNS server. If this server is only available to the local network,

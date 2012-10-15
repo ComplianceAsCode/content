@@ -175,11 +175,7 @@ attacker access to credentials by monitoring network traffic.
 access to any services. This modification will allow remote hosts to 
 initiate connections to the IMAP daemon, while keeping all other ports 
 on the server in their default protected state. 
-<br /><br />
-Edit <tt>/etc/sysconfig/iptables</tt>. Add the following line, ensuring 
-that it appears before the final <tt>LOG</tt> and <tt>DROP</tt> lines 
-for the <tt>RH-Firewall-1-INPUT</tt> chain:
-<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 143 -j ACCEPT</pre>
+<iptables-desc-macro proto="tcp" port="143" />
 </description>
 
 </Group> <!-- <Group id="dovecot_allow_imap_access"> -->

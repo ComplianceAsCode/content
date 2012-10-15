@@ -46,14 +46,7 @@ num  target     prot opt source       destination
 
 Chain OUTPUT (policy ACCEPT)
 num  target     prot opt source       destination</pre>
-The <tt>ip6tables</tt> default rules are similar, with its rules 2 and
-10 reflecting protocol naming and addressing differences. Instead
-of rule 8, however, <tt>ip6tables</tt> includes two rules that accept all
-incoming udp and tcp packets with a particular destination port
-range. This is because the current Netfilter implementation for
-IPv6 lacks reliable connection-tracking functionality.</description>
-
-
+The <tt>ip6tables</tt> default rules are essentially the same.</description>
 
 
 <Rule id="enable_ip6tables">
@@ -164,20 +157,20 @@ The output should be simular to the following:
 <Group id="iptables_icmp_disabled">
 <title>Restrict ICMP Message Types</title>
 <description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages types can be restricted. To accept only ICMP echo reply, destination unreachable, and time exceeded messages, remove the line:<br />
-<pre>-A RH-Firewall-1-INPUT -p icmp --icmp-type any -j ACCEPT</pre>
+<pre>-A INPUT -p icmp --icmp-type any -j ACCEPT</pre>
 and insert the lines:
-<pre>-A RH-Firewall-1-INPUT -p icmp --icmp-type echo-reply -j ACCEPT
--A RH-Firewall-1-INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
--A RH-Firewall-1-INPUT -p icmp --icmp-type time-exceeded -j ACCEPT</pre>
+<pre>-A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
+-A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+-A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT</pre>
 To allow the system to respond to pings, also insert the following line:
-<pre>-A RH-Firewall-1-INPUT -p icmp --icmp-type echo-request -j ACCEPT</pre>
+<pre>-A INPUT -p icmp --icmp-type echo-request -j ACCEPT</pre>
 Ping responses can also be limited to certain networks or hosts by using the -s option in the previous rule.
 Because IPv6 depends so heavily on ICMPv6, it is preferable to deny the ICMPv6 packets you know you
 don't need (e.g. ping requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else through:
-<pre>-A RH-Firewall-1-INPUT -p icmpv6 --icmpv6-type echo-request -j DROP</pre>
+<pre>-A INPUT -p icmpv6 --icmpv6-type echo-request -j DROP</pre>
 If you are going to statically configure the machine's address, it should ignore Router Advertisements which
 could add another IPv6 address to the interface or alter important network settings:
-<pre>-A RH-Firewall-1-INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>
+<pre>-A INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>
 </description>
 <ref nist="AC-4, CM-6" />
 <rationale>Restricting other ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not recommended because the oper-
@@ -194,12 +187,12 @@ logging these spoofing or suspicious attempts before they are dropped. If you do
 traffic, add identical rules with a target of DROP after each LOG.
 To log and then drop these IPv4 packets, insert the following rules in <tt>/etc/sysconfig/iptables</tt> (excepting
 any that are intentionally used):
-<pre>-A INPUT -i eth0 -s 10.0.0.0/8 -j LOG --log-prefix "IP DROP SPOOF A: "
--A INPUT -i eth0 -s 172.16.0.0/12 -j LOG --log-prefix "IP DROP SPOOF B: "
--A INPUT -i eth0 -s 192.168.0.0/16 -j LOG --log-prefix "IP DROP SPOOF C: "
--A INPUT -i eth0 -s 224.0.0.0/4 -j LOG --log-prefix "IP DROP MULTICAST D: "
--A INPUT -i eth0 -s 240.0.0.0/5 -j LOG --log-prefix "IP DROP SPOOF E: "
--A INPUT -i eth0 -d 127.0.0.0/8 -j LOG --log-prefix "IP DROP LOOPBACK: "</pre>
+<pre>-A INPUT -s 10.0.0.0/8 -j LOG --log-prefix "IP DROP SPOOF A: "
+-A INPUT -s 172.16.0.0/12 -j LOG --log-prefix "IP DROP SPOOF B: "
+-A INPUT -s 192.168.0.0/16 -j LOG --log-prefix "IP DROP SPOOF C: "
+-A INPUT -s 224.0.0.0/4 -j LOG --log-prefix "IP DROP MULTICAST D: "
+-A INPUT -s 240.0.0.0/5 -j LOG --log-prefix "IP DROP SPOOF E: "
+-A INPUT -d 127.0.0.0/8 -j LOG --log-prefix "IP DROP LOOPBACK: "</pre>
 Similarly, you might wish to log packets containing some IPv6 reserved addresses if they are not expected
 on your network:
 <pre>-A INPUT -i eth0 -s ::1 -j LOG --log-prefix "IPv6 DROP LOOPBACK: "

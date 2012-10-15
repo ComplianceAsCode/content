@@ -179,9 +179,9 @@ these users from filling a disk used by other services.</rationale>
 
 <Group id="ftp_configure_firewall">
 <title>Configure Firewalls to Protect the FTP Server</title>
-<description>Edit the file <tt>/etc/sysconfig/iptables</tt>. Add the following lines, ensuring that they appear before the final
-LOG and DROP lines for the RH-Firewall-1-INPUT chain:
-<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 21 -j ACCEPT</pre>
+<description>By default, <tt>iptables</tt>
+blocks access to the ports used by the web server.
+<iptables-desc-macro allow="true" proto="tcp" port="21" />
 Edit the file <tt>/etc/sysconfig/iptables-config</tt>. Ensure that the space-separated list of modules contains
 the FTP connection tracking module:
 <pre>IPTABLES_MODULES="ip_conntrack_ftp"</pre></description>

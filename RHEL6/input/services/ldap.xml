@@ -358,18 +358,18 @@ permissions. This will prevent slapd from starting correctly.
 
 <Rule id="iptables_ldap_enabled">
 <title>Configure iptables to Allow Access to the LDAP Server</title>
-<description>Determine an appropriate network block, netwk , and network mask, mask , representing the machines on
+<description>Determine an appropriate network block representing the machines on
 your network which will synchronize to this server.
-Edit /etc/sysconfig/iptables. Add the following lines, ensuring that they appear before the final LOG and
-DROP lines for the RH-Firewall-1-INPUT chain:
-<pre>-A RH-Firewall-1-INPUT -s netwk/mask -m state --state NEW -p tcp --dport 389 -j ACCEPT
--A RH-Firewall-1-INPUT -s netwk/mask -m state --state NEW -p tcp --dport 636 -j ACCEPT</pre>
-The default Iptables configuration does not allow inbound access to any services. These modifications allow
-access to the LDAP primary (389) and encrypted-only (636) ports, while keeping all other ports on the server
-in their default protected state.
-Note: Even if the LDAP server restricts connections so that only encrypted queries are allowed, it will probably
-be necessary to allow traffic to the default port 389. This is true because many LDAP clients implement
-encryption by connecting to the primary port and issuing the STARTTLS command.
+<iptables-desc-macro net="true" proto="tcp" port="389" />
+<iptables-desc-macro net="true" proto="tcp" port="636" />
+The default Iptables configuration does not allow inbound access to any 
+services. These modifications allow access to the LDAP primary (389) and 
+encrypted-only (636) ports, while keeping all other ports on the server in 
+their default protected state.
+Note: Even if the LDAP server restricts connections so that only encrypted 
+queries are allowed, it will probably be necessary to allow traffic to the 
+default port 389. This is true because many LDAP clients implement encryption 
+by connecting to the primary port and issuing the STARTTLS command.
 </description>
 <!--<ident cce="TODO:CCE" />-->
 <oval id="iptables_ldap_enabled" />

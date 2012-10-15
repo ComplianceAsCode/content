@@ -811,15 +811,10 @@ to access information about the web server or to alter the server's configuratio
 <Group id="httpd_configure_iptables">
 <title>Configure <tt>iptables</tt> to Allow Access to the Web Server</title>
 <description>
-By default, <tt>iptables</tt> blocks access to the ports used by the web server.
-To configure <tt>iptables</tt> to allow port 80 traffic edit <tt>/etc/sysconfig/iptables</tt>.
-Add the following line, ensuring that it appears before the final LOG and DROP lines for
-the RH-Firewall-1-INPUT chain:
-<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 80 -j ACCEPT</pre>
-To configure <tt>iptables</tt> to allow port 443 traffic edit <tt>/etc/sysconfig/iptables</tt>.
-Add the following line, ensuring that it appears before the final LOG and DROP lines for
-the RH-Firewall-1-INPUT chain:
-<pre>-A RH-Firewall-1-INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT</pre>
+By default, <tt>iptables</tt>
+blocks access to the ports used by the web server.
+<iptables-desc-macro allow="true" proto="tcp" port="80" />
+<iptables-desc-macro allow="true" proto="tcp" port="443" />
 </description>
 
 </Group> <!-- <Group id="httpd_configure_iptables"> -->
