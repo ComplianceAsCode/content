@@ -25,20 +25,6 @@ configurable, with further configuration information located in
 <tt>/usr/share/doc/aide-<i>VERSION</i></tt></description>
 <ref disa="374,1069,1297,1589"/>
 
-<Rule id="install_hids">
-<title>System Must Have a Host-Based Intrusion Detection Tool Installed </title>
-<description>
-Install a Host-Based Intrusion Detection Tool
-</description>
-<ocil clause="no host-based intrusion detection systems are installed">
-For DoD systems, HBSS is typically provided.
-<package-check-macro package="mfehiplsm"/>
-</ocil>
-<rationale>
-Host-based intrusion detection systems monitor hosts for potentially malicious behavior. 
-</rationale>
-<ref disa="1263"/>
-</Rule>
 
 <Rule id="install_aide">
 <title>Install AIDE</title>
@@ -112,8 +98,8 @@ running AIDE may reveal unexpected changes in installed files.
 </rationale>
 <ref nist="CM-6, SC-28, SI-7" disa="416,1069,1166,1263"/>
 </Rule>
-
-<Rule id="aide_verify_integrity_manually">
+<!--
+<Group id="aide_verify_integrity_manually">
 <title>Manually Verify Integrity of AIDE</title>
 <description>
 Manually verify the integrity of the AIDE binaries, configuration file, and database. Possibilities for doing
@@ -136,11 +122,9 @@ or alter these files after a successful intrusion. Because of this, manual and f
 recommended. The safely stored copies (or hashes) of the database, binary, and configuration file were created
 earlier for this purpose.
 </rationale>
-<!--<ident cce="4209-3" />-->
-<!--<oval id="aide_verify_integrity_manually" />-->
 <ref nist="SC-28, SI-7" />
-</Rule>
-
+</Group>
+-->
 </Group>
 
 <Group id="rpm_verification">
@@ -201,30 +185,81 @@ on the system.</rationale>
 
 </Group>
 
-<Group id="antivirus">
-<title>Virus Scanning</title>
-<description>In order to minimize potential negative impact to the organization that can
-be caused by malicious code, it is imperative that malicious code is identified and
-eradicated. Virus scanning software should be used to protect a system from penetration
-from computer viruses and to limit their spread through intermediate systems. 
+<Group id="additional_security_software">
+<title>Additional Security Software</title>
+<description>
+Additional security software that is not provided or supported
+by Red Hat can be installed to provide complementary or duplicative
+security capabilities to those provided by the base platform.
 </description>
+
+<Rule id="install_hids">
+<title>Install Intrusion Detection Software</title>
+<description>
+The base Red Hat platform already includes a sophisticated auditing system that
+can detect intruder activity, as well as SELinux, which provides host-based
+intrusion prevention capabilities by confining privileges programs and user
+sessions which may become compromised.  
+<br/>
+<br/>
+Install an additional intrusion detection tool to provide complementary or
+duplicative monitoring, reporting, and reaction capabilities to those of the base
+platform.  For DoD systems, the McAfee Host-based Security System is provided
+to fulfill this role.  
+<!-- provide link to cybercom site? -->
+<!-- need additional commentary: verify that HBSS (sans HIPS module) compatible w/SELinux -->
+</description>
+<ocil clause="no host-based intrusion detection tools are installed">
+Inspect the system to determine if intrusion detection software has been installed.
+Verify that the intrusion detection software is active. 
+<!-- add instructions for HBSS?  the text in the RHEL 5 STIG is wrong as usual -->
+</ocil>
+<rationale>
+Adding host-based intrusion detection tools can provide the capability to
+automatically take actions in response to malicious behavior, which can provide
+additional agility in reacting to network threats. These tools also often
+include a reporting capability to provide network awareness of system, which
+may not otherwise exist in an organization's systems management regime.
+</rationale>
+<ref disa="1263"/>
+</Rule>
 
 <Rule id="install_antivirus">
 <title>Install Virus Scanning Software</title>
-<description>Virus scanning software should be installed and configured to perform scans
-dynamically on accessed files. If this capability is not available, the system should be
-configured to scan, at a minimum, all altered files on the system on a daily basis.
-<br /><br />
-Virus signature definition files should be updated frequently. It is recommended that definition
-files be updated at least every 7 days.
+<description>
+Install virus scanning software, which uses signatures to search for the
+presence of viruses on the filesystem. 
+The McAfee uvscan virus scanning tool is provided for DoD systems.
+Ensure virus definition files are no older than 7 days, or their last release.
+<!-- need info here on where DoD admins can go to get this -->
+Configure the virus scanning software to perform scans dynamically on all
+accessed files.  If this is not possible, configure the
+system to scan all altered files on the system on a daily
+basis. If the system processes inbound SMTP mail, configure the virus scanner
+to scan all received mail.
+<!-- what's the basis for the IAO language? would not failure of a check
+     imply a discussion, for every check in this document, 
+     with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
+     particular neighborhood) should occur? -->
 </description>
+<ocil clause="virus scanning software does not run daily, or has signatures that are out of date">
+Inspect the system for a cron job or system service which executes
+a virus scanning tool regularly.
+<br/>
+<!-- this should be handled as DoD-specific text in a future revision -->
+To verify that the McAfee command line scan tool (uvscan) is scheduled for
+regular execution, run the following command to check for a cron job:
+<pre># grep uvscan /etc/cron* /var/spool/cron/*</pre>
+This will reveal if and when the uvscan program will be run.
+<br/>
+To check on the age of uvscan virus definition files, run the following command:
+<pre># cd /usr/local/uvscan
+# ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
+</ocil>
 <rationale>
-In order to minimize potential negative impact to the organization caused by malicious
-code, it is imperative that malicious code is identified and eradicated prior to entering
-protected enclaves.
+Virus scanning software can be used to detect if a system has been compromised by
+computer viruses, as well as to limit their spread to other systems. 
 </rationale>
-<ident cce="TODO" />
-<oval id="TODO" />
 <ref disa="1239,1668"/>
 </Rule>
 
