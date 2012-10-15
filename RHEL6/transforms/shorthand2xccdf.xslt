@@ -395,6 +395,37 @@ system call, run the following command:
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
+  <!--Example usage: <iptables-desc-macro allow="true" net="false" proto="tcp" 
+       port="80" />  -->
+    <!-- allow (boolean): optional attribute which defaults to true, or to 
+         allow this traffic through -->
+    <!-- net (boolean): optional attribute which determines if -s netwk/mask 
+         is put in.  By defaults this is false -->
+    <!-- proto (string): protocol in question, typically tcp or udp -->
+    <!-- port (integer): port in question -->
+  <xsl:template match="iptables-desc-macro">
+    <xsl:choose>
+      <xsl:when test="@allow = 'false'"> 
+      <!-- allow: optional attribute which defaults to true, or to allow this traffic through -->
+        To configure <xhtml:code>iptables</xhtml:code> to not allow port 
+        <xsl:value-of select="@port"/> traffic one must edit 
+        <xhtml:code>/etc/sysconfig/iptables</xhtml:code> and
+        <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
+        Remove the following line, ensuring that it does not appear in the INPUT 
+        chain:
+        <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
+      </xsl:when>
+      <xsl:otherwise>
+        To configure <xhtml:code>iptables</xhtml:code> to allow port 
+        <xsl:value-of select="@port"/> traffic one must edit 
+        <xhtml:code>/etc/sysconfig/iptables</xhtml:code>  and 
+        <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
+        Add the following line, ensuring that it appears before the final LOG 
+        and DROP lines for the INPUT chain:
+        <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <xsl:template match="sshd-check-macro">
   <!-- could also do this with sshd -T to test live configuration -->
