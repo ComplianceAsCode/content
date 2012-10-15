@@ -229,15 +229,17 @@ or allow privileges that the daemon does not require.
 
 <Rule id="selinux_unlabeled_device_files">
 <title>Ensure No Device Files are Unlabeled by SELinux</title>
-<description>Device files are used for communication with important system resources.
-SELinux contexts should exist for these.  By checking for <tt>unlabeled_t</tt> file
-contexts, we can determine if the system is optimally configured.</description>
-<ocil clause="there is output">To check for unlabeled device files, run the following command in
-the directory that you want to check the SELinux contexts:
+<description>Device files, which are used for communication with important
+system resources, should be labeled with proper SELinux types. If any device
+files carry the SELinux type <tt>unlabeled_t</tt>, investigate the cause and
+correct the file's context.
+</description>
+<ocil clause="there is output">To check for unlabeled device files, run the following command:
 <pre># ls -Z /dev | grep unlabeled_t</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
-If a device file is not labeled, then misconfiguration is likely.
+If a device file carries the SELinux type <tt>unlabeled_t</tt>, then SELinux
+cannot properly restrict access to the device file.
 </rationale>
 
 <ident cce="14991-4" />
