@@ -1,6 +1,14 @@
 <Profile id="stig-server" extends="common" xmlns="http://checklists.nist.gov/xccdf/1.1" >
 <title>Pre-release Draft STIG for RHEL 6 Server</title>
 <description>This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
+
+<select idref="install_antivirus" selected="true"/>
+<select idref="install_hids" selected="true"/>
+<select idref="root_path_default" selected="true"/>
+
+
+<select idref="rpm_verify_permissions" selected="true"/>
+
 <select idref="rpm_verify_permissions" selected="true"/>
 <select idref="disable_xwindows_with_runlevel" selected="true"/>
 <select idref="packagegroup_xwindows_remove" selected="true"/>
@@ -34,6 +42,7 @@
 <select idref="world_writable_files_system_ownership" selected="true" />
 <select idref="tftpd_uses_secure_mode" selected="true" />
 
+<select idref="ftp_log_transactions" selected="true" />
 
 <select idref="user_umask_bashrc" selected="true" />
 <select idref="user_umask_cshrc" selected="true" />
