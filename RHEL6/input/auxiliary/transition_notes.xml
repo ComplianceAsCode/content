@@ -206,6 +206,13 @@ This is covered in the RHEL 6 content.  This is a manual check.  Previously have
 This is not covered in the RHEL 6 content. 
 </note>
 
+<note ref="12030" auth="JB">
+It is impossible to express network access rules
+for a particular use case in a baseline.  Keep best
+practice suggestions in a howto guide.
+Furthermore, iptables obsolete TCPwrappers.
+</note>
+
 <note ref="22301" auth="VP">
 This is covered in the RHEL 6 content. CCE-14735-5
 </note>
@@ -236,6 +243,12 @@ This is covered in the RHEL 6 content.
 
 <note ref="22308" auth="VP">
 This is not covered in the RHEL 6 content. 
+</note>
+
+<note ref="22308" auth="JB">
+This is nice best practice for a howto guide,
+but it is unreasonable to dictate which groups
+a site should use for its privileged users.
 </note>
 
 <note ref="22312" auth="VP">
@@ -728,7 +741,7 @@ This is covered in the RHEL 6 content.
 <note ref="760,923,925,4246,4247,4248,4255,4357,4398,11986,12018,12020,12021,
 22310,22311,22578,22579,27251,22579,22580,27251" auth="JB">
 This is a manual/procedural check that requires human intervention.
-How to handle this for a specific OS's STIG is currently under consideration.
+How to handle this for a specific OS's STIG is currently under investigation.
 </note>
 
 <note ref="22363,22354,22355,22359,22360,22364" auth="JB">
@@ -761,6 +774,11 @@ This will be superceded by a new section describing expectations for permissions
 contained in certain important directories.
 </note>
 
+<note ref="924,925" auth="JB">
+DAC permissions on device files do not relate to their behavior, which
+depends on the implementation of the underlying device driver.
+</note>
+
 <note ref="22370,22371,22372,22365" auth="JB">
 This is superceded by the system-wide check for improper permissions provided
 by the package manager. Automating this check became possible with OVAL 5.8.
@@ -790,12 +808,8 @@ Existence of an ACL is not necessarily a problem, and checking for existence of 
 files does not achieve any security goals. Alternatives include denying use of any ACLs unless documented, or simply dropping these rules entirely (preferred).
 </note>
 
-<note ref="756,763,773,783,785,797,798,800,806,807,847,867,4687,4688,11945,11947,11948,11972,11973,12003,22290,22341,22342,22343,22576,22584,24386" auth="JB">
+<note ref="756,763,773,783,785,797,798,800,806,807,808,847,867,913,4687,4688,11945,11947,11948,11972,11973,12003,22290,22341,22342,22343,22576,22584,24386" auth="JB">
 This is covered in the RHEL6 content.
-</note>
-
-<note ref="808" auth="JB">
-Bothering with umasks: worth the bother?
 </note>
 
 <note ref="805" auth="JB">
@@ -955,7 +969,7 @@ Installation of NIS will now be a CAT I finding. NIS to be added to banned packa
 Language to be broadened to beyond just CAC cards per PKI-e
 </note>
 
-<note ref="984" auth="1augDCM">
+<note ref="984, 986" auth="1augDCM">
 Disablement of at service to be implemented in RHEL6 STIG
 </note>
 
@@ -1064,7 +1078,17 @@ group=ensure_rsyslog_log_file_configuration (redundant?)
 Has no cce associated
 </note>
 
-<note ref="845,850,903,913" auth="KS">
+<note ref="850" auth="JB">
+This is superceded by a stronger requirement to not permit remote X sessions.
+Also, the RHEL 5 STIG text is wrong anyway.
+</note>
+
+<note ref="845" auth="JB">
+A non-mess version of this check exists in the RHEL 6 content, but could
+use further improvement. 
+</note>
+
+<note ref="845,850,903" auth="KS">
 Check does not exist in the RHEL6 prose, it can be automated and the OVAL for 
 it does not appear to already exist. 
 rule=null manual=no
@@ -1084,6 +1108,11 @@ Check does not exist in the RHEL6 prose, it can be automated and the OVAL for
 it does not appear to already exist. 
 rule=null manual=no
 By default new home directories will be given 700 perms.
+</note>
+
+<note ref="904,905" auth="JB">
+A STIG is not an unconstrained search for potential misconfigurations.
+If it were, there would far more files than these to consider.
 </note>
 
 <note ref="904,905,914,915,924,986,993,995,1021,1022,1046,4087,4268, 
@@ -1630,7 +1659,21 @@ exist.
 rule=sshd_enable_warning_banner manual=no
 </note>
 
-<note ref="776,777,780,812,761,781,782,813,4382,11975" auth="DS">
+<note ref="780" auth="JB">
+This is incoherent. There is no apparent relationship between the title, description, and
+fixtext/checktext. The checking text lists user IDs in
+/etc/passwd, which have nothing to do with group IDs.  If something coherent is
+presented it could be considered for inclusion for RHEL 6, but even then, the
+possibilities suggest checking for a highly unlikely configuration which is not
+worth inclusion in a baseline.
+</note>
+
+<note ref="777" auth="JB">
+This is redundant to another rule requiring that the path be the vendor default.
+</note>
+
+<note ref="776,812,761,781,782,813,4382,11975" auth="DS">
 This is covered in the RHEL6 content.
 </note>
+
 </notegroup>
