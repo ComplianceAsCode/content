@@ -134,7 +134,7 @@ eval-ftp:
 	oscap xccdf eval --profile ftp $(OUT)/$(ID)-rhel6-xccdf.xml
 
 eval-common:
-	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/rhel6-xccdf-$(ID).xml
+	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-rhel6-xccdf.xml
 
 # items in dist are expected for distribution in an rpm
 dist: tables guide content
