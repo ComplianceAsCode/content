@@ -107,7 +107,7 @@
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:check/cdf:check-content/node()"/> </td>
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:fixtext/node()"/> </td>
 			<xsl:if test='$notes'>
-				<td> <xsl:call-template name="print-notes"><xsl:with-param name="vulnid" select="@id"/></xsl:call-template> </td>
+				<td> <table><xsl:call-template name="print-notes"><xsl:with-param name="vulnid" select="@id"/></xsl:call-template> </table> </td>
 			</xsl:if>
 		</tr>
      </xsl:template>
