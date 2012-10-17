@@ -53,11 +53,11 @@ indicator:
 After identifying any wireless interfaces (which may have
 names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
 <tt>eth0</tt>), deactivate the interface with the command:
-<pre># ifdown interface</pre>
+<pre># ifdown <i>interface</i></pre>
 These changes will only last until the next reboot. To
 disable the interface for future boots, remove the appropriate
 interface file from <tt>/etc/sysconfig/network-scripts</tt>:
-<pre># rm /etc/sysconfig/network-scripts/ifcfg-interface</pre>
+<pre># rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 </description>
 <rationale>Wireless networking allows attackers within physical proximity to
 launch network-based attacks against systems, including those against local LAN
