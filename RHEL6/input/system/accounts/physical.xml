@@ -17,14 +17,9 @@ The default RHEL boot loader for x86 systems is called GRUB.
 Options it can pass to the kernel include <i>single-user mode</i>, which
 provides root access without any authentication, and the ability to
 disable SELinux. To prevent local users from modifying the boot
-parameters and endangering security, the boot loader configuration
-should be protected with a password and its configuration file's permissions
-should be set properly.
-<br/><br />
-If any correction is needed for the permissions on <tt>/etc/grub.conf</tt>, (which is a symlink to
-<tt>../boot/grub/grub.conf</tt>) the following commands can be used:
-<pre># chown root:root /etc/grub.conf
-# chmod 600 /etc/grub.conf</pre>
+parameters and endangering security, protect the boot loader configuration
+with a password and ensure its configuration file's permissions
+are set properly.
 </description>
 
 <Rule id="user_owner_grub_conf">
@@ -217,8 +212,8 @@ the man page <tt>gconftool-2(1)</tt>.</description>
 <Rule id="set_screensaver_inactivity_timeout">
 <title>Set GNOME Login Inactivity Timeout</title>
 <description>
-The idle time-out value for period of inactivity GNOME
-desktop lockout should be 15 minutes.
+Run the following command to set the idle time-out value for
+inactivity in the GNOME desktop to 15 minutes:
 <pre># gconftool-2 \
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
@@ -242,8 +237,9 @@ screen locking to prevent access from passersby.
 
 <Rule id="enable_screensaver_after_idle">
 <title>GNOME Desktop Screensaver Mandatory Use</title>
-<description>Idle activation of the screen saver should be
-enabled
+<description>
+Run the following command to activate the screensaver
+in the GNOME desktop after a period of inactivity:
 <pre># gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
@@ -254,8 +250,12 @@ enabled
 If properly configured, the output should be <tt>true</tt>.
 </ocil>
 <rationale>
-Enabling idle activation of the screen saver ensures that the
-screensaver will be activated after the idle delay.  Applications requiring continuous, real-time screen display (i.e., network management products) require the following and need to be documented with the IAO:  the login session does not have administrator rights; and, the display station (i.e., keyboard, monitor, etc.) is located in a controlled-access area.
+Enabling idle activation of the screen saver ensures that the screensaver will
+be activated after the idle delay.  Applications requiring continuous,
+real-time screen display (such as network management products) require the
+following and need to be documented with the IAO: the login session does not
+have administrator rights; and the display station is located in a
+controlled-access area.
 </rationale>
 <ident cce="14604-3" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
@@ -264,8 +264,9 @@ screensaver will be activated after the idle delay.  Applications requiring cont
 
 <Rule id="enable_screensaver_password_lock">
 <title>Enable Screen Lock Activation After Idle Period</title>
-<description>Idle activation of the screen lock should be
-enabled.
+<description>
+Run the following command to activate locking of the screensaver
+in the GNOME desktop when it is activated:
 <pre># gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
@@ -289,7 +290,8 @@ access the system, preventing access by passersby.
 <Rule id="set_blank_screensaver">
 <title>Implement Blank Screen Saver</title>
 <description>
-The screen saver should be blank.
+Run the following command to set the screensaver mode
+in the GNOME desktop to a blank screen:
 <pre># gconftool-2
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
