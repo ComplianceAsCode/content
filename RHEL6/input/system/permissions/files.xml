@@ -181,14 +181,16 @@ by default:
 /usr/lib64
 </pre>
 Kernel modules, which can be added to the kernel during runtime, are
-stored in <tt>/lib/modules</tt>. All files in these directories should not be
+stored in:
+<pre>/lib/modules</pre>
+All files in these directories should not be
 group-writable or world-writable. 
 If any file <i>FILE</i> in these directories is found
 to be group-writable or world-writeable, correct its permission with the
 following command:
 <pre># chmod go-w <i>FILE</i></pre>
 </description>
-<ocil clause="any of the modules are group-writable">
+<ocil clause="any of these files are group-writable or world-writable">
 To find shared libraries that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> -perm /022</pre>
@@ -211,14 +213,16 @@ by default:
 /usr/lib64
 </pre>
 Kernel modules, which can be added to the kernel during runtime, are also
-stored in <tt>/lib/modules</tt>.  All files in these directories should be
+stored in:
+<pre>/lib/modules</pre>
+All files in these directories should be
 owned by the <tt>root</tt> user.
 If any file <i>FILE</i> in these directories is found
 to be owned by a user other than root, correct its ownership with the
 following command:
 <pre># chown root <i>FILE</i></pre>
 </description>
-<ocil clause="any of the shared modules aren't owned by root">
+<ocil clause="any of these files aren't owned by root">
 To find shared libraries that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> \! -user root</pre>
