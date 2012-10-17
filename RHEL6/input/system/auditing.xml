@@ -104,9 +104,10 @@ those which start prior to the audit daemon, add the argument
 <tt>audit=1</tt> to the kernel line in <tt>/etc/grub.conf</tt>, in the manner below:
 <pre>kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1</pre>
 </description>
-<ocil clause="any processes aren't able to be monitored and logged">
+<ocil clause="auditing is not enabled at boot time">
 Inspect the kernel boot arguments (which follow the word <tt>kernel</tt>) in
-<tt>/etc/grub.conf</tt> to ensure that they include <tt>audit=1</tt>.
+<tt>/etc/grub.conf</tt>. If they include <tt>audit=1</tt>, then
+auditing is enabled at boot time.
 </ocil>
 <rationale>
 Each process on the system carries an "auditable" flag which
