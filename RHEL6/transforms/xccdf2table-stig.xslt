@@ -107,7 +107,7 @@
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:check/cdf:check-content/node()"/> </td>
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:fixtext/node()"/> </td>
 			<xsl:if test='$notes'>
-				<td> <xsl:call-template name="print-notes"><xsl:with-param name="vulnid" select="@id"/></xsl:call-template> </td>
+				<td> <table><xsl:call-template name="print-notes"><xsl:with-param name="vulnid" select="@id"/></xsl:call-template> </table> </td>
 			</xsl:if>
 		</tr>
      </xsl:template>
@@ -123,12 +123,10 @@
     <xsl:template name="print-notes">
             <xsl:param name="vulnid"/>
 		<xsl:for-each select="$notegroup/note">
-			<table>
         	<xsl:call-template name="search_vulnidlist" select="note">
 		    	<xsl:with-param name="vulnid_sought" select="$vulnid" />
 		    	<xsl:with-param name="vulnid_list" select="@ref" />
         	</xsl:call-template>
-			</table>
 		</xsl:for-each>
 
     </xsl:template>

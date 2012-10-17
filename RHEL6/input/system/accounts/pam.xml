@@ -175,15 +175,13 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="password_retry">
-<title>Set Password Retry Prompts Permitted Per-session</title>
-<description>The pam_cracklib module's <tt>retry=</tt> parameter
-controls how many times a program will re-prompt a user after an incorrect
-password entry, on a per-session basis.  To configure this, open
-<tt>/etc/pam.d/system-auth</tt> and locate the <tt>retry=</tt> parameter for
-<tt>pam_cracklib</tt> in the <tt>password</tt> portion of the PAM stack.
-The system default is 3.  
-The DoD required value is 3.
-Add or correct<tt>retry=3</tt> after pam_cracklib.so to allow 3 retries.
+<title>Set Password Retry Prompts Permitted Per-Session</title>
+<description>To configure the number of retry prompts that are permitted per-session:
+<br /><br />
+Edit the <tt>pam_cracklib.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to 
+show <tt>retry=3</tt>.
+<br /><br />
+The DoD requirement is three prompts per session.
 </description>
 <ocil clause="it is not the required value">
 To check how many retry attempts are permitted on a per-session basis, run the following command:
@@ -365,43 +363,20 @@ and a second to use unlock_time and set it to a Value
 
 <Rule id="deny_password_attempts">
 <title>Set Deny For Failed Password Attempts</title>
-<!-- TODO JB: there needs to be a comprehensive discussion of
-this, to explain meaning of "PAM-aware", for all PAM module changes.
-These include
-<tt>login</tt>, <tt>sshd</tt>, and <tt>vsftpd</tt>.
-
-By default, all individual programs' configuration files in <tt>/etc/pam.d</tt>
-include <tt>system-auth</tt> or <tt>password-auth</tt>.
--->
-<!-- <description>
-To configure
-the system to lock out accounts after a number of incorrect login
-attempts using
-<tt>pam_faillock.so</tt>,
-<br /><br />
-Find the following line in <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth sufficient pam_unix.so try_first_pass</pre>
-and then change it so that it reads as follows:
-<pre>auth required pam_unix.so try_first_pass</pre>
-In the same file, comment out or delete the lines:
-<pre>auth requisite pam_succeed_if.so uid &gt;= 500 quiet
-auth required pam_deny.so</pre>
-To enforce password
-lockout, add the following to <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>.
-First, add the following just before the pam_unix.so auth line:
-<pre>auth required pam_faillock.so preauth audit silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=900</pre>
-Second, add the following two lines just after the pam_unix.so auth line:
-<pre>auth     [default=die]  pam_faillock.so authfail audit deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=900
-auth     sufficient     pam_faillock.so authsucc audit deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=900</pre>
-<ul><li>NOTE: The DoD requires accounts be locked out after 3 failed login attempts,
-accomplished by changing the value of the <tt>deny</tt> option to <i>3</i> in the example
-above.</li></ul>
-</description> -->
 <description>
-This requires further investigation.
+To configure the system to lock out accounts after a number of incorrect login
+attempts using <tt>pam_tally2.so</tt>:
+<br /><br />
+Add the following line immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth-ac</tt> and <tt>/etc/pam.d/password-auth</tt>:
+<pre>auth required pam_tally2.so deny=3 onerr=fail unlock_time=900</pre>
+The DoD requirement is three failed attempts.
 </description>
-<ocil>
-This requires further investigation.
+<ocil clause="that is not the case">
+To ensure the failed password attempt policy is configured correctly, run the following command:
+<pre># grep onerr /etc/pam.d/system-auth-ac</pre>
+and
+<pre># grep onerr /etc/pam.d/password-auth</pre>
+The output of both should show <tt>deny=3</tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -452,14 +427,10 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
-module. In order to prevent a user from re-using any of their
-last <sub idref="password_history_retain_number" /> passwords, 
-append <tt>remember=<sub idref="password_history_retain_number" /></tt> to
-the password line which uses the <tt>pam_unix</tt> module in the file
-<tt>/etc/pam.d/system-auth</tt>, as shown:
-<pre>password sufficient pam_unix.so existing_options remember=<sub idref="password_history_retain_number" /></pre>
-Old (and thus no longer valid) passwords are stored in the
-file <tt>/etc/security/opasswd</tt>.  The DoD requirement is currently 24 passwords.</description>
+module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=24</tt> to the 
+line which refers to the <tt>pam_unix.so</tt> module, as shown:
+<pre>password sufficient pam_unix.so <i>existing_options</i> remember=24</pre>
+The DoD requirement is 24 passwords.</description>
 <ocil clause="it does not">
 To verify that the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
