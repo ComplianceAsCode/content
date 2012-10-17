@@ -87,6 +87,7 @@ using the root account.
 <ref nist="AC-3, AC-6" disa="770" />
 </Rule>
 
+
 <Rule id="no_root_webbrowsing">
 <title>Restrict Web Browser Use for Administrative Accounts</title>
 <description>
@@ -168,7 +169,7 @@ access to root privileges in an accountable manner.
 <ref nist="AC-3, AC-11, CM-6, CM-7" disa="366" />
 </Rule>
 
-<Rule id="root_path_defaultabsolute">
+<Rule id="root_path_default">
 <title>Root Path Must Be Vendor Default</title>
 <description>
 Assuming root shell is bash, edit the following files:
@@ -191,6 +192,10 @@ contain only absolute paths.
 <ref disa="366" />
 </Rule>
 
+<!--
+     This is redundant to the previous rule, which insists that the
+     root path is the vendor default.
+
 <Rule id="root_path_no_wwdir">
 <title>Root Path Must Not Contain World-Writable Directories</title>
 <description>
@@ -209,6 +214,6 @@ If the root search path contains a world-writable directory, malicious software
 could be placed in the path.
 </rationale>
 <ref disa="366" />
-</Rule>
+</Rule> -->
 </Group>
 
