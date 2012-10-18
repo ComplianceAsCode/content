@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <titles xmlns="http://checklists.nist.gov/xccdf/1.1" id="stig">
 <!-- This file can be used to specify alternative titles.
      The rule attribute is used to identify the Rule with which to associate the title.
@@ -161,7 +160,7 @@ The /etc/group file must not contain a plus (+) entry.
 <title rule="no_nis_inclusions_passwd" shorttitle="Remove Legacy + Entries From /etc/passwd">
 The /etc/passwd file must not contain a plus (+) entry.
 </title>
-<title rule="password_retry" shorttitle="Set Password Retry Prompts Permitted Per-session">
+<title rule="password_retry" shorttitle="Set Password Retry Prompts Permitted Per-Session">
 The system must reject session authentication after three consecutive failed authentication attempts.
 </title>
 <title rule="password_require_digits" shorttitle="Set Password Strength Minimum Digit Characters">
@@ -329,7 +328,7 @@ The system must provide VPN connectivity for communications over untrusted netwo
 <title rule="package_rsyslog_installed" shorttitle="Ensure rsyslog is Installed">
 The system must provide system logging services.
 </title>
-<title rule="service_rsyslog_enabled" shorttitle="Enable Rsyslog Service (rsyslog)">
+<title rule="service_rsyslog_enabled" shorttitle="Enable rsyslog Service">
 The system's system logging services must be enabled.
 </title>
 <title rule="userowner_rsyslog_files" shorttitle="Ensure Log Files Are Owned By Appropriate User">
@@ -491,7 +490,7 @@ The TFTP service must not be running.
 <title rule="uninstall_tftp-server" shorttitle="Uninstall tftp-server Package">
 The tftp-servicer package must not be installed.
 </title>
-<title rule="tftpd_uses_secure_mode" shorttitle="Ensure TFTP Daemon Uses Secure Mode">
+<title rule="tftpd_uses_secure_mode" shorttitle="Ensure tftp Daemon Uses Secure Mode">
 The TFTP daemon must operate in "secure mode" which provides access only to a single directory on the host file system.
 </title>
 <title rule="service_abrtd_disabled" shorttitle="Disable Automatic Bug Reporting Tool (abrtd)">
@@ -654,5 +653,21 @@ The snmpd service must be disabled unless required.
 </title>
 <title rule="uninstall_net-snmp" shorttitle="Uninstall net-snmp Package">
 The net-snmp package must not be installed unless required.
+</title>
+<title rule="install_hids" shorttitle="Install Intrusion Detection Software">
+The system must have a host-based intrusion detection tool installed.
+</title>
+<title rule="install_antivirus" shorttitle="Install Virus Scanning Software">
+The system must use and update a DoD-approved virus scan program.
+</title>
+<title rule="root_path_default" shorttitle="Root Path Must Be Vendor Default">
+The root account's executable search path must be the vendor default.
+</title>
+<title rule="ftp_log_transactions" shorttitle="Enable Logging of All FTP Transactions">
+The FTP daemon must be configured for logging or verbose mode.
+</title>
+<title rule="smartcard_auth" shorttitle="Enable Smart Card Login">
+The system, if capable, must be configured to require the use of a CAC, PIV
+compliant hardware token, or Alternate Logon Token (ALT) for authentication.
 </title>
 </titles>
