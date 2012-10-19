@@ -16,7 +16,7 @@
 	<Benchmark xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cpe="http://cpe.mitre.org/language/2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"
 xmlns="http://checklists.nist.gov/xccdf/1.1" id="RHEL_6_STIG" xml:lang="en"
 xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 http://nvd.nist.gov/schema/xccdf-1.1.4.xsd http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
-	<status date="2012-10-01">pre-draft</status>
+	<status date="2012-10-01">draft</status>
 	<title>Pre-Draft Red Hat Enterprise Linux 6 Security Technical Implementation Guide</title>
 	<description>The Red Hat Enterprise Linux 6 Security Technical Implementation Guide (STIG) is published as a tool to improve the security of Department of Defense (DoD) information systems. Comments or proposed revisions to this document should be sent via e-mail to the following address: fso_spt@disa.mil.</description>
 	<notice id="terms-of-use" xml:lang="en" />
