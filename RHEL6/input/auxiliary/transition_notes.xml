@@ -744,8 +744,29 @@ This is a manual/procedural check that requires human intervention.
 How to handle this for a specific OS's STIG is currently under investigation.
 </note>
 
+<note ref="22578,22579" auth="18octDCM">
+This was identified as no longer practical for most use cases.
+</note>
+
+<note ref="760,4398" auth="18octDCM">
+This was identified as impractical/costly.
+</note>
+
+<note ref="923" auth="18octDCM">
+This was identified as redundant to the integrity checking baseline requirements.
+</note>
+
+<note ref="925" auth="18octDCM">
+This was identified as not indicative of the underlying driver behavior.
+</note>
+
+<note ref="22310,22311" auth="18octDCM">
+This was identified as providing little confidence of proper system state, as
+it is extremely difficult to query the system with any confidence.
+</note>
+
 <note ref="22363,22354,22355,22359,22360,22364" auth="JB">
-This needs to be considered for a new group that involves ensuring LD_LIBRARY_PATH,
+This could be considered for a new group that involves ensuring LD_LIBRARY_PATH,
 LD_PRELOAD, LD_AUDIT, and relative paths do not occur in a particular set of initialization files.
 At the same time, this represents a level of misconfiguration-checking
 that may not be appropriate for a baseline.

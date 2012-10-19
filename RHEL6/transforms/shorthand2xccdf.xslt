@@ -242,7 +242,7 @@ exclude-result-prefixes="xccdf xhtml dc">
 
 	<!-- The following text could also be included conditionally, if the defaultness of the sysctl were indicated. -->
     If this is not the system's default value, add the following line to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
-    <xhtml:pre xml:space="preserve"><xsl:value-of select="@sysctl"/> <xsl:value-of select="@value"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve"><xsl:value-of select="@sysctl"/> = <xsl:value-of select="@value"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="sysctl-check-macro">
@@ -348,8 +348,13 @@ exclude-result-prefixes="xccdf xhtml dc">
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
-    It is prudent to check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot
-    configuration via <xhtml:code>chkconfig</xhtml:code> and not currently running on the system (runtime configuration).
+    To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot
+    configuration, run the following command: 
+    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
+    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been disabled at all runlevels,
+    as shown in the example below:
+    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
+<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
 
     Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through current
     runtime configuration:
@@ -357,15 +362,6 @@ exclude-result-prefixes="xccdf xhtml dc">
 
     If the service is disabled, the command will return:
     <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
-
-    Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through system
-    boot configuration:
-    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
- 
-    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been disabled at all runlevels,
-    as shown in the example below:
-    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-check-macro">
