@@ -54,7 +54,8 @@
 				<td>Fix Text (Description)</td>
 				<td>Check Text (OCIL Check)</td>
 				<!-- <td>Variable Setting</td> -->
-				<td>CCI Ref<br/>(800-53 Origin)</td>
+				<td>CCI Refs</td>
+				<td>800-53 Refs</td>
 			</thead>
 
 		<xsl:call-template name="profileplate">
@@ -148,18 +149,24 @@
             	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 				<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 				<xsl:value-of select="$cci_expanded"/>
-				<xsl:text> (</xsl:text>
+				<br/>
+			</xsl:for-each>
+			</td> 
+
+			<td> 
+			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
+            	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
+				<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 				<xsl:for-each select="$cci_list/cci:cci_items/cci:cci_item">
 					<xsl:if test="@id=$cci_expanded">
 						<xsl:for-each select="cci:references/cci:reference">
 							<xsl:if test="@title='NIST SP 800-53'">
 								<xsl:value-of select="@index"/>
+								<br/>
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
-				<xsl:text>)</xsl:text>
-				<br/>
 			</xsl:for-each>
 			</td> 
 		</tr>
