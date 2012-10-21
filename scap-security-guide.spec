@@ -47,6 +47,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Oct 22 2012 Shawn Wells <shawn@redhat.com> 0.1-6
+- Corrected RPM versioning, we're on 0.1 release 6 (not version 1 release 6)
+- Updated RPM includes feedback received from DoD Consensus meetings
+
 * Fri Oct 5  2012 Jeffrey Blank <blank@eclipse.ncsc.mil> 1.0-5
 - Adjusted installation directory to /usr/share/xml/scap.
 
