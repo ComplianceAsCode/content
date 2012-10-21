@@ -387,42 +387,6 @@ prevents direct password guessing attacks.
 <ref nist="AC-7, CM-6" disa="1452,44,47" />
 </Rule>
 
-</Group>
-
-
-<Rule id="set_password_hashing_algorithm">
-<title>Set Password Hashing Algorithm</title>
-<description>The system's default algorithm for storing password hashes in
-<tt>/etc/shadow</tt> is SHA-512.
-In order to ensure the system is still configured to use SHA-512 algorithm,
-the following line must appear in <tt>/etc/login.defs</tt>:
-<pre>ENCRYPT_METHOD SHA512</pre>
-Also ensure that the <tt>pam_unix.so</tt> module in the <tt>password</tt> section in
-<tt>/etc/pam.d/system-auth</tt> includes the argument <tt>sha512</tt>.
-<br/>
-If this is not the case, the following command can be run to fix:
-<pre># /usr/sbin/authconfig --passalgo=sha512 --update</pre>
-This ensures that when users change their passwords, hashes for the new passwords
-will be generated using the SHA-512 algorithm.
-<!-- All accounts will
-need to perform a password change in order to upgrade the stored
-hashes to the stronger algorithm. -->
-</description>
-<ocil clause="either of these are not the case">
-To ensure the system is configured to store password hashes using the SHA-512 algorithm, two conditions must be met.
-First, ensure the following line appears in <tt>/etc/login.defs</tt>:
-<pre>ENCRYPT_METHOD SHA512</pre>
-Also, ensure the <tt>pam_unix.so</tt> module in the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt> includes 
-the argument <tt>sha512</tt>.
-</ocil>
-<rationale>
-Using a stronger hashing algorithm makes password cracking attacks more difficult.
-</rationale>
-<ident cce="14063-2" />
-<oval id="accounts_password_hashing_algorithm" />
-<ref nist="IA-5" disa="803"/>
-</Rule>
-
 <Rule id="limiting_password_reuse">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
@@ -444,4 +408,78 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
 <ref nist="IA-5" disa="200" />
 </Rule>
+</Group>
+
+<Group id="set_password_hashing_algorithm">
+<title>Set Password Hashing Algorithm</title>
+<description>The system's default algorithm for storing password hashes in
+<tt>/etc/shadow</tt> is SHA-512. This can be configured in several
+locations.</description>
+
+<Rule id="set_password_hashing_algorithm_systemauth">
+<title>Set Password Hashing Algorithm in /etc/pam.d/system-auth</title>
+<description>
+In <tt>/etc/pam.d/system-auth</tt>, the <tt>password</tt> section of
+the file controls which PAM modules execute during a password change.
+Set the <tt>pam_unix.so</tt> module in the
+<tt>password</tt> section to include the argument <tt>sha512</tt>, as shown here:
+<pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
+This will help ensure that when local users change their passwords, hashes for the new
+passwords will be generated using the SHA-512 algorithm.
+This is the default.
+</description>
+<ocil clause="it does not">
+Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>  and
+ensure that the <tt>pam_unix.so</tt> module includes the argument
+<tt>sha512</tt>.
+</ocil>
+<rationale>
+Using a stronger hashing algorithm makes password cracking attacks more difficult.
+</rationale>
+<!-- <ident cce="14063-2" /> -->
+<!-- <oval id="accounts_password_hashing_algorithm" /> -->
+<ref nist="IA-5" disa="803"/>
+</Rule>
+
+<Rule id="set_password_hashing_algorithm_logindefs">
+<title>Set Password Hashing Algorithm in /etc/login.defs</title>
+<description>
+In <tt>/etc/login.defs</tt>, add or correct the following line to ensure
+that the system will use SHA-512 as the hashing algorithm:
+<pre>ENCRYPT_METHOD SHA512</pre>
+</description>
+<ocil clause="it does not">
+Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
+<pre>ENCRYPT_METHOD SHA512</pre>
+</ocil>
+<rationale>
+Using a stronger hashing algorithm makes password cracking attacks more difficult.
+</rationale>
+<!-- <ident cce="14063-2" /> -->
+<!-- <oval id="accounts_password_hashing_algorithm" /> -->
+<ref nist="IA-5" disa="803"/>
+</Rule>
+
+<Rule id="set_password_hashing_algorithm_libuserconf">
+<title>Set Password Hashing Algorithm in /etc/libuser.conf</title>
+<description>
+In <tt>/etc/libuser.conf</tt>, add or correct the the following line in its
+<tt>[defaults]</tt> section to ensure that the system will use the SHA-512
+algorithm for password hashing:
+<pre>crypt_style = sha512</pre>
+</description>
+<ocil clause="it does not">
+Inspect <tt>/etc/libuser.conf</tt> and ensure the following line appears
+in the <tt>[default]</tt> section:
+<pre>crypt_style = sha512</pre>
+</ocil>
+<rationale>
+Using a stronger hashing algorithm makes password cracking attacks more difficult.
+</rationale>
+<!-- <ident cce="14063-2" /> -->
+<!-- <oval id="accounts_password_hashing_algorithm" /> -->
+<ref nist="IA-5" disa="803"/>
+</Rule>
+</Group>
+
 </Group>
