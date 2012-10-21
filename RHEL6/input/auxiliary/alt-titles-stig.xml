@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <titles xmlns="http://checklists.nist.gov/xccdf/1.1" id="stig">
 <!-- This file can be used to specify alternative titles.
      The rule attribute is used to identify the Rule with which to associate the title.
@@ -660,14 +661,17 @@ The system must have a host-based intrusion detection tool installed.
 <title rule="install_antivirus" shorttitle="Install Virus Scanning Software">
 The system must use and update a DoD-approved virus scan program.
 </title>
-<title rule="root_path_default" shorttitle="Root Path Must Be Vendor Default">
-The root account's executable search path must be the vendor default.
-</title>
 <title rule="ftp_log_transactions" shorttitle="Enable Logging of All FTP Transactions">
 The FTP daemon must be configured for logging or verbose mode.
 </title>
 <title rule="smartcard_auth" shorttitle="Enable Smart Card Login">
 The system, if capable, must be configured to require the use of a CAC, PIV
 compliant hardware token, or Alternate Logon Token (ALT) for authentication.
+</title>
+<title rule="package_sendmail_removed" shorttitle="Uninstall Sendmail Package">
+The sendmail package must be removed.
+</title>
+<title rule="disable_ctrlaltdel_reboot" shorttitle="Disable Ctrl-Alt-Del Reboot Activation">
+The x86 CTRL-ALT-DELETE key sequence must be disabled.
 </title>
 </titles>
