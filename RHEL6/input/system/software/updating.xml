@@ -27,7 +27,8 @@ receive them if desired), the Red Hat GPG key must properly be installed.
 To ensure that the GPG key is installed, run:
 <pre># rhn_register</pre>
 </description>
-<ocil clause="the Red Hat GPG Key isn't installed">To ensure that the GPG key is isntalled, run:
+<ocil clause="the Red Hat GPG Key isn't installed">
+To ensure that the GPG key is installed, run:
 <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
 The command should return the string:
 <pre>gpg(Red Hat, Inc. (release key &lt;security@redhat.com&gt;)</pre>
