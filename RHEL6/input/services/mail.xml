@@ -22,15 +22,17 @@ Postfix was coded with security in mind and can also be more effectively contain
 SELinux as its modular design has resulted in separate processes performing specific actions.
 More information is available on its website, http://www.postfix.org.</description>
 
-<Rule id="service_postfix_enabled">
-<title>Enable Postfix (postfix)</title>
-<description>The Postfix mail transfer agent is used for local mail delivery within
-the system. The default configuration only listens for connections to the default SMTP
-port (port 25) on the loopback interface (127.0.0.1). 
-It is recommended to leave this
-service enabled for local mail delivery.
+<Rule id="service_postfix_enable">
+<title>Enable Postfix Service</title>
+<description>The Postfix mail transfer agent is used for local mail delivery
+within the system. The default configuration only listens for connections to
+the default SMTP port (port 25) on the loopback interface (127.0.0.1).  It is
+recommended to leave this service enabled for local mail delivery.
 <service-enable-macro service="postfix" />
 </description>
+<ocil clause="the service is not enabled">
+<service-disable-check-macro service="postfix" />
+</ocil>
 <rationale>Local mail delivery is essential to some system maintenance and
 notification tasks.
 </rationale>
@@ -39,28 +41,29 @@ notification tasks.
 <ref nist="CM-6" />
 </Rule>
 
+<Rule id="package_sendmail_removed">
+<title>Uninstall Sendmail Package</title>
+<description>Sendmail is not the default mail transfer agent and is
+not installed by default.
+<package-remove-macro package="sendmail" />
+</description>
+<ocil>
+<package-check-macro package="sendmail" />
+</ocil>
+<rationale>The sendmail software was not developed with security in mind and
+its design prevents it from being effectively contained by SELinux.  Postfix
+should be used instead.
+</rationale>
+<ref nist="CM-6" />
+</Rule>
+
+
+
+
 <Group id="postfix_client">
 <title>Configure SMTP For Mail Clients</title>
-<description>This section discusses settings for Postfix in a submission-only e-mail configuration.</description>
-
-<!-- postfix is installed by default on RHEL 6,
-but sendmail was the default on RHEL 5. -->
-
-<!-- <Rule id="postfix_package_installation">
-<title>The postfix package should be installed</title>
-<description>If this machine does not need to operate as a mail server, follow the remaining
-instructions in this section to ensure this software run only in a submission-only mode.
-MTA software must still be installed in order to ensure local mail delivery for services
-such as cron.
-
-If the machine must operate as a mail server, follow the remaining instructions in this section for
- strategies for MTA configuration. Then apply both the MTA-independent operating system
-configuration guidance, and the specific guidance for your MTA in this section.
-</description>
-<ident cce="14068-1" />
-<oval id="package_postfix_installed" />
-</Rule>
--->
+<description>This section discusses settings for Postfix in a submission-only
+e-mail configuration.</description>
 
 <Rule id="postfix_network_listening">
 <title>Disable Postfix Network Listening</title>
