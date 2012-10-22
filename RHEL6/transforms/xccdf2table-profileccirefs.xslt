@@ -48,6 +48,7 @@
 		<table>
 			<thead>
 				<td>Vuln ID</td>
+				<td>CAT</td>
 				<!-- <td>GEN ID</td> -->
 				<td>Title</td>
 				<td>Discussion (Rationale)</td>
@@ -117,6 +118,7 @@
 		<xsl:if test="@id=$idreference and $enabletest='true'">
 		<tr>
 			<td>TBD<!-- insert proper Vuln-ID if available --></td>
+			<td> <xsl:value-of select="@severity" /></td>
 			<td> <xsl:value-of select="cdf:title" /></td>
 			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
 			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
