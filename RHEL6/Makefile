@@ -87,6 +87,7 @@ table-stigs: shorthand2xccdf
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/table-rhel6-stig-server.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
+	xsltproc --html -o $(OUT)/table-rhel6-stig-server.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-rhel6-stig-server.html
 
 tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
 
