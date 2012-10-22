@@ -7,7 +7,7 @@ DIST = dist
 
 ID = ssg
 
-all: shorthand2xccdf tables guide checks content submission-stig dist
+all: shorthand2xccdf tables guide checks content dist
 
 shorthand-guide:
 	xsltproc -o $(OUT)/rhel6-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
