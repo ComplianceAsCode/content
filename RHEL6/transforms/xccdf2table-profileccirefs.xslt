@@ -4,6 +4,7 @@
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
 <xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
+<xsl:variable name="os_srg" select="document('../references/disa-os-srg-v1r1.xml')/cdf:Benchmark" />
 
 <xsl:param name="testinfo" select="''" />
 
@@ -55,6 +56,7 @@
 				<td>Fix Text (Description)</td>
 				<td>Check Text (OCIL Check)</td>
 				<!-- <td>Variable Setting</td> -->
+				<td>SRG Refs</td>
 				<td>CCI Refs</td>
 				<td>800-53 Refs</td>
 			</thead>
@@ -143,8 +145,19 @@
 			</xsl:if>
 			</td>
 
-			<!-- need to resolve <sub idref=""> here  -->
-			<!-- <td> TODO: print refine-value from profile associated with rule  </td> -->
+			<td> 
+			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
+            	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
+				<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
+				<xsl:for-each select="$os_srg/cdf:Group/cdf:Rule" >
+					<xsl:if test="cdf:ident=$cci_expanded">
+						<xsl:value-of select="cdf:version"/>
+						<br/>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:for-each>
+			</td> 
+
 			<td> 
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
