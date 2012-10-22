@@ -337,7 +337,7 @@ access restriction in some configurations.
 <description>Limit the ciphers to those algorithms which are FIPS-approved.
 Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
 The following line in <tt>/etc/ssh/sshd_config</tt>
-demonstrates use of FIPS-approved ciphers in CTR mode:
+demonstrates use of FIPS-approved ciphers:
 <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr, aes128-cbc, 3des-cbc, aes192-cbc, aes256-cbc</pre>
 The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 Note that older or less capable versions of SSH client or server software
