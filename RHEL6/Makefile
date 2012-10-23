@@ -88,6 +88,10 @@ table-stigs: shorthand2xccdf
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
 	xsltproc --html -o $(OUT)/table-rhel6-stig-server.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-rhel6-stig-server.html
+	xsltproc -stringparam profile "stig-server" -stringparam format "flat" -o $(OUT)/table-rhel6-stig-server-flat.html \
+		$(TRANS)/xccdf2table-profileccirefs.xslt \
+		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
+	xsltproc --html -o $(OUT)/table-rhel6-stig-server-flat.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-rhel6-stig-server-flat.html
 
 tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
 
