@@ -8,6 +8,8 @@
 
 <xsl:param name="testinfo" select="''" />
 
+<xsl:param name="format" select="''"/>
+
 <xsl:include href="constants.xslt"/>
 
 	<xsl:template match="/">
@@ -106,10 +108,21 @@
 		</xsl:for-each>
 
 		<xsl:for-each select="cdf:Rule">
-			<xsl:call-template name="ruleplate">
-				<xsl:with-param name="idreference" select="$idreference" />
-				<xsl:with-param name="enabletest" select="$enabletest" />
-			</xsl:call-template>
+			<xsl:choose>
+			<xsl:when test="$format='flat'">
+				<xsl:call-template name="ruleplate-flat">
+					<xsl:with-param name="idreference" select="$idreference" />
+					<xsl:with-param name="enabletest" select="$enabletest" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="ruleplate">
+					<xsl:with-param name="idreference" select="$idreference" />
+					<xsl:with-param name="enabletest" select="$enabletest" />
+				</xsl:call-template>
+			</xsl:otherwise>
+
+			</xsl:choose>
 		</xsl:for-each>
 	</xsl:template>
 
@@ -187,6 +200,57 @@
 		</xsl:if>
 	</xsl:template>
 
+
+	<xsl:template match="cdf:Rule" name="ruleplate-flat">
+		<xsl:param name="idreference" />
+		<xsl:param name="enabletest" />
+		<xsl:if test="@id=$idreference and $enabletest='true'">
+
+		<xsl:variable name="rule" select="."  />
+
+		<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
+           	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
+			<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
+
+			<tr>
+			<td>TBD<!-- insert proper Vuln-ID if available --></td>
+			<td> <xsl:value-of select="../@severity" /></td>
+			<td> <xsl:value-of select="../cdf:title" /></td>
+			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
+			<td> <xsl:apply-templates select="../cdf:rationale"/> </td>
+			<td> <xsl:apply-templates select="../cdf:description"/> </td>
+			<td> <xsl:apply-templates select="../cdf:check" /> </td>
+
+			<td> 
+			<xsl:for-each select="$os_srg/cdf:Group/cdf:Rule" >
+				<xsl:if test="cdf:ident=$cci_expanded">
+					<!-- output the SRG ID -->
+					<xsl:value-of select="cdf:version"/>
+					<br/>
+				</xsl:if>
+			</xsl:for-each>
+			</td> 
+
+			<td> <xsl:value-of select="$cci_expanded"/> </td> 
+
+			<td> 
+				<xsl:for-each select="$cci_list/cci:cci_items/cci:cci_item">
+					<xsl:if test="@id=$cci_expanded">
+						<xsl:for-each select="cci:references/cci:reference">
+							<xsl:if test="@title='NIST SP 800-53'">
+								<xsl:value-of select="@index"/>
+								<br/>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:if>
+				</xsl:for-each>
+			</td> 
+
+			</tr>
+
+		</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
 
 	<xsl:template match="cdf:check">
 	    <xsl:if test="@system=$ociltransitional">
