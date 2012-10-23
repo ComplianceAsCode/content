@@ -49,7 +49,7 @@ num  target     prot opt source       destination</pre>
 The <tt>ip6tables</tt> default rules are essentially the same.</description>
 
 
-<Rule id="enable_ip6tables">
+<Rule id="enable_ip6tables" severity="medium">
 <title>Verify ip6tables Enabled</title>
 <description>
 <service-enable-macro service="ip6tables" />
@@ -63,7 +63,7 @@ capability for IPv6 and ICMPv6.
 <ref nist="CM-6, CM-7" disa="66,1115,1118,1092,1117,1098,1100,1097,1123,1124,1414"/>
 </Rule>
 
-<Rule id="enable_iptables">
+<Rule id="enable_iptables" severity="medium">
 <title>Verify iptables Enabled</title>
 <description>
 <service-enable-macro service="iptables" />
@@ -110,7 +110,7 @@ requirements. Otherwise, this program should not be used to make
 changes to the firewall configuration because it re-writes the
 saved configuration file.</warning>
 
-<Rule id="set_iptables_default_rule">
+<Rule id="set_iptables_default_rule" severity="medium">
 <title>Set Default Iptables Policy for Incoming Packets</title>
 <description>To set the default policy to DROP (instead of ACCEPT) for
 the built-in INPUT chain which processes incoming packets,
@@ -131,7 +131,7 @@ accepted.</rationale>
 <ref nist="AC-4, CM-6" disa="66,1109,1154,1414" />
 </Rule>
 
-<Rule id="set_iptables_default_rule_forward">
+<Rule id="set_iptables_default_rule_forward" severity="medium">
 <title>Set Default Iptables Policy for Forwarded Packets</title>
 <description>To set the default policy to DROP (instead of ACCEPT) for
 the built-in FORWARD chain which processes packets that will be forwarded from
