@@ -365,18 +365,17 @@ and a second to use unlock_time and set it to a Value
 <title>Set Deny For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
-attempts using <tt>pam_tally2.so</tt>:
+attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
-Add the following line immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth-ac</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth required pam_tally2.so deny=3 onerr=fail unlock_time=900</pre>
+Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth-ac</tt>:
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=900</pre>
 The DoD requirement is three failed attempts.
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep onerr /etc/pam.d/system-auth-ac</pre>
-and
-<pre># grep onerr /etc/pam.d/password-auth</pre>
-The output of both should show <tt>deny=3</tt>.
+<pre># grep deny /etc/pam.d/system-auth-ac</pre>
+The output should show <tt>deny=3</tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
