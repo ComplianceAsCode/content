@@ -68,6 +68,26 @@ stations</li>
 </description>
 <!--<ident cce="14081-4" /> -->
 <!--<oval id="snmp_configure_server" /> -->
+
+<Rule id="snmpd_configuration_guidance" severity="medium">
+<title>The SNMP Service Must Use only SNMPv3 or Newer </title>
+<description>
+Edit <tt>/etc/snmpd.conf</tt>, removing any references to <tt>v1</tt>, <tt>v2c</tt>, <tt>community</tt>, or <tt>com2sec</tt>.  
+Upon doing that, restart the SNMP service:
+<pre># service snmpd restart</pre>
+</description>
+<ocil clause="there is output">
+To ensure only SNMPv3 or newer is used, run the following command:
+<pre># grep 'v1\|v2c\|community\|com2sec' /etc/snmpd.conf</pre>
+There should be no output.
+</ocil>
+<rationale>
+Earlier versions of SNMP are considered insecure, as they potentially allow 
+unauthorized access to detailed system management information.
+</rationale>
+</Rule>
+
+
 </Group>
 
 </Group> <!-- <Group id="snmp"> -->
