@@ -95,6 +95,7 @@ actions will be taken if other obstacles exist.
 <ident cce="4292-9" />
 <oval id="service_auditd_enabled" />
 <ref nist="CM-6, CM-7" disa="169,172,174,1353,1462,1487,1115,1454,067,158,831,1123,1190,1312,1263,130" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="enable_auditd_bootloader">
@@ -245,6 +246,7 @@ determine how many logs the system is configured to retain after rotation:
 log information over the period required. This is a function of the maxium log
 file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" /> 
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -267,6 +269,7 @@ determine how much data the system will retain in each audit log file:
 log information over the period required. This is a function of the maxium
 log file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" /> 
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -299,6 +302,7 @@ being overwhelmed with log data. However, for systems that must never discard
 log data, or which use external processes to transfer it and reclaim space,
 <tt>keep_logs</tt> can be employed.</rationale>
 <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <!--
@@ -347,6 +351,7 @@ disk space is starting to run low:
 allow them to take corrective action prior to any disruption.</rationale>
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
 <ref disa="140,143,144" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -386,6 +391,7 @@ is used, running low on space for audit records should never occur.
 </rationale>
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
 <ref disa="140,143,144,1343" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -663,6 +669,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
 <oval id="file_permissions_var_log_audit" />
 <ref disa="366" />
+<tested by="DS" on="20121024"/>
 </Rule> 
 
 <Rule id="audit_logs_rootowner">
@@ -677,6 +684,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 owner, and unauthorized users, potential access to sensitive information.</rationale>
 <oval id="file_ownership_var_log_audit" />
 <ref nist="AU-2" />
+<tested by="DS" on="20121024"/>
 </Rule> 
 
 <Rule id="audit_mac_changes">
@@ -1164,7 +1172,7 @@ Then, for each setuid program on the system, add a line of the following form to
 in the list:
 <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
 </description>
-<ocil clause="it is the case">
+<ocil clause="it is not the case">
 To verify that auditing of privileged command use is configured, run the following command to find relevant setuid programs:
 <pre># find / -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
 Run the following command to verify entries in the audit rules for all programs found with the previous command:
@@ -1179,6 +1187,7 @@ unusual activity.
 <ident cce="14296-8" />
 <oval id="audit_rules_privileged_commands" />
 <ref nist="AU-2" disa="40" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="audit_media_exports">
@@ -1200,6 +1209,7 @@ loss.</rationale>
 <ident cce="14569-8" />
 <oval id="audit_rules_media_export" />
 <ref nist="AU-2" disa="126"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="audit_file_deletions">
@@ -1241,6 +1251,7 @@ of what was executed on the system as well as for accountability purposes.</rati
 <ident cce="14824-7" />
 <oval id="audit_rules_sysadmin_actions" />
 <ref nist="AU-2" disa="126"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="audit_kernel_module_loading">
