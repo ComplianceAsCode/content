@@ -299,6 +299,7 @@ To verify that the <tt>nfs</tt> service is disabled, run the following command:
 If properly configured, the output should look like:
 <pre>nfs            	0:off	1:off	2:off	3:off	4:off	5:off	6:off</pre>
 </ocil>
+<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident cce="4473-5" />
 <oval id="service_nfs_disabled" />
 </Rule>
@@ -314,6 +315,8 @@ RPC then this service should be disabled.
 <ocil>
 <service-disable-check-macro service="rpcsvcgssd" />
 </ocil>
+<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
+<ident cce="4473-5" />
 <ident cce="4491-7" />
 <oval id="service_rpcsvcgssd_disabled" />
 </Rule>

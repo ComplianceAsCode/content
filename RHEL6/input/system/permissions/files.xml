@@ -315,6 +315,14 @@ following command:
 To find world-writable directories that lack the sticky bit, run the following command:
 <pre># find / -type d -perm 002 ! -perm 1000</pre>
 </ocil>
+<rationale>
+Failing to set the sticky bit on public directories allows unauthorized users to delete files in the directory structure.
+<br/><br/>
+The only authorized public directories are those temporary directories supplied with the system, 
+or those designed to be temporary file repositories.  The setting is normally reserved for directories 
+used by the system, and by users for temporary file storage - such as /tmp - 
+and for directories requiring global read/write access.
+</rationale>
 <ident cce="3399-3" />
 <oval id="dir_perms_world_writable_sticky_bits" />
 <ref nist="CM-6"/>
