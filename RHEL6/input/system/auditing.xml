@@ -80,7 +80,7 @@ the process, which in this case, is <tt>exe="/usr/sbin/httpd"</tt>.
 </description>
 <ref disa="120,135,166,1338,1339,157" />
 
-<Rule id="enable_auditd_service">
+<Rule id="enable_auditd_service" severity="medium">
 <title>Enable auditd Service</title>
 <description>The <tt>auditd</tt> service is an essential userspace component of
 the Linux Auditing System, as it is responsible for writing audit records to
@@ -98,7 +98,7 @@ actions will be taken if other obstacles exist.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="enable_auditd_bootloader">
+<Rule id="enable_auditd_bootloader" severity="medium">
 <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
 <description>To ensure that all processes can be audited, even
 those which start prior to the audit daemon, add the argument
@@ -228,7 +228,7 @@ normally.</i>
 <value selector="admin">admin</value>
 </Value>
 
-<Rule id="configure_auditd_num_logs">
+<Rule id="configure_auditd_num_logs" severity="medium">
 <title>Configure auditd Number of Logs Retained</title>
 <description>Determine how many log files
 <tt>auditd</tt> should retain when it rotates logs.
@@ -250,7 +250,7 @@ file size and the number of logs retained.</rationale>
 </Rule>
 
 
-<Rule id="configure_auditd_max_log_file">
+<Rule id="configure_auditd_max_log_file" severity="medium">
 <title>Configure auditd Max Log File Size</title>
 <description>Determine the amount of audit data (in megabytes)
 which should be retained in each log file. Edit the file
@@ -273,7 +273,7 @@ log file size and the number of logs retained.</rationale>
 </Rule>
 
 
-<Rule id="configure_auditd_max_log_file_action">
+<Rule id="configure_auditd_max_log_file_action" severity="medium">
 <title>Configure auditd max_log_file_action Upon Reaching Maximum Log Size</title>
 <description> The default action to take when the logs reach their maximum size
 is to rotate the log files, discarding the oldest one. To configure the action taken
@@ -319,7 +319,7 @@ installation time. The partition should be larger than the maximum space which
 </Group>
 -->
 
-<Rule id="configure_auditd_space_left_action">
+<Rule id="configure_auditd_space_left_action" severity="medium">
 <title>Configure auditd space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
 when disk space <i>starts</i> to run low. 
@@ -355,7 +355,7 @@ allow them to take corrective action prior to any disruption.</rationale>
 </Rule>
 
 
-<Rule id="configure_auditd_admin_space_left_action">
+<Rule id="configure_auditd_admin_space_left_action" severity="medium">
 <title>Configure auditd admin_space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
 when disk space is running low but prior to running out of space completely. 
@@ -395,7 +395,7 @@ is used, running low on space for audit records should never occur.
 </Rule>
 
 
-<Rule id="configure_auditd_action_mail_acct">
+<Rule id="configure_auditd_action_mail_acct" severity="medium">
 <title>Configure auditd mail_acct Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to send email to
 a designated account in certain situations. Add or correct the following line

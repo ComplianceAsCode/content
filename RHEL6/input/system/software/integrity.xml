@@ -26,7 +26,7 @@ configurable, with further configuration information located in
 <ref disa="374,1069,1297,1589"/>
 
 
-<Rule id="install_aide">
+<Rule id="install_aide" severity="medium">
 <title>Install AIDE</title>
 <description>
 Install the AIDE package with the command:
@@ -81,7 +81,7 @@ must be captured and it should be able to be verified against the installed file
 <ref nist="SC-28, SI-7" />
 </Rule>
 
-<Rule id="aide_periodic_cron_checking">
+<Rule id="aide_periodic_cron_checking" severity="medium">
 <title>Configure Periodic Execution of AIDE</title>
 <description>
 AIDE should be executed on a periodic basis to check for changes.
@@ -194,7 +194,7 @@ by Red Hat can be installed to provide complementary or duplicative
 security capabilities to those provided by the base platform.
 </description>
 
-<Rule id="install_hids">
+<Rule id="install_hids" severity="high">
 <title>Install Intrusion Detection Software</title>
 <description>
 The base Red Hat platform already includes a sophisticated auditing system that

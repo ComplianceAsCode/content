@@ -42,7 +42,7 @@ notification tasks.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="package_sendmail_removed">
+<Rule id="package_sendmail_removed" severity="medium">
 <title>Uninstall Sendmail Package</title>
 <description>Sendmail is not the default mail transfer agent and is
 not installed by default.
@@ -67,7 +67,7 @@ should be used instead.
 <description>This section discusses settings for Postfix in a submission-only
 e-mail configuration.</description>
 
-<Rule id="postfix_network_listening">
+<Rule id="postfix_network_listening" severity="medium">
 <title>Disable Postfix Network Listening</title>
 <description>
 Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following

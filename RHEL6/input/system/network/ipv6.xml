@@ -16,7 +16,7 @@ effectively prevent execution of the IPv6 networking stack is to
 instruct the system not to activate the IPv6 kernel module.
 </description>
 
-<Rule id="disable_ipv6_module_loading">
+<Rule id="disable_ipv6_module_loading" severity="medium">
 <title>Disable IPv6 Networking Support Automatic Loading</title>
 <description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from loading the
 IPv6 networking stack, add the following line to
@@ -141,7 +141,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="set_sysctl_ipv6_default_accept_redirects">
+<Rule id="set_sysctl_ipv6_default_accept_redirects" severity="medium">
 <title>Disable Accepting IPv6 Redirects</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
