@@ -199,6 +199,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 <ident cce="15054-0" />
 <oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
 <ref nist="IA-5" disa="1092" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="password_require_3consecrepeat">
@@ -241,6 +242,7 @@ search space.
 <ident cce="14113-5" />
 <oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
 <ref nist="IA-5,194" disa="194"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="password_require_uppercases">
@@ -265,6 +267,7 @@ more difficult by ensuring a larger search space.
 <ident cce="14672-0" />
 <oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
 <ref nist="IA-5" disa="192" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="password_require_specials">
@@ -289,6 +292,7 @@ more difficult by ensuring a larger search space.
 <ident cce="14122-6" />
 <oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
 <ref nist="IA-5" disa="1619" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="password_require_lowercases">
@@ -313,6 +317,7 @@ more difficult by ensuring a larger search space.
 <ident cce="14712-4" />
 <oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
 <ref nist="IA-5" disa="193" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="password_require_diffchars">
@@ -338,6 +343,7 @@ Note that passwords which are changed on compromised systems will still be compr
 <ident cce="14701-7" />
 <oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
 <ref nist="IA-5" disa="195"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 </Group>
 </Group>
@@ -406,6 +412,7 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 <ident cce="14939-3" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
 <ref nist="IA-5" disa="200" />
+<tested by="DS" on="20121024"/>
 </Rule>
 </Group>
 
@@ -438,6 +445,7 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 <!-- <ident cce="14063-2" /> -->
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
 <ref nist="IA-5" disa="803"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="set_password_hashing_algorithm_logindefs">
@@ -457,6 +465,7 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 <!-- <ident cce="14063-2" /> -->
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
 <ref nist="IA-5" disa="803"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="set_password_hashing_algorithm_libuserconf">

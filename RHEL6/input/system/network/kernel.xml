@@ -25,6 +25,7 @@ only appropriate for routers.</rationale>
 <ident cce="4151-7" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
 <ref nist="AC-4, SC-5, SC-7" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="disable_sysctl_ipv4_all_send_redirects">
@@ -41,6 +42,7 @@ only appropriate for routers.</rationale>
 <ident cce="4155-8" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
 <ref nist="CM-6" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="disable_sysctl_ipv4_ip_forward">
@@ -57,6 +59,7 @@ only appropriate for routers.</rationale>
 <ident cce="3561-8" />
 <oval id="sysctl_net_ipv4_ip_forward" />
 <ref nist="AC-3, CM-6, CM-7, SC-5" disa="366"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 </Group>
 
@@ -207,6 +210,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4236-6" />
 <oval id="sysctl_net_ipv4_conf_all_accept_source_route" value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
 <ref nist="CM-7" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_conf_all_accept_redirects">
@@ -222,6 +226,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4217-6" />
 <oval id="sysctl_net_ipv4_conf_all_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
 <ref nist="CM-7" disa="1503,1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -239,6 +244,7 @@ absolutely required.</rationale>
 <ident cce="3472-8" />
 <oval id="sysctl_net_ipv4_conf_all_secure_redirects" value="sysctl_net_ipv4_conf_all_secure_redirects_value" />
 <ref nist="CM-7, AC-4" disa="1503,1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_conf_all_log_martians">
@@ -256,6 +262,7 @@ to be detected.</rationale>
 <ident cce="4320-8" />
 <oval id="sysctl_net_ipv4_conf_all_log_martians" value="sysctl_net_ipv4_conf_all_log_martians_value" />
 <ref nist="CM-7" disa="126"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -272,6 +279,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4091-5" />
 <oval id="sysctl_net_ipv4_conf_all_accept_source_route" value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
 <ref nist="AC-4, SC-5, SC-7" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -288,6 +296,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="4186-3" />
 <oval id="sysctl_net_ipv4_conf_default_accept_redirects" />
 <ref nist="AC-4, SC-5, SC-7" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -305,6 +314,7 @@ absolutely required.</rationale>
 <ident cce="3339-9" />
 <oval id="sysctl_net_ipv4_conf_default_secure_redirects" value="sysctl_net_ipv4_conf_default_secure_redirects_value" />
 <ref nist="AC-4, SC-5, SC-7" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -322,6 +332,7 @@ addresses makes the system slightly more difficult to enumerate on the network.
 <ident cce="3644-2" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
 <ref nist="AC-3, CM-6, CM-7, SC-5" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -338,6 +349,7 @@ log size, although some activity would not be logged.</rationale>
 <ident cce="4133-5" />
 <oval id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" value="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" />
 <ref nist="AC-3, CM-6, CM-7, SC-5" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_tcp_syncookies">
@@ -358,6 +370,7 @@ enables the system to continue servicing valid connection requests.
 <ident cce="4265-5" />
 <oval id="sysctl_net_ipv4_tcp_syncookies" value="sysctl_net_ipv4_tcp_syncookies_value" />
 <ref nist="CM-6, CM-7" disa="1092, 1095" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_conf_all_rp_filter">
@@ -376,6 +389,7 @@ networks.</rationale>
 <ident cce="4080-8" />
 <oval id="sysctl_net_ipv4_conf_all_rp_filter" value="sysctl_net_ipv4_conf_all_rp_filter_value" />
 <ref nist="AC-4, SC-5, SC-7" disa="1551"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="set_sysctl_net_ipv4_conf_default_rp_filter">
@@ -394,6 +408,7 @@ networks.</rationale>
 <ident cce="3840-6" />
 <oval id="sysctl_net_ipv4_conf_default_rp_filter" value="sysctl_net_ipv4_conf_default_rp_filter_value" />
 <ref nist="AC-4, SC-5, SC-7" />
+<tested by="DS" on="20121024"/>
 </Rule>
 
 </Group>
