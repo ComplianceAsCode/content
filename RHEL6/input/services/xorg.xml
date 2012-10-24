@@ -26,6 +26,7 @@ To verify that the default runlevel is 3, run the following command:
 The output should show the following:
 <pre>id:3:initdefault:</pre>
 </ocil>
+<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident cce="4462-8" />
 <oval id="xwindows_runlevel_setting" />
 <ref disa="366" />
@@ -45,6 +46,7 @@ To ensure the X Windows package group is removed, run the following command:
 The output should be:
 <pre>package xorg-x11-server-common is not installed</pre>
 </ocil>
+<rationale>Unnecessary packages should not be installed to decrease the attack surface of the system.</rationale>
 <ident cce="4422-2" />
 <oval id="package_xorg-x11-server-common_removed" />
 <ref disa="366" />
