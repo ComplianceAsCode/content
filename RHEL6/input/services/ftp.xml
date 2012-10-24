@@ -82,6 +82,19 @@ and for consistency with future Red Hat releases, the use of vsftpd is recommend
 xferlog_std_format=NO
 log_ftp_protocol=YES</pre>
 </description>
+<ocil clause="xferlog_enable is missing, or is not set to yes">
+Find if logging is applied to the ftp daemon.
+<br/><br/>
+Procedures:
+<br/><br/>
+If vsftpd is started by xinetd:
+<pre># grep vsftpd /etc/xinetd.d/*</pre>
+This will indicate the xinetd.d startup file.
+<pre># grep server_args <i>vsftpd xinetd.d startup file</i></pre>
+This will indicate the vsftpd config file used when starting through xinetd.
+If the line is missing, then the default config file (/etc/vsftpd/vsftpd.conf) is used.
+<pre># grep xferlog_enable <i>vsftpd config file</i></pre>
+</ocil>
 <rationale>The modifications above ensure that all commands sent to the ftp server are logged using the verbose vsftpd log
 format. The default vsftpd log file is /var/log/vsftpd.log.</rationale>
 <warning category="general">If verbose logging to vsftpd.log is done, sparse logging of downloads to /var/log/xferlog will not also occur. However, the information about what files were downloaded is included in the information logged to vsftpd.log</warning>
