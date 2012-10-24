@@ -24,7 +24,7 @@ controls and perform some logging. It has been largely obsoleted by other
 features, and it is not installed by default. The older Inetd service
 is not even available as part of RHEL 6.</description>
 
-<Rule id="disable_xinetd">
+<Rule id="disable_xinetd" severity="medium">
 <title>Disable xinetd Service</title>
 <description>
 <service-disable-macro service="xinetd" />
@@ -82,7 +82,7 @@ subject to man-in-the-middle attacks.
 <ref disa="1436,196,197" />
 </Rule>
 
-<Rule id="uninstall_telnet_server">
+<Rule id="uninstall_telnet_server" severity="high">
 <title>Uninstall telnet-server Package</title>
 <description>The <tt>telnet-server</tt> package can be uninstalled with
 the following command:
@@ -106,7 +106,7 @@ telnet service's accidental (or intentional) activation.
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="uninstall_rsh-server">
+<Rule id="uninstall_rsh-server" severity="high">
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
 the following command:
@@ -159,7 +159,7 @@ stolen by eavesdroppers on the network.
 <ref disa="1436" />
 </Rule>
 
-<Rule id="disable_rlogin">
+<Rule id="disable_rlogin" severity="high">
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -209,7 +209,7 @@ services. NIS should not be used because it suffers from security
 problems inherent in its design, such as inadequate protection of
 important authentication information.</description>
 
-<Rule id="uninstall_ypserv">
+<Rule id="uninstall_ypserv" severity="medium">
 <title>Uninstall ypserv Package</title>
 <description>The <tt>ypserv</tt> package can be uninstalled with
 the following command:
@@ -224,7 +224,7 @@ accidental (or intentional) activation of NIS or NIS+ services.
 <ref disa="305"/>
 </Rule>
 
-<Rule id="disable_ypbind">
+<Rule id="disable_ypbind" severity="medium">
 <title>Disable ypbind Service</title>
 <description>The <tt>ypbind</tt> service, which allows the system to act as a client in
 a NIS or NIS+ domain, should be disabled.
@@ -252,7 +252,7 @@ more secure protocols. A TFTP server should be run only if no more
 secure method of supporting existing equipment can be
 found.</description>
 
-<Rule id="disable_tftp">
+<Rule id="disable_tftp" severity="medium">
 <title>Disable tftp Service</title>
 <description>The <tt>tftp</tt> service should be disabled.
 <service-disable-macro service="tftp" />
@@ -267,7 +267,7 @@ as a tftp server, which does not provide encryption or authentication.
 <ref disa="1436" />
 </Rule>
 
-<Rule id="uninstall_tftp-server">
+<Rule id="uninstall_tftp-server" severity="medium">
 <title>Uninstall tftp-server Package</title>
 <description>
 <package-remove-macro package="tftp-server" />

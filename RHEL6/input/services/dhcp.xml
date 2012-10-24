@@ -33,7 +33,7 @@ system does not need to act as a DHCP server, it should be disabled
 and removed.
 </description>
 
-<Rule id="disable_dhcp_server">
+<Rule id="disable_dhcp_server" severity="medium">
 <title>Disable DHCP Service</title>
 <description>The <tt>dhcpd</tt> service should be disabled on
 any system that does not need to act as a DHCP server.
@@ -51,7 +51,7 @@ DHCP server if there is one.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="uninstall_dhcp_server">
+<Rule id="uninstall_dhcp_server" severity="medium">
 <title>Uninstall DHCP Server Package</title>
 <description>If the system does not need to act as a DHCP server,
 the dhcp package can be uninstalled.

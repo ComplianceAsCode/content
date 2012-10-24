@@ -36,7 +36,7 @@ console interface may be retained for backwards compatibility:
 <pre>vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...</pre></li>
 </ul>
 -->
-<Rule id="restrict_root_console_logins">
+<Rule id="restrict_root_console_logins" severity="medium">
 <title>Restrict Virtual Console Root Logins</title>
 <description>
 To restrict root logins through the (deprecated) virtual console devices,
@@ -108,7 +108,7 @@ administration should be documented in site-defined policy.
 <ref disa="366" />
 </Rule>
 
-<Rule id="no_shelllogin_for_systemaccounts">
+<Rule id="no_shelllogin_for_systemaccounts" severity="medium">
 <title>Ensure that System Accounts Do Not Run a Shell Upon Login</title>
 <description>
 Some accounts are not associated with a human
@@ -148,7 +148,7 @@ become inaccessible.
 </Rule>
 
 
-<Rule id="no_uidzero_except_root">
+<Rule id="no_uidzero_except_root" severity="medium">
 <title>Verify Only Root Has UID 0</title>
 <description>
 If any account other than root has a UID of 0,

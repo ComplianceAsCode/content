@@ -17,7 +17,7 @@ need read access to the <tt>passwd</tt> file in order to function properly, but
 read access to the <tt>shadow</tt> file allows malicious attacks against system
 passwords, and should never be enabled.</description>
 
-<Rule id="userowner_shadow_file">
+<Rule id="userowner_shadow_file" severity="medium">
 <title>Verify User Who Owns <tt>shadow</tt> File</title>
 <description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
@@ -31,7 +31,7 @@ which could weaken the system security posture.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="groupowner_shadow_file">
+<Rule id="groupowner_shadow_file" severity="medium">
 <title>Verify Group Who Owns <tt>shadow</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
@@ -42,7 +42,7 @@ critical for system security.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="perms_shadow_file">
+<Rule id="perms_shadow_file" severity="medium">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
 <description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
 <ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
@@ -56,7 +56,7 @@ which could weaken the system security posture.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="userowner_group_file">
+<Rule id="userowner_group_file" severity="medium">
 <title>Verify User Who Owns <tt>group</tt> File</title>
 <description><fileowner-desc-macro file="/etc/group" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
@@ -67,7 +67,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-3, CM-6"/>
 </Rule>
 
-<Rule id="groupowner_group_file">
+<Rule id="groupowner_group_file" severity="medium">
 <title>Verify Group Who Owns <tt>group</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/group" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
@@ -78,7 +78,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="perms_group_file">
+<Rule id="perms_group_file" severity="medium">
 <title>Verify Permissions on <tt>group</tt> File</title>
 <description><fileperms-desc-macro file="/etc/group" perms="644"/></description>
 <ocil><fileowner-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
@@ -89,7 +89,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="userowner_gshadow_file">
+<Rule id="userowner_gshadow_file" severity="medium">
 <title>Verify User Who Owns <tt>gshadow</tt> File</title>
 <description><fileowner-desc-macro file="/etc/gshadow" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
@@ -100,7 +100,7 @@ is critical for system security.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="groupowner_gshadow_file">
+<Rule id="groupowner_gshadow_file" severity="medium">
 <title>Verify Group Who Owns <tt>gshadow</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/gshadow" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/gshadow" group="root"/></ocil>
@@ -111,7 +111,7 @@ is critical for system security.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="perms_gshadow_file">
+<Rule id="perms_gshadow_file" severity="medium">
 <title>Verify Permissions on <tt>gshadow</tt> File</title>
 <description><fileperms-desc-macro file="/etc/gshadow" perms="0000"/></description>
 <ocil><fileperms-check-macro file="/etc/gshadow" perms="----------"/></ocil>
@@ -122,7 +122,7 @@ is critical for system security.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="userowner_passwd_file">
+<Rule id="userowner_passwd_file" severity="medium">
 <title>Verify User Who Owns <tt>passwd</tt> File</title>
 <description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
@@ -133,7 +133,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="groupowner_passwd_file">
+<Rule id="groupowner_passwd_file" severity="medium">
 <title>Verify Group Who Owns <tt>passwd</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/passwd" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
@@ -144,7 +144,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="file_permissions_etc_passwd">
+<Rule id="file_permissions_etc_passwd" severity="medium">
 <title>Verify Permissions on <tt>passwd</tt> File</title>
 <description><fileperms-desc-macro file="/etc/passwd" perms="0644"/></description>
 <ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/></ocil>
@@ -170,7 +170,7 @@ an argument exists to verify that files' permissions within these directories re
 configured correctly and restrictively.   
 </description>
 
-<Rule id="file_permissions_library_dirs">
+<Rule id="file_permissions_library_dirs" severity="medium">
 <title>Verify that Shared Library Files Have Restrictive Permissions</title>
 <description>System-wide shared library files, which are linked to executables
 during process load time or run time, are stored in the following directories
@@ -202,7 +202,7 @@ runtime. Restrictive permissions are necessary to protect the integrity of the s
 <ref disa="1499"/>
 </Rule>
 
-<Rule id="file_ownership_library_dirs">
+<Rule id="file_ownership_library_dirs" severity="medium">
 <title>Verify that Shared Library Files Have Root Ownership</title>
 <description>System-wide shared library files, which are linked to executables
 during process load time or run time, are stored in the following directories
@@ -235,7 +235,7 @@ runtime. Proper ownership is necessary to protect the integrity of the system.
 </Rule>
 
 
-<Rule id="file_permissions_binary_dirs">
+<Rule id="file_permissions_binary_dirs" severity="medium">
 <title>Verify that System Executables Have Restrictive Permissions</title>
 <description>
 System executables are stored in the following directories by default:
@@ -263,7 +263,7 @@ execution of these programs cannot be co-opted.
 <ref disa="1499"/>
 </Rule>
 
-<Rule id="file_ownership_binary_dirs">
+<Rule id="file_ownership_binary_dirs" severity="medium">
 <title>Verify that System Executables Have Root Ownership</title>
 <description>
 System executables are stored in the following directories by default:
@@ -329,7 +329,7 @@ and for directories requiring global read/write access.
 <tested by="swells" on="20120929"/>
 </Rule>
 
-<Rule id="world_writeable_files">
+<Rule id="world_writeable_files" severity="medium">
 <title>Ensure No World-Writable Files Exist</title>
 <description>Data in world-writable files can be modified by any
 user on the system. In almost all circumstances, files can be
