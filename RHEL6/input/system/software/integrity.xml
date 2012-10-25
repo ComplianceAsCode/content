@@ -1,0 +1,269 @@
+<Group id="integrity">
+<title>Software Integrity Checking</title>
+<description>
+Both the AIDE (Advanced Intrusion Detection Environment)
+software and the RPM package management system provide
+mechanisms for verifying the integrity of installed software.
+AIDE is the successor to the well-known Tripwire integrity
+checker. The RPM package management system can conduct integrity
+checks by comparing information in its metadata database with
+files installed on the system.
+<br /><br />
+Integrity checking cannot <i>prevent</i> intrusions into your
+system, but can detect that they have occurred. Requirements
+for software integrity checking may be highly dependent on
+the environment in which the system will be used.
+</description>
+
+<Group id="aide">
+<title>Verify Integrity with AIDE</title>
+<description>AIDE conducts integrity checks by comparing information
+about files with previously-gathered information. Ideally, the AIDE
+database should be created immediately after your system is built,
+and before the system is connected to any network. AIDE is highly
+configurable, with further configuration information located in
+<tt>/usr/share/doc/aide-<i>VERSION</i></tt></description>
+<ref disa="374,1069,1297,1589"/>
+
+
+<Rule id="install_aide" severity="medium">
+<title>Install AIDE</title>
+<description>
+Install the AIDE package with the command:
+<pre># yum install aide</pre>
+</description>
+<ocil clause="the package is not installed">
+<package-check-macro package="aide"/>
+</ocil>
+<rationale>
+The AIDE package must be installed if it is to be available for integrity checking.
+</rationale>
+<ident cce="4209-3" />
+<oval id="package_aide_installed" />
+<ref nist="CM-6, CM-7, SC-28, SI-7" disa="1069"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="disable_prelink">
+<title>Disable Prelinking</title>
+<description>
+The prelinking feature
+changes binaries in an attempt to decrease their startup time.
+In order to disable it, change or add the following line inside the file <tt>/etc/sysconfig/prelink</tt>:
+<pre>PRELINKING=no</pre>
+Next,  the following command to return binaries to a normal, non-prelinked state:
+<pre># /usr/sbin/prelink -ua</pre>
+</description>
+<rationale>
+The prelinking feature can interfere with the operation
+of AIDE, because it changes binaries.
+</rationale>
+<ref nist="CM-6, SC-28, SI-7" />
+</Rule>
+
+<Rule id="aide_build_database">
+<title>Build and Test AIDE Database</title>
+<description>Run the following command to generate a new database:
+<pre># /usr/sbin/aide --init</pre>
+By default, the database will be written to the file <tt>/var/lib/aide/aide.db.new.gz</tt>.
+Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
+<tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
+The newly-generated database can be installed as follows:
+<pre># cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+To initiate a manual check, run the following command:
+<pre># /usr/sbin/aide --check</pre>
+If this check produces any unexpected output, investigate.
+</description>
+<rationale>
+For AIDE to be effective, an initial database of "known-good" information about files
+must be captured and it should be able to be verified against the installed files.
+</rationale>
+<ref nist="SC-28, SI-7" />
+</Rule>
+
+<Rule id="aide_periodic_cron_checking" severity="medium">
+<title>Configure Periodic Execution of AIDE</title>
+<description>
+AIDE should be executed on a periodic basis to check for changes.
+To implement a daily execution of AIDE at 4:05am using cron, add the following line to /etc/crontab:
+<pre>05 4 * * * root /usr/sbin/aide --check</pre>
+AIDE can be executed periodically through other means; this is merely one example.
+</description>
+<ocil clause="there is no output">
+To determine that periodic AIDE execution has been scheduled, run the following command:
+<pre># grep aide /etc/crontab</pre>
+</ocil>
+<rationale>
+By default, AIDE does not install itself for periodic execution. Periodically
+running AIDE may reveal unexpected changes in installed files.
+</rationale>
+<ref nist="CM-6, SC-28, SI-7" disa="416,1069,1166,1263"/>
+</Rule>
+<!--
+<Group id="aide_verify_integrity_manually">
+<title>Manually Verify Integrity of AIDE</title>
+<description>
+Manually verify the integrity of the AIDE binaries, configuration file, and database. Possibilities for doing
+so include:
+<br /><br />
+1. Use sha1sum or md5sum to generate checksums on the files and then visually compare them to those
+generated from the safely stored versions. This does not, of course, preclude the possibility that such
+output could also be faked.
+<br /><br />
+2. Mount the stored versions on read-only media and run <tt>/bin/diff</tt> to verify that there are no differences
+between the files.
+<br /><br />
+3. Copying the files to another system and performing the hash or file comparisons there may impart
+additional confidence that the manual verification process is not being interfered with.
+</description>
+<rationale>
+Because integrity checking is a means of intrusion detection and not intrusion prevention, it cannot be guaranteed
+that the AIDE binaries, configuration files, or database have not been tampered with. An attacker could disable
+or alter these files after a successful intrusion. Because of this, manual and frequent checks on these files is
+recommended. The safely stored copies (or hashes) of the database, binary, and configuration file were created
+earlier for this purpose.
+</rationale>
+<ref nist="SC-28, SI-7" />
+</Group>
+-->
+</Group>
+
+<Group id="rpm_verification">
+<title>Verify Integrity with RPM</title>
+<description>The RPM package management system includes the ability
+to verify the integrity of installed packages by comparing the
+installed files with information about the files taken from the
+package metadata stored in the RPM database. Although an attacker
+could corrupt the RPM database (analogous to attacking the AIDE
+database as described above), this check can still reveal
+modification of important files. To list which files on the system differ from what is expected by the RPM database:
+<pre># rpm -qVa</pre>
+See the man page for <tt>rpm</tt> to see a complete explanation of each column.
+</description>
+
+<Rule id="rpm_verify_permissions">
+<title>Verify File Permissions with RPM</title>
+<description>The RPM package management system can check file access
+permissions of installed software packages, including many that are
+important to system security. The following command will list which
+files on the system have permissions that are different from what
+is expected by the RPM database:
+<pre># rpm -Va | grep '^.M'</pre>
+</description>
+<ocil clause="there is output">
+The following command will list which files on the system have permissions that are different from what
+is expected by the RPM database:
+<pre># rpm -Va | grep '^.M'</pre>
+</ocil>
+<rationale>
+Permissions on system binaries and configuration files that are too generous
+could allow an unauthorized user to gain privileges that they should not have.
+The permissions set by the vendor should be maintained. Any deviations from
+this baseline should be investigated.</rationale>
+<ident cce="14931-0" />
+<oval id="rpm_verify_permissions" />
+<ref nist="SI-7"/>
+</Rule>
+
+<Rule id="rpm_verify_hashes">
+<title>Verify File Hashes with RPM</title>
+<description>The RPM package management system can check the hashes of
+installed software packages, including many that are important to system
+security. Run the following command to list which files on the system
+have hashes that differ from what is expected by the RPM database:
+<pre># rpm -Va | grep '^..5'</pre>
+A "c" in the second column indicates that a file is a configuration file,
+which may appropriately be expected to change.
+</description>
+<rationale>
+The hash on important files like system executables should match the information given
+by the RPM database. Executables with erroneous hashes could be a sign of nefarious activity
+on the system.</rationale>
+<ident cce="TODO" />
+<oval id="rpm_verify_hashes" />
+<ref nist="SI-7" disa="1496" />
+</Rule>
+
+</Group>
+
+<Group id="additional_security_software">
+<title>Additional Security Software</title>
+<description>
+Additional security software that is not provided or supported
+by Red Hat can be installed to provide complementary or duplicative
+security capabilities to those provided by the base platform.
+</description>
+
+<Rule id="install_hids" severity="high">
+<title>Install Intrusion Detection Software</title>
+<description>
+The base Red Hat platform already includes a sophisticated auditing system that
+can detect intruder activity, as well as SELinux, which provides host-based
+intrusion prevention capabilities by confining privileged programs and user
+sessions which may become compromised.
+<br/>
+<br/>
+Install an additional intrusion detection tool to provide complementary or
+duplicative monitoring, reporting, and reaction capabilities to those of the base
+platform.  For DoD systems, the McAfee Host-based Security System is provided
+to fulfill this role.  
+<!-- provide link to cybercom site? -->
+<!-- need additional commentary: verify that HBSS (sans HIPS module) compatible w/SELinux -->
+</description>
+<ocil clause="no host-based intrusion detection tools are installed">
+Inspect the system to determine if intrusion detection software has been installed.
+Verify that the intrusion detection software is active. 
+<!-- add instructions for HBSS?  the text in the RHEL 5 STIG is wrong as usual -->
+</ocil>
+<rationale>
+Adding host-based intrusion detection tools can provide the capability to
+automatically take actions in response to malicious behavior, which can provide
+additional agility in reacting to network threats. These tools also often
+include a reporting capability to provide network awareness of system, which
+may not otherwise exist in an organization's systems management regime.
+</rationale>
+<ref disa="1263"/>
+</Rule>
+
+<Rule id="install_antivirus">
+<title>Install Virus Scanning Software</title>
+<description>
+Install virus scanning software, which uses signatures to search for the
+presence of viruses on the filesystem. 
+The McAfee uvscan virus scanning tool is provided for DoD systems.
+Ensure virus definition files are no older than 7 days, or their last release.
+<!-- need info here on where DoD admins can go to get this -->
+Configure the virus scanning software to perform scans dynamically on all
+accessed files.  If this is not possible, configure the
+system to scan all altered files on the system on a daily
+basis. If the system processes inbound SMTP mail, configure the virus scanner
+to scan all received mail.
+<!-- what's the basis for the IAO language? would not failure of a check
+     imply a discussion, for every check in this document, 
+     with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
+     particular neighborhood) should occur? -->
+</description>
+<ocil clause="virus scanning software does not run daily, or has signatures that are out of date">
+Inspect the system for a cron job or system service which executes
+a virus scanning tool regularly.
+<br/>
+<!-- this should be handled as DoD-specific text in a future revision -->
+To verify that the McAfee command line scan tool (uvscan) is scheduled for
+regular execution, run the following command to check for a cron job:
+<pre># grep uvscan /etc/cron* /var/spool/cron/*</pre>
+This will reveal if and when the uvscan program will be run.
+<br/>
+To check on the age of uvscan virus definition files, run the following command:
+<pre># cd /usr/local/uvscan
+# ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
+</ocil>
+<rationale>
+Virus scanning software can be used to detect if a system has been compromised by
+computer viruses, as well as to limit their spread to other systems. 
+</rationale>
+<ref disa="1239,1668"/>
+</Rule>
+
+</Group>
+
+</Group>
