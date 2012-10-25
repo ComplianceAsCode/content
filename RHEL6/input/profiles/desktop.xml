@@ -1,0 +1,37 @@
+<Profile id="desktop" extends="common" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Desktop Baseline</title>
+<description>This profile is for a desktop installation of RHEL 6.</description>
+<select idref="enable_gdm_login_banner" selected="true"/>
+<select idref="set_gdm_login_banner_text" selected="true"/>
+<select idref="set_screensaver_inactivity_timeout" selected="true"/>
+<select idref="enable_screensaver_after_idle" selected="true"/>
+<select idref="enable_screensaver_password_lock" selected="true"/>
+<select idref="set_blank_screensaver" selected="true"/>
+<select idref="install_openswan" selected="true"/>
+<select idref="disable_vsftpd" selected="true"/>
+<select idref="uninstall_vsftpd" selected="true"/>
+<select idref="disable_dns_server" selected="true"/>
+<select idref="uninstall_bind" selected="true"/>
+<select idref="disable_httpd" selected="true"/>
+<select idref="uninstall_httpd" selected="true"/>
+<select idref="disable_smb_server" selected="true"/>
+<select idref="disable_squid" selected="true"/>
+<select idref="uninstall_squid" selected="true"/>
+<select idref="disable_snmpd" selected="true"/>
+<select idref="uninstall_net-snmp" selected="true"/>
+<select idref="disable_dovecot" selected="true"/>
+<select idref="uninstall_dovecot" selected="true"/>
+<select idref="service_nfs_disabled" selected="true"/> 
+<select idref="service_rpcsvcgssd_disabled" selected="true"/>
+<select idref="service_nfslock_disabled" selected="true"/>
+<select idref="service_rpcgssd_disabled" selected="true"/>
+<select idref="service_rpcidmapd_disabled" selected="true"/>
+<select idref="service_netfs_disabled" selected="true"/>
+<select idref="service_rpcbind_disabled" selected="true"/>
+<select idref="disable_dhcp_server" selected="true"/>
+<select idref="uninstall_dhcp_server" selected="true"/>
+
+<!-- Refine Values -->
+<!-- inactivity timeout for GNOME screensaver -->
+<refine-value idref="inactivity_timeout_value" selector="15_minutes"/>
+</Profile>

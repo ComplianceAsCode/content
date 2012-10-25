@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_session_events" version="1">
+    <metadata>
+      <title>Record Attempts to Alter Process and Session Initiation Information</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Audit rules should capture information about session initiation.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="utmp" test_ref="test_audit_rules_session_events_utmp" />
+      <criterion comment="btmp" test_ref="test_audit_rules_session_events_btmp" />
+      <criterion comment="wtmp" test_ref="test_audit_rules_session_events_wtmp" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" comment="utmp" id="test_audit_rules_session_events_utmp" version="1">
+    <ind:object object_ref="object_audit_rules_session_events_utmp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_session_events_utmp" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="btmp" id="test_audit_rules_session_events_btmp" version="1">
+    <ind:object object_ref="object_audit_rules_session_events_btmp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_session_events_btmp" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="wtmp" id="test_audit_rules_session_events_wtmp" version="1">
+    <ind:object object_ref="object_audit_rules_session_events_wtmp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_session_events_wtmp" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
