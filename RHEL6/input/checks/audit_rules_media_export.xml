@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_media_export" version="1">
+    <metadata>
+      <title>Audit Information Export To Media</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Audit rules that detect the mounting of filesystems should be enabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="audit mount" test_ref="test_audit_rules_media_export" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" comment="audit mount" id="test_audit_rules_media_export" version="1">
+    <ind:object object_ref="object_audit_rules_media_export" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_media_export" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+(\-F\s+arch=(b64|b32)\s+)?\-S\s+mount\s+\-F\s+auid>=500\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

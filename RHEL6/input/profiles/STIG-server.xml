@@ -1,0 +1,85 @@
+<Profile id="stig-server" extends="common" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Pre-release Draft STIG for RHEL 6 Server</title>
+<description>This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
+
+<select idref="rpm_verify_permissions" selected="true"/>
+<select idref="world_writeable_files" selected="true"/>
+
+<select idref="install_antivirus" selected="true"/>
+<select idref="install_hids" selected="true"/>
+
+<select idref="disable_ctrlaltdel_reboot" selected="true"/>
+
+<select idref="service_postfix_enabled" selected="true"/>
+<select idref="package_sendmail_removed" selected="true"/>
+
+<select idref="service_netconsole_disabled" selected="true"/>
+
+<select idref="disable_xwindows_with_runlevel" selected="true"/>
+<select idref="packagegroup_xwindows_remove" selected="true"/>
+<select idref="disable_dhcp_client" selected="true"/>
+<select idref="limiting_password_reuse" selected="true"/>
+
+<select idref="gid_passwd_group_same" selected="true"/>
+<select idref="account_unique_name" selected="true"/>
+
+<select idref="password_require_consecrepeat" selected="true"/>
+
+<select idref="no_files_unowned_by_user" selected="true"/>
+<select idref="no_files_unowned_by_group" selected="true"/>
+
+<select idref="aide_periodic_cron_checking" selected="true"/>
+<select idref="disable_users_coredumps" selected="true"/>
+<select idref="no_insecure_locks_exports" selected="true" />
+<select idref="configure_auditd_space_left_action" selected="true" />
+<select idref="configure_auditd_action_mail_acct" selected="true" />
+
+<select idref="kernel_module_bluetooth_disabled" selected="true"/>
+<select idref="kernel_module_usb-storage_disabled" selected="true"/>
+
+<select idref="max_concurrent_login_sessions" selected="true"/>
+<refine-value idref="max_concurrent_login_sessions_value" selector="10"/>
+
+<select idref="set_iptables_default_rule_forward" selected="true"/>
+
+<select idref="install_openswan" selected="true" />
+<select idref="enable_gdm_login_banner" selected="true" />
+
+<select idref="set_gdm_login_banner_text" selected="true" />
+<refine-value idref="login_banner_text" selector="dod_default"/>
+
+<select idref="service_bluetooth_disabled" selected="true" />
+<select idref="account_disable_post_pw_expiration" selected="true" />
+
+<select idref="sticky_world_writable_dirs" selected="true" />
+<select idref="world_writable_files_system_ownership" selected="true" />
+<select idref="tftpd_uses_secure_mode" selected="true" />
+
+<select idref="ftp_log_transactions" selected="true" />
+
+<select idref="user_umask_bashrc" selected="true" />
+<select idref="user_umask_cshrc" selected="true" />
+<select idref="user_umask_profile" selected="true" />
+<select idref="user_umask_logindefs" selected="true" />
+
+
+<refine-value idref="user_umask_value" selector="077"/>
+
+
+<select idref="daemon_umask" selected="true" />
+<refine-value idref="var_umask_for_daemons" selector="027"/>
+
+
+<select idref="no_netrc_files" selected="true" />
+
+<select idref="ftp_present_banner" selected="true" />
+
+<select idref="smartcard_auth" selected="true" />
+
+<!-- from inherited Rule, limiting_password_reuse -->
+<refine-value idref="password_history_retain_number" selector="24"/>
+
+<refine-value idref="var_password_max_age" selector="60"/>
+<!-- from inherited Rule, deny_password_attempts -->
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3"/>
+</Profile>
