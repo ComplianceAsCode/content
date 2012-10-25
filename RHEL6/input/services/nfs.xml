@@ -466,7 +466,7 @@ attacker could gain access to data on the NFS server.</rationale>
 <oval id="TO:DO" />
 </Rule>
 
-<Rule id="no_insecure_locks_exports">
+<Rule id="no_insecure_locks_exports" severity="medium">
 <title>Ensure Insecure File Locking is Not Allowed</title>
 <description>By default the NFS server requires secure file-lock requests,
 which require credentials from the client in order to lock a file. Most NFS
