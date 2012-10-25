@@ -23,13 +23,13 @@ are set properly.
 </description>
 
 <Rule id="user_owner_grub_conf" severity="medium">
-<title>Verify /boot/grub/grub.conf User Ownership</title>
-<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to
-<tt>/boot/grub/grub.conf</tt> which should be owned by the <tt>root</tt> user
-to prevent destruction or modification of the file.
-<fileowner-desc-macro file="/boot/grub/grub.conf" owner="root"/>
+<title>Verify /etc/grub.conf User Ownership</title>
+<description>The file <tt>/etc/grub.conf</tt> should 
+be owned by the <tt>root</tt> user to prevent destruction 
+or modification of the file.
+<fileowner-desc-macro file="/etc/grub.conf" owner="root"/>
 </description>
-<ocil><fileowner-check-macro file="/boot/grub/grub.conf" owner="root"/></ocil>
+<ocil><fileowner-check-macro file="/etc/grub.conf" owner="root"/></ocil>
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
@@ -39,13 +39,13 @@ Only root should be able to modify important boot parameters.
 </Rule>
 
 <Rule id="group_owner_grub_conf" severity="medium">
-<title>Verify /boot/grub/grub.conf Group Ownership</title>
-<description>The file <tt>/etc/grub.conf</tt> is a symbolic link to
-<tt>/boot/grub/grub.conf</tt> which should be group-owned by the <tt>root</tt>
-group to prevent destruction or modification of the file.
-<filegroupowner-desc-macro file="/boot/grub/grub.conf" group="root"/>
+<title>Verify /etc/grub.conf Group Ownership</title>
+<description>The file <tt>/etc/grub.conf</tt> should 
+be group-owned by the <tt>root</tt> group to prevent 
+destruction or modification of the file.
+<filegroupowner-desc-macro file="/etc/grub.conf" group="root"/>
 </description>
-<ocil><filegroupowner-check-macro file="/boot/grub/grub.conf" group="root"/></ocil>
+<ocil><filegroupowner-check-macro file="/etc/grub.conf" group="root"/></ocil>
 <rationale>
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
@@ -56,12 +56,12 @@ file should not have any access privileges anyway.
 </Rule>
 
 <Rule id="permissions_grub_conf" severity="medium">
-<title>Verify /boot/grub/grub.conf Permissions</title>
-<description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
+<title>Verify /etc/grub.conf Permissions</title>
+<description>File permissions for <tt>/etc/grub.conf</tt> should be set to 600, which
 is the default.
-<fileperms-desc-macro file="/boot/grub/grub.conf" perms="600"/>
+<fileperms-desc-macro file="/etc/grub.conf" perms="600"/>
 </description>
-<ocil><fileperms-check-macro file="/boot/grub/grub.conf" perms="-rw-------"/></ocil>
+<ocil><fileperms-check-macro file="/etc/grub.conf" perms="-rw-------"/></ocil>
 <rationale>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
