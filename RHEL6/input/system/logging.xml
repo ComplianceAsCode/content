@@ -17,7 +17,7 @@ This section discusses how to configure rsyslog for
 best effect, and how to use tools provided with the system to maintain and
 monitor logs.</description>
 
-<Rule id="package_rsyslog_installed">
+<Rule id="package_rsyslog_installed" severity="medium">
 <title>Ensure rsyslog is Installed</title>
 <description>
 Rsyslog is installed by default. 
@@ -37,7 +37,7 @@ system logging services.
 </Rule>
 
 
-<Rule id="service_rsyslog_enabled">
+<Rule id="service_rsyslog_enabled" severity="medium">
 <title>Enable rsyslog Service</title>
 <description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6.
 <service-enable-macro service="rsyslog" />
@@ -115,7 +115,7 @@ will not create it and important log messages can be lost.
 <ref nist="AC-3, CM-6" />
 </Rule>
 
-<Rule id="userowner_rsyslog_files">
+<Rule id="userowner_rsyslog_files" severity="medium">
 <title>Ensure Log Files Are Owned By Appropriate User</title>
 <description>The owner of all log files written by
 <tt>rsyslog</tt> should be root.
@@ -141,7 +141,7 @@ protected from unauthorized access.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="groupowner_rsyslog_files">
+<Rule id="groupowner_rsyslog_files" severity="medium">
 <title>Ensure Log Files Are Owned By Appropriate Group</title>
 <description>The group-owner of all log files written by
 <tt>rsyslog</tt> should be root.
@@ -168,7 +168,7 @@ protected from unauthorized access.</rationale>
 </Rule>
 
 
-<Rule id="rsyslog_file_permissions">
+<Rule id="rsyslog_file_permissions" severity="medium">
 <title>Ensure System Log Files Have Correct Permissions</title>
 <description>The file permissions for all log files written by
 rsyslog should be set to 600, or more restrictive.
