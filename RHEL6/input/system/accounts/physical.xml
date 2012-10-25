@@ -22,7 +22,7 @@ with a password and ensure its configuration file's permissions
 are set properly.
 </description>
 
-<Rule id="user_owner_grub_conf">
+<Rule id="user_owner_grub_conf" severity="medium">
 <title>Verify /boot/grub/grub.conf User Ownership</title>
 <description>The file <tt>/etc/grub.conf</tt> is a symbolic link to
 <tt>/boot/grub/grub.conf</tt> which should be owned by the <tt>root</tt> user
@@ -38,7 +38,7 @@ Only root should be able to modify important boot parameters.
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="group_owner_grub_conf">
+<Rule id="group_owner_grub_conf" severity="medium">
 <title>Verify /boot/grub/grub.conf Group Ownership</title>
 <description>The file <tt>/etc/grub.conf</tt> is a symbolic link to
 <tt>/boot/grub/grub.conf</tt> which should be group-owned by the <tt>root</tt>
@@ -55,7 +55,7 @@ file should not have any access privileges anyway.
 <ref nist="AC-3, CM-6" disa="225"/>
 </Rule>
 
-<Rule id="permissions_grub_conf">
+<Rule id="permissions_grub_conf"> severity="medium"
 <title>Verify /boot/grub/grub.conf Permissions</title>
 <description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
 is the default.
