@@ -85,7 +85,7 @@ the need to install such a driver first.
 <ref nist="CM-7" disa="85" />
 </Rule>
 -->
-<Rule id="service_bluetooth_disabled">
+<Rule id="service_bluetooth_disabled" severity="medium">
 <title>Disable Bluetooth Service</title>
 <description>
 <service-disable-macro service="bluetooth" />
@@ -102,7 +102,7 @@ utility of Bluetooth connectivity and its limited range.</rationale>
 <ref nist="AC-18, CM-6, CM-7" disa="85,1551" />
 </Rule>
 
-<Rule id="kernel_module_bluetooth_disabled">
+<Rule id="kernel_module_bluetooth_disabled" severity="medium">
 <title>Disable Bluetooth Kernel Modules</title>
 <description>The kernel's module loading system can be configured to prevent
 loading of the Bluetooth module. Add the following to
