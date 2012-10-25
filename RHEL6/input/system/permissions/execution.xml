@@ -114,7 +114,7 @@ controlled through <tt>sysctl</tt> variables <tt>kernel.exec-shield</tt> and
 <tt>kernel.randomize_va_space</tt>.
 </description>
 
-<Rule id="enable_execshield">
+<Rule id="enable_execshield" severity="medium">
 <title>Enable ExecShield</title>
 <description><sysctl-desc-macro sysctl="kernel.exec-shield" value="1" /></description>
 <ocil><sysctl-check-macro sysctl="kernel.exec-shield" value="1" /></ocil>
@@ -131,7 +131,7 @@ address range.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="enable_randomize_va_space">
+<Rule id="enable_randomize_va_space" severity="medium">
 <title>Enable Randomized Layout of Virtual Address Space</title>
 <description><sysctl-desc-macro sysctl="kernel.randomize_va_space" value="1" /></description>
 <ocil><sysctl-check-macro sysctl="kernel.randomize_va_space" value="1" /></ocil>
