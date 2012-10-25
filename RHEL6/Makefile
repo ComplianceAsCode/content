@@ -15,10 +15,10 @@ shorthand-guide:
 
 shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
-	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-rhel6-xccdf.xml \
+	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-rhel6-xccdf-prerefs.xml \
 		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml
 	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
-		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf-prerefs.xml
 #   extract manual check instructions from xccdf into an ocil file
 	xsltproc -o $(OUT)/unlinked-rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-rhel6-ocil.xml $(OUT)/unlinked-rhel6-ocil.xml 
@@ -122,8 +122,9 @@ content-stig: shorthand2xccdf guide checks
 	$(TRANS)/relabelids.py unlinked-stig-rhel6-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-rhel6-xccdf.xml $(OUT)/disa-predraft-stig-rhel6-xccdf.xml
 
-submission-stig: content-stig
-	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-rhel6-xccdf.xml > $(OUT)/table-rhel6-stig.csv
+submission-stig-check: table-stigs
+	cd output; ../$(UTILS)/verify-references.py -p stig-server --rules-with-disarefs-outside-profile unlinked-rhel6-xccdf-prerefs.xml
+#	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-rhel6-xccdf.xml > $(OUT)/table-rhel6-stig.csv
 
 # content-usgcb: coming soon
 
