@@ -32,7 +32,7 @@ including configuration of cryptographic authentication for
 time data, is available at http://www.ntp.org.
 </description>
 
-<Rule id="enable_ntpd">
+<Rule id="enable_ntpd" severity="medium">
 <title>Enable the NTP Daemon</title>
 <description>
 <service-enable-macro service="ntpd" />
@@ -51,7 +51,7 @@ logs and auditing possible security breaches.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="ntpd_specify_remote_server">
+<Rule id="ntpd_specify_remote_server" severity="medium">
 <title>Specify a Remote NTP Server</title>
 <description>To specify a remote NTP server for time synchronization, edit
 the file <tt>/etc/ntp.conf</tt>. Add or correct the following lines,
