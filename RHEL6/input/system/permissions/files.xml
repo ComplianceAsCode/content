@@ -313,7 +313,7 @@ following command:
 </description>
 <ocil clause="any world-writable directories are missing the sticky bit">
 To find world-writable directories that lack the sticky bit, run the following command:
-<pre># find / -type d -perm 002 ! -perm 1000</pre>
+<pre># find / -xdev -type d -perm 002 ! -perm 1000</pre>
 </ocil>
 <rationale>
 Failing to set the sticky bit on public directories allows unauthorized users to delete files in the directory structure.
@@ -345,7 +345,7 @@ symptoms of a misconfigured application or user
 account.</description>
 <ocil clause="there is output">
 To find world-writable files, run the following command:
-<pre># find / -type f -perm -002</pre>
+<pre># find / -xdev -type f -perm -002</pre>
 </ocil>
 <ident cce="3795-2" />
 <ref nist="CM-6"/>
@@ -361,7 +361,7 @@ of any unpackaged SGID files.
 </description>
 <ocil clause="there is output">
 To find world-writable files, run the following command:
-<pre># find / -type f -perm -002</pre>
+<pre># find / -xdev -type f -perm -002</pre>
 </ocil>
 <rationale>Executable files with the SGID permission run with the privileges of
 the owner of the file. SGID files of uncertain provenance could allow for
@@ -382,7 +382,7 @@ of any unpackaged SUID files.
 </description>
 <ocil>
 To find world-writable files, run the following command:
-<pre># find / -type f -perm -002</pre>
+<pre># find / -xdev -type f -perm -002</pre>
 </ocil>
 <rationale>Executable files with the SUID permission run with the privileges of
 the owner of the file. SUID files of uncertain provenance could allow for
