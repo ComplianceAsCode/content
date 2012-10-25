@@ -351,8 +351,8 @@ exclude-result-prefixes="xccdf xhtml dc">
     To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot
     configuration, run the following command: 
     <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
-    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has been disabled at all runlevels,
-    as shown in the example below:
+    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, 
+    or has been disabled at all runlevels, as shown in the example below:
     <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
 
