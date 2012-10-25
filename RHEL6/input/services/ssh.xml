@@ -200,7 +200,7 @@ is reached.
 </Rule>
 
 
-<Rule id="sshd_disable_rhosts">
+<Rule id="sshd_disable_rhosts" severity="medium">
 <title>Disable SSH Support for .rhosts Files</title>
 <description>SSH can emulate the behavior of the obsolete rsh
 command in allowing users to enable insecure access to their
@@ -223,7 +223,7 @@ can allow an attacker to move trivially to other hosts.
 </Rule>
 
 
-<Rule id="disable_host_auth">
+<Rule id="disable_host_auth" severity="medium">
 <title>Disable Host-Based Authentication</title>
 <description>SSH's cryptographic host-based authentication is
 more secure than <tt>.rhosts</tt> authentication,
@@ -249,7 +249,7 @@ can allow an attacker to move trivially to other hosts.
 </Rule>
 
 
-<Rule id="sshd_disable_root_login">
+<Rule id="sshd_disable_root_login" severity="medium">
 <title>Disable SSH Root Login</title>
 <description>The root user should never be allowed to login to a
 system directly over a network.
@@ -271,7 +271,7 @@ and also allows direct attack attempts on root's password.
 </Rule>
 
 
-<Rule id="sshd_disable_empty_passwords">
+<Rule id="sshd_disable_empty_passwords" severity="high">
 <title>Disable SSH Access via Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
 empty passwords, add or correct the following line:
@@ -341,7 +341,7 @@ access restriction in some configurations.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="sshd_use_approved_ciphers">
+<Rule id="sshd_use_approved_ciphers" severity="medium">
 <title>Use Only Approved Ciphers</title>
 <description>Limit the ciphers to those algorithms which are FIPS-approved.
 Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
