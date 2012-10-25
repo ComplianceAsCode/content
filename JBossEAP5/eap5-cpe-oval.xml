@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2012 Red Hat, Inc.
+  ~ All rights reserved.
+  ~  
+  ~ This file is part of JBoss EAP 5.x SCAP Content.
+  ~  
+  ~ JBoss EAP 5.x SCAP Content is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Lesser General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~  
+  ~ JBoss EAP 5.x SCAP Content is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Lesser General Public License for more details.
+  ~  
+  ~ You should have received a copy of the GNU Lesser General Public License
+  ~ along with JBoss EAP 5.x SCAP Content.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<oval_definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd" 
+	xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+	xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+	xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
+	xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent">
+
+	<generator>
+		<oval:schema_version>5.4</oval:schema_version>
+		<oval:timestamp>2010-07-08T11:19:35.419-04:00</oval:timestamp>
+	</generator>
+
+	<definitions>
+		<definition version="1" class="inventory" id="oval:com.redhat.eap5.scap:def:599901">
+			<metadata>
+				<title>JBoss Enterprise Application Platform 5.1.0</title>
+				<description>EAP Version should be 5.1.0</description>
+				<affected family="undefined">
+					<platform>JBoss Enterprise Application Platform 5.1.0</platform>
+				</affected>
+				<reference source="http://cpe.mitre.org" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:5.1.0"/>
+			</metadata>
+			<criteria>
+				<criterion test_ref="oval:com.redhat.eap5.scap:tst:59990101" />
+			</criteria>
+		</definition>
+		
+		<definition version="1" class="inventory" id="oval:com.redhat.eap5.scap:def:599801">
+			<metadata>
+				<title>JBoss Enterprise Application Platform 5.1.2</title>
+				<description>EAP Version should be 5.1.2</description>
+				<affected family="undefined">
+					<platform>JBoss Enterprise Application Platform 5.1.2</platform>
+				</affected>
+				<reference ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:5.1.2" source="http://cpe.mitre.org"/>
+			</metadata>
+			<criteria>
+				<criterion test_ref="oval:com.redhat.eap5.scap:tst:59980101" />
+			</criteria>
+		</definition>
+		
+		<definition version="1" class="inventory" id="oval:com.redhat.eap5.scap:def:599701">
+			<metadata>
+				<title>JBoss Enterprise Application Platform 5.1.1</title>
+				<description>EAP Version should be 5.1.1</description>
+				<affected family="undefined">
+					<platform>JBoss Enterprise Application Platform 5.1.1</platform>
+				</affected>
+				<reference source="http://cpe.mitre.org" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:5.1.1"/>
+			</metadata>
+			<criteria>
+				<criterion test_ref="oval:com.redhat.eap5.scap:tst:59970101" />
+			</criteria>
+		</definition>
+		
+		<definition version="1" class="inventory" id="oval:com.redhat.eap5.scap:def:599601">
+			<metadata>
+				<title>JBoss Enterprise Application Platform 5.0.0</title>
+				<description>EAP Version should be 5.0.0</description>
+				<affected family="undefined">
+					<platform>JBoss Enterprise Application Platform 5.0.0</platform>
+				</affected>
+				<reference ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:5.0.0" source="http://cpe.mitre.org"/>
+			</metadata>
+			<criteria>
+				<criterion test_ref="oval:com.redhat.eap5.scap:tst:59960101" />
+			</criteria>
+		</definition>
+		
+		<definition version="1" class="inventory"
+			id="oval:com.redhat.eap5.scap:def:600001">
+			<metadata>
+				<title>JBoss Enterprise Application Platform 5.0.1</title>
+				<description>EAP Version should be 5.0.1</description>
+				<affected family="undefined">
+					<platform>JBoss Enterprise Application Platform 5.0.1</platform>
+				</affected>
+				<reference source="http://cpe.mitre.org" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:5.0.1"/>
+			</metadata>
+			<criteria>
+				<criterion test_ref="oval:com.redhat.eap5.scap:tst:60000101" />
+			</criteria>
+		</definition>	
+	</definitions>
+
+	<tests>
+		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:59990101"	version="1" check="all" comment="Check EAP Version">
+			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:59990101" />
+			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:59990101" />
+		</ind:textfilecontent54_test>
+		
+		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:59980101"	version="1" check="all" comment="Check EAP Version">
+			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:59990101" />
+			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:59980101" />
+		</ind:textfilecontent54_test>
+		
+		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:59970101"	version="1" check="all" comment="Check EAP Version">
+			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:59990101" />
+			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:59970101" />
+		</ind:textfilecontent54_test>
+		
+		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:59960101"	version="1" check="all" comment="Check EAP Version">
+			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:59990101" />
+			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:59960101" />
+		</ind:textfilecontent54_test>
+		
+		<ind:textfilecontent54_test id="oval:com.redhat.eap5.scap:tst:60000101"	version="1" check="all" comment="Check EAP Version">
+			<ind:object object_ref="oval:com.redhat.eap5.scap:obj:59990101" />
+			<ind:state state_ref="oval:com.redhat.eap5.scap:ste:60000101" />
+		</ind:textfilecontent54_test>
+	</tests>
+
+	<objects>
+		<ind:environmentvariable_object id="oval:com.redhat.eap5.scap:obj:8001"	version="1">
+			<ind:name>JBOSS_HOME</ind:name>
+		</ind:environmentvariable_object>
+
+		<ind:textfilecontent54_object id="oval:com.redhat.eap5.scap:obj:59990101" version="1">
+			<ind:path var_ref="oval:com.redhat.eap5.scap:var:800101"/>
+			<ind:filename>boot.log</ind:filename>
+			<ind:pattern operation="pattern match">Release ID: JBoss \[EAP\] ([0-9\.]{3,5})</ind:pattern>
+			<ind:instance datatype="int">1</ind:instance>
+		</ind:textfilecontent54_object>
+	</objects>
+
+	<states>
+		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:59990101" version="1">
+			<ind:subexpression>5.1.0</ind:subexpression>
+		</ind:textfilecontent54_state>
+		
+		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:59980101" version="1">
+			<ind:subexpression>5.1.2</ind:subexpression>
+		</ind:textfilecontent54_state>
+		
+		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:59970101" version="1">
+			<ind:subexpression>5.1.1</ind:subexpression>
+		</ind:textfilecontent54_state>
+		
+		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:59960101" version="1">
+			<ind:subexpression>5.0.0</ind:subexpression>
+		</ind:textfilecontent54_state>
+		<ind:textfilecontent54_state id="oval:com.redhat.eap5.scap:ste:60000101" version="1">
+			<ind:subexpression>5.0.1</ind:subexpression>
+		</ind:textfilecontent54_state>
+	</states>
+
+	<variables>
+		<constant_variable comment="server profile OVAL content is run against" datatype="string" version="1" id="oval:com.redhat.eap5.scap:var:800122">
+			<value>production</value>
+		</constant_variable>
+		
+		<local_variable id="oval:com.redhat.eap5.scap:var:800101" version="1" datatype="string" comment="log location">
+			<concat>
+				<object_component object_ref="oval:com.redhat.eap5.scap:obj:8001" item_field="value" />
+				<literal_component>/server/</literal_component>
+				<variable_component var_ref="oval:com.redhat.eap5.scap:var:800122"/>
+				<literal_component>/log</literal_component>
+			</concat>
+		</local_variable>
+	</variables>
+</oval_definitions>
