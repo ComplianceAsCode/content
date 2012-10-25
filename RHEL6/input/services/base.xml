@@ -405,7 +405,8 @@ RHN server or satellite and managed as such.
 <ocil><service-disable-check-macro service="rhnsd" /></ocil>
 <rationale>Although systems management and patching is extremely important to
 system security, management by a system outside the enterprise enclave is not
-desirable for some environments.</rationale>
+desirable for some environments.  However, if the system is being managed by RHN or
+ RHN Satellite Server it can remain on, otherwise disable the service. </rationale>
 <ident cce="3416-5" />
 <oval id="service_rhnsd_disabled" />
 <ref nist="CM-6, CM-7" disa="382" />
