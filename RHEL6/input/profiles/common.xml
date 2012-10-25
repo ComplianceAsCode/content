@@ -36,11 +36,16 @@
 <select idref="groupowner_passwd_file" selected="true"/>
 <select idref="file_permissions_etc_passwd" selected="true"/>
 
+<select idref="userowner_group_file" selected="true" />
+<select idref="groupowner_group_file" selected="true" />
+<select idref="perms_group_file" selected="true" />
+
 <select idref="file_permissions_library_dirs" selected="true"/>
 <select idref="file_ownership_library_dirs" selected="true"/>
 <select idref="file_permissions_binary_dirs" selected="true"/>
 <select idref="file_ownership_binary_dirs" selected="true"/>
 
+<select idref="audit_logs_permissions" selected="true"/>
 
 <select idref="password_min_len" selected="true"/>
 <select idref="password_min_age" selected="true"/>
@@ -78,6 +83,7 @@
 <select idref="set_sysctl_net_ipv4_conf_all_log_martians" selected="true"/>
 <select idref="set_sysctl_net_ipv4_conf_default_accept_source_route" selected="true"/>
 <select idref="set_sysctl_net_ipv4_conf_default_secure_redirects" selected="true"/>
+<select idref="set_sysctl_net_ipv4_conf_default_accept_redirects" selected="true"/>
 <select idref="set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true"/>
 <select idref="set_sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true"/>
 <select idref="set_sysctl_net_ipv4_tcp_syncookies" selected="true"/>
@@ -203,6 +209,8 @@ these should likely be moved out of common.
 
 <select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
 <select idref="use_nosuid_option_on_nfs_mounts" selected="true"/>
+<select idref="mountopt_noexec_on_removable_partitions" selected="true"/>
+
 <!-- <select idref="disable_dns_server" selected="true"/> -->
 <!-- <select idref="uninstall_bind" selected="true"/> -->
 <!-- <select idref="disable_vsftpd" selected="true"/> -->

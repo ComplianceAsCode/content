@@ -3,6 +3,7 @@
 <description>This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
 
 <select idref="rpm_verify_permissions" selected="true"/>
+<select idref="world_writeable_files" selected="true"/>
 
 <select idref="install_antivirus" selected="true"/>
 <select idref="install_hids" selected="true"/>
@@ -12,11 +13,21 @@
 <select idref="service_postfix_enabled" selected="true"/>
 <select idref="package_sendmail_removed" selected="true"/>
 
+<select idref="service_netconsole_disabled" selected="true"/>
+
 <select idref="disable_xwindows_with_runlevel" selected="true"/>
 <select idref="packagegroup_xwindows_remove" selected="true"/>
 <select idref="disable_dhcp_client" selected="true"/>
 <select idref="limiting_password_reuse" selected="true"/>
+
+<select idref="gid_passwd_group_same" selected="true"/>
+<select idref="account_unique_name" selected="true"/>
+
+<select idref="password_require_consecrepeat" selected="true"/>
+
 <select idref="no_files_unowned_by_user" selected="true"/>
+<select idref="no_files_unowned_by_group" selected="true"/>
+
 <select idref="aide_periodic_cron_checking" selected="true"/>
 <select idref="disable_users_coredumps" selected="true"/>
 <select idref="no_insecure_locks_exports" selected="true" />
@@ -50,6 +61,8 @@
 <select idref="user_umask_cshrc" selected="true" />
 <select idref="user_umask_profile" selected="true" />
 <select idref="user_umask_logindefs" selected="true" />
+
+
 <refine-value idref="user_umask_value" selector="077"/>
 
 
