@@ -141,7 +141,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="set_sysctl_ipv6_default_accept_redirects">
+<Rule id="set_sysctl_ipv6_default_accept_redirects" severity="medium">
 <title>Disable Accepting IPv6 Redirects</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
