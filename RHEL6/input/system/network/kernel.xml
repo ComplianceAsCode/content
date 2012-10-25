@@ -352,7 +352,7 @@ log size, although some activity would not be logged.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="set_sysctl_net_ipv4_tcp_syncookies">
+<Rule id="set_sysctl_net_ipv4_tcp_syncookies" severity="medium">
 <title>Enable Kernel Parameter to Use TCP Syncookies</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.tcp_syncookies" value="1" />
@@ -373,7 +373,7 @@ enables the system to continue servicing valid connection requests.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="set_sysctl_net_ipv4_conf_all_rp_filter">
+<Rule id="set_sysctl_net_ipv4_conf_all_rp_filter" severity="medium">
 <title>Enable Kernel Parameter to Use Reverse Path Filtering for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.rp_filter" value="1" />
@@ -392,7 +392,7 @@ networks.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="set_sysctl_net_ipv4_conf_default_rp_filter">
+<Rule id="set_sysctl_net_ipv4_conf_default_rp_filter" severity="medium">
 <title>Enable Kernel Parameter to Use Reverse Path Filtering by Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.rp_filter" value="1" />
