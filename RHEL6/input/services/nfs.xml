@@ -302,6 +302,7 @@ If properly configured, the output should look like:
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident cce="4473-5" />
 <oval id="service_nfs_disabled" />
+<tested by="DS" on="20121025"/>
 </Rule>
 
 <Rule id="service_rpcsvcgssd_disabled">
@@ -319,6 +320,7 @@ RPC then this service should be disabled.
 <ident cce="4473-5" />
 <ident cce="4491-7" />
 <oval id="service_rpcsvcgssd_disabled" />
+<tested by="DS" on="20121025"/>
 </Rule>
 </Group>
 
@@ -350,6 +352,7 @@ All NFS mounts should show the <tt>nodev</tt> setting in parentheses.
 should not present device files to users.</rationale>
 <ident cce="4368-7" />
 <oval id="mount_option_nodev_remote_filesystems" />
+<tested by="DS" on="20121025"/>
 </Rule>
 
 <Rule id="use_nosuid_option_on_nfs_mounts" severity="medium">
@@ -366,6 +369,7 @@ All NFS mounts should show the <tt>nosuid</tt> setting in parentheses.
 should be installed to their default location on the local filesystem.</rationale>
 <ident cce="4024-6" />
 <oval id="mount_option_nosuid_remote_filesystems" />
+<tested by="DS" on="20121025"/>
 </Rule>
 
 </Group>
