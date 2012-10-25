@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance"
+  id="network_ipv6_privacy_extensions" version="1">
+    <metadata>
+      <title>Enable Privacy Extensions for IPv6</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Enable privacy extensions for IPv6</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="IPv6 disabled or..."
+      definition_ref="kernel_module_ipv6_option_disabled" />
+      <criterion comment="Enable privacy extensions per interface" 
+      test_ref="test_network_ipv6_privacy_extensions" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist" comment="Enable privacy extensions on each interface"
+  id="test_network_ipv6_privacy_extensions" version="1">
+    <ind:object object_ref="obj_network_ipv6_privacy_extensions" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="Enable privacy extensions on each interface"
+  id="obj_network_ipv6_privacy_extensions" version="1">
+    <ind:path>/etc/sysconfig/network-scripts</ind:path>
+    <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
+    <ind:pattern operation="pattern match">^IPV6_PRIVACY=rfc3041$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

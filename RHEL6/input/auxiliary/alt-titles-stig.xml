@@ -1,0 +1,722 @@
+<?xml version="1.0"?>
+<titles xmlns="http://checklists.nist.gov/xccdf/1.1" id="stig">
+<!-- This file can be used to specify alternative titles.
+     The rule attribute is used to identify the Rule with which to associate the title.
+     The shorttitle attribute is provided as an aide to data entry. 
+     The xccdf-alt-titles.xslt transform can be used to synchronize the rule and
+     shorttitle attributes with a particular XCCDF profile automatically. -->
+<title rule="partition_for_tmp" shorttitle="Ensure /tmp Located On Separate Partition">
+The system must use a separate file system for /tmp.
+</title>
+<title rule="partition_for_var" shorttitle="Ensure /var Located On Separate Partition">
+The system must use a separate file system for /var.
+</title>
+<title rule="partition_for_var_log" shorttitle="Ensure /var/log Located On Separate Partition">
+The system must use a separate file system for /var/log.
+</title>
+<title rule="partition_for_var_log_audit" shorttitle="Ensure /var/log/audit Located On Separate Partition">
+The system must use a separate file system for the system audit data path.
+</title>
+<title rule="partition_for_home" shorttitle="Ensure /home Located On Separate Partition">
+The system must use a separate file system for user home directories.
+</title>
+<title rule="ensure_redhat_gpgkey_installed" shorttitle="Ensure Red Hat GPG Key Installed">
+Vendor-provided cryptographic certificates must be installed to verify the integrity of system software.
+</title>
+<title rule="security_patches_up_to_date" shorttitle="Ensure Software Patches Installed">
+Vendor-recommended software patches and updates, and system security patches and updates, must be installed and up-to-date.
+</title>
+<title rule="ensure_gpgcheck_globally_activated" shorttitle="Ensure gpgcheck Enabled In Main Yum Configuration">
+The system package management tool must cryptographically verify the authenticity of system software packages during installation.
+</title>
+<title rule="ensure_gpgcheck_never_disabled" shorttitle="Ensure gpgcheck Enabled For All Yum Package Repositories">
+The system package management tool must cryptographically verify the authenticity of all software packages during installation.
+</title>
+<title rule="install_aide" shorttitle="Install AIDE">
+A file integrity tool must be installed.
+</title>
+<title rule="aide_periodic_cron_checking" shorttitle="Configure Periodic Execution of AIDE">
+A file integrity tool must be used at least weekly to check for unauthorized file changes, particularly the addition of unauthorized system libraries or binaries, or for unauthorized modification to authorized system libraries or binaries.
+</title>
+<title rule="rpm_verify_permissions" shorttitle="Verify File Permissions with RPM">
+The system package management tool must verify permissions on all file and directories associated with packages.
+</title>
+<title rule="kernel_module_usb-storage_disabled" shorttitle="Disable Modprobe Loading of USB Storage Driver">
+The system must have USB Mass Storage disabled unless needed.
+</title>
+<title rule="service_autofs_disabled" shorttitle="Disable the Automounter">
+Automated file system mounting tools must not be enabled unless needed.
+</title>
+<title rule="userowner_shadow_file" shorttitle="Verify User Who Owns shadow File">
+The /etc/shadow file must be owned by root.
+</title>
+<title rule="groupowner_shadow_file" shorttitle="Verify Group Who Owns shadow File">
+The /etc/shadow file must be group-owned by root.
+</title>
+<title rule="perms_shadow_file" shorttitle="Verify Permissions on shadow File">
+The /etc/shadow file must have mode 0000.
+</title>
+<title rule="userowner_gshadow_file" shorttitle="Verify User Who Owns gshadow File">
+The /etc/gshadow file must be owned by root.
+</title>
+<title rule="groupowner_gshadow_file" shorttitle="Verify Group Who Owns gshadow File">
+The /etc/gshadow file must be group-owned by root.
+</title>
+<title rule="perms_gshadow_file" shorttitle="Verify Permissions on gshadow File">
+The /etc/gshadow file must have mode 0000.
+</title>
+<title rule="userowner_passwd_file" shorttitle="Verify User Who Owns passwd File">
+The /etc/passwd file must be owned by root.
+</title>
+<title rule="groupowner_passwd_file" shorttitle="Verify Group Who Owns passwd File">
+The /etc/passwd file must be group-owned by root.
+</title>
+<title rule="file_permissions_etc_passwd" shorttitle="Verify Permissions on passwd File">
+The /etc/passwd file must have mode 0644 or less permissive.
+</title>
+<title rule="file_permissions_library_dirs" shorttitle="Verify that Shared Library Files Have Restrictive Permissions">
+Library files must have mode 0755 or less permissive.
+</title>
+<title rule="file_ownership_library_dirs" shorttitle="Verify that Shared Library Files Have Root Ownership">
+Library files must be owned by root.
+</title>
+<title rule="file_permissions_binary_dirs" shorttitle="Verify that System Executables Have Restrictive Permissions">
+All system command files must have mode 0755 or less permissive.
+</title>
+<title rule="file_ownership_binary_dirs" shorttitle="Verify that System Executables Have Root Ownership">
+All system command files must be owned by root.
+</title>
+<title rule="sticky_world_writable_dirs" shorttitle="Verify that All World-Writable Directories Have Sticky Bits Set">
+The sticky bit must be set on all public directories.
+</title>
+<title rule="no_files_unowned_by_user" shorttitle="Ensure All Files Are Owned by a User">
+All files and directories must have a valid owner.
+</title>
+<title rule="world_writable_files_system_ownership" shorttitle="Ensure All World-Writable Directories Are Owned by a System Account">
+All public directories must be owned by a system account.
+</title>
+<title rule="disable_users_coredumps" shorttitle="Disable Core Dumps for All Users">
+Process core dumps must be disabled unless needed.
+</title>
+<title rule="enable_execshield" shorttitle="Enable ExecShield">
+The system must limit the ability of processes to have simultaneous write and execute access to memory.
+</title>
+<title rule="enable_randomize_va_space" shorttitle="Enable Randomized Layout of Virtual Address Space">
+The system must implement virtual address space randomization.
+</title>
+<title rule="enable_selinux_bootloader" shorttitle="Ensure SELinux Not Disabled in /etc/grub.conf">
+The system must use a Linux Security Module at boot time.
+</title>
+<title rule="set_selinux_state" shorttitle="Ensure SELinux State is Enforcing">
+The system must use a Linux Security Module configured to enforce limits on system services.
+</title>
+<title rule="set_selinux_policy" shorttitle="Configure SELinux Policy">
+The system must use a Linux Security Module configured to limit the privileges of system services.
+</title>
+<title rule="selinux_unlabeled_device_files" shorttitle="Ensure No Device Files are Unlabeled by SELinux">
+All device files must be monitored by the system Linux Security Module.
+</title>
+<title rule="restrict_root_console_logins" shorttitle="Restrict Virtual Console Root Logins">
+The system must prevent the root account from logging in from virtual consoles.
+</title>
+<title rule="restrict_serial_port_logins" shorttitle="Restrict Serial Port Root Logins">
+The system must prevent the root account from logging in from serial consoles.
+</title>
+<title rule="no_shelllogin_for_systemaccounts" shorttitle="Ensure that System Accounts Do Not Run a Shell Upon Login">
+System accounts must not have a working shell, unless needed.
+</title>
+<title rule="no_uidzero_except_root" shorttitle="Verify Only Root Has UID 0">
+The root account must be the only account having a UID of 0.
+</title>
+<title rule="no_empty_passwords" shorttitle="Prevent Log In to Accounts With Empty Password">
+The system must not have accounts configured with blank or null passwords.
+</title>
+<title rule="no_hashes_outside_shadow" shorttitle="Verify All Account Password Hashes are Shadowed">
+The /etc/passwd file must not contain password hashes.
+</title>
+<title rule="no_netrc_files" shorttitle="Verify No netrc Files Exist">
+There must be no .netrc files on the system.
+</title>
+<title rule="password_min_len" shorttitle="Set Password Minimum Length in login.defs">
+The system must require passwords contain a minimum of 14 characters.
+</title>
+<title rule="password_min_age" shorttitle="Set Password Minimum Age">
+Users must not be able to change passwords more than once every 24 hours.
+</title>
+<title rule="password_max_age" shorttitle="Set Password Maximum Age">
+User passwords must be changed at least every 60 days.
+</title>
+<title rule="password_warn_age" shorttitle="Set Password Warning Age">
+Users must be warned 14 days in advance of password expiration.
+</title>
+<title rule="account_disable_post_pw_expiration" shorttitle="Set Account Expiration Following Inactivity">
+Accounts must be locked upon 35 days of inactivity.
+</title>
+<title rule="no_nis_inclusions_shadow" shorttitle="Remove Legacy + Entries From /etc/shadow">
+The /etc/shadow file must not contain a plus (+) entry.
+</title>
+<title rule="no_nis_inclusions_group" shorttitle="Remove Legacy + Entries From /etc/group">
+The /etc/group file must not contain a plus (+) entry.
+</title>
+<title rule="no_nis_inclusions_passwd" shorttitle="Remove Legacy + Entries From /etc/passwd">
+The /etc/passwd file must not contain a plus (+) entry.
+</title>
+<title rule="password_retry" shorttitle="Set Password Retry Prompts Permitted Per-Session">
+The system must reject session authentication after three consecutive failed authentication attempts.
+</title>
+<title rule="password_require_digits" shorttitle="Set Password Strength Minimum Digit Characters">
+The system must require passwords contain at least one numeric character.
+</title>
+<title rule="password_require_uppercases" shorttitle="Set Password Strength Minimum Uppercase Characters">
+The system must require passwords contain at least one uppercase alphabetic character.
+</title>
+<title rule="password_require_specials" shorttitle="Set Password Strength Minimum Special Characters">
+The system must require passwords contain at least one special character.
+</title>
+<title rule="password_require_lowercases" shorttitle="Set Password Strength Minimum Lowercase Characters">
+The system must require passwords contain at least one lowercase alphabetic character.
+</title>
+<title rule="password_require_diffchars" shorttitle="Set Password Strength Minimum Different Characters">
+The system must require at least four characters be changed between the old and new passwords during a password change.
+</title>
+<title rule="deny_password_attempts" shorttitle="Set Deny For Failed Password Attempts">
+The system must disable accounts after three consecutive unsuccessful login attempts.
+</title>
+<title rule="set_password_hashing_algorithm" shorttitle="Set Password Hashing Algorithm">
+The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes.
+</title>
+<title rule="limiting_password_reuse" shorttitle="Limit Password Reuse">
+The system must prohibit the reuse of passwords within five iterations.
+</title>
+<title rule="max_concurrent_login_sessions" shorttitle="Limit the Number of Concurrent Login Sessions Allowed Per User">
+The system must limit users to 10 simultaneous system logins, or a site-defined number, in accordance with operational requirements.
+</title>
+<title rule="user_umask_bashrc" shorttitle="Ensure the Default Bash Umask is Set Correctly">
+The system default umask for the bash shell must be 077.
+</title>
+<title rule="user_umask_cshrc" shorttitle="Ensure the Default C Shell Umask is Set Correctly">
+The system default umask for the csh shell must be 077.
+</title>
+<title rule="user_umask_profile" shorttitle="Ensure the Default Umask is Set Correctly in /etc/profile">
+The system default umask in /etc/profile must be 077.
+</title>
+<title rule="user_umask_logindefs" shorttitle="Ensure the Default Umask is Set Correctly in login.defs">
+The system default umask in /etc/login.defs must be 077.
+</title>
+<title rule="user_owner_grub_conf" shorttitle="Verify /etc/grub.conf User Ownership">
+The system boot loader configuration file(s) must be owned by root.
+</title>
+<title rule="group_owner_grub_conf" shorttitle="Verify /etc/grub.conf Group Ownership">
+The system boot loader configuration file(s) must be group-owned by root.
+</title>
+<title rule="permissions_grub_conf" shorttitle="Verify /etc/grub.conf Permissions">
+The system boot loader configuration file(s) must have mode 0600 or less permissive.
+</title>
+<title rule="bootloader_password" shorttitle="Set Boot Loader Password">
+The system boot loader must require authentication.
+</title>
+<title rule="require_singleuser_auth" shorttitle="Require Authentication for Single User Mode">
+The system must require authentication upon booting into single-user and maintenance modes.
+</title>
+<title rule="disable_interactive_boot" shorttitle="Disable Interactive Boot">
+The system must not permit interactive boot.
+</title>
+<title rule="set_screensaver_inactivity_timeout" shorttitle="Set GNOME Login Inactivity Timeout">
+The graphical desktop environment must set the idle timeout to no more than 15 minutes.
+</title>
+<title rule="enable_screensaver_after_idle" shorttitle="GNOME Desktop Screensaver Mandatory Use">
+The graphical desktop environment must automatically lock after 15 minutes of inactivity and the system must require user to re-authenticate to unlock the environment.
+</title>
+<title rule="enable_screensaver_password_lock" shorttitle="Enable Screen Lock Activation After Idle Period">
+The graphical desktop environment must have automatic lock enabled.
+</title>
+<title rule="set_blank_screensaver" shorttitle="Implement Blank Screen Saver">
+The system must display a publicly-viewable pattern during a graphical desktop environment session lock.
+</title>
+<title rule="install_vlock_package" shorttitle="Install the vlock Package">
+The system must allow locking of the console screen.
+</title>
+<title rule="set_system_login_banner" shorttitle="Modify the System Login Banner">
+The Department of Defense (DoD) login banner must be displayed immediately prior to, or as part of, console login prompts.
+</title>
+<title rule="enable_gdm_login_banner" shorttitle="Enable GUI Warning Banner">
+A login banner must be displayed immediately prior to, or as part of, graphical desktop environment login prompts.
+</title>
+<title rule="set_gdm_login_banner_text" shorttitle="Set GUI Warning Banner Text">
+The Department of Defense (DoD) login banner must be displayed immediately prior to, or as part of, graphical desktop environment login prompts.
+</title>
+<title rule="disable_sysctl_ipv4_default_send_redirects" shorttitle="Disable Kernel Parameter for Sending ICMP Redirects by Default">
+The system must not send ICMPv4 redirects by default.
+</title>
+<title rule="disable_sysctl_ipv4_all_send_redirects" shorttitle="Disable Kernel Parameter for Sending ICMP Redirects for All Interfaces">
+The system must not send ICMPv4 redirects from any interface.
+</title>
+<title rule="disable_sysctl_ipv4_ip_forward" shorttitle="Disable Kernel Parameter for IP Forwarding">
+IP forwarding for IPv4 must not be enabled, unless the system is a router.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_accept_source_route" shorttitle="Disable Kernel Parameter for Accepting Source-Routed Packets for All Interfaces">
+The system must not accept IPv4 source-routed packets on any interface.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_accept_redirects" shorttitle="Disable Kernel Parameter for Accepting ICMP Redirects for All Interfaces">
+The system must not accept ICMPv4 redirect packets on any interface.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_secure_redirects" shorttitle="Disable Kernel Parameter for Accepting Secure Redirects for All Interfaces">
+The system must not accept ICMPv4 secure redirect packets on any interface.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_log_martians" shorttitle="Enable Kernel Parameter to Log Martian Packets">
+The system must log Martian packets.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_accept_source_route" shorttitle="Disable Kernel Parameter for Accepting Source-Routed Packets By Default">
+The system must not accept IPv4 source-routed packets by default.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_secure_redirects" shorttitle="Disable Kernel Parameter for Accepting Secure Redirects By Default">
+The system must not accept ICMPv4 secure redirect packets by default.
+</title>
+<title rule="set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts" shorttitle="Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests">
+The system must not respond to ICMPv4 sent to a broadcast address.
+</title>
+<title rule="set_sysctl_net_ipv4_icmp_ignore_bogus_error_responses" shorttitle="Enable Kernel Parameter to Ignore Bogus ICMP Error Responses">
+The system must ignore ICMPv4 bogus error responses.
+</title>
+<title rule="set_sysctl_net_ipv4_tcp_syncookies" shorttitle="Enable Kernel Parameter to Use TCP Syncookies">
+The system must be configured to use TCP syncookies when experiencing a TCP SYN flood.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_all_rp_filter" shorttitle="Enable Kernel Parameter to Use Reverse Path Filtering for All Interfaces">
+The system must use a reverse-path filter for IPv4 network traffic when possible on all interfaces.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_rp_filter" shorttitle="Enable Kernel Parameter to Use Reverse Path Filtering by Default">
+The system must use a reverse-path filter for IPv4 network traffic when possible by default.
+</title>
+<title rule="service_bluetooth_disabled" shorttitle="Disable Bluetooth Service">
+The Bluetooth service must be disabled.
+</title>
+<title rule="kernel_module_bluetooth_disabled" shorttitle="Disable Bluetooth Kernel Modules">
+The Bluetooth kernel module must be disabled.
+</title>
+<title rule="disable_ipv6_module_loading" shorttitle="Disable IPv6 Networking Support Automatic Loading">
+The IPv6 protocol handler must not be bound to the network stack unless needed.
+</title>
+<title rule="set_sysctl_ipv6_default_accept_redirects" shorttitle="Disable Accepting IPv6 Redirects">
+The system must ignore ICMPv6 redirects by default.
+</title>
+<title rule="enable_ip6tables" shorttitle="Verify ip6tables Enabled">
+The system must employ a local IPv6 firewall.
+</title>
+<title rule="enable_iptables" shorttitle="Verify iptables Enabled">
+The system must employ a local IPv4 firewall.
+</title>
+<title rule="set_iptables_default_rule" shorttitle="Set Default Iptables Policy for Incoming Packets">
+The system's local firewall must implement a deny-all, allow-by-exception policy for inbound packets.
+</title>
+<title rule="set_iptables_default_rule_forward" shorttitle="Set Default Iptables Policy for Forwarded Packets">
+The system's local firewall must implement a deny-all, allow-by-exception policy for forwarded packets.
+</title>
+<title rule="disable_protocol_dccp" shorttitle="Disable DCCP Support">
+The Datagram Congestion Control Protocol (DCCP) must be disabled unless required.
+</title>
+<title rule="disable_protocol_sctp" shorttitle="Disable SCTP Support">
+The Stream Control Transmission Protocol (SCTP) must be disabled unless required.
+</title>
+<title rule="disable_protocol_rds" shorttitle="Disable RDS Support">
+The Reliable Datagram Sockets (RDS) protocol must be disabled unless required.
+</title>
+<title rule="disable_protocol_tipc" shorttitle="Disable TIPC Support">
+The Transparent Inter-Process Communication (TIPC) protocol must be disabled unless required.
+</title>
+<title rule="install_openswan" shorttitle="Install openswan Package">
+The system must provide VPN connectivity for communications over untrusted networks.
+</title>
+<title rule="package_rsyslog_installed" shorttitle="Ensure rsyslog is Installed">
+The system must provide system logging services.
+</title>
+<title rule="service_rsyslog_enabled" shorttitle="Enable rsyslog Service">
+The system's system logging services must be enabled.
+</title>
+<title rule="userowner_rsyslog_files" shorttitle="Ensure Log Files Are Owned By Appropriate User">
+All rsyslog-generated log files must be owned by root.
+</title>
+<title rule="groupowner_rsyslog_files" shorttitle="Ensure Log Files Are Owned By Appropriate Group">
+All rsyslog-generated log files must be group-owned by root.
+</title>
+<title rule="rsyslog_file_permissions" shorttitle="Ensure System Log Files Have Correct Permissions">
+All rsyslog-generated log files must have mode 0600 or less permissive.
+</title>
+<title rule="rsyslog_send_messages_to_logserver" shorttitle="Ensure Logs Sent To Remote Host">
+The system must use a remote syslog server (loghost).
+</title>
+<title rule="ensure_logrotate_activated" shorttitle="Ensure Logrotate Runs Periodically">
+Audit logs must be rotated daily.
+</title>
+<title rule="enable_auditd_service" shorttitle="Enable auditd Service">
+Auditing must be implemented.
+</title>
+<title rule="enable_auditd_bootloader" shorttitle="Enable Auditing for Processes Which Start Prior to the Audit Daemon">
+Auditing must be enabled at boot by setting a kernel parameter.
+</title>
+<title rule="configure_auditd_num_logs" shorttitle="Configure auditd Number of Logs Retained">
+The system must retain enough rotated audit logs to cover the required log retention period.
+</title>
+<title rule="configure_auditd_max_log_file" shorttitle="Configure auditd Max Log File Size">
+The system must set a maximum audit log file size.
+</title>
+<title rule="configure_auditd_max_log_file_action" shorttitle="Configure auditd max_log_file_action Upon Reaching Maximum Log Size">
+The system must rotate audit log files that reach the maximum file size.
+</title>
+<title rule="configure_auditd_space_left_action" shorttitle="Configure auditd space_left Action on Low Disk Space">
+The audit system must alert designated staff members when the audit storage volume approaches capacity.
+</title>
+<title rule="configure_auditd_admin_space_left_action" shorttitle="Configure auditd admin_space_left Action on Low Disk Space">
+The audit system must switch the system to single-user mode when available audit storage volume becomes dangerously low.
+</title>
+<title rule="configure_auditd_action_mail_acct" shorttitle="Configure auditd mail_acct Action on Low Disk Space">
+The audit system must identify staff members to receive notifications of audit log storage volume capacity issues.
+</title>
+<title rule="audit_rules_time_adjtimex" shorttitle="Record attempts to alter time through adjtimex">
+The audit system must be configured to audit all attempts to alter system time through adjtimex.
+</title>
+<title rule="audit_rules_time_settimeofday" shorttitle="Record attempts to alter time through settimeofday">
+The audit system must be configured to audit all attempts to alter system time through settimeofday.
+</title>
+<title rule="audit_rules_time_stime" shorttitle="Record Attempts to Alter Time Through stime">
+The audit system must be configured to audit all attempts to alter system time through stime.
+</title>
+<title rule="audit_rules_time_clock_settime" shorttitle="Record Attempts to Alter Time Through clock_settime">
+The audit system must be configured to audit all attempts to alter system time through clock_settime.
+</title>
+<title rule="audit_rules_time_watch_localtime" shorttitle="Record Attempts to Alter the localtime File">
+The audit system must be configured to audit all attempts to alter system time through /etc/localtime.
+</title>
+<title rule="audit_account_changes" shorttitle="Record Events that Modify User/Group Information">
+The audit system must be configured to audit account creation and modification.
+</title>
+<title rule="audit_network_modifications" shorttitle="Record Events that Modify the System's Network Environment">
+The audit system must be configured to audit modifications to the systems network configuration.
+</title>
+<title rule="audit_mac_changes" shorttitle="Record Events that Modify the System's Mandatory Access Controls">
+The audit system must be configured to audit modifications to the system's Mandatory Access Control (MAC) configuration (SELinux).
+</title>
+<title rule="audit_rules_dac_modification_chmod" shorttitle="Record Events that Modify the System's Discretionary Access Controls - chmod">
+The audit system must be configured to audit all discretionary access control permission modifications using chmod.
+</title>
+<title rule="audit_rules_dac_modification_chown" shorttitle="Record Events that Modify the System's Discretionary Access Controls - chown">
+The audit system must be configured to audit all discretionary access control permission modifications using chown.
+</title>
+<title rule="audit_rules_dac_modification_fchmod" shorttitle="Record Events that Modify the System's Discretionary Access Controls - fchmod">
+The audit system must be configured to audit all discretionary access control permission modifications using fchmod.
+</title>
+<title rule="audit_rules_dac_modification_fchmodat" shorttitle="Record Events that Modify the System's Discretionary Access Controls - fchmodat">
+The audit system must be configured to audit all discretionary access control permission modifications using fchmodat.
+</title>
+<title rule="audit_rules_dac_modification_fchown" shorttitle="Record Events that Modify the System's Discretionary Access Controls - fchown">
+The audit system must be configured to audit all discretionary access control permission modifications using fchown.
+</title>
+<title rule="audit_rules_dac_modification_fchownat" shorttitle="Record Events that Modify the System's Discretionary Access Controls - fchownat">
+The audit system must be configured to audit all discretionary access control permission modifications using fchownat.
+</title>
+<title rule="audit_rules_dac_modification_fremovexattr" shorttitle="Record Events that Modify the System's Discretionary Access Controls - fremovexattr">
+The audit system must be configured to audit all discretionary access control permission modifications using fremovexattr.
+</title>
+<title rule="audit_rules_dac_modification_fsetxattr" shorttitle="Record Events that Modify the System's Discretionary Access Controls - fsetxattr">
+The audit system must be configured to audit all discretionary access control permission modifications using fsetxattr.
+</title>
+<title rule="audit_rules_dac_modification_lchown" shorttitle="Record Events that Modify the System's Discretionary Access Controls - lchown">
+The audit system must be configured to audit all discretionary access control permission modifications using lchown.
+</title>
+<title rule="audit_rules_dac_modification_lremovexattr" shorttitle="Record Events that Modify the System's Discretionary Access Controls - lremovexattr">
+The audit system must be configured to audit all discretionary access control permission modifications using lremovexattr.
+</title>
+<title rule="audit_rules_dac_modification_lsetxattr" shorttitle="Record Events that Modify the System's Discretionary Access Controls - lsetxattr">
+The audit system must be configured to audit all discretionary access control permission modifications using lsetxattr.
+</title>
+<title rule="audit_rules_dac_modification_removexattr" shorttitle="Record Events that Modify the System's Discretionary Access Controls - removexattr">
+The audit system must be configured to audit all discretionary access control permission modifications using removexattr.
+</title>
+<title rule="audit_rules_dac_modification_setxattr" shorttitle="Record Events that Modify the System's Discretionary Access Controls - setxattr">
+The audit system must be configured to audit all discretionary access control permission modifications using setxattr.
+</title>
+<title rule="audit_file_access" shorttitle="Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful)">
+The audit system must be configured to audit failed attempts to access files and programs.
+</title>
+<title rule="audit_privileged_commands" shorttitle="Ensure auditd Collects Information on the Use of Privileged Commands">
+The audit system must be configured to audit all use of setuid programs.
+</title>
+<title rule="audit_media_exports" shorttitle="Ensure auditd Collects Information on Exporting to Media (successful)">
+The audit system must be configured to audit successful file system mounts.
+</title>
+<title rule="audit_file_deletions" shorttitle="Ensure auditd Collects File Deletion Events by User">
+The audit system must be configured to audit user deletions of files and programs.
+</title>
+<title rule="audit_sysadmin_actions" shorttitle="Ensure auditd Collects System Administrator Actions">
+The audit system must be configured to audit changes to the "/etc/sudoers" file.
+</title>
+<title rule="audit_kernel_module_loading" shorttitle="Ensure auditd Collects Information on Kernel Module Loading and Unloading">
+The audit system must be configured to audit the loading and unloading of dynmaic kernel modules.
+</title>
+<title rule="disable_xinetd" shorttitle="Disable xinetd Service">
+The xinetd service must be disabled if no network services utilizing it are enabled.
+</title>
+<title rule="uninstall_xinetd" shorttitle="Uninstall xinetd Package">
+The xinetd service must be uninstalled if no network services utilizing it are enabled.
+</title>
+<title rule="disable_telnet_service" shorttitle="Disable telnet Service">
+The telnet daemon must not be running.
+</title>
+<title rule="uninstall_telnet_server" shorttitle="Uninstall telnet-server Package">
+The telnet-server package must not be installed.
+</title>
+<title rule="uninstall_rsh-server" shorttitle="Uninstall rsh-server Package">
+The rsh-server package must not be installed.
+</title>
+<title rule="disable_rexec" shorttitle="Disable rexec Service">
+The rexecd service must not be running.
+</title>
+<title rule="disable_rsh" shorttitle="Disable rsh Service">
+The rshd service must not be running.
+</title>
+<title rule="disable_rlogin" shorttitle="Disable rlogin Service">
+The rlogind service must not be running.
+</title>
+<title rule="no_rsh_trust_files" shorttitle="Remove Rsh Trust Files">
+There must be no .rhosts or hosts.equiv files on the system.
+</title>
+<title rule="uninstall_ypserv" shorttitle="Uninstall ypserv Package">
+The ypserv package must not be installed.
+</title>
+<title rule="disable_ypbind" shorttitle="Disable ypbind Service">
+The ypbind service must not be running.
+</title>
+<title rule="disable_tftp" shorttitle="Disable tftp Service">
+The TFTP service must not be running.
+</title>
+<title rule="uninstall_tftp-server" shorttitle="Uninstall tftp-server Package">
+The tftp-servicer package must not be installed.
+</title>
+<title rule="tftpd_uses_secure_mode" shorttitle="Ensure tftp Daemon Uses Secure Mode">
+The TFTP daemon must operate in "secure mode" which provides access only to a single directory on the host file system.
+</title>
+<title rule="service_abrtd_disabled" shorttitle="Disable Automatic Bug Reporting Tool (abrtd)">
+The Automatic Bug Reporting Tool (abrtd) service must not be running.
+</title>
+<title rule="service_atd_disabled" shorttitle="Disable At Service (atd)">
+The atd service must be disabled.
+</title>
+<title rule="service_ntpdate_disabled" shorttitle="Disable ntpdate Service (ntpdate)">
+The ntpdate service must not be running.
+</title>
+<title rule="service_oddjobd_disabled" shorttitle="Disable Odd Job Daemon (oddjobd)">
+The oddjobd service must not be running.
+</title>
+<title rule="service_qpidd_disabled" shorttitle="Disable Apache Qpid (qpidd)">
+The qpidd service must not be running.
+</title>
+<title rule="service_rdisc_disabled" shorttitle="Disable Network Router Discovery Daemon (rdisc)">
+The rdisc service must not be running.
+</title>
+<title rule="service_rhnsd_disabled" shorttitle="Disable Red Hat Network Service (rhnsd)">
+The Red Hat Network Service (rhnsd) service must not be running, unless using RHN or an RHN Satellite.
+</title>
+<title rule="service_sysstat_disabled" shorttitle="Disable System Statistics Reset Service (sysstat)">
+The sysstat service must not be running.
+</title>
+<title rule="enable_cron" shorttitle="Enable cron Service">
+The cron service must be running.
+</title>
+<title rule="disable_at" shorttitle="Disable atd Service">
+The atd service must be disabled.
+</title>
+<title rule="sshd_allow_only_protocol2" shorttitle="Allow Only SSH Protocol 2">
+The SSH daemon must be configured to use only the SSHv2 protocol.
+</title>
+<title rule="sshd_set_idle_timeout" shorttitle="Set SSH Idle Timeout Interval">
+The SSH daemon must set a timeout interval on idle sessions.
+</title>
+<title rule="sshd_set_keepalive" shorttitle="Set SSH Client Alive Count">
+The SSH daemon must set a timeout count on idle sessions.
+</title>
+<title rule="sshd_disable_rhosts" shorttitle="Disable SSH Support for .rhosts Files">
+The SSH daemon must ignore .rhosts files.
+</title>
+<title rule="disable_host_auth" shorttitle="Disable Host-Based Authentication">
+The SSH daemon must not allow host-based authentication.
+</title>
+<title rule="sshd_disable_root_login" shorttitle="Disable SSH Root Login">
+The system must not permit root logins using remote access programs such as ssh.
+</title>
+<title rule="sshd_disable_empty_passwords" shorttitle="Disable SSH Access via Empty Passwords">
+The SSH daemon must not allow authentication using an empty password.
+</title>
+<title rule="sshd_enable_warning_banner" shorttitle="Enable SSH Warning Banner">
+The SSH daemon must be configured with the Department of Defense (DoD) login banner.
+</title>
+<title rule="sshd_do_not_permit_user_env" shorttitle="Do Not Allow SSH Environment Options">
+The SSH daemon must not permit user environment settings.
+</title>
+<title rule="sshd_use_approved_ciphers" shorttitle="Use Only Approved Ciphers">
+The SSH daemon must be configured to use only FIPS 140-2 approved ciphers.
+</title>
+<title rule="disable_xwindows_with_runlevel" shorttitle="Disable X Windows Startup By Setting Runlevel">
+X Windows must not be enabled unless required.
+</title>
+<title rule="packagegroup_xwindows_remove" shorttitle="Remove the X Windows Package Group">
+The xorg-x11-server-common (X Windows) package must not be installed, unless required.
+</title>
+<title rule="xwindows_remote_listening" shorttitle="Disable X Window System Listening">
+</title>
+<title rule="disable_avahi" shorttitle="Disable Avahi Server Software">
+The avahi service must be disabled.
+</title>
+<title rule="disable_dhcp_server" shorttitle="Disable DHCP Service">
+The DHCP server must be disabled.
+</title>
+<title rule="uninstall_dhcp_server" shorttitle="Uninstall DHCP Server Package">
+The DHCP server must be not be installed.
+</title>
+<title rule="disable_dhcp_client" shorttitle="Disable DHCP Client">
+The DHCP client must be disabled if not needed.
+</title>
+<title rule="enable_ntpd" shorttitle="Enable the NTP Daemon">
+The system clock must be synchronized continuously, or at least daily.
+</title>
+<title rule="ntpd_specify_remote_server" shorttitle="Specify a Remote NTP Server">
+The system clock must be synchronized to an authoritative DoD time source.
+</title>
+<title rule="postfix_network_listening" shorttitle="Disable Postfix Network Listening">
+Mail relaying must be restricted.
+</title>
+<title rule="ldap_client_start_tls" shorttitle="Configure LDAP to Use TLS For All Transactions">
+If the system is using LDAP for authentication or account information, the system must use a TLS connection using FIPS 140-2 approved cryptographic algorithms.
+</title>
+<title rule="ldap_client_tls_cacertpath" shorttitle="Configure Certificate Directives for LDAP Use of TLS">
+If the system is using LDAP for authentication or account information, the system must use a TLS connection using trust certificates signed by the site CA.
+</title>
+<title rule="package_openldap-servers_removed" shorttitle="Uninstall openldap-servers Package">
+The openldap-servers package must not be installed unless required.
+</title>
+<title rule="service_nfs_disabled" shorttitle="Disable Network File System (nfs)">
+The Network File System (nfs) service must be disabled unless required.
+</title>
+<title rule="service_rpcsvcgssd_disabled" shorttitle="Disable Secure RPC Server Service (rpcsvcgssd)">
+The Secure RPC Server Service (rpcsvcgssd) must be disabled unless required.
+</title>
+<title rule="use_nodev_option_on_nfs_mounts" shorttitle="Mount Remote Filesystems with nodev">
+Remote file systems must be mounted with the "nodev" option.
+</title>
+<title rule="use_nosuid_option_on_nfs_mounts" shorttitle="Mount Remote Filesystems with nosuid">
+Remote file systems must be mounted with the "nosuid" option.
+</title>
+<title rule="no_insecure_locks_exports" shorttitle="Ensure Insecure File Locking is Not Allowed">
+The NFS server must not have the insecure file locking option enabled.
+</title>
+<title rule="disable_dns_server" shorttitle="Disable DNS Server">
+The DNS (named) service must be disabled unless required.
+</title>
+<title rule="uninstall_bind" shorttitle="Uninstall bind Package">
+The bind package must not be installed unless required.
+</title>
+<title rule="disable_vsftpd" shorttitle="Disable vsftpd Service">
+The vsftpd service must be disabled unless required.
+</title>
+<title rule="uninstall_vsftpd" shorttitle="Uninstall vsftpd Package">
+The vsftpd package must not be installed unless required.
+</title>
+<title rule="ftp_present_banner" shorttitle="Create Warning Banners for All FTP Users">
+The FTPS/FTP service on the system must be configured with the Department of Defense (DoD) login banner.
+</title>
+<title rule="disable_httpd" shorttitle="Disable httpd Service">
+The httpd service must be disabled unless required.
+</title>
+<title rule="uninstall_httpd" shorttitle="Uninstall httpd Package">
+The httpd package must not be installed unless required.
+</title>
+<title rule="disable_dovecot" shorttitle="Disable Dovecot Service">
+The dovecot service must be disabled unless required.
+</title>
+<title rule="uninstall_dovecot" shorttitle="Uninstall dovecot Package">
+The dovecot package must not be installed unless required.
+</title>
+<title rule="disable_smb_server" shorttitle="Disable Samba">
+The smb service must be disabled unless required.
+</title>
+<title rule="require_smb_client_signing" shorttitle="Require Client SMB Packet Signing, if using smbclient">
+The system must use SMB client signing for connecting to samba servers using smbclient.
+</title>
+<title rule="require_smb_client_signing_mount.cifs" shorttitle="Require Client SMB Packet Signing, if using mount.cifs">
+The system must use SMB client signing for connecting to samba servers using mount.cifs.
+</title>
+<title rule="disable_squid" shorttitle="Disable Squid">
+The squid service must be disabled unless required.
+</title>
+<title rule="uninstall_squid" shorttitle="Uninstall squid Package">
+The squid package must not be installed unless required.
+</title>
+<title rule="disable_snmpd" shorttitle="Disable snmpd Service">
+The snmpd service must be disabled unless required.
+</title>
+<title rule="uninstall_net-snmp" shorttitle="Uninstall net-snmp Package">
+The net-snmp package must not be installed unless required.
+</title>
+<title rule="install_hids" shorttitle="Install Intrusion Detection Software">
+The system must have a host-based intrusion detection tool installed.
+</title>
+<title rule="install_antivirus" shorttitle="Install Virus Scanning Software">
+The system must use and update a DoD-approved virus scan program.
+</title>
+<title rule="ftp_log_transactions" shorttitle="Enable Logging of All FTP Transactions">
+The FTP daemon must be configured for logging or verbose mode.
+</title>
+<title rule="smartcard_auth" shorttitle="Enable Smart Card Login">
+The system, if capable, must be configured to require the use of a CAC, PIV
+compliant hardware token, or Alternate Logon Token (ALT) for authentication.
+</title>
+<title rule="package_sendmail_removed" shorttitle="Uninstall Sendmail Package">
+The sendmail package must be removed.
+</title>
+<title rule="disable_ctrlaltdel_reboot" shorttitle="Disable Ctrl-Alt-Del Reboot Activation">
+The x86 CTRL-ALT-DELETE key sequence must be disabled.
+</title>
+<title rule="set_password_hashing_algorithm_systemauth" shorttitle="Set Password Hashing Algorithm in /etc/pam.d/system-auth">
+The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes.
+</title>
+<title rule="set_password_hashing_algorithm_logindefs" shorttitle="Set Password Hashing Algorithm in /etc/login.defs">
+The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes.
+</title>
+<title rule="set_password_hashing_algorithm_libuserconf" shorttitle="Set Password Hashing Algorithm in /etc/libuser.conf">
+The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes.
+</title>
+<title rule="mountopt_noexec_on_removable_partitions" shorttitle="Add noexec Option to Removable Media Partitions">
+The noexec option must be added to removable media partitions.
+</title>
+<title rule="userowner_group_file" shorttitle="Verify User Who Owns group File">
+The /etc/group file must be owned by root.
+</title>
+<title rule="groupowner_group_file" shorttitle="Verify Group Who Owns group File">
+The /etc/group file must be group-owned by root, bin, or sys.
+</title>
+<title rule="perms_group_file" shorttitle="Verify Permissions on group File">
+The /etc/group file must have mode 0644 or less permissive.
+</title>
+<title rule="no_files_unowned_by_group" shorttitle="Ensure All Files Are Owned by a Group">
+All files must be owned by a group.
+</title>
+<title rule="gid_passwd_group_same" shorttitle="All GIDs referenced in /etc/passwd must be defined in /etc/group">
+All GIDs referenced in /etc/passwd must be defined in /etc/group
+</title>
+<title rule="account_unique_name" shorttitle="All Accounts on the System Must Have Unique User or Account Names">
+All Accounts on the System Must Have Unique User or Account Names
+</title>
+<title rule="password_require_consecrepeat" shorttitle="Set Password to Maximum of Three Consecutive Repeating Characters">
+The system must require passwords contain no more than three consecutive repeating characters.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_accept_redirects" shorttitle="Disable Kernel Parameter for Accepting ICMP Redirects By Default">
+The system must ignore IPv4 ICMP redirect messages.
+</title>
+<title rule="audit_logs_permissions" shorttitle="System Audit Logs Must Have Mode 0640 or Less Permissive">
+System log files must have mode 0640 or less permissive.
+</title>
+<title rule="service_netconsole_disabled" shorttitle="Disable Network Console (netconsole)">
+The netconsole service must be disabled unless required.
+</title>
+<title rule="world_writeable_files" shorttitle="Ensure No World-Writable Files Exist">
+There must be no world-writable files on the system.
+</title>
+</titles>
