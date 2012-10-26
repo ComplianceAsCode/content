@@ -203,13 +203,13 @@ The system default umask in /etc/profile must be 077.
 <title rule="user_umask_logindefs" shorttitle="Ensure the Default Umask is Set Correctly in login.defs">
 The system default umask in /etc/login.defs must be 077.
 </title>
-<title rule="user_owner_grub_conf" shorttitle="Verify /boot/grub/grub.conf User Ownership">
+<title rule="user_owner_grub_conf" shorttitle="Verify /etc/grub.conf User Ownership">
 The system boot loader configuration file(s) must be owned by root.
 </title>
-<title rule="group_owner_grub_conf" shorttitle="Verify /boot/grub/grub.conf Group Ownership">
+<title rule="group_owner_grub_conf" shorttitle="Verify /etc/grub.conf Group Ownership">
 The system boot loader configuration file(s) must be group-owned by root.
 </title>
-<title rule="permissions_grub_conf" shorttitle="Verify /boot/grub/grub.conf Permissions">
+<title rule="permissions_grub_conf" shorttitle="Verify /etc/grub.conf Permissions">
 The system boot loader configuration file(s) must have mode 0600 or less permissive.
 </title>
 <title rule="bootloader_password" shorttitle="Set Boot Loader Password">
@@ -682,5 +682,41 @@ The system must use a FIPS 140-2 approved cryptographic hashing algorithm for ge
 </title>
 <title rule="set_password_hashing_algorithm_libuserconf" shorttitle="Set Password Hashing Algorithm in /etc/libuser.conf">
 The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes.
+</title>
+<title rule="mountopt_noexec_on_removable_partitions" shorttitle="Add noexec Option to Removable Media Partitions">
+The noexec option must be added to removable media partitions.
+</title>
+<title rule="userowner_group_file" shorttitle="Verify User Who Owns group File">
+The /etc/group file must be owned by root.
+</title>
+<title rule="groupowner_group_file" shorttitle="Verify Group Who Owns group File">
+The /etc/group file must be group-owned by root, bin, or sys.
+</title>
+<title rule="perms_group_file" shorttitle="Verify Permissions on group File">
+The /etc/group file must have mode 0644 or less permissive.
+</title>
+<title rule="no_files_unowned_by_group" shorttitle="Ensure All Files Are Owned by a Group">
+All files must be owned by a group.
+</title>
+<title rule="gid_passwd_group_same" shorttitle="All GIDs referenced in /etc/passwd must be defined in /etc/group">
+All GIDs referenced in /etc/passwd must be defined in /etc/group
+</title>
+<title rule="account_unique_name" shorttitle="All Accounts on the System Must Have Unique User or Account Names">
+All Accounts on the System Must Have Unique User or Account Names
+</title>
+<title rule="password_require_consecrepeat" shorttitle="Set Password to Maximum of Three Consecutive Repeating Characters">
+The system must require passwords contain no more than three consecutive repeating characters.
+</title>
+<title rule="set_sysctl_net_ipv4_conf_default_accept_redirects" shorttitle="Disable Kernel Parameter for Accepting ICMP Redirects By Default">
+The system must ignore IPv4 ICMP redirect messages.
+</title>
+<title rule="audit_logs_permissions" shorttitle="System Audit Logs Must Have Mode 0640 or Less Permissive">
+System log files must have mode 0640 or less permissive.
+</title>
+<title rule="service_netconsole_disabled" shorttitle="Disable Network Console (netconsole)">
+The netconsole service must be disabled unless required.
+</title>
+<title rule="world_writeable_files" shorttitle="Ensure No World-Writable Files Exist">
+There must be no world-writable files on the system.
 </title>
 </titles>
