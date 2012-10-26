@@ -331,13 +331,7 @@ and for directories requiring global read/write access.
 
 <Rule id="world_writeable_files" severity="medium">
 <title>Ensure No World-Writable Files Exist</title>
-<description>Data in world-writable files can be modified by any
-user on the system. In almost all circumstances, files can be
-configured using a combination of user and group permissions to
-support whatever legitimate access is needed without the risk
-caused by world-writable files.
-<br /><br />
-It is generally a good idea to remove global (other) write
+<description>It is generally a good idea to remove global (other) write
 access to a file when it is discovered. However, check with
 documentation for specific applications before making changes.
 Also, monitor for recurring world-writable files, as these may be
@@ -347,6 +341,12 @@ account.</description>
 To find world-writable files, run the following command:
 <pre># find / -xdev -type f -perm -002</pre>
 </ocil>
+<rationale>
+Data in world-writable files can be modified by any
+user on the system. In almost all circumstances, files can be
+configured using a combination of user and group permissions to
+support whatever legitimate access is needed without the risk
+caused by world-writable files.</rationale>
 <ident cce="3795-2" />
 <ref nist="CM-6"/>
 </Rule>
