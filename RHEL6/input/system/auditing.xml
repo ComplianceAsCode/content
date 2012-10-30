@@ -460,7 +460,7 @@ editing as needed, the new rules can be activated as follows:
 <Group id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
 <description>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time. All changes to the system 
 time should be audited.</description>
 
@@ -483,7 +483,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="adjtimex" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -511,7 +511,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="settimeofday" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -537,7 +537,7 @@ See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -565,7 +565,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="clock_settime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -590,7 +590,7 @@ command:
 If the system is configured to audit this activity, it will return a line.
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
