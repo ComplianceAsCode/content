@@ -976,7 +976,7 @@ If the system is 64 bit then also add the following:
     -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="lchown" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
