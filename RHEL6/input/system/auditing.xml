@@ -695,7 +695,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <ocil clause="the system isn't configured to audit attempts to change the MAC policy">
 To determine if the system is configured to audit changes to its SELinux
 configuration files, run the following command:
-<pre># auditctl -l | grep "dir=selinux"</pre>
+<pre># auditctl -l | grep "dir=/etc/selinux"</pre>
 If the system is configured to watch for changes to its SELinux
 configuration, a line should be returned (including
 <tt>perm=wa</tt> indicating permissions that are watched).
