@@ -122,6 +122,7 @@ add or correct the following line in
 </description>
 <ocil clause="the default policy for the INPUT chain isn't set to DROP">Inspect the file <tt>/etc/sysconfig/iptables</tt> to determine
 the default policy for the INPUT chain. It should be set to DROP.
+<tt> # grep ":INPUT" /etc/sysconfig/iptables</tt>
 </ocil>
 <rationale>In <tt>iptables</tt> the default policy is applied only after all
 the applicable rules in the table are examined for a match. Setting the
