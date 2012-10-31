@@ -181,7 +181,7 @@ operator="equals" interactive="0">
 Edit the <tt>pam_cracklib.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to 
 show <tt>retry=3</tt>.
 <br /><br />
-The DoD requirement is three prompts per session.
+The DoD requirement is 3 prompts per session.
 </description>
 <ocil clause="it is not the required value">
 To check how many retry attempts are permitted on a per-session basis, run the following command:
@@ -376,7 +376,7 @@ attempts using <tt>pam_faillock.so</tt>:
 Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth-ac</tt>:
 <pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=900</pre>
 <pre>auth required pam_faillock.so authsucc deny=3 unlock_time=900</pre>
-The DoD requirement is three failed attempts.
+The DoD requirement is 3 failed attempts.
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
