@@ -178,19 +178,19 @@ to compromises on another.
 
 <Rule id="sshd_set_keepalive">
 <title>Set SSH Client Alive Count</title>
-<description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveInterval</tt> is set,
+<description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveCountMax</tt> is set,
 edit <tt>/etc/ssh/sshd_config</tt> as
 follows:
 <pre>ClientAliveCountMax 0</pre>
 </description>
 <ocil clause="it is not">
-To ensure the SSH idle timeout will occur when the <tt>ClientAliveInterval</tt> is set, run the following command:
+To ensure the SSH idle timeout will occur when the <tt>ClientAliveCountMax</tt> is set, run the following command:
 <pre># grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
 <pre>ClientAliveCountMax 0</pre>
 </ocil>
 <rationale>
-This ensures that a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>
+This ensures that a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
 <ident cce="14061-6" />
