@@ -11,7 +11,7 @@ run the following command, substituting <tt><i>NUM_DAYS</i></tt> and <tt><i>USER
 <pre># chage -I <i>NUM_DAYS USER</i></pre>
 Accounts, such as temporary accounts, can also be configured to expire on an explicitly-set date with the
 <tt>-E</tt> option.
-The file <tt>/etc/defaults/useradd</tt> controls
+The file <tt>/etc/default/useradd</tt> controls
 default settings for all newly-created accounts created with the system's
 normal command line utilities.
 </description>
@@ -32,7 +32,7 @@ normal command line utilities.
 <title>Set Account Expiration Following Inactivity</title>
 <description>To specify the number of days after a password expires (which
 signifies inactivity) until an account is permanently disabled, add or correct
-the following lines in <tt>/etc/defaults/useradd</tt>, substituting
+the following lines in <tt>/etc/default/useradd</tt>, substituting
 <tt><i>NUM_DAYS</i></tt> appropriately:
 <pre>INACTIVE=<i>NUM_DAYS</i></pre>
 A value of 35 is recommended.  
@@ -47,10 +47,10 @@ the timeout too low incurs support costs and also has the potential to impact
 availability of the system to legitimate users.
 </description>
 <ocil>To verify the <tt>INACTIVE</tt> setting, run the following command:
-<pre>grep "INACTIVE" /etc/defaults/useradd</pre>
+<pre>grep "INACTIVE" /etc/default/useradd</pre>
 The output should indicate the <tt>INACTIVE</tt> configuration option is set
 to an appropriate integer as shown in the example below:
-<pre># grep "INACTIVE" /etc/defaults/useradd
+<pre># grep "INACTIVE" /etc/default/useradd
 INACTIVE=35</pre></ocil>
 <rationale>
 Disabling inactive accounts ensures that accounts which may not
