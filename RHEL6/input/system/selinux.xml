@@ -82,7 +82,7 @@ and to protect the boot process.
 <value selector="mls">mls</value>
 </Value>
 
-<Rule id="enable_selinux_bootloader" severity="high">
+<Rule id="enable_selinux_bootloader" severity="medium">
 <title>Ensure SELinux Not Disabled in /etc/grub.conf</title>
 <description>SELinux can be disabled at boot time by an argument in
 <tt>/etc/grub.conf</tt>.
@@ -146,7 +146,7 @@ Check the file <tt>/etc/selinux/config</tt> and ensure the following line appear
 <rationale>
 Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
 ensures that the system will confine processes that are likely to be
-targeted for exploitation, such as network services or system services.
+targeted for exploitation, such as network or system services.
 </rationale>
 <ident cce="3624-4" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
