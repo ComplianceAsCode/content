@@ -77,7 +77,7 @@ and for consistency with future Red Hat releases, the use of vsftpd is recommend
 </description>
 <Rule id="ftp_log_transactions">
 <title>Enable Logging of All FTP Transactions</title>
-<description>Edit the vsftpd configuration file. Add or correct the following configuration options:
+<description>Edit the vsftpd configuration file, <tt>/etc/vsftpd/vsftpd.conf</tt>. Add or correct the following configuration options:
 <pre>xferlog_enable=YES
 xferlog_std_format=NO
 log_ftp_protocol=YES</pre>
@@ -119,8 +119,8 @@ To verify this configuration, run the following command:
 <pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
 
 The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below:
-<pre># grep "banner_file" /etc/issue
-banner_file=/etc/issue"</pre>
+<pre># grep "banner_file" /etc/vsftpd/vsftpd.conf
+banner_file=/etc/issue</pre>
 </ocil>
 </Rule>
 

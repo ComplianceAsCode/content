@@ -311,10 +311,10 @@ reduces the risk of sharing files which should remain private.
 </rationale>
 <ocil>Verify that <tt>tftp</tt> is configured by with the <tt>-s</tt> option by running the
 following command:
-<pre>grep "server_args" /etc/xinetd.d/tftpboot</pre>
+<pre>grep "server_args" /etc/xinetd.d/tftp</pre>
 The output should indicate the <tt>server_args</tt> variable is configured with the <tt>-s</tt>
 flag, matching the example below:
-<pre> # grep "server_args" /etc/xinetd.d/tftpboot
+<pre> # grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
 <ident cce="TODO" />

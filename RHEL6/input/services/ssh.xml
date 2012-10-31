@@ -178,19 +178,19 @@ to compromises on another.
 
 <Rule id="sshd_set_keepalive">
 <title>Set SSH Client Alive Count</title>
-<description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveInterval</tt> is set,
+<description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveCountMax</tt> is set,
 edit <tt>/etc/ssh/sshd_config</tt> as
 follows:
 <pre>ClientAliveCountMax 0</pre>
 </description>
 <ocil clause="it is not">
-To ensure the SSH idle timeout will occur when the <tt>ClientAliveInterval</tt> is set, run the following command:
+To ensure the SSH idle timeout will occur when the <tt>ClientAliveCountMax</tt> is set, run the following command:
 <pre># grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
 <pre>ClientAliveCountMax 0</pre>
 </ocil>
 <rationale>
-This ensures that a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>
+This ensures that a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
 <ident cce="14061-6" />
@@ -349,12 +349,7 @@ The following line in <tt>/etc/ssh/sshd_config</tt>
 demonstrates use of FIPS-approved ciphers:
 <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr, aes128-cbc, 3des-cbc, aes192-cbc, aes256-cbc</pre>
 The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
-Note that older or less capable versions of SSH client or server software
-may still be found on systems such as networking equipment, and these
-may not support CTR mode. This may become an issue if, for example,
-these systems need to retrieve files from your SSH server using SFTP.
-TODO: Need to investigate current status of this. Earlier issues with
-CBC were supposed to be fixed.</description>
+</description>
 <ocil clause="that is not the case">
 Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
 ciphers are in use, run the following command:

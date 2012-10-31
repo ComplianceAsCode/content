@@ -186,7 +186,7 @@ The system must disable accounts after three consecutive unsuccessful login atte
 The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes.
 </title>
 <title rule="limiting_password_reuse" shorttitle="Limit Password Reuse">
-The system must prohibit the reuse of passwords within five iterations.
+The system must prohibit the reuse of passwords within 24 iterations.
 </title>
 <title rule="max_concurrent_login_sessions" shorttitle="Limit the Number of Concurrent Login Sessions Allowed Per User">
 The system must limit users to 10 simultaneous system logins, or a site-defined number, in accordance with operational requirements.
@@ -702,7 +702,7 @@ All files must be owned by a group.
 All GIDs referenced in /etc/passwd must be defined in /etc/group
 </title>
 <title rule="account_unique_name" shorttitle="All Accounts on the System Must Have Unique User or Account Names">
-All Accounts on the System Must Have Unique User or Account Names
+All accounts on the system must have unique user or account names
 </title>
 <title rule="password_require_consecrepeat" shorttitle="Set Password to Maximum of Three Consecutive Repeating Characters">
 The system must require passwords contain no more than three consecutive repeating characters.

@@ -115,9 +115,9 @@ access to these files should be disabled.</description>
 <Rule id="disable_at">
 <title>Disable atd Service</title>
 <description>
-<service-disable-macro service="at" />
+<service-disable-macro service="atd" />
 </description>
-<ocil><service-disable-check-macro service="at" /></ocil>
+<ocil><service-disable-check-macro service="atd" /></ocil>
 <rationale>
 Many of the periodic or delayed execution features of the at
 daemon can be provided through the cron daemon instead.

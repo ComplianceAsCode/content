@@ -243,7 +243,7 @@ determine how many logs the system is configured to retain after rotation:
 <pre>num_logs = 5</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
-log information over the period required. This is a function of the maxium log
+log information over the period required. This is a function of the maximum log
 file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" /> 
 <tested by="DS" on="20121024"/>
@@ -266,7 +266,7 @@ determine how much data the system will retain in each audit log file:
 <pre>max_log_file = 6</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
-log information over the period required. This is a function of the maxium
+log information over the period required. This is a function of the maximum
 log file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" /> 
 <tested by="DS" on="20121024"/>
@@ -460,7 +460,7 @@ editing as needed, the new rules can be activated as follows:
 <Group id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
 <description>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time. All changes to the system 
 time should be audited.</description>
 
@@ -483,7 +483,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="adjtimex" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -511,7 +511,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="settimeofday" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -537,7 +537,7 @@ See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -565,7 +565,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <audit-syscall-check-macro syscall="clock_settime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -590,7 +590,7 @@ command:
 If the system is configured to audit this activity, it will return a line.
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activites in log files as well as to confuse network services that 
+nefarious activities in log files as well as to confuse network services that 
 are highly dependent upon an accurate system time (such as sshd). All changes 
 to the system time should be audited.</rationale>
 <ident cce="14051-7" />
@@ -695,7 +695,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <ocil clause="the system isn't configured to audit attempts to change the MAC policy">
 To determine if the system is configured to audit changes to its SELinux
 configuration files, run the following command:
-<pre># auditctl -l | grep "dir=selinux"</pre>
+<pre># auditctl -l | grep "dir=/etc/selinux"</pre>
 If the system is configured to watch for changes to its SELinux
 configuration, a line should be returned (including
 <tt>perm=wa</tt> indicating permissions that are watched).
@@ -738,7 +738,7 @@ arch=b32 replaced with arch=b64 as follows:
 <rationale>The changing of file permissions could indicate that a user is 
 attempting to gain access to information that would otherwise be disallowed. 
 Auditing DAC modifications can facilitate the identification of patterns of 
-abuse amoung both authorized and unauthorized users.</rationale>
+abuse among both authorized and unauthorized users.</rationale>
 
 <Rule id="audit_rules_dac_modification_chmod">
 <title>Record Events that Modify the System's Discretionary Access Controls - chmod</title>
@@ -753,10 +753,10 @@ If the system is 64 bit then also add the following:
 </description>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <ocil clause="the system isn't configured to audit permission changes">
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="chmod" />
 </ocil>
 <warning category="general">Note that these rules can be configured in a 
 number of ways while still acheiving the desired effect.  Here the system calls 
@@ -780,11 +780,11 @@ If the system is 64 bit then also add the following:
     -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="chown" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a 
 number of ways while still acheiving the desired effect.  Here the system calls 
@@ -812,7 +812,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -840,7 +840,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -868,7 +868,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -896,7 +896,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -924,7 +924,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -952,7 +952,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -976,11 +976,11 @@ If the system is 64 bit then also add the following:
     -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<audit-syscall-check-macro syscall="lchown" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -1008,7 +1008,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -1036,7 +1036,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -1064,7 +1064,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
@@ -1092,7 +1092,7 @@ If the system is 64 bit then also add the following:
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
-can facilitate the identification of patterns of abuse amoung both authorized and
+can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still acheiving the desired effect.  Here the system calls
