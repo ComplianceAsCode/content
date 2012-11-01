@@ -47,6 +47,14 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov 1 2012 Shawn Wells <shawn@redhat.com> 0.1-7
+- Corrected XCCDF content errors
+- OpenSCAP now supports CPE dictionaries, important to
+  utilize --cpe-dict when scanning machines with OpenSCAP,
+  e.g.:
+  $ oscap xccdf eval --profile stig-server \
+   --cpe-dict ssg-rhel6-cpe-dictionary.xml ssg-rhel6-xccdf.xml
+
 * Mon Oct 22 2012 Shawn Wells <shawn@redhat.com> 0.1-6
 - Corrected RPM versioning, we're on 0.1 release 6 (not version 1 release 6)
 - Updated RPM includes feedback received from DoD Consensus meetings
