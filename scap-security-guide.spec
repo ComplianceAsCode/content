@@ -13,7 +13,7 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:	%{arch}
 
 BuildRequires:  coreutils, libxslt, expat, python, openscap-utils
-Requires:       filesystem
+Requires:       filesystem, openscap-utils >= 0.9.1
 
 %description
 The scap-security-guide project provides security configuration guidance in
