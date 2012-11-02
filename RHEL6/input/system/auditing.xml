@@ -265,6 +265,7 @@ support retention of even more audit data.</description>
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how much data the system will retain in each audit log file:
 <pre>max_log_file = 6</pre>
+<tt># grep max_log_file /etc/audit/auditd.conf</tt>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum
@@ -278,7 +279,7 @@ log file size and the number of logs retained.</rationale>
 <title>Configure auditd max_log_file_action Upon Reaching Maximum Log Size</title>
 <description> The default action to take when the logs reach their maximum size
 is to rotate the log files, discarding the oldest one. To configure the action taken
-by <tt>auditd</tt>, add or correct the line:
+by <tt>auditd</tt>, add or correct the line in <tt>/etc/audit/auditd.conf</tt>:
 <pre>max_log_file_action = <i>ACTION</i></pre>
 Possible values for <i>ACTION</i> are described in the <tt>auditd.conf</tt> man
 page. These include:
@@ -296,6 +297,7 @@ occurs.  This is the default.  The setting is case-insensitive.
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
 maximum size: <pre>max_log_file_action <tt>rotate</tt></pre>
+<tt># grep max_log_file_action /etc/audit/auditd.conf</tt>
 </ocil>
 <rationale>Automatically rotating logs (by setting this to <tt>rotate</tt>)
 minimizes the chances of the system unexpectedly running out of disk space by
@@ -347,6 +349,7 @@ Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to email the administrator when
 disk space is starting to run low:
 <pre>space_left_action email</pre>
+<tt># grep space_left_action /etc/audit/auditd.conf</tt>
 </ocil>
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
