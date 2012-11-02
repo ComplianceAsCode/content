@@ -1248,7 +1248,7 @@ administrator actions for all users and root. Add the following to
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for system administrator actions, run the following command:
-<pre># grep actions /etc/audit/audit.rules</pre>
+<pre># auditctl -l | grep "watch=/etc/sudoers"</pre>
 </ocil>
 <rationale>The actions taken by system administrators should be audited to keep a record
 of what was executed on the system as well as for accountability purposes.</rationale>
