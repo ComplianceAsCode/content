@@ -1204,7 +1204,7 @@ appropriate for your system:
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for all media exportation events, run the following command:
-<pre># grep mount /etc/audit/audit.rules</pre>
+<pre># auditctl -l | grep syscall | grep mount</pre>
 </ocil>
 <rationale>The unauthorized exportation of data to external media could result in an information leak
 where classified information, Privacy Act information, and intellectual property could be lost. An audit
