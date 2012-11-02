@@ -241,6 +241,7 @@ Note that values less than 2 result in no log rotation.</description>
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how many logs the system is configured to retain after rotation:
 <pre>num_logs = 5</pre>
+<tt># grep num_logs /etc/audit/auditd.conf</tt>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum log
