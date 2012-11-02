@@ -1261,11 +1261,11 @@ of what was executed on the system as well as for accountability purposes.</rati
 <Rule id="audit_kernel_module_loading">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
-to capture kernel module loading and unloading events:
+to capture kernel module loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
 <pre>-w /sbin/insmod -p x -k modules
 -w /sbin/rmmod -p x -k modules
 -w /sbin/modprobe -p x -k modules
--a always,exit -S init_module -S delete_module -k modules</pre>
+-a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="init_module" />
