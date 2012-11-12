@@ -240,8 +240,8 @@ Note that values less than 2 result in no log rotation.</description>
 <ocil clause="the overall system log file(s) retention hasn't been properly set up">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how many logs the system is configured to retain after rotation:
-<pre>num_logs = 5</pre>
 <tt># grep num_logs /etc/audit/auditd.conf</tt>
+<pre>num_logs = 5</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum log
@@ -264,8 +264,8 @@ support retention of even more audit data.</description>
 <ocil clause="the system audit data threshold hasn't been properly set up">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how much data the system will retain in each audit log file:
-<pre>max_log_file = 6</pre>
 <tt># grep max_log_file /etc/audit/auditd.conf</tt>
+<pre>max_log_file = 6</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum
@@ -296,8 +296,9 @@ occurs.  This is the default.  The setting is case-insensitive.
 <ocil clause="the system hasn't been properly set up to rotate audit logs">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
-maximum size: <pre>max_log_file_action <tt>rotate</tt></pre>
+maximum size: 
 <tt># grep max_log_file_action /etc/audit/auditd.conf</tt>
+<pre>max_log_file_action <tt>rotate</tt></pre>
 </ocil>
 <rationale>Automatically rotating logs (by setting this to <tt>rotate</tt>)
 minimizes the chances of the system unexpectedly running out of disk space by
@@ -348,8 +349,8 @@ disk space is starting to run low">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to email the administrator when
 disk space is starting to run low:
-<pre>space_left_action email</pre>
 <tt># grep space_left_action /etc/audit/auditd.conf</tt>
+<pre>space_left_action email</pre>
 </ocil>
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
