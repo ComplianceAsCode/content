@@ -82,7 +82,7 @@ directory "/path/to/DIRNAME ";
 }</pre>
 then copy that directory and its contents from the original zone directory.
 <pre># cp -r /path/to/DIRNAME /var/named/chroot/DIRNAME</pre>
-Edit the file <tt>/etc/sysconfig/named</tt>. Add or correct the line.
+Add or correct the following line within <tt>/etc/sysconfig/named</tt>.
 <pre>ROOTDIR=/var/named/chroot</pre>
 </description>
 <rationale>Chroot jails are not foolproof. However, they serve to make it more
@@ -133,7 +133,7 @@ DNS data.</description>
 <title>Run Separate DNS Servers for External and Internal Queries</title>
 <description>Is it possible to run external and internal nameservers on
 separate machines? If so, follow the configuration guidance in this section. On
-the external nameserver, edit <tt>/etc/named.conf</tt>. Add or correct the
+the external nameserver, edit <tt>/etc/named.conf</tt> to add or correct the
 following directives.
 <pre>options {
   allow-query { any; };
@@ -237,7 +237,7 @@ this server as a general-purpose nameserver.</warning>
 via zone transfer from the primary server?  If not, follow the instructions in
 this section. If so, see the next section for instructions on protecting zone
 transfers.
-Edit <tt>/etc/named.conf</tt>. Add or correct the following directive.
+Add or correct the following directive within <tt>/etc/named.conf</tt>.
 <pre>options {
   allow-transfer { none; };
   ...
@@ -265,7 +265,7 @@ This output is the name of a file containing the new key. Read the file to find
 the base64-encoded key string.
 <pre># cat Kdns.example.com .+NNN +MMMMM .key
 dns.example.com IN KEY 512 3 157 base64-key-string</pre>
-Edit <tt>/etc/named.conf</tt> on the primary nameserver. Add the directives.
+Add the directives to <tt>/etc/named.conf</tt> on the primary server.
 <pre>key zone-transfer-key {
   algorithm hmac-md5;
   secret "base64-key-string ";
@@ -275,7 +275,7 @@ zone "example.com " IN {
   allow-transfer { key zone-transfer-key; };
   ...
 };</pre>
-Edit <tt>/etc/named.conf</tt> on the secondary nameserver. Add the directives.
+Add the directives below to <tt>/etc/named.conf</tt> on the secondary nameserver.
 <pre>key zone-transfer-key {
   algorithm hmac-md5;
   secret "base64-key-string ";
