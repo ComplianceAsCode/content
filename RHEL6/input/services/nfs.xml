@@ -69,7 +69,7 @@ this service should be disabled.
 <Group id="disabling_netfs">
 <title>Disable netfs if Possible</title>
 <description>To determine if any network filesystems handled by netfs are
-currently mounted on the system execute the following command:
+currently mounted on the system execute the following command.
 <pre># mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
 If the command did not return any output then disable netfs.
 </description>
@@ -109,7 +109,7 @@ NFSv2, NIS (see Section 3.2.4 for information about NIS, which is not
 recommended), or any third-party or custom RPC-based program. If none of these
 programs are in use, however, rpcbind should be disabled to improve system
 security.  In order to get more information about whether rpcbind may be
-disabled on a given host, query rpcbind using the command:
+disabled on a given host, query rpcbind using the following command.
 <pre># rpcinfo -p</pre>
 If the only services listed are portmapper and status, it is safe to disable
 rpcbind. If other services are listed and your site is not running NFS or NIS,
@@ -344,7 +344,7 @@ server.</description>
 <mount-desc-macro option="nodev" part="any NFS mounts" />
 </description>
 <ocil clause="the setting does not show">
-To verify that the <tt>nodev</tt> option is configured for all NFS mounts, run the following command:
+To verify the <tt>nodev</tt> option is configured for all NFS mounts, run the following command.
 <pre>$ mount  | grep nfs</pre>
 All NFS mounts should show the <tt>nodev</tt> setting in parentheses.
 </ocil>
@@ -361,7 +361,7 @@ should not present device files to users.</rationale>
 <mount-desc-macro option="nosuid" part="any NFS mounts" />
 </description>
 <ocil clause="the setting does not show">
-To verify that the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command:
+To verify the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command.
 <pre>$ mount  | grep nfs</pre>
 All NFS mounts should show the <tt>nosuid</tt> setting in parentheses.
 </ocil>
@@ -484,7 +484,7 @@ Remove any instances of the
 <tt>insecure_locks</tt> option from the file <tt>/etc/exports</tt>.
 </description>
 <ocil clause="there is output">
-To verify that insecure file locking has been disabled, run the following command:
+To verify insecure file locking has been disabled, run the following command.
 <pre># grep insecure_locks /etc/exports</pre>
 </ocil>
 <rationale>Allowing insecure file locking could allow for sensitive data to be
