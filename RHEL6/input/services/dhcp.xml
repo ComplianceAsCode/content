@@ -123,7 +123,7 @@ allocations.</rationale>
 <Rule id="dhcp_server_deny_bootp">
 <title>Deny BOOTP Queries</title>
 <description>Unless your network needs to support older BOOTP clients, disable
-support for the bootp protocol by adding or correcting the global option:
+support for the bootp protocol by adding or correcting the global option.
 <pre>deny bootp;</pre>
 </description>
 <rationale>The bootp option tells dhcpd to respond to BOOTP queries. If support
@@ -139,7 +139,7 @@ vectors against the DHCP server.
 <title>Minimize Served Information</title>
 <description>Edit /etc/dhcpd.conf. Examine each address range section within
 the file, and ensure that the following options are not defined unless there is
-an operational need to provide this information via DHCP:
+an operational need to provide this information via DHCP.
 <pre>option domain-name
 option domain-name-servers
 option nis-domain
@@ -173,7 +173,7 @@ usually static across machines at a given site.</warning>
 <Rule id="dhcp_server_configure_logging">
 <title>Configure Logging</title>
 <description>Ensure that the following line exists in
-<tt>/etc/syslog.conf</tt>:
+<tt>/etc/syslog.conf</tt>.
 <pre>daemon.*           /var/log/daemon.log</pre>
 Configure logwatch or other log monitoring tools to summarize error conditions
 reported by the dhcpd process.</description>
@@ -201,13 +201,13 @@ accountability for network activity.
 <description>
 For each interface <i>IFACE</i> on the system (e.g. eth0), edit
 <tt>/etc/sysconfig/network-scripts/ifcfg-<i>IFACE</i></tt> and make the
-following changes:
+following changes.
 <ul>
-<li> Correct the BOOTPROTO line to read:
+<li> Correct the BOOTPROTO line to read.
 <pre>BOOTPROTO=static</pre>
 </li>
 <li> Add or correct the following lines, substituting the appropriate
-values based on your site's addressing scheme:
+values based on your site's addressing scheme.
 <pre>NETMASK=255.255.255.0
 IPADDR=192.168.1.2
 GATEWAY=192.168.1.1</pre>
@@ -215,11 +215,11 @@ GATEWAY=192.168.1.1</pre>
 </ul>
 </description>
 <ocil clause="it does not">
-To verify that DHCP is not being used, examine the following file for each interface:
+To verify that DHCP is not being used, examine the following file for each interface.
 <pre># /etc/sysconfig/network-scripts/ifcfg-<i>IFACE</i></pre>
-Look for the following:
+Look for the following.
 <pre>BOOTPROTO=static</pre>
-and the following, substituting the appropriate values based on your site's addressing scheme:
+and the following, substituting the appropriate values based on your site's addressing scheme.
 <pre>NETMASK=255.255.255.0
 IPADDR=192.168.1.2
 GATEWAY=192.168.1.1</pre>
@@ -248,16 +248,16 @@ dhclient(8) and dhclient.conf(5) man pages.  </description>
 <title>Minimize the DHCP-Configured Options</title>
 <description>Create the file <tt>/etc/dhclient.conf</tt>, and add an
 appropriate setting for each of the ten configuration settings which can be
-obtained via DHCP. For each setting, do one of the following:
+obtained via DHCP. For each setting, do one of the following.
 <br/>
 If the setting should <i>not</i> be configured remotely by the DHCP server,
-select an appropriate static value, and add the line:
+select an appropriate static value, and add the line.
 <pre>supersede <tt>setting value</tt>;</pre>
-If the setting should be configured remotely by the DHCP server, add the lines:
+If the setting should be configured remotely by the DHCP server, add the lines.
 <pre>request <tt>setting</tt>;
 require <tt>setting</tt>;</pre>
 For example, suppose the DHCP server should provide only the IP address itself
-and the subnet mask. Then the entire file should look like:
+and the subnet mask. Then the entire file should look like.
 <pre>supersede domain-name "example.com";
 supersede domain-name-servers 192.168.1.2;
 supersede nis-domain "";
@@ -269,7 +269,7 @@ request subnet-mask;
 require subnet-mask;</pre>
 </description>
 <rationale>By default, the DHCP client program, dhclient, requests and applies
-ten configuration options (in addition to the IP address) from the DHCP server:
+ten configuration options (in addition to the IP address) from the DHCP server.
 subnet-mask, broadcast-address, time-offset, routers, domain-name,
 domain-name-servers, host-name, nis-domain, nis-servers, and ntp-servers.  Many
 of the options requested and applied by dhclient may be the same for every
