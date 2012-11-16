@@ -28,12 +28,12 @@ network.</warning>
 <Rule id="ldap_client_start_tls" severity="medium">
 <title>Configure LDAP to Use TLS For All Transactions</title>
 <description>Configure LDAP to enforce TLS use. First, edit the file 
-<tt>/etc/pam_ldap.conf</tt>, and add or correct the following lines:
+<tt>/etc/pam_ldap.conf</tt>, and add or correct the following lines.
 <pre>ssl start_tls</pre>
 Then review the LDAP server and ensure TLS has been configured.
 </description>
 <ocil clause="no lines are returned">
-To ensure LDAP is configured to use TLS for all transactions, run the following command:
+To ensure LDAP is configured to use TLS for all transactions, run the following command.
 <pre>$ grep start_tls /etc/pam_ldap.conf</pre>
 </ocil>
 <rationale>The ssl directive specifies whether to use ssl or not. If
@@ -50,14 +50,14 @@ than doing LDAP over SSL.</rationale>
 <description>Ensure a copy of the site's CA certificate has been placed in
 the file <tt>/etc/pki/tls/CA/cacert.pem</tt>. Configure LDAP to enforce TLS 
 use and to trust certificates signed by the site's CA. First, edit the file 
-<tt>/etc/pam_ldap.conf</tt>, and add or correct either of the following lines:
+<tt>/etc/pam_ldap.conf</tt>, and add or correct either of the following lines.
 <pre>tls_cacertdir /etc/pki/tls/CA</pre>
 or
 <pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
 Then review the LDAP server and ensure TLS has been configured.
 </description>
 <ocil clause="there is no output, or the lines are commented out">
-To ensure TLS is configured with trust certificates, run the following command:
+To ensure TLS is configured with trust certificates, run the following command.
 <pre># grep cert /etc/pam_ldap.conf</pre>
 </ocil>
 <rationale>The tls_cacertdir or tls_cacertfile directives are required when
@@ -84,7 +84,7 @@ securing an OpenLDAP infrastructure nonetheless.
 <Rule id="package_openldap-servers_removed">
 <title>Uninstall openldap-servers Package</title>
 <description>The <tt>openldap-servers</tt> package should be removed if not in use.
-Is this machine the OpenLDAP server? If not, remove the package:
+Is this machine the OpenLDAP server? If not, remove the package.
 <pre># yum erase openldap-servers</pre>
 The openldap-servers RPM is not installed by default on RHEL6
 machines. It is needed only by the OpenLDAP server, not by the
@@ -93,9 +93,9 @@ intended for use as an LDAP Server it should be removed.
 </description>
 <ocil clause="it does not">
 To verify the <tt>openldap-servers</tt> package is not installed, 
-run the following command:
+run the following command.
 <pre>$ rpm -q openldap-servers</pre>
-The output should show:
+The output should show the following.
 <pre>package openldap-servers is not installed</pre>
 </ocil>
 <rationale>Unnecessary packages should not be installed to decrease the attack surface of the system.</rationale>
@@ -130,7 +130,7 @@ ensure that the configuration files are protected from unauthorized
 access or modification.
 <br /><br />
 Edit the ldap configuration file at <tt>/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif</tt>.
-Ensure that the configuration file has reasonable permissions:
+Ensure that the configuration file has reasonable permissions.
 <pre># chown root:ldap /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif
 # chmod 640 /etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif</pre>
 Protect configuration files containing the hashed password the same way you would protect other files, such as
@@ -146,14 +146,14 @@ Protect configuration files containing the hashed password the same way you woul
 <description>Is this system an OpenLDAP server? If so,
 ensure that the RootDN uses a secure password.
 <br /><br />
-Generate a hashed password using the slappasswd utility:
+Generate a hashed password using the slappasswd utility.
 <pre># slappasswd
 New password:
 Re-enter new password:</pre>
 This will output a hashed password string.
 <br /><br />
 Edit the file <tt>/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif</tt>, and add or correct
-the line:
+the line.
 <pre>olcRootPW: {SSHA}hashed-password-string</pre>
 Be sure to select a secure password for the LDAP root user, since this user has permission to read and write all
 LDAP data, so a compromise of the LDAP root password will probably enable a full compromise of your site.
@@ -166,23 +166,23 @@ In addition, be sure to use a reasonably strong hash function. The default hash 
 
 <Rule id="ldap_server_config_certificate_files">
 <title>Protect LDAP Certificate Files</title>
-<description>Create the PKI directory for LDAP certificates if it does not already exist:
+<description>Create the PKI directory for LDAP certificates if it does not already exist.
 <pre># mkdir /etc/pki/tls/ldap
 # chown root:root /etc/pki/tls/ldap
 # chmod 755 /etc/pki/tls/ldap</pre>
 Using removable media or some other secure transmission format, install the files generated in the previous
-step onto the LDAP server:
+step onto the LDAP server.
 <ul>
 <li><tt>/etc/pki/tls/ldap/serverkey.pem</tt>: the private key <tt>ldapserverkey.pem</tt></li>
 <li><tt>/etc/pki/tls/ldap/servercert.pem</tt>: the certificate file <tt>ldapservercert.pem</tt></li>
 </ul>
-Verify the ownership and permissions of these files:
+Verify the ownership and permissions of these files.
 <pre># chown root:ldap /etc/pki/tls/ldap/serverkey.pem
 # chown root:ldap /etc/pki/tls/ldap/servercert.pem
 # chmod 640 /etc/pki/tls/ldap/serverkey.pem
 # chmod 640 /etc/pki/tls/ldap/servercert.pem</pre>
 Verify that the CA's public certificate file has been installed as <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the
-correct permissions:
+correct permissions.
 <pre># mkdir /etc/pki/tls/CA
 # chown root:root /etc/pki/tls/CA/cacert.pem
 # chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
@@ -209,7 +209,7 @@ LDAP server process would need to be restarted manually whenever the server rebo
 
 <Group id="ldap_server_config_directory_domain">
 <title>Create Top-level LDAP Structure for Domain</title>
-<description>Create a structure for the domain itself with at least the following attributes:
+<description>Create a structure for the domain itself with at least the following attributes.
 <pre>dn: dc=example,dc=com
 objectClass: dcObject
 objectClass: organization
@@ -225,7 +225,7 @@ any other entries for the domain.
 
 <Group id="ldap_server_config_directory_users_groups">
 <title>Create LDAP Structures for Users and Groups</title>
-<description>Create LDAP structures for people (users) and for groups with at least the following attributes:
+<description>Create LDAP structures for people (users) and for groups with at least the following attributes.
 <pre>dn: ou=people,dc=example,dc=com
 ou: people
 structuralObjectClass: organizationalUnit
@@ -274,7 +274,7 @@ but only for user accounts which are to be shared across machines, and which hav
 
 <Group id="ldap_server_config_directory_groups">
 <title>Create Unix Groups</title>
-<description>For each Unix group, create an LDAP entry with at least the following attributes:
+<description>For each Unix group, create an LDAP entry with at least the following attributes.
 <pre>dn: cn=groupname ,ou=groups,dc=example,dc=com
 cn: groupname
 structuralObjectClass: posixGroup
@@ -298,7 +298,7 @@ or which are shared across systems.
 <Group id="ldap_server_config_directory_admin_group">
 <title>Create Groups to Administer LDAP</title>
 <description>If a group of LDAP administrators is desired, that group must be created somewhat differently.
-The specification should have these attributes:
+The specification should have these attributes.
 <pre>dn: cn=admins ,ou=groups,dc=example,dc=com
 cn: admins
 structuralObjectClass: groupOfUniqueNames
@@ -320,9 +320,9 @@ auditing and error detection, it is recommended that LDAP administrators have un
 
 <Rule id="ldap_server_config_olcaccess">
 <title>Configure slapd to Protect Authentication Information</title>
-<description>Use ldapmodify to add these entries to the database. Add or correct the following access specifications:
+<description>Use ldapmodify to add these entries to the database. Add or correct the following access specifications.
 1. Protect the user's password by allowing the user himself or the LDAP administrators to change it,
-allowing the anonymous user to authenticate against it, and allowing no other access:
+allowing the anonymous user to authenticate against it, and allowing no other access.
 <pre>olcAccess: to attrs=userPassword
     by self write
     by group/groupOfUniqueNames/uniqueMember="cn=admins ,ou=groups,dc=example,dc=com " write
@@ -332,7 +332,7 @@ olcAccess: to attrs=shadowLastChange
     by self write
     by group/groupOfUniqueNames/uniqueMember="cn=admins ,ou=groups,dc=example,dc=com " write
     by * read</pre>
-2. Allow anyone to read other information, and allow the administrators to change it:
+2. Allow anyone to read other information, and allow the administrators to change it.
 <pre>olcAccess: to *
     by group/groupOfUniqueNames/uniqueMember="cn=admins ,ou=groups,dc=example,dc=com " write
     by * read</pre>
@@ -349,7 +349,7 @@ be able to change data without an explicit access statement.
 
 <Rule id="ldap_server_config_directory_file_security">
 <title>Correct Permissions on LDAP Server Files</title>
-<description>Correct the permissions on the ldap server's files:
+<description>Correct the permissions on the ldap server's files.
 <pre># chown ldap:root /var/lib/ldap/*</pre>
 Some manual methods of inserting information into the LDAP database may leave these files with incorrect
 permissions. This will prevent slapd from starting correctly.
@@ -384,10 +384,10 @@ by connecting to the primary port and issuing the STARTTLS command.
 <title>Configure Logging for LDAP</title>
 <description>
 <ol>
-<li>Edit the file <tt>/etc/rsyslog.conf</tt>. Add or correct the following line:
+<li>Edit the file <tt>/etc/rsyslog.conf</tt>. Add or correct the following line.
 <pre>local4.*</pre>
 </li>
-<li>Create the log file with safe permissions:
+<li>Create the log file with safe permissions.
 <pre># touch /var/log/ldap.log
 # chown root:root /var/log/ldap.log
 # chmod 0600 /var/log/ldap.log</pre>
@@ -396,7 +396,7 @@ by connecting to the primary port and issuing the STARTTLS command.
 <pre>/var/log/ldap.log</pre>
 to the space-separated list in the first line.</li>
 <li>Edit the LDAP configuration file /etc/openldap/slapd.conf and set a reasonable set of default log
-parameters, such as:
+parameters, such as the following.
 <pre>loglevel stats2</pre>
 </li>
 </ol>
