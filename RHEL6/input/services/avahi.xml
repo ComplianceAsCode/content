@@ -50,9 +50,9 @@ http://www.avahi.org for more detailed information about the configuration optio
 <title>Serve Avahi Only via Required Protocol</title>
 <description>
 If you are using only IPv4, edit <tt>/etc/avahi/avahi-daemon.conf</tt> and ensure
-the following line exists in the <tt>[server]</tt> section:
+the following line exists in the <tt>[server]</tt> section.
 <pre>use-ipv6=no</pre>
-Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
+Similarly, if you are using only IPv6, disable IPv4 sockets with the line.
 <pre>use-ipv4=no</pre>
 </description>
 <ref nist="CM-6, CM-7" />
@@ -83,7 +83,7 @@ are not permitted.
 <title>Prevent Other Programs from Using Avahi's Port</title>
 <description>
 To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
-and ensure the following line appears in the <tt>[server]</tt> section:
+and ensure the following line appears in the <tt>[server]</tt> section.
 <pre>disallow-other-stacks=yes</pre>
 </description>
 <rationale>
@@ -98,7 +98,7 @@ that port on the system.
 <title>Disable Avahi Publishing</title>
 <description>
 To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
-and ensure the following line appears in the <tt>[server]</tt> section:
+and ensure the following line appears in the <tt>[server]</tt> section.
 <pre>disallow-other-stacks=yes</pre>
 </description>
 <rationale>
@@ -116,10 +116,10 @@ If it is necessary to publish some information to the network, it should not be 
 by any extraneous information, or by information supplied by a non-trusted source
 on the system.
 Prevent user applications from using Avahi to publish services by adding or
-correcting the following line in the <tt>[publish]</tt> section:
+correcting the following line in the <tt>[publish]</tt> section.
 <pre>disable-user-service-publishing=yes</pre>
 Implement as many of the following lines as possible, to restrict the information
-published by Avahi:
+published by Avahi.
 <pre>publish-addresses=no
 publish-hinfo=no
 publish-workstation=no
