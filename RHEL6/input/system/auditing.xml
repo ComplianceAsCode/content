@@ -136,7 +136,7 @@ it can be configured to do).
 For a busy
 system or a system which is thoroughly auditing system activity, the default settings
 for data retention may be
- insuffcient. The log file size needed will depend heavily on what types
+ insufficient. The log file size needed will depend heavily on what types
 of events are being audited. First configure auditing to log all the events of
 interest. Then monitor the log size manually for awhile to determine what file
 size will allow you to keep the required data for the correct time period.
@@ -720,8 +720,8 @@ changes for all users and root.  Note that the "-F arch=b32" lines should be
 present even on a 64 bit system.  These commands identify system calls for 
 auditing.  Even if the system is 64 bit it can still execute 32 bit system 
 calls.  Additionally, these rules can be configured in a number of ways while 
-still acheiving the desired effect.  An example of this is that the "-S" calls 
-could be split up and placed on seperate lines, however, this is less efficient.
+still achieving the desired effect.  An example of this is that the "-S" calls 
+could be split up and placed on separate lines, however, this is less efficient.
 Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat \
     -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
@@ -764,8 +764,8 @@ unauthorized users.</rationale>
 <audit-syscall-check-macro syscall="chmod" />
 </ocil>
 <warning category="general">Note that these rules can be configured in a 
-number of ways while still acheiving the desired effect.  Here the system calls 
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls 
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -792,8 +792,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a 
-number of ways while still acheiving the desired effect.  Here the system calls 
-have been placed independant of other system calls.  Grouping these system 
+number of ways while still achieving the desired effect.  Here the system calls 
+have been placed independent of other system calls.  Grouping these system 
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -820,8 +820,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -848,8 +848,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -876,8 +876,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -904,8 +904,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -932,8 +932,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -960,8 +960,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -988,8 +988,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -1016,8 +1016,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -1044,8 +1044,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -1072,8 +1072,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -1100,8 +1100,8 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
-number of ways while still acheiving the desired effect.  Here the system calls
-have been placed independant of other system calls.  Grouping these system
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="14058-2" />
@@ -1287,7 +1287,7 @@ to make the configuration immutable:
 <pre>-e 2</pre>
 With this setting, a reboot will be required to change any
 audit rules.</description>
-<rationale>Making the audit configuration immutable prevents accidential as
+<rationale>Making the audit configuration immutable prevents accidental as
 well as malicious modification of the audit rules, although it may be
 problematic if legitimate changes are needed during system
 operation</rationale>

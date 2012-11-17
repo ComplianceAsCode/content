@@ -10,7 +10,7 @@ many network settings.</description>
 <title>Disable Support for IPv6 unless Needed</title>
 <description>
 Despite configuration that suggests support for IPv6 has
-been disabled, link-local IPv6 address autoconfiguration occurs
+been disabled, link-local IPv6 address auto-configuration occurs
 even when only an IPv4 address is assigned. The only way to
 effectively prevent execution of the IPv6 networking stack is to
 instruct the system not to activate the IPv6 kernel module.
@@ -100,7 +100,7 @@ sending router solicitations):
 <Value id="sysconfig_network_IPV6_AUTOCONF_value" type="string"
 operator="equals" interactive="0">
 <title>IPV6_AUTOCONF</title>
-<description>Toggle global IPv6 autoconfiguration (only, if global
+<description>Toggle global IPv6 auto-configuration (only, if global
 forwarding is disabled)</description>
 <value>no</value>
 <value selector="enabled">yes</value>
@@ -197,7 +197,7 @@ applied.
 the following line (substituting your gateway IP as appropriate):
 <pre>IPV6_DEFAULTGW=2001:0DB8::0001</pre>
 Router addresses should be manually set and not accepted via any
-autoconfiguration or router advertisement.
+auto-configuration or router advertisement.
 </description>
 <oval id="network_ipv6_default_gateway" />
 <ref nist="CM-6, CM-7" />
