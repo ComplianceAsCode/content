@@ -40,7 +40,7 @@ maliciously may result in an exceptional number of simultaneous login sessions.
 Run the following command to ensure the <tt>maxlogins</tt> value is configured for all users
 on the system:
 <pre># grep "maxlogins" /etc/security/limits.conf</pre>
-You should receive output simular to the following:
+You should receive output similar to the following:
 <pre>*		hard	maxlogins	<i>MAX</i></pre>
 Where <i>MAX</i> represents the value you have chosen.
 </ocil>
@@ -138,7 +138,7 @@ change.</warning>
 User home directories contain many configuration files which
 affect the behavior of a user's account. No user should ever have
 write permission to another user's home directory. Group shared
-directories can be configured in subdirectories or elsewhere in the
+directories can be configured in sub-directories or elsewhere in the
 filesystem if they are needed. Typically, user home directories
 should not be world-readable, as it would disclose file names
 to other users. If a subset of users need read access

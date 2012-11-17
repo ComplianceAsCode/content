@@ -150,7 +150,7 @@ any packets which are not explicitly permitted should not be
 accepted.</rationale>
 <ocil>Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
 <pre>grep ":FORWARD" /etc/sysconfig/iptables</pre>
-The output should be simular to the following:
+The output should be similar to the following:
 <pre># grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
 <ident cce="14264-6" />
@@ -176,8 +176,8 @@ could add another IPv6 address to the interface or alter important network setti
 <pre>-A INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>
 </description>
 <ref nist="AC-4, CM-6" />
-<rationale>Restricting other ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not recommended because the oper-
-ation of IPv6 depends heavily on ICMPv6. Thus, more care must be taken when blocking ICMPv6 types.</rationale>
+<rationale>Restricting other ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not recommended because the operation-
+  of IPv6 depends heavily on ICMPv6. Thus, more care must be taken when blocking ICMPv6 types.</rationale>
 <!--<ident cce="14264-6" />-->
 <!--<oval id="iptables_icmp_disabled" />-->
 </Group>
@@ -209,7 +209,7 @@ on your network:
 If you are not expecting to see site-local multicast or auto-tunneled traffic, you can log those:
 <pre>-A INPUT -s FF05::/16 -j LOG --log-prefix "IPv6 SITE-LOCAL MULTICAST: "
 -A INPUT -s ::0.0.0.0/96 -j LOG --log-prefix "IPv4 COMPATIBLE IPv6 ADDR: "</pre>
-If you wish to block multicasts to all link-local nodes (e.g. if you are not using router autoconfiguration and
+If you wish to block multicasts to all link-local nodes (e.g. if you are not using router auto-configuration and
 do not plan to have any services that multicast to the entire local network), you can block the link-local
 all-nodes multicast address (before accepting incoming ICMPv6):
 <pre>-A INPUT -d FF02::1 -j LOG --log-prefix "Link-local All-Nodes Multicast: "</pre>
