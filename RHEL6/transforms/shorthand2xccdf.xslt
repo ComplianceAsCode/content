@@ -241,15 +241,15 @@ exclude-result-prefixes="xccdf xhtml dc">
     <xhtml:pre xml:space="preserve"># sysctl -w <xsl:value-of select="@sysctl"/>=<xsl:value-of select="@value"/></xhtml:pre>
 
 	<!-- The following text could also be included conditionally, if the defaultness of the sysctl were indicated. -->
-    If this is not the system's default value, add the following line to <xhtml:code>/etc/sysctl.conf</xhtml:code>.
+    If this is not the system's default value, add the following line to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
     <xhtml:pre xml:space="preserve"><xsl:value-of select="@sysctl"/> = <xsl:value-of select="@value"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="sysctl-check-macro">
     The status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
-    by running the following command.
+    by running the following command:
     <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
-    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
+    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>:
     If this value is not the default value, investigate how it could have been
     adjusted at runtime, and verify it is not set improperly in
     <xhtml:code>/etc/sysctl.conf</xhtml:code>.
@@ -261,7 +261,7 @@ exclude-result-prefixes="xccdf xhtml dc">
 
     <xhtml:br />
     To verify persistent configuration of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter, 
-    verify that the following line is present in <xhtml:code>/etc/sysctl.conf</xhtml:code>.
+    verify that the following line is present in <xhtml:code>/etc/sysctl.conf</xhtml:code>:
     <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    -->
   </xsl:template>
 
@@ -277,109 +277,108 @@ exclude-result-prefixes="xccdf xhtml dc">
   </xsl:template>
 
   <xsl:template match="fileperms-desc-macro">
-    To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command.
+    To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre xml:space="preserve"># chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileowner-desc-macro">
-    To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command.
+    To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@owner"/> <xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="filegroupowner-desc-macro">
-    To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command.
+    To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre xml:space="preserve"># chgrp <xsl:value-of select="@group"/> <xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">
-    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command.
+    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
-    If properly configured, the output should indicate the following permissions.
+    If properly configured, the output should indicate the following permissions:
     <xhtml:code><xsl:value-of select="@perms"/></xhtml:code>
   </xsl:template>
 
   <xsl:template match="fileowner-check-macro">
-    To check the ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command.
+    To check the ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
-    If properly configured, the output should indicate the following owner.
+    If properly configured, the output should indicate the following owner:
     <xhtml:code><xsl:value-of select="@owner"/></xhtml:code>
   </xsl:template>
 
   <xsl:template match="filegroupowner-check-macro">
-    To check the group ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command.
+    To check the group ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
     If properly configured, the output should indicate the following group-owner.
     <xhtml:code><xsl:value-of select="@group"/></xhtml:code>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">
-    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command.
+    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
     <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
-    If properly configured, the output should indicate the following permissions.
+    If properly configured, the output should indicate the following permissions:
     <xhtml:code><xsl:value-of select="@perms"/></xhtml:code>
   </xsl:template>
 
   <xsl:template match="package-install-macro">
-    The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command.
+    The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
     <xhtml:pre># yum install <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="package-remove-macro">
-    The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command.
+    The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
     <xhtml:pre># yum erase <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="partition-check-macro">
     Run the following command to determine if  <xhtml:code><xsl:value-of select="@part"/></xhtml:code>
-    is on its own partition or logical volume.
+    is on its own partition or logical volume:
+
   <xhtml:pre>$ mount | grep "on <xsl:value-of select="@part"/>"</xhtml:pre>
   If <xhtml:code><xsl:value-of select="@part"/></xhtml:code> has its own partition or volume group, a line
   will be returned.
   </xsl:template>
 
   <xsl:template match="service-disable-macro">
-    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command.
+    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-macro">
-    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command.
+    The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
     <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
-    To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot
-    configuration, run the following command. 
+    To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command: 
     <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
     Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, 
-    or has been disabled at all runlevels, as shown in the example below.
+    or has been disabled at all runlevels, as shown in the example below:
     <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
 
-    Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through current
-    runtime configuration.
+    Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through current runtime configuration:
     <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
 
-    If the service is disabled the command will return the following output.
+    If the service is disabled the command will return the following output:
     <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-check-macro">
     Run the following command to determine the current status of the
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code> service.
+<xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
   <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
     If the service is enabled, it should return the following: <xhtml:pre><xsl:value-of select="@service"/> is running...</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="package-check-macro">
-    Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed.
+    Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed:
     <xhtml:pre># rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
 
   <xsl:template match="module-disable-macro">
 To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
-kernel module from being loaded, add the following line to a file in the directory <xhtml:code>/etc/modprobe.d</xhtml:code>.
+kernel module from being loaded, add the following line to a file in the directory <xhtml:code>/etc/modprobe.d</xhtml:code>:
 <xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</xhtml:pre>
   </xsl:template>
 
@@ -390,14 +389,14 @@ it will contain lines inside any file in <xhtml:code>/etc/modprobe.d</xhtml:code
 These lines instruct the module loading system to run another program (such as
 <xhtml:code>/bin/true</xhtml:code>) upon a module <xhtml:code>install</xhtml:code> event.
 Run the following command to search for such lines in all files in <xhtml:code>/etc/modprobe.d</xhtml:code>
-and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>.
+and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 <xhtml:pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="audit-syscall-check-macro">
 To determine if the system is configured to audit calls to
 the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
-system call, run the following command.
+system call, run the following command:
 <xhtml:pre xml:space="preserve"># auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
@@ -419,7 +418,7 @@ If the system is configured to audit this activity, it will return a line.
         <xhtml:code>/etc/sysconfig/iptables</xhtml:code> and
         <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
         Remove the following line, ensuring that it does not appear in the INPUT 
-        chain.
+        chain:
         <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
       </xsl:when>
       <xsl:otherwise>
@@ -428,7 +427,7 @@ If the system is configured to audit this activity, it will return a line.
         <xhtml:code>/etc/sysconfig/iptables</xhtml:code>  and 
         <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
         Add the following line, ensuring that it appears before the final LOG 
-        and DROP lines for the INPUT chain.
+        and DROP lines for the INPUT chain:
         <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
       </xsl:otherwise>
     </xsl:choose>
@@ -438,7 +437,7 @@ If the system is configured to audit this activity, it will return a line.
   <!-- could also do this with sshd -T to test live configuration -->
     To determine how the SSH daemon's
     <xhtml:code><xsl:value-of select="@option"/></xhtml:code>
-    option is set, run the following command.
+    option is set, run the following command:
     <xhtml:pre xml:space="preserve"># grep -i <xsl:value-of select="@option"/> /etc/ssh/sshd_config</xhtml:pre>
     <xsl:if test="@default='yes'">
       If no line, a commented line, or a line indicating the value
