@@ -38,6 +38,9 @@ A file integrity tool must be installed.
 <title rule="aide_periodic_cron_checking" shorttitle="Configure Periodic Execution of AIDE">
 A file integrity tool must be used at least weekly to check for unauthorized file changes, particularly the addition of unauthorized system libraries or binaries, or for unauthorized modification to authorized system libraries or binaries.
 </title>
+<title rule="rpm_verify_hashes" shorttitle="Verify File Hashes with RPM">
+The system package management tool must verify contents of all files associated with packages.
+</title>
 <title rule="rpm_verify_permissions" shorttitle="Verify File Permissions with RPM">
 The system package management tool must verify permissions on all file and directories associated with packages.
 </title>
@@ -718,5 +721,20 @@ The netconsole service must be disabled unless required.
 </title>
 <title rule="world_writeable_files" shorttitle="Ensure No World-Writable Files Exist">
 There must be no world-writable files on the system.
+</title>
+<title rule="unmet_impractical_product" shorttitle="Product Does Not Meet this Requirement Due to Impracticality or Scope"> 
+This requirement must be satisfied via an external application or server. 
+</title> 
+<title rule="unmet_impractical_guidance" shorttitle="Guidance Does Not Meet this Requirement Due to Impracticality or Scope"> 
+This requirement must be satisfied via an external application, policy, or service. 
+</title> 
+<title rule="requirement_unclear" shorttitle="Implementation of the Requirement is Unclear"> 
+This requirement must be clarified. 
+</title> 
+<title rule="new_rule_needed" shorttitle="A New Policy/Manual? Rule is Needed."> 
+This rule remains to be written. 
+</title> 
+<title rule="met_inherently" shorttitle="Product Meets This Requirement"> 
+The system can not be configured not to meet this requirement. 
 </title>
 </titles>

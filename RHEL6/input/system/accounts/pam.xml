@@ -117,7 +117,7 @@ operator="equals" interactive="0">
 <Value id="var_password_pam_cracklib_dcredit" type="number"
 operator="equals" interactive="0">
 <title>dcredit</title>
-<description>Mininum number of digits in password</description>
+<description>Minimum number of digits in password</description>
 <value selector="">-1</value>
 <value selector="2">-2</value>
 <value selector="1">-1</value>
@@ -126,7 +126,7 @@ operator="equals" interactive="0">
 <Value id="var_password_pam_cracklib_ocredit" type="number"
 operator="equals" interactive="0">
 <title>ocredit</title>
-<description>Mininum number of other (special characters) in
+<description>Minimum number of other (special characters) in
 password</description>
 <value selector="">-1</value>
 <value selector="2">-2</value>
@@ -136,7 +136,7 @@ password</description>
 <Value id="var_password_pam_cracklib_lcredit" type="number"
 operator="equals" interactive="0">
 <title>lcredit</title>
-<description>Mininum number of lower case in password</description>
+<description>Minimum number of lower case in password</description>
 <value selector="">-1</value>
 <value selector="2">-2</value>
 <value selector="1">-1</value>
@@ -145,7 +145,7 @@ operator="equals" interactive="0">
 <Value id="var_password_pam_cracklib_ucredit" type="number"
 operator="equals" interactive="0">
 <title>ucredit</title>
-<description>Mininum number of upper case in password</description>
+<description>Minimum number of upper case in password</description>
 <value selector="">-1</value>
 <value selector="2">-2</value>
 <value selector="1">-1</value>
@@ -154,7 +154,7 @@ operator="equals" interactive="0">
 <Value id="var_password_pam_cracklib_difok" type="number"
 operator="equals" interactive="0">
 <title>difok</title>
-<description>Mininum number of characters not present in old
+<description>Minimum number of characters not present in old
 password</description>
 <warning category="general">Keep this high for short
 passwords</warning>
@@ -438,6 +438,7 @@ This is the default.
 Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>  and
 ensure that the <tt>pam_unix.so</tt> module includes the argument
 <tt>sha512</tt>.
+<tt>$ grep sha512 /etc/pam.d/system-auth</tt>
 </ocil>
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.

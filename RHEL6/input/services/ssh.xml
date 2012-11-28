@@ -129,7 +129,7 @@ RSAAuthentication no</pre></description>
 <Rule id="sshd_disable_tunnel">
 <title>Disable Tunneling</title>
 <description>OpenSSH includes the ability to provide tunneling, which allows
-a user to effectively stablish a VPN connection with a firewall/gateway machine and then access resources
+a user to effectively establish a VPN connection with a firewall/gateway machine and then access resources
 sitting behind it. This feature is disabled by default. To explicitly
 disable it:
 <pre>PermitTunnel no</pre>
@@ -207,7 +207,7 @@ command in allowing users to enable insecure access to their
 accounts via <tt>.rhosts</tt> files.
 <br /><br />
 To ensure that this behavior is disabled, add or correct the
-following line:
+following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>IgnoreRhosts yes</pre>
 </description>
 <ocil>
@@ -353,7 +353,7 @@ The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 <ocil clause="that is not the case">
 Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
 ciphers are in use, run the following command:
-<pre>$ grep Ciphers /etc/ssh/sshd_config</pre>
+<pre># grep Ciphers /etc/ssh/sshd_config</pre>
 The output should contain only those ciphers which are FIPS-approved.
 </ocil>
 <rationale>
