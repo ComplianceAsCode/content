@@ -1,9 +1,9 @@
 VERSION := 0.1
-RELEASE := 7
+RELEASE := 8
 PKGNAME := scap-security-guide
 PKG := $(PKGNAME)-$(VERSION)
 
-ARCH := noarch
+ARCH := x86_64
 VENDOR := scap-security-guide
 PACKAGER := scap-security-guide
 
