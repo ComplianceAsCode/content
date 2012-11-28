@@ -47,6 +47,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 27 2012 Shawn Wells <shawn@redhat.com> 0.1-8
+- Significant copy editing to XCCDF rules per community
+  feedback on the DISA RHEL6 STIG Initial Draft
+
 * Thu Nov 1 2012 Shawn Wells <shawn@redhat.com> 0.1-7
 - Corrected XCCDF content errors
 - OpenSCAP now supports CPE dictionaries, important to
