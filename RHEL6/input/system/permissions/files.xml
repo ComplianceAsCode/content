@@ -10,7 +10,7 @@ arisen.</description>
 
 <Group id="permissions_important_account_files">
 <title>Verify Permissions on Files with Local Account Information and Credentials</title>
-<description>The default restritctive permissions for files which act as
+<description>The default restrictive permissions for files which act as
 important security databases such as <tt>passwd</tt>, <tt>shadow</tt>,
 <tt>group</tt>, and <tt>gshadow</tt> files must be maintained.  Many utilities
 need read access to the <tt>passwd</tt> file in order to function properly, but
@@ -161,7 +161,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/></ocil>
 <rationale>If the <tt>/etc/passwd</tt> file is writable by a group-owner or the
 world the risk of its compromise is increased. The file contains the list of
-acounts on the system and associated information, and protection of this file
+accounts on the system and associated information, and protection of this file
 is critical for system security.</rationale>
 <ident cce="3566-7" />
 <oval id="file_permissions_etc_passwd" />

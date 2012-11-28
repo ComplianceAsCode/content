@@ -37,7 +37,7 @@ If SELinux is suspected of involvement with boot-time problems
 (unlikely), it is possible to boot into the warning-only mode
 <tt>SELINUX=permissive</tt> for debugging purposes. Make certain to change
 the mode back to enforcing after debugging, set the filesystems to
-be relabelled for consistency using the command <tt>touch
+be relabeled for consistency using the command <tt>touch
 /.autorelabel</tt>, and reboot.
 <br /><br />
 However, the RHEL6 default SELinux configuration should be
@@ -194,7 +194,7 @@ The <tt>mcstransd</tt> daemon provides the category label translation
 information defined in <tt>/etc/selinux/targeted/setrans.conf</tt> to
 client processes which request this information.
 <br /><br />
-Category labelling is unlikely to be used except in sites
+Category labeling is unlikely to be used except in sites
 with special requirements. Therefore, it should be disabled in
 order to reduce the amount of potentially vulnerable code running
 on the system. See Section 2.4.6 for more information about systems
