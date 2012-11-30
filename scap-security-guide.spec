@@ -1,7 +1,7 @@
 Name:           scap-security-guide
 Version:        %{version}
 Release:        %{release}
-Summary:        The scap-security-guide project provides security guidance and baselines in SCAP formats for Red Hat Enterprise Linux.
+Summary:        The scap-security-guide project provides security guidance and baselines in SCAP formats.
 
 Group:          Testing
 License:        Public domain and GPL
@@ -12,7 +12,7 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildArch:	%{arch}
 
-BuildRequires:  coreutils, libxslt, expat, python, openscap-utils
+BuildRequires:  coreutils, libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
 Requires:       filesystem, openscap-utils >= 0.9.1
 
 %description
@@ -47,6 +47,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 28 2012 Shawn Wells <shawn@redhat.com> 0.1-9
+- Updated BuildRequires to reflect python-lxml (thank you, Ray S.!)
+- Reverting to noarch RPM
+
 * Tue Nov 27 2012 Shawn Wells <shawn@redhat.com> 0.1-8
 - Significant copy editing to XCCDF rules per community
   feedback on the DISA RHEL6 STIG Initial Draft

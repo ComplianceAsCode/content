@@ -1,9 +1,9 @@
 VERSION := 0.1
-RELEASE := 8
+RELEASE := 9.el6
 PKGNAME := scap-security-guide
 PKG := $(PKGNAME)-$(VERSION)
 
-ARCH := x86_64
+ARCH := noarch
 VENDOR := scap-security-guide
 PACKAGER := scap-security-guide
 
