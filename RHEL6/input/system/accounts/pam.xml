@@ -332,7 +332,7 @@ The DoD requirement is 4.
 To check how many characters must differ during a password change, run the following command:
 <pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
 The <tt>difok</tt> parameter will indicate how many characters must differ.
-The DoD requires 4 character differ during a password change.
+The DoD requires four characters differ during a password change.
 This would appear as <tt>difok=4</tt>.
 </ocil>
 <rationale>
@@ -401,7 +401,7 @@ line which refers to the <tt>pam_unix.so</tt> module, as shown:
 <pre>password sufficient pam_unix.so <i>existing_options</i> remember=24</pre>
 The DoD requirement is 24 passwords.</description>
 <ocil clause="it does not">
-To verify that the password reuse setting is compliant, run the following command:
+To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
 The output should show the following at the end of the line:
 <pre>remember=24</pre>
@@ -428,9 +428,9 @@ locations.</description>
 In <tt>/etc/pam.d/system-auth</tt>, the <tt>password</tt> section of
 the file controls which PAM modules execute during a password change.
 Set the <tt>pam_unix.so</tt> module in the
-<tt>password</tt> section to include the argument <tt>sha512</tt>, as shown here:
+<tt>password</tt> section to include the argument <tt>sha512</tt>, as shown below:
 <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
-This will help ensure that when local users change their passwords, hashes for the new
+This will help ensure when local users change their passwords, hashes for the new
 passwords will be generated using the SHA-512 algorithm.
 This is the default.
 </description>
@@ -453,7 +453,7 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 <title>Set Password Hashing Algorithm in /etc/login.defs</title>
 <description>
 In <tt>/etc/login.defs</tt>, add or correct the following line to ensure
-that the system will use SHA-512 as the hashing algorithm:
+the system will use SHA-512 as the hashing algorithm:
 <pre>ENCRYPT_METHOD SHA512</pre>
 </description>
 <ocil clause="it does not">
@@ -472,8 +472,8 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 <Rule id="set_password_hashing_algorithm_libuserconf" severity="medium">
 <title>Set Password Hashing Algorithm in /etc/libuser.conf</title>
 <description>
-In <tt>/etc/libuser.conf</tt>, add or correct the the following line in its
-<tt>[defaults]</tt> section to ensure that the system will use the SHA-512
+In <tt>/etc/libuser.conf</tt>, add or correct the following line in its
+<tt>[defaults]</tt> section to ensure the system will use the SHA-512
 algorithm for password hashing:
 <pre>crypt_style = sha512</pre>
 </description>
