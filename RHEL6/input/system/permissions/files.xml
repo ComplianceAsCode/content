@@ -193,13 +193,10 @@ by default:
 /usr/lib64
 </pre>
 Kernel modules, which can be added to the kernel during runtime, are
-stored in:
-<pre>/lib/modules</pre>
-All files in these directories should not be
-group-writable or world-writable. 
-If any file <i>FILE</i> in these directories is found
-to be group-writable or world-writeable, correct its permission with the
-following command:
+stored in <tt>/lib/modules</</tt>>. All files in these directories
+should not be group-writable or world-writable. If any file in these
+directories is found to be group-writable or world-writeable, correct
+its permission with the following command:
 <pre># chmod go-w <i>FILE</i></pre>
 </description>
 <ocil clause="any of these files are group-writable or world-writable">
@@ -226,16 +223,13 @@ by default:
 /usr/lib64
 </pre>
 Kernel modules, which can be added to the kernel during runtime, are also
-stored in:
-<pre>/lib/modules</pre>
-All files in these directories should be
-owned by the <tt>root</tt> user.
-If any file <i>FILE</i> in these directories is found
+stored in <tt>/lib/modules</tt>. All files in these directories should be
+owned by the <tt>root</tt> user. If any file in these directories is found
 to be owned by a user other than root, correct its ownership with the
 following command:
 <pre># chown root <i>FILE</i></pre>
 </description>
-<ocil clause="any of these files aren't owned by root">
+<ocil clause="any of these files are not owned by root">
 To find shared libraries that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> \! -user root</pre>
@@ -264,14 +258,14 @@ to be group-writable or world-writeable, correct its permission with the
 following command:
 <pre># chmod go-w <i>FILE</i></pre>
 </description>
-<ocil clause="any system executables are found to be group, or world writable">
+<ocil clause="any system executables are found to be group or world writable">
 To find system executables that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> -perm /022</pre>
 </ocil>
-<rationale>System binaries are executed by privileged users as well as system services,
-and restrictive permissions are necessary to ensure that their
-execution of these programs cannot be co-opted.
+<rationale>System binaries are executed by privileged users, as well as system services,
+and restrictive permissions are necessary to ensure execution of these programs
+cannot be co-opted.
 </rationale>
 <ref disa="1499"/>
 </Rule>
@@ -414,7 +408,7 @@ cause of their lack of ownership should be investigated.
 Following this, the files should be deleted or assigned to an
 appropriate user.
 </description>
-<ocil clause="files exist that aren't owned by a valid user">
+<ocil clause="files exist that are not owned by a valid user">
 The following command will discover and print any
 files on local partitions which do not belong to a valid user.
 Run it once for each local partition <i>PART</i>:
@@ -425,7 +419,7 @@ Unowned files do not directly imply a security problem, but they are generally
 a sign that something is amiss. They may
 be caused by an intruder, by incorrect software installation or
 draft software removal, or by failure to remove all files belonging
-to a deleted account. The files should be repaired so that they
+to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
@@ -452,7 +446,7 @@ Unowned files do not directly imply a security problem, but they are generally
 a sign that something is amiss. They may
 be caused by an intruder, by incorrect software installation or
 draft software removal, or by failure to remove all files belonging
-to a deleted account. The files should be repaired so that they
+to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
