@@ -17,7 +17,7 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-rhel6-xccdf-prerefs.xml \
 		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml
-	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
+	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
 		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf-prerefs.xml
 #   extract manual check instructions from xccdf into an ocil file
 	xsltproc -o $(OUT)/unlinked-rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-rhel6-xccdf.xml
@@ -78,25 +78,25 @@ table-stigs: shorthand2xccdf
 		$(TRANS)/xccdf2table-stig.xslt \
 		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
-	xsltproc -stringparam profile "stig-server" -stringparam testinfo "y" -o $(OUT)/table-rhel6-stig-server-shorttitles.html \
+	xsltproc -stringparam profile "stig-rhel6-server" -stringparam testinfo "y" -o $(OUT)/table-stig-rhel6-server-shorttitles.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-rhel6-xccdf.xml  
 	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
 		$(TRANS)/xccdf-alt-titles.xslt \
 		$(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -stringparam profile "stig-server" -o $(OUT)/table-rhel6-stig-server.html \
+	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/table-stig-rhel6-server.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
-	xsltproc --html -o $(OUT)/table-rhel6-stig-server.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-rhel6-stig-server.html
-	xsltproc -stringparam profile "stig-server" -stringparam format "flat" -o $(OUT)/table-rhel6-stig-server-flat.html \
+	xsltproc --html -o $(OUT)/table-stig-rhel6-server.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-rhel6-server.html
+	xsltproc -stringparam profile "stig-rhel6-server" -stringparam format "flat" -o $(OUT)/table-stig-rhel6-server-flat.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
-	xsltproc --html -o $(OUT)/table-rhel6-stig-server-flat.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-rhel6-stig-server-flat.html
+	xsltproc --html -o $(OUT)/table-stig-rhel6-server-flat.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-rhel6-server-flat.html
 
 tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
 
 alt-titles: shorthand2xccdf
-	$(UTILS)/sync-alt-titles.py -p stig-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/unlinked-rhel6-xccdf.xml
+	$(UTILS)/sync-alt-titles.py -p stig-rhel6-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/unlinked-rhel6-xccdf.xml
 	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml 
 
 content: shorthand2xccdf guide checks
@@ -113,9 +113,9 @@ content-stig: shorthand2xccdf guide checks
 		$(TRANS)/xccdf-alt-titles.xslt \
 		$(OUT)/unlinked-rhel6-xccdf.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-resolved-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -stringparam profile "stig-server" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
+	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
 		$(TRANS)/xccdf2stigformat.xslt $(OUT)/unlinked-resolved-rhel6-xccdf.xml 
-	xsltproc -o $(OUT)/table-rhel6-stig-server-stigformat.html \
+	xsltproc -o $(OUT)/table-stig-rhel6-server-stigformat.html \
 		$(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-stig-rhel6-xccdf.xml $(OUT)/unlinked-stig-rhel6-xccdf.xml 
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml disa-predraft
@@ -123,8 +123,8 @@ content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-rhel6-xccdf.xml $(OUT)/disa-predraft-stig-rhel6-xccdf.xml
 
 submission-stig-check: table-stigs
-	cd output; ../$(UTILS)/verify-references.py -p stig-server --rules-with-disarefs-outside-profile unlinked-rhel6-xccdf-prerefs.xml
-#	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-rhel6-xccdf.xml > $(OUT)/table-rhel6-stig.csv
+	cd output; ../$(UTILS)/verify-references.py -p stig-rhel6-server --rules-with-disarefs-outside-profile unlinked-rhel6-xccdf-prerefs.xml
+#	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-rhel6-xccdf.xml > $(OUT)/table-stig.csv
 
 # content-usgcb: coming soon
 
