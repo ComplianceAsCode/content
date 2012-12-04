@@ -117,7 +117,7 @@ Check the file <tt>/etc/selinux/config</tt> and ensure the following line appear
 <pre>SELINUX=enforcing</pre>
 </ocil>
 <rationale>
-Setting the SELinux state to enforcing ensures that SELinux is able to confine
+Setting the SELinux state to enforcing ensures SELinux is able to confine
 potentially compromised processes to the security policy, which is designed to
 prevent them from causing damage to the system or further elevating their
 privileges.
@@ -145,7 +145,7 @@ Check the file <tt>/etc/selinux/config</tt> and ensure the following line appear
 </ocil>
 <rationale>
 Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
-ensures that the system will confine processes that are likely to be
+ensures the system will confine processes that are likely to be
 targeted for exploitation, such as network or system services.
 </rationale>
 <ident cce="3624-4" />
@@ -155,13 +155,12 @@ targeted for exploitation, such as network or system services.
 </Rule>
 </Group>
 
-
 <Rule id="service_restorecond_enabled">
 <title>Enable the SELinux Context Restoration Service (restorecond)</title>
 <description>The <tt>restorecond</tt> service utilizes <tt>inotify</tt> to look
 for the creation of new files listed in the
 <tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
-created, <tt>restorecond</tt> ensures that the file receives the proper SELinux
+created, <tt>restorecond</tt> ensures the file receives the proper SELinux
 security context.
 <service-enable-macro service="restorecond" />
 </description>
