@@ -146,12 +146,12 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 <description>The RPM package management system can check file access
 permissions of installed software packages, including many that are
 important to system security. The following command will list which
-files on the system have permissions that are different from what
+files on the system have permissions different from what
 is expected by the RPM database:
 <pre># rpm -Va | grep '^.M'</pre>
 </description>
 <ocil clause="there is output">
-The following command will list which files on the system have permissions that are different from what
+The following command will list which files on the system have permissions different from what
 is expected by the RPM database:
 <pre># rpm -Va | grep '^.M'</pre>
 </ocil>
@@ -220,7 +220,7 @@ to fulfill this role.
 </description>
 <ocil clause="no host-based intrusion detection tools are installed">
 Inspect the system to determine if intrusion detection software has been installed.
-Verify that the intrusion detection software is active. 
+Verify the intrusion detection software is active. 
 <!-- add instructions for HBSS?  the text in the RHEL 5 STIG is wrong as usual -->
 </ocil>
 <rationale>
@@ -256,7 +256,7 @@ Inspect the system for a cron job or system service which executes
 a virus scanning tool regularly.
 <br/>
 <!-- this should be handled as DoD-specific text in a future revision -->
-To verify that the McAfee command line scan tool (uvscan) is scheduled for
+To verify the McAfee command line scan tool (uvscan) is scheduled for
 regular execution, run the following command to check for a cron job:
 <pre># grep uvscan /etc/cron* /var/spool/cron/*</pre>
 This will reveal if and when the uvscan program will be run.
