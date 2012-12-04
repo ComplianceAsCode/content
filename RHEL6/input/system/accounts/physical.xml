@@ -78,11 +78,10 @@ parameters.
 <title>Set Boot Loader Password</title>
 <description>The grub boot loader should have password protection
 enabled to protect boot-time settings.
-To do so, select a password and then generate a hash from it by running:
+To do so, select a password and then generate a hash from it by running the following command:
 <pre># grub-crypt --sha-512</pre>
-You will then be prompted to enter a password.
-Insert the following line into <tt>/etc/grub.conf</tt> immediately
-after the header comments. (Use the output from <tt>grub-crypt</tt> as the
+When prompted to enter a password, insert the following line into <tt>/etc/grub.conf</tt>
+immediately after the header comments. (Use the output from <tt>grub-crypt</tt> as the
 value of <b>password-hash</b>):
 <pre>password --encrypted <b>password-hash</b></pre>
 </description>
@@ -93,7 +92,7 @@ The output should show the following:
 <pre>password --encrypted <b>password-hash</b></pre>
 </ocil>
 <rationale>
-Password protection on the boot loader configuration ensures that
+Password protection on the boot loader configuration ensures
 users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
@@ -121,7 +120,7 @@ file <tt>/etc/sysconfig/init</tt>:
 <ocil clause="the output is different">
 To check if authentication is required for single-user mode, run the following command:
 <pre>$ grep SINGLE /etc/sysconfig/init</pre>
-The output should be:
+The output should be the following:
 <pre>SINGLE=/sbin/sulogin</pre>
 </ocil>
 <rationale>
@@ -150,9 +149,8 @@ rebooting the system, alter that line to read as follows:
 <ocil clause="the system is configured to run the shutdown command">
 To check how the system is configured to behave when Ctrl-Alt-Del is pressed,
 inspect the file <tt>/etc/init/control-alt-delete</tt>.
-The commands following the line:
+The commands following the line below will be executed when the key squence is pressed:
 <pre>start on control-alt-delete</pre>
-will be executed when the key sequence is pressed.
 </ocil>
 <rationale>
 A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
@@ -285,11 +283,10 @@ in the GNOME desktop after a period of inactivity:
 If properly configured, the output should be <tt>true</tt>.
 </ocil>
 <rationale>
-Enabling idle activation of the screen saver ensures that the screensaver will
+Enabling idle activation of the screen saver ensures the screensaver will
 be activated after the idle delay.  Applications requiring continuous,
 real-time screen display (such as network management products) require the
-following and need to be documented with the IAO: the login session does not
-have administrator rights; and the display station is located in a
+login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
 <ident cce="14604-3" />
@@ -314,7 +311,7 @@ If properly configured, the output should be <tt>true</tt>.
 </ocil>
 <rationale>
 Enabling the activation of the screen lock after an idle period
-ensures that password entry will be required in order to
+ensures password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
 <ident cce="14023-6" />
@@ -374,7 +371,7 @@ To check whether vlock has been installed, run the following command:
 If vlock is available, then the terminal will lock.
 </ocil>
 <rationale>
-Installing vlock ensures that a console locking capability is available
+Installing vlock ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
 <ident cce="3910-7" />
