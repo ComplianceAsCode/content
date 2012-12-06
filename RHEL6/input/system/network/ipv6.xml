@@ -31,7 +31,7 @@ If the system is configured to prevent the loading of the
 <tt>ipv6</tt> kernel module, it will contain a line
 of the form:
 <pre>options ipv6 disable=1</pre>
-inside any file in <tt>/etc/modprobe.d</tt> or the
+Such lines may be inside any file in <tt>/etc/modprobe.d</tt> or the
 deprecated<tt>/etc/modprobe.conf</tt>.  This permits insertion of the IPv6
 kernel module (which other parts of the system expect to be present), but
 otherwise keeps it inactive.  Run the following command to search for such
