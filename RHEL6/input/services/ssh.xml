@@ -178,7 +178,7 @@ to compromises on another.
 
 <Rule id="sshd_set_keepalive">
 <title>Set SSH Client Alive Count</title>
-<description>To ensure that the SSH idle timeout occurs precisely when the <tt>ClientAliveCountMax</tt> is set,
+<description>To ensure the SSH idle timeout occurs precisely when the <tt>ClientAliveCountMax</tt> is set,
 edit <tt>/etc/ssh/sshd_config</tt> as
 follows:
 <pre>ClientAliveCountMax 0</pre>
@@ -190,7 +190,7 @@ If properly configured, output should be:
 <pre>ClientAliveCountMax 0</pre>
 </ocil>
 <rationale>
-This ensures that a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
+This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
 <ident cce="14061-6" />
@@ -206,7 +206,7 @@ is reached.
 command in allowing users to enable insecure access to their
 accounts via <tt>.rhosts</tt> files.
 <br /><br />
-To ensure that this behavior is disabled, add or correct the
+To ensure this behavior is disabled, add or correct the
 following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>IgnoreRhosts yes</pre>
 </description>
@@ -214,7 +214,7 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 <sshd-check-macro option="IgnoreRhosts" value="yes" default="yes" />
 </ocil>
 <rationale>
-SSH trust relationships mean that a compromise on one host
+SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="4475-0" />
@@ -239,7 +239,7 @@ following line:
 <sshd-check-macro option="HostbasedAuthentication" value="no" default="yes" />
 </ocil>
 <rationale>
-SSH trust relationships mean that a compromise on one host
+SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="4370-3" />
