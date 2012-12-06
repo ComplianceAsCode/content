@@ -27,7 +27,7 @@ receive them if desired), the Red Hat GPG key must properly be installed.
 To ensure that the GPG key is installed, run:
 <pre># rhn_register</pre>
 </description>
-<ocil clause="the Red Hat GPG Key isn't installed">
+<ocil clause="the Red Hat GPG Key is not installed">
 To ensure that the GPG key is installed, run:
 <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
 The command should return the string:
@@ -55,7 +55,7 @@ them, ensure that the following line appears in <tt>/etc/yum.conf</tt> in
 the <tt>[main]</tt> section:
 <pre>gpgcheck=1</pre>
 </description>
-<ocil clause="GPG checking isn't enabled">
+<ocil clause="GPG checking is not enabled">
 To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
 inspect <tt>/etc/yum.conf</tt> and ensure that the following appears in the
 <tt>[main]</tt> section:
