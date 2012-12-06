@@ -187,7 +187,7 @@ packet signing, add the following to the <tt>[global]</tt> section
 of the Samba configuration file:
 <pre>client signing = mandatory</pre>
 Requiring samba clients such as <tt>smbclient</tt> to use packet
-signing ensures that they can
+signing ensures they can
 only communicate with servers that support packet signing.
 </description>
 <ocil clause="it is not">
@@ -210,7 +210,7 @@ transit.
 <title>Require Client SMB Packet Signing, if using mount.cifs</title>
 <description>Require packet signing of clients who mount Samba
 shares using the <tt>mount.cifs</tt> program (e.g., those who specify shares
-in <tt>/etc/fstab</tt>). To do so, ensure that signing options (either
+in <tt>/etc/fstab</tt>). To do so, ensure signing options (either
 <tt>sec=krb5i</tt> or <tt>sec=ntlmv2i</tt>) are used.
 <br /><br />
 See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
