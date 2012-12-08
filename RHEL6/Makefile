@@ -69,8 +69,9 @@ table-srgmap: shorthand2xccdf
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-rhel6-xccdf.xml" -o $(OUT)/table-rhel6-srgmap-flat.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+	xmllint --xmlout --html --output $(OUT)/table-rhel6-srgmap-flat.xhtml $(OUT)/table-rhel6-srgmap-flat.html
 
-table-stigs: shorthand2xccdf
+table-stigs: shorthand2xccdf table-srgmap
 	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
 	xsltproc --html -o $(OUT)/table-rhel5-stig-manual-ccisorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/table-rhel5-stig-manual.html 
@@ -91,6 +92,7 @@ table-stigs: shorthand2xccdf
 	xsltproc -stringparam profile "stig-rhel6-server" -stringparam format "flat" -o $(OUT)/table-stig-rhel6-server-flat.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
+	xsltproc --novalid --html -o $(OUT)/table-stig-rhel6-server-flat-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-rhel6-server-flat.html
 	xsltproc --html -o $(OUT)/table-stig-rhel6-server-flat.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-rhel6-server-flat.html
 
 tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
