@@ -34,8 +34,8 @@ checks:
 guide: shorthand2xccdf
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
 #	specifying a nonexistent profile, "allrules," to make oscap print all Rules
-	xsltproc -o $(OUT)/unlinked-rhel6-xccdf.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-rhel6-xccdf.xml > $(OUT)/rhel6-guide.html
+	xsltproc -o $(OUT)/unlinked-rhel6-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-rhel6-xccdf-guide.xml > $(OUT)/rhel6-guide.html
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
