@@ -63,6 +63,7 @@
 						<td>Rule ID</td>
 						<td>Rule Title</td>
 						<td>Rule Desc</td>
+						<td>Rule Check</td>
 					</xsl:when>
 					<xsl:otherwise>
 						<td>Rules Mapped</td>
@@ -140,6 +141,7 @@
 					<td> <xsl:value-of select="$item/@id"/> </td>
 					<td> <xsl:value-of select="$item/cdf:title"/> </td>
 					<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
+					<td> <xsl:apply-templates select="$item/cdf:check/cdf:check-content"/> </td>
 			  		</tr>
 		  		</xsl:if>
 			</xsl:for-each>
@@ -170,6 +172,10 @@
 	</xsl:template>
 
 	<xsl:template match="cdf:description">
+		<xsl:apply-templates select="@*|node()" />
+	</xsl:template>
+
+	<xsl:template match="cdf:check-content">
 		<xsl:apply-templates select="@*|node()" />
 	</xsl:template>
 
