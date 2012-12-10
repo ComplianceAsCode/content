@@ -25,7 +25,7 @@
             <td> <xsl:value-of select="$title" /> </td>
             <td> <xsl:value-of select="td[4]" /> </td>
             <td> <xsl:value-of select="td[7]" /> </td>
-            <td> <xsl:value-of select="td[7]" /> </td>
+            <td> <xsl:value-of select="td[8]" /> </td>
             <td> <xsl:value-of select="$srg_id" /> </td>
             <td> <xsl:value-of select="$cci_id" /> </td>
             <td>
