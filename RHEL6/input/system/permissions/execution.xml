@@ -37,6 +37,11 @@ Setting the umask to too restrictive a setting can cause serious errors at
 runtime.  Many daemons on the system already individually restrict themselves to
 a umask of 077 in their own init scripts.
 </description>
+<ocil clause="it does not">
+To check the value of the <tt>umask</tt>, run the following command:
+<pre>$ grep umask /etc/init.d/functions</pre>
+The output should show either <tt>022</tt> or <tt>027</tt>.
+</ocil>
 <rationale>The umask influences the permissions assigned to files created by a
 process at run time.  An unnecessarily permissive umask could result in files
 being created with insecure permissions.</rationale>

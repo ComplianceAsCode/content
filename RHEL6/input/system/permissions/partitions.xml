@@ -64,6 +64,11 @@ certain types of worms or malicious code.
 </description>
 <rationale>Allowing users to execute binaries from removable media such as USB keys exposes
 the system to potential compromise.</rationale>
+<ocil clause="it does not">
+To verify that binaries cannot be directly executed from removable media, run the following command:
+<pre># grep noexec /etc/fstab</pre>
+The output should show <tt>noexec</tt> in use.
+</ocil>
 <ident cce="4275-4" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
 <ref nist="CM-7, MP-2" disa="87" />

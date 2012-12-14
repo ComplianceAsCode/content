@@ -383,6 +383,9 @@ enabled.</description>
 <rationale>Log files that are not properly rotated run the risk of growing so large
 that they fill up the /var/log partition. Valuable logging information could be lost
 if the /var/log partition becomes full.</rationale>
+<ocil>
+<service-enable-check-macro service="logrotate" />
+</ocil>
 <ident cce="4182-2" />
 <oval id="logrotate_rotate_all_files" />
 <ref nist="AU-2, AU-9, CM-6" disa="366" />
