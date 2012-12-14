@@ -78,7 +78,6 @@ the process, which in this case, is <tt>exe="/usr/sbin/httpd"</tt>.
 </li></ul>
 </li></ul>
 </description>
-<ref disa="120,135,166,1338,1339,157" />
 
 <Rule id="enable_auditd_service" severity="medium">
 <title>Enable auditd Service</title>
@@ -94,7 +93,7 @@ actions will be taken if other obstacles exist.
 </rationale>
 <ident cce="4292-9" />
 <oval id="service_auditd_enabled" />
-<ref nist="CM-6, CM-7" disa="169,172,174,1353,1462,1487,1115,1454,067,158,831,1123,1190,1312,1263,130" />
+<ref nist="CM-6, CM-7" disa="169,157,172,174,1353,1462,1487,1115,1454,067,158,831,1123,1190,1312,1263,130,120" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -355,7 +354,7 @@ disk space is starting to run low:
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
-<ref disa="140,143,144" />
+<ref disa="140,143,144,1339" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -673,7 +672,7 @@ Audit logs must be mode 0640 or less permissive.
 If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
 <oval id="file_permissions_var_log_audit" />
-<ref disa="366" />
+<ref disa="166,1338" />
 <tested by="DS" on="20121024"/>
 </Rule> 
 
@@ -688,7 +687,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <rationale>Failure to give ownership of the audit log file(s) to root allows the designated 
 owner, and unauthorized users, potential access to sensitive information.</rationale>
 <oval id="file_ownership_var_log_audit" />
-<ref nist="AU-2" />
+<ref nist="AU-2" disa="166" />
 <tested by="DS" on="20121024"/>
 </Rule> 
 
