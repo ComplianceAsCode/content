@@ -87,6 +87,23 @@ unauthorized access to detailed system management information.
 </rationale>
 </Rule>
 
+<Rule id="snmpd_not_default_password" severity="medium">
+<title>Ensure Default Password Is Not Used</title>
+<description>
+Edit <tt>/etc/snmp/snmpd.conf</tt>, remove default community string <tt>public</tt>.  
+Upon doing that, restart the SNMP service:
+<pre># service snmpd restart</pre>
+</description>
+<ocil clause="there is output">
+To ensure the default password is not set, run the following command:
+<pre># grep -v "^#" /etc/snmp/snmpd.conf| grep public</pre>
+There should be no output.
+</ocil>
+<rationale>
+Presence of the default SNMP password enables querying of different system aspects and could result in unauthorized knowledge of the system.
+</rationale>
+<tested by="MAN" on="20121214"/>
+</Rule>
 
 </Group>
 
