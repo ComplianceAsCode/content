@@ -23,7 +23,7 @@
   id="obj_iptables_sshd_disabled_ipv4" version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>iptables</ind:filename>
-    <ind:pattern operation="pattern match">^-A (?:RH-Firewall-1-)?INPUT -m state --state NEW -m tcp -p tcp --dport 25 -j ACCEPT$</ind:pattern>
+    <ind:pattern operation="pattern match">^-A INPUT -m state --state NEW -m tcp -p tcp --dport 25 -j ACCEPT$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all"
@@ -35,7 +35,7 @@
   id="obj_iptables_sshd_disabled_ipv6" version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>ip6tables</ind:filename>
-    <ind:pattern operation="pattern match">^-A (?:RH-Firewall-1-)?INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT$</ind:pattern>
+    <ind:pattern operation="pattern match">^-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
