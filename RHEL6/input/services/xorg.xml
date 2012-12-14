@@ -6,7 +6,7 @@ system is called X.org.</description>
 <Group id="disabling_xwindows">
 <title>Disable X Windows</title>
 <description>Unless there is a mission-critical reason for the
-system to run a graphical user interface, ensure that X is not set to start
+system to run a graphical user interface, ensure X is not set to start
 automatically at boot and remove the X Windows software packages.
 There is usually no reason to run X Windows
 on a dedicated server machine, as it increases the system's attack surface and consumes
@@ -16,12 +16,12 @@ SSH or on the text console.</description>
 <Rule id="disable_xwindows_with_runlevel">
 <title>Disable X Windows Startup By Setting Runlevel</title>
 <description>Setting the system's runlevel to 3 will prevent automatic startup
-of the X server. To do so, ensure that the following line in <tt>/etc/inittab</tt>
+of the X server. To do so, ensure the following line in <tt>/etc/inittab</tt>
 features a <tt>3</tt> as shown:
 <pre>id:3:initdefault:</pre>
 </description>
 <ocil clause="it does not">
-To verify that the default runlevel is 3, run the following command:
+To verify the default runlevel is 3, run the following command:
 <pre># grep initdefault /etc/inittab</pre>
 The output should show the following:
 <pre>id:3:initdefault:</pre>
@@ -37,7 +37,7 @@ The output should show the following:
 <Rule id="packagegroup_xwindows_remove">
 <title>Remove the X Windows Package Group</title>
 <description>Removing all packages which constitute the X Window System
-ensures that users or malicious software cannot start X.
+ensures users or malicious software cannot start X.
 To do so, run the following command:
 <pre># yum groupremove "X Window System"</pre>
 </description>
