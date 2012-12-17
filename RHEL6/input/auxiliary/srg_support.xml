@@ -6,11 +6,14 @@ those cases where Groups or Rules elsewhere in scap-security-guide do
 not clearly relate.
 </description>
 
+
+<!-- The CCI/SRG item referenced here are:
+     - satisfied (through design and implementation)
+     - selected in DoD baseline (per CNSS 1253) -->
 <Rule id="met_inherently">
 <title>Product Meets this Requirement</title>
 <rationale>
-Red Hat Enterprise Linux meets this requirement by design.
-<!-- We could include discussion of Common Criteria Testing if so desired here. -->
+Red Hat Enterprise Linux meets this requirement through design and implementation.
 </rationale>
 <ocil>RHEL6 supports this requirement and cannot be configured to be out of 
 compliance. This is a permanent not a finding. 
@@ -18,15 +21,17 @@ compliance. This is a permanent not a finding.
 <description> 
 This requirement is permanent not a finding. No fix is required.
 </description>
-<ref disa="56,1084,42,66,68,135,223,131,132,133,134,85,159,1694,770,804,162,163,164,345,346,872,1493,1494,1495,226,1096,1111,386,34,35,156,186,99,1083,1089,1082,804,1209,1214,1237,1248,1265,1269,1314,1362,1368,1310,1311,1328,1399,1400,1425,1427,1499,1693,1665,1670,1674,206,154" />
-</Rule> <!-- end met_inherently -->
+<ref disa="56,1084,42,66,135,223,131,132,133,134,85,159,1694,770,804,162,163,164,345,346,1493,1494,1495,1096,1111,1291,386,156,186,1083,1082,1090,804,1248,1265,1314,1362,1368,1310,1311,1328,1399,1400,1425,1427,1499,1693,1665,1674,206" />
+</Rule>
 
 
+<!-- The CCI/SRG item referenced here are:
+     - satisfied (through design and implementation)
+     - not selected in a DoD baseline -->
 <Rule id="met_inherently_nonselected">
 <title>Product Meets this Requirement</title>
 <rationale>
-Red Hat Enterprise Linux meets this requirement by design.
-<!-- We could include discussion of Common Criteria Testing if so desired here. -->
+Red Hat Enterprise Linux meets this requirement through design and implementation.
 </rationale>
 <ocil>RHEL6 supports this requirement and cannot be configured to be out of 
 compliance. This is a permanent not a finding. 
@@ -34,10 +39,21 @@ compliance. This is a permanent not a finding.
 <description> 
 This requirement is permanent not a finding. No fix is required.
 </description>
-<ref disa="1086,1087,1090,1091,1424,1426,802" />
-</Rule> <!-- end met_inherently -->
+<ref disa="34,35,99,154,226,802,872,1086,1087,1089,1091,1424,1426,1209,1214,1237,1269,1338,1425,1670" />
+</Rule> 
 
-<Rule id="unmet_impractical_guidance">
+
+<!-- The CCI/SRG item listed here are:
+     - satisfied (by Rules in the guidance, which include the reference)
+     - not selected in DoD baseline -->
+<!-- disa="26,27,32,771,772,779,831,884,888,1095,1115,1117,1250,1339,1348,1353,1428,1464,1496" -->
+
+
+<!-- The CCI/SRG item referenced here are:
+     - not satisfied
+     - not selected in a DoD baseline
+     - considered out of scope -->
+<Rule id="unmet_nonfinding_nonselected_scope">
 <title>Guidance Does Not Meet this Requirement Due to Impracticality or Scope</title>
 <rationale>
 The guidance does not meet this requirement.
@@ -50,37 +66,51 @@ application, policy, or service. This requirement is NA.
 <description> 
 This requirement is NA. No fix is required.
 </description>
-<ref disa="165,21,354,1094,371,372,535,537,539,780,1682,1383,370,37,221,25,28,29,30,24,1112,1126,1149,1157,1210,1211,1341,1372,1373,1374,1376,1377,1340,1352,1401,1555,1556,1150" />
-</Rule> <!-- end unmet_impractical_guidance -->
+<ref disa="21,25,28,29,30,165,221,354,780,781,1009,1094,1123,1124,1125,1132,1135,1140,1141,1142,1143,1145,1147,1148,1166,1295,1340,1341,1350,1373,1374,1383,1391,1392,1395,1662" />
+</Rule>
 
-<Rule id="requirement_unclear">
-<title>Implementation of the Requirement is Unclear</title>
+
+<!-- The CCI/SRG items referenced here are:
+     - not satisfied
+     - not selected in a DoD baseline
+     - considered permanent findings -->
+<Rule id="unmet_finding_nonselected">
+<title>Implementation of the Requirement is Not Supported</title>
 <rationale>
-It is unclear how to satisfy this requirement.
-</rationale> 
-<ocil> 
-RHEL6 does not support this requirement. This is a permanent finding. 
-</ocil> 
+RHEL6 does not support this requirement.
+</rationale>
+<ocil>
+This is a permanent finding.
+</ocil>
 <description>
-This requirement is a permanent finding and cannot be fixed. An appropriate 
-mitigation for the system must be implemented but this finding cannot be 
+This requirement is a permanent finding and cannot be fixed. An appropriate
+mitigation for the system must be implemented but this finding cannot be
 considered fixed.
 </description>
-<ref disa="20,31,218,219,1158,1291,1294,1295,1428,1500" />
-</Rule> <!-- end requirement_unclear -->
+<ref disa="20,31,52,53,218,219,1158,1294,1295,1500" />
+<!-- Note: CCI 52 supported for text login, but not graphical -->
+</Rule>
 
-<Rule id="new_rule_needed">
-<title>A New Policy/Manual Rule is Needed</title>
+
+<!-- The CCI/SRG items referenced here are:
+     - not satisfied
+     - selected in a DoD baseline
+     - considered NA -->
+<Rule id="unmet_nonfinding_scope">
+<title>Guidance Does Not Meet this Requirement Due to Impracticality or Scope</title>
 <rationale>
-A new Rule needs to be created in the scap-security-guide content.
+The guidance does not meet this requirement.
+The requirement is impractical or out of scope.
 </rationale> 
 <ocil> 
-RHEL6 does support this requirement but the guidance is not yet written. 
+RHEL6 cannot support this requirement without assistance from an external 
+application, policy, or service. This requirement is NA. 
 </ocil> 
 <description> 
-When the guidance is written, the fix will be forthcoming.
+This requirement is NA. No fix is required.
 </description>
-<ref disa="52,53,1009,1019,1159,1125,1140,1143" />
-</Rule> <!-- end new_rule_needed -->
+<ref disa="371,372,535,537,539,1682,370,37,24,1112,1126,1143,1149,1157,1159,1210,1211,1274,1372,1376,1377,1352,1401,1555,1556,1150" />
+</Rule>
+
 
 </Group>
