@@ -100,7 +100,7 @@ of space.
 </rationale>
 <ident cce="14171-3" />
 <oval id="mount_var_log_audit_own_partition" />
-<ref nist="CM-6, AU-9" disa="137,1208"/>
+<ref nist="CM-6, AU-9" disa="137,138,1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -153,6 +153,11 @@ https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guid
 <ocil clause="encryption must be used and is not employed">
 Determine if encryption must be used to protect data on the system. 
 </ocil>
+<rationale>
+The risk of a system's physical compromise, particularly mobile systems such as
+laptops, places its data at risk of compromise.  Encrypting this data mitigates
+the risk of its loss if the system is lost.
+</rationale>
 <ref disa="1019,1199,1200" />
 </Rule>
 
