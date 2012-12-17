@@ -18,7 +18,7 @@
         	<xsl:variable name="cci_id" select="td[2]"/>
         	<xsl:variable name="title" select="td[3]"/>
 
-			<xsl:if test="not($ruletable/tr[td[7]=$srg_id])" >
+			<xsl:if test="not($ruletable/tr[contains(td[7],$srg_id)])" >
             <tr>
             <td>TBD</td>
             <td>medium</td> <!-- based ONLY on the fact that all OS SRG items have "medium" severity -->
