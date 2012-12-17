@@ -724,17 +724,29 @@ There must be no world-writable files on the system.
 </title>
 <title rule="unmet_impractical_product" shorttitle="Product Does Not Meet this Requirement Due to Impracticality or Scope"> 
 This requirement must be satisfied via an external application or server. 
-</title> 
+</title>
 <title rule="unmet_impractical_guidance" shorttitle="Guidance Does Not Meet this Requirement Due to Impracticality or Scope"> 
 This requirement must be satisfied via an external application, policy, or service. 
-</title> 
+</title>
 <title rule="requirement_unclear" shorttitle="Implementation of the Requirement is Unclear"> 
 This requirement must be clarified. 
-</title> 
-<title rule="new_rule_needed" shorttitle="A New Policy/Manual? Rule is Needed."> 
-This rule remains to be written. 
-</title> 
+</title>
 <title rule="met_inherently" shorttitle="Product Meets This Requirement"> 
 The system can not be configured not to meet this requirement. 
+</title>
+<title rule="encrypt_partitions" shorttitle="Encrypt Partitions">
+The operating system must employ cryptographic mechanisms to protect information in storage.
+</title>
+<title rule="set_daemon_umask" shorttitle="Set Daemon Umask">
+The system default umask for daemons must be 027 or 022.
+</title>
+<title rule="service_postfix_enable" shorttitle="Enable Postfix Service">
+The postfix service must be enabled for mail delivery.
+</title>
+<title rule="snmpd_use_newer_protocol" shorttitle="Configure SNMP Service to Use Only SNMPv3 or Newer ">
+The snmpd service must use only SNMP protocol version 3 or newer.
+</title>
+<title rule="snmpd_not_default_password" shorttitle="Ensure Default Password Is Not Used">
+The snmpd service must not use a default password.
 </title>
 </titles>
