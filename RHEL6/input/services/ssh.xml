@@ -8,7 +8,6 @@ implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
-<ref disa="1453,877" />
 
 <Value id="sshd_idle_timeout_value" type="number"
 operator="equals" interactive="0">
@@ -59,7 +58,7 @@ certain changes should be made to the OpenSSH daemon configuration
 file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
 applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
-<ref disa="68,197,888,1632,779,781" />
+<ref disa="68,197,1632,779,781" />
 
 <Rule id="sshd_allow_only_protocol2" severity="high">
 <title>Allow Only SSH Protocol 2</title>
@@ -82,7 +81,7 @@ should not be used.
 </rationale>
 <ident cce="4325-7" />
 <oval id="sshd_protocol_2" />
-<ref disa="776,774,1135,1436" />
+<ref disa="776,774,1436" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
