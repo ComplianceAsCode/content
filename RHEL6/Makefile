@@ -93,6 +93,7 @@ table-stigs: shorthand2xccdf table-srgmap
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
 	xsltproc --novalid --html -o $(OUT)/table-stig-rhel6-server-flat-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-rhel6-server-flat.html
+	xsltproc --novalid --html -o $(OUT)/table-stig-rhel6-server-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-rhel6-server.html
 	xsltproc --html -o $(OUT)/table-stig-rhel6-server-flat.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-rhel6-server-flat.html
 
 tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
