@@ -137,5 +137,22 @@ This requirement is NA. No fix is required.
 <ref disa="15,27,371,372,535,537,539,1682,370,37,24,1112,1126,1143,1149,1157,1159,1210,1211,1274,1372,1376,1377,1352,1401,1555,1556,1150" />
 </Rule>
 
+<Rule id="update_process">
+<title>A process for prompt installation of OS updates must exist.</title>
+<rationale>
+This is a manual inquiry about update procedure.
+</rationale>
+<ocil>
+Ask an administrator if a process exists to promptly and automatically apply OS
+software updates.  If such a process does not exist, this is a finding.
+</ocil> 
+<description>
+Procedures to promptly apply software updates must be established and
+executed. The Red Hat operating system provides support for automating such a
+process, by running the yum program through a cron job or by managing the
+system and its packages through the Red Hat Network or a Satellite Server.
+</description>
+<ref disa="1232" />
+</Rule>
 
 </Group>
