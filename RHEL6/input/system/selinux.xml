@@ -236,7 +236,7 @@ files carry the SELinux type <tt>unlabeled_t</tt>, investigate the cause and
 correct the file's context.
 </description>
 <ocil clause="there is output">To check for unlabeled device files, run the following command:
-<pre># ls -Z /dev | grep unlabeled_t</pre>
+<pre># ls -RZ /dev | grep unlabeled_t</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
 If a device file carries the SELinux type <tt>unlabeled_t</tt>, then SELinux
