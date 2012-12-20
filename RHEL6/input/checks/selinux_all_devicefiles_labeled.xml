@@ -16,6 +16,7 @@
     <linux:state state_ref="state_selinux_all_devicefiles_labeled" />
   </linux:selinuxsecuritycontext_test>
   <linux:selinuxsecuritycontext_object comment="unlabeled_t in /dev" id="object_selinux_all_devicefiles_labeled" version="1">
+    <linux:behaviors recurse_direction="down" />
     <linux:path>/dev</linux:path>
     <linux:filename operation="pattern match">^.*$</linux:filename>
     <filter action="include">state_selinux_all_devicefiles_labeled</filter>
