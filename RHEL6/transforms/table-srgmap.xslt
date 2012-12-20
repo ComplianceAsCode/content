@@ -7,7 +7,6 @@
      "flat", then it will output a separate row for every Rule which satisfies an SRG requirement. -->
 
 <xsl:param name="flat" select="''"/>
-
 <xsl:include href="constants.xslt"/>
 
 <!-- expecting external variable "map-to-items", a filename to an XCCDF document with Rules and Groups -->
@@ -32,7 +31,6 @@
 		</body>
 		</html>
 	</xsl:template>
-
 
 	<xsl:template match="cdf:Benchmark">
 		<style type="text/css">
@@ -72,10 +70,14 @@
 			</thead>
 			<xsl:for-each select=".//cdf:Rule">
 				<xsl:sort select="cdf:version"/>
+
+				<xsl:variable name="curr_cci" select="string(number(substring-after(cdf:ident,'CCI-')))"/> 
 				<xsl:choose>
-					<xsl:when test="$flat">
+					<!-- output multiple rows if we're in flat mode and at least one ref exists -->
+					<xsl:when test="$flat and $items/cdf:reference[@href=$disa-cciuri and text()=$curr_cci]">
 						<xsl:call-template name="output-rows-flat"> <xsl:with-param name="rule" select="."/> </xsl:call-template> 
 					</xsl:when>
+					<!-- otherwise output a row with all (and possibly zero) Rules in nested tables  -->
 					<xsl:otherwise>
 						<xsl:call-template name="output-row-nested"> <xsl:with-param name="rule" select="."/> </xsl:call-template> 
 					</xsl:otherwise>
@@ -124,7 +126,6 @@
    		<!-- iterate over the items (everything with references) in the (externally-provided) XCCDF document -->
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
-			<xsl:if test="cdf:reference[@href=$disa-cciuri]" > 
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
 			    <xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 			    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
@@ -145,7 +146,6 @@
 			  		</tr>
 		  		</xsl:if>
 			</xsl:for-each>
-			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 

@@ -151,7 +151,7 @@ exclude-result-prefixes="xccdf xhtml dc">
             <xsl:value-of select="$disa-cciuri" />
           </xsl:if>
         </xsl:attribute>
-        <xsl:value-of select="$refitem" />
+        <xsl:value-of select="normalize-space($refitem)" />
       </reference>
   </xsl:template>
 
