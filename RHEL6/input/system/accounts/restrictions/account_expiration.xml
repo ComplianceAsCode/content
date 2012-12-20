@@ -62,7 +62,7 @@ who may have compromised their credentials.
 </Rule>
 
 <Rule id="account_unique_name">
-<title>All Accounts on the System Must Have Unique User or Account Names</title>
+<title>Ensure All Accounts on the System Have Unique Names</title>
 <description>
 Change usernames, or delete accounts, so each has a unique name.
 </description>
@@ -72,9 +72,33 @@ Run the following command to check for duplicate account names:
 If there are no duplicate names, no line will be returned.
 </ocil>
 <rationale>
-Unique usernames allow for accountability on the system.
+Unique usernames allow for accountability on the system. 
 </rationale>
 <ref disa="770,804"/>
+</Rule>
+
+<Rule id="account_temp_expire_date">
+<title>Assign Expiration Date to Temporary Accounts</title>
+<description>
+In the event temporary or emergency accounts are required, configure the system
+to terminate them after a documented time period. For every temporary and
+emergency account, run the following command to set an expiration date on it:
+<pre># chage -E <i>YYYY-MM-DD</i> <i>username of temporary or emergency account</i></pre>
+<tt><i>YYYY-MM-DD</i></tt> indicates the documented expiration date for the account.
+</description>
+<ocil clause="any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame">
+Run the following command to obtain a list of all temporary and emergency
+accounts on the system:
+<pre># chage -l <i>username of temporary or emergency account</i></pre>
+Verify each of these accounts has an expiration date set as documented.
+</ocil>
+<rationale>
+When temporary and emergency accounts are created, there is a risk they may
+remain in place and active after the need for them no longer exists.  Account
+expiration greatly reduces the risk of accounts being misused or hijacked. 
+<br/>
+</rationale>
+<ref disa="16,1682"/>
 </Rule>
 
 </Group>
