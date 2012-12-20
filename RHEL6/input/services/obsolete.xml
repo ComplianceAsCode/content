@@ -44,7 +44,7 @@ attacks against xinetd itself.
 
 <Rule id="uninstall_xinetd">
 <title>Uninstall xinetd Package</title>
-<description>The <tt>xinetd</tt> package can be uninstalled with the following command.
+<description>The <tt>xinetd</tt> package can be uninstalled with the following command:
 <pre># yum erase xinetd</pre>
 </description>
 <ocil><package-check-macro package="xinetd" /> </ocil>
@@ -88,7 +88,7 @@ subject to man-in-the-middle attacks.
 <Rule id="uninstall_telnet_server" severity="high">
 <title>Uninstall telnet-server Package</title>
 <description>The <tt>telnet-server</tt> package can be uninstalled with
-the following command.
+the following command:
 <pre># yum erase telnet-server</pre></description>
 <ocil><package-check-macro package="telnet-server" /> </ocil>
 <rationale>
@@ -113,7 +113,7 @@ model.</description>
 <Rule id="uninstall_rsh-server" severity="high">
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
-the following command.
+the following command:
 <pre># yum erase rsh-server</pre>
 </description>
 <ocil><package-check-macro package="rsh-server" /> </ocil>
@@ -221,7 +221,7 @@ important authentication information.</description>
 <Rule id="uninstall_ypserv" severity="medium">
 <title>Uninstall ypserv Package</title>
 <description>The <tt>ypserv</tt> package can be uninstalled with
-the following command.
+the following command:
 <pre># yum erase ypserv</pre>
 </description>
 <ocil><package-check-macro package="ypserv" /> </ocil>
@@ -302,7 +302,7 @@ accidental (or intentional) activation of tftp services.
 <description>If running the <tt>tftp</tt> service is necessary, it should be configured
 to change its root directory at startup. To do so, ensure
 <tt>/etc/xinetd.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
-the following example (which is also the default).
+the following example (which is also the default):
 <pre>server_args = -s /var/lib/tftpboot</pre>
 </description>
 <rationale>Using the <tt>-s</tt> option causes the TFTP service to only serve files from the
