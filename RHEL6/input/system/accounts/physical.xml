@@ -351,31 +351,27 @@ contents of the display from passersby.
 <title>Configure Console Screen Locking</title>
 <description>
 A console screen locking mechanism is provided in the
-vlock package, which is not installed by default.
+<tt>screen</tt> package, which is not installed by default.
 </description>
 
-<Rule id="install_vlock_package">
-<title>Install the vlock Package</title>
+<Rule id="install_screen_package">
+<title>Install the screen Package</title>
 <description>
-To enable console screen locking, install the vlock package:
-<pre># yum install vlock</pre>
-Instruct users to invoke the program when necessary, in order
-to prevent passersby from abusing their login:
-<pre>$ vlock</pre>
-The <tt>-a</tt> option can be used to prevent switching to other
-virtual consoles.
+To enable console screen locking, install the <tt>screen</tt> package:
+<pre># yum install screen</pre>
+Instruct users to begin new terminal sessions with the following command:
+<pre>$ screen</pre>
+The console can now be locked with the following key combination:
+<pre>ctrl+a x</pre>
 </description>
-<ocil clause="there is a command not found error">
-To check whether vlock has been installed, run the following command:
-<pre>$ vlock</pre>
-If vlock is available, then the terminal will lock.
+<ocil clause="the package is not installed">
+<package-check-macro package="screen" />
 </ocil>
 <rationale>
-Installing vlock ensures a console locking capability is available
+Installing <tt>screen</tt> ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
 <ident cce="3910-7" />
-<oval id="package_vlock_installed" />
 <ref nist="CM-6, CM-7" disa="58" />
 <tested by="DS" on="20121026"/>
 </Rule>
