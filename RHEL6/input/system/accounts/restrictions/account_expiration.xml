@@ -82,14 +82,15 @@ Unique usernames allow for accountability on the system.
 <description>
 In the event temporary or emergency accounts are required, configure the system
 to terminate them after a documented time period. For every temporary and
-emergency account, run the following command to set an expiration date on it:
-<pre># chage -E <i>YYYY-MM-DD</i> <i>username of temporary or emergency account</i></pre>
+emergency account, run the following command to set an expiration date on it,
+substituting <tt><i>USER</i></tt> and <tt><i>YYYY-MM-DD</i></tt> appropriately:
+<pre># chage -E <i>YYYY-MM-DD USER</i></pre>
 <tt><i>YYYY-MM-DD</i></tt> indicates the documented expiration date for the account.
 </description>
 <ocil clause="any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame">
-Run the following command to obtain a list of all temporary and emergency
-accounts on the system:
-<pre># chage -l <i>username of temporary or emergency account</i></pre>
+For every temporary and emergency account, run the following command
+to obtain its account aging and expiration information:
+<pre># chage -l <i>USER</i></pre>
 Verify each of these accounts has an expiration date set as documented.
 </ocil>
 <rationale>
