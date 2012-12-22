@@ -83,6 +83,13 @@
 
 <select idref="smartcard_auth" selected="true" />
 
+<select idref="expire_date_set" selected="true" />
+
+<select idref="deny_password_attempts_unlock_time" selected="true" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="100000000"/>
+<select idref="deny_password_attempts_fail_interval" selected="true" />
+<refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900"/>
+
 <!-- from inherited Rule, limiting_password_reuse -->
 <refine-value idref="password_history_retain_number" selector="24"/>
 
