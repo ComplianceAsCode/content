@@ -28,7 +28,7 @@ interpreted as character or block devices. The only legitimate location
 for device files is the /dev directory located on the root partition.
 The only exception to this is chroot jails, for which it is not advised
 to set <tt>nodev</tt> on these filesystems.</rationale>
-<ident cce="4249-9" />
+<ident cce="27045-4" />
 <oval id="mount_option_nodev_nonroot_local_partitions" />
 <ref nist="CM-6, CM-7, AC-6"/>
 </Rule>
@@ -46,7 +46,7 @@ jails built for system services.
 located on the root partition.  An exception to this is chroot jails, and it is
 not advised to set <tt>nodev</tt> on partitions which contain their root
 filesystems.  </rationale>
-<ident cce="3522-0" />
+<ident cce="26860-7" />
 <oval id="mount_option_nodev_removable_partitions" value="var_removable_partition" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -69,7 +69,7 @@ To verify that binaries cannot be directly executed from removable media, run th
 <pre># grep noexec /etc/fstab</pre>
 The output should show <tt>noexec</tt> in use.
 </ocil>
-<ident cce="4275-4" />
+<ident cce="27196-5" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
 <ref nist="CM-7, MP-2" disa="87" />
 </Rule>
@@ -87,7 +87,7 @@ files into the system via partitions mounted from removeable media.
 <rationale>The presence of suid and sgid executables should be tightly controlled. Users
 should not be able to execute suid or sgid binaries from partitions mounted off of
 removable media.</rationale>
-<ident cce="4275-4" />
+<ident cce="27056-1" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -103,7 +103,7 @@ within temporary directories like <tt>/tmp</tt>.
 </description>
 <rationale>The only legitimate location for device files is the /dev directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
-<ident cce="14412-1" />
+<ident cce="26499-4" />
 <oval id="mount_option_tmp_nodev" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -117,7 +117,7 @@ from being executed out of <tt>/tmp</tt>.
 <rationale>Allowing users to execute binaries from world-writeable directories
 such as <tt>/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
-<ident cce="14927-8" />
+<ident cce="26720-3" />
 <oval id="mount_option_tmp_noexec" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -131,7 +131,7 @@ should not be required in these world-writeable directories.
 </description>
 <rationale>The presence of suid and sgid executables should be tightly controlled. Users
 should not be able to execute suid or sgid binaries from temporary storage partitions.</rationale>
-<ident cce="14940-1" />
+<ident cce="26762-5" />
 <oval id="mount_option_tmp_nosuid" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -146,7 +146,7 @@ within temporary directories like <tt>/dev/shm</tt>.
 </description>
 <rationale>The only legitimate location for device files is the /dev directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
-<ident cce="15007-8" />
+<ident cce="26778-1" />
 <oval id="mount_option_dev_shm_nodev" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -161,7 +161,7 @@ from world-writeable temporary storage directories such as <tt>/dev/shm</tt>.
 </description>
 <rationale>Allowing users to execute binaries from world-writeable directories
 such as /dev/shm can expose the system to potential compromise.</rationale>
-<ident cce="14703-3" />
+<ident cce="26622-1" />
 <oval id="mount_option_dev_shm_noexec" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -175,7 +175,7 @@ be required in these world-writeable directories.
 </description>
 <rationale>The presence of suid and sgid executables should be tightly controlled. Users
 should not be able to execute suid or sgid binaries from temporary storage partitions.</rationale>
-<ident cce="14306-5" />
+<ident cce="26486-1" />
 <oval id="mount_option_dev_shm_nosuid" />
 <ref nist="CM-7, MP-2"/>
 </Rule>
@@ -192,7 +192,7 @@ See the mount(8) man page for further explanation of bind mounting.
 <rationale>Having multiple locations for temporary storage is not required. Unless absolutely
 necessary to meet requirements, the storage location /var/tmp should be bind mounted to
 /tmp and thus share the same protections.</rationale>
-<ident cce="14584-7" />
+<ident cce="26582-7" />
 <oval id="mount_option_var_tmp_bind" />
 <ref nist="CM-6"/>
 </Rule>

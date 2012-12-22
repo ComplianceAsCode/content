@@ -24,7 +24,7 @@ POP3 server, the dovecot software should be disabled and removed.
 Running an IMAP or POP3 server provides a network-based
 avenue of attack, and should be disabled if not needed.
 </rationale>
-<ident cce="3847-1" />
+<ident cce="26922-5" />
 <oval id="service_dovecot_disabled" />
 </Rule>
 
@@ -41,7 +41,7 @@ with the following command.
 If there is no need to make the Dovecot software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="4239-0" />
+<ident cce="27039-7" />
 <oval id="package_dovecot_removed" />
 </Rule>
 
@@ -74,10 +74,10 @@ client to use the STARTTLS command before authenticating.
 Configuring Dovecot to only support the protocols the protocols needed by
 your site reduces the risk of an attacker using one of the unused protocols
 to base an attack.</rationale>
-<ident cce="4384-4" />
-<ident cce="3887-7" />
-<ident cce="4530-2" />
-<ident cce="4547-6" />
+<ident cce="27097-5" />
+<ident cce="26933-2" />
+<ident cce="27135-3" />
+<ident cce="27140-3" />
 <!-- <oval id="dovecot_support_necessary_protocols" /> -->
 </Rule>
 
@@ -106,7 +106,7 @@ protecting user credentials, mail as it is downloaded, and clients may use
 SSL certificates to authenticate the server, preventing another system from 
 impersonating the server.
 </rationale>
-<!-- <ident cce="4239-0" /> -->
+<!-- <ident cce="27039-7" /> -->
 <oval id="dovecot_enable_ssl" />
 </Rule>
 
@@ -163,7 +163,7 @@ or correct the following line.
 Using plain text authentication to the mail server could allow an 
 attacker access to credentials by monitoring network traffic.
 </rationale>
-<ident cce="4552-6" />
+<ident cce="27144-5" />
 <oval id="dovecot_disable_plaintext_auth" />
 </Rule>
 

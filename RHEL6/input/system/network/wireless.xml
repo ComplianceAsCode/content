@@ -33,7 +33,7 @@ boot.</description>
 activation of the wireless interface, generally requiring administrators
 to reboot the system first.
 </rationale>
-<ident cce="3628-5" />
+<ident cce="26878-9" />
 <!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
 <ref nist="CM-7" disa="85" />
 </Rule>
@@ -63,7 +63,7 @@ interface file from <tt>/etc/sysconfig/network-scripts</tt>:
 launch network-based attacks against systems, including those against local LAN
 protocols which were not designed with security in mind.
 </rationale>
-<ident cce="4276-2" />
+<ident cce="27057-9" />
 <oval id="wireless_disable_interfaces" />
 <ref nist="CM-7" disa="85" />
 <tested by="DS" on="20121025"/>
@@ -81,7 +81,7 @@ an administrator or malware to activate a wireless interface, by introducing
 the need to install such a driver first.
 </rationale>
 <warning category="general">This command must also be repeated every time the kernel is upgraded.</warning>
-<ident cce="4170-7" />
+<ident cce="27009-0" />
 <oval id="wireless_disable_drivers" />
 <ref nist="CM-7" disa="85" />
 </Rule>
@@ -98,7 +98,7 @@ the need to install such a driver first.
 connections to Bluetooth devices, which entails some security risk.
 Nevertheless, variation in this risk decision may be expected due to the
 utility of Bluetooth connectivity and its limited range.</rationale>
-<ident cce="4355-4" />
+<ident cce="27081-9" />
 <oval id="service_bluetooth_disabled" />
 <ref nist="AC-18, CM-6, CM-7" disa="85,1551" />
 <tested by="DS" on="20121025"/>
@@ -120,7 +120,7 @@ install bluetooth /bin/true</pre>
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
 activation.</rationale>
-<ident cce="14948-4" />
+<ident cce="26763-3" />
 <oval id="kernel_module_bluetooth_disabled" />
 <ref nist="AC-18, CM-6, CM-7" disa="85,1551" />
 <tested by="DS" on="20121025"/>

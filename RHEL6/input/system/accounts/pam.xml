@@ -217,7 +217,7 @@ requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks. Note that this
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
-<ident cce="15054-0" />
+<ident cce="26796-5" />
 <oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
 <ref nist="IA-5" disa="1092" />
 <tested by="DS" on="20121024"/>
@@ -260,7 +260,7 @@ This would appear as <tt>dcredit=-1</tt>.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident cce="14113-5" />
+<ident cce="26374-9" />
 <oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
 <ref nist="IA-5,194" disa="194"/>
 <tested by="DS" on="20121024"/>
@@ -285,7 +285,7 @@ This would appear as <tt>ucredit=-1</tt>.
 Requiring a minimum number of uppercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="14672-0" />
+<ident cce="26601-5" />
 <oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
 <ref nist="IA-5" disa="192" />
 <tested by="DS" on="20121024"/>
@@ -310,7 +310,7 @@ This would appear as <tt>ocredit=-1</tt>.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="14122-6" />
+<ident cce="26409-3" />
 <oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
 <ref nist="IA-5" disa="1619" />
 <tested by="DS" on="20121024"/>
@@ -335,7 +335,7 @@ This would appear as <tt>lcredit=-1</tt>.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="14712-4" />
+<ident cce="26631-2" />
 <oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
 <ref nist="IA-5" disa="193" />
 <tested by="DS" on="20121024"/>
@@ -361,7 +361,7 @@ Requiring a minimum number of different characters during password changes ensur
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
-<ident cce="14701-7" />
+<ident cce="26615-5" />
 <oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
 <ref nist="IA-5" disa="195"/>
 <tested by="DS" on="20121024"/>
@@ -407,7 +407,7 @@ The output should show <tt>deny=3</tt>.
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident cce="3410-8" />
+<ident cce="26844-1" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
 <ref nist="AC-7, CM-6" disa="44" />
 </Rule>
@@ -479,7 +479,7 @@ The output should show the following at the end of the line:
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
-<ident cce="14939-3" />
+<ident cce="26741-9" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
 <ref nist="IA-5" disa="200" />
 <tested by="DS" on="20121024"/>
@@ -513,7 +513,7 @@ ensure that the <tt>pam_unix.so</tt> module includes the argument
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<!-- <ident cce="14063-2" /> -->
+<ident cce="26303-8" />
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
 <ref nist="IA-5" disa="803"/>
 <tested by="DS" on="20121024"/>
@@ -533,7 +533,6 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<!-- <ident cce="14063-2" /> -->
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
 <ref nist="IA-5" disa="803"/>
 <tested by="DS" on="20121024"/>
@@ -555,7 +554,6 @@ in the <tt>[default]</tt> section:
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<!-- <ident cce="14063-2" /> -->
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
 <ref nist="IA-5" disa="803"/>
 <tested by="DS" on="20121026"/>

@@ -33,7 +33,7 @@ or modification of the file.
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
-<ident cce="4144-2" />
+<ident cce="26995-1" />
 <oval id="file_user_owner_grub_conf" />
 <ref nist="AC-3, CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -51,7 +51,7 @@ destruction or modification of the file.
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
-<ident cce="4197-0" />
+<ident cce="27022-3" />
 <oval id="file_group_owner_grub_conf" />
 <ref nist="AC-3, CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -68,7 +68,7 @@ is the default.
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
-<ident cce="3923-0" />
+<ident cce="26949-8" />
 <oval id="file_permissions_grub_conf" />
 <ref nist="AC-3, CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -97,7 +97,7 @@ users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
 </rationale>
-<ident cce="3818-2" />
+<ident cce="26911-8" />
 <oval id="bootloader_password" />
 <ref nist="CM-7, IA-5, AC-3" disa="213" />
 <tested by="DS" on="20121026"/>
@@ -128,7 +128,7 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
-<ident cce="4241-6" />
+<ident cce="27040-5" />
 <oval id="singleuser_password" />
 <ref nist="AC-6, IA-5" disa="213" />
 <tested by="DS" on="20121024"/>
@@ -185,7 +185,7 @@ Using interactive boot,
 the console user could disable auditing, firewalls, or other
 services, weakening system security.
 </rationale>
-<ident cce="4245-7" />
+<ident cce="27043-9" />
 <oval id="interactive_boot_disable" />
 <ref nist="CM-7, IA-4, SC-2" disa="213"/>
 <tested by="DS" on="20121024"/>
@@ -263,7 +263,7 @@ Setting the idle delay controls when the
 screensaver will start, and can be combined with
 screen locking to prevent access from passersby.
 </rationale>
-<ident cce="3315-9" />
+<ident cce="26828-4" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" disa="57"/>
 </Rule>
@@ -289,7 +289,7 @@ real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
-<ident cce="14604-3" />
+<ident cce="26600-7" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
 <ref nist="CM-6, CM-7" disa="57" />
 </Rule>
@@ -314,7 +314,7 @@ Enabling the activation of the screen lock after an idle period
 ensures password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
-<ident cce="14023-6" />
+<ident cce="26235-2" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
 <ref nist="AC-3, CM-6, CM-7, AC-11" disa="57" />
 </Rule>
@@ -339,7 +339,7 @@ If properly configured, the output should be <tt>blank-only</tt>
 Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
-<ident cce="14735-5" />
+<ident cce="26638-7" />
 <oval id="gconf_gnome_screensaver_mode_blank" />
 <ref nist="CM-6, CM-7" disa="60" />
 </Rule>
@@ -371,7 +371,7 @@ The console can now be locked with the following key combination:
 Installing <tt>screen</tt> ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
-<ident cce="3910-7" />
+<ident cce="26940-7" />
 <ref nist="CM-6, CM-7" disa="58" />
 <tested by="DS" on="20121026"/>
 </Rule>

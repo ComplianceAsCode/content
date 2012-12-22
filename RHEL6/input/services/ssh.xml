@@ -26,7 +26,7 @@ However, if it can be disabled, do so.
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>
-<ident cce="4268-9" />
+<ident cce="27054-6" />
 <oval id="service_sshd_disabled" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -47,7 +47,7 @@ remote access.
 If inbound SSH connections are not expected, disallowing access to the SSH port will 
 avoid possible exploitation of the port by an attacker.
 </rationale>
-<ident cce="4295-2" />
+<ident cce="27060-3" />
 <oval id="iptables_sshd_disabled" />
 </Rule>
 
@@ -78,7 +78,7 @@ SSH protocol version 1 suffers from design flaws that
 result in security vulnerabilities and
 should not be used.
 </rationale>
-<ident cce="4325-7" />
+<ident cce="27072-8" />
 <oval id="sshd_protocol_2" />
 <ref disa="776,774,1436" />
 <tested by="DS" on="20121024"/>
@@ -97,7 +97,7 @@ Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
 Specifying which accounts are allowed SSH access into the system reduces the 
 possibility of unauthorized access to the system.
 </rationale>
-<!-- <ident cce="4325-7" /> -->
+<!-- <ident cce="27072-8" /> -->
 <!-- <oval id="sshd_limit_user_access" /> -->
 </Rule>
 
@@ -167,7 +167,7 @@ Causing idle users to be automatically logged out
 guards against compromises one system leading trivially
 to compromises on another.
 </rationale>
-<ident cce="3845-5" />
+<ident cce="26919-1" />
 <oval id="sshd_idle_timeout" value="sshd_idle_timeout_value"/>
 <ref disa="879,1133"/>
 <tested by="DS" on="20121024"/>
@@ -191,7 +191,7 @@ If properly configured, output should be:
 This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
-<ident cce="14061-6" />
+<ident cce="26282-4" />
 <oval id="sshd_clientalivecountmax" />
 <ref disa="879,1133"/>
 <tested by="DS" on="20121024"/>
@@ -215,7 +215,7 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
-<ident cce="4475-0" />
+<ident cce="27124-7" />
 <oval id="sshd_rsh_emulation_disabled" />
 <ref disa="765,766"/>
 </Rule>
@@ -240,7 +240,7 @@ following line:
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
-<ident cce="4370-3" />
+<ident cce="27091-8" />
 <oval id="sshd_hostbasedauthentication" />
 <ref disa="765,766"/>
 <tested by="DS" on="20121024"/>
@@ -262,7 +262,7 @@ Permitting direct root login reduces auditable information about who ran
 privileged commands on the system
 and also allows direct attack attempts on root's password.
 </rationale>
-<ident cce="4387-7" />
+<ident cce="27100-7" />
 <oval id="sshd_permitrootlogin_no" />
 <ref disa="770" />
 <tested by="DS" on="20121024"/>
@@ -285,7 +285,7 @@ Configuring this setting for the SSH daemon provides additional assurance that
 remote login via SSH will require a password,
 even in the event of misconfiguration elsewhere.
 </rationale>
-<ident cce="3660-8" />
+<ident cce="26887-0" />
 <oval id="sshd_permitemptypasswords_no" />
 <ref disa="765,766"/>
 <tested by="DS" on="20121024"/>
@@ -309,7 +309,7 @@ reinforces policy awareness during the logon process. Alternatively,
 systems whose ownership should not be obvious
 should ensure usage of a banner that does not provide easy attribution.
 </rationale>
-<ident cce="4431-3" />
+<ident cce="27112-2" />
 <oval id="sshd_banner_set" />
 <ref disa="48" />
 <tested by="DS" on="20121024"/>
@@ -333,7 +333,7 @@ If properly configured, output should be:
 SSH environment options potentially allow users to bypass
 access restriction in some configurations.
 </rationale>
-<ident cce="4422-2" />
+<ident cce="27201-3" />
 <oval id="sshd_no_user_envset" />
 <ref disa="1414" />
 <tested by="DS" on="20121024"/>
@@ -358,7 +358,7 @@ The output should contain only those ciphers which are FIPS-approved.
 Approved algorithms should impart some level of confidence in their
 implementation. These are also required for compliance.
 </rationale>
-<ident cce="14491-5" />
+<ident cce="26555-3" />
 <oval id="sshd_use_approved_ciphers" />
 <ref disa="803,1144,1145,1146" />
 <tested by="DS" on="20121024"/>
@@ -382,7 +382,7 @@ and replace it with:
 <rationale>
 Restricting SSH access to only trusted network segments reduces exposure of the SSH 
 server to attacks from unauthorized networks.</rationale>
-<!-- <ident cce="14491-5" /> -->
+<!-- <ident cce="26555-3" /> -->
 <!-- <oval id="sshd_strengthen_firewall" /> -->
 </Group>
 

@@ -17,7 +17,7 @@ maintenance tasks, such as notifying root of system activity.
 <rationale>Due to its usage for maintenance and security-supporting tasks,
 enabling the cron daemon is essential.
 </rationale>
-<ident cce="4324-0" />
+<ident cce="27070-2" />
 <oval id="service_crond_enabled" />
 <ref nist="CM-6, CM-7" />
 <tested by="DS" on="20121024"/>
@@ -45,7 +45,7 @@ attack surface for an intruder.</description>
 <description>The system crontab /etc/crontab should be owned by the root user. This
 file is provided for backwards compatibility by the RPM package crontabs and it
 will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
-<ident cce="3851-3" />
+<ident cce="26923-3" />
 <oval id="file_user_owner_etc_crontab" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -55,7 +55,7 @@ will be read by the crond service. RHEL6 will not add jobs to it by default.</de
 <description>The file /etc/crontab should be owned by the root group. This
 file is provided for backwards compatibility by the RPM package crontabs and it
 will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
-<ident cce="3626-9" />
+<ident cce="26876-3" />
 <oval id="file_group_owner_etc_crontab" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -65,7 +65,7 @@ will be read by the crond service. RHEL6 will not add jobs to it by default.</de
 <description>The file /etc/crontab should be mode 600. This
 file is provided for backwards compatibility by the RPM package crontabs and it
 will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
-<ident cce="4388-5" />
+<ident cce="27102-3" />
 <oval id="file_mode_etc_crontab" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -122,7 +122,7 @@ access to these files should be disabled.</description>
 Many of the periodic or delayed execution features of the at
 daemon can be provided through the cron daemon instead.
 </rationale>
-<ident cce="14466-7" />
+<ident cce="26548-8" />
 <oval id="service_atd_disabled" />
 <ref nist="CM-6, CM-7" />
 <tested by="DS" on="20121024"/>
