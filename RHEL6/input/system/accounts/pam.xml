@@ -172,6 +172,28 @@ operator="equals" interactive="0">
 <value selector="5">5</value>
 <value selector="10">10</value>
 </Value>
+<Value id="var_accounts_passwords_pam_faillock_unlock_time" type="number"
+operator="equals" interactive="0">
+<title>fail_unlock_time</title>
+<description>Seconds before automatic unlocking after excessive failed logins</description>
+<value selector="">100000000</value>
+<value selector="900">900</value> <!-- 15 minutes -->
+<value selector="1800">1800</value> <!-- 30 minutes -->
+<value selector="3600">3600</value> <!-- 1 hour -->
+<value selector="86400">86400</value> <!-- 1 day -->
+<value selector="100000000">100000000</value> <!-- 3.16 years -->
+</Value>
+<Value id="var_accounts_passwords_pam_faillock_fail_interval" type="number"
+operator="equals" interactive="0">
+<title>fail_interval</title>
+<description>Interval for counting failed login attempts before account lockout</description>
+<value selector="">900</value>
+<value selector="900">900</value> <!-- 15 minutes -->
+<value selector="1800">1800</value> <!-- 30 minutes -->
+<value selector="3600">3600</value> <!-- 1 hour -->
+<value selector="86400">86400</value> <!-- 1 day -->
+<value selector="100000000">100000000</value> <!-- 3.16 years -->
+</Value>
 
 <Rule id="password_retry">
 <title>Set Password Retry Prompts Permitted Per-Session</title>
@@ -373,13 +395,12 @@ To configure the system to lock out accounts after a number of incorrect login
 attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth-ac</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=900</pre>
-The DoD requirement is 3 failed attempts.
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=100000000 fail_interval=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=100000000 fail_interval=900</pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep deny /etc/pam.d/system-auth-ac</pre>
+<pre># grep pam_faillock /etc/pam.d/system-auth-ac</pre>
 The output should show <tt>deny=3</tt>.
 </ocil>
 <rationale>
@@ -388,7 +409,57 @@ prevents direct password guessing attacks.
 </rationale>
 <ident cce="3410-8" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
-<ref nist="AC-7, CM-6" disa="1452,44,47" />
+<ref nist="AC-7, CM-6" disa="44" />
+</Rule>
+
+<Rule id="deny_password_attempts_unlock_time" severity="medium">
+<title>Set Lockout Time For Failed Password Attempts</title>
+<description>
+To configure the system to lock out accounts after a number of incorrect login
+attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
+<br /><br />
+Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth-ac</tt>:
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=100000000 fail_interval=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=100000000 fail_interval=900</pre>
+</description>
+<ocil clause="that is not the case">
+To ensure the failed password attempt policy is configured correctly, run the following command:
+<pre># grep pam_faillock /etc/pam.d/system-auth-ac</pre>
+The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
+</ocil>
+<rationale>
+Locking out user accounts after a number of incorrect attempts
+prevents direct password guessing attacks.  Ensuring that an administrator is
+involved in unlocking locked accounts draws appropriate attention to such
+situations.
+</rationale>
+<ident cce="3410-8" />
+<oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
+<ref nist="AC-7, CM-6" disa="47" />
+</Rule>
+
+<Rule id="deny_password_attempts_fail_interval" severity="medium">
+<title>Set Interval For Counting Failed Password Attempts</title>
+<description>
+To configure the system to lock out accounts after a number of incorrect login
+attempts within a 15 minute interval using <tt>pam_faillock.so</tt>:
+<br /><br />
+Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth-ac</tt>:
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=100000000 fail_interval=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=100000000 fail_interval=900</pre>
+</description>
+<ocil clause="that is not the case">
+To ensure the failed password attempt policy is configured correctly, run the following command:
+<pre># grep pam_faillock /etc/pam.d/system-auth-ac</pre>
+The output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 900 (15 minutes) or greater.  If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
+</ocil>
+<rationale>
+Locking out user accounts after a number of incorrect attempts within a
+specific period of time prevents direct password guessing attacks.
+</rationale>
+<ident cce="3410-8" />
+<oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
+<ref nist="AC-7, CM-6" disa="1452" />
 </Rule>
 
 <Rule id="limiting_password_reuse" severity="medium">
