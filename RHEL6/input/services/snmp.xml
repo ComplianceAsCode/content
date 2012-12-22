@@ -26,7 +26,7 @@ installed and activated, the software should be disabled and removed.
 Running SNMP software provides a network-based avenue of attack, and
 should be disabled if not needed.
 </rationale>
-<ident cce="3765-5" />
+<ident cce="26906-8" />
 <oval id="service_snmpd_disabled" />
 </Rule>
 
@@ -43,7 +43,7 @@ If there is no need to run SNMP server software,
 removing the package provides a safeguard against its
 activation.
 </rationale>
-<ident cce="14081-4" />
+<ident cce="26332-7" />
 <oval id="package_net-snmp_removed" />
 </Rule>
 
@@ -66,7 +66,7 @@ stations</li>
 <li>ensure that permissions on the <tt>snmpd.conf</tt> configuration file (by default, in <tt>/etc/snmp</tt>) are 640 or more restrictive</li>
 <li>ensure that any MIB files' permissions are also 640 or more restrictive</li></ul>
 </description>
-<!--<ident cce="14081-4" /> -->
+<!--<ident cce="26332-7" /> -->
 <!--<oval id="snmp_configure_server" /> -->
 
 <Rule id="snmpd_use_newer_protocol" severity="medium">

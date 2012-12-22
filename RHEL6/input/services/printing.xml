@@ -16,7 +16,7 @@ homepage and more detailed documentation are available at http://www.cups.org.
 <ocil><service-disable-check-macro service="cups" /></ocil>
 <rationale>Turn off unneeded services to reduce attack surface.
 </rationale>
-<ident cce="3755-6" />
+<ident cce="26899-5" />
 <oval id="service_cups_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -32,7 +32,7 @@ homepage and more detailed documentation are available at http://www.cups.org.
 port are not allowed. If the print server does need to be accessed this
 exception should be added to the firewall configuration.
 </rationale>
-<ident cce="3649-1" />
+<ident cce="26884-7" />
 <!-- Need to invert this check <oval id="iptables_cupsd_disabled" /> -->
 <ref nist="CM-7" />
 </Rule>
@@ -57,7 +57,7 @@ the CUPS print service, can be configured to listen to these broadcasts and add
 and configure these printers for immediate use. By disabling this browsing
 capability, the machine will no longer generate or receive such broadcasts.
 </rationale>
-<ident cce="4420-6" />
+<ident cce="27108-0" />
 <oval id="cups_disable_browsing" />
 </Rule>
 
@@ -80,7 +80,7 @@ broadcasts, or remote users will still be able to see the locally configured
 printers, even if they cannot actually print to them. To limit print serving to
 a particular set of users, use the Policy directive.
 </rationale>
-<ident cce="4407-3" /> 
+<ident cce="27107-2" /> 
 <oval id="cups_disable_printserver" />
 <ref nist="TODO:NIST" />
 </Rule>

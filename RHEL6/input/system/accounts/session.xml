@@ -87,7 +87,7 @@ These empty elements have the same effect as a single <tt>.</tt> character.
 Including these entries increases the risk that root could
 execute code from an untrusted location.
 </rationale>
-<ident cce="3301-9" />
+<ident cce="26826-8" />
 <oval id="accounts_dangerous_path_for_root" />
 <ref nist="CM6, CM-7"/>
 </Rule>
@@ -110,7 +110,7 @@ Such entries increase the risk that root could
 execute code provided by unprivileged users,
 and potentially malicious code.
 </rationale>
-<ident cce="14957-5" />
+<ident cce="26768-2" />
 <oval id="accounts_root_path_dirs_no_write" />
 <ref nist="CM6, CM-7"/>
 </Rule>
@@ -145,7 +145,7 @@ to other users. If a subset of users need read access
 to one another's home directories, this can be provided using
 groups or ACLs.
 </rationale>
-<ident cce="4090-7" />
+<ident cce="26981-1" />
 <oval id="file_permissions_home_dirs" />
 <ref nist="AC-3, CM-6"/>
 </Rule>
@@ -225,7 +225,7 @@ umask 077
 umask 077</pre>
 </ocil>
 
-<ident cce="3844-8" />
+<ident cce="26917-5" />
 <oval id="accounts_umask_bash_users" value="umask_user_value"/>
 <ref nist="CM-6, CM-7" disa="366"/>
 <tested by="swells" on="20120929"/>
@@ -249,7 +249,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 <pre># grep "umask" /etc/csh.cshrc
 umask 077</pre>
 </ocil>
-<ident cce="4227-5" />
+<ident cce="27034-8" />
 <oval id="accounts_umask_csh" value="umask_user_value"/>
 <ref nist="CM-6, CM-7" disa="366"/>
 <tested by="swells" on="20120929"/>
@@ -265,7 +265,7 @@ add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as fo
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and/or
 written to by unauthorized users.</rationale>
-<ident cce="14847-8" />
+<ident cce="26669-2" />
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
@@ -297,7 +297,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 <pre># grep "umask" /etc/login.defs
 umask 077</pre>
 </ocil>
-<ident cce="14107-7" />
+<ident cce="26371-5" />
 <oval id="accounts_umask_login_defs" value="umask_user_value" />
 <ref nist="CM-6, CM-7" disa="366"/>
 <tested by="swells" on="20120929" />

@@ -57,7 +57,7 @@ The <tt>ip6tables</tt> default rules are essentially the same.</description>
 <rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
 capability for IPv6 and ICMPv6.
 </rationale>
-<ident cce="4167-3" />
+<ident cce="27006-6" />
 <oval id="service_ip6tables_enabled" />
 <ref nist="CM-6, CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414"/>
 <tested by="DS" on="20121024"/>
@@ -73,7 +73,7 @@ capability for IPv6 and ICMPv6.
 The <tt>iptables</tt> service provides the system's host-based firewalling
 capability for IPv4 and ICMP.
 </rationale>
-<ident cce="4189-7" />
+<ident cce="27018-1" />
 <oval id="service_iptables_enabled" />
 <ref nist="CM-6, CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414" />
 <tested by="DS" on="20121024"/>
@@ -128,7 +128,7 @@ the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
-<ident cce="14264-6" />
+<ident cce="26444-0" />
 <oval id="iptables_default_policy_drop" />
 <ref nist="AC-4, CM-6" disa="66,1109,1154,1414" />
 </Rule>
@@ -152,7 +152,7 @@ accepted.</rationale>
 The output should be similar to the following:
 <pre># grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
-<ident cce="14264-6" />
+<ident cce="27186-6" />
 <ref nist="AC-4, CM-6" disa="1109" />
 </Rule>
 
@@ -177,7 +177,7 @@ could add another IPv6 address to the interface or alter important network setti
 <ref nist="AC-4, CM-6" />
 <rationale>Restricting other ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not recommended because the operation-
   of IPv6 depends heavily on ICMPv6. Thus, more care must be taken when blocking ICMPv6 types.</rationale>
-<!--<ident cce="14264-6" />-->
+<!--<ident cce="26444-0" />-->
 <!--<oval id="iptables_icmp_disabled" />-->
 </Group>
 
@@ -224,7 +224,7 @@ If you are not expecting to see any IPv4 (or IPv4-compatible) traffic on your ne
 The following rule will log all traffic originating from a site-local address, which is deprecated address space:
 <pre>-A INPUT -s FEC0::/10 -j LOG --log-prefix "SITE-LOCAL ADDRESS TRAFFIC: "</pre>
 </description>
-<!--<ident cce="14264-6" />-->
+<!--<ident cce="26444-0" />-->
 <!--MANUAL<oval id="iptables_log_and_drop_suspicious" />-->
 <ref nist="AC-4, AC-17, CM-6" />
 </Group>

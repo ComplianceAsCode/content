@@ -38,7 +38,7 @@ programs.
 such as laptops or desktops. For other systems, such as servers, it may permit
 accidental or trivially achievable denial of service situations and disabling
 it is appropriate.</rationale>
-<ident cce="4298-6" />
+<ident cce="27061-1" />
 <oval id="service_acpid_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -127,7 +127,7 @@ provides benefit. Traditionally this has included laptops (to enhance battery li
 but may also apply to server or desktop environments where conserving power is
 highly desirable or necessary.
 </rationale>
-<ident cce="4051-9" />
+<ident cce="26973-8" />
 <oval id="service_cpuspeed_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -147,7 +147,7 @@ deals with removable media or devices.
 that use removable media or devices, but can be disabled for systems
 that do not require these.
 </rationale>
-<ident cce="4364-6" />
+<ident cce="27086-8" />
 <oval id="service_haldaemon_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -163,7 +163,7 @@ multiple processors.
 <ocil><service-disable-check-macro service="irqbalance" /></ocil>
 <rationale>In an environment with multiple processors (now common), the irqbalance service
 provides potential speedups for handling interrupt requests.</rationale>
-<ident cce="4123-6" />
+<ident cce="26990-2" />
 <oval id="service_irqbalance_enabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -178,7 +178,7 @@ crash, which can load information from the crashed kernel for analysis.
 <ocil><service-disable-check-macro service="kdump" /></ocil>
 <rationale>Unless the system is used for kernel development or testing, there
 is little need to run the kdump service.</rationale>
-<ident cce="3425-6" />
+<ident cce="26850-8" />
 <oval id="service_kdump_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -212,7 +212,7 @@ RAID setups do not use this service).
 <ocil><service-disable-check-macro service="mdmonitor" /></ocil>
 <rationale>If software RAID monitoring is not required (and it is uncommon),
 there is no need to run the service.</rationale>
-<ident cce="3854-7" />
+<ident cce="27193-2" />
 <oval id="service_mdmonitor_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -233,7 +233,7 @@ it could be a target for attack. However, disabling D-Bus is likely to be
 impractical for any system which needs to provide
 a graphical login session.
 </rationale>
-<ident cce="3822-4" />
+<ident cce="26913-4" />
 <oval id="service_messagebus_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -347,7 +347,7 @@ package selection is selected during installation.  The qpidd service listens
 for network connections which increases the attack surface of the system.  If 
 the system is not intended to receive AMQP traffic then the <tt>qpidd</tt> 
 service is not needed and should be disabled or removed.</rationale>
-<ident cce="3854-7" />
+<ident cce="26928-2" />
 <oval id="service_qpidd_disabled" />
 <ref nist="CM-6, CM-7" disa="382" />
 </Rule>
@@ -407,7 +407,7 @@ RHN server or satellite and managed as such.
 system security, management by a system outside the enterprise enclave is not
 desirable for some environments.  However, if the system is being managed by RHN or
  RHN Satellite Server the <tt>rhnsd</tt> daemon can remain on. </rationale>
-<ident cce="3416-5" />
+<ident cce="26846-6" />
 <oval id="service_rhnsd_disabled" />
 <ref nist="CM-6, CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
@@ -467,7 +467,7 @@ relay an appropriate warning.
 service due to failing hardware. Nevertheless, if it is not needed or the
 system's drives are not SMART-capable (such as solid state drives), it can be
 disabled.</rationale>
-<ident cce="3455-3" />
+<ident cce="26853-2" />
 <oval id="service_smartd_disabled" />
 <ref nist="CM-6, CM-7" />
 <tested by="DS" on="20121024"/>

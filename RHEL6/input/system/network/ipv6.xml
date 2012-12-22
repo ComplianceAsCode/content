@@ -43,7 +43,7 @@ lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
 Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
-<ident cce="CCE-3562-6" />
+<ident cce="27153-6" />
 <oval id="kernel_module_ipv6_option_disabled" />
 <ref nist="CM-6, CM-7" disa="1551"/>
 <tested by="DS" on="20121024"/>
@@ -136,7 +136,7 @@ operator="equals" interactive="0">
 <rationale>
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="CCE-4269-7" />
+<ident cce="27164-3" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" />
 <ref nist="CM-7" />
 </Rule>
@@ -152,7 +152,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="CCE-4313-3" />
+<ident cce="27166-8" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-6, CM-7" disa="1551"/>
 </Rule>
@@ -185,7 +185,7 @@ hardware over its lifetime using its traffic. If it is important for a system's
 IP address to not trivially reveal its hardware address, this setting should be
 applied.
 </description>
-<ident cce="CCE-3842-2" />
+<ident cce="27154-4" />
 <oval id="network_ipv6_privacy_extensions" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -238,13 +238,13 @@ addresses can be assigned to each interface.  The default is 16, but it should
 be set to exactly the number of statically configured global addresses
 required.
 </description>
-<ident cce="CCE-4221-8" />
-<ident cce="CCE-4137-6" />
-<ident cce="CCE-4159-0" />
-<ident cce="CCE-3895-0" />
-<ident cce="CCE-4287-9" />
-<ident cce="CCE-4058-4" />
-<ident cce="CCE-4128-5" />
+<ident cce="27163-5" />
+<ident cce="27161-9" />
+<ident cce="27162-7" />
+<ident cce="27157-7" />
+<ident cce="27165-0" />
+<ident cce="27158-5" />
+<ident cce="27160-1" />
 <oval id="network_ipv6_limit_requests" />
 <ref nist="CM-6, CM-7" />
 </Rule>

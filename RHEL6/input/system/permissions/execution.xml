@@ -45,7 +45,7 @@ The output should show either <tt>022</tt> or <tt>027</tt>.
 <rationale>The umask influences the permissions assigned to files created by a
 process at run time.  An unnecessarily permissive umask could result in files
 being created with insecure permissions.</rationale>
-<ident cce="4220-0" />
+<ident cce="27031-4" />
 <oval id="umask_for_daemons" value="var_umask_for_daemons"/>
 <ref nist="AC-3, CM-6"/>
 </Rule>
@@ -87,7 +87,7 @@ The output should be:
 <rationale>A core dump includes a memory image taken at the time the operating system
 terminates an application. The memory image could contain sensitive data and is generally useful
 only for developers trying to debug problems.</rationale>
-<ident cce="4225-9" />
+<ident cce="27033-0" />
 <oval id="core_dumps_limitsconf" />
 <ref nist="SC-5" />
 </Rule>
@@ -102,7 +102,7 @@ sensitive data, as the program itself runs with greater privileges than the
 user who initiated execution of the program.  Disabling the ability for any
 setuid program to write a core file decreases the risk of unauthorized access
 of such data.</rationale>
-<ident cce="4247-3" />
+<ident cce="27044-7" />
 <oval id="core_dump_suid_progs_limits_conf" />
 <ref nist="SI-11" />
 </Rule>
@@ -130,7 +130,7 @@ control where code can be executed, on a per-process basis. When
 the kernel places a process's memory regions such as the stack and
 heap higher than this address, the hardware prevents execution in that
 address range.</rationale>
-<ident cce="4168-1" />
+<ident cce="27007-4" />
 <oval id="sysctl_kernel_exec_shield" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -146,7 +146,7 @@ into a process's address space during an attempt at exploitation.  Additionally,
 makes it more difficult for an attacker to know the location of existing code
 in order to re-purpose it using return oriented programming (ROP) techniques.
 </rationale>
-<ident cce="4146-7" />
+<ident cce="26999-3" />
 <oval id="sysctl_kernel_randomize_va_space" />
 <ref nist="AC-3, CM-6" />
 <tested by="DS" on="20121024"/>
@@ -186,7 +186,7 @@ installed on older systems that do not support the XD or NX bit, as
 this may prevent them from booting.</warning>
 <rationale>On 32-bit systems that support the XD or NX bit, the vendor-supplied
 PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) support.</rationale>
-<ident cce="4172-3" />
+<ident cce="27010-8" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -198,7 +198,7 @@ under a Security section. Look for Execute Disable (XD) on Intel-based systems a
 on AMD-based systems.</description>
 <rationale>Computers with the ability to prevent this type of code execution frequently put an option in the BIOS that will
 allow users to turn the feature on or off at will.</rationale>
-<ident cce="4177-2" />
+<ident cce="27012-4" />
 <ref nist="CM-6" />
 </Rule>
 

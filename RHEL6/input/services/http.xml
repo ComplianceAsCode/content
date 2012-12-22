@@ -34,7 +34,7 @@ and removed from the system.
 Running web server software provides a network-based avenue
 of attack, and should be disabled if not needed.
 </rationale>
-<ident cce="4338-0" />
+<ident cce="27075-1" />
 <oval id="service_httpd_disabled" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -51,7 +51,7 @@ of attack, and should be disabled if not needed.
 If there is no need to make the web server software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="4514-6" />
+<ident cce="27133-8" />
 <oval id="package_httpd_removed" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -70,7 +70,7 @@ package group during the system installation process. The Web Server package
 group includes many packages which are likely extraneous, while the
 command-line method installs only the required <tt>httpd</tt> package itself.
 </description>
-<!--<ident cce="4346-3" />-->
+<!--<ident cce="27078-5" />-->
 <!--<oval id="package_httpd_installed" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 
@@ -119,7 +119,7 @@ Add or correct the following directive in <tt>/etc/httpd/conf/httpd.conf</tt>:
 Information disclosed to clients about the configuration of the web server and system could be used
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
-<ident cce="4474-3" />
+<ident cce="27123-9" />
 <oval id="httpd_servertokens_prod" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -137,7 +137,7 @@ Add or correct the following directive in <tt>/etc/httpd/conf/httpd.conf</tt>:
 Information disclosed to clients about the configuration of the web server and system could be used
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
-<ident cce="3756-4" />
+<ident cce="26900-1" />
 <oval id="httpd_serversignature_off" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -214,7 +214,7 @@ If the above functionality is unnecessary, comment out the related module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>-->
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_basic_authentication" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Group>
@@ -230,7 +230,7 @@ If this functionality is unnecessary, comment out the related module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_digest_authentication" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -248,7 +248,7 @@ unnecessary, comment out the related module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_mod_rewrite" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -266,7 +266,7 @@ If LDAP is to be used, SSL encryption should be used as well.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_ldap_support" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -287,7 +287,7 @@ supplied data should be encoded to prevent cross-site scripting vulnerabilities.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_server_side_includes" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -303,7 +303,7 @@ is likely extraneous. If its functionality is unnecessary, comment out the relat
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_mime_magic" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -324,7 +324,7 @@ server that is DAV enabled should be protected by access controls.
 Minimizing the number of loadable modules available to the web server, reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_webdav" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -344,7 +344,7 @@ configuration.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_server_activity_status" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -363,7 +363,7 @@ an access control list to restrict access to the information.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_server_configuration_display" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -380,7 +380,7 @@ This functionality weakens server security by making site enumeration easier.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_url_correction" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -405,7 +405,7 @@ are a security risk. <tt>mod_proxy_balancer</tt> enables load balancing, but req
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_proxy_support" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -426,7 +426,7 @@ If caching is required, it should not be enabled for any limited-access content.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_cache_support" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -452,7 +452,7 @@ CGI scripts to run as a specified user/group instead of as the server's user/gro
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_cgi_support" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -480,7 +480,7 @@ are not using these directives), comment out the associated module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </description>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_optional_components" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Group>
@@ -506,7 +506,7 @@ the possibility of unwanted or malicious configuration files to be automatically
 part of the server's running configuration.
 <!--</rationale>-->
 </description>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_minimize_config_files_included" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Group>
@@ -537,7 +537,7 @@ The <tt>httpd</tt> root directory should always have the most restrictive config
 The Web Server's root directory content should be protected from unauthorized access
 by web clients.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_restrict_root_directory" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -563,7 +563,7 @@ Ensure that this policy is adhered to by altering the related section of the con
 Access to the web server's directory hierarchy could allow access to unauthorized files
 by web clients. Following symbolic links could also allow such access.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_restrict_web_directory" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -580,7 +580,7 @@ should be used to deny access by default, allowing access only where necessary.
 Directories accessible from a web client should be configured with the least amount of
 access possible in order to avoid unauthorized access to restricted content or server information.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_restrict_critical_directories" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -607,7 +607,7 @@ are limited to the WebDAV protocol.
 Minimizing the number of available methods to the web client reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_limit_available_methods" />-->
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -647,7 +647,7 @@ Install the <tt>mod_ssl</tt> module:
 content is transmitted in plain text which could be passively monitored and accessed by
 unauthorized parties.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <oval id="package_mod_ssl_installed" />
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -678,7 +678,7 @@ Install the <tt>security</tt> module:
 enabling the administrator to implement content access policies and filters at the
 application layer.
 </rationale>
-<!--<ident cce="3756-4" />-->
+<!--<ident cce="26900-1" />-->
 <oval id="package_mod_security_installed" />
 <!--<ref nist="CM-6, CM-7" />-->
 </Rule>
@@ -771,7 +771,7 @@ This is its default setting.
 Access to the web server's log files may allow an unauthorized user or attacker
 to access information about the web server or alter the server's log files.
 </rationale>
-<ident cce="4574-0" />
+<ident cce="27150-2" />
 <oval id="dir_perms_var_log_httpd" />
 <ref nist="CM-6, CM-7" />
 </Rule>
@@ -786,7 +786,7 @@ Set permissions on the web server configuration directory to 750:
 Access to the web server's configuration files may allow an unauthorized user or attacker
 to access information about the web server or alter the server's configuration files.
 </rationale>
-<!-- <ident cce="4574-0" /> -->
+<!-- <ident cce="27150-2" /> -->
 <oval id="dir_perms_etc_httpd_conf" />
 <!-- <ref nist="CM-6, CM-7" /> -->
 </Rule>
@@ -801,7 +801,7 @@ Set permissions on the web server configuration files to 640:
 Access to the web server's configuration files may allow an unauthorized user or attacker
 to access information about the web server or to alter the server's configuration files.
 </rationale>
-<ident cce="4386-9" />
+<ident cce="27099-1" />
 <oval id="file_permissions_httpd_server_conf_files" />
 <ref nist="CM-6, CM-7" />
 </Rule>
