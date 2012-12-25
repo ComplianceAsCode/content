@@ -27,7 +27,6 @@ normal command line utilities.
 <value selector="180">180</value>
 </Value>
 
-
 <Rule id="account_disable_post_pw_expiration">
 <title>Set Account Expiration Following Inactivity</title>
 <description>To specify the number of days after a password expires (which
@@ -58,7 +57,7 @@ have been responsibly removed are not available to attackers
 who may have compromised their credentials.
 </rationale>
 <oval id="accounts_disable_post_pw_expiration" value="var_account_disable_post_pw_expiration"/>
-<ref disa="16,17,795"/>
+<ref nist="AC-2(2), AC-2(3)" disa="16,17,795"/>
 </Rule>
 
 <Rule id="account_unique_name">
@@ -99,7 +98,7 @@ remain in place and active after the need for them no longer exists.  Account
 expiration greatly reduces the risk of accounts being misused or hijacked. 
 <br/>
 </rationale>
-<ref disa="16,1682"/>
+<ref nist="AC-2(2),AC-2(3)" disa="16,1682"/>
 </Rule>
 
 </Group>
