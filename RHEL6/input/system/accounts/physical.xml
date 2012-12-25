@@ -35,7 +35,7 @@ Only root should be able to modify important boot parameters.
 </rationale>
 <ident cce="26995-1" />
 <oval id="file_user_owner_grub_conf" />
-<ref nist="AC-3, CM-6" disa="225"/>
+<ref nist="CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -53,7 +53,7 @@ file should not have any access privileges anyway.
 </rationale>
 <ident cce="27022-3" />
 <oval id="file_group_owner_grub_conf" />
-<ref nist="AC-3, CM-6" disa="225"/>
+<ref nist="CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -70,7 +70,7 @@ parameters.
 </rationale>
 <ident cce="26949-8" />
 <oval id="file_permissions_grub_conf" />
-<ref nist="AC-3, CM-6" disa="225"/>
+<ref nist="CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -99,7 +99,7 @@ and whether to enter single-user mode.
 </rationale>
 <ident cce="26911-8" />
 <oval id="bootloader_password" />
-<ref nist="CM-7, IA-5, AC-3" disa="213" />
+<ref nist="CM-7, IA-5" disa="213" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -265,7 +265,7 @@ screen locking to prevent access from passersby.
 </rationale>
 <ident cce="26828-4" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-3, CM-6, CM-7, AC-11" disa="57"/>
+<ref nist="CM-6, CM-7, AC-11" disa="57"/>
 </Rule>
 
 <Rule id="enable_screensaver_after_idle" severity="medium">
@@ -316,7 +316,7 @@ access the system, preventing access by passersby.
 </rationale>
 <ident cce="26235-2" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-3, CM-6, CM-7, AC-11" disa="57" />
+<ref nist="CM-6, CM-7, AC-11" disa="57" />
 </Rule>
 
 <Rule id="set_blank_screensaver">
