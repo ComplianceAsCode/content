@@ -117,7 +117,6 @@ privilege escalation or denial of service attacks which might compromise the mai
 steps to ensure that only system administrators are allowed shell access to the MTA host.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
-<ref nist="AC-6, SC-2" />
 </Group>
 
 <Group id="postfix_restrict_mail_spool_access">
@@ -155,7 +154,7 @@ Ensure log will be rotated as appropriate by adding or correcting the following 
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <oval id="postfix_logging" />
-<ref nist="AC-6, AU-2, AU-9" />
+<ref nist="AU-2, AU-9" />
 </Rule>
 
 <Group id="postfix_configure_ssl_certs">
@@ -214,7 +213,7 @@ correct permissions:
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
 <oval id="postfix_certificate_files" />
-<ref nist="AC-6, SC-12, SC-13" />
+<ref nist="SC-12, SC-13" />
 </Rule>
 
 </Group><!--End <Group id="postfix_configure_ssl_certs"> -->

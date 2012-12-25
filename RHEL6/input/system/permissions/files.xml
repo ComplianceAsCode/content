@@ -28,7 +28,7 @@ to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
 <ident cce="26947-2" />
 <oval id="file_owner_etc_shadow" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -40,7 +40,7 @@ which could weaken the system security posture.</rationale>
 critical for system security.</rationale>
 <ident cce="26967-0" />
 <oval id="file_groupowner_etc_shadow" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -55,7 +55,7 @@ to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
 <ident cce="26992-8" />
 <oval id="file_permissions_etc_shadow" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -67,7 +67,7 @@ which could weaken the system security posture.</rationale>
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="26822-7" />
 <oval id="file_owner_etc_group" />
-<ref nist="CM-6"/>
+<ref nist="AC-6,CM-6"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -79,7 +79,7 @@ on the system. Protection of this file is important for system security.</ration
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="26930-8" />
 <oval id="file_groupowner_etc_group" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -91,7 +91,7 @@ on the system. Protection of this file is important for system security.</ration
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="26954-8" />
 <oval id="file_permissions_etc_group" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -103,7 +103,7 @@ on the system. Protection of this file is important for system security.</ration
 is critical for system security.</rationale>
 <ident cce="27026-4" />
 <oval id="file_owner_etc_gshadow" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -115,7 +115,7 @@ is critical for system security.</rationale>
 is critical for system security.</rationale>
 <ident cce="26975-3" />
 <oval id="file_groupowner_etc_gshadow" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -127,7 +127,7 @@ is critical for system security.</rationale>
 is critical for system security.</rationale>
 <ident cce="26951-4" />
 <oval id="file_permissions_etc_gshadow" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -139,7 +139,7 @@ is critical for system security.</rationale>
 the system. Protection of this file is critical for system security.</rationale>
 <ident cce="26953-0" />
 <oval id="file_owner_etc_passwd" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -151,7 +151,7 @@ the system. Protection of this file is critical for system security.</rationale>
 the system. Protection of this file is critical for system security.</rationale>
 <ident cce="26856-5" />
 <oval id="file_groupowner_etc_passwd" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -165,7 +165,7 @@ accounts on the system and associated information, and protection of this file
 is critical for system security.</rationale>
 <ident cce="26868-0" />
 <oval id="file_permissions_etc_passwd" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="AC-6,CM-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 </Group>
@@ -208,7 +208,7 @@ run the following command for each directory <i>DIR</i> which contains shared li
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Restrictive permissions are necessary to protect the integrity of the system.
 </rationale>
-<ref disa="1499"/>
+<ref nist="AC-6" disa="1499"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -238,7 +238,7 @@ run the following command for each directory <i>DIR</i> which contains shared li
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Proper ownership is necessary to protect the integrity of the system.
 </rationale>
-<ref disa="1499"/>
+<ref nist="AC-6" disa="1499"/>
 </Rule>
 
 
@@ -267,7 +267,7 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure execution of these programs
 cannot be co-opted.
 </rationale>
-<ref disa="1499"/>
+<ref nist="AC-6" disa="1499"/>
 </Rule>
 
 <Rule id="file_ownership_binary_dirs" severity="medium">
@@ -295,7 +295,7 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
 </rationale>
-<ref disa="1499"/>
+<ref nist="AC-6" disa="1499"/>
 </Rule>
 
 
@@ -332,7 +332,7 @@ and for directories requiring global read/write access.
 </rationale>
 <ident cce="26840-9" />
 <oval id="dir_perms_world_writable_sticky_bits" />
-<ref nist="CM-6"/>
+<ref nist="AC-6,CM-6"/>
 <tested by="swells" on="20120929"/>
 </Rule>
 
@@ -355,7 +355,7 @@ configured using a combination of user and group permissions to
 support whatever legitimate access is needed without the risk
 caused by world-writable files.</rationale>
 <ident cce="26910-0" />
-<ref nist="CM-6"/>
+<ref nist="AC-6,CM-6"/>
 </Rule>
 
 <Rule id="no_unpackaged_sgid_files">
@@ -376,7 +376,7 @@ unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
 <ident cce="26769-0" />
 <oval id="file_permissions_unauthorized_sgid" />
-<ref nist="CM-6"/>
+<ref nist="CM-7,CM-6"/>
 </Rule>
 
 <Rule id="no_unpackaged_suid_files">
@@ -397,7 +397,7 @@ unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
 <ident cce="26497-8" />
 <oval id="file_permissions_unauthorized_suid" />
-<ref nist="CM-6"/>
+<ref nist="CM-6,CM-7"/>
 </Rule>
 
 
@@ -425,7 +425,7 @@ and the cause should be discovered and addressed.
 </rationale>
 <ident cce="27032-2" />
 <oval id="file_permissions_unowned" />
-<ref nist="CM-6" disa="224"/>
+<ref nist="AC-6,CM-6" disa="224"/>
 </Rule>
 
 <Rule id="no_files_unowned_by_group">
@@ -452,7 +452,7 @@ and the cause should be discovered and addressed.
 </rationale>
 <ident cce="26872-2" />
 <oval id="file_permissions_ungroupowned" />
-<ref nist="CM-6" disa="224"/>
+<ref nist="AC-6,CM-6" disa="224"/>
 </Rule>
 
 <Rule id="world_writable_files_system_ownership">
@@ -478,7 +478,7 @@ users.
 </rationale>
 <ident cce="26642-9" />
 <oval id="dir_perms_world_writable_system_owned" />
-<ref nist="CM-6"/>
+<ref nist="AC-6,CM-6"/>
 <tested by="swells" on="20120929"/>
 </Rule>
 </Group>
