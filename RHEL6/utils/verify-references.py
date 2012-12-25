@@ -55,7 +55,7 @@ def get_ovalfiles(checks):
 		if check.get("system") == oval_ns:
 			checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
 			ovalfiles.add(checkcontentref.get("href"))
-		else:
+		elif check.get("system") != "ocil-transitional":
 			print "Non-OVAL checking system found: " + check.get("system")
 	return ovalfiles
 
