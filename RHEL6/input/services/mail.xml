@@ -128,7 +128,6 @@ escalation or denial of service attacks which might compromise the mail service.
 ensure that only system administrators are allowed shell access to the MTA host.
 </description>
 <!-- <ident cce="TODO:CCE" /> -->
-<ref nist="AC-2, AC-4, CM-7, SC-2" />
 </Group>
 
 <Rule id="iptables_smtp_enabled">
@@ -141,7 +140,7 @@ that access, while keeping other ports on the server in their default protected 
 </rationale>
 <!-- <ident cce="TODO:CCE" /> -->
 <oval id="iptables_smtp_enabled" />
-<ref nist="AC-4, CM-7, SC-7" />
+<ref nist="CM-7, SC-7" />
 </Rule>
 
 <Rule id="postfix_logging">
