@@ -39,7 +39,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident cce="27024-9" />
 <oval id="package_aide_installed" />
-<ref nist="CM-6, CM-7, SC-28, SI-7" disa="1069"/>
+<ref nist="CM-6, SC-28, SI-7" disa="1069"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -161,14 +161,14 @@ The permissions set by the vendor should be maintained. Any deviations from
 this baseline should be investigated.</rationale>
 <ident cce="26731-0" />
 <oval id="rpm_verify_permissions" />
-<ref nist="SI-7" disa="1493,1494,1495" />
+<ref nist="AC-3" disa="1493,1494,1495" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
 <title>Verify File Hashes with RPM</title>
 <description>The RPM package management system can check the hashes of
 installed software packages, including many that are important to system
-security. Run the following command to list which files on the system
+security. Run thie following command to list which files on the system
 have hashes that differ from what is expected by the RPM database:
 <pre># rpm -Va | grep '^..5'</pre>
 A "c" in the second column indicates that a file is a configuration file,
@@ -229,7 +229,7 @@ additional agility in reacting to network threats. These tools also often
 include a reporting capability to provide network awareness of system, which
 may not otherwise exist in an organization's systems management regime.
 </rationale>
-<ref disa="1263"/>
+<ref nist="SC-7" disa="1263"/>
 </Rule>
 
 <Rule id="install_antivirus">
@@ -268,7 +268,7 @@ To check on the age of uvscan virus definition files, run the following command:
 Virus scanning software can be used to detect if a system has been compromised by
 computer viruses, as well as to limit their spread to other systems. 
 </rationale>
-<ref disa="1239,1668"/>
+<ref nist="SC-28, SI-3" disa="1239,1668"/>
 </Rule>
 
 </Group>

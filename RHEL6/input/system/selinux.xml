@@ -123,7 +123,7 @@ privileges.
 </rationale>
 <ident cce="26969-6" />
 <oval id="selinux_mode" value="var_selinux_state_name"/>
-<ref nist="CM-6, CM-7" disa="22,32,26"/>
+<ref nist="AC-3, AC-6, CM-6" disa="22,32,26"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -149,7 +149,7 @@ targeted for exploitation, such as network or system services.
 </rationale>
 <ident cce="26875-5" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
-<ref nist="CM-6, CM-7" disa="22,32"/>
+<ref nist="CM-6" disa="22,32"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
@@ -168,7 +168,7 @@ file context is applied to files. This allows automatic correction
 of file contexts created by some programs.</rationale>
 <ident cce="26991-0" />
 <oval id="service_restorecond_enabled" />
-<ref nist="AC-3, CM-6" />
+<ref nist="AC-3, AC-6, CM-6" />
 </Rule>
 
 
@@ -244,7 +244,7 @@ cannot properly restrict access to the device file.
 </rationale>
 <ident cce="26774-0" />
 <oval id="selinux_all_devicefiles_labeled" />
-<ref nist="CM-6, CM-7" disa="22,32"/>
+<ref nist="AC-6, CM-6, CM-7" disa="22,32"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
