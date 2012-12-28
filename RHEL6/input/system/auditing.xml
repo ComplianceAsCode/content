@@ -93,7 +93,7 @@ actions will be taken if other obstacles exist.
 </rationale>
 <ident cce="27058-7" />
 <oval id="service_auditd_enabled" />
-<ref nist="CM-6, CM-7" disa="347,169,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" />
+<ref nist="AU-1, CM-6" disa="347,169,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -246,6 +246,7 @@ determine how many logs the system is configured to retain after rotation:
 log information over the period required. This is a function of the maximum log
 file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" /> 
+<ref nist="AU-11, CM-6" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -270,6 +271,7 @@ determine how much data the system will retain in each audit log file:
 log information over the period required. This is a function of the maximum
 log file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" /> 
+<ref nist="AU-11, CM-6" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -305,6 +307,7 @@ being overwhelmed with log data. However, for systems that must never discard
 log data, or which use external processes to transfer it and reclaim space,
 <tt>keep_logs</tt> can be employed.</rationale>
 <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
+<ref nist="AU-4, AU-11, CM-6" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -354,7 +357,7 @@ disk space is starting to run low:
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
-<ref disa="140,143,1339" />
+<ref nist="AU-4, CM-6" disa="140,143,1339" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -394,7 +397,7 @@ audit records. If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
-<ref disa="140,143,1343" />
+<ref nist="AU-4, CM-6" disa="140,143,1343" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -416,7 +419,7 @@ account when it needs to notify an administrator:
 <rationale>Email sent to the root account is typically aliased to the
 administrators of the system, who can take appropriate action.</rationale>
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
-<ref disa="139,144" />
+<ref nist="AU-4, CM-6" disa="139,144" />
 </Rule>
 
 </Group>
@@ -491,7 +494,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="26242-8" />
 <oval id="audit_rules_time_adjtimex" />
-<ref nist="AU-2(a)" />
+<ref nist="AU-2" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -519,7 +522,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27203-9" />
 <oval id="audit_rules_time_settimeofday" />
-<ref nist="AU-2(a)" />
+<ref nist="AU-2" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -545,7 +548,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27169-2" />
 <oval id="audit_rules_time_stime" />
-<ref nist="AU-2(a)" />
+<ref nist="AU-2" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -573,7 +576,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27170-0" />
 <oval id="audit_rules_time_clock_settime" />
-<ref nist="AU-2(a)" />
+<ref nist="AU-2" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -598,7 +601,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27172-6" />
 <oval id="audit_rules_time_watch_localtime" />
-<ref nist="AU-2(a)" />
+<ref nist="AU-2" />
 <ref disa="1487,169" />
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
@@ -627,7 +630,7 @@ unexpected users, groups, or modifications should be investigated for
 legitimacy.</rationale>
 <ident cce="26664-3" />
 <oval id="audit_rules_usergroup_modification" />
-<ref nist="AU-2(a)" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
+<ref nist="AU-2" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
 </Rule>
 
 <Rule id="audit_network_modifications">
@@ -653,7 +656,7 @@ than administrator action. Any change to network parameters should be
 audited.</rationale>
 <ident cce="26648-6" />
 <oval id="audit_rules_networkconfig_modification" />
-<ref nist="AU-2(a)" />
+<ref nist="AU-2" />
 </Rule>
 
 <Rule id="audit_logs_permissions">
@@ -671,7 +674,7 @@ Audit logs must be mode 0640 or less permissive.
 If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
 <oval id="file_permissions_var_log_audit" />
-<ref disa="166" />
+<ref nist="AC-6, AU-9" disa="166" />
 <tested by="DS" on="20121024"/>
 </Rule> 
 
@@ -686,7 +689,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <rationale>Failure to give ownership of the audit log file(s) to root allows the designated 
 owner, and unauthorized users, potential access to sensitive information.</rationale>
 <oval id="file_ownership_var_log_audit" />
-<ref nist="AU-2" disa="166" />
+<ref nist="AC-6, AU-9" disa="166" />
 <tested by="DS" on="20121024"/>
 </Rule> 
 
@@ -1138,7 +1141,7 @@ storing such process information, add the following to
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="26610-6" />
 <oval id="audit_rules_session_events" />
-<!--<ref nist="TODO" />-->
+<ref nist="AU-2" />
 </Rule>
 
 <Rule id="audit_file_access">
@@ -1161,7 +1164,7 @@ To verify that the audit system collects unauthorized file accesses, run the fol
 these events could serve as evidence of potential system compromise.</rationale>
 <ident cce="26712-0" />
 <oval id="audit_rules_unsuccessful_file_modification" />
-<ref nist="AU-2.1 (v),AU-2 d" disa="126" />
+<ref nist="AU-2" disa="126" />
 </Rule>
 
 <Rule id="audit_privileged_commands">
