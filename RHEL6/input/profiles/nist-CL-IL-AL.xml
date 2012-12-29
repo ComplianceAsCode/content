@@ -1,0 +1,490 @@
+<Profile id="stig-rhel6-server" extends="common" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>CNSSI 1253 Low/Low/Low</title>
+<description>This profile follows the Committee on National Security Systems Instruction
+(CNSSI) No. 1253, "Security Categorization and Control Selection for National Security
+Systems" on security controls to meet low confidentiality, low integrity, and low
+assurance."</description>
+
+<!-- --------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------- -->
+<!-- The following variables must be configured against organization-defined settings  -->
+
+<!--	AC-2(2): The information system automatically terminates temporary and emergency
+     	accounts after [Assignment: organization-defined time period for each type of
+     	account].
+
+	AC-2(3): The information system automatically disables inactive accounts after
+	[Assignment: organization-defined time period] -->
+<refine-value idref="var_account_disable_post_pw_expiration" selector="60" \>
+
+<!--	AC-3:	"Access control policies... and access control mechanisms... are
+     	employed by organizations to control access between users... and objects.
+
+	To meet this, SELinux *must* be enabled and configured against either
+	"targeted" or "mls" mode -->
+<refine-value idref="var_selinux_state_name" selector="enforcing" \>
+<refine-value idref="var_selinux_policy_name" selector="targeted" \>
+
+<!--	AC-6: Least privilege
+
+	Optional values for the umask are "022" or "027" -->
+<refine-value idref="var_umask_for_daemons" selector="022" \>
+
+<!--	AC-7(a): Enforces a limit of [Assignment: organization-defined number]
+     	consecutive invalid login attempts by a user during a [Assignment: organization-
+     	defined time period]; and
+
+	Valid options for the consecutive invalid login attempts: 3, 5, or 10
+	(var_accounts_passwords_pam_faillock_deny)
+
+	Valid options for time interval:
+	(var_accounts_passwords_pam_faillock_fail_interval) 
+		- 900		(15 minutes)
+		- 1800		(30 minutes)
+		- 3600		(1 hour)
+		- 86400		(1 day)
+		- 100000000	(3.1 years) -->
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" \>
+<refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" \>
+
+<!--	AC-7(b): Automatically [Selection: locks the account/node for an [Assignment:
+     	organization-defined time period]; locks the account/node until released by an
+     	administrator; delays next login prompt according to [Assignment: organization-
+     	defined delay algorithm]] when the maximum number of unsuccessful attempts is
+     	exceeded. The control applies regardless of whether the login occures via a
+     	local or network connection
+
+	The accepted behavior is to issue an "account lock" for an organization-defined
+	time period. Valid options for time interval:
+	(var_accounts_passwords_pam_faillock_unlock_time)
+	                - 900           (15 minutes)
+	                - 1800          (30 minutes)
+	                - 3600		(1 hour)
+	                - 86400		(1 day)
+	                - 100000000	(3.1 years) -->
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="900" \>
+
+<!--	AC-11(a): Prevents furtuer access to the system by initiating a session lock
+     	after [Assignment: organization-defined time period] of inactivity or upon
+     	receiving a request from a user;
+
+	The accepted inactivity timeout values are:
+	(inactivity_timeout_value)
+		- 5	(minutes)
+		- 10	(minutes)
+		- 15	(minutes) -->
+<refine-value idref="inactivity_timeout_value" selector="15" \>
+
+
+<!-- --------------------------------------------------------------------------------- -->
+<!-- STATIC VARIABLES: DO NOT ALTER -->
+<refine-value idref="login_banner_text" selector="usgcb_default" \>
+<!-- --------------------------------------------------------------------------------- -->
+
+
+<!-- MAYBE
+     AC-2(1) -->
+
+<!-- AC-2(2), AC-2(3) -->
+<select idref="account_temp_expire_date" selected="true" />
+<select id=ref"account_disable_post_pw_expiration" selected="true" \>
+
+<!-- AC-2(4) -->
+<select idref="audit_account_changes" selected="true" \>
+     
+<!-- AC-2(7)(b) -->
+<select idref="audit_sysadmin_action" selected="true" \>
+
+<!--  AC-3 -->
+<select idref="sshd_use_approved_ciphers" selected="true" \>
+<select idref="enable_selinux_bootloader" selected="true" \>
+<select idref="set_selinux_state" selected="true" \>
+<select idref="set_selinux_policy" selected="true" \>
+<select idref="service_restorecond_enabled" selected="true" \>
+
+<!-- AC-4 -->
+<select idref="service_rdisc_disabled" selected="true" \>
+<select idref="disable_sysctl_ipv4_default_send_redirects" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_all_secure_redirects" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_default_accept_source_route" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_default_accept_redirects" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_default_secure_redirects" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_all_rp_filter" selected="true" \>
+<select idref"set_sysctl_net_ipv4_conf_default_rp_filter" selected="true" \>
+<select idref="enable_ip6tables" selected="true" \>
+<select idref="enable_iptables" selected="true" \>
+
+<!-- AC-6 -->
+<select idref="service_oddjobd_disabled" selected="true" \>
+<select idref="rpm_verify_permissions" selected="true" \>
+<select idref="audit_logs_permissions" selected="true" \>
+<select idref="audit_logs_rootowner" selected="true" \>
+<select idref="userowner_shadow_file" selected="true" \>
+<select idref="groupowner_shadow_file" selected="true" \>
+<select idref="perms_shadow_file" selected="true" \>
+<select idref="userowner_group_file" selected="true" \>
+<select idref="groupowner_group_file" selected="true" \>
+<select idref="perms_group_file" selected="true" \>
+<select idref="userowner_gshadow_file" selected="true" \>
+<select idref="groupowner_gshadow_file" selected="true" \>
+<select idref="perms_gshadow_file" selected="true" \>
+<select idref="userowner_passwd_file" selected="true" \>
+<select idref="groupowner_passwd_file" selected="true" \>
+<select idref="file_permissions_etc_passwd" selected="true" \>
+<select idref="selinux_confinement_of_daemons" selected="true" \>
+<select idref="permissions_within_important_dirs" selected="true" \>
+<select idref="file_ownership_library_dirs" selected="true" \>
+<select idref="file_permissions_binary_dirs" selected="true" \>
+<select idref="file_ownership_binary_dirs" selected="true" \>
+<select idref="sticky_world_writable_dirs" selected="true" \>
+<select idref="world_writeable_files" selected="true" \>
+<select idref="no_files_unowned_by_user" selected="true" \>
+<select idref="no_files_unowned_by_group" selected="true" \>
+<select idref="world_writable_files_system_ownership" selected="true" \>
+<select idref="set_daemon_umask" selected="true" \>
+<select idref="no_uidzero_except_root" selected="true" \>
+<select idref="userowner_rsyslog_files" selected="true" \>
+<select idref="groupowner_rsyslog_files" selected="true" \>
+
+<!-- AC-6(2) -->
+<select idref="restrict_root_console_logins" selected="true" \>
+<select idref="restrict_serial_port_logins" selected="true" \>
+<select idref="sshd_disable_root_login" selected="true" \>
+
+<!-- AC-7(a) -->
+<select idref="deny_password_attempts" selected="true" \>
+<select idref="deny_password_attempts_fail_interval" selected="true" \>
+
+<!-- AC-7(b) -->
+<select idref="deny_password_attempts_unlock_time" selected="true" \>
+
+<!-- AC-8(a), AC-8(c) -->
+<select idref="set_system_login_banner" selected="true" \>
+<select idref="enable_gdm_login_banner" selected="true" \>
+<select idref="set_gdm_login_banner_text" selected="true" \>
+
+<!-- AC-11(a) -->
+<select idref="set_screensaver_inactivity_timeout" selected="true" \>
+<select idref="enable_screensaver_after_idle" selected="true" \>
+<select idref="enable_screensaver_password_lock" selected="true" \>
+
+<!-- AC-11(1) -->
+<select idref="set_blank_screensaver" selected="true" \>
+
+<!-- TODO: 
+     AC-17
+     AC-17(1)
+     AC-17(2)
+     AC-17(3)
+     AC-17(4)
+     AC-17(5)
+     AC-17(6)
+     AC-17(7)
+     AC-17(8)
+     AC-18
+     AC-18(1)
+     AC-18(2)
+     AC-18(3)
+     AC-18(4)
+     AC-18(5)
+     AC-19
+     AC-19(1)
+     AC-19(2)
+     AC-19(3)
+     AC-19(4)
+     AC-20
+     AC-20(1)
+     AC-20(2)    
+     AC-21
+     AC-21(1)
+     AC-22
+     AT-1
+     AT-2
+     AT-3
+     AT-3(2)
+     AT-4
+     AT-5
+     AU-1
+     AU-2
+     AU-2(3)
+     AU-2(4)
+     AU-3
+     AU-3(1)
+     AU-3(2)
+     AU-6
+     AU-6(3)
+     AU-8
+     AU-8(1)
+     AU-9
+     AU-9(4)
+     AU-11
+     AU-12
+     CA-1
+     CA-2
+     CA-2(1)
+     CA-2(2)
+     CA-3
+     CA-3(1)
+     CA-3(2)
+     CA-5
+     CA-6
+     CA-7
+     CA-7(1)
+     CA-7(2)
+     CM-1
+     CM-2
+     CM-2(1)
+     CM-2(5)
+     CM-3
+     CM-3(4)
+     CM-4
+     CM-4(2)
+     CM-5
+     CM-5(2)
+     CM-5(5)
+     CM-5(6)
+     CM-6
+     CM-6(3)
+     CM-7
+     CM-7(1)
+     CM-7(3)
+     CM-8
+     CM-8(1)
+     CM-8(4)
+     CM-8(5)
+     CM-9
+     CP-1
+     CP-2
+     CP-3
+     CP-4
+     CP-9
+     CP-9(1)
+     CP-10(2)
+     IA-1
+     IA-2
+     IA-2(1)
+     IA-2(5)
+     IA-2(8)
+     IA-3
+     IA-3(1)
+     IA-3(2)
+     IA-3(3)
+     IA-4
+     IA-4(4)
+     IA-5
+     IA-5(1)
+     IA-5(2)
+     IA-5(3)
+     IA-5(4)
+     IA-5(6)
+     IA-5(7)
+     IA-5(8)
+     IA-6
+     IA-7
+     IA-8
+     IR-1
+     IR-2
+     IR-3
+     IR-4
+     IR-4(1)
+     IR-4(3)
+     IR-4(4)
+     IR-5
+     IR-6
+     IR-6(1)
+     IR-6(2)
+     IR-7
+     IR-7(1)
+     IR-7(2)
+     IR-8
+     MA-1
+     MA-2
+     MA-2(1)
+     MA-3
+     MA-3(2)
+     MA-3(3)
+     MA-4
+     MA-4(2)
+     MA-4(3)
+     MA-4(5)
+     MA-4(6)
+     MA-4(7)
+     MA-5
+     MA-5(1)
+     MP-1
+     MP-2
+     MP-3
+     MP-4
+     MP-5
+     MP-5(2)
+     MP-6
+     MP-6(2)
+     MP-6(3)
+     MP-6(4)
+     MP-6(5)
+     MP-6(6)
+     PE-1
+     PE-2
+     PE-2(1)
+     PE-2(3)
+     PE-3
+     PE-3(2)
+     PE-3(3)
+     PE-5
+     PE-6
+     PE-7
+     PE-7(1)
+     PE-8
+     PE-9
+     PE-10
+     PE-12
+     PE-13
+     PE-14
+     PE-15
+     PE-16
+     PL-1
+     PL-2
+     PL-2(1)
+     PL-2(2)
+     PL-4
+     PL-5
+     PL-6
+     PS-1
+     PS-2
+     PS-3
+     PS-3(1)
+     PS-3(2)
+     PS-3(3)
+     PS-4
+     PS-5
+     PS-6
+     PS-6(1)
+     PS-6(2)
+     PS-7
+     PS-8
+     RA-1
+     RA-2
+     RA-3
+     RA-5
+     RA-5(1)
+     RA-5(2)
+     RA-5(4)
+     RA-5(5)
+     RA-5(7)
+     SA-1
+     SA-2
+     SA-3
+     SA-4
+     SA-4(6)
+     SA-5
+     SA-5(1)
+     SA-5(2)
+     SA-6
+     SA-7
+     SA-8
+     SA-9
+     SA-9(1)
+     SA-10
+     SA-10(1)
+     SA-11
+     SA-12
+     SA-12(2)
+     SC-1
+     SC-2
+     SC-2(1)
+     SC-4
+     SC-5
+     SC-5(1)
+     SC-7
+     SC-7(1)
+     SC-7(2)
+     SC-7(3)
+     SC-7(4)
+     SC-7(5)
+     SC-7(7)
+     SC-7(8)
+     SC-7(11)
+     SC-7(12)
+     SC-7(3)
+     SC-7(14)
+     SC-7(18)
+     SC-8
+     SC-9
+     SC-9(1)
+     SC-10
+     SC-11
+     SC-12
+     SC-12(1)
+     SC-13
+     SC-14
+     SC-15
+     SC-15(1)
+     SC-15(2)
+     SC-15(3)
+     SC-17
+     SC-18
+     SC-18(1)
+     SC-18(2)
+     SC-18(3)
+     SC-18(4)
+     SC-19
+     SC-20
+     SC-20(1)
+     DC-21
+     SC-21(1)
+     SC-22
+     SC-23
+     SC-23(1)
+     SC-23(2)
+     SC-23(3)
+     SC-23(4)
+     SC-24
+     SC-28
+     SI-1
+     SC-2
+     SC-2(3)
+     SC-2(4)
+     SI-3
+     SI-3(1)
+     SC-3(2)
+     SC-3(3)
+     SI-4
+     SI-4(1)
+     SI-4(2)
+     SI-4(4)
+     SI-4(5)
+     SI-4(6)
+     SI-4(7)
+     SI-4(8)
+     SI-4(9)
+     SI-4(11)
+     SI-4(12)
+     SI-4(14)
+     SI-4(15)
+     SI-4(16)
+     SI-4(17)
+     SI-5
+     SI-5(1)
+     SI-6
+     SI-6(1)
+     SI-6(3)
+     SI-8
+     SI-8(1)
+     SI-8(2)
+     SI-9
+     SI-11
+     SI-12
+     PM-1
+     PM-2
+     PM-3
+     PM-4
+     PM-5
+     PM-6
+     PM-7
+     PM-8
+     PM-9
+     PM-10
+     PM-11 -->
+
+
+</Profile>
