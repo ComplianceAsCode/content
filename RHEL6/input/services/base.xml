@@ -22,7 +22,7 @@ vulnerabilities in software executing on the local machine, as well as sensitive
 information from within a process's address space or registers.</rationale>
 <ident cce="TODO" />
 <oval id="service_abrtd_disabled" />
-<ref nist="CM-6, CM-7" disa="382" />
+<ref nist="AC-17(8),CM-6,CM-7" disa="382" />
 </Rule>
 
 
@@ -40,7 +40,7 @@ accidental or trivially achievable denial of service situations and disabling
 it is appropriate.</rationale>
 <ident cce="27061-1" />
 <oval id="service_acpid_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6,CM-7" />
 </Rule>
 
 
@@ -62,7 +62,7 @@ accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
 </rationale>
 <ident cce="TODO" />
 <oval id="service_atd_disabled" />
-<ref nist="CM-6, CM-7" disa="382" />
+<ref nist="CM-6,CM-7" disa="382" />
 </Rule>
 
 
@@ -80,7 +80,7 @@ fulfilling some roles a PKI infrastructure, but its functionality is not necessa
 for many other use cases.</rationale>
 <ident cce="TODO" />
 <oval id="service_certmonger_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6,CM-7" />
 </Rule>
 
 
@@ -97,7 +97,7 @@ service is not necessary.
 </rationale>
 <ident cce="TODO" />
 <oval id="service_cgconfig_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6,CM-7" />
 </Rule>
 
 <Rule id="service_cgred_disabled">
@@ -112,7 +112,7 @@ service is not necessary.
 </rationale>
 <ident cce="TODO" />
 <oval id="service_cgred_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6,CM-7" />
 </Rule>
 
 <Rule id="service_cpuspeed_disabled">
@@ -129,7 +129,7 @@ highly desirable or necessary.
 </rationale>
 <ident cce="26973-8" />
 <oval id="service_cpuspeed_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6,CM-7" />
 </Rule>
 
 
@@ -149,7 +149,7 @@ that do not require these.
 </rationale>
 <ident cce="27086-8" />
 <oval id="service_haldaemon_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6,CM-7" />
 </Rule>
 
 
@@ -165,7 +165,7 @@ multiple processors.
 provides potential speedups for handling interrupt requests.</rationale>
 <ident cce="26990-2" />
 <oval id="service_irqbalance_enabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-6,CM-7" />
 </Rule>
 
 <Rule id="service_kdump_disabled">
@@ -180,7 +180,7 @@ crash, which can load information from the crashed kernel for analysis.
 is little need to run the kdump service.</rationale>
 <ident cce="26850-8" />
 <oval id="service_kdump_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="AC-17(8),CM-6,CM-7" />
 </Rule>
 
 <!--
@@ -252,7 +252,7 @@ kernel panics, which is not common.
 </rationale>
 <ident cce="TODO" />
 <oval id="service_netconsole_disabled" />
-<ref nist="CM-6, CM-7" disa="382" />
+<ref nist="AC-17(8),CM-6,CM-7" disa="382" />
 </Rule>
 
 
@@ -272,7 +272,7 @@ reboots. In any event, the functionality of the ntpdate service is now
 available in the ntpd program and should be considered deprecated.</rationale>
 <ident cce="TODO" />
 <!--<oval id="service_ntpdate_disabled" /> -->
-<ref nist="AU-8, CM-6" disa="382" />
+<ref nist="AC-17(8),AU-8,CM-6" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -295,7 +295,6 @@ been a source of privilege escalation security issues.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
 <Rule id="service_portreserve_disabled">
 <title>Disable Portreserve (portreserve)</title>
 <description>The <tt>portreserve</tt> service is a TCP port reservation utility that can
@@ -309,11 +308,9 @@ preventing conflicting usage of ports in the reserved port range, but it can be
 disabled if not needed.</rationale>
 <ident cce="TODO" />
 <oval id="service_portreserve_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="AC-17(8),CM-6, CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
-
 
 <Rule id="service_psacct_enabled">
 <title>Enable Process Accounting (psacct)</title>
@@ -349,7 +346,7 @@ the system is not intended to receive AMQP traffic then the <tt>qpidd</tt>
 service is not needed and should be disabled or removed.</rationale>
 <ident cce="26928-2" />
 <oval id="service_qpidd_disabled" />
-<ref nist="CM-6, CM-7" disa="382" />
+<ref nist="AC-17(8),CM-6,CM-7" disa="382" />
 </Rule>
 
 <Rule id="service_quota_nld_disabled">
@@ -389,7 +386,7 @@ some special-purpose systems often use DHCP (instead of IRDP) to retrieve
 dynamic network configuration information.</rationale>
 <ident cce="TODO" />
 <oval id="service_rdisc_disabled" />
-<ref nist="AC-4, CM-6, CM-7" disa="382" />
+<ref nist="AC-17(8),AC-4,CM-6,CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -409,7 +406,7 @@ desirable for some environments.  However, if the system is being managed by RHN
  RHN Satellite Server the <tt>rhnsd</tt> daemon can remain on. </rationale>
 <ident cce="26846-6" />
 <oval id="service_rhnsd_disabled" />
-<ref nist="CM-6, CM-7" disa="382" />
+<ref nist="AC-17(8),CM-6,CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -450,7 +447,7 @@ use Kerberos and LDAP. For others, however, in which only local files may be
 consulted, it is not necessary and should be disabled.</rationale>
 <ident cce="TODO" />
 <oval id="service_saslauthd_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="AC-17(8),CM-6,CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 

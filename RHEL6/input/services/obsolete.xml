@@ -38,7 +38,7 @@ attacks against xinetd itself.
 </rationale>
 <ident cce="27046-2" />
 <oval id="service_xinetd_disabled" />
-<ref disa="305"/>
+<ref nist="AC-17(8)" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -54,7 +54,7 @@ xinetd service's accidental (or intentional) activation.
 </rationale>
 <ident cce="27005-8" />
 <oval id="package_xinetd_removed" />
-<ref disa="305"/>
+<ref nist="AC-17(8)" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -81,7 +81,7 @@ subject to man-in-the-middle attacks.
 </rationale>
 <ident cce="26836-7" />
 <oval id="service_telnetd_disabled" />
-<ref disa="68,1436,197,877,888" />
+<ref nist="AC-17(8)" disa="68,1436,197,877,888" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -97,7 +97,7 @@ telnet service's accidental (or intentional) activation.
 </rationale>
 <ident cce="27073-6" />
 <oval id="package_telnet-server_removed" />
-<ref disa="305,381"/>
+<ref nist="AC-17(8)" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 </Group>
@@ -124,7 +124,7 @@ activation.
 </rationale>
 <ident cce="27062-9" />
 <oval id="package_rsh-server_removed" />
-<ref disa="305,381"/>
+<ref nist="AC-17(8)" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -143,7 +143,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident cce="27208-8" />
 <oval id="service_rexec_disabled" />
-<ref disa="68,1436"/>
+<ref nist="AC-17(8)" disa="68,1436"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -162,7 +162,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident cce="26994-4" />
 <oval id="service_rsh_disabled" />
-<ref disa="68,1436" />
+<ref nist="AC-17(8)" disa="68,1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -181,7 +181,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident cce="26865-6" />
 <oval id="service_rlogin_disabled" />
-<ref disa="1436" />
+<ref nist="AC-17(8)" disa="1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -204,6 +204,7 @@ of an Rsh trust relationship.
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
 <ident cce="TODO" />
+<ref nist="AC-17(8)" disa="1436" \>
 <oval id="no_rsh_trusted_host_files" />
 <tested by="DS" on="20121026"/>
 </Rule>
@@ -230,7 +231,7 @@ accidental (or intentional) activation of NIS or NIS+ services.
 </rationale>
 <ident cce="27079-3" />
 <oval id="package_ypserv_removed" />
-<ref disa="305,381"/>
+<ref nist="AC-17(8)" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -247,7 +248,7 @@ as a client in a NIS or NIS+ domain.
 </rationale>
 <ident cce="26894-6" />
 <oval id="service_ypbind_disabled" />
-<ref disa="305"/>
+<ref nist="AC-17(8)" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 </Group>
@@ -275,7 +276,7 @@ as a tftp server, which does not provide encryption or authentication.
 </rationale>
 <ident cce="27055-3" />
 <oval id="service_tftp_disabled" />
-<ref disa="1436" />
+<ref nist="AC-17(8)" disa="1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -293,7 +294,7 @@ accidental (or intentional) activation of tftp services.
 </rationale>
 <ident cce="26946-4" />
 <oval id="package_tftp-server_removed" />
-<ref disa="305"/>
+<ref nist="AC-17(8)" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -319,7 +320,7 @@ server_args = -s /var/lib/tftpboot</pre>
 </ocil>
 <ident cce="TODO" />
 <oval id="tftpd_uses_secure_mode" />
-<ref disa="366"/>
+<ref nist="AC-17(8)" disa="366"/>
 </Rule>
 
 </Group>
