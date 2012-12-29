@@ -115,6 +115,7 @@ assurance."</description>
 <select idref="enable_iptables" selected="true" \>
 
 <!-- AC-6 -->
+<select idref="audit_config_immutable" selected="true" \>
 <select idref="service_oddjobd_disabled" selected="true" \>
 <select idref="rpm_verify_permissions" selected="true" \>
 <select idref="audit_logs_permissions" selected="true" \>
@@ -171,17 +172,69 @@ assurance."</description>
 <!-- AC-11(1) -->
 <select idref="set_blank_screensaver" selected="true" \>
 
-<!-- TODO: 
-     AC-17
-     AC-17(1)
-     AC-17(2)
-     AC-17(3)
-     AC-17(4)
-     AC-17(5)
-     AC-17(6)
-     AC-17(7)
-     AC-17(8)
-     AC-18
+<!-- AC-17(1) -->
+<select idref="enable_auditd_service" selected="true" \>
+<select idref="enable_auditd_bootloader" selected="true" \>
+
+<!--  AC-17(7) -->
+<select idref="audit_rules_time_adjtimex" selected="true" \>
+<select idref="audit_rules_time_settimeofday" selected="true" \>
+<select idref="audit_rules_time_stime" selected="true" \>
+<select idref="audit_rules_time_clock_settime" selected="true" \>
+<select idref="audit_rules_time_watch_localtime" selected="true" \>
+<select idref="audit_account_changes" selected="true" \>
+<select idref="audit_network_modifications" selected="true" \>
+<select idref="audit_mac_changes" selected="true" \>
+<select idref="audit_rules_dac_modification_chmod" selected="true" \>
+<select idref="audit_rules_dac_modification_chown" selected="true" \>
+<select idref="audit_rules_dac_modification_fchmod" selected="true" \>
+<select idref="audit_rules_dac_modification_fchmodat" selected="true" \>
+<select idref="audit_rules_dac_modification_fchown" selected="true" \>
+<select idref="audit_rules_dac_modification_fchownat" selected="true" \>
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true" \>
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true" \>
+<select idref="audit_rules_dac_modification_lchown" selected="true" \>
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true" \>
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true" \>
+<select idref="audit_rules_dac_modification_removexattr" selected="true" \>
+<select idref="audit_rules_dac_modification_setxattr" selected="true" \>
+<select idref="audit_manual_logon_edits" selected="true" \>
+<select idref="audit_manual_session_edits" selected="true" \>
+<select idref="audit_file_access" selected="true" \>
+<select idref="audit_privileged_commands" selected="true" \>
+<select idref="audit_media_exports" selected="true" \>
+<select idref="audit_file_deletions" selected="true" \>
+<select idref="audit_sysadmin_actions" selected="true" \>
+<select idref="audit_kernel_module_loading" selected="true" \>
+
+<!-- AC-17(8) -->
+<select idref="disable_xinetd" selected="true" \>
+<select idref="uninstall_xinetd" selected="true" \>
+<select idref="disable_telnet_service" selected="true" \>
+<select idref="uninstall_telnet_server" selected="true" \>
+<select idref="uninstall_rsh" selected="true" \>
+<select idref="disable_rexec" selected="true" \>
+<select idref="disable_rsh" selected="true" \>
+<select idref="disable_rlogin" selected="true" \>
+<select idref="no_rsh_trust_files" selected="true" \>
+<select idref="uninstall_ypserv" selected="true" \>
+<select idref="disable_ypbind" selected="true" \>
+<select idref="disable_tftp" selected="true" \>
+<select idref="uninstall_tftp" selected="true" \>
+<select idref="tftpd_uses_secure_mode" selected="true" \>
+<select idref="service_abrtd_disabled" selected="true" \>
+<select idref="service_kdump_disabled" selected="true" \>
+<select idref="service_netconsole_disabled" selected="true" \>
+<select idref="service_ntpdate_disabled" selected="true" \>
+<select idref="service_portreserve_disabled" selected="true" \>
+<select idref="service_qpidd_disabled" selected="true" \>
+<select idref="service_rdisc_disabled" selected="true" \>
+<select idref="service_rhnsd_disabled" selected="true" \>
+<select idref="service_saslauthd_disabled" selected="true" \>
+<select idref="sshd_allow_only_protocol2" selected="true" \>
+
+ AC-18
+
      AC-18(1)
      AC-18(2)
      AC-18(3)
@@ -474,17 +527,7 @@ assurance."</description>
      SI-9
      SI-11
      SI-12
-     PM-1
-     PM-2
-     PM-3
-     PM-4
-     PM-5
-     PM-6
-     PM-7
-     PM-8
-     PM-9
-     PM-10
-     PM-11 -->
+     -->
 
 
 </Profile>
