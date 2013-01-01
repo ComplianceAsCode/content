@@ -75,7 +75,7 @@ software and other vulnerabilities. Support for these devices should be disabled
 the devices themselves should be tightly controlled.</rationale>
 <ident cce="27016-5" />
 <oval id="kernel_module_usb-storage_disabled" />
-<ref nist="CM-6, CM-7" disa="1250,85" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-6,CM-7" disa="1250,85" />
 </Rule>
 <!-- Considering removal of this entirely, in favor of previous Rule
 
@@ -116,7 +116,7 @@ disable USB storage devices if they are plugged into the system. Support for the
 should be disabled and the devices themselves should be tightly controlled.</rationale>
 <ident cce="27011-6" />
 <oval id="bootloader_nousb_argument" />
-<ref nist="CM-6, CM-7" disa="1250,85" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-6,CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="bios_disable_usb_boot">
@@ -131,7 +131,7 @@ any security measures offered by the native OS. Attackers could mount partitions
 configuration of the native OS. The BIOS should be configured to disallow booting from USB media.</rationale>
 <ident cce="26952-2" />
 <!-- <oval id="bios_disable_usb_boot" /> -->
-<ref nist="CM-6, CM-7" disa="1250,85" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-6,CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="service_autofs_disabled">
@@ -159,7 +159,7 @@ should be explicitly listed in /etc/fstab by and administrator. New filesystems 
 not be arbitrarily introduced via the automounter.</rationale>
 <ident cce="26976-1" />
 <oval id="service_autofs_disabled" />
-<ref nist="CM-6, CM-7" disa="1250,85" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-6,CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="gconf_gnome_disable_automount">
@@ -188,7 +188,7 @@ DVDs.
 </rationale>
 <ident cce="27035-5" />
 <oval id="gconf_gnome_disable_automount" />
-<ref nist="CM-6, CM-7" disa="1250,85" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-6,CM-7" disa="1250,85" />
 </Rule>
 
 <Rule id="disable_module_cramfs">
