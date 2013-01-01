@@ -48,7 +48,7 @@ not advised to set <tt>nodev</tt> on partitions which contain their root
 filesystems.  </rationale>
 <ident cce="26860-7" />
 <oval id="mount_option_nodev_removable_partitions" value="var_removable_partition" />
-<ref nist="CM-7, MP-2"/>
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
 </Rule>
 
 <Rule id="mountopt_noexec_on_removable_partitions">
@@ -71,7 +71,7 @@ The output should show <tt>noexec</tt> in use.
 </ocil>
 <ident cce="27196-5" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
-<ref nist="CM-7,MP-2" disa="87" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" />
 </Rule>
 
 <!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
@@ -89,7 +89,7 @@ should not be able to execute suid or sgid binaries from partitions mounted off 
 removable media.</rationale>
 <ident cce="27056-1" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
-<ref nist="CM-7, MP-2"/>
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
 </Rule>
 
 <Rule id="mount_option_tmp_nodev">
@@ -198,4 +198,3 @@ necessary to meet requirements, the storage location /var/tmp should be bind mou
 </Rule>
 
 </Group>
-
