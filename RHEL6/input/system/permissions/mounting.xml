@@ -147,6 +147,8 @@ rather than relying on the automounter.
 If the <tt>autofs</tt> service is not needed to dynamically mount NFS filesystems
 or removable media, disable the service for all runlevels:
 <pre># chkconfig --level 0123456 autofs off</pre>
+Stop the service if it is already running:
+<pre># service autofs stop</pre>
 </description>
 <ocil clause="it does not">
 To verify the <tt>autofs</tt> service is disabled, run the following command:
