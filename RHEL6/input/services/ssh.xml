@@ -352,7 +352,8 @@ The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
 ciphers are in use, run the following command:
 <pre># grep Ciphers /etc/ssh/sshd_config</pre>
-The output should contain only those ciphers which are FIPS-approved.
+The output should contain only those ciphers which are FIPS-approved, namely, the 
+AES and 3DES ciphers.
 </ocil>
 <rationale>
 Approved algorithms should impart some level of confidence in their
