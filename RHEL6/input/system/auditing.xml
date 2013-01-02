@@ -93,7 +93,7 @@ actions will be taken if other obstacles exist.
 </rationale>
 <ident cce="27058-7" />
 <oval id="service_auditd_enabled" />
-<ref nist="AC-17(1),AU-1, CM-6" disa="347,169,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" />
+<ref nist="AC-17(1),AU-1, CM-6" disa="347,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -397,7 +397,7 @@ audit records. If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
-<ref nist="AU-4, CM-6" disa="140,143,1343" />
+<ref nist="AU-4, CM-6" disa="140,1343" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -420,6 +420,26 @@ account when it needs to notify an administrator:
 administrators of the system, who can take appropriate action.</rationale>
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
 <ref nist="AU-4, CM-6" disa="139,144" />
+</Rule>
+
+<Rule id="configure_auditd_audispd" severity="medium">
+<title>Configure auditd to use audispd plugin</title>
+<description>To configure the <tt>auditd</tt> service to use the 
+<tt>audispd</tt> plugin, set the <tt>active</tt> line in 
+<tt>/etc/audisp/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
+Restart the <tt>auditd</tt>service:
+<pre># service auditd restart</pre>
+</description>
+<ocil clause="it is not">
+To verify the audispd plugin is active, run the following command:
+<pre># grep active /etc/audisp/plugins.d/syslog.conf</pre>
+If the plugin is active, the output will show <tt>yes</tt>.
+</ocil>
+<rationale>The auditd service does not include the ability to send audit 
+records to a centralized server for management directly.  It does, however, 
+include an audit event multiplexor plugin (audispd) to pass audit records 
+to the local syslog server</rationale>
+<ref nist="AU-3" disa="136" />
 </Rule>
 
 </Group>
