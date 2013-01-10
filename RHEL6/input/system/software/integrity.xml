@@ -39,7 +39,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident cce="27024-9" />
 <oval id="package_aide_installed" />
-<ref nist="CM-6, SC-28, SI-7" disa="1069"/>
+<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -57,7 +57,7 @@ Next,  the following command to return binaries to a normal, non-prelinked state
 The prelinking feature can interfere with the operation
 of AIDE, because it changes binaries.
 </rationale>
-<ref nist="CM-6, SC-28, SI-7" />
+<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
 </Rule>
 
 <Rule id="aide_build_database">
@@ -77,7 +77,7 @@ If this check produces any unexpected output, investigate.
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ref nist="SC-28, SI-7" />
+<ref nist="CM-6(d),CM-6(3),SC-28,SI-7" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
@@ -96,7 +96,7 @@ To determine that periodic AIDE execution has been scheduled, run the following 
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE may reveal unexpected changes in installed files.
 </rationale>
-<ref nist="CM-6, SC-28, SI-7" disa="374,416,1069,1263,1297,1589"/>
+<ref nist="CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
 </Rule>
 <!--
 <Group id="aide_verify_integrity_manually">
@@ -161,7 +161,7 @@ The permissions set by the vendor should be maintained. Any deviations from
 this baseline should be investigated.</rationale>
 <ident cce="26731-0" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,CM-6" disa="1493,1494,1495" />
+<ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
@@ -188,7 +188,7 @@ by the RPM database. Executables with erroneous hashes could be a sign of nefari
 on the system.</rationale>
 <ident cce="TODO" />
 <oval id="rpm_verify_hashes" />
-<ref nist="SI-7" disa="1496" />
+<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" />
 </Rule>
 
 </Group>

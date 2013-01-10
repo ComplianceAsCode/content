@@ -93,7 +93,7 @@ actions will be taken if other obstacles exist.
 </rationale>
 <ident cce="27058-7" />
 <oval id="service_auditd_enabled" />
-<ref nist="AC-17(1),AU-1(b),AU-12(a),AU-12(c),CM-6" disa="347,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" />
+<ref nist="AC-17(1),AU-1(b),AU-12(a),AU-12(c)" disa="347,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -246,7 +246,7 @@ determine how many logs the system is configured to retain after rotation:
 log information over the period required. This is a function of the maximum log
 file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" /> 
-<ref nist="AU-1(b),AU-11,CM-6" />
+<ref nist="AU-1(b),AU-11" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -270,7 +270,7 @@ determine how much data the system will retain in each audit log file:
 log information over the period required. This is a function of the maximum
 log file size and the number of logs retained.</rationale>
 <oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" /> 
-<ref nist="AU-1(b),AU-11,CM-6" />
+<ref nist="AU-1(b),AU-11" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -305,7 +305,7 @@ being overwhelmed with log data. However, for systems that must never discard
 log data, or which use external processes to transfer it and reclaim space,
 <tt>keep_logs</tt> can be employed.</rationale>
 <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
-<ref nist="AU-1(b),AU-4,AU-11,CM-6" />
+<ref nist="AU-1(b),AU-4,AU-11" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -355,7 +355,7 @@ disk space is starting to run low:
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
-<ref nist="AU-1(b),AU-4,CM-6" disa="140,143,1339" />
+<ref nist="AU-1(b),AU-4" disa="140,143,1339" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -395,7 +395,7 @@ audit records. If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
-<ref nist="AU-1(b),AU-4,CM-6" disa="140,1343" />
+<ref nist="AU-1(b),AU-4" disa="140,1343" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -417,7 +417,7 @@ account when it needs to notify an administrator:
 <rationale>Email sent to the root account is typically aliased to the
 administrators of the system, who can take appropriate action.</rationale>
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
-<ref nist="AU-1(b),AU-4,CM-6" disa="139,144" />
+<ref nist="AU-1(b),AU-4" disa="139,144" />
 </Rule>
 
 <Rule id="configure_auditd_audispd" severity="medium">

@@ -19,7 +19,7 @@ enabling the cron daemon is essential.
 </rationale>
 <ident cce="27070-2" />
 <oval id="service_crond_enabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -47,7 +47,7 @@ file is provided for backwards compatibility by the RPM package crontabs and it
 will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
 <ident cce="26923-3" />
 <oval id="file_user_owner_etc_crontab" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="file_group_owner_etc_crontab">
@@ -57,7 +57,7 @@ file is provided for backwards compatibility by the RPM package crontabs and it
 will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
 <ident cce="26876-3" />
 <oval id="file_group_owner_etc_crontab" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="file_mode_etc_crontab">
@@ -67,7 +67,7 @@ file is provided for backwards compatibility by the RPM package crontabs and it
 will be read by the crond service. RHEL6 will not add jobs to it by default.</description>
 <ident cce="27102-3" />
 <oval id="file_mode_etc_crontab" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Group id="cron_file_perms">
@@ -124,7 +124,7 @@ daemon can be provided through the cron daemon instead.
 </rationale>
 <ident cce="26548-8" />
 <oval id="service_atd_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 

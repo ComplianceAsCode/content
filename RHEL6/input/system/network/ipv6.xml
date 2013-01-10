@@ -45,7 +45,7 @@ the vulnerability to exploitation.
 </rationale>
 <ident cce="27153-6" />
 <oval id="kernel_module_ipv6_option_disabled" />
-<ref nist="CM-6, CM-7" disa="1551"/>
+<ref nist="CM-7" disa="1551"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -60,7 +60,7 @@ For each network interface <i>IFACE</i> , add or correct the following lines in
 prevention mechanism:
 <pre>IPV6INIT=no</pre>
 </description>
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -75,7 +75,7 @@ following two lines in <tt>/etc/netconfig</tt>:
 tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
 </description>
 <oval id="network_ipv6_disable_rpc" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 </Group><!--<Group id="disabling_ipv6">-->
 
@@ -154,7 +154,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
 <ident cce="27166-8" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
-<ref nist="CM-6, CM-7" disa="1551"/>
+<ref nist="CM-7" disa="1551"/>
 </Rule>
 
 </Group><!--<Group id="disabling_ipv6_autoconfig">-->
@@ -170,7 +170,7 @@ from the network otherwise. The example address here is an IPv6 address
 reserved for documentation purposes, as defined by RFC3849.
 </description>
 <oval id="network_ipv6_static_address" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="network_ipv6_privacy_extensions">
@@ -187,7 +187,7 @@ applied.
 </description>
 <ident cce="27154-4" />
 <oval id="network_ipv6_privacy_extensions" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="network_ipv6_default_gateway">
@@ -200,7 +200,7 @@ Router addresses should be manually set and not accepted via any
 auto-configuration or router advertisement.
 </description>
 <oval id="network_ipv6_default_gateway" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="network_ipv6_limit_requests">
@@ -246,7 +246,7 @@ required.
 <ident cce="27158-5" />
 <ident cce="27160-1" />
 <oval id="network_ipv6_limit_requests" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group><!--<Group id="configuring_ipv6">-->

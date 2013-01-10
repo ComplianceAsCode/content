@@ -35,7 +35,7 @@ Only root should be able to modify important boot parameters.
 </rationale>
 <ident cce="26995-1" />
 <oval id="file_user_owner_grub_conf" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -53,7 +53,7 @@ file should not have any access privileges anyway.
 </rationale>
 <ident cce="27022-3" />
 <oval id="file_group_owner_grub_conf" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -70,7 +70,7 @@ parameters.
 </rationale>
 <ident cce="26949-8" />
 <oval id="file_permissions_grub_conf" />
-<ref nist="CM-6" disa="225"/>
+<ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -265,7 +265,7 @@ screen locking to prevent access from passersby.
 </rationale>
 <ident cce="26828-4" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="CM-6, CM-7, AC-11(a)" disa="57"/>
+<ref nist="CM-7, AC-11(a)" disa="57"/>
 </Rule>
 
 <Rule id="enable_screensaver_after_idle" severity="medium">
@@ -291,7 +291,7 @@ controlled-access area.
 </rationale>
 <ident cce="26600-7" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="CM-6, CM-7,AC-11(a)" disa="57" />
+<ref nist="CM-7,AC-11(a)" disa="57" />
 </Rule>
 
 <Rule id="enable_screensaver_password_lock" severity="medium">
@@ -316,7 +316,7 @@ access the system, preventing access by passersby.
 </rationale>
 <ident cce="26235-2" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
-<ref nist="CM-6, CM-7, AC-11(a)" disa="57" />
+<ref nist="CM-7, AC-11(a)" disa="57" />
 </Rule>
 
 <Rule id="set_blank_screensaver">
@@ -341,7 +341,7 @@ contents of the display from passersby.
 </rationale>
 <ident cce="26638-7" />
 <oval id="gconf_gnome_screensaver_mode_blank" />
-<ref nist="CM-6, CM-7,AC-11(b)" disa="60" />
+<ref nist="CM-7,AC-11(b)" disa="60" />
 </Rule>
 
 </Group>
@@ -372,7 +372,7 @@ Installing <tt>screen</tt> ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
 <ident cce="26940-7" />
-<ref nist="CM-6, CM-7" disa="58" />
+<ref nist="CM-7" disa="58" />
 <tested by="DS" on="20121026"/>
 </Rule>
 </Group>

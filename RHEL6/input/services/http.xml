@@ -36,7 +36,7 @@ of attack, and should be disabled if not needed.
 </rationale>
 <ident cce="27075-1" />
 <oval id="service_httpd_disabled" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="uninstall_httpd">
@@ -53,7 +53,7 @@ removing it provides a safeguard against its activation.
 </rationale>
 <ident cce="27133-8" />
 <oval id="package_httpd_removed" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group> <!--<Group id="disabling_httpd"> -->
@@ -72,7 +72,7 @@ command-line method installs only the required <tt>httpd</tt> package itself.
 </description>
 <!--<ident cce="27078-5" />-->
 <!--<oval id="package_httpd_installed" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 
 <Group id="httpd_minimal_modules_installed">
 <title>Confirm Minimal Built-in Modules Installed</title>
@@ -121,7 +121,7 @@ to plan an attack on the given system. This information disclosure should be res
 </rationale>
 <ident cce="27123-9" />
 <oval id="httpd_servertokens_prod" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="httpd_serversignature_off">
@@ -139,7 +139,7 @@ to plan an attack on the given system. This information disclosure should be res
 </rationale>
 <ident cce="26900-1" />
 <oval id="httpd_serversignature_off" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_restrict_info_leakage"> -->
@@ -216,7 +216,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>-->
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_basic_authentication" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 <Rule id="httpd_digest_authentication">
@@ -232,7 +232,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_digest_authentication" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_mod_rewrite">
@@ -250,7 +250,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_mod_rewrite" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_ldap_support">
@@ -268,7 +268,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_ldap_support" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_server_side_includes">
@@ -289,7 +289,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_server_side_includes" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_mime_magic">
@@ -305,7 +305,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_mime_magic" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_webdav">
@@ -326,7 +326,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_webdav" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_server_activity_status">
@@ -346,7 +346,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_server_activity_status" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_server_configuration_display">
@@ -365,7 +365,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_server_configuration_display" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_url_correction">
@@ -382,7 +382,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_url_correction" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_proxy_support">
@@ -407,7 +407,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_proxy_support" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_cache_support">
@@ -428,7 +428,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_cache_support" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_cgi_support">
@@ -454,7 +454,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_cgi_support" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Group id="httpd_optional_components">
@@ -482,7 +482,7 @@ by limiting the capabilities allowed by the web server.
 </description>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_optional_components" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 <Group id="httpd_minimize_config_files_included">
@@ -508,7 +508,7 @@ part of the server's running configuration.
 </description>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_minimize_config_files_included" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 </Group> <!-- <Group id="httpd_core_modules"> -->
@@ -539,7 +539,7 @@ by web clients.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_restrict_root_directory" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_restrict_web_directory">
@@ -565,7 +565,7 @@ by web clients. Following symbolic links could also allow such access.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_restrict_web_directory" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_restrict_critical_directories">
@@ -582,7 +582,7 @@ access possible in order to avoid unauthorized access to restricted content or s
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_restrict_critical_directories" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Rule id="httpd_limit_available_methods">
@@ -609,7 +609,7 @@ by limiting the capabilities allowed by the web server.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <!--<oval id="httpd_limit_available_methods" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 </Group> <!-- <Group id="httpd_directory_restrictions"> -->
@@ -649,7 +649,7 @@ unauthorized parties.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <oval id="package_mod_ssl_installed" />
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 </Group> <!-- <Group id="httpd_deploy_mod_ssl"> -->
@@ -680,7 +680,7 @@ application layer.
 </rationale>
 <!--<ident cce="26900-1" />-->
 <oval id="package_mod_security_installed" />
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 </Group> <!-- <Group id="httpd_deploy_mod_security"> -->
@@ -773,7 +773,7 @@ to access information about the web server or alter the server's log files.
 </rationale>
 <ident cce="27150-2" />
 <oval id="dir_perms_var_log_httpd" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="httpd_conf_dir_permissions">
@@ -788,7 +788,7 @@ to access information about the web server or alter the server's configuration f
 </rationale>
 <!-- <ident cce="27150-2" /> -->
 <oval id="dir_perms_etc_httpd_conf" />
-<!-- <ref nist="CM-6, CM-7" /> -->
+<!-- <ref nist="CM-7" /> -->
 </Rule>
 
 <Rule id="httpd_conf_files_permissions">
@@ -803,7 +803,7 @@ to access information about the web server or to alter the server's configuratio
 </rationale>
 <ident cce="27099-1" />
 <oval id="file_permissions_httpd_server_conf_files" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_restrict_file_dir_access"> -->

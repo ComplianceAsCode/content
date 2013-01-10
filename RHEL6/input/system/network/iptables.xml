@@ -59,7 +59,7 @@ capability for IPv6 and ICMPv6.
 </rationale>
 <ident cce="27006-6" />
 <oval id="service_ip6tables_enabled" />
-<ref nist="AC-4,CM-6,CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414"/>
+<ref nist="AC-4,CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -75,7 +75,7 @@ capability for IPv4 and ICMP.
 </rationale>
 <ident cce="27018-1" />
 <oval id="service_iptables_enabled" />
-<ref nist="AC-4,CM-6,CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414" />
+<ref nist="AC-4,CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414" />
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group><!--<Group id="iptables_activation">-->
@@ -130,7 +130,7 @@ any packets which are not explicitly permitted should not be
 accepted.</rationale>
 <ident cce="26444-0" />
 <oval id="iptables_default_policy_drop" />
-<ref nist="CM-6" disa="66,1109,1154,1414" />
+<ref nist="" disa="66,1109,1154,1414" />
 </Rule>
 
 <Rule id="set_iptables_default_rule_forward" severity="medium">
@@ -153,7 +153,7 @@ The output should be similar to the following:
 <pre># grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
 <ident cce="27186-6" />
-<ref nist="CM-6" disa="1109" />
+<ref nist="" disa="1109" />
 </Rule>
 
 <Group id="iptables_icmp_disabled">
@@ -174,7 +174,7 @@ If you are going to statically configure the machine's address, it should ignore
 could add another IPv6 address to the interface or alter important network settings:
 <pre>-A INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>
 </description>
-<ref nist="CM-6" />
+<ref nist="" />
 <rationale>Restricting other ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not recommended because the operation-
   of IPv6 depends heavily on ICMPv6. Thus, more care must be taken when blocking ICMPv6 types.</rationale>
 <!--<ident cce="26444-0" />-->
@@ -226,7 +226,7 @@ The following rule will log all traffic originating from a site-local address, w
 </description>
 <!--<ident cce="26444-0" />-->
 <!--MANUAL<oval id="iptables_log_and_drop_suspicious" />-->
-<ref nist="AC-17, CM-6" />
+<ref nist="AC-17" />
 </Group>
 
 </Group><!--<Group id="ruleset_modifications">-->
