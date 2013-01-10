@@ -30,7 +30,7 @@ a risk of compromising sensitive information.
 </rationale>
 <ident cce="26948-0" />
 <oval id="service_vsftpd_disabled" />
-<ref nist="CM-6, CM-7" disa="1436"/>
+<ref nist="CM-7" disa="1436"/>
 </Rule>
 
 <Rule id="uninstall_vsftpd">
@@ -47,7 +47,7 @@ accidental activation.
 </rationale>
 <ident cce="26687-4" />
 <oval id="package_vsftpd_removed" />
-<ref nist="CM-6, CM-7" disa="1436"/>
+<ref nist="CM-7" disa="1436"/>
 </Rule>
 
 </Group> <!-- <Group id="disabling_vsftpd"> -->
@@ -64,7 +64,7 @@ accidental activation.
 and for consistency with future Red Hat releases, the use of vsftpd is recommended.</rationale>
 <ident cce="27187-4" />
 <oval id="package_vsftpd_installed" />
-<ref nist="CM-6, CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group> <!-- <Group id="ftp_use_vsftpd"> -->
@@ -100,7 +100,7 @@ format. The default vsftpd log file is /var/log/vsftpd.log.</rationale>
 <warning category="general">If verbose logging to vsftpd.log is done, sparse logging of downloads to /var/log/xferlog will not also occur. However, the information about what files were downloaded is included in the information logged to vsftpd.log</warning>
 <ident cce="27142-9" />
 <!--<oval id="ftp_log_transactions" />-->
-<!--<ref nist="CM-6, CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Rule>
 
 <Rule id="ftp_present_banner" severity="medium">
@@ -113,7 +113,7 @@ by default. Add or correct the following configuration options.
 <ident cce="27145-2" />
 <ref disa="48" />
 <!--<oval id="ftp_present_banner" />-->
-<!--<ref nist="CM-6, CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 <ocil clause="it does not">
 To verify this configuration, run the following command.
 <pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
@@ -140,7 +140,7 @@ these logins as much as possible.</description>
 <rationale>The use of non-anonymous FTP logins is strongly discouraged. Since SSH clients and servers are widely available, and since SSH provides support for a transfer mode which resembles FTP in user interface, there is no good reason to allow password-based FTP access. </rationale>
 <ident cce="27115-5" />
 <!--<oval id="ftp_restrict_to_anon" />-->
-<!--<ref nist="CM-6, CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Rule>
 
 <Group id="ftp_limit_users">
@@ -158,7 +158,7 @@ ftp</pre>
 <rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via ftp. It was used to prevent system users such as the root user from logging in via the insecure ftp protocol. However, when the configuration option userlist deny=NO is set, vsftpd interprets ftpusers as the set of users who are allowed to login via ftp. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous ftp access can be limited to legacy users who have been explicitly identified.</rationale>
 <!--<ident cce="27115-5" />-->
 <!--<oval id="ftp_limit_users" />-->
-<!--<ref nist="CM-6, CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Group>
 
 </Group> <!-- <Group id="ftp_restrict_users"> -->
@@ -176,7 +176,7 @@ is necessary to ensure that files cannot be uploaded and downloaded from the sam
 </rationale>
 <ident cce="27117-1" />
 <!--<oval id="ftp_disable_uploads" />-->
-<!--<ref nist="CM-6, CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Rule>
 
 <Rule id="ftp_home_partition">
@@ -187,7 +187,7 @@ be used to verify that this directory is on its own partition.</description>
 these users from filling a disk used by other services.</rationale>
 <!--<ident cce="27115-5" />-->
 <!--<oval id="ftp_home_partition" />-->
-<!--<ref nist="CM-6, CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Rule>
 
 <Group id="ftp_configure_firewall">
@@ -206,7 +206,7 @@ iptables to listen to that dialogue and allow connections to the data ports whic
 FTP server to operate on a machine which is running a firewall.</rationale>
 <!--<ident cce="27115-5" />-->
 <!--<oval id="ftp_configure_firewall" />-->
-<!--<ref nist="CM-6, CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Group>
 
 </Group> <!-- <Group id="ftp_configure_vsftpd"> -->

@@ -28,7 +28,7 @@ implementation flaws and should be disabled if possible.
 </rationale>
 <ident cce="26873-0" />
 <oval id="service_named_disabled" />
-<ref nist="CM-6, CM-7" disa="366"/>
+<ref nist="CM-7" disa="366"/>
 </Rule>
 
 <Rule id="uninstall_bind">
@@ -44,7 +44,7 @@ removing it provides a safeguard against its activation.
 </rationale>
 <ident cce="27030-6" />
 <oval id="package_bind_removed" />
-<ref nist="CM-6, CM-7" disa="366"/>
+<ref nist="CM-7" disa="366"/>
 </Rule>
 
 </Group> <!--<Group id="disabling_dns_server">-->
@@ -63,7 +63,7 @@ Internet, it is strongly recommended that no other services be offered by
 machines which act as organizational DNS servers.</description>
 <!--<ident cce="27030-6" />-->
 <!--<oval id="dns_server_dedicated" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 <Rule id="dns_server_chroot">
@@ -101,7 +101,7 @@ configuration file. That is, when this guide recommends editing
 <ident cce="27127-0" />
 <ident cce="26961-3" />
 <!--<oval id="dns_server_chroot" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 <Group id="dns_server_firewall">
@@ -118,7 +118,7 @@ it may be appropriate to insert a -s flag into this rule to allow traffic only
 from packets on the local network.</rationale>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_firewall" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 </Group> <!--<Group id="dns_server_isolation">-->
@@ -181,7 +181,7 @@ Separate machines should be used to fill these two functions whenever possible.
 
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_separate_internal_external" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 <Group id="dns_server_partition_with_views">
@@ -228,7 +228,7 @@ circumstances, this includes only the internal clients which are allowed to use
 this server as a general-purpose nameserver.</warning>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_partition_with_views" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 <Group id="dns_server_disable_zone_transfers">
@@ -250,7 +250,7 @@ is not necessary to allow zone transfers within BIND itself, so they should be
 disabled to avoid the potential for abuse.</rationale>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_disable_zone_transfers" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 <Group id="dns_server_authenticate_zone_transfers">
@@ -307,7 +307,7 @@ key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 .private are no longer needed, and may safely be deleted.</warning>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_authenticate_zone_transfers" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Group>
 
 <Rule id="dns_server_disable_dynamic_updates">
@@ -329,7 +329,7 @@ example), and consider using the update-policy directive to restrict changes to
 only the precise type of change needed.</rationale>
 <ident cce="27105-6" />
 <!--<oval id="dns_server_disable_dynamic_updates" />-->
-<!--<ref nist="CM-6, CM-7" />-->
+<!--<ref nist="CM-7" />-->
 </Rule>
 
 </Group> <!--<Group id="dns_server_protection">-->
