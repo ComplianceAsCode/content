@@ -32,7 +32,7 @@ system logging services.
 </rationale>
 <ident cce="26809-4" />
 <oval id="package_rsyslog_installed" />
-<ref nist="AU-2, AU-9, CM-6" disa="1311,1312"/>
+<ref nist="AU-9, CM-6" disa="1311,1312"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -262,7 +262,7 @@ place to view the status of multiple hosts within the enterprise.
 </rationale>
 <ident cce="26801-1" />
 <oval id="rsyslog_remote_loghost" />
-<ref nist="AU-2, AU-9" disa="1348, 136" />
+<ref nist="AU-9" disa="1348, 136" />
 </Rule>
 </Group>
 
@@ -298,7 +298,7 @@ rsyslog by configuring it not to listen on the network.
 </rationale>
 <ident cce="26803-7" />
 <oval id="rsyslog_nolisten" />
-<ref nist="AU-2, AU-9" />
+<ref nist="AU-9" />
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_tcp">
@@ -316,7 +316,7 @@ messages over a reliable TCP connection.
 </rationale>
 <ident cce="TODO" />
 <!--<oval id="rsyslog_listen_tcp" />-->
-<ref nist="AU-2, AU-9" />
+<ref nist="AU-9" />
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_udp">
@@ -335,7 +335,7 @@ this enables it to receive their messages as well.
 </rationale>
 <ident cce="TODO" />
 <!--<oval id="rsyslog_listen_udp" />-->
-<ref nist="AU-2, AU-9" />
+<ref nist="AU-9" />
 </Rule>
 
 </Group>
@@ -372,7 +372,7 @@ periodically in order to perform its log rotation function.</description>
 that they fill up the /var/log partition. Valuable logging information could be lost
 if the /var/log partition becomes full.</rationale>
 <ident cce="27194-0" />
-<ref nist="AU-2, AU-9, CM-6" disa="366"/>
+<ref nist="AU-9, CM-6" disa="366"/>
 </Rule> -->
 
 <!-- <Rule id="ensure_logrotate_rotates_all_files"> -->
@@ -388,7 +388,7 @@ if the /var/log partition becomes full.</rationale>
 </ocil>
 <ident cce="27014-0" />
 <oval id="logrotate_rotate_all_files" />
-<ref nist="AU-2, AU-9, CM-6" disa="366" />
+<ref nist="AU-9, CM-6" disa="366" />
 </Rule>
 </Group>
 
