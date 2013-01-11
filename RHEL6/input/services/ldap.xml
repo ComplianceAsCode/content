@@ -39,7 +39,7 @@ To ensure LDAP is configured to use TLS for all transactions, run the following 
 <rationale>The ssl directive specifies whether to use ssl or not. If
 not specified it will default to no. It should be set to start_tls rather
 than doing LDAP over SSL.</rationale>
-<ref disa="776,778,1453" />
+<ref nist="CM-7" disa="776,778,1453" />
 <ident cce="26690-8" />
 <oval id="ldap_client_start_tls" />
 <tested by="DS" on="20121024"/>
@@ -64,7 +64,7 @@ To ensure TLS is configured with trust certificates, run the following command:
 tls_checkpeer is configured (which is the default for openldap versions 2.1 and
 up). These directives define the path to the trust certificates signed by the
 site CA.</rationale>
-<ref disa="776,778,1453" />
+<ref nist="CM-7" disa="776,778,1453" />
 <ident cce="27189-0" />
 <oval id="ldap_client_tls_cacertpath" />
 <tested by="DS" on="20121024"/>
@@ -120,7 +120,7 @@ These are basic LDAP configuration directives. The suffix parameter gives the ro
 </description>
 <ident cce="27191-6" />
 <oval id="ldap_server_config_olcsuffix" />
-<ref nist="AC-2, CM-7" />
+<ref nist="AC-2,CM-7" />
 </Rule>
 
 <Rule id="ldap_server_config_bdb_file_security">
@@ -138,7 +138,7 @@ Protect configuration files containing the hashed password the same way you woul
 </description>
 <!--<ident cce="TODO:CCE" />-->
 <oval id="ldap_server_config_bdb_file_security" />
-<ref nist="AC-6, CM-7" />
+<ref nist="AC-6,CM-7" />
 </Rule>
 
 <Rule id="ldap_server_config_olcrootpw">
@@ -204,7 +204,7 @@ LDAP server process would need to be restarted manually whenever the server rebo
 <ident cce="26989-4" />
 <ident cce="26895-3" />
 <oval id="ldap_server_config_certificate_files" />
-<ref nist="AC-6, CM-7, SC-11, SC-12, SC-13, SC-17" />
+<ref nist="AC-6,SC-11,SC-12,SC-13,SC-17" />
 </Rule>
 
 <Group id="ldap_server_config_directory_domain">

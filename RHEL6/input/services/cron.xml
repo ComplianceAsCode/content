@@ -23,7 +23,6 @@ enabling the cron daemon is essential.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
 <Rule id="disable_anacron">
 <title>Disable anacron Service</title>
 <description>The <tt>cronie-anacron</tt> package which provides anacron
@@ -36,6 +35,7 @@ such as laptops and workstations that may be shut down during the normal times
 that <tt>cron</tt> jobs are scheduled to run. On systems which do not require this
 additional functionality, <tt>anacron</tt> could needlessly increase the possible
 attack surface for an intruder.</description>
+<ref nist="CM-7" />
 </Rule>
 
 <!--
@@ -128,7 +128,6 @@ daemon can be provided through the cron daemon instead.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
 <Group id="restrict_at_cron_users">
 <title>Restrict at and cron to Authorized Users if Necessary</title>
 <description>
@@ -154,4 +153,3 @@ To restrict at and cron to only authorized users:
 </Group>
 
 </Group>
-

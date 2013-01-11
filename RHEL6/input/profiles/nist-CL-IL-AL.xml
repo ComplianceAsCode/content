@@ -25,6 +25,12 @@ assurance."</description>
 <refine-value idref="var_selinux_state_name" selector="enforcing" \>
 <refine-value idref="var_selinux_policy_name" selector="targeted" \>
 
+<!--	AC-4:	TBD 
+
+	-->
+<refine-value idref="sysctl_net_ipv4_conf_all_secure_redirects_value" selector="1" \>
+
+
 <!--	AC-6: Least privilege
 
 	Optional values for the umask are "022" or "027" -->
@@ -79,6 +85,13 @@ assurance."</description>
 <!-- --------------------------------------------------------------------------------- -->
 <!-- STATIC VARIABLES: DO NOT ALTER -->
 <refine-value idref="login_banner_text" selector="usgcb_default" \>
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="0" \>
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_redirects_value" selector="0" \>
+<refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="1" \>
+<refine-value idref="sysctl_net_ipv4_conf_default_secure_redirects_value" selector="1" \>
+<refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" selector="1" \>
+<refine-value idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" selector="1" \>
+
 <!-- --------------------------------------------------------------------------------- -->
 
 
@@ -206,6 +219,8 @@ assurance."</description>
 <select idref="audit_file_deletions" selected="true" \>
 <select idref="audit_sysadmin_actions" selected="true" \>
 <select idref="audit_kernel_module_loading" selected="true" \>
+<select idref="iptables_log_and_drop_suspicious" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_all_log_martians" selected="true" \>
 
 <!-- AC-17(8) -->
 <select idref="disable_xinetd" selected="true" \>
@@ -269,6 +284,8 @@ assurance."</description>
 <select idref="ntpd_specify_remote_server" selected="true" \>
 <select idref="ntpd_specify_multiple_servers" selected="true" \>
 
+<!-- AU-12 -->
+<select idref="service_psacct_enabled" selected="true" \>
 
 <!-- CM-3
      	At some point we should look at creating prose for this 
@@ -282,12 +299,84 @@ assurance."</description>
 <select idref="aide_periodic_cron_checking" selected="true" \>
 <select idref="rpm_verify_hashes" selected="true" \>
 
+<!-- CM-7 -->
+<select idref="disable_ipv6_module_loading" selected="true" \>
+<select idref="network_ipv6_disable_interfaces" selected="true" \>
+<select idref="network_ipv6_disable_rpc" selected="true" \>
+<select idref="set_sysctl_net_ipv6_conf_default_accept_ra" selected="true" \>
+<select idref="set_sysctl_ipv6_default_accept_redirects" selected="true" \>
+<!-- network_ipv6_limit_requests should likely be broken up into individual
+     rules at some point -->
+<select idref="network_ipv6_limit_requests" selected="true" \>
+<select idref="network_disable_unused_interfaces" selected="true" \>
+<select idref="network_disable_zeroconf" selected="true" \>
+<select idref="network_sniffer_disabled" selected="true" \>
+<select idref="disable_protocol_dccp" selected="true" \>
+<select idref="disable_protocol_sctp" selected="true" \>
+<select idref="disable_protocol_rds" selected="true" \>
+<select idref="disable_protocol_tipc" selected="true" \>
+<select idref="set_iptables_default_rule" selected="true" \>
+<select idref="set_iptables_default_rule_forward" selected="true" \>
+<select idref="iptables_icmp_disabled" selected="true" \>
+<select idref="disable_sysctl_ipv4_all_send_redirects" selected="true" \>
+<select idref="disable_sysctl_ipv4_ip_forward" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_all_accept_source_route" selected="true" \>
+<select idref="set_sysctl_net_ipv4_conf_all_accept_redirects" selected="true" \>
+<select idref="set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" \>
+<select idref="set_sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true" \>
+<select idref="disable_module_cramfs" selected="true" \>
+<select idref="disable_module_freevxfs" selected="true" \>
+<select idref="disable_module_jffs2" selected="true" \>
+<select idref="disable_module_hfs" selected="true" \>
+<select idref="disable_module_hfsplus" selected="true" \>
+<select idref="disable_module_squashfs" selected="true" \>
+<select idref="disable_module_udf" selected="true" \>
+<select idref="disable_gnome_thumbnailers" selected="true" \>
+<select idref="mountopt_nodev_on_nonroot_partitions" selected="true" \>
+<select idref="mount_option_tmp_nodev" selected="true" \>
+<select idref="mount_option_tmp_noexec" selected="true" \>
+<select idref="mount_option_tmp_nosuid" selected="true" \>
+<select idref="mount_option_dev_shm_nodev" selected="true" \>
+<select idref="mount_option_dev_shm_noexec" selected="true" \>
+<select idref="mount_option_dev_shm_nosuid" selected="true" \>
+<select idref="mount_option_var_tmp_bind_var" selected="true" \>
+<select idref="service_cups_disabled" selected="true" \>
+<select idref="iptables_cupsd_disabled" selected="true" \>
+<select idref="cups_disable_browsing" selected="true" \>
+<select idref="cups_disable_printserver" selected="true" \>
+<select idref="disable_dhcp_server" selected="true" \>
+<select idref="uninstall_dhcp_server" selected="true" \>
+<select idref="disable_dhcp_client" selected="true" \>
+<select idref="disable_avahi" selected="true" \>
+<select idref="enable_cron" selected="true" \>
+<select idref="disable_anacron" seleted="true" \>
+<select idref="disable_at" selected="true" \>
+<select idref="disable_dns_server" selected="true" \>
+<select idref="uninstall_bind" selected="true" \>
+<select idref="package_openldap-servers_removed" selected="true" \>
+<select idref="package_sendmail_removed" selected="true" \>
+<select idref="service_acpid_disabled" selected="true" \>
+<select idref="service_atd_disabled" selected="true" \>
+<select idref="service_certmonger_disabled" selected="true" \>
+<select idref="service_cgconfig_disabled" selected="true" \>
+<select idref="service_cgred_disabled" selected="true" \>
+<select idref="service_cpuspeed_disabled" selected="true" \>
+<select idref="service_haldaemon_disabled" selected="true" \>
+<select idref="service_irqbalance_enabled" selected="true" \>
+<select idref="service_mdmonitor_disabled" selected="true" \>
+<select idref="service_messagebus_disabled" selected="true" \>
+<select idref="service_oddjobd_disabled" selected="true" \>
+<select idref="service_quota_nld_disabled" selected="true" \>
+<select idref="service_rhsmcertd_disabled" selected="true" \>
+<select idref="service_smartd_disabled" selected="true" \>
+<select idref="service_sysstat_disabled" selected="true" \>
+<select idref="disable_httpd" selected="true" \>
+<select idref="uninstall_httpd" selected="true" \>
+<select idref="disabling_vsftpd" selected="true" \>
+<select idref="uninstall_vsftpd" selected="true" \>
 
 
 <!-- REMAINING MAPPINGS
-     CM-7
-     CM-7(1)
-     CM-7(3)
      CM-8
      CM-8(1)
      CM-8(4)

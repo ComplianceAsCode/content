@@ -25,7 +25,6 @@ information from within a process's address space or registers.</rationale>
 <ref nist="AC-17(8),CM-7" disa="381" />
 </Rule>
 
-
 <Rule id="service_acpid_disabled">
 <title>Disable Advanced Configuration and Power Interface (acpid)</title>
 <description>The Advanced Configuration and Power Interface Daemon (<tt>acpid</tt>)
@@ -42,7 +41,6 @@ it is appropriate.</rationale>
 <oval id="service_acpid_disabled" />
 <ref nist="CM-7" />
 </Rule>
-
 
 <Rule id="service_atd_disabled">
 <title>Disable At Service (atd)</title>
@@ -81,7 +79,6 @@ for many other use cases.</rationale>
 <oval id="service_certmonger_disabled" />
 <ref nist="CM-7" />
 </Rule>
-
 
 <Rule id="service_cgconfig_disabled">
 <title>Disable Control Group Config (cgconfig)</title>
@@ -131,7 +128,6 @@ highly desirable or necessary.
 <ref nist="CM-7" />
 </Rule>
 
-
 <Rule id="service_haldaemon_disabled">
 <title>Disable Hardware Abstraction Layer Service (haldaemon)</title>
 <description>The Hardware Abstraction Layer Daemon (<tt>haldaemon</tt>) collects
@@ -150,7 +146,6 @@ that do not require these.
 <oval id="service_haldaemon_disabled" />
 <ref nist="CM-7" />
 </Rule>
-
 
 <Rule id="service_irqbalance_enabled">
 <title>Enable IRQ Balance (irqbalance)</title>
@@ -216,7 +211,6 @@ there is no need to run the service.</rationale>
 <ref nist="CM-7" />
 </Rule>
 
-
 <Rule id="service_messagebus_disabled">
 <title>Disable D-Bus IPC Service (messagebus)</title>
 <description>D-Bus provides an IPC mechanism used by 
@@ -270,7 +264,7 @@ reboots. In any event, the functionality of the ntpdate service is now
 available in the ntpd program and should be considered deprecated.</rationale>
 <ident cce="TODO" />
 <!--<oval id="service_ntpdate_disabled" /> -->
-<ref nist="AC-17(8),AU-8" disa="382" />
+<ref nist="AC-17(8),AU-8,CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -306,7 +300,7 @@ preventing conflicting usage of ports in the reserved port range, but it can be
 disabled if not needed.</rationale>
 <ident cce="TODO" />
 <oval id="service_portreserve_disabled" />
-<ref nist="AC-17(8), CM-7" />
+<ref nist="AC-17(8),CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -324,7 +318,7 @@ system and its audit records provide more authoritative and comprehensive
 records.</rationale>
 <ident cce="TODO" />
 <oval id="service_psacct_enabled" />
-<ref nist="AU-12" />
+<ref nist="AU-12,CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -368,7 +362,6 @@ service.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
 <Rule id="service_rdisc_disabled">
 <title>Disable Network Router Discovery Daemon (rdisc)</title>
 <description>The <tt>rdisc</tt> service implements the client side of the ICMP
@@ -387,7 +380,6 @@ dynamic network configuration information.</rationale>
 <ref nist="AC-17(8),AC-4,CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="service_rhnsd_disabled">
 <title>Disable Red Hat Network Service (rhnsd)</title>
@@ -408,7 +400,6 @@ desirable for some environments.  However, if the system is being managed by RHN
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
 <Rule id="service_rhsmcertd_disabled">
 <title>Disable Red Hat Subscription Manager Daemon (rhsmcertd)</title>
 <description>The Red Hat Subscription Manager (rhsmcertd) periodically checks for
@@ -427,7 +418,6 @@ unnecessary and can be disabled.</rationale>
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="service_saslauthd_disabled">
 <title>Disable Cyrus SASL Authentication Daemon (saslauthd)</title>
@@ -448,7 +438,6 @@ consulted, it is not necessary and should be disabled.</rationale>
 <ref nist="AC-17(8),CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="service_smartd_disabled">
 <title>Disable SMART Disk Monitoring Service (smartd)</title>

@@ -99,7 +99,7 @@ and whether to enter single-user mode.
 </rationale>
 <ident cce="26911-8" />
 <oval id="bootloader_password" />
-<ref nist="CM-7, IA-5" disa="213" />
+<ref nist="IA-5" disa="213" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -130,7 +130,7 @@ by configuring the bootloader password.
 </rationale>
 <ident cce="27040-5" />
 <oval id="singleuser_password" />
-<ref nist="CM-7,IA-5" disa="213" />
+<ref nist="IA-5" disa="213" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -187,10 +187,9 @@ services, weakening system security.
 </rationale>
 <ident cce="27043-9" />
 <oval id="interactive_boot_disable" />
-<ref nist="CM-7, IA-4, SC-2" disa="213"/>
+<ref nist="IA-4, SC-2" disa="213"/>
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Group id="screen_locking">
 <title>Configure Screen Locking</title>
@@ -265,7 +264,7 @@ screen locking to prevent access from passersby.
 </rationale>
 <ident cce="26828-4" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="CM-7, AC-11(a)" disa="57"/>
+<ref nist="AC-11(a)" disa="57"/>
 </Rule>
 
 <Rule id="enable_screensaver_after_idle" severity="medium">
@@ -291,7 +290,7 @@ controlled-access area.
 </rationale>
 <ident cce="26600-7" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="CM-7,AC-11(a)" disa="57" />
+<ref nist="AC-11(a)" disa="57" />
 </Rule>
 
 <Rule id="enable_screensaver_password_lock" severity="medium">
@@ -316,7 +315,7 @@ access the system, preventing access by passersby.
 </rationale>
 <ident cce="26235-2" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
-<ref nist="CM-7, AC-11(a)" disa="57" />
+<ref nist="AC-11(a)" disa="57" />
 </Rule>
 
 <Rule id="set_blank_screensaver">
@@ -341,7 +340,7 @@ contents of the display from passersby.
 </rationale>
 <ident cce="26638-7" />
 <oval id="gconf_gnome_screensaver_mode_blank" />
-<ref nist="CM-7,AC-11(b)" disa="60" />
+<ref nist="AC-11(b)" disa="60" />
 </Rule>
 
 </Group>
@@ -372,7 +371,7 @@ Installing <tt>screen</tt> ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
 <ident cce="26940-7" />
-<ref nist="CM-7" disa="58" />
+<ref nist="" disa="58" />
 <tested by="DS" on="20121026"/>
 </Rule>
 </Group>
