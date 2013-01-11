@@ -7,8 +7,6 @@ These protections are applied at the system initialization or
 kernel level, and defend against certain types of badly-configured
 or compromised programs.</description>
 
-
-
 <Group id="daemon_umask">
 <title>Daemon Umask</title>
 <description>The umask is a per-process setting which limits
@@ -132,7 +130,7 @@ heap higher than this address, the hardware prevents execution in that
 address range.</rationale>
 <ident cce="27007-4" />
 <oval id="sysctl_kernel_exec_shield" />
-<ref nist="CM-7" />
+<ref nist="" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -152,7 +150,6 @@ in order to re-purpose it using return oriented programming (ROP) techniques.
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
-
 
 <Group id="enable_nx">
 <title>Enable Execute Disable (XD) or No Execute (NX) Support on
@@ -187,7 +184,7 @@ this may prevent them from booting.</warning>
 <rationale>On 32-bit systems that support the XD or NX bit, the vendor-supplied
 PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) support.</rationale>
 <ident cce="27010-8" />
-<ref nist="CM-7" />
+<ref nist="" />
 </Rule>
 
 <Rule id="bios_enable_execution_restrictions">

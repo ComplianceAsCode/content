@@ -101,7 +101,7 @@ configuration file. That is, when this guide recommends editing
 <ident cce="27127-0" />
 <ident cce="26961-3" />
 <!--<oval id="dns_server_chroot" />-->
-<!--<ref nist="CM-7" />-->
+<ref nist="CM-7" />
 </Rule>
 
 <Group id="dns_server_firewall">
@@ -118,7 +118,7 @@ it may be appropriate to insert a -s flag into this rule to allow traffic only
 from packets on the local network.</rationale>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_firewall" />-->
-<!--<ref nist="CM-7" />-->
+<ref nist="CM-7" />
 </Group>
 
 </Group> <!--<Group id="dns_server_isolation">-->
@@ -231,7 +231,7 @@ this server as a general-purpose nameserver.</warning>
 <!--<ref nist="CM-7" />-->
 </Group>
 
-<Group id="dns_server_disable_zone_transfers">
+<Rule id="dns_server_disable_zone_transfers">
 <title>Disable Zone Transfers from the Nameserver</title>
 <description>Is it necessary for a secondary nameserver to receive zone data
 via zone transfer from the primary server?  If not, follow the instructions in
@@ -250,10 +250,10 @@ is not necessary to allow zone transfers within BIND itself, so they should be
 disabled to avoid the potential for abuse.</rationale>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_disable_zone_transfers" />-->
-<!--<ref nist="CM-7" />-->
-</Group>
+<ref nist="CM-7" />
+</Rule>
 
-<Group id="dns_server_authenticate_zone_transfers">
+<Rule id="dns_server_authenticate_zone_transfers">
 <title>Authenticate Zone Transfers</title>
 <description>If it is necessary for a secondary nameserver to receive zone data
 via zone transfer from the primary server, follow the instructions here.  Use
@@ -307,8 +307,8 @@ key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 .private are no longer needed, and may safely be deleted.</warning>
 <!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
 <!--<oval id="dns_server_authenticate_zone_transfers" />-->
-<!--<ref nist="CM-7" />-->
-</Group>
+<ref nist="CM-7" />
+</Rule>
 
 <Rule id="dns_server_disable_dynamic_updates">
 <title>Disable Dynamic Updates</title>
