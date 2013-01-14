@@ -238,6 +238,7 @@ Look for the value of the <tt>maxrepeat</tt> parameter.  The DoD requirement is 
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
+<ident cce="TODO" />
 <ref disa="366"/>
 </Rule>
 
@@ -272,7 +273,7 @@ search space.
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
 contain that many uppercase characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each uppercase character.
-Add <tt>ucredit=-1</tt> after pam_cracklib.so to require use of a digit in passwords.
+Add <tt>ucredit=-1</tt> after pam_cracklib.so to require use of an upper case character in passwords.
 </description>
 <ocil clause="ucredit is not found or not set to the required value">
 To check how many uppercase characters are required in a password, run the following command:
@@ -507,8 +508,8 @@ This is the default.
 <ocil clause="it does not">
 Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>  and
 ensure that the <tt>pam_unix.so</tt> module includes the argument
-<tt>sha512</tt>.
-<tt>$ grep sha512 /etc/pam.d/system-auth</tt>
+<tt>sha512</tt>:
+<pre>$ grep sha512 /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
@@ -534,6 +535,7 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
+<ident cce="TODO" />
 <ref nist="IA-5" disa="803"/>
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -555,6 +557,7 @@ in the <tt>[default]</tt> section:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
+<ident cce="TODO" />
 <ref nist="IA-5" disa="803"/>
 <tested by="DS" on="20121026"/>
 </Rule>
