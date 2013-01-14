@@ -134,7 +134,7 @@ directly to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml<
 and this file can later be edited directly if necessary.
 </description>
 <ocil clause="it does not">
-To ensure login warning banner text is properly set, run the following:
+To ensure the login warning banner text is properly set, run the following:
 <pre>$ gconftool-2 -g /apps/gdm/simple-greeter/banner_message_text</pre>
 If properly configured, the proper banner text will appear within this schema.
 </ocil>
@@ -149,7 +149,7 @@ process and facilitates possible legal action against attackers.
 
 </Group>
 
-<Group id="user_list">
+<Rule id="disable_user_list">
 <title>Disable the User List</title>
 <description>In the default graphical environment, users logging
 directly into the system are greeted with a login screen that displays
@@ -159,16 +159,18 @@ Run the following command to disable the user list:
 <pre>sudo -u gdm gconftool-2 \
   --type bool \
   --set /apps/gdm/simple-greeter/disable_user_list true</pre>
-Leaving the user list enabled is a security risk since it allows anyone
-with physical access to the system to quickly enumerate known user accounts
-without logging in.
 </description>
-<Rule id="disable_user_list">
-<title>Disable the User List</title>
-<description>GDM's list of previously logged in users should not be displayed.</description>
+<ocil clause="it is not">
+To ensure the user list is disabled, run the following command:
+<pre>$ gconftool-2 -g /apps/gdm/simple-greeter/disable_user_list</pre>
+The output should be <tt>true</tt>.
+</ocil>
+<rationale>Leaving the user list enabled is a security risk since it allows anyone
+with physical access to the system to quickly enumerate known user accounts
+without logging in.</rationale>
+<ident cce="TODO" />
 <ref nist="AC-23" />
 </Rule>
-</Group>
 
 </Group>
 
