@@ -237,7 +237,7 @@ exclude-result-prefixes="xccdf xhtml dc">
   <!-- convenience macros for XCCDF prose -->
   <xsl:template match="sysctl-desc-macro">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
-    run the following command.
+    run the following command:
     <xhtml:pre xml:space="preserve"># sysctl -w <xsl:value-of select="@sysctl"/>=<xsl:value-of select="@value"/></xhtml:pre>
 
 	<!-- The following text could also be included conditionally, if the defaultness of the sysctl were indicated. -->
@@ -249,7 +249,7 @@ exclude-result-prefixes="xccdf xhtml dc">
     The status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
     by running the following command:
     <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
-    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>:
+    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
     If this value is not the default value, investigate how it could have been
     adjusted at runtime, and verify it is not set improperly in
     <xhtml:code>/etc/sysctl.conf</xhtml:code>.
