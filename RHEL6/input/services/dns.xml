@@ -34,7 +34,7 @@ implementation flaws and should be disabled if possible.
 <Rule id="uninstall_bind">
 <title>Uninstall bind Package</title>
 <description>To remove the <tt>bind</tt> package, which contains the
-<tt>named</tt> service, run the following command.
+<tt>named</tt> service, run the following command:
 <pre># yum erase bind</pre>
 </description>
 <ocil><package-check-macro package="bind" /> </ocil>
@@ -68,21 +68,21 @@ machines which act as organizational DNS servers.</description>
 
 <Rule id="dns_server_chroot">
 <title>Run DNS Software in a chroot Jail</title>
-<description>Install the <tt>bind-chroot</tt> package.
+<description>Install the <tt>bind-chroot</tt> package:
 <pre># yum install bind-chroot</pre>
-Place a valid named.conf file inside the chroot jail.
+Place a valid named.conf file inside the chroot jail:
 <pre># cp /etc/named.conf /var/named/chroot/etc/named.conf
 # chown root:root /var/named/chroot/etc/named.conf
 # chmod 644 /var/named/chroot/etc/named.conf</pre>
 Create and populate an appropriate zone directory within the jail, based on the
-options directive. If your <tt>named.conf</tt> includes.
+options directive. If your <tt>named.conf</tt> includes:
 <pre>options {
 directory "/path/to/DIRNAME ";
 ...
 }</pre>
-then copy that directory and its contents from the original zone directory.
+then copy that directory and its contents from the original zone directory:
 <pre># cp -r /path/to/DIRNAME /var/named/chroot/DIRNAME</pre>
-Add or correct the following line within <tt>/etc/sysconfig/named</tt>.
+Add or correct the following line within <tt>/etc/sysconfig/named</tt>:
 <pre>ROOTDIR=/var/named/chroot</pre>
 </description>
 <rationale>Chroot jails are not foolproof. However, they serve to make it more
@@ -134,7 +134,7 @@ DNS data.</description>
 <description>Is it possible to run external and internal nameservers on
 separate machines? If so, follow the configuration guidance in this section. On
 the external nameserver, edit <tt>/etc/named.conf</tt> to add or correct the
-following directives.
+following directives:
 <pre>options {
   allow-query { any; };
   recursion no;
@@ -145,7 +145,7 @@ zone "example.com " IN {
 };</pre>
 On the internal nameserver, edit <tt>/etc/named.conf</tt>. Add or correct the
 following directives, where SUBNET is the numerical IP representation of your
-organization in the form xxx.xxx.xxx.xxx/xx.
+organization in the form xxx.xxx.xxx.xxx/xx:
 <pre>acl internal {
   SUBNET ;
   localhost;
@@ -190,7 +190,7 @@ Separate machines should be used to fill these two functions whenever possible.
 separate physical machines, run BIND9 and simulate this feature using views.
 Edit <tt>/etc/named.conf</tt>. Add or correct the following directives (where
 SUBNET is the numerical IP representation of your organization in the form
-xxx.xxx.xxx.xxx/xx).
+xxx.xxx.xxx.xxx/xx):
 <pre>acl internal {
   SUBNET ;
   localhost;
@@ -237,7 +237,7 @@ this server as a general-purpose nameserver.</warning>
 via zone transfer from the primary server?  If not, follow the instructions in
 this section. If so, see the next section for instructions on protecting zone
 transfers.
-Add or correct the following directive within <tt>/etc/named.conf</tt>.
+Add or correct the following directive within <tt>/etc/named.conf</tt>:
 <pre>options {
   allow-transfer { none; };
   ...
@@ -257,15 +257,15 @@ disabled to avoid the potential for abuse.</rationale>
 <title>Authenticate Zone Transfers</title>
 <description>If it is necessary for a secondary nameserver to receive zone data
 via zone transfer from the primary server, follow the instructions here.  Use
-dnssec-keygen to create a symmetric key file in the current directory.
+dnssec-keygen to create a symmetric key file in the current directory:
 <pre># cd /tmp
 # dnssec-keygen -a HMAC-MD5 -b 128 -n HOST dns.example.com
 Kdns.example.com .+aaa +iiiii</pre>
 This output is the name of a file containing the new key. Read the file to find
-the base64-encoded key string.
+the base64-encoded key string:
 <pre># cat Kdns.example.com .+NNN +MMMMM .key
 dns.example.com IN KEY 512 3 157 base64-key-string</pre>
-Add the directives to <tt>/etc/named.conf</tt> on the primary server.
+Add the directives to <tt>/etc/named.conf</tt> on the primary server:
 <pre>key zone-transfer-key {
   algorithm hmac-md5;
   secret "base64-key-string ";
@@ -275,7 +275,7 @@ zone "example.com " IN {
   allow-transfer { key zone-transfer-key; };
   ...
 };</pre>
-Add the directives below to <tt>/etc/named.conf</tt> on the secondary nameserver.
+Add the directives below to <tt>/etc/named.conf</tt> on the secondary nameserver:
 <pre>key zone-transfer-key {
   algorithm hmac-md5;
   secret "base64-key-string ";
@@ -314,7 +314,7 @@ key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 <title>Disable Dynamic Updates</title>
 <description>Is there a mission-critical reason to enable the risky dynamic
 update functionality? If not, edit <tt>/etc/named.conf</tt>. For each zone
-specification, correct the following directive if necessary.
+specification, correct the following directive if necessary:
 <pre>zone "example.com " IN {
   allow-update { none; };
   ...

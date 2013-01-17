@@ -163,8 +163,8 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 
 <Rule id="network_ipv6_static_address">
 <title>Manually Assign Global IPv6 Address</title>
-<description>To manually assign an IP address for an interface IFACE , edit the
-file <tt>/etc/sysconfig/network-scripts/ifcfg-IFACE</tt>. Add or correct the
+<description>To manually assign an IP address for an interface, edit the
+file <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>. Add or correct the
 following line (substituting the correct IPv6 address):
 <pre>IPV6ADDR=2001:0DB8::ABCD/64</pre>
 Manually assigning an IP address is preferable to accepting one from routers or
@@ -180,7 +180,7 @@ reserved for documentation purposes, as defined by RFC3849.
 <title>Use Privacy Extensions for Address</title>
 <description>To introduce randomness into the automatic generation of IPv6
 addresses, add or correct the following line in
-<tt>/etc/sysconfig/network-scripts/ifcfg-IFACE</tt>:
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>:
 <pre>IPV6_PRIVACY=rfc3041</pre>
 Automatically-generated IPv6 addresses are based on the underlying hardware
 (e.g. Ethernet) address, and so it becomes possible to track a piece of
@@ -196,7 +196,7 @@ applied.
 <Rule id="network_ipv6_default_gateway">
 <title>Manually Assign IPv6 Router Address</title>
 <description>Edit the file
-<tt>/etc/sysconfig/network-scripts/ifcfg-<i>IFACE</i></tt>, and add or correct
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>, and add or correct
 the following line (substituting your gateway IP as appropriate):
 <pre>IPV6_DEFAULTGW=2001:0DB8::0001</pre>
 Router addresses should be manually set and not accepted via any

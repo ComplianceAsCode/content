@@ -69,7 +69,7 @@ this service should be disabled.
 <Group id="disabling_netfs">
 <title>Disable netfs if Possible</title>
 <description>To determine if any network filesystems handled by netfs are
-currently mounted on the system execute the following command.
+currently mounted on the system execute the following command:
 <pre># mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
 If the command did not return any output then disable netfs.
 </description>
@@ -109,7 +109,7 @@ NFSv2, NIS (see Section 3.2.4 for information about NIS, which is not
 recommended), or any third-party or custom RPC-based program. If none of these
 programs are in use, however, rpcbind should be disabled to improve system
 security.  In order to get more information about whether rpcbind may be
-disabled on a given host, query rpcbind using the following command.
+disabled on a given host, query rpcbind using the following command:
 <pre># rpcinfo -p</pre>
 If the only services listed are portmapper and status, it is safe to disable
 rpcbind. If other services are listed and your site is not running NFS or NIS,
@@ -338,13 +338,14 @@ intercept the request and substitute a malicious file. Allowing setuid files to
 be executed from remote servers is particularly risky, both for this reason and
 because it requires the clients to extend root-level trust to the NFS
 server.</description>
+
 <Rule id="use_nodev_option_on_nfs_mounts" severity="medium">
 <title>Mount Remote Filesystems with nodev</title>
 <description>
 <mount-desc-macro option="nodev" part="any NFS mounts" />
 </description>
 <ocil clause="the setting does not show">
-To verify the <tt>nodev</tt> option is configured for all NFS mounts, run the following command.
+To verify the <tt>nodev</tt> option is configured for all NFS mounts, run the following command:
 <pre>$ mount  | grep nfs</pre>
 All NFS mounts should show the <tt>nodev</tt> setting in parentheses.
 </ocil>
@@ -361,7 +362,7 @@ should not present device files to users.</rationale>
 <mount-desc-macro option="nosuid" part="any NFS mounts" />
 </description>
 <ocil clause="the setting does not show">
-To verify the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command.
+To verify the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command:
 <pre>$ mount  | grep nfs</pre>
 All NFS mounts should show the <tt>nosuid</tt> setting in parentheses.
 </ocil>
@@ -389,7 +390,7 @@ The syntax of the <tt>exports</tt> file is not necessarily checked fully on relo
 can leave your NFS configuration more open than intended. Therefore, exercise caution when modifying
 the file.
 <br /><br />
-The syntax of each line in <tt>/etc/exports</tt> is
+The syntax of each line in <tt>/etc/exports</tt> is:
 <pre>/DIR	host1(opt1,opt2) host2(opt3)</pre>
 where <tt>/DIR</tt> is a directory or filesystem to export, <tt>hostN</tt> is an IP address, netblock,
 hostname, domain, or netgroup to which to export, and <tt>optN</tt> is an option.
@@ -484,7 +485,7 @@ Remove any instances of the
 <tt>insecure_locks</tt> option from the file <tt>/etc/exports</tt>.
 </description>
 <ocil clause="there is output">
-To verify insecure file locking has been disabled, run the following command.
+To verify insecure file locking has been disabled, run the following command:
 <pre># grep insecure_locks /etc/exports</pre>
 </ocil>
 <rationale>Allowing insecure file locking could allow for sensitive data to be
