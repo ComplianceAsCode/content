@@ -14,9 +14,13 @@ hosts, and networks. The rules can also specify which of the
 system's network services are available to particular hosts or
 networks.</description>
 
-<!-- <Rule id="network_disable_unused_interfaces">
+<Group id="network_disable_unused_interfaces">
 <title>Disable Unused Interfaces</title>
-<description>If the system does not require network communications but still
+<description>Network interfaces expand the attack surface of the 
+system.  Unused interfaces are not monitored or controlled, and 
+should be disabled.
+<br /><br />
+If the system does not require network communications but still
 needs to use the loopback interface, remove all files of the form
 <tt>ifcfg-<i>interface</i></tt> except for <tt>ifcfg-lo</tt> from
 <tt>/etc/sysconfig/network-scripts</tt>:
@@ -25,13 +29,7 @@ If the system is a standalone machine with no need for network access or even
 communication over the loopback device, then disable this service.
 <service-disable-macro service="network" />
 </description>
-<rationale>The network interfaces expand the attack surface of a system.
-Although unusual, if they are not needed they should be disabled.
-</rationale>
-<ident cce="TODO" />
--TODO:MANUAL<oval id="network_disable_unused_interfaces" />
-<ref nist="CM-7" />
-</Rule> -->
+</Group> 
 
 <Rule id="network_disable_zeroconf">
 <title>Disable Zeroconf Networking</title>
@@ -59,8 +57,8 @@ capture all traffic on the network to which it is connected. Run the following
 to determine if any interface is running in promiscuous mode:
 <pre>$ ip link | grep PROMISC</pre>
 </description>
-<rationale>If any results are returned then a sniffing process (such as tcpdump
-or wireshark) is likely to be using the interface and this should be
+<rationale>If any results are returned, then a sniffing process (such as tcpdump
+or Wireshark) is likely to be using the interface and this should be
 investigated.
 </rationale>
 <ident cce="27152-8" />
