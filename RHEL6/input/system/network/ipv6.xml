@@ -55,8 +55,8 @@ the vulnerability to exploitation.
 correct the following lines in <tt>/etc/sysconfig/network</tt>:
 <pre>NETWORKING_IPV6=no
 IPV6INIT=no</pre>
-For each network interface <i>IFACE</i> , add or correct the following lines in
-<tt>/etc/sysconfig/network-scripts/</tt> ifcfg-<i>IFACE</i> as an additional
+For each network interface, add or correct the following lines in
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt> as an additional
 prevention mechanism:
 <pre>IPV6INIT=no</pre>
 </description>
