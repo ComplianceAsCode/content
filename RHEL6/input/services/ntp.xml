@@ -55,14 +55,14 @@ logs and auditing possible security breaches.</rationale>
 <title>Specify a Remote NTP Server</title>
 <description>To specify a remote NTP server for time synchronization, edit
 the file <tt>/etc/ntp.conf</tt>. Add or correct the following lines,
-substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>.
+substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>:
 <pre>server <i>ntpserver</i></pre>
 This instructs the NTP software to contact that remote server to obtain time
 data.
 </description>
 <ocil clause="this is not the case">
 A remote NTP server should be configured for time synchronization.  To verify
-one is configured, open the following file.
+one is configured, open the following file:
 <pre>/etc/ntp.conf</pre>
 In the file, there should be a section similar to the following:
 <pre># --- OUR TIMESERVERS -----
