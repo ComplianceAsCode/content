@@ -6,14 +6,14 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>The kernel runtime parameter "kernel.randomize_va_space" should be set to "1".</description>
+      <description>The kernel runtime parameter "kernel.randomize_va_space" should be set to "2".</description>
     </metadata>
     <criteria>
-      <criterion comment="kernel runtime parameter kernel.randomize_va_space set to 1" test_ref="test_sysctl_kernel_randomize_va_space" />
+      <criterion comment="kernel runtime parameter kernel.randomize_va_space set to 2" test_ref="test_sysctl_kernel_randomize_va_space" />
     </criteria>
   </definition>
 
-  <unix:sysctl_test check="all" check_existence="all_exist" comment="kernel runtime parameter kernel.randomize_va_space set to 1" id="test_sysctl_kernel_randomize_va_space" version="1">
+  <unix:sysctl_test check="all" check_existence="all_exist" comment="kernel runtime parameter kernel.randomize_va_space set to 2" id="test_sysctl_kernel_randomize_va_space" version="1">
     <unix:object object_ref="object_sysctl_kernel_randomize_va_space" />
     <unix:state state_ref="state_sysctl_kernel_randomize_va_space" />
   </unix:sysctl_test>
@@ -23,6 +23,6 @@
   </unix:sysctl_object>
 
   <unix:sysctl_state id="state_sysctl_kernel_randomize_va_space" version="1">
-    <unix:value datatype="int" operation="greater than or equal">1</unix:value>
+    <unix:value datatype="int" operation="equals">2</unix:value>
   </unix:sysctl_state>
 </def-group>
