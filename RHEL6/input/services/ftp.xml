@@ -78,7 +78,7 @@ and for consistency with future Red Hat releases, the use of vsftpd is recommend
 <Rule id="ftp_log_transactions">
 <title>Enable Logging of All FTP Transactions</title>
 <description>Add or correct the following configuration options within the <tt>vsftpd</tt>
-configuration file, located at <tt>/etc/vsftpd/vsftpd.conf</tt>.
+configuration file, located at <tt>/etc/vsftpd/vsftpd.conf</tt>:
 <pre>xferlog_enable=YES
 xferlog_std_format=NO
 log_ftp_protocol=YES</pre>
@@ -88,14 +88,15 @@ Find if logging is applied to the ftp daemon.
 <br/><br/>
 Procedures:
 <br/><br/>
-If vsftpd is started by xinetd the following command will indicate the xinetd.d startup file.
+If vsftpd is started by xinetd the following command will indicate the xinetd.d startup file:
 <pre># grep vsftpd /etc/xinetd.d/*</pre>
 <pre># grep server_args <i>vsftpd xinetd.d startup file</i></pre>
 This will indicate the vsftpd config file used when starting through xinetd.
-If the <i>server_args</i>line is missing or does not include the vsftpd configuration file, then the default config file (/etc/vsftpd/vsftpd.conf) is used.
+If the <i>server_args</i> line is missing or does not include the vsftpd configuration file, then the default config file (/etc/vsftpd/vsftpd.conf) is used.
 <pre># grep xferlog_enable <i>vsftpd config file</i></pre>
 </ocil>
-<rationale>The modifications above ensure that all commands sent to the ftp server are logged using the verbose vsftpd log
+<rationale>To trace malicious activity facilitated by the FTP service, it must be configured to ensure that all commands sent to
+the ftp server are logged using the verbose vsftpd log
 format. The default vsftpd log file is /var/log/vsftpd.log.</rationale>
 <warning category="general">If verbose logging to vsftpd.log is done, sparse logging of downloads to /var/log/xferlog will not also occur. However, the information about what files were downloaded is included in the information logged to vsftpd.log</warning>
 <ident cce="27142-9" />
@@ -106,7 +107,7 @@ format. The default vsftpd log file is /var/log/vsftpd.log.</rationale>
 <Rule id="ftp_present_banner" severity="medium">
 <title>Create Warning Banners for All FTP Users</title>
 <description>Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd/vsftpd.conf</tt>
-by default. Add or correct the following configuration options.
+by default. Add or correct the following configuration options:
 <pre>banner_file=/etc/issue</pre>
 </description>
 <rationale>This setting will cause the system greeting banner to be used for FTP connections as well.</rationale>
@@ -115,10 +116,10 @@ by default. Add or correct the following configuration options.
 <!--<oval id="ftp_present_banner" />-->
 <!--<ref nist="CM-7" /> -->
 <ocil clause="it does not">
-To verify this configuration, run the following command.
+To verify this configuration, run the following command:
 <pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
 
-The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below.
+The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below:
 <pre># grep "banner_file" /etc/vsftpd/vsftpd.conf
 banner_file=/etc/issue</pre>
 </ocil>
@@ -133,7 +134,7 @@ identified need for this access.</description>
 <Rule id="ftp_restrict_to_anon">
 <title>Restrict Access to Anonymous Users if Possible</title>
 <description>Is there a mission-critical reason for users to transfer files to/from their own accounts using FTP, rather than
-using a secure protocol like SCP/SFTP? If not, edit the vsftpd configuration file. Add or correct the following configuration option.
+using a secure protocol like SCP/SFTP? If not, edit the vsftpd configuration file. Add or correct the following configuration option:
 <pre>local_enable=NO</pre>
 If non-anonymous FTP logins are necessary, follow the guidance in the remainder of this section to secure
 these logins as much as possible.</description>
@@ -145,11 +146,11 @@ these logins as much as possible.</description>
 
 <Group id="ftp_limit_users">
 <title>Limit Users Allowed FTP Access if Necessary</title>
-<description>If there is a mission-critical reason for users to access their accounts via the insecure FTP protocol, limit the set of users who are allowed this access. Edit the vsftpd configuration file. Add or correct the following configuration options.
+<description>If there is a mission-critical reason for users to access their accounts via the insecure FTP protocol, limit the set of users who are allowed this access. Edit the vsftpd configuration file. Add or correct the following configuration options:
 <pre>userlist_enable=YES
 userlist_file=/etc/vsftp.ftpusers
 userlist_deny=NO</pre>
-Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via ftp, add a line containing that user's name.
+Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via ftp, add a line containing that user's name:
 <pre>USERNAME</pre>
 If anonymous access is also required, add the anonymous usernames to <tt>/etc/vsftp.ftpusers</tt> as well.
 <pre>anonymous
@@ -166,7 +167,7 @@ ftp</pre>
 <Rule id="ftp_disable_uploads">
 <title>Disable FTP Uploads if Possible</title>
 <description>Is there a mission-critical reason for users to upload files via FTP? If not,
-edit the vsftpd configuration file to add or correct the following configuration options.
+edit the vsftpd configuration file to add or correct the following configuration options:
 <pre>write_enable=NO</pre>
 If FTP uploads are necessary, follow the guidance in the remainder of this section to secure these transactions
 as much as possible.</description>
@@ -196,7 +197,7 @@ these users from filling a disk used by other services.</rationale>
 blocks access to the ports used by the web server.
 <iptables-desc-macro allow="true" proto="tcp" port="21" />
 Edit the file <tt>/etc/sysconfig/iptables-config</tt>. Ensure that the space-separated list of modules contains
-the FTP connection tracking module.
+the FTP connection tracking module:
 <pre>IPTABLES_MODULES="ip_conntrack_ftp"</pre></description>
 <rationale>These settings configure iptables to allow connections to an FTP server. The first line allows initial connections
 to the FTP server port.

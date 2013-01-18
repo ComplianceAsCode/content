@@ -165,16 +165,16 @@ an SSL certificate are independent of the MTA in use, and are described here.
 <Group id="postfix_create_cert">
 <title>Create an SSL Certificate</title>
 <description>
-Change into the CA certificate directory.
+Change into the CA certificate directory:
 <pre># cd /etc/pki/tls/certs</pre>
-Generate a key pair for the mail server.
+Generate a key pair for the mail server:
 <pre># openssl genrsa -out mailserverkey.pem 2048</pre>
 Next, generate a certificate signing request (CSR) for the CA to sign, making sure to supply your mail
-server's fully qualified domain name as the Common Name.
+server's fully qualified domain name as the Common Name:
 <pre># openssl req -new -key mailserverkey.pem -out mailserver.csr</pre>
 Next, the mail server CSR must be signed to create the mail server certificate. You can either send the CSR
 to an established CA or sign it with your CA.
-To sign mailserver.csr using your CA.
+To sign mailserver.csr using your CA:
 <pre># openssl ca -in mailserver.csr -out mailservercert.pem</pre>
 </description>
 <rationale>This step creates a private key, <tt>mailserverkey.pem</tt>, and a public certificate, <tt>mailservercert.pem</tt>.
@@ -284,12 +284,12 @@ with SSL support.
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and configure the contents of the <tt>mynetworks</tt> variable in one of the following
 ways:
 <ul>
-<li>If any machine in the subnet containing the MTA may be trusted to relay messages, add or correct the following line.
+<li>If any machine in the subnet containing the MTA may be trusted to relay messages, add or correct the following line:
 <pre>mynetworks_style = subnet</pre></li>
-<li>If only the MTA host itself is trusted to relay messages, add or correct the following line.
+<li>If only the MTA host itself is trusted to relay messages, add or correct the following line:
 <pre>mynetworks_style = host</pre></li>
 <li>If the set of machines which can relay is more complicated, manually specify an entry for each netblock
-or IP address which is trusted to relay by setting the <tt>mynetworks</tt> variable directly.
+or IP address which is trusted to relay by setting the <tt>mynetworks</tt> variable directly:
 <pre>mynetworks = 10.0.0.0/16 , 192.168.1.0/24 , 127.0.0.1</pre></li>
 </ul>
 </description>
@@ -342,7 +342,7 @@ smtpd_recipient_restrictions =
     reject_unauth_destination,
     ...</pre>
 Then edit <tt>/usr/lib/sasl2/smtpd.conf</tt> and add or correct the following line with the correct authentication
-mechanism for SASL to use.
+mechanism for SASL to use:
 <pre>pwcheck_method: saslauthd</pre>
 <service-enable-macro service="saslauthd" />
 </description>

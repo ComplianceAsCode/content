@@ -189,7 +189,7 @@ stolen by eavesdroppers on the network.
 each user's home directory) list remote hosts and users that are trusted by the
 local system when using the rshd daemon.
 To remove these files, run the following command to delete them from any
-location.
+location:
 <pre># rm /etc/hosts.equiv</pre>
 <pre>$ rm ~/.rhosts</pre>
 </description>
@@ -309,10 +309,10 @@ given directory. Serving files from an intentionally-specified directory
 reduces the risk of sharing files which should remain private.
 </rationale>
 <ocil>Verify <tt>tftp</tt> is configured by with the <tt>-s</tt> option by running the
-following command.
+following command:
 <pre>grep "server_args" /etc/xinetd.d/tftp</pre>
 The output should indicate the <tt>server_args</tt> variable is configured with the <tt>-s</tt>
-flag, matching the example below.
+flag, matching the example below:
 <pre> # grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>

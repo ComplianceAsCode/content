@@ -31,7 +31,7 @@ avenue of attack, and should be disabled if not needed.
 <Rule id="uninstall_dovecot">
 <title>Uninstall dovecot Package</title>
 <description>The <tt>dovecot</tt> package can be uninstalled
-with the following command.
+with the following command:
 <pre># yum erase dovecot</pre>
 </description>
 <ocil>
@@ -61,7 +61,7 @@ SSL-protected versions of those protocols. Configure the Dovecot server
 to support only the protocols needed by your site. Edit <tt>/etc/dovecot/dovecot.conf</tt>. 
 Add or correct the following lines, replacing <tt>PROTOCOL</tt> with 
 only the subset of protocols (<tt>imap</tt>, <tt>imaps</tt>, 
-<tt>pop3</tt>, <tt>pop3s</tt>) required.
+<tt>pop3</tt>, <tt>pop3s</tt>) required:
 <pre>protocols = PROTOCOL</pre>
 If possible, require SSL protection for all transactions. The SSL 
 protocol variants listen on alternate ports (995 instead of 110 for 
@@ -97,7 +97,7 @@ the server.
 <description>To allow clients to make encrypted connections the <tt>ssl</tt>
 flag in Dovecot's configuration file needs to be set to <tt>yes</tt>.
 <br /><br />
-Edit <tt>/etc/dovecot/conf.d/10-ssl.conf</tt> and add or correct the following line.
+Edit <tt>/etc/dovecot/conf.d/10-ssl.conf</tt> and add or correct the following line:
 <pre>ssl = yes</pre>
 </description>
 <rationale>
@@ -112,12 +112,12 @@ impersonating the server.
 
 <Rule id="dovecot_configure_ssl_cert">
 <title>Configure Dovecot to Use the SSL Certificate file</title>
-<description>This option tell Dovecot where to find the the mail 
+<description>This option tells Dovecot where to find the the mail 
 server's SSL Certificate.
 <br /><br />
 Edit <tt>/etc/dovecot/conf.d/10-ssl.conf</tt> and add or correct the following 
-line. The path below is the default path set by the Dovecot installation. If 
-you are using a different path, ensure you reference the appropriate file.
+line (<i>note: the path below is the default path set by the Dovecot installation. If 
+you are using a different path, ensure you reference the appropriate file</i>):
 <pre>ssl_cert = &lt;/etc/pki/dovecot/certs/dovecot.pem</pre>
 </description>
 <rationale>
@@ -133,12 +133,12 @@ text over the network.
 
 <Rule id="dovecot_configure_ssl_key">
 <title>Configure Dovecot to Use the SSL Key file</title>
-<description>This option tell Dovecot where to find the the mail 
+<description>This option tells Dovecot where to find the the mail 
 server's SSL Key.
 <br /><br />
 Edit <tt>/etc/dovecot/conf.d/10-ssl.conf</tt> and add or correct the following 
-line. The path below is the default path set by the Dovecot installation. If 
-you are using a different path, ensure you reference the appropriate file.
+line (<i>note: the path below is the default path set by the Dovecot installation. If 
+you are using a different path, ensure you reference the appropriate file</i>):
 <pre>ssl_key = &lt;/etc/pki/dovecot/private/dovecot.pem</pre>
 </description>
 <rationale>
@@ -156,7 +156,7 @@ text over the network.
 <title>Disable Plaintext Authentication</title>
 <description>To prevent Dovecot from attempting plaintext 
 authentication of clients, edit <tt>/etc/dovecot/conf.d/10-auth.conf</tt> and add
-or correct the following line.
+or correct the following line:
 <pre>disable_plaintext_auth = yes</pre>
 </description>
 <rationale>

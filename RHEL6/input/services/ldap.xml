@@ -95,7 +95,7 @@ intended for use as an LDAP Server it should be removed.
 To verify the <tt>openldap-servers</tt> package is not installed, 
 run the following command:
 <pre>$ rpm -q openldap-servers</pre>
-The output should show the following.
+The output should show the following:
 <pre>package openldap-servers is not installed</pre>
 </ocil>
 <rationale>Unnecessary packages should not be installed to decrease the attack surface of the system.</rationale>
@@ -111,7 +111,7 @@ The output should show the following.
 Is this system an OpenLDAP server? If so,
 edit the ldap configuration file at
 <tt>/etc/openldap/slapd.d/cn=config/olcDatabase={*}bdb.ldif</tt>
-to include suffix information relevant to your domain.
+to include suffix information relevant to your domain:
 <pre>olcSuffix: "dc=example,dc=com "
 olcRootDN: "cn=Manager,dc=example,dc=com "</pre>
 where dc=example,dc=com is the same root you will use on the LDAP clients.
@@ -166,7 +166,7 @@ In addition, be sure to use a reasonably strong hash function. The default hash 
 
 <Rule id="ldap_server_config_certificate_files">
 <title>Protect LDAP Certificate Files</title>
-<description>Create the PKI directory for LDAP certificates if it does not already exist.
+<description>Create the PKI directory for LDAP certificates if it does not already exist:
 <pre># mkdir /etc/pki/tls/ldap
 # chown root:root /etc/pki/tls/ldap
 # chmod 755 /etc/pki/tls/ldap</pre>
