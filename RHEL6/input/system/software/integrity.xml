@@ -85,7 +85,7 @@ must be captured and it should be able to be verified against the installed file
 <title>Configure Periodic Execution of AIDE</title>
 <description>
 AIDE should be executed on a periodic basis to check for changes.
-To implement a daily execution of AIDE at 4:05am using cron, add the following line to /etc/crontab:
+To implement a daily execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
 <pre>05 4 * * * root /usr/sbin/aide --check</pre>
 AIDE can be executed periodically through other means; this is merely one example.
 </description>
@@ -214,7 +214,7 @@ sessions which may become compromised.
 <br/>
 Install an additional intrusion detection tool to provide complementary or
 duplicative monitoring, reporting, and reaction capabilities to those of the base
-platform.  For DoD systems, the McAfee Host-based Security System is provided
+platform.  For DoD systems, the McAfee Host Based Security System is provided
 to fulfill this role.  
 <!-- provide link to cybercom site? -->
 <!-- need additional commentary: verify that HBSS (sans HIPS module) compatible w/SELinux -->
