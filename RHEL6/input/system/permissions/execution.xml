@@ -136,8 +136,8 @@ address range.</rationale>
 
 <Rule id="enable_randomize_va_space" severity="medium">
 <title>Enable Randomized Layout of Virtual Address Space</title>
-<description><sysctl-desc-macro sysctl="kernel.randomize_va_space" value="1" /></description>
-<ocil><sysctl-check-macro sysctl="kernel.randomize_va_space" value="1" /></ocil>
+<description><sysctl-desc-macro sysctl="kernel.randomize_va_space" value="2" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.randomize_va_space" value="2" /></ocil>
 <rationale> Address space layout randomization (ASLR) makes it more difficult
 for an attacker to predict the location of attack code he or she has introduced
 into a process's address space during an attempt at exploitation.  Additionally, ASLR also
