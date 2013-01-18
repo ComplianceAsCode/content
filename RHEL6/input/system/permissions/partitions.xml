@@ -114,7 +114,7 @@ located on the root partition. The only exception to this is chroot jails.</rati
 from being executed out of <tt>/tmp</tt>.
 <mount-desc-macro option="noexec" part="/tmp" />
 </description>
-<rationale>Allowing users to execute binaries from world-writeable directories
+<rationale>Allowing users to execute binaries from world-writable directories
 such as <tt>/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
 <ident cce="26720-3" />
@@ -126,7 +126,7 @@ can expose the system to potential compromise.</rationale>
 <title>Add nosuid Option to /tmp</title>
 <description>The <tt>nosuid</tt> mount option can be used to prevent
 execution of setuid programs in <tt>/tmp</tt>. The suid/sgid permissions
-should not be required in these world-writeable directories.
+should not be required in these world-writable directories.
 <mount-desc-macro option="nosuid" part="/tmp" />
 </description>
 <rationale>The presence of suid and sgid executables should be tightly controlled. Users
@@ -156,10 +156,10 @@ located on the root partition. The only exception to this is chroot jails.</rati
 <description>The <tt>noexec</tt> mount option can be used to prevent binaries
 from being executed out of <tt>/dev/shm</tt>.
 It can be dangerous to allow the execution of binaries
-from world-writeable temporary storage directories such as <tt>/dev/shm</tt>.
+from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
 <mount-desc-macro option="noexec" part="/dev/shm" />
 </description>
-<rationale>Allowing users to execute binaries from world-writeable directories
+<rationale>Allowing users to execute binaries from world-writable directories
 such as /dev/shm can expose the system to potential compromise.</rationale>
 <ident cce="26622-1" />
 <oval id="mount_option_dev_shm_noexec" />
@@ -170,7 +170,7 @@ such as /dev/shm can expose the system to potential compromise.</rationale>
 <title>Add nosuid Option to /dev/shm</title>
 <description>The <tt>nosuid</tt> mount option can be used to prevent execution
 of setuid programs in <tt>/dev/shm</tt>.  The suid/sgid permissions should not
-be required in these world-writeable directories.
+be required in these world-writable directories.
 <mount-desc-macro option="nosuid" part="/dev/shm" />
 </description>
 <rationale>The presence of suid and sgid executables should be tightly controlled. Users
