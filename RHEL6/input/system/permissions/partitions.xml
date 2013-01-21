@@ -187,7 +187,7 @@ Bind-mount it to <tt>/tmp</tt> in order to consolidate temporary storage into
 one location protected by the same techniques as <tt>/tmp</tt>.  To do so, edit
 <tt>/etc/fstab</tt> and add the following line:
 <pre>/tmp     /var/tmp     none     rw,nodev,noexec,nosuid,bind     0 0</pre>
-See the mount(8) man page for further explanation of bind mounting.
+See the <tt>mount(8)</tt> man page for further explanation of bind mounting.
 </description>
 <rationale>Having multiple locations for temporary storage is not required. Unless absolutely
 necessary to meet requirements, the storage location <tt>/var/tmp</tt> should be bind mounted to
