@@ -57,7 +57,7 @@ def add_oval_elements(body):
         if childnode.tag.endswith("_variable"): variables.append(childnode)
     return defname
 
-# replace external_varables with local_variables, so the definition can be tested
+# replace external_variables with local_variables, so the definition can be tested
 # independently of an XCCDF file
 def replace_external_vars(tree):
     # external_variable is a special case: we turn it into a local_variable so we can test
