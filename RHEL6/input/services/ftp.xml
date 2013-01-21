@@ -97,8 +97,8 @@ If the <i>server_args</i> line is missing or does not include the vsftpd configu
 </ocil>
 <rationale>To trace malicious activity facilitated by the FTP service, it must be configured to ensure that all commands sent to
 the ftp server are logged using the verbose vsftpd log
-format. The default vsftpd log file is /var/log/vsftpd.log.</rationale>
-<warning category="general">If verbose logging to vsftpd.log is done, sparse logging of downloads to /var/log/xferlog will not also occur. However, the information about what files were downloaded is included in the information logged to vsftpd.log</warning>
+format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
+<warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
 <ident cce="27142-9" />
 <!--<oval id="ftp_log_transactions" />-->
 <!--<ref nist="CM-7" /> -->
@@ -156,7 +156,7 @@ If anonymous access is also required, add the anonymous usernames to <tt>/etc/vs
 <pre>anonymous
 ftp</pre>
 </description>
-<rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via ftp. It was used to prevent system users such as the root user from logging in via the insecure ftp protocol. However, when the configuration option userlist deny=NO is set, vsftpd interprets ftpusers as the set of users who are allowed to login via ftp. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous ftp access can be limited to legacy users who have been explicitly identified.</rationale>
+<rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via ftp. It was used to prevent system users such as the root user from logging in via the insecure ftp protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via ftp. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous ftp access can be limited to legacy users who have been explicitly identified.</rationale>
 <!--<ident cce="27115-5" />-->
 <!--<oval id="ftp_limit_users" />-->
 <!--<ref nist="CM-7" /> -->
