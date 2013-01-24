@@ -23,7 +23,7 @@
   version="1" comment="kernel module cramfs disabled">
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+cramfs\s+/bin/true$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*install\s+cramfs\s+/bin/false$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
