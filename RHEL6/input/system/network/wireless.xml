@@ -111,8 +111,8 @@ utility of Bluetooth connectivity and its limited range.</rationale>
 loading of the Bluetooth module. Add the following to
 the appropriate <tt>/etc/modprobe.d</tt> configuration file
 to prevent the loading of the Bluetooth module:
-<pre>install net-pf-31 /bin/true
-install bluetooth /bin/true</pre>
+<pre>install net-pf-31 /bin/false
+install bluetooth /bin/false</pre>
 </description>
 <ocil>
 <module-disable-check-macro module="bluetooth" />
