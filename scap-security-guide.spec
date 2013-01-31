@@ -1,7 +1,7 @@
 Name:           scap-security-guide
 Version:        %{version}
 Release:        %{release}
-Summary:        The scap-security-guide project provides security guidance and baselines in SCAP formats.
+Summary:        Security guidance and baselines in SCAP formats.
 
 Group:          Testing
 License:        Public domain and GPL
@@ -33,9 +33,15 @@ cd RHEL6 && make dist
 rm -rf $RPM_BUILD_ROOT
 #make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
+mkdir -p $RPM_BUILD_ROOT/usr/share/man/en/man8/
 
+# Add in core content (SCAP, guide, tables)
 cp -r RHEL6/dist/* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
 
+# Add in manpage
+gzip -c RHEL6/input/auxiliary/ssg.8 > $RPM_BUILD_ROOT/usr/share/man/en/man8/ssg.8.gz
+makewhatis
+chcon -u system_u /usr/share/man/en/man8/ssg.8.gz
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,6 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(0644,root,root,0755)
 %attr(0755,root,root) /usr/share/xml/scap/ssg
+%attr(0644,root,root) /usr/share/man/en/man8/ssg.8.gz
 
 
 %changelog
