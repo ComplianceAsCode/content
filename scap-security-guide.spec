@@ -41,7 +41,7 @@ cp -r RHEL6/dist/* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
 # Add in manpage
 gzip -c RHEL6/input/auxiliary/ssg.8 > $RPM_BUILD_ROOT/usr/share/man/en/man8/ssg.8.gz
 makewhatis
-chcon -u system_u /usr/share/man/en/man8/ssg.8.gz
+chcon -u system_u $RPM_BUILD_ROOT/usr/share/man/en/man8/ssg.8.gz
 
 %clean
 rm -rf $RPM_BUILD_ROOT
