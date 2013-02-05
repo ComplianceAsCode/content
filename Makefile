@@ -41,8 +41,18 @@ rhel6:
 
 tarball:
 	$(call rpm-prep)
-	cp -r RHEL6 $(RPM_TMPDIR)/$(PKG)	
+
+	# Copy in the source trees for both RHEL6
+	# and JBossEAP5 content
+	cp -r RHEL6 $(RPM_TMPDIR)/$(PKG)
+	cp -r JBossEAP5 $(RPM_TMPDIR)/$(PKG)
+
+	# Don't trust the developers, clean out the build
+	# environment before packaging
 	cd $(RPM_TMPDIR)/$(PKG)/RHEL6 && $(MAKE) clean
+
+	# Create the source tar, copy it to $TARBALL
+	# (e.g. somewhere in the SOURCES directory)
 	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
 

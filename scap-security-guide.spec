@@ -37,6 +37,8 @@ mkdir -p $RPM_BUILD_ROOT/usr/share/man/en/man8/
 
 # Add in core content (SCAP, guide, tables)
 cp -r RHEL6/dist/* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
+cp JBossEAP5/eap5-* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/content/
+cp JBossEAP5/docs/JBossEAP5_Guide.html $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/guide/
 
 # Add in manpage
 gzip -c RHEL6/input/auxiliary/ssg.8 > $RPM_BUILD_ROOT/usr/share/man/en/man8/ssg.8.gz
