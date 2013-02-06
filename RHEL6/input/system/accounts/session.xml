@@ -193,7 +193,7 @@ correct the line:
 <pre>umask 077</pre>
 </li>
 -->
-<Value id="umask_user_value" type="string"
+<Value id="var_accounts_user_umask" type="string"
 operator="equals" interactive="0">
 <title>Sensible umask</title>
 <description>Enter default user umask</description>
@@ -213,7 +213,7 @@ as follows:
 <pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
-A misconfigured umask value could result in files with excessive permissions that can be read and/or
+A misconfigured umask value could result in files with excessive permissions that can be read or
 written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
@@ -226,7 +226,7 @@ umask 077</pre>
 </ocil>
 
 <ident cce="26917-5" />
-<oval id="accounts_umask_bash_users" value="umask_user_value"/>
+<oval id="accounts_umask_bashrc" value="var_accounts_user_umask"/>
 <ref nist="" disa="366"/>
 <tested by="swells" on="20120929"/>
 </Rule>
@@ -239,7 +239,7 @@ add or correct the <tt>umask</tt> setting in <tt>/etc/csh.cshrc</tt> to read as 
 <pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
-A misconfigured umask value could result in files with excessive permissions that can be read and/or
+A misconfigured umask value could result in files with excessive permissions that can be read or
 written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/csh.cshrc</tt> file by
@@ -250,7 +250,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 umask 077</pre>
 </ocil>
 <ident cce="27034-8" />
-<oval id="accounts_umask_csh" value="umask_user_value"/>
+<oval id="accounts_umask_cshrc" value="var_accounts_user_umask"/>
 <ref nist="" disa="366"/>
 <tested by="swells" on="20120929"/>
 </Rule>
@@ -263,7 +263,7 @@ add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as fo
 <pre>umask 077<!--<sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
-A misconfigured umask value could result in files with excessive permissions that can be read and/or
+A misconfigured umask value could result in files with excessive permissions that can be read or
 written to by unauthorized users.</rationale>
 <ident cce="26669-2" />
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
@@ -274,7 +274,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 <pre># grep "umask" /etc/profile
 umask 077</pre>
 </ocil>
-<oval id="accounts_umask_etc_profile" value="umask_user_value" />
+<oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
 <tested by="swells" on="20120929"/>
 <ref nist="" disa="366"/>
 </Rule>
@@ -298,7 +298,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 umask 077</pre>
 </ocil>
 <ident cce="26371-5" />
-<oval id="accounts_umask_login_defs" value="umask_user_value" />
+<oval id="accounts_umask_login_defs" value="var_accounts_user_umask" />
 <ref nist="" disa="366"/>
 <tested by="swells" on="20120929" />
 </Rule>
