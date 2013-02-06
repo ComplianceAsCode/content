@@ -41,9 +41,9 @@ cp JBossEAP5/eap5-* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/content/
 cp JBossEAP5/docs/JBossEAP5_Guide.html $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/guide/
 
 # Add in manpage
-gzip -c RHEL6/input/auxiliary/ssg.8 > $RPM_BUILD_ROOT/usr/share/man/en/man8/ssg.8.gz
+gzip -c RHEL6/input/auxiliary/scap-security-guide.8 > $RPM_BUILD_ROOT/usr/share/man/en/man8/scap-security-guide.8.gz
 makewhatis
-chcon -u system_u $RPM_BUILD_ROOT/usr/share/man/en/man8/ssg.8.gz
+chcon -u system_u $RPM_BUILD_ROOT/usr/share/man/en/man8/scap-security-guide.8.gz
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -52,7 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(0644,root,root,0755)
 %attr(0755,root,root) /usr/share/xml/scap/ssg
-%attr(0644,root,root) /usr/share/man/en/man8/ssg.8.gz
+%attr(0644,root,root) /usr/share/man/en/man8/scap-security-guide.8.gz
 
 
 %changelog
