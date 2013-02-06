@@ -7,30 +7,23 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>The default umask for all users should be set
-      correctly</description>
+      <description>The default umask for all users specified in /etc/login.defs</description>
     </metadata>
     <criteria>
-      <criterion test_ref="test_20089" />
+      <criterion test_ref="test_accounts_umask_login_defs" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="all_exist"
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Tests the value of the ^[\s]*umask[\s]+([^#]*) expression in the /etc/login.defs file"
-  id="test_20089" version="1">
-    <ind:object object_ref="obj_20089" />
-    <ind:state state_ref="state_20088" />
+  id="test_accounts_umask_login_defs" version="1">
+    <ind:object object_ref="obj_accounts_umask_login_defs" />
+    <ind:state state_ref="state_accounts_umask_login_defs" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state id="state_20088"
-  version="1">
-    <ind:subexpression operation="equals" var_check="all"
-    var_ref="var_20088" />
+  <ind:textfilecontent54_state id="state_accounts_umask_login_defs" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_accounts_user_umask" />
   </ind:textfilecontent54_state>
-  <external_variable comment="External variable for definition 20087 - 20090"
-  datatype="string" id="var_20088"
-  version="1" />
-  <ind:textfilecontent54_object id="obj_20089"
-  version="1">
+  <external_variable comment="user umask" datatype="string" id="var_accounts_user_umask" version="1" />
+  <ind:textfilecontent54_object id="obj_accounts_umask_login_defs" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>login.defs</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*UMASK[\s]+([^#\s]*)</ind:pattern>
