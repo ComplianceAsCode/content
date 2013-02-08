@@ -304,7 +304,7 @@ minimizes the chances of the system unexpectedly running out of disk space by
 being overwhelmed with log data. However, for systems that must never discard
 log data, or which use external processes to transfer it and reclaim space,
 <tt>keep_logs</tt> can be employed.</rationale>
-<ident cce="TODO" />
+<ident cce="27237-7" />
 <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
 <ref nist="AU-1(b),AU-4,AU-11" />
 <tested by="DS" on="20121024"/>
@@ -355,7 +355,7 @@ disk space is starting to run low:
 </ocil>
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
-<ident cce="TODO" />
+<ident cce="27238-5" />
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
 <ref nist="AU-1(b),AU-4" disa="140,143,1339" />
 <tested by="DS" on="20121024"/>
@@ -396,7 +396,7 @@ when disk space has run low:
 audit records. If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
-<ident cce="TODO" />
+<ident cce="27239-3" />
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
 <ref nist="AU-1(b),AU-4" disa="140,1343" />
 <tested by="DS" on="20121024"/>
@@ -419,7 +419,7 @@ account when it needs to notify an administrator:
 </ocil>
 <rationale>Email sent to the root account is typically aliased to the
 administrators of the system, who can take appropriate action.</rationale>
-<ident cce="TODO" />
+<ident cce="27241-9" />
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
 <ref nist="AU-1(b),AU-4" disa="139,144" />
 </Rule>
@@ -695,7 +695,7 @@ Audit logs must be mode 0640 or less permissive.
 <rationale>
 If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
-<ident cce="TODO" />
+<ident cce="27243-5" />
 <oval id="file_permissions_var_log_audit" />
 <ref nist="AC-6,AU-1(b),AU-9" disa="166" />
 <tested by="DS" on="20121024"/>
@@ -711,7 +711,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 </ocil>
 <rationale>Failure to give ownership of the audit log file(s) to root allows the designated 
 owner, and unauthorized users, potential access to sensitive information.</rationale>
-<ident cce="TODO" />
+<ident cce="27244-3" />
 <oval id="file_ownership_var_log_audit" />
 <ref nist="AC-6,AU-1(b),AU-9" disa="166" />
 <tested by="DS" on="20121024"/>
