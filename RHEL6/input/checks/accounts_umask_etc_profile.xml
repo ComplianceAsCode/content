@@ -11,25 +11,21 @@
       correctly</description>
     </metadata>
     <criteria>
-      <criterion test_ref="test_20090" />
+      <criterion test_ref="test_accounts_umask_etc_profile" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all"
   check_existence="all_exist"
   comment="Tests the value of the ^[\s]*umask[\s]+([^#]*) expression in the /etc/profile file"
-  id="test_20090" version="1">
-    <ind:object object_ref="obj_20090" />
-    <ind:state state_ref="state_20090" />
+  id="test_accounts_umask_etc_profile" version="1">
+    <ind:object object_ref="obj_accounts_umask_etc_profile" />
+    <ind:state state_ref="state_accounts_umask_etc_profile" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state id="state_20090"
-  version="1">
-    <ind:subexpression operation="equals" var_check="all"
-    var_ref="var_20090" />
+  <ind:textfilecontent54_state id="state_accounts_umask_etc_profile" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_accounts_user_umask" />
   </ind:textfilecontent54_state>
-  <external_variable comment="External variable for definition 20087 - 20090"
-  datatype="string" id="var_20090"
-  version="1" />
-  <ind:textfilecontent54_object id="obj_20090"
+  <external_variable comment="user umask" datatype="string" id="var_accounts_user_umask" version="1" />
+  <ind:textfilecontent54_object id="obj_accounts_umask_etc_profile"
   version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>profile</ind:filename>
