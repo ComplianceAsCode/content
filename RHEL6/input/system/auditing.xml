@@ -236,7 +236,7 @@ line, substituting <i>NUMLOGS</i> with the correct value:
 <pre>num_logs = <i>NUMLOGS</i></pre>
 Set the value to 5 for general-purpose systems. 
 Note that values less than 2 result in no log rotation.</description>
-<ocil clause="the overall system log file(s) retention hasn't been properly set up">
+<ocil clause="the system log file retention has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how many logs the system is configured to retain after rotation:
 <tt># grep num_logs /etc/audit/auditd.conf</tt>
@@ -260,7 +260,7 @@ the correct value for <i>STOREMB</i>:
 Set the value to <tt>6</tt> (MB) or higher for general-purpose systems.
 Larger values, of course,
 support retention of even more audit data.</description>
-<ocil clause="the system audit data threshold hasn't been properly set up">
+<ocil clause="the system audit data threshold has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how much data the system will retain in each audit log file:
 <tt># grep max_log_file /etc/audit/auditd.conf</tt>
@@ -292,7 +292,7 @@ page. These include:
 Set the <tt><i>ACTION</i></tt> to <tt>rotate</tt> to ensure log rotation
 occurs.  This is the default.  The setting is case-insensitive.
 </description>
-<ocil clause="the system has not been properly set up to rotate audit logs">
+<ocil clause="the system has not been properly configured to rotate audit logs">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
 maximum size: 
@@ -709,7 +709,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <ocil>
 <fileowner-check-macro file="/var/log" owner="root"/>
 </ocil>
-<rationale>Failure to give ownership of the audit log file(s) to root allows the designated 
+<rationale>Failure to give ownership of the audit log files to root allows the designated 
 owner, and unauthorized users, potential access to sensitive information.</rationale>
 <ident cce="27244-3" />
 <oval id="file_ownership_var_log_audit" />
