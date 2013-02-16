@@ -23,7 +23,8 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-rhel6-ocil.xml $(OUT)/unlinked-rhel6-ocil.xml 
 	xsltproc -o $(OUT)/unlinked-ocilrefs-rhel6-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-#	xsltproc -stringparam fixes "../$(IN)/fixes/bash-ks.xml" -o $(OUT)/unlinked-rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+	./$(TRANS)/combinefixes.sh $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
+	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-rhel6-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
 
 checks:
