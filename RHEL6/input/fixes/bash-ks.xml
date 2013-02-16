@@ -1,4 +1,7 @@
 <fix-group id="bash" system="urn:xccdf:fix:script:sh" xmlns="http://checklists.nist.gov/xccdf/1.1">
 <fix rule="disable_vsftp">service vsftpd stop</fix>
-<fix rule="install_aide">yum install aide</fix>
+<fix rule="install_aide">yum -y install aide</fix>
+<fix rule="uninstall_xinetd">yum -y remove xinetd</fix>
+<fix rule="uninstall_telnet_server">yum -y remove telnet-server</fix>
+<fix rule="uninstall_ypserv">yum -y remove ypserv</fix>
 </fix-group>
