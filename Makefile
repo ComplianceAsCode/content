@@ -25,16 +25,17 @@ MKDIR = test -d $(1) || mkdir -p $(1)
 RPMBUILD_ARGS := --define '_topdir $(RPM_TOPDIR)'  --define '_tmppath $(RPM_TMPDIR)'
 
 define rpm-prep
-	 $(call MKDIR,$(RPM_TMPDIR)/$(PKG))
-	 $(call MKDIR,$(RPM_BUILDROOT))
-	 $(call MKDIR,$(RPM_TOPDIR)/SOURCES)
-	 $(call MKDIR,$(RPM_TOPDIR)/SPECS)
-	 $(call MKDIR,$(RPM_TOPDIR)/BUILD)
-	 $(call MKDIR,$(RPM_TOPDIR)/RPMS/$(ARCH))
-	 $(call MKDIR,$(RPM_TOPDIR)/SRPMS)
+	$(call MKDIR,$(RPM_TMPDIR)/$(PKG))
+	$(call MKDIR,$(RPM_BUILDROOT))
+	$(call MKDIR,$(RPM_TOPDIR)/SOURCES)
+	$(call MKDIR,$(RPM_TOPDIR)/SPECS)
+	$(call MKDIR,$(RPM_TOPDIR)/BUILD)
+	$(call MKDIR,$(RPM_TOPDIR)/RPMS/$(ARCH))
+	$(call MKDIR,$(RPM_TOPDIR)/SRPMS)
+	$(call MKDIR,$(RPM_TOPDIR)/ZIP)
 endef
 
-all: rhel6 rpm
+all: rhel6 rpm zipfile
 
 rhel6:
 	cd RHEL6 && $(MAKE)
@@ -55,6 +56,23 @@ tarball:
 	# (e.g. somewhere in the SOURCES directory)
 	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
+
+zipfile:
+	# Create a zipfile release, since many SCAP
+	# tools desire content in that format
+	# (Note: By default zip will store the full path
+	#	 relative to the current directory, need
+	#	 to cd into $(RPM_TMPDIR)
+	cp RHEL6/output/ssg-* $(RPM_TOPDIR)/ZIP/
+	cp JBossEAP5/eap5-* $(RPM_TOPDIR)/ZIP/
+	# Originally attempted to `cd $(RPM_TOPDIR/ZIP` and
+	# make the zip from there, however it still placed it
+	# at working directory. Should look into this sometime
+	#
+	#cd $(RPM_TOPDIR)/ZIP
+	#zip -r $(PKG)-$(RELEASE).zip . * -j
+	zip -r $(PKG)-$(RELEASE).zip $(RPM_TOPDIR)/ZIP/* -j
+	mv $(PKG)-$(RELEASE).zip $(RPM_TOPDIR)/ZIP/
 
 srpm: $(RPM_DEPS)
 	@echo "Building $(PKGNAME) SRPM..."
