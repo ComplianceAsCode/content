@@ -35,7 +35,15 @@ guide: shorthand2xccdf
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
 #	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-rhel6-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-rhel6-xccdf.xml
+#	
+#	Begin Guide Creation
+#	NOTE:	If you do not follow the $(profile)-guide.html syntax
+#		you will manually have to include your guide in the 
+#		make dist section
+#
 	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-rhel6-xccdf-guide.xml > $(OUT)/rhel6-guide.html
+	oscap xccdf generate guide --profile stig-rhel6-server $(OUT)/unlinked-rhel6-xccdf-guide.xml > $(OUT)/stig-rhel6-server-guide.html
+	oscap xccdf generate guide --profile usgcb-rhel6-server $(OUT)/unlinked-rhel6-xccdf-guide.xml > $(OUT)/usgcb-rhel6-server-guide.html
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
@@ -148,7 +156,7 @@ eval-common:
 # items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/guide $(DIST)/content $(DIST)/policytables
-	cp $(OUT)/rhel6-guide.html $(DIST)/guide
+	cp $(OUT)/*-guide.html $(DIST)/guide
 	cp $(OUT)/$(ID)-rhel6-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-dictionary.xml $(DIST)/content
