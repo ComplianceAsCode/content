@@ -35,10 +35,16 @@ define rpm-prep
 	$(call MKDIR,$(RPM_TOPDIR)/ZIP)
 endef
 
-all: rhel6 rpm zipfile
+all: rhel6 openstack rhevm rpm zipfile
 
 rhel6:
 	cd RHEL6 && $(MAKE)
+
+openstack:
+	cd OpenStack && $(MAKE)
+
+rhevm3:
+	cd RHEVM3 && $(MAKE)
 
 tarball:
 	$(call rpm-prep)
@@ -87,5 +93,7 @@ rpm: srpm
 clean:
 	rm -rf $(RPM_TMPDIR)
 	cd RHEL6 && $(MAKE) clean
+	cd OpenStack && $(MAKE) clean
+	cd RHEVM3 && $(MAKE) clean
 
 .PHONY: rhel6 tarball srpm rpm clean all
