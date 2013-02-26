@@ -35,7 +35,7 @@ define rpm-prep
 	$(call MKDIR,$(RPM_TOPDIR)/ZIP)
 endef
 
-all: rhel6 openstack rhevm rpm zipfile
+all: rhel6 openstack rhevm3 rpm zipfile
 
 rhel6:
 	cd RHEL6 && $(MAKE)
