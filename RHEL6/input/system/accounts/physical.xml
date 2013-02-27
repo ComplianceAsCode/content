@@ -138,7 +138,7 @@ by configuring the bootloader password.
 <title>Disable Ctrl-Alt-Del Reboot Activation</title>
 <description>
 By default, the system includes the following line in
-<tt>/etc/init/control-alt-delete</tt>
+<tt>/etc/init/control-alt-delete.conf</tt>
 to reboot the system when the Ctrl-Alt-Del key sequence is pressed:
 <pre>exec /sbin/shutdown -r now "Control-Alt-Delete pressed"</pre>
 <br/>
@@ -148,7 +148,7 @@ rebooting the system, alter that line to read as follows:
 </description>
 <ocil clause="the system is configured to run the shutdown command">
 To check how the system is configured to behave when Ctrl-Alt-Del is pressed,
-inspect the file <tt>/etc/init/control-alt-delete</tt>.
+inspect the file <tt>/etc/init/control-alt-delete.conf</tt>.
 The commands following the line below will be executed when the key sequence is pressed:
 <pre>start on control-alt-delete</pre>
 </ocil>
