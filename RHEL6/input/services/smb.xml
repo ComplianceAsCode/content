@@ -184,7 +184,7 @@ not use the Samba service to share files between Unix or Linux machines.
 <description>
 To require samba clients running <tt>smbclient</tt> to use
 packet signing, add the following to the <tt>[global]</tt> section
-of the Samba configuration file:
+of the Samba configuration file, <tt>/etc/samba/smb.conf</tt>:
 <pre>client signing = mandatory</pre>
 Requiring samba clients such as <tt>smbclient</tt> to use packet
 signing ensures they can
