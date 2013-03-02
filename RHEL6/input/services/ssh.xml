@@ -230,7 +230,7 @@ not recommended that hosts unilaterally trust one another, even
 within an organization.
 <br /><br />
 To disable host-based authentication, add or correct the
-following line:
+following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>HostbasedAuthentication no</pre>
 </description>
 <ocil>
@@ -251,7 +251,8 @@ can allow an attacker to move trivially to other hosts.
 <title>Disable SSH Root Login</title>
 <description>The root user should never be allowed to login to a
 system directly over a network.
-To disable root login via SSH, add or correct the following line:
+To disable root login via SSH, add or correct the following line
+in <tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitRootLogin no</pre>
 </description>
 <ocil>
