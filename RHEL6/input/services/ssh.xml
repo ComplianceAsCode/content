@@ -273,7 +273,8 @@ and also allows direct attack attempts on root's password.
 <Rule id="sshd_disable_empty_passwords" severity="high">
 <title>Disable SSH Access via Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
-empty passwords, add or correct the following line:
+empty passwords, add or correct the following line in
+<tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitEmptyPasswords no</pre>
 Any accounts with empty passwords should be disabled immediately, and PAM configuration
 should prevent users from being able to assign themselves empty passwords.
