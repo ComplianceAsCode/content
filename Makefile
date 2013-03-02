@@ -71,7 +71,7 @@ zipfile:
 	#	 to cd into $(RPM_TMPDIR)
 	cp RHEL6/output/ssg-* $(RPM_TOPDIR)/ZIP/
 	cp JBossEAP5/eap5-* $(RPM_TOPDIR)/ZIP/
-	# Originally attempted to `cd $(RPM_TOPDIR/ZIP` and
+	# Originally attempted to `cd $(RPM_TOPDIR)/ZIP` and
 	# make the zip from there, however it still placed it
 	# at working directory. Should look into this sometime
 	#
