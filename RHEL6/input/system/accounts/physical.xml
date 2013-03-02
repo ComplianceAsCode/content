@@ -58,12 +58,12 @@ file should not have any access privileges anyway.
 </Rule>
 
 <Rule id="permissions_grub_conf" severity="medium">
-<title>Verify /etc/grub.conf Permissions</title>
-<description>File permissions for <tt>/etc/grub.conf</tt> should be set to 600, which
+<title>Verify /boot/grub/grub.conf Permissions</title>
+<description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
 is the default.
-<fileperms-desc-macro file="/etc/grub.conf" perms="600"/>
+<fileperms-desc-macro file="/boot/grub/grub.conf" perms="600"/>
 </description>
-<ocil><fileperms-check-macro file="/etc/grub.conf" perms="-rw-------"/></ocil>
+<ocil><fileperms-check-macro file="/boot/grub/grub.conf" perms="-rw-------"/></ocil>
 <rationale>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
