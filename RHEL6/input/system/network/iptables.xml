@@ -49,7 +49,7 @@ The <tt>ip6tables</tt> default rules are essentially the same.</description>
 
 
 <Rule id="enable_ip6tables" severity="medium">
-<title>Verify ip6tables Enabled</title>
+<title>Verify ip6tables Enabled if Using IPv6</title>
 <description>
 <service-enable-macro service="ip6tables" />
 </description>
@@ -61,6 +61,27 @@ capability for IPv6 and ICMPv6.
 <oval id="service_ip6tables_enabled" />
 <ref nist="AC-4,CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414"/>
 <tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="set_ip6tables_default_rule" severity="medium">
+<title>Set Default ip6tables Policy for Incoming Packets</title>
+<description>To set the default policy to DROP (instead of ACCEPT) for
+the built-in INPUT chain which processes incoming packets,
+add or correct the following line in
+<tt>/etc/sysconfig/ip6tables</tt>:
+<pre>:INPUT DROP [0:0]</pre>
+</description>
+<ocil clause="the default policy for the INPUT chain is not set to DROP">Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
+the default policy for the INPUT chain. It should be set to DROP:
+<pre> # grep ":INPUT" /etc/sysconfig/ip6tables</pre>
+</ocil>
+<rationale>In <tt>ip6tables</tt> the default policy is applied only after all
+the applicable rules in the table are examined for a match. Setting the
+default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
+any packets which are not explicitly permitted should not be
+accepted.</rationale>
+<ident cce="27317-7" />
+<ref nist="CM-7" disa="66,1109,1154,1414" />
 </Rule>
 
 <Rule id="enable_iptables" severity="medium">
@@ -147,7 +168,8 @@ the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
-<ocil>Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
+<ocil clause="the default policy for the FORWARD chain is not set to DROP">
+Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
 <pre>grep ":FORWARD" /etc/sysconfig/iptables</pre>
 The output should be similar to the following:
 <pre># grep ":FORWARD" /etc/sysconfig/iptables
