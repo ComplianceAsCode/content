@@ -44,7 +44,11 @@ any servers specified. This is important whether the system is configured to be
 a client (and synchronize only its own clock) or it is also acting as an NTP
 server to other systems.  Synchronizing time is essential for authentication
 services such as Kerberos, but it is also important for maintaining accurate
-logs and auditing possible security breaches.</rationale>
+logs and auditing possible security breaches.  
+<br /><br />
+The NTP daemon offers all of the functionality of <tt>ntpdate</tt>, which is now 
+deprecated.  Additional information on this is available at 
+http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate</rationale>
 <ident cce="27093-4" />
 <oval id="service_ntpd_enabled" />
 <ref nist="AU-8(1)" disa="160" />
