@@ -200,16 +200,16 @@ operator="equals" interactive="0">
 <description>To configure the number of retry prompts that are permitted per-session:
 <br /><br />
 Edit the <tt>pam_cracklib.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to 
-show <tt>retry=3</tt>.
+show <tt>retry=3</tt>, or a lower value if site policy is more restrictive.
 <br /><br />
-The DoD requirement is 3 prompts per session.
+The DoD requirement is a maximum of 3 prompts per session.
 </description>
 <ocil clause="it is not the required value">
 To check how many retry attempts are permitted on a per-session basis, run the following command:
 <pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
 The <tt>retry</tt> parameter will indicate how many attempts are permitted.
-The DoD required value is 3.
-This would appear as <tt>retry=3</tt>.
+The DoD required value is less than or equal to 3.
+This would appear as <tt>retry=3</tt>, or a lower value.
 </ocil>
 <rationale>
 Setting the password retry prompts that are permitted on a per-session basis to a low value
