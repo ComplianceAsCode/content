@@ -150,7 +150,6 @@ rebooting the system, alter that line to read as follows:
 To ensure the system is configured to log a message instead of rebooting the system when 
 Ctrl-Alt-Del is pressed, ensure the following line is in <tt>/etc/init/control-alt-delete.conf</tt>:
 <pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
-</description>
 </ocil>
 <rationale>
 A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
