@@ -689,7 +689,7 @@ Change the mode of the audit log files with the following command:
 </description>
 <ocil clause="any are more permissive">
 Run the following command to check the mode of the system audit logs:
-<pre>grep "^log_file" /etc/audit/auditd.conf|sed s/^[^\/]*//|xargs stat -c %a:%n</pre>
+<pre>ls -l /var/log/audit</pre>
 Audit logs must be mode 0640 or less permissive.
 </ocil>
 <rationale>
