@@ -147,10 +147,10 @@ rebooting the system, alter that line to read as follows:
 <pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
 </description>
 <ocil clause="the system is configured to run the shutdown command">
-To check how the system is configured to behave when Ctrl-Alt-Del is pressed,
-inspect the file <tt>/etc/init/control-alt-delete.conf</tt>.
-The commands following the line below will be executed when the key sequence is pressed:
-<pre>start on control-alt-delete</pre>
+To ensure the system is configured to log a message instead of rebooting the system when 
+Ctrl-Alt-Del is pressed, ensure the following line is in <tt>/etc/init/control-alt-delete.conf</tt>:
+<pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
+</description>
 </ocil>
 <rationale>
 A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
