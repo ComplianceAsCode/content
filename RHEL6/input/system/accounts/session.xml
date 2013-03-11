@@ -27,10 +27,9 @@ operator="equals" interactive="0">
 <description>
 Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
 Service attacks. This addresses concurrent sessions for a single account and does not address 
-concurrent sessions by a single user via multiple accounts. To set the number of concurrent
+concurrent sessions by a single user via multiple accounts.  The DoD requirement is 10.   To set the number of concurrent
 sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
-<pre>* hard maxlogins <i>MAX</i></pre>
-Where <i>MAX</i> is the maximum number of login sessions allowed.
+<pre>* hard maxlogins 10</pre>
 </description>
 <rationale>Limiting simultaneous user logins can insulate the system from denial of service 
 problems caused by excessive logins. Automated login processes operating improperly or 
@@ -41,8 +40,7 @@ Run the following command to ensure the <tt>maxlogins</tt> value is configured f
 on the system:
 <pre># grep "maxlogins" /etc/security/limits.conf</pre>
 You should receive output similar to the following:
-<pre>*		hard	maxlogins	<i>MAX</i></pre>
-Where <i>MAX</i> represents the value you have chosen.
+<pre>*		hard	maxlogins	10</pre>
 </ocil>
 <!-- <oval id="max_concurrent_login_sessions" value="max_concurrent_login_sessions_value" /> -->
 <ref disa="54"/>
