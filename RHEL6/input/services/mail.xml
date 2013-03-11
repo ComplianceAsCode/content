@@ -21,8 +21,6 @@ The <tt>alternatives</tt> program in RHEL permits selection of other mail server
 Postfix was coded with security in mind and can also be more effectively contained by
 SELinux as its modular design has resulted in separate processes performing specific actions.
 More information is available on its website, http://www.postfix.org.
-<br /><br />
-Cross domain solutions are not required to have Postfix installed.
 </description>
 
 <Rule id="service_postfix_enable">
@@ -33,7 +31,7 @@ the default SMTP port (port 25) on the loopback interface (127.0.0.1).  It is
 recommended to leave this service enabled for local mail delivery.
 <service-enable-macro service="postfix" />
 </description>
-<ocil clause="the service is not enabled">
+<ocil clause="the system is not a cross domain solution and the service is not enabled">
 <service-enable-check-macro service="postfix" />
 </ocil>
 <rationale>Local mail delivery is essential to some system maintenance and
@@ -56,7 +54,7 @@ not installed by default.
 </ocil>
 <rationale>The sendmail software was not developed with security in mind and
 its design prevents it from being effectively contained by SELinux.  Postfix
-should be used instead.
+should be used instead.  
 </rationale>
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
