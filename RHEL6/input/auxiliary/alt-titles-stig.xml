@@ -108,16 +108,16 @@ The system must limit the ability of processes to have simultaneous write and ex
 The system must implement virtual address space randomization.
 </title>
 <title rule="enable_selinux_bootloader" shorttitle="Ensure SELinux Not Disabled in /etc/grub.conf">
-The system must use a Linux Security Module at boot time.
+The system must use SELinux at boot time.
 </title>
 <title rule="set_selinux_state" shorttitle="Ensure SELinux State is Enforcing">
-The system must use a Linux Security Module configured to enforce limits on system services.
+The system must use SELinux configured to enforce limits on system services.
 </title>
 <title rule="set_selinux_policy" shorttitle="Configure SELinux Policy">
-The system must use a Linux Security Module configured to limit the privileges of system services.
+The system must use SELinux configured to limit the privileges of system services.
 </title>
 <title rule="selinux_unlabeled_device_files" shorttitle="Ensure No Device Files are Unlabeled by SELinux">
-All device files must be monitored by the system Linux Security Module.
+All device files must be monitored by SELinux.
 </title>
 <title rule="restrict_root_console_logins" shorttitle="Restrict Virtual Console Root Logins">
 The system must prevent the root account from logging in from virtual consoles.
