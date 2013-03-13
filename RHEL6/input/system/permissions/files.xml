@@ -230,8 +230,14 @@ following command:
 <pre># chown root <i>FILE</i></pre>
 </description>
 <ocil clause="any of these files are not owned by root">
-To find shared libraries that are not owned by <tt>root</tt>,
-run the following command for each directory <i>DIR</i> which contains shared libraries:
+Shared libraries are stored in the following directories:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+</pre>
+For each of these directories, run the following command to find files not 
+owned by root:
 <pre>$ find <i>DIR</i> \! -user root</pre>
 </ocil>
 <rationale>Files from shared library directories are loaded into the address
