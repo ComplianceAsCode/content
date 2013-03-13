@@ -244,7 +244,7 @@ Shared libraries are stored in the following directories:
 </pre>
 For each of these directories, run the following command to find files not 
 owned by root:
-<pre>$ find <i>DIR</i> \! -user root</pre>
+<pre>$ find <i>DIR</i> \! -user root -type f</pre>
 </ocil>
 <rationale>Files from shared library directories are loaded into the address
 space of processes (including privileged ones) or of the kernel itself at

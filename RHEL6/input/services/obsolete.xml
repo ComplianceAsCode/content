@@ -29,7 +29,10 @@ is not even available as part of RHEL 6.</description>
 <description>
 <service-disable-macro service="xinetd" />
 </description>
-<ocil><service-disable-check-macro service="xinetd" /></ocil>
+<ocil>
+If network services are using the xinetd service, this is not applicable.
+<br /><br />
+<service-disable-check-macro service="xinetd" /></ocil>
 <rationale>
 The xinetd service provides a dedicated listener service for some programs,
 which is no longer necessary for commonly-used network services. Disabling
@@ -47,7 +50,10 @@ attacks against xinetd itself.
 <description>The <tt>xinetd</tt> package can be uninstalled with the following command:
 <pre># yum erase xinetd</pre>
 </description>
-<ocil><package-check-macro package="xinetd" /> </ocil>
+<ocil>
+If network services are using the xinetd service, this is not applicable.
+<br /><br />
+<package-check-macro package="xinetd" /> </ocil>
 <rationale>
 Removing the <tt>xinetd</tt> package decreases the risk of the
 xinetd service's accidental (or intentional) activation.

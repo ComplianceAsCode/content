@@ -53,7 +53,10 @@ The <tt>ip6tables</tt> default rules are essentially the same.</description>
 <description>
 <service-enable-macro service="ip6tables" />
 </description>
-<ocil><service-enable-check-macro service="ip6tables" /></ocil>
+<ocil>
+If IPv6 is disabled, this is not applicable.
+<br /><br />
+<service-enable-check-macro service="ip6tables" /></ocil>
 <rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
 capability for IPv6 and ICMPv6.
 </rationale>
@@ -71,7 +74,10 @@ add or correct the following line in
 <tt>/etc/sysconfig/ip6tables</tt>:
 <pre>:INPUT DROP [0:0]</pre>
 </description>
-<ocil clause="the default policy for the INPUT chain is not set to DROP">Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
+<ocil clause="the default policy for the INPUT chain is not set to DROP">
+If IPv6 is disabled, this is not applicable.
+<br /><br />
+Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
 the default policy for the INPUT chain. It should be set to DROP:
 <pre> # grep ":INPUT" /etc/sysconfig/ip6tables</pre>
 </ocil>

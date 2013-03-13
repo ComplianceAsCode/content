@@ -63,7 +63,12 @@ file should not have any access privileges anyway.
 is the default.
 <fileperms-desc-macro file="/boot/grub/grub.conf" perms="600"/>
 </description>
-<ocil><fileperms-check-macro file="/boot/grub/grub.conf" perms="-rw-------"/></ocil>
+<ocil clause ="it does not">
+To check the permissions of /etc/grub.conf, run the command:
+<pre># ls -lL /etc/grub.conf</pre>
+If properly configured, the output should indicate the following 
+permissions: <tt>-rw-------</tt>
+</ocil>
 <rationale>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
