@@ -31,7 +31,7 @@ The <tt>/tmp</tt> directory is a world-writable directory used
 for temporary file storage. Ensure it has its own partition or
 logical volume at installation time, or migrate it using LVM.
 </description>
-<ocil><partition-check-macro part="/tmp"/></ocil>
+<ocil><partition-check-macro part="/tmp "/></ocil>
 <rationale>
 The <tt>/tmp</tt> partition is used as temporary storage by many programs.
 Placing <tt>/tmp</tt> in its own partition enables the setting of more
@@ -49,7 +49,7 @@ restrictive mount options, which can help protect programs which use it.
 services to store frequently-changing data. Ensure that <tt>/var</tt> has its own partition
 or logical volume at installation time, or migrate it using LVM.
 </description>
-<ocil><partition-check-macro part="/var"/></ocil>
+<ocil><partition-check-macro part="/var "/></ocil>
 <rationale>
 Ensuring that <tt>/var</tt> is mounted on its own partition enables the
 setting of more restrictive mount options. This helps protect
@@ -70,7 +70,7 @@ System logs are stored in the <tt>/var/log</tt> directory.
 Ensure that it has its own partition or logical
 volume at installation time, or migrate it using LVM.
 </description>
-<ocil><partition-check-macro part="/var/log"/></ocil>
+<ocil><partition-check-macro part="/var/log "/></ocil>
 <rationale>
 Placing <tt>/var/log</tt> in its own partition
 enables better separation between log files
@@ -90,7 +90,7 @@ has its own partition or logical volume at installation time, or migrate it
 later using LVM. Make absolutely certain that it is large enough to store all
 audit logs that will be created by the auditing daemon.
 </description>
-<ocil><partition-check-macro part="/var/log/audit"/></ocil>
+<ocil><partition-check-macro part="/var/log/audit "/></ocil>
 <rationale>
 Placing <tt>/var/log/audit</tt> in its own partition
 enables better separation between audit files
@@ -113,7 +113,7 @@ for <tt>/home</tt> at installation time (or migrate it later using LVM). If
 creating a separate partition is not necessary at installation time, and the
 mountpoint can instead be configured later.
 </description>
-<ocil><partition-check-macro part="/home"/></ocil>
+<ocil><partition-check-macro part="/home "/></ocil>
 <rationale>
 Ensuring that <tt>/home</tt> is mounted on its own partition enables the
 setting of more restrictive mount options, and also helps ensure that
