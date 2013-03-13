@@ -345,7 +345,7 @@ exclude-result-prefixes="xccdf xhtml dc">
 
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
-    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> on</xhtml:pre>
+    <xhtml:pre># chkconfig --level 2345 <xsl:value-of select="@service"/> on</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
