@@ -290,9 +290,9 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
 running the following command:
-<pre># grep "UMASK" /etc/login.defs</pre>
+<pre># grep -i "UMASK" /etc/login.defs</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
-<pre># grep "UMASK" /etc/login.defs
+<pre># grep -i "UMASK" /etc/login.defs
 umask 077</pre>
 </ocil>
 <ident cce="26371-5" />
