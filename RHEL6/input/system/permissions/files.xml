@@ -200,6 +200,12 @@ its permission with the following command:
 <pre># chmod go-w <i>FILE</i></pre>
 </description>
 <ocil clause="any of these files are group-writable or world-writable">
+Shared libraries are stored in the following directories:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+</pre>
 To find shared libraries that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
 <pre>$ find <i>DIR</i> -perm /022 -type f</pre>
@@ -265,6 +271,13 @@ following command:
 <pre># chmod go-w <i>FILE</i></pre>
 </description>
 <ocil clause="any system executables are found to be group or world writable">
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
 To find system executables that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> -perm /022</pre>
@@ -293,6 +306,13 @@ following command:
 <pre># chown root <i>FILE</i></pre>
 </description>
 <ocil clause="any system executables are found to not be owned by root">
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
 To find system executables that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> \! -user root</pre>

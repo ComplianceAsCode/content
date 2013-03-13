@@ -120,7 +120,7 @@ will not create it and important log messages can be lost.
 <description>The owner of all log files written by
 <tt>rsyslog</tt> should be root.
 These log files are determined by the second part of each Rule line in
-<tt>/etc/rsyslog.conf</tt> typically all appear in <tt>/var/log</tt>. 
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
 For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
 run the following command to inspect the file's owner:
 <pre>$ ls -l <i>LOGFILE</i></pre>
@@ -129,6 +129,9 @@ correct this:
 <pre># chown root <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the owner is not root">
+The owner of all log files written by <tt>rsyslog</tt> should be root.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
 To see the owner of a given log file, run the following command:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 </ocil>
@@ -155,6 +158,9 @@ correct this:
 <pre># chgrp root <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the group-owner is not root">
+The group-owner of all log files written by <tt>rsyslog</tt> should be root.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
 To see the group-owner of a given log file, run the following command:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 </ocil>
@@ -171,7 +177,7 @@ protected from unauthorized access.</rationale>
 <Rule id="rsyslog_file_permissions" severity="medium">
 <title>Ensure System Log Files Have Correct Permissions</title>
 <description>The file permissions for all log files written by
-rsyslog should be set to 600, or more restrictive.
+<tt>rsyslog</tt> should be set to 600, or more restrictive.
 These log files are determined by the second part of each Rule line in
 <tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
 For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
@@ -182,6 +188,10 @@ run the following command to correct this:
 <pre># chmod 0600 <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the permissions are not correct">
+The file permissions for all log files written by <tt>rsyslog</tt> 
+should be set to 600, or more restrictive.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
 To see the permissions of a given log file, run the following command:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 The permissions should be 600, or more restrictive.
