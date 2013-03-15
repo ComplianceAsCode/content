@@ -395,7 +395,8 @@ and a second to use unlock_time and set it to a Value
 To configure the system to lock out accounts after a number of incorrect login
 attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
-Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
+Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
+<tt>/etc/pam.d/system-auth</tt>:
 <pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
 <pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
 </description>
