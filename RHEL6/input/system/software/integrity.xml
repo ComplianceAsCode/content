@@ -146,10 +146,9 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 <title>Verify File Permissions with RPM</title>
 <description>The RPM package management system can check file access
 permissions of installed software packages, including many that are
-important to system security. The following command will list which
-files on the system have permissions different from what
-is expected by the RPM database:
-<pre># rpm -Va | grep '^.M'</pre>
+important to system security. The following command will reset permissions to 
+their expected values:
+<pre># rpm --setperms <i>package</i></pre>
 </description>
 <ocil clause="there is output">
 The following command will list which files on the system have permissions different from what
