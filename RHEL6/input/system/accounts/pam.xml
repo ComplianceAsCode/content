@@ -55,6 +55,30 @@ frequently.</description>
 <value selector="24">24</value>
 </Value>
 
+<Rule id="display_login_attempts">
+<title>Set Last Logon/Access Notification</title>
+<description>To configure the system to notify users of last logon/access
+using <tt>pam_lastlog</tt>, add the following line immediately after <tt>session  required  pam_limits.so</tt>:
+<pre>session       required     pam_lastlog.so showfailed</pre>
+</description>
+<ocil clause="that is not the case">
+To ensure that last logon/access notification is configured correctly, run
+the following command:
+<pre># grep pam_lastlog.so /etc/pam.d/system-auth</pre>
+The output should show output <tt>showfailed</tt>.
+</ocil>
+<rationale>
+Users need to be aware of activity that occurs regarding
+their account. Providing users with information regarding the number
+of unsuccessful attempts that were made to login to their account
+allows the user to determine if any unauthorized activity has occurred
+and gives them an opportunity to notify administrators.
+</rationale>
+<ident cce="TODO" />
+<oval id="TODO" />
+<ref disa="53" />
+</Rule>
+
 <Group id="password_quality">
 <title>Set Password Quality Requirements</title>
 <description>The default <tt>pam_cracklib</tt> PAM module provides strength
