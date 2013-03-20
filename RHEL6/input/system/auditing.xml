@@ -343,7 +343,8 @@ These include:
 <li><tt>halt</tt></li>
 </ul>
 Set this to <tt>email</tt> (instead of the default,
-which is <tt>suspend</tt>) as it is more likely to get prompt attention.
+which is <tt>suspend</tt>) as it is more likely to get prompt attention. Acceptable values
+also include <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
 </description>
 <ocil clause="the system is not configured to send an email to the system administrator when
 disk space is starting to run low">
@@ -351,7 +352,8 @@ Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to email the administrator when
 disk space is starting to run low:
 <tt># grep space_left_action /etc/audit/auditd.conf</tt>
-<pre>space_left_action email</pre>
+<pre>space_left_action</pre>
+Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
 </ocil>
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
@@ -381,15 +383,16 @@ These include:
 <li><tt>halt</tt></li>
 </ul>
 Set this value to <tt>single</tt> to cause the system to switch to single user
-mode for corrective action.  For certain systems, the need for availability
+mode for corrective action. Acceptable values also include <tt>suspend</tt> and
+<tt>halt</tt>. For certain systems, the need for availability
 outweighs the need to log all actions, and a different setting should be
 determined.
 </description>
 <ocil clause="the system is not configured to switch to single user
 mode for corrective action">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
-determine if the system is configured to switch to single user mode
-when disk space has run low:
+determine if the system is configured to either suspend, switch to single user mode,
+or halt when disk space has run low:
 <pre>admin_space_left_action single</pre>
 </ocil>
 <rationale>Administrators should be made aware of an inability to record
