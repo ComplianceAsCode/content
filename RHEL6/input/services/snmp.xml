@@ -78,7 +78,7 @@ Upon doing that, restart the SNMP service:
 </description>
 <ocil clause="there is output">
 To ensure only SNMPv3 or newer is used, run the following command:
-<pre># grep 'v1\|v2c\|com2sec' /etc/snmp/snmpd.conf</pre>
+<pre># grep 'v1\|v2c\|com2sec' /etc/snmp/snmpd.conf | grep -v "^#"</pre>
 There should be no output.
 </ocil>
 <rationale>
