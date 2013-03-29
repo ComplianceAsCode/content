@@ -36,41 +36,20 @@ guide: shorthand2xccdf
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
 #	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-rhel6-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-#	
-#	Begin Guide Creation
-#	NOTE:	If you do not follow the $(profile)-guide.html syntax
-#		you will manually have to include your guide in the 
-#		make dist section
-#
 	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-rhel6-xccdf-guide.xml > $(OUT)/rhel6-guide.html
-	oscap xccdf generate guide --profile stig-rhel6-server $(OUT)/unlinked-rhel6-xccdf-guide.xml > $(OUT)/stig-rhel6-server-guide.html
-	oscap xccdf generate guide --profile usgcb-rhel6-server $(OUT)/unlinked-rhel6-xccdf-guide.xml > $(OUT)/usgcb-rhel6-server-guide.html
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
 #	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
-table-profilenistrefs: shorthand2xccdf
-	xsltproc -stringparam profile "desktop" -o $(OUT)/table-rhel6-nistrefs-desktop.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -stringparam profile "server" -o $(OUT)/table-rhel6-nistrefs-server.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -stringparam profile "common" -o $(OUT)/table-rhel6-nistrefs-common.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -stringparam profile "ftp" -o $(OUT)/table-rhel6-nistrefs-ftp.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-
 table-refs: shorthand2xccdf
 	xsltproc -stringparam ref "nist" -o $(OUT)/table-rhel6-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-# break apart references by delimiter:
-	xsltproc -stringparam ref "nist" -stringparam delim "," -o $(OUT)/table-rhel6-nistrefs-delim.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-# then sort them:
-	xsltproc --html -o $(OUT)/table-rhel6-nistrefs-delim-sorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/table-rhel6-nistrefs-delim.html
+	xsltproc -stringparam profile "common" -o $(OUT)/table-rhel6-nistrefs-common.html \
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 
 table-idents: shorthand2xccdf
 	xsltproc -o $(OUT)/table-rhel6-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -stringparam ref "../$(REFS)/cce-rhel5.xml" -o $(OUT)/table-rhel6-cces-rhel5.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 
 table-srgmap: shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
@@ -83,7 +62,6 @@ table-srgmap: shorthand2xccdf
 table-stigs: shorthand2xccdf table-srgmap
 	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
-	xsltproc --html -o $(OUT)/table-rhel5-stig-manual-ccisorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/table-rhel5-stig-manual.html 
 	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
 		$(TRANS)/xccdf2table-stig.xslt \
 		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
@@ -148,9 +126,6 @@ validate:
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-rhel6-xccdf.xml
 
-eval-ftp:
-	oscap xccdf eval --profile ftp $(OUT)/$(ID)-rhel6-xccdf.xml
-
 eval-common:
 	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-rhel6-xccdf.xml
 
@@ -163,9 +138,6 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-rhel6-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/table-rhel6-* $(DIST)/policytables
-
-#install:
-#	cp -r rhel6/src/dist/* /usr/share/scap-security-guide/rhel6
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini
