@@ -300,14 +300,14 @@ exclude-result-prefixes="xccdf xhtml dc">
 
   <xsl:template match="fileowner-check-macro">
     To check the ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre>$ ls -lL <xsl:value-of select="@file"/></xhtml:pre>
     If properly configured, the output should indicate the following owner:
     <xhtml:code><xsl:value-of select="@owner"/></xhtml:code>
   </xsl:template>
 
   <xsl:template match="filegroupowner-check-macro">
     To check the group ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre>$ ls -lL <xsl:value-of select="@file"/></xhtml:pre>
     If properly configured, the output should indicate the following group-owner.
     <xhtml:code><xsl:value-of select="@group"/></xhtml:code>
   </xsl:template>
