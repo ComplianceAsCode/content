@@ -38,7 +38,7 @@ Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
 <ident cce="26435-8"/>
-<oval id="mount_tmp_own_partition" />
+<oval id="partition_for_tmp" />
 <ref nist="" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
@@ -58,7 +58,7 @@ It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories, installed by other software packages.
 </rationale>
 <ident cce="26639-5"/>
-<oval id="mount_var_own_partition" />
+<oval id="partition_for_var" />
 <ref nist="" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
@@ -77,7 +77,7 @@ enables better separation between log files
 and other files in <tt>/var/</tt>.
 </rationale>
 <ident cce="26215-4" />
-<oval id="mount_var_log_own_partition" />
+<oval id="partition_for_var_log" />
 <ref nist="AU-9" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
@@ -99,7 +99,7 @@ auditing cannot be halted due to the partition running out
 of space.
 </rationale>
 <ident cce="26436-6" />
-<oval id="mount_var_log_audit_own_partition" />
+<oval id="partition_for_var_log_audit" />
 <ref nist="AU-9" disa="137,138,1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
@@ -120,7 +120,7 @@ setting of more restrictive mount options, and also helps ensure that
 users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
 <ident cce="26557-9" />
-<oval id="mount_home_own_partition" />
+<oval id="partition_for_home" />
 <ref nist="" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
