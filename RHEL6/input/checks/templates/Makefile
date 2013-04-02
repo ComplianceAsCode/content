@@ -22,6 +22,7 @@ compare:
 
 copy:
 	cp output/*.xml ../
+	cp output/*.sh ../../fixes/bash/
 
 find-untemplated: templates
 	./find_untemplated.py
