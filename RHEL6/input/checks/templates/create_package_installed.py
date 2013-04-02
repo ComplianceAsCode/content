@@ -15,12 +15,18 @@ import sys, csv, re
 def output_check(package_info):
     pkgname = package_info[0]
     if pkgname:
-        with open("./template_package_installed", 'r') as templatefile:
-            filestring = templatefile.read()
+        with open("./template_OVAL_package_installed", 'r') as OVALtemplatefile:
+            filestring = OVALtemplatefile.read()
             filestring = filestring.replace("PKGNAME", pkgname)
-            with open("./output/package_" + pkgname + "_installed.xml", 'wb+') as outputfile:
-                outputfile.write(filestring)
-                outputfile.close()
+            with open("./output/package_" + pkgname + "_installed.xml", 'wb+') as OVALoutputfile:
+                OVALoutputfile.write(filestring)
+                OVALoutputfile.close()
+	with open("./template_BASH_package_installed", 'r') as BASHtemplatefile:
+		filestring = BASHtemplatefile.read()
+		filestring = filestring.replace("PKGNAME", pkgname)
+		with open("./output/package_" + pkgname + "_installed.sh", 'wb+') as BASHoutputfile:
+			BASHoutputfile.write(filestring)
+			BASHoutputfile.close()
     else:
         print "ERROR: input violation: the package name must be defined"
 
