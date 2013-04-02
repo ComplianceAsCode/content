@@ -83,7 +83,7 @@ table-stigs: shorthand2xccdf table-srgmap
 	xsltproc --novalid --html -o $(OUT)/table-stig-rhel6-server-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-rhel6-server.html
 	xsltproc --html -o $(OUT)/table-stig-rhel6-server-flat.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-rhel6-server-flat.html
 
-tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
+tables: table-refs table-idents table-srgmap table-stigs
 
 alt-titles: shorthand2xccdf
 	$(UTILS)/sync-alt-titles.py -p stig-rhel6-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/unlinked-rhel6-xccdf.xml
