@@ -29,3 +29,4 @@ find-untemplated: templates
 
 clean:
 	rm output/*.xml
+	rm output/*.sh
