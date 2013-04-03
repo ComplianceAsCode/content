@@ -12,6 +12,8 @@
 
   <xsl:template match="xccdf:Benchmark">
     <xsl:copy>
+    <title>Pre-release Final STIG for Red Hat Enterprise Linux 6</title>
+
   	<xsl:variable name="rules" select="//xccdf:Rule"/>
 
     <xsl:for-each select="$overlays/xccdf:overlay">  <!-- make sure overlays file namespace is XCCDF (hack) -->
