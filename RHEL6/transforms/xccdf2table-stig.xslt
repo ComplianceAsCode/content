@@ -56,14 +56,14 @@
 			<table class="bbl">
 				<tr><td class="bl">Title</td></tr>
 				<tr><td>V-ID</td></tr>
-				<!--<tr><td>GEN-ID</td></tr>-->
+				<tr><td>CCI</td></tr>
 				<tr><td>CAT</td></tr>
 			</table>
 			</td>
 			</xsl:when>
 			<xsl:otherwise>
 				<td>V-ID</td>
-				<!--<td>GEN-ID</td>-->
+				<td>CCI</td>
 				<td>CAT</td>
 				<td>Title</td>
 			</xsl:otherwise>
@@ -97,7 +97,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<td><xsl:value-of select="@id"/></td> 
-				<!--<td> <xsl:value-of select="cdf:ident" /></td>-->
+				<td> <xsl:value-of select="cdf:Rule/cdf:ident" /></td>
 				<!--<td> <xsl:value-of select="cdf:title" /></td>-->
 				<td> <xsl:value-of select="cdf:Rule/@severity" /></td>
 				<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
