@@ -8,6 +8,7 @@
 <xsl:variable name="notegroup" select="document($notes)/notegroup" />
 
 <xsl:include href="constants.xslt"/>
+<xsl:include href="table-style.xslt"/>
 
 	<xsl:template match="/">
 		<html>
@@ -29,25 +30,8 @@
 
 
 	<xsl:template match="cdf:Benchmark">
-		<style type="text/css">
-		table
-		{
-			border-collapse:collapse;
-		}
-		table,th,td
-		{
-			border: 1px solid black;
-			vertical-align: top;
-			padding: 3px;
-		}
-		.bl, table.bl tr td { border:none; }
-		.bbl, table.bbl tr td { border:none; font-weight: bold;}
-		thead
-		{
-			display: table-header-group;
-			font-weight: bold;
-		}
-		</style>
+		<xsl:call-template name="table-style" />
+
 		<table>
 			<thead>
 			<xsl:choose>
