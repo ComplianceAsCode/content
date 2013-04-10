@@ -9,16 +9,22 @@
 		{
 			border-collapse:collapse;
 		}
-		table,th, td
+		table, th, td
 		{
-			border: 1px solid black;
+			border: 2px solid #dcdcdc;
+			border-left: none;
+			border-right: none;
 			vertical-align: top;
-			padding: 3px;
+			padding: 2px;
+			font-family: verdana,arial,sans-serif;
+			font-size:11px;
 		}
+		table tr:nth-child(2n+2) { background-color: #f4f4f4; }
 		thead
 		{
 			display: table-header-group;
 			font-weight: bold;
+			background-color: #dedede;
 		}
 	</style>
 </xsl:template>
