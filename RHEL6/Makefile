@@ -14,11 +14,12 @@ shorthand-guide:
 	xmllint --format --output $(OUT)/rhel6-shorthand.xml $(OUT)/rhel6-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
-	xsltproc -o $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
-	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-rhel6-xccdf-prerefs.xml \
-		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-rhel6-xccdf.xml
-	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
-		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf-prerefs.xml
+	xsltproc -o $(OUT)/unlinked-unresolved-noprofiles-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
+	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-unresolved-rhel6-xccdf.xml \
+		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-unresolved-noprofiles-rhel6-xccdf.xml
+	oscap xccdf resolve -o $(OUT)/unlinked-rhel6-xccdf.xml $(OUT)/unlinked-unresolved-rhel6-xccdf.xml
+#	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
+#		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file
 	xsltproc -o $(OUT)/unlinked-rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-rhel6-ocil.xml $(OUT)/unlinked-rhel6-ocil.xml 
@@ -66,31 +67,15 @@ table-stigs: shorthand2xccdf table-srgmap
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
-	xsltproc -stringparam profile "stig-rhel6-server" -stringparam testinfo "y" -o $(OUT)/table-stig-rhel6-server-shorttitles.html \
+	xsltproc -stringparam profile "stig-rhel6-server" -stringparam testinfo "y" -o $(OUT)/table-stig-rhel6-shorttitles.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
-		$(OUT)/unlinked-rhel6-xccdf.xml  
+		$(OUT)/unlinked-rhel6-xccdf.xml
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
 		$(TRANS)/xccdf-apply-overlay-stig.xslt \
 		$(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -o $(OUT)/table-stig-rhel6-overlay.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml  
-#	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
-#		$(TRANS)/xccdf-alt-titles.xslt \
-#		$(OUT)/unlinked-rhel6-xccdf.xml
-#	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/table-stig-rhel6-server.html \
-#		$(TRANS)/xccdf2table-profileccirefs.xslt \
-#		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
-#	xsltproc --html -o $(OUT)/table-stig-rhel6-server.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-rhel6-server.html
-#	xsltproc -stringparam profile "stig-rhel6-server" -stringparam format "flat" -o $(OUT)/table-stig-rhel6-server-flat.html \
-#		$(TRANS)/xccdf2table-profileccirefs.xslt \
-#		$(OUT)/unlinked-stig-rhel6-xccdf.xml  
-#	xsltproc --novalid --html -o $(OUT)/table-stig-rhel6-server-flat-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-rhel6-server-flat.html
-#	xsltproc --novalid --html -o $(OUT)/table-stig-rhel6-server-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-rhel6-server.html
+	xsltproc -o $(OUT)/table-stig-rhel6.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml  
 
 tables: table-refs table-idents table-srgmap table-stigs
-
-alt-titles: shorthand2xccdf
-	$(UTILS)/sync-alt-titles.py -p stig-rhel6-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/unlinked-rhel6-xccdf.xml
-	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml 
 
 content: shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
@@ -100,16 +85,7 @@ content: shorthand2xccdf guide checks
 	$(TRANS)/relabelids.py unlinked-rhel6-xccdf.xml $(ID)
 	$(TRANS)/relabelids.py unlinked-ocilrefs-rhel6-xccdf.xml $(ID)
 
-# not ready until oscap resolve behavior resolved
 content-stig: shorthand2xccdf guide checks
-	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/unlinked-rhel6-xccdf.xml \
-		$(TRANS)/xccdf-alt-titles.xslt \
-		$(OUT)/unlinked-rhel6-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-resolved-rhel6-xccdf.xml $(OUT)/unlinked-rhel6-xccdf.xml
-#	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
-#		$(TRANS)/xccdf2stigformat.xslt $(OUT)/unlinked-resolved-rhel6-xccdf.xml 
-#	xsltproc -o $(OUT)/table-stig-rhel6-server-stigformat.html \
-#		$(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-stig-rhel6-xccdf.xml $(OUT)/unlinked-stig-rhel6-xccdf.xml 
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml disa-predraft
 	$(TRANS)/relabelids.py unlinked-stig-rhel6-xccdf.xml disa-predraft

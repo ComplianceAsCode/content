@@ -9,6 +9,7 @@
 <xsl:variable name="cce_list" select="document($ref)/cce:cce_list" />
 
 <xsl:include href="constants.xslt"/>
+<xsl:include href="table-style.xslt"/>
 
 	<xsl:template match="/">
 		<html>
@@ -30,23 +31,7 @@
 
 
 	<xsl:template match="cdf:Benchmark">
-		<style type="text/css">
-		table
-		{
-			border-collapse:collapse;
-		}
-		table,th, td
-		{
-			border: 1px solid black;
-			vertical-align: top;
-			padding: 3px;
-		}
-		thead
-		{
-			display: table-header-group;
-			font-weight: bold;
-		}
-		</style>
+		<xsl:call-template name="table-style" />
 		<table>
 			<thead>
 				<td>CCE ID</td>
