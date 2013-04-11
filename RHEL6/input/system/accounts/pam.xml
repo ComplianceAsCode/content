@@ -74,7 +74,7 @@ of unsuccessful attempts that were made to login to their account
 allows the user to determine if any unauthorized activity has occurred
 and gives them an opportunity to notify administrators.
 </rationale>
-<ident cce="TODO" />
+<ident cce="27291-4" />
 <oval id="TODO" />
 <ref disa="53" />
 </Rule>
@@ -241,7 +241,7 @@ requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks. Note that this
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
-<ident cce="26796-5" />
+<ident cce="27123-9" />
 <oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
 <ref nist="IA-5" disa="1092" />
 <tested by="DS" on="20121024"/>
@@ -459,7 +459,7 @@ prevents direct password guessing attacks.  Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
-<ident cce="3410-8" />
+<ident cce="27110-6" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
 <ref nist="AC-7(b)" disa="47" />
 </Rule>
@@ -483,7 +483,7 @@ The output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where 
 Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
-<ident cce="3410-8" />
+<ident cce="27215-3" />
 <oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
 <ref nist="AC-7(a)" disa="1452" />
 </Rule>

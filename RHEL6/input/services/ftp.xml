@@ -159,7 +159,6 @@ If anonymous access is also required, add the anonymous usernames to <tt>/etc/vs
 ftp</pre>
 </description>
 <rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via ftp. It was used to prevent system users such as the root user from logging in via the insecure ftp protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via ftp. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous ftp access can be limited to legacy users who have been explicitly identified.</rationale>
-<!--<ident cce="27115-5" />-->
 <!--<oval id="ftp_limit_users" />-->
 <!--<ref nist="CM-7" /> -->
 </Group>
@@ -188,7 +187,6 @@ is necessary to ensure that files cannot be uploaded and downloaded from the sam
 be used to verify that this directory is on its own partition.</description>
 <rationale>If there is a mission-critical reason for anonymous users to upload files, precautions must be taken to prevent
 these users from filling a disk used by other services.</rationale>
-<!--<ident cce="27115-5" />-->
 <!--<oval id="ftp_home_partition" />-->
 <!--<ref nist="CM-7" /> -->
 </Rule>
@@ -207,7 +205,6 @@ FTP is an older protocol which is not very compatible with firewalls. During the
 and server negotiate an arbitrary port to be used for data transfer. The ip conntrack ftp module is used by
 iptables to listen to that dialogue and allow connections to the data ports which FTP negotiates. This allows an
 FTP server to operate on a machine which is running a firewall.</rationale>
-<!--<ident cce="27115-5" />-->
 <!--<oval id="ftp_configure_firewall" />-->
 <!--<ref nist="CM-7" /> -->
 </Group>
