@@ -96,24 +96,6 @@ operator="equals" interactive="0">
 <value selector="root">root</value>
 </Value>
 
-<Rule id="rsyslog_logfiles_exist">
-<title>Ensure Log Files Exist</title>
-<description>
-The log files written by <tt>rsyslog</tt> are determined by the second part of each rule line in
-<tt>/etc/rsyslog.conf</tt>. These typically all appear in <tt>/var/log</tt>. 
-For any log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt> which
-does not already exist the following commands will create it and apply proper
-permissions:
-<pre># touch <i>LOGFILE</i>
-# chown root:root <i>LOGFILE</i>
-# chmod 0600 <i>LOGFILE</i></pre>
-</description>
-<rationale>If a log file referenced by rsyslog does not exist, rsyslog
-will not create it and important log messages can be lost.
-</rationale>
-<ident cce="26818-5" />
-<ref nist="" />
-</Rule>
 
 <Rule id="userowner_rsyslog_files" severity="medium">
 <title>Ensure Log Files Are Owned By Appropriate User</title>
