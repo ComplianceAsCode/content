@@ -8,14 +8,19 @@
       </affected>
       <description>Protect against attempts to reduce availability of network resources.</description>
     </metadata>
-    <criteria operator="AND">
-      <criterion comment="Limit smtp recipients"  test_ref="test_postfix_server_denial_of_service_smtpd_recipient_limit" />
-      <criterion comment="Limit message size"     test_ref="test_postfix_server_denial_of_service_message_size_limit" />
-      <criterion comment="Limit header size"      test_ref="test_postfix_server_denial_of_service_header_size_limit" />
-      <criterion comment="Limit queue"            test_ref="test_postfix_server_denial_of_service_queue_minfree" />
-      <criterion comment="Limit connection rate"  test_ref="test_postfix_server_denial_of_service_smtpd_client_connection_rate_limit" />
-      <criterion comment="Limit connection count" test_ref="test_postfix_server_denial_of_service_smtpd_client_connection_count_limit" />
-      <criterion comment="Limit proc count"       test_ref="test_postfix_server_denial_of_service_default_process_limit" />
+    <criteria comment="Postfix installed and service is configured to start" operator="AND">
+      <!-- NOTE: The package install check is inherited from service_postfix_enabled -->
+      <extend_definition comment="postfix configured to start" definition_ref="service_postfix_enabled" />
+
+      <criteria operator="AND">
+        <criterion comment="Limit smtp recipients"  test_ref="test_postfix_server_denial_of_service_smtpd_recipient_limit" />
+        <criterion comment="Limit message size"     test_ref="test_postfix_server_denial_of_service_message_size_limit" />
+        <criterion comment="Limit header size"      test_ref="test_postfix_server_denial_of_service_header_size_limit" />
+        <criterion comment="Limit queue"            test_ref="test_postfix_server_denial_of_service_queue_minfree" />
+        <criterion comment="Limit connection rate"  test_ref="test_postfix_server_denial_of_service_smtpd_client_connection_rate_limit" />
+        <criterion comment="Limit connection count" test_ref="test_postfix_server_denial_of_service_smtpd_client_connection_count_limit" />
+        <criterion comment="Limit proc count"       test_ref="test_postfix_server_denial_of_service_default_process_limit" />
+      </criteria>
     </criteria>
   </definition>
 
