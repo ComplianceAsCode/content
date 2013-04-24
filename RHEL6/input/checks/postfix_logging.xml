@@ -8,15 +8,19 @@
       </affected>
       <description>Postfix Should Log Relevant Events and Logs Shall Be Protected.</description>
     </metadata>
-    <criteria operator="AND">
-      <criterion comment="Test log file ownership"       test_ref="test_postfix_logging_ownership" />
-      <criterion comment="Test log file group ownership" test_ref="test_postfix_logging_gownership" />
-      <criterion comment="Test log file permissions"     test_ref="test_postfix_logging_permissions" />
-      <criterion comment="Test logs set for maillog"     test_ref="test_postfix_logging_sent_to_maillog" />
-      <criterion comment="Test logs are set to rotate"   test_ref="test_postfix_logging_maillog_rotates" />
+    <criteria comment="Postfix installed and service is configured to start" operator="AND">
+      <!-- NOTE: The package install check is inherited from service_postfix_enabled -->
+      <extend_definition comment="postfix configured to start" definition_ref="service_postfix_enabled" />
+      <criteria operator="AND">
+        <criterion comment="Test log file ownership"       test_ref="test_postfix_logging_ownership" />
+        <criterion comment="Test log file group ownership" test_ref="test_postfix_logging_gownership" />
+        <criterion comment="Test log file permissions"     test_ref="test_postfix_logging_permissions" />
+        <criterion comment="Test logs set for maillog"     test_ref="test_postfix_logging_sent_to_maillog" />
+        <criterion comment="Test logs are set to rotate"   test_ref="test_postfix_logging_maillog_rotates" />
+      </criteria>
     </criteria>
   </definition>
- 
+
   <unix:file_test check="all" check_existence="all_exist"
   comment="Testing ownership of maillog file"
   id="test_postfix_logging_ownership" version="1">
