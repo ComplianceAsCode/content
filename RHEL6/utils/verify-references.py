@@ -103,6 +103,11 @@ def main():
 	ovaltree = ET.parse(ovalfile) 
 	ovaldefs = ovaltree.findall(".//{%s}definition" % oval_ns)
 	ovaldef_ids = [ovaldef.get("id") for ovaldef in ovaldefs] 
+
+	oval_extenddefs = ovaltree.findall(".//{%s}extend_definition" % oval_ns)
+	ovaldef_ids_extended = [oval_extenddef.get("definition_ref") for oval_extenddef in oval_extenddefs]
+	ovaldef_ids_extended = list(set(ovaldef_ids_extended))
+
 	check_content_refs = xccdftree.findall(".//{%s}check-content-ref" % xccdf_ns)
 
 	# now we can actually do the verification work here
@@ -168,7 +173,9 @@ def main():
 		# the list should now contain the OVAL checks that are not referenced by any XCCDF rule
 		oval_checks_list.sort()
 		for oval_id in oval_checks_list:
-			print "XCCDF does not reference OVAL Check: %s" % oval_id
+			# don't print out the OVAL defs that are extended by others, as they're not unused
+			if oval_id not in ovaldef_ids_extended:
+				print "XCCDF does not reference OVAL Check: %s" % oval_id
 
 	sys.exit(0)
 
