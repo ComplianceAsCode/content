@@ -97,10 +97,14 @@ submission-stig-check: table-stigs
 
 # content-usgcb: coming soon
 
-validate:
+validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-rhel6-xccdf.xml
 	oscap oval validate-xml $(OUT)/$(ID)-rhel6-oval.xml
 	oscap oval validate-xml $(OUT)/$(ID)-rhel6-cpe-oval.xml
+
+validate: validate-xml
+	cd output; ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-rhel6-xccdf.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-rhel6-oval.xml
 
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-rhel6-xccdf.xml
