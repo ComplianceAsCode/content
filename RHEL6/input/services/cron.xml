@@ -111,21 +111,25 @@ access to these files should be disabled.</description>
 
 -->
 
-
-<Rule id="disable_at">
-<title>Disable atd Service</title>
-<description>
+<Rule id="service_atd_disabled">
+<title>Disable At Service (atd)</title>
+<description>The <tt>at</tt> and <tt>batch</tt> commands can be used to
+schedule tasks that are meant to be executed only once. This allows delayed
+execution in a manner similar to cron, except that it is not
+recurring. The daemon <tt>atd</tt> keeps track of tasks scheduled via
+<tt>at</tt> and <tt>batch</tt>, and executes them at the specified time.
 <service-disable-macro service="atd" />
 </description>
 <ocil><service-disable-check-macro service="atd" /></ocil>
 <rationale>
-Many of the periodic or delayed execution features of the at
-daemon can be provided through the cron daemon instead.
+The <tt>atd</tt> service could be used by an unsophisticated insider to carry
+out activities outside of a normal login session, which could complicate
+accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
+<tt>batch</tt> is not common.
 </rationale>
-<ident cce="26548-8" />
+<ident cce="27249-2" />
 <oval id="service_atd_disabled" />
-<ref nist="CM-7" />
-<tested by="DS" on="20121024"/>
+<ref nist="CM-7" disa="381" />
 </Rule>
 
 <Group id="restrict_at_cron_users">
