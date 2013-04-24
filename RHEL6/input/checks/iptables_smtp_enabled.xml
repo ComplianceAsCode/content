@@ -10,10 +10,20 @@
       the ldap service.</description>
     </metadata>
     <criteria operator="AND">
+      <criterion comment="Package Postfix is installed" test_ref="test_package_postfix_installed" />
       <criterion comment="Test ipv4 25 Accept" test_ref="test_iptables_smtp_enabled_ipv4" />
       <criterion comment="Test ipv6 25 Accept" test_ref="test_iptables_smtp_enabled_ipv6" />
     </criteria>
   </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" id="test_package_postfix_installed" version="1"
+  comment="Package Postfix is installed">
+    <linux:object object_ref="obj_package_postfix" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_postfix" version="1">
+    <linux:name>postfix</linux:name>
+  </linux:rpminfo_object>
+
   <ind:textfilecontent54_test check="all"
   check_existence="all_exist" comment="Test for 25 access over ipv4"
   id="test_iptables_smtp_enabled_ipv4" version="1">
