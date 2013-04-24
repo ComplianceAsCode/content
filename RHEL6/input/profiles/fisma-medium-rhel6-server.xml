@@ -1,0 +1,146 @@
+<Profile id="fisma-medium-rhel6-server" extends="" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>FISAMA Medium for Red Hat Enterprise Linux 6</title>
+<description>FISMA Medium for Red Hat Enterprise Linux 6</description>
+
+<!-- ACCESS CONTROL (AC) -->
+<!-- 	AC-2(2)
+     	FISMA Refine: Accounts expire every 90 days -->
+<refine-value idref="var_account_disable_post_pw_expiration" selector="90"/>
+<select idref="account_disable_post_pw_expiration" selected="true" />
+<select idref="account_temp_expire_date" selected="true" />
+
+<!--	AC-2(4) -->
+<select idref="audit_account_changes" selected="true"/>
+
+<!--	AC-2(7) -->
+<select idref="audit_sysadmin_actions" selected="true"/>
+
+<!--	AC-3, AC-3(3) -->
+<select idref="enable_selinux_bootloader" selected="true" />
+<select idref="set_selinux_state" selected="true" />
+<select idref="set_selinux_policy" selected="true" />
+<select idref="service_restorecond_enabled" selected="true" />
+<select idref="sshd_use_approved_ciphers" selected="true" />
+
+<!--	AC-4 -->
+<select idref="service_rdisc_disabled" selected="true" />
+<select idref="disable_sysctl_ipv4_default_send_redirects" selected="true" />
+<select idref="set_sysctl_net_ipv4_conf_all_secure_redirects" selected="true" />
+<select idref="set_sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
+<select idref="set_sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
+<select idref="set_sysctl_net_ipv4_conf_default_secure_redirects" selected="true" />
+<select idref="set_sysctl_net_ipv4_tcp_syncookies" selected="true" />
+<select idref="set_sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
+<select idref="set_sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
+<select idref="enable_ip6tables" selected="true" />
+<select idref="enable_iptables" selected="true" />
+
+<!--	AC-6 -->
+<refine-value idref="var_umask_for_daemons" selector="022"/>
+<select idref="sshd_disable_root_login" selected="true" />
+<select idref="set_daemon_umask" selected="true" />
+<select idref="userowner_shadow_file" selected="true" />
+<select idref="groupowner_shadow_file" selected="true" />
+<select idref="perms_shadow_file" selected="true"/>
+<select idref="userowner_group_file" selected="true" />
+<select idref="groupowner_group_file" selected="true" />
+<select idref="perms_group_file" selected="true" />
+<select idref="userowner_gshadow_file" selected="true" />
+<select idref="groupowner_gshadow_file" selected="true" />
+<select idref="perms_gshadow_file" selected="true" />
+<select idref="userowner_passwd_file" selected="true" />
+<select idref="groupowner_passwd_file" selected="true" />
+<select idref="file_permissions_etc_passwd" selected="true" />
+<select idref="file_permissions_library_dirs" selected="true" />
+<select idref="file_ownership_library_dirs" selected="true" />
+<select idref="file_permissions_binary_dirs" selected="true" />
+<select idref="file_ownership_binary_dirs" selected="true" />
+<select idref="sticky_world_writable_dirs" selected="true" />
+<select idref="world_writeable_files" selected="true" />
+<select idref="no_files_unowned_by_user" selected="true" />
+<select idref="no_files_unowned_by_group" selected="true" />
+<select idref="world_writable_files_system_ownership" selected="true" />
+<select idref="selinux_confinement_of_daemons" selected="true" />
+<select idref="selinux_unlabeled_device_files" selected="true" />
+<select idref="userowner_rsyslog_files" selected="true" />
+<select idref="groupowner_rsyslog_files" selected="true" />
+<select idref="audit_logs_permissions" selected="true" />
+<select idref="audit_logs_rootowner" selected="true" />
+<select idref="audit_config_immutable" selected="true" />
+<select idref="no_uidzero_except_root" selected="true" />
+<select idref="rpm_verify_permissions" selected="true" />
+
+<!--	AC-6(2) -->
+<select idref="restrict_root_console_logins" selected="true" />
+<select idref="restrict_serial_port_logins" selected="true" />
+
+<!--	AC-7(a)
+     	FISMA Refine: 3 attempts in 15 min -->
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3"/>
+<refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
+<select idref="deny_password_attempts" selected="true" />
+<select idref="deny_password_attempts_fail_interval" selected="true" />
+
+<!--	AC-7(b)
+     	FISMA Refine: Locks until admin action
+     		      Delay pw prompt for 30min -->
+<!-- TODO: PASSWORD PROMPT DELAY FOR 30min, possible?! -->
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800"/>
+<select idref="deny_password_attempts_unlock_time" selected="true" />
+
+<!--	AC-8(a), AC-8(b), AC-8(c) -->
+<refine-value idref="login_banner_text" selector="usgcb_default"/>
+<select idref="set_system_login_banner" selected="true"/>
+
+<!--	AC-10
+     	FISMA Refine: One session -->
+<refine-value idref="max_concurrent_login_sessions_value" seletor="1" />
+<select idref="max_concurrent_login_sessions" selected="true" />
+
+<!--	AC-11(a), AC-11(b)
+     	FISMA Refine: Lock after 15min -->
+<!-- TODO: Set 15min timeout! -->
+<select idref="package_screen_installed" selected="true" />
+
+<!--	AC-17(1) -->
+<select idref="enable_auditd_service" selected="true" />
+<select idref="enable_auditd_bootloader" selected="true" />
+
+<!--	AC-17(7) -->
+<select idref="audit_rules_time_adjtimex" selected="true" />
+<select idref="audit_rules_time_settimeofday" selected="true" />
+<select idref="audit_rules_time_stime" selected="true" />
+<select idref="audit_rules_time_clock_settime" selected="true" />
+<select idref="audit_rules_time_watch_localtime" selected="true" />
+<select idref="audit_account_changes" selected="true" />
+<select idref="audit_network_modifications" selected="true" />
+<select idref="audit_mac_changes" selected="true" />
+<select idref="audit_rules_dac_modification_chmod" selected="true" />
+<select idref="audit_rules_dac_modification_chown" selected="true" />
+<select idref="audit_rules_dac_modification_fchmod" selected="true" />
+<select idref="audit_rules_dac_modification_fchmodat" selected="true" />
+<select idref="audit_rules_dac_modification_fchown" selected="true" />
+<select idref="audit_rules_dac_modification_fchownat" selected="true" />
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_lchown" selected="true" />
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_removexattr" selected="true" />
+<select idref="audit_rules_dac_modification_setxattr" selected="true" />
+<select idref="audit_manual_logon_edits" selected="true" />
+<select idref="audit_manual_session_edits" selected="true" />
+<select idref="audit_file_access" selected="true" />
+<select idref="audit_privileged_commands" selected="true" />
+<select idref="audit_media_exports" selected="true" />
+<select idref="audit_file_deletions" selected="true" />
+<select idref="audit_sysadmin_actions" selected="true" />
+<select idref="audit_kernel_module_loading" selected="true" />
+
+system/network/kernel.xml:265:<ref nist="AC-17(7),CM-7" disa="126"/>
+
+
+
+
+
+</Profile>
