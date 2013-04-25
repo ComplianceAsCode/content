@@ -243,7 +243,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident cce="27123-9" />
 <oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
-<ref nist="IA-5" disa="1092" />
+<ref nist="IA-5(c)" disa="1092" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -263,7 +263,7 @@ Look for the value of the <tt>maxrepeat</tt> parameter.  The DoD requirement is 
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="27227-8" />
-<ref disa="366"/>
+<ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
 <Rule id="password_require_digits">
@@ -507,7 +507,7 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 </rationale>
 <ident cce="26741-9" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
-<ref nist="IA-5" disa="200" />
+<ref nist="IA-5(f)" disa="200" />
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
