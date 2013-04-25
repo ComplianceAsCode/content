@@ -35,6 +35,39 @@ console interface may be retained for backwards compatibility:
 <pre>vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...</pre></li>
 </ul>
 -->
+<Rule id="no_direct_root_logins" severity="medium">
+<title>Direct root Logins Not Allowed</title>
+<description>To further limit access to the <tt>root</tt> account, administrators
+can disable root logins at the console by editing the <tt>/etc/secuetty</tt> file. 
+This file lists all devices the root user is allowed to login to. If the file does
+not exist at all, the root user can login through any communication device on thesyste,
+whether via the console or a raw network interface. This is dangerous as as user can login to
+his machine as root via Telnet, which sends the passowrd in plain text over the network.
+By default, Red Hat Enteprise Linux's <tt>/etc/securetty</tt> file only allows the root user
+to login at the console physically attached to the machine. To prevent root from logging in,
+remove the contents of this file. To prevent direct root logins, remove the contents of this
+file by typing the following command:
+<pre>
+echo > /etc/securetty
+</pre>
+<ocil clause="the /etc/securetty file is not empty">
+To ensure root may not directly login to the system over physical consoles,
+run the following command:
+<pre>cat /etc/securetty</pre>
+If any output is returned, this is a finding.
+</ocil>
+<rationale>
+Disabling direct root logins ensures proper accountability and multifactor
+authentication to privileged accounts. Users will first login, then escalate
+to privileged (root) access via su/sudo. This is required for FISMA Low
+and FISMA Moderate systems.
+</rationale>
+<ident cce="TODO" />
+<oval id="TODO" />
+<ref nist="IA-2(1)" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
 <Rule id="restrict_root_console_logins" severity="medium">
 <title>Restrict Virtual Console Root Logins</title>
 <description>
@@ -167,7 +200,7 @@ access to root privileges in an accountable manner.
 </rationale>
 <ident cce="26971-2" />
 <oval id="accounts_no_uid_except_zero" />
-<ref nist="AC-6" disa="366" />
+<ref nist="AC-6,IA-2(1)" disa="366" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
