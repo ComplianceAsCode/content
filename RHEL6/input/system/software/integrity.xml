@@ -39,7 +39,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident cce="27024-9" />
 <oval id="package_aide_installed" />
-<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -78,7 +78,7 @@ If this check produces any unexpected output, investigate.
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ref nist="CM-6(d),CM-6(3),SC-28,SI-7" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
@@ -98,7 +98,7 @@ By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE may reveal unexpected changes in installed files.
 </rationale>
 <ident cce="27222-9" />
-<ref nist="CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
 </Rule>
 <!--
 <Group id="aide_verify_integrity_manually">
