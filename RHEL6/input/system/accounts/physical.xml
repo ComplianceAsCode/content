@@ -89,6 +89,7 @@ When prompted to enter a password, insert the following line into <tt>/etc/grub.
 immediately after the header comments. (Use the output from <tt>grub-crypt</tt> as the
 value of <b>password-hash</b>):
 <pre>password --encrypted <b>password-hash</b></pre>
+NOTE: To meet FISMA Moderate, the bootloader password MUST differ from the root password.
 </description>
 <ocil clause="it does not">
 To verify the boot loader password has been set and encrypted, run the following command:
@@ -104,7 +105,7 @@ and whether to enter single-user mode.
 </rationale>
 <ident cce="26911-8" />
 <oval id="bootloader_password" />
-<ref nist="IA-5" disa="213" />
+<ref nist="IA-2(1),IA-5" disa="213" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
