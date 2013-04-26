@@ -48,7 +48,7 @@ operator="equals" interactive="0">
 <tt>/etc/security/opasswd</tt> in order to force password change history and
 keep the user from alternating between the same password too
 frequently.</description>
-<value selector="">5</value>
+<value selector="">24</value>
 <value selector="0">0</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
@@ -495,7 +495,7 @@ be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> 
 module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=24</tt> to the 
 line which refers to the <tt>pam_unix.so</tt> module, as shown:
 <pre>password sufficient pam_unix.so <i>existing_options</i> remember=24</pre>
-The DoD requirement is 24 passwords.</description>
+The DoD and FISMA requirement is 24 passwords.</description>
 <ocil clause="it does not">
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
@@ -507,7 +507,7 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 </rationale>
 <ident cce="26741-9" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
-<ref nist="IA-5(f)" disa="200" />
+<ref nist="IA-5(f),IA-5(1)(e)" disa="200" />
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
