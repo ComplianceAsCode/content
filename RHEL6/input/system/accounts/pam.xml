@@ -303,7 +303,7 @@ Add <tt>ucredit=-1</tt> after pam_cracklib.so to require use of an upper case ch
 To check how many uppercase characters are required in a password, run the following command:
 <pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
 The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
-The DoD requires at least one uppercase character in a password.
+The DoD and FISMA require at least one uppercase character in a password.
 This would appear as <tt>ucredit=-1</tt>.
 </ocil>
 <rationale>
@@ -312,7 +312,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26601-5" />
 <oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
-<ref nist="IA-5(b),IA-5(c)" disa="192" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -328,7 +328,7 @@ Add <tt>ocredit=-1</tt> after pam_cracklib.so to require use of a special charac
 To check how many special characters are required in a password, run the following command:
 <pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
 The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
-The DoD requires at least one special character in a password.
+The DoD and FISMA require at least one special character in a password.
 This would appear as <tt>ocredit=-1</tt>.
 </ocil>
 <rationale>
@@ -337,7 +337,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26409-3" />
 <oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
-<ref nist="IA-5(b),IA-5(c)" disa="1619" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -353,7 +353,7 @@ Add <tt>lcredit=-1</tt> after pam_cracklib.so to require use of a lowercase char
 To check how many lowercase characters are required in a password, run the following command:
 <pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
 The <tt>lcredit</tt> parameter (as a negative number) will indicate how many special characters are required.
-The DoD requires at least one lowercase character in a password.
+The DoD and FISMA require at least one lowercase character in a password.
 This would appear as <tt>lcredit=-1</tt>.
 </ocil>
 <rationale>
@@ -362,7 +362,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26631-2" />
 <oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
-<ref nist="IA-5(b),IA-5(c)" disa="193" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -372,7 +372,7 @@ more difficult by ensuring a larger search space.
 usage of different characters during a password change.
 Add <tt>difok=<i>NUM</i></tt> after pam_cracklib.so to require differing
 characters when changing passwords, substituting <i>NUM</i> appropriately.
-The DoD requirement is 4.
+The DoD requirement is <tt>4</tt>.
 </description>
 <ocil clause="difok is not found or not set to the required value">
 To check how many characters must differ during a password change, run the following command:
