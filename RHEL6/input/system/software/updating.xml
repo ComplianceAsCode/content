@@ -1,20 +1,15 @@
 <Group id="updating">
 <title>Updating Software</title>
 <description>The <tt>yum</tt> command line tool is used to install and
-update software packages. The system also provides two graphical
-package managers, <tt>pirut</tt> and <tt>pup</tt>. The <tt>pirut</tt>
-tool is a graphical front-end for <tt>yum</tt> that allows users to install
-and update packages while <tt>pup</tt> is a simple update tool for packages
-that are already installed. In the <b>Applications</b> menu, <tt>pirut</tt>
-is labeled <b>Add/Remove Software</b> and pup is labeled
-<b>Software Updater</b>.
+update software packages. The system also provides a graphical
+software update tool in the <b>System</b> menu, in the <b>Administration</b> submenu,
+called <b>Software Update</b>.
 <br /><br />
-Red Hat Enterprise Linux systems contain an embedded Installed Software
-Catalog, or "RPM Database," which records metadata of installed packages.
-The <tt>yum</tt>, <tt>pirut</tt>, and <tt>pup</tt> tools interface
-with the Installed Software Catalog to ensure all system metadata is
-accurate with regard to installed software and security patches, and
-for this reason, their use is strongly encouraged.
+Red Hat Enterprise Linux systems contain an installed software catalog called
+the RPM database, which records metadata of installed packages.  Tools such as
+<tt>yum</tt> or the graphical <b>Software Update</b> ensure usage of RPM
+packages for software installation.  This allows for insight into the current
+inventory of installed software on the system, and is highly recommended.
 </description>
 
 <Rule id="ensure_redhat_gpgkey_installed" severity="high">
