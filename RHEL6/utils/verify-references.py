@@ -175,7 +175,7 @@ def main():
 		for oval_id in oval_checks_list:
 			# don't print out the OVAL defs that are extended by others, as they're not unused
 			if oval_id not in ovaldef_ids_extended:
-				print "XCCDF does not reference OVAL Check: %s" % oval_id
+				print "OVAL Check is not referenced by XCCDF: %s" % oval_id
 
 	sys.exit(0)
 
