@@ -20,13 +20,12 @@ in the presence of frequent software updates.
 
 <Group id="aide">
 <title>Verify Integrity with AIDE</title>
-<description>AIDE conducts integrity checks by comparing information
-about files with previously-gathered information. Ideally, the AIDE
-database should be created immediately after your system is built,
-and before the system is connected to any network. AIDE is highly
-configurable, with further configuration information located in
-<tt>/usr/share/doc/aide-<i>VERSION</i></tt></description>
-
+<description>AIDE conducts integrity checks by comparing information about
+files with previously-gathered information. Ideally, the AIDE database should
+be created immediately after your system is built, and then again after any
+software update.  AIDE is highly configurable, with further configuration
+information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
+</description>
 
 <Rule id="package_aide_installed" severity="medium">
 <title>Install AIDE</title>
@@ -49,11 +48,11 @@ The AIDE package must be installed if it is to be available for integrity checki
 <Rule id="disable_prelink">
 <title>Disable Prelinking</title>
 <description>
-The prelinking feature
-changes binaries in an attempt to decrease their startup time.
-In order to disable it, change or add the following line inside the file <tt>/etc/sysconfig/prelink</tt>:
+The prelinking feature changes binaries in an attempt to decrease their startup
+time.  In order to disable it, change or add the following line inside the file
+<tt>/etc/sysconfig/prelink</tt>:
 <pre>PRELINKING=no</pre>
-Next,  the following command to return binaries to a normal, non-prelinked state:
+Next, run the following command to return binaries to a normal, non-prelinked state:
 <pre># /usr/sbin/prelink -ua</pre>
 </description>
 <rationale>
@@ -202,7 +201,8 @@ on the system.</rationale>
 <description>
 Additional security software that is not provided or supported
 by Red Hat can be installed to provide complementary or duplicative
-security capabilities to those provided by the base platform.
+security capabilities to those provided by the base platform.  Add-on
+software may not be appropriate for some specialized systems.
 </description>
 
 <Rule id="install_hids" severity="high">

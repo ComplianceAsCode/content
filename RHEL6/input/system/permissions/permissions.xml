@@ -16,7 +16,7 @@ name of each local partition substituted for <i>PART</i> in turn.
 <br /><br />
 The following command prints a list of ext4 partitions on the local
 machine, which is the default filesystem for Red Hat Enterprise Linux
-6 installations.
+6 installations:
 <pre>$ mount -t ext4 | awk '{print $3}'</pre>
 If your site uses a local filesystem type other than ext4 then you
 will need to modify this command.</description>
