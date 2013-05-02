@@ -56,6 +56,16 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr 26 2013 Shawn Wells <shawn@redhat.com> 0.1-11
+- Significant amount of OVAL bugfixes
+- Incorporation of Draft RHEL6 STIG feedback
+
+* Sat Feb 16 2013 Shawn Wells <shawn@redhat.com> 0.1-10
+- SSG now includes JBoss EAP5 content!
+- `man scap-security-guide`
+- OVAL bug fixes
+- NIST 800-53 mappings update
+
 * Tue Nov 28 2012 Shawn Wells <shawn@redhat.com> 0.1-9
 - Updated BuildRequires to reflect python-lxml (thank you, Ray S.!)
 - Reverting to noarch RPM
