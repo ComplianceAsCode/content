@@ -103,7 +103,7 @@ other.
 <ocil clause="group or other write permissions exist">
 To ensure write permissions are disabled for group and other
  for each element in root's path, run the following command:
-<pre># ls -ld DIR</pre>
+<pre># ls -ld <i>DIR</i></pre>
 </ocil>
 <rationale>
 Such entries increase the risk that root could
@@ -118,7 +118,7 @@ and potentially malicious code.
 
 <Rule id="homedir_perms_no_groupwrite_worldread">
 <title>Ensure that User Home Directories are not Group-Writable or World-Readable</title>
-<description>For each human user USER of the system, view the
+<description>For each human user of the system, view the
 permissions of the user's home directory:
 <pre># ls -ld /home/<i>USER</i></pre>
 Ensure that the directory is not group-writable and that it

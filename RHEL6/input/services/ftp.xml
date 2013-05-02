@@ -84,7 +84,7 @@ xferlog_std_format=NO
 log_ftp_protocol=YES</pre>
 </description>
 <ocil clause="xferlog_enable is missing, or is not set to yes">
-Find if logging is applied to the ftp daemon.
+Find if logging is applied to the FTP daemon.
 <br/><br/>
 Procedures:
 <br/><br/>
@@ -96,7 +96,7 @@ If the <i>server_args</i> line is missing or does not include the vsftpd configu
 <pre># grep xferlog_enable <i>vsftpd config file</i></pre>
 </ocil>
 <rationale>To trace malicious activity facilitated by the FTP service, it must be configured to ensure that all commands sent to
-the ftp server are logged using the verbose vsftpd log
+the FTP server are logged using the verbose vsftpd log
 format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
 <warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
 <ident cce="27142-9" />
@@ -152,13 +152,13 @@ these logins as much as possible.</description>
 <pre>userlist_enable=YES
 userlist_file=/etc/vsftp.ftpusers
 userlist_deny=NO</pre>
-Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via ftp, add a line containing that user's name:
+Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via FTP, add a line containing that user's name:
 <pre>USERNAME</pre>
 If anonymous access is also required, add the anonymous usernames to <tt>/etc/vsftp.ftpusers</tt> as well.
 <pre>anonymous
 ftp</pre>
 </description>
-<rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via ftp. It was used to prevent system users such as the root user from logging in via the insecure ftp protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via ftp. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous ftp access can be limited to legacy users who have been explicitly identified.</rationale>
+<rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via FTP. It was used to prevent system users such as the root user from logging in via the insecure FTP protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via FTP. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous FTP access can be limited to legacy users who have been explicitly identified.</rationale>
 <!--<oval id="ftp_limit_users" />-->
 <!--<ref nist="CM-7" /> -->
 </Group>
@@ -183,7 +183,7 @@ is necessary to ensure that files cannot be uploaded and downloaded from the sam
 
 <Rule id="ftp_home_partition">
 <title>Place the FTP Home Directory on its Own Partition</title>
-<description>By default, the anonymous FTP root is the home directory of the ftp user account. The df command can
+<description>By default, the anonymous FTP root is the home directory of the FTP user account. The df command can
 be used to verify that this directory is on its own partition.</description>
 <rationale>If there is a mission-critical reason for anonymous users to upload files, precautions must be taken to prevent
 these users from filling a disk used by other services.</rationale>
@@ -202,7 +202,7 @@ the FTP connection tracking module:
 <rationale>These settings configure iptables to allow connections to an FTP server. The first line allows initial connections
 to the FTP server port.
 FTP is an older protocol which is not very compatible with firewalls. During the initial FTP dialogue, the client
-and server negotiate an arbitrary port to be used for data transfer. The ip conntrack ftp module is used by
+and server negotiate an arbitrary port to be used for data transfer. The <tt>ip_conntrack_ftp</tt>  module is used by
 iptables to listen to that dialogue and allow connections to the data ports which FTP negotiates. This allows an
 FTP server to operate on a machine which is running a firewall.</rationale>
 <!--<oval id="ftp_configure_firewall" />-->
