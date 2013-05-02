@@ -209,11 +209,12 @@ auto-configuration or router advertisement.
 <ref nist="" />
 </Rule>
 
-<Rule id="network_ipv6_limit_requests">
-<title>Limit Network-Transmitted Configuration</title>
-<description>Add the following lines to <tt>/etc/sysctl.conf</tt> to limit the
-configuration information requested from other systems, and accepted from the
-network:
+<Group id="network_ipv6_limit_requests">
+<title>Limit Network-Transmitted Configuration if Using Static IPv6 Addresses</title>
+<description>To limit the configuration information requested from other
+systems and accepted from the network on a system that uses
+statically-configured IPv6 addresses, add the following lines to
+<tt>/etc/sysctl.conf</tt>:
 <pre>net.ipv6.conf.default.router_solicitations = 0
 net.ipv6.conf.default.accept_ra_rtr_pref = 0
 net.ipv6.conf.default.accept_ra_pinfo = 0
@@ -244,16 +245,7 @@ addresses can be assigned to each interface.  The default is 16, but it should
 be set to exactly the number of statically configured global addresses
 required.
 </description>
-<ident cce="27163-5" />
-<ident cce="27161-9" />
-<ident cce="27162-7" />
-<ident cce="27157-7" />
-<ident cce="27165-0" />
-<ident cce="27158-5" />
-<ident cce="27160-1" />
-<oval id="network_ipv6_limit_requests" />
-<ref nist="CM-7" />
-</Rule>
+</Group>
 
 </Group><!--<Group id="configuring_ipv6">-->
 </Group><!--<Group id="network-ipv6">-->

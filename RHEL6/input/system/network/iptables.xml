@@ -184,9 +184,11 @@ The output should be similar to the following:
 <ref nist="CM-7" disa="1109" />
 </Rule>
 
-<Rule id="iptables_icmp_disabled">
+<Group id="iptables_icmp_disabled">
 <title>Restrict ICMP Message Types</title>
-<description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages types can be restricted. To accept only ICMP echo reply, destination unreachable, and time exceeded messages, remove the line:<br />
+<description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages
+types can be restricted. To accept only ICMP echo reply, destination
+unreachable, and time exceeded messages, remove the line:<br />
 <pre>-A INPUT -p icmp --icmp-type any -j ACCEPT</pre>
 and insert the lines:
 <pre>-A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
@@ -194,22 +196,27 @@ and insert the lines:
 -A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT</pre>
 To allow the system to respond to pings, also insert the following line:
 <pre>-A INPUT -p icmp --icmp-type echo-request -j ACCEPT</pre>
-Ping responses can also be limited to certain networks or hosts by using the -s option in the previous rule.
-Because IPv6 depends so heavily on ICMPv6, it is preferable to deny the ICMPv6 packets you know you
-don't need (e.g. ping requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else through:
+Ping responses can also be limited to certain networks or hosts by using the -s
+option in the previous rule.  Because IPv6 depends so heavily on ICMPv6, it is
+preferable to deny the ICMPv6 packets you know you don't need (e.g. ping
+requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else
+through:
 <pre>-A INPUT -p icmpv6 --icmpv6-type echo-request -j DROP</pre>
-If you are going to statically configure the machine's address, it should ignore Router Advertisements which
-could add another IPv6 address to the interface or alter important network settings:
+If you are going to statically configure the machine's address, it should
+ignore Router Advertisements which could add another IPv6 address to the
+interface or alter important network settings:
 <pre>-A INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>
+Restricting ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not
+recommended because the operation of IPv6 depends heavily on ICMPv6. Thus, great
+care must be taken if any other ICMPv6 types are blocked.
 </description>
-<ref nist="CM-7" />
-<rationale>Restricting other ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not recommended because the operation-
-  of IPv6 depends heavily on ICMPv6. Thus, more care must be taken when blocking ICMPv6 types.</rationale>
-<!--<ident cce="26444-0" />-->
-<!--<oval id="iptables_icmp_disabled" />-->
-</Rule>
+<rationale>Restricting ICMP messages may make a system slightly less
+discoverable to an unsophisticated attacker but is not appropriate for many
+general-purpose use cases and can also make troubleshooting more difficult.
+</rationale> 
+</Group>
 
-<Rule id="iptables_log_and_drop_suspicious">
+<Group id="iptables_log_and_drop_suspicious">
 <title>Log and Drop Packets with Suspicious Source Addresses</title>
 <description>Packets with non-routable source addresses should be rejected, as they may indicate spoofing. Because the
 modified policy will reject non-matching packets, you only need to add these rules if you are interested in also
@@ -252,10 +259,7 @@ If you are not expecting to see any IPv4 (or IPv4-compatible) traffic on your ne
 The following rule will log all traffic originating from a site-local address, which is deprecated address space:
 <pre>-A INPUT -s FEC0::/10 -j LOG --log-prefix "SITE-LOCAL ADDRESS TRAFFIC: "</pre>
 </description>
-<!--<ident cce="26444-0" />-->
-<!--MANUAL<oval id="iptables_log_and_drop_suspicious" />-->
-<ref nist="AC-17,CM-7" />
-</Rule>
+</Group>
 
-</Group><!--<Group id="ruleset_modifications">-->
-</Group><!--<Group id="network-iptables">-->
+</Group>
+</Group>
