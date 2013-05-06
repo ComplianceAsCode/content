@@ -32,7 +32,7 @@ def main():
                 body = body + encode(f.read())
             fixName = os.path.splitext(filename)[0]
             out.write("<fix rule=\""+fixName+"\">\n")
-            out.write(body+"\n")
+            out.write(body.rstrip())
             out.write("</fix>\n")
 
     out.write(fixGroupFooter)
@@ -45,7 +45,7 @@ def main():
                 body = body + encode(f.read())
             fixName = os.path.splitext(filename)[0]
             out.write("<fix-common id=\""+fixName+"\">\n")
-            out.write(body+"\n")
+            out.write(body.rstrip())
             out.write("</fix-common>\n")
 
     out.write(fixCommonGroupFooter)
