@@ -6,12 +6,9 @@ xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
 
   <!-- remove the test contributor name from final output -->
-  <xsl:template match="dc:contributor">
+  <xsl:template match="xccdf:Rule/xccdf:reference[@href='test_attestation']">
   </xsl:template>
   
-  <!-- remove the test contribution date from final output -->
-  <xsl:template match="dc:date">
-  </xsl:template>
 
   <!-- copy everything else through to final output -->
   <xsl:template match="@*|node()">
