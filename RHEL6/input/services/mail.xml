@@ -8,8 +8,8 @@ Ensure that machines are not running MTAs unnecessarily,
 and configure needed MTAs as defensively as possible.
 <br /><br />
 Very few systems at any site should be configured to directly receive email over the
-network. Users should instead use mail clients programs to retrieve email
-from a central server that support protocols such as IMAP or POP3.
+network. Users should instead use mail client programs to retrieve email
+from a central server that supports protocols such as IMAP or POP3.
 However, it is normal for most systems to be independently capable of sending email,
 for instance so that cron jobs can report output to an administrator.
 Most MTAs, including Postfix, support a submission-only mode in which mail can be sent from
@@ -39,7 +39,6 @@ notification tasks.
 </rationale>
 <ident cce="26325-1" />
 <oval id="service_postfix_enabled" />
-<ref nist="" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -89,109 +88,30 @@ and not from the network, which protects it from network attack.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-</Group><!--End <Group id="postfix_client"> -->
+</Group>
 
 <Group id="postfix_harden_os">
 <title>Configure Operating System to Protect Mail Server
 </title>
-<description>The guidance in this section is appropriate for any host which is operating as a site MTA, whether the mail server runs using Sendmail, Postfix, or some other software.
+<description>The guidance in this section is appropriate for any host which is
+operating as a site MTA, whether the mail server runs using Sendmail, Postfix,
+or some other software.
 </description>
 
-<Group id="postfix_seperate_internal_external">
-<title>Use Separate Hosts for External and Internal Mail if Possible</title>
-<description>The mail server is a frequent target of network attack from the outside. However, since all site users receive mail,
-the mail server must be open to some connection from each inside users. It is strongly recommended that these
-functions be separated, by having an externally visible mail server which processes all incoming and outgoing
-mail, then forwards internal mail to a separate machine from which users can access it.
-</description>
-<!-- <ident cce="TODO:CCE" /> -->
-<ref nist="CM-7, SC-5, SC-7" />
-</Group>
 
-<Group id="postfix_restrict_user_access">
-<title>Protect the MTA Host from User Access</title>
-<description>The mail server contains privileged data belonging to all users and performs a
-vital network function. Preventing users from logging into this server is a precaution against
-privilege escalation or denial of service attacks which might compromise the mail service. Take
-steps to ensure that only system administrators are allowed shell access to the MTA host.
-</description>
-<!-- <ident cce="TODO:CCE" /> -->
-</Group>
-
-<Group id="postfix_restrict_mail_spool_access">
-<title>Restrict Remote Access to the Mail Spool</title>
-<description>The mail server contains privileged data belonging to all users and performs a vital
-network function. Preventing users from logging into this server is a precaution against privilege
-escalation or denial of service attacks which might compromise the mail service. Take steps to
-ensure that only system administrators are allowed shell access to the MTA host.
-</description>
-<!-- <ident cce="TODO:CCE" /> -->
-</Group>
-
-<Rule id="iptables_smtp_enabled">
-<title>Configure iptables to Allow Access to the Mail Server</title>
-<description>
-<iptables-desc-macro proto="tcp" port="25" />
-</description>
-<rationale>The default Iptables configuration does not allow inbound access to the SMTP service. This modification allows
-that access, while keeping other ports on the server in their default protected state.
-</rationale>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="iptables_smtp_enabled" />
-<ref nist="CM-7, SC-7" />
-</Rule>
-
-<Rule id="postfix_logging">
-<title>Verify System Logging and Log Permissions for Mail</title>
-<description>Edit the file <tt>/etc/rsyslog.conf</tt>. Add or correct the following line if necessary (this is the default):
-<pre>mail.*					-/var/log/maillog</pre>
-Run the following commands to ensure correct permissions on the mail log:
-<pre># chown root:root /var/log/maillog
-# chmod 600 /var/log/maillog</pre>
-Ensure log will be rotated as appropriate by adding or correcting the following line if needed into the list on the first line of <tt>/etc/logrotate.d/syslog</tt> (this is the default):
-<pre>/var/log/maillog</pre>
-</description>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_logging" />
-<ref nist="AU-2(a), AU-9" />
-</Rule>
 
 <Group id="postfix_configure_ssl_certs">
 <title>Configure SSL Certificates for Use with SMTP AUTH</title>
-<description>If SMTP AUTH is to be used, the use of SSL to protect credentials in transit is strongly recommended.
+<description>
+If SMTP AUTH is to be used, the use of SSL to protect credentials in transit is strongly recommended.
 There are also configurations for which it may be desirable to encrypt all mail in transit from one MTA to another,
 though such configurations are beyond the scope of this guide. In either event, the steps for creating and installing
 an SSL certificate are independent of the MTA in use, and are described here.
 </description>
 
-<Group id="postfix_create_cert">
-<title>Create an SSL Certificate</title>
-<description>
-Change into the CA certificate directory:
-<pre># cd /etc/pki/tls/certs</pre>
-Generate a key pair for the mail server:
-<pre># openssl genrsa -out mailserverkey.pem 2048</pre>
-Next, generate a certificate signing request (CSR) for the CA to sign, making sure to supply your mail
-server's fully qualified domain name as the Common Name:
-<pre># openssl req -new -key mailserverkey.pem -out mailserver.csr</pre>
-Next, the mail server CSR must be signed to create the mail server certificate. You can either send the CSR
-to an established CA or sign it with your CA.
-To sign mailserver.csr using your CA:
-<pre># openssl ca -in mailserver.csr -out mailservercert.pem</pre>
-</description>
-<rationale>This step creates a private key, <tt>mailserverkey.pem</tt>, and a public certificate, <tt>mailservercert.pem</tt>.
-The mail server will use these to prove its identity by demonstrating that it has a certificate which has been signed by a
-CA. Mail clients at your site should be willing to send their mail only to a server they can authenticate.
-</rationale>
-<warning category="general">Note: This step must be performed on your CA system, not on the MTA host itself. If you will have a commercial
-CA sign certificates, then this step should be performed on a separate, physically secure system devoted to that
-purpose.</warning>
-<!-- <ident cce="TODO:CCE" /> -->
-<ref nist="CM-7, SC-12" />
-</Group>
 
-<Rule id="postfix_install_ssl_cert">
-<title>Install the SSL Certificate</title>
+<Group id="postfix_install_ssl_cert">
+<title>Ensure Security of Postfix SSL Certificate</title>
 <description>Create the PKI directory for mail certificates, if it does not already exist:
 <pre># mkdir /etc/pki/tls/mail
 # chown root:root /etc/pki/tls/mail
@@ -210,23 +130,42 @@ correct permissions:
 <pre># chown root:root /etc/pki/tls/CA/cacert.pem
 # chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
 </description>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_certificate_files" />
-<ref nist="SC-12, SC-13" />
-</Rule>
+</Group>
 
-</Group><!--End <Group id="postfix_configure_ssl_certs"> -->
-</Group><!--End <Group id="postfix_harden_os"> -->
+</Group>
 
 <Group id="postfix_server_configuration">
 <title>Configure Postfix if Necessary</title>
-<description>Postfix stores its configuration files in the directory /etc/postfix by default. The primary configuration file is
-/etc/postfix/main.cf. Other files will be introduced as needed.
+<description>Postfix stores its configuration files in the directory
+/etc/postfix by default. The primary configuration file is
+/etc/postfix/main.cf.
 </description>
 
-<Rule id="postfix_server_denial_of_service">
-<title>Limit Denial of Service Attacks</title>
-<description>Edit <tt>/etc/postfix/main.cf</tt>. Add or correct the following lines:
+<Rule id="postfix_server_banner" severity="medium">
+<title>Configure SMTP Greeting Banner</title>
+<description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the
+following line, substituting some other wording for the banner information if
+you prefer:
+<pre>smtpd_banner = $myhostname ESMTP</pre>
+</description>
+<rationale>The default greeting banner discloses that the listening mail
+process is Postfix.  When remote mail senders connect to the MTA on port 25,
+they are greeted by an initial banner as part of the SMTP dialogue. This banner
+is necessary, but it frequently gives away too much information, including the
+MTA software which is in use, and sometimes also its version number. Remote
+mail senders do not need this information in order to send mail, so the banner
+should be changed to reveal only the hostname (which is already known and may
+be useful) and the word ESMTP, to indicate that the modern SMTP protocol
+variant is supported.
+</rationale>
+<oval id="postfix_server_banner" />
+<ref nist="AC-22, AU-13" />
+</Rule>
+
+<Group id="postfix_server_denial_of_service">
+<title>Configure Postfix Resource Usage to Limit Denial of Service Attacks</title>
+<description>Edit <tt>/etc/postfix/main.cf</tt>. Edit the following lines to
+configure the amount of system resources Postfix can consume:
 <pre>default_process_limit = 100
 smtpd_client_connection_count_limit = 10
 smtpd_client_connection_rate_limit = 30
@@ -234,165 +173,128 @@ queue_minfree = 20971520
 header_size_limit = 51200
 message_size_limit = 10485760
 smtpd_recipient_limit = 100</pre>
+The values here are examples.
 </description>
-<rationale>These configuration options serve to make it more difficult for attackers to consume resources on the MTA host.
-The <tt>default_process_limit</tt> parameter controls how many <tt>smtpd</tt> processes can exist at a time, while
-<tt>smtpd_client_connection_count_limit</tt> controls the number of those which can be occupied by any one
-remote sender, and <tt>smtpd_client_connection_rate_limit</tt> controls the number of connections any one client
-can make per minute. By default, local hosts (those in <tt>mynetworks</tt>) are exempted from per-client rate limiting.
-The <tt>queue_minfree</tt> parameter establishes a free space threshold, in order to stop e-mail receipt before the
-queue filesystem is entirely full. The <tt>header_size_limit</tt>, <tt>message_size_limit</tt>, and <tt>smtpd_recipient_limit</tt>
-parameters place bounds on the legal sizes of messages received via SMTP.
+<rationale>These configuration options serve to make it more difficult for
+attackers to consume resources on the MTA host.  The
+<tt>default_process_limit</tt> parameter controls how many <tt>smtpd</tt>
+processes can exist at a time, while
+<tt>smtpd_client_connection_count_limit</tt> controls the number of those which
+can be occupied by any one remote sender, and
+<tt>smtpd_client_connection_rate_limit</tt> controls the number of connections
+any one client can make per minute. By default, local hosts (those in
+<tt>mynetworks</tt>) are exempted from per-client rate limiting.  The
+<tt>queue_minfree</tt> parameter establishes a free space threshold, in order
+to stop e-mail receipt before the queue filesystem is entirely full. The
+<tt>header_size_limit</tt>, <tt>message_size_limit</tt>, and
+<tt>smtpd_recipient_limit</tt> parameters place bounds on the legal sizes of
+messages received via SMTP.
 </rationale>
-<warning category="general">Note: The values given here are examples, and may need to be modified for any particular site. By default, the
-Postfix anvil process gathers mail receipt statistics. To get information about about what connection rates are
-typical at your site, look in <tt>/var/log/maillog</tt> for lines with the daemon name postfix/anvil.
+<warning category="general">Note: The values given here are examples, and may
+need to be modified for any particular site. By default, the Postfix anvil
+process gathers mail receipt statistics. To get information about about what
+connection rates are typical at your site, look in <tt>/var/log/maillog</tt>
+for lines with the daemon name postfix/anvil.
 </warning>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_server_denial_of_service" />
-<ref nist="SC-5" />
-</Rule>
+</Group>
 
-<Rule id="postfix_server_banner" severity="medium">
-<title>Configure SMTP Greeting Banner</title>
-<description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the following line, substituting some other wording for the
-banner information if you prefer:
-<pre>smtpd_banner = $myhostname ESMTP</pre>
-</description>
-<rationale>The default greeting banner discloses that the listening mail process is Postfix.
-When remote mail senders connect to the MTA on port 25, they are greeted by an initial banner as part of
-the SMTP dialogue. This banner is necessary, but it frequently gives away too much information, including
-the MTA software which is in use, and sometimes also its version number. Remote mail senders do not need
-this information in order to send mail, so the banner should be changed to reveal only the hostname (which is
-already known and may be useful) and the word ESMTP, to indicate that the modern SMTP protocol variant is
-supported.
-</rationale>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_server_banner" />
-<ref nist="AC-22, AU-13" />
-</Rule>
 
 <Group id="postfix_server_mail_relay">
 <title>Control Mail Relaying</title>
-<description>Postfix's mail relay controls are implemented with the help of the smtpd recipient restrictions option, which
-controls the restrictions placed on the SMTP dialogue once the sender and recipient envelope addresses are known.
-The guidance in the following sections should be applied to all machines. If there are machines which
-must be allowed to relay mail, but which cannot be trusted to relay unconditionally, configure SMTP AUTH
-with SSL support.
+<description>Postfix's mail relay controls are implemented with the help of the
+smtpd recipient restrictions option, which controls the restrictions placed on
+the SMTP dialogue once the sender and recipient envelope addresses are known.
+The guidance in the following sections should be applied to all machines. If
+there are machines which must be allowed to relay mail, but which cannot be
+trusted to relay unconditionally, configure SMTP AUTH with SSL support.
 </description>
 
-<Rule id="postfix_server_mail_relay_set_trusted_networks">
+<Group id="postfix_server_mail_relay_set_trusted_networks">
 <title>Configure Trusted Networks and Hosts</title>
-<description>Edit <tt>/etc/postfix/main.cf</tt>, and configure the contents of the <tt>mynetworks</tt> variable in one of the following
-ways:
+<description>Edit <tt>/etc/postfix/main.cf</tt>, and configure the contents of
+the <tt>mynetworks</tt> variable in one of the following ways:
 <ul>
-<li>If any machine in the subnet containing the MTA may be trusted to relay messages, add or correct the following line:
-<pre>mynetworks_style = subnet</pre></li>
-<li>If only the MTA host itself is trusted to relay messages, add or correct the following line:
+<li>If any machine in the subnet containing the MTA may be trusted to relay
+messages, add or correct the following line:
+<pre>mynetworks_style = subnet</pre>
+This is also the default setting, and is in effect if all
+<tt>my_networks_style</tt> directives are commented.</li>
+<li>If only the MTA host itself is trusted to relay messages, add or correct
+the following line:
 <pre>mynetworks_style = host</pre></li>
-<li>If the set of machines which can relay is more complicated, manually specify an entry for each netblock
-or IP address which is trusted to relay by setting the <tt>mynetworks</tt> variable directly:
-<pre>mynetworks = 10.0.0.0/16 , 192.168.1.0/24 , 127.0.0.1</pre></li>
+<li>If the set of machines which can relay is more complicated, manually
+specify an entry for each netblock or IP address which is trusted to relay by
+setting the <tt>mynetworks</tt> variable directly:
+<pre>mynetworks = 10.0.0.0/16, 192.168.1.0/24, 127.0.0.1</pre></li>
 </ul>
 </description>
-<rationale>The <tt>mynetworks</tt> variable must contain only the set of machines for which this MTA should unconditionally
-relay mail. This is a trust relationship - if spammers gain access to these machines, your site will effectively
-become an open relay. It is recommended that only machines which are managed by you or by another trusted
-organization be placed in mynetworks, and users of all other machines be required to use SMTP AUTH to send
-mail.
+<rationale>The <tt>mynetworks</tt> variable must contain only the set of
+machines for which this MTA should unconditionally relay mail. This is a trust
+relationship - if spammers gain access to these machines, your site will
+effectively become an open relay. It is recommended that only machines which
+are managed by you or by another trusted organization be placed in mynetworks,
+and users of all other machines be required to use SMTP AUTH to send mail.
 </rationale>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_server_mail_relay_set_trusted_networks" />
-<ref nist="IA-8, SI-8" />
-</Rule>
+</Group>
 
-<Rule id="postfix_server_mail_relay_for_trusted_networks">
-<title>Allow Unlimited Relaying for Trusted Networks Only</title>
-<description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the <tt>smtpd_recipient_restrictions</tt> definition so that it
-contains at least:
-<pre>smtpd_recipient_restrictions =
-    ...
-    permit_mynetworks,
-    reject_unauth_destination,
-    ...</pre>
+<Group id="postfix_server_mail_smtpd_relay_restrictions">
+<title>Enact SMTP Relay Restrictions</title>
+<description>
+To configure Postfix to restrict addresses to which it
+will send mail, see:
+http://www.postfix.org/SMTPD_ACCESS_README.html#danger
+<br/>
+The full contents of <tt>smtpd_recipient_restrictions</tt> will
+vary by site, since this is a common place to put spam restrictions and other
+site-specific options. The <tt>permit_mynetworks</tt> option allows all mail to
+be relayed from the machines in <tt>mynetworks</tt>. Then, the
+<tt>reject_unauth_destination</tt> option denies all mail whose destination
+address is not local, preventing any other machines from relaying. These two
+options should always appear in this order, and should usually follow one
+another immediately unless SMTP AUTH is used.
 </description>
-<rationale>The full contents of <tt>smtpd_recipient_restrictions</tt> will vary by site, since this is a common place
-to put spam restrictions and other site-specific options. The <tt>permit_mynetworks</tt> option allows all mail to be
-relayed from the machines in <tt>mynetworks</tt>. Then, the <tt>reject_unauth_destination</tt> option denies all mail
-whose destination address is not local, preventing any other machines from relaying. These two options should always appear in
-this order, and should usually follow one another immediately unless SMTP AUTH is used.
-</rationale>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_server_mail_relay_for_trusted_networks" />
-<ref nist="SI-8" />
-</Rule>
+</Group>
 
-<Rule id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks">
+<Group id="postfix_server_mail_smtpd_recipient_restrictions">
+<title>Enact SMTP Recipient Restrictions</title>
+<description>
+To configure Postfix to restrict addresses to which it
+will send mail, see:
+http://www.postfix.org/SMTPD_ACCESS_README.html#danger
+<br/>
+The full contents of <tt>smtpd_recipient_restrictions</tt> will
+vary by site, since this is a common place to put spam restrictions and other
+site-specific options. The <tt>permit_mynetworks</tt> option allows all mail to
+be relayed from the machines in <tt>mynetworks</tt>. Then, the
+<tt>reject_unauth_destination</tt> option denies all mail whose destination
+address is not local, preventing any other machines from relaying. These two
+options should always appear in this order, and should usually follow one
+another immediately unless SMTP AUTH is used.
+</description>
+</Group>
+
+<Group id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks">
 <title>Require SMTP AUTH Before Relaying from Untrusted Clients</title>
-<description>SMTP authentication allows remote clients to relay mail safely by requiring them to authenticate before submit-
-ting mail. Postfix's SMTP AUTH uses an authentication library called SASL, which is not part of Postfix itself.
-This section describes how to configure authentication using the Cyrus-SASL implementation. See below for a
-discussion of other options.
-<br /><br />
-To enable the use of SASL authentication, edit <tt>/etc/postfix/main.cf</tt> and add or correct the following
-settings:
-<pre>smtpd_sasl_auth_enable = yes
-smtpd_recipient_restrictions =
-    ...
-    permit_mynetworks,
-    permit_sasl_authenticated,
-    reject_unauth_destination,
-    ...</pre>
-Then edit <tt>/usr/lib/sasl2/smtpd.conf</tt> and add or correct the following line with the correct authentication
-mechanism for SASL to use:
-<pre>pwcheck_method: saslauthd</pre>
-<service-enable-macro service="saslauthd" />
+<description>SMTP authentication allows remote clients to relay mail safely by
+requiring them to authenticate before submitting mail. Postfix's SMTP AUTH uses
+an authentication library called SASL, which is not part of Postfix itself.  To
+enable the use of SASL authentication, see
+http://www.postfix.org/SASL_README.html
 </description>
-<rationale>Postfix can use either the Cyrus library or Dovecot as a source for SASL authentication. If this host is running
-Dovecot for some other reason, it is recommended that Dovecot's SASL support be used instead of running the
-Cyrus code as well. See http://www.postfix.org/SASL_README.html for instructions on implementing that
-configuration, which is not described in this guide.
-<br /><br />
-In Postfix's configuration, the directive <tt>smtpd_sasl_auth_enable</tt> tells <tt>smtpd</tt> to allow the use of the SMTP AUTH
-command during the SMTP dialogue, and to support that command by getting authentication information from
-SASL. The <tt>smtpd_recipient_restrictions</tt> directive is changed so that, if the client is not connecting from a
-trusted address, it is allowed to attempt authentication (<tt>permit_sasl_authenticated</tt>) in order to relay mail.
-The file <tt>/usr/lib/sasl2/smtpd.conf</tt> is the Cyrus-SASL configuration file. The <tt>pwcheck_method</tt> directive tells
-SASL how to find passwords. The simplest method, described above, is to run a separate authentication daemon,
-<tt>saslauthd</tt>, which is able to communicate with the system authentication system. On RHEL6, <tt>saslauthd</tt> uses
-PAM by default, which should work in most cases. If you have a centralized authentication system which does not
-work via PAM, look at the <tt>saslauthd(8)</tt> manpage to find out how to configure <tt>saslauthd</tt> for your environment.
-</rationale>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_server_mail_relay_smtp_auth_for_untrusted_networks" />
-<ref nist="IA-8, SI-8" />
-</Rule>
+</Group>
 
-<Rule id="postfix_server_mail_relay_require_tls_for_smtp_auth">
-<title>Require TLS for SMTP AUTH</title>
-<description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the following lines:
-<pre>smtpd_tls_CApath = /etc/pki/tls/CA
-smtpd_tls_CAfile = /etc/pki/tls/CA/cacert.pem
-smtpd_tls_cert_file = /etc/pki/tls/mail/servercert.pem
-smtpd_tls_key_file = /etc/pki/tls/mail/serverkey.pem
-smtpd_tls_security_level = may
-smtpd_tls_auth_only = yes</pre>
+<Group id="postfix_server_mail_relay_require_tls_for_smtp_auth">
+<title>Use TLS for SMTP AUTH</title>
+<description>
+Postfix provides options to use TLS for certificate-based
+authentication and encrypted sessions. An encrypted session protects the
+information that is transmitted with SMTP mail or with SASL authentication.
+To configure Postfix to protect all SMTP AUTH transactions
+using TLS, see http://www.postfix.org/TLS_README.html.
 </description>
-<rationale>These options tell Postfix to protect all SMTP AUTH transactions using TLS. The first four options describe
-the locations of the necessary TLS key files.
-The <tt>smtpd_tls_security_level</tt> directive tells <tt>smtpd</tt> to allow the STARTTLS command during the SMTP protocol
-exchange, but not to require it for mail senders. (Unless your site receives mail only from other trusted sites
-whose sysadmins can be asked to maintain a copy of your site certificate, you do not want to require TLS for all
-SMTP exchanges.)
-The <tt>smtpd_tls_auth_only</tt> directive tells <tt>smtpd</tt> to require the STARTTLS command before allowing the client to
-attempt to authenticate for relaying using SMTP AUTH. It may not be possible to use this directive if you must
-allow relaying from non-TLS-capable client software. If this is the case, simply omit that line.
-</rationale>
-<!-- <ident cce="TODO:CCE" /> -->
-<oval id="postfix_server_mail_relay_require_tls_for_smtp_auth" />
-<ref nist="IA-8, SC-13" />
-</Rule>
+</Group>
 
-</Group><!--End <Group id="postfix_server_mail_relay"> -->
-</Group><!--End <Group id="postfix_server_configuration"> -->
-</Group><!--End <Group id="mail"> -->
+</Group>
+</Group>
+</Group>
+</Group>
