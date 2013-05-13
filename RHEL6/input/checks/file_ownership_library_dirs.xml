@@ -110,21 +110,21 @@
   </unix:file_object>
 
   <unix:file_test  check="all" check_existence="none_exist" comment="/lib/modules directories uid root" id="test_ownership_lib_modules_dir" version="1">
-    <unix:object object_ref="object_lib_modules_dir" />
+    <unix:object object_ref="object_file_ownership_lib_modules" />
   </unix:file_test>
 
   <unix:file_test  check="all" check_existence="none_exist" comment="/lib/modules files uid root" id="test_ownership_lib_modules_files" version="1">
-    <unix:object object_ref="object_lib_modules_files" />
+    <unix:object object_ref="object_file_ownership_lib_modules_files" />
   </unix:file_test>
 
-  <unix:file_object comment="/lib/modules directories" id="object_lib_modules_dir" version="1">
+  <unix:file_object comment="/lib/modules directories" id="object_file_ownership_lib_modules" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/lib/modules</unix:path>
     <unix:filename xsi:nil="true" />
    <filter action="include">state_owner_not_root</filter>
   </unix:file_object>
 
-  <unix:file_object comment="/lib/modules files" id="object_lib_modules_files" version="1">
+  <unix:file_object comment="/lib/modules files" id="object_file_ownership_lib_modules_files" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/lib/modules</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
