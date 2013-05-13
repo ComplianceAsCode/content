@@ -27,7 +27,7 @@
   </unix:file_test>
 
   <unix:file_test check="all" check_existence="none_exist" comment="/lib files go-w" id="test_perms_lib_files" version="1">
-    <unix:object object_ref="object_lib_files" />
+    <unix:object object_ref="object_file_permissions_lib_files" />
   </unix:file_test>
 
   <unix:file_object comment="/lib directories" id="object_file_permissions_library_dir" version="1">
@@ -38,7 +38,7 @@
     <filter action="exclude">state_symlink</filter>
   </unix:file_object>
 
-  <unix:file_object comment="/lib files" id="object_lib_files" version="1">
+  <unix:file_object comment="/lib files" id="object_file_permissions_lib_files" version="1">
     <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/lib</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
