@@ -88,14 +88,14 @@
   </unix:file_object>  
 
   <unix:file_test  check="all" check_existence="none_exist" comment="/usr/lib64 directories uid root" id="test_ownership_usr_lib64_dir" version="1">
-    <unix:object object_ref="object_usr_lib64_dir" />
+    <unix:object object_ref="object_file_ownership_usr_lib64_dir" />
   </unix:file_test>
 
   <unix:file_test  check="all" check_existence="none_exist" comment="/usr/lib64 files uid root" id="test_ownership_usr_lib64_files" version="1">
     <unix:object object_ref="object_usr_lib64_files" />
   </unix:file_test>
 
-  <unix:file_object comment="/usr/lib64 directories" id="object_usr_lib64_dir" version="1">
+  <unix:file_object comment="/usr/lib64 directories" id="object_file_ownership_usr_lib64_dir" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/usr/lib64</unix:path>
     <unix:filename xsi:nil="true" />
