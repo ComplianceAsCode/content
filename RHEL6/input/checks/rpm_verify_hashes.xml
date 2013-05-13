@@ -19,21 +19,21 @@
   <!-- configuration files, documentation files, etc. Using these discriminators in the state reduced -->
   <!-- the number of false positives, but it did not eliminate them. I left them commented out to serve -->
   <!-- as an example of what they look like. -->
-  <linux:rpmverify_test check_existence="none_exist" id="test_files_fail_md5_hash" version="1" check="all" comment="verify file md5 hashes">
+  <linux:rpmverifyfile_test check_existence="none_exist" id="test_files_fail_md5_hash" version="1" check="all" comment="verify file md5 hashes">
     <linux:object object_ref="object_files_fail_md5_hash"/>
-  </linux:rpmverify_test>
-  <linux:rpmverify_object id="object_files_fail_md5_hash" version="1" comment="rpm verify of all files">
-    <linux:behaviors nodeps="true" nofiles="false" nodigest="true" noscripts="true" nosignature="true" nomd5="false"/>
+  </linux:rpmverifyfile_test>
+  <linux:rpmverifyfile_object id="object_files_fail_md5_hash" version="1" comment="rpm verify of all files">
+    <linux:behaviors nomd5="false"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:filepath operation="pattern match">^.*bin/.*$</linux:filepath>
     <filter action="include">state_files_fail_md5_hash</filter>
-  </linux:rpmverify_object>
-  <linux:rpmverify_state id="state_files_fail_md5_hash" version="1" operator="AND">
+  </linux:rpmverifyfile_object>
+  <linux:rpmverifyfile_state id="state_files_fail_md5_hash" version="1" operator="AND">
     <linux:md5_differs>fail</linux:md5_differs>
     <!-- <linux:configuration_file datatype="boolean">false</linux:configuration_file> -->
     <!-- <linux:documentation_file datatype="boolean">false</linux:documentation_file> -->
     <!-- <linux:ghost_file datatype="boolean">false</linux:ghost_file> -->
     <!-- <linux:license_file datatype="boolean">false</linux:license_file> -->
     <!-- <linux:readme_file datatype="boolean">false</linux:readme_file> -->
-  </linux:rpmverify_state>
+  </linux:rpmverifyfile_state>
 </def-group>
