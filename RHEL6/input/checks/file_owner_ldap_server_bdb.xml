@@ -17,9 +17,9 @@
   comment="Testing user ownership of /etc/openldap/slapd.d/cn=config/olcDatabase=*bdb.ldif"
   id="test_file_owner_ldap_server_bdb" version="1">
     <unix:object object_ref="object_ldap_server_bdb" />
-    <unix:state state_ref="state_uid_root" />
+    <unix:state state_ref="state_ldap_server_bdb_uid_root" />
   </unix:file_test>
-  <unix:file_state id="state_uid_root"
+  <unix:file_state id="state_ldap_server_bdb_uid_root"
   version="1">
     <unix:user_id datatype="int">0</unix:user_id>
   </unix:file_state>
