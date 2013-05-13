@@ -51,7 +51,7 @@
   </unix:file_test>
 
   <unix:file_test check="all" check_existence="none_exist" comment="/lib64 files go-w" id="test_perms_lib64_files" version="1">
-    <unix:object object_ref="object_lib64_files" />
+    <unix:object object_ref="object_file_permissions_lib64_files" />
   </unix:file_test>
 
   <unix:file_object comment="/lib64 directories" id="object_file_permissions_lib64_dir" version="1">
@@ -62,7 +62,7 @@
     <filter action="exclude">state_symlink</filter>
   </unix:file_object>
 
-  <unix:file_object comment="/lib64 files" id="object_lib64_files" version="1">
+  <unix:file_object comment="/lib64 files" id="object_file_permissions_lib64_files" version="1">
     <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/lib64</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
