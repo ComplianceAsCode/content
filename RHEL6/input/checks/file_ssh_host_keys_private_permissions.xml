@@ -18,7 +18,7 @@
     <unix:state state_ref="state_ssh_host_keys_private_mode_0600" />
   </unix:file_test>
   <unix:file_object comment="ssh private host keys" id="object_ssh_private_host_keys" version="1">
-    <unix:path var_ref="var_ssh_config_directory" />
+    <unix:path var_ref="var_ssg_host_keys_private_config_directory" />
     <unix:filename operation="pattern match">^.*_key$</unix:filename>
   </unix:file_object>
   <unix:file_state id="state_ssh_host_keys_private_uid_root" version="1">
@@ -41,5 +41,5 @@
     <unix:owrite datatype="boolean">false</unix:owrite>
     <unix:oexec datatype="boolean">false</unix:oexec>
   </unix:file_state>
-  <external_variable comment="ssh configuration directory" datatype="string" id="var_ssh_config_directory" version="1" />
+  <external_variable comment="ssh configuration directory" datatype="string" id="var_ssg_host_keys_private_config_directory" version="1" />
 </def-group>
