@@ -21,26 +21,15 @@ homepage and more detailed documentation are available at http://www.cups.org.
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="iptables_cupsd_disabled">
-<title>Enable Firewall Access to Printing Service</title>
-<description>If the system must act as a network print server then 
-<tt>iptables</tt> should be configured to allow traffic for it through.
-<iptables-desc-macro proto="tcp" port="631" />
-<iptables-desc-macro proto="tcp" port="631" />
-</description>
-<rationale>By default, inbound connections to the Internet Printing Protocol
-port are not allowed. If the print server does need to be accessed this
-exception should be added to the firewall configuration.
-</rationale>
-<ident cce="26884-7" />
-<!-- Need to invert this check <oval id="iptables_cupsd_disabled" /> -->
-<ref nist="CM-7" />
-</Rule>
-
 
 <Group id="configure_printing">
 <title>Configure the CUPS Service if Necessary</title>
-<description>CUPS provides the ability to easily share local printers with other machines over the network. It does this by allowing machines to share lists of available printers. Additionally, each machine that runs the CUPS service can potentially act as a print server. Whenever possible, the printer sharing and print server capabilities of CUPS should be limited or disabled. The following recommendations should demonstrate how to do just that.
+<description>CUPS provides the ability to easily share local printers with
+other machines over the network. It does this by allowing machines to share
+lists of available printers. Additionally, each machine that runs the CUPS
+service can potentially act as a print server. Whenever possible, the printer
+sharing and print server capabilities of CUPS should be limited or disabled.
+The following recommendations should demonstrate how to do just that.
 </description>
 
 <Rule id="cups_disable_browsing">
