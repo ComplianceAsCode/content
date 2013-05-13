@@ -22,14 +22,14 @@
   </definition>
 
   <unix:file_test  check="all" check_existence="none_exist" comment="/lib directories uid root" id="test_ownership_lib_dir" version="1">
-    <unix:object object_ref="object_lib_dir" />
+    <unix:object object_ref="file_ownership_object_lib_dir" />
   </unix:file_test>
 
   <unix:file_test  check="all" check_existence="none_exist" comment="/lib files uid root" id="test_ownership_lib_files" version="1">
     <unix:object object_ref="object_lib_files" />
   </unix:file_test>
 
-  <unix:file_object comment="/lib directories" id="object_lib_dir" version="1">
+  <unix:file_object comment="/lib directories" id="file_ownership_object_lib_dir" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/lib</unix:path>
     <unix:filename xsi:nil="true" />
