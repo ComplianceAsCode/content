@@ -9,9 +9,9 @@ choices for the community string.</description>
 
 <Group id="disabling_snmp_service">
 <title>Disable SNMP Server if Possible</title>
-<description>The system includes an SNMP daemon that allows for its
-remote monitoring, though it not installed by default. If it was
-installed and activated, the software should be disabled and removed.
+<description>The system includes an SNMP daemon that allows for its remote
+monitoring, though it not installed by default. If it was installed and
+activated but is not needed, the software should be disabled and removed.
 </description>
 
 <Rule id="disable_snmpd">
@@ -66,8 +66,6 @@ stations</li>
 <li>ensure that permissions on the <tt>snmpd.conf</tt> configuration file (by default, in <tt>/etc/snmp</tt>) are 640 or more restrictive</li>
 <li>ensure that any MIB files' permissions are also 640 or more restrictive</li></ul>
 </description>
-<!--<ident cce="26332-7" /> -->
-<!--<oval id="snmp_configure_server" /> -->
 
 <Rule id="snmpd_use_newer_protocol" severity="medium">
 <title>Configure SNMP Service to Use Only SNMPv3 or Newer </title>
@@ -100,7 +98,8 @@ To ensure the default password is not set, run the following command:
 There should be no output.
 </ocil>
 <rationale>
-Presence of the default SNMP password enables querying of different system aspects and could result in unauthorized knowledge of the system.
+Presence of the default SNMP password enables querying of different system
+aspects and could result in unauthorized knowledge of the system.
 </rationale>
 <tested by="MAN" on="20121214"/>
 </Rule>
