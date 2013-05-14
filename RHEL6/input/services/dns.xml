@@ -61,12 +61,9 @@ attacks on nameservers more difficult.</description>
 a high-risk service which must frequently be made available to the entire
 Internet, it is strongly recommended that no other services be offered by
 machines which act as organizational DNS servers.</description>
-<!--<ident cce="27030-6" />-->
-<!--<oval id="dns_server_dedicated" />-->
-<!--<ref nist="CM-7" />-->
 </Group>
 
-<Rule id="dns_server_chroot">
+<Group id="dns_server_chroot">
 <title>Run DNS Software in a chroot Jail</title>
 <description>Install the <tt>bind-chroot</tt> package:
 <pre># yum install bind-chroot</pre>
@@ -97,31 +94,10 @@ configuration file. That is, when this guide recommends editing
 <tt>/etc/named.conf</tt>, you should instead edit
 <tt>/var/named/chroot/etc/named.conf</tt>.
 </warning>
-<ident cce="26957-1" />
-<ident cce="27127-0" />
-<ident cce="26961-3" />
-<!--<oval id="dns_server_chroot" />-->
-<ref nist="CM-7" />
-</Rule>
-
-<Group id="dns_server_firewall">
-<title>Configure Firewalls to Protect the DNS Server</title>
-<description>
-By default, <tt>iptables</tt> blocks access to the ports used by the DNS 
-server.
-<iptables-desc-macro proto="udp" port="53" />
-<iptables-desc-macro proto="tcp" port="53" />
-</description>
-<rationale>These lines are necessary in order to allow remote machines to
-contact the DNS server. If this server is only available to the local network,
-it may be appropriate to insert a -s flag into this rule to allow traffic only
-from packets on the local network.</rationale>
-<!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
-<!--<oval id="dns_server_firewall" />-->
-<ref nist="CM-7" />
 </Group>
 
-</Group> <!--<Group id="dns_server_isolation">-->
+
+</Group>
 
 <Group id="dns_server_protection">
 <title>Protect DNS Data from Tampering or Attack</title>
@@ -179,9 +155,6 @@ to untrusted machines.
 Separate machines should be used to fill these two functions whenever possible.
 </rationale>
 
-<!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
-<!--<oval id="dns_server_separate_internal_external" />-->
-<!--<ref nist="CM-7" />-->
 </Group>
 
 <Group id="dns_server_partition_with_views">
@@ -226,9 +199,6 @@ required for recursion, such as the root hints file, must be available to any
 clients which are allowed to make recursive queries. Under typical
 circumstances, this includes only the internal clients which are allowed to use
 this server as a general-purpose nameserver.</warning>
-<!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
-<!--<oval id="dns_server_partition_with_views" />-->
-<!--<ref nist="CM-7" />-->
 </Group>
 
 <Rule id="dns_server_disable_zone_transfers">
@@ -248,9 +218,6 @@ or if you have only one nameserver, it may be possible to use an external
 configuration management mechanism to distribute zone updates. In that case, it
 is not necessary to allow zone transfers within BIND itself, so they should be
 disabled to avoid the potential for abuse.</rationale>
-<!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
-<!--<oval id="dns_server_disable_zone_transfers" />-->
-<ref nist="CM-7" />
 </Rule>
 
 <Rule id="dns_server_authenticate_zone_transfers">
@@ -305,8 +272,6 @@ create the shared secret string base64-key-string. Once this secret has been
 obtained and inserted into named.conf on the primary and secondary servers, the
 key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 .private are no longer needed, and may safely be deleted.</warning>
-<!--<ident cce="3985-9, 4487-5, 4258-0" /> -->
-<!--<oval id="dns_server_authenticate_zone_transfers" />-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -328,8 +293,6 @@ are easily spoofed. Instead, use TSIG keys (see the previous section for an
 example), and consider using the update-policy directive to restrict changes to
 only the precise type of change needed.</rationale>
 <ident cce="27105-6" />
-<!--<oval id="dns_server_disable_dynamic_updates" />-->
-<!--<ref nist="CM-7" />-->
 </Rule>
 
 </Group> <!--<Group id="dns_server_protection">-->
