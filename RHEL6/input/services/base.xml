@@ -156,25 +156,6 @@ is little need to run the kdump service.</rationale>
 <ref nist="AC-17(8),CM-7" />
 </Rule>
 
-<!--
-More research needed.
-
-<Rule id="service_lvm2-monitor_enabled">
-<title>Enable Logical Volume Management Monitor (lvm2-monitor)</title>
-<description>The <tt>lvm2-monitor</tt> service can be used to start or stop monitoring a mirrored
-or snapshot logical volume with dmeventd, if it is installed. If a device used by a
-monitored mirror reports an I/O error, the failure is handled according to "mirror_image_fault_policy"
-and "mirror_log_fault_policy" set in the /etc/lvm/lvm.conf configuration file. If the system utilizes
-mirrored or snapshot logical volumes then this service should be configured and enabled.
-<service-disable-macro service="lvm2-monitor" />
-</description>
-<rationale>The <tt>lvm2-monitor</tt> service provides services for mirrored or snapshotted volumes.
-</rationale>
-<ident cce="TODO" />
-<oval id="service_lvm2-monitor_enabled" />
-<ref nist="SI-11" />
-</Rule>
--->
 
 <Rule id="service_mdmonitor_disabled">
 <title>Disable Software RAID Monitor (mdmonitor)</title>
@@ -436,26 +417,6 @@ disabled.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<!--
-More research needed.
-
-<Rule id="service_sssd_disabled">
-<title>Disable System Security Services Daemon (sssd)</title>
-<description>The sssd service provides a set of daemons to manage access to remote directories
-and authentication mechanisms. It provides an NSS and PAM interface for the system and a
-pluggable backend system to connect to multiple different account sources. It is also the basis
-to provide client auditing and policy services for projects like FreeIPA.
-<service-disable-macro service="sssd" />
-</description>
-<rationale>The sssd service provides essential functionality for systems which
-use different backend identity and authentication providers. However, if
-authentication is only necessary against local account databases (such as
-passwd and shadow), it is not needed. </rationale>
-<ident cce="TODO" />
-<oval id="service_sssd_disabled" />
-<ref nist="CM-7" disa="382" />
-</Rule>
--->
 
 <Rule id="service_sysstat_disabled">
 <title>Disable System Statistics Reset Service (sysstat)</title>
@@ -475,16 +436,4 @@ operation, but unless used this service can be disabled.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<!--
-<Rule id="service_udev-post_disabled">
-<title>Disable Device Manager (udev-post)</title>
-<description>The udev service serves as the device manager. It maintains a set of
-devices that are normally located in the /dev directory. This service should be
-disabled.
-<service-disable-macro service="udev-post" />
-</description>
-<ident cce="TODO" />
-<oval id="service_udev-post_disabled" />
-</Rule>
--->
 </Group>
