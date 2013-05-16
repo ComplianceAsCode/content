@@ -19,22 +19,9 @@ installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
 These are likely to be deprecated in most environments, but may be retained
 for compatibility. Root should also be prohibited from connecting
 via network protocols. Other sections of this document
-include guidance describing how to prevent root from logging in via SSH.</description>
+include guidance describing how to prevent root from logging in via SSH.
+</description>
 
-<!--
-Ensure that the file
-contains only the following lines:
-<br />
-<ul>
-<li>The primary system console device:
-<pre>console</pre></li>
-<li>The virtual console devices:
-<pre>tty1 tty2 tty3 tty4 tty5 tty6 ...</pre></li>
-<li>If required by your organization, the deprecated virtual
-console interface may be retained for backwards compatibility:
-<pre>vc/1 vc/2 vc/3 vc/4 vc/5 vc/6 ...</pre></li>
-</ul>
--->
 <Rule id="no_direct_root_logins" severity="medium">
 <title>Direct root Logins Not Allowed</title>
 <description>To further limit access to the <tt>root</tt> account, administrators
@@ -63,8 +50,6 @@ authentication to privileged accounts. Users will first login, then escalate
 to privileged (root) access via su/sudo. This is required for FISMA Low
 and FISMA Moderate systems.
 </rationale>
-<ident cce="TODO" />
-<oval id="TODO" />
 <ref nist="IA-2(1)" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -78,7 +63,6 @@ ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
 vc/2
 vc/3
 vc/4</pre>
-<!-- TODO: discussion/description of virtual consoles-->
 </description>
 <ocil clause="root login over virtual console devices is permitted">
 To check for virtual console entries which permit root login, run the
