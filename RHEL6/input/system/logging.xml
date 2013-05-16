@@ -326,7 +326,6 @@ the traditional syslog transmission over UDP. If the system must act as a log se
 this enables it to receive their messages as well.
 </rationale>
 <ident cce="27236-9" />
-<!--<oval id="rsyslog_listen_udp" />-->
 <ref nist="AU-9" />
 </Rule>
 
@@ -355,19 +354,7 @@ Note that <tt>logrotate</tt> is run nightly by the cron job
 rotated more often than once a day, some other mechanism must be
 used.</description>
 
-<!-- TODO: this needs cleanup 
-<Rule id="ensure_logrotate_activated">
-<title>Ensure Logrotate Runs Periodically</title>
-<description>The <tt>logrotate</tt> service must be configured to run
-periodically in order to perform its log rotation function.</description>
-<rationale>Log files that are not properly rotated run the risk of growing so large
-that they fill up the /var/log partition. Valuable logging information could be lost
-if the /var/log partition becomes full.</rationale>
-<ident cce="27194-0" />
-<ref nist="AU-9" disa="366"/>
-</Rule> -->
 
-<!-- <Rule id="ensure_logrotate_rotates_all_files"> -->
 <Rule id="ensure_logrotate_activated">
 <title>Ensure Logrotate Runs Periodically</title>
 <description>The <tt>logrotate</tt> service should be
