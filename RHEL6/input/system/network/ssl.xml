@@ -97,9 +97,6 @@ When the CA later signs a server certificate using its private key, it means tha
 of that server. A client can then use the CA's certificate (which contains its public key) to verify the authenticity
 of the server certificate.
 </description>
-<!--<ident cce="TODO" />-->
-<!--TODO:MANUAL<oval id="network_ssl_create_ca" />-->
-<ref nist="SC-12, SC-13" />  
 </Group>
 
 <Group id="network_ssl_create_ssl_certs">
@@ -112,97 +109,28 @@ of the server certificate.
 set up as described earlier, it can sign the CSR.</li>
 <li>The server certificate and keys must be installed on the server.</li>
 </ol>
-Instructions on how to generate and sign SSL certificates are provided for the following common services can be found in the applicable sections of this guide:
+Instructions on how to generate and sign SSL certificates are provided for the
+following common services can be found in the applicable sections of this
+guide:
 <ul>
 <li><a href="#item-postfix_configure_ssl_certs">Postfix</a></li>
 <li>Dovecot</li>
 <li>Apache</li>
 </ul>
 </description>
-<!--<ident cce="TODO" />-->
-<!--TODO:MANUAL<oval id="network_ssl_create_ssl_certs" />-->
-<ref nist="SC-12, SC-13" />
 </Group>
 
-<Group id="network_ssl_enable_client_support">
-<title>Enable Client Support</title>
-<description>The system ships with certificates from well-known commercial CAs. If your server certificates were signed by one of these established CAs, then this step is not necessary since the clients should include the CA certificate already.
-If your servers use certificates signed by your own CA, some user applications will warn that the server's certificate
-cannot be verified because the CA is not recognized. Other applications may simply fail to accept the certificate
-and refuse to operate, or continue operating without ever having properly verified the server certificate.
-To avoid this warning, and properly authenticate the servers, your CA certificate must be exported to every
-application on every client system that will be connecting to an SSL-enabled server.</description>
-<!--<ident cce="TODO" />-->
-<!--TODO:MANUAL<oval id="network_ssl_enable_client_support" />-->
-</Group>
-
-<Group id="network_ssl_add_ca_firefox">
-<title>Adding a Trusted CA for Firefox</title>
-<description>To import a new CA certificate into Firefox:
-<ol>
-<li>Launch Firefox and choose Preferences from the menu.</li>
-<li>Click the Advanced button.</li>
-<li>Select the Encryption tab.</li>
-<li>Click the View Certificates button.</li>
-<li>Select the Authorities tab.</li>
-<li>Click the Import button at the bottom of the screen.</li>
-<li>Navigate to the CA certificate and import it. Determine whether the CA should be used to identify
-web sites, e-mail users, and software developers and trust it for each accordingly.</li>
-</ol>
-</description>
-<!--<ident cce="TODO" />-->
-<!--TODO:MANUAL<oval id="network_ssl_add_ca_firefox" />-->
-<ref nist="AC-17, SC-12, SC-13" />
-</Group>
-
-<Group id="network_ssl_add_ca_thunderbird">
-<title>Adding a Trusted CA for Thunderbird</title>
-<description>To import a new CA certificate into Thunderbird:
-<ol>
-<li>Launch Thunderbird and choose Preferences from the menu.</li>
-<li>Click the Advanced button.</li>
-<li>Select the Encryption tab.</li>
-<li>Click the View Certificates button.</li>
-<li>Select the Authorities tab.</li>
-<li>Click the Import button at the bottom of the screen.</li>
-<li>Navigate to the CA certificate and import it. Determine whether the CA should be used to identify
-web sites, e-mail users, and software developers and trust it for each accordingly.</li>
-</ol>
-</description>
-<!--<ident cce="TODO" />-->
-<!--TODO:MANUAL<oval id="network_ssl_add_ca_thunderbird" />-->
-<ref nist="AC-17, SC-12, SC-13" />
-</Group>
-
-<Group id="network_ssl_add_ca_evolution">
-<title>Adding a Trusted CA for Evolution</title>
-<description>To import a new CA certificate into Evolution:
-<ol>
-<li>Launch Evolution and choose Preferences from the menu.</li>
-<li>Click the Advanced button.</li>
-<li>Select the Encryption tab.</li>
-<li>Click the View Certificates button.</li>
-<li>Select the Authorities tab.</li>
-<li>Click the Import button at the bottom of the screen.</li>
-<li>Navigate to the CA certificate and import it. Determine whether the CA should be used to identify
-web sites, e-mail users, and software developers and trust it for each accordingly.</li>
-</ol>
-</description>
-<!--<ident cce="TODO" />-->
-<!--TODO:MANUAL<oval id="network_ssl_add_ca_evolution" />-->
-<ref nist="AC-17, SC-12, SC-13" />
-</Group>
 
 <Group id="network_ssl_remove_certs">
 <title>Remove Certificate Authorities, if Appropriate</title>
-<description>Survey the certificate authorities trusted by Firefox, Thunderbird, Evolution, or other network clients. The list of certificate authorities for each program can be found via GUI, as described in the previous sections.
-Remove the certificate authorities which are not appropriate for your network connectivity needs.
-This may only make sense for some environments, and may create operational problems for a general purpose
+<description>Survey the certificate authorities trusted by Firefox,
+Thunderbird, Evolution, or other network clients. The list of certificate
+authorities for each program can be found via GUI, as described in the previous
+sections.  Remove the certificate authorities which are not appropriate for
+your network connectivity needs.  This may only make sense for some
+environments, and may create operational problems for a general purpose
 Internet-connected system.
 </description>
-<!--<ident cce="TODO" />-->
-<!--TODO:MANUAL<oval id="network_ssl_remove_certs" />-->
-<ref nist="AC-17, SC-12, SC-13" />
 </Group>
 
-</Group><!--<Group id="network_ssl">-->
+</Group>
