@@ -54,7 +54,7 @@ POP3 server, the dovecot software should be configured securely by following
 the recommendations below.
 </description>
 
-<Rule id="dovecot_support_necessary_protocols">
+<Group id="dovecot_support_necessary_protocols">
 <title>Support Only the Necessary Protocols</title>
 <description>Dovecot supports the IMAP and POP3 protocols, as well as 
 SSL-protected versions of those protocols. Configure the Dovecot server 
@@ -74,12 +74,7 @@ client to use the STARTTLS command before authenticating.
 Configuring Dovecot to only support the protocols the protocols needed by
 your site reduces the risk of an attacker using one of the unused protocols
 to base an attack.</rationale>
-<ident cce="27097-5" />
-<ident cce="26933-2" />
-<ident cce="27135-3" />
-<ident cce="27140-3" />
-<!-- <oval id="dovecot_support_necessary_protocols" /> -->
-</Rule>
+</Group>
 
 <Group id="dovecot_enabling_ssl">
 <title>Enable SSL Support</title>
