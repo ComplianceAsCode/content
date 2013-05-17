@@ -68,24 +68,7 @@ protocols which were not designed with security in mind.
 <ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
 <tested by="DS" on="20121025"/>
 </Rule>
-<!--
-<Rule id="wireless_disable_drivers">
-<title>Disable Wireless Network Drivers</title>
-<description>Removing the kernel drivers that provide support for wireless
-Ethernet devices will prevent users from easily activating the devices. To
-remove the wireless drivers from the system:
-<pre># rm -r /lib/modules/<i>kernelversion(s)</i>/kernel/drivers/net/wireless</pre>
-</description>
-<rationale>Removing the wireless kernel drivers makes it slightly more difficult for
-an administrator or malware to activate a wireless interface, by introducing
-the need to install such a driver first.
-</rationale>
-<warning category="general">This command must also be repeated every time the kernel is upgraded.</warning>
-<ident cce="27009-0" />
-<oval id="wireless_disable_drivers" />
-<ref nist="CM-7" disa="85" />
-</Rule>
--->
+
 <Rule id="service_bluetooth_disabled" severity="medium">
 <title>Disable Bluetooth Service</title>
 <description>
