@@ -170,42 +170,6 @@ of file contexts created by some programs.</rationale>
 <ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" />
 </Rule>
 
-<!--
-<Group id="selinux_daemons">
-<title>Disable Unnecessary SELinux Daemons</title>
-<description>Several daemons are installed by default as part of
-the RHEL6 SELinux support mechanism. These daemons may improve the
-system's ability to enforce SELinux policy in a useful fashion, but
-may also represent unnecessary code running on the machine,
-increasing system risk. If these daemons are not needed on your
-system, they should be disabled.</description>
-<Group id="group-2.4.3.2">
-<title>Disable MCS Translation Service (mcstrans) if
-Possible</title>
-<description>Unless there is some overriding need for the
-convenience of category label translation, disable the MCS
-translation service.
-<service-disable-macro service="mcstrans" />
-The <tt>mcstransd</tt> daemon provides the category label translation
-information defined in <tt>/etc/selinux/targeted/setrans.conf</tt> to
-client processes which request this information.
-<br /><br />
-Category labeling is unlikely to be used except in sites
-with special requirements. Therefore, it should be disabled in
-order to reduce the amount of potentially vulnerable code running
-on the system. See Section 2.4.6 for more information about systems
-which use category labelling.</description>
-
-<Rule id="disable_mcstransd">
-<title>Disable mcstrans Service</title>
-<description>The MCS Translation Service (mcstrans) should be disabled.</description>
-<ident cce="26891-2" />
-<oval id="service_mcstrans_disabled" />
-<ref nist="" />
-</Rule>
-</Group>
-</Group>
--->
 
 <Rule id="selinux_confinement_of_daemons" severity="medium">
 <title>Ensure No Daemons are Unconfined by SELinux</title>
