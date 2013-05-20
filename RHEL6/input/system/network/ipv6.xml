@@ -51,21 +51,6 @@ the vulnerability to exploitation.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="network_ipv6_disable_interfaces">
-<title>Disable Interface Usage of IPv6</title>
-<description>To prevent configuration of IPv6 for all interfaces, add or
-correct the following lines in <tt>/etc/sysconfig/network</tt>:
-<pre>NETWORKING_IPV6=no
-IPV6INIT=no</pre>
-For each network interface, add or correct the following lines in
-<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt> as an additional
-prevention mechanism:
-<pre>IPV6INIT=no</pre>
-</description>
-<ident cce="27231-0" />
-<ref nist="CM-7" />
-<tested by="DS" on="20121024"/>
-</Rule>
 
 <Rule id="network_ipv6_disable_rpc">
 <title>Disable Support for RPC IPv6</title>
