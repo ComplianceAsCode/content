@@ -28,5 +28,5 @@ find-untemplated: templates
 	./find_untemplated.py
 
 clean:
-	rm output/*.xml
-	rm output/*.sh
+	rm -f output/*.xml
+	rm -f output/*.sh
