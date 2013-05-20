@@ -101,7 +101,8 @@ def main():
 	# find important elements within the XCCDF and the OVAL
 	ovalfile = ovalfiles.pop()
 	ovaltree = ET.parse(ovalfile) 
-	ovaldefs = ovaltree.findall(".//{%s}definition" % oval_ns)
+	# collect all compliance checks (not inventory checks, which are needed by CPE)
+	ovaldefs = ovaltree.findall(".//{%s}definition[@class='compliance']" % oval_ns)
 	ovaldef_ids = [ovaldef.get("id") for ovaldef in ovaldefs] 
 
 	oval_extenddefs = ovaltree.findall(".//{%s}extend_definition" % oval_ns)
@@ -163,7 +164,7 @@ def main():
 					print "XCCDF Rule found with DISA CCI reference outside Profile %s: " % options.profile_name + rule.get("id")
 
 	if options.ovaldefs_unused or options.all_checks:
-		# create a list of all of the OVAL checks that are defined in the oval file
+		# create a list of all of the OVAL compliance check ids that are defined in the oval file
 		oval_checks_list = [ovaldef.get("id") for ovaldef in ovaldefs]
 		# now loop through the xccdf rules; if a rule references an oval check we remove the oval check from our list
 		for check_content in check_content_refs:
