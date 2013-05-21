@@ -1,5 +1,5 @@
 <Group id="network-iptables">
-<title>IPTables and Ip6tables</title>
+<title>iptables and ip6tables</title>
 <description>A host-based firewall called Netfilter is included as
 part of the Linux kernel distributed with the system. It is
 activated by default. This firewall is controlled by the program
@@ -139,7 +139,7 @@ changes to the firewall configuration because it re-writes the
 saved configuration file.</warning>
 
 <Rule id="set_iptables_default_rule" severity="medium">
-<title>Set Default IPTables Policy for Incoming Packets</title>
+<title>Set Default iptables Policy for Incoming Packets</title>
 <description>To set the default policy to DROP (instead of ACCEPT) for
 the built-in INPUT chain which processes incoming packets,
 add or correct the following line in
@@ -161,7 +161,7 @@ accepted.</rationale>
 </Rule>
 
 <Rule id="set_iptables_default_rule_forward" severity="medium">
-<title>Set Default IPTables Policy for Forwarded Packets</title>
+<title>Set Default iptables Policy for Forwarded Packets</title>
 <description>To set the default policy to DROP (instead of ACCEPT) for
 the built-in FORWARD chain which processes packets that will be forwarded from
 one interface to another,
