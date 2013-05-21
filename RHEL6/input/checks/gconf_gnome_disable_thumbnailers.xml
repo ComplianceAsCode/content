@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance"
+  id="gconf_gnome_disable_thumbnailers" version="1">
+    <metadata>
+      <title>Disable All GNOME Thumbnailers</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The system's default desktop environment, GNOME, uses a number of different thumbnailer programs to generate thumbnails for any new or modified content in an opened folder. Disable the execution of these thumbnail applications within GNOME.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Disable thumbnailers in GNOME" test_ref="test_gconf_gnome_disable_thumbnailers" />
+    </criteria>
+  </definition>
+ 
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" 
+  comment="Disable thumbnailers in GNOME" 
+  id="test_gconf_gnome_disable_thumbnailers" version="1">
+    <ind:object object_ref="obj_gconf_gnome_disable_thumbnailers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_gconf_gnome_disable_thumbnailers" version="1">
+    <ind:path>/etc/gconf/gconf.xml.mandatory/desktop/gnome/thumbnailers</ind:path>
+    <ind:filename>%gconf.xml</ind:filename>
+    <ind:pattern operation="pattern match">^\s*.entry\s+name="disable_all"\s+mtime="\d+"\s+type="bool"\s+value="true"\/.$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
