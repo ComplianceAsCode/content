@@ -9,6 +9,8 @@
       </affected>
       <description>The abrtd service should be disabled if possible.</description>
     </metadata>
+   <criteria comment="package abrt removed or service abrtd is not configured to start" operator="OR">
+    <extend_definition comment="abrt removed" definition_ref="package_abrt_removed" />
     <criteria operator="AND" comment="service abrtd is not configured to start">
       <criterion comment="abrtd runlevel 0" test_ref="test_runlevel0_abrtd" />
       <criterion comment="abrtd runlevel 1" test_ref="test_runlevel1_abrtd" />
@@ -17,6 +19,7 @@
       <criterion comment="abrtd runlevel 4" test_ref="test_runlevel4_abrtd" />
       <criterion comment="abrtd runlevel 5" test_ref="test_runlevel5_abrtd" />
       <criterion comment="abrtd runlevel 6" test_ref="test_runlevel6_abrtd" />
+    </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
