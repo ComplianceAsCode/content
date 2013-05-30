@@ -31,8 +31,8 @@
   </unix:file_state>
   <unix:file_object comment="all local files"
   id="obj_20025" version="1">
-    <unix:behaviors recurse="files" recurse_file_system="local" />
-    <unix:path operation="pattern match">.*</unix:path>
+    <unix:behaviors recurse="symlinks and directories" recurse_file_system="local" />
+    <unix:path>/</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
   </unix:file_object>
 </def-group>
