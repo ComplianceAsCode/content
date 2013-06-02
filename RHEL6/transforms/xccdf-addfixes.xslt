@@ -19,7 +19,7 @@
         <xsl:if test="@rule=$rule_id">
           <xsl:element name="fix" namespace="http://checklists.nist.gov/xccdf/1.1">
           <xsl:attribute name="system"><xsl:value-of select="$fixsystem"/></xsl:attribute>
-          <xsl:value-of select="text()"/>
+          <xsl:apply-templates select="node()"/>
           </xsl:element>
         </xsl:if>
       </xsl:for-each> 
