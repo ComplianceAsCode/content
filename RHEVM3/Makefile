@@ -14,7 +14,8 @@ shorthand-guide:
 	xmllint --format --output $(OUT)/rhevm3-shorthand.xml $(OUT)/rhevm3-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
-	xsltproc -o $(OUT)/unlinked-noprofiles-rhevm3-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhevm3-shorthand.xml
+	xsltproc -o $(OUT)/unlinked-noprofiles-rhevm3-shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhevm3-shorthand.xml
+	xsltproc -o $(OUT)/unlinked-noprofiles-rhevm3-xccdf.xml $(TRANS)/add_xccdf_namespace.xslt $(OUT)/unlinked-noprofiles-rhevm3-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-rhevm3-xccdf-prerefs.xml \
 		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-rhevm3-xccdf.xml
 	xsltproc -stringparam profile "stig-rhevm3-server" -o $(OUT)/unlinked-rhevm3-xccdf.xml \
