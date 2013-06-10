@@ -16,40 +16,40 @@
       <criterion test_ref="test_verify_all_rpms_mode" comment="mode of all files matches local rpm database" />
     </criteria>
   </definition>
-  <linux:rpmverify_test check_existence="none_exist" id="test_verify_all_rpms_user_ownership" version="1" check="all" comment="user ownership of all files matches local rpm database">
+  <linux:rpmverifyfile_test check_existence="none_exist" id="test_verify_all_rpms_user_ownership" version="1" check="all" comment="user ownership of all files matches local rpm database">
     <linux:object object_ref="object_files_fail_user_ownership"/>
-  </linux:rpmverify_test>
-  <linux:rpmverify_test check_existence="none_exist" id="test_verify_all_rpms_group_ownership" version="1" check="all" comment="group ownership of all files matches local rpm database">
+  </linux:rpmverifyfile_test>
+  <linux:rpmverifyfile_test check_existence="none_exist" id="test_verify_all_rpms_group_ownership" version="1" check="all" comment="group ownership of all files matches local rpm database">
     <linux:object object_ref="object_files_fail_group_ownership"/>
-  </linux:rpmverify_test>
-  <linux:rpmverify_test check_existence="none_exist" id="test_verify_all_rpms_mode" version="1" check="all" comment="mode of all files matches local rpm database">
+  </linux:rpmverifyfile_test>
+  <linux:rpmverifyfile_test check_existence="none_exist" id="test_verify_all_rpms_mode" version="1" check="all" comment="mode of all files matches local rpm database">
     <linux:object object_ref="object_files_fail_mode"/>
-  </linux:rpmverify_test>
-  <linux:rpmverify_object id="object_files_fail_user_ownership" version="1" comment="rpm verify of all files">
-    <linux:behaviors nodeps="true" nofiles="false" nodigest="true" noscripts="true" nosignature="true" nomd5="true"/>
+  </linux:rpmverifyfile_test>
+  <linux:rpmverifyfile_object id="object_files_fail_user_ownership" version="1" comment="rpm verify of all files">
+    <linux:behaviors nomd5="true"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:filepath operation="pattern match">.*</linux:filepath>
     <filter action="include">state_files_fail_user_ownership</filter>
-  </linux:rpmverify_object>
-  <linux:rpmverify_object id="object_files_fail_group_ownership" version="1" comment="rpm verify of all files">
-    <linux:behaviors nodeps="true" nofiles="false" nodigest="true" noscripts="true" nosignature="true" nomd5="true"/>
+  </linux:rpmverifyfile_object>
+  <linux:rpmverifyfile_object id="object_files_fail_group_ownership" version="1" comment="rpm verify of all files">
+    <linux:behaviors nomd5="true"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:filepath operation="pattern match">.*</linux:filepath>
     <filter action="include">state_files_fail_group_ownership</filter>
-  </linux:rpmverify_object>
-  <linux:rpmverify_object id="object_files_fail_mode" version="1" comment="rpm verify of all files">
-    <linux:behaviors nodeps="true" nofiles="false" nodigest="true" noscripts="true" nosignature="true" nomd5="true"/>
+  </linux:rpmverifyfile_object>
+  <linux:rpmverifyfile_object id="object_files_fail_mode" version="1" comment="rpm verify of all files">
+    <linux:behaviors nomd5="true"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:filepath operation="pattern match">.*</linux:filepath>
     <filter action="include">state_files_fail_mode</filter>
-  </linux:rpmverify_object>
-  <linux:rpmverify_state id="state_files_fail_user_ownership" version="1">
+  </linux:rpmverifyfile_object>
+  <linux:rpmverifyfile_state id="state_files_fail_user_ownership" version="1">
     <linux:ownership_differs>fail</linux:ownership_differs>
-  </linux:rpmverify_state>
-  <linux:rpmverify_state id="state_files_fail_group_ownership" version="1">
+  </linux:rpmverifyfile_state>
+  <linux:rpmverifyfile_state id="state_files_fail_group_ownership" version="1">
     <linux:group_differs>fail</linux:group_differs>
-  </linux:rpmverify_state>
-  <linux:rpmverify_state id="state_files_fail_mode" version="1">
+  </linux:rpmverifyfile_state>
+  <linux:rpmverifyfile_state id="state_files_fail_mode" version="1">
     <linux:mode_differs>fail</linux:mode_differs>
-  </linux:rpmverify_state>
+  </linux:rpmverifyfile_state>
 </def-group>
