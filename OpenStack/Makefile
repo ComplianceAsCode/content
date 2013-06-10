@@ -14,7 +14,8 @@ shorthand-guide:
 	xmllint --format --output $(OUT)/openstack-shorthand.xml $(OUT)/openstack-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
-	xsltproc -o $(OUT)/unlinked-noprofiles-openstack-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/openstack-shorthand.xml
+	xsltproc -o $(OUT)/unlinked-noprofiles-openstack-shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/openstack-shorthand.xml
+	xsltproc -o $(OUT)/unlinked-noprofiles-openstack-xccdf.xml $(TRANS)/add_xccdf_namespace.xslt $(OUT)/unlinked-noprofiles-openstack-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-openstack-xccdf-prerefs.xml \
 		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-openstack-xccdf.xml
 	xsltproc -stringparam profile "stig-openstack-server" -o $(OUT)/unlinked-openstack-xccdf.xml \
