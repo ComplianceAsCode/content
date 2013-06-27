@@ -107,7 +107,8 @@ character, lowercase character, digit, and other (special)
 character, locate the following line in <tt>/etc/pam.d/system-auth</tt>:
 <pre>password requisite pam_cracklib.so try_first_pass retry=3</pre>
 and then alter it to read:
-<pre>password required pam_cracklib.so try_first_pass retry=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=0</pre>
+<pre>password required pam_cracklib.so try_first_pass retry=3 maxrepeat=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1 difok=4</pre>
+If no such line exists, add one as the first line of the password section in <tt>/etc/pam.d/system-auth</tt>.
 The arguments can be modified to ensure compliance with
 your organization's security policy. Discussion of each parameter follows.
 </description>
@@ -250,14 +251,14 @@ is different from account lockout, which is provided by the pam_faillock module.
 <Rule id="password_require_consecrepeat">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
-consecutive repeating characters.  Edit the <tt>/etc/pam.d/system-auth</tt> file to include the following 
-line prior to the <tt>password include system-auth</tt> line:
-<pre>password required pam_cracklib.so maxrepeat=3</pre>
+consecutive repeating characters. When set to a positive number, it will reject passwords
+which contain more than that number of consecutive characters. Add <tt>maxrepeat=3</tt>
+after pam_cracklib.so to prevent a run of four or more identical characters.
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
-Look for the value of the <tt>maxrepeat</tt> parameter.  The DoD requirement is 3.
+Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3.
 </ocil>
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
