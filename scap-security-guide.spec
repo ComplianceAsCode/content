@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 26 2013 Shawn Wells <shawn@redhat.com> 0.1-12
+- 
+
 * Fri Apr 26 2013 Shawn Wells <shawn@redhat.com> 0.1-11
 - Significant amount of OVAL bugfixes
 - Incorporation of Draft RHEL6 STIG feedback

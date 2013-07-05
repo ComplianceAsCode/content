@@ -1,5 +1,5 @@
 VERSION := 0.1
-RELEASE := 11.el6
+RELEASE := 12.el6
 PKGNAME := scap-security-guide
 PKG := $(PKGNAME)-$(VERSION)
 
