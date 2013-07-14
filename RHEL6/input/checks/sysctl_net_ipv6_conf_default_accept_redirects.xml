@@ -8,8 +8,7 @@
       </affected>
       <description>The kernel runtime parameter "net.ipv6.conf.default.accept_redirects" should be set to "0".</description>
     </metadata>
-    <criteria operator="OR">
-      <extend_definition comment="IPv6 disabled or..." definition_ref="kernel_module_ipv6_option_disabled" />
+    <criteria>
       <criterion comment="kernel runtime parameter net.ipv6.conf.default.accept_redirects set to 0" test_ref="test_sysctl_net_ipv6_conf_default_accept_redirects" />
     </criteria>
   </definition>
