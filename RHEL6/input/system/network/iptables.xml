@@ -48,7 +48,7 @@ num  target     prot opt source       destination</pre>
 The <tt>ip6tables</tt> default rules are essentially the same.</description>
 
 
-<Rule id="enable_ip6tables" severity="medium">
+<Rule id="service_ip6tables_enabled" severity="medium">
 <title>Verify ip6tables Enabled if Using IPv6</title>
 <description>
 <service-enable-macro service="ip6tables" />
@@ -90,7 +90,7 @@ accepted.</rationale>
 <ref nist="CM-7" disa="66,1109,1154,1414" />
 </Rule>
 
-<Rule id="enable_iptables" severity="medium">
+<Rule id="service_iptables_enabled" severity="medium">
 <title>Verify iptables Enabled</title>
 <description>
 <service-enable-macro service="iptables" />
