@@ -32,8 +32,8 @@
 <select idref="set_sysctl_net_ipv4_tcp_syncookies" selected="true" />
 <select idref="set_sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
 <select idref="set_sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
-<select idref="enable_ip6tables" selected="true" />
-<select idref="enable_iptables" selected="true" />
+<select idref="service_ip6tables_enabled" selected="true" />
+<select idref="service_iptables_enabled" selected="true" />
 
 <!--	AC-6 -->
 <refine-value idref="var_umask_for_daemons" selector="022"/>
@@ -103,7 +103,7 @@
 <select idref="package_screen_installed" selected="true" />
 
 <!--	AC-17(1) -->
-<select idref="enable_auditd_service" selected="true" />
+<select idref="service_auditd_enabled" selected="true" />
 <select idref="enable_auditd_bootloader" selected="true" />
 
 <!--	AC-17(7) -->
@@ -203,7 +203,7 @@
 <select idref="partition_for_var_log_audit" selected="true" />
 
 <!--	AU-8 -->
-<select idref="enable_ntpd" selected="true" />
+<select idref="service_ntpd_enabled" selected="true" />
 <select idref="ntpd_specify_remote_server" selected="true" />
 <select idref="ntpd_specify_multiple_servers" selected="true" />
 
@@ -234,7 +234,7 @@
 <select idref="service_rhsmcertd_disabled" selected="true" />
 <select idref="service_smartd_disabled" selected="true" />
 <select idref="service_sysstat_disabled" selected="true" />
-<select idref="enable_cron" selected="true" />
+<select idref="service_crond_enabled" selected="true" />
 <select idref="disable_anacron" selected="true" />
 <select idref="service_atd_disabled" selected="true" />
 <select idref="disable_avahi" selected="true" />
