@@ -4,6 +4,6 @@
 chkconfig --level 0123456 psacct on
 
 #
-# Stop psacct if currently running
+# Start psacct if not currently running
 #
 service psacct start
