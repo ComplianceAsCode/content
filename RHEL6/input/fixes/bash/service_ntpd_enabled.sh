@@ -4,6 +4,6 @@
 chkconfig --level 0123456 ntpd on
 
 #
-# Stop ntpd if currently running
+# Start ntpd if not currently running
 #
 service ntpd start

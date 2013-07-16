@@ -4,6 +4,6 @@
 chkconfig --level 0123456 auditd on
 
 #
-# Stop auditd if currently running
+# Start auditd if not currently running
 #
 service auditd start

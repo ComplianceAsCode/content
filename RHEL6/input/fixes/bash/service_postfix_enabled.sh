@@ -4,6 +4,6 @@
 chkconfig --level 0123456 postfix on
 
 #
-# Stop postfix if currently running
+# Start postfix if not currently running
 #
 service postfix start
