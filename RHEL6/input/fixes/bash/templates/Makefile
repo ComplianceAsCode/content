@@ -5,6 +5,7 @@ sysctls:
 
 services:
 	./create_services_disabled.py ../../../checks/templates/services_disabled.csv
+	./create_services_enabled.py ../../../checks/templates/services_disabled.csv
 	
 compare:
 	diff output/ ../ | grep -v "Only in ../"
