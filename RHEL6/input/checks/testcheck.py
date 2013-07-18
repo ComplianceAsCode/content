@@ -108,6 +108,7 @@ def main():
         os.write(ovalfile, ET.tostring(ovaltree))
         os.close(ovalfile)
         print "Evaluating with OVAL tempfile : " + fname
+        print "Writing results to : " + fname + "-results"
         subprocess.call("oscap oval eval --results "+ fname + "-results " + fname, shell=True)
         # perhaps delete tempfile?
         definitions = ET.Element("definitions")
