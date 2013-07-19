@@ -662,7 +662,7 @@ legitimacy.</rationale>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
 <pre># audit_network_modifications
--a exit,always -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
+-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
 -w /etc/issue -p wa -k audit_network_modifications
 -w /etc/issue.net -p wa -k audit_network_modifications
 -w /etc/hosts -p wa -k audit_network_modifications
