@@ -75,7 +75,7 @@ accidentally reactivated and disrupt network operation.
 <description>If the system must act as a DHCP server, the configuration
 information it serves should be minimized. Also, support for other protocols
 and DNS-updating schemes should be explicitly disabled unless needed. The
-configuration file for dhcpd is called <tt>/etc/dhcpd.conf</tt>. The file
+configuration file for dhcpd is called <tt>/etc/dhcp/dhcpd.conf</tt>. The file
 begins with a number of global configuration options. The remainder of the file
 is divided into sections, one for each block of addresses offered by dhcpd,
 each of which contains configuration options specific to that address
@@ -84,7 +84,7 @@ block.</description>
 <Rule id="dhcp_server_disable_ddns">
 <title>Do Not Use Dynamic DNS</title>
 <description>To prevent the DHCP server from receiving DNS information from
-clients, edit <tt>/etc/dhcpd.conf</tt>, and add or correct the following global
+clients, edit <tt>/etc/dhcp/dhcpd.conf</tt>, and add or correct the following global
 option: <pre>ddns-update-style none;</pre>
 </description>
 <rationale>The Dynamic DNS protocol is used to remotely update the data served
@@ -107,7 +107,7 @@ best practice).</warning>
 
 <Rule id="dhcp_server_deny_decline">
 <title>Deny Decline Messages</title>
-<description>Edit <tt>/etc/dhcpd.conf</tt> and add or correct the following
+<description>Edit <tt>/etc/dhcp/dhcpd.conf</tt> and add or correct the following
 global option to prevent the DHCP server from responding the DHCPDECLINE
 messages, if possible: <pre>deny declines;</pre> </description>
 <rationale>The DHCPDECLINE message can be sent by a DHCP client to indicate
@@ -137,7 +137,7 @@ vectors against the DHCP server.
 
 <Group id="dhcp_server_minimize_served_info">
 <title>Minimize Served Information</title>
-<description>Edit /etc/dhcpd.conf. Examine each address range section within
+<description>Edit /etc/dhcp/dhcpd.conf. Examine each address range section within
 the file, and ensure that the following options are not defined unless there is
 an operational need to provide this information via DHCP:
 <pre>option domain-name
@@ -173,7 +173,7 @@ usually static across machines at a given site.</warning>
 <Rule id="dhcp_server_configure_logging">
 <title>Configure Logging</title>
 <description>Ensure that the following line exists in
-<tt>/etc/syslog.conf</tt>:
+<tt>/etc/rsyslog.conf</tt>:
 <pre>daemon.*           /var/log/daemon.log</pre>
 Configure logwatch or other log monitoring tools to summarize error conditions
 reported by the dhcpd process.</description>
@@ -246,7 +246,7 @@ successfully distribute.  For more information on configuring dhclient, see the
 
 <Group id="dhcp_client_restrict_options">
 <title>Minimize the DHCP-Configured Options</title>
-<description>Create the file <tt>/etc/dhclient.conf</tt>, and add an
+<description>Create the file <tt>/etc/dhcp/dhclient.conf</tt>, and add an
 appropriate setting for each of the ten configuration settings which can be
 obtained via DHCP. For each setting, do one of the following:
 <br/>
@@ -277,7 +277,7 @@ system on a network. It is recommended that almost all configuration options be
 assigned statically, and only options which must vary on a host-by-host basis
 be assigned via DHCP. This limits the damage which can be done by a rogue DHCP
 server.  If appropriate for your site, it is also possible to supersede the
-host-name directive in <tt>/etc/dhclient.conf</tt>, establishing a static
+host-name directive in <tt>/etc/dhcp/dhclient.conf</tt>, establishing a static
 hostname for the machine. However, dhclient does not use the host name option
 provided by the DHCP server (instead using the value provided by a reverse DNS
 lookup).</rationale>
