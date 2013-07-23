@@ -4,6 +4,6 @@
 chkconfig --level 0123456 crond on
 
 #
-# Stop crond if currently running
+# Start crond if not currently running
 #
 service crond start

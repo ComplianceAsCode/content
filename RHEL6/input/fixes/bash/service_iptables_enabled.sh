@@ -4,6 +4,6 @@
 chkconfig --level 0123456 iptables on
 
 #
-# Stop iptables if currently running
+# Start iptables if not currently running
 #
 service iptables start

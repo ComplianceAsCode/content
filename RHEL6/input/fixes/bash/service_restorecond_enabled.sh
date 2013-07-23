@@ -4,6 +4,6 @@
 chkconfig --level 0123456 restorecond on
 
 #
-# Stop restorecond if currently running
+# Start restorecond if not currently running
 #
 service restorecond start

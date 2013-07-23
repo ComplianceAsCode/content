@@ -4,6 +4,6 @@
 chkconfig --level 0123456 rsyslog on
 
 #
-# Stop rsyslog if currently running
+# Start rsyslog if not currently running
 #
 service rsyslog start
