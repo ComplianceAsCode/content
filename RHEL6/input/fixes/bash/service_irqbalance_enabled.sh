@@ -4,6 +4,6 @@
 chkconfig --level 0123456 irqbalance on
 
 #
-# Stop irqbalance if currently running
+# Start irqbalance if not currently running
 #
 service irqbalance start

@@ -35,7 +35,7 @@
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
     <ind:pattern 
-    operation="pattern match">^[\s]*-a[\s]+(always,exit|exit,always)[\s]+-F[\s]+arch=b32.*-S[\s]+clock_settime[\s]+.*-k[\s]+[\S]+[\s]*$</ind:pattern>
+    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32.*-S[\s]+clock_settime[\s]+.*-k[\s]+[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -50,7 +50,7 @@
     <ind:path>/etc/audit</ind:path>
     <ind:filename>audit.rules</ind:filename>
     <ind:pattern 
-    operation="pattern match">^[\s]*-a[\s]+(always,exit|exit,always)[\s]+-F[\s]+arch=b64.*-S[\s]+clock_settime[\s]+.*-k[\s]+[\S]+[\s]*$</ind:pattern>
+    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64.*-S[\s]+clock_settime[\s]+.*-k[\s]+[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
