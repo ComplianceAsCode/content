@@ -204,6 +204,17 @@ There is no need to run the NFS server daemons <tt>nfs</tt> and
 designated as NFS servers. Ensure that these daemons are turned off on
 clients.</description>
 
+<Rule id="nfs_no_anonymous">
+<title>Specify UID and GID for Anonymous NFS Connections</title>
+<description>To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:
+<pre>
+anonuid=-1
+anongid=-1
+</pre>
+</description>
+<rationale>Specifying the anonymous UID and GID as -1 ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
+</Rule>
+
 <Rule id="service_nfs_disabled">
 <title>Disable Network File System (nfs)</title>
 <description>The Network File System (NFS) service allows remote hosts to mount
