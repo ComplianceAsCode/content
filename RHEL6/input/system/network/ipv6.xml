@@ -51,6 +51,13 @@ the vulnerability to exploitation.
 <tested by="DS" on="20121024"/>
 </Rule>
 
+<Rule id="network_ipv6_disable_interfaces">
+<title>Disable Interface Usage of IPv6</title>
+<description>To disable interface usage of IPv6, add or correct the following lines in <tt>/etc/sysconfig/network</tt>:
+<pre>NETWORKING_IPV6=no
+IPV6INIT=no</pre>
+</description>
+</Rule>
 
 <Rule id="network_ipv6_disable_rpc">
 <title>Disable Support for RPC IPv6</title>
@@ -130,7 +137,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="set_sysctl_net_ipv6_default_accept_redirects" severity="medium">
+<Rule id="set_sysctl_ipv6_default_accept_redirects" severity="medium">
 <title>Disable Accepting IPv6 Redirects</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
