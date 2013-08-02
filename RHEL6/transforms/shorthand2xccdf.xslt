@@ -6,15 +6,28 @@
   xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
   exclude-result-prefixes="xccdf xhtml dc">
 
+  <!-- This transform takes a "shorthand" variant of XCCDF
+       and expands its elements into proper XCCDF elements.
+       It also assigns all elements into the proper namespace,
+       whether it be xccdf, xhtml, or simply maintained from the
+       input. -->
+
 <xsl:include href="constants.xslt"/>
 
 <xsl:variable name="ovalfile">unlinked-rhel6-oval.xml</xsl:variable>
 <xsl:variable name="defaultseverity" select="'low'" />
 
-  <!-- This transform takes a "shorthand" variant of XCCDF
-       and expands its elements into proper XCCDF elements,
-       except (notably) it does not assign namespaces.  This is handled
-       in another transform. -->
+<!-- put elements created in this stylesheet into the xccdf namespace,
+     if no namespace explicitly indicated -->
+<xsl:namespace-alias result-prefix="xccdf" stylesheet-prefix="#default" />
+
+
+  <xsl:template match="Benchmark">
+    <xsl:element name="{local-name()}" namespace="http://checklists.nist.gov/xccdf/1.1">
+        <xsl:apply-templates select="node()|@*"/>
+    </xsl:element>
+  </xsl:template>
+
 
   <!-- insert current date -->
   <xsl:template match="Benchmark/status/@date">
@@ -25,7 +38,8 @@
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
   <xsl:template match="Rule">
-    <xsl:copy>
+    <Rule selected="false">
+    <!-- set selected attribute to false, to enable profile-driven evaluation -->
       <xsl:apply-templates select="@*" />
       <!-- also: add severity of "low" to each Rule if otherwise unspecified -->
       <xsl:if test="not(@severity)">
@@ -43,12 +57,12 @@
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/> 
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::tested|self::rationale|self::ident|self::oval)]"/>
-    </xsl:copy>
+    </Rule>
   </xsl:template> 
 
 
   <xsl:template match="Group">
-    <xsl:copy>
+    <Group>
       <xsl:apply-templates select="@*" />
       <xsl:apply-templates select="title"/>
       <xsl:apply-templates select="description"/>
@@ -56,7 +70,7 @@
       <xsl:apply-templates select="ref"/> 
       <xsl:apply-templates select="rationale"/> 
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale)]"/>
-    </xsl:copy>
+    </Group>
   </xsl:template> 
 
   <!-- XHTML, such as tt, is not allowed in titles -->
@@ -141,9 +155,6 @@
           <xsl:if test="$refsource = 'cnss'">
             <xsl:value-of select="$cnss1253uri" />
           </xsl:if>
-          <xsl:if test="$refsource = 'dcid'">
-            <xsl:value-of select="$dcid63uri" />
-          </xsl:if>
           <xsl:if test="$refsource = 'disa'">
             <xsl:value-of select="$disa-cciuri" />
           </xsl:if>
@@ -223,8 +234,50 @@
       </reference>
    </xsl:template>
 
+  <!-- The next set of templates places elements into the correct namespaces,
+       so that content authors never have to bother with them. 
+       XHTML elements are explicitly identified and the xhtml
+       namespace is added.  Any element with an empty namespace
+       is assigned to the xccdf namespace. -->
 
-  <!-- convenience macros for XCCDF prose -->
+  <!-- put table and list-related xhtml tags into xhtml namespace -->
+  <xsl:template match="table | tr | th | td | ul | li | ol" >
+    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- put general formatting xhtml into xhtml namespace -->
+  <xsl:template match="code | strong | b | em | i | pre | br | hr" >
+    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- convert tt to code, which seems better-supported -->
+  <xsl:template match="tt">
+    <xhtml:code>
+      <xsl:apply-templates select="@*|node()"/>
+    </xhtml:code>
+  </xsl:template>
+
+  <!-- if no namespace is indicated, put into xccdf namespace-->
+  <xsl:template match="*[namespace-uri()='']" priority="-1">
+    <xsl:element name="{local-name()}" namespace="http://checklists.nist.gov/xccdf/1.1">
+      <xsl:apply-templates select="node()|@*"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- identity transform: pass anything else through -->
+  <xsl:template match="@*|node()" priority="-2">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+  </xsl:template>
+
+
+
+  <!-- The next set of templates expand convenience macros for XCCDF prose -->
   <xsl:template match="sysctl-desc-macro">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     run the following command:
@@ -436,13 +489,6 @@ If the system is configured to audit this activity, it will return a line.
     <xsl:if test="@default='no' or @default=''">
       If a line indicating <xsl:value-of select="@value"/> is returned, then the required value is set.
     </xsl:if>
-  </xsl:template>
-
-  <!-- identity transform: pass anything else through -->
-  <xsl:template match="@*|node()">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()" />
-    </xsl:copy>
   </xsl:template>
 
 </xsl:stylesheet>
