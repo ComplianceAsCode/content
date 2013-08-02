@@ -14,10 +14,7 @@ shorthand-guide:
 	xmllint --format --output $(OUT)/rhel6-shorthand.xml $(OUT)/rhel6-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
-	xsltproc -o $(OUT)/unlinked-unresolved-noprofiles-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
-	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-unresolved-rhel6-xccdf.xml \
-		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-unresolved-noprofiles-rhel6-xccdf.xml
-	xsltproc -o $(OUT)/unlinked-unresolved-rhel6-xccdf.xml $(TRANS)/xccdf-addnamespaces.xslt $(OUT)/unlinked-unresolved-rhel6-xccdf.xml
+	xsltproc -o $(OUT)/unlinked-unresolved-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-rhel6-xccdf.xml $(OUT)/unlinked-unresolved-rhel6-xccdf.xml
 #	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
 #		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
