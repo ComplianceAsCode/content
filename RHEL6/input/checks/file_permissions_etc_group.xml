@@ -1,6 +1,5 @@
 <def-group>
-  <definition class="compliance"
-  id="file_permissions_etc_group" version="1">
+  <definition class="compliance" id="file_permissions_etc_group" version="1">
     <metadata>
       <title>Verify permissions on 'group' file</title>
       <affected family="unix">
@@ -10,17 +9,16 @@
       correctly.</description>
     </metadata>
     <criteria>
-      <criterion test_ref="test_20043" />
+      <criterion test_ref="test_file_permissions_etc_group" />
     </criteria>
   </definition>
   <unix:file_test check="all" check_existence="all_exist"
-  comment="Testing /etc/group permissions"
-  id="test_20043" version="1">
-    <unix:object object_ref="obj_20012" />
-    <unix:state state_ref="state_1000645" />
-  </unix:file_test>
-  <unix:file_state id="state_1000645"
+  comment="Testing /etc/group permissions" id="test_file_permissions_etc_group"
   version="1">
+    <unix:object object_ref="object_file_permissions_etc_group" />
+    <unix:state state_ref="state_file_permissions_etc_group" />
+  </unix:file_test>
+  <unix:file_state id="state_file_permissions_etc_group" version="1">
     <unix:uread datatype="boolean">true</unix:uread>
     <unix:uwrite datatype="boolean">true</unix:uwrite>
     <unix:uexec datatype="boolean">false</unix:uexec>
@@ -31,8 +29,8 @@
     <unix:owrite datatype="boolean">false</unix:owrite>
     <unix:oexec datatype="boolean">false</unix:oexec>
   </unix:file_state>
-  <unix:file_object comment="/etc/group"
-  id="obj_20012" version="1">
+  <unix:file_object comment="/etc/group" id="object_file_permissions_etc_group"
+  version="1">
     <unix:path>/etc</unix:path>
     <unix:filename>group</unix:filename>
   </unix:file_object>
