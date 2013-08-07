@@ -7,6 +7,7 @@
       </affected>
       <description>The maximum number of concurrent login sessions per user should meet
       minimum requirements.</description>
+      <reference source="MED" ref_id="20130807" ref_url="test_attestation" />
     </metadata>
     <criteria comment="the value maxlogins should be set appropriately in /etc/security/limits.conf">
       <criterion test_ref="test_maxlogins" />
@@ -25,9 +26,9 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_maxlogins" version="1">
-    <ind:subexpression operation="greater than or equal" var_ref="max_concurrent_login_sessions_value" datatype="int" />
+    <ind:subexpression operation="less than or equal" var_ref="max_concurrent_login_sessions_value" datatype="int" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="maximum password age" datatype="int" id="max_concurrent_login_sessions_value" version="1" />
+  <external_variable comment="maximum number of concurrent logins per user" datatype="int" id="max_concurrent_login_sessions_value" version="1" />
 
 </def-group>
