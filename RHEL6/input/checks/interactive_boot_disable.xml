@@ -1,29 +1,28 @@
 <def-group>
-  <definition class="compliance"
-  id="interactive_boot_disable" version="1">
+  <definition class="compliance" id="interactive_boot_disable" version="1">
     <metadata>
       <title>Disable Interactive Boot</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>The ability for users to perform interactive
-      startups should be disabled.</description>
+      <description>The ability for users to perform interactive startups should
+      be disabled.</description>
     </metadata>
     <criteria>
-      <criterion test_ref="test_20097" />
+      <criterion test_ref="test_interactive_boot_disable" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="all_exist"
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Tests the value of the PROMPT[\s]*=[\s]*([^#]*) expression in the /etc/sysconfig/init file"
-  id="test_20097" version="1">
-    <ind:object object_ref="obj_20096" />
+  id="test_interactive_boot_disable" version="1">
+    <ind:object object_ref="object_interactive_boot_disable" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20096"
+  <ind:textfilecontent54_object id="object_interactive_boot_disable"
   version="1">
     <ind:path>/etc/sysconfig</ind:path>
     <ind:filename>init</ind:filename>
-    <ind:pattern operation="pattern match">PROMPT[\s]*=[\s]*no\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">
+    PROMPT[\s]*=[\s]*no\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
