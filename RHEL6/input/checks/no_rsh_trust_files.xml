@@ -6,6 +6,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>There should not be any .rhosts or hosts.equiv files on the system.</description>
+      <reference source="MED" ref_id="20130807" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion test_ref="test_no_rsh_trust_files_root" negate="true" />
@@ -33,6 +34,6 @@
   </unix:file_object>
   <unix:file_object comment="look for /etc/hosts.equiv or /etc/shosts.equiv" id="object_no_rsh_trust_files_etc" version="1">
     <unix:path operation="equals">/etc</unix:path>
-    <unix:filename operation="pattern match">^s?hosts.equiv$</unix:filename>
+    <unix:filename operation="pattern match">^s?hosts\.equiv$</unix:filename>
   </unix:file_object>
 </def-group>
