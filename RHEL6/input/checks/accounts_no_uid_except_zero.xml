@@ -6,6 +6,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Only the root account should be assigned a user id of 0.</description>
+      <reference source="MED" ref_id="20130807" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion comment="tests for reg exp ^[^r][^o][^o][^t].*:0 in /etc/passwd file" test_ref="test_accounts_no_uid_except_root" />
