@@ -19,6 +19,11 @@
 			font-family: verdana,arial,sans-serif;
 			font-size:11px;
 		}
+		pre { 
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap !important;
+			word-wrap:break-word; 
+		}
 		table tr:nth-child(2n+2) { background-color: #f4f4f4; }
 		thead
 		{
