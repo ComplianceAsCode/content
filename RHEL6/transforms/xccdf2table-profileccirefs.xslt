@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="http://iase.disa.mil/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="http://iase.disa.mil/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
 
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
 <xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
 <xsl:variable name="os_srg" select="document('../references/disa-os-srg-v1r1.xml')/cdf:Benchmark" />
+<xsl:variable name="ovaldefs" select="document('../output/unlinked-rhel6-oval.xml')/ovalns:oval_definitions" />
 
 <xsl:param name="testinfo" select="''" />
 <xsl:param name="format" select="''"/>
@@ -36,7 +37,6 @@
 			<thead>
 				<td>ID</td>
 				<td>Severity</td>
-				<!-- <td>GEN ID</td> -->
 				<td>Title</td>
 				<td>Discussion (Rationale)</td>
 				<td>Fix Text (Description)</td>
@@ -66,8 +66,12 @@
 		<xsl:param name="idreference" />
 		<xsl:param name="enabletest" />
 		<xsl:if test="@id=$idreference and $enabletest='true'">
+			<!-- get related OVAL check info -->
+			<xsl:variable name="ovalcheckid" select="cdf:check[@system=$ovaluri]/cdf:check-content-ref/@name" />
+			<xsl:variable name="ovalcheck" select="$ovaldefs/ovalns:definitions/ovalns:definition[@id=$ovalcheckid]" />
+
 		<tr>
-			<td>TBD<!-- insert proper Vuln-ID if available --></td>
+			<td> <xsl:value-of select="@id" /></td>
 			<td> <xsl:value-of select="@severity" /></td>
 			<td> <xsl:value-of select="cdf:title" /></td>
 			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
@@ -77,8 +81,13 @@
 			<td>
 			<!-- print pretty visual indication of testing data -->
 			<xsl:if test="$testinfo and cdf:reference[@href='test_attestation']">
-				<!-- add green border on left if test attestation found -->
-				<xsl:attribute name="style">border-left:solid thick lime</xsl:attribute>
+				<!-- add green border on left if manual test attestation found -->
+				<xsl:attribute name="style">border-left:solid medium lime</xsl:attribute>
+			</xsl:if>
+
+			<xsl:if test="$testinfo and $ovalcheck/ovalns:metadata/ovalns:reference[@ref_url='test_attestation']">
+				<!-- add thicker green border on left if manual and OVAL test attestation found -->
+				<xsl:attribute name="style">border-left:solid 15px limegreen</xsl:attribute>
 			</xsl:if>
 
 			<!-- print the manual check text -->
@@ -86,8 +95,14 @@
 
 			<!-- print the test attestation info -->
 			<xsl:if test="$testinfo">
+				<!-- in the XCCDF -->
 				<xsl:for-each select="cdf:reference[@href='test_attestation']">
-					<br/><br/><i>Tested on <xsl:value-of select="dc:date"/> by <xsl:value-of select="dc:contributor"/>.</i>
+					<br/><br/><i>Manual check tested on <xsl:value-of select="dc:date"/> by <xsl:value-of select="dc:contributor"/>.</i>
+				</xsl:for-each>
+				<!-- in the associated OVAL -->
+				<xsl:for-each select="$ovalcheck/ovalns:metadata/ovalns:reference[@ref_url='test_attestation']">
+						<xsl:variable name="curr" select="current()"/>
+						<br/><i>OVAL check tested on <xsl:value-of select="$curr/@ref_id"/> by <xsl:value-of select="$curr/@source"/>.</i>
 				</xsl:for-each>
 			</xsl:if>
 			</td>
