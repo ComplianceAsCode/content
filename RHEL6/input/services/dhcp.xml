@@ -4,24 +4,12 @@
 systems to request and obtain an IP address and other configuration
 parameters from a server.
 <br /><br />
-In general, sites use DHCP either to allow a large pool of
-mobile or unknown machines to share a limited number of IP
-addresses, or to standardize installations by avoiding static,
-individual IP address configuration on hosts. It is recommended
-that sites avoid DHCP as much as possible. Since DHCP
-authentication is not well-supported, DHCP clients are open to
-attacks from rogue DHCP servers. Such servers can give clients
-incorrect information (e.g. malicious DNS server addresses) which
-could lead to their compromise.
-<br /><br />
-If a machine must act as a DHCP client or server, configure
-it defensively using the guidance in this section. This guide
-recommends configuring networking on clients by manually editing
-the appropriate files under <tt>/etc/sysconfig</tt>. It is also possible to
-use the graphical front-end programs system-config-network and
-system-config-network-tui, but these programs rewrite configuration
-files from scratch based on their defaults - destroying any manual
-changes - and should therefore be used with caution.</description>
+This guide recommends configuring networking on clients by manually editing
+the appropriate files under <tt>/etc/sysconfig</tt>.  Use of DHCP can make client 
+systems vulnerable to compromise by rogue DHCP servers, and should be avoided 
+unless necessary.  If using DHCP is necessary, however, there are best practices 
+that should be followed to minimize security risk.
+</description>
 
 
 <Group id="disabling_dhcp_server">
