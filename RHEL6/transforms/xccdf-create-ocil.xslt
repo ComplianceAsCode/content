@@ -1,16 +1,19 @@
 <?xml version="1.0"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="cdf">
+<xsl:stylesheet version="1.0" 
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" exclude-result-prefixes="cdf"
+xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" >
 
 <!-- This transform expects checks with system "ocil-transitional" and that these contain check-content
      that can transformed into OCIL questionnaires.
      -->
 
-
   <xsl:template match="/">
   <ocil xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://scap.nist.gov/schema/ocil/2.0" >
    <generator>
    <schema_version>2.0</schema_version>
-   <timestamp>2009-05-20T12:06:31</timestamp>
+   <timestamp><xsl:value-of select="date:date()"/></timestamp>
    </generator>
 
 	<questionnaires>
@@ -47,6 +50,7 @@
 		<boolean_question id="{@id}_question">
 			<question_text>
 			<xsl:apply-templates select="cdf:check[@system='ocil-transitional']/cdf:check-content"/>
+			Is it the case that <xsl:value-of select="cdf:check[@system='ocil-transitional']/cdf:check-export/@export-name"/>?
 			</question_text>
 		</boolean_question>
 	</xsl:if>
