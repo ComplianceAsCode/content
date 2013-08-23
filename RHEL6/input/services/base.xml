@@ -159,13 +159,13 @@ is little need to run the kdump service.</rationale>
 
 <Rule id="service_mdmonitor_disabled">
 <title>Disable Software RAID Monitor (mdmonitor)</title>
-<description>The mdmonitor service is used for monitoring a software RAID (hardware
-RAID setups do not use this service).
+<description>The <tt>mdmonitor</tt> service is used for monitoring a software RAID array; hardware
+RAID setups do not use this service.
 <service-disable-macro service="mdmonitor" />
 </description>
 <ocil><service-disable-check-macro service="mdmonitor" /></ocil>
-<rationale>If software RAID monitoring is not required (and it is uncommon),
-there is no need to run the service.</rationale>
+<rationale>If software RAID monitoring is not required,
+there is no need to run this service.</rationale>
 <ident cce="27193-2" />
 <oval id="service_mdmonitor_disabled" />
 <ref nist="CM-7" />
@@ -210,7 +210,7 @@ kernel panics, which is not common.
 
 <Rule id="service_ntpdate_disabled">
 <title>Disable ntpdate Service (ntpdate)</title>
-<description>The ntpdate service sets the local hardware clock by polling NTP servers
+<description>The <tt>ntpdate</tt> service sets the local hardware clock by polling NTP servers
 when the system boots. It synchronizes to the NTP servers listed in
 <tt>/etc/ntp/step-tickers</tt> or <tt>/etc/ntp.conf</tt>
 and then sets the local hardware clock to the newly synchronized
@@ -238,7 +238,7 @@ applications. Communication with <tt>oddjobd</tt> through the system message bus
 </description>
 <ocil><service-disable-check-macro service="oddjobd" /></ocil>
 <rationale>The <tt>oddjobd</tt> service may provide necessary functionality in
-some environments but it can be disabled if it is not needed. Execution of
+some environments, and can be disabled if it is not needed. Execution of
 tasks by privileged programs, on behalf of unprivileged ones, has traditionally
 been a source of privilege escalation security issues.</rationale>
 <ident cce="27257-5" />
@@ -266,7 +266,7 @@ disabled if not needed.</rationale>
 
 <Rule id="service_psacct_enabled">
 <title>Enable Process Accounting (psacct)</title>
-<description>The process accounting service (<tt>psacct</tt>) works with programs
+<description>The process accounting service, <tt>psacct</tt>, works with programs
 including <tt>acct</tt> and <tt>ac</tt> to allow system administrators to view
 user activity, such as commands issued by users of the system.
 <service-enable-macro service="psacct" />
@@ -293,8 +293,8 @@ listen for connection attempts.
 <ocil><service-disable-check-macro service="qpidd" /></ocil>
 <rationale>The qpidd service is automatically installed when the "base" 
 package selection is selected during installation.  The qpidd service listens 
-for network connections which increases the attack surface of the system.  If 
-the system is not intended to receive AMQP traffic then the <tt>qpidd</tt> 
+for network connections, which increases the attack surface of the system.  If 
+the system is not intended to receive AMQP traffic, then the <tt>qpidd</tt> 
 service is not needed and should be disabled or removed.</rationale>
 <ident cce="26928-2" />
 <oval id="service_qpidd_disabled" />
@@ -381,7 +381,7 @@ unnecessary and can be disabled.</rationale>
 
 <Rule id="service_saslauthd_disabled">
 <title>Disable Cyrus SASL Authentication Daemon (saslauthd)</title>
-<description>The saslauthd service handles plaintext authentication requests on
+<description>The <tt>saslauthd</tt> service handles plaintext authentication requests on
 behalf of the SASL library. The service isolates all code requiring superuser
 privileges for SASL authentication into a single process, and can also be used
 to provide proxy authentication services to clients that do not understand SASL
