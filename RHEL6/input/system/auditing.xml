@@ -555,7 +555,7 @@ to the system time should be audited.</rationale>
 <description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
-On a 64-bit system, the "-S time" is not necessary. The -k option allows for 
+On a 64-bit system, the "-S stime" is not necessary. The -k option allows for 
 the specification of a key in string form that can be used for better 
 reporting capability through ausearch and aureport. Multiple system calls 
 can be defined on the same line to save space if desired, but is not required.
