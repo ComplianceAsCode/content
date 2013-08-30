@@ -7,7 +7,7 @@ DIST = dist
 
 ID = ssg
 
-all: shorthand2xccdf tables guide checks content dist
+all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 	xsltproc -o $(OUT)/rhel6-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
@@ -59,14 +59,14 @@ table-srgmap: shorthand2xccdf
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 	xmllint --xmlout --html --output $(OUT)/table-rhel6-srgmap-flat.xhtml $(OUT)/table-rhel6-srgmap-flat.html
 
-table-stigs: shorthand2xccdf table-srgmap
+table-stigs: shorthand2xccdf table-srgmap checks
 	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
-	xsltproc -stringparam profile "stig-rhel6-server" -stringparam testinfo "y" -o $(OUT)/table-stig-rhel6-shorttitles.html \
+	xsltproc -stringparam profile "stig-rhel6-server" -stringparam testinfo "y" -o $(OUT)/table-stig-rhel6-testinfo.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-rhel6-xccdf.xml
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
