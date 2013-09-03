@@ -199,4 +199,16 @@ allow users to turn the feature on or off at will.</rationale>
 </Rule>
 
 </Group> <!--<Group id="enable_nx"> -->
+
+<Rule id="enable_dmesg_restriction">
+<title>Restrict Access to Kernel Message Buffer</title>
+<description><sysctl-desc-macro sysctl="kernel.dmesg_restrict" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.dmesg_restrict" value="1" /></ocil>
+<rationale>Unprivileged access to the kernel syslog can expose sensitive kernel 
+address information.</rationale>
+<ident cce="27366-4" />
+<oval id="sysctl_kernel_dmesg_restrict" />
+</Rule> 
+  
+
 </Group> <!--<Group id="restrictions"> -->
