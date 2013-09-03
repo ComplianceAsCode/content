@@ -7,6 +7,7 @@
       </affected>
       <description>The daemon umask should be set as
       appropriate</description>
+      <reference source="swells" ref_id="20130901" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_umask_for_daemons" />
@@ -27,9 +28,9 @@
   <external_variable comment="external variable for daemon umask" datatype="string" id="var_umask_for_daemons" version="1" />
 
   <ind:textfilecontent54_object id="object_umask_for_daemons" version="1">
-    <ind:path>/etc/sysconfig</ind:path>
-    <ind:filename>init</ind:filename>
-    <ind:pattern operation="pattern match">umask[\s]+(.*)</ind:pattern>
+    <ind:path>/etc/init.d</ind:path>
+    <ind:filename>functions</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*umask[\s]+([^#\s]*)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
