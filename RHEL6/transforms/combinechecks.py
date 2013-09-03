@@ -30,7 +30,7 @@ def append(element, newchild):
     newid = newchild.get("id")
     existing = element.find(".//*[@id='" + newid + "']")
     if existing is not None:
-        sys.stderr.write( "Duplicate ID, which will not be added: " + newid + "\n")
+        sys.stderr.write( "Notification: this ID is used more than once and should represent equivalent elements: " + newid + "\n")
     else:
         element.append(newchild)
 
