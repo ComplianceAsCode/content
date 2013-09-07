@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sshd_hostbasedauthentication" version="2">
+  <definition class="compliance" id="disable_host_auth" version="2">
     <metadata>
       <title>Disable Host-Based Authentication</title>
       <affected family="unix">
@@ -22,8 +22,7 @@
     <ind:object object_ref="object_sshd_hostbasedauthentication" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_sshd_hostbasedauthentication" version="1">
-    <ind:path>/etc/ssh</ind:path>
-    <ind:filename>sshd_config</ind:filename>
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)HostbasedAuthentication[\s]+yes[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
