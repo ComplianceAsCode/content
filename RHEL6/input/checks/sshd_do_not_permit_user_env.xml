@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sshd_no_user_envset" version="1">
+  <definition class="compliance" id="sshd_do_not_permit_user_env" version="1">
     <metadata>
       <title>Do Not Allow Users to Set Environment Options</title>
       <affected family="unix">
@@ -22,8 +22,7 @@
     <ind:object object_ref="obj_sshd_no_user_envset" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_no_user_envset" version="1">
-    <ind:path>/etc/ssh</ind:path>
-    <ind:filename>sshd_config</ind:filename>
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)PermitUserEnvironment[\s]+no[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
