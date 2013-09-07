@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sysconfig_nozeroconf_yes" version="1">
+  <definition class="compliance" id="network_disable_zeroconf" version="1">
     <metadata>
       <title>Disable Zeroconf Networking</title>
       <affected family="unix">
@@ -20,8 +20,7 @@
     <ind:object object_ref="obj_sysconfig_nozeroconf_yes" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sysconfig_nozeroconf_yes" version="1">
-    <ind:path>/etc/sysconfig</ind:path>
-    <ind:filename>network</ind:filename>
+    <ind:filepath>/etc/sysconfig/network</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*NOZEROCONF[\s]*=[\s]*yes</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
