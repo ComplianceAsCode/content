@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sshd_banner_set" version="1">
+  <definition class="compliance" id="sshd_enable_warning_banner" version="1">
     <metadata>
       <title>Enable a Warning Banner</title>
       <affected family="unix">
@@ -23,8 +23,7 @@
     <ind:object object_ref="obj_sshd_banner_set" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_banner_set" version="1">
-    <ind:path>/etc/ssh</ind:path>
-    <ind:filename>sshd_config</ind:filename>
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)Banner(?-i)[\s]+/etc/issue[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
