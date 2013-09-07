@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sshd_clientalivecountmax" version="1">
+  <definition class="compliance" id="sshd_set_keepalive" version="1">
     <metadata>
       <title>Set ClientAliveCountMax for User Logins</title>
       <affected family="unix">
@@ -27,8 +27,7 @@
     <ind:subexpression datatype="int" operation="equals">0</ind:subexpression>
   </ind:textfilecontent54_state>
   <ind:textfilecontent54_object id="obj_sshd_clientalivecountmax" version="1">
-    <ind:path>/etc/ssh</ind:path>
-    <ind:filename>sshd_config</ind:filename>
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
