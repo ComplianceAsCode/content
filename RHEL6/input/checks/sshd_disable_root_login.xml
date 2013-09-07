@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sshd_permitrootlogin_no" version="1">
+  <definition class="compliance" id="sshd_disable_root_login" version="1">
     <metadata>
       <title>Disable root Login via SSH</title>
       <affected family="unix">
@@ -23,8 +23,7 @@
     <ind:object object_ref="obj_sshd_permitrootlogin_no" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_permitrootlogin_no" version="1">
-    <ind:path>/etc/ssh</ind:path>
-    <ind:filename>sshd_config</ind:filename>
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)PermitRootLogin[\s]+yes[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
