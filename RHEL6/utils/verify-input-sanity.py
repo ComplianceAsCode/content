@@ -127,7 +127,10 @@ for xccdf_file in xccdf_xml_files:
         # form valid XML so that we can parse it
         xccdf_xml_contents = xccdf_header + infile.read() + xccdf_footer
         # parse the XML at this point
-        tree = ET.fromstring(xccdf_xml_contents)
+        try:
+            tree = ET.fromstring(xccdf_xml_contents)
+        except ET.XMLSyntaxError:
+            print "  XML syntax error in file: %s" % xccdf_file.replace("./", "src/input/")
         # extract all of the rules that are defined within the XCCDF
         xccdf_rules = tree.findall(".//Rule")
         for xccdf_rule in xccdf_rules:
