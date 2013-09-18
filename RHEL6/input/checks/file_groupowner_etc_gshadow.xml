@@ -7,6 +7,7 @@
       </affected>
       <description>The /etc/gshadow file should be owned by the appropriate
       group.</description>
+      <reference source="swells" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_file_groupowner_etc_gshadow" />
@@ -23,7 +24,6 @@
   </unix:file_state>
   <unix:file_object comment="/etc/gshadow"
   id="object_file_groupowner_etc_gshadow" version="1">
-    <unix:path>/etc</unix:path>
-    <unix:filename>gshadow</unix:filename>
+    <unix:filepath>/etc/gshadow</unix:filepath>
   </unix:file_object>
 </def-group>
