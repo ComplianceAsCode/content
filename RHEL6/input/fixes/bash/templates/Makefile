@@ -1,4 +1,4 @@
-templates: sysctls services
+templates: sysctls services kernel_modules
 
 sysctls:
 	./create_sysctl_bash.py ../../../checks/templates/sysctl_values.csv
@@ -9,6 +9,9 @@ services:
 	
 compare:
 	diff output/ ../ | grep -v "Only in ../"
+
+kernel_modules:
+	./create_kernel_module_disabled.py ../../../checks/templates/kernel_modules_disabled.csv
 
 copy:
 	cp output/*.sh ../
