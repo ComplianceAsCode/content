@@ -8,6 +8,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The ntpd service should be enabled if possible.</description>
+      <reference source="DS" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
     <criteria comment="package ntp installed and service ntpd is configured to start" operator="AND">
     <extend_definition comment="ntp installed" definition_ref="package_ntp_installed" />
