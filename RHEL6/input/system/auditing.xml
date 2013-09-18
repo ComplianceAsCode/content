@@ -363,30 +363,19 @@ allow them to take corrective action prior to any disruption.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
-<Rule id="configure_auditd_admin_space_left_action" severity="medium">
+<Rule id="auditd_data_retention_admin_space_left_action" severity="medium">
 <title>Configure auditd admin_space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
 when disk space is running low but prior to running out of space completely. 
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
 substituting <i>ACTION</i> appropriately:
 <pre>admin_space_left_action = <i>ACTION</i></pre>
-Possible values for <i>ACTION</i> are described in the <tt>auditd.conf</tt> man page.
-These include:
-<ul>
-<li><tt>ignore</tt></li>
-<li><tt>syslog</tt></li>
-<li><tt>email</tt></li>
-<li><tt>exec</tt></li>
-<li><tt>suspend</tt></li>
-<li><tt>single</tt></li>
-<li><tt>halt</tt></li>
-</ul>
 Set this value to <tt>single</tt> to cause the system to switch to single user
 mode for corrective action. Acceptable values also include <tt>suspend</tt> and
 <tt>halt</tt>. For certain systems, the need for availability
 outweighs the need to log all actions, and a different setting should be
-determined.
+determined. Details regarding all possible values for <i>ACTION</i> are described in the
+<tt>auditd.conf</tt> man page.
 </description>
 <ocil clause="the system is not configured to switch to single user
 mode for corrective action">
