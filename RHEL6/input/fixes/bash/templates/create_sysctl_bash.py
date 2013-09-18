@@ -14,7 +14,7 @@ def output_checkfile(serviceinfo):
         filestring = filestring.replace("SYSCTLVAR", sysctl_var)
         filestring = filestring.replace("SYSCTLVAL", sysctl_val)
         # write the check
-        with open("./output/set_sysctl_" + sysctl_var_id + ".sh", 'wb+') as outputfile:
+        with open("./output/sysctl_" + sysctl_var_id + ".sh", 'wb+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
 
