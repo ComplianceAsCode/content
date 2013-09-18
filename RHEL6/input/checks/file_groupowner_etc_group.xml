@@ -7,6 +7,7 @@
       </affected>
       <description>The /etc/group file should be owned by the appropriate
       group.</description>
+      <reference source="swells" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_file_groupowner_etc_group" />
@@ -23,7 +24,6 @@
   </unix:file_state>
   <unix:file_object comment="/etc/group" id="object_file_groupowner_etc_group"
   version="1">
-    <unix:path>/etc</unix:path>
-    <unix:filename>group</unix:filename>
+    <unix:filepath>/etc/group</unix:filepath>
   </unix:file_object>
 </def-group>
