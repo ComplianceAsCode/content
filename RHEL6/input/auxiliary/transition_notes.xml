@@ -1495,9 +1495,9 @@ rule=enable_execshield manual=no
 <note ref="12002" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=set_sysctl_net_ipv4_conf_all_accept_source_route manual=no
+rule=sysctl_net_ipv4_conf_all_accept_source_route manual=no
 This check is split in the RHEL6 prose and addressed in the rule listed above 
-and the set_sysctl_net_ipv4_conf_default_accept_source_route rule
+and the sysctl_net_ipv4_conf_default_accept_source_route rule
 </note>
 
 <note ref="846,12010,12011,23732" auth="KS">
@@ -1510,7 +1510,7 @@ Per V-12010 don't allow FTP.  Lets get rid of these other random FTP rules.
 <note ref="12023" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=disable_sysctl_ipv4_ip_forward manual=no
+rule=sysctl_ipv4_ip_forward manual=no
 </note>
 
 <note ref="12028" auth="KS">
@@ -1592,38 +1592,38 @@ This is accomplished by whitelisting specific types of icmp traffic.
 <note ref="22410,22411" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=set_sysctl_net_ipv4_icmp_echo_ignore_broadcasts manual=no
+rule=sysctl_net_ipv4_icmp_echo_ignore_broadcasts manual=no
 V-22410 and V-22411 are the same.
 </note>
 
 <note ref="22414" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=set_sysctl_net_ipv4_conf_all_accept_source_route manual=no
+rule=sysctl_net_ipv4_conf_all_accept_source_route manual=no
 This check is split in the RHEL6 prose into the above and the 
-set_sysctl_net_ipv4_conf_default_accept_source_route rule.
+sysctl_net_ipv4_conf_default_accept_source_route rule.
 </note>
 
 <note ref="22416" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=set_sysctl_net_ipv4_conf_all_accept_redirects manual=no
+rule=sysctl_net_ipv4_conf_all_accept_redirects manual=no
 This check is split in the RHEL6 prose into the above and the 
-set_sysctl_net_ipv4_conf_default_accept_redirects rule.
+sysctl_net_ipv4_conf_default_accept_redirects rule.
 </note>
 
 <note ref="22417" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=disable_sysctl_ipv4_all_send_redirects manual=no
+rule=sysctl_ipv4_all_send_redirects manual=no
 This check is split in the RHEL6 prose into the above and the 
-disable_sysctl_ipv4_default_send_redirects rule.
+sysctl_net_ipv4_conf_default_send_redirects rule.
 </note>
 
 <note ref="22418" auth="KS">
 Partial check does exist in the RHEL6 prose, it can be automated and partial 
 OVAL for it does exist.
-rule=set_sysctl_net_ipv4_conf_all_log_martians manual=no
+rule=sysctl_net_ipv4_conf_all_log_martians manual=no
 This check is split in the RHEL6 prose into the above but no equivalent rule 
 exists for "default."
 </note>
@@ -1631,7 +1631,7 @@ exists for "default."
 <note ref="22419" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=set_sysctl_net_ipv4_tcp_syncookies manual=no
+rule=sysctl_net_ipv4_tcp_syncookies manual=no
 </note>
 
 <note ref="22429" auth="KS">
