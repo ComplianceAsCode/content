@@ -16,7 +16,7 @@
 
   <ind:textfilecontent54_test check="all" comment="the value PASS_MAX_DAYS should be set appropriately in /etc/login.defs" id="test_pass_max_days" version="1">
     <ind:object object_ref="object_etc_login_defs_pass_max" />
-    <ind:state state_ref="state_password_max_age" />
+    <ind:state state_ref="state_accounts_maximum_age_login_defs" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_etc_login_defs_pass_max" version="1">
@@ -25,10 +25,10 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_password_max_age" version="1">
-    <ind:subexpression operation="less than or equal" var_ref="var_password_max_age" datatype="int" />
+  <ind:textfilecontent54_state id="state_accounts_maximum_age_login_defs" version="1">
+    <ind:subexpression operation="less than or equal" var_ref="var_accounts_maximum_age_login_defs" datatype="int" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="maximum password age" datatype="int" id="var_password_max_age" version="1" />
+  <external_variable comment="maximum password age" datatype="int" id="var_accounts_maximum_age_login_defs" version="1" />
 
 </def-group>
