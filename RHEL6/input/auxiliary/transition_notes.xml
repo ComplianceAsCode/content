@@ -5,7 +5,7 @@
 
 <note ref="811" auth="GG" rule="service_auditd_enabled">This is covered in RHEL 6 content</note>
 
-<note ref="778" auth="GG" rule="restrict_root_console_logins">This is covered in RHEL 6 content</note>
+<note ref="778" auth="GG" rule="securetty_root_login_console_only">This is covered in RHEL 6 content</note>
 
 <note ref="768" auth="GG" rule="">This is not covered in RHEL 6 content</note>
 
@@ -1560,7 +1560,7 @@ rule=no_hashes_outside_shadow manual=no
 <note ref="22375" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=configure_auditd_space_left_action manual=no
+rule=auditd_data_retention_space_left_action manual=no
 </note>
 
 <note ref="22376,22377" auth="KS">
