@@ -7,6 +7,7 @@
       </affected>
       <description>The /etc/passwd file should be owned by the appropriate
       group.</description>
+      <reference source="swells" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_file_groupowner_etc_passwd" />
@@ -23,7 +24,6 @@
   </unix:file_state>
   <unix:file_object comment="/etc/passwd"
   id="object_file_groupowner_etc_passwd" version="1">
-    <unix:path>/etc</unix:path>
-    <unix:filename>passwd</unix:filename>
+    <unix:filepath>/etc/passwd</unix:filepath>
   </unix:file_object>
 </def-group>
