@@ -231,9 +231,9 @@ by default:
 </pre>
 Kernel modules, which can be added to the kernel during runtime, are also
 stored in <tt>/lib/modules</tt>. All files in these directories should be
-owned by the <tt>root</tt> user. If any file in these directories is found
-to be owned by a user other than root, correct its ownership with the
-following command:
+owned by the <tt>root</tt> user. If the directory, or any file in these
+directories, is found to be owned by a user other than root correct its
+ownership with the following command:
 <pre># chown root <i>FILE</i></pre>
 </description>
 <ocil clause="any of these files are not owned by root">
@@ -242,10 +242,11 @@ Shared libraries are stored in the following directories:
 /lib64
 /usr/lib
 /usr/lib64
+Additionlly, kernel modules are stored in <tt>/lib/modules</tt>.
 </pre>
 For each of these directories, run the following command to find files not 
 owned by root:
-<pre>$ find <i>DIR</i> \! -user root -type f</pre>
+<pre># find -L <i>$DIR</i> \! -user root -exec chown root {} \;</pre>
 </ocil>
 <rationale>Files from shared library directories are loaded into the address
 space of processes (including privileged ones) or of the kernel itself at
@@ -253,6 +254,7 @@ runtime. Proper ownership is necessary to protect the integrity of the system.
 </rationale>
 <ref nist="AC-6" disa="1499"/>
 <oval id="file_ownership_library_dirs" />
+<tested by="swells" on="20130914"/>
 </Rule>
 
 
