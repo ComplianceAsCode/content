@@ -1273,13 +1273,13 @@ rule=smb_restrict_file_sharing manual=no
 <note ref="1030" auth="KS">
 Check exists in the RHEL6 prose, it can be automated and the OVAL for it
 does not appear to exist.
-rule=password_min_age manual=no
+rule=accounts_minimum_age_login_defs manual=no
 </note>
 
 <note ref="1032" auth="KS">
 Check exists in the RHEL6 prose, it can be automated and the OVAL for it
 partially exists.
-rule=password_min_age manual=no
+rule=accounts_minimum_age_login_defs manual=no
 Guide and oval address changing the defaults but don't address the current
 values
 </note>
@@ -1468,7 +1468,7 @@ No automated means to determine presence in DMZ. We should not be allowing FTP.
 <note ref="11976" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=password_max_age manual=yes
+rule=accounts_maximum_age_login_defs manual=yes
 </note>
 
 <note ref="11980" auth="KS">

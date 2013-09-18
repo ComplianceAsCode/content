@@ -3,9 +3,9 @@
 <description>This profile is for testing.</description>
 <!--
 <select idref="accounts_password_minlen_login_defs" selected="true"/>
-<select idref="password_min_age" selected="true"/>
-<select idref="password_max_age" selected="true"/>
-<select idref="password_warn_age" selected="true"/>
+<select idref="accounts_minimum_age_login_defs" selected="true"/>
+<select idref="accounts_maximum_age_login_defs" selected="true"/>
+<select idref="accounts_password_warn_age_login_defs" selected="true"/>
 <select idref="package_rsyslog_installed" selected="true"/>
 <select idref="service_rsyslog_enabled" selected="true"/>
 <select idref="disable_vsftpd" selected="true"/>
@@ -56,11 +56,11 @@
 
 <refine-value idref="var_accounts_password_minlen_login_defs" selector="12"/>
 <!-- password minimum length -->
-<refine-value idref="var_password_max_age" selector="90"/>
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="90"/>
 <!-- maximum password age -->
-<refine-value idref="var_password_min_age" selector="7"/>
+<refine-value idref="var_accounts_minimum_age_login_defs" selector="7"/>
 <!-- minimum password age -->
-<refine-value idref="var_password_warn_age" selector="7"/>
+<refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
 <!-- password warn age -->
 
 
