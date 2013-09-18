@@ -6,6 +6,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The root account is the only system account that should have a login shell.</description>
+      <reference source="swells" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion comment="tests for the presence of login shells (not /sbin/nologin) for system accounts in /etc/passwd file" test_ref="test_accounts_no_shelllogin_for_systemaccounts" />
@@ -15,8 +16,7 @@
     <ind:object object_ref="object_accounts_no_shelllogin_for_systemaccounts" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_accounts_no_shelllogin_for_systemaccounts" version="1">
-    <ind:path>/etc</ind:path>
-    <ind:filename>passwd</ind:filename>
+    <ind:filepath>/etc/passwd</ind:filepath>
     <ind:pattern operation="pattern match">^(?!root).*:x:[\d]*:0*([0-9]{1,2}|[1-4][0-9]{2}):[^:]*:[^:]*:(?!\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
