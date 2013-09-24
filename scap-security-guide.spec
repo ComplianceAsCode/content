@@ -69,7 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 - OVAL bug fixes
 - NIST 800-53 mappings update
 
-* Tue Nov 28 2012 Shawn Wells <shawn@redhat.com> 0.1-9
+* Wed Nov 28 2012 Shawn Wells <shawn@redhat.com> 0.1-9
 - Updated BuildRequires to reflect python-lxml (thank you, Ray S.!)
 - Reverting to noarch RPM
 
@@ -95,7 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Aug 28  2012 Spencer Shimko <sshimko@tresys.com> 1.0-4
 - Fix BuildRequires and Requires.
 
-* Wed Jul 3 2012 Jeffrey Blank <blank@eclipse.ncsc.mil> 1.0-3
+* Tue Jul 3 2012 Jeffrey Blank <blank@eclipse.ncsc.mil> 1.0-3
 - Modified install section, made description more concise.
 
 * Thu Apr 19 2012 Spencer Shimko <sshimko@tresys.com> 1.0-2
