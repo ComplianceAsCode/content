@@ -10,10 +10,12 @@ PACKAGER := scap-security-guide
 ROOT_DIR ?= $(CURDIR)
 
 RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
+FEDORA_SPEC := $(ROOT_DIR)/Fedora/scap-security-guide.spec
 
 TARBALL = $(RPM_TOPDIR)/SOURCES/$(PKG).tar.gz
 
 RPM_DEPS := tarball $(RPM_SPEC) Makefile
+FEDORA_RPM_DEPS := $(FEDORA_SPEC) Makefile
 
 RPM_TMPDIR ?= $(ROOT_DIR)/rpmbuild
 RPM_TOPDIR ?= $(RPM_TMPDIR)/src/redhat
@@ -63,6 +65,21 @@ tarball:
 	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
 
+fedora-tarball:
+	$(call rpm-prep)
+
+	# Copy the source tree for Fedora content
+	cp -r Fedora $(RPM_TMPDIR)/$(PKG)
+
+        # Don't trust the developers, clean out the build
+        # environment before packaging
+	cd $(RPM_TMPDIR)/$(PKG)/Fedora && $(MAKE) clean
+
+        # Create the source tar, copy it to $TARBALL
+        # (e.g. somewhere in the SOURCES directory)
+	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
+	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
+
 zipfile:
 	# Create a zipfile release, since many SCAP
 	# tools desire content in that format
@@ -86,14 +103,39 @@ srpm: $(RPM_DEPS)
 	cat $(RPM_SPEC) >> $(RPM_TOPDIR)/SPECS/$(notdir $(RPM_SPEC))
 	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(RPM_SPEC)) --nodeps
 
+fedora-srpm: $(FEDORA_RPM_DEPS)
+	# Create the necessary directory structure
+	$(call rpm-prep)
+	# Obtain name, version, and source from Fedora's spec file
+	$(eval FEDORA_NAME := $(shell sed -ne 's/Name:\t\t\(.*\)/\1/p' $(FEDORA_SPEC)))
+	$(eval FEDORA_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
+	$(eval FEDORA_SOURCE := $(shell sed -ne 's/Source0:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
+	# Substitute %{name} and %{version} with actual values
+	$(eval FEDORA_TARBALL := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{name}/$(FEDORA_NAME)/p"))
+	$(eval FEDORA_TARBALL := $(shell echo $(FEDORA_TARBALL) | sed -ne "s/%{version}/$(FEDORA_VERSION)/p"))
+	# Download the tarball
+	@echo "Downloading the $(FEDORA_TARBALL) tarball..."
+	@wget -O $(TARBALL) $(FEDORA_TARBALL)
+	@echo "Copying $(FEDORA_SPEC) file to proper location..."
+	cat $(FEDORA_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(FEDORA_SPEC))
+	@echo "Building Fedora source $(PKGNAME) RPM package..."
+	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(FEDORA_SPEC)) --nodeps
+
 rpm: srpm
 	 @echo "Building $(PKG) RPM..."
 	 cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)-$(RELEASE).src.rpm
+
+fedora-rpm: fedora-srpm
+	# Obtain Fedora package release from Fedora spec file
+	$(eval FEDORA_RELEASE := $(shell sed -ne 's/Release:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
+	@echo "Building Fedora $(PKG) RPM package..."
+	cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)-$(FEDORA_RELEASE).src.rpm
 
 clean:
 	rm -rf $(RPM_TMPDIR)
 	cd RHEL6 && $(MAKE) clean
 	cd OpenStack && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
+	cd Fedora && $(MAKE) clean
 
 .PHONY: rhel6 tarball srpm rpm clean all
