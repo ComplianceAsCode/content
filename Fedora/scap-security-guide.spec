@@ -5,14 +5,16 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
+%global	fedorassgrelease	1
+
 Name:		scap-security-guide
 Version:	0.1
-Release:	1.fc19
+Release:	%{fedorassgrelease}%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Group:		Applications/System
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
-Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}.tar.gz
+Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}-%{fedorassgrelease}.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:	noarch
 BuildRequires:	coreutils, libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
