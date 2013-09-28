@@ -1,0 +1,115 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_binary_dirs" version="1">
+    <metadata>
+      <title>Verify that System Executables Have Restrictive Permissions</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Checks that /bin, /usr/bin, /usr/local/bin, /sbin, /usr/sbin, /usr/local/sbin, and objects therein,
+      are not group-writable or world-writable.</description>
+      <reference source="swells" ref_id="20130928" ref_url="test_attestation"/>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_perms_bin_files" />
+      <criterion test_ref="test_perms_usr_bin_files" />
+      <criterion test_ref="test_perms_usr_local_bin_files" />
+      <criterion test_ref="test_perms_sbin_files" />
+      <criterion test_ref="test_perms_usr_sbin_files" />
+      <criterion test_ref="test_perms_usr_local_sbin_files" />
+    </criteria>
+  </definition>
+
+<!-- /bin directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/bin files go-w" id="test_perms_bin_files" version="1">
+    <unix:object object_ref="object_file_permissions_bin_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="/bin files" id="object_file_permissions_bin_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/bin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_symlink</filter>
+  </unix:file_object>
+<!-- end /bin directory and file tests -->
+
+<!-- /usr/bin directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/usr/bin files go-w" id="test_perms_usr_bin_files" version="1">
+    <unix:object object_ref="object_file_permissions_usr_bin_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="/usr/bin files" id="object_file_permissions_usr_bin_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/bin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_symlink</filter>
+  </unix:file_object>
+<!-- end /usr/bin directory and file tests -->
+
+<!-- /usr/local/bin directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/usr/local/bin files go-w" id="test_perms_usr_local_bin_files" version="1">
+    <unix:object object_ref="object_file_permissions_usr_local_bin_files" />
+  </unix:file_test>
+                          
+  <unix:file_object comment="/usr/local/bin files" id="object_file_permissions_usr_local_bin_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/local/bin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_symlink</filter>
+  </unix:file_object>
+<!-- end /usr/local/bin directory and file tests -->
+
+<!-- /sbin directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/sbin files go-w" id="test_perms_sbin_files" version="1">
+    <unix:object object_ref="object_file_permissions_sbin_files" />
+  </unix:file_test>
+          
+  <unix:file_object comment="/sbin files" id="object_file_permissions_sbin_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/sbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_symlink</filter>
+  </unix:file_object>
+<!-- end /sbin directory and file tests -->
+
+<!-- /usr/sbin directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/usr/sbin files go-w" id="test_perms_usr_sbin_files" version="1">
+    <unix:object object_ref="object_file_permissions_usr_sbin_files" />
+  </unix:file_test>
+          
+  <unix:file_object comment="/usr/sbin files" id="object_file_permissions_usr_sbin_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/sbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_symlink</filter>
+  </unix:file_object>
+<!-- end /usr/sbin directory and file tests -->
+
+<!-- /usr/local/sbin directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/usr/local/sbin files go-w" id="test_perms_usr_local_sbin_files" version="1">
+    <unix:object object_ref="object_file_permissions_usr_local_sbin_files" />
+  </unix:file_test>
+            
+  <unix:file_object comment="/usr/local/sbin files" id="object_file_permissions_usr_local_sbin_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/local/sbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_symlink</filter>
+  </unix:file_object>
+<!-- end /usr/local/sbin directory and file tests -->
+
+  <unix:file_state id="state_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_perms_nogroupwrite_noworldwrite" version="1" operator="OR">
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+
+</def-group>
