@@ -1,10 +1,10 @@
 Name:           scap-security-guide
 Version:        %{version}
 Release:        %{release}
-Summary:        Security guidance and baselines in SCAP formats.
+Summary:        Security guidance and baselines in SCAP formats
 
-Group:          Testing
-License:        Public domain and GPL
+Group:          System Environment/Base
+License:        Public Domain
 URL:            https://fedorahosted.org/scap-security-guide/
 
 Source0:        %{name}-%{version}.tar.gz
@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Sep 28 2013 Shawn Wells <shawn@redhat.com> 0.1-13
+- test
+
 * Wed Jun 26 2013 Shawn Wells <shawn@redhat.com> 0.1-12
 - 
 
