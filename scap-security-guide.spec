@@ -1,19 +1,19 @@
 Name:           scap-security-guide
-Version:        %{version}
-Release:        %{release}
-Summary:        Security guidance and baselines in SCAP formats
+Version:	%{version}
+Release:	%{release}
+Summary:	Security guidance and baselines in SCAP formats
 
-Group:          System Environment/Base
-License:        Public Domain
-URL:            https://fedorahosted.org/scap-security-guide/
+Group:		System Environment/Base
+License:	Public Domain
+URL:		https://fedorahosted.org/scap-security-guide/
 
-Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+Source0:	%{name}-%{version}.tar.gz
+BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildArch:	%{arch}
 
-BuildRequires:  coreutils, libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
-Requires:       filesystem, openscap-utils >= 0.9.1
+BuildRequires:	coreutils, libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
+Requires:	filesystem, openscap-utils >= 0.9.1
 
 %description
 The scap-security-guide project provides security configuration guidance in
@@ -24,36 +24,32 @@ requirements and specific implementation guidance.
 %prep
 %setup -q 
 
-
 %build
 cd RHEL6 && make dist
-
 
 %install
 rm -rf $RPM_BUILD_ROOT
 #make install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
-mkdir -p $RPM_BUILD_ROOT/usr/share/man/en/man8/
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/en/man8/
 
 # Add in core content (SCAP, guide, tables)
-cp -r RHEL6/dist/* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/
-cp JBossEAP5/eap5-* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/content/
-cp JBossEAP5/docs/JBossEAP5_Guide.html $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/guide/
+cp -r RHEL6/dist/* $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/
+cp JBossEAP5/eap5-* $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/content/
+cp JBossEAP5/docs/JBossEAP5_Guide.html $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/guide/
 
 # Add in manpage
-gzip -c RHEL6/input/auxiliary/scap-security-guide.8 > $RPM_BUILD_ROOT/usr/share/man/en/man8/scap-security-guide.8.gz
+gzip -c RHEL6/input/auxiliary/scap-security-guide.8 > $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
 makewhatis
-chcon -u system_u $RPM_BUILD_ROOT/usr/share/man/en/man8/scap-security-guide.8.gz
+chcon -u system_u $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %files
-%defattr(0644,root,root,0755)
-%attr(0755,root,root) /usr/share/xml/scap/ssg
-%attr(0644,root,root) /usr/share/man/en/man8/scap-security-guide.8.gz
-
+%defattr(-,root,root,-)
+%{_datadir}/xml/scap/ssg
+%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 
 %changelog
 * Sat Sep 28 2013 Shawn Wells <shawn@redhat.com> 0.1-13
