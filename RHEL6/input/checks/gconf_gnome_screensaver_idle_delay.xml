@@ -20,7 +20,7 @@
     <ind:xpath datatype="string" operation="equals">/gconf/dir[@name='schemas']/dir[@name='apps']/dir[@name='gnome-screensaver']/entry[@name='idle_delay']/local_schema[1]/default[1]/@value</ind:xpath>
   </ind:xmlfilecontent_object>
   <ind:xmlfilecontent_state comment="idle timeout" id="state_gnome_screensaver_idle_delay" version="1">
-    <ind:value_of datatype="string" operation="equals" var_check="all" var_ref="inactivity_timeout_value" />
+    <ind:value_of datatype="int" operation="less than or equal" var_check="all" var_ref="inactivity_timeout_value" />
   </ind:xmlfilecontent_state>
-  <external_variable comment="inactivity timeout variable" datatype="string" id="inactivity_timeout_value" version="1" />
+  <external_variable comment="inactivity timeout variable" datatype="int" id="inactivity_timeout_value" version="1" />
 </def-group>
