@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	1
+%global	fedorassgrelease	2.rc1
 
 Name:		scap-security-guide
 Version:	0.1
@@ -27,7 +27,7 @@ catalog of practical hardening advice and links it to government requirements
 where applicable. The project bridges the gap between generalized policy
 requirements and specific implementation guidance.
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{fedorassgrelease}
 
 
 %build
@@ -36,11 +36,10 @@ cd Fedora && make dist
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/fedora/19
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/fedora/19
 
 # Add in core content (SCAP, guide)
-cp -r Fedora/dist/* $RPM_BUILD_ROOT/usr/share/xml/scap/ssg/fedora/19
-
+cp -a Fedora/dist/* $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/fedora/19
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -48,8 +47,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-/usr/share/xml/scap/ssg/fedora/19/*
+%{_datadir}/xml/scap/ssg/fedora/19/*
 
 %changelog
+* Wed Oct 02 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc1
+- Set proper name of the build directory in the spec's %setup macro.
+- Replace hard-wired paths with macros. Preserve attributes when copying files.
+
 * Tue Sep 17 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-1
 - Initial Fedora SSG RPM.
