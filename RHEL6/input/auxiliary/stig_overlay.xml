@@ -48,7 +48,7 @@
 	<overlay owner="disastig" ruleid="set_selinux_policy" ownerid="RHEL-06-000023" disa="22" severity="low">
 		<title>The system must use a Linux Security Module configured to limit the privileges of system services.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="selinux_unlabeled_device_files" ownerid="RHEL-06-000025" disa="22" severity="low">
+	<overlay owner="disastig" ruleid="selinux_all_devicefiles_labeled" ownerid="RHEL-06-000025" disa="22" severity="low">
 		<title>All device files must be monitored by the system Linux Security Module.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000027" disa="770" severity="medium">
@@ -696,7 +696,7 @@
 	<overlay owner="disastig" ruleid="143" ownerid="RHEL-06-000311" disa="143" severity="medium">
 		<title>The audit system must provide a warning when allocated audit record storage volume reaches a documented percentage of maximum audit record storage capacity.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="configure_auditd_action_mail_acct" ownerid="RHEL-06-000313" disa="139" severity="medium">
+	<overlay owner="disastig" ruleid="auditd_data_retention_action_mail_acct" ownerid="RHEL-06-000313" disa="139" severity="medium">
 		<title>The audit system must identify staff members to receive notifications of audit log storage volume capacity issues.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="kernel_module_bluetooth_disabled" ownerid="RHEL-06-000315" disa="85" severity="medium">
