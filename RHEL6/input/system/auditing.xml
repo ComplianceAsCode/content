@@ -324,7 +324,7 @@ installation time. The partition should be larger than the maximum space which
 </Group>
 -->
 
-<Rule id="configure_auditd_space_left_action" severity="medium">
+<Rule id="auditd_data_retention_space_left_action" severity="medium">
 <title>Configure auditd space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
 when disk space <i>starts</i> to run low. 
@@ -394,7 +394,7 @@ is used, running low on space for audit records should never occur.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="configure_auditd_action_mail_acct" severity="medium">
+<Rule id="auditd_data_retention_action_mail_acct" severity="medium">
 <title>Configure auditd mail_acct Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to send email to
 a designated account in certain situations. Add or correct the following line
