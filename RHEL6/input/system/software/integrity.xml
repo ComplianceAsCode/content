@@ -10,8 +10,8 @@ The RPM package management system can conduct integrity
 checks by comparing information in its metadata database with
 files installed on the system.
 <br /><br />
-Integrity checking cannot <i>prevent</i> intrusions into your
-system, but can detect that they have occurred. Requirements
+Integrity checking cannot <i>prevent</i> intrusions,
+but can detect that they have occurred. Requirements
 for software integrity checking may be highly dependent on
 the environment in which the system will be used. Snapshot-based
 approaches such as AIDE may induce considerable overhead
@@ -21,8 +21,8 @@ in the presence of frequent software updates.
 <Group id="aide">
 <title>Verify Integrity with AIDE</title>
 <description>AIDE conducts integrity checks by comparing information about
-files with previously-gathered information. Ideally, the AIDE database should
-be created immediately after your system is built, and then again after any
+files with previously-gathered information. Ideally, the AIDE database is
+created immediately after initial system configuration, and then again after any
 software update.  AIDE is highly configurable, with further configuration
 information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
 </description>
@@ -86,7 +86,6 @@ must be captured and it should be able to be verified against the installed file
 <Rule id="aide_periodic_cron_checking" severity="medium">
 <title>Configure Periodic Execution of AIDE</title>
 <description>
-AIDE should be executed on a periodic basis to check for changes.
 To implement a daily execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
 <pre>05 4 * * * root /usr/sbin/aide --check</pre>
 AIDE can be executed periodically through other means; this is merely one example.
@@ -97,38 +96,11 @@ To determine that periodic AIDE execution has been scheduled, run the following 
 </ocil>
 <rationale>
 By default, AIDE does not install itself for periodic execution. Periodically
-running AIDE may reveal unexpected changes in installed files.
+running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
 <ident cce="27222-9" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
 </Rule>
-<!--
-<Group id="aide_verify_integrity_manually">
-<title>Manually Verify Integrity of AIDE</title>
-<description>
-Manually verify the integrity of the AIDE binaries, configuration file, and database. Possibilities for doing
-so include:
-<br /><br />
-1. Use sha1sum or md5sum to generate checksums on the files and then visually compare them to those
-generated from the safely stored versions. This does not, of course, preclude the possibility that such
-output could also be faked.
-<br /><br />
-2. Mount the stored versions on read-only media and run <tt>/bin/diff</tt> to verify that there are no differences
-between the files.
-<br /><br />
-3. Copying the files to another system and performing the hash or file comparisons there may impart
-additional confidence that the manual verification process is not being interfered with.
-</description>
-<rationale>
-Because integrity checking is a means of intrusion detection and not intrusion prevention, it cannot be guaranteed
-that the AIDE binaries, configuration files, or database have not been tampered with. An attacker could disable
-or alter these files after a successful intrusion. Because of this, manual and frequent checks on these files is
-recommended. The safely stored copies (or hashes) of the database, binary, and configuration file were created
-earlier for this purpose.
-</rationale>
-<ref nist="SC-28, SI-7" />
-</Group>
--->
 </Group>
 
 <Group id="rpm_verification">
@@ -145,12 +117,16 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 </description>
 
 <Rule id="rpm_verify_permissions">
-<title>Verify File Permissions with RPM</title>
-<description>The RPM package management system can check file access
+<title>Verify and Correct File Permissions with RPM</title>
+<description>
+The RPM package management system can check file access
 permissions of installed software packages, including many that are
-important to system security. The following command will reset permissions to 
-their expected values:
-<pre># rpm --setperms <i>package</i></pre>
+important to system security. 
+After locating a file with incorrect permissions, run the following command to determine which package owns it:
+<pre># rpm -qf <i>FILENAME</i></pre>
+Next, run the following command to reset its permissions to 
+the correct values:
+<pre># rpm --setperms <i>PACKAGENAME</i></pre>
 </description>
 <ocil clause="there is output">
 The following command will list which files on the system have permissions different from what
@@ -174,21 +150,25 @@ installed software packages, including many that are important to system
 security. Run the following command to list which files on the system
 have hashes that differ from what is expected by the RPM database:
 <pre># rpm -Va | grep '^..5'</pre>
-A "c" in the second column indicates that a file is a configuration file,
-which may appropriately be expected to change.
-If the file that has changed was not expected to then refresh from distribution media or online repositories.
-<pre>rpm -Uvh <i>affected_package</i></pre> 
-OR 
-<pre>yum reinstall <i>affected_package</i></pre>
+A "c" in the second column indicates that a file is a configuration file, which
+may appropriately be expected to change.  If the file was not expected to
+change, investigate the cause of the change using audit logs or other means.
+The package can then be reinstalled to restore the file.
+Run the following command to determine which package owns the file:
+<pre># rpm -qf <i>FILENAME</i></pre>
+The package can be reinstalled from a yum repository using the command:
+<pre>yum reinstall <i>PACKAGENAME</i></pre>
+Alternatively, the package can be reinstalled from trusted media using the command:
+<pre>rpm -Uvh <i>PACKAGENAME</i></pre> 
 </description>
 <ocil clause="there is output"> The following command will list which files on the system 
 have file hashes different from what is expected by the RPM database. 
 <pre># rpm -Va | grep '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
 </ocil>
 <rationale>
-The hash on important files like system executables should match the information given
-by the RPM database. Executables with erroneous hashes could be a sign of nefarious activity
-on the system.</rationale>
+The hashes of important files like system executables should match the
+information given by the RPM database. Executables with erroneous hashes could
+be a sign of nefarious activity on the system.</rationale>
 <ident cce="27223-7" />
 <oval id="rpm_verify_hashes" />
 <ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" />
@@ -208,30 +188,17 @@ software may not be appropriate for some specialized systems.
 <Rule id="install_hids" severity="high">
 <title>Install Intrusion Detection Software</title>
 <description>
-The base Red Hat platform already includes a sophisticated auditing system that
-can detect intruder activity, as well as SELinux, which provides host-based
-intrusion prevention capabilities by confining privileged programs and user
-sessions which may become compromised.
-<br/>
-<br/>
-Install an additional intrusion detection tool to provide complementary or
-duplicative monitoring, reporting, and reaction capabilities to those of the base
-platform.  For DoD systems, the McAfee Host Based Security System is provided
-to fulfill this role.  
-<!-- provide link to cybercom site? -->
-<!-- need additional commentary: verify that HBSS (sans HIPS module) compatible w/SELinux -->
+The Red Hat platform includes a sophisticated auditing system 
+and SELinux, which provide host-based intrusion detection capabilities.
 </description>
-<ocil clause="no host-based intrusion detection tools are installed">
-Inspect the system to determine if intrusion detection software has been installed.
-Verify the intrusion detection software is active. 
-<!-- add instructions for HBSS?  the text in the RHEL 5 STIG is wrong as usual -->
+<ocil clause="SELinux is installed, this is not a finding.  However, if neither SELinux nor HBSS is used on the system">
+Inspect the system to determine if intrusion detection software has been installed. 
+SELinux is the intrusion detection system included with RHEL. Another one is 
+McAfee HBSS, which is available through Cybercom.
 </ocil>
 <rationale>
-Adding host-based intrusion detection tools can provide the capability to
-automatically take actions in response to malicious behavior, which can provide
-additional agility in reacting to network threats. These tools also often
-include a reporting capability to provide network awareness of system, which
-may not otherwise exist in an organization's systems management regime.
+Host-based intrusion detection tools provide a system-level defense when an
+intruder gains access to a system or network.  
 </rationale>
 <ref nist="SC-7" disa="1263"/>
 </Rule>
