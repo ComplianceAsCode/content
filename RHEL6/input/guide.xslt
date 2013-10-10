@@ -16,6 +16,7 @@
 		<!-- <xsl:apply-templates select="document('profiles/ftp.xml')" /> -->
 		<xsl:apply-templates select="document('profiles/stig-rhel6-server.xml')" />
 		<xsl:apply-templates select="document('profiles/usgcb-rhel6-server.xml')" />
+		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>
