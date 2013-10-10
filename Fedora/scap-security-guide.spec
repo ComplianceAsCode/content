@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	2.rc2
+%global	fedorassgrelease	2.rc3
 
 Name:		scap-security-guide
 Version:	0.1
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xml/scap/ssg/fedora/19/*
 
 %changelog
+* Thu Oct 10 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc3
+- Convert four RHEL6 'Set Password Expiration Parameter' rules to Fedora
+
 * Thu Oct 10 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc2
 - Introduce 'Account and Access Control' section
 - Convert following "Verify Proper Storage and Existence of Password Hashes" section

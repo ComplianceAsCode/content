@@ -46,6 +46,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_storage.xml')" />
+      <xsl:apply-templates select="document('system/accounts/restrictions/password_expiration.xml')" />
     </xsl:copy>
   </xsl:template>
 
