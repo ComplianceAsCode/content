@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	2.rc1
+%global	fedorassgrelease	2.rc2
 
 Name:		scap-security-guide
 Version:	0.1
@@ -50,6 +50,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xml/scap/ssg/fedora/19/*
 
 %changelog
+* Thu Oct 10 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc2
+- Introduce 'Account and Access Control' section
+- Convert following "Verify Proper Storage and Existence of Password Hashes" section
+  rules to Fedora:
+  * Prevent Log In to Accounts With Empty Password
+  * Verify All Account Password Hashes are Shadowed
+  * All GIDs referenced in /etc/passwd must be defined in /etc/group
+  * Verify No netrc Files Exist
+
 * Wed Oct 02 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc1
 - Set proper name of the build directory in the spec's %setup macro.
 - Replace hard-wired paths with macros. Preserve attributes when copying files.
