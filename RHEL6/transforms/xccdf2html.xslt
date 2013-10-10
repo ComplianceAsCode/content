@@ -98,52 +98,60 @@
   </script>
 
   <style type="text/css">
-      /*	   { background-color: #FFFFFF; } */
-      body { margin-left: 8%; margin-right: 8%; foreground: black; }
-      h1   { text-align: center; font-size: 200%;  margin-top: 2em; margin-bottom: 2em;
-             font-family: verdana, arial, helvetica, sans-serif; 
-             border-bottom: solid 2px gray; margin-bottom: 1.0em; 
-             border-top: solid 2px gray; margin-bottom: 1.0em; }
-      h2   { margin-left: -2%; font-size: 125%; 
-             border-bottom: solid 1px gray; margin-bottom: 1.0em; 
-             margin-top: 2em; margin-bottom: 0.75em;
-             font-family: verdana, arial, helvetica, sans-serif; }
-      h3   { margin-left: 6%; font-size: 110%; margin-bottom: 0.25em; 
-             font-family: verdana, arial, helvetica, sans-serif; }
-      h4   { margin-left: 10%; font-size: 100%; margin-bottom: 0.75em; 
-             font-family: verdana, arial, helvetica, sans-serif; }
+      /*    { background-color: #FFFFFF; } */
+      body  { margin-left: 8%; margin-right: 8%; foreground: black; }
+      h1    { text-align: center; font-size: 200%;
+              margin-top: 2em; margin-bottom: 1.0em;
+              font-family: verdana, arial, helvetica, sans-serif; 
+              background-color: black; color: white; }
+      h2    { margin-left: 0%; font-size: 125%; 
+              /*border-bottom: solid 1px gray; margin-bottom: 1.0em; */
+              margin-top: 2em; margin-bottom: 0.75em;
+              padding: 2px;
+              font-family: verdana, arial, helvetica, sans-serif; }
+      h2    { color: black; background-color: #ccc; }
+      h2.toplevel { color: white; background-color: black; font-size: 175%; text-align: center; }
+      h3    { margin-left: 6%; font-size: 110%; margin-bottom: 0.25em; 
+              font-family: verdana, arial, helvetica, sans-serif; }
+      h4    { margin-left: 10%; font-size: 100%; margin-bottom: 0.75em; 
+              font-family: verdana, arial, helvetica, sans-serif; }
       h5,h6 { margin-left: 10%; font-size: 90%; margin-bottom: 0.5em;  
               font-family: verdana, arial, helvetica, sans-serif; }
-      p    { margin-bottom: 0.2em; margin-top: 0.2em; }
-      pre  { margin-bottom: 0.5em; margin-top: 0.25em; margin-left: 3%;
-             font-family: monospace; font-size: 90%; }
-      ul   { margin-bottom: 0.5em; margin-top: 0.25em; }
-      td   { vertical-align: top; }
+      p     { margin-bottom: 0.2em; margin-top: 0.2em; }
+      pre   { margin-bottom: 0.5em; margin-top: 0.25em; margin-left: 3%;
+              font-family: monospace; font-size: 90%; }
+      ul    { margin-bottom: 0.5em; margin-top: 0.25em; }
+      td    { vertical-align: top; }
 
-      *.simpleText   { margin-left: 10%; }
-      *.propertyText { margin-left: 10%; margin-top: 0.2em; margin-bottom: 0.2em }
-      *.toc	     { background: #FFFFFF; }
-      *.toc2	     { background: #FFFFFF; }
-      div	     { margin-top: 1em; margin-bottom: 1em; }
-      div.rule	     { margin-left: 10%; border: 1px solid; padding: 10px 10px 10px 10px; margin-top: 1em; margin-bottom: 1em; }
-      div.hiddencheck	     { margin-left: 10%; border: 1px solid; padding: 10px 10px 10px 10px; margin-top: 1em; margin-bottom: 1em; display: none; }
-      div.check	     { margin-left: 10%; border: 1px solid; padding: 10px 10px 10px 10px; margin-top: 1em; margin-bottom: 1em; display: block; }
-      div.legal      { margin-left: 10%; }
+      *.simpleText     { margin-left: 10%; }
+      *.propertyText   { margin-left: 10%; margin-top: 0.2em; margin-bottom: 0.2em }
+      *.toc	           { background: #FFFFFF; }
+      *.toc2           { background: #FFFFFF; }
+      div              { margin-top: 1em; margin-bottom: 1em; }
+      div.rule	       { margin-left: 10%; border: 1px solid; background: #ccc; padding: 10px 10px 10px 10px; margin-top: 1em; margin-bottom: 1em; }
+      div.hiddencheck  { margin-left: 10%; border: 1px solid; background: #ccc; padding: 10px 10px 10px 10px; margin-top: 1em; margin-bottom: 1em; display: none; }
+      div.check	       { margin-left: 10%; border: 1px solid; background: #ccc; padding: 10px 10px 10px 10px; margin-top: 1em; margin-bottom: 1em; display: block; }
+      div.legal        { margin-left: 10%; margin-top: 0.2em; margin-bottom: 0.2em}
       
-      div.toc	     { margin-left: 6%; margin-bottom: 4em;
-                       padding-bottom: 0.75em; padding-top: 1em; 
-                       padding-left: 2em; padding-right: 2em; 
-                     }
-      h2.toc	     { border-bottom: none; margin-left: 0%; margin-top: 0em; }
-      p.toc          { margin-left: 2em; margin-bottom: 0.2em; margin-top: 0.5em; }
-      p.toc2         { margin-left: 5em; margin-bottom: 0.1em; margin-top: 0.1em; }
-      ul.smallList   { margin-bottom: 0.1em; margin-top: 0.1em; font-size: 85%; }
+      div.toc          { margin-left: 6%; margin-bottom: 4em;
+                         padding-bottom: 0.75em; padding-top: 1em; 
+                         padding-left: 2em; padding-right: 2em; 
+                       }
+      h2.toc           { border-bottom: none; margin-left: 0%; margin-top: 0em; }
+      p.toc            { margin-left: 2em; margin-bottom: 0.2em; margin-top: 0.5em; }
+      p.toc2           { margin-left: 5em; margin-bottom: 0.1em; margin-top: 0.1em; }
+      ul.smallList     { margin-bottom: 0.1em; margin-top: 0.1em; font-size: 85%; }
       /* table.propertyTable { margin-left: 14%; width: 90%; margin-top: 0.5em; margin-bottom: 0.25em; }
       th.propertyTableHead { font-size: 80%; background-color: #CCCCCC; } */
-      table          { border-collapse:collapse; /*border: 1px solid black;*/ }
-      table,th,td   { text-align: left; padding: 8px 8px; }
+      table            { border-collapse:collapse; /*border: 1px solid black;*/ }
+      table,th,td      { text-align: left; padding: 8px 8px; }
       table tr:nth-child(2n+2) { background-color: #F4F4F4; }
-      th            { border-bottom: 3px solid gray; }
+      th               { border-bottom: 3px solid gray; }
+      table#references { border-collapse: collapse; border-top: 1px #ccc solid; width:90%;
+                         margin-left:10%; margin-top: 0.75em; margin-bottom: 0.75em;
+                         font-family: verdana, arial, helvetica, sans-serif; }
+      td.ident         { width: 30%; font-size: 90%; }
+      td.ref           { width: 70%; font-size: 90%; }
       .expandstyle a         { color: black; text-decoration: none; }
       .expandstyle a:link    { color: black; text-decoration: none; }
       .expandstyle a:visited { color: black; text-decoration: none; }
@@ -175,7 +183,9 @@
       </xsl:if>
       <xsl:if test="./cdf:platform">
 	<p>Applies to:<ul>
-	  <xsl:apply-templates select="./cdf:platform" mode="list"/>
+        <xsl:for-each select="./cdf:platform">
+          <li><xsl:value-of select="@idref"/></li>
+        </xsl:for-each>
 	</ul></p>
       </xsl:if>
     </div>
@@ -186,16 +196,14 @@
   <xsl:if test="./cdf:front-matter">
      <xsl:for-each select="./cdf:front-matter">
        <div class="propertyText">
-          <xsl:apply-templates select="./text() | ./*" mode="text"/>
+          <xsl:copy-of select="./text() | ./* | node()" />
        </div>
      </xsl:for-each>
   </xsl:if>
   <xsl:if test="./cdf:description">
      <h3>Description</h3>
      <xsl:for-each select="./cdf:description">
-       <div class="propertyText">
-          <xsl:apply-templates select="./text() | ./*" mode="text"/>
-       </div>
+       <div class="propertyText"><p><xsl:copy-of select="./text() | ./* | node()" /></p></div>
      </xsl:for-each>
   </xsl:if>
   <xsl:if test="./cdf:notice">
@@ -205,8 +213,9 @@
       </xsl:for-each>
   </xsl:if>
 
+  <br />
+
   <!-- Build the Table of Contents -->
-  <br/>
   <h3 class="toc">Contents</h3>
   <div class="toc">
      <!-- rules and groups TOC -->
@@ -368,7 +377,9 @@
     </xsl:if>
     <xsl:if test="./cdf:platform">
       <p>Applies only to:<ul>
-        <xsl:apply-templates select="./cdf:platform" mode="list"/>
+        <xsl:for-each select="./cdf:platform">
+          <li><xsl:value-of select="@idref"/></li>
+        </xsl:for-each>
       </ul></p>
     </xsl:if>
   </div>
@@ -402,11 +413,19 @@
    </div>
   </xsl:if>
 
+  <!-- Top level reference -->
   <xsl:if test="./cdf:reference">
-    <h4>References: 
+    <h4 class="references">References: 
 	<xsl:for-each select="./cdf:reference">
 	    <xsl:if test="@href">
-	      <a href="{@href}"><xsl:value-of select="text()"/></a>
+	      <xsl:choose>
+	        <xsl:when test='. != ""'>
+	          <a href="{@href}"><xsl:value-of select="text()"/></a>
+	        </xsl:when>
+	        <xsl:otherwise>
+	          <a href="{@href}"><xsl:value-of select="./@href"/></a>
+	        </xsl:otherwise>
+	      </xsl:choose>
         </xsl:if>
 	</xsl:for-each>
     </h4>
@@ -472,11 +491,25 @@
   <!--<xsl:message>In body template for Group, id=<xsl:value-of select="@id"/>.</xsl:message>-->
   <xsl:comment>Group id = <xsl:value-of select="./@id"/></xsl:comment>
   <div  xmlns="http://www.w3.org/1999/xhtml">
-  <h2><a name="{@id}"></a>
-     <xsl:value-of select="$section-prefix"/>
-     <xsl:value-of select="$section-num"/>
-     <xsl:value-of select="concat(' ', ./cdf:title/text())"/>
-  </h2>
+
+  <!--<h1><xsl:value-of select="$section-prefix" />meh<br /><xsl:value-of select="$section-num" />meh</h1>-->
+
+  <xsl:choose>
+    <xsl:when test="$section-prefix">
+      <h2><a name="{@id}"></a>
+         <xsl:value-of select="$section-prefix"/>
+         <xsl:value-of select="$section-num"/>
+         <xsl:value-of select="concat(' ', ./cdf:title/text())"/>
+      </h2>
+    </xsl:when>
+    <xsl:otherwise>
+      <h2 class="toplevel"><a name="{@id}"></a>
+         <xsl:value-of select="$section-prefix"/>
+         <xsl:value-of select="$section-num"/>
+         <xsl:value-of select="concat('. ', ./cdf:title/text())"/>
+      </h2>
+    </xsl:otherwise>
+  </xsl:choose>
 
   <xsl:if test="./cdf:description">
      <xsl:for-each select="./cdf:description">
@@ -503,15 +536,44 @@
      </xsl:for-each>
   </xsl:if>
 
-
-  <xsl:if test="./cdf:reference">
-     <h4>References:
-       <xsl:for-each select="./cdf:reference">
-	     <xsl:if test="@href">
-	      <a href="{@href}"><xsl:value-of select="text()"/> </a>
-         </xsl:if>
-        </xsl:for-each>
-      </h4>
+  <!-- Group level reference -->
+  <xsl:if test="./cdf:ident or ./cdf:reference">
+    <table id="references">
+      <tr valign="top">
+        <td class="ident">
+          <strong>Security Identifiers: </strong>
+          <xsl:if test="not(./cdf:ident)">none<br /></xsl:if>
+          <xsl:for-each select='./cdf:ident'><xsl:value-of select='.' /><xsl:if test='not(position()=last())'>, </xsl:if></xsl:for-each>
+        </td>
+        <td class="ref">
+          <strong>References: </strong>
+          <xsl:if test="not(./cdf:reference)">none<br /></xsl:if>
+          <xsl:for-each select='./cdf:reference'>
+            <xsl:if test="@href">
+              <xsl:choose>
+                <xsl:when test='. != ""'>
+                  <xsl:choose>
+                    <xsl:when test='./@href = "http://iase.disa.mil/cci/index.html"'>
+                      <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
+                    </xsl:when>
+                    <xsl:when test='./@href = "http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf"'>
+                      <a href="{@href}">NIST <xsl:value-of select="text()"/></a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <a href="{@href}"><xsl:value-of select="text()"/></a>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{@href}"><xsl:value-of select="./@href"/></a>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:if test="not(position()=last())">, </xsl:if>
+            </xsl:if>
+          </xsl:for-each>
+        </td>
+      </tr>
+    </table>
   </xsl:if>
 
   <xsl:if test="./cdf:Group | ./cdf:Rule">
@@ -568,30 +630,61 @@
      </xsl:for-each>
   </xsl:if>
 
-
   <xsl:if test="./cdf:check[@system='ocil-transitional']">
   <xsl:variable name="manualcheck" select="concat('manualcheck-', @id)"/>
-     <xsl:for-each select="./cdf:check[@system='ocil-transitional']/cdf:check-content">
+    <xsl:for-each select="./cdf:check[@system='ocil-transitional']/cdf:check-content">
       <h4 class="expandstyle">
-      	<a href="javascript:toggle('{$manualcheck}', 'link-{$manualcheck}');">
-      	<img id="link-{$manualcheck}" src="images/collapsed.png" height="20" width="20"/> Check Procedure
+        <a href="javascript:toggle('{$manualcheck}', 'link-{$manualcheck}');" style="height:25px; line-height: 25px">
+      	<span style="display:inline-block; vertical-align:middle"><img id="link-{$manualcheck}" src="images/collapsed.png" height="15" width="15" style="vertical-align: middle"/> Check Procedure</span>
       	</a>
       </h4>
-       <div id="{$manualcheck}" class="hiddencheck">
+      <div id="{$manualcheck}" class="hiddencheck">
       <xsl:apply-templates select="node()" />
-       </div>
-     </xsl:for-each>
+      </div>
+    </xsl:for-each>
   </xsl:if>
 
-  <xsl:if test="./cdf:reference">
-     <h4>References: 
-	 <xsl:for-each select="./cdf:reference">
-	     <xsl:if test="@href">
-	        <a href="{@href}" style="padding-right:15px"><xsl:value-of select="text()"/></a>
-         </xsl:if>
-	 </xsl:for-each>
-     </h4>
+  <!-- Rule level reference -->
+  <xsl:if test="./cdf:ident or ./cdf:reference">
+    <table id="references">
+      <tr valign="top">
+        <td class="ident">
+          <strong>Security Identifiers: </strong>
+          <xsl:if test="not(./cdf:ident)">none<br /></xsl:if>
+          <xsl:for-each select='./cdf:ident'><xsl:value-of select='.' /><xsl:if test='not(position()=last())'>, </xsl:if></xsl:for-each>
+        </td>
+        <td class="ref">
+          <strong>References: </strong>
+          <xsl:if test="not(./cdf:reference)">none<br /></xsl:if>
+          <xsl:for-each select='./cdf:reference'>
+            <xsl:if test="@href">
+              <xsl:choose>
+                <xsl:when test='. != ""'>
+                  <xsl:choose>
+                    <xsl:when test='./@href = "http://iase.disa.mil/cci/index.html"'>
+                      <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
+                    </xsl:when>
+                    <xsl:when test='./@href = "http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf"'>
+                      <a href="{@href}">NIST <xsl:value-of select="text()"/></a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <a href="{@href}"><xsl:value-of select="text()"/></a>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{@href}"><xsl:value-of select="./@href"/></a>
+                </xsl:otherwise>
+
+              </xsl:choose>
+              <xsl:if test="not(position()=last())">, </xsl:if>
+            </xsl:if>
+          </xsl:for-each>
+        </td>
+      </tr>
+    </table>
   </xsl:if>
+
   </div>
 </xsl:template>
 
