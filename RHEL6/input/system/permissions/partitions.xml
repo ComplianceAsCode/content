@@ -54,12 +54,10 @@ filesystems.  </rationale>
 <Rule id="mountopt_noexec_on_removable_partitions">
 <title>Add noexec Option to Removable Media Partitions</title>
 <description>The <tt>noexec</tt> mount option prevents the direct
-execution of binaries on the mounted filesystem. Users should not
-be allowed to execute binaries that exist on partitions mounted
-from removable media (such as a USB key). The <tt>noexec</tt>
-option prevents code from being executed directly from the media
-itself, and may therefore provide a line of defense against
-certain types of worms or malicious code.
+execution of binaries on the mounted filesystem. 
+Preventing the direct execution of binaries from removable media (such as a USB
+key) provides a defense against malicious software that may be present on such
+untrusted media.
 <mount-desc-macro option="noexec" part="any removable media partitions" />
 </description>
 <rationale>Allowing users to execute binaries from removable media such as USB keys exposes
@@ -85,9 +83,9 @@ of the file respectively. Users should not be allowed to introduce suid and guid
 files into the system via partitions mounted from removeable media.
 <mount-desc-macro option="nosuid" part="any removable media partitions" />
 </description>
-<rationale>The presence of suid and sgid executables should be tightly controlled. Users
-should not be able to execute suid or sgid binaries from partitions mounted off of
-removable media.</rationale>
+<rationale>The presence of suid and sgid executables should be tightly controlled. Allowing
+users to introduce suid or sgid binaries from partitions mounted off of
+removable media would allow them to introduce their own highly-privileged programs.</rationale>
 <ident cce="27056-1" />
 <oval id="mount_option_nosuid_removable_partitions" value="var_removable_partition" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
