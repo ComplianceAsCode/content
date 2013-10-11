@@ -2,15 +2,30 @@
 <title>Common Profile for General-Purpose Fedora Systems</title>
 <description>This profile contains items common to general-purpose Fedora installations.</description>
 
-<select idref="ensure_gpgcheck_globally_activated" selected="true"/>
-<select idref="ensure_gpgcheck_never_disabled" selected="true"/>
-<select idref="no_empty_passwords" selected="true"/>
-<select idref="no_hashes_outside_shadow" selected="true"/>
-<select idref="gid_passwd_group_same" selected="true"/>
-<select idref="no_netrc_files" selected="true"/>
-<select idref="accounts_password_minlen_login_defs" selected="true"/>
-<select idref="accounts_minimum_age_login_defs" selected="true"/>
-<select idref="accounts_maximum_age_login_defs" selected="true"/>
-<select idref="accounts_password_warn_age_login_defs" selected="true"/>
+<!-- Installing and Maintaining Software section rules -->
+  <!-- Updating Software section rules -->
+  <select idref="ensure_gpgcheck_globally_activated" selected="true"/>
+  <select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+
+<!-- Account and Access Control section rules -->
+  <!-- Protect Accounts by Restricting Password-Based Login section rules -->
+    <!-- Restrict Root Logins section rules -->
+    <select idref="no_direct_root_logins" selected="true"/>
+    <select idref="securetty_root_login_console_only" selected="true"/>
+    <select idref="restrict_serial_port_logins" selected="true"/>
+    <select idref="no_root_webbrowsing" selected="true"/>
+    <select idref="no_shelllogin_for_systemaccounts" selected="true"/>
+    <select idref="no_uidzero_except_root" selected="true"/>
+    <select idref="root_path_default" selected="true"/>
+    <!-- Verify Proper Storage and Existence of Password Hashes section rules -->
+    <select idref="no_empty_passwords" selected="true"/>
+    <select idref="no_hashes_outside_shadow" selected="true"/>
+    <select idref="gid_passwd_group_same" selected="true"/>
+    <select idref="no_netrc_files" selected="true"/>
+    <!-- Set Password Expiration Parameters section rules -->
+    <select idref="accounts_password_minlen_login_defs" selected="true"/>
+    <select idref="accounts_minimum_age_login_defs" selected="true"/>
+    <select idref="accounts_maximum_age_login_defs" selected="true"/>
+    <select idref="accounts_password_warn_age_login_defs" selected="true"/>
 
 </Profile>
