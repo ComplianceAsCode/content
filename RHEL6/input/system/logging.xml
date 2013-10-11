@@ -357,13 +357,21 @@ used.</description>
 
 <Rule id="ensure_logrotate_activated">
 <title>Ensure Logrotate Runs Periodically</title>
-<description>The <tt>logrotate</tt> service should be
-enabled.</description>
+<description>The <tt>logrotate</tt> utility allows for the automatic rotation of 
+log files.  The frequency of rotation is specified in <tt>/etc/logrotate.conf</tt>, 
+which triggers a cron task.  To configure logrotate to run daily, add or correct 
+the following line in <tt>/etc/logrotate.conf</tt>:
+<pre># rotate log files <i>frequency</i>
+daily</pre>
+</description>
 <rationale>Log files that are not properly rotated run the risk of growing so large
 that they fill up the /var/log partition. Valuable logging information could be lost
 if the /var/log partition becomes full.</rationale>
-<ocil>
-<service-enable-check-macro service="logrotate" />
+<ocil clause="logrotate is not configured to run daily">
+To determine the status and frequency of logrotate, run the following command:
+<pre># grep logrotate /var/log/cron*</pre>
+If logrotate is configured properly, output should include references to 
+<tt>/etc/cron.daily</tt>.
 </ocil>
 <ident cce="27014-0" />
 <oval id="logrotate_rotate_all_files" />
