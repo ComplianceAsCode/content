@@ -25,14 +25,15 @@ include guidance describing how to prevent root from logging in via SSH.
 <Rule id="no_direct_root_logins" severity="medium">
 <title>Direct root Logins Not Allowed</title>
 <description>To further limit access to the <tt>root</tt> account, administrators
-can disable root logins at the console by editing the <tt>/etc/secuetty</tt> file. 
+can disable root logins at the console by editing the <tt>/etc/securetty</tt> file.
 This file lists all devices the root user is allowed to login to. If the file does
-not exist at all, the root user can login through any communication device on thesyste,
-whether via the console or a raw network interface. This is dangerous as as user can login to
-his machine as root via Telnet, which sends the passowrd in plain text over the network.
-By default, Red Hat Enteprise Linux's <tt>/etc/securetty</tt> file only allows the root user
-to login at the console physically attached to the machine. To prevent root from logging in,
-remove the contents of this file. To prevent direct root logins, remove the contents of this
+not exist at all, the root user can login through any communication device on the
+system, whether via the console or via a raw network interface. This is dangerous
+as user can login to his machine as root via Telnet, which sends the password in
+plain text over the network. By default, Red Hat Enteprise Linux's
+<tt>/etc/securetty</tt> file only allows the root user to login at the console
+physically attached to the machine. To prevent root from logging in, remove the
+contents of this file. To prevent direct root logins, remove the contents of this
 file by typing the following command:
 <pre>
 echo > /etc/securetty
@@ -47,7 +48,7 @@ If any output is returned, this is a finding.
 <rationale>
 Disabling direct root logins ensures proper accountability and multifactor
 authentication to privileged accounts. Users will first login, then escalate
-to privileged (root) access via su/sudo. This is required for FISMA Low
+to privileged (root) access via su / sudo. This is required for FISMA Low
 and FISMA Moderate systems.
 </rationale>
 <ref nist="IA-2(1)" />
@@ -110,16 +111,16 @@ using the root account.
 <Rule id="no_root_webbrowsing">
 <title>Restrict Web Browser Use for Administrative Accounts</title>
 <description>
-Enforce policy requiring administrative accounts use web browsers only for 
+Enforce policy requiring administrative accounts use web browsers only for
 local service administration.
 </description>
 <ocil clause="this is not the case">
-Check the <tt>root</tt> home directory for a <tt>.mozilla</tt> directory.  If 
+Check the <tt>root</tt> home directory for a <tt>.mozilla</tt> directory. If
 one exists, ensure browsing is limited to local service administration.
 </ocil>
 <rationale>
-If a browser vulnerability is exploited while running with administrative privileges, 
-the entire system could be compromised.  Specific exceptions for local service 
+If a browser vulnerability is exploited while running with administrative privileges,
+the entire system could be compromised. Specific exceptions for local service
 administration should be documented in site-defined policy.
 </rationale>
 </Rule>
@@ -133,8 +134,8 @@ function. Should an attacker be able to log into these accounts,
 they should not be granted access to a shell.
 <br /><br />
 The login shell for each local account is stored in the last field of each line
-in <tt>/etc/passwd</tt>.  System accounts are those user accounts with a user ID less than
-500. The user ID is stored in the third field. 
+in <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID less than
+500. The user ID is stored in the third field.
 If any system account <i>SYSACCT</i> (other than root) has a login shell,
 disable it with the command:
 <pre># usermod -s /sbin/nologin <i>SYSACCT</i></pre>
@@ -195,18 +196,18 @@ access to root privileges in an accountable manner.
 Assuming root shell is bash, edit the following files:
 <pre>~/.profile</pre>
 <pre>~/.bashrc</pre>
-Change any <tt>PATH</tt> variables to the vendor default for root and remove any 
+Change any <tt>PATH</tt> variables to the vendor default for root and remove any
 empty <tt>PATH</tt> entries or references to relative paths.
 </description>
 <ocil clause="any of these conditions are not met">
 To view the root user's <tt>PATH</tt>, run the following command:
 <pre># env | grep PATH</pre>
-If correctly configured, the <tt>PATH</tt> must: use vendor default settings, 
+If correctly configured, the <tt>PATH</tt> must: use vendor default settings,
 have no empty entries, and have no entries beginning with a character
 other than a slash (/).
 </ocil>
 <rationale>
-The root account's executable search path must be the vendor default, and must 
+The root account's executable search path must be the vendor default, and must
 contain only absolute paths.
 </rationale>
 <tested by="DS" on="20121024"/>
