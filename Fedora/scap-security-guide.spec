@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	2.rc4
+%global	fedorassgrelease	2.rc5
 
 Name:		scap-security-guide
 Version:	0.1
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xml/scap/ssg/fedora/19/*
 
 %changelog
+* Mon Oct 12 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc5
+- Remove percent sign from spec's changelog to silence rpmlint warning
+
 * Fri Oct 11 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc4
 - Convert RHEL6 'Restrict Root Logins' section's rules to Fedora
 
@@ -66,7 +69,7 @@ rm -rf $RPM_BUILD_ROOT
   * Verify No netrc Files Exist
 
 * Wed Oct 02 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc1
-- Set proper name of the build directory in the spec's %setup macro.
+- Set proper name of the build directory in the spec's setup macro.
 - Replace hard-wired paths with macros. Preserve attributes when copying files.
 
 * Tue Sep 17 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-1
