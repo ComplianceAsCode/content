@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	2.rc5
+%global	fedorassgrelease	2
 
 Name:		scap-security-guide
 Version:	0.1
@@ -37,9 +37,14 @@ cd Fedora && make dist
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/fedora/19
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/en/man8/
 
 # Add in core content (SCAP, guide)
 cp -a Fedora/dist/* $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/fedora/19
+
+# Add in manpage
+gzip -c Fedora/input/auxiliary/scap-security-guide.8 > $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
+chcon -u system_u $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -48,29 +53,19 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{_datadir}/xml/scap/ssg/fedora/19/*
+%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 
 %changelog
-* Mon Oct 12 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc5
+* Mon Oct 14 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2
+- Provide manual page for scap-security-guide
 - Remove percent sign from spec's changelog to silence rpmlint warning
-
-* Fri Oct 11 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc4
 - Convert RHEL6 'Restrict Root Logins' section's rules to Fedora
-
-* Thu Oct 10 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc3
-- Convert four RHEL6 'Set Password Expiration Parameter' rules to Fedora
-
-* Thu Oct 10 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc2
+- Convert RHEL6 'Set Password Expiration Parameter' rules to Fedora
 - Introduce 'Account and Access Control' section
-- Convert following "Verify Proper Storage and Existence of Password Hashes" section
-  rules to Fedora:
-  * Prevent Log In to Accounts With Empty Password
-  * Verify All Account Password Hashes are Shadowed
-  * All GIDs referenced in /etc/passwd must be defined in /etc/group
-  * Verify No netrc Files Exist
-
-* Wed Oct 02 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2.rc1
+- Convert RHEL6 'Verify Proper Storage and Existence of Password Hashes' section's
+  rules to Fedora
 - Set proper name of the build directory in the spec's setup macro.
-- Replace hard-wired paths with macros. Preserve attributes when copying files.
+- Replace hard-coded paths with macros. Preserve attributes when copying files.
 
 * Tue Sep 17 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-1
 - Initial Fedora SSG RPM.
