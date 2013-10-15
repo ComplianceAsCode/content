@@ -1,16 +1,20 @@
-Name:           scap-security-guide
-Version:	%{version}
-Release:	%{release}
+
+%global		redhatssgrelease	14.rc1
+
+Name:		scap-security-guide
+Version:	0.1
+Release:	%{redhatssgrelease}%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
+Vendor:		scap-security-guide
 
 Group:		System Environment/Base
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
 
-Source0:	%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}-%{redhatssgrelease}.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildArch:	%{arch}
+BuildArch:	noarch
 
 BuildRequires:	coreutils, libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
 Requires:	filesystem, openscap-utils >= 0.9.1
@@ -22,7 +26,7 @@ catalog of practical hardening advice and links it to government requirements
 where applicable. The project bridges the gap between generalized policy
 requirements and specific implementation guidance.
 %prep
-%setup -q 
+%setup -q -n %{name}-%{version}-%{redhatssgrelease}
 
 %build
 cd RHEL6 && make dist
@@ -52,11 +56,14 @@ rm -rf $RPM_BUILD_ROOT
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 
 %changelog
+* Mon Oct 07 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-14.rc1
+- Change RPM versioning scheme to include release into tarball
+
 * Sat Sep 28 2013 Shawn Wells <shawn@redhat.com> 0.1-13
-- test
+- Updated RPM spec file to fix rpmlint warnings
 
 * Wed Jun 26 2013 Shawn Wells <shawn@redhat.com> 0.1-12
-- 
+- Updated RPM version to 0.1-12
 
 * Fri Apr 26 2013 Shawn Wells <shawn@redhat.com> 0.1-11
 - Significant amount of OVAL bugfixes
