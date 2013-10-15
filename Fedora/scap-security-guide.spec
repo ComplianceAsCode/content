@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	2
+%global	fedorassgrelease	3.rc1
 
 Name:		scap-security-guide
 Version:	0.1
@@ -15,47 +15,48 @@ Group:		Applications/System
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
 Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}-%{fedorassgrelease}.tar.gz
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:	noarch
-BuildRequires:	coreutils, libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
-Requires:	filesystem, openscap-utils >= 0.9.1
+BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
+Requires:	openscap-utils >= 0.9.1
 
 %description
-The scap-security-guide project provides security configuration guidance in
-formats of the Security Content Automation Protocol (SCAP).  It provides a
-catalog of practical hardening advice and links it to government requirements
+The scap-security-guide project provides guide for configuration of the
+system from final system's security point of view. The guidance is specified
+in the Security Content Automation Protocol (SCAP) format and consitutes
+a catalog of practical hardening advice linked to government requirements
 where applicable. The project bridges the gap between generalized policy
-requirements and specific implementation guidance.
+requirements and specific implementation guidelines.
+
 %prep
 %setup -q -n %{name}-%{version}-%{fedorassgrelease}
-
 
 %build
 cd Fedora && make dist
 
-
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/fedora/19
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/en/man8/
+mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/fedora
+mkdir -p %{buildroot}%{_mandir}/en/man8/
 
 # Add in core content (SCAP, guide)
-cp -a Fedora/dist/* $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/fedora/19
+cp -a Fedora/dist/* %{buildroot}%{_datadir}/xml/scap/ssg/fedora
 
 # Add in manpage
-gzip -c Fedora/input/auxiliary/scap-security-guide.8 > $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
-chcon -u system_u $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
+cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
 %files
-%defattr(-,root,root,-)
-%{_datadir}/xml/scap/ssg/fedora/19/*
-%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
+%{_datadir}/xml/scap/ssg/fedora/*
+%lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
+%doc Fedora/LICENSE
 
 %changelog
+* Tue Oct 15 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-3.rc1
+- Fixes for scap-security-guide Fedora RPM review request (RH BZ#1018905):
+  * drop Fedora release from package provided files' final path (c#5),
+  * drop BuildRoot, selected Requires:, clean section, drop chcon for
+    manual page, don't gzip man page (c#4),
+  * change package's description (c#4),
+  * include PD license text (#c4).
+
 * Mon Oct 14 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-2
 - Provide manual page for scap-security-guide
 - Remove percent sign from spec's changelog to silence rpmlint warning
