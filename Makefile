@@ -1,42 +1,35 @@
-VERSION := 0.1
-RELEASE := 12.el6
-PKGNAME := scap-security-guide
-PKG := $(PKGNAME)-$(VERSION)
+# Define RHEL6 / JBossEAP5 specific variables below
+ROOT_DIR ?= $(CURDIR)
+RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
+PKGNAME := $(shell sed -ne 's/Name:\t\t\(.*\)/\1/p' $(RPM_SPEC))
+VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(RPM_SPEC))
+REDHAT_SSG_RELEASE := $(shell sed -ne 's/^\(.*\)redhatssgrelease\t\(.*\)/\2/p' $(RPM_SPEC))
+REDHAT_DIST := $(shell rpm --eval '%{dist}')
+RELEASE := $(REDHAT_SSG_RELEASE)$(REDHAT_DIST)
+PKG := $(PKGNAME)-$(VERSION)-$(REDHAT_SSG_RELEASE)
 
 ARCH := noarch
-VENDOR := scap-security-guide
-PACKAGER := scap-security-guide
-
-ROOT_DIR ?= $(CURDIR)
-
-RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
-
 TARBALL = $(RPM_TOPDIR)/SOURCES/$(PKG).tar.gz
 
 RPM_DEPS := tarball $(RPM_SPEC) Makefile
-
 RPM_TMPDIR ?= $(ROOT_DIR)/rpmbuild
 RPM_TOPDIR ?= $(RPM_TMPDIR)/src/redhat
 RPM_BUILDROOT ?= $(RPM_TMPDIR)/rpm-buildroot
-
-
-MKDIR = test -d $(1) || mkdir -p $(1)
-
 RPMBUILD_ARGS := --define '_topdir $(RPM_TOPDIR)'  --define '_tmppath $(RPM_TMPDIR)'
 
 # Define Fedora specific variables below
 FEDORA_SPEC := $(ROOT_DIR)/Fedora/scap-security-guide.spec
 FEDORA_RPM_DEPS := $(FEDORA_SPEC) Makefile
-
 FEDORA_NAME := $(PKGNAME)
 FEDORA_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(FEDORA_SPEC))
 FEDORA_SSG_RELEASE := $(shell sed -ne 's/^\(.*\)\tfedorassgrelease\t\(.*\)/\2/p' $(FEDORA_SPEC))
-
 FEDORA_PKG := $(FEDORA_NAME)-$(FEDORA_VERSION)-$(FEDORA_SSG_RELEASE)
 FEDORA_TARBALL := $(RPM_TOPDIR)/SOURCES/$(FEDORA_PKG).tar.gz
 FEDORA_DIST := $(shell rpm --eval '%{dist}')
 
 # Define custom canned sequences / macros below
+
+MKDIR = test -d $(1) || mkdir -p $(1)
 
 define rpm-prep
 	$(call MKDIR,$(RPM_TMPDIR)/$(PKG))
@@ -117,8 +110,7 @@ zipfile:
 
 srpm: $(RPM_DEPS)
 	@echo "Building $(PKGNAME) SRPM..."
-	echo -e "%define arch $(ARCH)\n%define pkgname $(PKGNAME)\n%define _sysconfdir /etc\n%define version $(VERSION)\n%define release $(RELEASE)\n%define vendor $(VENDOR)\n%define packager $(PACKAGER)" > $(RPM_TOPDIR)/SPECS/$(notdir $(RPM_SPEC))
-	cat $(RPM_SPEC) >> $(RPM_TOPDIR)/SPECS/$(notdir $(RPM_SPEC))
+	cat $(RPM_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(RPM_SPEC))
 	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(RPM_SPEC)) --nodeps
 
 fedora-srpm: $(FEDORA_RPM_DEPS)
@@ -140,7 +132,7 @@ fedora-srpm: $(FEDORA_RPM_DEPS)
 
 rpm: srpm
 	 @echo "Building $(PKG) RPM..."
-	 cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)-$(RELEASE).src.rpm
+	 cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)$(REDHAT_DIST).src.rpm
 
 fedora-rpm: fedora-srpm
 	@echo "Building Fedora $(FEDORA_PKG) RPM package..."

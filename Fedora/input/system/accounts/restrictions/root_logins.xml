@@ -17,8 +17,10 @@ and <tt>/dev/tty*</tt> represent the system consoles (accessible via
 the Ctrl-Alt-F1 through Ctrl-Alt-F6 keyboard sequences on a default
 installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
 These are likely to be deprecated in most environments, but may be retained
-for compatibility. Root should also be prohibited from connecting
-via network protocols. Other sections of this document
+for compatibility. Furthermore, <tt>/dev/hvc*</tt> represent virtio-serial
+consoles, <tt>/dev/hvsi*</tt> IBM pSeries serial consoles, and finally
+<tt>/dev/xvc0</tt> Xen virtual console. Root should also be prohibited
+from connecting via network protocols. Other sections of this document
 include guidance describing how to prevent root from logging in via SSH.
 </description>
 
@@ -30,11 +32,11 @@ This file lists all devices the root user is allowed to login to. If the file do
 not exist at all, the root user can login through any communication device on the
 system, whether via the console or via a raw network interface. This is dangerous
 as user can login to his machine as root via Telnet, which sends the password in
-plain text over the network. By default, Red Hat Enteprise Linux's
-<tt>/etc/securetty</tt> file only allows the root user to login at the console
-physically attached to the machine. To prevent root from logging in, remove the
-contents of this file. To prevent direct root logins, remove the contents of this
-file by typing the following command:
+plain text over the network. By default, Fedora's <tt>/etc/securetty</tt> file
+only allows the root user to login at the console physically attached to the
+machine. To prevent root from logging in, remove the contents of this file.
+To prevent direct root logins, remove the contents of this file by typing the
+following command:
 <pre>
 echo > /etc/securetty
 </pre>
@@ -48,11 +50,10 @@ If any output is returned, this is a finding.
 <rationale>
 Disabling direct root logins ensures proper accountability and multifactor
 authentication to privileged accounts. Users will first login, then escalate
-to privileged (root) access via su / sudo. This is required for FISMA Low
-and FISMA Moderate systems.
+to privileged (root) access via su / sudo. This scenario is nowadays required
+by security standards.
 </rationale>
 <ref nist="IA-2(1)" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="securetty_root_login_console_only" severity="medium">
@@ -76,10 +77,8 @@ Preventing direct root login to virtual console devices
 helps ensure accountability for actions taken on the system
 using the root account.
 </rationale>
-<ident cce="26855-7" />
 <oval id="securetty_root_login_console_only" />
 <ref nist="AC-6(2)" disa="770" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="restrict_serial_port_logins">
@@ -101,12 +100,9 @@ Preventing direct root login to serial port interfaces
 helps ensure accountability for actions taken on the systems
 using the root account.
 </rationale>
-<ident cce="27047-0" />
 <oval id="restrict_serial_port_logins" />
 <ref nist="AC-6(2)" disa="770" />
-<tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="no_root_webbrowsing">
 <title>Restrict Web Browser Use for Administrative Accounts</title>
@@ -158,12 +154,9 @@ Do not perform the steps in this
 section on the root account. Doing so might cause the system to
 become inaccessible.
 </warning>
-<ident cce="26966-2" />
 <oval id="no_shelllogin_for_systemaccounts" />
 <ref nist="" disa="178" />
-<tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="no_uidzero_except_root" severity="medium">
 <title>Verify Only Root Has UID 0</title>
@@ -184,10 +177,8 @@ guess a password for a privileged account. Proper configuration of
 sudo is recommended to afford multiple system administrators
 access to root privileges in an accountable manner.
 </rationale>
-<ident cce="26971-2" />
 <oval id="accounts_no_uid_except_zero" />
 <ref nist="AC-6,IA-2(1)" disa="366" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="root_path_default">
@@ -210,7 +201,6 @@ other than a slash (/).
 The root account's executable search path must be the vendor default, and must
 contain only absolute paths.
 </rationale>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <!--
@@ -220,21 +210,21 @@ contain only absolute paths.
 <Rule id="root_path_no_wwdir">
 <title>Root Path Must Not Contain World-Writable Directories</title>
 <description>
-If a world-writable directory is found in the <tt>PATH</tt>, remove the 
+If a world-writable directory is found in the <tt>PATH</tt>, remove the
 world-writable permission for that directory with the following command:
 <pre># chmod o-w <i>/dir</i></pre>
 Alternately, remove the world-writable directory from the <tt>PATH</tt>.
 </description>
 <ocil clause="any world-writable directories are found">
-World-writable permissions on directories in root's path can be checked 
+World-writable permissions on directories in root's path can be checked
 with the following command:
 <pre># ls -ld 'echo $PATH | sed "s/:/ /g"'</pre>
 </ocil>
 <rationale>
-If the root search path contains a world-writable directory, malicious software 
+If the root search path contains a world-writable directory, malicious software
 could be placed in the path.
 </rationale>
 <ref disa="366" />
 </Rule> -->
-</Group>
 
+</Group>
