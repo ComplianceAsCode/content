@@ -5,7 +5,7 @@ UTILS = utils
 DIST = dist
 
 ID = ssg
-PROD = fedora19
+PROD = fedora
 
 all: shorthand2xccdf guide content dist
 
@@ -44,8 +44,7 @@ validate: validate-xml
 
 # items in dist are expected for distribution in an rpm
 dist: guide content
-	mkdir -p $(DIST)/guide $(DIST)/content
-	cp $(OUT)/*-guide.html $(DIST)/guide
+	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
@@ -56,4 +55,4 @@ eval-common: content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
-	rm -rf $(DIST)/content $(DIST)/guide
+	rm -rf $(DIST)/content

@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	3.rc1
+%global	fedorassgrelease	3.rc2
 
 Name:		scap-security-guide
 Version:	0.1
@@ -17,15 +17,19 @@ URL:		https://fedorahosted.org/scap-security-guide/
 Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}-%{fedorassgrelease}.tar.gz
 BuildArch:	noarch
 BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
-Requires:	openscap-utils >= 0.9.1
+Requires:	xml-common, openscap-utils >= 0.9.1
 
 %description
-The scap-security-guide project provides guide for configuration of the
-system from final system's security point of view. The guidance is specified
-in the Security Content Automation Protocol (SCAP) format and consitutes
-a catalog of practical hardening advice linked to government requirements
+The scap-security-guide project provides a guide for configuration of the
+system from the final system's security point of view. The guidance is specified
+in the Security Content Automation Protocol (SCAP) format and constitutes
+a catalog of practical hardening advice, linked to government requirements
 where applicable. The project bridges the gap between generalized policy
-requirements and specific implementation guidelines.
+requirements and specific implementation guidelines. The Fedora system
+administrator can use the oscap CLI tool from openscap-utils package, or the
+scap-workbench GUI tool from scap-workbench package to verify that the system
+conforms to provided guideline. Refer to scap-security-guide(8) manual page for
+further information.
 
 %prep
 %setup -q -n %{name}-%{version}-%{fedorassgrelease}
@@ -37,18 +41,28 @@ cd Fedora && make dist
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/fedora
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 
-# Add in core content (SCAP, guide)
-cp -a Fedora/dist/* %{buildroot}%{_datadir}/xml/scap/ssg/fedora
+# Add in core content (SCAP XCCDF and OVAL content)
+cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/fedora
 
 # Add in manpage
 cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
 %files
-%{_datadir}/xml/scap/ssg/fedora/*
+%{_datadir}/xml/scap
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
-%doc Fedora/LICENSE
+%doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Wed Oct 16 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-3.rc2
+- Apply further changes motivated by scap-security-guide Fedora RPM review
+  request (RH BZ#1018905, c#8):
+  * update package description,
+  * make content files to be owned by the scap-security-guide package,
+  * remove Fedora release number from generated content files,
+  * move HTML form of the guide under the doc directory (together
+    with that drop fedora/content subdir and place the content
+    directly under fedora/ subdir).
+
 * Tue Oct 15 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-3.rc1
 - Fixes for scap-security-guide Fedora RPM review request (RH BZ#1018905):
   * drop Fedora release from package provided files' final path (c#5),

@@ -14,7 +14,7 @@
 
 <xsl:include href="constants.xslt"/>
 
-<xsl:variable name="ovalfile">unlinked-fedora19-oval.xml</xsl:variable>
+<xsl:variable name="ovalfile">unlinked-fedora-oval.xml</xsl:variable>
 <xsl:variable name="defaultseverity" select="'low'" />
 
 <!-- put elements created in this stylesheet into the xccdf namespace,
