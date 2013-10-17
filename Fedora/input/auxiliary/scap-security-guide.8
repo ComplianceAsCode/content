@@ -39,15 +39,15 @@ common profile, run:
 $ oscap  xccdf eval --profile common \
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
---cpe /usr/share/xml/scap/ssg/fedora/content/ssg-fedora-cpe-dictionary.xml \
-/usr/share/xml/scap/ssg/fedora/content/ssg-fedora-xccdf.xml
+--cpe /usr/share/xml/scap/ssg/fedora/ssg-fedora-cpe-dictionary.xml \
+/usr/share/xml/scap/ssg/fedora/ssg-fedora-xccdf.xml
 
 To scan your system utilizing the scap-workbench systems compliance evaluation
 GUI tool against the common profile, run:
 
 $ scap-workbench
 
-tool, select /usr/share/xml/scap/ssg/fedora/content/ssg-fedora-xccdf.xml
+tool, select /usr/share/xml/scap/ssg/fedora/ssg-fedora-xccdf.xml
 as input file, and 'Common Profile for General-Purpose Fedora Systems' as the
 profile file.
 
@@ -57,7 +57,7 @@ https://fedorahosted.org/scap-security-guide/wiki/usageguide
 
 
 .SH FILES
-.I /usr/share/xml/scap/ssg/fedora/content/
+.I /usr/share/xml/scap/ssg/fedora/
 .RS
 Houses SCAP content utilizing the following naming conventions:
 
