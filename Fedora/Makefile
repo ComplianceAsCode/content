@@ -13,6 +13,7 @@ FEDORA_GUIDE_XML = fedora_guide.xml
 all: shorthand2xccdf guide content dist
 
 set-fedora-release:
+	mkdir -p $(OUT)
 #	obtain full Fedora release name and CPE from the system
 	$(TRANS)/genguidexslt.py $(OUT)/$(FEDORA_GUIDE_XSLT)
 #	update Fedora/input/guide.xml based on retrieved values
