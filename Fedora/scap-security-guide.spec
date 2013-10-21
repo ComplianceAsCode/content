@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	3.rc3
+%global	fedorassgrelease	3.rc4
 
 Name:		scap-security-guide
 Version:	0.1
@@ -53,6 +53,9 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Mon Oct 21 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-3.rc4
+- Set up Fedora release name and CPE based on build system properties
+
 * Thu Oct 17 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-3.rc3
 - Use correct file paths in scap-security-guide(8) manual page 
   (RH BZ#1018905, c#10)
