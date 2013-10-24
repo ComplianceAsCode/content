@@ -7,10 +7,19 @@ DIST = dist
 ID = ssg
 PROD = fedora
 
+FEDORA_GUIDE_XSLT = fedora_guide.xslt
+FEDORA_GUIDE_XML = fedora_guide.xml
+
 all: shorthand2xccdf guide content dist
 
-shorthand-guide:
-	xsltproc -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
+set-fedora-release:
+#	obtain full Fedora release name and CPE from the system
+	$(TRANS)/genguidexslt.py $(OUT)/$(FEDORA_GUIDE_XSLT)
+#	update Fedora/input/guide.xml based on retrieved values
+	xsltproc -o $(OUT)/$(FEDORA_GUIDE_XML) $(OUT)/$(FEDORA_GUIDE_XSLT) $(IN)/guide.xml
+
+shorthand-guide: set-fedora-release
+	xsltproc -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/$(FEDORA_GUIDE_XML)
 	xmllint --format --output $(OUT)/$(ID)-$(PROD)-shorthand.xml $(OUT)/$(ID)-$(PROD)-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
@@ -55,4 +64,5 @@ eval-common: content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
+	rm -f $(OUT)/$(FEDORA_GUIDE_XSLT)
 	rm -rf $(DIST)/content
