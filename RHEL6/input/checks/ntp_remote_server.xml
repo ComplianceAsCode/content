@@ -9,9 +9,7 @@
       specified (and dependencies are met)</description>
       <reference source="MED" ref_id="20130819" ref_url="test_attestation" />
     </metadata>
-    <criteria comment="ntpd is enabled and conditions are met" operator="AND">
-      <extend_definition comment="ntpd is enabled"
-      definition_ref="service_ntpd_enabled" />
+    <criteria comment="ntp.conf conditions are met">
       <criterion test_ref="test_ntp_remote_server" />
     </criteria>
   </definition>
