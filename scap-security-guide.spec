@@ -1,5 +1,5 @@
 
-%global		redhatssgrelease	14.rc1
+%global		redhatssgrelease	14
 
 Name:		scap-security-guide
 Version:	0.1
@@ -56,6 +56,13 @@ rm -rf $RPM_BUILD_ROOT
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 
 %changelog
+* Thu Oct 24 2013 Shawn Wells <shawn@redhat.com> 0.1-14
+- Formal RPM release
+- Inclusion of rht-ccp profile
+- OVAL unit testing patches
+- Bash remediation patches
+- Bugfixes
+
 * Mon Oct 07 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-14.rc1
 - Change RPM versioning scheme to include release into tarball
 
