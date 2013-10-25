@@ -1,5 +1,5 @@
 
-%global		redhatssgrelease	14
+%global		redhatssgrelease	15.rc2
 
 Name:		scap-security-guide
 Version:	0.1
@@ -12,19 +12,23 @@ License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
 
 Source0:	%{name}-%{version}-%{redhatssgrelease}.tar.gz
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildArch:	noarch
 
-BuildRequires:	coreutils, libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
-Requires:	filesystem, openscap-utils >= 0.9.1
+BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
+Requires:	xml-common, openscap-utils >= 0.9.1
 
 %description
-The scap-security-guide project provides security configuration guidance in
-formats of the Security Content Automation Protocol (SCAP).  It provides a
-catalog of practical hardening advice and links it to government requirements
-where applicable. The project bridges the gap between generalized policy
-requirements and specific implementation guidance.
+The scap-security-guide project provides a guide for configuration of the
+system from the final system's security point of view. The guidance is
+specified in the Security Content Automation Protocol (SCAP) format and
+constitutes a catalog of practical hardening advice, linked to government
+requirements where applicable. The project bridges the gap between generalized
+policy requirements and specific implementation guidelines. The Red Hat
+Enterprise Linux 6 system administrator can use the oscap command-line tool
+from the openscap-utils package to verify that the system conforms to provided
+guideline. Refer to scap-security-guide(8) manual page for further information.
+
 %prep
 %setup -q -n %{name}-%{version}-%{redhatssgrelease}
 
@@ -32,30 +36,31 @@ requirements and specific implementation guidance.
 cd RHEL6 && make dist
 
 %install
-rm -rf $RPM_BUILD_ROOT
-#make install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/en/man8/
+mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{content,policytables}
+mkdir -p %{buildroot}%{_mandir}/en/man8/
 
-# Add in core content (SCAP, guide, tables)
-cp -r RHEL6/dist/* $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/
-cp JBossEAP5/eap5-* $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/content/
-cp JBossEAP5/docs/JBossEAP5_Guide.html $RPM_BUILD_ROOT%{_datadir}/xml/scap/ssg/guide/
+# Add in core content (SCAP, tables)
+cp -a RHEL6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+cp -a RHEL6/dist/policytables/* %{buildroot}%{_datadir}/xml/scap/ssg/policytables/
+cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in manpage
-gzip -c RHEL6/input/auxiliary/scap-security-guide.8 > $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
+cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 makewhatis
-chcon -u system_u $RPM_BUILD_ROOT%{_mandir}/en/man8/scap-security-guide.8.gz
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root,-)
-%{_datadir}/xml/scap/ssg
+%{_datadir}/xml/scap
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
+%doc RHEL6/LICENSE RHEL6/output/rhel6-guide.html RHEL6/output/table-rhel6-cces.html RHEL6/output/table-rhel6-nistrefs-common.html RHEL6/output/table-rhel6-nistrefs.html RHEL6/output/table-rhel6-srgmap-flat.html RHEL6/output/table-rhel6-srgmap-flat.xhtml RHEL6/output/table-rhel6-srgmap.html RHEL6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc2
+- Updated file permissions of JBossEAP5/eap5-cpe-dictionary.xml (chmod -x) to resolve rpmlint errors
+- RHEL6 HTML table naming bugfixes (table-rhel6-*, not table-*-rhel6)
+
+* Fri Oct 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc1
+- Apply spec file changes required by review request (RH BZ#1018905)
+
 * Thu Oct 24 2013 Shawn Wells <shawn@redhat.com> 0.1-14
 - Formal RPM release
 - Inclusion of rht-ccp profile
