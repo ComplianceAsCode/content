@@ -1,5 +1,5 @@
 
-%global		redhatssgrelease	15.rc4
+%global		redhatssgrelease	15.rc5
 
 Name:		scap-security-guide
 Version:	0.1
@@ -11,7 +11,7 @@ Group:		System Environment/Base
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
 
-Source0:	%{name}-%{version}-%{redhatssgrelease}.tar.gz
+Source0:	http://repos.ssgproject.org/sources/%{name}-%{version}-%{redhatssgrelease}.tar.gz
 
 BuildArch:	noarch
 
@@ -52,6 +52,10 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 %doc RHEL6/LICENSE RHEL6/output/rhel6-guide.html RHEL6/output/table-rhel6-cces.html RHEL6/output/table-rhel6-nistrefs-common.html RHEL6/output/table-rhel6-nistrefs.html RHEL6/output/table-rhel6-srgmap-flat.html RHEL6/output/table-rhel6-srgmap-flat.xhtml RHEL6/output/table-rhel6-srgmap.html RHEL6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Sat Oct 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc5
+- Point the spec's source to proper remote tarball location
+- Modify the main Makefile to use remote tarball when building RHEL6's SRPM
+
 * Sat Oct 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc4
 - Don't include the table html files two times
 - Remove makewhatis

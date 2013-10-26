@@ -109,8 +109,18 @@ zipfile:
 	mv $(PKG)-$(RELEASE).zip $(RPM_TOPDIR)/ZIP/
 
 srpm: $(RPM_DEPS)
-	@echo "Building $(PKGNAME) SRPM..."
+	# Obtain the source from RedHat's spec file
+	$(eval SOURCE := $(shell sed -ne 's/Source0:\t\(.*\)/\1/p' $(RPM_SPEC)))
+	# Substitute %{name}, %{version}, and %{redhatssgrelease} with their actual values
+	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne "s/%{name}/$(PKGNAME)/p"))
+	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne "s/%{version}/$(VERSION)/p"))
+	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne "s/%{redhatssgrelease}/$(REDHAT_SSG_RELEASE)/p"))
+	# Download the tarball
+	@echo "Downloading the $(SOURCE) tarball..."
+	@wget -O $(TARBALL) $(SOURCE)
+	@echo "Copying the SPEC file to proper location..."
 	cat $(RPM_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(RPM_SPEC))
+	@echo "Building $(PKGNAME) SRPM..."
 	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(RPM_SPEC)) --nodeps
 
 fedora-srpm: $(FEDORA_RPM_DEPS)
@@ -123,9 +133,9 @@ fedora-srpm: $(FEDORA_RPM_DEPS)
 	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{version}/$(FEDORA_VERSION)/p"))
 	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{fedorassgrelease}/$(FEDORA_SSG_RELEASE)/p"))
 	# Download the tarball
-	@echo "Downloading the $(FEDORA_TARBALL) tarball..."
+	@echo "Downloading the $(FEDORA_SOURCE) tarball..."
 	@wget -O $(FEDORA_TARBALL) $(FEDORA_SOURCE)
-	@echo "Copying $(FEDORA_SPEC) file to proper location..."
+	@echo "Copying the SPEC file to proper location..."
 	cat $(FEDORA_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(FEDORA_SPEC))
 	@echo "Building Fedora source $(PKGNAME) RPM package..."
 	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(FEDORA_SPEC)) --nodeps
