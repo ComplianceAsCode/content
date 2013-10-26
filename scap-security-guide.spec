@@ -56,6 +56,8 @@ makewhatis
 %changelog
 * Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc3
 - [bugfix] Updated rsyslog_remote_loghost to scan /etc/rsyslog.conf and /etc/rsyslog.d/*
+- Numberous XCCDF->OVAL naming schema updates
+- All rules now have CCE
 
 * Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc2
 - Updated file permissions of JBossEAP5/eap5-cpe-dictionary.xml (chmod -x) to resolve rpmlint errors
