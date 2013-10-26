@@ -205,6 +205,7 @@
             <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
             <xsl:if test="partition-check-macro">no line is returned</xsl:if>
             <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
+            <xsl:if test="xinetd-service-disable-check-macro">the service is running</xsl:if>
             <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
             <xsl:if test="package-check-macro">the package is installed</xsl:if>
             <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
@@ -405,6 +406,17 @@
     If the service is disabled the command will return the following output:
     <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
   </xsl:template>
+
+  <xsl:template match="xinetd-service-disable-check-macro">
+      To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
+          <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
+              Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, or has been disabled, as shown in the example below:
+              <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
+<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       off</xhtml:pre>
+  </xsl:template>
+
+
+
 
   <xsl:template match="service-enable-check-macro">
     Run the following command to determine the current status of the
