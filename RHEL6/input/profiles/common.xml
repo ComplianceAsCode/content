@@ -224,7 +224,7 @@ these should likely be moved out of common.
 <!-- <select idref="uninstall_squid" selected="true"/> -->
 <!-- <select idref="disable_snmpd" selected="true"/> -->
 <!-- <select idref="uninstall_net-snmp" selected="true"/> -->
-<select idref="limiting_password_reuse" selected="true"/>
+<select idref="accounts_password_reuse_limit" selected="true"/>
 <!-- Refine Values -->
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <!-- daemon umask -->
@@ -250,7 +250,7 @@ these should likely be moved out of common.
 <!-- Minimum number of lower case in password -->
 <refine-value idref="var_password_pam_cracklib_difok" selector="3"/>
 <!-- Minimum number of characters not present in old password -->
-<refine-value idref="password_history_retain_number" selector="5"/>
+<refine-value idref="var_password_history_retain_limit" selector="5"/>
 <!-- Passwords to remember -->
 
 <refine-value idref="var_accounts_user_umask" selector="077"/>

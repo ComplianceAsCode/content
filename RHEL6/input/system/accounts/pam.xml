@@ -41,7 +41,7 @@ a series of system defaults. One reference to the configuration
 file syntax can be found at
 http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/sag-configuration-file.html.</warning>
 
-<Value id="password_history_retain_number" type="number"
+<Value id="var_password_history_retain_limit" type="number"
 operator="equals" interactive="0">
 <title>remember</title>
 <description>The last n passwords for each user are saved in
@@ -490,7 +490,7 @@ specific period of time prevents direct password guessing attacks.
 <ref nist="AC-7(a)" disa="1452" />
 </Rule>
 
-<Rule id="limiting_password_reuse" severity="medium">
+<Rule id="accounts_password_reuse_limit" severity="medium">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
@@ -508,7 +508,7 @@ The output should show the following at the end of the line:
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
 <ident cce="26741-9" />
-<oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
+<oval id="accounts_password_reuse_limit" value="var_password_history_retain_limit" />
 <ref nist="IA-5(f),IA-5(1)(e)" disa="200" />
 <tested by="DS" on="20121024"/>
 </Rule>
