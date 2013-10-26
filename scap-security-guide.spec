@@ -1,5 +1,5 @@
 
-%global		redhatssgrelease	15.rc2
+%global		redhatssgrelease	15.rc3
 
 Name:		scap-security-guide
 Version:	0.1
@@ -54,6 +54,9 @@ makewhatis
 %doc RHEL6/LICENSE RHEL6/output/rhel6-guide.html RHEL6/output/table-rhel6-cces.html RHEL6/output/table-rhel6-nistrefs-common.html RHEL6/output/table-rhel6-nistrefs.html RHEL6/output/table-rhel6-srgmap-flat.html RHEL6/output/table-rhel6-srgmap-flat.xhtml RHEL6/output/table-rhel6-srgmap.html RHEL6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc3
+- [bugfix] Updated rsyslog_remote_loghost to scan /etc/rsyslog.conf and /etc/rsyslog.d/*
+
 * Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc2
 - Updated file permissions of JBossEAP5/eap5-cpe-dictionary.xml (chmod -x) to resolve rpmlint errors
 - RHEL6 HTML table naming bugfixes (table-rhel6-*, not table-*-rhel6)
