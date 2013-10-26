@@ -114,13 +114,12 @@ eval-common:
 
 # items in dist are expected for distribution in an rpm
 dist: tables guide content
-	mkdir -p $(DIST)/content $(DIST)/policytables
+	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-oval.xml $(DIST)/content
-	cp $(OUT)/table-rhel6-* $(DIST)/policytables
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
-	rm -rf $(DIST)/content $(DIST)/policytables
+	rm -rf $(DIST)/content
