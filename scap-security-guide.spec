@@ -1,5 +1,5 @@
 
-%global		redhatssgrelease	15.rc3
+%global		redhatssgrelease	15.rc4
 
 Name:		scap-security-guide
 Version:	0.1
@@ -36,17 +36,15 @@ guideline. Refer to scap-security-guide(8) manual page for further information.
 cd RHEL6 && make dist
 
 %install
-mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{content,policytables}
+mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 
-# Add in core content (SCAP, tables)
+# Add in core content (SCAP)
 cp -a RHEL6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-cp -a RHEL6/dist/policytables/* %{buildroot}%{_datadir}/xml/scap/ssg/policytables/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in manpage
 cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
-makewhatis
 
 %files
 %{_datadir}/xml/scap
@@ -54,6 +52,10 @@ makewhatis
 %doc RHEL6/LICENSE RHEL6/output/rhel6-guide.html RHEL6/output/table-rhel6-cces.html RHEL6/output/table-rhel6-nistrefs-common.html RHEL6/output/table-rhel6-nistrefs.html RHEL6/output/table-rhel6-srgmap-flat.html RHEL6/output/table-rhel6-srgmap-flat.xhtml RHEL6/output/table-rhel6-srgmap.html RHEL6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Sat Oct 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc4
+- Don't include the table html files two times
+- Remove makewhatis
+
 * Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc3
 - [bugfix] Updated rsyslog_remote_loghost to scan /etc/rsyslog.conf and /etc/rsyslog.d/*
 - Numberous XCCDF->OVAL naming schema updates
