@@ -44,7 +44,7 @@ critical for system security.</rationale>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="perms_shadow_file" severity="medium">
+<Rule id="file_permissions_etc_shadow" severity="medium">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
 <description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
 <ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
