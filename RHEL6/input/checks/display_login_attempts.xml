@@ -6,6 +6,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Configure the system to notify users of last logon/access using pam_lastlog.</description>
+      <reference source="swells" ref_id="20131025" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion comment="Conditions for pam_lastlog are satisfied" test_ref="test_display_login_attempts" />
@@ -17,8 +18,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_display_login_attempts" version="1">
-    <ind:path>/etc/pam.d</ind:path>
-    <ind:filename>system-auth</ind:filename>
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
     <ind:pattern operation="pattern match">^\s*session\s+(required|requisite)?\s+pam_lastlog.so[\s\w\d\=]+showfailed</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>

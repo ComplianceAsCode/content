@@ -27,7 +27,7 @@ critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
 <ident cce="26947-2" />
-<oval id="file_owner_etc_shadow" />
+<oval id="userowner_shadow_file" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
@@ -39,12 +39,12 @@ which could weaken the system security posture.</rationale>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
 <ident cce="26967-0" />
-<oval id="file_groupowner_etc_shadow" />
+<oval id="groupowner_shadow_file" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="perms_shadow_file" severity="medium">
+<Rule id="file_permissions_etc_shadow" severity="medium">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
 <description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
 <ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
@@ -214,6 +214,7 @@ run the following command for each directory <i>DIR</i> which contains shared li
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Restrictive permissions are necessary to protect the integrity of the system.
 </rationale>
+<ident cce="27381-3"/>
 <ref nist="AC-6" disa="1499"/>
 <tested by="DS" on="20121026"/>
 <oval id="file_permissions_library_dirs" />
@@ -252,6 +253,7 @@ owned by root:
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Proper ownership is necessary to protect the integrity of the system.
 </rationale>
+<ident cce="27424-1"/>
 <ref nist="AC-6" disa="1499"/>
 <oval id="file_ownership_library_dirs" />
 <tested by="swells" on="20130914"/>
@@ -290,6 +292,7 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure execution of these programs
 cannot be co-opted.
 </rationale>
+<ident cce="27289-8"/>
 <ref nist="AC-6" disa="1499"/>
 <oval id="file_permissions_binary_dirs" />
 </Rule>
@@ -326,9 +329,9 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
 </rationale>
+<ident cce="27623-8"/>
 <ref nist="AC-6" disa="1499"/>
 </Rule>
-
 
 </Group>
 
