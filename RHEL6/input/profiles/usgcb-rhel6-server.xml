@@ -36,7 +36,7 @@
 <select idref="perms_gshadow_file" selected="true" /> <!-- RHEL5 had this as chmod 400, RHEL6 as 0000 -->
 <select idref="userowner_gshadow_file" selected="true" />
 <select idref="groupowner_gshadow_file" selected="true" />
-<select idref="perms_shadow_file" selected="true" /> <!-- RHEL5 as 400, RHEL6 as 000 -->
+<select idref="file_permissions_etc_shadow" selected="true" /> <!-- RHEL5 as 400, RHEL6 as 000 -->
 <select idref="userowner_shadow_file" selected="true" />
 <select idref="groupowner_shadow_file" selected="true" />
 <select idref="perms_group_file" selected="true" /> 
@@ -86,8 +86,8 @@
 <select idref="deny_password_attempts" selected="true" />
 <select idref="set_password_hashing_algorithm_systemauth" selected="true" />
 <select idref="set_password_hashing_algorithm_logindefs" selected="true" />
-<refine-value idref="password_history_retain_number" selector="24" />
-<select idref="limiting_password_reuse" selected="true" />
+<refine-value idref="var_password_history_retain_limit" selector="24" />
+<select idref="accounts_password_reuse_limit" selected="true" />
 <select idref="root_path_no_dot" selected="true" />
 <select idref="root_path_no_groupother_writable" selected="true" />
 <select idref="homedir_perms_no_groupwrite_worldread" selected="true" />

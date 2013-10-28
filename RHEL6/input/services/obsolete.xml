@@ -77,7 +77,7 @@ actively working to migrate to a more secure protocol.</description>
 <description>
 <service-disable-macro service="telnet" />
 </description>
-<ocil><service-disable-check-macro service="telnet" /></ocil>
+<ocil><xinetd-service-disable-check-macro service="telnet" /></ocil>
 <rationale>
 The telnet protocol uses unencrypted network communication, which
 means that data from the login session, including passwords and
@@ -139,7 +139,7 @@ the <tt>rsh-server</tt> package and runs as a service through xinetd,
 should be disabled.
 <service-disable-macro service="rexec" />
 </description> 
-<ocil><service-disable-check-macro service="rexec" /></ocil>
+<ocil><xinetd-service-disable-check-macro service="rexec" /></ocil>
 <rationale>The rexec service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -158,7 +158,7 @@ the <tt>rsh-server</tt> package and runs as a service through xinetd,
 should be disabled.
 <service-disable-macro service="rsh" />
 </description> 
-<ocil><service-disable-check-macro service="rsh" /></ocil>
+<ocil><xinetd-service-disable-check-macro service="rsh" /></ocil>
 <rationale>The rsh service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -177,7 +177,7 @@ the <tt>rsh-server</tt> package and runs as a service through xinetd,
 should be disabled.
 <service-disable-macro service="rlogin" />
 </description> 
-<ocil><service-disable-check-macro service="rlogin" /></ocil>
+<ocil><xinetd-service-disable-check-macro service="rlogin" /></ocil>
 <rationale>The rlogin service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be

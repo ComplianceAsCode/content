@@ -41,7 +41,7 @@ a series of system defaults. One reference to the configuration
 file syntax can be found at
 http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/sag-configuration-file.html.</warning>
 
-<Value id="password_history_retain_number" type="number"
+<Value id="var_password_history_retain_limit" type="number"
 operator="equals" interactive="0">
 <title>remember</title>
 <description>The last n passwords for each user are saved in
@@ -421,7 +421,7 @@ To configure the system to lock out accounts after a number of incorrect login
 attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
-<tt>/etc/pam.d/system-auth</tt>:
+both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
 <pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
 <pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
 </description>
@@ -465,13 +465,14 @@ situations.
 <ref nist="AC-7(b)" disa="47" />
 </Rule>
 
-<Rule id="deny_password_attempts_fail_interval" severity="medium">
+<Rule id="accounts_passwords_pam_fail_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
-To configure the system to lock out accounts after a number of incorrect login
-attempts within a 15 minute interval using <tt>pam_faillock.so</tt>:
+Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
+attempts.
 <br /><br />
-Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
+Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
+<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
 <pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
 <pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
 </description>
@@ -489,7 +490,7 @@ specific period of time prevents direct password guessing attacks.
 <ref nist="AC-7(a)" disa="1452" />
 </Rule>
 
-<Rule id="limiting_password_reuse" severity="medium">
+<Rule id="accounts_password_reuse_limit" severity="medium">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
@@ -507,7 +508,7 @@ The output should show the following at the end of the line:
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
 <ident cce="26741-9" />
-<oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
+<oval id="accounts_password_reuse_limit" value="var_password_history_retain_limit" />
 <ref nist="IA-5(f),IA-5(1)(e)" disa="200" />
 <tested by="DS" on="20121024"/>
 </Rule>

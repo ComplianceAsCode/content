@@ -73,7 +73,7 @@ table-stigs: shorthand2xccdf table-srgmap checks
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
 		$(TRANS)/xccdf-apply-overlay-stig.xslt \
 		$(OUT)/unlinked-rhel6-xccdf.xml
-	xsltproc -o $(OUT)/table-stig-rhel6.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml  
+	xsltproc -o $(OUT)/table-rhel6-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml  
 
 tables: table-refs table-idents table-srgmap table-stigs
 
@@ -114,14 +114,12 @@ eval-common:
 
 # items in dist are expected for distribution in an rpm
 dist: tables guide content
-	mkdir -p $(DIST)/guide $(DIST)/content $(DIST)/policytables
-	cp $(OUT)/*-guide.html $(DIST)/guide
+	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-oval.xml $(DIST)/content
-	cp $(OUT)/table-rhel6-* $(DIST)/policytables
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
-	rm -rf $(DIST)/content $(DIST)/policytables $(DIST)/guide
+	rm -rf $(DIST)/content

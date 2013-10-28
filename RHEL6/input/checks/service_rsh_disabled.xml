@@ -6,6 +6,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The rsh service should be disabled if possible.</description>
+      <reference source="DS" ref_id="20131018" ref_url="test_attestation" />
     </metadata>
     <criteria comment="package rsh-server removed or service rsh is not configured to start" operator="OR">
       <extend_definition comment="rpm package rsh-server removed" definition_ref="package_rsh-server_removed" />
