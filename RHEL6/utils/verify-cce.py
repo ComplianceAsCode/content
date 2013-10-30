@@ -43,6 +43,8 @@ for rule in tree.findall("//{%s}Rule" % xccdf_ns):
 	items = rule.findall("{%s}ident[@system='http://cce.mitre.org']" % xccdf_ns)
 	if len(items) > 1:
 		print "Rule with multiple CCEs assigned: %s" % rule.get("id")
+	if len(items) == 0:
+		print "Rule without  CCE: %s" % rule.get("id")
 	for item in items:
 		if item.text not in granted_ids:
 			print "Invalid CCE: %s in %s" % (item.text, rule.get("id"))

@@ -218,6 +218,7 @@ or if you have only one nameserver, it may be possible to use an external
 configuration management mechanism to distribute zone updates. In that case, it
 is not necessary to allow zone transfers within BIND itself, so they should be
 disabled to avoid the potential for abuse.</rationale>
+<ident cce="27528-9" />
 </Rule>
 
 <Rule id="dns_server_authenticate_zone_transfers">
@@ -273,6 +274,7 @@ obtained and inserted into named.conf on the primary and secondary servers, the
 key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 .private are no longer needed, and may safely be deleted.</warning>
 <ref nist="CM-7" />
+<ident cce="27496-9" />
 </Rule>
 
 <Rule id="dns_server_disable_dynamic_updates">
