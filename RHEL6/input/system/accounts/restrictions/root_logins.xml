@@ -51,6 +51,7 @@ authentication to privileged accounts. Users will first login, then escalate
 to privileged (root) access via su / sudo. This is required for FISMA Low
 and FISMA Moderate systems.
 </rationale>
+<ident cce="26891-2" />
 <ref nist="IA-2(1)" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -123,6 +124,7 @@ If a browser vulnerability is exploited while running with administrative privil
 the entire system could be compromised. Specific exceptions for local service
 administration should be documented in site-defined policy.
 </rationale>
+<ident cce="26795-5" />
 </Rule>
 
 <Rule id="no_shelllogin_for_systemaccounts" severity="medium">
@@ -210,6 +212,7 @@ other than a slash (/).
 The root account's executable search path must be the vendor default, and must
 contain only absolute paths.
 </rationale>
+<ident cce="27125-4" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
