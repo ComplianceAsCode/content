@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "User_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-User_Guide-Scanning">
+	<title>Running a Scan</title>
+	<section id="sect-User_Guide-Scanning-Profiles">
+		<title>Available Profiles</title>
+		<para>SCAP Security Guide content is broken into groupings of security settings that
+			correlate to a known policy. These groupings are named XCCDF Profiles, which not only
+			reflect a grouping of security controls, but also any variable tailoring (e.g. password
+			length customization). Available profiles are: </para>
+		<important>
+			<title>Important</title>
+			<para>The SCAP Security Guide serves as the <emphasis role="italic"><emphasis
+						role="underline">upstream</emphasis></emphasis> development community for
+				many government baselines. Due to upstream/downstream development relationships, SSG
+				content will likely be ahead of officially released government baselines. If you
+				require scrict conformance against published baselines, always refer to the issuers
+				website for current content.</para>
+		</important>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para><emphasis role="bold"><emphasis role="underline">stig-rhel6-server
+							</emphasis></emphasis></para>
+					<para>The Security Technical Implimentation Guides (STIGs) and the NSA SNAC
+						Guides are the configuration standards for U.S. Department of Defense
+						Information Assurance and Information Assurance-Enabled devices/systems.
+						Since 1998, DISA Field Security Operations (DISA FSO) has played a critical
+						role enhancing the security posture of DoD's security systems by providing
+						the Security Technical Implimentation Guides. This profile was created as a
+						collaboration effort between the National Security Agency, DISA FSO, and Red
+						Hat, to form an upstream development community around the Red Hat Enterprise
+						Linux 6 STIG. </para>
+				</listitem>
+				<listitem>
+					<para><emphasis role="bold"><emphasis role="underline"
+								>usgcb-rhel6-server</emphasis></emphasis></para>
+					<para>The purpose of the United States Government Configuration Baseline (USGCB)
+						initiative is to create security configuration baselines for Information
+						Technology products widely deployed across federal agencies. The USGCB
+						baseline evolved from the Federal Desktop Core Configuration mandate. The
+						USGCH is a Federal government-wide initiative that provides guidance to
+						agencies on what should be done to improve and maintain an effective
+						configuration settings focusing primarily on security.</para>
+				</listitem>
+				<listitem>
+					<para><emphasis role="bold"><emphasis role="underline"
+							>rht-ccp</emphasis></emphasis></para>
+					<para>The Red Hat Certified Cloud Provider (CCP) program ensures that public
+						cloud providers meet "testing and certification requirements to demonstrate
+						that they can deliver a safe, scalable, supported and consistent environment
+						for enterprise cloud deployments. The Red Hat Certified Cloud Provider
+						program provides customers, ISVs, and partners with the confidence that Red
+						Hat product experts have validated the solution so that implimentations
+						begin with a solid foundation" In order to establish an automated security
+						testing process, Red Hat is exploring the use of SCAP profiles to evaluate
+						RHEL baselines/AMIs before public cloud providers release them to their
+						customer sets. <emphasis role="underline">This does not reflect a statement
+							of direction for Red Hat, but rather transparency as Red Hat evaluates
+							best practices to evaluate the security posture of public cloud
+							images.</emphasis></para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para> </para>
+	</section>
+	<section id="sect-User_Guide-Scanning-OpenSCAP">
+		<title>Command Line Interface (CLI)</title>
+		<para>This document outlines the usage of OpenSCAP, a command-line utility packaged within
+			Fedora and RHEL which allows users to load, scan, validate, edit, and export SCAP
+			documents. Additional details regarding OpenSCAP can be found on the project homepage
+			located at <ulink url="http://open-scap.org/">http://open-scap.org/</ulink>.</para>
+		<para>Five arguments to OpenSCAP are needed to perform a system scan against the upstream
+			DISA STIG profile:</para>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>--profile</para>
+					<para>Mandatory, identifies which profile to scan against</para>
+				</listitem>
+				<listitem>
+					<para>--results</para>
+					<para>Optional, indicates location to place XML formatted results</para>
+				</listitem>
+				<listitem>
+					<para>--report</para>
+					<para>Optional, indicates location to place HTML formatted results</para>
+				</listitem>
+				<listitem>
+					<para>--cpe</para>
+					<para>Mandatory, identifies location of CPE dictionary</para>
+				</listitem>
+				<listitem>
+					<para><emphasis role="italic">xccdf location</emphasis></para>
+					<para>Mandatory, identifies location of XCCDF file</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>Putting these arguments together, a properly formatted command would be:
+			<programlisting>$ sudo oscap xccdf eval --profile stig-rhel6-server \
+--results /root/ssg-results.xml \
+--report /root/ssg-report.xml \
+--cpe /usr/share/xml/scap/ssg/ssg-rhel6-cpe-dictionary.xml \
+/usr/share/xml/scap/ssg/ssg-rhel6-xccdf.xml</programlisting>
+		</para>
+	</section>
+	<section id="sect-User_Guide-Scanning-Results">
+		<title>Result Interpretation</title>
+		<para>
+			<variablelist>
+				<varlistentry>
+					<term>HTML Results</term>
+					<listitem>
+						<para>asdasdasd</para>
+						<para>asdasd</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>XML Results</term>
+					<listitem>
+						<para>asdasdasd</para>
+						<para>asdasd</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+	</section>
+	<section id="sect-User_Guide-Scanning-Remediation">
+		<title>Remediation</title>
+		<para> SCAP Security Guide embeds bash remediation scripts into the SCAP content. This
+			allows for SCAP compatible tools to extract these remediation scripts to aide in
+			potential remediation of system misconfigurations. </para>
+		<para>OpenSCAP, the CLI delivered with Fedora and RHEL systems, contains the ability to transform
+			XML results into an executable script. The syntax to generate a remediation script
+			is:</para>
+		<para><programlisting>$ oscap xccdf generate fix \
+--result-id xccdf_org.open-scap_testresult_<?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>{profile-name}<?oxy_custom_end?> \
+/root/ssg-results.xml</programlisting></para>
+		<para>Replace
+			<?oxy_custom_start type="oxy_content_highlight" color="255,255,0"?>{profile-name}<?oxy_custom_end?>
+			with the profile the system was scanned against. For example, for
+			stig-rhel6-server:</para>
+		<para><programlisting>$ oscap xccdf generate fix \
+--result-id xccdf_org.open-scap_testresult_stig-rhel6-server \
+/root/ssg-results.xml</programlisting></para>
+		<para>You will receive output similar to the following:</para>
+		<para><programlisting>$ oscap xccdf generate fix \
+--result-id xccdf_org.open-scap_testresult_stig-rhel6-server \
+/root/ssg-results.xml
+
+#!/bin/bash
+# OpenSCAP fix generator output for benchmark: DRAFT Guide
+# to the Secure Configuration of Red Hat Enterprise Linux 6
+
+# XCCDF rule: set_sysctl_net_ipv4_conf_default_rp_filter
+# CCE-26915-9
+#
+# Set runtime for net.ipv4.conf.default.rp_filter
+#
+sysctl -q -n -w net.ipv4.conf.default.rp_filter=1
+
+#
+# If net.ipv4.conf.default.rp_filter present in
+# /etc/sysctl.conf, change value to "1"
+# else, add "net.ipv4.conf.default.rp_filter = 1" to /etc/sysctl.conf
+#
+if grep --silent ^net.ipv4.conf.default.rp_filter /etc/sysctl.conf ; then sed -i \ 
+ 's/^net.ipv4.conf.default.rp_filter.*/net.ipv4.conf.default.rp_filter \
+ = 1/g' /etc/sysctl.conf
+else
+echo "" >> /etc/sysctl.conf
+echo "# Set net.ipv4.conf.default.rp_filter to 1 per \
+ security requirements" >> /etc/sysctl.conf
+echo "net.ipv4.conf.default.rp_filter = 1" >> /etc/sysctl.conf
+fi
+
+# XCCDF rule: uninstall_xinetd
+# CCE-27005-8
+if rpm -qa | grep -q xinetd; then
+yum -y remove xinetd
+fi
+
+# generated: 2013-07-05T13:56:30-04:00
+# END OF SCRIPT		
+		
+		</programlisting></para>
+		<para>This output could be redirected to a bash script, or built into your RHEL6
+			provisioning process (e.g. the %post section of a kickstart).</para>
+	</section>
+</chapter>
