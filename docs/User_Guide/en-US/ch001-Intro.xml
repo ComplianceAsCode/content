@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "User_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-User_Guide-Intro">
+	<title>Introduction to SSG </title>
+	<section id="sect-User_Guide-Intro-Proj_History">
+		<title>Project Description</title>
+		<para> The SCAP Security Guide (SSG) project delivers security guidance, baselines and associated
+            validation mechanisms utilizing the Security Content Automation Protocol (SCAP). SSG
+            currently provides content for Red Hat Enterprise Linux 6 (RHEL6) and JBoss Enterprise
+            Application Server 5 (JBoss EAP5).</para>
+        <para>In addition to hardening advice, SSG links back to compliance requirements in order to
+            eease deployment activities, such as certification and accreditation. These include
+            requirements in the U.S. Government (Federal, Defense, and Intelligence Community) as
+            well as of the financial services and health care industries. For example, high-level
+            and widely-accepted policies such as NIST 80-53 provide prose stating that System
+            Administrators must audit "privileged user actions," but do not define what "privileged
+            actions" are. The SSG bridges the gap between generalized policy requirements and
+            specific implementation guidance, in SCAP formats to support automation whenever
+            possible.</para>
+        <para>The project homepage is <ulink url="https://fedorahosted.org/scap-security-guide/"
+                >https://fedorahosted.org/scap-security-guide/</ulink>.</para>
+	</section>
+	
+	<section id="sect-User_Guide-Intro-Collaboration">
+		<title>Government/Industry Collaboration</title>
+       <informaltable frame='none'>
+            <tgroup cols='2'>
+                <colspec colnum="1" colname="c_logos" colwidth="1*"/>
+                <colspec colnum="2" colname="c_text" colwidth="1.3*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                            <inlinegraphic fileref="images/logos-400x400-nsa-300x300.jpg"/>
+                        </entry>
+                        <entry> The <ulink url="http://www.nsa.gov/">National Security
+                                Agency</ulink>'s <ulink url="https://www.iad.gov/iad/index.cfm"
+                                >Information Assurance Directorate</ulink> (NSA IAD) is
+                            presidentially mandated to protect Confidential, Secret and Top Secret
+                            information that could reasonably be expected to cause damage to U.S.
+                            National Security. As part of this mission, NSA develops and distributes
+                            configuration guidance for operating systems. These guides are currently
+                            being used throughout the U.S. government and by numerous entities as a
+                            security baseline for their systems. The SCAP Security Guide project
+                            serves as NSA's upstream source for <ulink
+                                url="http://www.nsa.gov/ia/mitigation_guidance/security_configuration_guides/operating_systems.shtml#linux2"
+                                >Red Hat Enterprise Linux operating system guidance</ulink>. </entry>
+                    </row>
+                    <row><entry><inlinegraphic fileref="images/logos-400x400-disa-300x300.jpg"
+                            /></entry><entry>The <ulink
+                                url="http://www.disa.mil/About/Our-Organization-Structure/OD-Field-Office/Field-Security-Operations"
+                                >U.S. Defense Information Systems Agency, Field Security
+                                Operations</ulink> (DISA FSO) authors hardening guidance known as
+                            Security Technical Implementation Guides (<ulink
+                                url="http://iase.disa.mil/stigs/index.html">STIGs</ulink>). These
+                            documents, used throughout the U.S. Military to harden systems,
+                            establish formal security compliance baselines. The SCAP Security Guide
+                            project serves as the usptream development source for <ulink
+                                url="http://iase.disa.mil/stigs/os/unix/red_hat.html">Red Hat STIG
+                                content</ulink> and helps DISA FSO move towards their business
+                            objective of utilizing SCAP-based formates to automate security
+                            compliance across U.S. Military organizations.</entry></row>
+                    <row>
+                        <entry><inlinegraphic
+                                fileref="images/logos-400x400-nist-300x300.jpg"/></entry>
+                        <entry>NIST publishes 'National Checklists' for software, which <ulink
+                                url="http://web.nvd.nist.gov/view/ncp/repository">as defined
+                            directly by NIST</ulink>:
+                            <para><quote>The National Checklist Program (NCP),
+                                defined by the <ulink
+                                    url="http://csrc.nist.gov/publications/PubsSPs.html#SP-800-70-Rev.%202"
+                                    >NIST SP 800-70 Rev. 2</ulink>, is the U.S. Government
+                                repositiory of publicly available securiyy checklists (or
+                                benchmarks) that provide detailed low level guidance on setting the
+                                security configuration of operating systems and applications. NCP is
+                                migrating its repository of checklists to conform to the Security
+                                Content Automation Protocol (SCAP).</quote></para>
+                            <para>The SCAP Security
+                                Guide project serves as the upstream repository for Red Hat related
+                                checklists, such as the <ulink
+                                    url="http://web.nvd.nist.gov/view/ncp/repository/checklistDetail?id=430"
+                                    >JBoss Enterprise Application Platform 5 (JBoss EAP5)</ulink>
+                                baseline.</para></entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </informaltable>
+	</section>
+
+</chapter>
+

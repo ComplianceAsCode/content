@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "User_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-User_Guide-Downloading">
+	<title>Downloading</title>
+	<para>
+		This is a test paragraph
+	</para>
+	<section id="sect-User_Guide-Downloading-EPEL">
+		<title>EPEL (yum) Repositories</title>
+		<itemizedlist mark='bullet'>
+			<listitem>
+				<formalpara><title>Red Hat Enterprise Linux 6 (RHEL6)</title>
+				<para>If you are running RHEL6, you will need to enable the Extra Packages for Enterprise Linux
+						(EPEL) repository. EPEL can be enabled by installing the epel-release RPM,
+						which contains the repository GPG key as well as configuration for yum. The
+						EPEL repository RPMs can be found at <ulink
+							url="http://download.fedoraproject.org/pub/epel/6/i386/repoview/epel-release.html"
+							>http://download.fedoraproject.org/pub/epel/6/i386/repoview/epel-release.html</ulink></para></formalpara>
+				<para>Once EPEL is enabled, SCAP Security Guide can be installed via yum:
+				<programlisting>$ sudo yum install scap-security-guide</programlisting></para>
+			</listitem>
+			<listitem>
+				<formalpara><title>Fedora 19+</title>
+				<para>SCAP Security Guide is shipped natively in Fedora 19+ and can
+				be installed via yum:
+				<programlisting>$ sudo yum install scap-security-guide</programlisting></para>
+				</formalpara>
+			</listitem>
+		</itemizedlist>
+	</section>
+	
+	<section id="sect-User_Guide-Downloading-Source">
+		<title>Source Code</title>
+		<orderedlist>
+			<listitem>
+				<para>On RHEL and Fedora make sure the packages 'openscap-utils' and 'python-lxml'
+and their dependencies are installed. As the project contains OVAL 5.8 content we require version
+0.8 or later of openscap-utils (available in RHEL 6.2+). Additionally, if not present, git
+must be installed. 
+<programlisting>$ sudo yum install git openscap-utils python-lxml</programlisting></para>
+			</listitem>
+			<listitem>
+				<para>Download our source code:
+<programlisting>$ git clone git://git.fedorahosted.org/git/scap-security-guide.git</programlisting></para>
+			</listitem>
+			<listitem>
+				<para>'make' the SSG
+<programlisting>$ cd scap-security-guide
+$ make
+$ cd output</programlisting></para>
+			</listitem>
+		</orderedlist>
+
+		<para>Discover the following:
+		<itemizedlist mark='bullet'>
+			<listitem><para>A pretty prose guide in RHEL6/output/rhel6-guide.html containing practical, 
+actionable information for administrators</para></listitem>
+			<listitem><para>A concise spreadsheet representation (potentially useful as the bases 
+for an SRTM document) in RHEL6/output/rhel6-table-nistrefs-server.html</para></listitem>
+			<listitem><para>Files that can be ingested by SCAP-compatible scanning tools, to enable automated checking:</para>
+	<para>
+						<itemizedlist>
+							<listitem>
+								<para>RHEL6/output/rhel6-xccdf-scap-security-guide.xml</para>
+							</listitem>
+							<listitem>
+								<para>RHEL6/output/rhel6-oval-scap-security-guide.xml</para>
+							</listitem>
+							<listitem>
+								<para>JBossEAP5/eap5-xccdf.xml</para>
+							</listitem>
+						</itemizedlist>
+					</para>
+			</listitem>
+		</itemizedlist>
+		</para>
+	</section>
+
+</chapter>
+
