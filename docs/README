@@ -2,4 +2,30 @@ The SSG documentation system uses Publican:
 https://fedorahosted.org/publican/
 
 To build the documentation on Fedora18+ or
-RHEL6+ one must `yum install publican`
+RHEL6+ one must `yum install publican` before
+running the Make.
+
+
+TO PUSH TO docs.ssgproject.org:
+(1) You must have git commit rights to the
+openshift cartridge. Currently Shawn Wells
+and Jan Lieskovsky have access.
+
+(2) git clone docs.ssgproject.org:
+
+$ mkdir -p ~/projects/ssg/
+$ git clone ssh://5275afbee0b8cd756b00003f@docs-ssgproject.rhcloud.com/~/git/docs.git/
+
+(3) Make the docs
+$ cd scap-security-guide/docs/
+$ make
+
+(4) Copy html/* into gear
+$ cp -R html/* ~/projects/ssg/docs/src/main/webapp/
+
+(5) Commit changes against docs.ssgproject.org
+$ cd ~/projects/ssg/docs/src/main/webapp
+$ git commit -a
+$ git push
+
+At some point this will be automated via Jenkins
