@@ -28,8 +28,8 @@
 		  <Group id="{$overlay_id}">
 		    <title>SRG-OS-ID</title>
 		    <description></description>
-            <Rule id="{$overlay_id}_rule" severity="{$overlay_severity}" >
-			<version><value-of select="$overlay_id"/></version>
+            <Rule id="{$overlay_rule}" severity="{$overlay_severity}" >
+			<version><xsl:value-of select="$overlay_id"/></version>
           	<title><xsl:value-of select="$overlay_title"/></title>
           	<description><xsl:copy-of select="xccdf:rationale/node()" /></description>
           	<check system="C-{$overlay_id}_chk">
