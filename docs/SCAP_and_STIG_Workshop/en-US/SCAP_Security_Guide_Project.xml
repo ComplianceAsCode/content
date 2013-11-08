@@ -3,31 +3,64 @@
 <!ENTITY % BOOK_ENTITIES SYSTEM "en-US/SCAP_and_STIG_Workshop.ent">
 %BOOK_ENTITIES;
 ]>
-<chapter id="chap-Documentation-SCAP_and_STIG_Workshop-Test_Chapter">
-	<title>Test Chapter</title>
+<chapter id="chap-Documentation-SCAP_and_STIG_Workshop-SCAP_Security_Guide_Project">
+	<title>SCAP Security Guide Project</title>
 	<para>
-		This is a test paragraph
+		The <firstterm>SCAP Security Guide</firstterm> (SSG) Project delivers security guidance, baselines, and associated validation mechanisms using the <firstterm>Security Content Automation Protocol</firstterm> (SCAP). We currently provide content for <firstterm>Red Hat Enterprise Linux 6</firstterm> (RHEL6) and <firstterm>JBoss Enterprise Application Server 5</firstterm> (JBoss EAP5). Other technologies are planned, such as KVM and Red Hat Storage, in CY2013.
 	</para>
-	<section id="sect-Documentation-SCAP_and_STIG_Workshop-Test_Chapter-Test_Section_1">
-		<title>Test Section 1</title>
+	<para>
+		The SSG project aspires to bridge the gap between generalized policy and specific implementation guidance, in SCAP formats to support automation whenever possible.
+	</para>
+	<para>
+		The project homepage is <ulink url="https://fedorahosted.org/scap-security-guide/" />.
+	</para>
+	<section id="sect-Documentation-SCAP_and_STIG_Workshop-SCAP_Security_Guide_Project-Background">
+		<title>Background</title>
 		<para>
-			This is a test paragraph in a section
+			Security guidance documents, such as the NSA RHEL5 SNAC Guide, have historically been authored in archaic static formats such as PDF files. This left much to be desired, particularly around automation, and individual shops were forced to create their own scripted hardening processes. These processes were authored in their own silos, by unique contractor teams, generally not shared across programs, and caused gross waste of tax payer dollars. Additionally, from a vendor perspective, supporting hardened environments was commercially unfeasible. As each shop held it's own processes, how could the vendor know what was changed and how to support it? The system was broke.
+		</para>
+		<para>
+			In May 2011, the <firstterm>Information Assurance Directorate of the National Security Agency</firstterm> (NSA IAD) invited Red Hat to begin collaboration on high quality security guidance for RHEL6. It was decided the content would be authored in SCAP formats to support automation, and thus the SCAP Security Guide project was born. 
+		</para>
+		<para>
+			Development of security guidance continued through May 2012, at which point Red Hat and NSA IAD contacted DISA Field Security Operations (DISA FSO) to begin development of the Red Hat Enterprise Linux 6 STIG. For the first time content development of a STIG would be open sourced. The movement towards transparent collaboration – between government agencies, industrial base partners, and content consumers – further reflects acceptance by the NSA and DISA FSO of the benefits of open source development models. On February 12th, 2013, DISA FSO released the first public Draft RHEL6 STIG which was derived from the upstream SCAP Security Guide project.
+		</para>
+		<para>
+			This community powered innovation model has allowed the rapid creation of security baselines at dramatically reduced costs, shortened timeframes, and (arguably) has produced higher-quality content that has now become official U.S. Government standards.
 		</para>
 	</section>
 	
-	<section id="sect-Documentation-SCAP_and_STIG_Workshop-Test_Chapter-Test_Section_2">
-		<title>Test Section 2</title>
+	<section id="sect-Documentation-SCAP_and_STIG_Workshop-SCAP_Security_Guide_Project-Project_Charter">
+		<title>Project Charter</title>
 		<para>
-			This is a test paragraph in Section 2
-			<orderedlist>
-				<listitem>
-					<para>
-						This is a test listitem.
-					</para>
-				</listitem>
-			</orderedlist>
+			The SSG community has a single goal: Develop usable security baselines across all Red Hat technology areas. Patches welcome!
 		</para>
 	</section>
-
+	<section id="sect-Documentation-SCAP_and_STIG_Workshop-SCAP_Security_Guide_Project-Installation">
+		<title>Installation</title>
+		<para>
+			The SCAP Security Guide content was developed on, and for, Red Hat Enterprise Linux 6. The content likely will not work on prior releases, Fedora, or CentOS, without modification. This workshop assumes you have access to a RHEL6 machine. Please note latest download instructions will always be found at the SSG homepage, located here: <ulink url="https://fedorahosted.org/scap-security-guide/" />.
+		</para>
+		<orderedlist>
+			<listitem>
+				<para>To enable the SSG EPEL repository, you must download the yum .repo file for the project:
+					<screen>
+$ wget -O ~/epel-6-scap-security-guide.repo \
+http://repos.fedorapeople.org/repos/scap-security-guide/epel-6-scap-
+security-guide.repo
+$ su -c "/bin/mv ~shawn/epel-6-scap-security-guide.repo /etc/yum.repos.d/"
+					</screen>
+				</para>
+			</listitem>
+			<listitem>
+				<para>Next, install SSG via yum:
+					<screen>
+$ sudo sh -c “yum install scap-security-guide”
+					</screen>
+Please note this may pull down other dependencies, such as the OpenSCAP tooling, if they are not part of your current baseline.
+				</para>
+			</listitem>
+		</orderedlist>
+	</section>
 </chapter>
 
