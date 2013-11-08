@@ -6,6 +6,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Enable the GUI warning banner.</description>
+      <reference source="rmercer" ref_id="20131104" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion comment="check settings" test_ref="test_banner_gui_enabled" />
@@ -13,10 +14,15 @@
   </definition>
   <ind:xmlfilecontent_test check="all" comment="stuff" id="test_banner_gui_enabled" version="1">
     <ind:object object_ref="object_banner_message_enable" />
+    <ind:state state_ref="state_banner_message_enable" />
   </ind:xmlfilecontent_test>
   <ind:xmlfilecontent_object id="object_banner_message_enable" version="1">
-    <ind:path>/etc/gconf/gconf.xml.defaults</ind:path>
-    <ind:filename>%gconf-tree.xml</ind:filename>
-    <ind:xpath>/gconf/dir[@name='apps']/dir[@name='gdm']/dir[@name='simple-greeter']/entry[@name='banner_message_enable']/local_schema[1]/default[1]/@value</ind:xpath>
+    <ind:filepath>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='banner_message_enable']/@value</ind:xpath>
   </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_banner_message_enable" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+
 </def-group>
