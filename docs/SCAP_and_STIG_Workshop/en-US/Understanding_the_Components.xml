@@ -3,10 +3,174 @@
 <!ENTITY % BOOK_ENTITIES SYSTEM "en-US/SCAP_and_STIG_Workshop.ent">
 %BOOK_ENTITIES;
 ]>
-<chapter id="chap-Documentation-SCAP_and_STIG_Workshop-Test_Chapter">
-	<title>Test Chapter</title>
-	<para>
-		This is a test paragraph
-	</para>
+<chapter id="chap-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components">
+	<title>Understanding the Components</title>
+	<para />
+
+	<section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-Content_Location">
+		<title>Content Location</title>
+		<para>
+			On RHEL6, SCAP content is stored under <code>/usr/share/xml/scap/</code>, with each content provider responsible for creating their own subdirectories. The SSG project deploys content into <code>/usr/share/xml/scap/ssg/</code> with the following sub directories:
+		</para>
+			<itemizedlist>
+				<listitem>
+					<para><code>content/</code></para>
+					<para>Houses SCAP content utilizing the following naming conventions:
+					<itemizedlist>
+						<listitem>
+							<para>CPE Dictionaries</para>
+							<para><filename>ssg-{profile}-cpe-dictionary.xml</filename></para>
+						</listitem>
+						<listitem>
+							<para>CPE OVAL Content</para>
+							<para><filename>ssg-{profile}-cpe-oval.xml</filename></para>
+						</listitem>
+						<listitem>
+							<para>OVAL Content</para>
+							<para><filename>ssg-{profile}-oval.xml</filename></para>
+						</listitem>
+						<listitem>
+							<para>XCCDF Content</para>
+							<para><filename>ssg-{profile}-xccdf.xml</filename></para>
+						</listitem>
+					</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para><code>guides/</code></para>
+					<para>HTML versions of SSG profiles, easily consumable by humans.</para>
+				</listitem>
+				<listitem>
+					<para><code>policytables/</code></para>
+					<para>HTML tables reflecting which institutionalized policy a particular SSG rule conforms to.</para>
+				</listitem>
+			</itemizedlist>
+	</section>
+        <section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-OpenSCAP">
+		<title>OpenSCAP</title>
+		<para>The SCAP protocol suite contains multiple complex data exchange formats that are used to transmit important vulnerability, configuration, and other security data. Historically there have been few tools that provide a way to query this data in the needed format. This lack of tools makes the barrier to entry very high and discourages adoption of these protocols by the community. It's the goal of the OpenSCAP project to create a framework of libraries and tools to improve the accessibility of SCAP
+and enhance the usability of the information it presents.</para>
+		<para>SCAP is a protocol, akin to HTML, and consumers must use a protocol interpreter. OpenSCAP provides that functionality for the RHEL platform.</para>
+		<para>The OpenSCAP homepage can be found at <ulink url="http://www.open-scap.org/page/Main_Page" /></para>
+	</section>
+	<section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-XCCDF">
+		<title>XCCDF</title>
+		<para>As documented by NIST on their XCCDF specification page at <ulink url="http://scap.nist.gov/specifications/xccdf/" />:</para>
+		<screen><para>XCCDF is a specification language for writing security checklists, benchmarks, and related kinds of documents. An XCCDF document represents a structured collection of security configuration rules for some set of target systems. The specification is designed to support information interchange, document generation, organizational and situational tailoring, automated compliance testing, and compliance scoring. The specification also defines a data model and format for storing results of benchmark compliance testing. The intent of XCCDF is to provide a uniform foundation for expression of security checklists, benchmarks, and other configuration guidance, and thereby foster more widespread application of good security practices.</para>
+		<para>XCCDF documents are expressed in XML, and may be validated with an XML Schema-validating parser.</para>
+		<para>Development of the XCCDF specification is being led by NSA, with contributions from other agencies and organizations. The current public draft of the specification document and related files can be downloaded below. A mailing list for XCCDF developers is available, please subscribe to participate in discussions. A publicly available archive of the XCCDF mailing list is also available.</para></screen>
+		<para>Within the project, XCCDF content is retained in <filename>/usr/share/xml/scap/ssg/content/</filename>.</para>
+
+		<section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-XCCDF-Sample_XCCDF_Code">
+			<title>Sample XCCDF Code</title>
+			<para>To understand XCCDF, let's review the <code>disable_telnet_service</code> rule within <filename>ssg-rhel6-xccdf.xml</filename>.
+			<command>$ vim /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml</command></para>
+			<para>Once loaded, locate the disable_telnet_service rule:
+			<command>&#60;Rule id=”disable_telnet_service</command></para>
+
+			<table frame='all'><title>XCCDF Rule Elements</title>
+			<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+			<colspec colname='c1' />
+			<colspec colname='c2' />
+			<thead>
+			<row>
+				<entry align="center">XML Tag</entry>
+				<entry align="center">Meaning</entry>
+			</row>
+			</thead>
+			<tbody>
+			<row>
+				<entry>&#60;Rule&#62;</entry>
+				<entry>Indicates:
+					<itemizedlist>
+						<listitem>
+							<para>Rule Name</para>
+							<para><code>...id="disable_telnet_service" ...</code></para>
+						</listitem>
+						<listitem>
+							<para>Severity</para>
+							<para><code>...severity="high"...</code></para>
+						</listitem>
+						<listitem>
+							<para>If the rule is enforced / selected</para>
+							<para><code>... selected="true"...</code></para>
+						</listitem>
+					</itemizedlist>
+				</entry>
+			</row>
+			<row>
+				<entry>&#60;title&#62;</entry>
+				<entry>The XCCDF Rule title.</entry>
+			</row>
+			<row>
+				<entry>&#60;description&#62;</entry>
+				<entry>Largely free form, contains implementation instructions and any policy references.</entry>
+			</row>
+			<row>
+				<entry>&#60;rationale&#62;</entry>
+				<entry>Identifies the logic behind applying this &#60;rule&#62; to the system.  Answers "why is this important"?</entry>
+			</row>
+			<row>
+				<entry>&#60;ident&#62;</entry>
+				<entry>Identifies CCE mapping</entry>
+			</row>
+			<row>
+				<entry>&#60;check system...&#62;</entry>
+				<entry>Identifies which version of OVAL the check was written for</entry>
+			</row>
+			<row>
+				<entry>&#60;check-content-ref...&#62;</entry>
+				<entry>There are two elements for this tag:
+					<itemizedlist>
+						<listitem>
+							<para>href=...</para>
+							<para>Path to associated OVAL file</para>
+						</listitem>
+						<listitem>
+							<para>name=...</para>
+							<para>Identifies the corresponding OVAL rule name, such as oval:ssg:def:281.</para>
+						</listitem>
+						<listitem>
+							<para>If one were to search for this rule within the href= identified file, they would be brought to the corresponding OVAL code.</para>
+						</listitem>
+					</itemizedlist>
+				</entry>
+			</row>
+			</tbody>
+			</tgroup>
+			</table>
+		</section>
+		<section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-XCCDF-Profiles">
+			<title>Profiles</title>
+			<para>XCCDF rules are logically organized into profiles. To query which profiles are contained within the SCAP Security Guide project, run the following command:
+				<screen>
+$ grep -n "&#60;Profile" /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
+12: &#60;Profile id="test"&#62;
+68: &#60;Profile id="common"&#62;
+345: &#60;Profile id="desktop" extends="common"&#62;
+381: &#60;Profile id="server" extends="common"&#62;
+389: &#60;Profile id="ftp" extends="server"&#62;
+403: &#60;Profile id="stig-rhel6-server" extends="common"&#62;
+				</screen>
+			</para>
+			<para>If you were to view line 403 and those proceeding, you will see a sampling of which rules make up the stig-rhel6-server profile:
+				<screen>
+$ sed -n '403,413p' /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
+&#60;Profile id="stig-rhel6-server" extends="common"&#62;
+&#60;title&#62;Pre-release Draft STIG for RHEL 6 Server&#60;/title&#62;
+&#60;description&#62;This profile is being developed under the DoD consensus
+model to become a STIG in coordination with DISA FSO.&#60;/description&#62;
+&#60;select idref="encrypt_partitions" selected="true"/&#62;
+&#60;select idref="rpm_verify_permissions" selected="true"/&#62;
+&#60;select idref="rpm_verify_hashes" selected="true"/&#62;
+&#60;select idref="world_writeable_files" selected="true"/&#62;
+&#60;select idref="install_antivirus" selected="true"/&#62;
+&#60;select idref="install_hids" selected="true"/&#62;
+&#60;select idref="disable_ctrlaltdel_reboot" selected="true"/&#62;
+&#60;select idref="service_postfix_enable" selected="true"/&#62;
+				</screen>
+			</para>
+		</section>
+	</section>
 </chapter>
 
