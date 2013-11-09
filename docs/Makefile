@@ -26,7 +26,8 @@
 
 SITECONFIG="../ssg-docs.cfg"
 
-all: user_guide developer_guide
+all: user_guide developer_guide workshop
+	publican update_site --site_config ssg-docs.cfg
 
 user_guide:
 	cd User_Guide/ \
@@ -38,6 +39,12 @@ developer_guide:
 	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
 	&& publican install_book --site_config $(SITECONFIG) --lang en-US
 
+workshop:
+	cd SCAP_and_STIG_Workshop/ \
+	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
+	&& publican install_book --site_config $(SITECONFIG) --lang en-US
+
 clean:
 	cd User_Guide &&  publican clean 
 	cd Developer_Guide && publican clean 
+	cd SCAP_and_STIG_Workshop && publican clean
