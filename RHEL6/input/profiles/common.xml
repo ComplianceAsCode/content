@@ -14,7 +14,7 @@
 <select idref="package_aide_installed" selected="true"/>
 <select idref="enable_selinux_bootloader" selected="true"/>
 <select idref="no_rsh_trust_files" selected="true"/>
-<select idref="set_selinux_state" selected="true"/>
+<select idref="selinux_state" selected="true"/>
 <select idref="selinux_policytype" selected="true"/>
 <select idref="selinux_all_devicefiles_labeled" selected="true"/>
 <select idref="securetty_root_login_console_only" selected="true"/>
@@ -258,7 +258,7 @@ these should likely be moved out of common.
 <!-- Sensible umask -->
 <refine-value idref="login_banner_text" selector="usgcb_default"/>
 <!-- login banner verbiage -->
-<refine-value idref="var_selinux_state_name" selector="enforcing"/>
+<refine-value idref="var_selinux_state" selector="enforcing"/>
 <!-- SELinux state -->
 <refine-value idref="var_selinux_policy_name" selector="targeted"/>
 <!-- SELinux policy -->
