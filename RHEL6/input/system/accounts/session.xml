@@ -11,7 +11,7 @@ correct configuration file permissions for interactive accounts,
 particularly those of privileged users such as root or system
 administrators.</description>
 
-<Value id="max_concurrent_login_sessions_value" type="number"
+<Value id="var_accounts_max_concurrent_login_sessions" type="number"
 operator="equals" interactive="0">
 <title>Maximum concurrent login sessions</title>
 <description>Maximum number of concurrent sessions by a user</description>
@@ -24,7 +24,7 @@ operator="equals" interactive="0">
 <value selector="20">20</value>
 </Value>
 
-<Rule id="max_concurrent_login_sessions">
+<Rule id="accounts_max_concurrent_login_sessions">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
 Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
@@ -44,7 +44,7 @@ on the system:
 You should receive output similar to the following:
 <pre>*		hard	maxlogins	10</pre>
 </ocil>
-<oval id="accounts_max_concurrent_login_sessions" value="max_concurrent_login_sessions_value" />
+<oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
 <ident cce="27457-1" />
 <ref nist="AC-10" disa="54"/>
 </Rule>
