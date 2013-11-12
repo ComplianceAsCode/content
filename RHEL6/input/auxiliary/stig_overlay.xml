@@ -12,13 +12,13 @@
 	<overlay owner="disastig" ruleid="partition_for_var_log_audit" ownerid="RHEL-06-000004" disa="137" severity="low">
 		<title>The system must use a separate file system for the system audit data path.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000005" disa="138" severity="medium">
+	<overlay owner="disastig" ruleid="auditd_data_retention_space_left_action" ownerid="RHEL-06-000005" disa="138" severity="medium">
 		<title>The audit system must alert designated staff members when the audit storage volume approaches capacity.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="partition_for_home" ownerid="RHEL-06-000007" disa="366" severity="low">
 		<title>The system must use a separate file system for user home directories.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000008" disa="352" severity="high">
+	<overlay owner="disastig" ruleid="ensure_redhat_gpgkey_installed" ownerid="RHEL-06-000008" disa="352" severity="high">
 		<title>Vendor-provided cryptographic certificates must be installed to verify the integrity of system software.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_rhnsd_disabled" ownerid="RHEL-06-000009" disa="382" severity="low">
@@ -33,7 +33,7 @@
 	<overlay owner="disastig" ruleid="ensure_gpgcheck_never_disabled" ownerid="RHEL-06-000015" disa="663" severity="low">
 		<title>The system package management tool must cryptographically verify the authenticity of all software packages during installation.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="install_aide" ownerid="RHEL-06-000016" disa="1069" severity="medium">
+	<overlay owner="disastig" ruleid="package_aide_installed" ownerid="RHEL-06-000016" disa="1069" severity="medium">
 		<title>A file integrity tool must be installed.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="enable_selinux_bootloader" ownerid="RHEL-06-000017" disa="22" severity="medium">
@@ -51,58 +51,58 @@
 	<overlay owner="disastig" ruleid="selinux_all_devicefiles_labeled" ownerid="RHEL-06-000025" disa="22" severity="low">
 		<title>All device files must be monitored by the system Linux Security Module.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000027" disa="770" severity="medium">
+	<overlay owner="disastig" ruleid="securetty_root_login_console_only" ownerid="RHEL-06-000027" disa="770" severity="medium">
 		<title>The system must prevent the root account from logging in from virtual consoles.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000028" disa="770" severity="low">
+	<overlay owner="disastig" ruleid="restrict_serial_port_logins" ownerid="RHEL-06-000028" disa="770" severity="low">
 		<title>The system must prevent the root account from logging in from serial consoles.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000029" disa="366" severity="medium">
 		<title>Default system accounts, other than root, must be locked.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000030" disa="366" severity="high">
+	<overlay owner="disastig" ruleid="no_empty_passwords" ownerid="RHEL-06-000030" disa="366" severity="high">
 		<title>The system must not have accounts configured with blank or null passwords.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000031" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="no_hashes_outside_shadow" ownerid="RHEL-06-000031" disa="366" severity="medium">
 		<title>The /etc/passwd file must not contain password hashes.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000032" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="no_uidzero_except_root" ownerid="RHEL-06-000032" disa="366" severity="medium">
 		<title>The root account must be the only account having a UID of 0.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000033" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="userowner_shadow_file" ownerid="RHEL-06-000033" disa="366" severity="medium">
 		<title>The /etc/shadow file must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000034" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="groupowner_shadow_file" ownerid="RHEL-06-000034" disa="366" severity="medium">
 		<title>The /etc/shadow file must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000035" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_permissions_etc_shadow" ownerid="RHEL-06-000035" disa="366" severity="medium">
 		<title>The /etc/shadow file must have mode 0000.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000036" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="userowner_gshadow_file" ownerid="RHEL-06-000036" disa="366" severity="medium">
 		<title>The /etc/gshadow file must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000037" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="groupowner_gshadow_file" ownerid="RHEL-06-000037" disa="366" severity="medium">
 		<title>The /etc/gshadow file must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000038" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="perms_gshadow_file" ownerid="RHEL-06-000038" disa="366" severity="medium">
 		<title>The /etc/gshadow file must have mode 0000.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000039" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="userowner_passwd_file" ownerid="RHEL-06-000039" disa="366" severity="medium">
 		<title>The /etc/passwd file must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000040" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="groupowner_passwd_file" ownerid="RHEL-06-000040" disa="366" severity="medium">
 		<title>The /etc/passwd file must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000041" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_permissions_etc_passwd" ownerid="RHEL-06-000041" disa="366" severity="medium">
 		<title>The /etc/passwd file must have mode 0644 or less permissive.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000042" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="userowner_group_file" ownerid="RHEL-06-000042" disa="366" severity="medium">
 		<title>The /etc/group file must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000043" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="groupowner_group_file" ownerid="RHEL-06-000043" disa="366" severity="medium">
 		<title>The /etc/group file must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000044" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="perms_group_file" ownerid="RHEL-06-000044" disa="366" severity="medium">
 		<title>The /etc/group file must have mode 0644 or less permissive.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="file_permissions_library_dirs" ownerid="RHEL-06-000045" disa="1499" severity="medium">
@@ -126,7 +126,7 @@
 	<overlay owner="disastig" ruleid="accounts_maximum_age_login_defs" ownerid="RHEL-06-000053" disa="199" severity="medium">
 		<title>User passwords must be changed at least every 60 days.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000054" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_password_warn_age_login_defs" ownerid="RHEL-06-000054" disa="366" severity="low">
 		<title>Users must be warned 7 days in advance of password expiration.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="accounts_password_pam_cracklib_dcredit" ownerid="RHEL-06-000056" disa="194" severity="low">
@@ -156,13 +156,13 @@
 	<overlay owner="disastig" ruleid="set_password_hashing_algorithm_libuserconf" ownerid="RHEL-06-000064" disa="803" severity="medium">
 		<title>The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes (libuser.conf).</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000065" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="user_owner_grub_conf" ownerid="RHEL-06-000065" disa="366" severity="medium">
 		<title>The system boot loader configuration file(s) must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000066" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="group_owner_grub_conf" ownerid="RHEL-06-000066" disa="366" severity="medium">
 		<title>The system boot loader configuration file(s) must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000067" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="permissions_grub_conf" ownerid="RHEL-06-000067" disa="366" severity="medium">
 		<title>The system boot loader configuration file(s) must have mode 0600 or less permissive.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="bootloader_password" ownerid="RHEL-06-000068" disa="213" severity="medium">
@@ -174,67 +174,67 @@
 	<overlay owner="disastig" ruleid="disable_interactive_boot" ownerid="RHEL-06-000070" disa="213" severity="medium">
 		<title>The system must not permit interactive boot.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="install_screen_package" ownerid="RHEL-06-000071" disa="58" severity="low">
+	<overlay owner="disastig" ruleid="package_screen_installed" ownerid="RHEL-06-000071" disa="58" severity="low">
 		<title>The system must allow locking of the console screen.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="set_system_login_banner" ownerid="RHEL-06-000073" disa="1384, 1385, 1386, 1387, 1388" severity="medium">
 		<title>The Department of Defense (DoD) login banner must be displayed immediately prior to, or as part of, console login prompts.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000078" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="enable_randomize_va_space" ownerid="RHEL-06-000078" disa="366" severity="medium">
 		<title>The system must implement virtual address space randomization.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000079" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="enable_execshield" ownerid="RHEL-06-000079" disa="366" severity="medium">
 		<title>The system must limit the ability of processes to have simultaneous write and execute access to memory.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000080" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_send_redirects" ownerid="RHEL-06-000080" disa="366" severity="medium">
 		<title>The system must not send ICMPv4 redirects by default.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000081" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_ipv4_all_send_redirects" ownerid="RHEL-06-000081" disa="366" severity="medium">
 		<title>The system must not send ICMPv4 redirects from any interface.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000082" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_ipv4_ip_forward" ownerid="RHEL-06-000082" disa="366" severity="medium">
 		<title>IP forwarding for IPv4 must not be enabled, unless the system is a router.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000083" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_accept_source_route" ownerid="RHEL-06-000083" disa="366" severity="medium">
 		<title>The system must not accept IPv4 source-routed packets on any interface.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000084" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_accept_redirects" ownerid="RHEL-06-000084" disa="366" severity="medium">
 		<title>The system must not accept ICMPv4 redirect packets on any interface.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000086" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_secure_redirects" ownerid="RHEL-06-000086" disa="366" severity="medium">
 		<title>The system must not accept ICMPv4 secure redirect packets on any interface.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000088" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_log_martians" ownerid="RHEL-06-000088" disa="366" severity="low">
 		<title>The system must log Martian packets.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000089" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_accept_source_route" ownerid="RHEL-06-000089" disa="366" severity="medium">
 		<title>The system must not accept IPv4 source-routed packets by default.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000090" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_secure_redirects" ownerid="RHEL-06-000090" disa="366" severity="medium">
 		<title>The system must not accept ICMPv4 secure redirect packets by default.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000091" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_accept_redirects" ownerid="RHEL-06-000091" disa="366" severity="low">
 		<title>The system must ignore IPv4 ICMP redirect messages.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000092" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" ownerid="RHEL-06-000092" disa="366" severity="low">
 		<title>The system must not respond to ICMPv4 sent to a broadcast address.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000093" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" ownerid="RHEL-06-000093" disa="366" severity="low">
 		<title>The system must ignore ICMPv4 bogus error responses.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="sysctl_net_ipv4_tcp_syncookies" ownerid="RHEL-06-000095" disa="1095" severity="medium">
 		<title>The system must be configured to use TCP syncookies when experiencing a TCP SYN flood.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000096" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_rp_filter" ownerid="RHEL-06-000096" disa="366" severity="medium">
 		<title>The system must use a reverse-path filter for IPv4 network traffic when possible on all interfaces.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000097" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_rp_filter" ownerid="RHEL-06-000097" disa="366" severity="medium">
 		<title>The system must use a reverse-path filter for IPv4 network traffic when possible by default.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000098" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="kernel_module_ipv6_option_disabled" ownerid="RHEL-06-000098" disa="366" severity="medium">
 		<title>The IPv6 protocol handler must not be bound to the network stack unless needed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000099" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv6_conf_default_accept_redirects_value" ownerid="RHEL-06-000099" disa="366" severity="medium">
 		<title>The system must ignore ICMPv6 redirects by default.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_ip6tables_enabled" ownerid="RHEL-06-000103" disa="1118" severity="medium">
@@ -306,10 +306,10 @@
 	<overlay owner="disastig" ruleid="rsyslog_send_messages_to_logserver" ownerid="RHEL-06-000136" disa="1348" severity="medium">
 		<title>The operating system must back up audit records on an organization defined frequency onto a different system or media than the system being audited. </title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000137" disa="136" severity="medium">
+	<overlay owner="disastig" ruleid="rsyslog_send_messages_to_logserver" ownerid="RHEL-06-000137" disa="136" severity="medium">
 		<title>The operating system must support the requirement to centrally manage the content of audit records generated by organization defined information system components.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000138" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="ensure_logrotate_activated" ownerid="RHEL-06-000138" disa="366" severity="low">
 		<title>System logs must be rotated daily.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_auditd_enabled" ownerid="RHEL-06-000139" disa="347" severity="medium">
@@ -342,13 +342,13 @@
 	<overlay owner="disastig" ruleid="enable_auditd_bootloader" ownerid="RHEL-06-000157" disa="1464" severity="low">
 		<title>Auditing must be enabled at boot by setting a kernel parameter.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000159" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="configure_auditd_num_logs" ownerid="RHEL-06-000159" disa="366" severity="medium">
 		<title>The system must retain enough rotated audit logs to cover the required log retention period.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000160" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="configure_auditd_max_log_file" ownerid="RHEL-06-000160" disa="366" severity="medium">
 		<title>The system must set a maximum audit log file size.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000161" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="configure_auditd_max_log_file_action" ownerid="RHEL-06-000161" disa="366" severity="medium">
 		<title>The system must rotate audit log files that reach the maximum file size.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="configure_auditd_admin_space_left_action" ownerid="RHEL-06-000163" disa="1343" severity="medium">
@@ -381,10 +381,10 @@
 	<overlay owner="disastig" ruleid="audit_account_changes" ownerid="RHEL-06-000177" disa="1405" severity="low">
 		<title>The operating system must automatically audit account termination.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000182" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="audit_network_modifications" ownerid="RHEL-06-000182" disa="366" severity="low">
 		<title>The audit system must be configured to audit modifications to the systems network configuration.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000183" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="audit_mac_changes" ownerid="RHEL-06-000183" disa="366" severity="low">
 		<title>The audit system must be configured to audit modifications to the system's Mandatory Access Control (MAC) configuration (SELinux).</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="audit_rules_dac_modification_chmod" ownerid="RHEL-06-000184" disa="172" severity="low">
@@ -459,7 +459,7 @@
 	<overlay owner="disastig" ruleid="uninstall_rsh-server" ownerid="RHEL-06-000213" disa="381" severity="high">
 		<title>The rsh-server package must not be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="" ownerid="RHEL-06-000214" disa="68" severity="high">
+	<overlay owner="disastig" ruleid="disable_rsh" ownerid="RHEL-06-000214" disa="68" severity="high">
 		<title>The rshd service must not be running.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="disable_rexec" ownerid="RHEL-06-000216" disa="68" severity="high">
@@ -522,7 +522,7 @@
 	<overlay owner="disastig" ruleid="sshd_use_approved_ciphers" ownerid="RHEL-06-000245" disa="1146" severity="medium">
 		<title>The operating system must employ NSA-approved cryptography to protect classified information.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000246" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="disable_avahi" ownerid="RHEL-06-000246" disa="366" severity="low">
 		<title>The avahi service must be disabled.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_ntpd_enabled" ownerid="RHEL-06-000247" disa="160" severity="medium">
@@ -534,16 +534,16 @@
 	<overlay owner="disastig" ruleid="postfix_network_listening" ownerid="RHEL-06-000249" disa="382" severity="medium">
 		<title>Mail relaying must be restricted.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000251" disa="778" severity="medium">
+	<overlay owner="disastig" ruleid="nonselected" ownerid="RHEL-06-000251" disa="778" severity="medium">
 		<title>The operating system must uniquely identify and authenticate an organization defined list of specific devices and/or types of devices before establishing a connection.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000252" disa="1453" severity="medium">
+	<overlay owner="disastig" ruleid="ldap_client_start_tls" ownerid="RHEL-06-000252" disa="1453" severity="medium">
 		<title>If the system is using LDAP for authentication or account information, the system must use a TLS connection using FIPS 140-2 approved cryptographic algorithms.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000253" disa="776" severity="medium">
+	<overlay owner="disastig" ruleid="ldap_client_tls_cacertpath" ownerid="RHEL-06-000253" disa="776" severity="medium">
 		<title>The LDAP client must use a TLS connection using trust certificates signed by the site CA.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000256" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="package_openldap-servers_removed" ownerid="RHEL-06-000256" disa="366" severity="low">
 		<title>The openldap-servers package must not be installed unless required.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="set_screensaver_inactivity_timeout" ownerid="RHEL-06-000257" disa="57" severity="medium">
@@ -564,7 +564,7 @@
 	<overlay owner="disastig" ruleid="service_atd_disabled" ownerid="RHEL-06-000262" disa="382" severity="low">
 		<title>The atd service must be disabled.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="service_autofs_disabled" ownerid="RHEL-06-000263" disa="1250" severity="low">
+	<overlay owner="disastig" ruleid="nonselected" ownerid="RHEL-06-000263" disa="1250" severity="low">
 		<title>Automated file system mounting tools must not be enabled unless needed.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_ntpdate_disabled" ownerid="RHEL-06-000265" disa="382" severity="low">
@@ -588,10 +588,10 @@
 	<overlay owner="disastig" ruleid="mountopt_noexec_on_removable_partitions" ownerid="RHEL-06-000271" disa="87" severity="low">
 		<title>The noexec option must be added to removable media partitions.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000272" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="require_smb_client_signing" ownerid="RHEL-06-000272" disa="366" severity="low">
 		<title>The system must use SMB client signing for connecting to samba servers using smbclient.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000273" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="require_smb_client_signing_mount.cifs" ownerid="RHEL-06-000273" disa="366" severity="low">
 		<title>The system must use SMB client signing for connecting to samba servers using mount.cifs.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="accounts_password_reuse_limit" ownerid="RHEL-06-000274" disa="200" severity="medium">
@@ -618,7 +618,7 @@
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000281" disa="1496" severity="medium">
 		<title>The system package management tool must verify contents of all files associated with the audit package.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000282" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="world_writeable_files" ownerid="RHEL-06-000282" disa="366" severity="medium">
 		<title>There must be no world-writable files on the system.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="install_antivirus" ownerid="RHEL-06-000284" disa="1668" severity="high">
@@ -627,28 +627,28 @@
 	<overlay owner="disastig" ruleid="install_hids" ownerid="RHEL-06-000285" disa="1263" severity="medium">
 		<title>The system must have a host-based intrusion detection tool installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000286" disa="366" severity="high">
+	<overlay owner="disastig" ruleid="disable_ctrlaltdel_reboot" ownerid="RHEL-06-000286" disa="366" severity="high">
 		<title>The x86 Ctrl-Alt-Delete key sequence must be disabled.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000287" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="service_postfix_enabled" ownerid="RHEL-06-000287" disa="366" severity="low">
 		<title>The postfix service must be enabled for mail delivery.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000288" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="package_sendmail_removed" ownerid="RHEL-06-000288" disa="366" severity="medium">
 		<title>The sendmail package must be removed.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_netconsole_disabled" ownerid="RHEL-06-000289" disa="382" severity="low">
 		<title>The netconsole service must be disabled unless required.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="packagegroup_xwindows_remove" ownerid="RHEL-06-000290" disa="1436" severity="medium">
+	<overlay owner="disastig" ruleid="disable_xwindows_with_runlevel" ownerid="RHEL-06-000290" disa="1436" severity="medium">
 		<title>X Windows must not be enabled unless required.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000291" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="packagegroup_xwindows_remove" ownerid="RHEL-06-000291" disa="366" severity="low">
 		<title>The xorg-x11-server-common (X Windows) package must not be installed, unless required.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000292" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="disable_dhcp_client" ownerid="RHEL-06-000292" disa="366" severity="medium">
 		<title>The DHCP client must be disabled if not needed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000294" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="gid_passwd_group_same" ownerid="RHEL-06-000294" disa="366" severity="low">
 		<title>All GIDs referenced in /etc/passwd must be defined in /etc/group</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="account_unique_name" ownerid="RHEL-06-000296" disa="804" severity="low">
@@ -660,7 +660,7 @@
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000298" disa="1682" severity="low">
 		<title>Emergency accounts must be provisioned with an expiration date.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000299" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="password_require_consecrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
 		<title>The system must require passwords to contain no more than three consecutive repeating characters.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="no_files_unowned_by_user" ownerid="RHEL-06-000300" disa="224" severity="low">
@@ -687,13 +687,13 @@
 	<overlay owner="disastig" ruleid="aide_periodic_cron_checking" ownerid="RHEL-06-000307" disa="1589" severity="medium">
 		<title>The operating system must ensure unauthorized, security-relevant configuration changes detected are tracked.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000308" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="disable_users_coredumps" ownerid="RHEL-06-000308" disa="366" severity="low">
 		<title>Process core dumps must be disabled unless needed.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="no_insecure_locks_exports" ownerid="RHEL-06-000309" disa="764" severity="high">
 		<title>The NFS server must not have the insecure file locking option enabled.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="143" ownerid="RHEL-06-000311" disa="143" severity="medium">
+	<overlay owner="disastig" ruleid="auditd_data_retention_space_left_action" ownerid="RHEL-06-000311" disa="143" severity="medium">
 		<title>The audit system must provide a warning when allocated audit record storage volume reaches a documented percentage of maximum audit record storage capacity.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="auditd_data_retention_action_mail_acct" ownerid="RHEL-06-000313" disa="139" severity="medium">
@@ -729,37 +729,37 @@
 	<overlay owner="disastig" ruleid="account_disable_post_pw_expiration" ownerid="RHEL-06-000335" disa="795" severity="low">
 		<title>The operating system must manage information system identifiers for users and devices by disabling the user identifier after an organization defined time period of inactivity.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000336" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="sticky_world_writable_dirs" ownerid="RHEL-06-000336" disa="366" severity="low">
 		<title>The sticky bit must be set on all public directories.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000337" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="world_writable_files_system_ownership" ownerid="RHEL-06-000337" disa="366" severity="low">
 		<title>All public directories must be owned by a system account.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000338" disa="366" severity="high">
+	<overlay owner="disastig" ruleid="tftpd_uses_secure_mode" ownerid="RHEL-06-000338" disa="366" severity="high">
 		<title>The TFTP daemon must operate in "secure mode" which provides access only to a single directory on the host file system.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="ftp_log_transactions" ownerid="RHEL-06-000339" disa="130" severity="low">
 		<title>The FTP daemon must be configured for logging or verbose mode.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000340" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="snmpd_use_newer_protocol" ownerid="RHEL-06-000340" disa="366" severity="medium">
 		<title>The snmpd service must use only SNMP protocol version 3 or newer.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000341" disa="366" severity="high">
+	<overlay owner="disastig" ruleid="snmpd_not_default_password" ownerid="RHEL-06-000341" disa="366" severity="high">
 		<title>The snmpd service must not use a default password.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000342" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="user_umask_bashrc" ownerid="RHEL-06-000342" disa="366" severity="low">
 		<title>The system default umask for the bash shell must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000343" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="user_umask_cshrc" ownerid="RHEL-06-000343" disa="366" severity="low">
 		<title>The system default umask for the csh shell must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000344" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="user_umask_profile" ownerid="RHEL-06-000344" disa="366" severity="low">
 		<title>The system default umask in /etc/profile must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000345" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="user_umask_logindefs" ownerid="RHEL-06-000345" disa="366" severity="low">
 		<title>The system default umask in /etc/login.defs must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000346" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="umask_for_daemons" ownerid="RHEL-06-000346" disa="366" severity="low">
 		<title>The system default umask for daemons must be 027 or 022.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="no_netrc_files" ownerid="RHEL-06-000347" disa="196" severity="medium">
@@ -777,18 +777,18 @@
 	<overlay owner="disastig" ruleid="accounts_passwords_pam_fail_interval" ownerid="RHEL-06-000357" disa="1452" severity="medium">
 		<title>The system must disable accounts after excessive login failures within a 15-minute interval.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000359" disa="20" severity="medium">
+	<overlay owner="disastig" ruleid="unselected" ownerid="RHEL-06-000359" disa="20" severity="medium">
 		<title>The operating system must dynamically manage user privileges and associated access authorizations.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000367" disa="31" severity="medium">
+	<overlay owner="disastig" ruleid="unselected" ownerid="RHEL-06-000367" disa="31" severity="medium">
 		<title>The operating system must support organization defined one-way flows using hardware mechanisms.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000368" disa="34" severity="medium">
+	<overlay owner="disastig" ruleid="unselected" ownerid="RHEL-06-000368" disa="34" severity="medium">
 		<title>The operating system must provide the capability for a privileged administrator to enable/disable organization defined security policy filters.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000371" disa="52" severity="medium">
+	<overlay owner="disastig" ruleid="unselected" ownerid="RHEL-06-000371" disa="52" severity="medium">
 		<title>The operating system, upon successful logon, must display to the user the date and time of the last logon (access) via GUI.</title>
-	</overlay>
+ 	</overlay>
 	<overlay owner="disastig" ruleid="display_login_attempts" ownerid="RHEL-06-000372" disa="53" severity="medium">
 		<title>The operating system, upon successful logon/access, must display to the user the number of unsuccessful logon/access attempts since the last successful logon/access.</title>
 	</overlay>
@@ -816,16 +816,16 @@
 	<overlay owner="disastig" ruleid="met_inherently_nonselected" ownerid="RHEL-06-000380" disa="154" severity="medium">
 		<title>Operating system must support the capability to centralize the review and analysis of audit records from multiple components within the system.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000381" disa="156" severity="medium">
+	<overlay owner="disastig" ruleid="met_inherently" ownerid="RHEL-06-000381" disa="156" severity="medium">
 		<title>The operating system must support an audit reduction capability.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="met_inherently_auditing" ownerid="RHEL-06-000382" disa="159" severity="medium">
 		<title>The operating system must use internal system clocks to generate time stamps for audit records.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000383" disa="163" severity="medium">
+	<overlay owner="disastig" ruleid="audit_logs_permissions" ownerid="RHEL-06-000383" disa="163" severity="medium">
 		<title>Audit log files must have mode 0640 or less permissive.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000384" disa="162" severity="medium">
+	<overlay owner="disastig" ruleid="audit_logs_rootowner" ownerid="RHEL-06-000384" disa="162" severity="medium">
 		<title>Audit log files must be owned by root.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000385" disa="164" severity="medium">
@@ -990,10 +990,10 @@
 	<overlay owner="disastig" ruleid="met_inherently_nonselected" ownerid="RHEL-06-000501" disa="1670" severity="medium">
 		<title>The operating system must take organization defined list of least disruptive actions to terminate suspicious events.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000502" disa="1674" severity="medium">
+	<overlay owner="disastig" ruleid="unselected" ownerid="RHEL-06-000502" disa="1674" severity="medium">
 		<title>The operating system must respond to security function anomalies in accordance with organization defined responses and alternative action(s).</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000503" disa="86" severity="medium">
+	<overlay owner="disastig" ruleid="kernel_module_usb-storage_disabled" ownerid="RHEL-06-000503" disa="86" severity="medium">
 		<title>The system must have USB Mass Storage disabled unless needed.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000504" disa="535" severity="medium">
@@ -1011,7 +1011,7 @@
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000508" disa="58" severity="low">
 		<title>The system must allow locking of graphical desktop sessions.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000509" disa="136" severity="low">
+	<overlay owner="disastig" ruleid="configure_auditd_audispd" ownerid="RHEL-06-000509" disa="136" severity="low">
 		<title>The system must forward audit records to the syslog service.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000510" disa="140" severity="medium">
@@ -1038,10 +1038,10 @@
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000517" disa="366" severity="low">
 		<title>The system package management tool must verify group-ownership on all files and directories associated with packages.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000518" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="rpm_verify_permissions" ownerid="RHEL-06-000518" disa="366" severity="low">
 		<title>The system package management tool must verify permissions on all files and directories associated with packages.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000519" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="rpm_verify_hashes" ownerid="RHEL-06-000519" disa="366" severity="low">
 		<title>The system package management tool must verify contents of all files associated with packages.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000521" disa="366" severity="medium">
@@ -1053,8 +1053,14 @@
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000523" disa="66" severity="medium">
 		<title>The system's local IPv6 firewall must implement a deny-all, allow-by-exception policy for inbound packets.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="unmet_nonfinding_scope" ownerid="SRG-OS-000001-NA" disa="15" severity="medium">
-		<title>The operating system must provide automated support for account management functions.</title>
+	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000524" disa="15" severity="low">
+		<title>The system must provide automated support for account management functions.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="enable_auditd_bootloader" ownerid="RHEL-06-000525" disa="169" severity="low">
+		<title>Auditing must be enabled at boot by setting a kernel parameter.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="service_autofs_disabled" ownerid="RHEL-06-000526" disa="366" severity="low">
+		<title>Automated file system mounting tools must not be enabled unless needed.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="unmet_nonfinding_scope" ownerid="SRG-OS-000006-NA" disa="21" severity="medium">
 		<title>The operating system must enforce dual authorization, based on organizational policies and procedures for organization defined privileged commands.</title>
