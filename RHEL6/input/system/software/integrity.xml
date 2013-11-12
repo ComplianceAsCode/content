@@ -165,7 +165,7 @@ Alternatively, the package can be reinstalled from trusted media using the comma
 </description>
 <ocil clause="there is output"> The following command will list which files on the system 
 have file hashes different from what is expected by the RPM database. 
-<pre># rpm -Va | grep '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
+<pre># rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
 </ocil>
 <rationale>
 The hashes of important files like system executables should match the
