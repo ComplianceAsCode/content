@@ -66,7 +66,7 @@
 	<overlay owner="disastig" ruleid="no_hashes_outside_shadow" ownerid="RHEL-06-000031" disa="366" severity="medium">
 		<title>The /etc/passwd file must not contain password hashes.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="no_uidzero_except_root" ownerid="RHEL-06-000032" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="accounts_no_uid_except_zero" ownerid="RHEL-06-000032" disa="366" severity="medium">
 		<title>The root account must be the only account having a UID of 0.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="userowner_shadow_file" ownerid="RHEL-06-000033" disa="366" severity="medium">
@@ -234,7 +234,7 @@
 	<overlay owner="disastig" ruleid="kernel_module_ipv6_option_disabled" ownerid="RHEL-06-000098" disa="366" severity="medium">
 		<title>The IPv6 protocol handler must not be bound to the network stack unless needed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="sysctl_net_ipv6_conf_default_accept_redirects_value" ownerid="RHEL-06-000099" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_ipv6_default_accept_redirects" ownerid="RHEL-06-000099" disa="366" severity="medium">
 		<title>The system must ignore ICMPv6 redirects by default.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_ip6tables_enabled" ownerid="RHEL-06-000103" disa="1118" severity="medium">
@@ -351,7 +351,7 @@
 	<overlay owner="disastig" ruleid="configure_auditd_max_log_file_action" ownerid="RHEL-06-000161" disa="366" severity="medium">
 		<title>The system must rotate audit log files that reach the maximum file size.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="configure_auditd_admin_space_left_action" ownerid="RHEL-06-000163" disa="1343" severity="medium">
+	<overlay owner="disastig" ruleid="nonselected" ownerid="RHEL-06-000163" disa="1343" severity="medium">
 		<title>The audit system must switch the system to single-user mode when available audit storage volume becomes dangerously low.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="audit_rules_time_adjtimex" ownerid="RHEL-06-000165" disa="169" severity="low">
@@ -747,16 +747,16 @@
 	<overlay owner="disastig" ruleid="snmpd_not_default_password" ownerid="RHEL-06-000341" disa="366" severity="high">
 		<title>The snmpd service must not use a default password.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="user_umask_bashrc" ownerid="RHEL-06-000342" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_umask_bashrc" ownerid="RHEL-06-000342" disa="366" severity="low">
 		<title>The system default umask for the bash shell must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="user_umask_cshrc" ownerid="RHEL-06-000343" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_umask_cshrc" ownerid="RHEL-06-000343" disa="366" severity="low">
 		<title>The system default umask for the csh shell must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="user_umask_profile" ownerid="RHEL-06-000344" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_umask_etc_profile" ownerid="RHEL-06-000344" disa="366" severity="low">
 		<title>The system default umask in /etc/profile must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="user_umask_logindefs" ownerid="RHEL-06-000345" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_umask_login_defs" ownerid="RHEL-06-000345" disa="366" severity="low">
 		<title>The system default umask in /etc/login.defs must be 077.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="umask_for_daemons" ownerid="RHEL-06-000346" disa="366" severity="low">
