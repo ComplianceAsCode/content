@@ -5,16 +5,16 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgrelease	3
+%global	fedorassgversion	3
 
 Name:		scap-security-guide
-Version:	0.1
-Release:	%{fedorassgrelease}%{?dist}
+Version:	0.1.%{fedorassgversion}
+Release:	1%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Group:		Applications/System
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
-Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}-%{fedorassgrelease}.tar.gz
+Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
 Requires:	xml-common, openscap-utils >= 0.9.1
@@ -32,7 +32,7 @@ conforms to provided guideline. Refer to scap-security-guide(8) manual page for
 further information.
 
 %prep
-%setup -q -n %{name}-%{version}-%{fedorassgrelease}
+%setup -q -n %{name}-%{version}
 
 %build
 cd Fedora && make dist
@@ -53,6 +53,11 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Mon Nov 18 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.3-1
+- Update versioning scheme - move fedorassgrelease to be part of
+  upstream version. Rename it to fedorassgversion to avoid name collision
+  with Fedora package release.
+
 * Tue Oct 22 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-3
 - Add .gitignore for Fedora output directory
 - Set up Fedora release name and CPE based on build system properties
