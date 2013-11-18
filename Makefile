@@ -21,9 +21,10 @@ RPMBUILD_ARGS := --define '_topdir $(RPM_TOPDIR)'  --define '_tmppath $(RPM_TMPD
 FEDORA_SPEC := $(ROOT_DIR)/Fedora/scap-security-guide.spec
 FEDORA_RPM_DEPS := $(FEDORA_SPEC) Makefile
 FEDORA_NAME := $(PKGNAME)
-FEDORA_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(FEDORA_SPEC))
-FEDORA_SSG_RELEASE := $(shell sed -ne 's/^\(.*\)\tfedorassgrelease\t\(.*\)/\2/p' $(FEDORA_SPEC))
-FEDORA_PKG := $(FEDORA_NAME)-$(FEDORA_VERSION)-$(FEDORA_SSG_RELEASE)
+FEDORA_SSG_VERSION := $(shell sed -ne 's/^\(.*\)\tfedorassgversion\t\(.*\)/\2/p' $(FEDORA_SPEC))
+FEDORA_RPM_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(FEDORA_SPEC))
+$(eval FEDORA_RPM_VERSION := $(shell echo $(FEDORA_RPM_VERSION) | sed -ne 's/%{fedorassgversion}/$(FEDORA_SSG_VERSION)/p'))
+FEDORA_PKG := $(FEDORA_NAME)-$(FEDORA_RPM_VERSION)
 FEDORA_TARBALL := $(RPM_TOPDIR)/SOURCES/$(FEDORA_PKG).tar.gz
 FEDORA_DIST := $(shell rpm --eval '%{dist}')
 
@@ -128,10 +129,9 @@ fedora-srpm: $(FEDORA_RPM_DEPS)
 	$(call rpm-prep)
 	# Obtain the source from Fedora's spec file
 	$(eval FEDORA_SOURCE := $(shell sed -ne 's/Source0:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
-	# Substitute %{name}, %{version}, and %{fedorassgrelease} with their actual values
+	# Substitute %{name} and %{version} with their actual values
 	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{name}/$(FEDORA_NAME)/p"))
-	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{version}/$(FEDORA_VERSION)/p"))
-	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{fedorassgrelease}/$(FEDORA_SSG_RELEASE)/p"))
+	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{version}/$(FEDORA_RPM_VERSION)/p"))
 	# Download the tarball
 	@echo "Downloading the $(FEDORA_SOURCE) tarball..."
 	@wget -O $(FEDORA_TARBALL) $(FEDORA_SOURCE)
@@ -145,8 +145,10 @@ rpm: srpm
 	 cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)$(REDHAT_DIST).src.rpm
 
 fedora-rpm: fedora-srpm
+	$(eval FEDORA_RPM_RELEASE := $(shell sed -ne 's/Release:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
+	$(eval FEDORA_RPM_RELEASE := $(shell echo $(FEDORA_RPM_RELEASE) | sed -ne 's/%{?dist}/$(FEDORA_DIST)/p'))
 	@echo "Building Fedora $(FEDORA_PKG) RPM package..."
-	cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(FEDORA_PKG)$(FEDORA_DIST).src.rpm
+	cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(FEDORA_PKG)-$(FEDORA_RPM_RELEASE).src.rpm
 
 clean:
 	rm -rf $(RPM_TMPDIR)
