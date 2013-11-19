@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc1
+%global	fedorassgversion	4.rc2
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -53,6 +53,10 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Tue Nov 19 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc2-1
+- Include remediations for login.defs' based password minimum, maximum and
+  warning age rules
+
 * Mon Nov 18 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc1-1
 - Include directory structure to support remediations
 - Add SCAP "replace or append pattern value in text file based on variable"
