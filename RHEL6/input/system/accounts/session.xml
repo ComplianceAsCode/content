@@ -11,7 +11,7 @@ correct configuration file permissions for interactive accounts,
 particularly those of privileged users such as root or system
 administrators.</description>
 
-<Value id="max_concurrent_login_sessions_value" type="number"
+<Value id="var_accounts_max_concurrent_login_sessions" type="number"
 operator="equals" interactive="0">
 <title>Maximum concurrent login sessions</title>
 <description>Maximum number of concurrent sessions by a user</description>
@@ -24,7 +24,7 @@ operator="equals" interactive="0">
 <value selector="20">20</value>
 </Value>
 
-<Rule id="max_concurrent_login_sessions">
+<Rule id="accounts_max_concurrent_login_sessions">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
 Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
@@ -44,7 +44,7 @@ on the system:
 You should receive output similar to the following:
 <pre>*		hard	maxlogins	10</pre>
 </ocil>
-<oval id="accounts_max_concurrent_login_sessions" value="max_concurrent_login_sessions_value" />
+<oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
 <ident cce="27457-1" />
 <ref nist="AC-10" disa="54"/>
 </Rule>
@@ -89,7 +89,7 @@ Including these entries increases the risk that root could
 execute code from an untrusted location.
 </rationale>
 <ident cce="26826-8" />
-<oval id="accounts_dangerous_path_for_root" />
+<oval id="root_path_no_dot" />
 <ref nist=""/>
 </Rule>
 
@@ -205,7 +205,7 @@ operator="equals" interactive="0">
 <value selector="077">077</value>
 </Value>
 
-<Rule id="user_umask_bashrc">
+<Rule id="accounts_umask_bashrc">
 <title>Ensure the Default Bash Umask is Set Correctly</title>
 <description>
 To ensure the default umask for users of the Bash shell is set properly,
@@ -225,14 +225,13 @@ All output must show the value of <tt>umask</tt> set to 077, as shown below:
 umask 077
 umask 077</pre>
 </ocil>
-
 <ident cce="26917-5" />
 <oval id="accounts_umask_bashrc" value="var_accounts_user_umask"/>
 <ref nist="" disa="366"/>
 <tested by="swells" on="20120929"/>
 </Rule>
 
-<Rule id="user_umask_cshrc">
+<Rule id="accounts_umask_cshrc">
 <title>Ensure the Default C Shell Umask is Set Correctly</title>
 <description>
 To ensure the default umask for users of the C shell is set properly,
@@ -256,7 +255,7 @@ umask 077</pre>
 <tested by="swells" on="20120929"/>
 </Rule>
 
-<Rule id="user_umask_profile">
+<Rule id="accounts_umask_etc_profile">
 <title>Ensure the Default Umask is Set Correctly in /etc/profile</title>
 <description>
 To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
@@ -280,7 +279,7 @@ umask 077</pre>
 <ref nist="" disa="366"/>
 </Rule>
 
-<Rule id="user_umask_logindefs">
+<Rule id="accounts_umask_login_defs">
 <title>Ensure the Default Umask is Set Correctly in login.defs</title>
 <description>
 To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
