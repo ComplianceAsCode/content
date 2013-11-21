@@ -17,8 +17,8 @@
 
 <!--	AC-3, AC-3(3) -->
 <select idref="enable_selinux_bootloader" selected="true" />
-<select idref="set_selinux_state" selected="true" />
-<select idref="set_selinux_policy" selected="true" />
+<select idref="selinux_state" selected="true" />
+<select idref="selinux_policytype" selected="true" />
 <select idref="service_restorecond_enabled" selected="true" />
 <select idref="sshd_use_approved_ciphers" selected="true" />
 
@@ -67,7 +67,7 @@
 <select idref="audit_logs_permissions" selected="true" />
 <select idref="audit_logs_rootowner" selected="true" />
 <select idref="audit_config_immutable" selected="true" />
-<select idref="no_uidzero_except_root" selected="true" />
+<select idref="accounts_no_uid_except_zero" selected="true" />
 <select idref="rpm_verify_permissions" selected="true" />
 
 <!--	AC-6(2) -->
@@ -94,8 +94,8 @@
 
 <!--	AC-10
      	FISMA Refine: One session -->
-<refine-value idref="max_concurrent_login_sessions_value" seletor="1" />
-<select idref="max_concurrent_login_sessions" selected="true" />
+<refine-value idref="var_accounts_max_concurrent_login_sessions" seletor="1" />
+<select idref="accounts_max_concurrent_login_sessions" selected="true" />
 
 <!--	AC-11(a), AC-11(b)
      	FISMA Refine: Lock after 15min -->

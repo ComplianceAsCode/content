@@ -22,7 +22,7 @@ assurance."</description>
 
 	To meet this, SELinux *must* be enabled and configured against either
 	"targeted" or "mls" mode -->
-<refine-value idref="var_selinux_state_name" selector="enforcing" \>
+<refine-value idref="var_selinux_state" selector="enforcing" \>
 <refine-value idref="var_selinux_policy_name" selector="targeted" \>
 
 <!--	AC-4:	TBD 
@@ -111,8 +111,8 @@ assurance."</description>
 <!--  AC-3 -->
 <select idref="sshd_use_approved_ciphers" selected="true" \>
 <select idref="enable_selinux_bootloader" selected="true" \>
-<select idref="set_selinux_state" selected="true" \>
-<select idref="set_selinux_policy" selected="true" \>
+<select idref="selinux_state" selected="true" \>
+<select idref="selinux_policytype" selected="true" \>
 <select idref="service_restorecond_enabled" selected="true" \>
 
 <!-- AC-4 -->
@@ -156,7 +156,7 @@ assurance."</description>
 <select idref="no_files_unowned_by_group" selected="true" \>
 <select idref="world_writable_files_system_ownership" selected="true" \>
 <select idref="umask_for_daemons" selected="true" \>
-<select idref="no_uidzero_except_root" selected="true" \>
+<select idref="accounts_no_uid_except_zero" selected="true" \>
 <select idref="userowner_rsyslog_files" selected="true" \>
 <select idref="groupowner_rsyslog_files" selected="true" \>
 

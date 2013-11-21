@@ -60,6 +60,7 @@ The prelinking feature can interfere with the operation
 of AIDE, because it changes binaries.
 </rationale>
 <ident cce="27221-1" />
+<oval id="disable_prelink" />
 <ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
 </Rule>
 
@@ -164,7 +165,7 @@ Alternatively, the package can be reinstalled from trusted media using the comma
 </description>
 <ocil clause="there is output"> The following command will list which files on the system 
 have file hashes different from what is expected by the RPM database. 
-<pre># rpm -Va | grep '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
+<pre># rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
 </ocil>
 <rationale>
 The hashes of important files like system executables should match the

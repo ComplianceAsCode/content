@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="accounts_dangerous_path_for_root" version="1">
+  <definition class="compliance" id="root_path_no_dot.xml" version="1">
     <metadata>
       <title>Ensure that No Dangerous Directories Exist in Root's Path</title>
       <affected family="unix">
@@ -18,7 +18,7 @@
       <criterion comment="environment variable PATH doesn't contain relative paths" test_ref="test_env_var_contains_relative_path" />
     </criteria>
   </definition>
-  <ind:environmentvariable58_object id="object_accounts_dangerous_path_for_root"
+  <ind:environmentvariable58_object id="object_root_path_no_dot.xml"
   version="1">
     <ind:pid xsi:nil="true" datatype="int" />
     <ind:name>PATH</ind:name>
@@ -26,37 +26,37 @@
   <ind:environmentvariable58_test check="none satisfy"
   comment="environment variable PATH starts with : or ."
   id="test_env_var_begins" version="1">
-    <ind:object object_ref="object_accounts_dangerous_path_for_root" />
+    <ind:object object_ref="object_root_path_no_dot.xml" />
     <ind:state state_ref="state_begins_colon_period" />
   </ind:environmentvariable58_test>
   <ind:environmentvariable58_test check="none satisfy"
   comment="environment variable PATH doesn't contain : twice in a row"
   id="test_env_var_contains_doublecolon" version="1">
-    <ind:object object_ref="object_accounts_dangerous_path_for_root" />
+    <ind:object object_ref="object_root_path_no_dot.xml" />
     <ind:state state_ref="state_contains_double_colon" />
   </ind:environmentvariable58_test>
   <ind:environmentvariable58_test check="none satisfy"
   comment="environment variable PATH doesn't contain . twice in a row"
   id="test_env_var_contains_doubleperiod" version="1">
-    <ind:object object_ref="object_accounts_dangerous_path_for_root" />
+    <ind:object object_ref="object_root_path_no_dot.xml" />
     <ind:state state_ref="state_contains_double_period" />
   </ind:environmentvariable58_test>
   <ind:environmentvariable58_test check="none satisfy"
   comment="environment variable PATH ends with : or ." id="test_env_var_ends"
   version="1">
-    <ind:object object_ref="object_accounts_dangerous_path_for_root" />
+    <ind:object object_ref="object_root_path_no_dot.xml" />
     <ind:state state_ref="state_ends_colon_period" />
   </ind:environmentvariable58_test>
   <ind:environmentvariable58_test check="none satisfy"
   comment="environment variable PATH starts with an absolute path /"
   id="test_env_var_begins_slash" version="1">
-    <ind:object object_ref="object_accounts_dangerous_path_for_root" />
+    <ind:object object_ref="object_root_path_no_dot.xml" />
     <ind:state state_ref="state_begins_slash" />
   </ind:environmentvariable58_test>
   <ind:environmentvariable58_test check="none satisfy"
   comment="environment variable PATH contains relative paths"
   id="test_env_var_contains_relative_path" version="1">
-    <ind:object object_ref="object_accounts_dangerous_path_for_root" />
+    <ind:object object_ref="object_root_path_no_dot.xml" />
     <ind:state state_ref="state_contains_relative_path" />
   </ind:environmentvariable58_test>
   <ind:environmentvariable58_state comment="starts with colon or period"

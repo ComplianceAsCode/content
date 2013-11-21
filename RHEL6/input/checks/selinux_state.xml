@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="selinux_mode" version="1">
+  <definition class="compliance" id="selinux_state" version="1">
     <metadata>
       <title>SELinux Enforcing</title>
       <affected family="unix">
@@ -27,9 +27,9 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_etc_selinux_config" version="1">
-    <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_selinux_state_name" />
+    <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_selinux_state" />
   </ind:textfilecontent54_state>
 
   <external_variable comment="external variable for selinux state"
-  datatype="string" id="var_selinux_state_name" version="1" />
+  datatype="string" id="var_selinux_state" version="1" />
 </def-group>
