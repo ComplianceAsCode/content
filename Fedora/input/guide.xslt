@@ -17,6 +17,7 @@
       </Value>
       <xsl:apply-templates select="document('intro/intro.xml')" />
       <xsl:apply-templates select="document('system/system.xml')" />
+      <xsl:apply-templates select="document('services/services.xml')" />
     </xsl:copy>
   </xsl:template>
 
@@ -48,6 +49,14 @@
       <xsl:apply-templates select="document('system/accounts/restrictions/root_logins.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_storage.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_expiration.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='services']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('services/ntp.xml')" />
+      <xsl:apply-templates select="document('services/ssh.xml')" />
     </xsl:copy>
   </xsl:template>
 
