@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc4
+%global	fedorassgversion	4.rc5
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -53,6 +53,13 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Mon Nov 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc5-1
+- Add OVAL check to test if there's is remote NTP server configured for
+  time data
+- Add system settings section for the guide (to track system wide
+  hardening configurations)
+- Include disable prelink rule and OVAL check for it
+
 * Mon Nov 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc4-1
 - Initial OVAL check if ntpd service is enabled. Add package_installed
   OVAL templating directory structure and functionality.

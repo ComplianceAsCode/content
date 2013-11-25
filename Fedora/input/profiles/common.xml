@@ -2,6 +2,8 @@
 <title>Common Profile for General-Purpose Fedora Systems</title>
 <description>This profile contains items common to general-purpose Fedora installations.</description>
 
+  <select idref="disable_prelink" selected="true"/>
+
 <!-- Installing and Maintaining Software section rules -->
   <!-- Updating Software section rules -->
   <select idref="ensure_gpgcheck_globally_activated" selected="true"/>
@@ -23,7 +25,7 @@
     <select idref="gid_passwd_group_same" selected="true"/>
     <select idref="no_netrc_files" selected="true"/>
     <!-- Set Password Expiration Parameters section rules -->
-    <refine-value idref="var_accounts_password_minlen_login_defs" selector="12" />
+    <refine-value idref="var_accounts_password_minlen_login_defs" selector="12"/>
     <select idref="accounts_password_minlen_login_defs" selected="true"/>
     <refine-value idref="var_accounts_minimum_age_login_defs" selector="7"/>
     <select idref="accounts_minimum_age_login_defs" selected="true"/>
