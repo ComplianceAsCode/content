@@ -329,8 +329,7 @@ access the system, preventing access by passersby.
 <description>
 Run the following command to set the screensaver mode
 in the GNOME desktop to a blank screen:
-<pre># gconftool-2
-  --direct \
+<pre># gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type string \
   --set /apps/gnome-screensaver/mode blank-only</pre>
