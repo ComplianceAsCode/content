@@ -383,12 +383,12 @@
 
   <xsl:template match="service-disable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
-    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
+    <xhtml:pre># systemctl disable <xsl:value-of select="@service"/>.service</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
-    <xhtml:pre># chkconfig --level 2345 <xsl:value-of select="@service"/> on</xhtml:pre>
+    <xhtml:pre># systemctl enable <xsl:value-of select="@service"/>.service</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">

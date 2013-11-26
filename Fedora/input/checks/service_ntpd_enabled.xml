@@ -25,7 +25,6 @@
   <unix:file_object comment="look for ntpd.service in /etc/systemd/system/multi-user.target.wants"
    id="object_ntpd_enabled_multi_user_target" version="1">
 
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="1" recurse_file_system="all" />
     <unix:filepath>/etc/systemd/system/multi-user.target.wants/ntpd.service</unix:filepath>
     <filter action="include">state_symlink</filter>
   </unix:file_object>

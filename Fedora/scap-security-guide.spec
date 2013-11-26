@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc5
+%global	fedorassgversion	4.rc6
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -18,6 +18,7 @@ Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
 Requires:	xml-common, openscap-utils >= 0.9.1
+Obsoletes:	openscap-content < 0:0.9.13
 
 %description
 The scap-security-guide project provides a guide for configuration of the
@@ -53,6 +54,13 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Tue Nov 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc6-1
+- Adjust service-enable-macro, service-disable-macro XSLT transforms
+  definition to evaluate to proper systemd syntax
+- Fix service_ntpd_enabled OVAL check make validate to pass again
+- Include patch from Šimon Lukašík to obsolete openscap-content
+  package (RH BZ#1028706)
+
 * Mon Nov 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc5-1
 - Add OVAL check to test if there's is remote NTP server configured for
   time data
