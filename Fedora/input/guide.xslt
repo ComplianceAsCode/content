@@ -24,8 +24,16 @@
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/settings/settings.xml')" />
       <xsl:apply-templates select="document('system/software/software.xml')" />
       <xsl:apply-templates select="document('system/accounts/accounts.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='settings']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/settings/disable_prelink.xml')" />
     </xsl:copy>
   </xsl:template>
 
