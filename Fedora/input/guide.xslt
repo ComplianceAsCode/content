@@ -26,6 +26,7 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/settings/settings.xml')" />
       <xsl:apply-templates select="document('system/software/software.xml')" />
+      <xsl:apply-templates select="document('system/permissions/permissions.xml')" />
       <xsl:apply-templates select="document('system/accounts/accounts.xml')" />
     </xsl:copy>
   </xsl:template>
@@ -57,6 +58,13 @@
       <xsl:apply-templates select="document('system/accounts/restrictions/root_logins.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_storage.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_expiration.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='permissions']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/permissions/files.xml')" />
     </xsl:copy>
   </xsl:template>
 
