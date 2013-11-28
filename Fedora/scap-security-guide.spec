@@ -57,6 +57,7 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 * Thu Nov 28 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc7-1
 - Include descriptions for permissions section, and rules for checking
   permissions and ownership of shared library files and system executables
+- Disable selected rules by default
 
 * Tue Nov 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc6-1
 - Adjust service-enable-macro, service-disable-macro XSLT transforms
