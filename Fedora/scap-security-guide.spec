@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc7
+%global	fedorassgversion	4.rc8
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -54,6 +54,9 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Fri Nov 29 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc8-1
+- Add OVAL check for sshd's ClientAliveCountMax rule
+
 * Thu Nov 28 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc7-1
 - Include descriptions for permissions section, and rules for checking
   permissions and ownership of shared library files and system executables
