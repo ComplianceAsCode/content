@@ -8,6 +8,15 @@ and more detailed documentation is available from its website,
 http://www.openssh.org. Its server program is called <tt>sshd</tt> and
 provided by the RPM package <tt>openssh-server</tt>.</description>
 
+<Value id="sshd_idle_timeout_value" type="number" operator="equals" interactive="0">
+<title>SSH session Idle time</title>
+<description>Specify duration of allowed idle time.</description>
+<value selector="">300</value>
+<value selector="5_minutes">300</value>
+<value selector="10_minutes">600</value>
+<value selector="15_minutes">900</value>
+</Value>
+
 <Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
 <description>If the system needs to act as an SSH server, then certain changes
@@ -69,7 +78,7 @@ SSH from correctly detecting that the user is idle.
 Causing idle users to be automatically logged out guards against compromises
 one system leading trivially to compromises on another.
 </rationale>
-<!-- <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/> -->
+<oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
 <ref disa="879,1133"/>
 </Rule>
 
