@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc8
+%global	fedorassgversion	4.rc9
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -54,6 +54,9 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Mon Dec 02 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc9-1
+- Fix remediation for Disable Prelinking rule
+
 * Fri Nov 29 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc8-1
 - OVAL check and remediation for sshd's ClientAliveCountMax rule
 - OVAL check for sshd's ClientAliveInterval rule
