@@ -56,6 +56,7 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %changelog
 * Mon Dec 09 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc12-1
 - Rename XCCDF rules
+- Revert Set up Fedora release name and CPE based on build system properties
 
 * Fri Dec 06 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc11-1
 - Shared OVAL check for Verify that Shared Library Files Have Root Ownership
