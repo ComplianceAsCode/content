@@ -4,11 +4,11 @@
 is notably important and may also be susceptible to misconfiguration over time,
 particularly if unpackaged software is installed. As such, an argument exists
 to verify that files' permissions within these directories remain configured
-correctly and restrictively.   
+correctly and restrictively.
 </description>
 
 <Rule id="file_permissions_library_dirs" severity="medium">
-<title>Verify that Shared Library Files Have Restrictive Permissions</title>
+<title>Shared Library Files Have Restrictive Permissions</title>
 <description>System-wide shared library files, which are linked to executables
 during process load time or run time, are stored in the following directories
 by default:
@@ -34,7 +34,7 @@ system.
 </Rule>
 
 <Rule id="file_ownership_library_dirs" severity="medium">
-<title>Verify that Shared Library Files Have Root Ownership</title>
+<title>Shared Library Files Have Root Ownership</title>
 <description>System-wide shared library files, which are linked to executables
 during process load time or run time, are stored in the following directories
 by default:
@@ -59,7 +59,7 @@ runtime. Proper ownership is necessary to protect the integrity of the system.
 </Rule>
 
 <Rule id="file_permissions_binary_dirs" severity="medium">
-<title>Verify that System Executables Have Restrictive Permissions</title>
+<title>System Executables Have Restrictive Permissions</title>
 <description>
 System executables are stored in the following directories by default:
 <pre>/bin
@@ -82,7 +82,7 @@ these programs cannot be co-opted.
 </Rule>
 
 <Rule id="file_ownership_binary_dirs" severity="medium">
-<title>Verify that System Executables Have Root Ownership</title>
+<title>System Executables Have Root Ownership</title>
 <description>
 System executables are stored in the following directories by default:
 <pre>/bin
