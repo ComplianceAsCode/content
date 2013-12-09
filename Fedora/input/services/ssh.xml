@@ -26,7 +26,7 @@ to this file. See the <tt>sshd_config(5)</tt> man page for more detailed
 information.</description>
 
 <Rule id="sshd_disable_root_login" severity="medium">
-<title>Disable SSH Root Login</title>
+<title>SSH Root Login Disabled</title>
 <description>The root user should never be allowed to login to a system
 directly over a network. To disable root login via SSH, add or correct the
 following line in <tt>/etc/ssh/sshd_config</tt>:
@@ -42,7 +42,7 @@ root's password.
 </Rule>
 
 <Rule id="sshd_disable_empty_passwords" severity="high">
-<title>Disable SSH Access via Empty Passwords</title>
+<title>SSH Access via Empty Passwords Disabled</title>
 <description>To explicitly disallow remote login from accounts with empty
 passwords, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitEmptyPasswords no</pre>
@@ -60,7 +60,7 @@ misconfiguration elsewhere.
 </Rule>
 
 <Rule id="sshd_set_idle_timeout">
-<title>Set SSH Idle Timeout Interval</title>
+<title>SSH Idle Timeout Interval Used</title>
 <description>SSH allows administrators to set an idle timeout interval.
 After this interval has passed, the idle user will be automatically logged out.
 <br /><br />
@@ -83,7 +83,7 @@ one system leading trivially to compromises on another.
 </Rule>
 
 <Rule id="sshd_set_keepalive">
-<title>Set SSH Client Alive Count</title>
+<title>SSH Client Alive Count Used</title>
 <description>To ensure the SSH idle timeout occurs precisely when the
 <tt>ClientAliveCountMax</tt> is set, edit <tt>/etc/ssh/sshd_config</tt> as
 follows:

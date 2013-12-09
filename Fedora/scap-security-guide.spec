@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc11
+%global	fedorassgversion	4.rc12
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -54,6 +54,9 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Mon Dec 09 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc12-1
+- Rename XCCDF rules
+
 * Fri Dec 06 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc11-1
 - Shared OVAL check for Verify that Shared Library Files Have Root Ownership
 - Shared OVAL check for Verify that System Executables Have Restrictive Permissions
