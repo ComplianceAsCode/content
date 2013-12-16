@@ -3,14 +3,13 @@
     <metadata>
       <title>Ensure /var Located On Separate Partition</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>Ensuring that /var is mounted on its own partition enables
       the setting of more restrictive mount options, which is used as temporary
       storage by many program, particularly system services such as daemons. It
       is not uncommon for the /var directory to contain world-writable
       directories, installed by other software packages.</description>
-      <reference source="MED" ref_id="20130830" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_var_partition" comment="/var on own partition" />

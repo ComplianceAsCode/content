@@ -3,11 +3,10 @@
     <metadata>
       <title>Ensure /var/log Located On Separate Partition</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>System logs are stored in the /var/log directory. Ensure
       that it has its own partition or logical volume.</description>
-      <reference source="MED" ref_id="20130830" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_var_log_partition" comment="/var/log on own partition" />
