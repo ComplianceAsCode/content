@@ -1,0 +1,103 @@
+<Group id="ntp">
+<title>Network Time Protocol</title>
+<description>The Network Time Protocol is used to manage the system
+clock over a network. Computer clocks are not very accurate, so
+time will drift unpredictably on unmanaged systems. Central time
+protocols can be used both to ensure that time is consistent among
+a network of machines, and that their time is consistent with the
+outside world.
+<br /><br />
+If every system on a network reliably reports the same time, then it is much
+easier to correlate log messages in case of an attack. In addition, a number of
+cryptographic protocols (such as Kerberos) use timestamps to prevent certain
+types of attacks. If your network does not have synchronized time, these
+protocols may be unreliable or even unusable.
+<br /><br />
+Depending on the specifics of the network, global time accuracy may be just as
+important as local synchronization, or not very important at all. If your
+network is connected to the Internet, using a
+public timeserver (or one provided by your enterprise) provides globally
+accurate timestamps which may be essential in investigating or responding to
+an attack which originated outside of your network.
+<br /><br />
+A typical network setup involves a small number of internal systems operating as NTP
+servers, and the remainder obtaining time information from those
+internal servers.
+<br /><br />
+More information on how to configure the NTP server software,
+including configuration of cryptographic authentication for
+time data, is available at http://www.ntp.org.
+</description>
+
+<Rule id="service_ntpd_enabled" severity="medium">
+<title>Enable the NTP Daemon</title>
+<description>
+<service-enable-macro service="ntpd" />
+</description>
+<ocil><service-enable-check-macro service="ntpd" /></ocil>
+<rationale>Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>
+service will be running and that the system will synchronize its time to
+any servers specified. This is important whether the system is configured to be
+a client (and synchronize only its own clock) or it is also acting as an NTP
+server to other systems.  Synchronizing time is essential for authentication
+services such as Kerberos, but it is also important for maintaining accurate
+logs and auditing possible security breaches.  
+<br /><br />
+The NTP daemon offers all of the functionality of <tt>ntpdate</tt>, which is now 
+deprecated.  Additional information on this is available at 
+http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate</rationale>
+<ident cce="27093-4" />
+<oval id="service_ntpd_enabled" />
+<ref nist="AU-8(1)" disa="160" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="ntpd_specify_remote_server" severity="medium">
+<title>Specify a Remote NTP Server</title>
+<description>To specify a remote NTP server for time synchronization, edit
+the file <tt>/etc/ntp.conf</tt>. Add or correct the following lines,
+substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>:
+<pre>server <i>ntpserver</i></pre>
+This instructs the NTP software to contact that remote server to obtain time
+data.
+</description>
+<ocil clause="this is not the case">
+To verify that a remote NTP service is configured for time synchronization,
+open the following file:
+<pre>/etc/ntp.conf</pre>
+In the file, there should be a section similar to the following:
+<pre>server <i>ntpserver</i></pre>
+</ocil>
+<rationale>Synchronizing with an NTP server makes it possible
+to collate system logs from multiple sources or correlate computer events with
+real time events.
+</rationale>
+<ident cce="27098-3" />
+<oval id="ntp_remote_server" />
+<ref nist="AU-8(1)" disa="160" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="ntpd_specify_multiple_servers">
+<title>Specify Additional Remote NTP Servers</title>
+<description>Additional NTP servers can be specified for time synchronization
+in the file <tt>/etc/ntp.conf</tt>.  To do so, add additional lines of the
+following form, substituting the IP address or hostname of a remote NTP server for
+<em>ntpserver</em>:
+<pre>server <i>ntpserver</i></pre>
+</description>
+<rationale>Specifying additional NTP servers increases the availability of
+accurate time data, in the event that one of the specified servers becomes
+unavailable. This is typical for a system acting as an NTP server for
+other systems.
+</rationale>
+<ident cce="26958-9" />
+<ref nist="AU-8(1)" />
+</Rule>
+
+<!-- future Rules (for later profiles/enhancements):
+ensuring use of the restrict keyword
+enabling cryptographic authentication (multiple options)
+-->
+
+</Group>

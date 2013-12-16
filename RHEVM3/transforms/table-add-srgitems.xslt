@@ -4,7 +4,7 @@
      that are not already included -->
 
 <xsl:variable name="srgtable" select="document('../output/table-rhevm3-srgmap-flat.xhtml')/html/body/table" />
-<xsl:variable name="cci_list" select="document('../references/disa-cci-list.xml')/cci:cci_list" />
+<xsl:variable name="cci_list" select="document('../../../shared/references/disa-cci-list.xml')/cci:cci_list" />
 
 
 <xsl:template match="table">
