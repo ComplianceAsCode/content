@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc12
+%global	fedorassgversion	4
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -32,6 +32,18 @@ scap-workbench GUI tool from scap-workbench package to verify that the system
 conforms to provided guideline. Refer to scap-security-guide(8) manual page for
 further information.
 
+%package	compat
+Summary:	Extra package to ensure compatibility with firstaidkit-plugin-openscap
+License:	Public Domain
+BuildArch:	noarch
+Requires:	xml-common, openscap-utils >= 0.9.1
+Provides:	openscap-content, firstaidkit-plugin-openscap
+
+%description	compat
+This package corrects Provides requirements needed to maintain
+backward-compatibility with openscap-content and firstaidkit-plugin-openscap
+packages.
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -53,60 +65,51 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
+%files compat
+
 %changelog
-* Mon Dec 09 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc12-1
+* Fri Dec 20 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4-1
+- Fix remediation for sshd set keepalive (ClientAliveCountMax) and move
+  it to /shared
+- Add shared remediations for sshd disable empty passwords and
+  sshd set idle timeout
+- Shared remediation for sshd disable root login
+- Add empty -compat subpackage to ensure backward-compatibility with
+  openscap-content and firstaidkit-plugin-openscap packages (RH BZ#1040335)
+- OVAL check for sshd disable root login
+- Fix typo in OVAL check for sshd disable empty passwords
+- OVAL check for sshd disable empty passwords
+- Unselect no shelllogin for systemaccounts rule from being run by default
 - Rename XCCDF rules
 - Revert Set up Fedora release name and CPE based on build system properties
-
-* Fri Dec 06 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc11-1
 - Shared OVAL check for Verify that Shared Library Files Have Root Ownership
 - Shared OVAL check for Verify that System Executables Have Restrictive Permissions
 - Shared OVAL check for Verify that System Executables Have Root Ownership
-
-* Thu Dec 05 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc10-1
 - Shared OVAL check for Verify that Shared Library Files Have Restrictive
   Permissions
-
-* Mon Dec 02 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc9-1
 - Fix remediation for Disable Prelinking rule
-
-* Fri Nov 29 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc8-1
 - OVAL check and remediation for sshd's ClientAliveCountMax rule
 - OVAL check for sshd's ClientAliveInterval rule
-
-* Thu Nov 28 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc7-1
 - Include descriptions for permissions section, and rules for checking
   permissions and ownership of shared library files and system executables
 - Disable selected rules by default
 - Add remediation for Disable Prelinking rule
-
-* Tue Nov 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc6-1
 - Adjust service-enable-macro, service-disable-macro XSLT transforms
   definition to evaluate to proper systemd syntax
 - Fix service_ntpd_enabled OVAL check make validate to pass again
 - Include patch from Šimon Lukašík to obsolete openscap-content
   package (RH BZ#1028706)
-
-* Mon Nov 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc5-1
 - Add OVAL check to test if there's is remote NTP server configured for
   time data
 - Add system settings section for the guide (to track system wide
   hardening configurations)
 - Include disable prelink rule and OVAL check for it
-
-* Mon Nov 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc4-1
 - Initial OVAL check if ntpd service is enabled. Add package_installed
   OVAL templating directory structure and functionality.
-
-* Fri Nov 22 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc3-1
 - Include services section, and XCCDF description for selected ntpd's
   sshd's service rules
-
-* Tue Nov 19 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc2-1
 - Include remediations for login.defs' based password minimum, maximum and
   warning age rules
-
-* Mon Nov 18 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc1-1
 - Include directory structure to support remediations
 - Add SCAP "replace or append pattern value in text file based on variable"
   remediation script generator
