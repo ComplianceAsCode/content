@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc13
+%global	fedorassgversion	4.rc14
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -54,6 +54,9 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Mon Dec 16 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4-rc14-1
+- OVAL check for sshd disable root login
+
 * Fri Dec 13 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc13-1
 - OVAL check for sshd disable empty passwords
 - Unselect no shelllogin for systemaccounts rule from being run by default
