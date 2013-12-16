@@ -57,7 +57,7 @@ by security standards.
 </Rule>
 
 <Rule id="securetty_root_login_console_only" severity="medium">
-<title>Restrict Virtual Console Root Logins</title>
+<title>Virtual Console Root Logins Restricted</title>
 <description>
 To restrict root logins through the (deprecated) virtual console devices,
 ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
@@ -82,7 +82,7 @@ using the root account.
 </Rule>
 
 <Rule id="restrict_serial_port_logins">
-<title>Restrict Serial Port Root Logins</title>
+<title>Serial Port Root Logins Restricted</title>
 <description>To restrict root logins on serial ports,
 ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
 <pre>ttyS0
@@ -105,7 +105,7 @@ using the root account.
 </Rule>
 
 <Rule id="no_root_webbrowsing">
-<title>Restrict Web Browser Use for Administrative Accounts</title>
+<title>Web Browser Use for Administrative Accounts Restricted</title>
 <description>
 Enforce policy requiring administrative accounts use web browsers only for
 local service administration.
@@ -122,7 +122,7 @@ administration should be documented in site-defined policy.
 </Rule>
 
 <Rule id="no_shelllogin_for_systemaccounts" severity="medium">
-<title>Ensure that System Accounts Do Not Run a Shell Upon Login</title>
+<title>System Accounts Do Not Run a Shell Upon Login</title>
 <description>
 Some accounts are not associated with a human
 user of the system, and exist to perform some administrative
@@ -159,7 +159,7 @@ become inaccessible.
 </Rule>
 
 <Rule id="no_uidzero_except_root" severity="medium">
-<title>Verify Only Root Has UID 0</title>
+<title>Only Root Has UID 0</title>
 <description>
 If any account other than root has a UID of 0,
 this misconfiguration should be investigated and the
@@ -182,7 +182,7 @@ access to root privileges in an accountable manner.
 </Rule>
 
 <Rule id="root_path_default">
-<title>Root Path Must Be Vendor Default</title>
+<title>Root Path Is Vendor Default</title>
 <description>
 Assuming root shell is bash, edit the following files:
 <pre>~/.profile</pre>

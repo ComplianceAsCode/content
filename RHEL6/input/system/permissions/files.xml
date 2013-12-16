@@ -504,7 +504,7 @@ appropriate group.
 The following command will discover and print world-writable directories that
 are not owned by a system account, given the assumption that only system
 accounts have a uid lower than 500.  Run it once for each local partition <i>PART</i>:
-<pre># find <i>PART</i> -xdev -type d -perm -0002 -uid +500 -print</pre>
+<pre># find <i>PART</i> -xdev -type d -perm -0002 -uid +499 -print</pre>
 </ocil>
 <rationale>
 Allowing a user account to own a world-writable directory is

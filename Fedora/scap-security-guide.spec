@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc6
+%global	fedorassgversion	4.rc13
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -54,6 +54,36 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
 %changelog
+* Fri Dec 13 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc13-1
+- OVAL check for sshd disable empty passwords
+- Unselect no shelllogin for systemaccounts rule from being run by default
+
+* Mon Dec 09 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc12-1
+- Rename XCCDF rules
+- Revert Set up Fedora release name and CPE based on build system properties
+
+* Fri Dec 06 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc11-1
+- Shared OVAL check for Verify that Shared Library Files Have Root Ownership
+- Shared OVAL check for Verify that System Executables Have Restrictive Permissions
+- Shared OVAL check for Verify that System Executables Have Root Ownership
+
+* Thu Dec 05 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc10-1
+- Shared OVAL check for Verify that Shared Library Files Have Restrictive
+  Permissions
+
+* Mon Dec 02 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc9-1
+- Fix remediation for Disable Prelinking rule
+
+* Fri Nov 29 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc8-1
+- OVAL check and remediation for sshd's ClientAliveCountMax rule
+- OVAL check for sshd's ClientAliveInterval rule
+
+* Thu Nov 28 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc7-1
+- Include descriptions for permissions section, and rules for checking
+  permissions and ownership of shared library files and system executables
+- Disable selected rules by default
+- Add remediation for Disable Prelinking rule
+
 * Tue Nov 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc6-1
 - Adjust service-enable-macro, service-disable-macro XSLT transforms
   definition to evaluate to proper systemd syntax

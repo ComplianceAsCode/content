@@ -29,7 +29,7 @@ http://www.ntp.org.
 </description>
 
 <Rule id="service_ntpd_enabled" severity="medium">
-<title>Enable the NTP Daemon</title>
+<title>NTP Daemon Enabled</title>
 <description> <service-enable-macro service="ntpd" /> </description>
 <rationale>Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>
 service will be running and that the system will synchronize its time to any
@@ -47,7 +47,7 @@ http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate</rationale>
 </Rule>
 
 <Rule id="ntpd_specify_remote_server" severity="medium">
-<title>Specify a Remote NTP Server</title>
+<title>Remote NTP Server Specified</title>
 <description>To specify a remote NTP server for time synchronization, edit
 the file <tt>/etc/ntp.conf</tt>. Add or correct the following lines,
 substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>:
