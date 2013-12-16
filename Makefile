@@ -83,6 +83,9 @@ fedora-tarball:
 	# Copy the source tree for Fedora content
 	cp -r Fedora $(RPM_TMPDIR)/$(FEDORA_PKG)
 
+	# Copy the source tree for shared OVAL / XCCDF content
+	cp -r shared $(RPM_TMPDIR)/$(FEDORA_PKG)
+
 	# Don't trust the developers, clean out the build
 	# environment before packaging
 	cd $(RPM_TMPDIR)/$(FEDORA_PKG)/Fedora && $(MAKE) clean
