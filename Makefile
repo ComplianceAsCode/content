@@ -45,10 +45,13 @@ endef
 
 # Define Makefile targets below
 
-all: rhel6 openstack rhevm3 rpm zipfile
+all: rhel6 rhel7 openstack rhevm3 rpm zipfile
 
 rhel6:
-	cd RHEL6 && $(MAKE)
+	cd RHEL/6/ && $(MAKE)
+
+rhel7:
+	cd RHEL/7/ && $(MAKE)
 
 openstack:
 	cd OpenStack && $(MAKE)
@@ -61,12 +64,12 @@ tarball:
 
 	# Copy in the source trees for both RHEL6
 	# and JBossEAP5 content
-	cp -r RHEL6 $(RPM_TMPDIR)/$(PKG)
+	cp -r RHEL/6/ $(RPM_TMPDIR)/$(PKG)
 	cp -r JBossEAP5 $(RPM_TMPDIR)/$(PKG)
 
 	# Don't trust the developers, clean out the build
 	# environment before packaging
-	cd $(RPM_TMPDIR)/$(PKG)/RHEL6 && $(MAKE) clean
+	cd $(RPM_TMPDIR)/$(PKG)/RHEL/6/ && $(MAKE) clean
 
 	# Create the source tar, copy it to $TARBALL
 	# (e.g. somewhere in the SOURCES directory)
@@ -101,7 +104,7 @@ zipfile:
 	# (Note: By default zip will store the full path
 	#	 relative to the current directory, need
 	#	 to cd into $(RPM_TMPDIR)
-	cp RHEL6/output/ssg-* $(RPM_TOPDIR)/ZIP/
+	cp RHEL/6/output/ssg-* $(RPM_TOPDIR)/ZIP/
 	cp JBossEAP5/eap5-* $(RPM_TOPDIR)/ZIP/
 	# Originally attempted to `cd $(RPM_TOPDIR)/ZIP` and
 	# make the zip from there, however it still placed it
@@ -155,7 +158,8 @@ fedora-rpm: fedora-srpm
 
 clean:
 	rm -rf $(RPM_TMPDIR)
-	cd RHEL6 && $(MAKE) clean
+	cd RHEL/6 && $(MAKE) clean
+	cd RHEL/7 && $(MAKE) clean
 	cd OpenStack && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean

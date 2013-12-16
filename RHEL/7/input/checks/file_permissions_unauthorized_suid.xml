@@ -1,0 +1,99 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_unauthorized_suid" version="1">
+    <metadata>
+      <title>Find setuid files from system packages</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>All files with setuid should be owned by a base system package</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all setuid files" test_ref="check_setuid_files" />
+    </criteria>
+  </definition>
+
+ <unix:file_test check="all" check_existence="none_exist" comment="setuid files outside system RPMs" id="check_setuid_files" version="1">
+    <unix:object object_ref="object_file_permissions_unauthorized_suid" />
+  </unix:file_test>
+
+  <unix:file_object comment="files with suid set" id="object_file_permissions_unauthorized_suid" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_file_permissions_unauthorized_suid</filter>
+    <filter action="exclude">state_suid_whitelist</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_unauthorized_suid" version="1">
+    <unix:suid datatype="boolean">true</unix:suid>
+  </unix:file_state>
+
+<!-- list of all setuid files included with base RHEL6 system -->
+   <unix:file_state id="state_suid_whitelist" version="1">
+      <unix:filepath var_ref="var_suid_whitelist" var_check="at least one" />
+   </unix:file_state>
+
+        <constant_variable id="var_suid_whitelist" version="1" datatype="string" comment="suid whitelist">
+                <value>/bin/fusermount</value>
+                <value>/bin/mount</value>
+                <value>/bin/ping6</value>
+                <value>/bin/ping</value>
+                <value>/bin/su</value>
+                <value>/bin/umount</value>
+                <value>/lib64/dbus-1/dbus-daemon-launch-helper</value>
+                <value>/lib/dbus-1/dbus-daemon-launch-helper</value>
+                <value>/sbin/mount.ecryptfs_private</value>
+                <value>/sbin/mount.nfs</value>
+                <value>/sbin/pam_timestamp_check</value>
+                <value>/sbin/unix_chkpwd</value>
+                <value>/usr/bin/abrt-action-install-debuginfo-to-abrt-cache</value>
+                <value>/usr/bin/at</value>
+                <value>/usr/bin/chage</value>
+                <value>/usr/bin/chfn</value>
+                <value>/usr/bin/chsh</value>
+                <value>/usr/bin/crontab</value>
+                <value>/usr/bin/gpasswd</value>
+                <value>/usr/bin/kgrantpty</value>
+                <value>/usr/bin/kpac_dhcp_helper</value>
+                <value>/usr/bin/ksu</value>
+                <value>/usr/bin/newgrp</value>
+                <value>/usr/bin/newrole</value>
+                <value>/usr/bin/passwd</value>
+                <value>/usr/bin/pkexec</value>
+                <value>/usr/bin/rcp</value>
+                <value>/usr/bin/rlogin</value>
+                <value>/usr/bin/rsh</value>
+                <value>/usr/bin/sperl5.10.1</value>
+                <value>/usr/bin/staprun</value>
+                <value>/usr/bin/sudoedit</value>
+                <value>/usr/bin/sudo</value>
+                <value>/usr/bin/Xorg</value>
+                <value>/usr/lib64/amanda/calcsize</value>
+                <value>/usr/lib64/amanda/dumper</value>
+                <value>/usr/lib64/amanda/killpgrp</value>
+                <value>/usr/lib64/amanda/planner</value>
+                <value>/usr/lib64/amanda/rundump</value>
+                <value>/usr/lib64/amanda/runtar</value>
+                <value>/usr/lib64/nspluginwrapper/plugin-config</value>
+                <value>/usr/lib/amanda/calcsize</value>
+                <value>/usr/lib/amanda/dumper</value>
+                <value>/usr/lib/amanda/killpgrp</value>
+                <value>/usr/lib/amanda/planner</value>
+                <value>/usr/lib/amanda/rundump</value>
+                <value>/usr/lib/amanda/runtar</value>
+                <value>/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache</value>
+                <value>/usr/libexec/spice-gtk-x86_64/spice-client-glib-usb-acl-helper</value>
+                <value>/usr/libexec/mc/cons.saver</value>
+                <value>/usr/libexec/openssh/ssh-keysign</value>
+                <value>/usr/libexec/polkit-1/polkit-agent-helper-1</value>
+                <value>/usr/libexec/pt_chown</value>
+                <value>/usr/libexec/pulse/proximity-helper</value>
+                <value>/usr/lib/nspluginwrapper/plugin-config</value>
+                <value>/usr/sbin/amcheck</value>
+                <value>/usr/sbin/seunshare</value>
+                <value>/usr/sbin/suexec</value>
+                <value>/usr/sbin/userhelper</value>
+                <value>/usr/sbin/usernetctl</value>
+        </constant_variable>
+
+</def-group>
