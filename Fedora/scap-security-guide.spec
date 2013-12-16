@@ -56,6 +56,7 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %changelog
 * Mon Dec 16 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4-rc14-1
 - OVAL check for sshd disable root login
+- Fix typo in OVAL check for sshd disable empty passwords
 
 * Fri Dec 13 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc13-1
 - OVAL check for sshd disable empty passwords
