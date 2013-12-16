@@ -10,7 +10,7 @@
        <!-- adding profiles here -->
 		<xsl:apply-templates select="document('profiles/test.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
-		<xsl:apply-templates select="document('profiles/stig-rhel6-server.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
 
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>

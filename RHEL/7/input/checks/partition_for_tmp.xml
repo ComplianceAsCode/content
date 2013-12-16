@@ -3,12 +3,11 @@
     <metadata>
       <title>Ensure /tmp Located On Separate Partition</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>The /tmp directory is a world-writable directory used for
       temporary file storage. Verify that it has its own partition or logical
       volume.</description>
-      <reference source="MED" ref_id="20130830" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_tmp_partition" comment="/tmp on own partition" />
