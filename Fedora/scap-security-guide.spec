@@ -32,6 +32,18 @@ scap-workbench GUI tool from scap-workbench package to verify that the system
 conforms to provided guideline. Refer to scap-security-guide(8) manual page for
 further information.
 
+%package	compat
+Summary:	Extra package to ensure compatibility with firstaidkit-plugin-openscap
+License:	Public Domain
+BuildArch:	noarch
+Requires:	xml-common, openscap-utils >= 0.9.1
+Provides:	openscap-content, firstaidkit-plugin-openscap
+
+%description	compat
+This package corrects Provides requirements needed to maintain
+backward-compatibility with openscap-content and firstaidkit-plugin-openscap
+packages.
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -53,9 +65,13 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
+%files compat
+
 %changelog
 * Thu Dec 19 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc15-1
 - Shared remediation for sshd disable root login
+- Add empty -compat subpackage to ensure backward-compatibility with
+  openscap-content and firstaidkit-plugin-openscap packages (RH BZ#1040335)
 
 * Mon Dec 16 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc14-1
 - OVAL check for sshd disable root login
