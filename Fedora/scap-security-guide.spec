@@ -5,7 +5,7 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4.rc15
+%global	fedorassgversion	4.rc16
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -68,6 +68,10 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %files compat
 
 %changelog
+* Fri Dec 20 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc16-1
+- Fix remediation for sshd set keepalive (ClientAliveCountMax) and move
+  it to /shared
+
 * Thu Dec 19 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc15-1
 - Shared remediation for sshd disable root login
 - Add empty -compat subpackage to ensure backward-compatibility with
