@@ -1,0 +1,1 @@
+../../../../shared/fixes/bash/sshd_disable_empty_passwords.sh

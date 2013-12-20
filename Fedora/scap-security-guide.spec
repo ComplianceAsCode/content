@@ -71,6 +71,7 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 * Fri Dec 20 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc16-1
 - Fix remediation for sshd set keepalive (ClientAliveCountMax) and move
   it to /shared
+- Add shared remediation for sshd disable empty passwords
 
 * Thu Dec 19 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4.rc15-1
 - Shared remediation for sshd disable root login
