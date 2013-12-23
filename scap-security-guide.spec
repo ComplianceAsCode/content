@@ -1,5 +1,5 @@
 
-%global		redhatssgrelease	15
+%global		redhatssgrelease	16
 
 Name:		scap-security-guide
 Version:	0.1
@@ -73,6 +73,7 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 - OVAL for accounts_no_uid_except_zero
 - OVAL for accounts_password_minlen_login_defs
 - OVAL for accounts_minimum_age_login_defs
+- OVAL for accounts_password_warn_age_login_defs
 
 * Fri Nov 01 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15
 - Version bump
