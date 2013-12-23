@@ -69,6 +69,7 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 - OVAL for accounts_password_reuse_limit
 - OVAL for no_shelllogin_for_systemaccounts
 - OVAL for no_empty_passwords
+- OVAL for no_hashes_outside_shadow
 
 * Fri Nov 01 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15
 - Version bump
