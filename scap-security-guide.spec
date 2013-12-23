@@ -74,6 +74,7 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 - OVAL for accounts_password_minlen_login_defs
 - OVAL for accounts_minimum_age_login_defs
 - OVAL for accounts_password_warn_age_login_defs
+- OVAL for accounts_password_pam_cracklib_retry
 
 * Fri Nov 01 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15
 - Version bump
