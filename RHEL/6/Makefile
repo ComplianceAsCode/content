@@ -1,7 +1,7 @@
 IN = input
 OUT = output
 TRANS = transforms
-REFS = "../../shared/references"
+REFS = ../../shared/references
 UTILS = utils
 DIST = dist
 
@@ -64,6 +64,7 @@ table-stigs: shorthand2xccdf table-srgmap checks
 	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
+	# asdasd
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
@@ -75,7 +76,8 @@ table-stigs: shorthand2xccdf table-srgmap checks
 		$(OUT)/unlinked-rhel6-xccdf.xml
 	xsltproc -o $(OUT)/table-rhel6-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhel6-xccdf.xml  
 
-tables: table-refs table-idents table-srgmap table-stigs
+tables: table-refs table-idents table-stigs
+#tables: table-refs table-idents table-srgmap table-stigs
 
 content: shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
