@@ -45,7 +45,7 @@ lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
 Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
-<ident cce="27153-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="kernel_module_ipv6_option_disabled" />
 <ref nist="CM-7" disa="1551"/>
 <tested by="DS" on="20121024"/>
@@ -57,7 +57,7 @@ the vulnerability to exploitation.
 <pre>NETWORKING_IPV6=no
 IPV6INIT=no</pre>
 </description>
-<ident cce="27161-9" />
+<ident cce="RHEL7-CCE-TBD" />
 </Rule>
 
 <Rule id="network_ipv6_disable_rpc">
@@ -70,7 +70,7 @@ following two lines in <tt>/etc/netconfig</tt>:
 <pre>udp6       tpi_clts      v     inet6    udp     -       -
 tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
 </description>
-<ident cce="27232-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="network_ipv6_disable_rpc" />
 <ref nist="CM-7" />
 </Rule>
@@ -133,7 +133,7 @@ operator="equals" interactive="0">
 <rationale>
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="27164-3" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
 <ref nist="CM-7" />
 </Rule>
@@ -149,7 +149,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="27166-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-7" disa="1551"/>
 </Rule>
@@ -166,7 +166,7 @@ Manually assigning an IP address is preferable to accepting one from routers or
 from the network otherwise. The example address here is an IPv6 address
 reserved for documentation purposes, as defined by RFC3849.
 </description>
-<ident cce="27233-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="network_ipv6_static_address" />
 <ref nist="" />
 </Rule>
@@ -183,7 +183,7 @@ hardware over its lifetime using its traffic. If it is important for a system's
 IP address to not trivially reveal its hardware address, this setting should be
 applied.
 </description>
-<ident cce="27154-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="network_ipv6_privacy_extensions" />
 <ref nist="" />
 </Rule>
@@ -197,7 +197,7 @@ the following line (substituting your gateway IP as appropriate):
 Router addresses should be manually set and not accepted via any
 auto-configuration or router advertisement.
 </description>
-<ident cce="27234-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="network_ipv6_default_gateway" />
 <ref nist="" />
 </Rule>

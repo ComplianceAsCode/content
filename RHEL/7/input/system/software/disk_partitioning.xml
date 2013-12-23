@@ -37,7 +37,7 @@ The <tt>/tmp</tt> partition is used as temporary storage by many programs.
 Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
-<ident cce="26435-8"/>
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="partition_for_tmp" />
 <ref nist="" disa="1208"/>
 <tested by="MM" on="20120928"/>
@@ -57,7 +57,7 @@ system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories, installed by other software packages.
 </rationale>
-<ident cce="26639-5"/>
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="partition_for_var" />
 <ref nist="" disa="1208"/>
 <tested by="MM" on="20120928"/>
@@ -76,7 +76,7 @@ Placing <tt>/var/log</tt> in its own partition
 enables better separation between log files
 and other files in <tt>/var/</tt>.
 </rationale>
-<ident cce="26215-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="partition_for_var_log" />
 <ref nist="AU-9" disa="1208"/>
 <tested by="MM" on="20120928"/>
@@ -98,7 +98,7 @@ and other files, and helps ensure that
 auditing cannot be halted due to the partition running out
 of space.
 </rationale>
-<ident cce="26436-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="partition_for_var_log_audit" />
 <ref nist="AU-4,AU-9" disa="137,138,1208"/>
 <tested by="MM" on="20120928"/>
@@ -119,7 +119,7 @@ Ensuring that <tt>/home</tt> is mounted on its own partition enables the
 setting of more restrictive mount options, and also helps ensure that
 users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
-<ident cce="26557-9" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="partition_for_home" />
 <ref nist="" disa="1208"/>
 <tested by="MM" on="20120928"/>
@@ -158,7 +158,7 @@ The risk of a system's physical compromise, particularly mobile systems such as
 laptops, places its data at risk of compromise.  Encrypting this data mitigates
 the risk of its loss if the system is lost.
 </rationale>
-<ident cce="27596-6"/>
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="SC-13, SC-28" disa="1019,1199,1200" />
 </Rule>
 
