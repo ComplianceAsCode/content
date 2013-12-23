@@ -33,31 +33,44 @@ guideline. Refer to scap-security-guide(8) manual page for further information.
 %setup -q -n %{name}-%{version}-%{redhatssgrelease}
 
 %build
-cd RHEL6 && make dist
+(cd RHEL/6 && make dist)
+(cd RHEL/7 && make dist)
 
 %install
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 
 # Add in core content (SCAP)
-cp -a RHEL6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in manpage
-cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
+cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
 %files
 %{_datadir}/xml/scap
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
-%doc RHEL6/LICENSE RHEL6/output/rhel6-guide.html RHEL6/output/table-rhel6-cces.html RHEL6/output/table-rhel6-nistrefs-common.html RHEL6/output/table-rhel6-nistrefs.html RHEL6/output/table-rhel6-srgmap-flat.html RHEL6/output/table-rhel6-srgmap-flat.xhtml RHEL6/output/table-rhel6-srgmap.html RHEL6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
+%doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Mon Dec 23 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc1
++ Added RHEL7 content to SSG rpm
+- partition_for_tmp
+- partition_for_var
+- partition_for_var_log
+- partition_for_var_log_audit
+- selinux_state
+- selinux_policytype
+- ensure_redhat_gpgkey_installed
+- ensure_gpgcheck_never_disabled
+
 * Fri Nov 01 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15
 - Version bump
 
 * Sat Oct 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc5
 - Point the spec's source to proper remote tarball location
-- Modify the main Makefile to use remote tarball when building RHEL6's SRPM
+- Modify the main Makefile to use remote tarball when building RHEL/6's SRPM
 
 * Sat Oct 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc4
 - Don't include the table html files two times
@@ -70,7 +83,7 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 
 * Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc2
 - Updated file permissions of JBossEAP5/eap5-cpe-dictionary.xml (chmod -x) to resolve rpmlint errors
-- RHEL6 HTML table naming bugfixes (table-rhel6-*, not table-*-rhel6)
+- RHEL/6 HTML table naming bugfixes (table-rhel6-*, not table-*-rhel6)
 
 * Fri Oct 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc1
 - Apply spec file changes required by review request (RH BZ#1018905)
@@ -93,7 +106,7 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 
 * Fri Apr 26 2013 Shawn Wells <shawn@redhat.com> 0.1-11
 - Significant amount of OVAL bugfixes
-- Incorporation of Draft RHEL6 STIG feedback
+- Incorporation of Draft RHEL/6 STIG feedback
 
 * Sat Feb 16 2013 Shawn Wells <shawn@redhat.com> 0.1-10
 - SSG now includes JBoss EAP5 content!
@@ -107,7 +120,7 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 
 * Tue Nov 27 2012 Shawn Wells <shawn@redhat.com> 0.1-8
 - Significant copy editing to XCCDF rules per community
-  feedback on the DISA RHEL6 STIG Initial Draft
+  feedback on the DISA RHEL/6 STIG Initial Draft
 
 * Thu Nov 1 2012 Shawn Wells <shawn@redhat.com> 0.1-7
 - Corrected XCCDF content errors

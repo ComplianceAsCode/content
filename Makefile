@@ -62,14 +62,17 @@ rhevm3:
 tarball:
 	$(call rpm-prep)
 
-	# Copy in the source trees for both RHEL6
+	# Copy in the source trees for both RHEL
 	# and JBossEAP5 content
-	cp -r RHEL/6/ $(RPM_TMPDIR)/$(PKG)
+	cp -r shared/ $(RPM_TMPDIR)/$(PKG)
+	cp -r --preserve=links --parents RHEL/6/ $(RPM_TMPDIR)/$(PKG)
+	cp -r --preserve=links --parents RHEL/7/ $(RPM_TMPDIR)/$(PKG)
 	cp -r JBossEAP5 $(RPM_TMPDIR)/$(PKG)
 
 	# Don't trust the developers, clean out the build
 	# environment before packaging
-	cd $(RPM_TMPDIR)/$(PKG)/RHEL/6/ && $(MAKE) clean
+	(cd $(RPM_TMPDIR)/$(PKG)/RHEL/6/ && $(MAKE) clean)
+	(cd $(RPM_TMPDIR)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 
 	# Create the source tar, copy it to $TARBALL
 	# (e.g. somewhere in the SOURCES directory)
@@ -124,7 +127,9 @@ srpm: $(RPM_DEPS)
 	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne "s/%{redhatssgrelease}/$(REDHAT_SSG_RELEASE)/p"))
 	# Download the tarball
 	@echo "Downloading the $(SOURCE) tarball..."
-	@wget -O $(TARBALL) $(SOURCE)
+	# If performing a real RPM build, uncomment the next line
+	# (+remember to upload tarball to repos.ssgproject.org first!)
+	#@wget -O $(TARBALL) $(SOURCE)
 	@echo "Copying the SPEC file to proper location..."
 	cat $(RPM_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(RPM_SPEC))
 	@echo "Building $(PKGNAME) SRPM..."
