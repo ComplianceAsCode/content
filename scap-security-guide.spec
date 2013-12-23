@@ -56,14 +56,19 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %changelog
 * Mon Dec 23 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc1
 + Added RHEL7 content to SSG rpm
-- partition_for_tmp
-- partition_for_var
-- partition_for_var_log
-- partition_for_var_log_audit
-- selinux_state
-- selinux_policytype
-- ensure_redhat_gpgkey_installed
-- ensure_gpgcheck_never_disabled
++ Added to RHEL7 content pool:
+- OVAL for partition_for_tmp
+- OVAL for partition_for_var
+- OVAL for partition_for_var_log
+- OVAL for partition_for_var_log_audit
+- OVAL for selinux_state
+- OVAL for selinux_policytype
+- OVAL for ensure_redhat_gpgkey_installed
+- OVAL for ensure_gpgcheck_never_disabled
+- OVAL for package_aide_installed
+- OVAL for accounts_password_reuse_limit
+- OVAL for no_shelllogin_for_systemaccounts
+- OVAL for no_empty_passwords
 
 * Fri Nov 01 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15
 - Version bump
