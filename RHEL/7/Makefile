@@ -18,6 +18,8 @@ shorthand2xccdf: shorthand-guide
 	oscap xccdf resolve -o $(OUT)/unlinked-rhel7-xccdf.xml $(OUT)/unlinked-unresolved-rhel7-xccdf.xml
 #	xsltproc -stringparam profile "stig-rhel7-server" -o $(OUT)/unlinked-rhel7-xccdf.xml \
 #		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel7-xccdf.xml
+	xsltproc -stringparam profile "rht-ccp" -o $(OUT)/unlinked-rhel7-xccdf.xml \
+		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel7-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file
 	xsltproc -o $(OUT)/unlinked-rhel7-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-rhel7-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-rhel7-ocil.xml $(OUT)/unlinked-rhel7-ocil.xml 
