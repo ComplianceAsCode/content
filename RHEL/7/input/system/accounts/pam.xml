@@ -74,7 +74,7 @@ of unsuccessful attempts that were made to login to their account
 allows the user to determine if any unauthorized activity has occurred
 and gives them an opportunity to notify administrators.
 </rationale>
-<ident cce="27291-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="display_login_attempts" />
 <ref disa="53" />
 </Rule>
@@ -242,7 +242,7 @@ requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks. Note that this
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
-<ident cce="27123-9" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
 <ref nist="IA-5(c)" disa="1092" />
 <tested by="DS" on="20121024"/>
@@ -263,7 +263,7 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
-<ident cce="27227-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
@@ -286,7 +286,7 @@ This would appear as <tt>dcredit=-1</tt>.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident cce="26374-9" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
 <ref nist="IA-5(b),IA-5(c),194" disa="194"/>
 <tested by="DS" on="20121024"/>
@@ -311,7 +311,7 @@ This would appear as <tt>ucredit=-1</tt>.
 Requiring a minimum number of uppercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26601-5" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" />
 <tested by="DS" on="20121024"/>
@@ -336,7 +336,7 @@ This would appear as <tt>ocredit=-1</tt>.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26409-3" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" />
 <tested by="DS" on="20121024"/>
@@ -361,7 +361,7 @@ This would appear as <tt>lcredit=-1</tt>.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26631-2" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" />
 <tested by="DS" on="20121024"/>
@@ -387,7 +387,7 @@ Requiring a minimum number of different characters during password changes ensur
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
-<ident cce="26615-5" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195"/>
 <tested by="DS" on="20121024"/>
@@ -434,7 +434,7 @@ The output should show <tt>deny=3</tt>.
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident cce="26844-1" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
 <ref nist="AC-7(a)" disa="44" />
 </Rule>
@@ -460,7 +460,7 @@ prevents direct password guessing attacks.  Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
-<ident cce="27110-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
 <ref nist="AC-7(b)" disa="47" />
 </Rule>
@@ -485,7 +485,7 @@ The output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where 
 Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
-<ident cce="27215-3" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
 <ref nist="AC-7(a)" disa="1452" />
 </Rule>
@@ -507,7 +507,7 @@ The output should show the following at the end of the line:
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
-<ident cce="26741-9" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_reuse_limit" value="var_password_history_retain_limit" />
 <ref nist="IA-5(f),IA-5(1)(e)" disa="200" />
 <tested by="DS" on="20121024"/>
@@ -541,7 +541,7 @@ ensure that the <tt>pam_unix.so</tt> module includes the argument
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<ident cce="26303-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
 <tested by="DS" on="20121024"/>
@@ -563,7 +563,7 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
-<ident cce="27228-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
 <tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_logindefs" />
@@ -586,7 +586,7 @@ in the <tt>[default]</tt> section:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
-<ident cce="27229-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
 <tested by="DS" on="20121026"/>
 <oval id="set_password_hashing_algorithm_libuserconf" />

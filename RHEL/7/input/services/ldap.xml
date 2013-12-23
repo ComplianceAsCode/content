@@ -38,7 +38,7 @@ To ensure LDAP is configured to use TLS for all transactions, run the following 
 not specified it will default to no. It should be set to start_tls rather
 than doing LDAP over SSL.</rationale>
 <ref nist="CM-7" disa="776,778,1453" />
-<ident cce="26690-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="ldap_client_start_tls" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -63,7 +63,7 @@ tls_checkpeer is configured (which is the default for openldap versions 2.1 and
 up). These directives define the path to the trust certificates signed by the
 site CA.</rationale>
 <ref nist="CM-7" disa="776,778,1453" />
-<ident cce="27189-0" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="ldap_client_tls_cacertpath" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -98,7 +98,7 @@ The output should show the following:
 surface of the system.  While this software is clearly essential on an LDAP
 server, it is not necessary on typical desktop or workstation systems.
 </rationale>
-<ident cce="26858-1" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="package_openldap-servers_removed" />
 <ref nist="CM-7" disa="366"/>
 <tested by="DS" on="20121024"/>

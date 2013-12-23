@@ -39,7 +39,7 @@ which is no longer necessary for commonly-used network services. Disabling
 it ensures that these uncommon services are not running, and also prevents
 attacks against xinetd itself.
 </rationale>
-<ident cce="27046-2" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_xinetd_disabled" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -58,7 +58,7 @@ If network services are using the xinetd service, this is not applicable.
 Removing the <tt>xinetd</tt> package decreases the risk of the
 xinetd service's accidental (or intentional) activation.
 </rationale>
-<ident cce="27005-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="package_xinetd_removed" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -85,7 +85,7 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="26836-7" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_telnetd_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
 <tested by="DS" on="20121026"/>
@@ -101,7 +101,7 @@ the following command:
 Removing the <tt>telnet-server</tt> package decreases the risk of the
 telnet service's accidental (or intentional) activation.
 </rationale>
-<ident cce="27073-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="package_telnet-server_removed" />
 <ref nist="AC-17(8),CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
@@ -126,7 +126,7 @@ network services. Removing it
 decreases the risk of those services' accidental (or intentional)
 activation.
 </rationale>
-<ident cce="27062-9" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="package_rsh-server_removed" />
 <ref nist="AC-17(8),CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
@@ -145,7 +145,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27208-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_rexec_disabled" />
 <ref nist="AC-17(8),CM-7" disa="68,1436"/>
 <tested by="DS" on="20121026"/>
@@ -164,7 +164,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="26994-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_rsh_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" />
 <tested by="DS" on="20121026"/>
@@ -183,7 +183,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="26865-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_rlogin_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" />
 <tested by="DS" on="20121026"/>
@@ -207,7 +207,7 @@ of an Rsh trust relationship.
 <rationale>Trust files are convenient, but when
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
-<ident cce="27270-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="AC-17(8),CM-7" disa="1436" />
 <oval id="no_rsh_trust_files" />
 <tested by="DS" on="20121026"/>
@@ -233,7 +233,7 @@ the following command:
 <rationale>Removing the <tt>ypserv</tt> package decreases the risk of the
 accidental (or intentional) activation of NIS or NIS+ services.
 </rationale>
-<ident cce="27079-3" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="package_ypserv_removed" />
 <ref nist="AC-17(8),CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
@@ -250,7 +250,7 @@ a NIS or NIS+ domain, should be disabled.
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
 </rationale>
-<ident cce="26894-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_ypbind_disabled" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -278,7 +278,7 @@ found.</description>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
 </rationale>
-<ident cce="27055-3" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_tftp_disabled" />
 <ref nist="AC-17(8),CM-7" disa="1436" />
 <tested by="DS" on="20121026"/>
@@ -296,7 +296,7 @@ as a TFTP server, which does not provide encryption or authentication.
 Removing the <tt>tftp-server</tt> package decreases the risk of the
 accidental (or intentional) activation of tftp services.
 </rationale>
-<ident cce="26946-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="package_tftp-server_removed" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -327,7 +327,7 @@ flag, matching the example below:
 <pre> # grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
-<ident cce="27272-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="tftpd_uses_secure_mode" />
 <ref nist="AC-17(8),CM-7" disa="366"/>
 </Rule>

@@ -60,7 +60,7 @@ If IPv6 is disabled, this is not applicable.
 <rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
 capability for IPv6 and ICMPv6.
 </rationale>
-<ident cce="27006-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_ip6tables_enabled" />
 <ref nist="AC-4,CA-3(c),CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414"/>
 <tested by="DS" on="20121024"/>
@@ -86,7 +86,7 @@ the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
-<ident cce="27317-7" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="CM-7" disa="66,1109,1154,1414" />
 </Rule>
 
@@ -100,7 +100,7 @@ accepted.</rationale>
 The <tt>iptables</tt> service provides the system's host-based firewalling
 capability for IPv4 and ICMP.
 </rationale>
-<ident cce="27018-1" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="service_iptables_enabled" />
 <ref nist="AC-4,CA-3(c),CM-7" disa="32,66,1115,1118,1092,1117,1098,1100,1097,1414" />
 <tested by="DS" on="20121024"/>
@@ -155,7 +155,7 @@ the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
-<ident cce="26444-0" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="iptables_default_policy_drop" />
 <ref nist="CM-7" disa="66,1109,1154,1414" />
 </Rule>
@@ -180,7 +180,7 @@ Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>D
 The output should be similar to the following:
 <pre># grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
-<ident cce="27186-6" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="CM-7" disa="1109" />
 </Rule>
 

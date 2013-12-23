@@ -45,7 +45,7 @@ You should receive output similar to the following:
 <pre>*		hard	maxlogins	10</pre>
 </ocil>
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
-<ident cce="27457-1" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="AC-10" disa="54"/>
 </Rule>
 
@@ -88,7 +88,7 @@ These empty elements have the same effect as a single <tt>.</tt> character.
 Including these entries increases the risk that root could
 execute code from an untrusted location.
 </rationale>
-<ident cce="26826-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="root_path_no_dot" />
 <ref nist=""/>
 </Rule>
@@ -111,7 +111,7 @@ Such entries increase the risk that root could
 execute code provided by unprivileged users,
 and potentially malicious code.
 </rationale>
-<ident cce="26768-2" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_root_path_dirs_no_write" />
 <ref nist=""/>
 </Rule>
@@ -146,7 +146,7 @@ to other users. If a subset of users need read access
 to one another's home directories, this can be provided using
 groups or ACLs.
 </rationale>
-<ident cce="26981-1" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_home_dirs" />
 <ref nist=""/>
 </Rule>
@@ -225,7 +225,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown below:
 umask 077
 umask 077</pre>
 </ocil>
-<ident cce="26917-5" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_umask_bashrc" value="var_accounts_user_umask"/>
 <ref nist="" disa="366"/>
 <tested by="swells" on="20120929"/>
@@ -249,7 +249,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 <pre># grep "umask" /etc/csh.cshrc
 umask 077</pre>
 </ocil>
-<ident cce="27034-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_umask_cshrc" value="var_accounts_user_umask"/>
 <ref nist="" disa="366"/>
 <tested by="swells" on="20120929"/>
@@ -265,7 +265,7 @@ add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as fo
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
 written to by unauthorized users.</rationale>
-<ident cce="26669-2" />
+<ident cce="RHEL7-CCE-TBD" />
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
@@ -297,7 +297,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 <pre># grep -i "UMASK" /etc/login.defs
 umask 077</pre>
 </ocil>
-<ident cce="26371-5" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_umask_login_defs" value="var_accounts_user_umask" />
 <ref nist="" disa="366"/>
 <tested by="swells" on="20120929" />

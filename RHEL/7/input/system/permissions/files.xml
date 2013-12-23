@@ -26,7 +26,7 @@ system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
-<ident cce="26947-2" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="userowner_shadow_file" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -38,7 +38,7 @@ which could weaken the system security posture.</rationale>
 <ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
-<ident cce="26967-0" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="groupowner_shadow_file" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -53,7 +53,7 @@ system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
-<ident cce="26992-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_etc_shadow" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -65,7 +65,7 @@ which could weaken the system security posture.</rationale>
 <ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident cce="26822-7" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_owner_etc_group" />
 <ref nist="AC-6"/>
 <tested by="DS" on="20121026"/>
@@ -77,7 +77,7 @@ on the system. Protection of this file is important for system security.</ration
 <ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident cce="26930-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_groupowner_etc_group" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -89,7 +89,7 @@ on the system. Protection of this file is important for system security.</ration
 <ocil><fileperms-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident cce="26954-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_etc_group" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -101,7 +101,7 @@ on the system. Protection of this file is important for system security.</ration
 <ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident cce="27026-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_owner_etc_gshadow" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -113,7 +113,7 @@ is critical for system security.</rationale>
 <ocil><filegroupowner-check-macro file="/etc/gshadow" group="root"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident cce="26975-3" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_groupowner_etc_gshadow" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -125,7 +125,7 @@ is critical for system security.</rationale>
 <ocil><fileperms-check-macro file="/etc/gshadow" perms="----------"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident cce="26951-4" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_etc_gshadow" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -137,7 +137,7 @@ is critical for system security.</rationale>
 <ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
 <rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
-<ident cce="26953-0" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_owner_etc_passwd" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -149,7 +149,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
 <rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
-<ident cce="26856-5" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_groupowner_etc_passwd" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -163,7 +163,7 @@ the system. Protection of this file is critical for system security.</rationale>
 world the risk of its compromise is increased. The file contains the list of
 accounts on the system and associated information, and protection of this file
 is critical for system security.</rationale>
-<ident cce="26868-0" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_etc_passwd" />
 <ref nist="AC-6" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -214,7 +214,7 @@ run the following command for each directory <i>DIR</i> which contains shared li
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Restrictive permissions are necessary to protect the integrity of the system.
 </rationale>
-<ident cce="27381-3"/>
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="AC-6" disa="1499"/>
 <tested by="DS" on="20121026"/>
 <oval id="file_permissions_library_dirs" />
@@ -253,7 +253,7 @@ owned by root:
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Proper ownership is necessary to protect the integrity of the system.
 </rationale>
-<ident cce="27424-1"/>
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="AC-6" disa="1499"/>
 <oval id="file_ownership_library_dirs" />
 <tested by="swells" on="20130914"/>
@@ -292,7 +292,7 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure execution of these programs
 cannot be co-opted.
 </rationale>
-<ident cce="27289-8"/>
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="AC-6" disa="1499"/>
 <oval id="file_permissions_binary_dirs" />
 </Rule>
@@ -329,7 +329,7 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
 </rationale>
-<ident cce="27623-8"/>
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_ownership_binary_dirs" />
 <ref nist="AC-6" disa="1499"/>
 </Rule>
@@ -365,7 +365,7 @@ or those designed to be temporary file repositories.  The setting is normally re
 used by the system, by users for temporary file storage (such as <tt>/tmp</tt>), and for directories 
 requiring global read/write access.
 </rationale>
-<ident cce="26840-9" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="dir_perms_world_writable_sticky_bits" />
 <ref nist="AC-6"/>
 <tested by="swells" on="20120929"/>
@@ -389,7 +389,7 @@ user on the system. In almost all circumstances, files can be
 configured using a combination of user and group permissions to
 support whatever legitimate access is needed without the risk
 caused by world-writable files.</rationale>
-<ident cce="26910-0" />
+<ident cce="RHEL7-CCE-TBD" />
 <ref nist="AC-6"/>
 <oval id="file_permissions_unauthorized_world_writable" />
 </Rule>
@@ -410,7 +410,7 @@ To find world-writable files, run the following command:
 the owner of the file. SGID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
-<ident cce="26769-0" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_unauthorized_sgid" />
 <ref nist=""/>
 </Rule>
@@ -431,7 +431,7 @@ To find world-writable files, run the following command:
 the owner of the file. SUID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
-<ident cce="26497-8" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_unauthorized_suid" />
 <ref nist=""/>
 </Rule>
@@ -459,7 +459,7 @@ to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
-<ident cce="27032-2" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="no_files_unowned_by_user" />
 <ref nist="AC-6" disa="224"/>
 </Rule>
@@ -486,7 +486,7 @@ to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
-<ident cce="26872-2" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_ungroupowned" />
 <ref nist="AC-6" disa="224"/>
 </Rule>
@@ -512,7 +512,7 @@ undesirable because it allows the owner of that directory to remove
 or replace any files that may be placed in the directory by other
 users.
 </rationale>
-<ident cce="26642-9" />
+<ident cce="RHEL7-CCE-TBD" />
 <oval id="dir_perms_world_writable_system_owned" />
 <ref nist="AC-6"/>
 <tested by="swells" on="20120929"/>
