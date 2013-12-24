@@ -1,5 +1,5 @@
 
-%global		redhatssgrelease	15
+%global		redhatssgrelease	16.rc1
 
 Name:		scap-security-guide
 Version:	0.1
@@ -52,6 +52,10 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 %doc RHEL6/LICENSE RHEL6/output/rhel6-guide.html RHEL6/output/table-rhel6-cces.html RHEL6/output/table-rhel6-nistrefs-common.html RHEL6/output/table-rhel6-nistrefs.html RHEL6/output/table-rhel6-srgmap-flat.html RHEL6/output/table-rhel6-srgmap-flat.xhtml RHEL6/output/table-rhel6-srgmap.html RHEL6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Tue Dec 24 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc1
+- [bugfix] RHEL6 no_empty_passwords remediation script overwrote
+  system-auth symlink. Added --follow-symlink to sed command.
+
 * Fri Nov 01 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15
 - Version bump
 
