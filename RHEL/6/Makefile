@@ -16,7 +16,7 @@ shorthand-guide:
 shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-unresolved-rhel6-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/rhel6-shorthand.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-rhel6-xccdf.xml $(OUT)/unlinked-unresolved-rhel6-xccdf.xml
-#	xsltproc -stringparam profile "stig-rhel6-server" -o $(OUT)/unlinked-rhel6-xccdf.xml \
+#	xsltproc -stringparam profile "stig-rhel6-server-upstream" -o $(OUT)/unlinked-rhel6-xccdf.xml \
 #		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-rhel6-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file
 	xsltproc -o $(OUT)/unlinked-rhel6-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-rhel6-xccdf.xml
@@ -68,7 +68,7 @@ table-stigs: shorthand2xccdf table-srgmap checks
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
-	xsltproc -stringparam profile "stig-rhel6-server" -stringparam testinfo "y" -o $(OUT)/table-stig-rhel6-testinfo.html \
+	xsltproc -stringparam profile "stig-rhel6-server-upstream" -stringparam testinfo "y" -o $(OUT)/table-stig-rhel6-testinfo.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-rhel6-xccdf.xml
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-rhel6-xccdf.xml \
@@ -94,7 +94,7 @@ content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-rhel6-xccdf.xml $(OUT)/disa-predraft-stig-rhel6-xccdf.xml
 
 submission-stig-check: table-stigs
-	cd output; ../$(UTILS)/verify-references.py -p stig-rhel6-server --rules-with-disarefs-outside-profile unlinked-rhel6-xccdf-prerefs.xml
+	cd output; ../$(UTILS)/verify-references.py -p stig-rhel6-server-upstream --rules-with-disarefs-outside-profile unlinked-rhel6-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-rhel6-xccdf.xml > $(OUT)/table-stig.csv
 
 # content-usgcb: coming soon

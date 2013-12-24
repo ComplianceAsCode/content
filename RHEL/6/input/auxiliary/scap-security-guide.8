@@ -24,7 +24,7 @@ https://fedorahosted.org/scap-security-guide/
 .SH PROFILES
 The SSG content is broken into 'profiles,' groupings of security settings that correlate to a known policy. Available profiles are:
 
-.I stig-rhel6-server
+.I stig-rhel6-server-upstream
 .RS
 The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
 configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
@@ -59,9 +59,9 @@ webpage at http://usgcb.nist.gov/usgcb_content.html.
 
 .SH EXAMPLES
 To scan your system utilizing the OpenSCAP utility against the 
-stig-rhel6-server profile:
+stig-rhel6-server-upstream profile:
 
-oscap  xccdf eval --profile stig-rhel6-server \ 
+oscap  xccdf eval --profile stig-rhel6-server-upstream \ 
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
 --cpe /usr/share/xml/scap/ssg/content/ssg-rhel6-cpe-dictionary.xml \
