@@ -14,7 +14,7 @@
 		<!-- <xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
 		<xsl:apply-templates select="document('profiles/server.xml')" />
 		<!-- <xsl:apply-templates select="document('profiles/ftp.xml')" /> -->
-		<xsl:apply-templates select="document('profiles/stig-rhel6-server.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-rhel6-server-upstream.xml')" />
 		<xsl:apply-templates select="document('profiles/usgcb-rhel6-server.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 
