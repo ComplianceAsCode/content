@@ -35,7 +35,7 @@
       <xsl:apply-templates select="document('system/accounts/accounts.xml')" />
       <xsl:apply-templates select="document('system/network/network.xml')" />
       <xsl:apply-templates select="document('system/logging.xml')" />
-<!--      <xsl:apply-templates select="document('system/auditing.xml')" /> -->
+      <xsl:apply-templates select="document('system/auditing.xml')" />
     </xsl:copy>
   </xsl:template>
 
@@ -54,9 +54,9 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/accounts/restrictions/restrictions.xml')" />
       <xsl:apply-templates select="document('system/accounts/pam.xml')" />
-<!--      <xsl:apply-templates select="document('system/accounts/session.xml')" />
+      <xsl:apply-templates select="document('system/accounts/session.xml')" />
       <xsl:apply-templates select="document('system/accounts/physical.xml')" />
-      <xsl:apply-templates select="document('system/accounts/banners.xml')" /> -->
+      <xsl:apply-templates select="document('system/accounts/banners.xml')" />
     </xsl:copy>
   </xsl:template>
 
@@ -75,13 +75,12 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/permissions/partitions.xml')" />
-  <!--    <xsl:apply-templates select="document('system/permissions/mounting.xml')" />
+      <xsl:apply-templates select="document('system/permissions/mounting.xml')" />
       <xsl:apply-templates select="document('system/permissions/files.xml')" />
-      <xsl:apply-templates select="document('system/permissions/execution.xml')" /> -->
+      <xsl:apply-templates select="document('system/permissions/execution.xml')" /> 
     </xsl:copy>
   </xsl:template>
 
-<!--
   <xsl:template match="Group[@id='network']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
@@ -94,9 +93,7 @@
       <xsl:apply-templates select="document('system/network/ipsec.xml')" />
     </xsl:copy>
   </xsl:template>
--->
 
-<!--
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
@@ -120,7 +117,7 @@
       <xsl:apply-templates select="document('services/squid.xml')" />
       <xsl:apply-templates select="document('services/snmp.xml')" />
     </xsl:copy>
-  </xsl:template> -->
+  </xsl:template>
 
   <!-- copy everything else through to final output -->
   <xsl:template match="@*|node()">
