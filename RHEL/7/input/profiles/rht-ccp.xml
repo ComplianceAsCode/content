@@ -34,13 +34,11 @@
 <select idref="selinux_policytype" selected="true"/>
 <!-- rhel7 broke: <select idref="selinux_all_devicefiles_labeled" selected="true"/> -->
 
-
 <!-- UPDATING CHECKS -->
 <select idref="ensure_redhat_gpgkey_installed" selected="true"/>
 <select idref="security_patches_up_to_date" selected="true"/>
 <select idref="ensure_gpgcheck_globally_activated" selected="true"/>
 <select idref="ensure_gpgcheck_never_disabled" selected="true"/>
-
 
 <select idref="package_aide_installed" selected="true"/>
 
@@ -65,7 +63,7 @@
 <select idref="set_password_hashing_algorithm_libuserconf" selected="true"/>
 <select idref="require_singleuser_auth" selected="true"/>
 
-FILE PERMISSION CHECKS
+<!-- FILE PERMISSION CHECKS -->
 <select idref="userowner_shadow_file" selected="true"/>
 <select idref="groupowner_shadow_file" selected="true"/>
 <select idref="file_permissions_etc_shadow" selected="true"/>
