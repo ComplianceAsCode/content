@@ -131,7 +131,7 @@ is critical for system security.</rationale>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="userowner_passwd_file" severity="medium">
+<Rule id="file_owner_etc_passwd" severity="medium">
 <title>Verify User Who Owns <tt>passwd</tt> File</title>
 <description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
