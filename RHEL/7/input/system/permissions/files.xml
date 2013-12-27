@@ -143,7 +143,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="groupowner_passwd_file" severity="medium">
+<Rule id="file_groupowner_etc_passwd" severity="medium">
 <title>Verify Group Who Owns <tt>passwd</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/passwd" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
