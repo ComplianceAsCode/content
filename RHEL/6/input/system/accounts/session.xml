@@ -211,7 +211,7 @@ operator="equals" interactive="0">
 To ensure the default umask for users of the Bash shell is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
 as follows:
-<pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
+<pre>umask 077<!-- <sub idref="var_accounts_user_umask" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -236,7 +236,7 @@ umask 077</pre>
 <description>
 To ensure the default umask for users of the C shell is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/csh.cshrc</tt> to read as follows:
-<pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
+<pre>umask 077<!-- <sub idref="var_accounts_user_umask" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -260,7 +260,7 @@ umask 077</pre>
 <description>
 To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as follows:
-<pre>umask 077<!--<sub idref="umask_user_value" /> --></pre>
+<pre>umask 077<!--<sub idref="var_accounts_user_umask" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -284,7 +284,7 @@ umask 077</pre>
 <description>
 To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
 add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
-<pre>UMASK 077<!-- <sub idref="umask_user_value" /> --></pre>
+<pre>UMASK 077<!-- <sub idref="var_accounts_user_umask" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and 
