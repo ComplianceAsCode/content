@@ -9,7 +9,7 @@
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Group:		Applications/System
 License:	Public Domain
@@ -19,6 +19,7 @@ BuildArch:	noarch
 BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
 Requires:	xml-common, openscap-utils >= 0.9.1
 Obsoletes:	openscap-content < 0:0.9.13
+Provides:	openscap-content
 
 %description
 The scap-security-guide project provides a guide for configuration of the
@@ -31,18 +32,6 @@ administrator can use the oscap CLI tool from openscap-utils package, or the
 scap-workbench GUI tool from scap-workbench package to verify that the system
 conforms to provided guideline. Refer to scap-security-guide(8) manual page for
 further information.
-
-%package	compat
-Summary:	Extra package to ensure compatibility with firstaidkit-plugin-openscap
-License:	Public Domain
-BuildArch:	noarch
-Requires:	xml-common, openscap-utils >= 0.9.1
-Provides:	openscap-content, firstaidkit-plugin-openscap
-
-%description	compat
-This package corrects Provides requirements needed to maintain
-backward-compatibility with openscap-content and firstaidkit-plugin-openscap
-packages.
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -65,9 +54,11 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
 %doc Fedora/LICENSE Fedora/output/ssg-fedora-guide.html
 
-%files compat
 
 %changelog
+* Mon Jan 06 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4-2
+- Drop -compat package, provide openscap-content directly (RH BZ#1040335#c14)
+
 * Fri Dec 20 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4-1
 - Fix remediation for sshd set keepalive (ClientAliveCountMax) and move
   it to /shared
