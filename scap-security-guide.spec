@@ -56,6 +56,8 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 * Thu Jan 23 2014 Shawn Wells <shawn@redhat.com> 0.1-16.rc3
 + Added to RHEL7 content pool
 - OVAL for sshd_set_idle_timeout
+- OVAL for sshd_set_keepalive
+- OVAL for sshd_disable_rhosts
 
 * Tue Dec 24 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc2
 + RHEL6 stig-rhel6-server XCCDF profile renamed to stig-rhel6-server-upstream
