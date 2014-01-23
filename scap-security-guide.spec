@@ -1,4 +1,4 @@
-%global		redhatssgrelease	16.rc2
+%global		redhatssgrelease	16.rc3
 
 Name:		scap-security-guide
 Version:	0.1
@@ -53,6 +53,10 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Thu Jan 23 2014 Shawn Wells <shawn@redhat.com> 0.1-16.rc3
++ Added to RHEL7 content pool
+- OVAL for sshd_set_idle_timeout
+
 * Tue Dec 24 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc2
 + RHEL6 stig-rhel6-server XCCDF profile renamed to stig-rhel6-server-upstream
 
