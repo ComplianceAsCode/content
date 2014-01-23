@@ -60,6 +60,7 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 - OVAL for sshd_disable_rhosts
 - OVAL for sshd_disable_root_login
 - OVAL for sshd_disable_empty_passwords
+- OVAL for sshd_enable_warning_banner
 
 * Tue Dec 24 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc2
 + RHEL6 stig-rhel6-server XCCDF profile renamed to stig-rhel6-server-upstream
