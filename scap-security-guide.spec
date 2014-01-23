@@ -63,6 +63,7 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 - OVAL for sshd_enable_warning_banner
 - OVAL for sshd_do_not_permit_user_env
 - OVAL for sshd_use_approved_ciphers
+- OVAL for sshd_allow_only_protocol2
 
 * Tue Dec 24 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc2
 + RHEL6 stig-rhel6-server XCCDF profile renamed to stig-rhel6-server-upstream
