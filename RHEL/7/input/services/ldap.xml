@@ -1,0 +1,142 @@
+<Group id="ldap">
+<title>LDAP</title>
+<description>LDAP is a popular directory service, that is, a
+standardized way of looking up information from a central database.
+RHEL 6 includes software that enables a system to act as both
+an LDAP client and server.
+</description>
+
+<Group id="openldap_client">
+<title>Configure OpenLDAP Clients</title>
+<description>This section provides information on which security settings are
+important to configure in OpenLDAP clients by manually editing the appropriate
+configuration files.  RHEL 6 provides an automated configuration tool called
+authconfig and a graphical wrapper for authconfig called
+<tt>system-config-authentication</tt>. However, these tools do not provide as
+much control over configuration as manual editing of configuration files. The
+authconfig tools do not allow you to specify locations of SSL certificate
+files, which is useful when trying to use SSL cleanly across several protocols.
+Installation and configuration of OpenLDAP on RHEL 6 is available at
+https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-Directory_Servers.html.
+</description>
+<warning category="general">Before configuring any system to be an
+LDAP client, ensure that a working LDAP server is present on the
+network.</warning>
+
+<Rule id="ldap_client_start_tls" severity="medium">
+<title>Configure LDAP Client to Use TLS For All Transactions</title>
+<description>Configure LDAP to enforce TLS use. First, edit the file 
+<tt>/etc/pam_ldap.conf</tt>, and add or correct the following lines:
+<pre>ssl start_tls</pre>
+Then review the LDAP server and ensure TLS has been configured.
+</description>
+<ocil clause="no lines are returned">
+To ensure LDAP is configured to use TLS for all transactions, run the following command:
+<pre>$ grep start_tls /etc/pam_ldap.conf</pre>
+</ocil>
+<rationale>The ssl directive specifies whether to use ssl or not. If
+not specified it will default to no. It should be set to start_tls rather
+than doing LDAP over SSL.</rationale>
+<ref nist="CM-7" disa="776,778,1453" />
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="ldap_client_start_tls" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="ldap_client_tls_cacertpath" severity="medium">
+<title>Configure Certificate Directives for LDAP Use of TLS</title>
+<description>Ensure a copy of a trusted CA certificate has been placed in
+the file <tt>/etc/pki/tls/CA/cacert.pem</tt>. Configure LDAP to enforce TLS 
+use and to trust certificates signed by that CA. First, edit the file 
+<tt>/etc/pam_ldap.conf</tt>, and add or correct either of the following lines:
+<pre>tls_cacertdir /etc/pki/tls/CA</pre>
+or
+<pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
+Then review the LDAP server and ensure TLS has been configured.
+</description>
+<ocil clause="there is no output, or the lines are commented out">
+To ensure TLS is configured with trust certificates, run the following command:
+<pre># grep cert /etc/pam_ldap.conf</pre>
+</ocil>
+<rationale>The tls_cacertdir or tls_cacertfile directives are required when
+tls_checkpeer is configured (which is the default for openldap versions 2.1 and
+up). These directives define the path to the trust certificates signed by the
+site CA.</rationale>
+<ref nist="CM-7" disa="776,778,1453" />
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="ldap_client_tls_cacertpath" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+</Group><!--End <Group id="openldap_client"> -->
+
+<Group id="openldap_server">
+<title>Configure OpenLDAP Server</title>
+<description>This section details some security-relevant settings
+for an OpenLDAP server.  Installation and configuration of OpenLDAP on RHEL 6 is available at:
+https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-Directory_Servers.html.
+</description>
+
+<Rule id="package_openldap-servers_removed">
+<title>Uninstall openldap-servers Package</title>
+<description>The <tt>openldap-servers</tt> package should be removed if not in use.
+Is this machine the OpenLDAP server? If not, remove the package.
+<pre># yum erase openldap-servers</pre>
+The openldap-servers RPM is not installed by default on RHEL 6
+machines. It is needed only by the OpenLDAP server, not by the
+clients which use LDAP for authentication. If the system is not
+intended for use as an LDAP Server it should be removed.
+</description>
+<ocil clause="it does not">
+To verify the <tt>openldap-servers</tt> package is not installed, 
+run the following command:
+<pre>$ rpm -q openldap-servers</pre>
+The output should show the following:
+<pre>package openldap-servers is not installed</pre>
+</ocil>
+<rationale>Unnecessary packages should not be installed to decrease the attack
+surface of the system.  While this software is clearly essential on an LDAP
+server, it is not necessary on typical desktop or workstation systems.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="package_openldap-servers_removed" />
+<ref nist="CM-7" disa="366"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Group id="ldap_server_config_certificate_files">
+<title>Install and Protect LDAP Certificate Files</title>
+<description>Create the PKI directory for LDAP certificates if it does not already exist:
+<pre># mkdir /etc/pki/tls/ldap
+# chown root:root /etc/pki/tls/ldap
+# chmod 755 /etc/pki/tls/ldap</pre>
+Using removable media or some other secure transmission format, install the certificate files
+onto the LDAP server:
+<ul>
+<li><tt>/etc/pki/tls/ldap/serverkey.pem</tt>: the private key <tt>ldapserverkey.pem</tt></li>
+<li><tt>/etc/pki/tls/ldap/servercert.pem</tt>: the certificate file <tt>ldapservercert.pem</tt></li>
+</ul>
+Verify the ownership and permissions of these files:
+<pre># chown root:ldap /etc/pki/tls/ldap/serverkey.pem
+# chown root:ldap /etc/pki/tls/ldap/servercert.pem
+# chmod 640 /etc/pki/tls/ldap/serverkey.pem
+# chmod 640 /etc/pki/tls/ldap/servercert.pem</pre>
+Verify that the CA's public certificate file has been installed as
+<tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the correct permissions:
+<pre># mkdir /etc/pki/tls/CA
+# chown root:root /etc/pki/tls/CA/cacert.pem
+# chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
+
+As a result of these steps, the LDAP server will have access to its own private
+certificate and the key with which that certificate is encrypted, and to the
+public certificate file belonging to the CA. Note that it would be possible for
+the key to be protected further, so that processes running as ldap could not
+read it. If this were done, the LDAP server process would need to be restarted
+manually whenever the server rebooted.
+</description>
+</Group>
+
+
+</Group>
+</Group>

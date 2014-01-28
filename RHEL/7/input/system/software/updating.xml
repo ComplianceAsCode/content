@@ -1,0 +1,130 @@
+<Group id="updating">
+<title>Updating Software</title>
+<description>The <tt>yum</tt> command line tool is used to install and
+update software packages. The system also provides a graphical
+software update tool in the <b>System</b> menu, in the <b>Administration</b> submenu,
+called <b>Software Update</b>.
+<br /><br />
+Red Hat Enterprise Linux systems contain an installed software catalog called
+the RPM database, which records metadata of installed packages. Consistently using
+<tt>yum</tt> or the graphical <b>Software Update</b> for all software installation
+allows for insight into the current inventory of installed software on the system.
+</description>
+
+<Rule id="ensure_redhat_gpgkey_installed" severity="high">
+<title>Ensure Red Hat GPG Key Installed</title>
+<description>
+To ensure the system can cryptographically verify base software
+packages come from Red Hat (and to connect to the Red Hat Network to
+receive them), the Red Hat GPG key must properly be installed.  
+To install the Red Hat GPG key, run:
+<pre># rhn_register</pre>
+If the system is not connected to the Internet or an RHN Satellite,
+then install the Red Hat GPG key from trusted media such as
+the Red Hat installation CD-ROM or DVD. Assuming the disc is mounted
+in <tt>/media/cdrom</tt>, use the following command as the root user to import
+it into the keyring:
+<pre># rpm --import /media/cdrom/RPM-GPG-KEY</pre>
+</description>
+<ocil clause="the Red Hat GPG Key is not installed">
+To ensure that the GPG key is installed, run:
+<pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
+The command should return the string below:
+<pre>gpg(Red Hat, Inc. (release key 2)  &lt;security@redhat.com&gt;</pre>
+</ocil>
+<rationale>
+The Red Hat GPG key is necessary to cryptographically verify packages
+are from Red Hat.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="ensure_redhat_gpgkey_installed" />
+<ref nist="SI-7,MA-1(b)" disa="351"/>
+<tested by="MM" on="20120928"/>
+</Rule>
+
+<!-- REMINDER: Before telling people to update their systems
+     via the security_patches_up_to_date rule, we must
+     ensure they have configured an update source! -->
+<Rule id="ensure_gpgcheck_globally_activated" severity="high">
+<title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
+<description>The <tt>gpgcheck</tt> option controls whether
+RPM packages' signatures are always checked prior to installation.
+To configure yum to check package signatures before installing
+them, ensure the following line appears in <tt>/etc/yum.conf</tt> in
+the <tt>[main]</tt> section:
+<pre>gpgcheck=1</pre>
+</description>
+<ocil clause="GPG checking is not enabled">
+To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
+inspect <tt>/etc/yum.conf</tt> and ensure the following appears in the
+<tt>[main]</tt> section:
+<pre>gpgcheck=1</pre>
+A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
+<tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
+disabled.
+</ocil>
+<rationale>
+Ensuring the validity of packages' cryptographic signatures prior to
+installation ensures the authenticity of the software and
+protects against malicious tampering.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="yum_gpgcheck_global_activation" />
+<ref nist="SI-7,MA-1(b)" disa="352,663" />
+<tested by="MM" on="20120928"/>
+</Rule>
+
+<Rule id="ensure_gpgcheck_never_disabled" severity="high">
+<title>Ensure gpgcheck Enabled For All Yum Package Repositories</title>
+<description>To ensure signature checking is not disabled for
+any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
+<pre>gpgcheck=0</pre>
+</description>
+<ocil clause="GPG checking is disabled">
+To determine whether <tt>yum</tt> has been configured to disable
+<tt>gpgcheck</tt> for any repos,  inspect all files in
+<tt>/etc/yum.repos.d</tt> and ensure the following does not appear in any
+sections:
+<pre>gpgcheck=0</pre>
+A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo. 
+</ocil>
+<rationale>
+Ensuring all packages' cryptographic signatures are valid prior to
+installation ensures the authenticity of the software and
+protects against malicious tampering.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="ensure_gpgcheck_never_disabled" />
+<ref nist="SI-7,MA-1(b)" disa="352,663"/>
+<tested by="MM" on="20120928"/>
+</Rule>
+
+<Rule id="security_patches_up_to_date" severity="high">
+<title>Ensure Software Patches Installed</title>
+<description>If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
+or a yum server, run the following command to install updates:
+<pre># yum update</pre>
+If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
+</description>
+<ocil clause="updates are not installed">
+If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
+a yum server which provides updates, invoking the following command will
+indicate if updates are available:
+<pre># yum check-update</pre>
+If the system is not configured to update from one of these sources,
+run the following command to list when each package was last updated:
+<pre>$ rpm -qa -last</pre>
+Compare this to Red Hat Security Advisories (RHSA) listed at 
+https://access.redhat.com/security/updates/active/
+to determine if the system is missing applicable updates.
+</ocil>
+<rationale>
+Installing software updates is a fundamental mitigation against
+the exploitation of publicly-known vulnerabilities.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="SI-2,MA-1(b)" disa="1227,1233"/>
+<tested by="MM" on="20120928"/>
+</Rule>
+</Group>

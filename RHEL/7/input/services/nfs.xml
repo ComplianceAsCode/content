@@ -1,0 +1,424 @@
+<Group id="nfs_and_rpc">
+<title>NFS and RPC</title>
+<description>The Network File System is a popular distributed filesystem for
+the Unix environment, and is very widely deployed.  This section discusses the
+circumstances under which it is possible to disable NFS and its dependencies,
+and then details steps which should be taken to secure
+NFS's configuration. This section is relevant to machines operating as NFS
+clients, as well as to those operating as NFS servers.
+</description>
+
+
+<Group id="disabling_nfs">
+<title>Disable All NFS Services if Possible</title>
+<description>If there is not a reason for the system to operate as either an
+NFS client or an NFS server, follow all instructions in this section to disable
+subsystems required by NFS.
+</description>
+<warning category="general">The steps in this section will prevent a machine
+from operating as either an NFS client or an NFS server. Only perform these
+steps on machines which do not need NFS at all.</warning>
+
+
+<Group id="disabling_nfs_services">
+<title>Disable Services Used Only by NFS</title>
+<description>If NFS is not needed, disable the NFS client daemons nfslock, rpcgssd, and rpcidmapd.
+<br /><br />
+All of these daemons run with elevated privileges, and many listen for network
+connections. If they are not needed, they should be disabled to improve system
+security posture.</description>
+
+<Rule id="service_nfslock_disabled">
+<title>Disable Network File System Lock Service (nfslock)</title>
+<description>The Network File System Lock (nfslock) service starts the required
+remote procedure call (RPC) processes which allow clients to lock files on the
+server. If the local machine is not configured to mount NFS filesystems then
+this service should be disabled.
+<service-disable-macro service="nfslock" />
+</description>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_nfslock_disabled" />
+</Rule>
+
+<Rule id="service_rpcgssd_disabled">
+<title>Disable Secure RPC Client Service (rpcgssd)</title>
+<description>
+The rpcgssd service manages RPCSEC GSS contexts required to secure protocols
+that use RPC (most often Kerberos and NFS). The rpcgssd service is the
+client-side of RPCSEC GSS. If the system does not require secure RPC then this
+service should be disabled.
+<service-disable-macro service="rpcgssd" />
+</description>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_rpcgssd_disabled" />
+</Rule>
+
+<Rule id="service_rpcidmapd_disabled">
+<title>Disable RPC ID Mapping Service (rpcidmapd)</title>
+<description>The rpcidmapd service is used to map user names and groups to UID
+and GID numbers on NFSv4 mounts. If NFS is not in use on the local system then
+this service should be disabled.
+<service-disable-macro service="rpcidmapd" />
+</description>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_rpcidmapd_disabled" />
+</Rule>
+</Group>
+
+<Group id="disabling_netfs">
+<title>Disable netfs if Possible</title>
+<description>To determine if any network filesystems handled by netfs are
+currently mounted on the system execute the following command:
+<pre># mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
+If the command did not return any output then disable netfs.
+</description>
+<Rule id="service_netfs_disabled">
+<title>Disable Network File Systems (netfs)</title>
+<description>The netfs script manages the boot-time mounting of several types
+of networked filesystems, of which NFS and Samba are the most common. If these
+filesystem types are not in use, the script can be disabled, protecting the
+system somewhat against accidental or malicious changes to <tt>/etc/fstab</tt>
+and against flaws in the netfs script itself.
+<service-disable-macro service="netfs" />
+</description>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_netfs_disabled" />
+</Rule>
+</Group>
+
+</Group>
+
+<Group id="nfs_configuring_all_machines">
+<title>Configure All Machines which Use NFS</title>
+<description>The steps in this section are appropriate for all machines which
+run NFS, whether they operate as clients or as servers.</description>
+
+<Group id="nfs_client_or_server_not_both">
+<title>Make Each Machine a Client or a Server, not Both</title>
+<description>If NFS must be used, it should be deployed in the simplest
+configuration possible to avoid maintainability problems which may lead to
+unnecessary security exposure. Due to the reliability and security problems
+caused by NFS (specially NFSv3 and NFSv2), it is not a good idea for machines
+which act as NFS servers to also mount filesystems via NFS. At the least,
+crossed mounts (the situation in which each of two servers mounts a filesystem
+from the other) should never be used.
+</description>
+
+</Group> <!-- <Group id="nfs_client_or_server_not_both"> -->
+
+
+<Group id="nfs_configure_fixed_ports">
+<title>Configure NFS Services to Use Fixed Ports (NFSv3 and NFSv2)</title>
+<description>Firewalling should be done at each host and at the border
+firewalls to protect the NFS daemons from remote access, since NFS servers
+should never be accessible from outside the organization. However, by default
+for NFSv3 and NFSv2, the RPC Bind service assigns each NFS service to a port
+dynamically at service startup time. Dynamic ports cannot be protected by port
+filtering firewalls such as iptables.
+<br /><br />
+Therefore, restrict each service to always use a given port, so that
+firewalling can be done effectively. Note that, because of the way RPC is
+implemented, it is not possible to disable the RPC Bind service even if ports
+are assigned statically to all RPC services.
+<br /><br />
+In NFSv4, the mounting and locking protocols have been incorporated into the
+protocol, and the server listens on the the well-known TCP port 2049. As such,
+NFSv4 does not need to interact with the <tt>rpcbind, lockd, and rpc.statd</tt>
+daemons, which can and should be disabled in a pure NFSv4 environment. The
+<tt>rpc.mountd</tt> daemon is still required on the NFS server to setup
+exports, but is not involved in any over-the-wire operations.
+</description>
+
+<Rule id="nfs_fixed_lockd_tcp_port">
+<title>Configure <tt>lockd</tt> to use static TCP port</title>
+<description>Configure the <tt>lockd</tt> daemon to use a static TCP port as
+opposed to letting the RPC Bind service dynamically assign a port. Edit the
+file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>LOCKD_TCPPORT=lockd-port</pre>
+Where <tt>lockd-port</tt> is a port which is not used by any other service on
+your network. 
+</description>
+<rationale>
+Restrict service to always use a given port, so that firewalling can be done
+effectively.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="nfs_fixed_lockd_udp_port">
+<title>Configure <tt>lockd</tt> to use static UDP port</title>
+<description>Configure the <tt>lockd</tt> daemon to use a static UDP port as
+opposed to letting the RPC Bind service dynamically assign a port. Edit the
+file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>LOCKD_UDPPORT=lockd-port</pre>
+Where <tt>lockd-port</tt> is a port which is not used by any other service on
+your network.
+</description>
+
+<rationale> Restricting services to always use a given port enables firewalling
+to be done more effectively.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="nfs_fixed_statd_port">
+<title>Configure <tt>statd</tt> to use static port</title>
+<description>Configure the <tt>statd</tt> daemon to use a static port as
+opposed to letting the RPC Bind service dynamically assign a port. Edit the
+file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>STATD_PORT=statd-port</pre>
+Where <tt>statd-port</tt> is a port which is not used by any other service on your network. 
+</description>
+<rationale> Restricting services to always use a given port enables firewalling
+to be done more effectively.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="nfs_fixed_mountd_port">
+<title>Configure <tt>mountd</tt> to use static port</title>
+<description>Configure the <tt>mountd</tt> daemon to use a static port as
+opposed to letting the RPC Bind service dynamically assign a port. Edit the
+file <tt>/etc/sysconfig/nfs</tt>. Add or correct the following line:
+<pre>MOUNTD_PORT=statd-port</pre>
+Where <tt>mountd-port</tt> is a port which is not used by any other service on your network. 
+</description>
+<rationale> Restricting services to always use a given port enables firewalling
+to be done more effectively.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+</Group> <!-- <Group id="nfs_configure_fixed_ports"> -->
+
+</Group> <!-- <Group id="nfs_configuring_all_machines"> -->
+
+<Group id="nfs_configuring_clients">
+<title>Configure NFS Clients</title>
+<description>The steps in this section are appropriate for machines which operate as NFS clients.</description>
+<Group id="disabling_nfsd">
+<title>Disable NFS Server Daemons</title>
+<description>
+There is no need to run the NFS server daemons <tt>nfs</tt> and
+<tt>rpcsvcgssd</tt> except on a small number of properly secured machines
+designated as NFS servers. Ensure that these daemons are turned off on
+clients.</description>
+
+<Rule id="nfs_no_anonymous">
+<title>Specify UID and GID for Anonymous NFS Connections</title>
+<description>To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:
+<pre>
+anonuid=-1
+anongid=-1
+</pre>
+</description>
+<rationale>Specifying the anonymous UID and GID as -1 ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="service_nfs_disabled">
+<title>Disable Network File System (nfs)</title>
+<description>The Network File System (NFS) service allows remote hosts to mount
+and interact with shared filesystems on the local machine. If the local machine
+is not designated as a NFS server then this service should be disabled.
+<service-disable-macro service="nfs" />
+</description>
+<ocil clause="it does not">
+It is prudent to ensure the <tt>nfs</tt> service is disabled in system boot, as well as 
+not currently running.  First, run the following to verify the service is stopped:
+<pre>$ service nfs status</pre>
+If the service is stopped or disabled, it will return the following:
+<pre>rpc.svcgssd is stopped
+rpc.mountd is stopped
+nfsd is stopped
+rpc.rquotad is stopped</pre>
+To verify that the <tt>nfs</tt> service is disabled, run the following command:
+<pre>$ chkconfig --list nfs</pre>
+If properly configured, the output should look like:
+<pre>nfs            	0:off	1:off	2:off	3:off	4:off	5:off	6:off</pre>
+</ocil>
+<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_nfs_disabled" />
+<tested by="DS" on="20121025"/>
+</Rule>
+
+<Rule id="service_rpcsvcgssd_disabled">
+<title>Disable Secure RPC Server Service (rpcsvcgssd)</title>
+<description>The rpcsvcgssd service manages RPCSEC GSS contexts required to
+secure protocols that use RPC (most often Kerberos and NFS). The rpcsvcgssd
+service is the server-side of RPCSEC GSS. If the system does not require secure
+RPC then this service should be disabled.
+<service-disable-macro service="rpcsvcgssd" />
+</description>
+<ocil>
+<service-disable-check-macro service="rpcsvcgssd" />
+</ocil>
+<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_rpcsvcgssd_disabled" />
+<tested by="DS" on="20121025"/>
+</Rule>
+</Group>
+
+<Group id="mounting_remote_filesystems">
+<title>Mount Remote Filesystems with Restrictive Options</title>
+<description>Edit the file <tt>/etc/fstab</tt>. For each filesystem whose type
+(column 3) is <tt>nfs</tt> or <tt>nfs4</tt>, add the text
+<tt>,nodev,nosuid</tt> to the list of mount options in column 4. If
+appropriate, also add <tt>,noexec</tt>.
+<br /><br />
+See the section titled "Restrict Partition Mount Options" for a description of
+the effects of these options. In general, execution of files mounted via NFS
+should be considered risky because of the possibility that an adversary could
+intercept the request and substitute a malicious file. Allowing setuid files to
+be executed from remote servers is particularly risky, both for this reason and
+because it requires the clients to extend root-level trust to the NFS
+server.</description>
+
+<Rule id="use_nodev_option_on_nfs_mounts" severity="medium">
+<title>Mount Remote Filesystems with nodev</title>
+<description>
+<mount-desc-macro option="nodev" part="any NFS mounts" />
+</description>
+<ocil clause="the setting does not show">
+To verify the <tt>nodev</tt> option is configured for all NFS mounts, run the following command:
+<pre>$ mount  | grep nfs</pre>
+All NFS mounts should show the <tt>nodev</tt> setting in parentheses.  This is not applicable if NFS is 
+not implemented.
+</ocil>
+<rationale>Legitimate device files should only exist in the /dev directory. NFS mounts
+should not present device files to users.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="mount_option_nodev_remote_filesystems" />
+<tested by="DS" on="20121025"/>
+</Rule>
+
+<Rule id="use_nosuid_option_on_nfs_mounts" severity="medium">
+<title>Mount Remote Filesystems with nosuid</title>
+<description>
+<mount-desc-macro option="nosuid" part="any NFS mounts" />
+</description>
+<ocil clause="the setting does not show">
+To verify the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command:
+<pre>$ mount  | grep nfs</pre>
+All NFS mounts should show the <tt>nosuid</tt> setting in parentheses.  This is not applicable if NFS is 
+not implemented.
+</ocil>
+<rationale>NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables
+should be installed to their default location on the local filesystem.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="mount_option_nosuid_remote_filesystems" />
+<tested by="DS" on="20121025"/>
+</Rule>
+
+</Group>
+</Group>
+
+<Group id="nfs_configuring_servers">
+<title>Configure NFS Servers</title>
+<description>The steps in this section are appropriate for machines which operate as NFS servers.</description>
+
+<Group id="configure_exports_restrictively">
+<title>Configure the Exports File Restrictively</title>
+<description>Linux's NFS implementation uses the file <tt>/etc/exports</tt> to control what filesystems
+and directories may be accessed via NFS. (See the <tt>exports(5)</tt> manpage for more information about the
+format of this file.)
+<br /><br />
+The syntax of the <tt>exports</tt> file is not necessarily checked fully on reload, and syntax errors
+can leave your NFS configuration more open than intended. Therefore, exercise caution when modifying
+the file.
+<br /><br />
+The syntax of each line in <tt>/etc/exports</tt> is:
+<pre>/DIR	host1(opt1,opt2) host2(opt3)</pre>
+where <tt>/DIR</tt> is a directory or filesystem to export, <tt>hostN</tt> is an IP address, netblock,
+hostname, domain, or netgroup to which to export, and <tt>optN</tt> is an option.
+</description>
+</Group> <!-- configure_exports_restrictively -->
+
+<Group id="use_acl_enforce_auth_restrictions">
+<title>Use Access Lists to Enforce Authorization Restrictions</title>
+<description>When configuring NFS exports, ensure that each export line in <tt>/etc/exports</tt> contains
+a list of hosts which are allowed to access that export. If no hosts are specified on an export line,
+then that export is available to any remote host which requests it. All lines of the exports file should
+specify the hosts (or subnets, if needed) which are allowed to access the exported directory, so that
+unknown or remote hosts will be denied.
+<br /><br />
+Authorized hosts can be specified in several different formats:
+<ul>
+<li>Name or alias that is recognized by the resolver</li>
+<li>Fully qualified domain name</li>
+<li>IP address</li>
+<li>IP subnets in the format <tt>address/netmask</tt> or <tt>address/CIDR</tt></li>
+</ul>
+</description>
+</Group> <!-- use_acl_enforce_auth_restrictions -->
+
+<Group id="export_filesystems_read_only">
+<title>Export Filesystems Read-Only if Possible</title>
+<description>If a filesystem is being exported so that users can view the files in a convenient
+fashion, but there is no need for users to edit those files, exporting the filesystem read-only
+removes an attack vector against the server. The default filesystem export mode is <tt>ro</tt>,
+so do not specify <tt>rw</tt> without a good reason.
+</description>
+</Group> <!-- export_filesystems_read_only -->
+
+
+<Rule id="use_root_squashing_all_exports">
+<title>Use Root-Squashing on All Exports</title>
+<description>If a filesystem is exported using root squashing, requests from root on the client
+are considered to be unprivileged (mapped to a user such as nobody). This provides some mild
+protection against remote abuse of an NFS server. Root squashing is enabled by default, and
+should not be disabled.
+<br /><br />
+Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>no_root_squash</tt>.
+</description>
+<rationale>If the NFS server allows root access to local file systems from remote hosts, this
+access could be used to compromise the system.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="restrict_nfs_clients_to_privileged_ports">
+<title>Restrict NFS Clients to Privileged Ports</title>
+<description>By default, the server NFS implementation requires that all client requests be made
+from ports less than 1024. If your organization has control over machines connected to its
+network, and if NFS requests are prohibited at the border firewall, this offers some protection
+against malicious requests from unprivileged users. Therefore, the default should not be changed.
+<br /><br />
+To ensure that the default has not been changed, ensure no line in
+<tt>/etc/exports</tt> contains the option <tt>insecure</tt>.
+</description>
+<rationale>Allowing client requests to be made from ports higher than 1024 could allow a unprivileged
+user to initiate an NFS connection. If the unprivileged user account has been compromised, an
+attacker could gain access to data on the NFS server.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="no_insecure_locks_exports" severity="medium">
+<title>Ensure Insecure File Locking is Not Allowed</title>
+<description>By default the NFS server requires secure file-lock requests,
+which require credentials from the client in order to lock a file. Most NFS
+clients send credentials with file lock requests, however, there are a few
+clients that do not send credentials when requesting a file-lock, allowing the
+client to only be able to lock world-readable files. To get around this, the
+<tt>insecure_locks</tt> option can be used so these clients can access the
+desired export. This poses a security risk by potentially allowing the client
+access to data for which it does not have authorization.
+Remove any instances of the 
+<tt>insecure_locks</tt> option from the file <tt>/etc/exports</tt>.
+</description>
+<ocil clause="there is output">
+To verify insecure file locking has been disabled, run the following command:
+<pre># grep insecure_locks /etc/exports</pre>
+</ocil>
+<rationale>Allowing insecure file locking could allow for sensitive data to be
+viewed or edited by an unauthorized user.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref disa="764" />
+</Rule>
+
+</Group> <!-- nfs_configuring_servers -->
+
+</Group>

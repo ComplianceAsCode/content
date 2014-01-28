@@ -24,20 +24,35 @@
 # sqlite> .exit
 
 
-SITECONFIG="../ssg-docs.cfg"
+SITE_CONFIG="ssg-docs.cfg"
 
-all: user_guide developer_guide
+all: user_guide developer_guide workshop
+
+update_site:
+	publican update_site --site_config $(SITE_CONFIG)
+	for lang in a*-* b*-* c*-* d*-* el-GR es-ES f*-* \
+	            g*-* h*-* i*-* j*-* k*-* l*-* m*-* \
+		    n*-* o*-* p*-* r*-* si-LK sk-SK \
+		    sr-Latn-RS sr-RS sv-SE t*-* u*-* zh-* ; do \
+		rm -Rf html/$$lang ; \
+	done
 
 user_guide:
 	cd User_Guide/ \
 	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
-	&& publican install_book --site_config $(SITECONFIG) --lang en-US
+	&& publican install_book --site_config ../$(SITE_CONFIG) --lang en-US
 
 developer_guide:
 	cd Developer_Guide/ \
 	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
-	&& publican install_book --site_config $(SITECONFIG) --lang en-US
+	&& publican install_book --site_config ../$(SITE_CONFIG) --lang en-US
+
+workshop:
+	cd SCAP_and_STIG_Workshop/ \
+	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
+	&& publican install_book --site_config ../$(SITE_CONFIG) --lang en-US
 
 clean:
 	cd User_Guide &&  publican clean 
 	cd Developer_Guide && publican clean 
+	cd SCAP_and_STIG_Workshop && publican clean

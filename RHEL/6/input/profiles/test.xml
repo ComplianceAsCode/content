@@ -1,0 +1,67 @@
+<Profile id="test">
+<title>test</title>
+<description>This profile is for testing.</description>
+<!--
+<select idref="accounts_password_minlen_login_defs" selected="true"/>
+<select idref="accounts_minimum_age_login_defs" selected="true"/>
+<select idref="accounts_maximum_age_login_defs" selected="true"/>
+<select idref="accounts_password_warn_age_login_defs" selected="true"/>
+<select idref="package_rsyslog_installed" selected="true"/>
+<select idref="service_rsyslog_enabled" selected="true"/>
+<select idref="disable_vsftpd" selected="true"/>
+<select idref="selinux_state" selected="true"/>
+<select idref="accounts_password_pam_cracklib_dcredit" selected="true"/>
+<select idref="tftpd_uses_secure_mode" selected="true"/>
+<select idref="set_system_login_banner" selected="true"/>
+<select idref="set_screensaver_inactivity_timeout" selected="true"/>
+<select idref="set_blank_screensaver" selected="true"/>
+<select idref="enable_screensaver_after_idle" selected="true"/>
+<select idref="enable_screensaver_password_lock" selected="true"/>
+<select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
+<select idref="kernel_module_cramfs_disabled" selected="true"/>
+<select idref="packagegroup_xwindows_remove" selected="true"/>
+<refine-value idref="login_banner_text" selector="usgcb_default"/>
+<refine-value idref="var_umask_for_daemons" selector="027"/>
+<refine-value idref="var_selinux_state" selector="enforcing"/>
+<refine-value idref="var_password_pam_cracklib_dcredit" selector="1"/>
+<refine-value idref="inactivity_timeout_value" selector="10_minutes"/>
+-->
+
+
+
+<select idref="configure_auditd_num_logs" selected="true"/>
+<select idref="configure_auditd_max_log_file" selected="true"/>
+<select idref="auditd_data_retention_action_mail_acct" selected="true"/>
+<select idref="auditd_data_retention_space_left_action" selected="true"/>
+<select idref="auditd_data_retention_admin_space_left_action" selected="true"/>
+<select idref="configure_auditd_max_log_file_action" selected="true"/>
+
+<refine-value idref="var_auditd_num_logs" selector="5"/>
+<refine-value idref="var_auditd_max_log_file" selector="6"/>
+<refine-value idref="var_auditd_max_log_file_action" selector="rotate"/>
+<refine-value idref="var_auditd_space_left_action" selector="syslog"/>
+<refine-value idref="var_auditd_admin_space_left_action" selector="single"/>
+<refine-value idref="var_auditd_action_mail_acct" selector="root"/>
+
+<select idref="accounts_umask_bashrc" selected="true" />
+<select idref="accounts_umask_cshrc" selected="true" />
+<select idref="accounts_umask_etc_profile" selected="true" />
+<select idref="accounts_umask_login_defs" selected="true" />
+<refine-value idref="var_accounts_user_umask" selector="077" />
+
+<select idref="umask_for_daemons" selected="true"/>
+<refine-value idref="var_umask_for_daemons" selector="027"/>
+
+
+
+<refine-value idref="var_accounts_password_minlen_login_defs" selector="12"/>
+<!-- password minimum length -->
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="90"/>
+<!-- maximum password age -->
+<refine-value idref="var_accounts_minimum_age_login_defs" selector="7"/>
+<!-- minimum password age -->
+<refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
+<!-- password warn age -->
+
+
+</Profile>

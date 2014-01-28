@@ -1,0 +1,185 @@
+<Group id="smb">
+<title>Samba(SMB) Microsoft Windows File Sharing Server</title>
+<description>When properly configured, the Samba service allows
+Linux machines to provide file and print sharing to Microsoft
+Windows machines. There are two software packages that provide
+Samba support. The first, <tt>samba-client</tt>, provides a series of
+command line tools that enable a client machine to access Samba
+shares. The second, simply labeled <tt>samba</tt>, provides the Samba
+service. It is this second package that allows a Linux machine to
+act as an Active Directory server, a domain controller, or as a
+domain member. Only the <tt>samba-client</tt> package is installed by
+default.</description>
+
+<Group id="disabling_samba">
+<title>Disable Samba if Possible</title>
+<description>
+Even after the Samba server package has been installed, it
+will remain disabled. Do not enable this service unless it is
+absolutely necessary to provide Microsoft Windows file and print
+sharing functionality.
+</description>
+
+<Rule id="disable_smb_server">
+<title>Disable Samba</title>
+<description>
+<service-disable-macro service="smb" />
+</description>
+<ocil>
+<service-disable-check-macro service="smb" />
+</ocil>
+<rationale>
+Running a Samba server provides a network-based avenue of attack, and
+should be disabled if not needed.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_smb_disabled" />
+<ref disa="1436" />
+</Rule>
+</Group> <!--<Group id="disabling_samba">-->
+
+<Group id="configuring_samba">
+<title>Configure Samba if Necessary</title>
+<description>All settings for the Samba daemon can be found in
+<tt>/etc/samba/smb.conf</tt>. Settings are divided between a
+<tt>[global]</tt> configuration section and a series of user
+created share definition sections meant to describe file or print
+shares on the system. By default, Samba will operate in user mode
+and allow client machines to access local home directories and
+printers. It is recommended that these settings be changed or that
+additional limitations be set in place.</description>
+
+
+
+
+<Group id="smb_restrict_file_sharing">
+<title>Restrict SMB File Sharing to Configured Networks</title>
+<description>Only users with local user accounts will be able to log in to
+Samba shares by default. Shares can be limited to particular users or network
+addresses. Use the <tt>hosts allow</tt> and <tt>hosts deny</tt> directives
+accordingly, and consider setting the valid users directive to a limited subset
+of users or to a group of users. Separate each address, user, or user group
+with a space as follows for a particular <i>share</i> or global:
+<pre>[<i>share</i>]
+  hosts allow = 192.168.1. 127.0.0.1
+  valid users = userone usertwo @usergroup</pre>
+It is also possible to limit read and write access to particular users with the
+read list and write list options, though the permissions set by the system
+itself will override these settings. Set the read only attribute for each share
+to ensure that global settings will not accidentally override the individual
+share settings. Then, as with the valid users directive, separate each user or
+group of users with a space:
+<pre>[<i>share</i>]
+  read only = yes
+  write list = userone usertwo @usergroup</pre>
+</description>
+<rationale>The Samba service is only required for sharing files and printers
+with Microsoft Windows workstations, and even then, other options may exist. 
+</rationale>
+</Group>
+
+<Rule id="smb_server_disable_root">
+<title>Disable Root Access to SMB Shares</title>
+<description>Administrators should not use administrator accounts to access
+Samba file and printer shares. Disable the root user and the wheel
+administrator group:
+<pre>[<i>share</i>]
+  invalid users = root @wheel</pre>
+If administrator accounts cannot be disabled, ensure that local machine
+passwords and Samba service passwords do not match.</description>
+<rationale>
+Typically, administrator access is required when Samba must create user and
+machine accounts and shares. Domain member servers and standalone servers may
+not need administrator access at all. If that is the case, add the invalid
+users parameter to <tt>[global]</tt> instead.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="require_smb_client_signing">
+<title>Require Client SMB Packet Signing, if using <tt>smbclient</tt></title>
+<description>
+To require samba clients running <tt>smbclient</tt> to use
+packet signing, add the following to the <tt>[global]</tt> section
+of the Samba configuration file, <tt>/etc/samba/smb.conf</tt>:
+<pre>client signing = mandatory</pre>
+Requiring samba clients such as <tt>smbclient</tt> to use packet
+signing ensures they can
+only communicate with servers that support packet signing.
+</description>
+<ocil clause="it is not">
+To verify that Samba clients running smbclient must use packet signing, run the following command:
+<pre># grep signing /etc/samba/smb.conf</pre>
+The output should show:
+<pre>client signing = mandatory</pre>
+</ocil>
+<rationale>
+Packet signing can prevent
+man-in-the-middle attacks which modify SMB packets in
+transit.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="smb_client_signing_smb_conf" />
+</Rule>
+
+
+<Rule id="require_smb_client_signing_mount.cifs">
+<title>Require Client SMB Packet Signing, if using mount.cifs</title>
+<description>Require packet signing of clients who mount Samba
+shares using the <tt>mount.cifs</tt> program (e.g., those who specify shares
+in <tt>/etc/fstab</tt>). To do so, ensure signing options (either
+<tt>sec=krb5i</tt> or <tt>sec=ntlmv2i</tt>) are used.
+<br /><br />
+See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
+client should only communicate with servers who can support SMB
+packet signing.
+</description>
+<ocil clause="it does not">
+To verify that Samba clients using mount.cifs must use packet signing, run the following command:
+<pre># grep sec /etc/fstab</pre>
+The output should show either <tt>krb5i</tt> or <tt>ntlmv2i</tt> in use.
+</ocil>
+<rationale>
+Packet signing can prevent man-in-the-middle
+attacks which modify SMB packets in transit.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="mount_option_smb_client_signing" />
+</Rule>
+
+<Group id="smb_disable_printing">
+<title>Restrict Printer Sharing</title>
+<description>By default, Samba utilizes the CUPS printing service to enable
+printer sharing with Microsoft Windows workstations. If there are no printers
+on the local machine, or if printer sharing with Microsoft Windows is not
+required, disable the printer sharing capability by commenting out the
+following lines, found in <tt>/etc/samba/smb.conf</tt>:
+<pre>[global]
+  load printers = yes
+  cups options = raw
+[printers]
+  comment = All Printers
+  path = /usr/spool/samba
+  browseable = no
+  guest ok = no
+  writable = no
+  printable = yes</pre>
+There may be other options present, but these are the only options enabled and
+uncommented by default. Removing the <tt>[printers]</tt> share should be enough
+for most users.  If the Samba printer sharing capability is needed, consider
+disabling the Samba network browsing capability or restricting access to a
+particular set of users or network addresses. Set the <tt>valid users</tt>
+parameter to a small subset of users or restrict it to a particular group of
+users with the shorthand <tt>@</tt>. Separate each user or group of users with
+a space. For example, under the <tt>[printers]</tt> share:
+<pre>[printers]
+  valid users = user @printerusers</pre>
+</description>
+<rationale>The Samba service is only required for sharing files and printers
+with Microsoft Windows workstations, and even then, other options may exist. Do
+not use the Samba service to share files between Unix or Linux machines.
+</rationale>
+</Group>
+
+</Group>
+</Group>

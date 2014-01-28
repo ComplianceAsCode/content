@@ -1,0 +1,213 @@
+<Group id="selinux">
+<title>SELinux</title>
+<description>SELinux is a feature of the Linux kernel which can be
+used to guard against misconfigured or compromised programs.
+SELinux enforces the idea that programs should be limited in what
+files they can access and what actions they can take.
+<br /><br />
+The default SELinux policy, as configured on RHEL 6, has been
+sufficiently developed and debugged that it should be usable on
+almost any Red Hat machine with minimal configuration and a small
+amount of system administrator training. This policy prevents
+system services - including most of the common network-visible
+services such as mail servers, FTP servers, and DNS servers - from
+accessing files which those services have no valid reason to
+access. This action alone prevents a huge amount of possible damage
+from network attacks against services, from trojaned software, and
+so forth.
+<br /><br />
+This guide recommends that SELinux be enabled using the
+default (targeted) policy on every Red Hat system, unless that
+system has requirements which make a stronger policy
+appropriate.
+</description>
+
+<Group id="enabling_selinux">
+<title>Enable SELinux</title>
+<description>Edit the file <tt>/etc/selinux/config</tt>. Add or correct the
+following lines:
+<pre>SELINUX=enforcing
+SELINUXTYPE=targeted</pre>
+Edit the file <tt>/etc/grub.conf</tt>. Ensure that the following
+arguments DO NOT appear on any kernel command line in the file:
+<pre>selinux=0
+enforcing=0</pre>
+The directive <tt>SELINUX=enforcing</tt> enables SELinux at boot time.
+If SELinux is suspected of involvement with boot-time problems
+(unlikely), it is possible to boot into the warning-only mode
+<tt>SELINUX=permissive</tt> for debugging purposes. Make certain to change
+the mode back to enforcing after debugging, set the filesystems to
+be relabeled for consistency using the command <tt>touch
+/.autorelabel</tt>, and reboot.
+<br /><br />
+However, the RHEL 6 default SELinux configuration should be
+sufficiently reasonable that most systems will boot without serious
+problems. Some applications that require deep or unusual system
+privileges, such as virtual machine software, may not be compatible
+with SELinux in its default configuration. However, this should be
+uncommon, and SELinux's application support continues to improve.
+In other cases, SELinux may reveal unusual or insecure program
+behavior by design.
+<br /><br />
+The directive <tt>SELINUXTYPE=targeted</tt> configures SELinux to use
+the default targeted policy.
+<br /><br />
+The SELinux boot mode specified in <tt>/etc/selinux/config</tt> can be
+overridden by command-line arguments passed to the kernel. It is
+necessary to check <tt>grub.conf</tt> to ensure that this has not been done
+and to protect the boot process.
+</description>
+
+<Value id="var_selinux_state" type="string" operator="equals" interactive="0">
+<title>SELinux state</title>
+<description>enforcing - SELinux security policy is enforced.
+<br />permissive - SELinux prints warnings instead of enforcing.
+<br />disabled - SELinux is fully disabled.</description>
+<value selector="">enforcing</value>
+<value selector="enforcing">enforcing</value>
+<value selector="permissive">permissive</value>
+<value selector="disabled">disabled</value>
+</Value>
+
+<Value id="var_selinux_policy_name" type="string" operator="equals" interactive="0">
+<title>SELinux policy</title>
+<description>Type of policy in use. Possible values are:
+<br />targeted - Only targeted network daemons are protected.
+<br />strict - Full SELinux protection.
+<br />mls - Multiple levels of security</description>
+<value selector="">targeted</value>
+<value selector="targeted">targeted</value>
+<value selector="mls">mls</value>
+</Value>
+
+<Rule id="enable_selinux_bootloader" severity="medium">
+<title>Ensure SELinux Not Disabled in /etc/grub.conf</title>
+<description>SELinux can be disabled at boot time by an argument in
+<tt>/etc/grub.conf</tt>.
+Remove any instances of <tt>selinux=0</tt> from the kernel arguments in that
+file to prevent SELinux from being disabled at boot.
+</description>
+<ocil clause="SELinux is disabled at boot time">
+Inspect <tt>/etc/grub.conf</tt> for any instances of <tt>selinux=0</tt>
+in the kernel boot arguments.  Presence of <tt>selinux=0</tt> indicates
+that SELinux is disabled at boot time.
+</ocil>
+<rationale>
+Disabling a major host protection feature, such as SELinux, at boot time prevents
+it from confining system services at boot time.  Further, it increases
+the chances that it will remain off during system operation.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="selinux_bootloader_notdisabled" />
+<ref nist="AC-3,AC-3(3),AC-6,AU-9" disa="22,32"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="selinux_state" severity="medium">
+<title>Ensure SELinux State is Enforcing</title>
+<description>The SELinux state should be set to <tt>enforcing</tt> at
+system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
+following line to configure the system to boot into enforcing mode:
+<pre>SELINUX=enforcing</pre>
+</description>
+<ocil clause="SELINUX is not set to enforcing">
+Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+<pre>SELINUX=enforcing</pre>
+</ocil>
+<rationale>
+Setting the SELinux state to enforcing ensures SELinux is able to confine
+potentially compromised processes to the security policy, which is designed to
+prevent them from causing damage to the system or further elevating their
+privileges.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="selinux_state" value="var_selinux_state"/>
+<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" disa="22,32,26"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="selinux_policytype">
+<title>Configure SELinux Policy</title>
+<description>The SELinux <tt>targeted</tt> policy is appropriate for
+general-purpose desktops and servers, as well as systems in many other roles.
+To configure the system to use this policy, add or correct the following line
+in <tt>/etc/selinux/config</tt>:
+<pre>SELINUXTYPE=targeted</pre>
+Other policies, such as <tt>mls</tt>, provide additional security labeling
+and greater confinement but are not compatible with many general-purpose
+use cases.
+</description>
+<ocil clause="it does not">
+Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+<pre>SELINUXTYPE=targeted</pre>
+</ocil>
+<rationale>
+Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
+ensures the system will confine processes that are likely to be
+targeted for exploitation, such as network or system services.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="selinux_policytype" value="var_selinux_policy_name"/>
+<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" disa="22,32"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+</Group>
+
+<Rule id="service_restorecond_enabled">
+<title>Enable the SELinux Context Restoration Service (restorecond)</title>
+<description>The <tt>restorecond</tt> service utilizes <tt>inotify</tt> to look
+for the creation of new files listed in the
+<tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
+created, <tt>restorecond</tt> ensures the file receives the proper SELinux
+security context.
+<service-enable-macro service="restorecond" />
+</description>
+<rationale>The <tt>restorecond</tt> service helps ensure that the default SELinux
+file context is applied to files. This allows automatic correction
+of file contexts created by some programs.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_restorecond_enabled" />
+<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" />
+</Rule>
+
+
+<Rule id="selinux_confinement_of_daemons" severity="medium">
+<title>Ensure No Daemons are Unconfined by SELinux</title>
+<description>
+Daemons for which the SELinux policy does not contain rules will inherit the
+context of the parent process. Because daemons are launched during
+startup and descend from the <tt>init</tt> process, they inherit the <tt>initrc_t</tt> context.
+<br/>
+<br/>
+To check for unconfined daemons, run the following command:
+<pre># ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'</pre>
+It should produce no output in a well-configured system.
+</description>
+<rationale>
+Daemons which run with the <tt>initrc_t</tt> context may cause AVC denials,
+or allow privileges that the daemon does not require.
+</rationale>
+<ref nist="AC-6,AU-9,CM-7" />
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="selinux_all_devicefiles_labeled">
+<title>Ensure No Device Files are Unlabeled by SELinux</title>
+<description>Device files, which are used for communication with important
+system resources, should be labeled with proper SELinux types. If any device
+files carry the SELinux type <tt>unlabeled_t</tt>, investigate the cause and
+correct the file's context.
+</description>
+<ocil clause="there is output">To check for unlabeled device files, run the following command:
+<pre># ls -RZ /dev | grep unlabeled_t</pre>
+It should produce no output in a well-configured system.</ocil>
+<rationale>
+If a device file carries the SELinux type <tt>unlabeled_t</tt>, then SELinux
+cannot properly restrict access to the device file.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="selinux_all_devicefiles_labeled" />
+<ref nist="AC-6,AU-9,CM-7" disa="22,32"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+</Group>

@@ -1,0 +1,520 @@
+<Group id="files">
+<title>Verify Permissions on Important Files and
+Directories</title>
+<description>Permissions for many files on a system must be set
+restrictively to ensure sensitive information is properly protected.
+This section discusses important
+permission restrictions which can be verified
+to ensure that no harmful discrepancies have
+arisen.</description>
+
+<Group id="permissions_important_account_files">
+<title>Verify Permissions on Files with Local Account Information and Credentials</title>
+<description>The default restrictive permissions for files which act as
+important security databases such as <tt>passwd</tt>, <tt>shadow</tt>,
+<tt>group</tt>, and <tt>gshadow</tt> files must be maintained.  Many utilities
+need read access to the <tt>passwd</tt> file in order to function properly, but
+read access to the <tt>shadow</tt> file allows malicious attacks against system
+passwords, and should never be enabled.</description>
+
+<Rule id="userowner_shadow_file" severity="medium">
+<title>Verify User Who Owns <tt>shadow</tt> File</title>
+<description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
+<rationale>The <tt>/etc/shadow</tt> file contains the list of local
+system accounts and stores password hashes. Protection of this file is
+critical for system security. Failure to give ownership of this file
+to root provides the designated owner with access to sensitive information
+which could weaken the system security posture.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="userowner_shadow_file" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="groupowner_shadow_file" severity="medium">
+<title>Verify Group Who Owns <tt>shadow</tt> File</title>
+<description><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
+<rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
+critical for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="groupowner_shadow_file" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_permissions_etc_shadow" severity="medium">
+<title>Verify Permissions on <tt>shadow</tt> File</title>
+<description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
+<ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
+<rationale>The <tt>/etc/shadow</tt> file contains the list of local
+system accounts and stores password hashes. Protection of this file is
+critical for system security. Failure to give ownership of this file
+to root provides the designated owner with access to sensitive information
+which could weaken the system security posture.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_etc_shadow" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_owner_etc_group" severity="medium">
+<title>Verify User Who Owns <tt>group</tt> File</title>
+<description><fileowner-desc-macro file="/etc/group" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
+<rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
+on the system. Protection of this file is important for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_owner_etc_group" />
+<ref nist="AC-6"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_groupowner_etc_group" severity="medium">
+<title>Verify Group Who Owns <tt>group</tt> File</title>
+<description><filegroupowner-desc-macro file="/etc/group" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
+<rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
+on the system. Protection of this file is important for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_groupowner_etc_group" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_permissions_etc_group" severity="medium">
+<title>Verify Permissions on <tt>group</tt> File</title>
+<description><fileperms-desc-macro file="/etc/group" perms="644"/></description>
+<ocil><fileperms-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
+<rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
+on the system. Protection of this file is important for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_etc_group" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_owner_etc_gshadow" severity="medium">
+<title>Verify User Who Owns <tt>gshadow</tt> File</title>
+<description><fileowner-desc-macro file="/etc/gshadow" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
+<rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_owner_etc_gshadow" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_groupowner_etc_gshadow" severity="medium">
+<title>Verify Group Who Owns <tt>gshadow</tt> File</title>
+<description><filegroupowner-desc-macro file="/etc/gshadow" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/gshadow" group="root"/></ocil>
+<rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_groupowner_etc_gshadow" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_permissions_etc_gshadow" severity="medium">
+<title>Verify Permissions on <tt>gshadow</tt> File</title>
+<description><fileperms-desc-macro file="/etc/gshadow" perms="0000"/></description>
+<ocil><fileperms-check-macro file="/etc/gshadow" perms="----------"/></ocil>
+<rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_etc_gshadow" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_owner_etc_passwd" severity="medium">
+<title>Verify User Who Owns <tt>passwd</tt> File</title>
+<description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
+<rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
+the system. Protection of this file is critical for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_owner_etc_passwd" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_groupowner_etc_passwd" severity="medium">
+<title>Verify Group Who Owns <tt>passwd</tt> File</title>
+<description><filegroupowner-desc-macro file="/etc/passwd" group="root"/></description>
+<ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
+<rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
+the system. Protection of this file is critical for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_groupowner_etc_passwd" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="file_permissions_etc_passwd" severity="medium">
+<title>Verify Permissions on <tt>passwd</tt> File</title>
+<description><fileperms-desc-macro file="/etc/passwd" perms="0644"/></description>
+<ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/></ocil>
+<rationale>If the <tt>/etc/passwd</tt> file is writable by a group-owner or the
+world the risk of its compromise is increased. The file contains the list of
+accounts on the system and associated information, and protection of this file
+is critical for system security.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_etc_passwd" />
+<ref nist="AC-6" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+</Group>
+
+
+<!-- pull /var/log permissions out of rsyslog discussion section? -->
+
+<Group id="permissions_within_important_dirs">
+<title>Verify File Permissions Within Some Important Directories</title>
+<description>Some directories contain files whose confidentiality or integrity
+is notably important and may also be susceptible to misconfiguration over time, particularly if
+unpackaged software is installed. As such,
+an argument exists to verify that files' permissions within these directories remain
+configured correctly and restrictively.   
+</description>
+
+<Rule id="file_permissions_library_dirs" severity="medium">
+<title>Verify that Shared Library Files Have Restrictive Permissions</title>
+<description>System-wide shared library files, which are linked to executables
+during process load time or run time, are stored in the following directories
+by default:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+</pre>
+Kernel modules, which can be added to the kernel during runtime, are
+stored in <tt>/lib/modules</tt>. All files in these directories
+should not be group-writable or world-writable. If any file in these
+directories is found to be group-writable or world-writable, correct
+its permission with the following command:
+<pre># chmod go-w <i>FILE</i></pre>
+</description>
+<ocil clause="any of these files are group-writable or world-writable">
+Shared libraries are stored in the following directories:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+</pre>
+To find shared libraries that are group-writable or world-writable,
+run the following command for each directory <i>DIR</i> which contains shared libraries:
+<pre>$ find <i>DIR</i> -perm /022 -type f</pre>
+</ocil>
+<rationale>Files from shared library directories are loaded into the address
+space of processes (including privileged ones) or of the kernel itself at
+runtime. Restrictive permissions are necessary to protect the integrity of the system.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6" disa="1499"/>
+<tested by="DS" on="20121026"/>
+<oval id="file_permissions_library_dirs" />
+</Rule>
+
+<Rule id="file_ownership_library_dirs" severity="medium">
+<title>Verify that Shared Library Files Have Root Ownership</title>
+<description>System-wide shared library files, which are linked to executables
+during process load time or run time, are stored in the following directories
+by default:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+</pre>
+Kernel modules, which can be added to the kernel during runtime, are also
+stored in <tt>/lib/modules</tt>. All files in these directories should be
+owned by the <tt>root</tt> user. If the directory, or any file in these
+directories, is found to be owned by a user other than root correct its
+ownership with the following command:
+<pre># chown root <i>FILE</i></pre>
+</description>
+<ocil clause="any of these files are not owned by root">
+Shared libraries are stored in the following directories:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+Additionlly, kernel modules are stored in <tt>/lib/modules</tt>.
+</pre>
+For each of these directories, run the following command to find files not 
+owned by root:
+<pre># find -L <i>$DIR</i> \! -user root -exec chown root {} \;</pre>
+</ocil>
+<rationale>Files from shared library directories are loaded into the address
+space of processes (including privileged ones) or of the kernel itself at
+runtime. Proper ownership is necessary to protect the integrity of the system.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6" disa="1499"/>
+<oval id="file_ownership_library_dirs" />
+<tested by="swells" on="20130914"/>
+</Rule>
+
+
+<Rule id="file_permissions_binary_dirs" severity="medium">
+<title>Verify that System Executables Have Restrictive Permissions</title>
+<description>
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
+All files in these directories should not be group-writable or world-writable.
+If any file <i>FILE</i> in these directories is found
+to be group-writable or world-writable, correct its permission with the
+following command:
+<pre># chmod go-w <i>FILE</i></pre>
+</description>
+<ocil clause="any system executables are found to be group or world writable">
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
+To find system executables that are group-writable or world-writable,
+run the following command for each directory <i>DIR</i> which contains system executables:
+<pre>$ find <i>DIR</i> -perm /022</pre>
+</ocil>
+<rationale>System binaries are executed by privileged users, as well as system services,
+and restrictive permissions are necessary to ensure execution of these programs
+cannot be co-opted.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6" disa="1499"/>
+<oval id="file_permissions_binary_dirs" />
+</Rule>
+
+<Rule id="file_ownership_binary_dirs" severity="medium">
+<title>Verify that System Executables Have Root Ownership</title>
+<description>
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
+All files in these directories should be owned by the <tt>root</tt> user.
+If any file <i>FILE</i> in these directories is found
+to be owned by a user other than root, correct its ownership with the
+following command:
+<pre># chown root <i>FILE</i></pre>
+</description>
+<ocil clause="any system executables are found to not be owned by root">
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
+To find system executables that are not owned by <tt>root</tt>,
+run the following command for each directory <i>DIR</i> which contains system executables:
+<pre>$ find <i>DIR</i> \! -user root</pre>
+</ocil>
+<rationale>System binaries are executed by privileged users as well as system services,
+and restrictive permissions are necessary to ensure that their
+execution of these programs cannot be co-opted.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_ownership_binary_dirs" />
+<ref nist="AC-6" disa="1499"/>
+</Rule>
+
+</Group>
+
+<Rule id="sticky_world_writable_dirs">
+<title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
+<description>When the so-called 'sticky bit' is set on a directory,
+only the owner of a given file may remove that file from the
+directory. Without the sticky bit, any user with write access to a
+directory may remove any file in the directory. Setting the sticky
+bit prevents users from removing each other's files. In cases where
+there is no reason for a directory to be world-writable, a better
+solution is to remove that permission rather than to set the sticky
+bit. However, if a directory is used by a particular application,
+consult that application's documentation instead of blindly
+changing modes.
+<br/>
+To set the sticky bit on a world-writable directory <i>DIR</i>, run the
+following command:
+<pre># chmod +t <i>DIR</i></pre>
+</description>
+<ocil clause="any world-writable directories are missing the sticky bit">
+To find world-writable directories that lack the sticky bit, run the following command:
+<pre># find / -xdev -type d -perm 002 ! -perm 1000</pre>
+</ocil>
+<rationale>
+Failing to set the sticky bit on public directories allows unauthorized users to delete files in the directory structure.
+<br/><br/>
+The only authorized public directories are those temporary directories supplied with the system, 
+or those designed to be temporary file repositories.  The setting is normally reserved for directories 
+used by the system, by users for temporary file storage (such as <tt>/tmp</tt>), and for directories 
+requiring global read/write access.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dir_perms_world_writable_sticky_bits" />
+<ref nist="AC-6"/>
+<tested by="swells" on="20120929"/>
+</Rule>
+
+<Rule id="world_writeable_files" severity="medium">
+<title>Ensure No World-Writable Files Exist</title>
+<description>It is generally a good idea to remove global (other) write
+access to a file when it is discovered. However, check with
+documentation for specific applications before making changes.
+Also, monitor for recurring world-writable files, as these may be
+symptoms of a misconfigured application or user
+account.</description>
+<ocil clause="there is output">
+To find world-writable files, run the following command:
+<pre># find / -xdev -type f -perm -002</pre>
+</ocil>
+<rationale>
+Data in world-writable files can be modified by any
+user on the system. In almost all circumstances, files can be
+configured using a combination of user and group permissions to
+support whatever legitimate access is needed without the risk
+caused by world-writable files.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6"/>
+<oval id="file_permissions_unauthorized_world_writable" />
+</Rule>
+
+<Rule id="no_unpackaged_sgid_files">
+<title>Ensure All SGID Executables Are Authorized</title>
+<description>The SGID (set group id) bit should be set only on files that were
+installed via authorized means. A straightforward means of identifying
+unauthorized SGID files is determine if any were not installed as part of an
+RPM package, which is cryptographically verified. Investigate the origin
+of any unpackaged SGID files. 
+</description>
+<ocil clause="there is output">
+To find world-writable files, run the following command:
+<pre># find / -xdev -type f -perm -002</pre>
+</ocil>
+<rationale>Executable files with the SGID permission run with the privileges of
+the owner of the file. SGID files of uncertain provenance could allow for
+unprivileged users to elevate privileges. The presence of these files should be
+strictly controlled on the system.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_unauthorized_sgid" />
+<ref nist=""/>
+</Rule>
+
+<Rule id="no_unpackaged_suid_files">
+<title>Ensure All SUID Executables Are Authorized</title>
+<description>The SUID (set user id) bit should be set only on files that were
+installed via authorized means. A straightforward means of identifying
+unauthorized SGID files is determine if any were not installed as part of an
+RPM package, which is cryptographically verified. Investigate the origin
+of any unpackaged SUID files. 
+</description>
+<ocil>
+To find world-writable files, run the following command:
+<pre># find / -xdev -type f -perm -002</pre>
+</ocil>
+<rationale>Executable files with the SUID permission run with the privileges of
+the owner of the file. SUID files of uncertain provenance could allow for
+unprivileged users to elevate privileges. The presence of these files should be
+strictly controlled on the system.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_unauthorized_suid" />
+<ref nist=""/>
+</Rule>
+
+
+<Rule id="no_files_unowned_by_user">
+<title>Ensure All Files Are Owned by a User</title>
+<description>If any files are not owned by a user, then the
+cause of their lack of ownership should be investigated.
+Following this, the files should be deleted or assigned to an
+appropriate user.
+</description>
+<ocil clause="files exist that are not owned by a valid user">
+The following command will discover and print any
+files on local partitions which do not belong to a valid user.
+Run it once for each local partition <i>PART</i>:
+<pre># find <i>PART</i> -xdev -nouser -print</pre>
+</ocil>
+<rationale>
+Unowned files do not directly imply a security problem, but they are generally
+a sign that something is amiss. They may
+be caused by an intruder, by incorrect software installation or
+draft software removal, or by failure to remove all files belonging
+to a deleted account. The files should be repaired so they
+will not cause problems when accounts are created in the future,
+and the cause should be discovered and addressed.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="no_files_unowned_by_user" />
+<ref nist="AC-6" disa="224"/>
+</Rule>
+
+<Rule id="no_files_unowned_by_group">
+<title>Ensure All Files Are Owned by a Group</title>
+<description>If any files are not owned by a group, then the
+cause of their lack of group-ownership should be investigated.
+Following this, the files should be deleted or assigned to an
+appropriate group.
+</description>
+<ocil clause="there is output">
+The following command will discover and print any
+files on local partitions which do not belong to a valid group.
+Run it once for each local partition <i>PART</i>:
+<pre># find <i>PART</i> -xdev -nogroup -print</pre>
+</ocil>
+<rationale>
+Unowned files do not directly imply a security problem, but they are generally
+a sign that something is amiss. They may
+be caused by an intruder, by incorrect software installation or
+draft software removal, or by failure to remove all files belonging
+to a deleted account. The files should be repaired so they
+will not cause problems when accounts are created in the future,
+and the cause should be discovered and addressed.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_ungroupowned" />
+<ref nist="AC-6" disa="224"/>
+</Rule>
+
+<Rule id="world_writable_files_system_ownership">
+<title>Ensure All World-Writable Directories Are Owned by a System Account</title>
+<description>All directories in local partitions which are
+world-writable should be owned by root or another
+system account.  If any world-writable directories are not
+owned by a system account, this should be investigated.
+Following this, the files should be deleted or assigned to an
+appropriate group.
+</description>
+<ocil clause="there is output">
+The following command will discover and print world-writable directories that
+are not owned by a system account, given the assumption that only system
+accounts have a uid lower than 500.  Run it once for each local partition <i>PART</i>:
+<pre># find <i>PART</i> -xdev -type d -perm -0002 -uid +499 -print</pre>
+</ocil>
+<rationale>
+Allowing a user account to own a world-writable directory is
+undesirable because it allows the owner of that directory to remove
+or replace any files that may be placed in the directory by other
+users.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dir_perms_world_writable_system_owned" />
+<ref nist="AC-6"/>
+<tested by="swells" on="20120929"/>
+</Rule>
+</Group>

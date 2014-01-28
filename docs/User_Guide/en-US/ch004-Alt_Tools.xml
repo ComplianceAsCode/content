@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "User_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-User_Guide-Alt_Tools">
+	<title>Alternative Scanning Tools</title>
+	<section id="sect-User_Guide-Alt_Tools-SCC">
+		<title>SPAWAR SCAP Compliance Checker (SCC)</title>
+			<para>Funded by the Internal Revenue Service and the National Security Agency, Space and Naval
+			Warface (SPAWAR) Systems Center Atlantic has authored a SCAP Compliance Checker (SCC).
+			SPAWAR SCC is available for any U.S. government employee or contractor; it is not
+			available to the general public. </para>
+		<para>The SPAWAR SCC website is <ulink
+				url="http://www.public.navy.mil/spawar/Atlantic/ProductsServices/Pages/SCAP.aspx"
+				>http://www.public.navy.mil/spawar/Atlantic/ProductsServices/Pages/SCAP.aspx</ulink>.</para>
+		<para>To utilize SCC with SCAP Security Guide content:</para>
+		<para>
+			<orderedlist>
+				<listitem>
+					<para>Import SSG content into SCC through the cscc -is command</para>
+					<para><programlisting>[root@localhost scc]# cd /opt/scc
+
+[root@localhost scc]# ./cscc -is /home/testUser/Desktop/ssg_scc.zip 
+Extracted: /opt/scc/Resources/Content/ssg-rhel6-cpe-oval.xml.
+Extracted: /opt/scc/Resources/Content/ssg-rhel6-cpe-dictionary.xml.
+Extracted: /opt/scc/Resources/Content/ssg-rhel6-xccdf.xml.
+Extracted: /opt/scc/Resources/Content/ssg-rhel6-ocil.xml.
+Extracted: /opt/scc/Resources/Content/ssg-rhel6-oval.xml.
+SCAP Content successfully installed to the Resources/Content directory.
+Please enable content by running CSCC with the '--config' option.</programlisting></para>
+				</listitem>
+				<listitem>
+					<para>Enable the SSG content</para>
+					<para>First, execute cscc --config:</para>
+					<para><programlisting>[root@localhost scc]# ./cscc --config
+
+SCC 3.1 RC2 configuration edit menu.
+Make menu selection:
+
+1. Configure SCAP content
+2. Configure SCAP profiles
+3. Delete SCAP content
+4. Configure OVAL content
+5. Delete OVAL content
+6. Configure Options
+7. Configure SSH Options
+8. Exit and save changes
+9. Exit without saving changes
+
+SCAP Processing is Enabled
+- 0 of 3 SCAP streams are enabled
+
+OVAL Processing is Disabled
+- 0 of 0 OVAL streams are enabled
+
+Enter menu selection: <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>1<?oxy_custom_end?></emphasis>
+</programlisting></para>
+					<para>You will be presented with a list of imported SCAP content. Select the option for SSG,
+						which will be simular to option 1 shown below:</para>
+					<para><programlisting>SCC 3.1 RC2 Available SCAP Content
+All content paths are relative to the installation directory at: /opt/scc/Resources
+
+1.  [ ] ssg-rhel6   2013-02-01-05:00   0.1
+        path: Content/
+        profile: test
+2.  [ ] U_RedHat_5_V1R2_STIG_Benchmark   2013-01-17   1
+        path: Content/
+        profile: MAC-1_Classified
+3.  [ ] usgcb-rhel5desktop   2011-09-30   1.0.5.0
+        path: Content/USGCB-RHEL5-1.0.5.0/
+        profile: united_states_government_configuration_baseline
+SCAP Content 0 of 3 enabled.
+
+Enter content number to enable or disable content
+('all', 'clear', or ranges N-N are allowed, type 'back' or '0' to return): <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>1<?oxy_custom_end?></emphasis></programlisting></para>
+					<para>Once selected, an [X] will be shown before the SSG SCAP content. Verify the SSG content
+						has been enabled, then enter 0 to return to the SCC main screen:</para>
+					<para><programlisting>SCC 3.1 RC2 Available SCAP Content
+All content paths are relative to the installation directory at: /opt/scc/Resources
+
+1.  [X] ssg-rhel6   2013-02-01-05:00   0.1
+        path: Content/
+        profile: test
+2.  [ ] U_RedHat_5_V1R2_STIG_Benchmark   2013-01-17   1
+        path: Content/
+        profile: MAC-1_Classified
+3.  [ ] usgcb-rhel5desktop   2011-09-30   1.0.5.0
+        path: Content/USGCB-RHEL5-1.0.5.0/
+        profile: united_states_government_configuration_baseline
+SCAP Content 1 of 3 enabled.
+
+Enter content number to enable or disable content
+('all', 'clear', or ranges N-N are allowed, type 'back' or '0' to return): <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>0<?oxy_custom_end?></emphasis></programlisting></para>
+				</listitem>
+				<listitem>
+					<para>Select SSG Profile</para>
+					<para>From the SCC home screen, select option 2, "Configure SCAP
+						profiles"</para>
+					<para><programlisting>SCC 3.1 RC2 configuration edit menu.
+Make menu selection:
+
+1. Configure SCAP content
+2. Configure SCAP profiles
+3. Delete SCAP content
+4. Configure OVAL content
+5. Delete OVAL content
+6. Configure Options
+7. Configure SSH Options
+8. Exit and save changes
+9. Exit without saving changes
+
+SCAP Processing is Enabled
+- 1 of 3 SCAP streams are enabled
+
+OVAL Processing is Disabled
+- 0 of 0 OVAL streams are enabled
+
+Enter menu selection: <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>2<?oxy_custom_end?></emphasis></programlisting></para>
+					<para>You will be brought to the SCAP content selection screen. Select the option for SSG,
+						simular to option 1 shown below:</para>
+					<para><programlisting>Select SCAP Content to view available profiles
+1.  [X] ssg-rhel6   2013-02-01-05:00   0.1
+        path: Content/
+        profile: stig-rhel6-server
+
+Enter content number to view available profiles (type 'back' or '0' to return): <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>1<?oxy_custom_end?></emphasis></programlisting></para>
+					<para>You will be shown available SSG profiles. Select the numerical identifier for the profile
+						you wish to scan against, such as stig-rhel6-server:</para>
+					<para><programlisting>Available Profiles for ssg-rhel6 2013-02-01-05:00 0.1
+1.  [ ] test
+2.  [ ] common
+3.  [ ] desktop
+4.  [ ] server
+5.  [ ] ftp
+6.  [ ] ftp
+7.  [X] stig-rhel6-server
+Enter profile number to set selected profile (type 'back' or '0' to return): <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>7<?oxy_custom_end?></emphasis></programlisting></para>
+					<para>You will be brought to the SCAP Content screen. Enter '0' to return to the SCC main
+						screen:</para>
+					<para><programlisting>Select SCAP Content to view available profiles
+1.  [X] ssg-rhel6   2013-02-01-05:00   0.1
+        path: Content/
+        profile: stig-rhel6-server
+
+Enter content number to view available profiles (type 'back' or '0' to return): <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>0<?oxy_custom_end?></emphasis></programlisting></para>
+				</listitem>
+				<listitem>
+					<para>Configure SSC Options</para>
+					<para>From the SCC main screen, select option 6, "Configure Options"</para>
+					<para><programlisting>SCC 3.1 RC2 configuration edit menu.
+Make menu selection:
+
+1. Configure SCAP content
+2. Configure SCAP profiles
+3. Delete SCAP content
+4. Configure OVAL content
+5. Delete OVAL content
+6. Configure Options
+7. Configure SSH Options
+8. Exit and save changes
+9. Exit without saving changes
+
+SCAP Processing is Enabled
+- 1 of 3 SCAP streams are enabled
+
+OVAL Processing is Disabled
+- 0 of 0 OVAL streams are enabled
+
+Enter menu selection: <emphasis role="bold"><?oxy_custom_start type="oxy_content_highlight" color="255,64,0"?>6<?oxy_custom_end?></emphasis></programlisting></para>
+					<para>On the options menu, ensure the following settings are enabled (indicated by [X]). To
+						enable/disable settings, enter their corresponding numerical
+						identifier:</para>
+					<para><programlisting>SCC 3.1 RC2 Options menu.
+Make menu selection:
+
+Content Scan Methods
+ 1. [X] Perform SCAP Scan
+ 2. [ ] Perform OVAL Scan
+
+Select Reports
+ 3. [X] Generate 'All Settings' report
+ 4. [ ] Generate 'All Settings Summary' report
+ 5. [X] Generate 'Non-Compliance' report
+ 6. [ ] Generate 'Non-Compliance Summary' report
+
+Report File Types
+ 7. [X] Generate reports as HTML
+ 8. [ ] Generate reports as Text
+
+Logging and Debugging
+ 9.  [ ] Save screen logs
+ 10. [ ] Save debug logs
+ 11. [ ] Suppress warnings
+
+XML Results
+ 12. [X] Save generated XCCDF OXML files
+ 13. [X] Save generated OVAL XML files
+ 14. [ ] Create ARF XML output
+ 15. [ ] Validate XML output files
+ 16. [ ] Save failed CPE XML results files
+
+Content Processing
+ 17. [ ] Scan content directories on application load
+ 18. [ ] Validate content stream(s) XML files
+
+Data Directory
+ 19. /opt/scc
+
+OVAL Processing Options
+ 20. [X] Ignore remote fileSystems
+ 21. [X] Enable item creation threshold
+ 22. Item creation threshold: 50000
+ 23. [X] Ignore file extended ACL attributes
+
+Enter menu selection (type 'back' or '0' to return): </programlisting></para>
+					<para>Once the above options are set, return to the SCC main screen by entering 0.</para>
+					<para/>
+				</listitem>
+				<listitem>
+					<para>Select option 8, "Exit and save changes":</para>
+					<para><programlisting>SCC 3.1 RC2 configuration edit menu.
+Make menu selection:
+
+1. Configure SCAP content
+2. Configure SCAP profiles
+3. Delete SCAP content
+4. Configure OVAL content
+5. Delete OVAL content
+6. Configure Options
+7. Configure SSH Options
+8. Exit and save changes
+9. Exit without saving changes
+
+SCAP Processing is Enabled
+- 1 of 3 SCAP streams are enabled
+
+OVAL Processing is Disabled
+- 0 of 0 OVAL streams are enabled
+
+Enter menu selection: 8
+Saving changes.
+</programlisting></para>
+				</listitem>
+				<listitem>
+					<para>Execute an SCC scan. Results should end simularly to the following:</para>
+					<para><programlisting>localhost: Processing (391 of 411) Configure Dovecot to Use the SSL Certificate file
+localhost: Processing (392 of 411) Configure Dovecot to Use the SSL Key file
+localhost: Processing (393 of 411) Disable Plaintext Authentication - (CCE-27144-5)
+localhost: Processing (394 of 411) Disable Samba - (CCE-27143-7)
+localhost: Processing (395 of 411) Disable Root Access
+localhost: Processing (396 of 411) Disable Root Access
+localhost: Processing (397 of 411) Require Client SMB Packet Signing, if using smbclient - (CCE-26328-5)
+localhost: Processing (398 of 411) Require Client SMB Packet Signing, if using mount.cifs - (CCE-26792-2)
+localhost: Processing (399 of 411) Disable Squid - (CCE-27146-0)
+localhost: Processing (400 of 411) Uninstall squid Package - (CCE-26977-9)
+localhost: Processing (401 of 411) Disable snmpd Service - (CCE-26906-8)
+localhost: Processing (402 of 411) Uninstall net-snmp Package - (CCE-26332-7)
+localhost: Processing (403 of 411) Configure SNMP Service to Use Only SNMPv3 or Newer 
+localhost: Processing (404 of 411) Ensure Default Password Is Not Used
+localhost: Processing (405 of 411) Product Meets this Requirement
+localhost: Processing (406 of 411) Product Meets this Requirement
+localhost: Processing (407 of 411) Product Meets this Requirement
+localhost: Processing (408 of 411) Guidance Does Not Meet this Requirement Due to Impracticality or Scope
+localhost: Processing (409 of 411) Implementation of the Requirement is Not Supported
+localhost: Processing (410 of 411) Guidance Does Not Meet this Requirement Due to Impracticality or Scope
+localhost: Processing (411 of 411) A process for prompt installation of OS updates must exist.
+localhost: Calculating scores
+localhost: User: Saving testUser_SCC-3.1_RC2_2013-02-04_145218_OVAL-Results_ssg-rhel6.xml
+localhost: OCIL Schema Version: 2.0
+localhost: Saving testUser_SCC-3.1_RC2_2013-02-04_145218_OCIL-Results_ssg-rhel6.xml
+localhost: Saving testUser_SCC-3.1_RC2_2013-02-04_145218_OVAL-Variables_ssg-rhel6.xml
+localhost: Saving testUser_SCC-3.1_RC2_2013-02-04_145218_XCCDF-Results_ssg-rhel6.xml
+localhost: Generating report testUser_SCC-3.1_RC2_2013-02-04_145218_All-Settings_ssg-rhel6.htm
+localhost: Generating report testUser_SCC-3.1_RC2_2013-02-04_145218_Non-Compliance_ssg-rhel6.htm
+
+localhost: Adjusted Score - 0% [RED]
+localhost: Original Score - 0% [RED]
+
+
+Total Errors: 11
+Total Warnings: 2
+Review complete.
+Results, if any, are located in the following directory:
+/opt/scc/Results
+
+Logs, if any, are located in the following directory:
+/opt/scc/Logs</programlisting></para>
+				</listitem>
+			</orderedlist>
+		</para>
+
+	</section>
+</chapter>
