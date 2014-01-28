@@ -104,11 +104,32 @@
 --results /root/ssg-results.xml \
 --report /root/ssg-report.xml \
 --cpe /usr/share/xml/scap/ssg/ssg-rhel6-cpe-dictionary.xml \
-/usr/share/xml/scap/ssg/ssg-rhel6-xccdf.xml</programlisting>
-		</para>
+/usr/share/xml/scap/ssg/ssg-rhel6-xccdf.xml </programlisting></para>
+		<para>While the scan is running, you will see output similar to the following on your
+			screen:</para>
+		<para><programlisting>Title   Install AIDE
+Rule    package_aide_installed
+Ident   CCE-27024-9
+Result  fail
+
+Title   Configure Periodic Execution of AIDE
+Rule    aide_periodic_cron_checking
+Ident   CCE-27222-9
+Result  notchecked
+
+Title   Verify File Permissions with RPM
+Rule    rpm_verify_permissions
+Ident   CCE-26731-0
+Result  fail
+
+Title   Verify File Hashes with RPM
+Rule    rpm_verify_hashes
+Ident   CCE-27223-7
+Result  pass</programlisting></para>
 	</section>
 	<section id="sect-User_Guide-Scanning-Results">
 		<title>Result Interpretation</title>
+		<para>s</para>
 		<para>
 			<variablelist>
 				<varlistentry>
@@ -121,8 +142,70 @@
 				<varlistentry>
 					<term>XML Results</term>
 					<listitem>
-						<para>asdasdasd</para>
-						<para>asdasd</para>
+						<para>Looking at the results.xml file, you will notice lines similar to
+							those below:</para>
+						<para><screen language="XML">&lt;rule-result idref="ensure_gpgcheck_globally_activated" time="2013-10-22T10:03:43" severity="high" weight="1.000000">
+  &lt;result>pass&lt;/result>
+  &lt;ident system="http://cce.mitre.org">CCE-26709-6&lt;/ident>
+  &lt;check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+    &lt;check-content-ref name="oval:ssg:def:413" href="ssg-rhel6-oval.xml"/>
+  &lt;/check>
+&lt;/rule-result>
+......
+&lt;rule-result idref="package_aide_installed" time="2013-10-22T10:03:43" severity="medium" weight="1.000000">
+  &lt;result>pass&lt;/result>
+  &lt;ident system="http://cce.mitre.org">CCE-27024-9&lt;/ident>
+  &lt;fix xmlns:xhtml="http://www.w3.org/1999/xhtml" system="urn:xccdf:fix:script:sh">
+    yum -y install aide
+  &lt;/fix>
+  &lt;check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+    &lt;check-content-ref name="oval:ssg:def:245" href="ssg-rhel6-oval.xml"/>
+  &lt;/check>
+&lt;/rule-result></screen></para>
+						<para>The XML above can be parsed as follows:</para>
+						<para><table frame='all'><title>XCCDF Rule Elements</title>
+							<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+								<colspec colname="c1" colwidth="1*"/>
+								<colspec colname="c2" colwidth="2.05*"/>
+								<thead>
+									<row>
+										<entry align="center">XML Tag</entry>
+										<entry align="center">Meaning</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>&lt;rule-result idref.....></entry>
+										<entry>Identifies which XCCDF rule the result reflects </entry>
+									</row>
+									<row>
+											<entry>&lt;result></entry>
+										<entry>Pass/Fail/Not Applicable</entry>
+									</row>
+									<row>
+											<entry>&lt;ident system.....></entry>
+										<entry>Identifies corresponding CCE</entry>
+									</row>
+									<row>
+										<entry>&lt;fix></entry>
+										<entry>Remediation actions, in bash, which will configure the system to be in compliance
+												with the XCCDF rule</entry>
+									</row>
+									<row>
+										<entry>&lt;check system....></entry>
+											<entry>Identifies which version of OVAL the check was
+												authored against</entry>
+									</row>
+									<row>
+										<entry>&lt;check-content-ref ....></entry>
+											<entry>Corresponding OVAL check name (name=....) and
+												source OVAL file (href=....) this check came from.
+												For general purpose users, this information can be
+												ignored.</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</table></para>
 					</listitem>
 				</varlistentry>
 			</variablelist>

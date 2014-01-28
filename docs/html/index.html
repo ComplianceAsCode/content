@@ -4,54 +4,89 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" href="interactive.css" type="text/css" />
-	<title>SCAP Security Guide Documentation</title>
+	<script type="text/javascript" src="toc.js"></script>
+	<title>toc nav</title>
 </head>
-<body class="tocnav">
-<div class="static_tocnavwrap">
-<center>
-<h1 class="producttitle">SSG Documentation</h1>
-</center>	
-	<div class="perlang" id="English">
-		<h2>English (en-US)</h2>
-		
-		<div class="product">
-			<span id="SCAP_Security_Guide" class="product">SCAP Security Guide</span>
-			<div class="versions">
-							<div class="version">
-					<span class="version">0.1</span>					<div class="books">
-					
-						<div class="book">
-							<span id="Developer_Guide" class="book"><a class="type" href="./en-US/SCAP_Security_Guide/0.1/html-single/Developer_Guide/index.html">Developer Guide</a></span> 
-							<div class="types">
-							
-								<a class="type" href="./en-US/SCAP_Security_Guide/0.1/epub/Developer_Guide/SCAP_Security_Guide-0.1-Developer_Guide-en-US.epub">epub</a>
-			        			
-								<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html/Developer_Guide/index.html">html</a>
-			        			
-								<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html-single/Developer_Guide/index.html">html-single</a>
-			        			
-							</div>
-						</div>
-	        			
-						<div class="book">
-							<span id="User_Guide" class="book"><a class="type" href="./en-US/SCAP_Security_Guide/0.1/html-single/User_Guide/index.html">User Guide</a></span> 
-							<div class="types">
-							
-								<a class="type" href="./en-US/SCAP_Security_Guide/0.1/epub/User_Guide/SCAP_Security_Guide-0.1-User_Guide-en-US.epub">epub</a>
-			        			
-								<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html/User_Guide/index.html">html</a>
-			        			
-								<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html-single/User_Guide/index.html">html-single</a>
-			        			
-							</div>
-						</div>
-	        			
-					</div>				</div>								
-			</div>					
-		</div>					
-       		
+<body class="tocnav" onload="hideNoJS();getCookie();checkCookie();">
+<h1>
+	<a style="background-image:url(images/web_logo.png)" href="index.html" onclick="window.top.location='index.html'" ><span>Welcome</span></a>
+</h1>
+<div class="tocnavwrap">
+		<form target="_top" method="get" action="http://www.google.com/search">
+		<div class="search">
+			<input class="searchtxt" type="text" name="q" value="" />
+			<input class="searchsub" type="submit" value="Search" />
+		</div>
+	</form>
+ 
+	<div class="lang">
+		<div class="reset">
+			<a href="#" title="collapse document navigation" onclick="clearCookie();">collapse all</a>
+		</div>
+		<select id="langselect" class="langselect"  onchange="loadToc();">
+			<option disabled="disabled" value="">Language</option>
+        	
+			<option selected="selected" value="en-US">English</option>
+	        
+		</select>
 	</div>
+	<div class="hidden" id="nocookie">The Navigation Menu below will automatically collapse when pages are loaded. Enable cookies to fix the Navigation Menu functionality.</div>
 	
+	<div class="product collapsed" onclick="toggle(event, 'SCAP_Security_Guide');work=1;">
+		<span class="product">SCAP Security Guide</span>
+		<div id='SCAP_Security_Guide' class="versions hidden">
+					<div id='SCAP_Security_Guide.0.1' class="version collapsed" onclick="toggle(event, 'SCAP_Security_Guide.0.1.books');">
+				<span class="version">0.1</span>
+				<div id='SCAP_Security_Guide.0.1.books' class="books hidden">				
+					<div id='SCAP_Security_Guide.0.1.Developer_Guide' class="book collapsed" onclick="toggle(event, 'SCAP_Security_Guide.0.1.Developer_Guide.types');">
+						<a class="type" href="en-US/SCAP_Security_Guide/0.1/html/Developer_Guide/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html/Developer_Guide/index.html'"><span class="book">Developer Guide</span></a> 
+						<div id='SCAP_Security_Guide.0.1.Developer_Guide.types' class="types hidden" onclick="work=0;">
+						
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/epub/Developer_Guide/SCAP_Security_Guide-0.1-Developer_Guide-en-US.epub" >epub</a>
+			        		
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html/Developer_Guide/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html/Developer_Guide/index.html';return false;">html</a>
+			        		
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html-single/Developer_Guide/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html-single/Developer_Guide/index.html';return false;">html-single</a>
+			        		
+						</div>
+					</div>
+	        		
+					<div id='SCAP_Security_Guide.0.1.SCAP_and_STIG_Workshop' class="book collapsed" onclick="toggle(event, 'SCAP_Security_Guide.0.1.SCAP_and_STIG_Workshop.types');">
+						<a class="type" href="en-US/SCAP_Security_Guide/0.1/html/SCAP_and_STIG_Workshop/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html/SCAP_and_STIG_Workshop/index.html'"><span class="book">SCAP and STIG Workshop</span></a> 
+						<div id='SCAP_Security_Guide.0.1.SCAP_and_STIG_Workshop.types' class="types hidden" onclick="work=0;">
+						
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/epub/SCAP_and_STIG_Workshop/SCAP_Security_Guide-0.1-SCAP_and_STIG_Workshop-en-US.epub" >epub</a>
+			        		
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html/SCAP_and_STIG_Workshop/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html/SCAP_and_STIG_Workshop/index.html';return false;">html</a>
+			        		
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html-single/SCAP_and_STIG_Workshop/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html-single/SCAP_and_STIG_Workshop/index.html';return false;">html-single</a>
+			        		
+						</div>
+					</div>
+	        		
+					<div id='SCAP_Security_Guide.0.1.User_Guide' class="book collapsed" onclick="toggle(event, 'SCAP_Security_Guide.0.1.User_Guide.types');">
+						<a class="type" href="en-US/SCAP_Security_Guide/0.1/html/User_Guide/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html/User_Guide/index.html'"><span class="book">User Guide</span></a> 
+						<div id='SCAP_Security_Guide.0.1.User_Guide.types' class="types hidden" onclick="work=0;">
+						
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/epub/User_Guide/SCAP_Security_Guide-0.1-User_Guide-en-US.epub" >epub</a>
+			        		
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html/User_Guide/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html/User_Guide/index.html';return false;">html</a>
+			        		
+							<a class="type" href="./en-US/SCAP_Security_Guide/0.1/html-single/User_Guide/index.html" onclick="window.top.location='./en-US/SCAP_Security_Guide/0.1/html-single/User_Guide/index.html';return false;">html-single</a>
+			        		
+						</div>
+					</div>
+	        		
+				</div>			</div>					       		
+		</div>					
+	</div>					
+       	
+	<div class="nocookie" id="nojs"><p>The Navigation Menu above requires JavaScript to function.</p><p>Enable JavaScript to allow the Navigation Menu to function.</p><p>Disable CSS to view the Navigation options without JavaScript enabled</p></div>
+	<div class="bottom_links">
+		<a href="toc.html" onclick="window.top.location='toc.html'" >Map</a>
+		<a href="./Site_Statistics.html" onclick="window.top.location='./Site_Statistics.html'" >Statistics</a>
+		<a href="./Site_Tech.html" onclick="window.top.location='./Site_Tech.html'" >Tech</a>
+	</div>
 </div>					
 </body>
 </html>

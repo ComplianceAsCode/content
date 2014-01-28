@@ -1,0 +1,427 @@
+<Group id="accounts-physical">
+<title>Protect Physical Console Access</title>
+<description>It is impossible to fully protect a system from an
+attacker with physical access, so securing the space in which the
+system is located should be considered a necessary step. However,
+there are some steps which, if taken, make it more difficult for an
+attacker to quickly or undetectably modify a system from its
+console.</description>
+
+<Group id="bootloader">
+<title>Set Boot Loader Password</title>
+<description>During the boot process, the boot loader is
+responsible for starting the execution of the kernel and passing
+options to it. The boot loader allows for the selection of
+different kernels - possibly on different partitions or media.
+The default RHEL boot loader for x86 systems is called GRUB.
+Options it can pass to the kernel include <i>single-user mode</i>, which
+provides root access without any authentication, and the ability to
+disable SELinux. To prevent local users from modifying the boot
+parameters and endangering security, protect the boot loader configuration
+with a password and ensure its configuration file's permissions
+are set properly.
+</description>
+
+<Rule id="user_owner_grub_conf" severity="medium">
+<title>Verify /etc/grub.conf User Ownership</title>
+<description>The file <tt>/etc/grub.conf</tt> should 
+be owned by the <tt>root</tt> user to prevent destruction 
+or modification of the file.
+<fileowner-desc-macro file="/etc/grub.conf" owner="root"/>
+</description>
+<ocil><fileowner-check-macro file="/etc/grub.conf" owner="root"/></ocil>
+<rationale>
+Only root should be able to modify important boot parameters.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_user_owner_grub_conf" />
+<ref nist="" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="group_owner_grub_conf" severity="medium">
+<title>Verify /etc/grub.conf Group Ownership</title>
+<description>The file <tt>/etc/grub.conf</tt> should 
+be group-owned by the <tt>root</tt> group to prevent 
+destruction or modification of the file.
+<filegroupowner-desc-macro file="/etc/grub.conf" group="root"/>
+</description>
+<ocil><filegroupowner-check-macro file="/etc/grub.conf" group="root"/></ocil>
+<rationale>
+The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
+file should not have any access privileges anyway.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_group_owner_grub_conf" />
+<ref nist="" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="permissions_grub_conf" severity="medium">
+<title>Verify /boot/grub/grub.conf Permissions</title>
+<description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
+is the default.
+<fileperms-desc-macro file="/boot/grub/grub.conf" perms="600"/>
+</description>
+<ocil clause ="it does not">
+To check the permissions of /etc/grub.conf, run the command:
+<pre># ls -lL /etc/grub.conf</pre>
+If properly configured, the output should indicate the following 
+permissions: <tt>-rw-------</tt>
+</ocil>
+<rationale>
+Proper permissions ensure that only the root user can modify important boot
+parameters.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="file_permissions_grub_conf" />
+<ref nist="" disa="225"/>
+<tested by="DS" on="20121026"/>
+</Rule>
+
+<Rule id="bootloader_password" severity="medium">
+<title>Set Boot Loader Password</title>
+<description>The grub boot loader should have password protection
+enabled to protect boot-time settings.
+To do so, select a password and then generate a hash from it by running the following command:
+<pre># grub-crypt --sha-512</pre>
+When prompted to enter a password, insert the following line into <tt>/etc/grub.conf</tt>
+immediately after the header comments. (Use the output from <tt>grub-crypt</tt> as the
+value of <b>password-hash</b>):
+<pre>password --encrypted <b>password-hash</b></pre>
+NOTE: To meet FISMA Moderate, the bootloader password MUST differ from the root password.
+</description>
+<ocil clause="it does not">
+To verify the boot loader password has been set and encrypted, run the following command:
+<pre># grep password /etc/grub.conf</pre>
+The output should show the following:
+<pre>password --encrypted <b>password-hash</b></pre>
+</ocil>
+<rationale>
+Password protection on the boot loader configuration ensures
+users with physical access cannot trivially alter
+important bootloader settings. These include which kernel to use,
+and whether to enter single-user mode.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="bootloader_password" />
+<ref nist="IA-2(1),IA-5(e)" disa="213" />
+<tested by="DS" on="20121026"/>
+</Rule>
+
+</Group>
+
+<Rule id="require_singleuser_auth" severity="medium">
+<title>Require Authentication for Single User Mode</title>
+<description>Single-user mode is intended as a system recovery
+method, providing a single user root access to the system by
+providing a boot option at startup. By default, no authentication
+is performed if single-user mode is selected.
+<br /><br />
+To require entry of the root password even if the system is
+started in single-user mode, add or correct the following line in the
+file <tt>/etc/sysconfig/init</tt>:
+<pre>SINGLE=/sbin/sulogin</pre>
+</description>
+<ocil clause="the output is different">
+To check if authentication is required for single-user mode, run the following command:
+<pre>$ grep SINGLE /etc/sysconfig/init</pre>
+The output should be the following:
+<pre>SINGLE=/sbin/sulogin</pre>
+</ocil>
+<rationale>
+This prevents attackers with physical access from trivially bypassing security
+on the machine and gaining root access. Such accesses are further prevented
+by configuring the bootloader password.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="require_singleuser_auth" />
+<ref nist="IA-2(1)" disa="213" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="disable_ctrlaltdel_reboot" severity="high">
+<title>Disable Ctrl-Alt-Del Reboot Activation</title>
+<description>
+By default, the system includes the following line in
+<tt>/etc/init/control-alt-delete.conf</tt>
+to reboot the system when the Ctrl-Alt-Del key sequence is pressed:
+<pre>exec /sbin/shutdown -r now "Control-Alt-Delete pressed"</pre>
+<br/>
+To configure the system to log a message instead of
+rebooting the system, alter that line to read as follows:
+<pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
+</description>
+<ocil clause="the system is configured to run the shutdown command">
+To ensure the system is configured to log a message instead of rebooting the system when 
+Ctrl-Alt-Del is pressed, ensure the following line is in <tt>/etc/init/control-alt-delete.conf</tt>:
+<pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
+</ocil>
+<rationale>
+A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
+can reboot the system. If accidentally pressed, as could happen in
+the case of mixed OS environment, this can create the risk of short-term
+loss of availability of systems due to unintentional reboot.
+In the GNOME graphical environment, risk of unintentional reboot from the
+Ctrl-Alt-Del sequence is reduced because the user will be
+prompted before any action is taken.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="disable_interactive_boot" severity="medium">
+<title>Disable Interactive Boot</title>
+<description>
+To disable the ability for users to perform interactive startups,
+edit the file <tt>/etc/sysconfig/init</tt>.
+Add or correct the line:
+<pre>PROMPT=no</pre>
+The <tt>PROMPT</tt> option allows the console user to perform an
+interactive system startup, in which it is possible to select the
+set of services which are started on boot.
+</description>
+<ocil clause="it does not">
+To check whether interactive boot is disabled, run the following command:
+<pre>$ grep PROMPT /etc/sysconfig/init</pre>
+If interactive boot is disabled, the output will show:
+<pre>PROMPT=no</pre>
+</ocil>
+<rationale>
+Using interactive boot,
+the console user could disable auditing, firewalls, or other
+services, weakening system security.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="disable_interactive_boot" />
+<ref nist="SC-2" disa="213"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Group id="screen_locking">
+<title>Configure Screen Locking</title>
+<description>When a user must temporarily leave an account
+logged-in, screen locking should be employed to prevent passersby
+from abusing the account. User education and training is
+particularly important for screen locking to be effective, and policies
+can be implemented to reinforce this.
+<br /><br />
+Automatic screen locking is only meant as a safeguard for
+those cases where a user forgot to lock the screen.</description>
+
+<Group id="gui_screen_locking">
+<title>Configure GUI Screen Locking</title>
+<description>In the default GNOME desktop, the screen can be locked
+by choosing <b>Lock Screen</b> from the <b>System</b> menu.
+<br /><br />
+The <tt>gconftool-2</tt> program can be used to enforce mandatory
+screen locking settings for the default GNOME environment.
+The
+following sections detail commands to enforce idle activation of the screen saver,
+screen locking, a blank-screen screensaver, and an idle
+activation time.
+
+<br /><br />
+Because users should be trained to lock the screen when they
+step away from the computer, the automatic locking feature is only
+meant as a backup. The Lock Screen icon from the System menu can
+also be dragged to the taskbar in order to facilitate even more
+convenient screen-locking.
+<br /><br />
+The root account cannot be screen-locked, but this should
+<!-- TODO: is this still true? -->have no practical effect as the root account should <i>never</i> be used
+to log into an X Windows environment, and should only be used to
+for direct login via console in emergency circumstances.
+<br /><br />
+For more information about configuring GNOME screensaver, see
+http://live.gnome.org/GnomeScreensaver. For more information about
+enforcing preferences in the GNOME environment using the GConf
+configuration system, see http://projects.gnome.org/gconf and
+the man page <tt>gconftool-2(1)</tt>.</description>
+
+<Value id="inactivity_timeout_value" type="number" operator="equals">
+<title>Inactivity timeout</title>
+<description>Choose allowed duration of inactive SSH connections, shells, and X sessions</description>
+<value>15</value>
+<value selector="5_minutes">5</value>
+<value selector="10_minutes">10</value>
+<value selector="15_minutes">15</value>
+</Value>
+
+<Rule id="set_screensaver_inactivity_timeout" severity="medium">
+<title>Set GNOME Login Inactivity Timeout</title>
+<description>
+Run the following command to set the idle time-out value for
+inactivity in the GNOME desktop to 15 minutes:
+<pre># gconftool-2 \
+  --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type int \
+  --set /apps/gnome-screensaver/idle_delay 15</pre>
+</description>
+<ocil clause="it is not">
+To check the current idle time-out value, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_delay</pre>
+If properly configured, the output should be <tt>15</tt>. 
+</ocil>
+<rationale>
+Setting the idle delay controls when the
+screensaver will start, and can be combined with
+screen locking to prevent access from passersby.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
+<ref nist="AC-11(a)" disa="57"/>
+</Rule>
+
+<Rule id="enable_screensaver_after_idle" severity="medium">
+<title>GNOME Desktop Screensaver Mandatory Use</title>
+<description>
+Run the following command to activate the screensaver
+in the GNOME desktop after a period of inactivity:
+<pre># gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
+</description>
+<ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_activation_enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+</ocil>
+<rationale>
+Enabling idle activation of the screen saver ensures the screensaver will
+be activated after the idle delay.  Applications requiring continuous,
+real-time screen display (such as network management products) require the
+login session does not have administrator rights and the display station is located in a
+controlled-access area.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="gconf_gnome_screensaver_idle_activation_enabled" />
+<ref nist="AC-11(a)" disa="57" />
+</Rule>
+
+<Rule id="enable_screensaver_password_lock" severity="medium">
+<title>Enable Screen Lock Activation After Idle Period</title>
+<description>
+Run the following command to activate locking of the screensaver
+in the GNOME desktop when it is activated:
+<pre># gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/lock_enabled true</pre>
+</description>
+<ocil clause="it is not">
+To check the status of the idle screen lock activation, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/lock_enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+</ocil>
+<rationale>
+Enabling the activation of the screen lock after an idle period
+ensures password entry will be required in order to
+access the system, preventing access by passersby.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="gconf_gnome_screensaver_lock_enabled" />
+<ref nist="AC-11(a)" disa="57" />
+</Rule>
+
+<Rule id="set_blank_screensaver">
+<title>Implement Blank Screen Saver</title>
+<description>
+Run the following command to set the screensaver mode
+in the GNOME desktop to a blank screen:
+<pre># gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type string \
+  --set /apps/gnome-screensaver/mode blank-only</pre>
+</description>
+<ocil clause="it is not">
+To ensure the screensaver is configured to be blank, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/mode</pre>
+If properly configured, the output should be <tt>blank-only</tt> 
+</ocil>
+<rationale>
+Setting the screensaver mode to blank-only conceals the
+contents of the display from passersby.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="gconf_gnome_screensaver_mode_blank" />
+<ref nist="AC-11(b)" disa="60" />
+</Rule>
+
+</Group>
+
+
+<Group id="console_screen_locking">
+<title>Configure Console Screen Locking</title>
+<description>
+A console screen locking mechanism is provided in the
+<tt>screen</tt> package, which is not installed by default.
+</description>
+
+<Rule id="package_screen_installed">
+<title>Install the screen Package</title>
+<description>
+To enable console screen locking, install the <tt>screen</tt> package:
+<pre># yum install screen</pre>
+Instruct users to begin new terminal sessions with the following command:
+<pre>$ screen</pre>
+The console can now be locked with the following key combination:
+<pre>ctrl+a x</pre>
+</description>
+<ocil clause="the package is not installed">
+<package-check-macro package="screen" />
+</ocil>
+<rationale>
+Installing <tt>screen</tt> ensures a console locking capability is available
+for users who may need to suspend console logins.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref disa="58" />
+<oval id="package_screen_installed" />
+<tested by="DS" on="20121026"/>
+</Rule>
+</Group>
+
+<Group id="smart_card_login">
+<title>Hardware Tokens for Authentication</title>
+<description>
+The use of hardware tokens such as smart cards for system login
+provides stronger, two-factor authentication than using a username/password.
+In Red Hat Enterprise Linux servers and workstations, hardware token login
+is not enabled by default and must be enabled in the system settings.
+</description>
+
+<Rule id="smartcard_auth" severity="medium">
+<title>Enable Smart Card Login</title>
+<description>
+To enable smart card authentication, consult the documentation at:
+<ul>
+<li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Smart_Cards/enabling-smart-card-login.html</li>
+</ul>
+</description>
+<ocil clause="non-exempt accounts are not using CAC authentication">
+Interview the SA to determine if all accounts not exempted by policy are
+using CAC authentication. 
+For DoD systems, the following systems and accounts are exempt from using
+smart card (CAC) authentication:
+<ul>
+<li>SIPRNET systems</li> <!-- also any other non-Internet systems? -->
+<li>Standalone systems</li>
+<li>Application accounts</li>
+<li>Temporary employee accounts, such as students or interns, who cannot easily receive a CAC or PIV</li>
+<li>Operational tactical locations that are not collocated with RAPIDS workstations to issue CAC or ALT</li>
+<li>Test systems, such as those with an Interim Approval to Test (IATT) and use a separate VPN, firewall, or security measure preventing access to network and system components from outside the protection boundary documented in the IATT.</li>
+</ul>
+</ocil>
+<rationale>Smart card login provides two-factor authentication stronger than
+that provided by a username/password combination. Smart cards leverage a PKI
+(public key infrastructure) in order to provide and verify credentials.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref disa="765,766,767,768,771,772,884" />
+</Rule>
+
+</Group>
+
+</Group>
+</Group>

@@ -1,0 +1,107 @@
+<Group id="permissions_within_important_dirs">
+<title>Verify File Permissions Within Some Important Directories</title>
+<description>Some directories contain files whose confidentiality or integrity
+is notably important and may also be susceptible to misconfiguration over time,
+particularly if unpackaged software is installed. As such, an argument exists
+to verify that files' permissions within these directories remain configured
+correctly and restrictively.
+</description>
+
+<Rule id="file_permissions_library_dirs" severity="medium">
+<title>Shared Library Files Have Restrictive Permissions</title>
+<description>System-wide shared library files, which are linked to executables
+during process load time or run time, are stored in the following directories
+by default:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+</pre>
+Kernel modules, which can be added to the kernel during runtime, are stored in
+<tt>/lib/modules</tt>. All files in these directories should not be
+group-writable or world-writable. If any file in these directories is found to
+be group-writable or world-writable, correct its permission with the following
+command:
+<pre># chmod go-w <i>FILE</i></pre>
+</description>
+<rationale>Files from shared library directories are loaded into the address
+space of processes (including privileged ones) or of the kernel itself at 
+runtime. Restrictive permissions are necessary to protect the integrity of the
+system.
+</rationale>
+<ref nist="AC-6" disa="1499"/>
+<oval id="file_permissions_library_dirs" />
+</Rule>
+
+<Rule id="file_ownership_library_dirs" severity="medium">
+<title>Shared Library Files Have Root Ownership</title>
+<description>System-wide shared library files, which are linked to executables
+during process load time or run time, are stored in the following directories
+by default:
+<pre>/lib
+/lib64
+/usr/lib
+/usr/lib64
+</pre>
+Kernel modules, which can be added to the kernel during runtime, are also
+stored in <tt>/lib/modules</tt>. All files in these directories should be owned
+by the <tt>root</tt> user. If the directory, or any file in these directories,
+is found to be owned by a user other than root correct its ownership with the
+following command:
+<pre># chown root <i>FILE</i></pre>
+</description>
+<rationale>Files from shared library directories are loaded into the address 
+space of processes (including privileged ones) or of the kernel itself at 
+runtime. Proper ownership is necessary to protect the integrity of the system.
+</rationale>
+<ref nist="AC-6" disa="1499"/>
+<oval id="file_ownership_library_dirs" />
+</Rule>
+
+<Rule id="file_permissions_binary_dirs" severity="medium">
+<title>System Executables Have Restrictive Permissions</title>
+<description>
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
+All files in these directories should not be group-writable or world-writable.
+If any file <i>FILE</i> in these directories is found to be group-writable or
+world-writable, correct its permission with the following command:
+<pre># chmod go-w <i>FILE</i></pre>
+</description>
+<rationale>System binaries are executed by privileged users, as well as system
+services, and restrictive permissions are necessary to ensure execution of
+these programs cannot be co-opted.
+</rationale>
+<ref nist="AC-6" disa="1499"/>
+<oval id="file_permissions_binary_dirs" />
+</Rule>
+
+<Rule id="file_ownership_binary_dirs" severity="medium">
+<title>System Executables Have Root Ownership</title>
+<description>
+System executables are stored in the following directories by default:
+<pre>/bin
+/usr/bin
+/usr/local/bin
+/sbin
+/usr/sbin
+/usr/local/sbin</pre>
+All files in these directories should be owned by the <tt>root</tt> user. If
+any file <i>FILE</i> in these directories is found to be owned by a user other
+than root, correct its ownership with the following command:
+<pre># chown root <i>FILE</i></pre>
+</description>
+<rationale>System binaries are executed by privileged users as well as system
+services, and restrictive permissions are necessary to ensure that their
+execution of these programs cannot be co-opted.
+</rationale>
+<oval id="file_ownership_binary_dirs" />
+<ref nist="AC-6" disa="1499"/>
+</Rule>
+
+</Group>

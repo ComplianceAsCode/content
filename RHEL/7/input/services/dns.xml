@@ -1,0 +1,302 @@
+<Group id="dns">
+<title>DNS Server</title>
+<description>Most organizations have an operational need to run at
+least one nameserver. However, there are many common attacks
+involving DNS server software, and this server software should
+be disabled on any system
+on which it is not needed.</description>
+
+<Group id="disabling_dns_server">
+<title>Disable DNS Server</title>
+<description>
+DNS software should be disabled on any machine which does not
+need to be a nameserver. Note that the BIND DNS server software is
+not installed on RHEL 6 by default. The remainder of this section
+discusses secure configuration of machines which must be
+nameservers.
+</description>
+
+<Rule id="disable_dns_server">
+<title>Disable DNS Server</title>
+<description>
+<service-disable-macro service="named" />
+</description>
+<ocil><service-disable-check-macro service="named" /></ocil>
+<rationale>
+All network services involve some risk of compromise due to
+implementation flaws and should be disabled if possible.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_named_disabled" />
+<ref nist="CM-7" disa="366"/>
+</Rule>
+
+<Rule id="uninstall_bind">
+<title>Uninstall bind Package</title>
+<description>To remove the <tt>bind</tt> package, which contains the
+<tt>named</tt> service, run the following command:
+<pre># yum erase bind</pre>
+</description>
+<ocil><package-check-macro package="bind" /> </ocil>
+<rationale>
+If there is no need to make DNS server software available,
+removing it provides a safeguard against its activation.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="package_bind_removed" />
+<ref nist="CM-7" disa="366"/>
+</Rule>
+
+</Group> <!--<Group id="disabling_dns_server">-->
+
+<Group id="dns_server_isolation">
+<title>Isolate DNS from Other Services</title>
+<description>This section discusses mechanisms for preventing the DNS server
+from interfering with other services. This is done both to protect the
+remainder of the network should a nameserver be compromised, and to make direct
+attacks on nameservers more difficult.</description>
+
+<Group id="dns_server_dedicated">
+<title>Run DNS Software on Dedicated Servers</title> <description>Since DNS is
+a high-risk service which must frequently be made available to the entire
+Internet, it is strongly recommended that no other services be offered by
+machines which act as organizational DNS servers.</description>
+</Group>
+
+<Group id="dns_server_chroot">
+<title>Run DNS Software in a chroot Jail</title>
+<description>Install the <tt>bind-chroot</tt> package:
+<pre># yum install bind-chroot</pre>
+Place a valid named.conf file inside the chroot jail:
+<pre># cp /etc/named.conf /var/named/chroot/etc/named.conf
+# chown root:root /var/named/chroot/etc/named.conf
+# chmod 644 /var/named/chroot/etc/named.conf</pre>
+Create and populate an appropriate zone directory within the jail, based on the
+options directive. If your <tt>named.conf</tt> includes:
+<pre>options {
+directory "/path/to/DIRNAME ";
+...
+}</pre>
+then copy that directory and its contents from the original zone directory:
+<pre># cp -r /path/to/DIRNAME /var/named/chroot/DIRNAME</pre>
+Add or correct the following line within <tt>/etc/sysconfig/named</tt>:
+<pre>ROOTDIR=/var/named/chroot</pre>
+</description>
+<rationale>Chroot jails are not foolproof. However, they serve to make it more
+difficult for a compromised program to be used to attack the entire host. They
+do this by restricting a program's ability to traverse the directory upward, so
+that files outside the jail are not visible to the chrooted process. Since RHEL
+supports a standard mechanism for placing BIND in a chroot jail, you should
+take advantage of this feature.</rationale>
+<warning category="general">If you are running BIND in a chroot jail, then you
+should use the jailed <tt>named.conf</tt> as the primary nameserver
+configuration file. That is, when this guide recommends editing
+<tt>/etc/named.conf</tt>, you should instead edit
+<tt>/var/named/chroot/etc/named.conf</tt>.
+</warning>
+</Group>
+
+
+</Group>
+
+<Group id="dns_server_protection">
+<title>Protect DNS Data from Tampering or Attack</title>
+<description>This section discusses DNS configuration options which make it
+more difficult for attackers to gain access to private DNS data or to modify
+DNS data.</description>
+
+<Group id="dns_server_separate_internal_external">
+<title>Run Separate DNS Servers for External and Internal Queries</title>
+<description>Is it possible to run external and internal nameservers on
+separate machines? If so, follow the configuration guidance in this section. On
+the external nameserver, edit <tt>/etc/named.conf</tt> to add or correct the
+following directives:
+<pre>options {
+  allow-query { any; };
+  recursion no;
+  ...
+};
+zone "example.com " IN {
+  ...
+};</pre>
+On the internal nameserver, edit <tt>/etc/named.conf</tt>. Add or correct the
+following directives, where SUBNET is the numerical IP representation of your
+organization in the form xxx.xxx.xxx.xxx/xx:
+<pre>acl internal {
+  SUBNET ;
+  localhost;
+};
+options {
+  allow-query { internal; };
+  ...
+};
+zone "internal.example.com " IN {
+  ...
+};</pre>
+</description>
+<rationale>Enterprise nameservers generally serve two functions. One is to
+provide public information about the machines in a domain for the benefit of
+outside users who wish to contact those machines, for instance in order to send
+mail to users in the enterprise, or to visit the enterprise's external web
+page. The other is to provide nameservice to client machines within the
+enterprise. Client machines require both private information about enterprise
+machines (which may be different from the public information served to the rest
+of the world) and public information about machines outside the enterprise,
+which is used to send mail or visit websites outside of the organization.
+<br />
+In order to provide the public nameservice function, it is necessary to share
+data with untrusted machines which request it - otherwise, the enterprise
+cannot be conveniently contacted by outside users. However, internal data
+should be protected from disclosure, and serving irrelevant public name queries
+for outside domains leaves the DNS server open to cache poisoning and other
+attacks. Therefore, local network nameservice functions should not be provided
+to untrusted machines.
+<br />
+Separate machines should be used to fill these two functions whenever possible.
+</rationale>
+
+</Group>
+
+<Group id="dns_server_partition_with_views">
+<title>Use Views to Partition External and Internal Information</title>
+<description>If it is not possible to run external and internal nameservers on
+separate physical machines, run BIND9 and simulate this feature using views.
+Edit <tt>/etc/named.conf</tt>. Add or correct the following directives (where
+SUBNET is the numerical IP representation of your organization in the form
+xxx.xxx.xxx.xxx/xx):
+<pre>acl internal {
+  SUBNET ;
+  localhost;
+};
+view "internal-view" {
+  match-clients { internal; };
+  zone "." IN {
+    type hint;
+    file "db.cache";
+  };
+  zone "internal.example.com " IN {
+    ...
+  };
+};
+
+view "external-view" {
+  match-clients { any; };
+  recursion no;
+  zone "example.com " IN {
+    ...
+  };
+};</pre>
+</description>
+<rationale>The view feature is provided by BIND9 as a way to allow a single
+nameserver to make different sets of data available to different sets of
+clients. If possible, it is always better to run external and internal
+nameservers on separate machines, so that even complete compromise of the
+external server cannot be used to obtain internal data or confuse internal DNS
+clients. However, this is not always feasible, and use of a feature like views
+is preferable to leaving internal DNS data entirely unprotected.</rationale>
+<warning category="general">As shown in the example, database files which are
+required for recursion, such as the root hints file, must be available to any
+clients which are allowed to make recursive queries. Under typical
+circumstances, this includes only the internal clients which are allowed to use
+this server as a general-purpose nameserver.</warning>
+</Group>
+
+<Rule id="dns_server_disable_zone_transfers">
+<title>Disable Zone Transfers from the Nameserver</title>
+<description>Is it necessary for a secondary nameserver to receive zone data
+via zone transfer from the primary server?  If not, follow the instructions in
+this section. If so, see the next section for instructions on protecting zone
+transfers.
+Add or correct the following directive within <tt>/etc/named.conf</tt>:
+<pre>options {
+  allow-transfer { none; };
+  ...
+}</pre>
+</description>
+<rationale>If both the primary and secondary nameserver are under your control,
+or if you have only one nameserver, it may be possible to use an external
+configuration management mechanism to distribute zone updates. In that case, it
+is not necessary to allow zone transfers within BIND itself, so they should be
+disabled to avoid the potential for abuse.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="dns_server_authenticate_zone_transfers">
+<title>Authenticate Zone Transfers</title>
+<description>If it is necessary for a secondary nameserver to receive zone data
+via zone transfer from the primary server, follow the instructions here.  Use
+dnssec-keygen to create a symmetric key file in the current directory:
+<pre># cd /tmp
+# dnssec-keygen -a HMAC-MD5 -b 128 -n HOST dns.example.com
+Kdns.example.com .+aaa +iiiii</pre>
+This output is the name of a file containing the new key. Read the file to find
+the base64-encoded key string:
+<pre># cat Kdns.example.com .+NNN +MMMMM .key
+dns.example.com IN KEY 512 3 157 base64-key-string</pre>
+Add the directives to <tt>/etc/named.conf</tt> on the primary server:
+<pre>key zone-transfer-key {
+  algorithm hmac-md5;
+  secret "base64-key-string ";
+};
+zone "example.com " IN {
+  type master;
+  allow-transfer { key zone-transfer-key; };
+  ...
+};</pre>
+Add the directives below to <tt>/etc/named.conf</tt> on the secondary nameserver:
+<pre>key zone-transfer-key {
+  algorithm hmac-md5;
+  secret "base64-key-string ";
+};
+
+server IP-OF-MASTER {
+  keys { zone-transfer-key; };
+};
+
+zone "example.com " IN {
+  type slave;
+  masters { IP-OF-MASTER ; };
+  ...
+};</pre>
+</description>
+<rationale>The BIND transaction signature (TSIG) functionality allows primary
+and secondary nameservers to use a shared secret to verify authorization to
+perform zone transfers. This method is more secure than using IP-based limiting
+to restrict nameserver access, since IP addresses can be easily spoofed.
+However, if you cannot configure TSIG between your servers because, for
+instance, the secondary nameserver is not under your control and its
+administrators are unwilling to configure TSIG, you can configure an
+allow-transfer directive with numerical IP addresses or ACLs as a last resort.
+</rationale>
+<warning category="general">The purpose of the dnssec-keygen command is to
+create the shared secret string base64-key-string. Once this secret has been
+obtained and inserted into named.conf on the primary and secondary servers, the
+key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
+.private are no longer needed, and may safely be deleted.</warning>
+<ref nist="CM-7" />
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="dns_server_disable_dynamic_updates">
+<title>Disable Dynamic Updates</title>
+<description>Is there a mission-critical reason to enable the risky dynamic
+update functionality? If not, edit <tt>/etc/named.conf</tt>. For each zone
+specification, correct the following directive if necessary:
+<pre>zone "example.com " IN {
+  allow-update { none; };
+  ...
+};</pre>
+</description>
+<rationale>Dynamic updates allow remote servers to add, delete, or modify any
+entries in your zone file. Therefore, they should be considered highly risky,
+and disabled unless there is a very good reason for their use. If dynamic
+updates must be allowed, IP-based ACLs are insufficient protection, since they
+are easily spoofed. Instead, use TSIG keys (see the previous section for an
+example), and consider using the update-policy directive to restrict changes to
+only the precise type of change needed.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+</Group> <!--<Group id="dns_server_protection">-->
+
+</Group> <!--<Group id="dns">-->

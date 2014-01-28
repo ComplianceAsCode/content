@@ -1,0 +1,243 @@
+<Group id="root_logins">
+<title>Restrict Root Logins</title>
+<description>
+Direct root logins should be allowed only for emergency use.
+In normal situations, the administrator should access the system
+via a unique unprivileged account, and then use <tt>su</tt> or <tt>sudo</tt> to execute
+privileged commands. Discouraging administrators from accessing the
+root account directly ensures an audit trail in organizations with
+multiple administrators. Locking down the channels through which
+root can connect directly also reduces opportunities for
+password-guessing against the root account. The <tt>login</tt> program
+uses the file <tt>/etc/securetty</tt> to determine which interfaces
+should allow root logins.
+
+The virtual devices <tt>/dev/console</tt>
+and <tt>/dev/tty*</tt> represent the system consoles (accessible via
+the Ctrl-Alt-F1 through Ctrl-Alt-F6 keyboard sequences on a default
+installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
+These are likely to be deprecated in most environments, but may be retained
+for compatibility. Root should also be prohibited from connecting
+via network protocols. Other sections of this document
+include guidance describing how to prevent root from logging in via SSH.
+</description>
+
+<Rule id="no_direct_root_logins" severity="medium">
+<title>Direct root Logins Not Allowed</title>
+<description>To further limit access to the <tt>root</tt> account, administrators
+can disable root logins at the console by editing the <tt>/etc/securetty</tt> file.
+This file lists all devices the root user is allowed to login to. If the file does
+not exist at all, the root user can login through any communication device on the
+system, whether via the console or via a raw network interface. This is dangerous
+as user can login to his machine as root via Telnet, which sends the password in
+plain text over the network. By default, Red Hat Enteprise Linux's
+<tt>/etc/securetty</tt> file only allows the root user to login at the console
+physically attached to the machine. To prevent root from logging in, remove the
+contents of this file. To prevent direct root logins, remove the contents of this
+file by typing the following command:
+<pre>
+echo > /etc/securetty
+</pre>
+</description>
+<ocil clause="the /etc/securetty file is not empty">
+To ensure root may not directly login to the system over physical consoles,
+run the following command:
+<pre>cat /etc/securetty</pre>
+If any output is returned, this is a finding.
+</ocil>
+<rationale>
+Disabling direct root logins ensures proper accountability and multifactor
+authentication to privileged accounts. Users will first login, then escalate
+to privileged (root) access via su / sudo. This is required for FISMA Low
+and FISMA Moderate systems.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="IA-2(1)" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="securetty_root_login_console_only" severity="medium">
+<title>Restrict Virtual Console Root Logins</title>
+<description>
+To restrict root logins through the (deprecated) virtual console devices,
+ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
+<pre>vc/1
+vc/2
+vc/3
+vc/4</pre>
+</description>
+<ocil clause="root login over virtual console devices is permitted">
+To check for virtual console entries which permit root login, run the
+following command:
+<pre># grep ^vc/[0-9] /etc/securetty</pre>
+If any output is returned, then root logins over virtual console devices is permitted.
+</ocil>
+<rationale>
+Preventing direct root login to virtual console devices
+helps ensure accountability for actions taken on the system
+using the root account.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="securetty_root_login_console_only" />
+<ref nist="AC-6(2)" disa="770" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="restrict_serial_port_logins">
+<title>Restrict Serial Port Root Logins</title>
+<description>To restrict root logins on serial ports,
+ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
+<pre>ttyS0
+ttyS1</pre>
+<!-- TODO: discussion/description of serial port -->
+</description>
+<ocil clause="root login over serial ports is permitted">
+To check for serial port entries which permit root login,
+run the following command:
+<pre># grep ^ttyS/[0-9] /etc/securetty</pre>
+If any output is returned, then root login over serial ports is permitted.
+</ocil>
+<rationale>
+Preventing direct root login to serial port interfaces
+helps ensure accountability for actions taken on the systems
+using the root account.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="restrict_serial_port_logins" />
+<ref nist="AC-6(2)" disa="770" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="no_root_webbrowsing">
+<title>Restrict Web Browser Use for Administrative Accounts</title>
+<description>
+Enforce policy requiring administrative accounts use web browsers only for
+local service administration.
+</description>
+<ocil clause="this is not the case">
+Check the <tt>root</tt> home directory for a <tt>.mozilla</tt> directory. If
+one exists, ensure browsing is limited to local service administration.
+</ocil>
+<rationale>
+If a browser vulnerability is exploited while running with administrative privileges,
+the entire system could be compromised. Specific exceptions for local service
+administration should be documented in site-defined policy.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="no_shelllogin_for_systemaccounts" severity="medium">
+<title>Ensure that System Accounts Do Not Run a Shell Upon Login</title>
+<description>
+Some accounts are not associated with a human
+user of the system, and exist to perform some administrative
+function. Should an attacker be able to log into these accounts,
+they should not be granted access to a shell.
+<br /><br />
+The login shell for each local account is stored in the last field of each line
+in <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID less than
+500. The user ID is stored in the third field.
+If any system account <i>SYSACCT</i> (other than root) has a login shell,
+disable it with the command:
+<pre># usermod -s /sbin/nologin <i>SYSACCT</i></pre>
+</description>
+<ocil clause="any system account (other than root) has a login shell">
+To obtain a listing of all users,
+their UIDs, and their shells, run the command:
+<pre>$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd</pre>
+Identify the system accounts from this listing. These will
+primarily be the accounts with UID numbers less than 500, other
+than root.
+</ocil>
+<rationale>
+Ensuring shells are not given to system accounts upon login
+makes it more difficult for attackers to make use of
+system accounts.
+</rationale>
+<warning category="functionality">
+Do not perform the steps in this
+section on the root account. Doing so might cause the system to
+become inaccessible.
+</warning>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="no_shelllogin_for_systemaccounts" />
+<ref nist="" disa="178" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="accounts_no_uid_except_zero" severity="medium">
+<title>Verify Only Root Has UID 0</title>
+<description>
+If any account other than root has a UID of 0,
+this misconfiguration should be investigated and the
+accounts other than root should be removed or have their UID changed.
+</description>
+<ocil clause="any account other than root has a UID of 0">
+To list all password file entries for accounts with UID 0, run the following command:
+<pre># awk -F: '($3 == "0") {print}' /etc/passwd</pre>
+This should print only one line, for the user root.
+</ocil>
+<rationale>
+An account has root authority if it has a UID of 0. Multiple accounts
+with a UID of 0 afford more opportunity for potential intruders to
+guess a password for a privileged account. Proper configuration of
+sudo is recommended to afford multiple system administrators
+access to root privileges in an accountable manner.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="accounts_no_uid_except_zero" />
+<ref nist="AC-6,IA-2(1)" disa="366" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="root_path_default">
+<title>Root Path Must Be Vendor Default</title>
+<description>
+Assuming root shell is bash, edit the following files:
+<pre>~/.profile</pre>
+<pre>~/.bashrc</pre>
+Change any <tt>PATH</tt> variables to the vendor default for root and remove any
+empty <tt>PATH</tt> entries or references to relative paths.
+</description>
+<ocil clause="any of these conditions are not met">
+To view the root user's <tt>PATH</tt>, run the following command:
+<pre># env | grep PATH</pre>
+If correctly configured, the <tt>PATH</tt> must: use vendor default settings,
+have no empty entries, and have no entries beginning with a character
+other than a slash (/).
+</ocil>
+<rationale>
+The root account's executable search path must be the vendor default, and must
+contain only absolute paths.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<!--
+     This is redundant to the previous rule, which insists that the
+     root path is the vendor default.
+
+<Rule id="root_path_no_wwdir">
+<title>Root Path Must Not Contain World-Writable Directories</title>
+<description>
+If a world-writable directory is found in the <tt>PATH</tt>, remove the 
+world-writable permission for that directory with the following command:
+<pre># chmod o-w <i>/dir</i></pre>
+Alternately, remove the world-writable directory from the <tt>PATH</tt>.
+</description>
+<ocil clause="any world-writable directories are found">
+World-writable permissions on directories in root's path can be checked 
+with the following command:
+<pre># ls -ld 'echo $PATH | sed "s/:/ /g"'</pre>
+</ocil>
+<rationale>
+If the root search path contains a world-writable directory, malicious software 
+could be placed in the path.
+</rationale>
+<ref disa="366" />
+</Rule> -->
+</Group>
+

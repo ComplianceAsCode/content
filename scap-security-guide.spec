@@ -1,5 +1,4 @@
-
-%global		redhatssgrelease	15
+%global		redhatssgrelease	16.rc3
 
 Name:		scap-security-guide
 Version:	0.1
@@ -33,31 +32,72 @@ guideline. Refer to scap-security-guide(8) manual page for further information.
 %setup -q -n %{name}-%{version}-%{redhatssgrelease}
 
 %build
-cd RHEL6 && make dist
+(cd RHEL/6 && make dist)
+(cd RHEL/7 && make dist)
 
 %install
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 
 # Add in core content (SCAP)
-cp -a RHEL6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in manpage
-cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
+cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
 %files
 %{_datadir}/xml/scap
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
-%doc RHEL6/LICENSE RHEL6/output/rhel6-guide.html RHEL6/output/table-rhel6-cces.html RHEL6/output/table-rhel6-nistrefs-common.html RHEL6/output/table-rhel6-nistrefs.html RHEL6/output/table-rhel6-srgmap-flat.html RHEL6/output/table-rhel6-srgmap-flat.xhtml RHEL6/output/table-rhel6-srgmap.html RHEL6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
+%doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Thu Jan 23 2014 Shawn Wells <shawn@redhat.com> 0.1-16.rc3
++ Added to RHEL7 content pool
+- OVAL for sshd_set_idle_timeout
+- OVAL for sshd_set_keepalive
+- OVAL for sshd_disable_rhosts
+- OVAL for sshd_disable_root_login
+- OVAL for sshd_disable_empty_passwords
+- OVAL for sshd_enable_warning_banner
+- OVAL for sshd_do_not_permit_user_env
+- OVAL for sshd_use_approved_ciphers
+- OVAL for sshd_allow_only_protocol2
+
+* Tue Dec 24 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc2
++ RHEL6 stig-rhel6-server XCCDF profile renamed to stig-rhel6-server-upstream
+
+* Mon Dec 23 2013 Shawn Wells <shawn@redhat.com> 0.1-16.rc1
++ Added RHEL7 content to SSG rpm
++ Added to RHEL7 content pool:
+- OVAL for partition_for_tmp
+- OVAL for partition_for_var
+- OVAL for partition_for_var_log
+- OVAL for partition_for_var_log_audit
+- OVAL for selinux_state
+- OVAL for selinux_policytype
+- OVAL for ensure_redhat_gpgkey_installed
+- OVAL for ensure_gpgcheck_never_disabled
+- OVAL for package_aide_installed
+- OVAL for accounts_password_reuse_limit
+- OVAL for no_shelllogin_for_systemaccounts
+- OVAL for no_empty_passwords
+- OVAL for no_hashes_outside_shadow
+- OVAL for accounts_no_uid_except_zero
+- OVAL for accounts_password_minlen_login_defs
+- OVAL for accounts_minimum_age_login_defs
+- OVAL for accounts_password_warn_age_login_defs
+- OVAL for accounts_password_pam_cracklib_retry
+- [bugfix] RHEL6 no_empty_passwords remediation script overwrote
+  system-auth symlink. Added --follow-symlink to sed command.
+
 * Fri Nov 01 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15
 - Version bump
 
 * Sat Oct 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc5
 - Point the spec's source to proper remote tarball location
-- Modify the main Makefile to use remote tarball when building RHEL6's SRPM
+- Modify the main Makefile to use remote tarball when building RHEL/6's SRPM
 
 * Sat Oct 26 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc4
 - Don't include the table html files two times
@@ -70,7 +110,7 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 
 * Fri Oct 25 2013 Shawn Wells <shawn@redhat.com> 0.1-15.rc2
 - Updated file permissions of JBossEAP5/eap5-cpe-dictionary.xml (chmod -x) to resolve rpmlint errors
-- RHEL6 HTML table naming bugfixes (table-rhel6-*, not table-*-rhel6)
+- RHEL/6 HTML table naming bugfixes (table-rhel6-*, not table-*-rhel6)
 
 * Fri Oct 25 2013 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-15.rc1
 - Apply spec file changes required by review request (RH BZ#1018905)
@@ -93,7 +133,7 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 
 * Fri Apr 26 2013 Shawn Wells <shawn@redhat.com> 0.1-11
 - Significant amount of OVAL bugfixes
-- Incorporation of Draft RHEL6 STIG feedback
+- Incorporation of Draft RHEL/6 STIG feedback
 
 * Sat Feb 16 2013 Shawn Wells <shawn@redhat.com> 0.1-10
 - SSG now includes JBoss EAP5 content!
@@ -107,7 +147,7 @@ cp -a RHEL6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8
 
 * Tue Nov 27 2012 Shawn Wells <shawn@redhat.com> 0.1-8
 - Significant copy editing to XCCDF rules per community
-  feedback on the DISA RHEL6 STIG Initial Draft
+  feedback on the DISA RHEL/6 STIG Initial Draft
 
 * Thu Nov 1 2012 Shawn Wells <shawn@redhat.com> 0.1-7
 - Corrected XCCDF content errors

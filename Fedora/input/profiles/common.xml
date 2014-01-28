@@ -2,10 +2,19 @@
 <title>Common Profile for General-Purpose Fedora Systems</title>
 <description>This profile contains items common to general-purpose Fedora installations.</description>
 
+  <select idref="disable_prelink" selected="true"/>
+
 <!-- Installing and Maintaining Software section rules -->
   <!-- Updating Software section rules -->
   <select idref="ensure_gpgcheck_globally_activated" selected="true"/>
   <select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+
+<!-- File Permissions And Masks -->
+  <!-- Verify File Permissions Within Some Important Directories -->
+  <select idref="file_permissions_library_dirs" selected="true"/>
+  <select idref="file_ownership_library_dirs" selected="true"/>
+  <select idref="file_permissions_binary_dirs" selected="true"/>
+  <select idref="file_ownership_binary_dirs" selected="true"/>
 
 <!-- Account and Access Control section rules -->
   <!-- Protect Accounts by Restricting Password-Based Login section rules -->
@@ -13,19 +22,34 @@
     <select idref="no_direct_root_logins" selected="true"/>
     <select idref="securetty_root_login_console_only" selected="true"/>
     <select idref="restrict_serial_port_logins" selected="true"/>
-    <select idref="no_root_webbrowsing" selected="true"/>
-    <select idref="no_shelllogin_for_systemaccounts" selected="true"/>
+    <!-- <select idref="no_root_webbrowsing" selected="true"/> -->
+    <!-- <select idref="no_shelllogin_for_systemaccounts" selected="true"/> -->
     <select idref="no_uidzero_except_root" selected="true"/>
-    <select idref="root_path_default" selected="true"/>
+    <!-- <select idref="root_path_default" selected="true"/> -->
     <!-- Verify Proper Storage and Existence of Password Hashes section rules -->
     <select idref="no_empty_passwords" selected="true"/>
     <select idref="no_hashes_outside_shadow" selected="true"/>
-    <select idref="gid_passwd_group_same" selected="true"/>
+    <!-- <select idref="gid_passwd_group_same" selected="true"/> -->
     <select idref="no_netrc_files" selected="true"/>
     <!-- Set Password Expiration Parameters section rules -->
+    <refine-value idref="var_accounts_password_minlen_login_defs" selector="12"/>
     <select idref="accounts_password_minlen_login_defs" selected="true"/>
+    <refine-value idref="var_accounts_minimum_age_login_defs" selector="7"/>
     <select idref="accounts_minimum_age_login_defs" selected="true"/>
+    <refine-value idref="var_accounts_maximum_age_login_defs" selector="90"/>
     <select idref="accounts_maximum_age_login_defs" selected="true"/>
+    <refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
     <select idref="accounts_password_warn_age_login_defs" selected="true"/>
+
+<!-- Services -->
+  <!-- Network Time Protocol -->
+  <select idref="service_ntpd_enabled" selected="true"/>
+  <select idref="ntpd_specify_remote_server" selected="true"/>
+  <!-- SSH Server -->
+  <select idref="sshd_disable_root_login" selected="true"/>
+  <select idref="sshd_disable_empty_passwords" selected="true"/>
+  <refine-value idref="sshd_idle_timeout_value" selector="5_minutes"/>
+  <select idref="sshd_set_idle_timeout" selected="true"/>
+  <select idref="sshd_set_keepalive" selected="true"/>
 
 </Profile>
