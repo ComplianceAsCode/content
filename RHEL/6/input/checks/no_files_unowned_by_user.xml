@@ -1,38 +1,43 @@
 <def-group>
-  <definition class="compliance"
-  id="no_files_unowned_by_user" version="1">
+  <definition class="compliance" id="no_files_unowned_by_user" version="1">
     <metadata>
       <title>Find files unowned by a user</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>All files should be owned by a
-      user</description>
+      <description>All files should be owned by a user</description>
+      <reference source="rmercer" ref_id="20131218" ref_url="test_attestation" />
     </metadata>
     <criteria>
-      <criterion comment="Check all files and make sure they are owned by a user"
-      negate="true"
-      test_ref="test_20050" />
+      <criterion comment="Check all files and make sure they are owned by a user" test_ref="no_files_unowned_by_user_test" />
     </criteria>
   </definition>
-  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-  check="all" comment="files with no user owner"
-  id="test_20050" version="1">
-    <notes>
-      <note>This will enumerate all files on local
-      partitions</note>
-    </notes>
-    <unix:object object_ref="obj_20022" />
-    <unix:state state_ref="state_20050" />
-  </unix:file_test>
-  <unix:file_state comment="Executables with suid set"
-  id="state_20050" version="1">
-    <unix:user_id datatype="int">0</unix:user_id>
+
+  <unix:file_state id="file_permissions_unowned_userid_list_match" version="1">
+    <unix:user_id var_check="at least one" var_ref="file_permissions_unowned_userid_list" datatype="int" />
   </unix:file_state>
-  <unix:file_object comment="all local files"
-  id="obj_20022" version="1">
-    <unix:behaviors recurse="symlinks and directories" recurse_file_system="local" />
+
+  <local_variable id="file_permissions_unowned_userid_list" comment="List of valid user ids" datatype="int" version="1">
+    <object_component item_field="subexpression" object_ref="file_permissions_unowned_userid_list_object" />
+  </local_variable>
+
+  <ind:textfilecontent54_object id="file_permissions_unowned_userid_list_object" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]+:([\d]+):[\d]+:[^:]*:[^:]+:[^:]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_object comment="all local files" id="file_permissions_unowned_object" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" recurse_file_system="local" />
     <unix:path>/</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">file_permissions_unowned_userid_list_match</filter>
   </unix:file_object>
+  
+  <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+  check="all" check_existence="none_exist" comment="Check user ids on all files on the system"
+  id="no_files_unowned_by_user_test" version="1">
+    <unix:object object_ref="file_permissions_unowned_object" />
+  </unix:file_test>
 </def-group>
+  
