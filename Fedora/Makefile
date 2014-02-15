@@ -36,6 +36,17 @@ guide: shorthand2xccdf
 content: shorthand2xccdf guide checks
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
+#       Once things are relabelled, create a datastream
+	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
+		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
+	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
+		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
+	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
+	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+#       Add in CPE and OVAL content to datastream
+	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+
 
 validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
