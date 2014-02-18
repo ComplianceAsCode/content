@@ -86,6 +86,17 @@ content: shorthand2xccdf guide checks
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel7-oval.xml $(IN)/checks/platform/rhel7-cpe-dictionary.xml $(ID)
 	$(TRANS)/relabelids.py unlinked-rhel7-xccdf.xml $(ID)
 	$(TRANS)/relabelids.py unlinked-ocilrefs-rhel7-xccdf.xml $(ID)
+#       Once things are relabelled, create a datastream
+	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-rhel7-xccdf.xml \
+		> $(OUT)/$(ID)-rhel7-xccdf-nodangles.xml
+	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
+		$(OUT)/$(ID)-rhel7-xccdf-nodangles.xml > $(OUT)/$(ID)-rhel7-xccdf-1.2.xml
+	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-rhel7-xccdf-1.2.xml
+	oscap ds sds-compose $(OUT)/$(ID)-rhel7-xccdf-1.2.xml $(OUT)/$(ID)-rhel7-ds.xml
+#       Add in CPE and OVAL content to datastream
+	oscap ds sds-add $(OUT)/$(ID)-rhel7-cpe-dictionary.xml $(OUT)/$(ID)-rhel7-ds.xml
+	oscap ds sds-add $(OUT)/$(ID)-rhel7-oval.xml $(OUT)/$(ID)-rhel7-ds.xml
+
 
 content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-rhel7-xccdf.xml $(OUT)/unlinked-stig-rhel7-xccdf.xml 
