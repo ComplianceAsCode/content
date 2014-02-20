@@ -5,11 +5,11 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4
+%global	fedorassgversion	5.rc1
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Group:		Applications/System
 License:	Public Domain
@@ -56,6 +56,10 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 
 
 %changelog
+* Thu Feb 20 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5.rc1-1
+- EOL for Fedora 18 support
+- Include datastream file (for remote system scans) into RPM package too
+
 * Mon Jan 06 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4-2
 - Drop -compat package, provide openscap-content directly (RH BZ#1040335#c14)
 
