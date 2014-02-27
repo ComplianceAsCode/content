@@ -5,16 +5,22 @@
 # file one level up - in the main scap-security-guide directory (instead of
 # this one).
 
-%global	fedorassgversion	4
+# Used for Fedora scap-security-guide RPM package versioning
+%global	fedorassgversion	5
+
+# Used to specify RHEL scap-security-guide tarball source
+# (needs to match latest EPEL-6 scap-security-guide RPM release)
+%global	rhelssgsource		0.1-16
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Group:		Applications/System
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
 Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}.tar.gz
+Source1:	http://repos.ssgproject.org/sources/%{name}-%{rhelssgsource}.tar.gz
 BuildArch:	noarch
 BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
 Requires:	xml-common, openscap-utils >= 0.9.1
@@ -34,20 +40,38 @@ conforms to provided guideline. Refer to scap-security-guide(8) manual page for
 further information.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -D -n %{name}-%{version} -a1
 
 %build
-cd Fedora && make dist
+# Build Fedora distribution content
+(cd Fedora && make dist)
+# Change CWD to point to RHEL content. Build RHEL content
+pushd %{name}-%{rhelssgsource}
+(cd RHEL/6 && make dist)
+(cd RHEL/7 && make dist)
+# Restore CWD to old value
+popd
 
 %install
+# Create required directory structure
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/fedora
+mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/rhel{6,7}
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 
-# Add in core content (SCAP XCCDF and OVAL content)
+# Add in core Fedora content (SCAP XCCDF and OVAL)
 cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/fedora
-
-# Add in manpage
+# Add in Fedora manpage
 cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
+
+# Change CWD to point to RHEL content. Copy
+# datastreams to appropriate buildroot places
+pushd %{name}-%{rhelssgsource}
+# Add in datastream form of RHEL-6 benchmark
+cp -a RHEL/6/dist/content/ssg-rhel6-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel6
+# Add in datastream form of RHEL-7 benchmark
+cp -a RHEL/7/dist/content/ssg-rhel7-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel7
+# Restore CWD to old value
+popd
 
 %files
 %{_datadir}/xml/scap
@@ -56,6 +80,12 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 
 
 %changelog
+* Thu Feb 27 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5-1
+- Fix fedora-srpm and fedora-rpm Make targets to work again
+- Include RHEL-6 and RHEL-7 datastream files to support remote RHEL system scans
+- EOL for Fedora 18 support
+- Include Fedora datastream file for remote Fedora system scans
+
 * Mon Jan 06 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.4-2
 - Drop -compat package, provide openscap-content directly (RH BZ#1040335#c14)
 

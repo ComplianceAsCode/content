@@ -131,6 +131,7 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-rhel6-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-rhel6-cpe-oval.xml $(DIST)/content
+	cp $(OUT)/$(ID)-rhel6-ds.xml $(DIST)/content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
