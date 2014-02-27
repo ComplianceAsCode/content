@@ -19,7 +19,9 @@ RPMBUILD_ARGS := --define '_topdir $(RPM_TOPDIR)'  --define '_tmppath $(RPM_TMPD
 
 # Define Fedora specific variables below
 FEDORA_SPEC := $(ROOT_DIR)/Fedora/scap-security-guide.spec
-FEDORA_RPM_DEPS := $(FEDORA_SPEC) Makefile
+# srpm target in FEDORA_RPM_DEPS below is needed to get value of SOURCE
+# variable evaluated for its subsequent use in fedora-srpm target
+FEDORA_RPM_DEPS := $(FEDORA_SPEC) Makefile srpm
 FEDORA_NAME := $(PKGNAME)
 FEDORA_SSG_VERSION := $(shell sed -ne 's/^\(.*\)\tfedorassgversion\t\(.*\)/\2/p' $(FEDORA_SPEC))
 FEDORA_RPM_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(FEDORA_SPEC))
@@ -143,9 +145,13 @@ fedora-srpm: $(FEDORA_RPM_DEPS)
 	# Substitute %{name} and %{version} with their actual values
 	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{name}/$(FEDORA_NAME)/p"))
 	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{version}/$(FEDORA_RPM_VERSION)/p"))
-	# Download the tarball
+	# Download the tarballs
+	# Fedora one
 	@echo "Downloading the $(FEDORA_SOURCE) tarball..."
 	@wget -O $(FEDORA_TARBALL) $(FEDORA_SOURCE)
+	# RHEL one
+	@echo "Downloading the $(SOURCE) tarball..."
+	@wget -O $(TARBALL) $(SOURCE)
 	@echo "Copying the SPEC file to proper location..."
 	cat $(FEDORA_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(FEDORA_SPEC))
 	@echo "Building Fedora source $(PKGNAME) RPM package..."
