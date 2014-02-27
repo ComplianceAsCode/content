@@ -40,7 +40,7 @@ conforms to provided guideline. Refer to scap-security-guide(8) manual page for
 further information.
 
 %prep
-%setup -q -T -D -n %{name}-%{version} -a1
+%setup -q -D -n %{name}-%{version} -a1
 
 %build
 # Build Fedora distribution content
@@ -80,7 +80,8 @@ popd
 
 
 %changelog
-* Wed Feb 26 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5-1
+* Thu Feb 27 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5-1
+- Fix fedora-srpm and fedora-rpm Make targets to work again
 - Include RHEL-6 and RHEL-7 datastream files to support remote RHEL system scans
 - EOL for Fedora 18 support
 - Include Fedora datastream file for remote Fedora system scans
