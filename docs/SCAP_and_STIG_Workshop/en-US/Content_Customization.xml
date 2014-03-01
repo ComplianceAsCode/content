@@ -105,7 +105,7 @@ The directory usages are:
 		<title>Creating your first XCCDF rule</title>
 		<para>For this workshop we will create a rule which mandates installation of the SCAP Security Guide RPM, and we'll identify failure (the lack of installation) as a CAT I / SEV 1 finding.</para>
 		<para>The directory structure, and multiple XML files, can be a bit overwhelming at first. Change directory to  input/system/ and perform a directory listing:
-<screen>
+			<screen>
 $ cd input/system/; ls -l
 
 total 116
@@ -117,29 +117,28 @@ drwxrwxr-x. 2 shawn shawn  4096 Mar 21 06:47 permissions
 -rw-rw-r--. 1 shawn shawn 10760 Mar 14 20:51 selinux.xml
 drwxrwxr-x. 2 shawn shawn  4096 Mar 23 18:06 software
 -rw-rw-r--. 1 shawn shawn    62 Mar 14 20:51 system.xml
-</screen>
+			</screen>
 		</para>
 		<para>To aid with multi-author content creation, the SSG project creates compartmented XCCDF files. These individual files are merged together during our Make/compilation process (more on that later!).</para>
 		<para>In the directory listing above you'll notice auditing.xml, logging.xml, and a few directories. Since we're creating a rule that deals with software, change directory into software/ and perform a directory listing:
-<screen>
+			<screen>
 $ cd software/; ls -l
 total 36
 -rw-rw-r--. 1 shawn shawn  7307 Mar 14 20:51 disk_partitioning.xml
 -rw-rw-r--. 1 shawn shawn 12458 Mar 17 18:57 integrity.xml
 -rw-rw-r--. 1 shawn shawn   274 Mar 14 20:51 software.xml
 -rw-rw-r--. 1 shawn shawn  5635 Mar 14 20:51 updating.xml
-</screen>
+			</screen>
 		</para>
 		<para>As the SSG project relates to security, lets create the new rule within the integrity.xml section. Load that file in your favorite text editor, then place yourself one line above EOF:
-<screen>
+			<screen>
 $ vim integrity.xml
 {shift+g}
 -
-</screen>
-</para>
-<para>Your screen should be similar to the following:
-
-<screen>
+			</screen>
+		</para>
+		<para>Your screen should be similar to the following:
+			<screen>
 <!--FIXME 
 The template for SSG XCCDF rules is below. Insert the following template into integrity.xml:
 <Rule id="" severity="">
@@ -153,7 +152,8 @@ The template for SSG XCCDF rules is below. Insert the following template into in
   </rational>
   <oval id="" />
 </Rule> -->
-</screen>
+			</screen>
+		</para>
 		<para>Using the template above, create a rule which:
 			<simplelist>
 				<member>Has an XCCDF rule id of “package_scap-security-guide_installed” with a severity of “high”</member>
@@ -166,7 +166,7 @@ The template for SSG XCCDF rules is below. Insert the following template into in
 			</simplelist>
 		</para>
 		<para>Your completed template will look similar to:
-<screen>
+			<screen>
 <!-- FIXME
 Done! Hopefully that wasn't to painful. If you're curious on where the “package-check-macro” comes from, check out RHEL6/transforms/shorthand2xccdf.xslt and search for lines that begin with “<xsl:template match="”
 The shorthand2xccdf.xslt file contains many short-hand macros that are available, which inserts template text into final XCCDF output. Unfortunately, in a two hour workshop, we don't have enough time to properly cover all embedded XSLT transformations within the SSG. Feel free to direct questions to the public mailing list!
@@ -180,10 +180,10 @@ oscap xccdf validate-xml output/ssg-rhel6-xccdf.xml
 oscap oval validate-xml output/ssg-rhel6-oval.xml
 oscap oval validate-xml output/ssg-rhel6-cpe-oval.xml
 -->
-</screen>
+			</screen>
 		</para>
 		<para>As mentioned earlier, the output/ directory contains artifacts from the build. Using a web browser, view http://studentX/scap-security-guide/output/rhel6-guide.html. You'll notice your XCCDF Rule Title is now listed in the table of contents:
-<screen>
+
 Click on the “Install SCAP Security Guide” link, and you'll be brought to the newly created rule:
 
 
@@ -234,21 +234,21 @@ $ vim output/package_scap-security-guide_installed.xml
 		
 	The newly created template:
 
-OVAL contains many pre-defined functions. In this case, we make use of <linux:rpminfo_test> to check for the installation of scap-security-guide.
+OVAL contains many pre-defined functions. In this case, we make use of linux:rpminfo_test to check for the installation of scap-security-guide.
 
 
 4. Run “make copy” to place package_scap-security-guide_installed.xml into the project:
 $ make copy
 
 5. Done! You've now added an OVAL rule to check for the existence of scap-security-guide!
-</screen>
+			
 		</para>
 	</section>
 	<section>
 		<title>Profiles</title>
 		<para>With our XCCDF rule and OVAL content created, we must now add the rule to an XCCDF profile. Let's add this as a STIG requirement, placing it into the stig-rhel6-server profile.</para>
 		<para>XCCDF profiles are retained within RHEL6/input/profiles/. Change directory and perform a directory listing to see available profiles:
-<screen>
+			<screen>
 $ cd /var/www/html/scap-security-guide/RHEL6/input/profiles/; ls -l
 total 96
 -rw-rw-r--. 1 shawn shawn 16798 Mar 14 20:51 common.xml
@@ -264,10 +264,10 @@ total 96
 
 Since we're adding this rule to the STIG profile, load stig-rhel6-server.xml:
 $ vim stig-rhel6-server.xml
-</screen>
+			</screen>
 		</para>
 		<para>Upon loading the file, you will be presented with the XCCDF code behind the STIG profile:
-<screen>
+			<screen>
 <!-- FIXME
 XML Tag/Element
 Description
@@ -296,7 +296,7 @@ If added correctly, you will have inserted a line that matches the following:
 		</para>
 	</section>
 	<section>
-		<title>Patch Creation & Submission</title>
+		<title>Patch Creation and Submission</title>
 		<para>Through this workshop we've made several modifications to the SSG source code. Specifically:
 			<simplelist>
 				<member>Creation of a new XCCDF rule, package_scap-security-guide_installed, which was placed into RHEL6/input/system/software/integrity.xml.</member>
@@ -310,15 +310,15 @@ $ cd /var/www/html/scap-security-guide/; git commit
 # On branch master
 #
 # Changed but not updated:
-#   (use "git add <file>..." to update what will be committed)
-#   (use "git checkout -- <file>..." to discard changes in working directory)
+#   (use "git add [file]..." to update what will be committed)
+#   (use "git checkout -- [file]..." to discard changes in working directory)
 #
 #	modified:   RHEL6/input/checks/templates/packages_installed.csv
 #	modified:   RHEL6/input/profiles/stig-rhel6-server.xml
 #	modified:   RHEL6/input/system/software/integrity.xml
 #
 # Untracked files:
-#   (use "git add <file>..." to include in what will be committed)
+#   (use "git add [file]..." to include in what will be committed)
 #
 #	RHEL6/input/checks/package_scap-security-guide_installed.xml
 no changes added to commit (use "git add" and/or "git commit -a")
@@ -353,3 +353,4 @@ $ git format-patch origin
 The final step is to EMail this patch to the SSG project mailing list. Upon acknowledgement/signoff, you will be able to “git push” your changes into the project.</para>
 	</section>
 </chapter>
+<!-- test -->
