@@ -50,7 +50,7 @@
 		<title>OpenSCAP</title>
 		<para>The SCAP protocol suite contains multiple complex data exchange formats that are used to transmit important vulnerability, configuration, and other security data. Historically there have been few tools that provide a way to query this data in the needed format. This lack of tools makes the barrier to entry very high and discourages adoption of these protocols by the community. It's the goal of the OpenSCAP project to create a framework of libraries and tools to improve the accessibility of SCAP
 and enhance the usability of the information it presents.</para>
-		<para>SCAP is a protocol, akin to HTML, and consumers must use a protocol interpreter. OpenSCAP provides that functionality for the RHEL platform.</para>
+		<para>SCAP is a protocol, akin to HTML, and consumers must use a protocol interpreter. OpenSCAP provides that functionality for Red Hat platforms.</para>
 		<para>The OpenSCAP homepage can be found at <ulink url="http://www.open-scap.org/page/Main_Page" /></para>
 	</section>
 	<section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-XCCDF">
@@ -145,20 +145,21 @@ and enhance the usability of the information it presents.</para>
 			<para>XCCDF rules are logically organized into profiles. To query which profiles are contained within the SCAP Security Guide project, run the following command:
 				<screen>
 $ grep -n "&#60;Profile" /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
-12: &#60;Profile id="test"&#62;
-68: &#60;Profile id="common"&#62;
-345: &#60;Profile id="desktop" extends="common"&#62;
-381: &#60;Profile id="server" extends="common"&#62;
-389: &#60;Profile id="ftp" extends="server"&#62;
-403: &#60;Profile id="stig-rhel6-server" extends="common"&#62;
+40: &#60;Profile id="test"&#62;
+67: &#60;Profile id="CS2"&#62;
+398: &#60;Profile id="common"&#62;
+613: &#60;Profile id="server"&#62;
+832: &#60;Profile id="stig-rhel6-server"&#62;
+1101: &#60;Profile id="usgcb-rhel6-server"&#62;
+1360: &#60;Profile id="rht-ccp"&#62;
 				</screen>
 			</para>
-			<para>If you were to view line 403 and those proceeding, you will see a sampling of which rules make up the stig-rhel6-server profile:
+<!--			<para>If you were to view line 403 and those proceeding, you will see a sampling of which rules make up the stig-rhel6-server profile:
 				<screen>
 $ sed -n '403,413p' /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
 &#60;Profile id="stig-rhel6-server" extends="common"&#62;
 &#60;title&#62;Pre-release Draft STIG for RHEL 6 Server&#60;/title&#62;
-&#60;description&#62;This profile is being developed under the DoD consensus
+&#60;description&#62;This profile is being developed under the DoD consensusi
 model to become a STIG in coordination with DISA FSO.&#60;/description&#62;
 &#60;select idref="encrypt_partitions" selected="true"/&#62;
 &#60;select idref="rpm_verify_permissions" selected="true"/&#62;
@@ -169,7 +170,7 @@ model to become a STIG in coordination with DISA FSO.&#60;/description&#62;
 &#60;select idref="disable_ctrlaltdel_reboot" selected="true"/&#62;
 &#60;select idref="service_postfix_enable" selected="true"/&#62;
 				</screen>
-			</para>
+			</para> -->
 		</section>
 	</section>
 </chapter>
