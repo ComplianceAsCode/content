@@ -4,8 +4,11 @@
 <status date="2011-12-20">draft</status>
 <title>Guide to the Secure Configuration of Red Hat Enterprise Linux 6</title>
 <description>This guide presents a catalog of security-relevant
-configuration settings for Red Hat Enterprise Linux 6 formatted in the
-eXtensible Configuration Checklist Description Format (XCCDF).  
+configuration settings for Red Hat Enterprise Linux 6. It is a rendering of
+content structured in the eXtensible Configuration Checklist Description Format (XCCDF)
+in order to support security automation.  The SCAP content is
+is available in the <tt>scap-security-guide</tt> package which is developed at
+http://fedorahosted.org/scap-security-guide.
 <br/>
 <br/>
 Providing system administrators with such guidance informs them how to securely
@@ -14,7 +17,7 @@ makers and baseline creators can use this catalog of settings, with its
 associated references to higher-level security control catalogs, in order to
 assist them in security baseline creation.  This guide is a <i>catalog, not a
 checklist,</i> and satisfaction of every item is not likely to be possible or
-sensible in many operational scenarios.  However, the XCCDF format enables
+sensible in any operational scenario.  However, the XCCDF format enables
 granular selection and adjustment of settings, and their association with OVAL
 and OCIL content provides an automated checking capability.  Transformations of
 this document, and its associated automated checking content, are capable of
@@ -22,7 +25,8 @@ providing baselines that meet a diverse set of policy objectives.  Some example
 XCCDF <i>Profiles</i>, which are selections of items that form checklists and
 can be used as baselines, are available with this guide.  They can be
 processed, in an automated fashion, with tools that support the Security
-Content Automation Protocol (SCAP).  The DISA STIG for RHEL 6 is one example of
+Content Automation Protocol (SCAP).  The DISA STIG for RHEL 6, which provides
+required settings for US Department of Defense systems, is one example of
 a baseline created from this guidance.
 </description>
 <notice id="terms_of_use">Do not attempt to implement any of the settings in
