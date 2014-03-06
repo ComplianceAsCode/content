@@ -18,45 +18,10 @@ so forth.
 <br /><br />
 This guide recommends that SELinux be enabled using the
 default (targeted) policy on every Red Hat system, unless that
-system has requirements which make a stronger policy
+system has unusual requirements which make a stronger policy
 appropriate.
 </description>
 
-<Group id="enabling_selinux">
-<title>Enable SELinux</title>
-<description>Edit the file <tt>/etc/selinux/config</tt>. Add or correct the
-following lines:
-<pre>SELINUX=enforcing
-SELINUXTYPE=targeted</pre>
-Edit the file <tt>/etc/grub.conf</tt>. Ensure that the following
-arguments DO NOT appear on any kernel command line in the file:
-<pre>selinux=0
-enforcing=0</pre>
-The directive <tt>SELINUX=enforcing</tt> enables SELinux at boot time.
-If SELinux is suspected of involvement with boot-time problems
-(unlikely), it is possible to boot into the warning-only mode
-<tt>SELINUX=permissive</tt> for debugging purposes. Make certain to change
-the mode back to enforcing after debugging, set the filesystems to
-be relabeled for consistency using the command <tt>touch
-/.autorelabel</tt>, and reboot.
-<br /><br />
-However, the RHEL 6 default SELinux configuration should be
-sufficiently reasonable that most systems will boot without serious
-problems. Some applications that require deep or unusual system
-privileges, such as virtual machine software, may not be compatible
-with SELinux in its default configuration. However, this should be
-uncommon, and SELinux's application support continues to improve.
-In other cases, SELinux may reveal unusual or insecure program
-behavior by design.
-<br /><br />
-The directive <tt>SELINUXTYPE=targeted</tt> configures SELinux to use
-the default targeted policy.
-<br /><br />
-The SELinux boot mode specified in <tt>/etc/selinux/config</tt> can be
-overridden by command-line arguments passed to the kernel. It is
-necessary to check <tt>grub.conf</tt> to ensure that this has not been done
-and to protect the boot process.
-</description>
 
 <Value id="var_selinux_state" type="string" operator="equals" interactive="0">
 <title>SELinux state</title>
@@ -151,7 +116,6 @@ targeted for exploitation, such as network or system services.
 <ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" disa="22,32"/>
 <tested by="DS" on="20121024"/>
 </Rule>
-</Group>
 
 <Rule id="service_restorecond_enabled">
 <title>Enable the SELinux Context Restoration Service (restorecond)</title>

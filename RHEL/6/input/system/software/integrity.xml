@@ -190,13 +190,15 @@ software may not be appropriate for some specialized systems.
 <Rule id="install_hids" severity="high">
 <title>Install Intrusion Detection Software</title>
 <description>
-The Red Hat platform includes a sophisticated auditing system 
-and SELinux, which provide host-based intrusion detection capabilities.
+The base Red Hat platform already includes a sophisticated auditing system that
+can detect intruder activity, as well as SELinux, which provides host-based
+intrusion prevention capabilities by confining privileged programs and user
+sessions which may become compromised.
+<br/>
 </description>
-<ocil clause="SELinux is installed, this is not a finding.  However, if neither SELinux nor HBSS is used on the system">
+<ocil clause="no host-based intrusion detection tools are installed">
 Inspect the system to determine if intrusion detection software has been installed. 
-SELinux is the intrusion detection system included with RHEL. Another one is 
-McAfee HBSS, which is available through Cybercom.
+Verify this intrusion detection software is active.
 </ocil>
 <rationale>
 Host-based intrusion detection tools provide a system-level defense when an
