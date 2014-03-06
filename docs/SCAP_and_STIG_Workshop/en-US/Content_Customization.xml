@@ -8,7 +8,7 @@
 	<para/>
 	<section>
 		<title>So, you wanna be a developer?</title>
-		<para>Welcome! Making changes to the project requires posting a patch to the mailing list, so that it can be vetted. Once there, another commit-level project member must issue acknowledgement (“ACK”) to accept it, and then it can be pushed. Assuming another project member has not issued a NACK in protest first, that is! The following instructions assume familiarity with git and git-send-email, but project members are happy to provide tips if you encounter any roadblocks.</para>
+		<para>Welcome! Making changes to the project requires posting a patch to the mailing list, so that it can be vetted. Once there, another commit-level project member must issue an acknowledgement (“ACK”) to accept it, and then it can be pushed - assuming another project member has not issued a NACK in protest first. The following instructions assume familiarity with git and git-send-email, but project members are happy to provide tips if you encounter any roadblocks.</para>
 		<para>To properly join the project you must first establish a few required accounts:
 			<simplelist>
 				<member>Join the <ulink url="https://fedorahosted.org/mailman/listinfo/scap-security-guide">mailing list</ulink>, it's how developers and users communicate.</member>
@@ -25,10 +25,10 @@
 NOTE: For this workshop, use /var/www/html/
 <screen>
 $ cd /var/www/html/
-$ git clone ssh://git.fedorahosted.org/git/scap-security-guide.git
+$ git clone ssh://USERNAME@git.fedorahosted.org/git/scap-security-guide.git
 
 If you have not been given commit access, use the standard HTTP interface:
-$ git clone ssh://git.fedorahosted.org/git/scap-security-guide.git
+$ git clone git://git.fedorahosted.org/git/scap-security-guide.git
 </screen>
 		</para>
 	</section>
@@ -38,29 +38,32 @@ $ git clone ssh://git.fedorahosted.org/git/scap-security-guide.git
 <screen>
 $ cd scap-security-guide; ls -l
 
-total 36
-drwxrwxr-x. 4 shawn shawn 4096 Mar 14 20:51 JBossEAP5
--rw-rw-r--. 1 shawn shawn  409 Mar 14 20:51 LICENSE
--rw-rw-r--. 1 shawn shawn 2945 Mar 17 18:58 Makefile
-drwxrwxr-x. 8 shawn shawn 4096 Mar 17 14:03 OpenStack
--rw-rw-r--. 1 shawn shawn  840 Mar 14 20:51 README
-drwxrwxr-x. 8 shawn shawn 4096 Mar 23 14:34 RHEL6
-drwxrwxr-x. 8 shawn shawn 4096 Mar 17 14:03 RHEVM3
-drwxrwxr-x. 4 shawn shawn 4096 Mar 23 11:32 rpmbuild
--rw-rw-r--. 1 shawn shawn 3229 Mar 14 20:51 scap-security-guide.spec
+total 56
+drwxrwxr-x. 8 dave dave 4096 Mar  5 13:02 docs
+drwxrwxr-x. 6 dave dave 4096 Mar  5 12:10 Fedora
+drwxrwxr-x. 4 dave dave 4096 Mar  5 12:10 JBossEAP5
+drwxrwxr-x. 4 dave dave 4096 Mar  5 12:10 JBossFuse6
+-rw-rw-r--. 1 dave dave  409 Mar  5 12:10 LICENSE
+-rw-rw-r--. 1 dave dave 6991 Mar  5 12:10 Makefile
+drwxrwxr-x. 7 dave dave 4096 Mar  5 12:10 OpenStack
+-rw-rw-r--. 1 dave dave  840 Mar  5 12:10 README
+drwxrwxr-x. 4 dave dave 4096 Mar  5 12:10 RHEL
+drwxrwxr-x. 7 dave dave 4096 Mar  5 12:10 RHEVM3
+-rw-rw-r--. 1 dave dave 7167 Mar  5 12:10 scap-security-guide.spec
+drwxrwxr-x. 5 dave dave 4096 Mar  5 12:10 shared
+</screen>
 
-
-Top level directories have been created to contain the per-technology SCAP content. Change directory into RHEL6 and perform a directory listing:
-$ cd RHEL6; ls -l
-total 40
-drwxrwxr-x. 2 shawn shawn  4096 Mar 23 17:35 dist
-drwxrwxr-x. 9 shawn shawn  4096 Mar 21 18:57 input
--rw-rw-r--. 1 shawn shawn 10277 Mar 14 20:51 Makefile
-drwxrwxr-x. 2 shawn shawn  4096 Mar 23 17:35 output
--rw-rw-r--. 1 shawn shawn  1616 Mar 14 20:51 README
-drwxrwxr-x. 2 shawn shawn  4096 Mar 17 18:57 references
-drwxrwxr-x. 2 shawn shawn  4096 Mar 17 14:03 transforms
-drwxrwxr-x. 2 shawn shawn  4096 Mar 14 20:51 utils
+Top level directories have been created to contain the per-technology SCAP content. Thanks to the ongoing development work toward content for RHEL7, there is now a RHEL directory, with sub-directories for 6 and 7. Change directory into RHEL/6 and perform a directory listing:
+<screen>
+cd RHEL/6/ ; ls -l
+total 32
+drwxrwxr-x. 9 dave dave 4096 Mar  6 06:31 input
+-rw-rw-r--. 1 dave dave 1211 Mar  5 12:10 LICENSE
+-rw-rw-r--. 1 dave dave 7917 Mar  5 12:10 Makefile
+drwxrwxr-x. 3 dave dave 4096 Mar  5 12:10 output
+-rw-rw-r--. 1 dave dave 1616 Mar  5 12:10 README
+drwxrwxr-x. 2 dave dave 4096 Mar  5 12:10 transforms
+drwxrwxr-x. 2 dave dave 4096 Mar  5 12:10 utils
 </screen>
 </para>
 <para>
@@ -77,20 +80,12 @@ The directory usages are:
 </thead>
 <tbody>
 	<row>
-		<entry>dist/</entry>
-		<entry>The build process generates finalized content here, which then are included into SSG RPMs.</entry>
-	</row>
-	<row>
 		<entry>input/</entry>
 		<entry>Source files that generate SCAP content, such as XCCDF and OVAL.  Since a single large XML file is an impractical format for multiple authors to collaborate on editing SCAP content, efforts are made to keep logically related guidance and checking content in individual files.</entry>
 	</row>
 	<row>
 		<entry>output/</entry>
 		<entry>Used as a storage area for items generated by the files in the inputs directory.  It should be empty in the repository, and built on users' individual systems (and rely on its .gitignore file to keep such files out).  The output directory contains transitional output (which may only exist in order to be further transformed) as well as final output.</entry>
-	</row>
-	<row>
-		<entry>references/</entry>
-		<entry>Contain documents which are specified as references from within the SCAP content, or documents that are "seeds," viz. documents whose prose will be translated into SCAP formats, as well as other examples of SCAP content.</entry>
 	</row>
 	<row>
 		<entry>transforms/</entry>
@@ -148,8 +143,8 @@ The template for SSG XCCDF rules is below. Insert the following template into in
   <ocil clause="">
     <package-check-macro package="" />
   </ocil>
-  <rational>
-  </rational>
+  <rationale>
+  </rationale>
   <oval id="" />
 </Rule> -->
 			</screen>
@@ -161,17 +156,17 @@ The template for SSG XCCDF rules is below. Insert the following template into in
 				<member>Outlines a method to install SSG. For example, “yum install scap-security-guide”</member>
 				<member>States that “if SCAP Security Guide is not installed” this is a finding</member>
 				<member>Includes the proper package name, scap-security-guide, in the package check macro</member>
-				<member>Includes rational on why the SSG project is awesome, and should be installed</member>
+				<member>Includes rationale on why the SSG project is awesome, and should be installed</member>
 				<member>Corresponds to a (currently non-existent) OVAL rule named “package_scap-security-guide_installed”</member>
 			</simplelist>
 		</para>
 		<para>Your completed template will look similar to:
 			<screen>
 <!-- FIXME
-Done! Hopefully that wasn't to painful. If you're curious on where the “package-check-macro” comes from, check out RHEL6/transforms/shorthand2xccdf.xslt and search for lines that begin with “<xsl:template match="”
+Done! Hopefully that wasn't too painful. If you're curious on where the “package-check-macro” comes from, check out RHEL/6/transforms/shorthand2xccdf.xslt and search for lines that begin with “<xsl:template match="”
 The shorthand2xccdf.xslt file contains many short-hand macros that are available, which inserts template text into final XCCDF output. Unfortunately, in a two hour workshop, we don't have enough time to properly cover all embedded XSLT transformations within the SSG. Feel free to direct questions to the public mailing list!
 Now that the XCCDF language is written, let's see how it looks in the HTML guide. For this we will need to run a quick SSG compilation:
-$ cd /var/www/html/scap-security-guide/RHEL6
+$ cd /var/www/html/scap-security-guide/RHEL/6
 $ make content
 
 To ensure your XCCDF is still SCAP compliant, run a quick “make validate”:
@@ -182,9 +177,7 @@ oscap oval validate-xml output/ssg-rhel6-cpe-oval.xml
 -->
 			</screen>
 		</para>
-		<para>As mentioned earlier, the output/ directory contains artifacts from the build. Using a web browser, view http://studentX/scap-security-guide/output/rhel6-guide.html. You'll notice your XCCDF Rule Title is now listed in the table of contents:
-
-Click on the “Install SCAP Security Guide” link, and you'll be brought to the newly created rule:
+		<para>As mentioned earlier, the output/ directory contains artifacts from the build. Using a web browser, view http://studentX/scap-security-guide/output/rhel6-guide.html. You'll notice your XCCDF Rule Title is now listed in the table of contents. Click on the “Install SCAP Security Guide” link, and you'll be brought to the newly created rule.
 
 
 <!-- FIXME
@@ -196,16 +189,21 @@ The <description> tag has the ability to handle XHTML arguments. Let's wrap our 
 
 
 Once updated, re-run the build:
+<screen>
 $ make clean; make content; make validate
+</screen>
 
-Upon completion, refresh your web browser to see the updated content:
+Upon completion, refresh your web browser to see the updated content.
 
 This looks much better. At this point we have a valid, functioning, XCCDF rule!
-Now, onto OVAL content creation.
-5.5   OVAL Authoring
-OVAL standardizes the assessment and reporting of machine state. It's very comprehensive, with capabilities to examine boot-time and run-time configuration. MITRE has documented OVAL's built-in functions here:
-http://oval.mitre.org/language/version5.10.1/ovaldefinition/documentation/linux-definitions-schema.html
-The SSG project maintains all OVAL code under RHEL6/input/checks/, and provides a template utilities in RHEL6/input/checks/templates/. Change directories to templates/ and perform a directory listing:
+Now, onto OVAL content creation...</para>
+
+	</section>
+	<section>
+        	<title>OVAL Authoring</title>
+		<para>OVAL standardizes the assessment and reporting of machine state. It's very comprehensive, with capabilities to examine boot-time and run-time configuration. MITRE has documented OVAL's built-in functions at http://oval.mitre.org/language/version5.10.1/ovaldefinition/documentation/linux-definitions-schema.html</para>
+		<para>The SSG project maintains all OVAL code under shared/oval/ and RHEL/6/input/checks/, and provides template utilities in RHEL/6/input/checks/templates/. Change directories to templates/ and perform a directory listing:
+			<screen>
 $ cd /var/www/html/scap-security-guide/RHEL6/input/checks/templates/; ls
 create_kernel_modules_disabled.py  packages_removed.csv
 create_package_installed.py        README
@@ -220,49 +218,65 @@ kernel_modules_disabled.csv        template_service_disabled
 Makefile                           template_service_enabled
 output                             template_sysctl
 packages_installed.csv
-
-Before continuing to the next page, take a minute to review the README file. What is the process to create a template for checking if scap-security-guide is installed?
-As noted in the README file, several CSV files are located within the templates/ directory. To automate the OVAL content:
+			</screen>
+		</para>
+		<para>Before continuing to the next page, take a minute to review the README file. What is the process to create a template for checking if scap-security-guide is installed? As noted in the README file, several CSV files are located within the templates/ directory. To automate the OVAL content:</para>
+		<para>
 1. Add scap-security-guide to the listing in packages_installed.csv:
+			<screen>
 $ echo “scap-security-guide” >> packages_installed.csv
-
+			</screen>
+		</para>
+		<para>
 2. Run “make templates”:
+			<screen>
 $ make templates
-
+			</screen>
+		</para>
+		<para>
 3. This process generated output/package_scap-security-guide_installed.xml. Load this file in a text editor for human-review:
+			<screen>
 $ vim output/package_scap-security-guide_installed.xml
-		
+			</screen>
+		</para>
+		<para>
 	The newly created template:
 
 OVAL contains many pre-defined functions. In this case, we make use of linux:rpminfo_test to check for the installation of scap-security-guide.
-
-
+		</para>
+		<para>
 4. Run “make copy” to place package_scap-security-guide_installed.xml into the project:
+			<screen>
 $ make copy
-
+			</screen>
+		</para>
+		<para>
 5. Done! You've now added an OVAL rule to check for the existence of scap-security-guide!
-			
 		</para>
 	</section>
 	<section>
 		<title>Profiles</title>
 		<para>With our XCCDF rule and OVAL content created, we must now add the rule to an XCCDF profile. Let's add this as a STIG requirement, placing it into the stig-rhel6-server profile.</para>
-		<para>XCCDF profiles are retained within RHEL6/input/profiles/. Change directory and perform a directory listing to see available profiles:
+		<para>XCCDF profiles are retained within RHEL/6/input/profiles/. Change directory and perform a directory listing to see available profiles:
 			<screen>
-$ cd /var/www/html/scap-security-guide/RHEL6/input/profiles/; ls -l
-total 96
--rw-rw-r--. 1 shawn shawn 16798 Mar 14 20:51 common.xml
--rw-rw-r--. 1 shawn shawn  1957 Mar 14 20:51 desktop.xml
--rw-rw-r--. 1 shawn shawn   800 Mar 14 20:51 ftp.xml
--rw-rw-r--. 1 shawn shawn  2527 Mar 14 20:51 manual_audits.xml
--rw-rw-r--. 1 shawn shawn  1902 Mar 14 20:51 manual_remediation.xml
--rw-rw-r--. 1 shawn shawn 21629 Mar 14 20:51 nist-CL-IL-AL.xml
--rw-rw-r--. 1 shawn shawn   448 Mar 14 20:51 server.xml
--rw-rw-r--. 1 shawn shawn  4166 Mar 20 18:59 stig-rhel6-server.xml
--rw-rw-r--. 1 shawn shawn  3108 Mar 14 20:51 test.xml
--rw-rw-r--. 1 shawn shawn 17127 Mar 14 20:51 usgcb-rhel6-server.xml
-
+$ cd /var/www/html/scap-security-guide/RHEL/6/input/profiles/; ls -l
+total 136
+-rw-rw-r--. 1 dave dave 16975 Mar  5 12:10 common.xml
+-rw-rw-r--. 1 dave dave 20758 Mar  5 12:10 CS2.xml
+-rw-rw-r--. 1 dave dave  1852 Mar  5 12:10 desktop.xml
+-rw-rw-r--. 1 dave dave 16163 Mar  5 12:10 fisma-medium-rhel6-server.xml
+-rw-rw-r--. 1 dave dave   800 Mar  5 12:10 ftp.xml
+-rw-rw-r--. 1 dave dave 21262 Mar  5 12:10 nist-CL-IL-AL.xml
+-rw-rw-r--. 1 dave dave  7507 Mar  5 12:10 rht-ccp.xml
+-rw-rw-r--. 1 dave dave   402 Mar  5 12:10 server.xml
+-rw-rw-r--. 1 dave dave  4736 Mar  5 12:10 stig-rhel6-server-upstream.xml
+-rw-rw-r--. 1 dave dave  3251 Mar  5 12:10 test.xml
+-rw-rw-r--. 1 dave dave 16983 Mar  5 12:10 usgcb-rhel6-server.xml
+			</screen>
+		</para>
+		<para>
 Since we're adding this rule to the STIG profile, load stig-rhel6-server.xml:
+			<screen>
 $ vim stig-rhel6-server.xml
 			</screen>
 		</para>
@@ -297,11 +311,11 @@ If added correctly, you will have inserted a line that matches the following:
 	</section>
 	<section>
 		<title>Patch Creation and Submission</title>
-		<para>Through this workshop we've made several modifications to the SSG source code. Specifically:
+		<para>Throughout this workshop, we've made several modifications to the SSG source code. Specifically:
 			<simplelist>
-				<member>Creation of a new XCCDF rule, package_scap-security-guide_installed, which was placed into RHEL6/input/system/software/integrity.xml.</member>
-				<member>Creation of a new OVAL rule, package_scap-security-guide_installed.xml, which also involved updating the OVAL template file RHEL6/input/checks/templates/packages_installed.csv.</member>
-				<member>Modification of the STIG profile, located at RHEL6/input/profiles/stig-rhel6-server.xml.</member>
+				<member>Creation of a new XCCDF rule, package_scap-security-guide_installed, which was placed into RHEL/6/input/system/software/integrity.xml.</member>
+				<member>Creation of a new OVAL rule, package_scap-security-guide_installed.xml, which also involved updating the OVAL template file RHEL/6/input/checks/templates/packages_installed.csv.</member>
+				<member>Modification of the STIG profile, located at RHEL/6/input/profiles/stig-rhel6-server.xml.</member>
 			</simplelist>
 		</para>
 		<para>We must now prepare our changes for submission back to the community, in the form of a patch. Change directories to /var/www/html/scap-security-guide/ and run “git commit”:
@@ -313,41 +327,38 @@ $ cd /var/www/html/scap-security-guide/; git commit
 #   (use "git add [file]..." to update what will be committed)
 #   (use "git checkout -- [file]..." to discard changes in working directory)
 #
-#	modified:   RHEL6/input/checks/templates/packages_installed.csv
-#	modified:   RHEL6/input/profiles/stig-rhel6-server.xml
-#	modified:   RHEL6/input/system/software/integrity.xml
+#	modified:   RHEL/6/input/checks/templates/packages_installed.csv
+#	modified:   RHEL/6/input/profiles/stig-rhel6-server.xml
+#	modified:   RHEL/6/input/system/software/integrity.xml
 #
 # Untracked files:
 #   (use "git add [file]..." to include in what will be committed)
 #
-#	RHEL6/input/checks/package_scap-security-guide_installed.xml
+#	RHEL/6/input/checks/package_scap-security-guide_installed.xml
 no changes added to commit (use "git add" and/or "git commit -a")
 </screen>
 		</para>
 		<para>From the output above, our patch must reflect changes to the “modified” files and include the net-new “untracked” file. To do so, run the following commands:
 <screen>
-$ git add RHEL6/input/checks/package_scap-security-guide_installed.xml 
-$ git commit RHEL6/input/checks/templates/packages_installed.csv \ RHEL6/input/profiles/stig-rhel6-server.xml \
-RHEL6/input/system/software/integrity.xml \
-RHEL6/input/checks/package_scap-security-guide_installed.xml 
+$ git add RHEL/6/input/checks/package_scap-security-guide_installed.xml 
+$ git commit RHEL/6/input/checks/templates/packages_installed.csv \ RHEL6/input/profiles/stig-rhel6-server.xml \
+RHEL/6/input/system/software/integrity.xml \
+RHEL/6/input/checks/package_scap-security-guide_installed.xml 
 </screen>
 		</para>
-		<para>The “git commit” command will bring you into a vi editor, prompting you to enter details of your patch. The first line, which is the default location of your cursor at this point, is where to create the patch title. At the EOF you place details of the patch.</para>
+		<para>The “git commit” command will bring you into a vi editor, prompting you to enter details of your patch. The first line, which is the default location of your cursor at this point, is where you create the patch title. At the EOF you place details of the patch.</para>
 		<para>Edit your patch content to reflect:
 			<simplelist>
 				<member>Patch title of “Added package_scap-security-guide_installed.xml to stig-rhel6-server profile”</member>
 				<member>Patch description of “Added package_scap-security-guide_installed.xml into STIG profile, which will now mandate the installation of the SSG”</member>
 			</simplelist>
 		</para>
-		<para>When done, your window will resemble the following:
-<screen>
-Once complete, save and exit (:wq).
-
-Your local source tree has now identified and grouped your changes into a consolidated patch. Using the git utility, we must “export” these changes in the format of a patch file. To do so, run the following command:
+		<para>Once complete, save and exit (:wq). Your local source tree has now identified and grouped your changes into a consolidated patch. Using the git utility, we must “export” these changes in the format of a patch file. To do so, run the following command:
+			<screen>
 $ git format-patch origin
 
 0001-Added-package_scap-security-guide_installed.xml-to-s.patch
-</screen>
+			</screen>
 		</para>
 		<para>A newly created file, 0001-Added-package_scap-security-guide_installed.xml-to-s.patch, will be placed into your working directory.
 The final step is to EMail this patch to the SSG project mailing list. Upon acknowledgement/signoff, you will be able to “git push” your changes into the project.</para>
