@@ -128,7 +128,10 @@ $ gconftool-2 --direct \
 	--config-source xml:read:/etc/gconf/gconf.xml.mandatory \
 	--get /apps/nautilus/preferences/media_autorun_never</pre>
 </ocil>
-<rationale>Disabling 
+<rationale>Disabling automatic mounting in GNOME can prevent
+the introduction of malware via removable media.
+It will, however, also prevent desktop users from legitimate use
+of removable media. 
 </rationale>
 <ident cce="27035-5" />
 <oval id="gconf_gnome_disable_automount" />
