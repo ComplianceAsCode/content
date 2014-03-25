@@ -10,9 +10,7 @@
       <description>The ntpdate service should be disabled if possible.</description>
       <reference source="DS" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
-   <criteria comment="package ntpdate removed or service ntpdate is not configured to start" operator="OR">
-    <extend_definition comment="ntpdate removed" definition_ref="package_ntpdate_removed" />
-    <criteria operator="AND" comment="service ntpdate is not configured to start">
+    <criteria comment="service ntpdate is not configured to start" operator="AND">
       <criterion comment="ntpdate runlevel 0" test_ref="test_runlevel0_ntpdate" />
       <criterion comment="ntpdate runlevel 1" test_ref="test_runlevel1_ntpdate" />
       <criterion comment="ntpdate runlevel 2" test_ref="test_runlevel2_ntpdate" />
@@ -20,7 +18,6 @@
       <criterion comment="ntpdate runlevel 4" test_ref="test_runlevel4_ntpdate" />
       <criterion comment="ntpdate runlevel 5" test_ref="test_runlevel5_ntpdate" />
       <criterion comment="ntpdate runlevel 6" test_ref="test_runlevel6_ntpdate" />
-    </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
