@@ -1,12 +1,13 @@
 <def-group>
   <definition class="compliance"
-  id="file_permissions_httpd_server_conf_files" version="1">
+  id="file_permissions_httpd_server_conf_files" version="2">
     <metadata>
       <title>Verify Permissions On Apache Web Server Configuration Files</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>The /etc/httpd/conf/* files should have the appropriate permissions.</description>
+      <description>The /etc/httpd/conf/* files should have the appropriate permissions (0640 or stronger).</description>
+      <reference source="JL" ref_id="20140403" ref_url="test_attestation"/>
     </metadata>
     <criteria>
       <criterion test_ref="test_file_permissions_httpd_server_conf_files" />
@@ -18,9 +19,10 @@
     <unix:state state_ref="state_file_permissions_httpd_server_conf_files" />
   </unix:file_test>
   <unix:file_state id="state_file_permissions_httpd_server_conf_files"
-  version="1">
-    <unix:uread datatype="boolean">true</unix:uread>
-    <unix:uwrite datatype="boolean">true</unix:uwrite>
+  version="2">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
     <unix:uexec datatype="boolean">false</unix:uexec>
     <unix:gread datatype="boolean">true</unix:gread>
     <unix:gwrite datatype="boolean">false</unix:gwrite>
