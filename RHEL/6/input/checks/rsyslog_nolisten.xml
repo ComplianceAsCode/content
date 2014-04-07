@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="rsyslog_nolisten" version="1">
+  <definition class="compliance" id="rsyslog_nolisten" version="2">
     <metadata>
       <title>Disable Rsyslogd from Accepting Remote Messages on Loghosts
       Only</title>
@@ -7,7 +7,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>rsyslogd should reject remote messages</description>
-      <reference source="MED" ref_id="20130819" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140407" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion comment="Conditions are satisfied"
@@ -19,10 +19,10 @@
   id="test_rsyslog_nolisten" version="1">
     <ind:object object_ref="object_rsyslog_nolisten" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_rsyslog_nolisten" version="1">
+  <ind:textfilecontent54_object id="object_rsyslog_nolisten" version="2">
     <ind:path>/etc</ind:path>
     <ind:filename>rsyslog.conf</ind:filename>
-    <ind:pattern operation="pattern match">^\$(?:Input(?:TCP|RELP)|UDP)ServerRun</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\$(?:Input(?:TCP|RELP)|UDP)ServerRun</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
