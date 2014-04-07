@@ -276,11 +276,11 @@ should remain commented out.
 unless the system acts as a log server.
 To ensure that it is not listening on the network, ensure the following lines are
 <i>not</i> found in <tt>/etc/rsyslog.conf</tt>:
-<pre>$ModLoad imtcp.so
+<pre>$ModLoad imtcp
 $InputTCPServerRun <i>port</i>
-$ModLoad imudp.so
-$InputUDPServerRun <i>port</i>
-$ModLoad imrelp.so
+$ModLoad imudp
+$UDPServerRun <i>port</i>
+$ModLoad imrelp
 $InputRELPServerRun <i>port</i></pre>
 </description>
 <rationale>
@@ -299,7 +299,7 @@ rsyslog by configuring it not to listen on the network.
 unless the system acts as a log server.
 If the system needs to act as a central log server, add the following lines to
 <tt>/etc/rsyslog.conf</tt> to enable reception of messages over TCP:
-<pre>$ModLoad imtcp.so
+<pre>$ModLoad imtcp
 $InputTCPServerRun 514</pre>
 </description>
 <rationale>
@@ -317,8 +317,8 @@ messages over a reliable TCP connection.
 unless the system acts as a log server.
 If the system needs to act as a central log server, add the following lines to
 <tt>/etc/rsyslog.conf</tt> to enable reception of messages over UDP:
-<pre>$ModLoad imudp.so
-$InputUDPServerRun 514</pre>
+<pre>$ModLoad imudp
+$UDPServerRun 514</pre>
 </description>
 <rationale>
 Many devices, such as switches, routers, and other Unix-like systems, may only support
