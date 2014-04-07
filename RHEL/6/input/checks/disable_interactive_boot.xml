@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="disable_interactive_boot" version="1">
+  <definition class="compliance" id="disable_interactive_boot" version="2">
     <metadata>
       <title>Disable Interactive Boot</title>
       <affected family="unix">
@@ -7,7 +7,7 @@
       </affected>
       <description>The ability for users to perform interactive startups should
       be disabled.</description>
-      <reference source="swells" ref_id="20130914" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140407" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_disable_interactive_boot" />
@@ -21,9 +21,9 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_disable_interactive_boot"
-  version="1">
+  version="2">
     <ind:filepath>/etc/sysconfig/init</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*PROMPT[\s]*=[\s]*no[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*PROMPT=no[\s]+</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
