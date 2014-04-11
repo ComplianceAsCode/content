@@ -5,9 +5,11 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
       </affected>
       <description>The minimum password age policy should be set appropriately.</description>
-      <reference source="MED" ref_id="20130807" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140411" ref_url="test_attestation" />
+      <!-- Fedora 20: <reference source="JL" ref_id="20140411" ref_url="test_attestation" /> -->
     </metadata>
     <criteria comment="the value PASS_MIN_DAYS should be set appropriately in /etc/login.defs">
       <criterion test_ref="test_pass_min_days" />
@@ -21,9 +23,9 @@
     <ind:state state_ref="state_etc_login_defs_pass_min_age" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_etc_login_defs_pass_min_age" version="1">
+  <ind:textfilecontent54_object id="object_etc_login_defs_pass_min_age" version="2">
     <ind:filepath>/etc/login.defs</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*PASS_MIN_DAYS[\s]+(\d+)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*PASS_MIN_DAYS[\s]+(\d+)[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

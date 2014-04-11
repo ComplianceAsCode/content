@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="accounts_maximum_age_login_defs" version="1">
+    <metadata>
+      <title>Set Password Expiration Parameters</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
+      </affected>
+      <description>The maximum password age policy should meet
+      minimum requirements.</description>
+      <reference source="JL" ref_id="20140411" ref_url="test_attestation" />
+      <!-- Fedora 20: <reference source="JL" ref_id="20140411" ref_url="test_attestation" /> -->
+    </metadata>
+    <criteria comment="the value PASS_MAX_DAYS should be set appropriately in /etc/login.defs">
+      <criterion test_ref="test_pass_max_days" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="the value PASS_MAX_DAYS should be set appropriately in /etc/login.defs" id="test_pass_max_days" version="1">
+    <ind:object object_ref="object_etc_login_defs_pass_max" />
+    <ind:state state_ref="state_accounts_maximum_age_login_defs" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_etc_login_defs_pass_max" version="2">
+    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*PASS_MAX_DAYS[\s]+(\d+)[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_accounts_maximum_age_login_defs" version="1">
+    <ind:subexpression operation="less than or equal" var_ref="var_accounts_maximum_age_login_defs" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="maximum password age" datatype="int" id="var_accounts_maximum_age_login_defs" version="1" />
+
+</def-group>
