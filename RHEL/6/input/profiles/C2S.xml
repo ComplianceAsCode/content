@@ -1,0 +1,713 @@
+<Profile id="C2S">
+<title>C2S for Red Hat Enterprise Linux 6</title>
+<description>This profile demonstrates compliance against the 
+U.S. Government C2S baseline.
+
+This baseline is tied to the Center for Internet Security's 
+Red Hat Enterprise Linux 6 Benchmark, v1.2.0 - 06-25-2013,
+and uses the same refine values. One could use C2S interchangably
+with CIS v1.2.0. For a copy of the CIS RHEL6 benchmark, refer
+to: 
+https://benchmarks.cisecurity.org/tools2/linux/CIS_Red_Hat_Enterprise_Linux_6_Benchmark_v1.2.0.pdf
+
+This profile is not production ready and should be considered
+development preview. As of 13-APR-2014, Out of the 233 
+policy-mandated checks, only 169 currently have associated OVAL.
+Patches would be most welcome!
+</description>
+
+<!-- BEGIN REFINE VALUES -->
+<refine-value idref="var_selinux_state" selector="enforcing" />
+<refine-value idref="var_selinux_policy_name" selector="targeted" />
+<refine-value idref="var_umask_for_daemons" selector="027"/>
+<refine-value idref="var_accounts_user_umask" selector="027"/>
+<!-- END REFINE VALUES -->
+<!-- No edits past this point should be needed -->
+
+
+<!--
+1 Install Updates, Patches and Additional Security Software
+1.1 Filesystem Configuration -->
+
+<!-- 1.1.1 Create Separate Partition for /tmp (Scored) -->
+<select idref="partition_for_tmp" selected="true"/>
+
+<!-- 1.1.2 Set nodev option for /tmp Partition (Scored) -->
+<select idref="mount_option_tmp_nodev" selected="true" />
+
+<!-- 1.1.3 Set nosuid option for /tmp Partition (Scored) -->
+<select idref="mount_option_tmp_nosuid" selected="true" />
+
+<!-- 1.1.4 Set noexec option for /tmp Partition (Scored) -->
+<select idref="mount_option_tmp_noexec" selected="true" />
+
+<!-- 1.1.5 Create Separate Partition for /var (Scored) -->
+<select idref="partition_for_var" selected="true"/>
+
+<!-- 1.1.6 Bind Mount the /var/tmp directory to /tmp (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 1.1.7 Create Separate Partition for /var/log -->
+<select idref="partition_for_var_log" selected="true"/>
+
+<!-- 1.1.8 Create Separate Partition for /var/log/audit (Scored) -->
+<select idref="partition_for_var_log_audit" selected="true"/>
+
+<!-- 1.1.9 Create Separate Partition for /home (Scored) -->
+<select idref="partition_for_home" selected="true"/>
+
+<!-- 1.1.10 Add nodev Option to /home (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 1.1.11 Add nodev Option to Removable Media Partitions (Not Scored) -->
+<select idref="mountopt_nodev_on_removable_partitions" selected="true" />
+
+<!-- 1.1.12 Add noexec Option to Removable Media Partitions (Not Scored)  -->
+<select idref="mountopt_noexec_on_removable_partitions" selected="true" />
+
+<!-- 1.1.13 Add nosuid Option to Removable Media Partitions (Not Scored)  -->
+<select idref="mountopt_nosuid_on_removable_partitions" selected="true" />
+
+<!-- 1.1.14 Add nodev Option to /dev/shm Partition (Scored) -->
+<select idref="mount_option_dev_shm_nodev" selected="true" />
+
+<!-- 1.1.15 Add nosuid Option to /dev/shm Partition (Scored) -->
+<select idref="mount_option_dev_shm_nosuid" selected="true" />
+
+<!-- 1.1.16 Add noexec Option to /dev/shm Partition (Scored)  -->
+<select idref="mount_option_dev_shm_noexec" selected="true" />
+
+<!-- 1.1.17 Set Sticky Bit on All World-Writable Directories (Scored) -->
+<select idref="sticky_world_writable_dirs" selected="true" />
+
+<!-- 1.1.18 Disable Mounting of cramfs Filesystems (Not Scored) -->
+<select idref="kernel_module_cramfs_disabled" selected="true" />
+
+<!-- 1.1.19 Disable Mounting of freevxfs Filesystems (Not Scored) -->
+<select idref="kernel_module_freevxfs_disabled" selected="true" />
+
+<!-- 1.1.20 Disable Mounting of jffs2 Filesystems (Not Scored) -->
+<select idref="kernel_module_jffs2_disabled" selected="true" />
+
+<!-- 1.1.21 Disable Mounting of hfs Filesystems (Not Scored) -->
+<select idref="kernel_module_hfs_disabled" selected="true" /> 
+
+<!-- 1.1.22 Disable Mounting of hfsplus Filesystems (Not Scored) -->
+<select idref="kernel_module_hfsplus_disabled" selected="true" />
+
+<!-- 1.1.23 Disable Mounting of squashfs Filesystems (Not Scored) -->
+<select idref="kernel_module_squashfs_disabled" selected="true" />
+
+<!-- 1.1.24 Disable Mounting of udf Filesystems (Not Scored) -->
+<select idref="kernel_module_udf_disabled" selected="true" />
+
+<!-- 1.2 Configure Software Updates  -->
+<!-- 1.2.1 Configure Connection to the RHN RPM Repositories (Not Scored)  -->
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED -->
+
+<!-- 1.2.2 Verify Red Hat GPG Key is Installed (Scored) -->
+<select idref="ensure_redhat_gpgkey_installed" selected="true"/>
+
+<!-- 1.2.3 Verify that gpgcheck is Globally Activated (Scored) -->
+<select idref="ensure_gpgcheck_globally_activated" selected="true"/>
+<select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+
+<!-- 1.2.4 Disable the rhnsd Daemon (Not Scored) -->
+<select idref="service_rhnsd_disabled" selected="true"/>
+
+<!-- 1.2.5 Obtain Software Package Updates with yum (Not Scored) -->
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED -->
+
+<!-- 1.2.6 Verify Package Integrity Using RPM (Not Scored) -->
+<select idref="rpm_verify_permissions" selected="true" />
+<select idref="rpm_verify_hashes" selected="true" />
+
+<!-- 1.3 Advanced Intrusion Detection Environment (AIDE) -->
+<!-- 1.3.1 Install AIDE (Scored) -->
+<select idref="package_aide_installed" selected="true" />
+
+<!-- 1.3.2 Implement Periodic Execution of File Integrity (Scored) -->
+<select idref="disable_prelink" selected="true" />
+<select idref="aide_build_database" selected="true" />
+<select idref="aide_periodic_cron_checking" selected="true" />
+
+<!-- 1.4 Configure SELinux -->
+<!-- 1.4.1 Enable SELinux in /etc/grub.conf (Scored) -->
+<select idref="enable_selinux_bootloader" selected="true" />
+
+<!-- 1.4.2 Set the SELinux State (Scored) -->
+<select idref="selinux_state" selected="true" />
+
+<!-- 1.4.3 Set the SELinux Policy (Scored) -->
+<select idref="selinux_policytype" selected="true" />
+
+<!-- 1.4.4 Remove SETroubleshoot (Scored) -->
+<select idref="package_setroubleshoot_removed" selected="true" />
+
+<!-- 1.4.5 Remove MCS Translation Service (mcstrans) (Scored) -->
+<select idref="package_mcstrans_removed" selected="true" />
+
+<!-- 1.4.6 Check for Unconfined Daemons (Scored) -->
+<select idref="selinux_confinement_of_daemons" selected="true" />
+
+<!-- 1.5 Secure Boot Settings -->
+<!-- 1.5.1 Set User/Group Owner on /etc/grub.conf (Scored) -->
+<select idref="user_owner_grub_conf" selected="true"/>
+<select idref="group_owner_grub_conf" selected="true"/>
+
+<!-- 1.5.2 Set Permissions on /etc/grub.conf (Scored) -->
+<select idref="permissions_grub_conf" selected="true"/>
+
+<!-- 1.5.3 Set Boot Loader Password (Scored) --> 
+<select idref="bootloader_password" selected="true"/>
+
+<!-- 1.5.4 Require Authentication for Single-User Mode (Scored)  -->
+<select idref="require_singleuser_auth" selected="true"/>
+
+<!-- 1.5.5 Disable Interactive Boot (Scored) --> 
+<select idref="disable_interactive_boot" selected="true"/>
+
+<!-- 1.6 Additional Process Hardening --> 
+<!-- 1.6.1 Restrict Core Dumps (Scored) -->
+<select idref="disable_users_coredumps" selected="true" />
+<select idref="sysctl_fs_suid_dumpable" selected="true" />
+
+<!-- 1.6.2 Configure ExecShield (Scored) --> 
+<select idref="enable_execshield" selected="true"/>
+
+<!-- 1.6.3 Enable Randomized Virtual Memory Region Placement (Scored) -->
+<select idref="sysctl_kernel_randomize_va_space" selected="true"/>
+
+<!-- 1.7 Use the Latest OS Release (Not Scored) -->
+<!-- 2 OS Services -->
+<!-- 2.1 Remove Legacy Services  -->
+<!-- 2.1.1 Remove telnet-server (Scored)  -->
+<select idref="uninstall_telnet_server" selected="true"/>
+
+<!-- 2.1.2 Remove telnet Clients (Scored) -->
+<select idref="package_telnet_removed" selected="true" />
+
+<!-- 2.1.3 Remove rsh-server (Scored) -->
+<select idref="uninstall_rsh-server" selected="true"/>
+
+<!-- 2.1.4 Remove rsh (Scored) -->
+<select idref="package_rsh_removed" selected="true" />
+
+<!-- 2.1.5 Remove NIS Client (Scored) -->
+<select idref="package_ypbind_removed" selected="true" />
+
+<!-- 2.1.6 Remove NIS Server (Scored) -->
+<select idref="uninstall_ypserv" selected="true" />
+
+<!-- 2.1.7 Remove tftp (Scored) -->
+<select idref="package_tftp_removed" selected="true" />
+
+<!-- 2.1.8 Remove tftp-server (Scored) -->
+<select idref="uninstall_tftp-server" selected="true"/>
+
+<!-- 2.1.9 Remove talk (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.10 Remove talk-server (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.11 Remove xinetd (Scored) -->
+<select idref="uninstall_xinetd" selected="true"/>
+
+<!-- 2.1.12 Disable chargen-dgram (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.13 Disable chargen-stream (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.14 Disable daytime-dgram (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.15 Disable daytime-stream (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.16 Disable echo-dgram (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.17 Disable echo-stream (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 2.1.18 Disable tcpmux-server (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 3 Special Purpose Services -->
+<!-- 3.1 Set Daemon umask (Scored) -->
+<select idref="umask_for_daemons" selected="true" />
+
+<!-- 3.2 Remove X Windows (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 3.3 Disable Avahi Server (Scored) --> 
+<select idref="disable_avahi" selected="true" />
+
+<!-- 3.4 Disable Print Server - CUPS (Not Scored) --> 
+<select idref="service_cups_disabled" selected="true" />
+
+<!-- 3.5 Remove DHCP Server (Scored) --> 
+<select idref="uninstall_dhcp_server" selected="true" />
+
+<!-- 3.6 Configure Network Time Protocol (NTP) (Scored) -->
+<select idref="service_ntpd_enabled" selected="true" />
+<select idref="ntpd_specify_remote_server" selected="true" />
+<select idref="ntpd_specify_multiple_servers" selected="true" />
+
+<!-- 3.7 Remove LDAP (Not Scored) -->
+<select idref="package_openldap-servers_removed" selected="true" />
+
+<!-- 3.8 Disable NFS and RPC (Not Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 3.9 Remove DNS Server (Not Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 3.10 Remove FTP Server (Not Scored) -->
+<select idref="uninstall_vsftpd" selected="true" />
+
+<!-- 3.11 Remove HTTP Server (Not Scored) -->
+<select idref="uninstall_httpd" selected="true" />
+
+<!-- 3.12 Remove Dovecot (IMAP and POP3 services) (Not Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 3.13 Remove Samba (Not Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 3.14 Remove HTTP Proxy Server (Not Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 3.15 Remove SNMP Server (Not Scored) -->
+<select idref="uninstall_net-snmp" selected="true"/>
+
+<!-- 3.16 Configure Mail Transfer Agent for Local-Only Mode (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 4 Network Configuration and Firewalls -->
+<!-- 4.1 Modify Network Parameters (Host Only) -->
+<!--4.1.1 Disable IP Forwarding (Scored) -->
+<select idref="sysctl_ipv4_ip_forward" selected="true"/>
+
+<!--4.1.2 Disable Send Packet Redirects (Scored) -->
+<select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true"/>
+<select idref="sysctl_ipv4_all_send_redirects" selected="true"/>
+
+<!-- 4.2 Modify Network Parameters (Host and Router) -->
+<!-- 4.2.1 Disable Source Routed Packet Acceptance (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true"/>
+<select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true"/>
+
+<!-- 4.2.2 Disable ICMP Redirect Acceptance (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true"/>
+<select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true"/>
+
+<!-- 4.2.3 Disable Secure ICMP Redirect Acceptance (Scored)-->
+<select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true"/>
+<select idref="sysctl_net_ipv4_conf_default_secure_redirects" selected="true"/>
+
+<!-- 4.2.4 Log Suspicious Packets (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true"/>
+
+<!-- 4.2.5 Enable Ignore Broadcast Requests (Scored) -->
+<select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true"/>
+
+<!-- 4.2.6 Enable Bad Error Message Protection (Scored) -->
+<select idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true"/>
+
+<!-- 4.2.7 Enable RFC-recommended Source Route Validation (Scored)-->
+<select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true"/>
+<select idref="sysctl_net_ipv4_conf_default_rp_filter" selected="true"/>
+
+<!-- 4.2.8 Enable TCP SYN Cookies (Scored) -->
+<select idref="sysctl_net_ipv4_tcp_syncookies" selected="true"/>
+
+<!-- 4.3 Wireless Networking -->
+<!-- 4.3.1 Deactivate Wireless Interfaces (Not Scored) -->
+<select idref="wireless_disable_in_bios" selected="true" />
+<select idref="deactivate_wireless_interfaces" selected="true" />
+
+<!-- 4.4 Disable IPv6 -->
+<!-- 4.4.1 Configure IPv6 -->
+<!-- 4.4.1.1 Disable IPv6 Router Advertisements (Not Scored) -->
+<select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
+<!-- NEEDS: net.ipv6.conf.all.accept_ra -->
+
+<!-- 4.4.1.2 Disable IPv6 Redirect Acceptance (Not Scored) -->
+<select idref="sysctl_ipv6_default_accept_redirects" selected="true" />
+<!-- NEEDS: net.ipv6.conf.default.accept_redirects -->
+
+<!-- 4.4.2 Disable IPv6 (Not Scored) -->
+<select idref="network_ipv6_disable_interfaces" selected="true" />
+
+<!-- 4.5 Install TCP Wrappers -->
+<!-- 4.5.1 Install TCP Wrappers (Not Scored) -->
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED -->
+
+<!-- 4.5.2 Create /etc/hosts.allow (Not Scored) -->
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED -->
+
+<!-- 4.5.3 Verify Permissions on /etc/hosts.allow (Scored) -->
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED -->
+
+<!-- 4.5.4 Create /etc/hosts.deny (Not Scored) -->
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED -->
+
+<!-- 4.5.5 Verify Permissions on /etc/hosts.deny (Scored)-->
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED -->
+
+<!-- 4.6 Uncommon Network Protocols-->
+<!-- 4.6.1 Disable DCCP (Not Scored) -->
+<select idref="kernel_module_dccp_disabled" selected="true"/>
+
+<!-- 4.6.2 Disable SCTP (Not Scored) -->
+<select idref="kernel_module_sctp_disabled" selected="true"/>
+
+<!-- 4.6.3 Disable RDS (Not Scored) -->
+<select idref="kernel_module_rds_disabled" selected="true"/>
+
+<!-- 4.6.4 Disable TIPC (Not Scored) -->
+<select idref="kernel_module_tipc_disabled" selected="true"/>
+
+<!-- 4.7 Enable IPtables (Scored) -->
+<select idref="service_iptables_enabled" selected="true"/>
+
+<!-- 4.8 Enable IP6tables (Not Scored) -->
+<select idref="service_ip6tables_enabled" selected="true"/>
+
+<!-- 5 Logging and Auditing-->
+<!-- 5.1 Configure rsyslog -->
+<!-- 5.1.1 Install the rsyslog package (Scored) -->
+<select idref="package_rsyslog_installed" selected="true"/>
+
+<!-- 5.1.2 Activate the rsyslog Service (Scored) -->
+<select idref="service_rsyslog_enabled" selected="true"/>
+
+<!-- 5.1.3 Configure /etc/rsyslog.conf (Not Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 5.1.4 Create and Set Permissions on rsyslog Log Files (Scored)-->
+<select idref="rsyslog_file_permissions" selected="true"/>
+
+<!-- 5.1.5 Configure rsyslog to Send Logs to a Remote Log Host (Scored) -->
+<select idref="rsyslog_send_messages_to_logserver" selected="true"/>
+
+<!-- 5.1.6 Accept Remote rsyslog Messages Only on Designated Log Hosts (Not Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 5.2 Configure System Accounting (auditd) -->
+<!-- 5.2.1 Configure Data Retention -->
+<!-- 5.2.1.1 Configure Audit Log Storage Size (Not Scored) -->
+<select idref="configure_auditd_max_log_file" selected="true"/>
+
+<!-- 5.2.1.2 Disable System on Audit Log Full (Not Scored) -->
+<select idref="auditd_data_retention_space_left_action" selected="true" />
+<select idref="auditd_data_retention_action_mail_acct" selected="true" />
+<select idref="auditd_data_retention_admin_space_left_action" selected="true" />
+
+<!-- 5.2.1.3 Keep All Auditing Information (Scored) -->
+<select idref="configure_auditd_max_log_file_action" selected="true" />
+
+<!-- 5.2.2 Enable auditd Service (Scored) -->
+<select idref="service_auditd_enabled" selected="true"/>
+
+<!-- 5.2.3 Enable Auditing for Processes That Start Prior to auditd (Scored) -->
+<select idref="enable_auditd_bootloader" selected="true"/>
+
+<!-- 5.2.4 Record Events That Modify Date and Time Information (Scored) -->
+<select idref="audit_rules_time_adjtimex" selected="true" />
+<select idref="audit_rules_time_settimeofday" selected="true" />
+<select idref="audit_rules_time_stime" selected="true" />
+<select idref="audit_rules_time_watch_localtime" selected="true" />
+
+<!-- 5.2.5 Record Events That Modify User/Group Information (Scored) -->
+<select idref="audit_account_changes" selected="true" />
+
+<!-- 5.2.6 Record Events That Modify the System's Network Environment (Scored) -->
+<select idref="audit_network_modifications" selected="true" />
+
+<!-- 5.2.7 Record Events That Modify the System's Mandatory Access Controls (Scored) -->
+<select idref="audit_mac_changes" selected="true" />
+
+<!-- 5.2.8 Collect Login and Logout Events (Scored) -->
+<select idref="audit_manual_logon_edits" selected="true" />
+
+<!-- 5.2.9 Collect Session Initiation Information (Scored) -->
+<select idref="audit_manual_session_edits" selected="true" />
+
+<!-- 5.2.10 Collect Discretionary Access Control Permission Modification Events (Scored)-->
+<select idref="audit_dac_actions" selected="true" />
+
+<!-- 5.2.11 Collect Unsuccessful Unauthorized Access Attempts to Files (Scored) -->
+<select idref="audit_file_access" selected="true" />
+
+<!-- 5.2.12 Collect Use of Privileged Commands (Scored) -->
+<select idref="audit_privileged_commands" selected="true" />
+
+<!-- 5.2.13 Collect Successful File System Mounts (Scored)-->
+<select idref="audit_media_exports" selected="true" />
+
+<!-- 5.2.14 Collect File Deletion Events by User (Scored) -->
+<select idref="audit_file_deletions" selected="true" />
+
+<!-- 5.2.15 Collect Changes to System Administration Scope (sudoers) (Scored) -->
+<select idref="audit_sysadmin_actions" selected="true" />
+
+<!-- 5.2.16 Collect System Administrator Actions (sudolog) (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 5.2.17 Collect Kernel Module Loading and Unloading (Scored) -->
+<select idref="audit_kernel_module_loading" selected="true" />
+
+<!-- 5.2.18 Make the Audit Configuration Immutable (Scored) -->
+<select idref="audit_config_immutable" selected="true" />
+
+<!-- 5.3 Configure logrotate (Not Scored) -->
+<select idref="ensure_logrotate_activated" selected="true" />
+
+<!-- 6 System Access, Authentication and Authorization -->
+<!-- 6.1 Configure cron and anacron -->
+<!-- 6.1.1 Enable anacron Daemon (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.2 Enable crond Daemon (Scored) -->
+<select idref="service_crond_enabled" selected="true" />
+
+<!-- 6.1.3 Set User/Group Owner and Permission on /etc/anacrontab (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.4 Set User/Group Owner and Permission on /etc/crontab (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.5 Set User/Group Owner and Permission on /etc/cron.hourly (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.6 Set User/Group Owner and Permission on /etc/cron.daily (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.7 Set User/Group Owner and Permission on /etc/cron.weekly (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.8 Set User/Group Owner and Permission on /etc/cron.monthly (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.9 Set User/Group Owner and Permission on /etc/cron.d (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.10 Restrict at Daemon (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.1.11 Restrict at/cron to Authorized Users (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.2 Configure SSH -->
+<!-- 6.2.1 Set SSH Protocol to 2 (Scored) -->
+<select idref="sshd_allow_only_protocol2" selected="true" />
+
+<!-- 6.2.2 Set LogLevel to INFO (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.2.3 Set Permissions on /etc/ssh/sshd_config (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.2.4 Disable SSH X11 Forwarding (Scored)-->
+<!-- NEEDS RULE -->
+
+<!-- 6.2.5 Set SSH MaxAuthTries to 4 or Less (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 6.2.6 Set SSH IgnoreRhosts to Yes (Scored) -->
+<select idref="sshd_disable_rhosts" selected="true" />
+
+<!-- 6.2.7 Set SSH HostbasedAuthentication to No (Scored) -->
+<select idref="disable_host_auth" selected="true" />
+
+<!-- 6.2.8 Disable SSH Root Login (Scored) -->
+<select idref="sshd_disable_root_login" selected="true" />
+
+<!-- 6.2.9 Set SSH PermitEmptyPasswords to No (Scored) -->
+<select idref="sshd_disable_empty_passwords" selected="true" />
+
+<!-- 6.2.10 Do Not Allow Users to Set Environment Options (Scored) -->
+<!-- 6.2.11 Use Only Approved Cipher in Counter Mode (Scored) -->
+<select idref="sshd_use_approved_ciphers" selected="true" />
+
+<!-- 6.2.12 Set Idle Timeout Interval for User Login (Scored) -->
+<select idref="sshd_set_idle_timeout" selected="true" />
+
+<!-- 6.2.13 Limit Access via SSH (Scored)-->
+<select idref="sshd_limit_user_access" selected="true" />
+
+<!-- 6.2.14 Set SSH Banner (Scored) -->
+<select idref="sshd_enable_warning_banner" selected="true" />
+
+<!-- 6.3 Configure PAM -->
+<!-- 6.3.1 Upgrade Password Hashing Algorithm to SHA-512 (Scored) -->
+<select idref="set_password_hashing_algorithm" selected="true" />
+<!-- 6.3.2 Set Password Creation Requirement Parameters Using pam_cracklib (Scored) 142 -->
+<select idref="password_quality_pamcracklib" selected="true" />
+
+<!-- 6.3.3 Set Lockout for Failed Password Attempts (Not Scored) -->
+<select idref="accounts_passwords_pam_faillock_deny" selected="true" />
+
+<!-- 6.3.4 Limit Password Reuse (Scored) -->
+<select idref="accounts_password_reuse_limit" selected="true" />
+
+<!-- 6.4 Restrict root Login to System Console (Not Scored) -->
+<select idref="no_direct_root_logins" selected="true" />
+
+<!-- 6.5 Restrict Access to the su Command (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 7 User Accounts and Environment -->
+<!-- 7.1 Set Shadow Password Suite Parameters (/etc/login.defs) -->
+<!-- NEEDS RULE -->
+
+<!-- 7.1.1 Set Password Expiration Days (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 7.1.2 Set Password Change Minimum Number of Days (Scored) -->
+<select idref="accounts_minimum_age_login_defs" selected="true" />
+
+<!-- 7.1.3 Set Password Expiring Warning Days (Scored) -->
+<select idref="accounts_password_warn_age_login_defs" selected="true" />
+
+<!-- 7.2 Disable System Accounts (Scored) -->
+<select idref="no_shelllogin_for_systemaccounts" selected="true" />
+
+<!-- 7.3 Set Default Group for root Account (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 7.4 Set Default umask for Users (Scored) -->
+<select idref="accounts_umask_bashrc" selected="true" />
+<select idref="accounts_umask_etc_profile" selected="true" />
+
+<!-- 7.5 Lock Inactive User Accounts (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 8 Warning Banners -->
+
+<!-- 8.1 Set Warning Banner for Standard Login Services (Scored) -->
+<select idref="set_system_login_banner" selected="true" />
+<!-- NEED /etc/issue -->
+<!-- NEED /etc/issue.net -->
+
+<!-- 8.2 Remove OS Information from Login Warning Banners (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 8.3 Set GNOME Warning Banner (Not Scored) -->
+<select idref="enable_gdm_login_banner" selected="true" />
+<select idref="set_gdm_login_banner_text" selected="true" />
+
+<!-- 9 System Maintenance -->
+<!-- 9.1 Verify System File Permissions -->
+<!-- 9.1.1 Verify System File Permissions (Not Scored) -->
+<!-- Duplicate of 1.2.6 -->
+
+<!-- 9.1.2 Verify Permissions on /etc/passwd (Scored) -->
+<select idref="file_permissions_etc_passwd" selected="true" />
+
+<!-- 9.1.3 Verify Permissions on /etc/shadow (Scored) -->
+<select idref="file_permissions_etc_shadow" selected="true" />
+
+<!-- 9.1.4 Verify Permissions on /etc/gshadow (Scored) -->
+<select idref="file_permissions_etc_gshadow" selected="true" />
+
+<!-- 9.1.5 Verify Permissions on /etc/group (Scored) -->
+<select idref="file_permissions_etc_group" selected="true" />
+
+<!-- 9.1.6 Verify User/Group Ownership on /etc/passwd (Scored) -->
+<select idref="file_owner_etc_passwd" selected="true" />
+<select idref="file_groupowner_etc_passwd" selected="true" />
+
+<!-- 9.1.7 Verify User/Group Ownership on /etc/shadow (Scored) -->
+<select idref="userowner_shadow_file" selected="true" />
+<select idref="groupowner_shadow_file" selected="true" />
+
+<!-- 9.1.8 Verify User/Group Ownership on /etc/gshadow (Scored) -->
+<select idref="file_owner_etc_gshadow" selected="true" />
+<select idref="file_groupowner_etc_gshadow" selected="true" />
+
+<!-- 9.1.9 Verify User/Group Ownership on /etc/group (Scored) -->
+<select idref="file_owner_etc_group" selected="true" />
+<select idref="file_groupowner_etc_group" selected="true" />
+
+<!-- 9.1.10 Find World Writable Files (Not Scored) -->
+<select idref="file_permissions_binary_dirs" selected="true" />
+
+<!-- 9.1.11 Find Un-owned Files and Directories (Scored) -->
+<select idref="no_files_unowned_by_user" selected="true" />
+
+<!-- 9.1.12 Find Un-grouped Files and Directories (Scored) -->
+<select idref="no_files_unowned_by_group" selected="true" />
+
+<!-- 9.1.13 Find SUID System Executables (Not Scored) -->
+<select idref="no_unpackaged_suid_files" selected="true" />
+
+<!-- 9.1.14 Find SGID System Executables (Not Scored) -->
+<select idref="no_unpackaged_sgid_files" selected="true" />
+
+<!-- 9.2 Review User and Group Settings -->
+<!-- 9.2.1 Ensure Password Fields are Not Empty (Scored) -->
+<select idref="no_empty_passwords" selected="true" />
+
+<!-- 9.2.2 Verify No Legacy "+" Entries Exist in /etc/passwd File (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.3 Verify No Legacy "+" Entries Exist in /etc/shadow File (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.4 Verify No Legacy "+" Entries Exist in /etc/group File (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.5 Verify No UID 0 Accounts Exist Other Than root (Scored) -->
+<select idref="accounts_no_uid_except_zero" selected="true" />
+
+<!-- 9.2.6 Ensure root PATH Integrity (Scored) -->
+<select idref="root_path_default" selected="true" />
+
+<!-- 9.2.7 Check Permissions on User Home Directories (Scored) -->
+<select idref="homedir_perms_no_groupwrite_worldread" selected="true" />
+
+<!-- 9.2.8 Check User Dot File Permissions (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.9 Check Permissions on User .netrc Files (Scored)-->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.10 Check for Presence of User .rhosts Files (Scored) -->
+<select idref="no_rsh_trust_files" selected="true" />
+
+<!-- 9.2.11 Check Groups in /etc/passwd (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.12 Check That Users Are Assigned Valid Home Directories (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.13 Check User Home Directory Ownership (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.14 Check for Duplicate UIDs (Scored)-->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.15 Check for Duplicate GIDs (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.16 Check That Reserved UIDs Are Assigned to System Accounts (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.17 Check for Duplicate User Names (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.18 Check for Duplicate Group Names (Scored) -->
+<!-- NEEDS RULE -->
+
+<!-- 9.2.19 Check for Presence of User .netrc Files (Scored) -->
+<select idref="no_netrc_files" selected="true" />
+
+<!-- 9.2.20 Check for Presence of User .forward Files (Scored) -->
+<!-- NEEDS RULE -->
+
+</Profile>
