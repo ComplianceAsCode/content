@@ -18,6 +18,7 @@
 		<xsl:apply-templates select="document('profiles/usgcb-rhel6-server.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/CSCF-RHEL6-MLS.xml')" />
+		<xsl:apply-templates select="document('profiles/C2S.xml')" />
 
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>
