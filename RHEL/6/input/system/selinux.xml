@@ -134,6 +134,19 @@ of file contexts created by some programs.</rationale>
 <ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" />
 </Rule>
 
+<Rule id="package_setroubleshoot_removed">
+<title>Remove SETroubleshoo</title>
+<description>The SETroubleshoot service notifies desktop users of SELinux
+denials. The service provides information around configuration errors,
+unauthorized intrusions, and other potential errors.
+<package-remove-macro package="setroubleshoot" />
+</description>
+<rationale>The SETroubleshoot service is an unnecessary daemon to
+have running on a server</rationale>
+<ident cce="" />
+<oval id="package_setroubleshoot_removed" />
+</Rule>
+
 
 <Rule id="selinux_confinement_of_daemons" severity="medium">
 <title>Ensure No Daemons are Unconfined by SELinux</title>
