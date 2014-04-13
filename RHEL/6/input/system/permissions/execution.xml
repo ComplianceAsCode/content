@@ -91,7 +91,7 @@ only for developers trying to debug problems.</rationale>
 </Rule>
 
 
-<Rule id="disable_setuid_coredumps">
+<Rule id="sysctl_fs_suid_dumpable">
 <title>Disable Core Dumps for SUID programs</title>
 <description><sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" /></description>
 <ocil><sysctl-check-macro sysctl="fs.suid_dumpable" value="0" /></ocil>
