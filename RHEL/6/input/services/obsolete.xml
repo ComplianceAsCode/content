@@ -285,6 +285,22 @@ as a client in a NIS or NIS+ domain.
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
+
+<Rule id="package_ypbind_removed">
+<title>Remove NIS Client</title>
+<description>The Network Information Service (NIS), formerly known as Yellow Pages,
+is a client-server directory service protocol used to distribute system configuration
+files. The NIS client (<tt>ypbind</tt>) was used to bind a machine to an NIS server
+and receive the distributed configuration files.</description>
+<ocil><package-remove-macro package="ypbind"/></ocil>
+<rationale>The NIS service is inherently an insecure system that has been vulnerable
+to DOS attacks, buffer overflows and has poor authentication for querying NIS maps.
+NIS generally has been replaced by such protocols as Lightweight Directory Access 
+Protocol (LDAP). It is recommended that the service be removed.</rationale>
+<ident cce="" />
+<oval id="package_ypbind_removed" />
+</Rule>
+
 </Group>
 
 <Group id="tftp">
