@@ -216,31 +216,24 @@ Patches would be most welcome!
 <select idref="uninstall_xinetd" selected="true"/>
 
 <!-- 2.1.12 Disable chargen-dgram (Scored) -->
-<!-- NEEDS RULE(?) -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
 
 <!-- 2.1.13 Disable chargen-stream (Scored) -->
-<!-- NEEDS RULE -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
 
 <!-- 2.1.14 Disable daytime-dgram (Scored) -->
-<!-- NEEDS RULE -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
 
 <!-- 2.1.15 Disable daytime-stream (Scored) -->
-<!-- NEEDS RULE -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
 
 <!-- 2.1.16 Disable echo-dgram (Scored) -->
-<!-- NEEDS RULE -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
 
 <!-- 2.1.17 Disable echo-stream (Scored) -->
-<!-- NEEDS RULE -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
 
 <!-- 2.1.18 Disable tcpmux-server (Scored) -->
-<!-- NEEDS RULE -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
 
 <!-- 3 Special Purpose Services -->
@@ -591,24 +584,24 @@ Patches would be most welcome!
 <select idref="no_shelllogin_for_systemaccounts" selected="true" />
 
 <!-- 7.3 Set Default Group for root Account (Scored) -->
-<!-- NEEDS RULE -->
+<!-- The system default is GID 0. Any alterations
+     will be audited via 5.2.5 "Record Events That
+     Modify User/Group Information" -->
 
 <!-- 7.4 Set Default umask for Users (Scored) -->
 <select idref="accounts_umask_bashrc" selected="true" />
 <select idref="accounts_umask_etc_profile" selected="true" />
 
 <!-- 7.5 Lock Inactive User Accounts (Scored) -->
-<!-- NEEDS RULE -->
+<select idref="account_disable_post_pw_expiration" selected="true" />
 
 <!-- 8 Warning Banners -->
 
 <!-- 8.1 Set Warning Banner for Standard Login Services (Scored) -->
 <select idref="set_system_login_banner" selected="true" />
-<!-- NEED /etc/issue -->
-<!-- NEED /etc/issue.net -->
 
 <!-- 8.2 Remove OS Information from Login Warning Banners (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Handled in Section 8.1 -->
 
 <!-- 8.3 Set GNOME Warning Banner (Not Scored) -->
 <select idref="enable_gdm_login_banner" selected="true" />
@@ -649,6 +642,7 @@ Patches would be most welcome!
 
 <!-- 9.1.10 Find World Writable Files (Not Scored) -->
 <select idref="file_permissions_binary_dirs" selected="true" />
+<select idref="world_writeable_files" selected="true" />
 
 <!-- 9.1.11 Find Un-owned Files and Directories (Scored) -->
 <select idref="no_files_unowned_by_user" selected="true" />
@@ -667,13 +661,13 @@ Patches would be most welcome!
 <select idref="no_empty_passwords" selected="true" />
 
 <!-- 9.2.2 Verify No Legacy "+" Entries Exist in /etc/passwd File (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Addressed from removal of NIS in "2.1.6 Remove NIS Server" -->
 
 <!-- 9.2.3 Verify No Legacy "+" Entries Exist in /etc/shadow File (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Addressed from removal of NIS in "2.1.6 Remove NIS Server" -->
 
 <!-- 9.2.4 Verify No Legacy "+" Entries Exist in /etc/group File (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Addressed from removal of NIS in "2.1.6 Remove NIS Server" -->
 
 <!-- 9.2.5 Verify No UID 0 Accounts Exist Other Than root (Scored) -->
 <select idref="accounts_no_uid_except_zero" selected="true" />
@@ -685,10 +679,10 @@ Patches would be most welcome!
 <select idref="homedir_perms_no_groupwrite_worldread" selected="true" />
 
 <!-- 9.2.8 Check User Dot File Permissions (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Addressed via  9.1.10 Find World Writable Files -->
 
 <!-- 9.2.9 Check Permissions on User .netrc Files (Scored)-->
-<!-- NEEDS RULE -->
+<!-- Addressed via  9.1.10 Find World Writable Files -->
 
 <!-- 9.2.10 Check for Presence of User .rhosts Files (Scored) -->
 <select idref="no_rsh_trust_files" selected="true" />
@@ -697,30 +691,34 @@ Patches would be most welcome!
 <select idref="gid_passwd_group_same" selected="true" />
 
 <!-- 9.2.12 Check That Users Are Assigned Valid Home Directories (Scored) -->
-<!-- NEEDS RULE -->
+<!-- The useradd tool addresses this problem natively. Will work with CIS
+     to remove this check -->
 
 <!-- 9.2.13 Check User Home Directory Ownership (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Default system behavior reflects that if user does not
+     own their assigned home directory, they will not
+     have privileges upon it -->
 
 <!-- 9.2.14 Check for Duplicate UIDs (Scored)-->
-<!-- NEEDS RULE -->
+<select idref="account_unique_name" selected="true" />
 
 <!-- 9.2.15 Check for Duplicate GIDs (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Duplicate of 9.2.14 -->
 
 <!-- 9.2.16 Check That Reserved UIDs Are Assigned to System Accounts (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Duplicate of 9.2.14 -->
 
 <!-- 9.2.17 Check for Duplicate User Names (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Duplicate of 9.2.14 -->
 
 <!-- 9.2.18 Check for Duplicate Group Names (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Duplicate of 9.2.14 -->
 
 <!-- 9.2.19 Check for Presence of User .netrc Files (Scored) -->
 <select idref="no_netrc_files" selected="true" />
 
 <!-- 9.2.20 Check for Presence of User .forward Files (Scored) -->
-<!-- NEEDS RULE -->
+<!-- This rule was inherited from RHEL5 STIG guidance, and since removed
+     from industry best practices. Will work with CIS to remove requirement. -->
 
 </Profile>
