@@ -7,7 +7,7 @@
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>PermitUserEnvironment should be disabled</description>
-      <reference source="MED" ref_id="20130813" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140414" ref_url="test_attestation" />
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"
     operator="OR">
@@ -22,9 +22,9 @@
   id="test_sshd_no_user_envset" version="1">
     <ind:object object_ref="obj_sshd_no_user_envset" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_sshd_no_user_envset" version="1">
+  <ind:textfilecontent54_object id="obj_sshd_no_user_envset" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)PermitUserEnvironment[\s]+no[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)PermitUserEnvironment(?-i)[\s]+no[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

@@ -8,7 +8,7 @@
       </affected>
       <description>Limit the ciphers to those which are FIPS-approved and only
       use ciphers in counter (CTR) mode.</description>
-      <reference source="MED" ref_id="20130813" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140414" ref_url="test_attestation" />
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"
     operator="OR">
@@ -23,9 +23,9 @@
   id="test_sshd_use_approved_ciphers" version="1">
     <ind:object object_ref="obj_sshd_use_approved_ciphers" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_sshd_use_approved_ciphers" version="1">
+  <ind:textfilecontent54_object id="obj_sshd_use_approved_ciphers" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
