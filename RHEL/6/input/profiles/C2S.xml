@@ -21,6 +21,7 @@ Patches would be most welcome!
 <refine-value idref="var_selinux_policy_name" selector="targeted" />
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <refine-value idref="var_accounts_user_umask" selector="027"/>
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="90" />
 <!-- END REFINE VALUES -->
 <!-- No edits past this point should be needed -->
 
@@ -511,23 +512,23 @@ Patches would be most welcome!
 <select idref="service_atd_disabled" selected="true" />
 
 <!-- 6.1.11 Restrict at/cron to Authorized Users (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Handled by rule immediately above -->
 
 <!-- 6.2 Configure SSH -->
 <!-- 6.2.1 Set SSH Protocol to 2 (Scored) -->
 <select idref="sshd_allow_only_protocol2" selected="true" />
 
 <!-- 6.2.2 Set LogLevel to INFO (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Default, non-configurable system behavior, will audit user login/logout events -->
 
 <!-- 6.2.3 Set Permissions on /etc/ssh/sshd_config (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Met via RPM Verify rule -->
 
 <!-- 6.2.4 Disable SSH X11 Forwarding (Scored)-->
-<!-- NEEDS RULE -->
+<!-- Met through removal of X11 via Section 3.2 -->
 
 <!-- 6.2.5 Set SSH MaxAuthTries to 4 or Less (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Met via 6.3.2 Set Password Creation Requirement Parameters Using pam_cracklib -->
 
 <!-- 6.2.6 Set SSH IgnoreRhosts to Yes (Scored) -->
 <select idref="sshd_disable_rhosts" selected="true" />
@@ -557,6 +558,7 @@ Patches would be most welcome!
 <!-- 6.3 Configure PAM -->
 <!-- 6.3.1 Upgrade Password Hashing Algorithm to SHA-512 (Scored) -->
 <select idref="set_password_hashing_algorithm" selected="true" />
+
 <!-- 6.3.2 Set Password Creation Requirement Parameters Using pam_cracklib (Scored) 142 -->
 <select idref="password_quality_pamcracklib" selected="true" />
 
@@ -570,14 +572,14 @@ Patches would be most welcome!
 <select idref="no_direct_root_logins" selected="true" />
 
 <!-- 6.5 Restrict Access to the su Command (Scored) -->
-<!-- NEEDS RULE -->
+<!-- This rule was inherited from the RHEL5 STIG, which provided misinterpretted 
+     guidance that sudo users must be in the "wheel" group. This guidance
+     has since been removed. Will work with CIS to drop this requirement -->
 
 <!-- 7 User Accounts and Environment -->
 <!-- 7.1 Set Shadow Password Suite Parameters (/etc/login.defs) -->
-<!-- NEEDS RULE -->
-
 <!-- 7.1.1 Set Password Expiration Days (Scored) -->
-<!-- NEEDS RULE -->
+<select idref="accounts_maximum_age_login_defs" selected="true" />
 
 <!-- 7.1.2 Set Password Change Minimum Number of Days (Scored) -->
 <select idref="accounts_minimum_age_login_defs" selected="true" />
