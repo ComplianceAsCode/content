@@ -394,7 +394,7 @@ Patches would be most welcome!
 <select idref="service_rsyslog_enabled" selected="true"/>
 
 <!-- 5.1.3 Configure /etc/rsyslog.conf (Not Scored) -->
-<select idref="rsyslog_nolisten" selected="true" />
+<!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED. -->
 
 <!-- 5.1.4 Create and Set Permissions on rsyslog Log Files (Scored)-->
 <select idref="rsyslog_file_permissions" selected="true"/>
@@ -403,7 +403,7 @@ Patches would be most welcome!
 <select idref="rsyslog_send_messages_to_logserver" selected="true"/>
 
 <!-- 5.1.6 Accept Remote rsyslog Messages Only on Designated Log Hosts (Not Scored) -->
-<!-- NEEDS RULE -->
+<select idref="rsyslog_nolisten" selected="true" />
 
 <!-- 5.2 Configure System Accounting (auditd) -->
 <!-- 5.2.1 Configure Data Retention -->
@@ -465,6 +465,7 @@ Patches would be most welcome!
 
 <!-- 5.2.16 Collect System Administrator Actions (sudolog) (Scored) -->
 <!-- NEEDS RULE -->
+<!-- sdw/jb: this rule is wrong. will work with CIS to correct in future editions -->
 
 <!-- 5.2.17 Collect Kernel Module Loading and Unloading (Scored) -->
 <select idref="audit_kernel_module_loading" selected="true" />
@@ -479,33 +480,35 @@ Patches would be most welcome!
 <!-- 6.1 Configure cron and anacron -->
 <!-- 6.1.1 Enable anacron Daemon (Scored) -->
 <!-- NEEDS RULE -->
+<!-- Low priority, given anacron is enabled by default -->
+<!-- ... and the security relevance is not clear ... -->
 
 <!-- 6.1.2 Enable crond Daemon (Scored) -->
 <select idref="service_crond_enabled" selected="true" />
 
 <!-- 6.1.3 Set User/Group Owner and Permission on /etc/anacrontab (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Taken care of via RPM verify -->
 
 <!-- 6.1.4 Set User/Group Owner and Permission on /etc/crontab (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Taken care of via RPM verify -->
 
 <!-- 6.1.5 Set User/Group Owner and Permission on /etc/cron.hourly (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Taken care of via RPM verify -->
 
 <!-- 6.1.6 Set User/Group Owner and Permission on /etc/cron.daily (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Taken care of via RPM verify -->
 
 <!-- 6.1.7 Set User/Group Owner and Permission on /etc/cron.weekly (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Taken care of via RPM verify -->
 
 <!-- 6.1.8 Set User/Group Owner and Permission on /etc/cron.monthly (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Taken care of via RPM verify -->
 
 <!-- 6.1.9 Set User/Group Owner and Permission on /etc/cron.d (Scored) -->
-<!-- NEEDS RULE -->
+<!-- Taken care of via RPM verify -->
 
 <!-- 6.1.10 Restrict at Daemon (Scored) -->
-<!-- NEEDS RULE -->
+<select idref="service_atd_disabled" selected="true" />
 
 <!-- 6.1.11 Restrict at/cron to Authorized Users (Scored) -->
 <!-- NEEDS RULE -->
