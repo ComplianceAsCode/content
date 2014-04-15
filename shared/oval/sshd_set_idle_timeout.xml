@@ -9,7 +9,7 @@
       </affected>
       <description>The SSH idle timeout interval should be set to an
       appropriate value.</description>
-      <reference source="MED" ref_id="20130813" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140414" ref_url="test_attestation" />
       <!-- Fedora 20: <reference source="JL" ref_id="20140224" ref_url="test_attestation" /> -->
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"
@@ -28,9 +28,9 @@
     <ind:state state_ref="state_timeout_value_lower_bound" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_sshd_idle_timeout" version="1">
+  <ind:textfilecontent54_object id="object_sshd_idle_timeout" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveInterval[\s]+(\d+)[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

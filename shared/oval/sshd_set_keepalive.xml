@@ -8,7 +8,7 @@
       </affected>
       <description>The SSH ClientAliveCountMax should be set to an appropriate
       value (and dependencies are met)</description>
-      <reference source="MED" ref_id="20130813" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140414" ref_url="test_attestation" />
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"
     operator="OR">
@@ -27,9 +27,9 @@
   <ind:textfilecontent54_state id="state_sshd_clientalivecountmax" version="1">
     <ind:subexpression datatype="int" operation="equals">0</ind:subexpression>
   </ind:textfilecontent54_state>
-  <ind:textfilecontent54_object id="obj_sshd_clientalivecountmax" version="1">
+  <ind:textfilecontent54_object id="obj_sshd_clientalivecountmax" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

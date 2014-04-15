@@ -8,7 +8,7 @@
       </affected>
       <description>Emulation of the rsh command through the ssh server should
       be disabled (and dependencies are met)</description>
-      <reference source="MED" ref_id="20130813" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140414" ref_url="test_attestation" />
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"
     operator="OR">
@@ -24,9 +24,9 @@
     <ind:object object_ref="obj_sshd_rsh_emulation_disabled" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_rsh_emulation_disabled"
-  version="1">
+  version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)IgnoreRhosts[\s]+no[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)IgnoreRhosts(?-i)[\s]+no[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
