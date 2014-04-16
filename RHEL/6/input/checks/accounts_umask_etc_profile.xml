@@ -9,7 +9,7 @@
       </affected>
       <description>The default umask for all users should be set
       correctly</description>
-      <reference source="MED" ref_id="20130807" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20140416" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_accounts_umask_etc_profile" />
@@ -27,9 +27,9 @@
   </ind:textfilecontent54_state>
   <external_variable comment="user umask" datatype="string" id="var_accounts_user_umask" version="1" />
   <ind:textfilecontent54_object id="obj_accounts_umask_etc_profile"
-  version="1">
+  version="2">
     <ind:filepath>/etc/profile</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*umask[\s]+([^#\s]*)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
