@@ -28,14 +28,14 @@
 
   <unix:file_object comment="library directories" id="object_file_ownership_lib_dir" version="1">
     <!-- Check that /lib, /lib64, /usr/lib, and /usr/lib64 directories belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/lib(|64)|^\/usr\/lib(|64)</unix:path>
+    <unix:path operation="pattern match">^\/lib(|64)\/|^\/usr\/lib(|64)\/</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_owner_libraries_not_root</filter>
   </unix:file_object>
 
   <unix:file_object comment="library files" id="object_file_ownership_lib_files" version="1">
     <!-- Check that files within /lib, /lib64, /usr/lib, and /usr/lib64 directories belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/lib(|64)|^\/usr\/lib(|64)</unix:path>
+    <unix:path operation="pattern match">^\/lib(|64)\/|^\/usr\/lib(|64)\/</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_owner_libraries_not_root</filter>
   </unix:file_object>
