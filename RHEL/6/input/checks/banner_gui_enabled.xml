@@ -8,7 +8,8 @@
       <description>Enable the GUI warning banner.</description>
       <reference source="rmercer" ref_id="20131104" ref_url="test_attestation" />
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
       <criterion comment="check settings" test_ref="test_banner_gui_enabled" />
     </criteria>
   </definition>
