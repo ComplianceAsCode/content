@@ -10,7 +10,7 @@
 
 # Used to specify RHEL scap-security-guide tarball source
 # (needs to match latest EPEL-6 scap-security-guide RPM release)
-%global	rhelssgsource		0.1-16
+%global	rhelssgversion		0.1.16
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
@@ -20,7 +20,7 @@ Group:		Applications/System
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
 Source0:	http://fedorapeople.org/~jlieskov/%{name}-%{version}.tar.gz
-Source1:	http://repos.ssgproject.org/sources/%{name}-%{rhelssgsource}.tar.gz
+Source1:	http://repos.ssgproject.org/sources/%{name}-%{rhelssgversion}.tar.gz
 BuildArch:	noarch
 BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
 Requires:	xml-common, openscap-utils >= 0.9.1
@@ -46,7 +46,7 @@ further information.
 # Build Fedora distribution content
 (cd Fedora && make dist)
 # Change CWD to point to RHEL content. Build RHEL content
-pushd %{name}-%{rhelssgsource}
+pushd %{name}-%{rhelssgversion}
 (cd RHEL/6 && make dist)
 (cd RHEL/7 && make dist)
 # Restore CWD to old value
@@ -65,7 +65,7 @@ cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 
 # Change CWD to point to RHEL content. Copy
 # datastreams to appropriate buildroot places
-pushd %{name}-%{rhelssgsource}
+pushd %{name}-%{rhelssgversion}
 # Add in datastream form of RHEL-6 benchmark
 cp -a RHEL/6/dist/content/ssg-rhel6-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel6
 # Add in datastream form of RHEL-7 benchmark

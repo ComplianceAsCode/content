@@ -2,11 +2,12 @@
 ROOT_DIR ?= $(CURDIR)
 RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
 PKGNAME := $(shell sed -ne 's/Name:\t\t\(.*\)/\1/p' $(RPM_SPEC))
+REDHAT_SSG_VERSION := $(shell sed -ne 's/^\(.*\)redhatssgversion\t\(.*\)/\2/p' $(RPM_SPEC))
+REDHAT_RPM_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(RPM_SPEC))
+$(eval REDHAT_RPM_VERSION := $(shell echo $(REDHAT_RPM_VERSION) | sed -ne 's/%{redhatssgversion}/$(REDHAT_SSG_VERSION)/p'))
 VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(RPM_SPEC))
-REDHAT_SSG_RELEASE := $(shell sed -ne 's/^\(.*\)redhatssgrelease\t\(.*\)/\2/p' $(RPM_SPEC))
 REDHAT_DIST := $(shell rpm --eval '%{dist}')
-RELEASE := $(REDHAT_SSG_RELEASE)$(REDHAT_DIST)
-PKG := $(PKGNAME)-$(VERSION)-$(REDHAT_SSG_RELEASE)
+PKG := $(PKGNAME)-$(REDHAT_RPM_VERSION)
 
 ARCH := noarch
 TARBALL = $(RPM_TOPDIR)/SOURCES/$(PKG).tar.gz
@@ -76,7 +77,7 @@ tarball:
 	(cd $(RPM_TMPDIR)/$(PKG)/RHEL/6/ && $(MAKE) clean)
 	(cd $(RPM_TMPDIR)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 
-	# Create the source tar, copy it to $TARBALL
+	# Create the source tar, copy it to TARBALL
 	# (e.g. somewhere in the SOURCES directory)
 	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
@@ -116,17 +117,16 @@ zipfile:
 	# at working directory. Should look into this sometime
 	#
 	#cd $(RPM_TOPDIR)/ZIP
-	#zip -r $(PKG)-$(RELEASE).zip . * -j
-	zip -r $(PKG)-$(RELEASE).zip $(RPM_TOPDIR)/ZIP/* -j
-	mv $(PKG)-$(RELEASE).zip $(RPM_TOPDIR)/ZIP/
+	#zip -r $(PKG).zip . * -j
+	zip -r $(PKG).zip $(RPM_TOPDIR)/ZIP/* -j
+	mv $(PKG).zip $(RPM_TOPDIR)/ZIP/
 
 srpm: $(RPM_DEPS)
 	# Obtain the source from RedHat's spec file
 	$(eval SOURCE := $(shell sed -ne 's/Source0:\t\(.*\)/\1/p' $(RPM_SPEC)))
-	# Substitute %{name}, %{version}, and %{redhatssgrelease} with their actual values
-	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne "s/%{name}/$(PKGNAME)/p"))
-	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne "s/%{version}/$(VERSION)/p"))
-	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne "s/%{redhatssgrelease}/$(REDHAT_SSG_RELEASE)/p"))
+	# Substitute %{name} and %{version} with their actual values
+	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne 's/%{name}/$(PKGNAME)/p'))
+	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne 's/%{version}/$(REDHAT_RPM_VERSION)/p'))
 	# Download the tarball
 	@echo "Downloading the $(SOURCE) tarball..."
 	# If performing a real RPM build, uncomment the next line
@@ -158,8 +158,10 @@ fedora-srpm: $(FEDORA_RPM_DEPS)
 	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(FEDORA_SPEC)) --nodeps
 
 rpm: srpm
-	 @echo "Building $(PKG) RPM..."
-	 cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)$(REDHAT_DIST).src.rpm
+	$(eval REDHAT_RPM_RELEASE := $(shell sed -ne 's/Release:\t\(.*\)/\1/p' $(RPM_SPEC)))
+	$(eval REDHAT_RPM_RELEASE := $(shell echo $(REDHAT_RPM_RELEASE) | sed -ne 's/%{?dist}/$(REDHAT_DIST)/p'))
+	@echo "Building $(PKG) RPM..."
+	cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)-$(REDHAT_RPM_RELEASE).src.rpm
 
 fedora-rpm: fedora-srpm
 	$(eval FEDORA_RPM_RELEASE := $(shell sed -ne 's/Release:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
