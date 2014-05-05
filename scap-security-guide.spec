@@ -1,8 +1,8 @@
-%global		redhatssgrelease	16
+%global		redhatssgversion	16
 
 Name:		scap-security-guide
-Version:	0.1
-Release:	%{redhatssgrelease}%{?dist}
+Version:	0.1.%{redhatssgversion}
+Release:	1%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Vendor:		scap-security-guide
 
@@ -10,7 +10,7 @@ Group:		System Environment/Base
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
 
-Source0:	http://repos.ssgproject.org/sources/%{name}-%{version}-%{redhatssgrelease}.tar.gz
+Source0:	http://repos.ssgproject.org/sources/%{name}-%{version}.tar.gz
 
 BuildArch:	noarch
 
@@ -29,7 +29,7 @@ from the openscap-utils package to verify that the system conforms to provided
 guideline. Refer to scap-security-guide(8) manual page for further information.
 
 %prep
-%setup -q -n %{name}-%{version}-%{redhatssgrelease}
+%setup -q -n %{name}-%{version}
 
 %build
 (cd RHEL/6 && make dist)
@@ -53,6 +53,9 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Mon May 05 2014 Jan iankko Lieskovsky <jlieskov@redhat.com) 0.1.16-1
+- Change naming scheme (0.1-16 => 0.1.16-1)
+
 * Fri Feb 21 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-16
 - Include datastream files into RHEL6 and RHEL7 RPM packages too
 - Bump version
