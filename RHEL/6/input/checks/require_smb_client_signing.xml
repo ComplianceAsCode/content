@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="smb_client_signing_smb_conf" version="1">
+  <definition class="compliance" id="require_smb_client_signing" version="1">
     <metadata>
       <title>Require Client SMB Packet Signing in smb.conf</title>
       <affected family="unix">
@@ -14,17 +14,17 @@
       <extend_definition comment="package samba-common is not installed"
       definition_ref="package_samba-common_removed" />
       <criterion comment="check for client signing = mandatory in /etc/samba/smb.conf"
-      test_ref="test_smb_client_signing_smb_conf" />
+      test_ref="test_require_smb_client_signing" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
   comment="check for client signing = mandatory in /etc/samba/smb.conf"
-  id="test_smb_client_signing_smb_conf" version="1">
-    <ind:object object_ref="obj_smb_client_signing_smb_conf" />
+  id="test_require_smb_client_signing" version="1">
+    <ind:object object_ref="obj_require_smb_client_signing" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_smb_client_signing_smb_conf"
+  <ind:textfilecontent54_object id="obj_require_smb_client_signing"
   version="1">
     <ind:path>/etc/samba</ind:path>
     <ind:filename>smb.conf</ind:filename>
