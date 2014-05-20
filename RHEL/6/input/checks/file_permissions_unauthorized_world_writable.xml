@@ -23,9 +23,17 @@
     <unix:path operation="equals">/</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_file_permissions_unauthorized_world_write</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_special_selinux_files</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_proc</filter>
   </unix:file_object>
   <unix:file_state id="state_file_permissions_unauthorized_world_write" version="1">
     <unix:type operation="equals">regular</unix:type>
     <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+  <unix:file_state id="state_file_permissions_unauthorized_world_write_exclude_special_selinux_files" version="1">
+    <unix:filepath operation="pattern match">^/selinux/(?:(?:member)|(?:user)|(?:relabel)|(?:create)|(?:access)|(?:context))$</unix:filepath>
+  </unix:file_state>
+  <unix:file_state id="state_file_permissions_unauthorized_world_write_exclude_proc" version="1">
+    <unix:filepath operation="pattern match">^/proc/.*$</unix:filepath>
   </unix:file_state>
 </def-group>
