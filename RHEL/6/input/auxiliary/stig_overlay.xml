@@ -548,7 +548,7 @@
 		<VMSinfo VKey="38565" SVKey="50366" VRelease="2" />
 		<title>The audit system must be configured to audit all discretionary access control permission modifications using setxattr.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_file_access" ownerid="RHEL-06-000197" disa="172" severity="low">
+	<overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification" ownerid="RHEL-06-000197" disa="172" severity="low">
 		<VMSinfo VKey="38566" SVKey="50367" VRelease="2" />
 		<title>The audit system must be configured to audit failed attempts to access files and programs.</title>
 	</overlay>
@@ -1000,7 +1000,7 @@
 		<VMSinfo VKey="38595" SVKey="50396" VRelease="1" />
 		<title>The system must be configured to require the use of a CAC, PIV compliant hardware token, or Alternate Logon Token (ALT) for authentication.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="deny_password_attempts_unlock_time" ownerid="RHEL-06-000356" disa="47" severity="medium">
+	<overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_unlock_time" ownerid="RHEL-06-000356" disa="47" severity="medium">
 		<VMSinfo VKey="38592" SVKey="50393" VRelease="1" />
 		<title>The system must require administrator action to unlock an account locked by excessive failed login attempts.</title>
 	</overlay>
