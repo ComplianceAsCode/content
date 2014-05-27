@@ -1128,7 +1128,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 </Rule>
 
-<Rule id="audit_file_access">
+<Rule id="audit_rules_unsuccessful_file_modification">
 <title>Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
 <description>At a minimum the audit system should collect
 unauthorized file accesses for all users and root. Add the following
@@ -1173,7 +1173,7 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 <ident cce="26457-2" />
-<oval id="audit_rules_privileged_commands" />
+<!-- <oval id="audit_rules_privileged_commands" /> -->
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),IR-5" disa="40" />
 <tested by="DS" on="20121024"/>
 </Rule>

@@ -261,11 +261,11 @@ inactivity in the GNOME desktop to 15 minutes:
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type int \
-  --set /apps/gnome-screensaver/idle_delay 15</pre>
+  --set /desktop/gnome/session/idle_delay 15</pre>
 </description>
 <ocil clause="it is not">
 To check the current idle time-out value, run the following command:
-<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_delay</pre>
+<pre>$ gconftool-2 -g /desktop/gnome/session/idle_delay</pre>
 If properly configured, the output should be <tt>15</tt>. 
 </ocil>
 <rationale>

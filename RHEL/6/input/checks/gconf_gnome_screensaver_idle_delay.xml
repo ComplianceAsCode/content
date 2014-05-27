@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="gconf_gnome_screensaver_idle_delay" version="1">
+  <definition class="compliance" id="gconf_gnome_screensaver_idle_delay" version="2">
     <metadata>
       <title>Configure GUI Screen Locking</title>
       <affected family="unix">
@@ -7,7 +7,7 @@
       </affected>
       <description>The allowed period of inactivity before the screensaver is
       activated.</description>
-      <reference source="MED" ref_id="20131125" ref_url="test_attestation" />
+      <reference source="SDW" ref_id="20140522" ref_url="test_attestation" />
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
@@ -21,7 +21,7 @@
     <ind:state state_ref="state_gnome_screensaver_idle_delay" />
   </ind:xmlfilecontent_test>
   <ind:xmlfilecontent_object id="object_gnome_screensaver_idle_delay" version="1">
-    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind:filepath>
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/desktop/gnome/session/%gconf.xml</ind:filepath>
     <ind:xpath>/gconf/entry[@name='idle_delay']/@value</ind:xpath>
   </ind:xmlfilecontent_object>
   <ind:xmlfilecontent_state comment="idle timeout"
