@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="ensure_logrotate_activated" version="1">
+    <metadata>
+      <title>Ensure the logrotate utility performs the automatic rotation of log files on daily basis</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>
+      The frequency of automatic log files rotation performed by the logrotate utility should be configured to run daily
+      </description>
+      <reference source="JL" ref_id="20140530" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="/etc/logrotate.conf contains daily setting or /etc/cron.daily/logrotate file exists" operator="OR">
+      <criterion comment="Check if daily is set in /etc/logrotate.conf"
+      test_ref="test_logrotate_conf_daily_setting" />
+      <criterion comment="Check if /etc/cron.daily/logrotate file exists (and calls logrotate)"
+      test_ref="test_cron_daily_logrotate_existence" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the presence of daily setting in /etc/logrotate.conf file"
+  id="test_logrotate_conf_daily_setting" version="1">
+    <ind:object object_ref="obj_logrotate_conf_daily_setting" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_logrotate_conf_daily_setting" version="1">
+    <ind:filepath>/etc/logrotate.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*daily[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the existence of /etc/cron.daily/logrotate file (and verify it actually calls logrotate utility)"
+  id="test_cron_daily_logrotate_existence" version="1">
+    <ind:object object_ref="obj_cron_daily_logrotate_existence" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_cron_daily_logrotate_existence" version="1">
+    <ind:filepath>/etc/cron.daily/logrotate</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*/usr/sbin/logrotate[\s]*/etc/logrotate.conf(?:.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
