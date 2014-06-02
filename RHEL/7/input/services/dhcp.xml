@@ -192,7 +192,7 @@ For each interface on the system (e.g. eth0), edit
 following changes:
 <ul>
 <li> Correct the BOOTPROTO line to read:
-<pre>BOOTPROTO=static</pre>
+<pre>BOOTPROTO=none</pre>
 </li>
 <li> Add or correct the following lines, substituting the appropriate
 values based on your site's addressing scheme:
@@ -206,7 +206,7 @@ GATEWAY=192.168.1.1</pre>
 To verify that DHCP is not being used, examine the following file for each interface:
 <pre># /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 Look for the following:
-<pre>BOOTPROTO=static</pre>
+<pre>BOOTPROTO=none</pre>
 and the following, substituting the appropriate values based on your site's addressing scheme:
 <pre>NETMASK=255.255.255.0
 IPADDR=192.168.1.2
