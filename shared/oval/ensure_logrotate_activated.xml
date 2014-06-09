@@ -1,0 +1,72 @@
+<def-group>
+  <definition class="compliance" id="ensure_logrotate_activated" version="1">
+    <metadata>
+      <title>Ensure the logrotate utility performs the automatic rotation of log files on daily basis</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>
+      The frequency of automatic log files rotation performed by the logrotate utility should be configured to run daily
+      </description>
+      <reference source="JL" ref_id="20140606" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="/etc/logrotate.conf contains daily setting or /etc/cron.daily/logrotate file exists" operator="OR">
+      <criterion comment="Check if daily is set in /etc/logrotate.conf"
+      test_ref="test_logrotate_conf_daily_setting" />
+      <criterion comment="Check if /etc/cron.daily/logrotate file exists (and calls logrotate)"
+      test_ref="test_cron_daily_logrotate_existence" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the presence of daily setting in /etc/logrotate.conf file"
+  id="test_logrotate_conf_daily_setting" version="1">
+    <ind:object object_ref="object_logrotate_conf_daily_setting" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_logrotate_conf_daily_setting" version="2">
+    <!-- Read whole /etc/logrotate.conf at once (as single line) -->
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/logrotate.conf</ind:filepath>
+    <!-- From the content extract the text chunk after the last (uncommented)
+         occurrence of 'daily' keyword till the EOF (including the 'daily'
+         string itself) -->
+    <ind:pattern operation="pattern match">(?:daily)*.*(?=[\n][\s]*daily)(.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+    <!-- From the found object exclude that one containing some (uncommented)
+         occurrence of (weekly / monthly / yearly) outside the {} block section
+         of /etc/logrotate.conf -->
+    <filter action="exclude">state_another_rotate_interval_after_daily</filter>
+  </ind:textfilecontent54_object>
+
+  <!-- This filter selects from previously found objects those containing
+       another (uncommented occurrence of) log files rotate interval setting
+       (one of weekly / monthly / yearly) present outside the {} block section
+       of /etc/logrotate.conf -->
+  <ind:textfilecontent54_state id="state_another_rotate_interval_after_daily" version="1">
+    <!-- if some of (weekly / monthly / yearly) uncommented setting is found
+         (in the previously selected chunk of text) in one of the following
+         parts:
+         * before the first '{' character,
+         * somewhere after '}' character and before another '{' character,
+         * after final '}' character and before end of the chunk
+         exclude such object from the found ones (since in that case earlier
+         daily setting would be replaced with the found setting) -->
+    <ind:subexpression datatype="string"
+    operation="pattern match">}[^{]+[\n][\s]*(weekly|monthly|yearly)|[\n][\s]*(weekly|monthly|yearly)[^}]+{</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the existence of /etc/cron.daily/logrotate file (and verify it actually calls logrotate utility)"
+  id="test_cron_daily_logrotate_existence" version="1">
+    <ind:object object_ref="object_cron_daily_logrotate_existence" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_cron_daily_logrotate_existence" version="1">
+    <ind:filepath>/etc/cron.daily/logrotate</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*/usr/sbin/logrotate[\s]*/etc/logrotate.conf(?:.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
