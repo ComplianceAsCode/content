@@ -396,4 +396,31 @@ server_args = -s /var/lib/tftpboot</pre>
 </Rule>
 
 </Group>
+
+<Group id="talk">
+<title>talk-server and talk</title>
+<description>
+The talk software makes it possible for users to send and receive messages
+across systems through a terminal session.
+</description>
+
+<Rule id="uninstall_talk-server" severity="medium">
+<title>Uninstall talk-server Package</title>
+<description>
+<package-remove-macro package="talk-server" />
+</description>
+<ocil>
+<package-check-macro package="talk-server" />
+</ocil>
+<rationale>
+The talk software presents a security risk as it uses unencrypted protocols
+for communications. Removing the <tt>talk-server</tt> package decreases the
+risk of the accidental (or intentional) activation of talk services.
+</rationale>
+<ident cce="" />
+<oval id="package_talk-server_removed" />
+<tested by="JL" on="20140625"/>
+</Rule>
+
+</Group>
 </Group>
