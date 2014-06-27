@@ -418,7 +418,8 @@ four categories available:
 * Digits
 * Special characters (for example, punctuation)
 </pre>
-Add <tt>minclass=<i>NUM</i></tt> after pam_cracklib.so to require differing categories of
+Add <tt>minclass=<i>NUM</i></tt> after pam_cracklib.so entry into the
+<tt>/etc/pam.d/system-auth</tt> file in order to require differing categories of
 characters when changing passwords, substituting <i>NUM</i> appropriately (for example to
 require at least three character classes to be used in password, use <tt>minclass=3</tt>).
 </description>
@@ -427,14 +428,14 @@ To check how many categories of characters must be used in password during a pas
 run the following command:
 <pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
 The <tt>minclass</tt> parameter will indicate how many character classes must be used. If
-the requirement was password to contain characters from three different categories, then this
-would appear as <tt>minclass=3</tt>.
+the requirement was for the password to contain characters from three different categories,
+then this would appear as <tt>minclass=3</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of character categories makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="" />
+<ident cce="CCE-27115-5" />
 <oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_cracklib_minclass"/>
 <tested by="JL" on="20140626"/>
 </Rule>
