@@ -123,6 +123,9 @@ class idtranslator:
 			if element.tag == "{" + oval_ns + "}filter":
 				element.text = self.assign_id("{" + oval_ns + "}state", element.text)
 				continue
+			if element.tag == "{" + oval_ns + "#independent}var_ref":
+				element.text = self.assign_id("{" + oval_ns + "}variable", element.text)
+				continue
 			for attr in element.keys():
 				if attr in ovalrefattr_to_tag.keys():
 					element.set(attr,self.assign_id( "{" + oval_ns + "}" + ovalrefattr_to_tag[attr], element.get(attr)))
