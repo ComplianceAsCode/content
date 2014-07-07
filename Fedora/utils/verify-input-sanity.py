@@ -129,8 +129,9 @@ for xccdf_file in xccdf_xml_files:
         # parse the XML at this point
         try:
             tree = ET.fromstring(xccdf_xml_contents)
-        except ET.XMLSyntaxError:
-            print "  XML syntax error in file: %s" % xccdf_file.replace("./", "src/input/")
+        except ET.XMLSyntaxError as e:
+            print "  XML syntax error in file %s:" % xccdf_file.replace("./", "src/input/")
+            print " ", e.msg, "\n"
         # extract all of the rules that are defined within the XCCDF
         xccdf_rules = tree.findall(".//Rule")
         for xccdf_rule in xccdf_rules:
