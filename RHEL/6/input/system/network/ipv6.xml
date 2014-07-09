@@ -218,21 +218,21 @@ net.ipv6.conf.default.max_addresses = 1</pre>
 The <tt>router_solicitations</tt> setting determines how many router
 solicitations are sent when bringing up the interface. If addresses are
 statically assigned, there is no need to send any solicitations.
-<br />
+<br /><br />
 The <tt>accept_ra_pinfo</tt> setting controls whether the system will accept
 prefix info from the router.
-<br />
+<br /><br />
 The <tt>accept_ra_defrtr</tt> setting controls whether the system will accept
 Hop Limit settings from a router advertisement. Setting it to 0 prevents a
 router from changing your default IPv6 Hop Limit for outgoing packets.
-<br />
+<br /><br />
 The <tt>autoconf</tt> setting controls whether router advertisements can cause
 the system to assign a global unicast address to an interface.
-<br />
+<br /><br />
 The <tt>dad_transmits</tt> setting determines how many neighbor solicitations
 to send out per address (global and link-local) when bringing up an interface
 to ensure the desired address is unique on the network.
-<br />
+<br /><br />
 The <tt>max_addresses</tt> setting determines how many global unicast IPv6
 addresses can be assigned to each interface.  The default is 16, but it should
 be set to exactly the number of statically configured global addresses
