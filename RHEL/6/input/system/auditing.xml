@@ -1210,7 +1210,9 @@ appropriate for your system:
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="unlink" />
+<audit-syscall-check-macro syscall="unlinkat" />
 <audit-syscall-check-macro syscall="rename" />
+<audit-syscall-check-macro syscall="renameat" />
 </ocil>
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
