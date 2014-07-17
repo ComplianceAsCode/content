@@ -48,20 +48,28 @@
 		<VMSinfo VKey="38489" SVKey="50290" VRelease="1" />
 		<title>A file integrity tool must be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="enable_selinux_bootloader" ownerid="RHEL-06-000017" disa="22" severity="medium">
+	<overlay owner="disastig" ruleid="enable_selinux_bootloader" ownerid="RHEL-06-000017" disa="366" severity="medium">
+		<VMSinfo VKey="51337" SVKey="65547" VRelease="1" />
 		<title>The system must use a Linux Security Module at boot time.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="aide_build_database" ownerid="RHEL-06-000018" disa="1069" severity="low">
+		<VMSinfo VKey="51391" SVKey="65601" VRelease="1" />
+		<title>A file integrity baseline must be created.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="no_rsh_trust_files" ownerid="RHEL-06-000019" disa="1436" severity="high">
 		<VMSinfo VKey="38491" SVKey="50292" VRelease="1" />
 		<title>There must be no .rhosts or hosts.equiv files on the system.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="selinux_state" ownerid="RHEL-06-000020" disa="22" severity="medium">
+	<overlay owner="disastig" ruleid="selinux_state" ownerid="RHEL-06-000020" disa="366" severity="medium">
+		<VMSinfo VKey="51363" SVKey="65573" VRelease="1" />
 		<title>The system must use a Linux Security Module configured to enforce limits on system services.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="selinux_policytype" ownerid="RHEL-06-000023" disa="22" severity="low">
+	<overlay owner="disastig" ruleid="selinux_policytype" ownerid="RHEL-06-000023" disa="366" severity="low">
+		<VMSinfo VKey="51369" SVKey="65579" VRelease="1" />
 		<title>The system must use a Linux Security Module configured to limit the privileges of system services.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="selinux_all_devicefiles_labeled" ownerid="RHEL-06-000025" disa="22" severity="low">
+	<overlay owner="disastig" ruleid="selinux_all_devicefiles_labeled" ownerid="RHEL-06-000025" disa="366" severity="low">
+		<VMSinfo VKey="51379" SVKey="65589" VRelease="1" />
 		<title>All device files must be monitored by the system Linux Security Module.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="securetty_root_login_console_only" ownerid="RHEL-06-000027" disa="770" severity="medium">
