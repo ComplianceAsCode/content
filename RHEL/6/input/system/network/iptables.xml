@@ -73,6 +73,8 @@ the built-in INPUT chain which processes incoming packets,
 add or correct the following line in
 <tt>/etc/sysconfig/ip6tables</tt>:
 <pre>:INPUT DROP [0:0]</pre>
+If changes were required, reload the ip6tables rules:
+<pre>$ sudo service ip6tables reload</pre>
 </description>
 <ocil clause="the default policy for the INPUT chain is not set to DROP">
 If IPv6 is disabled, this is not applicable.
