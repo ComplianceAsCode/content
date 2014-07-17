@@ -556,7 +556,7 @@ See an example of multiple combined syscalls:
 -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
-if the system is 64-bit only, this is not applicable.<br />
+If the system is 64-bit only, this is not applicable.<br />
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
