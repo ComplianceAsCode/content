@@ -285,7 +285,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 To find system executables that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains system executables:
-<pre>$ find <i>DIR</i> -perm /022</pre>
+<pre>$ find -L <i>DIR</i> -perm /022 -type f</pre>
 </ocil>
 <rationale>System binaries are executed by privileged users, as well as system services,
 and restrictive permissions are necessary to ensure execution of these programs
