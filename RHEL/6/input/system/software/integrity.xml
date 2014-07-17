@@ -41,7 +41,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident cce="27024-9" />
 <oval id="package_aide_installed" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28, SI-7" disa="1069"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -61,7 +61,7 @@ of AIDE, because it changes binaries.
 </rationale>
 <ident cce="27221-1" />
 <oval id="disable_prelink" />
-<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
+<ref nist="CM-6(d),SC-28, SI-7" />
 </Rule>
 
 <Rule id="aide_build_database">
@@ -82,7 +82,7 @@ For AIDE to be effective, an initial database of "known-good" information about 
 must be captured and it should be able to be verified against the installed files.
 </rationale>
 <ident cce="27135-3" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
@@ -101,7 +101,7 @@ By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
 <ident cce="27222-9" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
 </Rule>
 </Group>
 
@@ -142,7 +142,7 @@ The permissions set by the vendor should be maintained. Any deviations from
 this baseline should be investigated.</rationale>
 <ident cce="26731-0" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" />
+<ref nist="AC-6,CM-6(d),SI-7" disa="1493,1494,1495" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
@@ -173,7 +173,7 @@ information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
 <ident cce="27223-7" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" />
+<ref nist="CM-6(d),SI-7" disa="1496" />
 </Rule>
 
 </Group>
