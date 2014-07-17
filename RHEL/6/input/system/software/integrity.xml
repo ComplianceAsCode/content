@@ -64,7 +64,7 @@ of AIDE, because it changes binaries.
 <ref nist="CM-6(d),SC-28, SI-7" />
 </Rule>
 
-<Rule id="aide_build_database">
+<Rule id="aide_build_database" severity="medium">
 <title>Build and Test AIDE Database</title>
 <description>Run the following command to generate a new database:
 <pre># /usr/sbin/aide --init</pre>
@@ -77,12 +77,16 @@ To initiate a manual check, run the following command:
 <pre># /usr/sbin/aide --check</pre>
 If this check produces any unexpected output, investigate.
 </description>
+<ocil clause="there is no database file">
+To find the location of the AIDE databse file, run the following command:
+<pre># ls -l <i>DBDIR</i>/<i>databse_file_name</i></pre>
+</ocil>
 <rationale>
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
 <ident cce="27135-3" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
