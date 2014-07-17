@@ -510,7 +510,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="26242-8" />
 <oval id="audit_rules_time_adjtimex" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -538,7 +538,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27203-9" />
 <oval id="audit_rules_time_settimeofday" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -564,7 +564,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27169-2" />
 <oval id="audit_rules_time_stime" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -592,7 +592,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27170-0" />
 <oval id="audit_rules_time_clock_settime" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -617,7 +617,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27172-6" />
 <oval id="audit_rules_time_watch_localtime" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
@@ -646,7 +646,7 @@ unexpected users, groups, or modifications should be investigated for
 legitimacy.</rationale>
 <ident cce="26664-3" />
 <oval id="audit_rules_usergroup_modification" />
-<ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
+<ref nist="AC-2(4),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
 </Rule>
 
 <Rule id="audit_network_modifications">
@@ -672,7 +672,7 @@ than administrator action. Any change to network parameters should be
 audited.</rationale>
 <ident cce="26648-6" />
 <oval id="audit_rules_networkconfig_modification" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 </Rule>
 
 <Rule id="file_permissions_var_log_audit">
@@ -729,7 +729,7 @@ arbitrarily changed by anything other than administrator action. All changes to
 MAC policy should be audited.</rationale>
 <ident cce="26657-7" />
 <oval id="audit_rules_mac_modification" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 </Rule>
 
 <Group id="audit_dac_actions">
@@ -779,7 +779,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="26280-8" />
 <oval id="audit_rules_dac_modification_chmod" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_chown">
@@ -805,7 +805,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27173-4" />
 <oval id="audit_rules_dac_modification_chown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmod">
@@ -831,7 +831,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27174-2" />
 <oval id="audit_rules_dac_modification_fchmod" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmodat">
@@ -857,7 +857,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27175-9" />
 <oval id="audit_rules_dac_modification_fchmodat" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchown">
@@ -883,7 +883,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27177-5" />
 <oval id="audit_rules_dac_modification_fchown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchownat">
@@ -909,7 +909,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27178-3" />
 <oval id="audit_rules_dac_modification_fchownat" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fremovexattr">
@@ -935,7 +935,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27179-1" />
 <oval id="audit_rules_dac_modification_fremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fsetxattr">
@@ -961,7 +961,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27180-9" />
 <oval id="audit_rules_dac_modification_fsetxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lchown">
@@ -987,7 +987,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27181-7" />
 <oval id="audit_rules_dac_modification_lchown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lremovexattr">
@@ -1013,7 +1013,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27182-5" />
 <oval id="audit_rules_dac_modification_lremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lsetxattr">
@@ -1039,7 +1039,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27183-3" />
 <oval id="audit_rules_dac_modification_lsetxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_removexattr">
@@ -1065,7 +1065,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27184-1" />
 <oval id="audit_rules_dac_modification_removexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_setxattr">
@@ -1091,7 +1091,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27185-8" />
 <oval id="audit_rules_dac_modification_setxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
@@ -1108,7 +1108,7 @@ files involved in storing logon events, add the following to <tt>/etc/audit/audi
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="26691-6" />
 <oval id="audit_rules_login_events" />
-<ref nist="AC-17(7),AU-1(b),IR-5" />
+<ref nist="AC-3(10),AU-1(b),IR-5" />
 </Rule>
 
 <Rule id="audit_manual_session_edits">
@@ -1125,7 +1125,7 @@ storing such process information, add the following to
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="26610-6" />
 <oval id="audit_rules_session_events" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification">
@@ -1146,7 +1146,7 @@ To verify that the audit system collects unauthorized file accesses, run the fol
 these events could serve as evidence of potential system compromise.</rationale>
 <ident cce="26712-0" />
 <oval id="audit_rules_unsuccessful_file_modification" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126" />
 </Rule>
 
 <Rule id="audit_privileged_commands">
@@ -1174,7 +1174,7 @@ unusual activity.
 </rationale>
 <ident cce="26457-2" />
 <oval id="audit_rules_privileged_commands" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),IR-5" disa="40" />
+<ref nist="AC-3(10)),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AC-6(9),IR-5" disa="40" />
 <tested by="JL" on="20140703"/>
 </Rule>
 
@@ -1196,7 +1196,7 @@ trail should be created each time a filesystem is mounted to help identify and g
 loss.</rationale>
 <ident cce="26573-6" />
 <oval id="audit_rules_media_export" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -1217,7 +1217,7 @@ from the system. The audit trail could aid in system troubleshooting, as well as
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
 <ident cce="26651-0" />
 <oval id="audit_rules_file_deletion_events" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_sysadmin_actions">
@@ -1235,7 +1235,7 @@ To verify that auditing is configured for system administrator actions, run the 
 of what was executed on the system, as well as, for accountability purposes.</rationale>
 <ident cce="26662-7" />
 <oval id="audit_rules_sysadmin_actions" />
-<ref nist="AC-2(7)(b),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-2(7)(b),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -1257,7 +1257,7 @@ the kernel and potentially introduce malicious code into kernel space. It is imp
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident cce="26611-4" />
 <oval id="audit_rules_kernel_module_loading" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_config_immutable">
