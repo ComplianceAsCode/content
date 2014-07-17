@@ -208,7 +208,7 @@ Shared libraries are stored in the following directories:
 </pre>
 To find shared libraries that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
-<pre>$ find <i>DIR</i> -perm /022 -type f</pre>
+<pre>$ find -L <i>DIR</i> -perm /022 -type f</pre>
 </ocil>
 <rationale>Files from shared library directories are loaded into the address
 space of processes (including privileged ones) or of the kernel itself at
