@@ -221,7 +221,7 @@ intruder gains access to a system or network.
 <description>
 Install virus scanning software, which uses signatures to search for the
 presence of viruses on the filesystem. 
-The McAfee uvscan virus scanning tool is provided for DoD systems.
+The McAfee VirusScan Enterprise for Linux virus scanning tool is provided for DoD systems.
 Ensure virus definition files are no older than 7 days, or their last release.
 <!-- need info here on where DoD admins can go to get this -->
 Configure the virus scanning software to perform scans dynamically on all
@@ -234,18 +234,17 @@ to scan all received mail.
      with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
      particular neighborhood) should occur? -->
 </description>
-<ocil clause="virus scanning software does not run daily, or has signatures that are out of date">
+<ocil clause="virus scanning software does not run continuously, or at least daily, or has signatures that are out of date">
 Inspect the system for a cron job or system service which executes
 a virus scanning tool regularly.
 <br/>
 <!-- this should be handled as DoD-specific text in a future revision -->
-To verify the McAfee command line scan tool (uvscan) is scheduled for
-regular execution, run the following command to check for a cron job:
-<pre># grep uvscan /etc/cron* /var/spool/cron/*</pre>
-This will reveal if and when the uvscan program will be run.
+To verify the McAfee VSEL system service is operational,
+run the following command:
+<pre># /etc/init.d/nails status</pre>
 <br/>
 To check on the age of uvscan virus definition files, run the following command:
-<pre># cd /usr/local/uvscan
+<pre># cd /opt/NAI/LinuxShield/engine/dat
 # ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
 </ocil>
 <rationale>
