@@ -7,7 +7,7 @@
 <xsl:variable name="cceuri">http://cce.mitre.org</xsl:variable>
 
 <!-- abbreviated as references in the XCCDF-->
-<xsl:variable name="nist800-53uri">http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf</xsl:variable>
+<xsl:variable name="nist800-53uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf</xsl:variable>
 <xsl:variable name="cnss1253uri">http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf</xsl:variable>
 <xsl:variable name="dcid63uri">not_officially_available</xsl:variable>
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/cci/index.html</xsl:variable>
