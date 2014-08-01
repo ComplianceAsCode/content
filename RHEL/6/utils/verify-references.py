@@ -15,7 +15,7 @@ xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 
 # we use these strings to look for references within the XCCDF rules
-nist_ref_href = "http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf"
+nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"
 disa_ref_href = "http://iase.disa.mil/cci/index.html"
 
 # default exit value - success
