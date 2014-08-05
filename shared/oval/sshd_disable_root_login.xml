@@ -15,7 +15,7 @@
       <extend_definition comment="sshd service is disabled"
       definition_ref="service_sshd_disabled" />
       <criterion comment="Check PermitRootLogin in /etc/ssh/sshd_config"
-      test_ref="test_sshd_permitrootlogin_no" />
+      negate="true" test_ref="test_sshd_permitrootlogin_no" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
@@ -25,7 +25,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_permitrootlogin_no" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)PermitRootLogin(?-i)[\s]+yes[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)PermitRootLogin(?-i)[\s]+no[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
