@@ -248,7 +248,7 @@
   </xsl:template>
 
   <!-- put general formatting xhtml into xhtml namespace -->
-  <xsl:template match="code | strong | b | em | i | pre | br | hr" >
+  <xsl:template match="p | code | strong | b | em | i | pre | br | hr" >
     <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates select="@*|node()"/>
     </xsl:element>
