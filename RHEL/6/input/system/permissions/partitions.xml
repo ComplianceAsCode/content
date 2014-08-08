@@ -51,7 +51,7 @@ filesystems.  </rationale>
 <ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
 </Rule>
 
-<Rule id="mountopt_noexec_on_removable_partitions">
+<Rule id="mount_option_noexec_removable_partitions">
 <title>Add noexec Option to Removable Media Partitions</title>
 <description>The <tt>noexec</tt> mount option prevents the direct
 execution of binaries on the mounted filesystem. 
@@ -76,15 +76,15 @@ in the output are not removable media.
 <!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
 <Rule id="mountopt_nosuid_on_removable_partitions">
 <title>Add nosuid Option to Removable Media Partitions</title>
-<description>The <tt>nosuid</tt> mount option prevents set-user-identifier (suid)
-and set-group-identifier (sgid) permissions from taking effect. These permissions
+<description>The <tt>nosuid</tt> mount option prevents set-user-identifier (SUID)
+and set-group-identifier (SGID) permissions from taking effect. These permissions
 allow users to execute binaries with the same permissions as the owner and group
-of the file respectively. Users should not be allowed to introduce suid and guid
+of the file respectively. Users should not be allowed to introduce SUID and SGID
 files into the system via partitions mounted from removeable media.
 <mount-desc-macro option="nosuid" part="any removable media partitions" />
 </description>
-<rationale>The presence of suid and sgid executables should be tightly controlled. Allowing
-users to introduce suid or sgid binaries from partitions mounted off of
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Allowing
+users to introduce SUID or SGID binaries from partitions mounted off of
 removable media would allow them to introduce their own highly-privileged programs.</rationale>
 <ident cce="27056-1" />
 <oval id="mount_option_nosuid_removable_partitions" value="var_removable_partition" />
@@ -124,12 +124,12 @@ can expose the system to potential compromise.</rationale>
 <Rule id="mount_option_tmp_nosuid">
 <title>Add nosuid Option to /tmp</title>
 <description>The <tt>nosuid</tt> mount option can be used to prevent
-execution of setuid programs in <tt>/tmp</tt>. The suid/sgid permissions
+execution of setuid programs in <tt>/tmp</tt>. The SUID and SGID permissions
 should not be required in these world-writable directories.
 <mount-desc-macro option="nosuid" part="/tmp" />
 </description>
-<rationale>The presence of suid and sgid executables should be tightly controlled. Users
-should not be able to execute suid or sgid binaries from temporary storage partitions.</rationale>
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Users
+should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <ident cce="26762-5" />
 <oval id="mount_option_tmp_nosuid" />
 <ref nist="CM-7, MP-2"/>
@@ -168,12 +168,12 @@ such as <tt>/dev/shm</tt> can expose the system to potential compromise.</ration
 <Rule id="mount_option_dev_shm_nosuid">
 <title>Add nosuid Option to /dev/shm</title>
 <description>The <tt>nosuid</tt> mount option can be used to prevent execution
-of setuid programs in <tt>/dev/shm</tt>.  The suid/sgid permissions should not
+of setuid programs in <tt>/dev/shm</tt>.  The SUID and SGID permissions should not
 be required in these world-writable directories.
 <mount-desc-macro option="nosuid" part="/dev/shm" />
 </description>
-<rationale>The presence of suid and sgid executables should be tightly controlled. Users
-should not be able to execute suid or sgid binaries from temporary storage partitions.</rationale>
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Users
+should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <ident cce="26486-1" />
 <oval id="mount_option_dev_shm_nosuid" />
 <ref nist="CM-7, MP-2"/>

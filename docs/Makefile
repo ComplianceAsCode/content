@@ -39,17 +39,17 @@ update_site:
 
 user_guide:
 	cd User_Guide/ \
-	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
+	&& publican build --embedtoc --formats html,html-single,epub --embedtoc --langs en-US --publish \
 	&& publican install_book --site_config ../$(SITE_CONFIG) --lang en-US
 
 developer_guide:
 	cd Developer_Guide/ \
-	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
+	&& publican build --embedtoc --formats html,html-single,epub --embedtoc --langs en-US --publish \
 	&& publican install_book --site_config ../$(SITE_CONFIG) --lang en-US
 
 workshop:
 	cd SCAP_and_STIG_Workshop/ \
-	&& publican build --publish --formats html,html-single,epub --embedtoc --langs en-US \
+	&& publican build --embedtoc --formats html,html-single,epub --embedtoc --langs en-US --publish \
 	&& publican install_book --site_config ../$(SITE_CONFIG) --lang en-US
 
 clean:

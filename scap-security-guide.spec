@@ -1,4 +1,4 @@
-%global		redhatssgversion	16
+%global		redhatssgversion	18
 
 Name:		scap-security-guide
 Version:	0.1.%{redhatssgversion}
@@ -50,10 +50,16 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %files
 %{_datadir}/xml/scap
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
-%doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html JBossEAP5/docs/JBossEAP5_Guide.html
+%doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
-* Mon May 05 2014 Jan iankko Lieskovsky <jlieskov@redhat.com) 0.1.16-1
+* Sun Jun 22 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.18-1
+- Make new 0.1.18 release
+
+* Fri May 09 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.17-1
+- Make new 0.1.17 release
+
+* Mon May 05 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.16-1
 - Change naming scheme (0.1-16 => 0.1.16-1)
 
 * Fri Feb 21 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1-16

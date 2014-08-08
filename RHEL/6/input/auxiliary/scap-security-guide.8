@@ -34,8 +34,17 @@ security posture of DoD's security systems by providing the Security Technical
 Implementation Guides (STIGs). This profile was created as a collaboration
 effort between the National Security Agency, DISA FSO, and Red Hat.
 
-For additional information relating to STIGs, please refer to the DISA FSO
-webpage at http://iase.disa.mil/stigs/
+As a result of the upstream/downstream relationship between the SCAP Security
+Guide project and the official DISA FSO STIG baseline, users should expect
+variance between SSG and DISA FSO content. For additional information relating
+to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide
+package, please note that commercial support of this SCAP content is NOT
+available. This profile is provided as example SCAP content with no
+endorsement for suitability or production readiness. Support for this profile
+is provided by the upstream SCAP Security Guide community on a best-effort
+basis. The upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 
 .RE
 .I usgcb-rhel6-server
@@ -59,7 +68,7 @@ webpage at http://usgcb.nist.gov/usgcb_content.html.
 
 
 .SH EXAMPLES
-To scan your system utilizing the OpenSCAP utility against the 
+To scan your system utilizing the OpenSCAP utility against the
 stig-rhel6-server-upstream profile:
 
 oscap  xccdf eval --profile stig-rhel6-server-upstream \ 
@@ -103,7 +112,7 @@ conforms to.
 
 .SH STATEMENT OF SUPPORT
 The SCAP Security Guide, an open source project jointly maintained by Red Hat
-and the NSA, provides XCCDF and OVAL content for Red Hat technologies. As an open 
+and the NSA, provides XCCDF and OVAL content for Red Hat technologies. As an open
 source project, community participation extends into U.S. Department of Defense 
 agencies, civilian agencies, academia, and other industrial partners.
 
@@ -112,13 +121,14 @@ Packages for Enterprise Linux (EPEL) repository. As such, SCAP Security Guide
 content is considered "vendor provided."
 
 Note that while Red Hat hosts the infrastructure for this project and
-Red Hat engineers are involved as maintainers and leaders, there is no 
+Red Hat engineers are involved as maintainers and leaders, there is no
 commercial support contracts or service level agreements provided by Red Hat.
 
 Support, for both users and developers, is provided through the SCAP Security
 Guide community. 
 
 Homepage: https://fedorahosted.org/scap-security-guide/
+.PP
 Mailing List: https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide
 
 .SH DEPLOYMENT TO U.S. CIVILIAN GOVERNMENT SYSTEMS
@@ -136,11 +146,11 @@ Information Systems Agency (DISA) to "develop and provide security configuration
 guidance for IA and IA-enabled IT products in coordination with Director, NSA."
 The output of this authority is the DISA Security Technical Implementation Guides,
 or STIGs. DISA FSO is in the process of moving the STIGs towards the use 
-of the NIST Security Content Automation Protocol (SCAP) in order to "automate" 
+of the NIST Security Content Automation Protocol (SCAP) in order to "automate"
 compliance reporting of the STIGs.
 
-Through a common, shared vision, the SCAP Security Guide community enjoys 
-close collaboration directly with NSA and DISA FSO. As stated in Section 1.1 of 
+Through a common, shared vision, the SCAP Security Guide community enjoys
+close collaboration directly with NSA and DISA FSO. As stated in Section 1.1 of
 the RHEL6 STIG Overview, Version 1, Release 2, issued on 03-JUNE-2013:
 
 "The consensus content was developed using an open-source project called SCAP
@@ -155,10 +165,10 @@ DoD RHEL6 STIG contains only XCCDF content and is available online:
 http://iase.disa.mil/stigs/os/unix/red_hat.html
 
 Content published against the iase.disa.mil website  is authoritative 
-STIG content. The SCAP Security Guide project, as noted in the STIG overview, 
-is considered upstream content. Unlike DISA FSO, the SCAP Security Guide project 
-does publish OVAL automation content. Individual programs and C&A evaluators 
-make program-level determinations on the direct usage of the SCAP Security Guide. 
+STIG content. The SCAP Security Guide project, as noted in the STIG overview,
+is considered upstream content. Unlike DISA FSO, the SCAP Security Guide project
+does publish OVAL automation content. Individual programs and C&A evaluators
+make program-level determinations on the direct usage of the SCAP Security Guide.
 Currently there is no blanket approval.
 
 .SH SEE ALSO

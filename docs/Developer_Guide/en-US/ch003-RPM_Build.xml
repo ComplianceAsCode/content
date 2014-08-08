@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Developer_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Developer_Guide-RPM_Build">
+	<title>Building Official RPMs</title>
+	<para> The following steps are required to build an official release of the SCAP Security Guide
+		RPM. Please note that exceptionally few people have such access.</para>
+	<para> </para>
+	<section id="sect-Developer_Guide-RPM_Build-accounts">
+		<title>Required Accounts</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>Red Hat BugZilla</para>
+				</listitem>
+				<listitem>
+					<para>Bodhi</para>
+				</listitem>
+				<listitem>
+					<para>Koji</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+	<section id="sect-Developer_Guide-RPM_Build-software">
+		<title>Required Software</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>fedpkg</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+	
+	<section id="sect-Developer_Guide-RPM_Build-upstream">
+		<title>Build Upstream</title>
+		<orderedlist>
+			<listitem>
+				<para>Update main scap-security-guide.spec file
+					(scap-security-guide/scap-security-guide.spec) with new version (value of
+					"redhatssgversion" variable). Ensure that "Release:" field contains 1%{?dist} (1
+					as release version). Add particular changelog entry (possibly verify for &amp;
+					fix whitespace noise).</para>
+			</listitem>
+			<listitem>
+				<para>Build and test the content (i.e. run 'make', 'make srpm', 'make rpm') to
+					verify it builds successfully. Also try to scan some systems with selected
+					profiles to see if the content works.</para>
+			</listitem>
+			<listitem>
+				<para>If it works, 'make clean' in the git repository to start with clean table.
+					Make the source tarball via "make tarball". Upload the tarball to
+					repos.ssgproject.org.</para>
+			</listitem>
+		</orderedlist>
+	</section>
+	
+	<section id="sect-Developer_Guide-RPM_Build-epel">
+		<title>Build EPEL Release</title>
+		<para>
+			<orderedlist>
+				<listitem>
+					<para>file-in new EPEL-6 bugzilla (Summary = "Upgrade scap-security-guide
+						package to scap-security-guide-X.Y.Z").</para>
+					<para>NOTE: That bugzilla is required later when creating Bodhi update request.
+						See below.</para>
+					<para>NOTE: It would be created automa(g,t}ically once the "latest upstream
+						source tarball checking Red Hat Bugzilla functionality" would realize there
+						is new source tarball available. But since we want immediate upgrade, we
+						create that big manually.</para>
+				</listitem>
+				<listitem>
+					<para>Take that BugZilla (state change NEW=>ASSIGNED)</para>
+				</listitem>
+				<listitem>
+					<para>Clone the scap-security-guide git repository via fedpkg tool (as
+						documented in: <ulink
+							url="https://fedoraproject.org/wiki/Join_the_package_collection_maintainers#Import.2C_Commit.2Cand_Build_Your_Package"
+							>https://fedoraproject.org/wiki/Join_the_package_collection_maintainers#Import.2C_Commit.2Cand_Build_Your_Package</ulink>)
+						section "Check out the module" and later ones). Split into coins for our
+						case it means:</para>
+					<para>$ fedpkg clone scap-security-guide</para>
+					<para>$ cd scap-security-guide/</para>
+				</listitem>
+				<listitem>
+					<para>Ensure to change the git branch from master/ to origin/el6 via
+						'switch-branch' fedpkg's option (this ensures the changes will be actually
+						committed into EPEL-6 branch, and not into the master, IOW F-21 branch,
+						which we don't want. To see the list of available branches, issue the
+						following:</para>
+					<para>$ fedpkg switch-branch -l</para>
+					<para>Locals:</para>
+					<para>* master</para>
+					<para>Remotes:</para>
+					<para>     orgin/el6</para>
+					<para>     origin/epel7</para>
+					<para>     origin/f18</para>
+					<para>     origin/f19</para>
+					<para>     origin/f20</para>
+					<para>     origin/master</para>
+					<para/>
+					<para>To switch to the el6 branch, issue:</para>
+					<para>     $ fedpkg switch-branch el6</para>
+					<para>     Branch el6 set up to track remote branch el6 from origin</para>
+					<para>Now it's possible to actually see the actual content of EPEL-6
+						branch:</para>
+					<para>     $ ls</para>
+					<para>     scap-security-guide.spec     sources</para>
+					<para/>
+					<para>scap-security-guide.spec is the SPEC file used for build of EPEL-6's RPM,
+						sources text file contains md5sum of scap-security-guide tarball, which will
+						be built during SRPM / RPM build.</para>
+				</listitem>
+				<listitem>
+					<para>To refresh both of them (*.spec &amp; content of source) at once, it's
+						possible to create source RPM package &amp; import it into fedpkg.</para>
+					<para>Two important notes to mention here:</para>
+					<para>- The spec file needs to be the updated one => it's necessary to update
+						the actual epel-6 one with changes from upstream or replace the epel-6 one
+						with upstream one (the latter is still possible because as of right now
+						there aren't epel-6 downstream specific patches that wouldn't be present in
+						upstream already. But should there be changes in the future, the epel-6 spec
+						should be updated to include changes from upstream spec but simultaneoously
+						to keep epel-6 custom patches. IOW just replacing epel-6's spec with
+						upsteeam's one wouldn't work, but manual changes would be necessary).</para>
+					<para>- The new source tarball needs to be the last one uploaded to
+						repos.ssgproject.org (so md5sum would match during package build). </para>
+					<para>This means:</para>
+					<para>     * start with clean /rpmbuild directory structure</para>
+					<para>     * download latest tarball from repos.ssgproject.org into
+						/rpmbuild/SOURCES</para>
+					<para>     * place the modified epel-6 spec file into /rpmbuild/SPECS</para>
+					<para>     * build the source RPM (result will be in /rpmbuild/SRPMS)</para>
+					<para>Next, return back to fedpkg &amp; import the SRPM created in the previous
+						step:</para>
+					<para>     $ fedpkg import path_to_rpm</para>
+					<para>This will change content of 'sources' file (include new md5sum) &amp;
+						update scap-security-guide.spec.</para>
+					<para>$ git status [to see what will get committed]</para>
+					<para>$ git commit [to confirm changes. The commit message should contain the
+						string "Resolves: rh bz# id_of_epel_bug_we_created_before"</para>
+					<para>Make scratch build to see the uploaded content (spec + tarball) would
+						actually build in the Koji build system via:</para>
+					<para>$ fedpkg scratch-build --srpm path_to_srpm_created_locally_before</para>
+					<para>NOTE: scratch-build to work with actually committed git repository
+						content, it requires the new content to already be "git push-ed" to the
+						repository. But since we want to verify if the content would build ye before
+						pushing changes into the EPEL-6 repository, we need to provide the --srpm
+						option pointing fedpkg to the local source RPM package we have created one
+						step before.</para>
+					<para>Once the scratch build passes (visible in Koji web interface, or also on
+						command line), we can push the changes to the git repository via:</para>
+					<para>$ git push origin el6</para>
+					<para>After successful push, our / latest push should be visibile at (in el6
+						branch) http://pkgs.fedoraproject.org/cgit/scap-security-guide.git/</para>
+					<para>Now it's safe (scratch build succeeded &amp; we pushed the changes to the
+						Fedora's git) to build real new package via:</para>
+					<para>$ fedpkg build</para>
+					<para>This again generates clickable link, at which point it's possible to see
+						the progress / result of the build. Once the new package build in Koji
+						finishes successfully, we flip the previously created EPEL-6 bug to MODIFIED
+						(ASSIGNED => MODIFIED) and mention the new package name-version-release in
+						the "Fixed in Version:" field of that bug.</para>
+				</listitem>
+				<listitem>
+					<para>Having new build available, it's necessary to schedule new Bodhi update
+						(something like advisory to be tied with new package). I am using UI:</para>
+					<para>https://admin.fedoraproject.org/updates/new/</para>
+					<para>but there's command-line interface too (see [1] for further
+						details).</para>
+					<para>Add New Update screen is shown (containing the following fields /
+						items):</para>
+					<para>Add New Update</para>
+					<para>----------------------------</para>
+					<para>Package: name-version-release of Koji build goes here (e.g.
+						scap-security-guide-0.1-16.el6)</para>
+					<para>Type:  select one of - bugfix        /* intented for updates fixing bugs
+						*/</para>
+					<para>                                   enhancement /* intended for adding new
+						features */</para>
+					<para>                                   security /* intended for fixing
+						security flaws */</para>
+					<para>                                   newpackage /* intended for updates
+						introducing new RPM packages */</para>
+					<para>                                   options</para>
+					<para>Request: select "testing" option of -testing /* intended for udpates that
+						should reach -testing repo first, before -stable) */</para>
+					<para>                                                      -stable /* updates
+						directly into -stable (maybe fore critical) */</para>
+					<para>                                                      -none /* don't use
+						this */</para>
+					<para>Bugs: Provide previously created EPEL-6 RH BZ#, ensure the "Close bugs
+						when update is stable" option is checked!</para>
+					<para>Note: Describe the changes in this text field (i.e. which bugs got fixed,
+						which new functionality, etc). The content of this field appear in the
+						advisory (sent on fedora-package-announce mailing list), when the build is
+						pushed to -stable.</para>
+					<para>Suggest Reboot: []  (generally leave unchecked)</para>
+					<para>Enable karma automatism [v] </para>
+					<para>(If to use the karma threshhold the updates push system to use to decide
+						if the build should be pushed to -stable channel or not)</para>
+					<para>Threshold for pushing to -stable [3]</para>
+					<para>(Minimum level of karma build needs to obtain from package testers to be
+						able to push it into -stable channel)</para>
+					<para>Threshhold for unpushing [-3]</para>
+					<para>(Lower bound for negative karma, which is a sign for the push system to
+						move the package from the -testing repository. IOW the build has received so
+						much negative karma/experiences, it's not usable even for the -testing
+						repository and should be rebuilt)</para>
+					<para/>
+					<para>Once all the information is filed, click "Save Update." This will generate
+						automated EMail about the build being pushed to -testing. After some time at
+						the same day (depending on TZ) the build is pushed to -testing
+						repository.</para>
+				</listitem>
+				<listitem>
+					<para>The maintainer should check Bohdi packages for that update for
+						positive/negative karma/comments. If the build has reached positive karma
+						>=3 it can be pushed to -stable (if it hasn't reavhed positive karma in >= 3
+						in 7 days, it will be pushed to -stable; 7 days is considered sufficient
+						period). If there are signs of negative karma, the build should be either
+						unpushed / deleted &amp; new one made.</para>
+				</listitem>
+				<listitem>
+					<para>After 7 days the build can be pushed to -stable (under assumption it
+						didn't reach positive karma >= 3 sooner), meaning in the next day or two
+						it's reachable via yum subscribed to epel-6 repository directly.</para>
+				</listitem>
+			</orderedlist>
+		</para>
+	</section>
+
+</chapter>

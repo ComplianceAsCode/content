@@ -38,7 +38,7 @@
 <select idref="aide_build_database" selected="true"/>
 
 <select idref="mountopt_nodev_on_removable_partitions" selected="true"/>
-<select idref="mountopt_noexec_on_removable_partitions" selected="true"/>
+<select idref="mount_option_noexec_removable_partitions" selected="true"/>
 <select idref="mountopt_nosuid_on_removable_partitions" selected="true"/>
 <select idref="mount_option_tmp_nodev" selected="true"/>
 <select idref="mount_option_tmp_noexec" selected="true"/>
@@ -71,7 +71,7 @@
 
 <select idref="disable_users_coredumps" selected="true"/>
 <select idref="sysctl_kernel_randomize_va_space" selected="true"/>
-<select idref="enable_execshield" selected="true"/>
+<select idref="sysctl_kernel_exec_shield" selected="true"/>
 <select idref="install_PAE_kernel_on_x86-32" selected="true" />
 <select idref="disable_prelink" selected="true" />
 <select idref="account_unique_name" selected="true"/>
@@ -140,10 +140,10 @@
 <select idref="audit_logs_rootowner" selected="true" />
 <select idref="audit_manual_logon_edits" selected="true" />
 <select idref="audit_manual_session_edits" selected="true" />
-<select idref="audit_file_access" selected="true"/>
+<select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
 <select idref="audit_privileged_commands" selected="true"/>
 <select idref="audit_media_exports" selected="true"/>
-<select idref="audit_file_deletions" selected="true"/>
+<select idref="audit_rules_file_deletion_events" selected="true"/>
 
 <select idref="securetty_root_login_console_only" selected="true" />
 <select idref="no_direct_root_logins" selected="true" />
@@ -189,7 +189,6 @@
 <select idref="enable_gdm_login_banner" selected="true" />
 <select idref="set_gdm_login_banner_text" selected="true" />
 <refine-value idref="login_banner_text" selector="dod_default"/>
-<select idref="disable_user_list" selected="true" />
 <select idref="disable_gnome_thumbnailers" selected="true" />
 <select idref="gconf_gnome_disable_automount" selected="true"/>
 
@@ -227,7 +226,6 @@
 <select idref="kernel_module_bluetooth_disabled" selected="true"/>
 
 <select idref="service_crond_enabled" selected="true"/>
-<select idref="disable_anacron" selected="true" />
 
 <select idref="service_abrtd_disabled" selected="true"/>
 <select idref="service_acpid_disabled" selected="true" />
@@ -268,7 +266,7 @@
 
 <select idref="ssh_server_disabled" selected="true" />
 <select idref="sshd_allow_only_protocol2" selected="true"/>
-<select idref="sshd_set_idle_timeout" selected="true"/>
+<refine-value idref="sshd_idle_timeout_value" selector="60_minutes"/>
 <select idref="sshd_set_keepalive" selected="true"/>
 <select idref="sshd_disable_rhosts" selected="true"/>
 <select idref="sshd_disable_root_login" selected="true"/>
@@ -367,7 +365,7 @@
 <select idref="disable_snmpd" selected="true"/>
 <select idref="uninstall_net-snmp" selected="true"/>
 
-<select idref="install_openswan" selected="true" />
+<select idref="package_openswan_installed" selected="true" />
 <select idref="no_rsh_trust_files" selected="true"/>
 <select idref="tftpd_uses_secure_mode" selected="true" />
 

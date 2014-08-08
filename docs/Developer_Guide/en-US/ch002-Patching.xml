@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Developer_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Developer_Guide-Patching">
+	<title>Patch Creation</title>
+	<para>.... intro on GitHub pull request system ..... </para>
+	<para> </para>
+	<section id="sect-Developer_Guide-Patching-maillist">
+		<title>Fork SSG </title>
+		<orderedlist>
+			<listitem>
+				<para>Visit SSG's GitHub webpage at <ulink
+						url="https://github.com/OpenSCAP/scap-security-guide"
+						>https://github.com/OpenSCAP/scap-security-guide</ulink>. In the top-right
+					corner, you will see a button that says "Fork." Click it.</para>
+				<para><inlinegraphic fileref="images/ch002-Patching-fork.png"/></para>
+			</listitem>
+			<listitem>
+				<para>If you're a member of multiple GitHub groups/accounts, you will be asked for
+					the fork destination. For most users it is sufficient to fork into their local
+					account. To do so, click on your username/icon. For example:</para>
+				<para><inlinegraphic fileref="images/ch002-Patching-forklocation.png"/></para>
+			</listitem>
+			<listitem>
+				<para>Congratulations, you've created a localized repository! Any changes you make
+					will be localized, consider it your own sandbox. At this point you can 'git
+					clone' the source over SSH, HTTPS, or Subversion. </para>
+				<para>GitHub dynamically generates the appropriate git URLs, and dynamically
+					generates zip-compressed archives should you desire them. In the right-most
+					column, near the bottom, you will see the various git clone options:</para>
+				<para><inlinegraphic fileref="images/ch002-Patching-githubURL.png"/></para>
+			</listitem>
+		</orderedlist>
+	</section>
+	
+	<section id="sect-Developer_Guide-Patching-commit">
+		<title>Committing to your Local Repository</title>
+		<para>... text to describe .... </para>
+		<section>
+			<title>Edits via GUI</title>
+			<para>The GitHub website supports in-line editing of files. This is extremely convenient
+				when making small changes, such as fixing typos. When you've found a file in need of
+				edits, note the "Edit" button within the file's toolbar:</para>
+			<para><inlinegraphic fileref="images/ch002-Patching-inline_edits.png"/></para>
+			<para>This will bring you to an in-line editor. Make your changes and scroll to the
+				bottom of the webpage. You will notice a "Commit Changes" form. The first field is a
+				one-line description of the change, while within the second (main body) you are
+				expected to provide a detailed description of any changes. Your entries in this
+				field should be as concise as possible while providing enough description for a
+				community member to properly evaluate your changes, and the logic for making them.
+				For example:</para>
+			<para><inlinegraphic fileref="images/ch002-Patching-GUI_naming_scheme_sample.png"
+				/></para>
+			<para>Click on "Commit changes," which will push the change to your local
+				repository.</para>
+		</section>
+		<section>
+			<title>Edits via CLI</title>
+			<para>As mentioned earlier, GitHub creates a localized git repository, your own personal
+				sandbox. Clone the repository locally, then 'git commit' and 'git push' changes as
+				you normally would.</para>
+		</section>
+	</section>
+	
+	<section id="sect-Developer_Guide-Patching-ssgproject">
+		<title>Issuing Pull Requests</title>
+		<para>When you're ready for your patches to be merged upstream, you must issue a "Pull Request." </para>
+		<para>
+			<orderedlist>
+				<listitem>
+					<para>Return to your local repositories webpage on GitHub. </para>
+					<para><emphasis role="bold">NOTE: </emphasis>If you've created local branches,
+						ensure you've selected the appropriate branch that you'd like to submit
+						patches against. <emphasis role="italic">For most people, this step can be
+							ignored.</emphasis></para>
+				</listitem>
+				<listitem>
+					<para>Click on "Pull Request," located in the top-right of the frame which lists
+						your directory contents:</para>
+					<para><inlinegraphic fileref="images/ch002-Patching-Pull_Requests.png"/></para>
+				</listitem>
+				<listitem>
+					<para>You will be brought to a listing of your commits. Click the green button
+						labelled "Create Pull Request":</para>
+					<para><inlinegraphic fileref="images/ch002-Patching-Create_Pull.png"/></para>
+				</listitem>
+				<listitem>
+					<para>You will be requested to input a patch title and description. Be concise,
+						but thorough enough for a community member to understand logic behind your
+						changes. Paste into the description field testing evidence (e.g. running
+						testcheck.py on any submitted OVAL, or before/after for remediation
+						scripts). </para>
+					<para>After completing the form, select "Send pull request":</para>
+					<para><inlinegraphic fileref="images/ch002-Patching-Send_Pull_Request.png"
+						/></para>
+					<para/>
+				</listitem>
+				<listitem>
+					<para>A community member will review your patch. They will either merge the
+						patch upstream, indicate additional changes/documentation needed, or decline
+						the patch. You'll automatically be notified via EMail of any status
+						updates.</para>
+				</listitem>
+			</orderedlist>
+		</para>
+	</section>
+
+</chapter>

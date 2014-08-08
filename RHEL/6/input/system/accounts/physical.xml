@@ -168,7 +168,7 @@ prompted before any action is taken.
 
 NOTE: When updating the <tt>initscripts</tt> package on a Red Hat Enterprise
 Linux 6 system, custom changes to <tt>/etc/init/control-alt-delete.conf</tt>
-may be overwritten. Refer to https://access.redhat.com/site/solutions/70464
+may be overwritten. Refer to <b>https://access.redhat.com/site/solutions/70464</b>
 for additional information.
 </rationale>
 <ident cce="27567-7"/>
@@ -221,14 +221,14 @@ by choosing <b>Lock Screen</b> from the <b>System</b> menu.
 The <tt>gconftool-2</tt> program can be used to enforce mandatory
 screen locking settings for the default GNOME environment.
 The
-following sections detail commands to enforce idle activation of the screen saver,
+following sections detail commands to enforce idle activation of the screensaver,
 screen locking, a blank-screen screensaver, and an idle
 activation time.
 
 <br /><br />
 Because users should be trained to lock the screen when they
 step away from the computer, the automatic locking feature is only
-meant as a backup. The Lock Screen icon from the System menu can
+meant as a backup. The <b>Lock Screen</b> icon from the <b>System</b> menu can
 also be dragged to the taskbar in order to facilitate even more
 convenient screen-locking.
 <br /><br />
@@ -238,9 +238,9 @@ to log into an X Windows environment, and should only be used to
 for direct login via console in emergency circumstances.
 <br /><br />
 For more information about configuring GNOME screensaver, see
-http://live.gnome.org/GnomeScreensaver. For more information about
+<b>http://live.gnome.org/GnomeScreensaver</b>. For more information about
 enforcing preferences in the GNOME environment using the GConf
-configuration system, see http://projects.gnome.org/gconf and
+configuration system, see <b>http://projects.gnome.org/gconf</b> and
 the man page <tt>gconftool-2(1)</tt>.</description>
 
 <Value id="inactivity_timeout_value" type="number" operator="equals">
@@ -261,11 +261,11 @@ inactivity in the GNOME desktop to 15 minutes:
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type int \
-  --set /apps/gnome-screensaver/idle_delay 15</pre>
+  --set /desktop/gnome/session/idle_delay 15</pre>
 </description>
 <ocil clause="it is not">
 To check the current idle time-out value, run the following command:
-<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_delay</pre>
+<pre>$ gconftool-2 -g /desktop/gnome/session/idle_delay</pre>
 If properly configured, the output should be <tt>15</tt>. 
 </ocil>
 <rationale>
@@ -293,7 +293,7 @@ in the GNOME desktop after a period of inactivity:
 If properly configured, the output should be <tt>true</tt>.
 </ocil>
 <rationale>
-Enabling idle activation of the screen saver ensures the screensaver will
+Enabling idle activation of the screensaver ensures the screensaver will
 be activated after the idle delay.  Applications requiring continuous,
 real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
@@ -330,7 +330,7 @@ access the system, preventing access by passersby.
 </Rule>
 
 <Rule id="set_blank_screensaver">
-<title>Implement Blank Screen Saver</title>
+<title>Implement Blank Screensaver</title>
 <description>
 Run the following command to set the screensaver mode
 in the GNOME desktop to a blank screen:
@@ -391,7 +391,7 @@ for users who may need to suspend console logins.
 <title>Hardware Tokens for Authentication</title>
 <description>
 The use of hardware tokens such as smart cards for system login
-provides stronger, two-factor authentication than using a username/password.
+provides stronger, two-factor authentication than using a username and password.
 In Red Hat Enterprise Linux servers and workstations, hardware token login
 is not enabled by default and must be enabled in the system settings.
 </description>
@@ -401,7 +401,11 @@ is not enabled by default and must be enabled in the system settings.
 <description>
 To enable smart card authentication, consult the documentation at:
 <ul>
-<li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Smart_Cards/enabling-smart-card-login.html</li>
+<li><b>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Smart_Cards/enabling-smart-card-login.html</b></li>
+</ul>
+For guidance on enabling SSH to authenticate against a Common Access Card (CAC), consult documentation at:
+<ul>
+<li><b>https://access.redhat.com/solutions/82273</b></li>
 </ul>
 </description>
 <ocil clause="non-exempt accounts are not using CAC authentication">
@@ -419,7 +423,7 @@ smart card (CAC) authentication:
 </ul>
 </ocil>
 <rationale>Smart card login provides two-factor authentication stronger than
-that provided by a username/password combination. Smart cards leverage a PKI
+that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
 <ident cce="27440-7"/>
