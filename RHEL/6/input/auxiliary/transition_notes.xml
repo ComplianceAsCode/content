@@ -51,12 +51,12 @@
 
 <note ref="29241" auth="GG" rule="">This is not covered in RHEL 6 content</note>
 
-<note ref="29240" auth="GG" rule="audit_file_deletions">This is covered in RHEL 6 content</note>
+<note ref="29240" auth="GG" rule="audit_rules_file_deletion_events">This is covered in RHEL 6 content</note>
 
-<note ref="29239" auth="GG" rule="audit_file_access">This is covered in RHEL 6 content</note>
-<note ref="29238" auth="GG" rule="audit_file_access">This is covered in RHEL 6 content</note>
+<note ref="29239" auth="GG" rule="audit_rules_unsuccessful_file_modification">This is covered in RHEL 6 content</note>
+<note ref="29238" auth="GG" rule="audit_rules_unsuccessful_file_modification">This is covered in RHEL 6 content</note>
 <note ref="29237" auth="GG" rule="">This is not covered in RHEL 6 content</note>
-<note ref="29236" auth="GG" rule="audit_file_access">This is covered in RHEL 6 content</note>
+<note ref="29236" auth="GG" rule="audit_rules_unsuccessful_file_modification">This is covered in RHEL 6 content</note>
 
 <note ref="931" auth="VP">
 This is not in the RHEL 6 content.  Nosuid / nodev checks address perms on NFS shares.
@@ -1053,7 +1053,7 @@ also watch for LD_AUDIT
 <note ref="814" auth="KS">
 Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
 appears to already exist. 
-rule=audit_file_access manual=no
+rule=audit_rules_unsuccessful_file_modification manual=no
 </note>
 
 <note ref="815" auth="KS">
@@ -1489,7 +1489,7 @@ rule=disable_users_coredumps manual=no
 <note ref="11999" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=enable_execshield manual=no
+rule=sysctl_kernel_exec_shield manual=no
 </note>
 
 <note ref="12002" auth="KS">

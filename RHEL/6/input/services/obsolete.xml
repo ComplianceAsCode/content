@@ -41,7 +41,7 @@ attacks against xinetd itself.
 </rationale>
 <ident cce="27046-2" />
 <oval id="service_xinetd_disabled" />
-<ref nist="AC-17(8),CM-7" disa="305"/>
+<ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -60,7 +60,7 @@ xinetd service's accidental (or intentional) activation.
 </rationale>
 <ident cce="27005-8" />
 <oval id="package_xinetd_removed" />
-<ref nist="AC-17(8),CM-7" disa="305"/>
+<ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -87,7 +87,7 @@ subject to man-in-the-middle attacks.
 </rationale>
 <ident cce="26836-7" />
 <oval id="service_telnetd_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
+<ref nist="CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -103,7 +103,7 @@ telnet service's accidental (or intentional) activation.
 </rationale>
 <ident cce="27073-6" />
 <oval id="package_telnet-server_removed" />
-<ref nist="AC-17(8),CM-7" disa="305,381"/>
+<ref nist="CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -143,7 +143,7 @@ activation.
 </rationale>
 <ident cce="27062-9" />
 <oval id="package_rsh-server_removed" />
-<ref nist="AC-17(8),CM-7" disa="305,381"/>
+<ref nist="CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -162,7 +162,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident cce="27208-8" />
 <oval id="service_rexec_disabled" />
-<ref nist="AC-17(8),CM-7" disa="68,1436"/>
+<ref nist="CM-7" disa="68,1436"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -181,12 +181,12 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident cce="26994-4" />
 <oval id="service_rsh_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" />
+<ref nist="CM-7,IA-5(1)(c)" disa="68,1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_rsh_removed">
-<title>Remove rsh</title>
+<title>Uninstal rsh Package</title>
 <description>The <tt>rsh</tt> package contains the client commands
 for the rsh services</description>
 <ocil><package-remove-macro package="rsh"/></ocil>
@@ -198,6 +198,8 @@ their credentials. Note that removing the <tt>rsh</tt> package removes
 the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 </rationale>
 <ident cce="" />
+<oval id="package_rsh_removed" />
+<tested by="JL" on="20140530"/>
 </Rule>
 
 <Rule id="disable_rlogin" severity="high">
@@ -215,7 +217,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident cce="26865-6" />
 <oval id="service_rlogin_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" />
+<ref nist="CM-7,IA-5(1)(c)" disa="1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -238,7 +240,7 @@ of an Rsh trust relationship.
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
 <ident cce="27270-8" />
-<ref nist="AC-17(8),CM-7" disa="1436" />
+<ref nist="CM-7" disa="1436" />
 <oval id="no_rsh_trust_files" />
 <tested by="DS" on="20121026"/>
 </Rule>
@@ -265,7 +267,7 @@ accidental (or intentional) activation of NIS or NIS+ services.
 </rationale>
 <ident cce="27079-3" />
 <oval id="package_ypserv_removed" />
-<ref nist="AC-17(8),CM-7" disa="305,381"/>
+<ref nist="CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -282,7 +284,7 @@ as a client in a NIS or NIS+ domain.
 </rationale>
 <ident cce="26894-6" />
 <oval id="service_ypbind_disabled" />
-<ref nist="AC-17(8),CM-7" disa="305"/>
+<ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -326,7 +328,7 @@ as a TFTP server, which does not provide encryption or authentication.
 </rationale>
 <ident cce="27055-3" />
 <oval id="service_tftp_disabled" />
-<ref nist="AC-17(8),CM-7" disa="1436" />
+<ref nist="CM-7" disa="1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -344,7 +346,7 @@ accidental (or intentional) activation of tftp services.
 </rationale>
 <ident cce="26946-4" />
 <oval id="package_tftp-server_removed" />
-<ref nist="AC-17(8),CM-7" disa="305"/>
+<ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -390,7 +392,52 @@ server_args = -s /var/lib/tftpboot</pre>
 </ocil>
 <ident cce="27272-4" />
 <oval id="tftpd_uses_secure_mode" />
-<ref nist="AC-17(8),CM-7" disa="366"/>
+<ref nist="CM-7" disa="366"/>
+</Rule>
+
+</Group>
+
+<Group id="talk">
+<title>Chat/Messaging Services</title>
+<description>
+The talk software makes it possible for users to send and receive messages
+across systems through a terminal session.
+</description>
+
+<Rule id="uninstall_talk-server" severity="medium">
+<title>Uninstall talk-server Package</title>
+<description>
+<package-remove-macro package="talk-server" />
+</description>
+<ocil>
+<package-check-macro package="talk-server" />
+</ocil>
+<rationale>
+The talk software presents a security risk as it uses unencrypted protocols
+for communications. Removing the <tt>talk-server</tt> package decreases the
+risk of the accidental (or intentional) activation of talk services.
+</rationale>
+<ident cce="" />
+<oval id="package_talk-server_removed" />
+<tested by="JL" on="20140625"/>
+</Rule>
+
+<Rule id="package_talk_removed">
+<title>Uninstall talk Package</title>
+<description>The <tt>talk</tt> package contains the client program for the
+Internet talk protocol, which allows the user to chat with other users on
+different systems. Talk is a communication program which copies lines from one
+terminal to the terminal of another user.
+</description>
+<ocil><package-remove-macro package="talk"/></ocil>
+<rationale>
+The talk software presents a security risk as it uses unencrypted protocols
+for communications. Removing the <tt>talk</tt> package decreases the
+risk of the accidental (or intentional) activation of talk client program.
+</rationale>
+<ident cce="" />
+<oval id="package_talk_removed" />
+<tested by="JL" on="20140625"/>
 </Rule>
 
 </Group>

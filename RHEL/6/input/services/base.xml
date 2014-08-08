@@ -22,7 +22,7 @@ vulnerabilities in software executing on the local machine, as well as sensitive
 information from within a process's address space or registers.</rationale>
 <ident cce="27247-6" />
 <oval id="service_abrtd_disabled" />
-<ref nist="AC-17(8),CM-7" disa="381" />
+<ref nist="CM-7" disa="381" />
 </Rule>
 
 <Rule id="service_acpid_disabled">
@@ -153,7 +153,7 @@ crash, which can load information from the crashed kernel for analysis.
 is little need to run the kdump service.</rationale>
 <ident cce="26850-8" />
 <oval id="service_kdump_disabled" />
-<ref nist="AC-17(8),CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 
@@ -205,7 +205,7 @@ kernel panics, which is not common.
 </rationale>
 <ident cce="27254-2" />
 <oval id="service_netconsole_disabled" />
-<ref nist="AC-17(8),CM-7" disa="381" />
+<ref nist="CM-7" disa="381" />
 </Rule>
 
 <Rule id="service_ntpdate_disabled">
@@ -224,7 +224,7 @@ reboots. In any event, the functionality of the ntpdate service is now
 available in the ntpd program and should be considered deprecated.</rationale>
 <ident cce="27256-7" />
 <oval id="service_ntpdate_disabled" />
-<ref nist="AC-17(8),CM-7" disa="382" />
+<ref nist="CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -260,7 +260,7 @@ preventing conflicting usage of ports in the reserved port range, but it can be
 disabled if not needed.</rationale>
 <ident cce="27258-3" />
 <oval id="service_portreserve_disabled" />
-<ref nist="AC-17(8),CM-7" />
+<ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -298,7 +298,7 @@ the system is not intended to receive AMQP traffic, then the <tt>qpidd</tt>
 service is not needed and should be disabled or removed.</rationale>
 <ident cce="26928-2" />
 <oval id="service_qpidd_disabled" />
-<ref nist="AC-17(8),CM-7" disa="382" />
+<ref nist="CM-7" disa="382" />
 </Rule>
 
 <Rule id="service_quota_nld_disabled">
@@ -337,7 +337,7 @@ some special-purpose systems often use DHCP (instead of IRDP) to retrieve
 dynamic network configuration information.</rationale>
 <ident cce="27261-7" />
 <oval id="service_rdisc_disabled" />
-<ref nist="AC-17(8),AC-4,CM-7" disa="382" />
+<ref nist="AC-4,CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -356,7 +356,7 @@ desirable for some environments.  However, if the system is being managed by RHN
  RHN Satellite Server the <tt>rhnsd</tt> daemon can remain on. </rationale>
 <ident cce="26846-6" />
 <oval id="service_rhnsd_disabled" />
-<ref nist="AC-17(8),CM-7" disa="382" />
+<ref nist="CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -395,7 +395,7 @@ use Kerberos and LDAP. For others, however, in which only local files may be
 consulted, it is not necessary and should be disabled.</rationale>
 <ident cce="27263-3" />
 <oval id="service_saslauthd_disabled" />
-<ref nist="AC-17(8),CM-7" />
+<ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
 </Rule>
 

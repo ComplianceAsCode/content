@@ -117,7 +117,7 @@ controlled through <tt>sysctl</tt> variables <tt>kernel.exec-shield</tt> and
 <tt>kernel.randomize_va_space</tt>.
 </description>
 
-<Rule id="enable_execshield" severity="medium">
+<Rule id="sysctl_kernel_exec_shield" severity="medium">
 <title>Enable ExecShield</title>
 <description><sysctl-desc-macro sysctl="kernel.exec-shield" value="1" /></description>
 <ocil><sysctl-check-macro sysctl="kernel.exec-shield" value="1" /></ocil>

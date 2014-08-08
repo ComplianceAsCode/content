@@ -58,7 +58,7 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 
 <select idref="set_iptables_default_rule_forward" selected="true"/>
 
-<select idref="install_openswan" selected="true" />
+<select idref="package_openswan_installed" selected="true" />
 <select idref="enable_gdm_login_banner" selected="true" />
 
 <select idref="set_gdm_login_banner_text" selected="true" />
@@ -93,7 +93,7 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 
 <select idref="display_login_attempts" selected="true" />
 
-<select idref="deny_password_attempts_unlock_time" selected="true" />
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
 <refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800"/>
 <select idref="accounts_passwords_pam_fail_interval" selected="true" />
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900"/>
