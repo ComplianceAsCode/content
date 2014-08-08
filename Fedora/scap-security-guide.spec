@@ -10,11 +10,11 @@
 
 # Used to specify RHEL scap-security-guide tarball source
 # (needs to match latest EPEL-6 scap-security-guide RPM release)
-%global	rhelssgversion		0.1.16
+%global	rhelssgversion		0.1.18
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Group:		Applications/System
 License:	Public Domain
@@ -80,6 +80,9 @@ popd
 
 
 %changelog
+* Sun Jun 22 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5-2
+- Upgrade internal RHEL content to 0.1.18 version
+
 * Thu Feb 27 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5-1
 - Fix fedora-srpm and fedora-rpm Make targets to work again
 - Include RHEL-6 and RHEL-7 datastream files to support remote RHEL system scans

@@ -64,7 +64,7 @@ Patches would be most welcome!
 <select idref="mountopt_nodev_on_removable_partitions" selected="true" />
 
 <!-- 1.1.12 Add noexec Option to Removable Media Partitions (Not Scored)  -->
-<select idref="mountopt_noexec_on_removable_partitions" selected="true" />
+<select idref="mount_option_noexec_removable_partitions" selected="true" />
 
 <!-- 1.1.13 Add nosuid Option to Removable Media Partitions (Not Scored)  -->
 <select idref="mountopt_nosuid_on_removable_partitions" selected="true" />
@@ -174,7 +174,7 @@ Patches would be most welcome!
 <select idref="sysctl_fs_suid_dumpable" selected="true" />
 
 <!-- 1.6.2 Configure ExecShield (Scored) --> 
-<select idref="enable_execshield" selected="true"/>
+<select idref="sysctl_kernel_exec_shield" selected="true"/>
 
 <!-- 1.6.3 Enable Randomized Virtual Memory Region Placement (Scored) -->
 <select idref="sysctl_kernel_randomize_va_space" selected="true"/>
@@ -443,7 +443,7 @@ Patches would be most welcome!
 <select idref="audit_dac_actions" selected="true" />
 
 <!-- 5.2.11 Collect Unsuccessful Unauthorized Access Attempts to Files (Scored) -->
-<select idref="audit_file_access" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
 
 <!-- 5.2.12 Collect Use of Privileged Commands (Scored) -->
 <select idref="audit_privileged_commands" selected="true" />
@@ -452,7 +452,7 @@ Patches would be most welcome!
 <select idref="audit_media_exports" selected="true" />
 
 <!-- 5.2.14 Collect File Deletion Events by User (Scored) -->
-<select idref="audit_file_deletions" selected="true" />
+<select idref="audit_rules_file_deletion_events" selected="true" />
 
 <!-- 5.2.15 Collect Changes to System Administration Scope (sudoers) (Scored) -->
 <select idref="audit_sysadmin_actions" selected="true" />

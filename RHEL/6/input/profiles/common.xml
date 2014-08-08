@@ -72,7 +72,7 @@
 <!-- CURRENTLY NOT IMPLEMENTED <select idref="set_gui_login_banner" selected="true"/> -->
 
 <select idref="sysctl_kernel_randomize_va_space" selected="true"/>
-<select idref="enable_execshield" selected="true"/>
+<select idref="sysctl_kernel_exec_shield" selected="true"/>
 
 <select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true"/>
 <select idref="sysctl_ipv4_all_send_redirects" selected="true"/>
@@ -94,6 +94,7 @@
 <select idref="service_ip6tables_enabled" selected="true"/>
 <select idref="service_iptables_enabled" selected="true"/>
 <select idref="set_iptables_default_rule" selected="true"/>
+<select idref="set_ip6tables_default_rule" selected="true" />
 <select idref="kernel_module_dccp_disabled" selected="true"/>
 <select idref="kernel_module_sctp_disabled" selected="true"/>
 <select idref="kernel_module_rds_disabled" selected="true"/>
@@ -141,10 +142,10 @@
 <select idref="audit_rules_dac_modification_removexattr" selected="true"/>
 <select idref="audit_rules_dac_modification_setxattr" selected="true"/>
 
-<select idref="audit_file_access" selected="true"/>
+<select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
 <select idref="audit_privileged_commands" selected="true"/>
 <select idref="audit_media_exports" selected="true"/>
-<select idref="audit_file_deletions" selected="true"/>
+<select idref="audit_rules_file_deletion_events" selected="true"/>
 <select idref="audit_sysadmin_actions" selected="true"/>
 <select idref="audit_kernel_module_loading" selected="true"/>
 
@@ -207,7 +208,7 @@ these should likely be moved out of common.
 
 <select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
 <select idref="use_nosuid_option_on_nfs_mounts" selected="true"/>
-<select idref="mountopt_noexec_on_removable_partitions" selected="true"/>
+<select idref="mount_option_noexec_removable_partitions" selected="true"/>
 
 <!-- <select idref="disable_dns_server" selected="true"/> -->
 <!-- <select idref="uninstall_bind" selected="true"/> -->

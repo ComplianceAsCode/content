@@ -170,6 +170,23 @@ stolen by eavesdroppers on the network.
 <tested by="DS" on="20121026"/>
 </Rule>
 
+<Rule id="package_rsh_removed">
+<title>Uninstal rsh Package</title>
+<description>The <tt>rsh</tt> package contains the client commands
+for the rsh services</description>
+<ocil><package-remove-macro package="rsh"/></ocil>
+<rationale>These legacy clients contain numerous security exposures and have
+been replaced with the more secure SSH package. Even if the server is removed,
+it is best to ensure the clients are also removed to prevent users from
+inadvertently attempting to use these commands and therefore exposing
+their credentials. Note that removing the <tt>rsh</tt> package removes
+the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
+</rationale>
+<ident cce="" />
+<oval id="package_rsh_removed" />
+<tested by="JL" on="20140530"/>
+</Rule>
+
 <Rule id="disable_rlogin" severity="high">
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
@@ -330,6 +347,51 @@ server_args = -s /var/lib/tftpboot</pre>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="tftpd_uses_secure_mode" />
 <ref nist="AC-17(8),CM-7" disa="366"/>
+</Rule>
+
+</Group>
+
+<Group id="talk">
+<title>Chat/Messaging Services</title>
+<description>
+The talk software makes it possible for users to send and receive messages
+across systems through a terminal session.
+</description>
+
+<Rule id="uninstall_talk-server" severity="medium">
+<title>Uninstall talk-server Package</title>
+<description>
+<package-remove-macro package="talk-server" />
+</description>
+<ocil>
+<package-check-macro package="talk-server" />
+</ocil>
+<rationale>
+The talk software presents a security risk as it uses unencrypted protocols
+for communications. Removing the <tt>talk-server</tt> package decreases the
+risk of the accidental (or intentional) activation of talk services.
+</rationale>
+<ident cce="" />
+<oval id="package_talk-server_removed" />
+<tested by="JL" on="20140625"/>
+</Rule>
+
+<Rule id="package_talk_removed">
+<title>Uninstall talk Package</title>
+<description>The <tt>talk</tt> package contains the client program for the
+Internet talk protocol, which allows the user to chat with other users on
+different systems. Talk is a communication program which copies lines from one
+terminal to the terminal of another user.
+</description>
+<ocil><package-remove-macro package="talk"/></ocil>
+<rationale>
+The talk software presents a security risk as it uses unencrypted protocols
+for communications. Removing the <tt>talk</tt> package decreases the
+risk of the accidental (or intentional) activation of talk client program.
+</rationale>
+<ident cce="" />
+<oval id="package_talk_removed" />
+<tested by="JL" on="20140625"/>
 </Rule>
 
 </Group>

@@ -41,7 +41,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident cce="27024-9" />
 <oval id="package_aide_installed" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28, SI-7" disa="1069"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -61,10 +61,10 @@ of AIDE, because it changes binaries.
 </rationale>
 <ident cce="27221-1" />
 <oval id="disable_prelink" />
-<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
+<ref nist="CM-6(d),SC-28, SI-7" />
 </Rule>
 
-<Rule id="aide_build_database">
+<Rule id="aide_build_database" severity="medium">
 <title>Build and Test AIDE Database</title>
 <description>Run the following command to generate a new database:
 <pre># /usr/sbin/aide --init</pre>
@@ -77,12 +77,16 @@ To initiate a manual check, run the following command:
 <pre># /usr/sbin/aide --check</pre>
 If this check produces any unexpected output, investigate.
 </description>
+<ocil clause="there is no database file">
+To find the location of the AIDE databse file, run the following command:
+<pre># ls -l <i>DBDIR</i>/<i>database_file_name</i></pre>
+</ocil>
 <rationale>
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
 <ident cce="27135-3" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
@@ -102,7 +106,7 @@ running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
 <oval id="aide_periodic_cron_checking" />
 <ident cce="27222-9" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
 </Rule>
 </Group>
 
@@ -143,7 +147,7 @@ The permissions set by the vendor should be maintained. Any deviations from
 this baseline should be investigated.</rationale>
 <ident cce="26731-0" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" />
+<ref nist="AC-6,CM-6(d),SI-7" disa="1493,1494,1495" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
@@ -174,7 +178,7 @@ information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
 <ident cce="27223-7" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" />
+<ref nist="CM-6(d),SI-7" disa="1496" />
 </Rule>
 
 </Group>
@@ -194,7 +198,11 @@ software may not be appropriate for some specialized systems.
 The base Red Hat platform already includes a sophisticated auditing system that
 can detect intruder activity, as well as SELinux, which provides host-based
 intrusion prevention capabilities by confining privileged programs and user
-sessions which may become compromised.
+sessions which may become compromised.<br />
+In DoD environments, supplemental intrusion detection tools, such as, the McAfee
+Host-based Security System, are available to integrate with existing infrastructure.
+When these supplemental tools interfere with the proper functioning of SELinux, SELinux
+takes precedence.
 <br/>
 </description>
 <ocil clause="no host-based intrusion detection tools are installed">
@@ -214,7 +222,7 @@ intruder gains access to a system or network.
 <description>
 Install virus scanning software, which uses signatures to search for the
 presence of viruses on the filesystem. 
-The McAfee uvscan virus scanning tool is provided for DoD systems.
+The McAfee VirusScan Enterprise for Linux virus scanning tool is provided for DoD systems.
 Ensure virus definition files are no older than 7 days, or their last release.
 <!-- need info here on where DoD admins can go to get this -->
 Configure the virus scanning software to perform scans dynamically on all
@@ -227,18 +235,17 @@ to scan all received mail.
      with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
      particular neighborhood) should occur? -->
 </description>
-<ocil clause="virus scanning software does not run daily, or has signatures that are out of date">
+<ocil clause="virus scanning software does not run continuously, or at least daily, or has signatures that are out of date">
 Inspect the system for a cron job or system service which executes
 a virus scanning tool regularly.
 <br/>
 <!-- this should be handled as DoD-specific text in a future revision -->
-To verify the McAfee command line scan tool (uvscan) is scheduled for
-regular execution, run the following command to check for a cron job:
-<pre># grep uvscan /etc/cron* /var/spool/cron/*</pre>
-This will reveal if and when the uvscan program will be run.
+To verify the McAfee VSEL system service is operational,
+run the following command:
+<pre># /etc/init.d/nails status</pre>
 <br/>
 To check on the age of uvscan virus definition files, run the following command:
-<pre># cd /usr/local/uvscan
+<pre># cd /opt/NAI/LinuxShield/engine/dat
 # ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
 </ocil>
 <rationale>
