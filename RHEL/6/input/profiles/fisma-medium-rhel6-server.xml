@@ -86,7 +86,7 @@
      		      Delay pw prompt for 30min -->
 <!-- TODO: PASSWORD PROMPT DELAY FOR 30min, possible?! -->
 <refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800"/>
-<select idref="deny_password_attempts_unlock_time" selected="true" />
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
 
 <!--	AC-8(a), AC-8(b), AC-8(c) -->
 <refine-value idref="login_banner_text" selector="usgcb_default"/>
@@ -130,10 +130,10 @@
 <select idref="audit_rules_dac_modification_setxattr" selected="true" />
 <select idref="audit_manual_logon_edits" selected="true" />
 <select idref="audit_manual_session_edits" selected="true" />
-<select idref="audit_file_access" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
 <select idref="audit_privileged_commands" selected="true" />
 <select idref="audit_media_exports" selected="true" />
-<select idref="audit_file_deletions" selected="true" />
+<select idref="audit_rules_file_deletion_events" selected="true" />
 <select idref="audit_sysadmin_actions" selected="true" />
 <select idref="audit_kernel_module_loading" selected="true" />
 <refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="0" />
@@ -182,7 +182,7 @@
 
 <!--	AC-19 -->
 <select idref="mountopt_nodev_on_removable_partitions" selected="true" />
-<select idref="mountopt_noexec_on_removable_partitions" selected="true" />
+<select idref="mount_option_noexec_removable_partitions" selected="true" />
 <select idref="mountopt_nosuid_on_removable_partitions" selected="true" />
 <select idref="kernel_module_usb" selected="true" />
 <select idref="bootloader_nousb_argument" selected="true" />
@@ -235,7 +235,6 @@
 <select idref="service_smartd_disabled" selected="true" />
 <select idref="service_sysstat_disabled" selected="true" />
 <select idref="service_crond_enabled" selected="true" />
-<select idref="disable_anacron" selected="true" />
 <select idref="service_atd_disabled" selected="true" />
 <select idref="disable_avahi" selected="true" />
 <select idref="mountopt_nodev_on_nonroot_partitions" selected="true" />

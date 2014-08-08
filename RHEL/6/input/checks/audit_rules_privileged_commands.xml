@@ -1,31 +1,181 @@
 <def-group>
-  <definition class="compliance"
-  id="audit_rules_privileged_commands" version="1">
+  <definition class="compliance" id="audit_rules_privileged_commands"
+  version="1">
     <metadata>
-      <title>Ensure auditd Collects Information on the Use of
-      Privileged Commands</title>
+      <title>
+        Ensure auditd Collects Information on the Use of Privileged Commands
+      </title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>Audit rules about the Information on the Use of
-      Privileged Commands are enabled</description>
+      <description>Audit rules about the Information on the Use of Privileged
+      Commands are enabled</description>
+      <reference source="JL" ref_id="RHEL6_20140703" ref_url="test_attestation"/>
     </metadata>
     <criteria>
-      <criterion comment="/etc/audit/audit.rules contains -a always,exit -F path=/bin/ping -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged"
-      test_ref="test_20165" />
+
+      <criterion comment="/etc/audit/audit.rules contains -a always,exit
+      -F path=path_to_binary -F perm=x -F auid&gt;=500 -F auid!=4294967295
+      -k privileged for each setuid or setgid executable on the system"
+      test_ref="test_audit_rules_privileged_commands" />
+
+      <criterion comment="check if count of privileged commands on the system
+      matches the count of defined audit.rules in the expected form"
+      test_ref="test_sets_dimension_match" />
+
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all"
-  check_existence="at_least_one_exists"
-  comment="/etc/audit/audit.rules contains -a always,exit -F path=/bin/ping -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged"
-  id="test_20165" version="1">
-    <ind:object object_ref="obj_20165" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_20165"
+
+
+  <!-- *** Test #1: Check that all setuid / setgid files on the system have proper audit rule definition in /etc/audit/audit.rules *** -->
+
+  <!-- Get the list of setuid / setgid files on the system by traversing the
+       filesystem excluding /dev, /proc, and /sys directories for better
+       performance -->
+  <unix:file_object id="object_system_privileged_commands"
+  comment="system files with setuid or setgid permission set"
   version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^\-a\salways,exit\s-F\spath=/bin/ping\s-F perm=x\s\-F\sauid&gt;=500\s\-F\sauid!=4294967295\s\-k\sprivileged</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <unix:behaviors recurse="directories" recurse_direction="down"
+    recurse_file_system="local" max_depth="-1" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_setuid_or_setgid_set</filter>
+    <filter action="exclude">state_irrelevant_system_dirs</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_setuid_or_setgid_set" version="1" operator="OR">
+    <unix:suid datatype="boolean">true</unix:suid>
+    <unix:sgid datatype="boolean">true</unix:sgid>
+  </unix:file_state>
+
+  <unix:file_state id="state_irrelevant_system_dirs" version="1">
+    <unix:filepath operation="pattern match">^/(dev|proc|sys)/.*$</unix:filepath>
+  </unix:file_state>
+
+  <!-- Based on the above list create a variable holding full / expanded
+       form of particular expected audit.rules rule for each setuid / setgid
+       file found on the system -->
+  <local_variable id="variable_audit_rules_privileged_commands_full_form"
+  comment="full for of audit rules for privileged commands"
+  datatype="string" version="1">
+    <concat>
+      <literal_component>-a always,exit -F path=</literal_component>
+      <object_component object_ref="object_system_privileged_commands" item_field="filepath" />
+      <literal_component> -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- The actual implementation of the first test -->
+  <ind:textfilecontent54_test id="test_audit_rules_privileged_commands"
+  check="all" check_existence="all_exist"
+  comment="/etc/audit/audit.rules contains -a always,exit
+  -F path=path_to_binary -F perm=x -F auid&gt;=500 -F auid!=4294967295
+  -k privileged for each setuid or setgid binary on the system"
+  version="1">
+    <ind:object object_ref="object_audit_rules_privileged_commands" />
+    <ind:state state_ref="state_audit_rules_privileged_commands" />
+  </ind:textfilecontent54_test>
+
+  <!-- Search /etc/audit/audit.rules file for lines matching:
+
+       -a always, exit ... -k privileged
+
+       pattern -->
+  <ind:textfilecontent54_object id="object_audit_rules_privileged_commands" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <!-- Select only those rows containing the expected rule form, but different paths,
+         IOW allow the /etc/audit/audit.rules to contain also other definitions -->
+    <ind:pattern operation="pattern match">^[\s]*(-a always,exit -F path=[^\n]+ -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged)[\s]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <!-- But exclude from the set of found instances those where the executable
+         listed after the -F path= argument isn't from the list of setuid / setgid
+         ones - we require all setuid / setgid binaries to have such rule. But if
+         there's custom rule for non setuid / setgid binary, allow the test to pass
+         also in this case -->
+    <filter action="exclude">state_proper_always_exit_rule_but_for_unprivileged_command</filter>
   </ind:textfilecontent54_object>
+
+  <!-- List those instances found, having similar form of audit rule, but being a non setuid /
+       setgid binary. If such rule is found, compare it (in one step) for non-equality with
+       all the predefined rules -->
+  <ind:textfilecontent54_state id="state_proper_always_exit_rule_but_for_unprivileged_command"
+  version="1">
+    <ind:subexpression operation="not equal" datatype="string"
+    var_ref="variable_audit_rules_privileged_commands_full_form"
+    var_check="all" />
+  </ind:textfilecontent54_state>
+
+  <!-- Compare the (restricted) list of instances found from /etc/audit/audit.rules file
+       (following the expected audit rule pattern) with the pre-generated list of
+       full forms of rules for each setgid / setuid binary found on the system
+       (on one-by-one basis - it's enough if such rule is found at least once
+       in the pregenerated list) -->
+  <ind:textfilecontent54_state version="1"
+  id="state_audit_rules_privileged_commands">
+    <ind:subexpression operation="pattern match" datatype="string"
+    var_ref="variable_audit_rules_privileged_commands_full_form"
+    var_check="at least one"/>
+  </ind:textfilecontent54_state>
+
+  <!-- *** EndOfTest #1: Check that all setuid / setgid files on the system have proper audit rule definition in /etc/audit/audit.rules *** -->
+
+
+
+  <!-- *** Test #2: Check that count of setuid / setgid binaries rules found in /etc/audit/audit.rules actually matches the count
+                    of pre-generated full form rules we require to be present on this particular system *** -->
+
+  <!-- Create variable holding cardinality / dimension of the set containing
+       list of setuid / setgid binaries we have found on this system -->
+  <local_variable id="variable_dimension_of_object_system_privileged_commands"
+  comment="cardinality of system privileged commands set"
+  datatype="int" version="1">
+    <count>
+      <object_component item_field="filepath"
+      object_ref="object_system_privileged_commands" />
+    </count>
+  </local_variable>
+
+  <!-- Create variable holding cardinality / dimension of the set containing
+       list of audit rules for setuid / setgid binaries we have found in
+       /etc/audit/audit.rules file on this system -->
+  <local_variable id="variable_dimension_of_object_audit_rules_privileged_commands"
+  comment="cardinality of audit.rules privileged commands having expected rule definition set"
+  datatype="int" version="1">
+    <count>
+      <object_component item_field="subexpression"
+      object_ref="object_audit_rules_privileged_commands" />
+    </count>
+  </local_variable>
+
+  <!-- Perform the actual second test -->
+  <ind:variable_test id="test_sets_dimension_match"
+  check="all" check_existence="all_exist"
+  comment="check if count of found privileged commands on the system is equal
+  to count of audit.rules privileged commands definitions" version="1">
+    <ind:object object_ref="object_dimension_of_object_system_privileged_commands" />
+    <ind:state state_ref="state_set_dimension_match" />
+  </ind:variable_test>
+
+  <!-- Create variable object from the first variable (count of setuid / setgid
+       binaries found on the system) -->
+  <ind:variable_object id="object_dimension_of_object_system_privileged_commands"
+  version="1">
+    <ind:var_ref>variable_dimension_of_object_system_privileged_commands</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- And compare it with the value of the second variable (count of audit rules
+       involving setuid / setgid binaries found in audit.rules file.
+
+       If the count matches, we can be sure audit.rules file contains definition
+       for each of setuid / setgid binary found on the system. If not, something
+       is wrong and the test should return failure -->
+  <ind:variable_state id="state_set_dimension_match" version="1">
+    <ind:value operation="equals" datatype="int"
+    var_ref="variable_dimension_of_object_audit_rules_privileged_commands"
+    var_check="at least one" />
+  </ind:variable_state>
+
+  <!-- *** EndOfTest #2: Check that count of setuid / setgid binaries rules found in /etc/audit/audit.rules actually matches the count$
+                         of pre-generated full form rules we require to be present on this particular system *** -->
+
 </def-group>

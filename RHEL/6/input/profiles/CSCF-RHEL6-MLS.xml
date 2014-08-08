@@ -1,6 +1,17 @@
 <Profile id="CSCF-RHEL6-MLS">
 <title>CSCF RHEL6 MLS Core Baseline</title>
-<description> This profile reflects the Centralized Super Computing Facility (CSCF) baseline for Red Hat Enterprise Linux 6. This baseline has received government ATO through the ICD 503 process, utilizing the CNSSI 1253 cross domain overlay. This profile should be considered in active development. Additional tailoring will be needed, such as the creation of RBAC roles for production deployment.</description>
+<description> This profile reflects the Centralized Super Computing Facility 
+(CSCF) baseline for Red Hat Enterprise Linux 6. This baseline has received 
+government ATO through the ICD 503 process, utilizing the CNSSI 1253 cross 
+domain overlay. This profile should be considered in active development. 
+Additional tailoring will be needed, such as the creation of RBAC roles 
+for production deployment.</description>
+
+<refine-value idref="var_auditd_max_log_file_action"  selector="keep_logs" />
+<refine-value idref="var_accounts_max_concurrent_login_sessions" selector="3" />
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="180" />
+<refine-value idref="var_accounts_password_minlen_login_defs" selector="12" />
+<refine-value idref="var_selinux_policy_name" selector="mls" />
 
 <select idref="account_disable_post_pw_expiration" selected="true" />
 <select idref="account_temp_expire_date" selected="true" />
@@ -8,8 +19,8 @@
 <select idref="aide_periodic_cron_checking" selected="true" />
 <select idref="audit_account_changes" selected="true" />
 <select idref="audit_config_immutable" selected="true" />
-<select idref="audit_file_access" selected="true" />
-<select idref="audit_file_deletions" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
+<select idref="audit_rules_file_deletion_events" selected="true" />
 <select idref="audit_kernel_module_loading" selected="true" />
 <select idref="file_permissions_var_log_audit" selected="true" />
 <select idref="audit_logs_rootowner" selected="true" />
@@ -46,13 +57,12 @@
 <select idref="configure_auditd_audispd" selected="true" />
 <select idref="configure_auditd_max_log_file" selected="true" />
 <select idref="configure_auditd_max_log_file_action" selected="true" />
-<refine-value idref="var_auditd_max_log_file_action"  selector="keep_logs" />
 <select idref="configure_auditd_num_logs" selected="true" />
 <select idref="auditd_data_retention_space_left_action" selected="true" />
 <select idref="cups_disable_browsing" selected="true" />
 <select idref="cups_disable_printserver" selected="true" />
 <select idref="deactivate_wireless_interfaces" selected="true" />
-<select idref="deny_password_attempts_unlock_time" selected="true" />
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
 <select idref="accounts_passwords_pam_faillock_deny" selected="true" />
 <select idref="accounts_passwords_pam_fail_interval" selected="true" />
 <select idref="dhcp_server_deny_bootp" selected="true" />
@@ -126,10 +136,9 @@
 <select idref="mount_option_var_tmp_bind_var" selected="true" />
 <select idref="mountopt_nodev_on_nonroot_partitions" selected="true" />
 <!-- we do not have any removable media that has a mount point defined in fstab <select idref="mountopt_nodev_on_removable_partitions" selected="true" /> -->
-<select idref="mountopt_noexec_on_removable_partitions" selected="true" />
+<select idref="mount_option_noexec_removable_partitions" selected="true" />
 <select idref="mountopt_nosuid_on_removable_partitions" selected="true" />
 <select idref="accounts_max_concurrent_login_sessions" selected="true" />
-<refine-value idref="var_accounts_max_concurrent_login_sessions" selector="3" />
 <select idref="network_disable_zeroconf" selected="true" />
 <select idref="network_ipv6_disable_rpc" selected="true" />
 <select idref="network_sniffer_disabled" selected="true" />
@@ -151,9 +160,7 @@
 <select idref="partition_for_var_log" selected="true" />
 <select idref="partition_for_var_log_audit" selected="true" />
 <select idref="accounts_maximum_age_login_defs" selected="true" />
-<refine-value idref="var_accounts_maximum_age_login_defs" selector="180" />
 <select idref="accounts_password_minlen_login_defs" selected="true" />
-<refine-value idref="var_accounts_password_minlen_login_defs" selector="12" />
 <select idref="password_require_consecrepeat" selected="true" />
 <select idref="accounts_password_pam_cracklib_difok" selected="true" />
 <select idref="accounts_password_pam_cracklib_dcredit" selected="true" />
@@ -221,7 +228,6 @@
 <select idref="set_password_hashing_algorithm_libuserconf" selected="true" />
 <select idref="set_screensaver_inactivity_timeout" selected="true" />
 <select idref="selinux_policytype" selected="true" />
-<refine-value idref="var_selinux_policy_name" selector="mls" />
 <select idref="selinux_state" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
 <select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
@@ -260,7 +266,7 @@
 <select idref="disable_interactive_boot" selected="true" />
 <select idref="install_hids" selected="true" />
 <select idref="install_antivirus" selected="true" />
-<select idref="enable_execshield" selected="true" />
+<select idref="sysctl_kernel_exec_shield" selected="true" />
 <select idref="sysctl_kernel_randomize_va_space" selected="true" />
 <select idref="bios_enable_execution_restrictions" selected="true" />
 <select idref="sysctl_fs_suid_dumpable" selected="true" />

@@ -11,7 +11,7 @@
       <criterion comment="unlabeled_t in /dev" test_ref="test_selinux_all_devicefiles_labeled" />
     </criteria>
   </definition>
-  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="all_exist" comment="unlabeled_t in /dev" id="test_selinux_all_devicefiles_labeled" version="1">
+  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="unlabeled_t in /dev" id="test_selinux_all_devicefiles_labeled" version="2">
     <linux:object object_ref="object_selinux_all_devicefiles_labeled" />
     <linux:state state_ref="state_selinux_all_devicefiles_labeled" />
   </linux:selinuxsecuritycontext_test>
