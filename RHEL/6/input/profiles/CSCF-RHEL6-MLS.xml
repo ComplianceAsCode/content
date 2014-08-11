@@ -1,18 +1,20 @@
 <Profile id="CSCF-RHEL6-MLS">
 <title>CSCF RHEL6 MLS Core Baseline</title>
-<description> This profile reflects the Centralized Super Computing Facility 
-(CSCF) baseline for Red Hat Enterprise Linux 6. This baseline has received 
-government ATO through the ICD 503 process, utilizing the CNSSI 1253 cross 
-domain overlay. This profile should be considered in active development. 
-Additional tailoring will be needed, such as the creation of RBAC roles 
-for production deployment.</description>
-
+<description> This profile reflects the Centralized Super Computing Facility (CSCF) baseline for Red Hat Enterprise Linux 6. This baseline has received government ATO through the ICD 503 process, utilizing the CNSSI 1253 cross domain overlay. This profile should be considered in active development. Additional tailoring will be needed, such as the creation of RBAC roles for production deployment.</description>
+<select idref="configure_auditd_max_log_file_action" selected="true" />
 <refine-value idref="var_auditd_max_log_file_action"  selector="keep_logs" />
-<refine-value idref="var_accounts_max_concurrent_login_sessions" selector="3" />
+<select idref="accounts_max_concurrent_login_sessions" selected="true" />
+<refine-value idref="var_accounts_max_concurrent_login_sessions" selector="4" />
+<select idref="accounts_maximum_age_login_defs" selected="true" />
 <refine-value idref="var_accounts_maximum_age_login_defs" selector="180" />
+<select idref="accounts_password_minlen_login_defs" selected="true" />
 <refine-value idref="var_accounts_password_minlen_login_defs" selector="12" />
+<select idref="selinux_policytype" selected="true" />
 <refine-value idref="var_selinux_policy_name" selector="mls" />
-
+<select idref="partition_for_tmp" selected="true" />
+<select idref="partition_for_var" selected="true" />
+<select idref="partition_for_var_log" selected="false" />
+<select idref="partition_for_home" selected="false" />
 <select idref="account_disable_post_pw_expiration" selected="true" />
 <select idref="account_temp_expire_date" selected="true" />
 <select idref="aide_build_database" selected="true" />
@@ -20,7 +22,6 @@ for production deployment.</description>
 <select idref="audit_account_changes" selected="true" />
 <select idref="audit_config_immutable" selected="true" />
 <select idref="audit_rules_unsuccessful_file_modification" selected="true" />
-<select idref="audit_rules_file_deletion_events" selected="true" />
 <select idref="audit_kernel_module_loading" selected="true" />
 <select idref="file_permissions_var_log_audit" selected="true" />
 <select idref="audit_logs_rootowner" selected="true" />
@@ -29,7 +30,7 @@ for production deployment.</description>
 <select idref="audit_manual_session_edits" selected="true" />
 <select idref="audit_media_exports" selected="true" />
 <select idref="audit_network_modifications" selected="true" />
-<select idref="audit_privileged_commands" selected="true" />
+<select idref="audit_privileged_commands" selected="false" />
 <select idref="audit_rules_dac_modification_chmod" selected="true" />
 <select idref="audit_rules_dac_modification_chown" selected="true" />
 <select idref="audit_rules_dac_modification_fchmod" selected="true" />
@@ -50,21 +51,19 @@ for production deployment.</description>
 <select idref="audit_rules_time_watch_localtime" selected="true" />
 <select idref="audit_sysadmin_actions" selected="true" />
 <select idref="bios_disable_usb_boot" selected="true" />
-<select idref="bootloader_nousb_argument" selected="true" />
 <select idref="bootloader_password" selected="true" />
 <select idref="auditd_data_retention_action_mail_acct" selected="true" />
 <select idref="auditd_data_retention_admin_space_left_action" selected="true" />
 <select idref="configure_auditd_audispd" selected="true" />
 <select idref="configure_auditd_max_log_file" selected="true" />
-<select idref="configure_auditd_max_log_file_action" selected="true" />
 <select idref="configure_auditd_num_logs" selected="true" />
 <select idref="auditd_data_retention_space_left_action" selected="true" />
-<select idref="cups_disable_browsing" selected="true" />
+<!-- removed for compliance, broken rule -->  <select idref="cups_disable_browsing" selected="false" /> 
 <select idref="cups_disable_printserver" selected="true" />
 <select idref="deactivate_wireless_interfaces" selected="true" />
-<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
-<select idref="accounts_passwords_pam_faillock_deny" selected="true" />
-<select idref="accounts_passwords_pam_fail_interval" selected="true" />
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="false" />
+<!--  removed for compliance rhel case # 01131821 --> <select idref="accounts_passwords_pam_faillock_deny" selected="false" /> 
+<!-- removed for compliance rhel case # 01131821-->  <select idref="accounts_passwords_pam_fail_interval" selected="false" />
 <select idref="dhcp_server_deny_bootp" selected="true" />
 <select idref="dhcp_server_deny_decline" selected="true" />
 <select idref="dhcp_server_disable_ddns" selected="true" />
@@ -74,7 +73,6 @@ for production deployment.</description>
 <select idref="disable_dhcp_server" selected="true" />
 <select idref="disable_dns_server" selected="true" />
 <select idref="disable_gnome_thumbnailers" selected="true" />
-<select idref="disable_httpd" selected="true" />
 <select idref="kernel_module_ipv6_option_disabled" selected="true" />
 <select idref="kernel_module_cramfs_disabled" selected="true" />
 <select idref="kernel_module_freevxfs_disabled" selected="true" />
@@ -82,7 +80,7 @@ for production deployment.</description>
 <select idref="kernel_module_hfsplus_disabled" selected="true" />
 <select idref="kernel_module_jffs2_disabled" selected="true" />
 <select idref="kernel_module_squashfs_disabled" selected="true" />
-<select idref="kernel_module_udf_disabled" selected="true" />
+<!-- disaled for compliance <select idref="kernel_module_udf_disabled" selected="true" /> --> 
 <select idref="disable_prelink" selected="true" />
 <select idref="kernel_module_dccp_disabled" selected="true" />
 <select idref="kernel_module_rds_disabled" selected="true" />
@@ -97,13 +95,12 @@ for production deployment.</description>
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true" />
 <select idref="sysctl_ipv4_ip_forward" selected="true" />
-<select idref="disable_telnet_service" selected="true" />
 <select idref="disable_tftp" selected="true" />
 <select idref="disable_vsftpd" selected="true" />
 <select idref="disable_ypbind" selected="true" />
 <select idref="dns_server_authenticate_zone_transfers" selected="true" />
 <select idref="enable_auditd_bootloader" selected="true" />
-<select idref="enable_gdm_login_banner" selected="true" />
+<select idref="enable_gdm_login_banner" selected="false" />
 <select idref="enable_screensaver_after_idle" selected="true" />
 <select idref="enable_screensaver_password_lock" selected="true" />
 <select idref="enable_selinux_bootloader" selected="true" />
@@ -117,7 +114,7 @@ for production deployment.</description>
 <select idref="file_groupowner_etc_group" selected="true" />
 <select idref="file_groupowner_etc_gshadow" selected="true" />
 <select idref="file_groupowner_etc_passwd" selected="true" />
-<select idref="groupowner_rsyslog_files" selected="true" />
+<select idref="groupowner_rsyslog_files" selected="false" /> 
 <select idref="groupowner_shadow_file" selected="true" />
 <select idref="httpd_conf_files_permissions" selected="true" />
 <select idref="httpd_logs_permissions" selected="true" />
@@ -133,34 +130,30 @@ for production deployment.</description>
 <select idref="mount_option_tmp_nodev" selected="true" />
 <select idref="mount_option_tmp_noexec" selected="true" />
 <select idref="mount_option_tmp_nosuid" selected="true" />
-<select idref="mount_option_var_tmp_bind_var" selected="true" />
+<select idref="mount_option_var_tmp_bind_var" selected="false" />  
 <select idref="mountopt_nodev_on_nonroot_partitions" selected="true" />
 <!-- we do not have any removable media that has a mount point defined in fstab <select idref="mountopt_nodev_on_removable_partitions" selected="true" /> -->
-<select idref="mount_option_noexec_removable_partitions" selected="true" />
-<select idref="mountopt_nosuid_on_removable_partitions" selected="true" />
-<select idref="accounts_max_concurrent_login_sessions" selected="true" />
+<select idref="mount_option_noexec_removable_partitions" selected="false" />
+<select idref="mountopt_nosuid_on_removable_partitions" selected="false" />  
 <select idref="network_disable_zeroconf" selected="true" />
 <select idref="network_ipv6_disable_rpc" selected="true" />
 <select idref="network_sniffer_disabled" selected="true" />
 <select idref="no_empty_passwords" selected="true" />
-<select idref="no_files_unowned_by_group" selected="true" />
- <select idref="no_files_unowned_by_user" selected="true" />
+<select idref="no_files_unowned_by_group" selected="false" /> 
+<select idref="no_files_unowned_by_user" selected="false" /> 
 <select idref="accounts_password_all_shadowed" selected="true" />
 <select idref="no_netrc_files" selected="true" />
 <select idref="accounts_no_uid_except_zero" selected="true" />
 <select idref="no_direct_root_logins" selected="true" />
 <select idref="no_unpackaged_sgid_files" selected="true" />
-<select idref="no_unpackaged_suid_files" selected="true" />
+<select idref="no_unpackaged_suid_files" selected="false" />  
 <select idref="ntpd_specify_multiple_servers" selected="true" />
 <select idref="ntpd_specify_remote_server" selected="true" />
 <select idref="package_aide_installed" selected="true" />
 <select idref="package_openldap-servers_removed" selected="true" />
 <select idref="package_rsyslog_installed" selected="true" />
 <select idref="package_sendmail_removed" selected="true" />
-<select idref="partition_for_var_log" selected="true" />
 <select idref="partition_for_var_log_audit" selected="true" />
-<select idref="accounts_maximum_age_login_defs" selected="true" />
-<select idref="accounts_password_minlen_login_defs" selected="true" />
 <select idref="password_require_consecrepeat" selected="true" />
 <select idref="accounts_password_pam_cracklib_difok" selected="true" />
 <select idref="accounts_password_pam_cracklib_dcredit" selected="true" />
@@ -175,14 +168,14 @@ for production deployment.</description>
 <select idref="postfix_network_listening" selected="true" />
 <select idref="securetty_root_login_console_only" selected="true" />
 <select idref="restrict_serial_port_logins" selected="true" />
-<select idref="rpm_verify_hashes" selected="true" />
-<select idref="rpm_verify_permissions" selected="true" />
+<select idref="rpm_verify_hashes" selected="false" />
+<select idref="rpm_verify_permissions" selected="false" /> 
 <select idref="rsyslog_accept_remote_messages_none" selected="true" />
 <select idref="rsyslog_accept_remote_messages_tcp" selected="true" />
 <select idref="rsyslog_accept_remote_messages_udp" selected="true" /> 
-<select idref="rsyslog_send_messages_to_logserver" selected="true" />
+<select idref="rsyslog_send_messages_to_logserver" selected="false" /> 
 <select idref="selinux_confinement_of_daemons" selected="true" />
-<select idref="selinux_all_devicefiles_labeled" selected="true" />
+<select idref="selinux_all_devicefiles_labeled" selected="false" /> 
 <select idref="service_abrtd_disabled" selected="true" />
 <select idref="service_acpid_disabled" selected="true" />
 <select idref="service_atd_disabled" selected="true" />
@@ -197,8 +190,7 @@ for production deployment.</description>
 <select idref="service_haldaemon_disabled" selected="true" />
 <!-- not necessary if ipv6 is disabled <select idref="service_ip6tables_enabled" selected="true" /> -->
 <select idref="service_iptables_enabled" selected="true" />
-<select idref="service_irqbalance_enabled" selected="true" />
-<select idref="service_kdump_disabled" selected="true" />
+<!-- removed for compliance, we use sgi tool costome rule coming --> <select idref="service_irqbalance_enabled" selected="false" />
 <select idref="service_mdmonitor_disabled" selected="true" />
 <select idref="service_messagebus_disabled" selected="true" />
 <select idref="service_netconsole_disabled" selected="true" />
@@ -218,16 +210,14 @@ for production deployment.</description>
 <select idref="service_sysstat_disabled" selected="true" />
 <select idref="set_blank_screensaver" selected="true" />
 <select idref="umask_for_daemons" selected="true" />
-<!-- will need to be refined -->
 <select idref="set_gdm_login_banner_text" selected="true" />
 <!-- not necessary if ipv6 is disabled<select idref="set_ip6tables_default_rule" selected="true" /> -->
 <select idref="set_iptables_default_rule" selected="true" />
 <select idref="set_iptables_default_rule_forward" selected="true" />
-<select idref="set_password_hashing_algorithm_systemauth" selected="true" />
+<!-- remove for compliance, faulty rule bug to community <select idref="set_password_hashing_algorithm_systemauth" selected="true" /> --> 
 <select idref="set_password_hashing_algorithm_logindefs" selected="true" />
 <select idref="set_password_hashing_algorithm_libuserconf" selected="true" />
-<select idref="set_screensaver_inactivity_timeout" selected="true" />
-<select idref="selinux_policytype" selected="true" />
+<!-- removed for compliance, bad rule --> <select idref="set_screensaver_inactivity_timeout" selected="false" /> 
 <select idref="selinux_state" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
 <select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
@@ -240,38 +230,33 @@ for production deployment.</description>
 <select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true" />
 <select idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true" />
 <!-- not necessary if ipv6 is disabled <select idref="set_sysctl_net_ipv6_conf_default_accept_ra" selected="true" /> -->
-<select idref="set_system_login_banner" selected="true" />
+<select idref="set_system_login_banner" selected="false" />
 <select idref="sshd_allow_only_protocol2" selected="true" />
 <select idref="sshd_disable_root_login" selected="true" />
 <select idref="sshd_use_approved_ciphers" selected="true" />
-<select idref="sticky_world_writable_dirs" selected="true" />
+<select idref="sticky_world_writable_dirs" selected="false" /> 
 <select idref="tftpd_uses_secure_mode" selected="true" />
 <select idref="uninstall_bind" selected="true" />
 <select idref="uninstall_dhcp_server" selected="true" />
-<!-- not necessary for UVs -->
-<select idref="uninstall_httpd" selected="true" />
 <select idref="uninstall_rsh-server" selected="true" />
-<select idref="uninstall_telnet_server" selected="true" />
 <select idref="uninstall_tftp-server" selected="true" />
 <select idref="uninstall_vsftpd" selected="true" />
 <select idref="uninstall_ypserv" selected="true" />
-<!-- the following may need refinement -->
 <select idref="file_owner_etc_group" selected="true" />
 <select idref="file_owner_etc_gshadow" selected="true" />
 <select idref="file_owner_etc_passwd" selected="true" />
-<select idref="userowner_rsyslog_files" selected="true" />
+<select idref="userowner_rsyslog_files" selected="false" />   
 <select idref="userowner_shadow_file" selected="true" />
 <select idref="wireless_disable_in_bios" selected="true" />
-<select idref="world_writable_files_system_ownership" selected="true" />
 <select idref="disable_interactive_boot" selected="true" />
 <select idref="install_hids" selected="true" />
 <select idref="install_antivirus" selected="true" />
-<select idref="sysctl_kernel_exec_shield" selected="true" />
+<select idref="enable_execshield_settings" selected="true" />
 <select idref="sysctl_kernel_randomize_va_space" selected="true" />
 <select idref="bios_enable_execution_restrictions" selected="true" />
 <select idref="sysctl_fs_suid_dumpable" selected="true" />
 <select idref="disable_xwindows_with_runlevel" selected="true" />
-<select idref="world_writeable_files" selected="true" />
+<select idref="world_writeable_files" selected="false" /> 
 </Profile>
 
 
