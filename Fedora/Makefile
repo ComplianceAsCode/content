@@ -7,10 +7,17 @@ DIST = dist
 ID = ssg
 PROD = fedora
 
+OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
+
 all: shorthand2xccdf guide content dist
 
 shorthand-guide:
+ifeq ($(OPENSCAP_SVG), 0)
+	xsltproc -o $(OUT)/guide.xml $(TRANS)/includelogo.xslt $(IN)/guide.xml
+	xsltproc -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
+else
 	xsltproc -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
+endif
 	xmllint --format --output $(OUT)/$(ID)-$(PROD)-shorthand.xml $(OUT)/$(ID)-$(PROD)-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
