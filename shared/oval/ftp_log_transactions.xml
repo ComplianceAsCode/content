@@ -1,0 +1,51 @@
+<def-group>
+  <definition class="compliance" id="ftp_log_transactions" version="1">
+    <metadata>
+      <title>Banner for FTP Users</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
+      </affected>
+      <description>To trace malicious activity facilitated by the FTP 
+      service, it must be configured to ensure that all commands sent to 
+      the FTP server are logged using the verbose vsftpd log format.
+      </description>
+      <reference source="galford" ref_id="20140812" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="FTP is not being used or the conditions are met" operator="OR">
+      <extend_definition comment="vsftp package is not installed" definition_ref="package_vsftpd_installed" negate="true" />
+      <criteria comment="FTP configuration conditions are not set or are met" operator="AND">
+        <criterion comment="log ftp transactions enable" test_ref="test_ftp_log_transactions_enable" />
+        <criterion comment="log ftp transactions format" test_ref="test_ftp_log_transactions_format" />
+        <criterion comment="log ftp transactions protocol" test_ref="test_ftp_log_transactions_protocol" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="log ftp transactions" id="test_ftp_log_transactions_enable" version="1">
+    <ind:object object_ref="object_test_ftp_log_transactions_enable" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="log ftp transactions" id="object_test_ftp_log_transactions_enable" version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*xferlog_enable[\s]*=[\s]*YES$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="log ftp transactions" id="test_ftp_log_transactions_format" version="1">
+    <ind:object object_ref="object_test_ftp_log_transactions_format" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="log ftp transactions" id="object_test_ftp_log_transactions_format" version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*xferlog_std_format[\s]*=[\s]*NO$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="log ftp transactions" id="test_ftp_log_transactions_protocol" version="1">
+    <ind:object object_ref="object_test_ftp_log_transactions_protocol" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="log ftp transactions" id="object_test_ftp_log_transactions_protocol" version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*log_ftp_protocol[\s]*=[\s]*YES$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
+
