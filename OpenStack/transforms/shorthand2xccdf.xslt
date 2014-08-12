@@ -476,6 +476,12 @@ If the system is configured to audit this activity, it will return a line.
         <xsl:apply-templates select="@*|node()" />
   </xsl:template>
 
+  <xsl:template match="p">
+    <xhtml:p>
+        <xsl:apply-templates select="@*|node()" />
+    </xhtml:p>
+  </xsl:template>
+
   <xsl:template match="code">
     <xhtml:code>
         <xsl:apply-templates select="@*|node()" />
