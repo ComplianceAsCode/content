@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="aide_periodic_cron_checking" version="1">
+    <metadata>
+      <title>Configure Periodic Execution of AIDE</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>By default, AIDE does not install itself for periodic
+      execution. Periodically running AIDE is necessary to reveal
+      unexpected changes in installed files.
+      </description>
+      <reference source="galford" ref_id="20140808" ref_url="test_attestation" />
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="Aide is installed" negate="true" definition_ref="package_aide_installed" />
+      <criterion comment="run aide daily with cron" test_ref="test_aide_periodic_cron_checking" />
+      <criterion comment="run aide daily with cron" test_ref="test_aide_crond_checking" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="run aide daily with cron" id="test_aide_periodic_cron_checking" version="1">
+    <ind:object object_ref="object_test_aide_periodic_cron_checking" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="run aide daily with cron" id="object_test_aide_periodic_cron_checking" version="1">
+    <ind:filepath>/etc/crontab</ind:filepath>
+    <ind:pattern operation="pattern match">^[0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*\*[\s]*root[\s]*/usr/sbin/aide[\s]*\-\-check+$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="run aide daily with cron" id="test_aide_crond_checking" version="1">
+    <ind:object object_ref="object_test_aide_crond_checking" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="run aide daily with cron" id="object_test_aide_crond_checking" version="1">
+    <ind:path>/etc/cron.d</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^[0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*\*[\s]*root[\s]*/usr/sbin/aide[\s]*\-\-check+$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
