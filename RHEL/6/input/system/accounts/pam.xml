@@ -125,6 +125,14 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
+<Value id="var_password_pam_cracklib_maxrepeat" type="number" operator="equals" interative="0">
+<title>maxrepeat</title>
+<description>Maximum Number of Consecutive Repeating Characters in a Password</description>
+<value selector="">3</value>
+<value selector="1">1</value>
+<value selector="2">2</value>
+<value selector="3">3</value>
+
 <Value id="var_password_pam_cracklib_minlen" type="number"
 operator="equals" interactive="0">
 <title>minlen</title>
@@ -259,7 +267,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="password_require_consecrepeat">
+<Rule id="accounts_password_pam_cracklib_maxrepeat">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
@@ -275,6 +283,7 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="27227-8" />
+<oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_cracklib_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
