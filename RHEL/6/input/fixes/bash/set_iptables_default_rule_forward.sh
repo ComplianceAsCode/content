@@ -1,1 +1,1 @@
-sed -i 's/^:FORWARD ACCEPT.*/:FORWARD DROP [0:0]/g' /etc/sysconfig/iptables
+../../../../../shared/fixes/bash/set_iptables_default_rule_forward.sh
