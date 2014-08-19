@@ -73,6 +73,8 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('services/ntp.xml')" />
       <xsl:apply-templates select="document('services/ssh.xml')" />
+      <xsl:apply-templates select="document('services/ftp.xml')" />
+      <xsl:apply-templates select="document('services/snmp.xml')" />
     </xsl:copy>
   </xsl:template>
 
