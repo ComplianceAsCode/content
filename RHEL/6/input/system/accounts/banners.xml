@@ -91,7 +91,8 @@ banner.
 <description>
 To enable displaying a login warning banner in the GNOME
 Display Manager's login screen, run the following command:
-<pre>sudo -u gdm gconftool-2 \
+<pre>sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gdm/simple-greeter/banner_message_enable true</pre>
 To display a banner, this setting must be enabled and then
@@ -117,14 +118,16 @@ process and facilitates possible legal action against attackers.
 <description>
 To set the text shown by the GNOME Display Manager
 in the login screen, run the following command:
-<pre>sudo -u gdm gconftool-2 \
+<pre>sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type string \
   --set /apps/gdm/simple-greeter/banner_message_text \
   "Text of the warning banner here"</pre>
 When entering a warning banner that spans several lines, remember
 to begin and end the string with <tt>"</tt>. This command writes
-directly to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</tt>,
-and this file can later be edited directly if necessary.
+directly either to the <tt>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</tt>
+if it exists or to the file <tt>/etc/gconf/gconf.xml.mandatory/apps/gdm/simple-greeter/%gconf.xml</tt>.
+Either of these files can later be edited directly if necessary.
 </description>
 <ocil clause="it does not">
 To ensure the login warning banner text is properly set, run the following:
@@ -148,7 +151,8 @@ directly into the system are greeted with a login screen that displays
 all known users. This functionality should be disabled.
 <br /><br />
 Run the following command to disable the user list:
-<pre>sudo -u gdm gconftool-2 \
+<pre>sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gdm/simple-greeter/disable_user_list true</pre>
 </description>
