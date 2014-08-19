@@ -70,13 +70,13 @@ stations</li>
 <Rule id="snmpd_use_newer_protocol" severity="medium">
 <title>Configure SNMP Service to Use Only SNMPv3 or Newer </title>
 <description>
-Edit <tt>/etc/snmp/snmpd.conf</tt>, removing any references to <tt>v1</tt>, <tt>v2c</tt>, or <tt>com2sec</tt>.  
+Edit <tt>/etc/snmp/snmpd.conf</tt>, removing any references to <tt>rocommunity</tt>, <tt>rwcommunity</tt>, or <tt>com2sec</tt>.  
 Upon doing that, restart the SNMP service:
 <pre># service snmpd restart</pre>
 </description>
 <ocil clause="there is output">
 To ensure only SNMPv3 or newer is used, run the following command:
-<pre># grep 'v1\|v2c\|com2sec' /etc/snmp/snmpd.conf | grep -v "^#"</pre>
+<pre># grep 'rocommunity\|rwcommunity\|com2sec' /etc/snmp/snmpd.conf | grep -v "^#"</pre>
 There should be no output.
 </ocil>
 <rationale>
