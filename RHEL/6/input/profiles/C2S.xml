@@ -412,7 +412,7 @@ baseline.
 <select idref="service_auditd_enabled" selected="true"/>
 
 <!-- CIS 5.2.3 Enable Auditing for Processes That Start Prior to auditd (Scored) -->
-<select idref="enable_auditd_bootloader" selected="true"/>
+<select idref="bootloader_audit_argument" selected="true"/>
 
 <!-- CIS 5.2.4 Record Events That Modify Date and Time Information (Scored) -->
 <select idref="audit_rules_time_adjtimex" selected="true" />
@@ -442,7 +442,7 @@ baseline.
 <select idref="audit_rules_unsuccessful_file_modification" selected="true" />
 
 <!-- CIS 5.2.12 Collect Use of Privileged Commands (Scored) -->
-<select idref="audit_privileged_commands" selected="true" />
+<select idref="audit_rules_privileged_commands" selected="true" />
 
 <!-- CIS 5.2.13 Collect Successful File System Mounts (Scored)-->
 <select idref="audit_media_exports" selected="true" />
@@ -458,7 +458,7 @@ baseline.
 <!-- sdw/jb: this rule is wrong. will work with CIS to correct in future editions -->
 
 <!-- CIS 5.2.17 Collect Kernel Module Loading and Unloading (Scored) -->
-<select idref="audit_kernel_module_loading" selected="true" />
+<select idref="audit_rules_kernel_module_loading" selected="true" />
 
 <!-- CIS 5.2.18 Make the Audit Configuration Immutable (Scored) -->
 <select idref="audit_config_immutable" selected="true" />
