@@ -18,7 +18,7 @@
     <ind:object object_ref="object_test_disable_ctrlaltdel" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Disable Ctrl-Alt-Del key sequence" id="object_test_disable_ctrlaltdel" version="1">
-    <ind:filepath>/etc/init/control-alt-delete.conf</ind:filepath>
+    <ind:filepath>/etc/init/control-alt-delete.override</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*exec[\s]*/sbin/shutdown[\s]*\-r[\s]*now[\s]*\"Control-Alt-Delete[\s]*pressed\"+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
