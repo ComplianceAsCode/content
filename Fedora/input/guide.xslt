@@ -42,6 +42,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/software/updating.xml')" />
+      <xsl:apply-templates select="document('system/software/integrity.xml')" />
     </xsl:copy>
   </xsl:template>
 
