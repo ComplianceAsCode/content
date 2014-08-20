@@ -97,7 +97,7 @@ actions will be taken if other obstacles exist.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="enable_auditd_bootloader" severity="medium">
+<Rule id="bootloader_audit_argument" severity="medium">
 <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
 <description>To ensure all processes can be audited, even
 those which start prior to the audit daemon, add the argument
@@ -1133,12 +1133,13 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <title>Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
 <description>At a minimum the audit system should collect
 unauthorized file accesses for all users and root. Add the following
-to <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
-appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
--a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
+to <tt>/etc/audit/audit.rules</tt>:
+<pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
 </description>
-<ocil clause="either command lacks output">
+<ocil clause="32-bit and 64-bit system calls to creat, open, openat, open_by_handle_at, truncate, and ftruncate are not audited during EACCES and EPERM">
 To verify that the audit system collects unauthorized file accesses, run the following commands:
 <pre># grep EACCES /etc/audit/audit.rules</pre>
 <pre># grep EPERM /etc/audit/audit.rules</pre>
@@ -1150,7 +1151,7 @@ these events could serve as evidence of potential system compromise.</rationale>
 <ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126" />
 </Rule>
 
-<Rule id="audit_privileged_commands">
+<Rule id="audit_rules_privileged_commands">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum the audit system should collect the
 execution of privileged commands for all users and root.
@@ -1242,7 +1243,7 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_kernel_module_loading">
+<Rule id="audit_rules_kernel_module_loading">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to capture kernel module loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
