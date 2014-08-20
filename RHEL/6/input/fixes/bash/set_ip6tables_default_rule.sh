@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/set_ip6tables_default_rule.sh
