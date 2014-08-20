@@ -91,7 +91,7 @@ banner.
 <description>
 To enable displaying a login warning banner in the GNOME
 Display Manager's login screen, run the following command:
-<pre># gconftool-2 --direct \
+<pre>sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gdm/simple-greeter/banner_message_enable true</pre>
@@ -118,7 +118,7 @@ process and facilitates possible legal action against attackers.
 <description>
 To set the text shown by the GNOME Display Manager
 in the login screen, run the following command:
-<pre># gconftool-2 --direct \
+<pre>sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type string \
   --set /apps/gdm/simple-greeter/banner_message_text \
@@ -152,7 +152,7 @@ directly into the system are greeted with a login screen that displays
 all known users. This functionality should be disabled.
 <br /><br />
 Run the following command to disable the user list:
-<pre># gconftool-2 --direct \
+<pre>sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gdm/simple-greeter/disable_user_list true</pre>
