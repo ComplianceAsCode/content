@@ -26,8 +26,7 @@ activated but is not needed, the software should be disabled and removed.
 Running SNMP software provides a network-based avenue of attack, and
 should be disabled if not needed.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="service_snmpd_disabled" />
+<!--oval id="service_snmpd_disabled" /-->
 </Rule>
 
 <Rule id="uninstall_net-snmp">
@@ -43,8 +42,7 @@ If there is no need to run SNMP server software,
 removing the package provides a safeguard against its
 activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="package_net-snmp_removed" />
+<!--oval id="package_net-snmp_removed" /-->
 </Rule>
 
 </Group> <!-- <Group id="disabling_snmp_service"> -->
@@ -84,7 +82,6 @@ Earlier versions of SNMP are considered insecure, as they potentially allow
 unauthorized access to detailed system management information.
 </rationale>
 <oval id="snmpd_use_newer_protocol" />
-<ident cce="RHEL7-CCE-TBD" />
 </Rule>
 
 <Rule id="snmpd_not_default_password" severity="medium">
@@ -104,8 +101,6 @@ Presence of the default SNMP password enables querying of different system
 aspects and could result in unauthorized knowledge of the system.
 </rationale>
 <oval id="snmpd_not_default_password" />
-<ident cce="RHEL7-CCE-TBD" />
-<tested by="MAN" on="20121214"/>
 </Rule>
 
 </Group>
