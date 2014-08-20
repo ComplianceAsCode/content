@@ -33,7 +33,7 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 <select idref="disable_xwindows_with_runlevel" selected="true"/>
 <select idref="packagegroup_xwindows_remove" selected="true"/>
 <select idref="disable_dhcp_client" selected="true"/>
-<select idref="accounts_password_reuse_limit" selected="true"/>
+<select idref="accounts_password_pam_unix_remember" selected="true"/>
 
 <select idref="gid_passwd_group_same" selected="true"/>
 <select idref="account_unique_name" selected="true"/>
@@ -98,8 +98,8 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 <select idref="accounts_passwords_pam_fail_interval" selected="true" />
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900"/>
 
-<!-- from inherited Rule, accounts_password_reuse_limit -->
-<refine-value idref="var_password_history_retain_limit" selector="24"/>
+<!-- from inherited Rule, accounts_password_pam_unix_remember -->
+<refine-value idref="var_password_pam_unix_remember" selector="24"/>
 
 <refine-value idref="var_accounts_maximum_age_login_defs" selector="60"/>
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="1"/>
