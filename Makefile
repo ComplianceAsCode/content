@@ -51,16 +51,16 @@ endef
 all: rhel6 rhel7 openstack rhevm3 rpm zipfile
 
 rhel6:
-	cd RHEL/6/ && $(MAKE)
+	cd RHEL/6/ && $(MAKE) && $(MAKE) validate
 
 rhel7:
-	cd RHEL/7/ && $(MAKE)
+	cd RHEL/7/ && $(MAKE) && $(MAKE) validate
 
 openstack:
-	cd OpenStack && $(MAKE)
+	cd OpenStack && $(MAKE) && $(MAKE) validate
 
 rhevm3:
-	cd RHEVM3 && $(MAKE)
+	cd RHEVM3 && $(MAKE) && $(MAKE) validate
 
 tarball:
 	$(call rpm-prep)
