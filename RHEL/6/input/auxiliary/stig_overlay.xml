@@ -775,7 +775,7 @@
 		<VMSinfo VKey="38657" SVKey="50458" VRelease="2" />
 		<title>The system must use SMB client signing for connecting to samba servers using mount.cifs.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_reuse_limit" ownerid="RHEL-06-000274" disa="200" severity="medium">
+	<overlay owner="disastig" ruleid="accounts_password_pam_unix_remember" ownerid="RHEL-06-000274" disa="200" severity="medium">
 		<VMSinfo VKey="38658" SVKey="50459" VRelease="1" />
 		<title>The system must prohibit the reuse of passwords within twenty-four iterations.</title>
 	</overlay>
@@ -863,7 +863,7 @@
 		<VMSinfo VKey="38690" SVKey="50491" VRelease="1" />
 		<title>Emergency accounts must be provisioned with an expiration date.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="password_require_consecrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_password_pam_cracklib_maxrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
 		<VMSinfo VKey="38693" SVKey="50494" VRelease="1" />
 		<title>The system must require passwords to contain no more than three consecutive repeating characters.</title>
 	</overlay>
