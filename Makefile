@@ -51,21 +51,36 @@ endef
 all: fedora rhel6 rhel7 openstack rhevm3 rpm zipfile
 
 fedora:
-	cd Fedora/ && $(MAKE) && $(MAKE) validate
+	cd Fedora/ && $(MAKE)
 
 rhel6:
-	cd RHEL/6/ && $(MAKE) && $(MAKE) validate
+	cd RHEL/6/ && $(MAKE)
 
 rhel7:
 	cd RHEL/7/ && $(MAKE)
-	# When RHEL 7 is in good shape, enable the line below and remove the make line above
-        #cd RHEL/7/ && $(MAKE) && $(MAKE) validate
-
+	
 openstack:
-	cd OpenStack && $(MAKE) && $(MAKE) validate
+	cd OpenStack && $(MAKE)
 
 rhevm3:
-	cd RHEVM3 && $(MAKE) && $(MAKE) validate
+	cd RHEVM3 && $(MAKE)
+
+validate: validate-fedora validate-rhel6 validate-rhel7 validate-openstack validate-rhevm3
+
+validate-fedora:
+	cd Fedora/ && $(MAKE) validate
+
+validate-rhel6:
+	cd RHEL/6/ && $(MAKE) validate
+
+validate-rhel7:
+	cd RHEL/7/ && $(MAKE) validate
+
+validate-openstack:
+	cd OpenStack && $(MAKE) validate
+
+validate-rhevm3
+	cd RHEVM3 && $(MAKE) validate
 
 tarball:
 	$(call rpm-prep)
