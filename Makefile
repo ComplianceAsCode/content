@@ -65,21 +65,11 @@ openstack:
 rhevm3:
 	cd RHEVM3 && $(MAKE)
 
-validate: validate-fedora validate-rhel6 validate-rhel7 validate-openstack validate-rhevm3
-
-validate-fedora:
+validate:
 	cd Fedora/ && $(MAKE) validate
-
-validate-rhel6:
 	cd RHEL/6/ && $(MAKE) validate
-
-validate-rhel7:
 	cd RHEL/7/ && $(MAKE) validate
-
-validate-openstack:
 	cd OpenStack && $(MAKE) validate
-
-validate-rhevm3
 	cd RHEVM3 && $(MAKE) validate
 
 tarball:
