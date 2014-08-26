@@ -1,6 +1,8 @@
 Build Stats:
-Python Code: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
---
+
+Python Code:
+[![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
+---
 
 The purpose of this project is to create SCAP content, first for 
 Red Hat Enterprise Linux 6.  "SCAP content" refers to documents 
