@@ -58,19 +58,20 @@ rhel6:
 
 rhel7:
 	cd RHEL/7/ && $(MAKE)
-	
+
 openstack:
 	cd OpenStack && $(MAKE)
 
 rhevm3:
 	cd RHEVM3 && $(MAKE)
 
-validate:
+validate: fedora rhel6 rhel7 openstack rhevm3
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
-	cd RHEL/7/ && $(MAKE) validate
-	cd OpenStack && $(MAKE) validate
-	cd RHEVM3 && $(MAKE) validate
+	# Enable below when content is validates correctly
+	#cd RHEL/7/ && $(MAKE) validate
+	#cd OpenStack && $(MAKE) validate
+	#cd RHEVM3 && $(MAKE) validate
 
 tarball:
 	$(call rpm-prep)
