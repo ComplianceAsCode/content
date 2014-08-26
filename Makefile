@@ -48,7 +48,10 @@ endef
 
 # Define Makefile targets below
 
-all: rhel6 rhel7 openstack rhevm3 rpm zipfile
+all: fedora rhel6 rhel7 openstack rhevm3 rpm zipfile
+
+fedora:
+	cd Fedora/ && $(MAKE)
 
 rhel6:
 	cd RHEL/6/ && $(MAKE)
@@ -61,6 +64,14 @@ openstack:
 
 rhevm3:
 	cd RHEVM3 && $(MAKE)
+
+validate: fedora rhel6 rhel7 openstack rhevm3
+	cd Fedora/ && $(MAKE) validate
+	cd RHEL/6/ && $(MAKE) validate
+	# Enable below when content is validates correctly
+	#cd RHEL/7/ && $(MAKE) validate
+	#cd OpenStack && $(MAKE) validate
+	#cd RHEVM3 && $(MAKE) validate
 
 tarball:
 	$(call rpm-prep)
