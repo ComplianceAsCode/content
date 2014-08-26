@@ -1,0 +1,206 @@
+<Group id="ftp">
+<title>FTP Server</title>
+<description>FTP is a common method for allowing remote access to
+files. Like telnet, the FTP protocol is unencrypted, which means
+that passwords and other data transmitted during the session can be
+captured and that the session is vulnerable to hijacking.
+Therefore, running the FTP server software is not recommended.
+<br /><br />
+However, there are some FTP server configurations which may
+be appropriate for some environments, particularly those which
+allow only read-only anonymous access as a means of downloading
+data available to the public.</description>
+
+<Group id="disabling_vsftpd">
+<title>Disable vsftpd if Possible</title>
+
+<Rule id="disable_vsftpd">
+<title>Disable vsftpd Service</title>
+<description>
+<service-disable-macro service="vsftpd" />
+</description>
+<ocil>
+<service-disable-check-macro service="vsftpd" />
+</ocil>
+<rationale>
+Running FTP server software provides a network-based avenue
+of attack, and should be disabled if not needed.
+Furthermore, the FTP protocol is unencrypted and creates
+a risk of compromising sensitive information.
+</rationale>
+<!--oval id="service_vsftpd_disabled" /-->
+<ref nist="CM-7" disa="1436"/>
+</Rule>
+
+<Rule id="uninstall_vsftpd">
+<title>Uninstall vsftpd Package</title>
+<description>
+<package-remove-macro package="vsftpd" />
+</description>
+<ocil>
+<package-check-macro package="vsftpd" />
+</ocil>
+<rationale>
+Removing the vsftpd package decreases the risk of its
+accidental activation.
+</rationale>
+<!--oval id="package_vsftpd_removed" /-->
+<ref nist="CM-7" disa="1436"/>
+</Rule>
+
+</Group> <!-- <Group id="disabling_vsftpd"> -->
+
+<Group id="ftp_use_vsftpd">
+<title>Use vsftpd to Provide FTP Service if Necessary</title>
+
+<Rule id="package_vsftpd_installed">
+<title>Install vsftpd Package</title>
+<description>If this machine must operate as an FTP server, install the <tt>vsftpd</tt> package via the standard channels.
+<pre># yum install vsftpd</pre>
+</description>
+<rationale>After RHEL 2.1, Red Hat switched from distributing wu-ftpd with RHEL to distributing vsftpd. For security
+and for consistency with future Red Hat releases, the use of vsftpd is recommended.</rationale>
+<oval id="package_vsftpd_installed" />
+<ref nist="CM-7" />
+</Rule>
+
+</Group> <!-- <Group id="ftp_use_vsftpd"> -->
+
+<Group id="ftp_configure_vsftpd">
+<title>Use vsftpd to Provide FTP Service if Necessary</title>
+<description>The primary vsftpd configuration file is
+<tt>/etc/vsftpd.conf</tt>, if that file exists, or
+<tt>/etc/vsftpd/vsftpd.conf</tt> if it does not. 
+</description>
+<Rule id="ftp_log_transactions">
+<title>Enable Logging of All FTP Transactions</title>
+<description>Add or correct the following configuration options within the <tt>vsftpd</tt>
+configuration file, located at <tt>/etc/vsftpd/vsftpd.conf</tt>:
+<pre>xferlog_enable=YES
+xferlog_std_format=NO
+log_ftp_protocol=YES</pre>
+</description>
+<ocil clause="xferlog_enable is missing, or is not set to yes">
+Find if logging is applied to the FTP daemon.
+<br/><br/>
+Procedures:
+<br/><br/>
+If vsftpd is started by xinetd the following command will indicate the xinetd.d startup file:
+<pre># grep vsftpd /etc/xinetd.d/*</pre>
+<pre># grep server_args <i>vsftpd xinetd.d startup file</i></pre>
+This will indicate the vsftpd config file used when starting through xinetd.
+If the <i>server_args</i> line is missing or does not include the vsftpd configuration file, then the default config file (/etc/vsftpd/vsftpd.conf) is used.
+<pre># grep xferlog_enable <i>vsftpd config file</i></pre>
+</ocil>
+<rationale>To trace malicious activity facilitated by the FTP service, it must be configured to ensure that all commands sent to
+the FTP server are logged using the verbose vsftpd log
+format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
+<warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
+<oval id="ftp_log_transactions" />
+<!--<ref nist="CM-7" /> -->
+</Rule>
+
+<Rule id="ftp_present_banner" severity="medium">
+<title>Create Warning Banners for All FTP Users</title>
+<description>Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd/vsftpd.conf</tt>
+by default. Add or correct the following configuration options:
+<pre>banner_file=/etc/issue</pre>
+</description>
+<rationale>This setting will cause the system greeting banner to be used for FTP connections as well.</rationale>
+<ref disa="48" />
+<oval id="ftp_present_banner" />
+<!--<ref nist="CM-7" /> -->
+<ocil clause="it does not">
+If FTP services are not installed, this is not applicable.
+<br /><br />
+To verify this configuration, run the following command:
+<pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
+
+The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below:
+<pre># grep "banner_file" /etc/vsftpd/vsftpd.conf
+banner_file=/etc/issue</pre>
+</ocil>
+</Rule>
+
+<Group id="ftp_restrict_users">
+<title>Restrict the Set of Users Allowed to Access FTP</title>
+<description>This section describes how to disable non-anonymous (password-based) FTP logins, or, if it is not possible to
+do this entirely due to legacy applications, how to restrict insecure FTP login to only those users who have an
+identified need for this access.</description>
+
+<Rule id="ftp_restrict_to_anon">
+<title>Restrict Access to Anonymous Users if Possible</title>
+<description>Is there a mission-critical reason for users to transfer files to/from their own accounts using FTP, rather than
+using a secure protocol like SCP/SFTP? If not, edit the vsftpd configuration file. Add or correct the following configuration option:
+<pre>local_enable=NO</pre>
+If non-anonymous FTP logins are necessary, follow the guidance in the remainder of this section to secure
+these logins as much as possible.</description>
+<rationale>The use of non-anonymous FTP logins is strongly discouraged. Since SSH clients and servers are widely available, and since SSH provides support for a transfer mode which resembles FTP in user interface, there is no good reason to allow password-based FTP access. </rationale>
+<!--<oval id="ftp_restrict_to_anon" />-->
+<!--<ref nist="CM-7" /> -->
+</Rule>
+
+<Group id="ftp_limit_users">
+<title>Limit Users Allowed FTP Access if Necessary</title>
+<description>If there is a mission-critical reason for users to access their accounts via the insecure FTP protocol, limit the set of users who are allowed this access. Edit the vsftpd configuration file. Add or correct the following configuration options:
+<pre>userlist_enable=YES
+userlist_file=/etc/vsftp.ftpusers
+userlist_deny=NO</pre>
+Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via FTP, add a line containing that user's name:
+<pre>USERNAME</pre>
+If anonymous access is also required, add the anonymous usernames to <tt>/etc/vsftp.ftpusers</tt> as well.
+<pre>anonymous
+ftp</pre>
+</description>
+<rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via FTP. It was used to prevent system users such as the root user from logging in via the insecure FTP protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via FTP. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous FTP access can be limited to legacy users who have been explicitly identified.</rationale>
+<!--<oval id="ftp_limit_users" />-->
+<!--<ref nist="CM-7" /> -->
+</Group>
+
+</Group> <!-- <Group id="ftp_restrict_users"> -->
+
+<Rule id="ftp_disable_uploads">
+<title>Disable FTP Uploads if Possible</title>
+<description>Is there a mission-critical reason for users to upload files via FTP? If not,
+edit the vsftpd configuration file to add or correct the following configuration options:
+<pre>write_enable=NO</pre>
+If FTP uploads are necessary, follow the guidance in the remainder of this section to secure these transactions
+as much as possible.</description>
+<rationale>Anonymous FTP can be a convenient way to make files available for universal download. However, it is less
+common to have a need to allow unauthenticated users to place files on the FTP server. If this must be done, it
+is necessary to ensure that files cannot be uploaded and downloaded from the same directory.
+</rationale>
+<!--<oval id="ftp_disable_uploads" />-->
+<!--<ref nist="CM-7" /> -->
+</Rule>
+
+<Rule id="ftp_home_partition">
+<title>Place the FTP Home Directory on its Own Partition</title>
+<description>By default, the anonymous FTP root is the home directory of the FTP user account. The df command can
+be used to verify that this directory is on its own partition.</description>
+<rationale>If there is a mission-critical reason for anonymous users to upload files, precautions must be taken to prevent
+these users from filling a disk used by other services.</rationale>
+<!--<oval id="ftp_home_partition" />-->
+<!--<ref nist="CM-7" /> -->
+</Rule>
+
+<Group id="ftp_configure_firewall">
+<title>Configure Firewalls to Protect the FTP Server</title>
+<description>By default, <tt>iptables</tt>
+blocks access to the ports used by the web server.
+<iptables-desc-macro allow="true" proto="tcp" port="21" />
+Edit the file <tt>/etc/sysconfig/iptables-config</tt>. Ensure that the space-separated list of modules contains
+the FTP connection tracking module:
+<pre>IPTABLES_MODULES="ip_conntrack_ftp"</pre></description>
+<rationale>These settings configure iptables to allow connections to an FTP server. The first line allows initial connections
+to the FTP server port.
+FTP is an older protocol which is not very compatible with firewalls. During the initial FTP dialogue, the client
+and server negotiate an arbitrary port to be used for data transfer. The <tt>ip_conntrack_ftp</tt>  module is used by
+iptables to listen to that dialogue and allow connections to the data ports which FTP negotiates. This allows an
+FTP server to operate on a machine which is running a firewall.</rationale>
+<!--<oval id="ftp_configure_firewall" />-->
+<!--<ref nist="CM-7" /> -->
+</Group>
+
+</Group> <!-- <Group id="ftp_configure_vsftpd"> -->
+</Group> <!-- <Group id="ftp"> -->

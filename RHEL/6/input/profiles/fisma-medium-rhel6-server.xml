@@ -252,7 +252,7 @@
 <select idref="kernel_module_hfsplus_disabled" selected="true" />
 <select idref="kernel_module_squashfs_disabled" selected="true" />
 <select idref="kernel_module_udf_disabled" selected="true" />
-<select idref="sysctl_ipv4_all_send_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
 <select idref="sysctl_ipv4_ip_forward" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
 <select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
@@ -269,20 +269,20 @@
 <select idref="kernel_module_ipv6_option_disabled" selected="true" />
 <select idref="network_ipv6_disable_rpc" selected="true" />
 <select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
-<select idref="sysctl_ipv6_default_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_redirects" selected="true" />
 
 <!--	IA-2(1) -->
 <select idref="bootloader_password" selected="true" />
 
 <!--	IA-5 -->
 <select idref="accounts_password_pam_cracklib_retry" selected="true" />
-<select idref="password_require_consecrepeat" selected="true" />
+<select idref="accounts_password_pam_cracklib_maxrepeat" selected="true" />
 <select idref="accounts_password_pam_cracklib_ucredit" selected="true" />
 <select idref="accounts_password_pam_cracklib_ocredit" selected="true" />
 <select idref="accounts_password_pam_cracklib_lcredit" selected="true" />
 <select idref="accounts_password_pam_cracklib_difok" selected="true" />
-<refine-value idref="var_password_history_retain_limit" selector="24" />
-<select idref="accounts_password_reuse_limit" selected="true" />
+<refine-value idref="var_password_pam_unix_remember" selector="24" />
+<select idref="accounts_password_pam_unix_remember" selected="true" />
 <select idref="set_password_hashing_algorithm_systemauth" selected="true" />
 <select idref="set_password_hashing_algorithm_logindefs" selected="true" />
 <select idref="set_password_hashing_algorithm_libuserconf" selected="true" />

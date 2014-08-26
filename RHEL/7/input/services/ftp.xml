@@ -100,7 +100,7 @@ the FTP server are logged using the verbose vsftpd log
 format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
 <warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
 <ident cce="RHEL7-CCE-TBD" />
-<!--<oval id="ftp_log_transactions" />-->
+<oval id="ftp_log_transactions" />
 <!--<ref nist="CM-7" /> -->
 </Rule>
 
@@ -113,7 +113,7 @@ by default. Add or correct the following configuration options:
 <rationale>This setting will cause the system greeting banner to be used for FTP connections as well.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <ref disa="48" />
-<!--<oval id="ftp_present_banner" />-->
+<oval id="ftp_present_banner" />
 <!--<ref nist="CM-7" /> -->
 <ocil clause="it does not">
 If FTP services are not installed, this is not applicable.
