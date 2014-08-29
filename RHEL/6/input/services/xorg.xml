@@ -22,7 +22,7 @@ features a <tt>3</tt> as shown:
 </description>
 <ocil clause="it does not">
 To verify the default runlevel is 3, run the following command:
-<pre># grep initdefault /etc/inittab</pre>
+<pre>sudo grep initdefault /etc/inittab</pre>
 The output should show the following:
 <pre>id:3:initdefault:</pre>
 </ocil>
@@ -39,7 +39,7 @@ The output should show the following:
 <description>Removing all packages which constitute the X Window System
 ensures users or malicious software cannot start X.
 To do so, run the following command:
-<pre># yum groupremove "X Window System"</pre>
+<pre>sudo yum groupremove "X Window System"</pre>
 </description>
 <ocil clause="it is not">
 To ensure the X Windows package group is removed, run the following command:

@@ -69,7 +69,7 @@ this service should be disabled.
 <title>Disable netfs if Possible</title>
 <description>To determine if any network filesystems handled by netfs are
 currently mounted on the system execute the following command:
-<pre># mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
+<pre>sudo mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
 If the command did not return any output then disable netfs.
 </description>
 <Rule id="service_netfs_disabled">
@@ -410,7 +410,7 @@ Remove any instances of the
 </description>
 <ocil clause="there is output">
 To verify insecure file locking has been disabled, run the following command:
-<pre># grep insecure_locks /etc/exports</pre>
+<pre>sudo grep insecure_locks /etc/exports</pre>
 </ocil>
 <rationale>Allowing insecure file locking could allow for sensitive data to be
 viewed or edited by an unauthorized user.
