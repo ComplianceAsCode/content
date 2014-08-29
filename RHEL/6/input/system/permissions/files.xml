@@ -197,7 +197,7 @@ stored in <tt>/lib/modules</tt>. All files in these directories
 should not be group-writable or world-writable. If any file in these
 directories is found to be group-writable or world-writable, correct
 its permission with the following command:
-<pre># chmod go-w <i>FILE</i></pre>
+<pre>sudo chmod go-w <i>FILE</i></pre>
 </description>
 <ocil clause="any of these files are group-writable or world-writable">
 Shared libraries are stored in the following directories:
@@ -208,7 +208,7 @@ Shared libraries are stored in the following directories:
 </pre>
 To find shared libraries that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains shared libraries:
-<pre>$ find -L <i>DIR</i> -perm /022 -type f</pre>
+<pre>sudo find -L <i>DIR</i> -perm /022 -type f</pre>
 </ocil>
 <rationale>Files from shared library directories are loaded into the address
 space of processes (including privileged ones) or of the kernel itself at
@@ -235,7 +235,7 @@ stored in <tt>/lib/modules</tt>. All files in these directories should be
 owned by the <tt>root</tt> user. If the directory, or any file in these
 directories, is found to be owned by a user other than root correct its
 ownership with the following command:
-<pre># chown root <i>FILE</i></pre>
+<pre>sudo chown root <i>FILE</i></pre>
 </description>
 <ocil clause="any of these files are not owned by root">
 Shared libraries are stored in the following directories:
@@ -246,7 +246,7 @@ Shared libraries are stored in the following directories:
 </pre>
 For each of these directories, run the following command to find files not 
 owned by root:
-<pre># find -L <i>$DIR</i> \! -user root -exec chown root {} \;</pre>
+<pre>sudo find -L <i>$DIR</i> \! -user root -exec chown root {} \;</pre>
 </ocil>
 <rationale>Files from shared library directories are loaded into the address
 space of processes (including privileged ones) or of the kernel itself at
@@ -273,7 +273,7 @@ All files in these directories should not be group-writable or world-writable.
 If any file <i>FILE</i> in these directories is found
 to be group-writable or world-writable, correct its permission with the
 following command:
-<pre># chmod go-w <i>FILE</i></pre>
+<pre>sudo chmod go-w <i>FILE</i></pre>
 </description>
 <ocil clause="any system executables are found to be group or world writable">
 System executables are stored in the following directories by default:
@@ -285,7 +285,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 To find system executables that are group-writable or world-writable,
 run the following command for each directory <i>DIR</i> which contains system executables:
-<pre>$ find -L <i>DIR</i> -perm /022 -type f</pre>
+<pre>sudo find -L <i>DIR</i> -perm /022 -type f</pre>
 </ocil>
 <rationale>System binaries are executed by privileged users, as well as system services,
 and restrictive permissions are necessary to ensure execution of these programs
@@ -310,7 +310,7 @@ All files in these directories should be owned by the <tt>root</tt> user.
 If any file <i>FILE</i> in these directories is found
 to be owned by a user other than root, correct its ownership with the
 following command:
-<pre># chown root <i>FILE</i></pre>
+<pre>sudo chown root <i>FILE</i></pre>
 </description>
 <ocil clause="any system executables are found to not be owned by root">
 System executables are stored in the following directories by default:
@@ -322,7 +322,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 To find system executables that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains system executables:
-<pre>$ find <i>DIR</i> \! -user root</pre>
+<pre>sudo find <i>DIR</i> \! -user root</pre>
 </ocil>
 <rationale>System binaries are executed by privileged users as well as system services,
 and restrictive permissions are necessary to ensure that their
@@ -350,11 +350,11 @@ changing modes.
 <br/>
 To set the sticky bit on a world-writable directory <i>DIR</i>, run the
 following command:
-<pre># chmod +t <i>DIR</i></pre>
+<pre>sudo chmod +t <i>DIR</i></pre>
 </description>
 <ocil clause="any world-writable directories are missing the sticky bit">
 To find world-writable directories that lack the sticky bit, run the following command:
-<pre># find / -xdev -type d -perm 002 ! -perm 1000</pre>
+<pre>sudo find / -xdev -type d -perm 002 ! -perm 1000</pre>
 </ocil>
 <rationale>
 Failing to set the sticky bit on public directories allows unauthorized users to delete files in the directory structure.
@@ -380,7 +380,7 @@ symptoms of a misconfigured application or user
 account.</description>
 <ocil clause="there is output">
 To find world-writable files, run the following command:
-<pre># find / -xdev -type f -perm -002</pre>
+<pre>sudo find / -xdev -type f -perm -002</pre>
 </ocil>
 <rationale>
 Data in world-writable files can be modified by any
@@ -403,7 +403,7 @@ of any unpackaged SGID files.
 </description>
 <ocil clause="there is output">
 To find world-writable files, run the following command:
-<pre># find / -xdev -type f -perm -002</pre>
+<pre>sudo find / -xdev -type f -perm -002</pre>
 </ocil>
 <rationale>Executable files with the SGID permission run with the privileges of
 the owner of the file. SGID files of uncertain provenance could allow for
@@ -424,7 +424,7 @@ of any unpackaged SUID files.
 </description>
 <ocil>
 To find world-writable files, run the following command:
-<pre># find / -xdev -type f -perm -002</pre>
+<pre>sudo find / -xdev -type f -perm -002</pre>
 </ocil>
 <rationale>Executable files with the SUID permission run with the privileges of
 the owner of the file. SUID files of uncertain provenance could allow for
@@ -447,7 +447,7 @@ appropriate user.
 The following command will discover and print any
 files on local partitions which do not belong to a valid user.
 Run it once for each local partition <i>PART</i>:
-<pre># find <i>PART</i> -xdev -nouser -print</pre>
+<pre>sudo find <i>PART</i> -xdev -nouser -print</pre>
 </ocil>
 <rationale>
 Unowned files do not directly imply a security problem, but they are generally
@@ -474,7 +474,7 @@ appropriate group.
 The following command will discover and print any
 files on local partitions which do not belong to a valid group.
 Run it once for each local partition <i>PART</i>:
-<pre># find <i>PART</i> -xdev -nogroup -print</pre>
+<pre>sudo find <i>PART</i> -xdev -nogroup -print</pre>
 </ocil>
 <rationale>
 Unowned files do not directly imply a security problem, but they are generally
@@ -503,7 +503,7 @@ appropriate group.
 The following command will discover and print world-writable directories that
 are not owned by a system account, given the assumption that only system
 accounts have a uid lower than 500.  Run it once for each local partition <i>PART</i>:
-<pre># find <i>PART</i> -xdev -type d -perm -0002 -uid +499 -print</pre>
+<pre>sudo find <i>PART</i> -xdev -type d -perm -0002 -uid +499 -print</pre>
 </ocil>
 <rationale>
 Allowing a user account to own a world-writable directory is

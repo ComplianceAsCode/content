@@ -239,7 +239,7 @@ Note that values less than 2 result in no log rotation.</description>
 <ocil clause="the system log file retention has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how many logs the system is configured to retain after rotation:
-<tt># grep num_logs /etc/audit/auditd.conf</tt>
+<tt>sudo grep num_logs /etc/audit/auditd.conf</tt>
 <pre>num_logs = 5</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
@@ -264,7 +264,7 @@ support retention of even more audit data.</description>
 <ocil clause="the system audit data threshold has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how much data the system will retain in each audit log file:
-<tt># grep max_log_file /etc/audit/auditd.conf</tt>
+<tt>sudo grep max_log_file /etc/audit/auditd.conf</tt>
 <pre>max_log_file = 6</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
@@ -298,7 +298,7 @@ occurs.  This is the default.  The setting is case-insensitive.
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
 maximum size: 
-<tt># grep max_log_file_action /etc/audit/auditd.conf</tt>
+<tt>sudo grep max_log_file_action /etc/audit/auditd.conf</tt>
 <pre>max_log_file_action <tt>rotate</tt></pre>
 </ocil>
 <rationale>Automatically rotating logs (by setting this to <tt>rotate</tt>)
@@ -353,7 +353,7 @@ disk space is starting to run low">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to email the administrator when
 disk space is starting to run low:
-<tt># grep space_left_action /etc/audit/auditd.conf</tt>
+<tt>sudo grep space_left_action /etc/audit/auditd.conf</tt>
 <pre>space_left_action</pre>
 Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
 </ocil>
@@ -423,11 +423,11 @@ administrators of the system, who can take appropriate action.</rationale>
 <tt>audispd</tt> plugin, set the <tt>active</tt> line in 
 <tt>/etc/audisp/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
 Restart the <tt>auditd</tt>service:
-<pre># service auditd restart</pre>
+<pre>sudo service auditd restart</pre>
 </description>
 <ocil clause="it is not">
 To verify the audispd plugin is active, run the following command:
-<pre># grep active /etc/audisp/plugins.d/syslog.conf</pre>
+<pre>sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>
 If the plugin is active, the output will show <tt>yes</tt>.
 </ocil>
 <rationale>The auditd service does not include the ability to send audit 
@@ -476,7 +476,7 @@ architecture.
 <br /><br />
 After reviewing all the rules, reading the following sections, and
 editing as needed, the new rules can be activated as follows:
-<pre># service auditd restart</pre>
+<pre>sudo service auditd restart</pre>
 </description>
 
 <Group id="audit_time_rules">
@@ -609,7 +609,7 @@ should always be used.
 To determine if the system is configured to audit attempts to
 alter time via the /etc/localtime file, run the following
 command:
-<pre># auditctl -l | grep "watch=/etc/localtime"</pre>
+<pre>sudo auditctl -l | grep "watch=/etc/localtime"</pre>
 If the system is configured to audit this activity, it will return a line.
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -680,11 +680,11 @@ audited.</rationale>
 <title>System Audit Logs Must Have Mode 0640 or Less Permissive</title>
 <description>
 Change the mode of the audit log files with the following command:
-<pre># chmod 0640 <i>audit_file</i></pre>
+<pre>sudo chmod 0640 <i>audit_file</i></pre>
 </description>
 <ocil clause="any are more permissive">
 Run the following command to check the mode of the system audit logs:
-<pre>ls -l /var/log/audit</pre>
+<pre>sudo ls -l /var/log/audit</pre>
 Audit logs must be mode 0640 or less permissive.
 </ocil>
 <rationale>
@@ -720,7 +720,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <ocil clause="the system is not configured to audit attempts to change the MAC policy">
 To determine if the system is configured to audit changes to its SELinux
 configuration files, run the following command:
-<pre># auditctl -l | grep "dir=/etc/selinux"</pre>
+<pre>sudo auditctl -l | grep "dir=/etc/selinux"</pre>
 If the system is configured to watch for changes to its SELinux
 configuration, a line should be returned (including
 <tt>perm=wa</tt> indicating permissions that are watched).
@@ -1141,8 +1141,8 @@ to <tt>/etc/audit/audit.rules</tt>:
 </description>
 <ocil clause="32-bit and 64-bit system calls to creat, open, openat, open_by_handle_at, truncate, and ftruncate are not audited during EACCES and EPERM">
 To verify that the audit system collects unauthorized file accesses, run the following commands:
-<pre># grep EACCES /etc/audit/audit.rules</pre>
-<pre># grep EPERM /etc/audit/audit.rules</pre>
+<pre>sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>sudo grep EPERM /etc/audit/audit.rules</pre>
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
@@ -1156,7 +1156,7 @@ these events could serve as evidence of potential system compromise.</rationale>
 <description>At a minimum the audit system should collect the
 execution of privileged commands for all users and root.
 To find the relevant setuid / setgid programs:
-<pre># find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
+<pre>sudo find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
 Then, for each setuid / setgid program on the system, add a line of the following form to
 <tt>/etc/audit/audit.rules</tt>, where <i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
 in the list:
@@ -1164,9 +1164,9 @@ in the list:
 </description>
 <ocil clause="it is not the case">
 To verify that auditing of privileged command use is configured, run the following command to find relevant setuid / setgid programs:
-<pre># find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
+<pre>sudo find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
 Run the following command to verify entries in the audit rules for all programs found with the previous command:
-<pre># grep path /etc/audit/audit.rules</pre>
+<pre>sudo grep path /etc/audit/audit.rules</pre>
 It should be the case that all relevant setuid / setgid programs have a line in the audit rules.
 </ocil>
 <rationale>Privileged programs are subject to escalation-of-privilege attacks,
@@ -1190,7 +1190,7 @@ appropriate for your system:
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for all media exportation events, run the following command:
-<pre># auditctl -l | grep syscall | grep mount</pre>
+<pre>sudo auditctl -l | grep syscall | grep mount</pre>
 </ocil>
 <rationale>The unauthorized exportation of data to external media could result in an information leak
 where classified information, Privacy Act information, and intellectual property could be lost. An audit
@@ -1233,7 +1233,7 @@ administrator actions for all users and root. Add the following to
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for system administrator actions, run the following command:
-<pre># auditctl -l | grep "watch=/etc/sudoers"</pre>
+<pre>sudo auditctl -l | grep "watch=/etc/sudoers"</pre>
 </ocil>
 <rationale>The actions taken by system administrators should be audited to keep a record
 of what was executed on the system, as well as, for accountability purposes.</rationale>
