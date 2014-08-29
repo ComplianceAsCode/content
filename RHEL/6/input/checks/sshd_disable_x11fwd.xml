@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="sshd_disable_x11fwd" version="1">
+    <metadata>
+      <title>Disable X11 forwarding</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>
+      SSH supports forwarding X11 packets, so X11 applications started on the remote system have their display shown on the client. This behavior is by default disabled
+      </description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+      <criterion comment="file /etc/ssh/sshd_config may not have a line that matches ^X11Forwarding.*yes"
+      test_ref="test_sshd_disable_x11fwd" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="File /etc/ssh/sshd_config may not have a line that matches ^X11Forwarding.*yes"
+  id="test_sshd_disable_x11fwd" version="1">
+    <ind:object object_ref="obj_sshd_disable_x11fwd" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sshd_disable_x11fwd" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)X11Forwarding[\s]+yes[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

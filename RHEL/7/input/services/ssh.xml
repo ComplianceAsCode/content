@@ -389,8 +389,99 @@ server to attacks from unauthorized networks.</rationale>
 <!-- <oval id="sshd_strengthen_firewall" /> -->
 </Group>
 
+<Group id="sshd_disable_tunneling_capabilities">
+  <title>Disable Tunneling Capabilities</title>
+  <description>
+  By default, you can tunnel network connections through an SSH session. For example,
+  you could connect over the Internet to your PC, tunnel a remote desktop connection,
+  and access your desktop. This is known as "port forwarding".<p />
+  
+  By default, you can also tunnel specific graphical applications through an SSH session.
+  For example, you could connect over the Internet to your PC and run nautilus 
+  "file://$HOME" to see your PC's home folder. This is known as "X11 forwarding". <p />
+  
+  While both of these are very useful, they also give more options to an attacker who has 
+  already guessed your password. Disabling these options gives you a little security, 
+  but not as much as you'd think.
+  <br />
+  With access to a normal shell, a resourceful attacker can replicate both of these 
+  techniques and a specially-modified SSH client.
+  <p />
+  Therefore, it's only recommended to disable forwarding if you also use SSH keys 
+  with specified commands. 
+  <br />
+  To disable X11 forwarding and SSH tunneling, the following lines need to be set in sshd_config:
+  <pre>
+  AllowTcpForwarding no
+  X11Forwarding no
+  </pre>
+  Additionally, although it is not enabled by default, beginning with version 4.3, 
+  OpenSSH also provides secure VPN tunneling capabilities at both layer 2 and layer 3 of the OSI model, 
+  by using the tun(4) pseudo-device to encapsulate network traffic within SSH packets.
+  <br />
+  In order to explicitely disable this, PermitTunnel should be set to no in sshd_config file.
+  <pre>
+      PermitTunnel no
+  </pre>
+</description>
+
+<Rule id="sshd_disable_tcpfwd">
+  <title>SSH disable TCP forwarding</title>
+  <description>
+      SSH supports "tunneling", where packets are forwarded over a (partially) secure channel towards
+      another location. If you do not need this, disable TCP forwarding through  
+      <code>AllowTcpForwarding no</code>
+      <br />
+      <pre>### /etc/ssh/sshd_config : AllowTcpForwarding
+           # If not needed, disable TCP forwarding
+           AllowTcpForwarding no
+      </pre>
+      <br />
+      <br />
+      file /etc/ssh/sshd_config must have a line that matches ^AllowTcpForwarding.*no
+  </description>
+  <rationale>
+      Disable tunneling of insecure protocols via SSH or abusing SSH access to pivot 
+      through the network.
+  </rationale>
+  <oval id="sshd_disable_tcpfwd" />
+</Rule>
+
+<Rule id="sshd_disable_x11fwd">
+  <title>SSH disable X11 forwarding</title>
+  <description>
+      SSH supports forwarding X11 packets, so X11 applications started on the remote
+      system have their display shown on the client. This behavior is by default disabled.
+      <br />
+      <pre>### /etc/ssh/sshd_config : X11Forwarding
+           # If set, X11Forwarding must be set to no (which is the default)
+           X11Forwarding no
+      </pre>
+      <br />
+      <br />
+      File /etc/ssh/sshd_config may not have a line that matches ^X11Forwarding.*yes
+  </description>
+  <rationale>
+      Prevent remote users from running X applications
+  </rationale>
+  <oval id="sshd_disable_x11fwd" />
+</Rule>
+
+<Rule id="sshd_disable_tunnel">
+  <title>Disable Tunneling</title>
+  <description>OpenSSH includes the ability to provide tunneling, which allows
+  a user to effectively establish a VPN connection with a firewall/gateway machine and then access resources
+  sitting behind it. This feature is disabled by default. To explicitly
+  disable it:
+  <pre>PermitTunnel no</pre>
+  </description>
+  <rationale>
+      Explicitely disable VPN capability of SSH
+  </rationale>
+  <oval id="sshd_disable_tunnel" />
+</Rule>
+
+</Group> <!-- Group id="sshd_disable_tunneling capabilities" -->
+
 </Group>
 </Group>
-
-
-
