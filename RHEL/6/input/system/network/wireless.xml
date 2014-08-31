@@ -44,20 +44,20 @@ to reboot the system first.
 normal usage of the wireless capability.
 <br /><br />
 First, identify the interfaces available with the command:
-<pre># ifconfig -a</pre>
+<pre>$ sudo ifconfig -a</pre>
 Additionally, the following command may be used to
 determine whether wireless support is included for a
 particular interface, though this may not always be a clear
 indicator:
-<pre># iwconfig</pre>
+<pre>$ sudo iwconfig</pre>
 After identifying any wireless interfaces (which may have
 names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
 <tt>eth0</tt>), deactivate the interface with the command:
-<pre># ifdown <i>interface</i></pre>
+<pre>$ sudo ifdown <i>interface</i></pre>
 These changes will only last until the next reboot. To
 disable the interface for future boots, remove the appropriate
 interface file from <tt>/etc/sysconfig/network-scripts</tt>:
-<pre># rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+<pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 </description>
 <rationale>Wireless networking allows attackers within physical proximity to
 launch network-based attacks against systems, including those against local LAN
@@ -73,7 +73,7 @@ protocols which were not designed with security in mind.
 <title>Disable Bluetooth Service</title>
 <description>
 <service-disable-macro service="bluetooth" />
-<pre># service bluetooth stop</pre>
+<pre>$ sudo service bluetooth stop</pre>
 </description>
 <ocil>
 <service-disable-check-macro service="bluetooth" />

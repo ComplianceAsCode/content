@@ -65,7 +65,7 @@ is the default.
 </description>
 <ocil clause ="it does not">
 To check the permissions of /etc/grub.conf, run the command:
-<pre># ls -lL /etc/grub.conf</pre>
+<pre>$ sudo ls -lL /etc/grub.conf</pre>
 If properly configured, the output should indicate the following 
 permissions: <tt>-rw-------</tt>
 </ocil>
@@ -84,7 +84,7 @@ parameters.
 <description>The grub boot loader should have password protection
 enabled to protect boot-time settings.
 To do so, select a password and then generate a hash from it by running the following command:
-<pre># grub-crypt --sha-512</pre>
+<pre>$ sudo grub-crypt --sha-512</pre>
 When prompted to enter a password, insert the following line into <tt>/etc/grub.conf</tt>
 immediately after the header comments. (Use the output from <tt>grub-crypt</tt> as the
 value of <b>password-hash</b>):
@@ -93,7 +93,7 @@ NOTE: To meet FISMA Moderate, the bootloader password MUST differ from the root 
 </description>
 <ocil clause="it does not">
 To verify the boot loader password has been set and encrypted, run the following command:
-<pre># grep password /etc/grub.conf</pre>
+<pre>$ sudo grep password /etc/grub.conf</pre>
 The output should show the following:
 <pre>password --encrypted <b>password-hash</b></pre>
 </ocil>
@@ -258,7 +258,7 @@ the man page <tt>gconftool-2(1)</tt>.</description>
 <description>
 Run the following command to set the idle time-out value for
 inactivity in the GNOME desktop to 15 minutes:
-<pre># gconftool-2 \
+<pre>$ sudo gconftool-2 \
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type int \
@@ -284,7 +284,7 @@ screen locking to prevent access from passersby.
 <description>
 Run the following command to activate the screensaver
 in the GNOME desktop after a period of inactivity:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
@@ -310,7 +310,7 @@ controlled-access area.
 <description>
 Run the following command to activate locking of the screensaver
 in the GNOME desktop when it is activated:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gnome-screensaver/lock_enabled true</pre>
@@ -335,7 +335,7 @@ access the system, preventing access by passersby.
 <description>
 Run the following command to set the screensaver mode
 in the GNOME desktop to a blank screen:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type string \
   --set /apps/gnome-screensaver/mode blank-only</pre>
@@ -368,7 +368,7 @@ A console screen locking mechanism is provided in the
 <title>Install the screen Package</title>
 <description>
 To enable console screen locking, install the <tt>screen</tt> package:
-<pre># yum install screen</pre>
+<pre>$ sudo yum install screen</pre>
 Instruct users to begin new terminal sessions with the following command:
 <pre>$ screen</pre>
 The console can now be locked with the following key combination:
