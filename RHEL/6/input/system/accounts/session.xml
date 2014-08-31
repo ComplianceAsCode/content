@@ -40,7 +40,7 @@ maliciously may result in an exceptional number of simultaneous login sessions.
 <ocil clause="it is not similar">
 Run the following command to ensure the <tt>maxlogins</tt> value is configured for all users
 on the system:
-<pre>$ sudo grep "maxlogins" /etc/security/limits.conf</pre>
+<pre>$ grep "maxlogins" /etc/security/limits.conf</pre>
 You should receive output similar to the following:
 <pre>*		hard	maxlogins	10</pre>
 </ocil>
@@ -219,9 +219,9 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
 running the following command:
-<pre>$ sudo grep "umask" /etc/bashrc</pre>
+<pre>$ grep "umask" /etc/bashrc</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown below:
-<pre>$ sudo grep "umask" /etc/bashrc
+<pre>$ grep "umask" /etc/bashrc
 umask 077
 umask 077</pre>
 </ocil>
@@ -244,9 +244,9 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/csh.cshrc</tt> file by
 running the following command:
-<pre>$ sudo grep "umask" /etc/csh.cshrc</pre>
+<pre>$ grep "umask" /etc/csh.cshrc</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
-<pre>$ sudo grep "umask" /etc/csh.cshrc
+<pre>$ grep "umask" /etc/csh.cshrc
 umask 077</pre>
 </ocil>
 <ident cce="27034-8" />
@@ -269,9 +269,9 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
-<pre>$ sudo grep "umask" /etc/profile</pre>
+<pre>$ grep "umask" /etc/profile</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
-<pre>$ sudo grep "umask" /etc/profile
+<pre>$ grep "umask" /etc/profile
 umask 077</pre>
 </ocil>
 <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
@@ -292,9 +292,9 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
 running the following command:
-<pre>$ sudo grep -i "UMASK" /etc/login.defs</pre>
+<pre>$ grep -i "UMASK" /etc/login.defs</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
-<pre>$ sudo grep -i "UMASK" /etc/login.defs
+<pre>$ grep -i "UMASK" /etc/login.defs
 umask 077</pre>
 </ocil>
 <ident cce="26371-5" />
