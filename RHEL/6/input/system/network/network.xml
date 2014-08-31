@@ -24,7 +24,7 @@ If the system does not require network communications but still
 needs to use the loopback interface, remove all files of the form
 <tt>ifcfg-<i>interface</i></tt> except for <tt>ifcfg-lo</tt> from
 <tt>/etc/sysconfig/network-scripts</tt>:
-<pre># rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+<pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 If the system is a standalone machine with no need for network access or even
 communication over the loopback device, then disable this service.
 <service-disable-macro service="network" />

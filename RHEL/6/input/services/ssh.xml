@@ -73,7 +73,7 @@ line appears:
 </description>
 <ocil clause="it is not">
 To check which SSH protocol version is allowed, run the following command:
-<pre># grep Protocol /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
 If configured properly, output should be <pre>Protocol 2</pre>
 </ocil>
 <rationale>
@@ -161,7 +161,7 @@ from correctly detecting that the user is idle.
 </description>
 <ocil clause="it is not">
 Run the following command to see what the timeout interval is:
-<pre># grep ClientAliveInterval /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
 If properly configured, the output should be:
 <pre>ClientAliveInterval 900</pre>
 </ocil>
@@ -186,7 +186,7 @@ follows:
 </description>
 <ocil clause="it is not">
 To ensure the SSH idle timeout will occur when the <tt>ClientAliveCountMax</tt> is set, run the following command:
-<pre># grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
 <pre>ClientAliveCountMax 0</pre>
 </ocil>
@@ -329,7 +329,7 @@ in <tt>/etc/ssh/sshd_config</tt>:
 </description>
 <ocil clause="it is not">
 To ensure users are not able to present environment daemons, run the following command:
-<pre># grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
 <pre>PermitUserEnvironment no</pre>
 </ocil>
@@ -355,7 +355,7 @@ The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 <ocil clause="that is not the case">
 Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
 ciphers are in use, run the following command:
-<pre># grep Ciphers /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
 The output should contain only those ciphers which are FIPS-approved, namely, the 
 AES and 3DES ciphers.
 </ocil>

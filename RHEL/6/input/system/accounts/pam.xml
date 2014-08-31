@@ -64,7 +64,7 @@ using <tt>pam_lastlog</tt>, add the following line immediately after <tt>session
 <ocil clause="that is not the case">
 To ensure that last logon/access notification is configured correctly, run
 the following command:
-<pre># grep pam_lastlog.so /etc/pam.d/system-auth</pre>
+<pre>$ sudo grep pam_lastlog.so /etc/pam.d/system-auth</pre>
 The output should show output <tt>showfailed</tt>.
 </ocil>
 <rationale>
@@ -482,7 +482,7 @@ both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep pam_faillock /etc/pam.d/system-auth</pre>
+<pre>$ sudo grep pam_faillock /etc/pam.d/system-auth</pre>
 The output should show <tt>deny=3</tt>.
 </ocil>
 <rationale>
@@ -506,7 +506,7 @@ Add the following lines immediately below the <tt>pam_env.so</tt> statement in <
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep pam_faillock /etc/pam.d/system-auth</pre>
+<pre>$ sudo grep pam_faillock /etc/pam.d/system-auth</pre>
 The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
 </ocil>
 <rationale>
@@ -533,7 +533,7 @@ Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> 
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+<pre>$ sudo grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
 For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 900 (15 minutes) or greater.  If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
