@@ -23,13 +23,13 @@ the references at the end of this section.</description>
 <title>Inspect and Activate Default Rules</title>
 <description>View the currently-enforced <tt>iptables</tt> rules by running
 the command:
-<pre>sudo iptables -nL --line-numbers</pre>
+<pre>$ sudo iptables -nL --line-numbers</pre>
 The command is analogous for <tt>ip6tables</tt>.
 <br /><br />
 If the firewall does not appear to be active (i.e., no rules
 appear), activate it and ensure that it starts at boot by issuing
 the following commands (and analogously for <tt>ip6tables</tt>):
-<pre>sudo service iptables restart</pre>
+<pre>$ sudo service iptables restart</pre>
 The default iptables rules are:
 <pre>Chain INPUT (policy ACCEPT)
 num  target     prot opt source       destination
@@ -81,7 +81,7 @@ If IPv6 is disabled, this is not applicable.
 <br /><br />
 Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
 the default policy for the INPUT chain. It should be set to DROP:
-<pre>sudo grep ":INPUT" /etc/sysconfig/ip6tables</pre>
+<pre>$ sudo grep ":INPUT" /etc/sysconfig/ip6tables</pre>
 </ocil>
 <rationale>In <tt>ip6tables</tt>, the default policy is applied only after all
 the applicable rules in the table are examined for a match. Setting the
@@ -151,7 +151,7 @@ add or correct the following line in
 </description>
 <ocil clause="the default policy for the INPUT chain is not set to DROP">Inspect the file <tt>/etc/sysconfig/iptables</tt> to determine
 the default policy for the INPUT chain. It should be set to DROP:
-<pre>sudo grep ":INPUT" /etc/sysconfig/iptables</pre>
+<pre>$ sudo grep ":INPUT" /etc/sysconfig/iptables</pre>
 </ocil>
 <rationale>In <tt>iptables</tt> the default policy is applied only after all
 the applicable rules in the table are examined for a match. Setting the
@@ -181,7 +181,7 @@ accepted.</rationale>
 Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
 <pre>grep ":FORWARD" /etc/sysconfig/iptables</pre>
 The output should be similar to the following:
-<pre>sudo grep ":FORWARD" /etc/sysconfig/iptables
+<pre>$ sudo grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
 <ident cce="27186-6" />
 <oval id="set_iptables_default_rule_forward" />
