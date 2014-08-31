@@ -226,7 +226,7 @@ disabled to avoid the potential for abuse.</rationale>
 <description>If it is necessary for a secondary nameserver to receive zone data
 via zone transfer from the primary server, follow the instructions here.  Use
 dnssec-keygen to create a symmetric key file in the current directory:
-<pre>$ sudo cd /tmp
+<pre>$ cd /tmp
 $ sudo dnssec-keygen -a HMAC-MD5 -b 128 -n HOST dns.example.com
 Kdns.example.com .+aaa +iiiii</pre>
 This output is the name of a file containing the new key. Read the file to find

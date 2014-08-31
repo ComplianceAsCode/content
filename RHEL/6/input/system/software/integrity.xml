@@ -98,7 +98,7 @@ AIDE can be executed periodically through other means; this is merely one exampl
 </description>
 <ocil clause="there is no output">
 To determine that periodic AIDE execution has been scheduled, run the following command:
-<pre>$ sudo grep aide /etc/crontab</pre>
+<pre>$ grep aide /etc/crontab</pre>
 </ocil>
 <rationale>
 By default, AIDE does not install itself for periodic execution. Periodically
@@ -119,7 +119,7 @@ package metadata stored in the RPM database. Although an attacker
 could corrupt the RPM database (analogous to attacking the AIDE
 database as described above), this check can still reveal
 modification of important files. To list which files on the system differ from what is expected by the RPM database:
-<pre>$ sudo rpm -qVa</pre>
+<pre>$ rpm -qVa</pre>
 See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 </description>
 
@@ -130,7 +130,7 @@ The RPM package management system can check file access
 permissions of installed software packages, including many that are
 important to system security. 
 After locating a file with incorrect permissions, run the following command to determine which package owns it:
-<pre>$ sudo rpm -qf <i>FILENAME</i></pre>
+<pre>$ rpm -qf <i>FILENAME</i></pre>
 Next, run the following command to reset its permissions to 
 the correct values:
 <pre>$ sudo rpm --setperms <i>PACKAGENAME</i></pre>
@@ -138,7 +138,7 @@ the correct values:
 <ocil clause="there is output">
 The following command will list which files on the system have permissions different from what
 is expected by the RPM database:
-<pre>$ sudo rpm -Va | grep '^.M'</pre>
+<pre>$ rpm -Va | grep '^.M'</pre>
 </ocil>
 <rationale>
 Permissions on system binaries and configuration files that are too generous
@@ -156,13 +156,13 @@ this baseline should be investigated.</rationale>
 installed software packages, including many that are important to system
 security. Run the following command to list which files on the system
 have hashes that differ from what is expected by the RPM database:
-<pre>$ sudo rpm -Va | grep '^..5'</pre>
+<pre>$ rpm -Va | grep '^..5'</pre>
 A "c" in the second column indicates that a file is a configuration file, which
 may appropriately be expected to change.  If the file was not expected to
 change, investigate the cause of the change using audit logs or other means.
 The package can then be reinstalled to restore the file.
 Run the following command to determine which package owns the file:
-<pre>$ sudo rpm -qf <i>FILENAME</i></pre>
+<pre>$ rpm -qf <i>FILENAME</i></pre>
 The package can be reinstalled from a yum repository using the command:
 <pre>$ sudo yum reinstall <i>PACKAGENAME</i></pre>
 Alternatively, the package can be reinstalled from trusted media using the command:
@@ -170,7 +170,7 @@ Alternatively, the package can be reinstalled from trusted media using the comma
 </description>
 <ocil clause="there is output"> The following command will list which files on the system 
 have file hashes different from what is expected by the RPM database. 
-<pre>$ sudo rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
+<pre>$ rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
 </ocil>
 <rationale>
 The hashes of important files like system executables should match the
