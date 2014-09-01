@@ -64,7 +64,7 @@ untrusted media.
 the system to potential compromise.</rationale>
 <ocil clause="removable media partitions are present">
 To verify that binaries cannot be directly executed from removable media, run the following command:
-<pre>$ sudo grep -v noexec /etc/fstab</pre>
+<pre>$ grep -v noexec /etc/fstab</pre>
 The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
 in the output are not removable media.
 </ocil>
