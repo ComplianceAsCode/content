@@ -10,7 +10,7 @@ allow an attacker to compromise the system.
 <br /><br />
 This command can be used to list the types of filesystems that are
 available to the currently executing kernel:
-<pre>$ sudo find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
+<pre>$ find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
 If these filesystems are not required then they can be explicitly disabled
 in a configuratio file in  <tt>/etc/modprobe.d</tt>.
 </description>

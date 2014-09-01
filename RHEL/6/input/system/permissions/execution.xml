@@ -37,7 +37,7 @@ a umask of 077 in their own init scripts.
 </description>
 <ocil clause="it does not">
 To check the value of the <tt>umask</tt>, run the following command:
-<pre>$ sudo grep umask /etc/init.d/functions</pre>
+<pre>$ grep umask /etc/init.d/functions</pre>
 The output should show either <tt>022</tt> or <tt>027</tt>.
 </ocil>
 <rationale>The umask influences the permissions assigned to files created by a
@@ -78,7 +78,7 @@ value of 0 is recommended.</description>
 </description>
 <ocil clause="it is not">
 To verify that core dumps are disabled for all users, run the following command:
-<pre>$ sudo grep core /etc/security/limits.conf</pre>
+<pre>$ grep core /etc/security/limits.conf</pre>
 The output should be:
 <pre>*     hard   core    0</pre>
 </ocil>
