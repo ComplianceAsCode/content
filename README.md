@@ -18,6 +18,6 @@ baselines from a single set of high-quality SCAP content.
 The SSG homepage is https://fedorahosted.org/scap-security-guide/
 
 #### Health Checks
-Python Code via landscape.io: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
+* Python Code via landscape.io: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
 
-Jenkins @ http://jenkins.ssg-project.org:8080/
+* Jenkins @ http://jenkins.ssg-project.org:8080/
