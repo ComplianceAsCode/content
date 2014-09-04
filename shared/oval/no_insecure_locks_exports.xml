@@ -11,10 +11,7 @@
       data to be viewed or edited by an unauthorized user.</description>
       <reference source="galford" ref_id="20140813" ref_url="test_attestation" />
     </metadata>
-    <criteria comment="NFS is not being used or conditions are met"
-    operator="OR">
-      <extend_definition comment="nfs service is disabled"
-      negate="true" definition_ref="package_nfs-utils_removed" />
+    <criteria>
       <criterion comment="Check for insecure NFS locks in /etc/exports"
       test_ref="test_no_insecure_locks_exports" />
     </criteria>
