@@ -1,6 +1,7 @@
 IN = input
 OUT = output
 TRANS = transforms
+SHARED = ../shared
 REFS = references
 UTILS = utils
 DIST = dist
@@ -121,9 +122,9 @@ content: shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
 #	its second argument controls the IDs, as well as the output filenames.
 #	thus, with ID set to ssg, this creates ssg-rhevm3-xccdf.xml and ssg-rhevm3-oval.xml.
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhevm3-oval.xml $(IN)/checks/platform/rhevm3-cpe-dictionary.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-rhevm3-xccdf.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-ocilrefs-rhevm3-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhevm3-oval.xml $(IN)/checks/platform/rhevm3-cpe-dictionary.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-rhevm3-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-rhevm3-xccdf.xml $(ID)
 
 # not ready until oscap resolve behavior resolved
 content-stig: shorthand2xccdf guide checks
@@ -136,8 +137,8 @@ content-stig: shorthand2xccdf guide checks
 	xsltproc -o $(OUT)/table-stig-rhevm3-server-stigformat.html \
 		$(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-rhevm3-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-stig-rhevm3-xccdf.xml $(OUT)/unlinked-stig-rhevm3-xccdf.xml 
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhevm3-oval.xml $(IN)/checks/platform/rhevm3-cpe-dictionary.xml disa-predraft
-	$(TRANS)/relabelids.py unlinked-stig-rhevm3-xccdf.xml disa-predraft
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhevm3-oval.xml $(IN)/checks/platform/rhevm3-cpe-dictionary.xml disa-predraft
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-rhevm3-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-rhevm3-xccdf.xml $(OUT)/disa-predraft-stig-rhevm3-xccdf.xml
 
 submission-stig-check: table-stigs
