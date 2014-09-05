@@ -1,4 +1,4 @@
-templates: services packages kernel_modules permissions sysctls
+templates: services packages kernel_modules permissions umasks sysctls
 
 services:
 	./create_services_disabled.py services_disabled.csv
@@ -13,6 +13,9 @@ kernel_modules:
 
 permissions:
 	./create_permission_checks.py file_dir_permissions.csv
+
+umasks:
+	./create_umask_checks.py file_umask_checks.csv
 
 sysctls:
 	./create_sysctl_checks.py sysctl_values.csv
