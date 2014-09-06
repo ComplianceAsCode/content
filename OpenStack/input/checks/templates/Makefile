@@ -17,7 +17,7 @@ permissions:
 	${SHARED_DIR}/create_permission_checks.py file_dir_permissions.csv
 
 sysctls:
-	./create_sysctl_checks.py sysctl_values.csv
+	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
 	
 compare:
 	diff output/ ../ | grep -v "Only in ../"
