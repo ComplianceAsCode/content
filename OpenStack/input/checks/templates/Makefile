@@ -14,7 +14,7 @@ kernel_modules:
 	${SHARED_DIR}/create_kernel_modules_disabled.py kernel_modules_disabled.csv
 
 permissions:
-	./create_permission_checks.py file_dir_permissions.csv
+	${SHARED_DIR}/create_permission_checks.py file_dir_permissions.csv
 
 sysctls:
 	./create_sysctl_checks.py sysctl_values.csv
