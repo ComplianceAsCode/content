@@ -8,7 +8,7 @@ services:
 
 packages:
 	./create_package_installed.py packages_installed.csv
-	./create_package_removed.py packages_removed.csv
+	${SHARED_DIR}/create_package_removed.py packages_removed.csv
 
 kernel_modules:
 	./create_kernel_modules_disabled.py kernel_modules_disabled.csv
