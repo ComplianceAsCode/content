@@ -3,7 +3,7 @@ templates: services packages kernel_modules permissions sysctls
 SHARED_DIR=../../../../shared/oval/templates
 
 services:
-	./create_services_disabled.py services_disabled.csv
+	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
 	${SHARED_DIR}/create_services_enabled.py services_enabled.csv
 
 packages:
