@@ -1,6 +1,7 @@
 IN = input
 OUT = output
 TRANS = transforms
+SHARED = ../shared
 REFS = references
 UTILS = utils
 DIST = dist
@@ -121,9 +122,9 @@ content: shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
 #	its second argument controls the IDs, as well as the output filenames.
 #	thus, with ID set to ssg, this creates ssg-openstack-xccdf.xml and ssg-openstack-oval.xml.
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-openstack-oval.xml $(IN)/checks/platform/openstack-cpe-dictionary.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-openstack-xccdf.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-ocilrefs-openstack-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-openstack-oval.xml $(IN)/checks/platform/openstack-cpe-dictionary.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-openstack-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-openstack-xccdf.xml $(ID)
 
 # not ready until oscap resolve behavior resolved
 content-stig: shorthand2xccdf guide checks
@@ -136,8 +137,8 @@ content-stig: shorthand2xccdf guide checks
 	xsltproc -o $(OUT)/table-stig-openstack-server-stigformat.html \
 		$(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-openstack-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-stig-openstack-xccdf.xml $(OUT)/unlinked-stig-openstack-xccdf.xml 
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-openstack-oval.xml $(IN)/checks/platform/openstack-cpe-dictionary.xml disa-predraft
-	$(TRANS)/relabelids.py unlinked-stig-openstack-xccdf.xml disa-predraft
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-openstack-oval.xml $(IN)/checks/platform/openstack-cpe-dictionary.xml disa-predraft
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-openstack-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-openstack-xccdf.xml $(OUT)/disa-predraft-stig-openstack-xccdf.xml
 
 submission-stig-check: table-stigs

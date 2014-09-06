@@ -1,7 +1,8 @@
 IN = input
 OUT = output
 TRANS = transforms
-REFS = ../../shared/references
+SHARED = ../../shared
+REFS = $(SHARED)/references
 UTILS = utils
 DIST = dist
 
@@ -90,9 +91,9 @@ content: shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.
 #	its second argument controls the IDs, as well as the output filenames.
 #	thus, with ID set to ssg, this creates ssg-rhel6-xccdf.xml and ssg-rhel6-oval.xml.
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-rhel6-xccdf.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-ocilrefs-rhel6-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-rhel6-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-rhel6-xccdf.xml $(ID)
 # 	Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-rhel6-xccdf.xml \
 		> $(OUT)/$(ID)-rhel6-xccdf-nodangles.xml
@@ -106,8 +107,8 @@ content: shorthand2xccdf guide checks
 
 content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-rhel6-xccdf.xml $(OUT)/unlinked-stig-rhel6-xccdf.xml 
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml disa-predraft
-	$(TRANS)/relabelids.py unlinked-stig-rhel6-xccdf.xml disa-predraft
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-rhel6-oval.xml $(IN)/checks/platform/rhel6-cpe-dictionary.xml disa-predraft
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-rhel6-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-rhel6-xccdf.xml $(OUT)/disa-predraft-stig-rhel6-xccdf.xml
 
 submission-stig-check: table-stigs
