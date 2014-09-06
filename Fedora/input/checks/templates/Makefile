@@ -1,8 +1,10 @@
 templates: packages
 
+SHARED_DIR=../../../../shared/oval/templates
+
 packages:
 	./create_package_installed.py packages_installed.csv
-	./create_package_removed.py packages_removed.csv
+	${SHARED_DIR}/create_package_removed.py packages_removed.csv
 
 compare:
 	diff output/ ../ | grep -v "Only in ../"

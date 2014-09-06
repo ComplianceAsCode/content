@@ -1,21 +1,23 @@
 templates: services packages kernel_modules permissions sysctls
 
+SHARED_DIR=../../../../shared/oval/templates
+
 services:
-	./create_services_disabled.py services_disabled.csv
-	./create_services_enabled.py services_enabled.csv
+	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
+	${SHARED_DIR}/create_services_enabled.py services_enabled.csv
 
 packages:
 	./create_package_installed.py packages_installed.csv
-	./create_package_removed.py packages_removed.csv
+	${SHARED_DIR}/create_package_removed.py packages_removed.csv
 
 kernel_modules:
-	./create_kernel_modules_disabled.py kernel_modules_disabled.csv
+	${SHARED_DIR}/create_kernel_modules_disabled.py kernel_modules_disabled.csv
 
 permissions:
-	./create_permission_checks.py file_dir_permissions.csv
+	${SHARED_DIR}/create_permission_checks.py file_dir_permissions.csv
 
 sysctls:
-	./create_sysctl_checks.py sysctl_values.csv
+	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
 	
 compare:
 	diff output/ ../ | grep -v "Only in ../"
