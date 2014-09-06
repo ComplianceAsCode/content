@@ -11,7 +11,7 @@ packages:
 	${SHARED_DIR}/create_package_removed.py packages_removed.csv
 
 kernel_modules:
-	./create_kernel_modules_disabled.py kernel_modules_disabled.csv
+	${SHARED_DIR}/create_kernel_modules_disabled.py kernel_modules_disabled.csv
 
 permissions:
 	./create_permission_checks.py file_dir_permissions.csv
