@@ -14,8 +14,8 @@ Source0:	http://repos.ssgproject.org/sources/%{name}-%{version}.tar.gz
 
 BuildArch:	noarch
 
-BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
-Requires:	xml-common, openscap-utils >= 0.9.1
+BuildRequires:	libxslt, expat, python, openscap-utils >= 1.0.8, python-lxml
+Requires:	xml-common, openscap-utils >= 1.0.8
 
 %description
 The scap-security-guide project provides a guide for configuration of the
