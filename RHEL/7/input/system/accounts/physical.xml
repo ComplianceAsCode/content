@@ -22,50 +22,50 @@ with a password and ensure its configuration file's permissions
 are set properly.
 </description>
 
-<Rule id="user_owner_grub_conf" severity="medium">
-<title>Verify /etc/grub.conf User Ownership</title>
-<description>The file <tt>/etc/grub.conf</tt> should 
+<Rule id="file_user_owner_grub_cfg" severity="medium">
+<title>Verify /boot/grub2/grub.cfg User Ownership</title>
+<description>The file <tt>/boot/grub2/grub.cfg</tt> should 
 be owned by the <tt>root</tt> user to prevent destruction 
 or modification of the file.
-<fileowner-desc-macro file="/etc/grub.conf" owner="root"/>
+<fileowner-desc-macro file="/boot/grub2/grub.cfg" owner="root"/>
 </description>
-<ocil><fileowner-check-macro file="/etc/grub.conf" owner="root"/></ocil>
+<ocil><fileowner-check-macro file="/boot/grub2/grub.cfg" owner="root"/></ocil>
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="file_user_owner_grub_conf" />
+<oval id="file_user_owner_grub_cfg" />
 <ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="group_owner_grub_conf" severity="medium">
-<title>Verify /etc/grub.conf Group Ownership</title>
-<description>The file <tt>/etc/grub.conf</tt> should 
+<Rule id="file_group_owner_grub_cfg" severity="medium">
+<title>Verify /boot/grub2/grub.cfg Group Ownership</title>
+<description>The file <tt>/boot/grub2/grub.cfg</tt> should 
 be group-owned by the <tt>root</tt> group to prevent 
 destruction or modification of the file.
-<filegroupowner-desc-macro file="/etc/grub.conf" group="root"/>
+<filegroupowner-desc-macro file="/boot/grub2/grub.cfg" group="root"/>
 </description>
-<ocil><filegroupowner-check-macro file="/etc/grub.conf" group="root"/></ocil>
+<ocil><filegroupowner-check-macro file="/boot/grub2/grub.cfg" group="root"/></ocil>
 <rationale>
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="file_group_owner_grub_conf" />
+<oval id="file_group_owner_grub_cfg" />
 <ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="permissions_grub_conf" severity="medium">
-<title>Verify /boot/grub/grub.conf Permissions</title>
-<description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
+<Rule id="file_permissions_grub_conf" severity="medium">
+<title>Verify /boot/grub2/grub.cfg Permissions</title>
+<description>File permissions for <tt>/boot/grub2/grub.cfg</tt> should be set to 600, which
 is the default.
-<fileperms-desc-macro file="/boot/grub/grub.conf" perms="600"/>
+<fileperms-desc-macro file="/boot/grub2/grub.cfg" perms="600"/>
 </description>
 <ocil clause ="it does not">
-To check the permissions of /etc/grub.conf, run the command:
-<pre># ls -lL /etc/grub.conf</pre>
+To check the permissions of /boot/grub2/grub.cfg, run the command:
+<pre>$ sudo ls -lL /boot/grub2/grub.cfg</pre>
 If properly configured, the output should indicate the following 
 permissions: <tt>-rw-------</tt>
 </ocil>
@@ -74,7 +74,7 @@ Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="file_permissions_grub_conf" />
+<oval id="file_permissions_grub_cfg" />
 <ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
 </Rule>
