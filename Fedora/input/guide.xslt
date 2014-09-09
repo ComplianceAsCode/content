@@ -75,6 +75,7 @@
       <xsl:apply-templates select="document('services/ssh.xml')" />
       <xsl:apply-templates select="document('services/ftp.xml')" />
       <xsl:apply-templates select="document('services/snmp.xml')" />
+      <xsl:apply-templates select="document('services/nfs.xml')" />
     </xsl:copy>
   </xsl:template>
 
