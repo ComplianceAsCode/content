@@ -39,29 +39,8 @@ Install the AIDE package with the command:
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="package_aide_installed" />
+<!--oval id="package_aide_installed" /-->
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
-<tested by="DS" on="20121024"/>
-</Rule>
-
-<Rule id="disable_prelink">
-<title>Disable Prelinking</title>
-<description>
-The prelinking feature changes binaries in an attempt to decrease their startup
-time.  In order to disable it, change or add the following line inside the file
-<tt>/etc/sysconfig/prelink</tt>:
-<pre>PRELINKING=no</pre>
-Next, run the following command to return binaries to a normal, non-prelinked state:
-<pre># /usr/sbin/prelink -ua</pre>
-</description>
-<rationale>
-The prelinking feature can interfere with the operation
-of AIDE, because it changes binaries.
-</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="disable_prelink" />
-<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
 </Rule>
 
 <Rule id="aide_build_database">
@@ -81,7 +60,6 @@ If this check produces any unexpected output, investigate.
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" />
 </Rule>
 
@@ -100,7 +78,6 @@ To determine that periodic AIDE execution has been scheduled, run the following 
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
 </Rule>
 </Group>
@@ -140,8 +117,7 @@ Permissions on system binaries and configuration files that are too generous
 could allow an unauthorized user to gain privileges that they should not have.
 The permissions set by the vendor should be maintained. Any deviations from
 this baseline should be investigated.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="rpm_verify_permissions" />
+<!--oval id="rpm_verify_permissions" /-->
 <ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" />
 </Rule>
 
@@ -171,8 +147,7 @@ have file hashes different from what is expected by the RPM database.
 The hashes of important files like system executables should match the
 information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="rpm_verify_hashes" />
+<!--oval id="rpm_verify_hashes" /-->
 <ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" />
 </Rule>
 
@@ -190,15 +165,8 @@ software may not be appropriate for some specialized systems.
 <Rule id="install_hids" severity="high">
 <title>Install Intrusion Detection Software</title>
 <description>
-The base Red Hat platform already includes a sophisticated auditing system that
-can detect intruder activity, as well as SELinux, which provides host-based
-intrusion prevention capabilities by confining privileged programs and user
-sessions which may become compromised.<br />
-In DoD environments, supplemental intrusion detection tools, such as, the McAfee
-Host-based Security System, are available to integrate with existing infrastructure.
-When these supplemental tools interfere with the proper functioning of SELinux, SELinux
-takes precedence.
-<br/>
+The Red Hat platform includes a sophisticated auditing system 
+and SELinux, which provide host-based intrusion detection capabilities.
 </description>
 <ocil clause="no host-based intrusion detection tools are installed">
 Inspect the system to determine if intrusion detection software has been installed. 
@@ -208,7 +176,6 @@ Verify this intrusion detection software is active.
 Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.  
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <ref nist="SC-7" disa="1263"/>
 </Rule>
 
@@ -248,7 +215,6 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems. 
 </rationale>
 <oval id="install_antivirus" />
-<ident cce="RHEL7-CCE-TBD" />
 <ref nist="SC-28, SI-3" disa="1239,1668"/>
 </Rule>
 
