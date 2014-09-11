@@ -48,7 +48,7 @@ attacks against xinetd itself.
 <Rule id="uninstall_xinetd">
 <title>Uninstall xinetd Package</title>
 <description>The <tt>xinetd</tt> package can be uninstalled with the following command:
-<pre># yum erase xinetd</pre>
+<pre>$ sudo yum erase xinetd</pre>
 </description>
 <ocil>
 If network services are using the xinetd service, this is not applicable.
@@ -95,7 +95,7 @@ subject to man-in-the-middle attacks.
 <title>Uninstall telnet-server Package</title>
 <description>The <tt>telnet-server</tt> package can be uninstalled with
 the following command:
-<pre># yum erase telnet-server</pre></description>
+<pre>$ sudo yum erase telnet-server</pre></description>
 <ocil><package-check-macro package="telnet-server" /> </ocil>
 <rationale>
 Removing the <tt>telnet-server</tt> package decreases the risk of the
@@ -106,6 +106,21 @@ telnet service's accidental (or intentional) activation.
 <ref nist="AC-17(8),CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
+
+<Rule id="package_telnet_removed" severity="low">
+<title>Remove telnet Clients</title>
+<description>The telnet client allows users to start connections to other 
+systems via the telnet protocol.</description>
+<ocil><package-remove-macro package="telnet" /></ocil>
+<rationale>The <tt>telnet</tt> protocol is insecure and unencrypted. The use
+of an unencrypted transmission medium could allow an unauthorized user
+to steal credentials. The <tt>ssh</tt> package provides an
+encrypted session and stronger security and is included in Red Hat
+Enterprise Linux.</rationale>
+<ident cce="" />
+<oval id="package_telnet_removed" />
+</Rule>
+
 </Group>
 
 <Group id="r_services">
@@ -118,7 +133,7 @@ model.</description>
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
 the following command:
-<pre># yum erase rsh-server</pre>
+<pre>$ sudo yum erase rsh-server</pre>
 </description>
 <ocil><package-check-macro package="rsh-server" /> </ocil>
 <rationale>The <tt>rsh-server</tt> package provides several obsolete and insecure
@@ -213,7 +228,7 @@ each user's home directory) list remote hosts and users that are trusted by the
 local system when using the rshd daemon.
 To remove these files, run the following command to delete them from any
 location:
-<pre># rm /etc/hosts.equiv</pre>
+<pre>$ sudo rm /etc/hosts.equiv</pre>
 <pre>$ rm ~/.rhosts</pre>
 </description>
 <ocil clause="these files exist">
@@ -244,7 +259,7 @@ important authentication information.</description>
 <title>Uninstall ypserv Package</title>
 <description>The <tt>ypserv</tt> package can be uninstalled with
 the following command:
-<pre># yum erase ypserv</pre>
+<pre>$ sudo yum erase ypserv</pre>
 </description>
 <ocil><package-check-macro package="ypserv" /> </ocil>
 <rationale>Removing the <tt>ypserv</tt> package decreases the risk of the
@@ -272,6 +287,22 @@ as a client in a NIS or NIS+ domain.
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
+
+<Rule id="package_ypbind_removed">
+<title>Remove NIS Client</title>
+<description>The Network Information Service (NIS), formerly known as Yellow Pages,
+is a client-server directory service protocol used to distribute system configuration
+files. The NIS client (<tt>ypbind</tt>) was used to bind a machine to an NIS server
+and receive the distributed configuration files.</description>
+<ocil><package-remove-macro package="ypbind"/></ocil>
+<rationale>The NIS service is inherently an insecure system that has been vulnerable
+to DOS attacks, buffer overflows and has poor authentication for querying NIS maps.
+NIS generally has been replaced by such protocols as Lightweight Directory Access 
+Protocol (LDAP). It is recommended that the service be removed.</rationale>
+<ident cce="" />
+<oval id="package_ypbind_removed" />
+</Rule>
+
 </Group>
 
 <Group id="tftp">
@@ -319,6 +350,21 @@ accidental (or intentional) activation of tftp services.
 <tested by="DS" on="20121026"/>
 </Rule>
 
+<Rule id="package_tftp_removed">
+<title>Remove tftp</title>
+<description>Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol,
+typically used to automatically transfer configuration or boot files between machines.
+TFTP does not support authentication and can be easily hacked. The package
+<tt>tftp</tt> is a client program that allows for connections to a <tt>tftp</tt> server.
+</description>
+<ocil><package-remove-macro package="tftp"/></ocil>
+<rationale>It is recommended that TFTP be remvoed, unless there is a specific need
+for TFTP (such as a boot server). In that case, use extreme caution when configuring
+the services.</rationale>
+<ident cce="" />
+<oval id="package_tftp_removed" />
+</Rule>
+
 <Rule id="tftpd_uses_secure_mode" severity="high">
 <title>Ensure <tt>tftp</tt> Daemon Uses Secure Mode</title>
 <description>If running the <tt>tftp</tt> service is necessary, it should be configured
@@ -334,14 +380,14 @@ reduces the risk of sharing files which should remain private.
 <ocil clause="this flag is missing">
 If TFTP is not installed, this is not applicable.  To determine if TFTP is installed, 
 run the following command:
-<pre># rpm -qa | grep tftp</pre>
+<pre>$ rpm -qa | grep tftp</pre>
 <br /><br />
 Verify <tt>tftp</tt> is configured by with the <tt>-s</tt> option by running the
 following command:
 <pre>grep "server_args" /etc/xinetd.d/tftp</pre>
 The output should indicate the <tt>server_args</tt> variable is configured with the <tt>-s</tt>
 flag, matching the example below:
-<pre> # grep "server_args" /etc/xinetd.d/tftp
+<pre>$ grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
 <ident cce="RHEL7-CCE-TBD" />
