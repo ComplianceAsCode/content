@@ -91,7 +91,7 @@ only for developers trying to debug problems.</rationale>
 </Rule>
 
 
-<Rule id="disable_setuid_coredumps">
+<Rule id="sysctl_fs_suid_dumpable">
 <title>Disable Core Dumps for SUID programs</title>
 <description><sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" /></description>
 <ocil><sysctl-check-macro sysctl="fs.suid_dumpable" value="0" /></ocil>
@@ -117,7 +117,7 @@ controlled through <tt>sysctl</tt> variables <tt>kernel.exec-shield</tt> and
 <tt>kernel.randomize_va_space</tt>.
 </description>
 
-<Rule id="enable_execshield" severity="medium">
+<Rule id="sysctl_kernel_exec_shield" severity="medium">
 <title>Enable ExecShield</title>
 <description><sysctl-desc-macro sysctl="kernel.exec-shield" value="1" /></description>
 <ocil><sysctl-check-macro sysctl="kernel.exec-shield" value="1" /></ocil>
@@ -174,7 +174,7 @@ x86 kernel already includes this support. However, if the system is
 32-bit and also supports the PAE and NX features as
 determined in the previous section, the kernel-PAE package should
 be installed to enable XD or NX support:
-<pre># yum install kernel-PAE</pre>
+<pre>$ sudo yum install kernel-PAE</pre>
 The installation process should also have configured the
 bootloader to load the new kernel at boot. Verify this at reboot
 and modify <tt>/etc/grub.conf</tt> if necessary.</description>
