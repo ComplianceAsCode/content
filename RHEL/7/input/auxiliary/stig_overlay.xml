@@ -80,7 +80,7 @@
 		<VMSinfo VKey="38497" SVKey="50298" VRelease="1" />
 		<title>The system must not have accounts configured with blank or null passwords.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="no_hashes_outside_shadow" ownerid="RHEL-06-000031" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="accounts_password_all_shadowed" ownerid="RHEL-06-000031" disa="366" severity="medium">
 		<VMSinfo VKey="38499" SVKey="50300" VRelease="1" />
 		<title>The /etc/passwd file must not contain password hashes.</title>
 	</overlay>
@@ -248,7 +248,7 @@
 		<VMSinfo VKey="38600" SVKey="50401" VRelease="1" />
 		<title>The system must not send ICMPv4 redirects by default.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="sysctl_ipv4_all_send_redirects" ownerid="RHEL-06-000081" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_send_redirects" ownerid="RHEL-06-000081" disa="366" severity="medium">
 		<VMSinfo VKey="38601" SVKey="50402" VRelease="1" />
 		<title>The system must not send ICMPv4 redirects from any interface.</title>
 	</overlay>
@@ -308,7 +308,7 @@
 		<VMSinfo VKey="38546" SVKey="50347" VRelease="1" />
 		<title>The IPv6 protocol handler must not be bound to the network stack unless needed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="sysctl_ipv6_default_accept_redirects" ownerid="RHEL-06-000099" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="sysctl_net_ipv6_conf_default_accept_redirects" ownerid="RHEL-06-000099" disa="366" severity="medium">
 		<VMSinfo VKey="38548" SVKey="50349" VRelease="1" />
 		<title>The system must ignore ICMPv6 redirects by default.</title>
 	</overlay>
@@ -434,7 +434,7 @@
 		<VMSinfo VKey="38632" SVKey="50433" VRelease="2" />
 		<title>The operating system must produce audit records containing sufficient information to establish what type of events occurred.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="enable_auditd_bootloader" ownerid="RHEL-06-000157" disa="1464" severity="low">
+	<overlay owner="disastig" ruleid="bootloader_audit_argument" ownerid="RHEL-06-000157" disa="1464" severity="low">
 		<title>Auditing must be enabled at boot by setting a kernel parameter.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="configure_auditd_num_logs" ownerid="RHEL-06-000159" disa="366" severity="medium">
@@ -548,11 +548,11 @@
 		<VMSinfo VKey="38565" SVKey="50366" VRelease="2" />
 		<title>The audit system must be configured to audit all discretionary access control permission modifications using setxattr.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_file_access" ownerid="RHEL-06-000197" disa="172" severity="low">
+	<overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification" ownerid="RHEL-06-000197" disa="172" severity="low">
 		<VMSinfo VKey="38566" SVKey="50367" VRelease="2" />
 		<title>The audit system must be configured to audit failed attempts to access files and programs.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_privileged_commands" ownerid="RHEL-06-000198" disa="40" severity="low">
+	<overlay owner="disastig" ruleid="audit_rules_privileged_commands" ownerid="RHEL-06-000198" disa="40" severity="low">
 		<VMSinfo VKey="38567" SVKey="50368" VRelease="2" />
 		<title>The audit system must be configured to audit all use of setuid programs.</title>
 	</overlay>
@@ -568,7 +568,7 @@
 		<VMSinfo VKey="38578" SVKey="50379" VRelease="1" />
 		<title>The audit system must be configured to audit changes to the "/etc/sudoers" file.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_kernel_module_loading" ownerid="RHEL-06-000202" disa="172" severity="medium">
+	<overlay owner="disastig" ruleid="audit_rules_kernel_module_loading" ownerid="RHEL-06-000202" disa="172" severity="medium">
 		<VMSinfo VKey="38580" SVKey="50381" VRelease="1" />
 		<title>The audit system must be configured to audit the loading and unloading of dynamic kernel modules.</title>
 	</overlay>
@@ -1309,7 +1309,7 @@
 		<VMSinfo VKey="38439" SVKey="50239" VRelease="1" />
 		<title>The system must provide automated support for account management functions.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="enable_auditd_bootloader" ownerid="RHEL-06-000525" disa="169" severity="low">
+	<overlay owner="disastig" ruleid="bootloader_audit_argument" ownerid="RHEL-06-000525" disa="169" severity="low">
 		<VMSinfo VKey="38438" SVKey="50238" VRelease="1" />
 		<title>Auditing must be enabled at boot by setting a kernel parameter.</title>
 	</overlay>
