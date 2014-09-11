@@ -41,7 +41,7 @@ a series of system defaults. One reference to the configuration
 file syntax can be found at
 http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/sag-configuration-file.html.</warning>
 
-<Value id="var_password_history_retain_limit" type="number"
+<Value id="var_password_pam_unix_remember" type="number"
 operator="equals" interactive="0">
 <title>remember</title>
 <description>The last n passwords for each user are saved in
@@ -64,7 +64,7 @@ using <tt>pam_lastlog</tt>, add the following line immediately after <tt>session
 <ocil clause="that is not the case">
 To ensure that last logon/access notification is configured correctly, run
 the following command:
-<pre># grep pam_lastlog.so /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_lastlog.so /etc/pam.d/system-auth</pre>
 The output should show output <tt>showfailed</tt>.
 </ocil>
 <rationale>
@@ -125,8 +125,16 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_minlen" type="number"
-operator="equals" interactive="0">
+<Value id="var_password_pam_cracklib_maxrepeat" type="number" operator="equals" interactive="0">
+<title>maxrepeat</title>
+<description>Maximum Number of Consecutive Repeating Characters in a Password</description>
+<value selector="">3</value>
+<value selector="1">1</value>
+<value selector="2">2</value>
+<value selector="3">3</value>
+</Value>
+
+<Value id="var_password_pam_cracklib_minlen" type="number" operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
 <value selector="">14</value>
@@ -138,8 +146,8 @@ operator="equals" interactive="0">
 <value selector="14">14</value>
 <value selector="15">15</value>
 </Value>
-<Value id="var_password_pam_cracklib_dcredit" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_password_pam_cracklib_dcredit" type="number" operator="equals" interactive="0">
 <title>dcredit</title>
 <description>Minimum number of digits in password</description>
 <value selector="">-1</value>
@@ -147,8 +155,8 @@ operator="equals" interactive="0">
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="var_password_pam_cracklib_ocredit" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_password_pam_cracklib_ocredit" type="number" operator="equals" interactive="0">
 <title>ocredit</title>
 <description>Minimum number of other (special characters) in
 password</description>
@@ -157,8 +165,8 @@ password</description>
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="var_password_pam_cracklib_lcredit" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_password_pam_cracklib_lcredit" type="number" operator="equals" interactive="0">
 <title>lcredit</title>
 <description>Minimum number of lower case in password</description>
 <value selector="">-1</value>
@@ -166,8 +174,8 @@ operator="equals" interactive="0">
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="var_password_pam_cracklib_ucredit" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_password_pam_cracklib_ucredit" type="number" operator="equals" interactive="0">
 <title>ucredit</title>
 <description>Minimum number of upper case in password</description>
 <value selector="">-1</value>
@@ -175,8 +183,8 @@ operator="equals" interactive="0">
 <value selector="1">-1</value>
 <value selector="0">0</value>
 </Value>
-<Value id="var_password_pam_cracklib_difok" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_password_pam_cracklib_difok" type="number" operator="equals" interactive="0">
 <title>difok</title>
 <description>Minimum number of characters not present in old
 password</description>
@@ -188,8 +196,18 @@ passwords</warning>
 <value selector="4">4</value>
 <value selector="5">5</value>
 </Value>
-<Value id="var_accounts_passwords_pam_faillock_deny" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_password_pam_cracklib_minclass" type="number" operator="equals" interactive="0">
+<title>minclass</title>
+<description>Minimum number of categories of characters that must exist in a password</description>
+<value selector="">3</value>
+<value selector="1">1</value>
+<value selector="2">2</value>
+<value selector="3">3</value>
+<value selector="4">4</value>
+</Value>
+
+<Value id="var_accounts_passwords_pam_faillock_deny" type="number" operator="equals" interactive="0">
 <title>fail_deny</title>
 <description>Number of failed login attempts before account lockout</description>
 <value selector="">3</value>
@@ -197,8 +215,8 @@ operator="equals" interactive="0">
 <value selector="5">5</value>
 <value selector="10">10</value>
 </Value>
-<Value id="var_accounts_passwords_pam_faillock_unlock_time" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_accounts_passwords_pam_faillock_unlock_time" type="number" operator="equals" interactive="0">
 <title>fail_unlock_time</title>
 <description>Seconds before automatic unlocking after excessive failed logins</description>
 <value selector="">604800</value>
@@ -208,8 +226,8 @@ operator="equals" interactive="0">
 <value selector="86400">86400</value> <!-- 1 day -->
 <value selector="604800">604800</value> <!-- 7 days -->
 </Value>
-<Value id="var_accounts_passwords_pam_faillock_fail_interval" type="number"
-operator="equals" interactive="0">
+
+<Value id="var_accounts_passwords_pam_faillock_fail_interval" type="number" operator="equals" interactive="0">
 <title>fail_interval</title>
 <description>Interval for counting failed login attempts before account lockout</description>
 <value selector="">900</value>
@@ -248,7 +266,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="password_require_consecrepeat">
+<Rule id="accounts_password_pam_cracklib_maxrepeat">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
@@ -392,6 +410,42 @@ Note that passwords which are changed on compromised systems will still be compr
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195"/>
 <tested by="DS" on="20121024"/>
 </Rule>
+
+<Rule id="accounts_password_pam_cracklib_minclass">
+<title>Set Password Strength Minimum Different Categories</title>
+<description>The pam_cracklib module's <tt>minclass</tt> parameter controls requirements for
+usage of different character classes, or types, of character that must exist in a password
+before it is considered valid. For example, setting this value to three (3) requires that
+any password must have characters from at least three different categories in order to be
+approved. The default value is zero (0), meaning there are no required classes. There are
+four categories available:
+<pre>
+* Upper-case characters
+* Lower-case characters
+* Digits
+* Special characters (for example, punctuation)
+</pre>
+Add <tt>minclass=<i>NUM</i></tt> after pam_cracklib.so entry into the
+<tt>/etc/pam.d/system-auth</tt> file in order to require differing categories of
+characters when changing passwords, substituting <i>NUM</i> appropriately (for example to
+require at least three character classes to be used in password, use <tt>minclass=3</tt>).
+</description>
+<ocil clause="minclass is not found or not set to the required value">
+To check how many categories of characters must be used in password during a password change,
+run the following command:
+<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+The <tt>minclass</tt> parameter will indicate how many character classes must be used. If
+the requirement was for the password to contain characters from three different categories,
+then this would appear as <tt>minclass=3</tt>.
+</ocil>
+<rationale>
+Requiring a minimum number of character categories makes password guessing attacks
+more difficult by ensuring a larger search space.
+</rationale>
+<ident cce="CCE-27115-5" />
+<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_cracklib_minclass"/>
+<tested by="JL" on="20140626"/>
+</Rule>
 </Group>
 </Group>
 
@@ -427,7 +481,7 @@ both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep pam_faillock /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
 The output should show <tt>deny=3</tt>.
 </ocil>
 <rationale>
@@ -439,7 +493,7 @@ prevents direct password guessing attacks.
 <ref nist="AC-7(a)" disa="44" />
 </Rule>
 
-<Rule id="deny_password_attempts_unlock_time" severity="medium">
+<Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium">
 <title>Set Lockout Time For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
@@ -451,7 +505,7 @@ Add the following lines immediately below the <tt>pam_env.so</tt> statement in <
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep pam_faillock /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
 The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
 </ocil>
 <rationale>
@@ -478,8 +532,8 @@ Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> 
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre># grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 900 (15 minutes) or greater.  If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
+<pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 900 (15 minutes) or greater.  If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts within a
@@ -490,7 +544,7 @@ specific period of time prevents direct password guessing attacks.
 <ref nist="AC-7(a)" disa="1452" />
 </Rule>
 
-<Rule id="accounts_password_reuse_limit" severity="medium">
+<Rule id="accounts_password_pam_unix_remember" severity="medium">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM

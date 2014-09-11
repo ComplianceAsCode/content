@@ -109,7 +109,7 @@ only communicate with servers that support packet signing.
 </description>
 <ocil clause="it is not">
 To verify that Samba clients running smbclient must use packet signing, run the following command:
-<pre># grep signing /etc/samba/smb.conf</pre>
+<pre>$ grep signing /etc/samba/smb.conf</pre>
 The output should show:
 <pre>client signing = mandatory</pre>
 </ocil>
@@ -136,7 +136,7 @@ packet signing.
 </description>
 <ocil clause="it does not">
 To verify that Samba clients using mount.cifs must use packet signing, run the following command:
-<pre># grep sec /etc/fstab</pre>
+<pre>$ grep sec /etc/fstab</pre>
 The output should show either <tt>krb5i</tt> or <tt>ntlmv2i</tt> in use.
 </ocil>
 <rationale>
