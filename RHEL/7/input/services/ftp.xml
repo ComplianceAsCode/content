@@ -58,7 +58,7 @@ accidental activation.
 <Rule id="package_vsftpd_installed">
 <title>Install vsftpd Package</title>
 <description>If this machine must operate as an FTP server, install the <tt>vsftpd</tt> package via the standard channels.
-<pre># yum install vsftpd</pre>
+<pre>$ sudo yum install vsftpd</pre>
 </description>
 <rationale>After RHEL 2.1, Red Hat switched from distributing wu-ftpd with RHEL to distributing vsftpd. For security
 and for consistency with future Red Hat releases, the use of vsftpd is recommended.</rationale>
@@ -89,11 +89,11 @@ Find if logging is applied to the FTP daemon.
 Procedures:
 <br/><br/>
 If vsftpd is started by xinetd the following command will indicate the xinetd.d startup file:
-<pre># grep vsftpd /etc/xinetd.d/*</pre>
-<pre># grep server_args <i>vsftpd xinetd.d startup file</i></pre>
+<pre>$ grep vsftpd /etc/xinetd.d/*</pre>
+<pre>$ grep server_args <i>vsftpd xinetd.d startup file</i></pre>
 This will indicate the vsftpd config file used when starting through xinetd.
 If the <i>server_args</i> line is missing or does not include the vsftpd configuration file, then the default config file (/etc/vsftpd/vsftpd.conf) is used.
-<pre># grep xferlog_enable <i>vsftpd config file</i></pre>
+<pre>$ sudo grep xferlog_enable <i>vsftpd config file</i></pre>
 </ocil>
 <rationale>To trace malicious activity facilitated by the FTP service, it must be configured to ensure that all commands sent to
 the FTP server are logged using the verbose vsftpd log
@@ -122,7 +122,7 @@ To verify this configuration, run the following command:
 <pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
 
 The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below:
-<pre># grep "banner_file" /etc/vsftpd/vsftpd.conf
+<pre>$ sudo grep "banner_file" /etc/vsftpd/vsftpd.conf
 banner_file=/etc/issue</pre>
 </ocil>
 </Rule>

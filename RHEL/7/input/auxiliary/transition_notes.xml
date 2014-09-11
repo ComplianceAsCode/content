@@ -17,10 +17,10 @@
 
 <note ref="29289" auth="GG" rule="">This is not covered in RHEL 6 content</note>
 
-<note ref="29288" auth="GG" rule="audit_kernel_module_loading">This is covered in RHEL 6 content</note>
-<note ref="29286" auth="GG" rule="audit_kernel_module_loading">This is covered in RHEL 6 content</note>
-<note ref="29284" auth="GG" rule="audit_kernel_module_loading">This is covered in RHEL 6 content</note>
-<note ref="29281" auth="GG" rule="audit_kernel_module_loading">This is covered in RHEL 6 content</note>
+<note ref="29288" auth="GG" rule="audit_rules_kernel_module_loading">This is covered in RHEL 6 content</note>
+<note ref="29286" auth="GG" rule="audit_rules_kernel_module_loading">This is covered in RHEL 6 content</note>
+<note ref="29284" auth="GG" rule="audit_rules_kernel_module_loading">This is covered in RHEL 6 content</note>
+<note ref="29281" auth="GG" rule="audit_rules_kernel_module_loading">This is covered in RHEL 6 content</note>
 
 <note ref="29279" auth="GG" rule="audit_dac_actions">This is covered in RHEL 6 content</note>
 <note ref="29275" auth="GG" rule="audit_dac_actions">This is covered in RHEL 6 content</note>
@@ -53,10 +53,10 @@
 
 <note ref="29240" auth="GG" rule="audit_file_deletions">This is covered in RHEL 6 content</note>
 
-<note ref="29239" auth="GG" rule="audit_file_access">This is covered in RHEL 6 content</note>
-<note ref="29238" auth="GG" rule="audit_file_access">This is covered in RHEL 6 content</note>
+<note ref="29239" auth="GG" rule="audit_rules_unsuccessful_file_modification">This is covered in RHEL 6 content</note>
+<note ref="29238" auth="GG" rule="audit_rules_unsuccessful_file_modification">This is covered in RHEL 6 content</note>
 <note ref="29237" auth="GG" rule="">This is not covered in RHEL 6 content</note>
-<note ref="29236" auth="GG" rule="audit_file_access">This is covered in RHEL 6 content</note>
+<note ref="29236" auth="GG" rule="audit_rules_unsuccessful_file_modification">This is covered in RHEL 6 content</note>
 
 <note ref="931" auth="VP">
 This is not in the RHEL 6 content.  Nosuid / nodev checks address perms on NFS shares.
@@ -1053,7 +1053,7 @@ also watch for LD_AUDIT
 <note ref="814" auth="KS">
 Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
 appears to already exist. 
-rule=audit_file_access manual=no
+rule=audit_rules_unsuccessful_file_modification manual=no
 </note>
 
 <note ref="815" auth="KS">
@@ -1554,7 +1554,7 @@ rule=userowner_shadow_file manual=no
 <note ref="22347" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=no_hashes_outside_shadow manual=no
+rule=accounts_password_all_shadowed manual=no
 </note>
 
 <note ref="22375" auth="KS">
@@ -1573,7 +1573,7 @@ Auditing of the files is in place but not the commands.
 <note ref="22383" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=audit_kernel_module_loading manual=no
+rule=audit_rules_kernel_module_loading manual=no
 </note>
 
 <note ref="22404" auth="KS">
@@ -1615,7 +1615,7 @@ sysctl_net_ipv4_conf_default_accept_redirects rule.
 <note ref="22417" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=sysctl_ipv4_all_send_redirects manual=no
+rule=sysctl_net_ipv4_conf_all_send_redirects manual=no
 This check is split in the RHEL6 prose into the above and the 
 sysctl_net_ipv4_conf_default_send_redirects rule.
 </note>
