@@ -13,7 +13,7 @@ console.</description>
 responsible for starting the execution of the kernel and passing
 options to it. The boot loader allows for the selection of
 different kernels - possibly on different partitions or media.
-The default RHEL boot loader for x86 systems is called GRUB.
+The default RHEL boot loader for x86 systems is called GRUB2.
 Options it can pass to the kernel include <i>single-user mode</i>, which
 provides root access without any authentication, and the ability to
 disable SELinux. To prevent local users from modifying the boot
@@ -81,27 +81,48 @@ parameters.
 
 <Rule id="bootloader_password" severity="medium">
 <title>Set Boot Loader Password</title>
-<description>The grub boot loader should have password protection
-enabled to protect boot-time settings.
-To do so, select a password and then generate a hash from it by running the following command:
-<pre># grub-crypt --sha-512</pre>
-When prompted to enter a password, insert the following line into <tt>/etc/grub.conf</tt>
-immediately after the header comments. (Use the output from <tt>grub-crypt</tt> as the
-value of <b>password-hash</b>):
-<pre>password --encrypted <b>password-hash</b></pre>
-NOTE: To meet FISMA Moderate, the bootloader password MUST differ from the root password.
+<description>The grub2 boot loader should have a superuser account and password
+protection enabled to protect boot-time settings.
+<br /><br />
+To do so, select a superuser account and password and add them into the
+appropriate grub2 configuration file(s) under <tt>/etc/grub.d</tt>.
+Since plaintext passwords are a security risk, generate a hash for the pasword
+by running the following command:
+<pre>$ grub2-mkpasswd-pbkdf2</pre>
+When prompted, enter the password that was selected and insert the returned 
+password hash into the appropriate grub2 configuration file(s) under
+<tt>/etc/grub.d</tt> immediately after the superuser account.
+(Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of 
+<b>password-hash</b>):
+<pre>password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
+NOTE: It is recommended not to use common administrator account names like root,
+admin, or administrator for the grub2 superuser account. 
+<br />
+To meet FISMA Moderate, the bootloader superuser account and password MUST 
+differ from the root account and password.
+Once the superuser account and password have been added, update the 
+<tt>grub.cfg</tt> file by running:
+<pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+NOTE: Do NOT manually add the superuser account and password to the 
+<tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 </description>
 <ocil clause="it does not">
-To verify the boot loader password has been set and encrypted, run the following command:
-<pre># grep password /etc/grub.conf</pre>
+To verify the boot loader superuser account and superuser account password have
+been set, and the password encrypted, run the following command:
+<pre>sudo grep -A1 "superusers\|password" /etc/grub2.cfg</pre>
 The output should show the following:
-<pre>password --encrypted <b>password-hash</b></pre>
+<pre>set superusers="<b>superusers-account</b>"
+password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
 </ocil>
 <rationale>
 Password protection on the boot loader configuration ensures
 users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
-and whether to enter single-user mode.
+and whether to enter single-user mode. For more information on how to configure 
+the grub2 superuser account and password, please refer to 
+<ul>
+<li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-GRUB_2_Password_Protection.html</li>.
+</ul>
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="bootloader_password" />
