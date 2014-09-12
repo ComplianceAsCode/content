@@ -49,6 +49,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/accounts/restrictions/restrictions.xml')" />
+      <xsl:apply-templates select="document('system/accounts/physical.xml')" />
     </xsl:copy>
   </xsl:template>
 
