@@ -211,8 +211,12 @@ clients.</description>
 anonuid=-1
 anongid=-1
 </pre>
+Alternatively, functionally equivalent values of 60001, 65534, 65535 may be used.
 </description>
-<rationale>Specifying the anonymous UID and GID as -1 ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
+<ocil clause="anonuid or anongid are not set to anonymous (-1) or a value greater than UID_MAX (for anonuid) and GID_MAX (for anongid)">
+Inspect the mounts configured in <tt>/etc/exports</tt>. Each mount should specificy the anonuid and anonguid as either -1, or a value greater than UID_MAX and GID_MAX as defined in /etc/login.defs.
+</ocil>
+<rationale>Specifying the anonymous UID and GID ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
 <ident cce="27414-2" />
 </Rule>
 
