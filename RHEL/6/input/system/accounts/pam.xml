@@ -243,7 +243,7 @@ passwords</warning>
 <description>To configure the number of retry prompts that are permitted per-session:
 <br /><br />
 Edit the <tt>pam_cracklib.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to 
-show <tt>retry=3</tt>, or a lower value if site policy is more restrictive.
+show <tt>retry=<sub idref="var_password_pam_cracklib_retry" /></tt>, or a lower value if site policy is more restrictive.
 <br /><br />
 The DoD requirement is a maximum of 3 prompts per session.
 </description>
@@ -270,8 +270,8 @@ is different from account lockout, which is provided by the pam_faillock module.
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
-which contain more than that number of consecutive characters. Add <tt>maxrepeat=3</tt>
-after pam_cracklib.so to prevent a run of four or more identical characters.
+which contain more than that number of consecutive characters. Add <tt>maxrepeat=<sub idref="var_password_pam_cracklib_maxrepeat" /></tt>
+after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_cracklib_maxrepeat" /> + 1) or more identical characters.
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
@@ -390,9 +390,8 @@ more difficult by ensuring a larger search space.
 <title>Set Password Strength Minimum Different Characters</title>
 <description>The pam_cracklib module's <tt>difok</tt> parameter controls requirements for
 usage of different characters during a password change.
-Add <tt>difok=<i>NUM</i></tt> after pam_cracklib.so to require differing
-characters when changing passwords, substituting <i>NUM</i> appropriately.
-The DoD requirement is <tt>4</tt>.
+Add <tt>difok=<i><sub idref="var_password_pam_cracklib_difok" /></i></tt> after pam_cracklib.so to require differing
+characters when changing passwords. The DoD requirement is <tt>4</tt>.
 </description>
 <ocil clause="difok is not found or not set to the required value">
 To check how many characters must differ during a password change, run the following command:
@@ -426,10 +425,10 @@ four categories available:
 * Digits
 * Special characters (for example, punctuation)
 </pre>
-Add <tt>minclass=<i>NUM</i></tt> after pam_cracklib.so entry into the
-<tt>/etc/pam.d/system-auth</tt> file in order to require differing categories of
-characters when changing passwords, substituting <i>NUM</i> appropriately (for example to
-require at least three character classes to be used in password, use <tt>minclass=3</tt>).
+Add <tt>minclass=<i><sub idref="var_password_pam_cracklib_minclass" /></i></tt> after pam_cracklib.so entry into the
+<tt>/etc/pam.d/system-auth</tt> file in order to require <sub idref="var_password_pam_cracklib_minclass" />  differing categories of
+characters when changing passwords.
+For example to require at least three character classes to be used in password, use <tt>minclass=3</tt>.
 </description>
 <ocil clause="minclass is not found or not set to the required value">
 To check how many categories of characters must be used in password during a password change,
@@ -477,8 +476,8 @@ attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
 both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -501,8 +500,8 @@ To configure the system to lock out accounts after a number of incorrect login
 attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -528,8 +527,8 @@ attempts.
 <br /><br />
 Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
 <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -549,9 +548,9 @@ specific period of time prevents direct password guessing attacks.
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
-module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=24</tt> to the 
+module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_password_pam_unix_remember" /></tt> to the
 line which refers to the <tt>pam_unix.so</tt> module, as shown:
-<pre>password sufficient pam_unix.so <i>existing_options</i> remember=24</pre>
+<pre>password sufficient pam_unix.so <i>existing_options</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
 The DoD and FISMA requirement is 24 passwords.</description>
 <ocil clause="it does not">
 To verify the password reuse setting is compliant, run the following command:
