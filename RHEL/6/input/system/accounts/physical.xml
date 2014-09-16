@@ -257,12 +257,12 @@ the man page <tt>gconftool-2(1)</tt>.</description>
 <title>Set GNOME Login Inactivity Timeout</title>
 <description>
 Run the following command to set the idle time-out value for
-inactivity in the GNOME desktop to 15 minutes:
+inactivity in the GNOME desktop to <sub idref="inactivity_timeout_value" /> minutes:
 <pre>$ sudo gconftool-2 \
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type int \
-  --set /desktop/gnome/session/idle_delay 15</pre>
+  --set /desktop/gnome/session/idle_delay <sub idref="inactivity_timeout_value" /></pre>
 </description>
 <ocil clause="it is not">
 To check the current idle time-out value, run the following command:
