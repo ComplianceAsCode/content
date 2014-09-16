@@ -29,8 +29,8 @@ for system daemons.
 parameters for most or all daemons started at boot time.  The default umask of
 022 prevents creation of group- or world-writable files.  To set the default
 umask for daemons, edit the following line, inserting 022 or 027 for
-<i>UMASK</i> appropriately:
-<pre>umask <i>UMASK</i></pre>
+<i>umask</i> appropriately:
+<pre>umask <i><sub idref="var_umask_for_daemons" /></i></pre>
 Setting the umask to too restrictive a setting can cause serious errors at
 runtime.  Many daemons on the system already individually restrict themselves to
 a umask of 077 in their own init scripts.
