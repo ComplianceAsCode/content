@@ -106,10 +106,17 @@ see: https://github.com/OpenSCAP/scap-security-guide/issues/66 for details.
 
 This requirement does not apply against Red Hat Enterprise Linux 7:
 see: https://github.com/OpenSCAP/scap-security-guide/issues/67 for details.
-<select idref="kernel_module_tipc_disabled" selected="true"/>
+<select idref="kernel_module_tipc_disabled" selected="true"/> -->
 
-ANTIQUATED SERVICES
-<select idref="disable_xinetd" selected="true"/>
+<!-- ANTIQUATED SERVICES -->
+<select idref="service_abrtd_disabled" selected="true"/>
+<select idref="service_atd_disabled" selected="true"/>
+<select idref="service_ntpdate_disabled" selected="true"/>
+<select idref="service_oddjobd_disabled" selected="true"/>
+<select idref="service_qpidd_disabled" selected="true"/>
+<select idref="service_rdisc_disabled" selected="true"/>
+
+<!-- <select idref="disable_xinetd" selected="true"/>
 <select idref="uninstall_xinetd" selected="true"/>
 <select idref="uninstall_telnet_server" selected="true"/>
 <select idref="disable_telnet_service" selected="true"/>
@@ -122,13 +129,7 @@ ANTIQUATED SERVICES
 <select idref="uninstall_tftp-server" selected="true"/>
 <select idref="disable_tftp" selected="true"/>
 <select idref="disable_avahi" selected="true"/>
-<select idref="service_abrtd_disabled" selected="true"/>
-<select idref="service_atd_disabled" selected="true"/>
 <select idref="service_autofs_disabled" selected="true"/>
-<select idref="service_ntpdate_disabled" selected="true"/>
-<select idref="service_oddjobd_disabled" selected="true"/>
-<select idref="service_qpidd_disabled" selected="true"/>
-<select idref="service_rdisc_disabled" selected="true"/>
 
 SSH / REMOTE ACCESS CHECKS -->
 <select idref="sshd_allow_only_protocol2" selected="true"/>
