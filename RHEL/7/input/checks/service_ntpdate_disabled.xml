@@ -8,33 +8,33 @@
        RHEL/7/input/checks DIRECTORY REPLACING THE FORMER ONES
   -->
 
-  <definition class="compliance" id="service_sshd_disabled" version="1">
+  <definition class="compliance" id="service_ntpdate_disabled" version="1">
     <metadata>
-      <title>Service sshd Disabled</title>
+      <title>Service ntpdate Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
-      <description>The sshd service should be disabled if possible.</description>
+      <description>The ntpdate service should be disabled if possible.</description>
     </metadata>
-    <criteria comment="package openssh-server removed or service sshd is not configured to start" operator="OR">
-      <extend_definition comment="openssh-server removed" definition_ref="package_openssh-server_removed" />
-      <criterion comment="sshd is not configured to start" test_ref="test_sshd_disabled" />
+    <criteria comment="package ntpdate removed or service ntpdate is not configured to start" operator="OR">
+      <extend_definition comment="ntpdate removed" definition_ref="package_ntpdate_removed" />
+      <criterion comment="ntpdate is not configured to start" test_ref="test_ntpdate_disabled" />
     </criteria>
   </definition>
 
-  <unix:file_test id="test_sshd_disabled" check="all" check_existence="none_exist" comment="Test if none of systemd system targets references sshd" version="1">
-    <unix:object object_ref="object_sshd_disabled" />
+  <unix:file_test id="test_ntpdate_disabled" check="all" check_existence="none_exist" comment="Test if none of systemd system targets references ntpdate" version="1">
+    <unix:object object_ref="object_ntpdate_disabled" />
   </unix:file_test>
 
-  <unix:file_object id="object_sshd_disabled" comment="/etc/systemd/system entries" version="1">
+  <unix:file_object id="object_ntpdate_disabled" comment="/etc/systemd/system entries" version="1">
     <!-- Don't follow symbolic links below to search just through /etc/systemd/system/* content -->
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
     <unix:path>/etc/systemd/system</unix:path>
-    <unix:filename>sshd.service</unix:filename>
-    <filter action="include">state_sshd_symlink</filter>
+    <unix:filename>ntpdate.service</unix:filename>
+    <filter action="include">state_ntpdate_symlink</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_sshd_symlink" version="1">
+  <unix:file_state id="state_ntpdate_symlink" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
 
