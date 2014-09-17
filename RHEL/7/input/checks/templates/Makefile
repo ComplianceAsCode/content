@@ -1,9 +1,12 @@
-templates: services
+templates: services packages
 
 SHARED_DIR=../../../../../shared/oval/templates
 
 services:
 	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
+
+packages:
+	${SHARED_DIR}/create_package_removed.py packages_removed.csv
 
 compare:
 	diff output/ ../ | grep -v "Only in ../"
