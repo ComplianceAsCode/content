@@ -7,6 +7,7 @@ services:
 	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
 
 packages:
+	./create_package_installed.py packages_installed.csv
 	${SHARED_DIR}/create_package_removed.py packages_removed.csv
 
 compare:
