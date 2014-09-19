@@ -3,6 +3,7 @@ templates: services packages
 SHARED_DIR=../../../../../shared/oval/templates
 
 services:
+	${SHARED_DIR}/create_services_enabled.py services_enabled.csv
 	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
 
 packages:
