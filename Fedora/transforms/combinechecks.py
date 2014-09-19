@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, os 
+import sys, os
 import lxml.etree as ET
 
 header = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -25,54 +25,61 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
 
 footer = '</oval_definitions>'
 
-# append new child ONLY if it's not a duplicate 
+# append new child ONLY if it's not a duplicate
 def append(element, newchild):
     newid = newchild.get("id")
     existing = element.find(".//*[@id='" + newid + "']")
     if existing is not None:
-        sys.stderr.write( "Duplicate ID, which will not be added: " + newid + "\n")
+        sys.stderr.write("Notification: this ID is used more than once" +
+             " and should represent equivalent elements: " + newid + "\n")
     else:
         element.append(newchild)
 
 def main():
-	if len(sys.argv) < 2:
-		print "Provide a directory name, which contains the checks."
-		sys.exit(1)
+    if len(sys.argv) < 2:
+        print "Provide a directory name, which contains the checks."
+        sys.exit(1)
 
-        # concatenate all XML files in the checks directory, to create the document body
-	body = ""
-	for filename in os.listdir(sys.argv[1]):
-		if filename.endswith(".xml"):
-			with open( sys.argv[1] + "/" + filename, 'r') as f:
-				body = body + f.read()
-   
-	# parse new file(string) as an ElementTree, so we can reorder elements appropriately 
-	tree = ET.fromstring(header + body + footer)
-	definitions = ET.Element("definitions")
-	tests = ET.Element("tests")
-	objects = ET.Element("objects")
-	states = ET.Element("states")
-	variables = ET.Element("variables")
+    # concatenate all XML files in the checks directory, to create the
+    # document body
+    body = ""
+    for filename in os.listdir(sys.argv[1]):
+        if filename.endswith(".xml"):
+            with open(sys.argv[1] + "/" + filename, 'r') as xml_file:
+                body = body + xml_file.read()
 
-	for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
-                if childnode.tag is ET.Comment: continue
-		if childnode.tag.endswith("definition"): append(definitions, childnode) 
-		if childnode.tag.endswith("_test"): append(tests, childnode)
-		if childnode.tag.endswith("_object"): append(objects, childnode) 
-		if childnode.tag.endswith("_state"): append(states, childnode) 
-		if childnode.tag.endswith("_variable"): append(variables, childnode) 
+    # parse new file(string) as an ElementTree, so we can reorder elements
+    # appropriately
+    tree = ET.fromstring(header + body + footer)
+    definitions = ET.Element("definitions")
+    tests = ET.Element("tests")
+    objects = ET.Element("objects")
+    states = ET.Element("states")
+    variables = ET.Element("variables")
 
-	tree = ET.fromstring(header + footer)
-	tree.append(definitions)
-	tree.append(tests)
-	tree.append(objects)
-	tree.append(states)
-	# append <variables> tag only in case there are some child variables defined
-        if variables.__len__():
-		tree.append(variables)
+    for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
+        if childnode.tag is ET.Comment:
+            continue
+        if childnode.tag.endswith("definition"):
+            append(definitions, childnode)
+        if childnode.tag.endswith("_test"):
+            append(tests, childnode)
+        if childnode.tag.endswith("_object"):
+            append(objects, childnode)
+        if childnode.tag.endswith("_state"):
+            append(states, childnode)
+        if childnode.tag.endswith("_variable"):
+            append(variables, childnode)
 
-	ET.dump(tree) 
-	sys.exit(0)
+    tree = ET.fromstring(header + footer)
+    tree.append(definitions)
+    tree.append(tests)
+    tree.append(objects)
+    tree.append(states)
+    tree.append(variables)
+
+    ET.dump(tree)
+    sys.exit(0)
 
 if __name__ == "__main__":
     main()
