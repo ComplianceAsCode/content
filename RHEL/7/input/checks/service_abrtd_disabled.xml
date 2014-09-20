@@ -8,33 +8,33 @@
        RHEL/7/input/checks DIRECTORY REPLACING THE FORMER ONES
   -->
 
-  <definition class="compliance" id="service_sshd_disabled" version="1">
+  <definition class="compliance" id="service_abrtd_disabled" version="1">
     <metadata>
-      <title>Service sshd Disabled</title>
+      <title>Service abrtd Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
-      <description>The sshd service should be disabled if possible.</description>
+      <description>The abrtd service should be disabled if possible.</description>
     </metadata>
-    <criteria comment="package openssh-server removed or service sshd is not configured to start" operator="OR">
-      <extend_definition comment="openssh-server removed" definition_ref="package_openssh-server_removed" />
-      <criterion comment="sshd is not configured to start" test_ref="test_sshd_disabled" />
+    <criteria comment="package abrt removed or service abrtd is not configured to start" operator="OR">
+      <extend_definition comment="abrt removed" definition_ref="package_abrt_removed" />
+      <criterion comment="abrtd is not configured to start" test_ref="test_abrtd_disabled" />
     </criteria>
   </definition>
 
-  <unix:file_test id="test_sshd_disabled" check="all" check_existence="none_exist" comment="Test if none of systemd system targets references sshd" version="1">
-    <unix:object object_ref="object_sshd_disabled" />
+  <unix:file_test id="test_abrtd_disabled" check="all" check_existence="none_exist" comment="Test if none of systemd system targets references abrtd" version="1">
+    <unix:object object_ref="object_abrtd_disabled" />
   </unix:file_test>
 
-  <unix:file_object id="object_sshd_disabled" comment="/etc/systemd/system entries" version="1">
+  <unix:file_object id="object_abrtd_disabled" comment="/etc/systemd/system entries" version="1">
     <!-- Don't follow symbolic links below to search just through /etc/systemd/system/* content -->
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
     <unix:path>/etc/systemd/system</unix:path>
-    <unix:filename>sshd.service</unix:filename>
-    <filter action="include">state_sshd_symlink</filter>
+    <unix:filename>abrtd.service</unix:filename>
+    <filter action="include">state_abrtd_symlink</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_sshd_symlink" version="1">
+  <unix:file_state id="state_abrtd_symlink" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
 
