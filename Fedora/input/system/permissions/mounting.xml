@@ -29,8 +29,7 @@ module, but will not prevent an administrator (or another program) from using th
 </ocil>
 <rationale>USB storage devices such as thumb drives can be used to introduce
 malicious software.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_usb-storage_disabled" />
+<!--oval id="kernel_module_usb-storage_disabled" /-->
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
 </Rule>
 
@@ -48,8 +47,7 @@ infeasible for systems which require USB devices, which is common.</i></descript
 protect against potentially malicious USB devices, although it is only practical
 in specialized systems.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="bootloader_nousb_argument" />
+<!--oval id="bootloader_nousb_argument" /-->
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
 </Rule>
 
@@ -62,7 +60,6 @@ systems) to disallow booting from USB drives.
 circumvent any security measures provided by the operating system. Attackers
 could mount partitions and modify the configuration of the OS.</rationale>
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
-<ident cce="RHEL7-CCE-TBD" />
 </Rule>
 
 <Rule id="bios_assign_password">
@@ -78,7 +75,6 @@ a data center or Sensitive Compartmented Information Facility (SCIF), this risk 
 against the risk of administrative personnel being unable to conduct recovery operations in
 a timely fashion.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 </Rule>
 
 <Rule id="service_autofs_disabled">
@@ -99,8 +95,7 @@ rather than relying on the automounter.
 <rationale>Disabling the automounter permits the administrator to 
 statically control filesystem mounting through <tt>/etc/fstab</tt>. 
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="service_autofs_disabled" />
+<!--oval id="service_autofs_disabled" /-->
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
 </Rule>
 
@@ -133,7 +128,6 @@ the introduction of malware via removable media.
 It will, however, also prevent desktop users from legitimate use
 of removable media. 
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_disable_automount" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" />
 </Rule>
@@ -146,8 +140,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_cramfs_disabled" />
+<!--oval id="kernel_module_cramfs_disabled" /-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -159,8 +152,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_freevxfs_disabled" />
+<!--oval id="kernel_module_freevxfs_disabled" /-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -172,8 +164,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_jffs2_disabled" />
+<!--oval id="kernel_module_jffs2_disabled" /-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -185,8 +176,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_hfs_disabled" />
+<!--oval id="kernel_module_hfs_disabled" /-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -198,8 +188,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_hfsplus_disabled" />
+<!--oval id="kernel_module_hfsplus_disabled" /-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -211,8 +200,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_squashfs_disabled" />
+<!--oval id="kernel_module_squashfs_disabled" /-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -224,8 +212,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_udf_disabled" />
+<!--oval id="kernel_module_udf_disabled" /-->
 <ref nist="CM-7" />
 </Rule>
 
@@ -254,7 +241,6 @@ file to exploit this flaw. Assuming the attacker could place the malicious file 
 (via a web upload for example) and assuming a user browses the same location using Nautilus, the
 malicious file would exploit the thumbnailer with the potential for malicious code execution. It
 is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_disable_thumbnailers" />
 <ref nist="CM-7" />
 </Rule>
