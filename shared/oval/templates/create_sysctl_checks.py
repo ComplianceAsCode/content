@@ -14,17 +14,19 @@ def output_checkfile(serviceinfo):
         filestring = filestring.replace("SYSCTLVAR", sysctl_var)
         filestring = filestring.replace("SYSCTLVAL", sysctl_val)
         # write the check
-        with open("./output/sysctl_" + sysctl_var_id + ".xml", 'wb+') as outputfile:
+        with open("./output/sysctl_" + sysctl_var_id +
+                                      ".xml", 'w+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
 
 def main():
     if len(sys.argv) < 2:
-        print "Provide a CSV file containing lines of the format: sysctlvariable,sysctlvalue"
+        print ("Provide a CSV file containing lines of the format:" +
+                               " sysctlvariable,sysctlvalue")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as f:
+    with open(sys.argv[1], 'r') as csv_file:
         # put the CSV line's items into a list
-        sysctl_lines = csv.reader(f)
+        sysctl_lines = csv.reader(csv_file)
         for line in sysctl_lines:
             output_checkfile(line)
 

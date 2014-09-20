@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from subprocess import *
+from subprocess import Popen, PIPE
 from tempfile import mkstemp
 import os
 import sys
@@ -8,8 +8,7 @@ import sys
 # Default exit with failure
 EXIT_CODE = 1
 
-svg_benchmark = \
-"""<?xml version="1.0"?>
+svg_benchmark = """<?xml version="1.0"?>
 <Benchmark xmlns="http://checklists.nist.gov/xccdf/1.1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            id="RHEL-6" resolved="1" xml:lang="en-US">
@@ -45,23 +44,23 @@ out, err = child.communicate()
 
 # Child run sanity check
 if child.returncode != 0:
-  # Set exit value to failure
-  EXIT_CODE = 1
+    # Set exit value to failure
+    EXIT_CODE = 1
 
 # Delete the temporary file
 try:
-  os.remove(filename)
+    os.remove(filename)
 except OSError, e:
-  print "Error removing file: %s - %s" % (e.filename, e.strerror)
+    print "Error removing file: %s - %s" % (e.filename, e.strerror)
 
 # Check if generated guide contains desired SVG element
 try:
-  index = out.index('circle')
-  # If so, set exit value to success
-  EXIT_CODE = 0
+    index = out.index('circle')
+    # If so, set exit value to success
+    EXIT_CODE = 0
 except ValueError:
-  # Otherwise to failure
-  EXIT_CODE = 1
+    # Otherwise to failure
+    EXIT_CODE = 1
 
 # Call exit with appropriate value
 sys.exit(EXIT_CODE)
