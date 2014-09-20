@@ -77,7 +77,7 @@ oval_file_list = []
 for root, dirs, files in os.walk("."):
     if root == ".":
         for name in files:
-            if name.find(".xml" > -1):
+            if name.find(".xml") > -1:
                 oval_file_list.append(root + "/" + name)
 
 # step through each file and open it for reading
