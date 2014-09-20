@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="enable_dconf_user_profile" version="1">
+    <metadata>
+      <title>Implement Local DB for DConf User Profile</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
+      </affected>
+      <description>The DConf User profile should have the local DB configured.</description>
+      <reference source="galford" ref_id="20140824" ref_url="test_attestation" />
+    </metadata>
+    <criteria>
+      <criterion comment="dconf user profile exists" test_ref="test_dconf_user_profile" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="dconf user profile exists"
+  id="test_dconf_user_profile" version="1">
+    <ind:object object_ref="obj_dconf_user_profile" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dconf_user_profile"
+  version="2">
+    <ind:filepath>/etc/dconf/profile/user</ind:filepath>
+    <ind:pattern operation="pattern match">^user-db:user\nsystem-db:local$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
