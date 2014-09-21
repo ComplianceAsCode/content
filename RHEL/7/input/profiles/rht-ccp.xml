@@ -111,8 +111,6 @@ see: https://github.com/OpenSCAP/scap-security-guide/issues/67 for details.
 ANTIQUATED SERVICES
 <select idref="disable_xinetd" selected="true"/>
 <select idref="uninstall_xinetd" selected="true"/>
-<select idref="uninstall_telnet_server" selected="true"/>
-<select idref="disable_telnet_service" selected="true"/>
 <select idref="uninstall_rsh-server" selected="true"/>
 <select idref="disable_rsh" selected="true"/>
 <select idref="disable_rexec" selected="true"/>
@@ -128,9 +126,12 @@ ANTIQUATED SERVICES
 <select idref="service_ntpdate_disabled" selected="true"/>
 <select idref="service_oddjobd_disabled" selected="true"/>
 <select idref="service_qpidd_disabled" selected="true"/>
-<select idref="service_rdisc_disabled" selected="true"/>
+<select idref="service_rdisc_disabled" selected="true"/-->
+<select idref="disable_telnet_service" selected="true"/>
+<select idref="package_telnet_removed" selected="true"/>
+<select idref="uninstall_telnet_server" selected="true"/>
 
-SSH / REMOTE ACCESS CHECKS -->
+<!-- SSH / REMOTE ACCESS CHECKS -->
 <select idref="sshd_allow_only_protocol2" selected="true"/>
 <select idref="sshd_set_idle_timeout" selected="true"/>
 <select idref="sshd_set_keepalive" selected="true"/>
