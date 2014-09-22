@@ -75,7 +75,28 @@ actively working to migrate to a more secure protocol.</description>
 <Rule id="disable_telnet_service" severity="high">
 <title>Disable telnet Service</title>
 <description>
-<service-disable-macro service="telnet" />
+The <code>telnet</code> service configuration file <code>/etc/xinet.d/telnet</code>
+is not created automatically. If it was created manually, check the
+<code>/etc/xinet.d/telnet</code> file and ensure that <code>disable = no</code>
+is changed to read <code>disable = yes</code> as follows below:
+<pre>
+# description: The telnet server serves telnet sessions; it uses \\
+#       unencrypted username/password pairs for authentication.
+service telnet
+{
+        flags           = REUSE
+        socket_type     = stream
+
+        wait            = no
+        user            = root
+        server          = /usr/sbin/in.telnetd
+        log_on_failure  += USERID
+        disable         = yes
+}
+</pre>
+Then the activation of the <code>telnet</code> service on system boot can be disabled
+via the following command:
+<pre># systemctl disable telnet.socket</pre>
 </description>
 <ocil><xinetd-service-disable-check-macro service="telnet" /></ocil>
 <rationale>
@@ -88,7 +109,7 @@ subject to man-in-the-middle attacks.
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="service_telnetd_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
-<tested by="DS" on="20121026"/>
+<tested by="JL" on="20140922"/>
 </Rule>
 
 <Rule id="uninstall_telnet_server" severity="high">
