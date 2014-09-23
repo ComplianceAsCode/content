@@ -208,16 +208,17 @@ clients.</description>
 <title>Specify UID and GID for Anonymous NFS Connections</title>
 <description>To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:
 <pre>
-anonuid=-1
-anongid=-1
+anonuid=<tt>value greater than UID_MAX from /etc/login.defs</tt>
+anongid=<tt>value greater than GID_MAX from /etc/login.defs</tt> 
 </pre>
-Alternatively, functionally equivalent values of 60001, 65534, 65535 may be used.
 </description>
-<ocil clause="anonuid or anongid are not set to anonymous (-1) or a value greater than UID_MAX (for anonuid) and GID_MAX (for anongid)">
-Inspect the mounts configured in <tt>/etc/exports</tt>. Each mount should specificy the anonuid and anonguid as either -1, or a value greater than UID_MAX and GID_MAX as defined in /etc/login.defs.
+<ocil clause="anonuid or anongid are not set to a value greater than UID_MAX (for anonuid) and GID_MAX (for anongid)">
+Inspect the mounts configured in <tt>/etc/exports</tt>. Each mount should specify a value
+greater than UID_MAX and GID_MAX as defined in /etc/login.defs.
 </ocil>
-<rationale>Specifying the anonymous UID and GID ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
-<ident cce="27414-2" />
+<rationale>Specifying the anonymous UID and GID ensures that the remote root user is mapped 
+to a local account which has no permissions on the system.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
 </Rule>
 
 <Rule id="service_nfs_disabled">
