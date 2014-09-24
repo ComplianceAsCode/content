@@ -1,9 +1,9 @@
 #
-# Disable ypbind for all run levels
+# Disable ypbind.service for all systemd targets
 #
-chkconfig --level 0123456 ypbind off
+systemctl disable ypbind.service
 
 #
-# Stop ypbind if currently running
+# Stop ypbind.service if currently running
 #
-service ypbind stop
+systemctl stop ypbind.service

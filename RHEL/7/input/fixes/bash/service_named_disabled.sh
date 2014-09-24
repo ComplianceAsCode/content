@@ -1,9 +1,9 @@
 #
-# Disable named for all run levels
+# Disable named.service for all systemd targets
 #
-chkconfig --level 0123456 named off
+systemctl disable named.service
 
 #
-# Stop named if currently running
+# Stop named.service if currently running
 #
-service named stop
+systemctl stop named.service

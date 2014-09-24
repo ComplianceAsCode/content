@@ -1,9 +1,9 @@
 #
-# Disable nfslock for all run levels
+# Disable nfs-lock.service for all systemd targets
 #
-chkconfig --level 0123456 nfslock off
+systemctl disable nfs-lock.service
 
 #
-# Stop nfslock if currently running
+# Stop nfs-lock.service if currently running
 #
-service nfslock stop
+systemctl stop nfs-lock.service

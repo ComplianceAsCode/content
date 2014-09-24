@@ -1,9 +1,9 @@
 #
-# Disable nfs for all run levels
+# Disable nfs.service for all systemd targets
 #
-chkconfig --level 0123456 nfs off
+systemctl disable nfs.service
 
 #
-# Stop nfs if currently running
+# Stop nfs.service if currently running
 #
-service nfs stop
+systemctl stop nfs.service

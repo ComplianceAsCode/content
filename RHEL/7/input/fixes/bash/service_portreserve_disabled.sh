@@ -1,9 +1,9 @@
 #
-# Disable portreserve for all run levels
+# Disable portreserve.service for all systemd targets
 #
-chkconfig --level 0123456 portreserve off
+systemctl disable portreserve.service
 
 #
-# Stop portreserve if currently running
+# Stop portreserve.service if currently running
 #
-service portreserve stop
+systemctl stop portreserve.service

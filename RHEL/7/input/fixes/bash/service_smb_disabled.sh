@@ -1,9 +1,9 @@
 #
-# Disable smb for all run levels
+# Disable smb.service for all systemd targets
 #
-chkconfig --level 0123456 smb off
+systemctl disable smb.service
 
 #
-# Stop smb if currently running
+# Stop smb.service if currently running
 #
-service smb stop
+systemctl stop smb.service

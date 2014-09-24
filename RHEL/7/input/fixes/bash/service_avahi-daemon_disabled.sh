@@ -1,9 +1,12 @@
 #
-# Disable avahi-daemon for all run levels
+# Disable avahi-daemon.service for all systemd targets
 #
-chkconfig --level 0123456 avahi-daemon off
+systemctl disable avahi-daemon.service
 
 #
-# Stop avahi-daemon if currently running
+# Stop avahi-daemon.service if currently running
+# and disable avahi-daemon.socket so the avahi-daemon.service
+# can't be activated
 #
-service avahi-daemon stop
+systemctl stop avahi-daemon.service
+systemctl disable avahi-daemon.socket
