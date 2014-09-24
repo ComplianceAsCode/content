@@ -1,9 +1,9 @@
 #
-# Disable xinetd for all run levels
+# Disable xinetd.service for all systemd targets
 #
-chkconfig --level 0123456 xinetd off
+systemctl disable xinetd.service
 
 #
-# Stop xinetd if currently running
+# Stop xinetd.service if currently running
 #
-service xinetd stop
+systemctl stop xinetd.service

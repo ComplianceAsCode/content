@@ -1,9 +1,9 @@
 #
-# Disable rpcsvcgssd for all run levels
+# Disable nfs-secure-server.service (rpcsvcgssd) for all systemd targets
 #
-chkconfig --level 0123456 rpcsvcgssd off
+systemctl disable nfs-secure-server.service
 
 #
-# Stop rpcsvcgssd if currently running
+# Stop nfs-secure-server.service (rpcsvcgssd) if currently running
 #
-service rpcsvcgssd stop
+systemctl stop nfs-secure-server.service

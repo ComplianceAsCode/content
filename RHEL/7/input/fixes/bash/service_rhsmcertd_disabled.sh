@@ -1,9 +1,9 @@
 #
-# Disable rhsmcertd for all run levels
+# Disable rhsmcertd.service for all systemd targets
 #
-chkconfig --level 0123456 rhsmcertd off
+systemctl disable rhsmcertd.service
 
 #
-# Stop rhsmcertd if currently running
+# Stop rhsmcertd.service if currently running
 #
-service rhsmcertd stop
+systemctl stop rhsmcertd.service

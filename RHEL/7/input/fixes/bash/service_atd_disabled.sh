@@ -1,9 +1,9 @@
 #
-# Disable atd for all run levels
+# Disable atd.service for all systemd targets
 #
-chkconfig --level 0123456 atd off
+systemctl disable atd.service
 
 #
-# Stop atd if currently running
+# Stop atd.service if currently running
 #
-service atd stop
+systemctl stop atd.service
