@@ -11,7 +11,9 @@
 # KERNMODULE - the name of the kernel module that should be disabled
 #
 
-import sys, csv
+import sys
+import csv
+
 
 def output_checkfile(kerninfo):
     # get the items out of the list
@@ -20,9 +22,10 @@ def output_checkfile(kerninfo):
         filestring = templatefile.read()
         filestring = filestring.replace("KERNMODULE", kernmod)
         with open("./output/kernel_module_" + kernmod +
-                                       "_disabled.xml", 'w+') as outputfile:
+                  "_disabled.xml", 'w+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
+
 
 def main():
     if len(sys.argv) < 2:
@@ -38,4 +41,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

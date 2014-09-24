@@ -1,4 +1,7 @@
-import sys, os, tempfile, subprocess
+import sys
+import os
+import tempfile
+import subprocess
 import lxml.etree as ET
 
 # always use /shared/transforms' version of idtranslate.py
@@ -34,6 +37,7 @@ objects = ET.Element("objects")
 states = ET.Element("states")
 variables = ET.Element("variables")
 
+
 def add_oval_elements(body):
     """add oval elements to the global Elements defined above"""
 
@@ -51,7 +55,7 @@ def add_oval_elements(body):
             # extend_definition is a special case:  must include a whole other
             # definition
             for defchild in childnode.findall(".//" + ovalns +
-                         "extend_definition"):
+                                              "extend_definition"):
                 defid = defchild.get("definition_ref")
                 includedbody = read_ovaldefgroup_file(defid+".xml")
                 # recursively add the elements in the other file
@@ -66,6 +70,7 @@ def add_oval_elements(body):
             variables.append(childnode)
     return defname
 
+
 def replace_external_vars(tree):
     """replace external_variables with local_variables, so the definition can be
        tested independently of an XCCDF file"""
@@ -75,12 +80,12 @@ def replace_external_vars(tree):
     for node in tree.findall(".//"+ovalns+"external_variable"):
         print "external_variable with id : " + node.get("id")
         extvar_id = node.get("id")
-        #for envkey, envval in os.environ.iteritems():
-        #    print envkey + " = " + envval
-        #sys.exit()
+        # for envkey, envval in os.environ.iteritems():
+        #     print envkey + " = " + envval
+        # sys.exit()
         if extvar_id not in os.environ.keys():
             sys.exit("external_variable specified, but no value provided via "
-                           + "environment variable")
+                     + "environment variable")
         # replace tag name: external -> local
         node.tag = ovalns + "local_variable"
         literal = ET.Element("literal_component")
@@ -97,6 +102,7 @@ def read_ovaldefgroup_file(testfile):
         body = test_file.read()
     return body
 
+
 def main():
     global definitions
     global tests
@@ -106,7 +112,7 @@ def main():
 
     if len(sys.argv) < 2:
         print ("Provide the name of an XML file, which contains" +
-                       " the definition to test.")
+               " the definition to test.")
         sys.exit(1)
 
     for testfile in sys.argv[1:]:
@@ -120,15 +126,15 @@ def main():
         # re-map all the element ids from meaningful names to meaningless
         # numbers
         testtranslator = idtranslate.idtranslator("testids.ini",
-                                             "scap-security-guide.testing")
+                                                  "scap-security-guide.testing")
         ovaltree = testtranslator.translate(ovaltree)
         (ovalfile, fname) = tempfile.mkstemp(prefix=defname, suffix=".xml")
         os.write(ovalfile, ET.tostring(ovaltree))
         os.close(ovalfile)
         print "Evaluating with OVAL tempfile : " + fname
         print "Writing results to : " + fname + "-results"
-        subprocess.call("oscap oval eval --results "+ fname
-                                         + "-results " + fname, shell=True)
+        subprocess.call("oscap oval eval --results " + fname
+                        + "-results " + fname, shell=True)
         # perhaps delete tempfile?
         definitions = ET.Element("definitions")
         tests = ET.Element("tests")

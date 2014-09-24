@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
-import sys, os, idtranslate
+import sys
+import os
+import idtranslate
 import lxml.etree as ET
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
@@ -12,11 +14,12 @@ oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
 
+
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
         tree = ET.fromstring(filestring)
-        #print filestring
+        # print filestring
     return tree
 
 
@@ -44,6 +47,7 @@ def collect_nodes(tree, reflist):
             elementlist.append(element)
     return elementlist
 
+
 def main():
     if len(sys.argv) < 2:
         print "Provide an OVAL file that contains inventory definitions."
@@ -62,7 +66,7 @@ def main():
 # making (dubious) assumption that all inventory defs are CPE
     defs = ovaltree.find("./{%s}definitions" % oval_ns)
     inventory_defs = defs.findall(".//{%s}definition[@class='inventory']"
-                                   % oval_ns)
+                                  % oval_ns)
     defs.clear()
     [defs.append(inventory_def) for inventory_def in inventory_defs]
 
@@ -103,11 +107,10 @@ def main():
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
         check.set("href", os.path.basename(newovalfile))
         check.text = translator.assign_id("{" + oval_ns + "}definition",
-                         check.text)
+                                          check.text)
     ET.ElementTree(cpedicttree).write("./output/"+newcpedictfile)
 
     sys.exit(0)
 
 if __name__ == "__main__":
     main()
-

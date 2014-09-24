@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import sys, os
+import sys
+import os
 import idtranslate
 import lxml.etree as ET
 
@@ -13,10 +14,8 @@ import lxml.etree as ET
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 oval_cs = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-
 ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
 ocil_cs = "http://scap.nist.gov/schema/ocil/2"
-
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 
 
@@ -24,7 +23,7 @@ def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
         tree = ET.fromstring(filestring)
-        #print filestring
+        # print filestring
     return tree
 
 
@@ -41,8 +40,8 @@ def get_checkfiles(checks, checksystem):
 def main():
     if len(sys.argv) < 3:
         print "Provide an XCCDF file and an ID name scheme."
-        print ("This script finds check-content files (currently, OVAL" +
-                   " and OCIL) referenced from XCCDF and synchronizes all IDs.")
+        print ("This script finds check-content files (currently, OVAL " +
+               "and OCIL) referenced from XCCDF and synchronizes all IDs.")
         sys.exit(1)
 
     xccdffile = sys.argv[1]
@@ -58,7 +57,7 @@ def main():
 
     if len(ovalfiles) > 1 or len(ocilfiles) > 1:
         sys.exit("referencing more than one file per check system " +
-                              " is not yet supported by this script.")
+                 "is not yet supported by this script.")
     ovalfile = ovalfiles.pop() if ovalfiles else None
     ocilfile = ocilfiles.pop() if ocilfiles else None
 
@@ -91,8 +90,8 @@ def main():
             checkcontentref.set("href", newovalfile)
             checkexport = check.find("./{%s}check-export" % xccdf_ns)
             if checkexport is not None:
-                newexportname = translator.assign_id("{"+ oval_ns + "}variable",
-                                        checkexport.get("export-name"))
+                newexportname = translator.assign_id("{" + oval_ns + "}variable",
+                                                     checkexport.get("export-name"))
                 checkexport.set("export-name", newexportname)
 
         if check.get("system") == ocil_cs:
@@ -102,15 +101,14 @@ def main():
             checkcontentref.set("href", newocilfile)
             checkexport = check.find("./{%s}check-export" % xccdf_ns)
             if checkexport is not None:
-                newexportname = translator.assign_id("{"+ oval_ns + "}variable",
-                                        checkexport.get("export-name"))
+                newexportname = translator.assign_id("{" + oval_ns + "}variable",
+                                                     checkexport.get("export-name"))
                 checkexport.set("export-name", newexportname)
 
     newxccdffile = xccdffile.replace("unlinked", idname)
-    #ET.dump(xccdftree)
+    # ET.dump(xccdftree)
     ET.ElementTree(xccdftree).write(newxccdffile)
     sys.exit(0)
 
 if __name__ == "__main__":
     main()
-
