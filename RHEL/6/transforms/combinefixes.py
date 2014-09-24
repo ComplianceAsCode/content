@@ -1,10 +1,15 @@
 #!/usr/bin/python
 
-import sys, os, re, lxml.etree as etree
+import sys
+import os
+import re
+import lxml.etree as etree
+
 
 def substitute_vars(fix):
     # brittle and troubling code to assign environment vars to XCCDF values
-    env_var = re.match("(\s*source\s+\S+)\n+(\s*populate\s+)(\S+)\n(.*)", fix.text, re.DOTALL)
+    env_var = re.match("(\s*source\s+\S+)\n+(\s*populate\s+)(\S+)\n(.*)",
+                       fix.text, re.DOTALL)
     if not env_var:
         # no need to alter fix.text
         return
@@ -26,8 +31,11 @@ def main():
     fixdir = sys.argv[1]
     output = sys.argv[2]
 
-    fixcontent = etree.Element("fix-content", system="urn:xccdf:fix:script:sh", xmlns="http://checklists.nist.gov/xccdf/1.1")
-    fixgroup = etree.SubElement(fixcontent, "fix-group", id="bash", system="urn:xccdf:fix:script:sh", xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixcontent = etree.Element("fix-content", system="urn:xccdf:fix:script:sh",
+                               xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixgroup = etree.SubElement(fixcontent, "fix-group", id="bash",
+                                system="urn:xccdf:fix:script:sh",
+                                xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     for filename in os.listdir(fixdir):
         if filename.endswith(".sh"):

@@ -12,7 +12,9 @@
 # PACKAGENAME - the name of the package that installs the service
 #
 
-import sys, csv
+import sys
+import csv
+
 
 def output_checkfile(serviceinfo):
     # get the items out of the list
@@ -21,14 +23,15 @@ def output_checkfile(serviceinfo):
         filestring = templatefile.read()
         filestring = filestring.replace("SERVICENAME", servicename)
         with open("./output/service_" + servicename +
-                                  "_enabled.sh", 'w+') as outputfile:
+                  "_enabled.sh", 'w+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
 
+
 def main():
     if len(sys.argv) < 2:
-        print ("Provide a CSV file containing lines of the format:" +
-                                     " servicename,packagename")
+        print ("Provide a CSV file containing lines of the format: " +
+               "servicename,packagename")
         sys.exit(1)
     with open(sys.argv[1], 'r') as csv_file:
         # put the CSV line's items into a list
@@ -40,4 +43,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

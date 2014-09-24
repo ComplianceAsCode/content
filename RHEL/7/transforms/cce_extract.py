@@ -9,20 +9,21 @@ import lxml.etree as ET
 # OVAL CPE file, along with a synchronized CPE dictionary file.
 
 cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
-
 cce_ns = 'http://cce.mitre.org'
+
 
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
         tree = ET.fromstring(filestring)
-        #print filestring
+        # print filestring
     return tree
+
 
 def main():
     if len(sys.argv) < 3:
-        print ("Provide a CCE file and the name of the platform" +
-                          " whose CCEs to extract.")
+        print ("Provide a CCE file and the name of the platform " +
+               "whose CCEs to extract.")
         print "This script extracts those CCEs and writes them to STDOUT."
         sys.exit(1)
 
@@ -34,7 +35,7 @@ def main():
 
     # extract cces that match the platform name
     platform_cces = ccetree.findall(".//{%s}cce[@platform='%s']"
-                      % (cce_ns, platform))
+                                    % (cce_ns, platform))
 
     cces = ccetree.find("./{%s}cces" % cce_ns)
     resources = ccetree.find("./{%s}resources" % cce_ns)
@@ -50,4 +51,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

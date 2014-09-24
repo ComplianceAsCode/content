@@ -9,7 +9,7 @@ from lxml import etree
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 tree = etree.parse('../output/unlinked-rhel6-xccdf.xml')
 cces_assigned = tree.findall("//{%s}ident[@system='http://cce.mitre.org']"
-                                 % xccdf_ns)
+                             % xccdf_ns)
 assigned_ids = []
 granted_ids = []
 
@@ -30,7 +30,7 @@ with open('../references/cce-rhel6-avail.txt', 'r') as txt_file:
     for line in txt_file:
         granted_ids = [line.rstrip('\n') for line in txt_file]
 
-# print CCEs that are available (i.e. in granted but not assigned)
+    # print CCEs that are available (i.e. in granted but not assigned)
     for item in granted_ids:
         if item not in assigned_ids:
             print "Available CCE: %s" % item
@@ -47,4 +47,3 @@ for rule in tree.findall("//{%s}Rule" % xccdf_ns):
             print "Invalid CCE: %s in %s" % (item.text, rule.get("id"))
 
 sys.exit()
-

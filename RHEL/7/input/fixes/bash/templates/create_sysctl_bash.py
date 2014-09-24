@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
-import sys, csv, re
+import sys
+import csv
+import re
+
 
 def output_checkfile(serviceinfo):
     # get the items out of the list
@@ -15,14 +18,15 @@ def output_checkfile(serviceinfo):
         filestring = filestring.replace("SYSCTLVAL", sysctl_val)
         # write the check
         with open("./output/sysctl_" + sysctl_var_id +
-                                      ".sh", 'w+') as outputfile:
+                  ".sh", 'w+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
 
+
 def main():
     if len(sys.argv) < 2:
-        print ("Provide a CSV file containing lines of the format:"
-                                 + " sysctlvariable,sysctlvalue")
+        print ("Provide a CSV file containing lines of the format: " +
+               "sysctlvariable,sysctlvalue")
         sys.exit(1)
     with open(sys.argv[1], 'r') as csv_file:
         # put the CSV line's items into a list
@@ -34,4 +38,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

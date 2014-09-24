@@ -98,9 +98,9 @@ for oval_check in oval_file_list:
         if oval_check.find(oval_id + ".xml") < 0:
             print ("  WARNING: OVAL check " +
                    oval_check.replace("./", "src/input/checks/") +
-                    " has ID \"" + oval_id + "\"")
+                   " has ID \"" + oval_id + "\"")
             print ("           the ID should match the file name" +
-                    " without the .xml\n")
+                   " without the .xml\n")
 
 #
 ################################################################################
@@ -128,7 +128,7 @@ os.chdir("..")
 
 # exclude these directories in the search for XCCDF files
 exclude_subdirs = ['.', './checks', './checks/templates',
-                    './checks/templates/output']
+                   './checks/templates/output']
 
 # generate a list of all the XML files that are used to generate the XCCDF
 xccdf_xml_files = []
@@ -148,7 +148,7 @@ for xccdf_file in xccdf_xml_files:
             tree = ET.fromstring(xccdf_xml_contents)
         except ET.XMLSyntaxError as e:
             print ("  XML syntax error in file %s:"
-                      % xccdf_file.replace("./", "src/input/"))
+                   % xccdf_file.replace("./", "src/input/"))
             print " ", e.msg, "\n"
         # extract all of the rules that are defined within the XCCDF
         xccdf_rules = tree.findall(".//Rule")
@@ -162,14 +162,14 @@ for xccdf_file in xccdf_xml_files:
                     file_name = "./checks/" + oval_ref.get("id") + ".xml"
                     if not os.access(file_name, os.F_OK):
                         print ("  WARNING: XCCDF Rule \"" + xccdf_rule.get("id")
-                             + "\" references OVAL check \"" +
+                               + "\" references OVAL check \"" +
                                oval_ref.get("id") + "\" which does not exist")
                         print ("           problem occurs in file: " +
                                xccdf_file.replace("./", "src/input/") + "\n")
                 else:
                     print ("  WARNING: XCCDF Rule \"" + xccdf_rule.get("id")
-                              + "\" in file " + xccdf_file.replace("./",
-                              "src/input/") + " contains a null OVAL check\n")
+                           + "\" in file " + xccdf_file.replace("./",
+                           "src/input/") + " contains a null OVAL check\n")
 
 # we are done
 exit()
