@@ -116,7 +116,7 @@ your organization's security policy. Discussion of each parameter follows.
 requirements are not enforced for the root account for some
 reason.</warning>
 
-<Value id="var_password_pam_cracklib_retry" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_retry" type="number" operator="equals" interactive="0">
 <title>retry</title>
 <description>Number of retry attempts before erroring out</description>
 <value selector="">3</value>
@@ -238,7 +238,7 @@ passwords</warning>
 <value selector="100000000">100000000</value> <!-- 3.16 years -->
 </Value>
 
-<Rule id="accounts_password_pam_cracklib_retry">
+<Rule id="accounts_password_pam_retry">
 <title>Set Password Retry Prompts Permitted Per-Session</title>
 <description>To configure the number of retry prompts that are permitted per-session:
 <br /><br />
@@ -261,7 +261,7 @@ draw additional attention to some types of password-guessing attacks. Note that 
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
+<oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
 <ref nist="IA-5(c)" disa="1092" />
 <tested by="DS" on="20121024"/>
 </Rule>
