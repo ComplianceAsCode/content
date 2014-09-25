@@ -109,7 +109,7 @@ def main():
         for rule in rules:
             if rule.get("id") not in profile_ruleids:
                 prunedrules.remove(rule)
-            rules = prunedrules
+        rules = prunedrules
 
     # step over xccdf file, and find referenced oval files
     checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
