@@ -1,9 +1,13 @@
 #
-# Disable cups for all run levels
+# Disable cups.service for all systemd targets
 #
-chkconfig --level 0123456 cups off
+systemctl disable cups.service
 
 #
-# Stop cups if currently running
+# Stop cups.service if currently running
+# and disable cups.path and cups.socket so
+# cups.service can't be activated
 #
-service cups stop
+systemctl stop cups.service
+systemctl disable cups.path
+systemctl disable cups.socket

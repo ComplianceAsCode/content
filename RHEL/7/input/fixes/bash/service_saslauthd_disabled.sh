@@ -1,9 +1,9 @@
 #
-# Disable saslauthd for all run levels
+# Disable saslauthd.service for all systemd targets
 #
-chkconfig --level 0123456 saslauthd off
+systemctl disable saslauthd.service
 
 #
-# Stop saslauthd if currently running
+# Stop saslauthd.service if currently running
 #
-service saslauthd stop
+systemctl stop saslauthd.service
