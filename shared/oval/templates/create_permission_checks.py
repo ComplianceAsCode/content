@@ -10,7 +10,10 @@
 #
 #   directory path,file name,owner uid (numeric),group owner gid (numeric),mode
 
-import sys, csv, re
+import sys
+import csv
+import re
+
 
 def output_check(path_info):
     # the csv file contains lines that match the following layout:
@@ -23,7 +26,8 @@ def output_check(path_info):
     if file_name == '[NULL]':
         path_id = re.sub('[-\./]', '_', dir_path)
     else:
-        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]', '_', file_name)
+        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]',
+                                                                 '_', file_name)
 
     # build a string that contains the full path to the file
     # full_path maps to FILEPATH in the template
@@ -35,7 +39,7 @@ def output_check(path_info):
     # build the state that describes our mode
     # mode_str maps to STATEMODE in the template
     fields = ['oexec', 'owrite', 'oread', 'gexec', 'gwrite', 'gread', 'uexec',
-                 'uwrite', 'uread', 'sticky', 'sgid', 'suid']
+              'uwrite', 'uread', 'sticky', 'sgid', 'suid']
     mode_int = int(mode, 8)
     mode_str = "  </unix:file_state>"
     for field in fields:
@@ -57,7 +61,8 @@ def output_check(path_info):
         filestring = filestring.replace("FILEGID", gid)
         filestring = filestring.replace("FILEMODE", mode)
         if file_name == '[NULL]':
-            filestring = filestring.replace("UNIX_FILENAME", "<unix:filename xsi:nil=\"true\" />")
+            filestring = filestring.replace("UNIX_FILENAME",
+                                            "<unix:filename xsi:nil=\"true\" />")
         else:
             filestring = filestring.replace("UNIX_FILENAME", "<unix:filename>"
                                             + file_name + "</unix:filename>")
@@ -65,17 +70,17 @@ def output_check(path_info):
 
         # we can now write the check
         with open("./output/file_permissions" + path_id +
-                            ".xml", 'w+') as outputfile:
+                  ".xml", 'w+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
 
 
 def main():
     if len(sys.argv) < 2:
-        print ("\nERROR: you must provide the path to a CSV file that"
-                                     + " contains lines like so:")
-        print ("   directory path,file name,owner uid (numeric),group"
-                                     + " owner gid (numeric),mode")
+        print ("\nERROR: you must provide the path to a CSV file that " +
+               "contains lines like so:")
+        print ("   directory path,file name,owner uid (numeric),group " +
+               "owner gid (numeric),mode")
         sys.exit(1)
 
     # open and read the csv file

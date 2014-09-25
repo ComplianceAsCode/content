@@ -11,7 +11,9 @@
 # PKGNAME - the name of the package that should be removed
 #
 
-import sys, csv
+import sys
+import csv
+
 
 def output_check(package_info):
     pkgname = package_info[0]
@@ -20,9 +22,10 @@ def output_check(package_info):
             filestring = templatefile.read()
             filestring = filestring.replace("PKGNAME", pkgname)
             with open("./output/package_" + pkgname +
-                                          "_removed.xml", 'w+') as outputfile:
+                      "_removed.xml", 'w+') as outputfile:
                 outputfile.write(filestring)
                 outputfile.close()
+
 
 def main():
     if len(sys.argv) < 2:

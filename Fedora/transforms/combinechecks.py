@@ -1,39 +1,43 @@
 #!/usr/bin/python
 
-import sys, os
+import sys
+import os
 import lxml.etree as ET
 
 header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
-	xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
-	xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
-	xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
-	xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-	xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd
-		http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
-		http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
-		http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
-		http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
-	<generator>
-		<oval:product_name>python</oval:product_name>
-		<oval:product_version>2.6.6</oval:product_version>
-		<oval:schema_version>5.10</oval:schema_version>
-		<oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
-	</generator>'''
+    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+    xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
+    xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
+    xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
+    xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
+        http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
+    <generator>
+        <oval:product_name>python</oval:product_name>
+        <oval:product_version>2.6.6</oval:product_version>
+        <oval:schema_version>5.10</oval:schema_version>
+        <oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
+    </generator>'''
 
 footer = '</oval_definitions>'
+
 
 # append new child ONLY if it's not a duplicate
 def append(element, newchild):
     newid = newchild.get("id")
     existing = element.find(".//*[@id='" + newid + "']")
     if existing is not None:
-        sys.stderr.write("Notification: this ID is used more than once" +
-             " and should represent equivalent elements: " + newid + "\n")
+        sys.stderr.write("Notification: this ID is used more than once " +
+                         "and should represent equivalent elements: " +
+                         newid + "\n")
     else:
         element.append(newchild)
+
 
 def main():
     if len(sys.argv) < 2:
@@ -83,4 +87,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
