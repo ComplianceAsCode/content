@@ -51,7 +51,7 @@
 <select idref="accounts_minimum_age_login_defs" selected="true"/>
 <select idref="accounts_maximum_age_login_defs" selected="true"/>
 <select idref="accounts_password_warn_age_login_defs" selected="true"/>
-<select idref="accounts_password_pam_cracklib_retry" selected="true"/>
+<select idref="accounts_password_pam_retry" selected="true"/>
 <select idref="accounts_password_pam_cracklib_dcredit" selected="true"/>
 <select idref="accounts_password_pam_cracklib_ucredit" selected="true"/>
 <select idref="accounts_password_pam_cracklib_ocredit" selected="true"/>
@@ -237,7 +237,7 @@ these should likely be moved out of common.
 <!-- minimum password age -->
 <refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
 <!-- password warn age -->
-<refine-value idref="var_password_pam_cracklib_retry" selector="3"/>
+<refine-value idref="var_password_pam_retry" selector="3"/>
 <!-- Number of retry attempts before erroring out -->
 <refine-value idref="var_password_pam_cracklib_minlen" selector="14"/>
 <!-- Minimum number of characters in password -->
