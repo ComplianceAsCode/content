@@ -13,11 +13,14 @@
 # description, custom oval check id
 #
 
-import sys, csv, re
+import sys
+import csv
+import re
+
 
 def output_check(path_info):
     # the csv file contains lines that match the following layout
-    #(see file_umask_checks.csv for more details):
+    # (see file_umask_checks.csv for more details):
     #
     #   directory path, file name, external OVAL umask variable name, title,
     # description, custom oval check id
@@ -30,7 +33,8 @@ def output_check(path_info):
     if file_name == '[NULL]':
         path_id = re.sub('[-\./]', '_', dir_path)
     else:
-        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]', '_', file_name)
+        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]',
+                         '_', file_name)
 
     # build a string that contains the full path to the file
     # full_path maps to FILEPATH in the template
@@ -50,7 +54,7 @@ def output_check(path_info):
     # we are ready to create the check
     # open the template and perform the conversions
     with open("./template_umask", 'r') as templatefile:
-    # replace the placeholders within the template with the actual values
+        # replace the placeholders within the template with the actual values
         filestring = templatefile.read()
         filestring = filestring.replace("OVALCHECKID", oval_check_id)
         filestring = filestring.replace("TITLE", title)
@@ -67,10 +71,10 @@ def output_check(path_info):
 
 def main():
     if len(sys.argv) < 2:
-        print ("\nERROR: you must provide the path to a CSV file" +
-                            " that contains lines like so:")
-        print ("   directory path, file name, external OVAL umask" +
-                            " variable name for comparison")
+        print ("\nERROR: you must provide the path to a CSV file " +
+               "that contains lines like so:")
+        print ("   directory path, file name, external OVAL umask " +
+               "variable name for comparison")
         sys.exit(1)
 
         # open and read the csv file
@@ -86,4 +90,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

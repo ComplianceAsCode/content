@@ -2,47 +2,48 @@
 names to IDs in the formats required by the SCAP checking systems, such as
 OVAL and OCIL."""
 
-import ConfigParser, sys
+import ConfigParser
+import sys
 import lxml.etree as ET
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 oval_cs = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-
 ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
 ocil_cs = "http://scap.nist.gov/schema/ocil/2"
 
 ovaltag_to_abbrev = {
-    'definition' : 'def',
-    'criteria' : 'crit',
-    'test' : 'tst',
-    'object' : 'obj',
-    'state' : 'ste',
-    'variable' : 'var',
+    'definition': 'def',
+    'criteria': 'crit',
+    'test': 'tst',
+    'object': 'obj',
+    'state': 'ste',
+    'variable': 'var',
 }
 
 ociltag_to_abbrev = {
-    'questionnaire' : 'questionnaire',
-    'action' : 'testaction',
-    'question' : 'question',
-    'artifact' : 'artifact',
-    'variable' : 'variable',
+    'questionnaire': 'questionnaire',
+    'action': 'testaction',
+    'question': 'question',
+    'artifact': 'artifact',
+    'variable': 'variable',
 }
 
 ovalrefattr_to_tag = {
-    "definition_ref" : "definition",
-    "test_ref" : "test",
-    "object_ref" : "object",
-    "state_ref" : "state",
-    "var_ref" : "variable",
+    "definition_ref": "definition",
+    "test_ref": "test",
+    "object_ref": "object",
+    "state_ref": "state",
+    "var_ref": "variable",
 }
 
 ocilrefattr_to_tag = {
-    "question_ref" : "question",
+    "question_ref": "question",
 }
 
 ocilrefchild_to_tag = {
-    "test_action_ref" : "action",
+    "test_action_ref": "action",
 }
+
 
 def split_namespace(tag):
     """returns a tuple of (namespace,name) removing any fragment id
@@ -54,6 +55,7 @@ def split_namespace(tag):
     else:
         return (None, tag)
 
+
 def namespace_to_prefix(tag):
     namespace, name = split_namespace(tag)
     if namespace == ocil_ns:
@@ -61,6 +63,7 @@ def namespace_to_prefix(tag):
     if namespace == oval_ns:
         return "oval"
     sys.exit("Error: unknown checksystem referenced in tag : %s" % tag)
+
 
 def tagname_to_abbrev(tag):
     namespace, tag = split_namespace(tag)
@@ -73,6 +76,7 @@ def tagname_to_abbrev(tag):
     if namespace == oval_ns:
         return ovaltag_to_abbrev[tag]
     sys.exit("Error: unknown checksystem referenced in tag : %s" % tag)
+
 
 class idtranslator:
     def __init__(self, fname, content_id):
@@ -107,7 +111,8 @@ class idtranslator:
             self.config.set("assigned", name, str(idnum))
 
         str_id = "%s:%s:%s:%d" % (namespace_to_prefix(tagname),
-                             self.content_id, tagname_to_abbrev(tagname), idnum)
+                                  self.content_id, tagname_to_abbrev(tagname),
+                                  idnum)
         return str_id
 
     def translate(self, tree, store_defname=False):
@@ -120,17 +125,17 @@ class idtranslator:
                     if metadata is None:
                         metadata = ET.SubElement(element, "metadata")
                     defnam = ET.SubElement(metadata, "reference",
-                                      ref_id=idname, source=self.content_id)
+                                           ref_id=idname, source=self.content_id)
                 # set the element to the new identifier
                 element.set("id", self.assign_id(element.tag, idname))
-                #continue
+                # continue
             if element.tag == "{" + oval_ns + "}filter":
                 element.text = self.assign_id("{" + oval_ns + "}state",
-                                                               element.text)
+                                              element.text)
                 continue
             if element.tag == "{" + oval_ns + "#independent}var_ref":
                 element.text = self.assign_id("{" + oval_ns + "}variable",
-                                                               element.text)
+                                              element.text)
                 continue
             for attr in element.keys():
                 if attr in ovalrefattr_to_tag.keys():
@@ -146,5 +151,3 @@ class idtranslator:
         self.save()
         # note: the ini file is not tracked by git, see .gitignore
         return tree
-
-

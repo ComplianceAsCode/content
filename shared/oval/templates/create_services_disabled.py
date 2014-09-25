@@ -12,7 +12,10 @@
 # PACKAGENAME - the name of the package that installs the service
 #
 
-import sys, csv, re
+import sys
+import csv
+import re
+
 
 def output_checkfile(serviceinfo):
     # get the items out of the list
@@ -23,17 +26,20 @@ def output_checkfile(serviceinfo):
         if packagename:
             filestring = filestring.replace("PACKAGENAME", packagename)
         else:
-            filestring = re.sub("\n\s*<criteria.*>\n\s*<extend_definition.*/>", "", filestring)
-            filestring = re.sub("\s*</criteria>\n\s*</criteria>", "\n    </criteria>", filestring)
-        with open("./output/service_" + servicename
-                                + "_disabled.xml", 'w+') as outputfile:
+            filestring = re.sub("\n\s*<criteria.*>\n\s*<extend_definition.*/>",
+                                "", filestring)
+            filestring = re.sub("\s*</criteria>\n\s*</criteria>",
+                                "\n    </criteria>", filestring)
+        with open("./output/service_" + servicename +
+                  "_disabled.xml", 'w+') as outputfile:
             outputfile.write(filestring)
             outputfile.close()
 
+
 def main():
     if len(sys.argv) < 2:
-        print ("Provide a CSV file containing lines of the format:"
-                                           + " servicename,packagename")
+        print ("Provide a CSV file containing lines of the format: " +
+               "servicename,packagename")
         sys.exit(1)
     with open(sys.argv[1], 'r') as csv_file:
         # put the CSV line's items into a list
@@ -43,6 +49,6 @@ def main():
 
     sys.exit(0)
 
+
 if __name__ == "__main__":
     main()
-

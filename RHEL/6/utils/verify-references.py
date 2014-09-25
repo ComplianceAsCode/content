@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import sys, optparse
+import sys
+import optparse
 import lxml.etree as ET
 
 #
@@ -21,47 +22,47 @@ disa_ref_href = "http://iase.disa.mil/cci/index.html"
 # default exit value - success
 exit_value = 0
 
+
 def parse_options():
     usage = "usage: %prog [options] xccdf_file"
     parser = optparse.OptionParser(usage=usage, version="%prog ")
     # only some options are on by default
     parser.add_option("-p", "--profile", default=False,
-          action="store", dest="profile_name",
-          help="act on Rules from this XCCDF Profile only")
+                      action="store", dest="profile_name",
+                      help="act on Rules from this XCCDF Profile only")
     parser.add_option("--rules-with-invalid-checks", default=False,
-          action="store_true", dest="rules_with_invalid_checks",
-          help="print XCCDF Rules that reference an invalid/nonexistent check")
+                      action="store_true", dest="rules_with_invalid_checks",
+                      help="print XCCDF Rules that reference an invalid/nonexistent check")
     parser.add_option("--rules-without-checks", default=False,
-          action="store_true", dest="rules_without_checks",
-          help="print XCCDF Rules that do not include a check")
+                      action="store_true", dest="rules_without_checks",
+                      help="print XCCDF Rules that do not include a check")
     parser.add_option("--rules-without-severity", default=False,
-          action="store_true", dest="rules_without_severity",
-          help="print XCCDF Rules that do not include a severity")
+                      action="store_true", dest="rules_without_severity",
+                      help="print XCCDF Rules that do not include a severity")
     parser.add_option("--rules-without-nistrefs", default=False,
-          action="store_true", dest="rules_without_nistrefs",
-      help="print XCCDF Rules which do not include any NIST 800-53 references")
+                      action="store_true", dest="rules_without_nistrefs",
+                      help="print XCCDF Rules which do not include any NIST 800-53 references")
     parser.add_option("--rules-without-disarefs", default=False,
-         action="store_true", dest="rules_without_disarefs",
-         help="print XCCDF Rules which do not include any DISA CCI references")
+                      action="store_true", dest="rules_without_disarefs",
+                      help="print XCCDF Rules which do not include any DISA CCI references")
     parser.add_option("--rules-with-nistrefs-outside-profile", default=False,
-         action="store_true", dest="nistrefs_not_in_profile",
-         help="print XCCDF Rules which have a NIST reference, but are"
-                " not part of the Profile specified")
+                      action="store_true", dest="nistrefs_not_in_profile",
+                      help="print XCCDF Rules which have a NIST reference, but are not part of the Profile specified")
     parser.add_option("--rules-with-disarefs-outside-profile", default=False,
-          action="store_true", dest="disarefs_not_in_profile",
-          help="print XCCDF Rules which have a DISA CCI reference, but are" +
-                " not part of the Profile specified")
+                      action="store_true", dest="disarefs_not_in_profile",
+                      help="print XCCDF Rules which have a DISA CCI reference, but are not part of the Profile specified")
     parser.add_option("--ovaldefs-unused", default=False,
-           action="store_true", dest="ovaldefs_unused",
-           help="print OVAL definitions which are not used by any XCCDF Rule")
+                      action="store_true", dest="ovaldefs_unused",
+                      help="print OVAL definitions which are not used by any XCCDF Rule")
     parser.add_option("--all-checks", default=False, action="store_true",
-           dest="all_checks",
-           help="perform all checks on the given XCCDF file")
+                      dest="all_checks",
+                      help="perform all checks on the given XCCDF file")
     (options, args) = parser.parse_args()
     if len(args) < 1:
         parser.print_help()
         sys.exit(1)
     return (options, args)
+
 
 def get_ovalfiles(checks):
     global exit_value
@@ -82,7 +83,7 @@ def get_profileruleids(xccdftree, profile_name):
 
     while profile_name:
         profile = xccdftree.find(".//{%s}Profile[@id='%s']"
-                               % (xccdf_ns, profile_name))
+                                 % (xccdf_ns, profile_name))
         if profile is None:
             sys.exit("Specified XCCDF Profile %s was not found.")
         for select in profile.findall(".//{%s}select" % xccdf_ns):
@@ -90,6 +91,7 @@ def get_profileruleids(xccdftree, profile_name):
         profile_name = profile.get("extends")
 
     return ruleids
+
 
 def main():
     global exit_value
@@ -115,8 +117,8 @@ def main():
 
     # this script only supports the inclusion of one OVAL file
     if len(ovalfiles) > 1:
-        sys.exit("Referencing more than one OVAL file is not yet" +
-                                 " supported by this script.")
+        sys.exit("Referencing more than one OVAL file is not yet " +
+                 "supported by this script.")
 
     # find important elements within the XCCDF and the OVAL
     ovalfile = ovalfiles.pop()
@@ -124,7 +126,7 @@ def main():
     # collect all compliance checks (not inventory checks, which are
     # needed by CPE)
     ovaldefs = ovaltree.findall(".//{%s}definition[@class='compliance']"
-                          % oval_ns)
+                                % oval_ns)
     ovaldef_ids = [ovaldef.get("id") for ovaldef in ovaldefs]
 
     oval_extenddefs = ovaltree.findall(".//{%s}extend_definition" % oval_ns)
@@ -132,7 +134,7 @@ def main():
     ovaldef_ids_extended = list(set(ovaldef_ids_extended))
 
     check_content_refs = xccdftree.findall(".//{%s}check-content-ref"
-                           % xccdf_ns)
+                                           % xccdf_ns)
 
     # now we can actually do the verification work here
     if options.rules_with_invalid_checks or options.all_checks:
@@ -141,7 +143,7 @@ def main():
             if refname not in ovaldef_ids:
                 rule = check_content_ref.getparent().getparent()
                 print ("Invalid OVAL definition referenced by XCCDF Rule: " +
-                                    rule.get("id"))
+                       rule.get("id"))
                 exit_value = 1
 
     if options.rules_without_checks or options.all_checks:
@@ -149,7 +151,7 @@ def main():
             check = rule.find("./{%s}check" % xccdf_ns)
             if check is None:
                 print ("No reference to OVAL definition in XCCDF Rule: " +
-                                    rule.get("id"))
+                       rule.get("id"))
                 exit_value = 1
 
     if options.rules_without_severity or options.all_checks:
@@ -172,18 +174,18 @@ def main():
                 # print warning if rule does not have a NIST reference
                 if (not nist_ref_href in ref_href_list) and options.rules_without_nistrefs:
                     print ("No valid NIST reference in XCCDF Rule: " +
-                                         rule.get("id"))
+                           rule.get("id"))
                     exit_value = 1
                 # print warning if rule does not have a DISA reference
                 if (not disa_ref_href in ref_href_list) and options.rules_without_disarefs:
                     print ("No valid DISA CCI reference in XCCDF Rule: " +
-                                         rule.get("id"))
+                           rule.get("id"))
                     exit_value = 1
 
     if options.disarefs_not_in_profile or options.nistrefs_not_in_profile:
         if options.profile_name is None:
-            sys.exit("The options for finding Rules with a reference,"
-             " but which are not in a Profile, requires specifying a Profile.")
+            sys.exit("The options for finding Rules with a reference, "
+                     "but which are not in a Profile, requires specifying a Profile.")
         allrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
         for rule in allrules:
             # find all references in the current rule
@@ -193,13 +195,13 @@ def main():
             if options.nistrefs_not_in_profile:
                 if (nist_ref_href in ref_href_list) and (rule.get("id") not in profile_ruleids):
                     print ("XCCDF Rule found with NIST reference outside Profile %s: "
-                                % options.profile_name + rule.get("id"))
+                           % options.profile_name + rule.get("id"))
                     exit_value = 1
             # print warning if Rule is outside Profile and has a DISA reference
             if options.disarefs_not_in_profile:
                 if (disa_ref_href in ref_href_list) and (rule.get("id") not in profile_ruleids):
                     print ("XCCDF Rule found with DISA CCI reference outside Profile %s: "
-                                % options.profile_name + rule.get("id"))
+                           % options.profile_name + rule.get("id"))
                     exit_value = 1
 
     if options.ovaldefs_unused or options.all_checks:
@@ -226,4 +228,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

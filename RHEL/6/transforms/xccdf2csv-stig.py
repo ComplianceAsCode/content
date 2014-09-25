@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import sys, csv
+import sys
+import csv
 import lxml.etree as ET
 
 # This script creates a CSV file from an XCCDF file formatted in the
@@ -8,9 +9,9 @@ import lxml.etree as ET
 # as well as its comparison with VMS output.
 
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
-
 disa_cciuri = "http://iase.disa.mil/cci/index.html"
 disa_srguri = "http://iase.disa.mil/srgs"
+
 
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
@@ -18,13 +19,16 @@ def parse_xml_file(xmlfile):
         tree = ET.fromstring(filestring)
     return tree
 
+
 def reflist(refs):
     refstring = ', '.join(refs)
     return refstring
 
+
 def node_to_text(node):
     textslist = node.xpath(".//text()")
     return ''.join(textslist)
+
 
 def main():
     if len(sys.argv) < 2:
@@ -38,9 +42,9 @@ def main():
 
     for rule in rules:
         cci_refs = [ref.text for ref in rule.findall("{%s}ident[@system='%s']"
-                           % (xccdf_ns, disa_cciuri))]
+                                                     % (xccdf_ns, disa_cciuri))]
         srg_refs = [ref.text for ref in rule.findall("{%s}ident[@system='%s']"
-                           % (xccdf_ns, disa_srguri))]
+                                                     % (xccdf_ns, disa_srguri))]
         title = rule.find("{%s}title" % xccdf_ns).text
         description = node_to_text(rule.find("{%s}description" % xccdf_ns))
         fixtext = node_to_text(rule.find("{%s}fixtext" % xccdf_ns))
@@ -52,4 +56,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
