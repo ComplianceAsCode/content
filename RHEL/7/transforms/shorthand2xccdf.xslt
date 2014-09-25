@@ -384,27 +384,26 @@
 
   <xsl:template match="service-disable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
-    <xhtml:pre># chkconfig <xsl:value-of select="@service"/> off</xhtml:pre>
+    <xhtml:pre># systemctl disable <xsl:value-of select="@service"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
-    <xhtml:pre># chkconfig --level 2345 <xsl:value-of select="@service"/> on</xhtml:pre>
+    <xhtml:pre># systemctl enable <xsl:value-of select="@service"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
-    To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command: 
-    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
-    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, 
+    To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
+    <xhtml:pre># systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code></xhtml:pre>
+    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
-    <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
+    <xhtml:pre># systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code><xhtml:br/>disabled</xhtml:pre>
 
-    Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through current runtime configuration:
-    <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
+    Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is not active (i.e. not running) through current runtime configuration:
+    <xhtml:pre># systemctl is-active <xsl:value-of select="@service"/></xhtml:pre>
 
-    If the service is disabled the command will return the following output:
-    <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
+    If the service is not running the command will return the following output:
+    <xhtml:pre>inactive</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="xinetd-service-disable-check-macro">
@@ -412,24 +411,29 @@
           <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
               Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, or has been disabled, as shown in the example below:
               <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       off</xhtml:pre>
+
+                         Note: This output shows SysV services only and does not include native
+                         systemd services. SysV configuration data might be overridden by native
+                         systemd configuration.
+
+                         If you want to list systemd services use 'systemctl list-unit-files'.
+                         To see services enabled on particular target use
+                         'systemctl list-dependencies [target]'.
+
+                         <xhtml:code><xsl:value-of select="@service"/></xhtml:code>       off</xhtml:pre>
   </xsl:template>
-
-
-
 
   <xsl:template match="service-enable-check-macro">
     Run the following command to determine the current status of the
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
-  <xhtml:pre># service <xsl:value-of select="@service"/> status</xhtml:pre>
-    If the service is enabled, it should return the following: <xhtml:pre><xsl:value-of select="@service"/> is running...</xhtml:pre>
+  <xhtml:pre># systemctl is-active <xsl:value-of select="@service"/></xhtml:pre>
+    If the service is running, it should return the following: <xhtml:pre>active</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="package-check-macro">
     Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed:
     <xhtml:pre># rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
-
 
   <xsl:template match="module-disable-macro">
 To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
