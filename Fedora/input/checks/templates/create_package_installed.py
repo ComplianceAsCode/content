@@ -40,9 +40,9 @@ def output_check(package_info):
 
 def main():
     if len(sys.argv) < 2:
-        print "usage: %s <CSV_FILE_PATH>" % sys.argv[0]
-        print "   the csv file should contain lines of the format:"
-        print "   PACKAGE_NAME"
+        print("usage: %s <CSV_FILE_PATH>" % sys.argv[0])
+        print("   the csv file should contain lines of the format:")
+        print("   PACKAGE_NAME")
         sys.exit(1)
     with open(sys.argv[1], 'r') as csv_file:
         csv_lines = csv.reader(csv_file)
