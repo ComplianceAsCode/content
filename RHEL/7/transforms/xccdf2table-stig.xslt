@@ -13,13 +13,13 @@
 	<xsl:template match="/">
 		<html>
 		<head>
-			<title>Rules In <xsl:value-of select="/cdf:Benchmark/cdf:title" /><xsl:if test="$notes"> with Notes for Transition to RHEL 6 Consensus</xsl:if></title>
+			<title>Rules In <xsl:value-of select="/cdf:Benchmark/cdf:title" /><xsl:if test="$notes"> with Notes for Transition to RHEL 7 Consensus</xsl:if></title>
 		</head>
 		<body>
 			<br/>
 			<br/>
 			<div style="text-align: center; font-size: x-large; font-weight:bold">
-			Rules In <i><xsl:value-of select="/cdf:Benchmark/cdf:title" /></i><xsl:if test="$notes"> with Notes for Transition to RHEL 6 Consensus</xsl:if>
+			Rules In <i><xsl:value-of select="/cdf:Benchmark/cdf:title" /></i><xsl:if test="$notes"> with Notes for Transition to RHEL 7 Consensus</xsl:if>
 			</div>
 			<br/>
 			<br/>

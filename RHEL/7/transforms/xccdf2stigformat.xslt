@@ -17,8 +17,8 @@
 xmlns="http://checklists.nist.gov/xccdf/1.1" id="RHEL_6_STIG" xml:lang="en"
 xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 http://nvd.nist.gov/schema/xccdf-1.1.4.xsd http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
 	<status date="2012-10-01">draft</status>
-	<title>Pre-Draft Red Hat Enterprise Linux 6 Security Technical Implementation Guide</title>
-	<description>The Red Hat Enterprise Linux 6 Security Technical Implementation Guide (STIG) is published as a tool to improve the security of Department of Defense (DoD) information systems. Comments or proposed revisions to this document should be sent via e-mail to the following address: fso_spt@disa.mil.</description>
+	<title>Pre-Draft Red Hat Enterprise Linux 7 Security Technical Implementation Guide</title>
+	<description>The Red Hat Enterprise Linux 7 Security Technical Implementation Guide (STIG) is published as a tool to improve the security of Department of Defense (DoD) information systems. Comments or proposed revisions to this document should be sent via e-mail to the following address: fso_spt@disa.mil.</description>
 	<notice id="terms-of-use" xml:lang="en" />
 	<reference href="http://iase.disa.mil">
 	<!-- this is here as a placeholder, prior to any publication.  this is PRE-DRAFT, NON-RELEASE material. -->
