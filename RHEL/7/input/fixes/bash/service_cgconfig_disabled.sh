@@ -1,9 +1,9 @@
 #
-# Disable cgconfig for all run levels
+# Disable cgconfig.service for all systemd targets
 #
-chkconfig --level 0123456 cgconfig off
+systemctl disable cgconfig.service
 
 #
-# Stop cgconfig if currently running
+# Stop cgconfig.service if currently running
 #
-service cgconfig stop
+systemctl stop cgconfig.service

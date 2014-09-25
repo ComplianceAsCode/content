@@ -1,9 +1,9 @@
 #
-# Disable acpid for all run levels
+# Disable acpid.service for all systemd targets
 #
-chkconfig --level 0123456 acpid off
+systemctl disable acpid.service
 
 #
-# Stop acpid if currently running
+# Stop acpid.service if currently running
 #
-service acpid stop
+systemctl stop acpid.service

@@ -1,9 +1,9 @@
 #
-# Disable abrtd for all run levels
+# Disable abrtd.service for all systemd targets
 #
-chkconfig --level 0123456 abrtd off
+systemctl disable abrtd.service
 
 #
-# Stop abrtd if currently running
+# Stop abrtd.service if currently running
 #
-service abrtd stop
+systemctl stop abrtd.service

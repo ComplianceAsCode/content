@@ -1,9 +1,9 @@
 #
-# Disable dhcpd for all run levels
+# Disable dhcpd.service for all systemd targets
 #
-chkconfig --level 0123456 dhcpd off
+systemctl disable dhcpd.service
 
 #
-# Stop dhcpd if currently running
+# Stop dhcpd.service if currently running
 #
-service dhcpd stop
+systemctl stop dhcpd.service

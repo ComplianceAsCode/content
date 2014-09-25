@@ -1,9 +1,9 @@
 #
-# Disable rpcidmapd for all run levels
+# Disable nfs-idmap.service (rpcidmapd) for all systemd targets
 #
-chkconfig --level 0123456 rpcidmapd off
+systemctl disable nfs-idmap.service
 
 #
-# Stop rpcidmapd if currently running
+# Stop nfs-idmap.service (rpcidmapd) if currently running
 #
-service rpcidmapd stop
+systemctl stop nfs-idmap.service

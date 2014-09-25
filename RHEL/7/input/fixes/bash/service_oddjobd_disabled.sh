@@ -1,9 +1,9 @@
 #
-# Disable oddjobd for all run levels
+# Disable oddjobd.service for all systemd targets
 #
-chkconfig --level 0123456 oddjobd off
+systemctl disable oddjobd.service
 
 #
-# Stop oddjobd if currently running
+# Stop oddjobd.service if currently running
 #
-service oddjobd stop
+systemctl stop oddjobd.service

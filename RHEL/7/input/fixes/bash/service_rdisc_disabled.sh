@@ -1,9 +1,9 @@
 #
-# Disable rdisc for all run levels
+# Disable rdisc.service for all systemd targets
 #
-chkconfig --level 0123456 rdisc off
+systemctl disable rdisc.service
 
 #
-# Stop rdisc if currently running
+# Stop rdisc.service if currently running
 #
-service rdisc stop
+systemctl stop rdisc.service

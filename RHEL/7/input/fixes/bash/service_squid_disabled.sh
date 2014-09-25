@@ -1,9 +1,9 @@
 #
-# Disable squid for all run levels
+# Disable squid.service for all systemd targets
 #
-chkconfig --level 0123456 squid off
+systemctl disable squid.service
 
 #
-# Stop squid if currently running
+# Stop squid.service if currently running
 #
-service squid stop
+systemctl stop squid.service
