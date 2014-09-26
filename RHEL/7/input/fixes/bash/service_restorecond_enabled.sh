@@ -1,9 +1,9 @@
 #
-# Enable restorecond for all run levels
+# Enable restorecond.service for all systemd targets
 #
-chkconfig --level 0123456 restorecond on
+systemctl enable restorecond.service
 
 #
-# Start restorecond if not currently running
+# Start restorecond.service if not currently running
 #
-service restorecond start
+systemctl start restorecond.service
