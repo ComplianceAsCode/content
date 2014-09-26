@@ -397,7 +397,7 @@
     <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code></xhtml:pre>
     Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
-    <xhtml:pre>$ sudo systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code><xhtml:br/>disabled</xhtml:pre>
+    <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code><xhtml:br/>disabled</xhtml:pre>
 
     Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is not active (i.e. not running) through current runtime configuration:
     <xhtml:pre>$ systemctl is-active <xsl:value-of select="@service"/></xhtml:pre>
