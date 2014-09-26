@@ -1,9 +1,9 @@
 #
-# Enable ntpd for all run levels
+# Enable ntpd.service for all systemd targets
 #
-chkconfig --level 0123456 ntpd on
+systemctl enable ntpd.service
 
 #
-# Start ntpd if not currently running
+# Start ntpd.service if not currently running
 #
-service ntpd start
+systemctl start ntpd.service
