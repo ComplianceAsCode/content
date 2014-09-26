@@ -1,9 +1,9 @@
 #
-# Enable irqbalance for all run levels
+# Enable irqbalance.service for all systemd targets
 #
-chkconfig --level 0123456 irqbalance on
+systemctl enable irqbalance.service
 
 #
-# Start irqbalance if not currently running
+# Start irqbalance.service if not currently running
 #
-service irqbalance start
+systemctl start irqbalance.service

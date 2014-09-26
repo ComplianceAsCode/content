@@ -1,9 +1,9 @@
 #
-# Enable auditd for all run levels
+# Enable auditd.service for all systemd targets
 #
-chkconfig --level 0123456 auditd on
+systemctl enable auditd.service
 
 #
-# Start auditd if not currently running
+# Start auditd.service if not currently running
 #
-service auditd start
+systemctl start auditd.service
