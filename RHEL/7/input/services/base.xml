@@ -108,25 +108,6 @@ highly desirable or necessary.
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="service_haldaemon_disabled">
-<title>Disable Hardware Abstraction Layer Service (haldaemon)</title>
-<description>The Hardware Abstraction Layer Daemon (<tt>haldaemon</tt>) collects
-and maintains information about the system's hardware configuration. 
-This service is required on a workstation
-running a desktop environment, and may be necessary on any system which
-deals with removable media or devices.
-<service-disable-macro service="haldaemon" />
-</description>
-<ocil><service-disable-check-macro service="haldaemon" /></ocil>
-<rationale>The haldaemon provides essential functionality on systems
-that use removable media or devices, but can be disabled for systems
-that do not require these.
-</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="service_haldaemon_disabled" />
-<ref nist="CM-7" />
-</Rule>
-
 <Rule id="service_irqbalance_enabled">
 <title>Enable IRQ Balance (irqbalance)</title>
 <description>The <tt>irqbalance</tt> service optimizes the balance between
