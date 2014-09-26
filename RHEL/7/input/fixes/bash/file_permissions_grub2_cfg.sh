@@ -1,1 +1,1 @@
-../../../../../shared/fixes/bash/file_permissions_grub2_cfg.sh
+chmod 600 /boot/grub2/grub.cfg
