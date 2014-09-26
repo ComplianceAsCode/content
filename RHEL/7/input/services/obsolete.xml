@@ -106,9 +106,9 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27158-5" />
 <oval id="service_telnetd_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
+<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" />
 <tested by="JL" on="20140922"/>
 </Rule>
 
@@ -122,9 +122,9 @@ the following command:
 Removing the <tt>telnet-server</tt> package decreases the risk of the
 telnet service's accidental (or intentional) activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27165-0" />
 <oval id="package_telnet-server_removed" />
-<ref nist="AC-17(8),CM-7" disa="305,381"/>
+<ref nist="AC-17(8),CM-7" disa=""/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -138,7 +138,7 @@ of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
 encrypted session and stronger security and is included in Red Hat
 Enterprise Linux.</rationale>
-<ident cce="" />
+<ident cce="27039-7" />
 <oval id="package_telnet_removed" />
 </Rule>
 
