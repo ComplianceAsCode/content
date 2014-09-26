@@ -282,7 +282,7 @@
   <xsl:template match="sysctl-desc-macro">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     run the following command:
-    <xhtml:pre xml:space="preserve"># sysctl -w <xsl:value-of select="@sysctl"/>=<xsl:value-of select="@value"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo sysctl -w <xsl:value-of select="@sysctl"/>=<xsl:value-of select="@value"/></xhtml:pre>
 
 	<!-- The following text could also be included conditionally, if the defaultness of the sysctl were indicated. -->
     If this is not the system's default value, add the following line to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
@@ -322,17 +322,17 @@
 
   <xsl:template match="fileperms-desc-macro">
     To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileowner-desc-macro">
     To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@owner"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chown <xsl:value-of select="@owner"/> <xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="filegroupowner-desc-macro">
     To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chgrp <xsl:value-of select="@group"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/> <xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">
@@ -365,12 +365,12 @@
 
   <xsl:template match="package-install-macro">
     The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
-    <xhtml:pre># yum install <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre>$ sudo yum install <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="package-remove-macro">
     The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
-    <xhtml:pre># yum erase <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre>$ sudo yum erase <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="partition-check-macro">
@@ -384,23 +384,23 @@
 
   <xsl:template match="service-disable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
-    <xhtml:pre># systemctl disable <xsl:value-of select="@service"/></xhtml:pre>
+    <xhtml:pre>$ sudo systemctl disable <xsl:value-of select="@service"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
-    <xhtml:pre># systemctl enable <xsl:value-of select="@service"/></xhtml:pre>
+    <xhtml:pre>$ sudo systemctl enable <xsl:value-of select="@service"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
     To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
-    <xhtml:pre># systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code></xhtml:pre>
+    <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code></xhtml:pre>
     Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
-    <xhtml:pre># systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code><xhtml:br/>disabled</xhtml:pre>
+    <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@service"/></xhtml:code><xhtml:br/>disabled</xhtml:pre>
 
     Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is not active (i.e. not running) through current runtime configuration:
-    <xhtml:pre># systemctl is-active <xsl:value-of select="@service"/></xhtml:pre>
+    <xhtml:pre>$ systemctl is-active <xsl:value-of select="@service"/></xhtml:pre>
 
     If the service is not running the command will return the following output:
     <xhtml:pre>inactive</xhtml:pre>
@@ -408,9 +408,9 @@
 
   <xsl:template match="xinetd-service-disable-check-macro">
       To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
-          <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
+          <xhtml:pre>$ chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
               Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, or has been disabled, as shown in the example below:
-              <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
+              <xhtml:pre>$ chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
 
                          Note: This output shows SysV services only and does not include native
                          systemd services. SysV configuration data might be overridden by native
@@ -426,13 +426,13 @@
   <xsl:template match="service-enable-check-macro">
     Run the following command to determine the current status of the
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
-  <xhtml:pre># systemctl is-active <xsl:value-of select="@service"/></xhtml:pre>
+  <xhtml:pre>$ systemctl is-active <xsl:value-of select="@service"/></xhtml:pre>
     If the service is running, it should return the following: <xhtml:pre>active</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="package-check-macro">
     Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed:
-    <xhtml:pre># rpm -q <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre>$ rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="module-disable-macro">
@@ -456,7 +456,7 @@ and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 To determine if the system is configured to audit calls to
 the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
 system call, run the following command:
-<xhtml:pre xml:space="preserve"># auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
+<xhtml:pre xml:space="preserve">$ sudo auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
@@ -497,7 +497,7 @@ If the system is configured to audit this activity, it will return a line.
     To determine how the SSH daemon's
     <xhtml:code><xsl:value-of select="@option"/></xhtml:code>
     option is set, run the following command:
-    <xhtml:pre xml:space="preserve"># grep -i <xsl:value-of select="@option"/> /etc/ssh/sshd_config</xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo grep -i <xsl:value-of select="@option"/> /etc/ssh/sshd_config</xhtml:pre>
     <xsl:if test="@default='yes'">
       If no line, a commented line, or a line indicating the value
       <xhtml:code><xsl:value-of select="@value"/></xhtml:code> is returned, then the required value is set.

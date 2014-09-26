@@ -1,9 +1,9 @@
 #
-# Enable rsyslog for all run levels
+# Enable rsyslog.service for all systemd targets
 #
-chkconfig --level 0123456 rsyslog on
+systemctl enable rsyslog.service
 
 #
-# Start rsyslog if not currently running
+# Start rsyslog.service if not currently running
 #
-service rsyslog start
+systemctl start rsyslog.service
