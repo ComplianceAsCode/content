@@ -33,9 +33,9 @@ or modification of the file.
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26860-7" />
 <oval id="file_user_owner_grub2_cfg" />
-<ref nist="" disa="225"/>
+<ref nist="" disa=""/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -51,9 +51,9 @@ destruction or modification of the file.
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26812-8" />
 <oval id="file_group_owner_grub2_cfg" />
-<ref nist="" disa="225"/>
+<ref nist="" disa=""/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -72,9 +72,9 @@ permissions: <tt>-rw-------</tt>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27054-6" />
 <oval id="file_permissions_grub2_cfg" />
-<ref nist="" disa="225"/>
+<ref nist="" disa=""/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -123,9 +123,9 @@ the grub2 superuser account and password, please refer to
 <li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-GRUB_2_Password_Protection.html</li>.
 </ul>
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26809-4" />
 <oval id="bootloader_password" />
-<ref nist="IA-2(1),IA-5(e)" disa="213" />
+<ref nist="IA-2(1),IA-5(e)" disa="" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -154,7 +154,7 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27170-0" />
 <oval id="require_singleuser_auth" />
 <ref nist="IA-2(1)" disa="213" />
 <tested by="DS" on="20121024"/>
