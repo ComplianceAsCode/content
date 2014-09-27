@@ -1,0 +1,1 @@
+yum -y remove telnet
