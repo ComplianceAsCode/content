@@ -184,7 +184,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_difok" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_difok" type="number" operator="equals" interactive="0">
 <title>difok</title>
 <description>Minimum number of characters not present in old
 password</description>
@@ -385,7 +385,7 @@ more difficult by ensuring a larger search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_difok">
+<Rule id="accounts_password_pam_difok">
 <title>Set Password Strength Minimum Different Characters</title>
 <description>The pam_cracklib module's <tt>difok</tt> parameter controls requirements for
 usage of different characters during a password change.
@@ -406,7 +406,7 @@ newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
+<oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195"/>
 <tested by="DS" on="20121024"/>
 </Rule>
