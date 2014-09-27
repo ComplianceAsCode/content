@@ -312,15 +312,15 @@ search space.
 
 <Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
-<description>The pam_cracklib module's <tt>ucredit=</tt> parameter controls requirements for
+<description>The pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
-contain that many uppercase characters. When set to a positive number, pam_cracklib will grant +1 additional
+contain that many uppercase characters. When set to a positive number, pam_pwquality will grant +1 additional
 length credit for each uppercase character.
-Add <tt>ucredit=-1</tt> after pam_cracklib.so to require use of an upper case character in passwords.
+Add <tt>ucredit=-1</tt> after pam_pwquality.so to require use of an upper case character in passwords.
 </description>
 <ocil clause="ucredit is not found or not set to the required value">
 To check how many uppercase characters are required in a password, run the following command:
-<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
 The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
 The DoD and FISMA require at least one uppercase character in a password.
 This would appear as <tt>ucredit=-1</tt>.
