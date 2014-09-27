@@ -156,7 +156,7 @@ reason.</warning>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_ocredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_ocredit" type="number" operator="equals" interactive="0">
 <title>ocredit</title>
 <description>Minimum number of other (special characters) in
 password</description>
@@ -336,7 +336,7 @@ more difficult by ensuring a larger search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_ocredit">
+<Rule id="accounts_password_pam_ocredit">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_cracklib module's <tt>ocredit=</tt> parameter controls requirements for
 usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
@@ -356,7 +356,7 @@ Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26409-3" />
-<oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
+<oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" />
 <tested by="DS" on="20121024"/>
 </Rule>
