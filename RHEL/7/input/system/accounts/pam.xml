@@ -191,11 +191,12 @@ password</description>
 password</description>
 <warning category="general">Keep this high for short
 passwords</warning>
-<value selector="">4</value>
+<value selector="">15</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
 <value selector="4">4</value>
 <value selector="5">5</value>
+<value selector="15">15</value>
 </Value>
 
 <Value id="var_password_pam_minclass" type="number" operator="equals" interactive="0">
@@ -416,14 +417,14 @@ more difficult by ensuring a larger search space.
 usage of different characters during a password change.
 Add <tt>difok=<i>NUM</i></tt> after pam_pwquality.so to require differing
 characters when changing passwords, substituting <i>NUM</i> appropriately.
-The DoD requirement is <tt>4</tt>.
+The DoD requirement is <tt>15</tt>.
 </description>
 <ocil clause="difok is not found or not set to the required value">
 To check how many characters must differ during a password change, run the following command:
 <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
 The <tt>difok</tt> parameter will indicate how many characters must differ.
-The DoD requires four characters differ during a password change.
-This would appear as <tt>difok=4</tt>.
+The DoD requires 15 characters differ during a password change.
+This would appear as <tt>difok=15</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of different characters during password changes ensures that
@@ -432,7 +433,7 @@ Note that passwords which are changed on compromised systems will still be compr
 </rationale>
 <ident cce="26631-2" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa=""/>
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195", srg="72" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
