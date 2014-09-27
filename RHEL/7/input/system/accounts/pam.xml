@@ -387,15 +387,15 @@ more difficult by ensuring a larger search space.
 
 <Rule id="accounts_password_pam_difok">
 <title>Set Password Strength Minimum Different Characters</title>
-<description>The pam_cracklib module's <tt>difok</tt> parameter controls requirements for
+<description>The pam_pwquality module's <tt>difok</tt> parameter controls requirements for
 usage of different characters during a password change.
-Add <tt>difok=<i>NUM</i></tt> after pam_cracklib.so to require differing
+Add <tt>difok=<i>NUM</i></tt> after pam_pwquality.so to require differing
 characters when changing passwords, substituting <i>NUM</i> appropriately.
 The DoD requirement is <tt>4</tt>.
 </description>
 <ocil clause="difok is not found or not set to the required value">
 To check how many characters must differ during a password change, run the following command:
-<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
 The <tt>difok</tt> parameter will indicate how many characters must differ.
 The DoD requires four characters differ during a password change.
 This would appear as <tt>difok=4</tt>.
