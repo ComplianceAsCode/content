@@ -289,7 +289,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
-contain that many digits. When set to a positive number, pam_cracklib will grant +1 additional
+contain that many digits. When set to a positive number, pam_pwquality will grant +1 additional
 length credit for each digit.  
 Add <tt>dcredit=-1</tt> after pam_pwquality.so to require use of a digit in passwords.
 </description>
