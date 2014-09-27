@@ -147,7 +147,7 @@ reason.</warning>
 <value selector="15">15</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_dcredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_dcredit" type="number" operator="equals" interactive="0">
 <title>dcredit</title>
 <description>Minimum number of digits in password</description>
 <value selector="">-1</value>
@@ -286,7 +286,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_dcredit">
+<Rule id="accounts_password_pam_dcredit">
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
@@ -306,7 +306,7 @@ Requiring digits makes password guessing attacks more difficult by ensuring a la
 search space.
 </rationale>
 <ident cce="26374-9" />
-<oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
+<oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
 <ref nist="IA-5(b),IA-5(c),194" disa="194"/>
 <tested by="DS" on="20121024"/>
 </Rule>
