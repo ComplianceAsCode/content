@@ -4,10 +4,10 @@
 
 <!-- STIG refinement values. Note these are set by DISA FSO,
      and should not be manipulated -->
-<refine-value idref="var_password_pam_unix_remember" selector="5"/>
-<refine-value idref="var_accounts_maximum_age_login_defs" selector="60"/>
-<refine-value idref="var_password_pam_ocredit" selector="1"/>
-
+<refine-value idref="var_password_pam_unix_remember" selector="5" />
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="60" />
+<refine-value idref="var_password_pam_ocredit" selector="1" />
+<refine-value idref="var_password_pam_ucredit" selector="1" />
 <!-- BEGIN STIG RULE ENABLEMENT -->
 
 <!-- Disk Partitioning -->
@@ -17,5 +17,6 @@
 <select idref="accounts_maximum_age_login_defs" selected="true" />
 <select idref="accounts_password_pam_unix_remember" selected="true" />
 <select idref="accounts_password_pam_ocredit" selected="true" />
+<select idref="accounts_password_pam_ucredit" selected="true" />
 
 </Profile>
