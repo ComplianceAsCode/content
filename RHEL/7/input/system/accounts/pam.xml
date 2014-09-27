@@ -502,13 +502,13 @@ attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
 both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>deny=3</tt>.
+The output should show <tt>deny=<id subref="var_accounts_passwords_pam_faillock_deny" /></tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -516,7 +516,7 @@ prevents direct password guessing attacks.
 </rationale>
 <ident cce="26891-2" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
-<ref nist="AC-7(a)" disa="" />
+<ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium">
@@ -526,8 +526,8 @@ To configure the system to lock out accounts after a number of incorrect login
 attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -553,21 +553,23 @@ attempts.
 <br /><br />
 Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
 <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
-For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 900 (15 minutes) or greater.  If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
+For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 
+<tt><id subref="var_accounts_passwords_pam_faillock_fail_interval" /></tt>  or greater. 
+If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26763-3" />
 <oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
-<ref nist="AC-7(a)" disa="1452" />
+<ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
