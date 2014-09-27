@@ -125,7 +125,7 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_maxrepeat" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_maxrepeat" type="number" operator="equals" interactive="0">
 <title>maxrepeat</title>
 <description>Maximum Number of Consecutive Repeating Characters in a Password</description>
 <value selector="">3</value>
@@ -134,7 +134,7 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_minlen" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
 <value selector="">14</value>
@@ -197,7 +197,7 @@ passwords</warning>
 <value selector="5">5</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_minclass" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minclass" type="number" operator="equals" interactive="0">
 <title>minclass</title>
 <description>Minimum number of categories of characters that must exist in a password</description>
 <value selector="">3</value>
@@ -270,8 +270,8 @@ is different from account lockout, which is provided by the pam_faillock module.
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
-which contain more than that number of consecutive characters. Add <tt>maxrepeat=<sub idref="var_password_pam_cracklib_maxrepeat" /></tt>
-after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_cracklib_maxrepeat" /> + 1) or more identical characters.
+which contain more than that number of consecutive characters. Add <tt>maxrepeat=<sub idref="var_password_pam_maxrepeat" /></tt>
+after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
@@ -282,7 +282,7 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="27227-8" />
-<oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_cracklib_maxrepeat" />
+<oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
@@ -425,8 +425,8 @@ four categories available:
 * Digits
 * Special characters (for example, punctuation)
 </pre>
-Add <tt>minclass=<i><sub idref="var_password_pam_cracklib_minclass" /></i></tt> after pam_cracklib.so entry into the
-<tt>/etc/pam.d/system-auth</tt> file in order to require <sub idref="var_password_pam_cracklib_minclass" />  differing categories of
+Add <tt>minclass=<i><sub idref="var_password_pam_minclass" /></i></tt> after pam_cracklib.so entry into the
+<tt>/etc/pam.d/system-auth</tt> file in order to require <sub idref="var_password_pam_minclass" />  differing categories of
 characters when changing passwords.
 For example to require at least three character classes to be used in password, use <tt>minclass=3</tt>.
 </description>
@@ -443,7 +443,7 @@ Requiring a minimum number of character categories makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
-<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_cracklib_minclass"/>
+<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_minclass"/>
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
