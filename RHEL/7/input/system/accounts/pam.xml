@@ -48,7 +48,7 @@ operator="equals" interactive="0">
 <tt>/etc/security/opasswd</tt> in order to force password change history and
 keep the user from alternating between the same password too
 frequently.</description>
-<value selector="">24</value>
+<value selector="">5</value>
 <value selector="0">0</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
@@ -548,22 +548,23 @@ specific period of time prevents direct password guessing attacks.
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
-module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=24</tt> to the 
+module.  In the file <tt>/etc/pam.d/system-auth</tt>, append
+<tt>remember=<sub idref="var_password_pam_unix_remember" /></tt> to the 
 line which refers to the <tt>pam_unix.so</tt> module, as shown:
-<pre>password sufficient pam_unix.so <i>existing_options</i> remember=24</pre>
-The DoD and FISMA requirement is 24 passwords.</description>
+<pre>password sufficient pam_unix.so <i>existing_options</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
+The DoD STIG requirement is 5 passwords.</description>
 <ocil clause="it does not">
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
 The output should show the following at the end of the line:
-<pre>remember=24</pre>
+<pre>remember=<sub idref="var_password_pam_unix_rememer" /></pre>
 </ocil>
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
 <ident cce="26923-3" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
-<ref nist="IA-5(f),IA-5(1)(e)" disa="" />
+<ref nist="IA-5(f),IA-5(1)(e)" disa="200" srg="77" />
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
