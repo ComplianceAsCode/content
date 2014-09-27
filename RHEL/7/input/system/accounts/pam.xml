@@ -175,7 +175,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_ucredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_ucredit" type="number" operator="equals" interactive="0">
 <title>ucredit</title>
 <description>Minimum number of upper case in password</description>
 <value selector="">-1</value>
@@ -310,7 +310,7 @@ search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_ucredit">
+<Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
 <description>The pam_cracklib module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
@@ -330,7 +330,7 @@ Requiring a minimum number of uppercase characters makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
+<oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" />
 <tested by="DS" on="20121024"/>
 </Rule>
