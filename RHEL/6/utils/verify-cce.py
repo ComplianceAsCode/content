@@ -26,7 +26,7 @@ for item in dup_assigned_ids:
     print "Duplicate assignment of CCE: %s" % item
 
 # open the available CCE file
-with open('../references/cce-rhel6-avail.txt', 'r') as txt_file:
+with open('../references/cce-rhel-avail.txt', 'r') as txt_file:
     for line in txt_file:
         granted_ids = [line.rstrip('\n') for line in txt_file]
 
