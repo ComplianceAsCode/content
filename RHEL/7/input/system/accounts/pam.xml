@@ -137,13 +137,14 @@ reason.</warning>
 <Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
-<value selector="">14</value>
+<value selector="">15</value>
 <value selector="6">6</value>
 <!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
 <value selector="8">8</value>
 <value selector="10">10</value>
 <value selector="12">12</value>
 <value selector="14">14</value>
+<!-- DoD STIG requires 15 -->
 <value selector="15">15</value>
 </Value>
 
@@ -309,6 +310,30 @@ search space.
 <ref nist="IA-5(b),IA-5(c),194" disa="194" srg="71"/>
 <tested by="DS" on="20121024"/>
 </Rule>
+
+<Rule id="accounts_password_pam_minlen">
+<title>Set Password Minimum Length</title>
+<description>The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
+minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" />
+after pam_pwquality to set minimum password length requirements.
+</description>
+<ocil clause="minlen is not found or not set to the required value (or higher)">
+To check how many characters are required in a password, run the following command:
+<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
+Your output should contain <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+</ocil>
+<rationale>
+Password length is one factor of several that helps to determine
+strength and how long it takes to crack a password. Use of more characters in
+a password helps to exponentially increase the time and/or resources
+required to compromise the password.
+</rationale>
+<ident cce="26615-5" />
+<oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
+<ref nist="IA-5(1)(a)" disa="205" srg="78" />
+<tested by="swells" on="20140928" />
+</Rule>
+
 
 <Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
