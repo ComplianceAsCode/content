@@ -337,15 +337,15 @@ more difficult by ensuring a larger search space.
 
 <Rule id="accounts_password_pam_ocredit">
 <title>Set Password Strength Minimum Special Characters</title>
-<description>The pam_cracklib module's <tt>ocredit=</tt> parameter controls requirements for
+<description>The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
 usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
-contain that many special characters. When set to a positive number, pam_cracklib will grant +1 additional
+contain that many special characters. When set to a positive number, pam_pwquality will grant +1 additional
 length credit for each special character.
-Add <tt>ocredit=-1</tt> after pam_cracklib.so to require use of a special character in passwords.
+Add <tt>ocredit=-1</tt> after pam_pwquality.so to require use of a special character in passwords.
 </description>
 <ocil clause="ocredit is not found or not set to the required value">
 To check how many special characters are required in a password, run the following command:
-<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
 The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
 The DoD and FISMA require at least one special character in a password.
 This would appear as <tt>ocredit=-1</tt>.
