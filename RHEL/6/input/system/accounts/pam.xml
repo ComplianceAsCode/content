@@ -166,7 +166,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_lcredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_lcredit" type="number" operator="equals" interactive="0">
 <title>lcredit</title>
 <description>Minimum number of lower case in password</description>
 <value selector="">-1</value>
@@ -361,7 +361,7 @@ more difficult by ensuring a larger search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_lcredit">
+<Rule id="accounts_password_pam_lcredit">
 <title>Set Password Strength Minimum Lowercase Characters</title>
 <description>The pam_cracklib module's <tt>lcredit=</tt> parameter controls requirements for
 usage of lowercase letters in a password. When set to a negative number, any password will be required to
@@ -381,7 +381,7 @@ Requiring a minimum number of lowercase characters makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26631-2" />
-<oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
+<oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" />
 <tested by="DS" on="20121024"/>
 </Rule>
