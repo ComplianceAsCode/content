@@ -147,7 +147,7 @@ reason.</warning>
 <value selector="15">15</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_dcredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_dcredit" type="number" operator="equals" interactive="0">
 <title>dcredit</title>
 <description>Minimum number of digits in password</description>
 <value selector="">-1</value>
@@ -285,17 +285,17 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_dcredit">
+<Rule id="accounts_password_pam_dcredit">
 <title>Set Password Strength Minimum Digit Characters</title>
-<description>The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements for
+<description>The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
 contain that many digits. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each digit.  
-Add <tt>dcredit=-1</tt> after pam_cracklib.so to require use of a digit in passwords.
+Add <tt>dcredit=-1</tt> after pam_pwquality.so to require use of a digit in passwords.
 </description>
 <ocil clause="dcredit is not found or not set to the required value">
 To check how many digits are required in a password, run the following command:
-<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
 The <tt>dcredit</tt> parameter (as a negative number) will indicate how many digits are required.
 The DoD requires at least one digit in a password.
 This would appear as <tt>dcredit=-1</tt>.
@@ -305,7 +305,7 @@ Requiring digits makes password guessing attacks more difficult by ensuring a la
 search space.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
+<oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
 <ref nist="IA-5(b),IA-5(c),194" disa="194"/>
 <tested by="DS" on="20121024"/>
 </Rule>
