@@ -322,7 +322,7 @@ System executables are stored in the following directories by default:
 /usr/local/sbin</pre>
 To find system executables that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains system executables:
-<pre>$ sudo find <i>DIR</i> \! -user root</pre>
+<pre>$ sudo find <i>DIR/</i> \! -user root</pre>
 </ocil>
 <rationale>System binaries are executed by privileged users as well as system services,
 and restrictive permissions are necessary to ensure that their
