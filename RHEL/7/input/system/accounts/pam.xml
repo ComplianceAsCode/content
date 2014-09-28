@@ -315,7 +315,7 @@ search space.
 <Rule id="accounts_password_pam_minlen">
 <title>Set Password Minimum Length</title>
 <description>The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
-minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" />
+minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
 after pam_pwquality to set minimum password length requirements.
 </description>
 <ocil clause="minlen is not found or not set to the required value (or higher)">
@@ -433,7 +433,7 @@ Note that passwords which are changed on compromised systems will still be compr
 </rationale>
 <ident cce="26631-2" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195", srg="72" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="72" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
