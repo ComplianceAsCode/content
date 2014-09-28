@@ -125,7 +125,7 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_maxrepeat" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_maxrepeat" type="number" operator="equals" interactive="0">
 <title>maxrepeat</title>
 <description>Maximum Number of Consecutive Repeating Characters in a Password</description>
 <value selector="">3</value>
@@ -134,7 +134,7 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_minlen" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
 <value selector="">14</value>
@@ -197,7 +197,7 @@ passwords</warning>
 <value selector="5">5</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_minclass" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minclass" type="number" operator="equals" interactive="0">
 <title>minclass</title>
 <description>Minimum number of categories of characters that must exist in a password</description>
 <value selector="">3</value>
@@ -289,7 +289,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
-contain that many digits. When set to a positive number, pam_cracklib will grant +1 additional
+contain that many digits. When set to a positive number, pam_pwquality will grant +1 additional
 length credit for each digit.  
 Add <tt>dcredit=-1</tt> after pam_pwquality.so to require use of a digit in passwords.
 </description>
@@ -443,7 +443,7 @@ Requiring a minimum number of character categories makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
-<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_cracklib_minclass"/>
+<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_minclass"/>
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
