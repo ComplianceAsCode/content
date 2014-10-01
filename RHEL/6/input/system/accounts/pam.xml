@@ -48,7 +48,7 @@ operator="equals" interactive="0">
 <tt>/etc/security/opasswd</tt> in order to force password change history and
 keep the user from alternating between the same password too
 frequently.</description>
-<value selector="">24</value>
+<value selector="">5</value>
 <value selector="0">0</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
@@ -342,7 +342,7 @@ more difficult by ensuring a larger search space.
 usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
 contain that many special characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each special character.
-Add <tt>ocredit=-1</tt> after pam_cracklib.so to require use of a special character in passwords.
+Add <tt>ocredit=<sub idref="var_password_pam_ocredit" /></tt> after pam_cracklib.so to require use of a special character in passwords.
 </description>
 <ocil clause="ocredit is not found or not set to the required value">
 To check how many special characters are required in a password, run the following command:
@@ -357,7 +357,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26409-3" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -551,7 +551,7 @@ be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> 
 module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_password_pam_unix_remember" /></tt> to the
 line which refers to the <tt>pam_unix.so</tt> module, as shown:
 <pre>password sufficient pam_unix.so <i>existing_options</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
-The DoD and FISMA requirement is 24 passwords.</description>
+The DoD STIG requirement is 5 passwords.</description>
 <ocil clause="it does not">
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>

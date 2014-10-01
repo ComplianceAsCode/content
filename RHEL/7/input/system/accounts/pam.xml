@@ -48,7 +48,7 @@ operator="equals" interactive="0">
 <tt>/etc/security/opasswd</tt> in order to force password change history and
 keep the user from alternating between the same password too
 frequently.</description>
-<value selector="">24</value>
+<value selector="">5</value>
 <value selector="0">0</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
@@ -137,13 +137,14 @@ reason.</warning>
 <Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
-<value selector="">14</value>
+<value selector="">15</value>
 <value selector="6">6</value>
 <!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
 <value selector="8">8</value>
 <value selector="10">10</value>
 <value selector="12">12</value>
 <value selector="14">14</value>
+<!-- DoD STIG requires 15 -->
 <value selector="15">15</value>
 </Value>
 
@@ -190,11 +191,12 @@ password</description>
 password</description>
 <warning category="general">Keep this high for short
 passwords</warning>
-<value selector="">4</value>
+<value selector="">15</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
 <value selector="4">4</value>
 <value selector="5">5</value>
+<value selector="15">15</value>
 </Value>
 
 <Value id="var_password_pam_minclass" type="number" operator="equals" interactive="0">
@@ -306,9 +308,33 @@ search space.
 </rationale>
 <ident cce="27163-5" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
-<ref nist="IA-5(b),IA-5(c),194" disa=""/>
+<ref nist="IA-5(b),IA-5(c),194" disa="194" srg="71"/>
 <tested by="DS" on="20121024"/>
 </Rule>
+
+<Rule id="accounts_password_pam_minlen">
+<title>Set Password Minimum Length</title>
+<description>The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
+minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+after pam_pwquality to set minimum password length requirements.
+</description>
+<ocil clause="minlen is not found or not set to the required value (or higher)">
+To check how many characters are required in a password, run the following command:
+<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
+Your output should contain <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+</ocil>
+<rationale>
+Password length is one factor of several that helps to determine
+strength and how long it takes to crack a password. Use of more characters in
+a password helps to exponentially increase the time and/or resources
+required to compromise the password.
+</rationale>
+<ident cce="26615-5" />
+<oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
+<ref nist="IA-5(1)(a)" disa="205" srg="78" />
+<tested by="swells" on="20140928" />
+</Rule>
+
 
 <Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
@@ -331,18 +357,18 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26988-6" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" srg="69" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_ocredit">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
-usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
+usage of special (or "other") characters in a password. When set to a negative number, any password will be required to
 contain that many special characters. When set to a positive number, pam_pwquality will grant +1 additional
 length credit for each special character.
-Add <tt>ocredit=-1</tt> after pam_pwquality.so to require use of a special character in passwords.
-</description>
+Add <tt>ocredit=<sub idref="var_password_pam_ocredit" /></tt> after pam_pwquality.so to 
+require use of a special character in passwords.</description>
 <ocil clause="ocredit is not found or not set to the required value">
 To check how many special characters are required in a password, run the following command:
 <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
@@ -356,7 +382,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="27151-0" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -381,7 +407,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="27111-4" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="70" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -391,14 +417,14 @@ more difficult by ensuring a larger search space.
 usage of different characters during a password change.
 Add <tt>difok=<i>NUM</i></tt> after pam_pwquality.so to require differing
 characters when changing passwords, substituting <i>NUM</i> appropriately.
-The DoD requirement is <tt>4</tt>.
+The DoD requirement is <tt>15</tt>.
 </description>
 <ocil clause="difok is not found or not set to the required value">
 To check how many characters must differ during a password change, run the following command:
 <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
 The <tt>difok</tt> parameter will indicate how many characters must differ.
-The DoD requires four characters differ during a password change.
-This would appear as <tt>difok=4</tt>.
+The DoD requires 15 characters differ during a password change.
+This would appear as <tt>difok=15</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of different characters during password changes ensures that
@@ -407,7 +433,7 @@ Note that passwords which are changed on compromised systems will still be compr
 </rationale>
 <ident cce="26631-2" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa=""/>
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="72" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -476,13 +502,13 @@ attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
 both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>deny=3</tt>.
+The output should show <tt>deny=<id subref="var_accounts_passwords_pam_faillock_deny" /></tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -490,7 +516,7 @@ prevents direct password guessing attacks.
 </rationale>
 <ident cce="26891-2" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
-<ref nist="AC-7(a)" disa="" />
+<ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium">
@@ -500,8 +526,8 @@ To configure the system to lock out accounts after a number of incorrect login
 attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -527,43 +553,46 @@ attempts.
 <br /><br />
 Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
 <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
-For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 900 (15 minutes) or greater.  If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
+For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 
+<tt><id subref="var_accounts_passwords_pam_faillock_fail_interval" /></tt>  or greater. 
+If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26763-3" />
 <oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
-<ref nist="AC-7(a)" disa="1452" />
+<ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
-module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=24</tt> to the 
+module.  In the file <tt>/etc/pam.d/system-auth</tt>, append
+<tt>remember=<sub idref="var_password_pam_unix_remember" /></tt> to the 
 line which refers to the <tt>pam_unix.so</tt> module, as shown:
-<pre>password sufficient pam_unix.so <i>existing_options</i> remember=24</pre>
-The DoD and FISMA requirement is 24 passwords.</description>
+<pre>password sufficient pam_unix.so <i>existing_options</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
+The DoD STIG requirement is 5 passwords.</description>
 <ocil clause="it does not">
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
 The output should show the following at the end of the line:
-<pre>remember=24</pre>
+<pre>remember=<sub idref="var_password_pam_unix_rememer" /></pre>
 </ocil>
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
 <ident cce="26923-3" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
-<ref nist="IA-5(f),IA-5(1)(e)" disa="" />
+<ref nist="IA-5(f),IA-5(1)(e)" disa="200" srg="77" />
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
