@@ -7,7 +7,9 @@ UTILS = utils
 DIST = dist
 
 ID = ssg
+PROD = rhel7
 
+OS := Red Hat Enterprise Linux $(shell grep -oP '[0-9]*(?=\.)' /etc/redhat-release)
 OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
 
 all: shorthand2xccdf tables guide content dist
@@ -100,6 +102,8 @@ content: shorthand2xccdf guide checks
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-rhel7-xccdf-nodangles.xml > $(OUT)/$(ID)-rhel7-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-rhel7-xccdf-1.2.xml
+	sed -i 's/multiplatform_oval/$(OS)/g' $(OUT)/unlinked-$(PROD)-oval.xml
+	sed -i 's/multiplatform_oval/$(OS)/g' $(OUT)/$(ID)-$(PROD)-oval.xml
 	oscap ds sds-compose $(OUT)/$(ID)-rhel7-xccdf-1.2.xml $(OUT)/$(ID)-rhel7-ds.xml
 #       Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-rhel7-cpe-dictionary.xml $(OUT)/$(ID)-rhel7-ds.xml

@@ -7,7 +7,9 @@ UTILS = utils
 DIST = dist
 
 ID = ssg
+PROD = rhel6
 
+OS := Red Hat Enterprise Linux $(shell grep -oP '[0-9]*(?=\.)' /etc/redhat-release)
 OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
 
 all: shorthand2xccdf tables guide content dist
@@ -72,7 +74,6 @@ table-stigs: shorthand2xccdf table-srgmap checks
 	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
 	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
-	# asdasd
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
@@ -100,6 +101,8 @@ content: shorthand2xccdf guide checks
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-rhel6-xccdf-nodangles.xml > $(OUT)/$(ID)-rhel6-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-rhel6-xccdf-1.2.xml
+	sed -i 's/multiplatform_oval/$(OS)/g' $(OUT)/unlinked-$(PROD)-oval.xml
+	sed -i 's/multiplatform_oval/$(OS)/g' $(OUT)/$(ID)-$(PROD)-oval.xml
 	oscap ds sds-compose $(OUT)/$(ID)-rhel6-xccdf-1.2.xml $(OUT)/$(ID)-rhel6-ds.xml
 #	Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-rhel6-cpe-dictionary.xml $(OUT)/$(ID)-rhel6-ds.xml
