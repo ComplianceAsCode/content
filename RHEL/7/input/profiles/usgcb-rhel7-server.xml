@@ -1,0 +1,35 @@
+<Profile id="usgcb-rhel7-server">
+<title>United States Government Configuration Baseline (USGCB)</title>
+<description>This profile is a working draft for a USGCB submission against RHEL7 Server.</description>
+
+<refine-value idref="var_password_pam_unix_remember" selector="5" />
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="60" />
+<refine-value idref="var_password_pam_ocredit" selector="1" />
+<refine-value idref="var_password_pam_ucredit" selector="1" />
+<refine-value idref="var_password_pam_lcredit" selector="1" />
+<refine-value idref="var_password_pam_dcredit" selector="1" />
+<refine-value idref="var_password_pam_minlen" selector="15" />
+<refine-value idref="var_password_pam_difok" selector="15" />
+<refine-value idref="var_accounts_minimum_age_login_defs" selector="1" />
+<refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
+
+<!-- BEGIN RULE SELECTION -->
+
+<!-- Disk Partitioning -->
+<select idref="encrypt_partitions" selected="true"/>
+
+<!-- Password Requirements -->
+<select idref="accounts_maximum_age_login_defs" selected="true" />
+<select idref="accounts_password_pam_unix_remember" selected="true" />
+<select idref="accounts_password_pam_ocredit" selected="true" />
+<select idref="accounts_password_pam_ucredit" selected="true" />
+<select idref="accounts_password_pam_lcredit" selected="true" />
+<select idref="accounts_password_pam_dcredit" selected="true" />
+<select idref="accounts_password_pam_minlen" selected="true" />
+<select idref="accounts_password_pam_difok" selected="true" />
+<select idref="accounts_minimum_age_login_defs" selected="true" />
+<select idref="accounts_passwords_pam_fail_interval" selected="true" />
+<select idref="accounts_passwords_pam_faillock_deny" selected="true" />
+
+</Profile>
