@@ -1097,11 +1097,11 @@ calls with others as identifying earlier in this guide is more efficient.
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
 
-<Rule id="audit_manual_logon_edits">
-<title>Record Attempts to Alter Logon and Logout Events</title>
+<Rule id="audit_rules_login_events">
+<title>Record Attempts to Alter Login and Logout Events</title>
 <description> 
 The audit system already collects login info for all users and root. To watch for attempted manual edits of
-files involved in storing logon events, add the following to <tt>/etc/audit/audit.rules</tt>:
+files involved in storing login events, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /var/log/faillog -p wa -k logins 
 -w /var/log/lastlog -p wa -k logins</pre>
 </description> 
