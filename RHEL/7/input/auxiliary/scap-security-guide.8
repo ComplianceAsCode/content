@@ -47,24 +47,6 @@ is provided by the upstream SCAP Security Guide community on a best-effort
 basis. The upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 
 .RE
-.I usgcb-rhel7-server
-.RS
-The purpose of the United States Government Configuration Baseline (USGCB)
-initiative is to create security configuration baselines for Information
-Technology products widely deployed across the federal agencies. The USGCB
-baseline evolved from the Federal Desktop Core Configuration mandate. The
-USGCB is a Federal government-wide initiative that provides guidance to
-agencies on what should be done to improve and maintain an effective
-configuration settings focusing primarily on security.
-
-.B "NOTE: "
-While the current content maps to USGCB requirements, it has NOT
-been validated by NIST as of yet. This content should be considered
-draft, we are highly interested in feedback.
-
-For additional information relating to USGCB, please refer to the NIST
-webpage at http://usgcb.nist.gov/usgcb_content.html.
-.RE
 
 .I rht-cpp
 .RS
@@ -79,10 +61,9 @@ scanning of general-purpose RHEL systems.
 .RE
 
 .SH EXAMPLES
-To scan your system utilizing the OpenSCAP utility against the 
-stig-rhel7-server-upstream profile:
+To scan your system utilizing the OpenSCAP utility against the rht-cpp profile:
 
-oscap  xccdf eval --profile stig-rhel7-server-upstream \ 
+oscap  xccdf eval --profile rht-cpp \ 
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
 --cpe /usr/share/xml/scap/ssg/content/ssg-rhel7-cpe-dictionary.xml \
