@@ -472,7 +472,7 @@ and a second to use unlock_time and set it to a Value
 <Rule id="accounts_passwords_pam_faillock_deny" severity="medium">
 <title>Set Deny For Failed Password Attempts</title>
 <description>
-To configure the system to lock out accounts after a number of incorrect login
+To configure the system to lock out accounts after a number of incorrect logon
 attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
@@ -497,7 +497,7 @@ prevents direct password guessing attacks.
 <Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium">
 <title>Set Lockout Time For Failed Password Attempts</title>
 <description>
-To configure the system to lock out accounts after a number of incorrect login
+To configure the system to lock out accounts after a number of incorrect logon
 attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
@@ -523,7 +523,7 @@ situations.
 <Rule id="accounts_passwords_pam_fail_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
-Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
+Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect logon
 attempts.
 <br /><br />
 Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_unix.so</tt> statement in
