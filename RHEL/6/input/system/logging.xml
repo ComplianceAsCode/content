@@ -176,7 +176,7 @@ These log files are determined by the second part of each Rule line in
 <tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
 To see the permissions of a given log file, run the following command:
 <pre>$ ls -l <i>LOGFILE</i></pre>
-The permissions should be 600, or more restrictive.
+The permissions should be 600, or more restrictive. Some log files referenced in /etc/rsyslog.conf may be created by other programs and may require exclusion from consideration.
 </ocil>
 <rationale>Log files can contain valuable information regarding system
 configuration. If the system log files are not protected unauthorized
