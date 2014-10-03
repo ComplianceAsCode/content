@@ -271,7 +271,8 @@ is different from account lockout, which is provided by the pam_faillock module.
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
 which contain more than that number of consecutive characters. Add <tt>maxrepeat=<sub idref="var_password_pam_maxrepeat" /></tt>
-after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
+after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters:<br/>
+<pre>password requierd pam_cracklib.so maxrepeat=<sub idref="var_password_pam_maxrepeat" /></pre>
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
