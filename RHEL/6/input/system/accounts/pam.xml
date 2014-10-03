@@ -475,7 +475,7 @@ To configure the system to lock out accounts after a number of incorrect login
 attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
-both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
+both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
 <pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
 <pre>auth required pam_faillock.so authsucc deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
 </description>
@@ -499,14 +499,14 @@ prevents direct password guessing attacks.
 To configure the system to lock out accounts after a number of incorrect login
 attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
 <br /><br />
-Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
+Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
 <pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
 <pre>auth required pam_faillock.so authsucc deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
+<pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>; the largest acceptable value is 604800 seconds (one week).
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
