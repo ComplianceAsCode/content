@@ -1155,16 +1155,16 @@ these events could serve as evidence of potential system compromise.</rationale>
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum the audit system should collect the
 execution of privileged commands for all users and root.
-To find the relevant setuid / setgid programs:
-<pre>$ sudo find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
+To find the relevant setuid / setgid programs, run the following command for each local partition <i>PART</i>:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
 Then, for each setuid / setgid program on the system, add a line of the following form to
 <tt>/etc/audit/audit.rules</tt>, where <i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
 in the list:
 <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
 </description>
 <ocil clause="it is not the case">
-To verify that auditing of privileged command use is configured, run the following command to find relevant setuid / setgid programs:
-<pre>$ sudo find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
+To verify that auditing of privileged command use is configured, run the following command for each local partition <i>PART</i> to find relevant setuid / setgid programs:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
 Run the following command to verify entries in the audit rules for all programs found with the previous command:
 <pre>$ sudo grep path /etc/audit/audit.rules</pre>
 It should be the case that all relevant setuid / setgid programs have a line in the audit rules.
