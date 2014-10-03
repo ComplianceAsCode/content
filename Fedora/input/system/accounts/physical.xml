@@ -137,8 +137,9 @@ in <tt>/usr/lib/systemd/system/rescue.service</tt>.
 <ocil clause="the output is different">
 To check if authentication is required for single-user mode, run the following command:
 <pre>$ grep sulogin /usr/lib/systemd/system/rescue.service</pre>
-The output should include the following:
-<pre>/sbin/sulogin</pre>
+The output should be similar to the following, and the line must begin with
+ExecStart and /sbin/sulogin:
+<pre>ExecStart=-/sbin/sulogin</pre>
 </ocil>
 <rationale>
 This prevents attackers with physical access from trivially bypassing security
