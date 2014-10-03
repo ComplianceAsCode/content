@@ -499,7 +499,7 @@ prevents direct password guessing attacks.
 To configure the system to lock out accounts after a number of incorrect login
 attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
 <br /><br />
-Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
+Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
 <pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
 <pre>auth required pam_faillock.so authsucc deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
 </description>
@@ -525,7 +525,7 @@ situations.
 Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
 attempts.
 <br /><br />
-Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
+Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_unix.so</tt> statement in
 <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
 <pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 <pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
