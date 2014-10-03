@@ -75,8 +75,12 @@ protocols which were not designed with security in mind.
 <service-disable-macro service="bluetooth" />
 <pre>$ sudo service bluetooth stop</pre>
 </description>
-<ocil>
-<service-disable-check-macro service="bluetooth" />
+<ocil clause="the service is configured to run">
+To check that the <code>bluetooth</code> service is disabled in system boot configuration, run the following command: 
+<pre># chkconfig <code>bluetooth</code> --list</pre>
+Output should indicate the <code>bluetooth</code> service has either not been installed, or has been disabled at all runlevels, as shown in the example below:
+<pre># chkconfig <code>bluetooth</code> --list
+<code>bluetooth</code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</pre> 
 </ocil>
 <rationale>Disabling the <tt>bluetooth</tt> service prevents the system from attempting
 connections to Bluetooth devices, which entails some security risk.
