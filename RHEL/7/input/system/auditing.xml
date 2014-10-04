@@ -744,14 +744,14 @@ calls.  Additionally, these rules can be configured in a number of ways while
 still achieving the desired effect.  An example of this is that the "-S" calls 
 could be split up and placed on separate lines, however, this is less efficient.
 Add the following to <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If your system is 64 bit then these lines should be duplicated and the 
 arch=b32 replaced with arch=b64 as follows:
-<pre>-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <rationale>The changing of file permissions could indicate that a user is 
 attempting to gain access to information that would otherwise be disallowed. 
@@ -763,9 +763,9 @@ abuse among both authorized and unauthorized users.</rationale>
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -789,9 +789,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="chown" />
@@ -815,9 +815,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchmod" />
@@ -841,9 +841,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchmodat" />
@@ -867,9 +867,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchown" />
@@ -893,9 +893,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchownat" />
@@ -919,9 +919,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fremovexattr" />
@@ -945,9 +945,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fsetxattr" />
@@ -971,9 +971,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file 
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lchown" />
@@ -997,9 +997,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lremovexattr" />
@@ -1023,9 +1023,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lsetxattr" />
@@ -1049,9 +1049,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="removexattr" />
@@ -1075,9 +1075,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="setxattr" />
@@ -1135,10 +1135,10 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <description>At a minimum the audit system should collect
 unauthorized file accesses for all users and root. Add the following
 to <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
--a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access
--a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
--a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
+<pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access</pre>
 </description>
 <ocil clause="32-bit and 64-bit system calls to creat, open, openat, open_by_handle_at, truncate, and ftruncate are not audited during EACCES and EPERM">
 To verify that the audit system collects unauthorized file accesses, run the following commands:
@@ -1161,7 +1161,7 @@ To find the relevant setuid / setgid programs:
 Then, for each setuid / setgid program on the system, add a line of the following form to
 <tt>/etc/audit/audit.rules</tt>, where <i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
 in the list:
-<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
+<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged</pre>
 </description>
 <ocil clause="it is not the case">
 To verify that auditing of privileged command use is configured, run the following command to find relevant setuid / setgid programs:
@@ -1187,7 +1187,7 @@ unusual activity.
 exportation events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export</pre>
+<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for all media exportation events, run the following command:
@@ -1209,7 +1209,7 @@ loss.</rationale>
 deletion events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=500 -F auid!=4294967295 -k delete</pre>
+<pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="unlink" />
