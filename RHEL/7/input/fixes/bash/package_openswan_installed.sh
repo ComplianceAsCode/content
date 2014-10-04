@@ -1,1 +1,0 @@
-yum -y install openswan
