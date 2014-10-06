@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/set_password_hashing_algorithm_logindefs.sh

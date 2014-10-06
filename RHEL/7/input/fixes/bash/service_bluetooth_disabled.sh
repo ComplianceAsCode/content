@@ -1,9 +1,9 @@
 #
-# Disable bluetooth for all run levels
+# Disable bluetooth.service for all systemd targets
 #
-chkconfig --level 0123456 bluetooth off
+systemctl disable bluetooth.service
 
 #
-# Stop bluetooth if currently running
+# Stop bluetooth.service if currently running
 #
-service bluetooth stop
+systemctl stop bluetooth.service

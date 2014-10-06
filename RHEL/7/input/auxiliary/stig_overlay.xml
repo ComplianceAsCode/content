@@ -168,7 +168,7 @@
 		<VMSinfo VKey="38480" SVKey="50280" VRelease="1" />
 		<title>Users must be warned 7 days in advance of password expiration.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_cracklib_dcredit" ownerid="RHEL-06-000056" disa="194" severity="low">
+	<overlay owner="disastig" ruleid="accounts_password_pam_dcredit" ownerid="RHEL-06-000056" disa="194" severity="low">
 		<VMSinfo VKey="38482" SVKey="50282" VRelease="1" />
 		<title>The system must require passwords to contain at least one numeric character.</title>
 	</overlay>
@@ -184,7 +184,7 @@
 		<VMSinfo VKey="38571" SVKey="50372" VRelease="1" />
 		<title>The system must require passwords to contain at least one lowercase alphabetic character.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_cracklib_difok" ownerid="RHEL-06-000060" disa="195" severity="low">
+	<overlay owner="disastig" ruleid="accounts_password_pam_difok" ownerid="RHEL-06-000060" disa="195" severity="low">
 		<VMSinfo VKey="38572" SVKey="50373" VRelease="1" />
 		<title>The system must require at least four characters be changed between the old and new passwords during a password change.</title>
 	</overlay>
@@ -204,15 +204,15 @@
 		<VMSinfo VKey="38577" SVKey="50378" VRelease="1" />
 		<title>The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes (libuser.conf).</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="user_owner_grub_conf" ownerid="RHEL-06-000065" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_user_owner_grub2_cfg" ownerid="RHEL-06-000065" disa="366" severity="medium">
 		<VMSinfo VKey="38579" SVKey="50380" VRelease="1" />
 		<title>The system boot loader configuration file(s) must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="group_owner_grub_conf" ownerid="RHEL-06-000066" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_group_owner_grub2_cfg" ownerid="RHEL-06-000066" disa="366" severity="medium">
 		<VMSinfo VKey="38581" SVKey="50382" VRelease="1" />
 		<title>The system boot loader configuration file(s) must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="permissions_grub_conf" ownerid="RHEL-06-000067" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_permissions_grub2_cfg" ownerid="RHEL-06-000067" disa="366" severity="medium">
 		<VMSinfo VKey="38583" SVKey="50384" VRelease="1" />
 		<title>The system boot loader configuration file(s) must have mode 0600 or less permissive.</title>
 	</overlay>
@@ -827,7 +827,7 @@
 		<VMSinfo VKey="38672" SVKey="50473" VRelease="2" />
 		<title>The netconsole service must be disabled unless required.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_xwindows_with_runlevel" ownerid="RHEL-06-000290" disa="1436" severity="medium">
+	<overlay owner="disastig" ruleid="disable_xwindows_with_target" ownerid="RHEL-06-000290" disa="1436" severity="medium">
 		<VMSinfo VKey="38674" SVKey="50475" VRelease="1" />
 		<title>X Windows must not be enabled unless required.</title>
 	</overlay>
@@ -920,7 +920,7 @@
 		<VMSinfo VKey="38686" SVKey="50487" VRelease="1" />
 		<title>The system's local firewall must implement a deny-all, allow-by-exception policy for forwarded packets.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="install_openswan" ownerid="RHEL-06-000321" disa="1130" severity="low">
+	<overlay owner="disastig" ruleid="install_libreswan" ownerid="RHEL-06-000321" disa="1130" severity="low">
 		<VMSinfo VKey="38687" SVKey="50488" VRelease="1" />
 		<title>The system must provide VPN connectivity for communications over untrusted networks.</title>
 	</overlay>

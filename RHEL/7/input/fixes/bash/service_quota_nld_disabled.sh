@@ -1,9 +1,9 @@
 #
-# Disable quota_nld for all run levels
+# Disable quota_nld.service for all systemd targets
 #
-chkconfig --level 0123456 quota_nld off
+systemctl disable quota_nld.service
 
 #
-# Stop quota_nld if currently running
+# Stop quota_nld.service if currently running
 #
-service quota_nld stop
+systemctl stop quota_nld.service

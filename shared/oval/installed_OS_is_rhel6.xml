@@ -37,7 +37,7 @@
     <linux:state state_ref="state_rhel_workstation" />
   </linux:rpminfo_test>
   <linux:rpminfo_state id="state_rhel_workstation" version="1">
-    <linux:version operation="pattern match">^6\.\d+$</linux:version>
+    <linux:version operation="pattern match">^6.*$</linux:version>
   </linux:rpminfo_state>
   <linux:rpminfo_object id="obj_rhel_workstation" version="1">
     <linux:name>redhat-release-workstation</linux:name>
@@ -48,7 +48,7 @@
     <linux:state state_ref="state_rhel_server" />
   </linux:rpminfo_test>
   <linux:rpminfo_state id="state_rhel_server" version="1">
-    <linux:version operation="pattern match">^6\.\d+$</linux:version>
+    <linux:version operation="pattern match">^6.*$</linux:version>
   </linux:rpminfo_state>
   <linux:rpminfo_object id="obj_rhel_server" version="1">
     <linux:name>redhat-release-server</linux:name>

@@ -1,9 +1,9 @@
 #
-# Disable dovecot for all run levels
+# Disable dovecot.service for all systemd targets
 #
-chkconfig --level 0123456 dovecot off
+systemctl disable dovecot.service
 
 #
-# Stop dovecot if currently running
+# Stop dovecot.service if currently running
 #
-service dovecot stop
+systemctl stop dovecot.service

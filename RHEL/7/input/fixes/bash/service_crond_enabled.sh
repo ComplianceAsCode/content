@@ -1,9 +1,9 @@
 #
-# Enable crond for all run levels
+# Enable crond.service for all systemd targets
 #
-chkconfig --level 0123456 crond on
+systemctl enable crond.service
 
 #
-# Start crond if not currently running
+# Start crond.service if not currently running
 #
-service crond start
+systemctl start crond.service
