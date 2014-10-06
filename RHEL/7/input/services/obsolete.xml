@@ -75,7 +75,28 @@ actively working to migrate to a more secure protocol.</description>
 <Rule id="disable_telnet_service" severity="high">
 <title>Disable telnet Service</title>
 <description>
-<service-disable-macro service="telnet" />
+The <tt>telnet</tt> service configuration file <tt>/etc/xinetd.d/telnet</tt>
+is not created automatically. If it was created manually, check the
+<tt>/etc/xinetd.d/telnet</tt> file and ensure that <tt>disable = no</tt>
+is changed to read <tt>disable = yes</tt> as follows below:
+<pre>
+# description: The telnet server serves telnet sessions; it uses \\
+#       unencrypted username/password pairs for authentication.
+service telnet
+{
+        flags           = REUSE
+        socket_type     = stream
+
+        wait            = no
+        user            = root
+        server          = /usr/sbin/in.telnetd
+        log_on_failure  += USERID
+        disable         = yes
+}
+</pre>
+Then the activation of the <tt>telnet</tt> service on system boot can be disabled
+via the following command:
+<pre># systemctl disable telnet.socket</pre>
 </description>
 <ocil><xinetd-service-disable-check-macro service="telnet" /></ocil>
 <rationale>
@@ -85,10 +106,10 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27158-5" />
 <oval id="service_telnetd_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
-<tested by="DS" on="20121026"/>
+<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" />
+<tested by="JL" on="20140922"/>
 </Rule>
 
 <Rule id="uninstall_telnet_server" severity="high">
@@ -101,9 +122,9 @@ the following command:
 Removing the <tt>telnet-server</tt> package decreases the risk of the
 telnet service's accidental (or intentional) activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27165-0" />
 <oval id="package_telnet-server_removed" />
-<ref nist="AC-17(8),CM-7" disa="305,381"/>
+<ref nist="AC-17(8),CM-7" disa=""/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -117,7 +138,7 @@ of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
 encrypted session and stronger security and is included in Red Hat
 Enterprise Linux.</rationale>
-<ident cce="" />
+<ident cce="27039-7" />
 <oval id="package_telnet_removed" />
 </Rule>
 

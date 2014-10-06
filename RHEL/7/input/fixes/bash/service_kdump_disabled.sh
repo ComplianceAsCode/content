@@ -1,9 +1,9 @@
 #
-# Disable kdump for all run levels
+# Disable kdump.service for all systemd targets
 #
-chkconfig --level 0123456 kdump off
+systemctl disable kdump.service
 
 #
-# Stop kdump if currently running
+# Stop kdump.service if currently running
 #
-service kdump stop
+systemctl stop kdump.service

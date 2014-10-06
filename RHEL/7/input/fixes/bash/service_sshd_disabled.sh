@@ -1,9 +1,9 @@
 #
-# Disable sshd for all run levels
+# Disable sshd.service for all systemd targets
 #
-chkconfig --level 0123456 sshd off
+systemctl disable sshd.service
 
 #
-# Stop sshd if currently running
+# Stop sshd.service if currently running
 #
-service sshd stop
+systemctl stop sshd.service

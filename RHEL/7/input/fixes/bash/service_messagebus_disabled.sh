@@ -1,9 +1,9 @@
 #
-# Disable messagebus for all run levels
+# Disable messagebus.service for all systemd targets
 #
-chkconfig --level 0123456 messagebus off
+systemctl disable messagebus.service
 
 #
-# Stop messagebus if currently running
+# Stop messagebus.service if currently running
 #
-service messagebus stop
+systemctl stop messagebus.service

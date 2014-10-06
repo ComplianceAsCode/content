@@ -1,9 +1,9 @@
 #
-# Disable vsftpd for all run levels
+# Disable vsftpd.service for all systemd targets
 #
-chkconfig --level 0123456 vsftpd off
+systemctl disable vsftpd.service
 
 #
-# Stop vsftpd if currently running
+# Stop vsftpd.service if currently running
 #
-service vsftpd stop
+systemctl stop vsftpd.service

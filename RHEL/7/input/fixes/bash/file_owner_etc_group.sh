@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/file_owner_etc_group.sh

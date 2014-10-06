@@ -48,7 +48,7 @@ operator="equals" interactive="0">
 <tt>/etc/security/opasswd</tt> in order to force password change history and
 keep the user from alternating between the same password too
 frequently.</description>
-<value selector="">24</value>
+<value selector="">5</value>
 <value selector="0">0</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
@@ -116,7 +116,7 @@ your organization's security policy. Discussion of each parameter follows.
 requirements are not enforced for the root account for some
 reason.</warning>
 
-<Value id="var_password_pam_cracklib_retry" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_retry" type="number" operator="equals" interactive="0">
 <title>retry</title>
 <description>Number of retry attempts before erroring out</description>
 <value selector="">3</value>
@@ -125,7 +125,7 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_maxrepeat" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_maxrepeat" type="number" operator="equals" interactive="0">
 <title>maxrepeat</title>
 <description>Maximum Number of Consecutive Repeating Characters in a Password</description>
 <value selector="">3</value>
@@ -134,7 +134,7 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_minlen" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
 <value selector="">14</value>
@@ -147,7 +147,7 @@ reason.</warning>
 <value selector="15">15</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_dcredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_dcredit" type="number" operator="equals" interactive="0">
 <title>dcredit</title>
 <description>Minimum number of digits in password</description>
 <value selector="">-1</value>
@@ -156,7 +156,7 @@ reason.</warning>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_ocredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_ocredit" type="number" operator="equals" interactive="0">
 <title>ocredit</title>
 <description>Minimum number of other (special characters) in
 password</description>
@@ -166,7 +166,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_lcredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_lcredit" type="number" operator="equals" interactive="0">
 <title>lcredit</title>
 <description>Minimum number of lower case in password</description>
 <value selector="">-1</value>
@@ -175,7 +175,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_ucredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_ucredit" type="number" operator="equals" interactive="0">
 <title>ucredit</title>
 <description>Minimum number of upper case in password</description>
 <value selector="">-1</value>
@@ -184,7 +184,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_difok" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_difok" type="number" operator="equals" interactive="0">
 <title>difok</title>
 <description>Minimum number of characters not present in old
 password</description>
@@ -197,7 +197,7 @@ passwords</warning>
 <value selector="5">5</value>
 </Value>
 
-<Value id="var_password_pam_cracklib_minclass" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minclass" type="number" operator="equals" interactive="0">
 <title>minclass</title>
 <description>Minimum number of categories of characters that must exist in a password</description>
 <value selector="">3</value>
@@ -238,12 +238,12 @@ passwords</warning>
 <value selector="100000000">100000000</value> <!-- 3.16 years -->
 </Value>
 
-<Rule id="accounts_password_pam_cracklib_retry">
+<Rule id="accounts_password_pam_retry">
 <title>Set Password Retry Prompts Permitted Per-Session</title>
 <description>To configure the number of retry prompts that are permitted per-session:
 <br /><br />
 Edit the <tt>pam_cracklib.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to 
-show <tt>retry=3</tt>, or a lower value if site policy is more restrictive.
+show <tt>retry=<sub idref="var_password_pam_retry" /></tt>, or a lower value if site policy is more restrictive.
 <br /><br />
 The DoD requirement is a maximum of 3 prompts per session.
 </description>
@@ -261,7 +261,7 @@ draw additional attention to some types of password-guessing attacks. Note that 
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident cce="27123-9" />
-<oval id="accounts_password_pam_cracklib_retry" value="var_password_pam_cracklib_retry"/>
+<oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
 <ref nist="IA-5(c)" disa="1092" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -270,8 +270,8 @@ is different from account lockout, which is provided by the pam_faillock module.
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
-which contain more than that number of consecutive characters. Add <tt>maxrepeat=3</tt>
-after pam_cracklib.so to prevent a run of four or more identical characters.
+which contain more than that number of consecutive characters. Add <tt>maxrepeat=<sub idref="var_password_pam_maxrepeat" /></tt>
+after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
@@ -282,11 +282,11 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="27227-8" />
-<oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_cracklib_maxrepeat" />
+<oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_dcredit">
+<Rule id="accounts_password_pam_dcredit">
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
@@ -306,12 +306,12 @@ Requiring digits makes password guessing attacks more difficult by ensuring a la
 search space.
 </rationale>
 <ident cce="26374-9" />
-<oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
+<oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
 <ref nist="IA-5(b),IA-5(c),194" disa="194"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_ucredit">
+<Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
 <description>The pam_cracklib module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
@@ -331,18 +331,18 @@ Requiring a minimum number of uppercase characters makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26601-5" />
-<oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
+<oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_ocredit">
+<Rule id="accounts_password_pam_ocredit">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_cracklib module's <tt>ocredit=</tt> parameter controls requirements for
 usage of special (or ``other'') characters in a password. When set to a negative number, any password will be required to
 contain that many special characters. When set to a positive number, pam_cracklib will grant +1 additional
 length credit for each special character.
-Add <tt>ocredit=-1</tt> after pam_cracklib.so to require use of a special character in passwords.
+Add <tt>ocredit=<sub idref="var_password_pam_ocredit" /></tt> after pam_cracklib.so to require use of a special character in passwords.
 </description>
 <ocil clause="ocredit is not found or not set to the required value">
 To check how many special characters are required in a password, run the following command:
@@ -356,12 +356,12 @@ Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26409-3" />
-<oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" />
+<oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_lcredit">
+<Rule id="accounts_password_pam_lcredit">
 <title>Set Password Strength Minimum Lowercase Characters</title>
 <description>The pam_cracklib module's <tt>lcredit=</tt> parameter controls requirements for
 usage of lowercase letters in a password. When set to a negative number, any password will be required to
@@ -381,18 +381,17 @@ Requiring a minimum number of lowercase characters makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26631-2" />
-<oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
+<oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_difok">
+<Rule id="accounts_password_pam_difok">
 <title>Set Password Strength Minimum Different Characters</title>
 <description>The pam_cracklib module's <tt>difok</tt> parameter controls requirements for
 usage of different characters during a password change.
-Add <tt>difok=<i>NUM</i></tt> after pam_cracklib.so to require differing
-characters when changing passwords, substituting <i>NUM</i> appropriately.
-The DoD requirement is <tt>4</tt>.
+Add <tt>difok=<i><sub idref="var_password_pam_difok" /></i></tt> after pam_cracklib.so to require differing
+characters when changing passwords. The DoD requirement is <tt>4</tt>.
 </description>
 <ocil clause="difok is not found or not set to the required value">
 To check how many characters must differ during a password change, run the following command:
@@ -407,7 +406,7 @@ newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
 <ident cce="26615-5" />
-<oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
+<oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195"/>
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -426,10 +425,10 @@ four categories available:
 * Digits
 * Special characters (for example, punctuation)
 </pre>
-Add <tt>minclass=<i>NUM</i></tt> after pam_cracklib.so entry into the
-<tt>/etc/pam.d/system-auth</tt> file in order to require differing categories of
-characters when changing passwords, substituting <i>NUM</i> appropriately (for example to
-require at least three character classes to be used in password, use <tt>minclass=3</tt>).
+Add <tt>minclass=<i><sub idref="var_password_pam_minclass" /></i></tt> after pam_cracklib.so entry into the
+<tt>/etc/pam.d/system-auth</tt> file in order to require <sub idref="var_password_pam_minclass" />  differing categories of
+characters when changing passwords.
+For example to require at least three character classes to be used in password, use <tt>minclass=3</tt>.
 </description>
 <ocil clause="minclass is not found or not set to the required value">
 To check how many categories of characters must be used in password during a password change,
@@ -444,7 +443,7 @@ Requiring a minimum number of character categories makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
-<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_cracklib_minclass"/>
+<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_minclass"/>
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
@@ -477,8 +476,8 @@ attempts using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
 both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -501,8 +500,8 @@ To configure the system to lock out accounts after a number of incorrect login
 attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
 <br /><br />
 Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -528,8 +527,8 @@ attempts.
 <br /><br />
 Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
 <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=900</pre>
+<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -549,10 +548,10 @@ specific period of time prevents direct password guessing attacks.
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
-module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=24</tt> to the 
+module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_password_pam_unix_remember" /></tt> to the
 line which refers to the <tt>pam_unix.so</tt> module, as shown:
-<pre>password sufficient pam_unix.so <i>existing_options</i> remember=24</pre>
-The DoD and FISMA requirement is 24 passwords.</description>
+<pre>password sufficient pam_unix.so <i>existing_options</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
+The DoD STIG requirement is 5 passwords.</description>
 <ocil clause="it does not">
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>

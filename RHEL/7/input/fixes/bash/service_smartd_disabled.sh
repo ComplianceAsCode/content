@@ -1,9 +1,9 @@
 #
-# Disable smartd for all run levels
+# Disable smartd.service for all systemd targets
 #
-chkconfig --level 0123456 smartd off
+systemctl disable smartd.service
 
 #
-# Stop smartd if currently running
+# Stop smartd.service if currently running
 #
-service smartd stop
+systemctl stop smartd.service

@@ -3,26 +3,66 @@
     <metadata>
       <title>Require Authentication for Single-User Mode</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
       </affected>
       <description>The requirement for a password to boot into single-user mode
       should be configured correctly.</description>
-      <reference source="swells" ref_id="20131014" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20140926" ref_url="test_attestation" />
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="Conditions are satisfied"
-      test_ref="test_require_singleuser_auth" />
+      test_ref="test_require_rescue_service" />
+      <criterion test_ref="test_require_rescue_service_runlevel1" />
+      <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
+      <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="Tests that the SINGLE variable in the /etc/sysconfig/init file is set to /sbin/sulogin, to ensure that a password must be entered to access single user mode"
-  id="test_require_singleuser_auth" version="1">
-    <ind:object object_ref="obj_require_singleuser_auth" />
+  comment="Tests that /sbin/sulogin was not removed from the default systemd rescue.service to ensure that a
+  password must be entered to access single user mode"
+  id="test_require_rescue_service" version="1">
+    <ind:object object_ref="obj_require_rescue_service" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_require_singleuser_auth" version="1">
-    <ind:filepath>/etc/sysconfig/init</ind:filepath>
-    <ind:pattern operation="pattern match">^SINGLE=/sbin/sulogin[\s]*</ind:pattern>
+  <ind:textfilecontent54_object id="obj_require_rescue_service" version="1">
+    <ind:filepath>/usr/lib/systemd/system/rescue.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStart=\-.*/sbin/sulogin</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="Tests that the systemd rescue.service is in the runlevel1.target"
+    id="test_require_rescue_service_runlevel1" version="1">
+    <ind:object object_ref="obj_require_rescue_service_runlevel1" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_require_rescue_service_runlevel1" version="1">
+    <ind:filepath>/usr/lib/systemd/system/runlevel1.target</ind:filepath>
+    <ind:pattern operation="pattern match">^Requires=.*rescue.service</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" 
+  comment="look for rescue.service in /etc/systemd/system" 
+  id="test_no_custom_rescue_service" version="1">
+    <unix:object object_ref="object_no_custom_rescue_service" />
+  </unix:file_test>
+  <unix:file_object comment="look for rescue.service in /etc/systemd/system"
+  id="object_no_custom_rescue_service" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
+    <unix:path operation="equals">/etc/systemd/system</unix:path>
+    <unix:filename operation="pattern match">^rescue.service$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" 
+  comment="look for runlevel1.target in /etc/systemd/system"
+  id="test_no_custom_runlevel1_target" version="1">
+    <unix:object object_ref="object_no_custom_runlevel1_target" />
+  </unix:file_test>
+  <unix:file_object comment="look for runlevel1.target in /etc/systemd/system"
+  id="object_no_custom_runlevel1_target" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
+    <unix:path operation="equals">/etc/systemd/system</unix:path>
+    <unix:filename operation="pattern match">^runlevel1.target$</unix:filename>
+  </unix:file_object>
+
 </def-group>

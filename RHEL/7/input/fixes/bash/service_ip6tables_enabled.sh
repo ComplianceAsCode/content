@@ -1,9 +1,9 @@
 #
-# Enable ip6tables for all run levels
+# Enable ip6tables.service for all systemd targets
 #
-chkconfig --level 0123456 ip6tables on
+systemctl enable ip6tables.service
 
 #
-# Start ip6tables if not currently running
+# Start ip6tables.service if not currently running
 #
-service ip6tables start
+systemctl start ip6tables.service
