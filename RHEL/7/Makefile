@@ -44,10 +44,12 @@ checks:
 
 guide: shorthand2xccdf
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
-#	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xsltproc -o $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removetested.xslt $(OUT)/unlinked-$(PROD)-xccdf-guide.xml
-	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(PROD)-guide.html
+#       openscap-1.1.1 https://www.redhat.com/archives/open-scap-list/2014-September/msg00032.html expects
+#       exact profile name to be specified when generating guide (otherwise generated guide won't contain information
+#       about rules, just groups). Thus use 'rht-cpp' as expected profile name for RHEL-7 to see also rules
+	oscap xccdf generate guide --profile rht-ccp $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(PROD)-guide.html
 	xsltproc -o $(OUT)/$(PROD)-guide-custom.html $(TRANS)/xccdf2html.xslt $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml
 
 # example, if needed: for converting XCCDF into shorthand
