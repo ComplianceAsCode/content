@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv4.conf.all.log_martians
 #
-sysctl -q -n -w net.ipv4.conf.all.log_martians=1
+/sbin/sysctl -q -n -w net.ipv4.conf.all.log_martians=1
 
 #
 # If net.ipv4.conf.all.log_martians present in /etc/sysctl.conf, change value to "1"

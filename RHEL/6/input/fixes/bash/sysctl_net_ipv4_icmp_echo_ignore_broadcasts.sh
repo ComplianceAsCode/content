@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv4.icmp_echo_ignore_broadcasts
 #
-sysctl -q -n -w net.ipv4.icmp_echo_ignore_broadcasts=1
+/sbin/sysctl -q -n -w net.ipv4.icmp_echo_ignore_broadcasts=1
 
 #
 # If net.ipv4.icmp_echo_ignore_broadcasts present in /etc/sysctl.conf, change value to "1"

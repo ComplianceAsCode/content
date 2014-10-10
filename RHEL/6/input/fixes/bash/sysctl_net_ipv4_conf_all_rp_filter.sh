@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv4.conf.all.rp_filter
 #
-sysctl -q -n -w net.ipv4.conf.all.rp_filter=1
+/sbin/sysctl -q -n -w net.ipv4.conf.all.rp_filter=1
 
 #
 # If net.ipv4.conf.all.rp_filter present in /etc/sysctl.conf, change value to "1"

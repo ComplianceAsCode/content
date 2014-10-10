@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv4.conf.all.accept_redirects
 #
-sysctl -q -n -w net.ipv4.conf.all.accept_redirects=0
+/sbin/sysctl -q -n -w net.ipv4.conf.all.accept_redirects=0
 
 #
 # If net.ipv4.conf.all.accept_redirects present in /etc/sysctl.conf, change value to "0"
