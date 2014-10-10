@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv4.tcp_syncookies
 #
-sysctl -q -n -w net.ipv4.tcp_syncookies=1
+/sbin/sysctl -q -n -w net.ipv4.tcp_syncookies=1
 
 #
 # If net.ipv4.tcp_syncookies present in /etc/sysctl.conf, change value to "1"

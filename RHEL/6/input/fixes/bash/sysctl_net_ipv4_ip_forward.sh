@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv4.ip_forward
 #
-sysctl -q -n -w net.ipv4.ip_forward=0
+/sbin/sysctl -q -n -w net.ipv4.ip_forward=0
 
 #
 # If net.ipv4.ip_forward present in /etc/sysctl.conf, change value to "0"
