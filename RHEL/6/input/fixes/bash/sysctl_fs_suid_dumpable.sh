@@ -1,7 +1,7 @@
 #
 # Set runtime for fs.suid_dumpable
 #
-sysctl -q -n -w fs.suid_dumpable=0
+/sbin/sysctl -q -n -w fs.suid_dumpable=0
 
 #
 # If fs.suid_dumpable present in /etc/sysctl.conf, change value to "0"
