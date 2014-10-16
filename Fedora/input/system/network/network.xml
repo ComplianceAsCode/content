@@ -1,0 +1,67 @@
+<Group id="network">
+<title>Network Configuration and Firewalls</title>
+<description>Most machines must be connected to a network of some
+sort, and this brings with it the substantial risk of network
+attack. This section discusses the security impact of decisions
+about networking which must be made when configuring a system.
+<br /><br />
+This section also discusses firewalls, network access
+controls, and other network security frameworks, which allow
+system-level rules to be written that can limit an attackers' ability
+to connect to your system. These rules can specify that network
+traffic should be allowed or denied from certain IP addresses,
+hosts, and networks. The rules can also specify which of the
+system's network services are available to particular hosts or
+networks.</description>
+
+<Group id="network_disable_unused_interfaces">
+<title>Disable Unused Interfaces</title>
+<description>Network interfaces expand the attack surface of the 
+system.  Unused interfaces are not monitored or controlled, and 
+should be disabled.
+<br /><br />
+If the system does not require network communications but still
+needs to use the loopback interface, remove all files of the form
+<tt>ifcfg-<i>interface</i></tt> except for <tt>ifcfg-lo</tt> from
+<tt>/etc/sysconfig/network-scripts</tt>:
+<pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+If the system is a standalone machine with no need for network access or even
+communication over the loopback device, then disable this service.
+<service-disable-macro service="network" />
+</description>
+</Group> 
+
+<Rule id="network_disable_zeroconf">
+<title>Disable Zeroconf Networking</title>
+<description>Zeroconf networking allows the system to assign itself an IP
+address and engage in IP communication without a statically-assigned address or
+even a DHCP server. Automatic address assignment via Zeroconf (or DHCP) is not
+recommended. To disable Zeroconf automatic route assignment in the 169.254.0.0
+subnet, add or correct the following line in <tt>/etc/sysconfig/network</tt>:
+<pre>NOZEROCONF=yes</pre>
+</description>
+<rationale>Zeroconf addresses are in the network 169.254.0.0. The networking
+scripts add entries to the system's routing table for these addresses. Zeroconf
+address assignment commonly occurs when the system is configured to use DHCP
+but fails to receive an address assignment from the DHCP server.
+</rationale>
+<!--oval id="network_disable_zeroconf" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="network_sniffer_disabled">
+<title>Ensure System is Not Acting as a Network Sniffer</title>
+<description>The system should not be acting as a network sniffer, which can
+capture all traffic on the network to which it is connected. Run the following
+to determine if any interface is running in promiscuous mode:
+<pre>$ ip link | grep PROMISC</pre>
+</description>
+<rationale>If any results are returned, then a sniffing process (such as tcpdump
+or Wireshark) is likely to be using the interface and this should be
+investigated.
+</rationale>
+<!--oval id="network_sniffer_disabled" /-->
+<ref nist="CM-7,MA-3" />
+</Rule>
+
+</Group>
