@@ -29,8 +29,8 @@ do
 	else
 
 		# insert pam_faillock.so preauth & authfail rows with proper value of the 'deny' option
-		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/i auth required pam_faillock.so preauth silent deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
-		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/a auth [default=die] pam_faillock.so authfail deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
-		sed -i --follow-symlink "/^account.*required.*pam_unix.so/i account required pam_faillock.so" $pamFile
+		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
+		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/a auth        [default=die] pam_faillock.so authfail deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
+		sed -i --follow-symlink "/^account.*required.*pam_unix.so/i account     required      pam_faillock.so" $pamFile
 	fi
 done
