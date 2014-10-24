@@ -1,9 +1,9 @@
 #
 # Enable restorecond for all run levels
 #
-chkconfig --level 0123456 restorecond on
+/sbin/chkconfig --level 0123456 restorecond on
 
 #
 # Start restorecond if not currently running
 #
-service restorecond start
+/sbin/service restorecond start
