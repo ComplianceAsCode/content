@@ -1,9 +1,9 @@
 #
 # Disable nfs for all run levels
 #
-chkconfig --level 0123456 nfs off
+/sbin/chkconfig --level 0123456 nfs off
 
 #
 # Stop nfs if currently running
 #
-service nfs stop
+/sbin/service nfs stop

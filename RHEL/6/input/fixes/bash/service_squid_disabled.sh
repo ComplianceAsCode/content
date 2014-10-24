@@ -1,9 +1,9 @@
 #
 # Disable squid for all run levels
 #
-chkconfig --level 0123456 squid off
+/sbin/chkconfig --level 0123456 squid off
 
 #
 # Stop squid if currently running
 #
-service squid stop
+/sbin/service squid stop
