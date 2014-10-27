@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv6.conf.default.accept_ra
 #
-sysctl -q -n -w net.ipv6.conf.default.accept_ra=0
+/sbin/sysctl -q -n -w net.ipv6.conf.default.accept_ra=0
 
 #
 # If net.ipv6.conf.default.accept_ra present in /etc/sysctl.conf, change value to "0"
