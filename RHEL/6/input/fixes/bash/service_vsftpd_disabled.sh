@@ -1,9 +1,9 @@
 #
 # Disable vsftpd for all run levels
 #
-chkconfig --level 0123456 vsftpd off
+/sbin/chkconfig --level 0123456 vsftpd off
 
 #
 # Stop vsftpd if currently running
 #
-service vsftpd stop
+/sbin/service vsftpd stop

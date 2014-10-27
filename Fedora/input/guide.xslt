@@ -27,6 +27,7 @@
       <xsl:apply-templates select="document('system/software/software.xml')" />
       <xsl:apply-templates select="document('system/permissions/permissions.xml')" />
       <xsl:apply-templates select="document('system/accounts/accounts.xml')" />
+      <xsl:apply-templates select="document('system/network/network.xml')" />
     </xsl:copy>
   </xsl:template>
 

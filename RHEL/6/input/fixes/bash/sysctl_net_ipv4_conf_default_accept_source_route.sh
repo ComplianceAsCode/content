@@ -1,7 +1,7 @@
 #
 # Set runtime for net.ipv4.conf.default.accept_source_route
 #
-sysctl -q -n -w net.ipv4.conf.default.accept_source_route=0
+/sbin/sysctl -q -n -w net.ipv4.conf.default.accept_source_route=0
 
 #
 # If net.ipv4.conf.default.accept_source_route present in /etc/sysctl.conf, change value to "0"

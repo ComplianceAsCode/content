@@ -35,10 +35,11 @@ checks:
 
 guide: shorthand2xccdf
 #       remove auxiliary Groups which are only for use in tables, and not guide output.
-#       specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xsltproc -o $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removetested.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(ID)-$(PROD)-guide.html
+#       OpenSCAP-1.1.1 expects exact profile name in order to include also rules into guide
+#       Create guide for common profile
+	oscap xccdf generate guide --profile common $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(ID)-$(PROD)-common-guide.html
 
 content: shorthand2xccdf guide checks
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
