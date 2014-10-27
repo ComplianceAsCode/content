@@ -29,20 +29,20 @@ should be disabled if not needed.
 <!--oval id="service_snmpd_disabled" /-->
 </Rule>
 
-<Rule id="uninstall_net-snmp">
+<Rule id="package_net-snmp_removed">
 <title>Uninstall <tt>net-snmp</tt> Package</title>
 <description>The <tt>net-snmp</tt> package provides the snmpd service.
-<package-remove-macro package="net-snmpd" />
+<package-remove-macro package="net-snmp" />
 </description>
 <ocil>
-<package-check-macro package="net-snmpd" />
+<package-check-macro package="net-snmp" />
 </ocil>
 <rationale>
 If there is no need to run SNMP server software,
 removing the package provides a safeguard against its
 activation.
 </rationale>
-<!--oval id="package_net-snmp_removed" /-->
+<oval id="package_net-snmp_removed" />
 </Rule>
 
 </Group> <!-- <Group id="disabling_snmp_service"> -->
