@@ -3,8 +3,8 @@
 import sys
 
 # always use shared/testcheck_module.py version
-SHARED_TESTCHECK_MODULE_PATH = "../"
-sys.path.insert(0, SHARED_TESTCHECK_MODULE_PATH)
+SHARED_MODULE_PATH = "../modules/"
+sys.path.insert(0, SHARED_MODULE_PATH)
 import testcheck_module
 
 if __name__ == "__main__":
