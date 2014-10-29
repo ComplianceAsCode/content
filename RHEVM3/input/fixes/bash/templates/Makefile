@@ -1,6 +1,6 @@
 templates: sysctls services kernel_modules
 
-SHARED_DIR=../../../../../../shared/fixes/bash/templates
+SHARED_DIR=../../../../../shared/fixes/bash/templates
 
 sysctls:
 	$(SHARED_DIR)/create_sysctl_bash.py ../../../checks/templates/sysctl_values.csv
