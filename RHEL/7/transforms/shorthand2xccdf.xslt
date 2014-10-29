@@ -456,7 +456,7 @@ and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 To determine if the system is configured to audit calls to
 the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
 system call, run the following command:
-<xhtml:pre xml:space="preserve">$ sudo auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
+<xhtml:pre xml:space="preserve">$ sudo grep "<xsl:value-of select="@syscall"/>" /etc/audit/audit.rules</xhtml:pre>
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
