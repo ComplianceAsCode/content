@@ -28,46 +28,45 @@
     <unix:sgid datatype="boolean">true</unix:sgid>
   </unix:file_state>
 
+  <!-- list of all setgid files included with base RHEL6 system -->
+  <unix:file_state id="state_sgid_whitelist" version="1">
+    <unix:filepath var_ref="var_sgid_whitelist" var_check="at least one" />
+  </unix:file_state>
 
-<!-- list of all setgid files included with base RHEL6 system -->
-    <unix:file_state id="state_sgid_whitelist" version="1">
-       <unix:filepath var_ref="var_sgid_whitelist" var_check="at least one" />
-    </unix:file_state>
-    <constant_variable id="var_sgid_whitelist" version="1" datatype="string" comment="sgid whitelist">
-                <value>/bin/cgexec</value>
-                <value>/sbin/netreport</value>
-                <value>/usr/bin/crontab</value>
-                <value>/usr/bin/gnomine</value>
-                <value>/usr/bin/iagno</value>
-                <value>/usr/bin/locate</value>
-                <value>/usr/bin/lockfile</value>
-                <value>/usr/bin/same-gnome</value>
-                <value>/usr/bin/screen</value>
-                <value>/usr/bin/ssh-agent</value>
-                <value>/usr/bin/wall</value>
-                <value>/usr/bin/write</value>
-                <value>/usr/lib64/vte/gnome-pty-helper</value>
-                <value>/usr/libexec/kde4/kdesud</value>
-                <value>/usr/libexec/utempter/utempter</value>
-                <value>/usr/lib/mailman/cgi-bin/admindb</value>
-                <value>/usr/lib/mailman/cgi-bin/admin</value>
-                <value>/usr/lib/mailman/cgi-bin/confirm</value>
-                <value>/usr/lib/mailman/cgi-bin/create</value>
-                <value>/usr/lib/mailman/cgi-bin/edithtml</value>
-                <value>/usr/lib/mailman/cgi-bin/listinfo</value>
-                <value>/usr/lib/mailman/cgi-bin/options</value>
-                <value>/usr/lib/mailman/cgi-bin/private</value>
-                <value>/usr/lib/mailman/cgi-bin/rmlist</value>
-                <value>/usr/lib/mailman/cgi-bin/roster</value>
-                <value>/usr/lib/mailman/cgi-bin/subscribe</value>
-                <value>/usr/lib/mailman/mail/mailman</value>
-                <value>/usr/lib/vte/gnome-pty-helper</value>
-                <value>/usr/sbin/lockdev</value>
-                <value>/usr/sbin/postdrop</value>
-                <value>/usr/sbin/postqueue</value>
-                <value>/usr/sbin/sendmail.sendmail</value>
-        </constant_variable>
-
-
+  <constant_variable id="var_sgid_whitelist" version="1" datatype="string" comment="sgid whitelist">
+    <value>/bin/cgclassify</value>
+    <value>/bin/cgexec</value>
+    <value>/sbin/netreport</value>
+    <value>/usr/bin/crontab</value>
+    <value>/usr/bin/gnomine</value>
+    <value>/usr/bin/iagno</value>
+    <value>/usr/bin/locate</value>
+    <value>/usr/bin/lockfile</value>
+    <value>/usr/bin/same-gnome</value>
+    <value>/usr/bin/screen</value>
+    <value>/usr/bin/ssh-agent</value>
+    <value>/usr/bin/wall</value>
+    <value>/usr/bin/write</value>
+    <value>/usr/lib64/vte/gnome-pty-helper</value>
+    <value>/usr/libexec/kde4/kdesud</value>
+    <value>/usr/libexec/utempter/utempter</value>
+    <value>/usr/lib/mailman/cgi-bin/admindb</value>
+    <value>/usr/lib/mailman/cgi-bin/admin</value>
+    <value>/usr/lib/mailman/cgi-bin/confirm</value>
+    <value>/usr/lib/mailman/cgi-bin/create</value>
+    <value>/usr/lib/mailman/cgi-bin/edithtml</value>
+    <value>/usr/lib/mailman/cgi-bin/listinfo</value>
+    <value>/usr/lib/mailman/cgi-bin/options</value>
+    <value>/usr/lib/mailman/cgi-bin/private</value>
+    <value>/usr/lib/mailman/cgi-bin/rmlist</value>
+    <value>/usr/lib/mailman/cgi-bin/roster</value>
+    <value>/usr/lib/mailman/cgi-bin/subscribe</value>
+    <value>/usr/lib/mailman/mail/mailman</value>
+    <value>/usr/lib/vte/gnome-pty-helper</value>
+    <value>/usr/sbin/lockdev</value>
+    <value>/usr/sbin/postdrop</value>
+    <value>/usr/sbin/postqueue</value>
+    <value>/usr/sbin/sendmail.sendmail</value>
+  </constant_variable>
 
 </def-group>
