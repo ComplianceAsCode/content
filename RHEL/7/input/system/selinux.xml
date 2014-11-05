@@ -192,7 +192,7 @@ files carry the SELinux type <tt>unlabeled_t</tt>, investigate the cause and
 correct the file's context.
 </description>
 <ocil clause="there is output">To check for unlabeled device files, run the following command:
-<pre>$ sudo ls -RZ /dev | grep unlabeled_t</pre>
+<pre>$sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
 If a device file carries the SELinux type <tt>unlabeled_t</tt>, then SELinux
