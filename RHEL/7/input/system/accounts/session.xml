@@ -27,14 +27,14 @@ operator="equals" interactive="0">
 <Rule id="accounts_max_concurrent_login_sessions">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
-Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
-Service attacks. This addresses concurrent sessions for a single account and does not address 
-concurrent sessions by a single user via multiple accounts.  The DoD requirement is 10.   To set the number of concurrent
+Limiting the number of allowed users and sessions per user can limit risks related to Denial of
+Service attacks. This addresses concurrent sessions for a single account and does not address
+concurrent sessions by a single user via multiple accounts. The DoD requirement is 10. To set the number of concurrent
 sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
 <pre>* hard maxlogins 10</pre>
 </description>
-<rationale>Limiting simultaneous user logins can insulate the system from denial of service 
-problems caused by excessive logins. Automated login processes operating improperly or 
+<rationale>Limiting simultaneous user logins can insulate the system from denial of service
+problems caused by excessive logins. Automated login processes operating improperly or
 maliciously may result in an exceptional number of simultaneous login sessions.
 </rationale>
 <ocil clause="it is not similar">
@@ -287,7 +287,7 @@ add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as
 <pre>UMASK 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
-A misconfigured umask value could result in files with excessive permissions that can be read and 
+A misconfigured umask value could result in files with excessive permissions that can be read and
 written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
