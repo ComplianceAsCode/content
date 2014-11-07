@@ -31,7 +31,7 @@ information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
 <title>Install AIDE</title>
 <description>
 Install the AIDE package with the command:
-<pre># yum install aide</pre>
+<pre>$ sudo yum install aide</pre>
 </description>
 <ocil clause="the package is not installed">
 <package-check-macro package="aide"/>
@@ -41,9 +41,28 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <!--oval id="package_aide_installed" /-->
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
+<tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="aide_build_database">
+<Rule id="disable_prelink">
+<title>Disable Prelinking</title>
+<description>
+The prelinking feature changes binaries in an attempt to decrease their startup
+time.  In order to disable it, change or add the following line inside the file
+<tt>/etc/sysconfig/prelink</tt>:
+<pre>PRELINKING=no</pre>
+Next, run the following command to return binaries to a normal, non-prelinked state:
+<pre>$ sudo /usr/sbin/prelink -ua</pre>
+</description>
+<rationale>
+The prelinking feature can interfere with the operation
+of AIDE, because it changes binaries.
+</rationale>
+<oval id="disable_prelink" />
+<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
+</Rule>
+
+<Rule id="aide_build_database" severity="medium">
 <title>Build and Test AIDE Database</title>
 <description>Run the following command to generate a new database:
 <pre># /usr/sbin/aide --init</pre>
