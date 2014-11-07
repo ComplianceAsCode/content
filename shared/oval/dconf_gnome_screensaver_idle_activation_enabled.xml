@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="compliance" id="dconf_gnome_screensaver_idle_activation_enabled" version="1">
+    <metadata>
+      <title>Enable GNOME3 Screensaver Idle Activation</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
+      </affected>
+      <description>Idle activation of the screen saver should be enabled.</description>
+      <reference source="galford" ref_id="20140824" ref_url="test_attestation" />
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <criteria comment="check screensaver idle activation and prevent user from changing it" operator="AND">
+        <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
+        <criterion comment="idle activation has been configured" test_ref="test_screensaver_idle_activation_enabled" />
+        <criterion comment="prevent user from changing idle delay" test_ref="test_prevent_user_change_idle_activation_enabled" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="idle delay is configured"
+  id="test_screensaver_idle_activation_enabled" version="1">
+    <ind:object object_ref="obj_screensaver_idle_activation_enabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_screensaver_idle_activation_enabled"
+  version="1">
+    <ind:path>/etc/dconf/db/local.d/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^\[org/gnome/desktop/screensaver]([^\n]*\n+)+?idle-activation-enabled=true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="user cannot change idle_activation_enabled"
+  id="test_prevent_user_change_idle_activation_enabled" version="1">
+    <ind:object object_ref="obj_prevent_user_change_idle_activation_enabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_prevent_user_change_idle_activation_enabled"
+  version="1">
+    <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^/org/gnome/desktop/screensaver/idle-activation-enabled$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

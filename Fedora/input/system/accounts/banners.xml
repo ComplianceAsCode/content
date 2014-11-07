@@ -70,10 +70,8 @@ run the following command:
 An appropriate warning message reinforces policy awareness during the logon
 process and facilitates possible legal action against attackers.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="banner_etc_issue" value="login_banner_text"/>
 <ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48,1384,1385,1386,1387,1388" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Group id="gui_login_banner">
@@ -109,7 +107,6 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/banner-
 An appropriate warning message reinforces policy awareness during the logon
 process and facilitates possible legal action against attackers.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_banner_enabled" />
 <ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48,50" />
 </Rule>
@@ -133,12 +130,10 @@ To ensure the login warning banner text is locked and cannot be changed by a use
 <pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/locks/*</pre>
 If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-text</tt>.
 </ocil>
-</ocil>
 <rationale>
 An appropriate warning message reinforces policy awareness during the logon
 process and facilitates possible legal action against attackers.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_login_banner_text" value="login_banner_text"/>
 <ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48,1384,1385,1386,1387,1388" />
 </Rule>
@@ -167,8 +162,7 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/disable
 <rationale>Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="dconf_gnome_disable_user_list" />
+<!--oval id="dconf_gnome_disable_user_list" /-->
 <ref nist="AC-23" />
 </Rule>
 
