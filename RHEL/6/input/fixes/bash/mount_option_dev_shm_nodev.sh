@@ -15,7 +15,7 @@ IFS='#' read DEV_SHM_HEAD DEV_SHM_OPTS DEV_SHM_TAIL <<< "$DEV_SHM_FSTAB"
 DEV_SHM_OPTS=${DEV_SHM_OPTS//defaults/rw,suid,dev,exec,auto,nouser,async,relatime}
 
 # 'dev' option (not prefixed with 'no') present in the list?
-echo $DEV_SHM_OPTS | grep -P '(?<!no)dev'
+echo $DEV_SHM_OPTS | grep -q -P '(?<!no)dev'
 if [ $? -eq 0 ]
 then
         # 'dev' option found, replace with 'nodev'
@@ -23,7 +23,7 @@ then
 fi
 
 # at least one 'nodev' present in the options list?
-echo $DEV_SHM_OPTS | grep -v 'nodev'
+echo $DEV_SHM_OPTS | grep -q -v 'nodev'
 if [ $? -eq 0 ]
 then
         # 'nodev' not found yet, append it

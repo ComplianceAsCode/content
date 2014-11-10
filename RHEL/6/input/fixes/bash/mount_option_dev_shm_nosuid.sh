@@ -15,7 +15,7 @@ IFS='#' read DEV_SHM_HEAD DEV_SHM_OPTS DEV_SHM_TAIL <<< "$DEV_SHM_FSTAB"
 DEV_SHM_OPTS=${DEV_SHM_OPTS//defaults/rw,suid,dev,exec,auto,nouser,async,relatime}
 
 # 'suid' option (not prefixed with 'no') present in the list?
-echo $DEV_SHM_OPTS | grep -P '(?<!no)suid'
+echo $DEV_SHM_OPTS | grep -q -P '(?<!no)suid'
 if [ $? -eq 0 ]
 then
         # 'suid' option found, replace with 'nosuid'
@@ -23,7 +23,7 @@ then
 fi
 
 # at least one 'nosuid' present in the options list?
-echo $DEV_SHM_OPTS | grep -v 'nosuid'
+echo $DEV_SHM_OPTS | grep -q -v 'nosuid'
 if [ $? -eq 0 ]
 then
         # 'nosuid' not found yet, append it
