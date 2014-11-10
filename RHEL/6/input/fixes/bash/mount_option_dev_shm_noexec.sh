@@ -15,7 +15,7 @@ IFS='#' read DEV_SHM_HEAD DEV_SHM_OPTS DEV_SHM_TAIL <<< "$DEV_SHM_FSTAB"
 DEV_SHM_OPTS=${DEV_SHM_OPTS//defaults/rw,suid,dev,exec,auto,nouser,async,relatime}
 
 # 'exec' option (not prefixed with 'no') present in the list?
-echo $DEV_SHM_OPTS | grep -P '(?<!no)exec'
+echo $DEV_SHM_OPTS | grep -q -P '(?<!no)exec'
 if [ $? -eq 0 ]
 then
         # 'exec' option found, replace with 'noexec'
@@ -23,7 +23,7 @@ then
 fi
 
 # at least one 'noexec' present in the options list?
-echo $DEV_SHM_OPTS | grep -v 'noexec'
+echo $DEV_SHM_OPTS | grep -q -v 'noexec'
 if [ $? -eq 0 ]
 then
         # 'noexec' not found yet, append it
