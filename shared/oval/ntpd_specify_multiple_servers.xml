@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="ntpd_specify_multiple_servers" version="1">
+    <metadata>
+      <title>Specify a Remote NTP Server for Time Data</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
+      </affected>
+      <description>Multiple NTP Servers for time synchronization should be
+      specified</description>
+      <reference source="galford" ref_id="20141107" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="ntp.conf conditions are met">
+      <criterion test_ref="test_ntpd_multiple_servers" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensure at least one NTP server is set" id="test_ntpd_multiple_servers"
+  version="1">
+    <ind:object object_ref="obj_ntpd_multiple_servers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Ensure more than one NTP server is set"
+  id="obj_ntpd_multiple_servers" version="1">
+    <ind:filepath>/etc/ntp.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^([\s]*server[\s]+.+$){2,}$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
