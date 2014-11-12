@@ -5,9 +5,8 @@ then
   yum -y install GConf2
 fi
 
-# Set the screensaver locking activation in the GNOME desktop when the
-# screensaver is activated
+# Set the screensaver mode in the GNOME desktop to a blank screen
 gconftool-2 --direct \
             --config-source "xml:readwrite:/etc/gconf/gconf.xml.mandatory" \
-            --type bool \
-            --set /apps/gnome-screensaver/lock_enabled true
+            --type string \
+            --set /apps/gnome-screensaver/mode blank-only
