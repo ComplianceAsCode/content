@@ -253,7 +253,7 @@ the man page <tt>gconftool-2(1)</tt>.</description>
 <value selector="15_minutes">15</value>
 </Value>
 
-<Rule id="set_screensaver_inactivity_timeout" severity="medium">
+<Rule id="gconf_gnome_screensaver_idle_delay" severity="medium">
 <title>Set GNOME Login Inactivity Timeout</title>
 <description>
 Run the following command to set the idle time-out value for
@@ -279,7 +279,7 @@ screen locking to prevent access from passersby.
 <ref nist="AC-11(a)" disa="57"/>
 </Rule>
 
-<Rule id="enable_screensaver_after_idle" severity="medium">
+<Rule id="gconf_gnome_screensaver_idle_activation_enabled" severity="medium">
 <title>GNOME Desktop Screensaver Mandatory Use</title>
 <description>
 Run the following command to activate the screensaver
@@ -305,7 +305,7 @@ controlled-access area.
 <ref nist="AC-11(a)" disa="57" />
 </Rule>
 
-<Rule id="enable_screensaver_password_lock" severity="medium">
+<Rule id="gconf_gnome_screensaver_lock_enabled" severity="medium">
 <title>Enable Screen Lock Activation After Idle Period</title>
 <description>
 Run the following command to activate locking of the screensaver
@@ -330,7 +330,7 @@ access the system, preventing access by passersby.
 <ref nist="AC-11(a)" disa="57" />
 </Rule>
 
-<Rule id="set_blank_screensaver">
+<Rule id="gconf_gnome_screensaver_mode_blank">
 <title>Implement Blank Screensaver</title>
 <description>
 Run the following command to set the screensaver mode
