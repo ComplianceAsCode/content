@@ -2,9 +2,7 @@ source ./templates/support.sh
 populate inactivity_timeout_value
 
 # Install GConf2 package if not installed
-rpm -q GConf2
-if ! [ $? -eq 0 ]
-then
+if ! rpm -q GConf2; then
   yum -y install GConf2
 fi
 
