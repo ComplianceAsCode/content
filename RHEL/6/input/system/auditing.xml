@@ -207,7 +207,7 @@ normally.</i>
 </Value>
 
 <Value id="var_auditd_admin_space_left_action" type="string" >
-<title>Action for auditd to take when disk space just starts to run low</title>
+<title>Action for auditd to take when disk space runs dangerously low</title>
 <description>The setting for space_left_action in /etc/audit/auditd.conf</description>
 <value selector="">single</value>
 <value selector="ignore">ignore</value>
@@ -372,17 +372,17 @@ when disk space is running low but prior to running out of space completely.
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
 substituting <i>ACTION</i> appropriately:
 <pre>admin_space_left_action = <i>ACTION</i></pre>
-Set this value to <tt>single</tt> to cause the system to switch to single user
+Set this value to <tt>single</tt> to cause the system to switch to single-user
 mode for corrective action. Acceptable values also include <tt>suspend</tt> and
 <tt>halt</tt>. For certain systems, the need for availability
 outweighs the need to log all actions, and a different setting should be
 determined. Details regarding all possible values for <i>ACTION</i> are described in the
 <tt>auditd.conf</tt> man page.
 </description>
-<ocil clause="the system is not configured to switch to single user
+<ocil clause="the system is not configured to switch to single-user
 mode for corrective action">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
-determine if the system is configured to either suspend, switch to single user mode,
+determine if the system is configured to either suspend, switch to single-user mode,
 or halt when disk space has run low:
 <pre>admin_space_left_action single</pre>
 </ocil>
@@ -735,7 +735,7 @@ MAC policy should be audited.</rationale>
 
 <Group id="audit_dac_actions">
 <title>Record Events that Modify the System's Discretionary Access Controls</title>
-<description>At a minimum the audit system should collect file permission 
+<description>At a minimum, the audit system should collect file permission 
 changes for all users and root.  Note that the "-F arch=b32" lines should be 
 present even on a 64 bit system.  These commands identify system calls for 
 auditing.  Even if the system is 64 bit it can still execute 32 bit system 
@@ -1097,11 +1097,11 @@ calls with others as identifying earlier in this guide is more efficient.
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
 
-<Rule id="audit_manual_logon_edits">
-<title>Record Attempts to Alter Logon and Logout Events</title>
+<Rule id="audit_rules_login_events">
+<title>Record Attempts to Alter Login and Logout Events</title>
 <description> 
 The audit system already collects login info for all users and root. To watch for attempted manual edits of
-files involved in storing logon events, add the following to <tt>/etc/audit/audit.rules</tt>:
+files involved in storing login events, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /var/log/faillog -p wa -k logins 
 -w /var/log/lastlog -p wa -k logins</pre>
 </description> 
@@ -1155,16 +1155,16 @@ these events could serve as evidence of potential system compromise.</rationale>
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum the audit system should collect the
 execution of privileged commands for all users and root.
-To find the relevant setuid / setgid programs:
-<pre>$ sudo find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
+To find the relevant setuid / setgid programs, run the following command for each local partition <i>PART</i>:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
 Then, for each setuid / setgid program on the system, add a line of the following form to
 <tt>/etc/audit/audit.rules</tt>, where <i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
 in the list:
 <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
 </description>
-<ocil clause="it is not the case">
-To verify that auditing of privileged command use is configured, run the following command to find relevant setuid / setgid programs:
-<pre>$ sudo find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
+<ocil clause="that is not the case">
+To verify that auditing of privileged command use is configured, run the following command for each local partition <i>PART</i> to find relevant setuid / setgid programs:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
 Run the following command to verify entries in the audit rules for all programs found with the previous command:
 <pre>$ sudo grep path /etc/audit/audit.rules</pre>
 It should be the case that all relevant setuid / setgid programs have a line in the audit rules.
