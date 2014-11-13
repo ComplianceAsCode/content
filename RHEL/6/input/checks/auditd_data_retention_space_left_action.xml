@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="auditd_data_retention_space_left_action" version="1">
+  <definition class="compliance" id="auditd_data_retention_space_left_action" version="2">
     <metadata>
       <title>Auditd Action to Take When Disk Starting to Run Low on Space</title>
       <affected family="unix">
@@ -14,7 +14,7 @@
 
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="space left action" id="test_auditd_data_retention_space_left_action" version="1">
+  <ind:textfilecontent54_test check="all" comment="space left action" id="test_auditd_data_retention_space_left_action" version="2">
     <ind:object object_ref="object_auditd_data_retention_space_left_action" />
     <ind:state state_ref="state_auditd_data_retention_space_left_action" />
   </ind:textfilecontent54_test>
@@ -27,11 +27,11 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_auditd_data_retention_space_left_action" version="1">
+  <ind:textfilecontent54_state id="state_auditd_data_retention_space_left_action" version="2">
     <ind:subexpression operation="case insensitive equals" var_ref="var_auditd_space_left_action" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="audit space_left_action setting" datatype="string" id="var_auditd_space_left_action" version="1" />
+  <external_variable comment="audit space_left_action setting" datatype="string" id="var_auditd_space_left_action" version="2" />
 
 
 </def-group>
