@@ -11,15 +11,17 @@
       should exist in the /dev directory on the root partition or within chroot
       jails built for system services. All other locations should not allow
       character and block devices.</description>
-      <reference source="MED" ref_id="20130821" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20141113" ref_url="test_attestation" />
     </metadata>
-    <criteria>
-      <criterion comment="nodev on local filesystems"
-      test_ref="test_nodev_nonroot_local_partitions" negate="true" />
+    <criteria operator="AND">
+      <criterion comment="runtime nodev on local filesystems"
+      test_ref="test_runtime_nodev_nonroot_local_partitions" negate="true" />
+      <criterion comment="persistent nodev on local filesystems"
+      test_ref="test_persistent_nodev_nonroot_local_partitions" negate="true" />
     </criteria>
   </definition>
   <linux:partition_test check="all" check_existence="all_exist"
-  id="test_nodev_nonroot_local_partitions" version="1"
+  id="test_runtime_nodev_nonroot_local_partitions" version="1"
   comment="nodev on local filesystems">
     <linux:object object_ref="object_non_root_partitions" />
     <linux:state state_ref="state_local_nodev" />
@@ -35,4 +37,15 @@
     <linux:mount_options datatype="string" entity_check="all"
     operation="not equal">nodev</linux:mount_options>
   </linux:partition_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="persistent check"
+  id="test_persistent_nodev_nonroot_local_partitions" version="1">
+    <ind:object object_ref="object_persistent_nodev_nonroot_local_partitions" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_persistent_nodev_nonroot_local_partitions" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^/dev/((?!nodev|[\s]/[\s]).)*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>

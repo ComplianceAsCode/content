@@ -14,10 +14,31 @@
       certain types of worms or malicious code.</description>
     </metadata>
     <criteria operator="OR">
-      <criterion test_ref="test_noexec_removable_partition" comment="noexec on removable partition" />
-      <criterion test_ref="test_noexec_etc_fstab_removable_partition" comment="removable partition /etc/fstab" />
+      <criteria operator="AND">
+        <criterion test_ref="test_noexec_removable_partition" comment="noexec on removable partition" />
+        <criterion test_ref="test_noexec_etc_fstab_removable_partition" comment="removable partition /etc/fstab" />
+      </criteria>
+      <criteria>
+        <criterion test_ref="test_removable_partition_exists" comment="removable partition exists" negate="true"/>
+      </criteria>
     </criteria>
   </definition>
+
+  <!-- Check if removeable partition exists -->
+  <linux:partition_test check="all" check_existence="all_exist" id="test_removable_partition_exists" version="1" comment="removable partition exists">
+    <linux:object object_ref="object_removable_partition_exists" />
+    <linux:state state_ref="state_removable_partition_exists" />
+  </linux:partition_test>
+  <linux:partition_object id="object_removable_partition_exists" version="1">
+    <!-- look at all partitions except root -->
+    <linux:mount_point operation="pattern match">^/\w.*$</linux:mount_point>
+    <filter action="include">state_removable_partition_exists</filter>
+  </linux:partition_object>
+  <linux:partition_state id="state_removable_partition_exists" version="1">
+    <linux:device operation="pattern match" var_ref="var_removable_partition"/>
+  </linux:partition_state>
+
+  <!-- Check if removeable partition has noexec configured -->
   <linux:partition_test check="all" check_existence="all_exist" id="test_noexec_removable_partition" version="1" comment="noexec on removable partition">
     <linux:object object_ref="object_removable_partition_noexec" />
     <linux:state state_ref="state_noexec_removable_partition" />

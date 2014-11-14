@@ -41,4 +41,18 @@
     <ind:instance datatype="int" operation="greater than or equal">
     1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Ensure bind mount option is persistent on /var/tmp"
+  id="test_persistent_mount_option_var_tmp_bind" version="1">
+    <ind:object object_ref="object_persistent_mount_option_var_tmp_bind" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/mtab"
+  id="object_persistent_mount_option_var_tmp_bind" version="1">
+    <ind:filepath>/etc/mtab</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*/tmp[\s]+/var/tmp[\s]+.*bind.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">
+    1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>

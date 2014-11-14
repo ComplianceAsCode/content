@@ -123,25 +123,27 @@ transit.
 </Rule>
 
 
-<Rule id="require_smb_client_signing_mount.cifs">
-<title>Require Client SMB Packet Signing, if using mount.cifs</title>
-<description>Require packet signing of clients who mount Samba
+<Rule id="mount_option_cifs_client_signing">
+<title>Require CIFS Client Packet Signing, if using mount.cifs</title>
+<description>Require packet signing of clients who mount CIFS
 shares using the <tt>mount.cifs</tt> program (e.g., those who specify shares
 in <tt>/etc/fstab</tt>). To do so, ensure signing options (either
 <tt>sec=krb5i</tt> or <tt>sec=ntlmv2i</tt>) are used.
 <br /><br />
 See the <tt>mount.cifs(8)</tt> man page for more information. A Samba
-client should only communicate with servers who can support SMB
+client should only communicate with servers who can support CIFS
 packet signing.
 </description>
-<ocil clause="it does not">
-To verify that Samba clients using mount.cifs must use packet signing, run the following command:
+<ocil clause="cifs mounts do not persistently, and in runtime, sign client packets">
+The persistent settings can be verified by running the following:
 <pre>$ grep sec /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep cifs</pre>
 The output should show either <tt>krb5i</tt> or <tt>ntlmv2i</tt> in use.
 </ocil>
 <rationale>
 Packet signing can prevent man-in-the-middle
-attacks which modify SMB packets in transit.
+attacks which modify CIFS packets in transit.
 </rationale>
 <ident cce="26792-2" />
 <oval id="mount_option_smb_client_signing" />

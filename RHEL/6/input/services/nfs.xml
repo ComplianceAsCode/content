@@ -284,39 +284,45 @@ be executed from remote servers is particularly risky, both for this reason and
 because it requires the clients to extend root-level trust to the NFS
 server.</description>
 
-<Rule id="use_nodev_option_on_nfs_mounts" severity="medium">
+<Rule id="mount_option_nodev_nfs_remote" severity="medium">
 <title>Mount Remote Filesystems with nodev</title>
 <description>
 <mount-desc-macro option="nodev" part="any NFS mounts" />
 </description>
-<ocil clause="the setting does not show">
-To verify the <tt>nodev</tt> option is configured for all NFS mounts, run the following command:
+<ocil clause="Remote NFS filesystems do not persistently, and in runtime,
+ contain the nodev mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep nfs /etc/fstab</pre>
+The runtime settings can be verified by running the following:
 <pre>$ mount | grep nfs</pre>
-All NFS mounts should show the <tt>nodev</tt> setting in parentheses.  This is not applicable if NFS is 
-not implemented.
+The output should contain the remote NFS filesystems with the <tt>nodev</tt>
+mount option. This is not applicable if NFS is not implemented.
 </ocil>
 <rationale>Legitimate device files should only exist in the /dev directory. NFS mounts
 should not present device files to users.</rationale>
 <ident cce="27090-0" />
-<oval id="mount_option_nodev_remote_filesystems" />
+<oval id="mount_option_nodev_nfs_remote" />
 <tested by="DS" on="20121025"/>
 </Rule>
 
-<Rule id="use_nosuid_option_on_nfs_mounts" severity="medium">
+<Rule id="mount_option_nosuid_nfs_remote" severity="medium">
 <title>Mount Remote Filesystems with nosuid</title>
 <description>
 <mount-desc-macro option="nosuid" part="any NFS mounts" />
 </description>
-<ocil clause="the setting does not show">
-To verify the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command:
-<pre>$ mount | grep nfs</pre>
-All NFS mounts should show the <tt>nosuid</tt> setting in parentheses.  This is not applicable if NFS is 
-not implemented.
-</ocil>
+<ocil clause="Remote NFS filesystems do not persistently, and in runtime,
+ contain the nosuid mount option">
+ The persistent settings can be verified by running the following:
+ <pre>$ grep nfs /etc/fstab</pre>
+ The runtime settings can be verified by running the following:
+ <pre>$ mount | grep nfs</pre>
+ The output should contain the remote NFS filesystems with the <tt>nosuid</tt>
+ mount option. This is not applicable if NFS is not implemented.
+ </ocil>
 <rationale>NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables
 should be installed to their default location on the local filesystem.</rationale>
 <ident cce="26972-0" />
-<oval id="mount_option_nosuid_remote_filesystems" />
+<oval id="mount_option_nosuid_nfs_remote" />
 <tested by="DS" on="20121025"/>
 </Rule>
 
