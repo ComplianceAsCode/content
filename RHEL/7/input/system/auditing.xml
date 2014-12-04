@@ -713,7 +713,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <tested by="DS" on="20121024"/>
 </Rule> 
 
-<Rule id="audit_mac_changes">
+<Rule id="audit_rules_mac_modification">
 <title>Record Events that Modify the System's Mandatory Access Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
