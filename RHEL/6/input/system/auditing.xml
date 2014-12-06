@@ -623,16 +623,16 @@ to the system time should be audited.</rationale>
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
 
-<Rule id="audit_account_changes">
+<Rule id="audit_rules_usergroup_modification">
 <title>Record Events that Modify User/Group Information</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, in order
 to capture events that modify account changes:
-<pre># audit_account_changes
--w /etc/group -p wa -k audit_account_changes
--w /etc/passwd -p wa -k audit_account_changes
--w /etc/gshadow -p wa -k audit_account_changes
--w /etc/shadow -p wa -k audit_account_changes
--w /etc/security/opasswd -p wa -k audit_account_changes</pre>
+<pre># audit_rules_usergroup_modification
+-w /etc/group -p wa -k audit_rules_usergroup_modification
+-w /etc/passwd -p wa -k audit_rules_usergroup_modification
+-w /etc/gshadow -p wa -k audit_rules_usergroup_modification
+-w /etc/shadow -p wa -k audit_rules_usergroup_modification
+-w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit account changes">
 To determine if the system is configured to audit account changes,
@@ -712,7 +712,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <tested by="DS" on="20121024"/>
 </Rule> 
 
-<Rule id="audit_mac_changes">
+<Rule id="audit_rules_mac_modification">
 <title>Record Events that Modify the System's Mandatory Access Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
@@ -1224,7 +1224,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
 </Rule>
 
-<Rule id="audit_sysadmin_actions">
+<Rule id="audit_rules_sysadmin_actions">
 <title>Ensure <tt>auditd</tt> Collects System Administrator Actions</title>
 <description>At a minimum the audit system should collect
 administrator actions for all users and root. Add the following to
