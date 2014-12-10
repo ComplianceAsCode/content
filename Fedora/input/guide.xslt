@@ -66,6 +66,7 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/permissions/mounting.xml')" />
       <xsl:apply-templates select="document('system/permissions/files.xml')" />
+      <xsl:apply-templates select="document('system/permissions/execution.xml')" /> 
     </xsl:copy>
   </xsl:template>
 
