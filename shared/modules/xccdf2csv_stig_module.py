@@ -9,7 +9,7 @@ import lxml.etree as ET
 # as well as its comparison with VMS output.
 
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
-disa_cciuri = "http://iase.disa.mil/cci/index.html"
+disa_cciuri = "http://iase.disa.mil/cci/Pages/index.aspx"
 disa_srguri = "http://iase.disa.stigs/srgs/Pages/index.aspx"
 
 
