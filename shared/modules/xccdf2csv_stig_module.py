@@ -10,7 +10,7 @@ import lxml.etree as ET
 
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 disa_cciuri = "http://iase.disa.mil/cci/index.html"
-disa_srguri = "http://iase.disa.mil/srgs"
+disa_srguri = "http://iase.disa.stigs/srgs/Pages/index.aspx"
 
 
 def parse_xml_file(xmlfile):
