@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/disable_ctrlaltdel_reboot.sh
