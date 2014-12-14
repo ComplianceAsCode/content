@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/tftpd_uses_secure_mode.sh
