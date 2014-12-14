@@ -220,7 +220,7 @@
 		<VMSinfo VKey="38581" SVKey="50382" VRelease="1" />
 		<title>The system boot loader configuration file(s) must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="permissions_grub_conf" ownerid="RHEL-06-000067" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_permissions_grub_conf" ownerid="RHEL-06-000067" disa="366" severity="medium">
 		<VMSinfo VKey="38583" SVKey="50384" VRelease="2" />
 		<title>The system boot loader configuration file(s) must have mode 0600 or less permissive.</title>
 		<fix action="append">Boot partitions based on VFAT, NTFS, or other non-standard configurations may require alternative measures.</fix>
