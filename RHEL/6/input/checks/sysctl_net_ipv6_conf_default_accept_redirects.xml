@@ -10,12 +10,14 @@
       <reference source="swells" ref_id="20131010" ref_url="test_attestation" />
     </metadata>
     <criteria operator="OR">
+      <!-- Case IPv6 enabled -->
       <criteria operator="AND">
         <criterion comment="kernel runtime parameter net.ipv6.conf.default.accept_redirects set to 0" 
           test_ref="test_runtime_sysctl_net_ipv6_conf_default_accept_redirects" />
         <criterion comment="kernel /etc/sysctl.conf parameter net.ipv6.conf.default.accept_redirects set to 0" 
           test_ref="test_static_sysctl_net_ipv6_conf_default_accept_redirects" />
       </criteria>
+      <!-- Case IPv6 not enabled -->
       <criteria operator="AND">
         <extend_definition comment="IPv6 disabled" definition_ref="kernel_module_ipv6_option_disabled" />
       </criteria>
