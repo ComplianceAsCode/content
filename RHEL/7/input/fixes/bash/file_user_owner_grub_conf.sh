@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/file_user_owner_grub_conf.sh
