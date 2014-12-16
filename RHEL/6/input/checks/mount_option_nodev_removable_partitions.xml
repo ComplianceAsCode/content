@@ -12,15 +12,15 @@
       allow character and block devices.</description>
     </metadata>
     <criteria operator="OR">
-      <criterion test_ref="test_nodev_removable_partition" comment="nodev on removable partition" />
-      <criterion test_ref="test_nodev_etc_fstab_removable_partition" comment="removable partition /etc/fstab" />
+      <criterion test_ref="test_runtime_nodev_removable_partition" comment="nodev on removable partition" />
+      <criterion test_ref="test_persistent_nodev_etc_fstab_removable_partition" comment="removable partition /etc/fstab" />
     </criteria>
   </definition>
-  <linux:partition_test check="all" check_existence="all_exist" id="test_nodev_removable_partition" version="1" comment="nodev on removable partition">
+  <linux:partition_test check="all" check_existence="all_exist" id="test_runtime_nodev_removable_partition" version="1" comment="nodev on removable partition">
     <linux:object object_ref="object_removable_partition_nodev" />
     <linux:state state_ref="state_partition_removable_partition_nodev" />
   </linux:partition_test>
-  <ind:textfilecontent54_test check="at least one" comment="removable partition /etc/fstab" id="test_nodev_etc_fstab_removable_partition" version="1">
+  <ind:textfilecontent54_test check="at least one" comment="removable partition /etc/fstab" id="test_persistent_nodev_etc_fstab_removable_partition" version="1">
     <ind:object object_ref="object_etc_fstab_removable_partition_nodev" />
     <ind:state state_ref="state_text_removable_partition_nodev" />
   </ind:textfilecontent54_test>
