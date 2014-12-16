@@ -8,14 +8,15 @@
       <description>The nosuid mount option should be set for temporary storage
       partitions such as /tmp. The suid/sgid permissions should not be required
       in these world-writable directories.</description>
-      <reference source="MED" ref_id="20130821" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20141113" ref_url="test_attestation" />
     </metadata>
-    <criteria>
-      <criterion comment="nosuid on /tmp" test_ref="test_nosuid_tmp" />
+    <criteria operator="AND">
+      <criterion comment="runtime nosuid on /tmp" test_ref="test_runtime_nosuid_tmp" />
+      <criterion comment="persistent nosuid on /tmp" test_ref="test_persistent_nosuid_tmp" />
     </criteria>
   </definition>
   <linux:partition_test check="all" check_existence="all_exist"
-  id="test_nosuid_tmp" version="1" comment="nosuid on /tmp">
+  id="test_runtime_nosuid_tmp" version="1" comment="nosuid on /tmp">
     <linux:object object_ref="object_tmp_nosuid_partition" />
     <linux:state state_ref="state_tmp_nosuid" />
   </linux:partition_test>
@@ -26,4 +27,15 @@
     <linux:mount_options datatype="string" entity_check="at least one"
     operation="equals">nosuid</linux:mount_options>
   </linux:partition_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="persistent check"
+  id="test_persistent_nosuid_tmp" version="1">
+    <ind:object object_ref="object_persistent_nosuid_tmp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_persistent_nosuid_tmp" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*/tmp[\s]+.*nosuid.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>

@@ -14,7 +14,7 @@ partitions that are required on the local system.</description>
 <value selector="dev_cdrom">/dev/cdrom</value>
 </Value>
 
-<Rule id="mountopt_nodev_on_nonroot_partitions">
+<Rule id="mount_option_nodev_nonroot_partitions">
 <title>Add nodev Option to Non-Root Local Partitions</title>
 <description>The <tt>nodev</tt> mount option prevents files from being
 interpreted as character or block devices. 
@@ -23,6 +23,14 @@ the <tt>/dev</tt> directory on the root partition or within chroot
 jails built for system services.
 <mount-desc-macro option="nodev" part="any non-root local partitions" />
 </description>
+<ocil clause="Non-root partitions do not persistently, and in runtime, contain the nodev mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep /dev /etc/fstab | grep -v ' \/ '</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep /dev</pre>
+The output should contain non-root directories with the <tt>nodev</tt>
+mount option.
+</ocil>
 <rationale>The <tt>nodev</tt> mount option prevents files from being
 interpreted as character or block devices. The only legitimate location
 for device files is the <tt>/dev</tt> directory located on the root partition.
@@ -33,7 +41,7 @@ to set <tt>nodev</tt> on these filesystems.</rationale>
 <ref nist="CM-7"/>
 </Rule>
 
-<Rule id="mountopt_nodev_on_removable_partitions">
+<Rule id="mount_option_nodev_removable_partitions">
 <title>Add nodev Option to Removable Media Partitions</title>
 <description>The <tt>nodev</tt> mount option prevents files from being
 interpreted as character or block devices. 
@@ -42,6 +50,15 @@ the <tt>/dev</tt> directory on the root partition or within chroot
 jails built for system services. 
 <mount-desc-macro option="nodev" part="any removable media partitions" />
 </description>
+<ocil clause="Removable partitions do not persistently, and in runtime,
+contain the nodev mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep -v nodev  /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep -v nodev</pre>
+The output should contain remote partitions with the <tt>nodev</tt>
+mount option.
+</ocil>
 <rationale> The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition.  An exception to this is chroot jails, and it is
 not advised to set <tt>nodev</tt> on partitions which contain their root
@@ -60,29 +77,41 @@ key) provides a defense against malicious software that may be present on such
 untrusted media.
 <mount-desc-macro option="noexec" part="any removable media partitions" />
 </description>
+<ocil clause="Removable partitions do not persistently, and in runtime,
+contain the noexec mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep -v noexec /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep -v noexec</pre>
+The output should contain remote partitions with the <tt>noexec</tt>
+mount option.
+</ocil>
 <rationale>Allowing users to execute binaries from removable media such as USB keys exposes
 the system to potential compromise.</rationale>
-<ocil clause="removable media partitions are present">
-To verify that binaries cannot be directly executed from removable media, run the following command:
-<pre>$ grep -v noexec /etc/fstab</pre>
-The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
-in the output are not removable media.
-</ocil>
 <ident cce="27196-5" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" />
 </Rule>
 
 <!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
-<Rule id="mountopt_nosuid_on_removable_partitions">
+<Rule id="mount_option_nosuid_removable_partitions">
 <title>Add nosuid Option to Removable Media Partitions</title>
 <description>The <tt>nosuid</tt> mount option prevents set-user-identifier (SUID)
 and set-group-identifier (SGID) permissions from taking effect. These permissions
 allow users to execute binaries with the same permissions as the owner and group
 of the file respectively. Users should not be allowed to introduce SUID and SGID
-files into the system via partitions mounted from removeable media.
+files into the system via partitions mounted from removable media.
 <mount-desc-macro option="nosuid" part="any removable media partitions" />
 </description>
+<ocil clause="Removable partitions do not persistently, and in runtime,
+contain the nosuid mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep -v nosuid /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep -v nosuid</pre>
+The output should contain remote partitions with the <tt>nosuid</tt>
+mount option.
+</ocil>
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Allowing
 users to introduce SUID or SGID binaries from partitions mounted off of
 removable media would allow them to introduce their own highly-privileged programs.</rationale>
@@ -100,6 +129,14 @@ Legitimate character and block devices should not exist
 within temporary directories like <tt>/tmp</tt>. 
 <mount-desc-macro option="nodev" part="/tmp" />
 </description>
+<ocil clause="/tmp does not persistently, and in runtime, contain the nodev mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep /tmp /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep /tmp</pre>
+The output should contain the <tt>/tmp</tt> directory with the <tt>nodev</tt>
+mount option.
+</ocil>
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <ident cce="26499-4" />
@@ -113,6 +150,14 @@ located on the root partition. The only exception to this is chroot jails.</rati
 from being executed out of <tt>/tmp</tt>.
 <mount-desc-macro option="noexec" part="/tmp" />
 </description>
+<ocil clause="/tmp does not persistently, and in runtime, contain the noexec mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep /tmp /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep /tmp</pre>
+The output should contain the <tt>/tmp</tt> directory with the <tt>noexec</tt>
+mount option.
+</ocil>
 <rationale>Allowing users to execute binaries from world-writable directories
 such as <tt>/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
@@ -128,6 +173,14 @@ execution of setuid programs in <tt>/tmp</tt>. The SUID and SGID permissions
 should not be required in these world-writable directories.
 <mount-desc-macro option="nosuid" part="/tmp" />
 </description>
+<ocil clause="/tmp does not persistently, and in runtime, contain the nosuid mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep /tmp /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep /tmp</pre>
+The output should contain the <tt>/tmp</tt> directory with the <tt>nosuid</tt>
+mount option.
+</ocil>
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <ident cce="26762-5" />
@@ -143,6 +196,14 @@ Legitimate character and block devices should not exist
 within temporary directories like <tt>/dev/shm</tt>. 
 <mount-desc-macro option="nodev" part="/dev/shm" />
 </description>
+<ocil clause="/dev/shm does not persistently, and in runtime, contain the nodev mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep /dev/shm /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep /dev/shm</pre>
+The output should contain <tt>/dev/shm</tt> with the <tt>nodev</tt>
+mount option.
+</ocil>
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <ident cce="26778-1" />
@@ -158,6 +219,14 @@ It can be dangerous to allow the execution of binaries
 from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
 <mount-desc-macro option="noexec" part="/dev/shm" />
 </description>
+<ocil clause="/dev/shm does not persistently, and in runtime, contain the noexec mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep /dev/shm /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep /dev/shm</pre>
+The output should contain <tt>/dev/shm</tt> with the <tt>noexec</tt>
+mount option.
+</ocil>
 <rationale>Allowing users to execute binaries from world-writable directories
 such as <tt>/dev/shm</tt> can expose the system to potential compromise.</rationale>
 <ident cce="26622-1" />
@@ -172,6 +241,14 @@ of setuid programs in <tt>/dev/shm</tt>.  The SUID and SGID permissions should n
 be required in these world-writable directories.
 <mount-desc-macro option="nosuid" part="/dev/shm" />
 </description>
+<ocil clause="/dev/shm does not persistently, and in runtime, contain the nosuid mount option">
+The persistent settings can be verified by running the following:
+<pre>$ grep /dev/shm /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ mount | grep /dev/shm</pre>
+The output should contain <tt>/dev/shm</tt> with the <tt>nosuid</tt>
+mount option.
+</ocil>
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <ident cce="26486-1" />
@@ -188,6 +265,14 @@ one location protected by the same techniques as <tt>/tmp</tt>.  To do so, edit
 <pre>/tmp     /var/tmp     none     rw,nodev,noexec,nosuid,bind     0 0</pre>
 See the <tt>mount(8)</tt> man page for further explanation of bind mounting.
 </description>
+<ocil clause="/var/tmp is not persistently, and in runtime, bind-mounted to /tmp">
+The persistent settings can be verified by running the following:
+<pre>$ grep /var/tmp /etc/fstab</pre>
+The runtime settings can be verified by running the following:
+<pre>$ grep /var/tmp /etc/mtab</pre>
+The output should contain the <tt>/var/tmp</tt> directory with the <tt>bind</tt>
+mount option.
+</ocil>
 <rationale>Having multiple locations for temporary storage is not required. Unless absolutely
 necessary to meet requirements, the storage location <tt>/var/tmp</tt> should be bind mounted to
 <tt>/tmp</tt> and thus share the same protections.</rationale>

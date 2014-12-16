@@ -12,15 +12,36 @@
       files into the system via partitions mounted from removeable media.</description>
     </metadata>
     <criteria operator="OR">
-      <criterion test_ref="test_nosuid_removable_partition" comment="nosuid on removable partition" />
-      <criterion test_ref="test_nosuid_etc_fstab_removable_partition" comment="removable partition /etc/fstab" />
+      <criteria operator="AND">
+        <criterion test_ref="test_runtime_nosuid_removable_partition" comment="nosuid on removable partition" />
+        <criterion test_ref="test_persistent_nosuid_etc_fstab_removable_partition" comment="removable partition /etc/fstab" />
+      </criteria>
+      <criteria>
+        <criterion test_ref="test_removable_partition_exists" comment="removable partition exists" negate="true"/>
+      </criteria>
     </criteria>
   </definition>
-  <linux:partition_test check="all" check_existence="all_exist" id="test_nosuid_removable_partition" version="1" comment="nosuid on removable partition">
+
+  <!-- Check if removeable partition exists -->
+  <linux:partition_test check="all" check_existence="all_exist" id="test_removable_partition_exists" version="1" comment="removable partition exists">
+    <linux:object object_ref="object_removable_partition_exists" />
+    <linux:state state_ref="state_removable_partition_exists" />
+  </linux:partition_test>
+  <linux:partition_object id="object_removable_partition_exists" version="1">
+    <!-- look at all partitions except root -->
+    <linux:mount_point operation="pattern match">^/\w.*$</linux:mount_point>
+    <filter action="include">state_removable_partition_exists</filter>
+  </linux:partition_object>
+  <linux:partition_state id="state_removable_partition_exists" version="1">
+    <linux:device operation="pattern match" var_ref="nosuid_removable_media"/>
+  </linux:partition_state>
+
+  <!-- Check if removeable partition has nosuid configured -->
+  <linux:partition_test check="all" check_existence="all_exist" id="test_runtime_nosuid_removable_partition" version="1" comment="nosuid on removable partition">
     <linux:object object_ref="object_removable_partition_nosuid" />
     <linux:state state_ref="state_nosuid_removable_partitions" />
   </linux:partition_test>
-  <ind:textfilecontent54_test check="at least one" comment="removable partition /etc/fstab" id="test_nosuid_etc_fstab_removable_partition" version="1">
+  <ind:textfilecontent54_test check="at least one" comment="removable partition /etc/fstab" id="test_persistent_nosuid_etc_fstab_removable_partition" version="1">
     <ind:object object_ref="object_etc_fstab_removable_partition_nosuid" />
     <ind:state state_ref="state_text_removable_partition_nosuid" />
   </ind:textfilecontent54_test>

@@ -8,14 +8,15 @@
       <description>Legitimate character and block devices should not exist
       within temporary directories like /tmp. The nodev mount option should be
       specified for /tmp.</description>
-      <reference source="MED" ref_id="20130821" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20141113" ref_url="test_attestation" />
     </metadata>
-    <criteria>
-      <criterion comment="nodev on /tmp" test_ref="test_nodev_tmp" />
+    <criteria operator="AND">
+      <criterion comment="runtime nodev on /tmp" test_ref="test_runtime_nodev_tmp" />
+      <criterion comment="persistent nodev on /tmp" test_ref="test_persistent_nodev_tmp" />
     </criteria>
   </definition>
   <linux:partition_test check="all" check_existence="all_exist"
-  id="test_nodev_tmp" version="1" comment="nodev on /tmp">
+  id="test_runtime_nodev_tmp" version="1" comment="nodev on /tmp">
     <linux:object object_ref="object_tmp_nodev_partition" />
     <linux:state state_ref="state_tmp_nodev" />
   </linux:partition_test>
@@ -26,4 +27,15 @@
     <linux:mount_options datatype="string" entity_check="at least one"
     operation="equals">nodev</linux:mount_options>
   </linux:partition_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="persistent check"
+  id="test_persistent_nodev_tmp" version="1">
+    <ind:object object_ref="object_persistent_nodev_tmp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_persistent_nodev_tmp" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*/tmp[\s]+.*nodev.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>

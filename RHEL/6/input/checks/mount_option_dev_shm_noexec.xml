@@ -9,14 +9,15 @@
       world-writable temporary storage directories such as /dev/shm. The noexec
       mount option prevents binaries from being executed out of
       /dev/shm.</description>
-      <reference source="MED" ref_id="20130821" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20141113" ref_url="test_attestation" />
     </metadata>
-    <criteria>
-      <criterion comment="noexec on /dev/shm" test_ref="test_noexec_dev_shm" />
+    <criteria operator="AND">
+      <criterion comment="runtime noexec on /dev/shm" test_ref="test_runtime_noexec_dev_shm" />
+      <criterion comment="persistent noexec on /dev/shm" test_ref="test_persistent_noexec_dev_shm" />
     </criteria>
   </definition>
   <linux:partition_test check="all" check_existence="all_exist"
-  id="test_noexec_dev_shm" version="1" comment="noexec on /dev/shm">
+  id="test_runtime_noexec_dev_shm" version="1" comment="noexec on /dev/shm">
     <linux:object object_ref="object_dev_shm_partition_noexec" />
     <linux:state state_ref="state_dev_shm_noexec" />
   </linux:partition_test>
@@ -27,4 +28,15 @@
     <linux:mount_options datatype="string" entity_check="at least one"
     operation="equals">noexec</linux:mount_options>
   </linux:partition_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="persistent check"
+  id="test_persistent_noexec_dev_shm" version="1">
+    <ind:object object_ref="object_persistent_noexec_dev_shm" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_persistent_noexec_dev_shm" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^.*/dev/shm.*noexec.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>

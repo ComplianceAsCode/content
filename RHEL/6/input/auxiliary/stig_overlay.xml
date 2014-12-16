@@ -759,11 +759,11 @@
 		<VMSinfo VKey="38650" SVKey="50451" VRelease="2" />
 		<title>The rdisc service must not be running.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="use_nodev_option_on_nfs_mounts" ownerid="RHEL-06-000269" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="mount_option_nodev_nfs_remote" ownerid="RHEL-06-000269" disa="366" severity="medium">
 		<VMSinfo VKey="38652" SVKey="50453" VRelease="2" />
 		<title>Remote file systems must be mounted with the "nodev" option.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="use_nosuid_option_on_nfs_mounts" ownerid="RHEL-06-000270" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="mount_option_nosuid_nfs_remote" ownerid="RHEL-06-000270" disa="366" severity="medium">
 		<VMSinfo VKey="38654" SVKey="50455" VRelease="2" />
 		<title>Remote file systems must be mounted with the "nosuid" option.</title>
 	</overlay>
@@ -775,7 +775,7 @@
 		<VMSinfo VKey="38656" SVKey="50457" VRelease="1" />
 		<title>The system must use SMB client signing for connecting to samba servers using smbclient.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="require_smb_client_signing_mount.cifs" ownerid="RHEL-06-000273" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="mount_option_cifs_client_signing" ownerid="RHEL-06-000273" disa="366" severity="low">
 		<VMSinfo VKey="38657" SVKey="50458" VRelease="2" />
 		<title>The system must use SMB client signing for connecting to samba servers using mount.cifs.</title>
 	</overlay>
