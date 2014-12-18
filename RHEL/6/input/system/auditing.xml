@@ -650,16 +650,16 @@ legitimacy.</rationale>
 <ref nist="AC-2(4),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
 </Rule>
 
-<Rule id="audit_network_modifications">
+<Rule id="audit_rules_networkconfig_modification">
 <title>Record Events that Modify the System's Network Environment</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
-<pre># audit_network_modifications
--a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
--w /etc/issue -p wa -k audit_network_modifications
--w /etc/issue.net -p wa -k audit_network_modifications
--w /etc/hosts -p wa -k audit_network_modifications
--w /etc/sysconfig/network -p wa -k audit_network_modifications</pre>
+<pre># audit_rules_networkconfig_modification
+-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
+-w /etc/issue -p wa -k audit_rules_networkconfig_modification
+-w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
+-w /etc/hosts -p wa -k audit_rules_networkconfig_modification
+-w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit changes of the network configuration">
 To determine if the system is configured to audit changes to its network configuration,
@@ -1135,7 +1135,9 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 unauthorized file accesses for all users and root. Add the following
 to <tt>/etc/audit/audit.rules</tt>:
 <pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
--a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
+If the system is 64 bit then also add the following:
+<pre>
 -a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
 -a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
 </description>
@@ -1180,7 +1182,7 @@ unusual activity.
 <tested by="JL" on="20140703"/>
 </Rule>
 
-<Rule id="audit_media_exports">
+<Rule id="audit_rules_media_export">
 <title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
 <description>At a minimum the audit system should collect media
 exportation events for all users and root. Add the following to
