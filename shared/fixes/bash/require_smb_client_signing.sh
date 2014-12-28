@@ -3,7 +3,7 @@
 #luke.brisk@boeing.com or luke.brisk@gmail.com
 ######################################################################
 
-$CLIENTSIGNINGS=$( grep -i 'client signing' /etc/samba/smb.conf | wc -l )
+CLIENTSIGNING=$( grep -i 'client signing' /etc/samba/smb.conf | wc -l )
 
 if [ $CLIENTSIGNING -eq 0 ];  then
 	# Add to global section
