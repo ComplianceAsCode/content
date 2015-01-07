@@ -34,13 +34,20 @@ def _header(schema_version):
 def parse_conf_file(conf_file):
     parser = SafeConfigParser()
     parser.read(conf_file)
+    oval_version = None
 
     for section in parser.sections():
         for name, setting in parser.items(section):
             if name == 'oval_version':
-                return '%s' % setting
+                oval_version =  setting
             else:
                 pass
+
+    if oval_version is not None:
+        return oval_version
+    else:
+        print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
+        sys.exit(1)
 
 # append new child ONLY if it's not a duplicate
 def append(element, newchild):
@@ -58,9 +65,15 @@ def main():
     if len(sys.argv) < 2:
         print "Provide a directory name, which contains the checks."
         sys.exit(1)
-    
+
     # Get header with schema version
-    header = _header(parse_conf_file(sys.argv[1] + "/" + conf_file))
+    oval_config = sys.argv[1] + "/" + conf_file
+    
+    if os.path.isfile(oval_config):
+        header = _header(parse_conf_file(oval_config))
+    else:
+        print 'The directory specified does not contain the %s file!' % conf_file
+        sys.exit(1)
 
     # concatenate all XML files in the checks directory, to create the
     # document body

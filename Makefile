@@ -78,6 +78,7 @@ tarball:
 
 	# Copy in the source trees for both RHEL
 	# and JBossEAP5 content
+	cp -r config/ $(RPM_TMPDIR)/$(PKG)
 	cp -r shared/ $(RPM_TMPDIR)/$(PKG)
 	cp -r --preserve=links --parents RHEL/6/ $(RPM_TMPDIR)/$(PKG)
 	cp -r --preserve=links --parents RHEL/7/ $(RPM_TMPDIR)/$(PKG)
@@ -105,6 +106,7 @@ fedora-tarball:
 
 	# Copy the source tree for shared OVAL / XCCDF content
 	cp -r shared $(RPM_TMPDIR)/$(FEDORA_PKG)
+	cp -r config $(RPM_TMPDIR)/$(FEDORA_PKG)
 
 	# Don't trust the developers, clean out the build
 	# environment before packaging
