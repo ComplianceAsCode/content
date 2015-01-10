@@ -1,4 +1,8 @@
 
+# NOTE: Run-time reconfiguration of partitions' mount options is not possible.
+# After performing this remediation be sure to also subsequently reboot the
+# system as soon as possible for the remediation to take the effect!
+
 # Shortened ID for frequently used character class
 SP="[:space:]"
 
