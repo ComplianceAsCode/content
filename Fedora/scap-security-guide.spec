@@ -10,11 +10,11 @@
 
 # Used to specify RHEL scap-security-guide tarball source
 # (needs to match latest EPEL-6 scap-security-guide RPM release)
-%global	rhelssgversion		0.1.19
+%global	rhelssgversion		0.1.20
 
 Name:		scap-security-guide
 Version:	0.1.%{fedorassgversion}
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Group:		Applications/System
 License:	Public Domain
@@ -80,6 +80,9 @@ popd
 
 
 %changelog
+* Thu Jan 15 2015 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5-4
+- Upgrade internal RHEL content to 0.1.20 version
+
 * Sun Sep 28 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.5-3
 - Upgrade internal RHEL content to 0.1.19 version
 
