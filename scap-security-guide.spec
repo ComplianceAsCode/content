@@ -1,4 +1,4 @@
-%global		redhatssgversion	19
+%global		redhatssgversion	20
 
 Name:		scap-security-guide
 Version:	0.1.%{redhatssgversion}
@@ -58,6 +58,9 @@ cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man
 %doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Thu Jan 15 2015 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.20-1
+- Make new 0.1.20 release
+
 * Sun Sep 28 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.19-1
 - Make new 0.1.19 release
 
