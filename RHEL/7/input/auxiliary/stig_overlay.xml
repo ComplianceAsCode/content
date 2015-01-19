@@ -488,7 +488,7 @@
 		<VMSinfo VKey="38538" SVKey="50339" VRelease="1" />
 		<title>The operating system must automatically audit account termination.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_network_modifications" ownerid="RHEL-06-000182" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="audit_rules_networkconfig_modification" ownerid="RHEL-06-000182" disa="366" severity="low">
 		<VMSinfo VKey="38540" SVKey="50341" VRelease="1" />
 		<title>The audit system must be configured to audit modifications to the systems network configuration.</title>
 	</overlay>
@@ -556,7 +556,7 @@
 		<VMSinfo VKey="38567" SVKey="50368" VRelease="2" />
 		<title>The audit system must be configured to audit all use of setuid programs.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_media_exports" ownerid="RHEL-06-000199" disa="172" severity="low">
+	<overlay owner="disastig" ruleid="audit_rules_media_export" ownerid="RHEL-06-000199" disa="172" severity="low">
 		<VMSinfo VKey="38568" SVKey="50369" VRelease="2" />
 		<title>The audit system must be configured to audit successful file system mounts.</title>
 	</overlay>
@@ -584,11 +584,11 @@
 		<VMSinfo VKey="38587" SVKey="50388" VRelease="1" />
 		<title>The telnet-server package must not be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_telnet_service" ownerid="RHEL-06-000211" disa="888" severity="high">
+	<overlay owner="disastig" ruleid="service_telnetd_disabled" ownerid="RHEL-06-000211" disa="888" severity="high">
 		<VMSinfo VKey="38589" SVKey="50390" VRelease="2" />
 		<title>The telnet daemon must not be running.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="uninstall_rsh-server" ownerid="RHEL-06-000213" disa="381" severity="high">
+	<overlay owner="disastig" ruleid="package_rsh-server_removed" ownerid="RHEL-06-000213" disa="381" severity="high">
 		<VMSinfo VKey="38591" SVKey="50392" VRelease="1" />
 		<title>The rsh-server package must not be installed.</title>
 	</overlay>
@@ -616,7 +616,7 @@
 		<VMSinfo VKey="38606" SVKey="50407" VRelease="1" />
 		<title>The tftp-server package must not be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_tftp" ownerid="RHEL-06-000223" disa="1436" severity="medium">
+	<overlay owner="disastig" ruleid="service_tftp_disabled" ownerid="RHEL-06-000223" disa="1436" severity="medium">
 		<VMSinfo VKey="38609" SVKey="50410" VRelease="2" />
 		<title>The TFTP service must not be running.</title>
 	</overlay>

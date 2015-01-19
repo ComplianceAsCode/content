@@ -266,7 +266,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_maxrepeat">
+<Rule id="accounts_password_pam_maxrepeat">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
@@ -283,7 +283,7 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="27227-8" />
-<oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_maxrepeat" />
+<oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
@@ -311,6 +311,29 @@ search space.
 <ref nist="IA-5(b),IA-5(c),194" disa="194"/>
 <tested by="DS" on="20121024"/>
 </Rule>
+
+<Rule id="accounts_password_pam_minlen">
+<title>Set Password Minimum Length</title>
+<description>The pam_cracklib module's <tt>minlen</tt> parameter controls requirements for
+minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+after pam_pwquality to set minimum password length requirements.
+</description>
+<ocil clause="minlen is not found or not set to the required value (or higher)">
+To check how many characters are required in a password, run the following command:
+<pre>$ grep cracklib /etc/pam.d/system-auth</pre>
+Your output should contain <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+</ocil>
+<rationale>
+Password length is one factor of several that helps to determine
+strength and how long it takes to crack a password. Use of more characters in
+a password helps to exponentially increase the time and/or resources
+required to compromise the password.
+</rationale>
+<ident cce="26615-5" />
+<oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
+<ref nist="IA-5(1)(a)" disa="205" />
+</Rule>
+
 
 <Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
@@ -412,7 +435,7 @@ Note that passwords which are changed on compromised systems will still be compr
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_minclass">
+<Rule id="accounts_password_pam_minclass">
 <title>Set Password Strength Minimum Different Categories</title>
 <description>The pam_cracklib module's <tt>minclass</tt> parameter controls requirements for
 usage of different character classes, or types, of character that must exist in a password
@@ -444,7 +467,7 @@ Requiring a minimum number of character categories makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
-<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_minclass"/>
+<oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
@@ -478,11 +501,11 @@ attempts using <tt>pam_faillock.so</tt>, modify the content of both
 <br /><br />
 <ul>
 <li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<p><pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></p></li>
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 <li> Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<p><pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></p></li>
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 <li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
-<p><pre>account required pam_faillock.so</pre></p></li>
+<pre>account required pam_faillock.so</pre></li>
 </ul>
 </description>
 <ocil clause="that is not the case">
@@ -508,11 +531,11 @@ modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/pa
 <br /><br />
 <ul>
 <li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<p><pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></p></li>
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 <li> Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<p><pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></p></li>
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 <li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
-<p><pre>account required pam_faillock.so</pre></p></li>
+<pre>account required pam_faillock.so</pre></li>
 </ul>
 </description>
 <ocil clause="that is not the case">
@@ -539,11 +562,11 @@ attempts. Modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/et
 <br /><br />
 <ul>
 <li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<p><pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></p></li>
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 <li> Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<p><pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></p></li>
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 <li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
-<p><pre>account required pam_faillock.so</pre></p></li>
+<pre>account required pam_faillock.so</pre></li>
 </ul>
 </description>
 <ocil clause="that is not the case">
