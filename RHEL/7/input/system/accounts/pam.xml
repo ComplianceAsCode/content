@@ -525,7 +525,7 @@ attempts using <tt>pam_faillock.so</tt>, modify the content of both
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>deny=<id subref="var_accounts_passwords_pam_faillock_deny" /></tt>.
+The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /></tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -587,7 +587,7 @@ attempts. Modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/et
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
 For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 
-<tt><id subref="var_accounts_passwords_pam_faillock_fail_interval" /></tt>  or greater. 
+<tt><sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></tt>  or greater. 
 If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
