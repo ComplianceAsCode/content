@@ -63,10 +63,10 @@ and enhance the usability of the information it presents.</para>
 
 		<section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-XCCDF-Sample_XCCDF_Code">
 			<title>Sample XCCDF Code</title>
-			<para>To understand XCCDF, let's review the <code>disable_telnet_service</code> rule within <filename>ssg-rhel6-xccdf.xml</filename>.
+			<para>To understand XCCDF, let's review the <code>service_telnetd_disabled</code> rule within <filename>ssg-rhel6-xccdf.xml</filename>.
 			<command>$ vim /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml</command></para>
-			<para>Once loaded, locate the disable_telnet_service rule:
-			<command>&#60;Rule id=”disable_telnet_service</command></para>
+			<para>Once loaded, locate the service_telnetd_disabled rule:
+			<command>&#60;Rule id=”service_telnetd_disabled</command></para>
 
 			<table frame='all'><title>XCCDF Rule Elements</title>
 			<tgroup cols='2' align='left' colsep='1' rowsep='1'>
@@ -85,7 +85,7 @@ and enhance the usability of the information it presents.</para>
 					<itemizedlist>
 						<listitem>
 							<para>Rule Name</para>
-							<para><code>...id="disable_telnet_service" ...</code></para>
+							<para><code>...id="service_telnetd_disabled" ...</code></para>
 						</listitem>
 						<listitem>
 							<para>Severity</para>

@@ -61,9 +61,9 @@
 <select idref="set_password_hashing_algorithm_systemauth" selected="true"/>
 <select idref="set_password_hashing_algorithm_logindefs" selected="true"/>
 <select idref="set_password_hashing_algorithm_libuserconf" selected="true"/>
-<select idref="user_owner_grub_conf" selected="true"/>
-<select idref="group_owner_grub_conf" selected="true"/>
-<select idref="permissions_grub_conf" selected="true"/>
+<select idref="file_user_owner_grub_conf" selected="true"/>
+<select idref="file_group_owner_grub_conf" selected="true"/>
+<select idref="file_permissions_grub_conf" selected="true"/>
 <select idref="bootloader_password" selected="true"/>
 <select idref="require_singleuser_auth" selected="true"/>
 <select idref="disable_interactive_boot" selected="true"/>
@@ -122,7 +122,7 @@
 <select idref="audit_rules_time_watch_localtime" selected="true"/>
 
 <select idref="audit_rules_usergroup_modification" selected="true"/>
-<select idref="audit_network_modifications" selected="true"/>
+<select idref="audit_rules_networkconfig_modification" selected="true"/>
 <select idref="audit_rules_mac_modification" selected="true"/>
 
 <!-- Audit DAC modifications -->
@@ -143,7 +143,7 @@
 
 <select idref="audit_file_access" selected="true"/>
 <select idref="audit_privileged_commands" selected="true"/>
-<select idref="audit_media_exports" selected="true"/>
+<select idref="audit_rules_media_export" selected="true"/>
 <select idref="audit_file_deletions" selected="true"/>
 <select idref="audit_rules_sysadmin_actions" selected="true"/>
 <select idref="audit_kernel_module_loading" selected="true"/>
@@ -151,15 +151,23 @@
 <select idref="disable_xinetd" selected="true"/>
 <select idref="uninstall_xinetd" selected="true"/>
 <select idref="uninstall_telnet_server" selected="true"/>
-<select idref="disable_telnet_service" selected="true"/>
-<select idref="uninstall_rsh-server" selected="true"/>
+<<<<<<< HEAD
+<select idref="service_telnetd_disabled" selected="true"/>
+<select idref="package_rsh-server_removed" selected="true"/>
 <select idref="service_rsh_disabled" selected="true"/>
 <select idref="service_rexec_disabled" selected="true"/>
 <select idref="service_rlogin_disabled" selected="true"/>
+=======
+<select idref="service_telnetd_disabled" selected="true"/>
+<select idref="package_rsh-server_removed" selected="true"/>
+<select idref="service_rsh_disabled" selected="true"/>
+<select idref="service_rexec_disabled" selected="true"/>
+<select idref="service_rlogin_disabled" selected="true"/>
+>>>>>>> ee552bb7c8c5d6c30a62b4b847f1ae2f2457d493
 <select idref="uninstall_ypserv" selected="true"/>
 <select idref="disable_ypbind" selected="true"/>
 <select idref="uninstall_tftp-server" selected="true"/>
-<select idref="disable_tftp" selected="true"/>
+<select idref="service_tftp_disabled" selected="true"/>
 <select idref="enable_cron" selected="true"/>
 <select idref="disable_at" selected="true"/>
 <select idref="sshd_allow_only_protocol2" selected="true"/>

@@ -212,15 +212,15 @@
 		<VMSinfo VKey="38577" SVKey="50378" VRelease="1" />
 		<title>The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes (libuser.conf).</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="user_owner_grub_conf" ownerid="RHEL-06-000065" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_user_owner_grub_conf" ownerid="RHEL-06-000065" disa="366" severity="medium">
 		<VMSinfo VKey="38579" SVKey="50380" VRelease="1" />
 		<title>The system boot loader configuration file(s) must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="group_owner_grub_conf" ownerid="RHEL-06-000066" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_group_owner_grub_conf" ownerid="RHEL-06-000066" disa="366" severity="medium">
 		<VMSinfo VKey="38581" SVKey="50382" VRelease="1" />
 		<title>The system boot loader configuration file(s) must be group-owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="permissions_grub_conf" ownerid="RHEL-06-000067" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_permissions_grub_conf" ownerid="RHEL-06-000067" disa="366" severity="medium">
 		<VMSinfo VKey="38583" SVKey="50384" VRelease="2" />
 		<title>The system boot loader configuration file(s) must have mode 0600 or less permissive.</title>
 		<fix action="append">Boot partitions based on VFAT, NTFS, or other non-standard configurations may require alternative measures.</fix>
@@ -500,7 +500,7 @@
 		<VMSinfo VKey="38538" SVKey="50339" VRelease="1" />
 		<title>The operating system must automatically audit account termination.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_network_modifications" ownerid="RHEL-06-000182" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="audit_rules_networkconfig_modification" ownerid="RHEL-06-000182" disa="366" severity="low">
 		<VMSinfo VKey="38540" SVKey="50341" VRelease="2" />
 		<title>The audit system must be configured to audit modifications to the systems network configuration.</title>
 	</overlay>
@@ -568,7 +568,7 @@
 		<VMSinfo VKey="38567" SVKey="50368" VRelease="3" />
 		<title>The audit system must be configured to audit all use of setuid and setgid programs.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_media_exports" ownerid="RHEL-06-000199" disa="172" severity="low">
+	<overlay owner="disastig" ruleid="audit_rules_media_export" ownerid="RHEL-06-000199" disa="172" severity="low">
 		<VMSinfo VKey="38568" SVKey="50369" VRelease="2" />
 		<title>The audit system must be configured to audit successful file system mounts.</title>
 	</overlay>
@@ -596,11 +596,11 @@
 		<VMSinfo VKey="38587" SVKey="50388" VRelease="1" />
 		<title>The telnet-server package must not be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_telnet_service" ownerid="RHEL-06-000211" disa="888" severity="high">
+	<overlay owner="disastig" ruleid="service_telnetd_disabled" ownerid="RHEL-06-000211" disa="888" severity="high">
 		<VMSinfo VKey="38589" SVKey="50390" VRelease="2" />
 		<title>The telnet daemon must not be running.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="uninstall_rsh-server" ownerid="RHEL-06-000213" disa="381" severity="high">
+	<overlay owner="disastig" ruleid="package_rsh-server_removed" ownerid="RHEL-06-000213" disa="381" severity="high">
 		<VMSinfo VKey="38591" SVKey="50392" VRelease="1" />
 		<title>The rsh-server package must not be installed.</title>
 	</overlay>
@@ -628,7 +628,7 @@
 		<VMSinfo VKey="38606" SVKey="50407" VRelease="1" />
 		<title>The tftp-server package must not be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_tftp" ownerid="RHEL-06-000223" disa="1436" severity="medium">
+	<overlay owner="disastig" ruleid="service_tftp_disabled" ownerid="RHEL-06-000223" disa="1436" severity="medium">
 		<VMSinfo VKey="38609" SVKey="50410" VRelease="2" />
 		<title>The TFTP service must not be running.</title>
 	</overlay>
@@ -867,8 +867,8 @@
 		<VMSinfo VKey="38690" SVKey="50491" VRelease="1" />
 		<title>Emergency accounts must be provisioned with an expiration date.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_cracklib_maxrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
-		<VMSinfo VKey="38693" SVKey="50494" VRelease="2" />
+	<overlay owner="disastig" ruleid="accounts_password_pam_maxrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
+		<VMSinfo VKey="38693" SVKey="50494" VRelease="1" />
 		<title>The system must require passwords to contain no more than three consecutive repeating characters.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="no_files_unowned_by_user" ownerid="RHEL-06-000300" disa="224" severity="low">

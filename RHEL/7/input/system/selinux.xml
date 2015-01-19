@@ -117,23 +117,6 @@ targeted for exploitation, such as network or system services.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="service_restorecond_enabled">
-<title>Enable the SELinux Context Restoration Service (restorecond)</title>
-<description>The <tt>restorecond</tt> service utilizes <tt>inotify</tt> to look
-for the creation of new files listed in the
-<tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
-created, <tt>restorecond</tt> ensures the file receives the proper SELinux
-security context.
-<service-enable-macro service="restorecond" />
-</description>
-<rationale>The <tt>restorecond</tt> service helps ensure that the default SELinux
-file context is applied to files. This allows automatic correction
-of file contexts created by some programs.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="service_restorecond_enabled" />
-<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" />
-</Rule>
-
 <Rule id="package_setroubleshoot_removed">
 <title>Uninstall setroubleshoot Package</title>
 <description>The SETroubleshoot service notifies desktop users of SELinux
