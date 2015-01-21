@@ -102,6 +102,7 @@ possibility of unauthorized access to the system.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <!-- <oval id="sshd_limit_user_access" /> -->
+<ref nist="AC-3" />
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
@@ -220,7 +221,7 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="27035-5" />
 <oval id="sshd_disable_rhosts" />
-<ref disa=""/>
+<ref nist="AC-3" disa=""/>
 </Rule>
 
 
@@ -244,7 +245,7 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="26870-6" />
 <oval id="disable_host_auth" />
-<ref disa=""/>
+<ref nist="AC-3" disa=""/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -267,7 +268,7 @@ and also allows direct attack attempts on root's password.
 </rationale>
 <ident cce="26946-4" />
 <oval id="sshd_disable_root_login" />
-<ref nist="AC-6(2),IA-2(1)" disa="" />
+<ref nist="AC-3,AC-6(2),IA-2(1)" disa="" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -291,7 +292,7 @@ even in the event of misconfiguration elsewhere.
 </rationale>
 <ident cce="26864-9" />
 <oval id="sshd_disable_empty_passwords" />
-<ref disa=""/>
+<ref nist="AC-3" disa=""/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
