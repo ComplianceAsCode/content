@@ -22,7 +22,7 @@ def get_args():
     ''' Parses program arguments. '''
     if len(sys.argv) == 2:
         if sys.argv[1] == "--help" or sys.argv[1] == "-h":
-            print help_text
+            print(help_text)
             exit(0)
         else:
             return sys.argv[1]
@@ -56,36 +56,47 @@ def find_oval_objects(oval_refs):
             oval_file_path = os.path.join(xccdf_dir, oval_file)
             oval_files[oval_file] = load_xml(oval_file_path)
         oval_root = oval_files[oval_file]
-        definition = oval_root.find(".//definition[@id='" + def_id + "']")
-        if definition:
+        definition = None
+        for d in oval_root.findall(".//definition"):
+            if d.attrib.get('id') == def_id:
+                definition = d
+                break
+        if definition is not None:
             for criterion in definition.findall(".//criterion"):
                 test_ref = criterion.attrib["test_ref"]
                 tests.append(test_ref)
 
     # find references to objects in tests
     for test in tests:
-        test_element = oval_root.find("tests/*[@id='" + test + "']")
-        if test_element:
-            for object_element in test_element.findall(".//*[@object_ref]"):
-                object_ref = object_element.attrib['object_ref']
-                object_refs.append(object_ref)
+        test_element = None
+        for t in oval_root.findall("tests/*"):
+            if t.attrib.get('id') == test:
+                test_element = t
+                break
+        if test_element is not None:
+            for object_element in test_element.findall(".//*"):
+                if 'object_ref' in object_element.attrib:
+                    object_ref = object_element.attrib['object_ref']
+                    object_refs.append(object_ref)
 
     # find objects
     for r in object_refs:
-        obj = oval_root.find("objects/*[@id='" + r + "']")
-        objects.append(obj.tag)
+        for obj in oval_root.findall("objects/*"):
+            if obj.attrib.get('id') == r:
+                objects.append(obj.tag)
+                break
 
     return set(objects)
 
 
 def print_stats(stats):
     ''' Print statistic of most used objects in input'''
-    print ""
-    print "Count of used OVAL objects:"
-    print "=" * 50
+    print("")
+    print("Count of used OVAL objects:")
+    print("=" * 50)
     stats = stats.items()
     for key, value in reversed(sorted(stats, key=lambda obj: obj[1])):
-        print key.ljust(40) + str(value).rjust(10)
+        print(key.ljust(40) + str(value).rjust(10))
 
 
 def main():
@@ -96,20 +107,20 @@ def main():
     xccdf_root = load_xml(xccdf_file_name)
     xccdf_dir = os.path.dirname(xccdf_file_name)
 
-    for rule in xccdf_root.iter("Rule"):
+    for rule in xccdf_root.findall(".//Rule"):
         rule_id = rule.attrib['id']
         oval_refs = []
-        for ref in rule.iter("check-content-ref"):
+        for ref in rule.findall(".//check-content-ref"):
             oval_name = ref.attrib['name']
             oval_file = ref.attrib['href']
             oval_refs.append((oval_name, oval_file))
         if oval_refs:
             objects = find_oval_objects(oval_refs)
-            print rule_id + ": " + ", ".join(objects)
+            print(rule_id + ": " + ", ".join(objects))
             for o in objects:
                 stats[o] = stats.get(o, 0) + 1
         else:
-            print rule_id + ":"
+            print(rule_id + ":")
     print_stats(stats)
 
 
