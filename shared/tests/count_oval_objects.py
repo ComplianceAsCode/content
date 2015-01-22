@@ -1,27 +1,34 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 '''
 count_oval_objects.py
 
 Shows OVAL objects used by XCCDF rules.
 
-Author: Jan Černý <jcerny@redhat.com>
+Author: Jan Cerny <jcerny@redhat.com>
 '''
 
 import xml.etree.ElementTree as ET
 import sys
-import argparse
 import os.path
 
 oval_files = dict()
 xccdf_dir = None
 
+help_text = '''Shows OVAL objects used by XCCDF rules.
+Usage: ./count_oval_objects.py xccdf_file.xml'''
 
 def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--xccdf', help="xccdf file", required=True)
-    args = parser.parse_args()
-    return args.xccdf
+    ''' Parses program arguments. '''
+    if len(sys.argv) == 2:
+        if sys.argv[1] == "--help" or sys.argv[1] == "-h":
+            print help_text
+            exit(0)
+        else:
+            return sys.argv[1]
+    else:
+        sys.stderr.write("Bad argument. For more information, try --help.\n")
+        exit(-1)
 
 
 def load_xml(file_name):
@@ -73,12 +80,12 @@ def find_oval_objects(oval_refs):
 
 def print_stats(stats):
     ''' Print statistic of most used objects in input'''
-    print()
-    print("Count of used OVAL objects:")
-    print("=" * 50)
+    print ""
+    print "Count of used OVAL objects:"
+    print "=" * 50
     stats = stats.items()
     for key, value in reversed(sorted(stats, key=lambda obj: obj[1])):
-        print(key.ljust(40) + str(value).rjust(10))
+        print key.ljust(40) + str(value).rjust(10)
 
 
 def main():
@@ -98,11 +105,11 @@ def main():
             oval_refs.append((oval_name, oval_file))
         if oval_refs:
             objects = find_oval_objects(oval_refs)
-            print(rule_id + ": " + ", ".join(objects))
+            print rule_id + ": " + ", ".join(objects)
             for o in objects:
                 stats[o] = stats.get(o, 0) + 1
         else:
-            print(rule_id + ":")
+            print rule_id + ":"
     print_stats(stats)
 
 
