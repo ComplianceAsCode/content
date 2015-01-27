@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="auditd_data_retention_space_left_action" version="2">
+  <definition class="compliance" id="auditd_data_retention_space_left_action" version="3">
     <metadata>
       <title>Auditd Action to Take When Disk Starting to Run Low on Space</title>
       <affected family="unix">
@@ -24,7 +24,7 @@
     <!-- Allow only space (exactly) as delimiter: https://fedorahosted.org/audit/browser/trunk/src/auditd-config.c#L426 -->
     <!-- Require at least one space before and after the equal sign -->
     <ind:pattern operation="pattern match">^[ ]*space_left_action[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_auditd_data_retention_space_left_action" version="2">
@@ -32,6 +32,5 @@
   </ind:textfilecontent54_state>
 
   <external_variable comment="audit space_left_action setting" datatype="string" id="var_auditd_space_left_action" version="2" />
-
 
 </def-group>
