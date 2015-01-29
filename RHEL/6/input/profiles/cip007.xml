@@ -1,0 +1,445 @@
+<Profile id="cip007">
+<title>CIP 007-4</title>
+<description>Standard CIP-007-4 requires Responsible Entities to define
+methods, processes, and procedures for securing those systems determined
+to be Critical Cyber Assets, as well as other (non-critical) Cyber Assets
+within the Electronig Security Perimeter(s). Standard CIP-007-4 should be read
+as part of a group of standards numbered Standards CIP-002-4 through CIP-009-4.
+</description>
+
+<!-- R2. Ports and Services - The Responsible Entity shall establish, 
+     document and implement a process to ensure that only those ports
+     and services required for normal and emergency operations are
+     enabled. -->
+
+<!-- R2.1. The Responsible Entity shall enable only those ports and services
+     required for normal and emergency operations. -->
+<select idref="service_restorecond_enabled" selected="true" />
+<select idref="package_screen_installed" selected="true" />
+<select idref="package_openswan_installed" selected="true" />
+
+<select idref="service_iptables_enabled" selected="true" />
+<select idref="service_ip6tables_enabled" selected="true" />
+
+<!-- R2.2. The Responsible Entity shall shall disable other ports and services,
+     including those used for testing purposes, prior to production use of
+     all Cyber Assets inside the Electronic Security Perimeter(s). -->
+
+<select idref="set_ip6tables_default_rule" selected="true" />
+<select idref="set_iptables_default_rule" selected="true" />
+<select idref="set_iptables_default_rule_forward" selected="true" />
+<select idref="iptables_icmp_disabled" selected="true" />
+<select idref="iptables_log_and_drop_suspicious" selected="true" />
+
+<select idref="package_setroubleshoot_removed" selected="true" />
+
+<select idref="kernel_module_usb-storage_disabled" selected="true" />
+<select idref="bootloader_nousb_argument" selected="true" />
+<select idref="bios_disable_usb_boot" selected="true" />
+<select idref="bios_assign_password" selected="true" />
+<select idref="service_autofs_disabled" selected="true" />
+
+<select idref="kernel_module_cramfs_disabled" selected="true" />
+<select idref="kernel_module_freevxfs_disabled" selected="true" />
+<select idref="kernel_module_jffs2_disabled" selected="true" />
+<select idref="kernel_module_hfs_disabled" selected="true" />
+<select idref="kernel_module_hfsplus_disabled" selected="true" />
+<select idref="kernel_module_squashfs_disabled" selected="true" />
+<select idref="kernel_module_udf_disabled" selected="true" />
+<select idref="kernel_module_dccp_disabled" selected="true" />
+<select idref="kernel_module_sctp_disabled" selected="true" />
+<select idref="kernel_module_rds_disabled" selected="true" />
+<select idref="kernel_module_tipc_disabled" selected="true" />
+
+<select idref="sysctl_kernel_dmesg_restrict" selected="true" />
+<select idref="disable_users_coredumps" selected="true" />
+<select idref="sysctl_fs_suid_dumpable" selected="true" />
+<select idref="sysctl_kernel_exec_shield" selected="true" />
+<select idref="sysctl_kernel_randomize_va_space" selected="true" />
+
+<select idref="install_PAE_kernel_on_x86" selected="true" />
+<select idref="bios_enable_execution_restrictions" selected="true" />
+
+<select idref="network_disable_zeroconf" selected="true" />
+<select idref="network_sniffer_disabled" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
+<select idref="sysctl_ipv4_ip_forward" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_secure_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
+<select idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true" />
+<select idref="sysctl_net_ipv4_tcp_syncookies" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
+
+<select idref="wireless_disable_in_bios" selected="true" />
+<select idref="wireless_disable_interfaces" selected="true" />
+<select idref="service_bluetooth_disabled" selected="true" />
+<select idref="kernel_module_bluetooth_disabled" selected="true" />
+
+<select idref="kernel_module_ipv6_option_disabled" selected="true" />
+<select idref="network_ipv6_disable_interfaces" selected="true" />
+<select idref="network_ipv6_disable_rpc" selected="true" />
+<select idref="network_ipv6_static_address" selected="true" />
+<select idref="network_ipv6_privacy_extensions" selected="true" />
+<select idref="network_ipv6_default_gateway" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_redirects" selected="true" />
+<select idref="network_ipv6_limit_requests" selected="true" />
+
+<select idref="disable_xinetd" selected="true" />
+<select idref="uninstall_xinetd" selected="true" />
+<select idref="service_telnetd_disabled" selected="true" />
+<select idref="uninstall_telnet_server" selected="true" />
+<select idref="package_telnet_removed" selected="true" />
+<select idref="package_rsh-server_removed" selected="true" />
+<select idref="service_rexec_disabled" selected="true" />
+<select idref="service_rsh_disabled" selected="true" />
+<select idref="package_rsh_removed" selected="true" />
+<select idref="service_rlogin_disabled" selected="true" />
+<select idref="no_rsh_trust_files" selected="true" />
+<select idref="uninstall_ypserv" selected="true" />
+<select idref="disable_ypbind" selected="true" />
+<select idref="package_ypbind_removed" selected="true" />
+
+<select idref="service_tftp_disabled" selected="true" />
+<select idref="uninstall_tftp" selected="true" />
+<select idref="package_tftp_removed" selected="true" />
+<select idref="tftpd_uses_secure_mode" selected="true" />
+
+<select idref="uninstall_talk-server" selected="true" />
+<select idref="package_talk_removed" selected="true" />
+
+
+<!-- R2.3. In the case where unused ports and services cannot be disabled due
+     to technical limitations, the Responsible Entity shall document
+     compensating measure(s) applied to mitigate risk exposure. -->
+
+<!-- R3. Security Patch Management - The responsible Entity, either separately
+     or as a component of the documented configuration management process
+     specified in CIP-003-4 Requirement R6, shall establish, document
+     and implement a securiy patch management program for tracking,
+     evaluating, testing, and installing applicable cyber security software
+     patches for all Cyber Assets within the Electronic Security Perimeter(s).
+     -->
+<select idref="ensure_redhat_gpgkey_installed" selected="true" />
+<select idref="ensure_gpgcheck_globally_activated" selected="true" />
+<select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="security_patches_up_to_date" selected="true" />
+
+<!-- R3.1. The Responsible Entity shall document the assessment of security
+     patches and security upgrades for applicability within thirty calendar
+     days of availaility of the patches or upgrades. -->
+
+<!-- R3.2. The Responsible Entity shall document the implementation of
+     security patches. In any case where the patch is not installed, the
+     Responsible Entity shall document compensating measure(s) applied to
+     mitigate risk exposure. -->
+
+<!-- R4. Malicious Software Prevention - The Responsible Entity shall use anti-
+     virus software and other malicious software ("malware") prevention
+     tools, where technically feasible, to detect, prevent, deter, and
+     mitigate the introduction, exposure, and propagation of malware on
+     all Cyber Assets within the Electronic Security Perimeter(s). -->
+
+<!-- R4.1. The Responsible Entity shall document and implement ant-virus
+     and malware prevention tools. In the case where anti-virus software
+     and malware prevention tools are not installed, the Responsible Entity
+     shall document compensating measure(s) applied to mitigate risk exposure.
+     -->
+<refine-value idref="var_selinux_state" selector="enforcing" />
+<refine-value idref="var_selinux_policy_name" selector="targeted" />
+<select idref="enable_selinux_bootloader" selected="true" />
+<select idref="selinux_state" selected="true" />
+<select idref="selinux_policytype" selected="true" />
+<select idref="selinux_confinement_of_daemons" selected="true" />
+<select idref="selinux_all_devicefiles_labeled" selected="true" />
+
+<select idref="package_aide_installed" selected="true" />
+<select idref="disable_prelink" selected="true" />
+<select idref="aide_build_database" selected="true" />
+<select idref="aide_periodic_cron_checking" selected="true" />
+
+<select idref="rpm_verify_permissions" selected="true" />
+<select idref="rpm_verify_hashes" selected="true" />
+<select idref="install_hids" selected="true" />
+<select idref="install_antivirus" selected="true" />
+
+
+<!-- R4.2. The Responsible Entity shall document and implement a process for
+     the update of anti-virus and malware prevention "signatures." The process
+     must address testing and installing the signatures. -->
+
+<!-- R5. Acccount Management - The Responsible Entity shall establish,
+     implement, and document technical and procedural controls that enforce
+     access authentication of, and accountability for, all user activity,
+     and that minimize the risk of unauthorized system access. -->
+<select idref="mount_option_nodev_nonroot_local_partitions" selected="true" />
+<select idref="mount_option_nodev_removable_partitions" selected="true" />
+<select idref="mount_option_noexec_removable_partitions" selected="true" />
+<select idref="mount_option_nosuid_removable_partitions" selected="true" />
+<select idref="mount_option_tmp_nodev" selected="true" />
+<select idref="mount_option_tmp_noexec" selected="true" />
+<select idref="mount_option_tmp_nosuid" selected="true" />
+<select idref="mount_option_dev_shm_nodev" selected="true" />
+<select idref="mount_option_dev_shm_noexec" selected="true" />
+<select idref="mount_option_dev_shm_nosuid" selected="true" />
+<select idref="mount_option_var_tmp_bind" selected="true" />
+
+<select idref="userowner_shadow_file" selected="true" />
+<select idref="groupowner_shadow_file" selected="true" />
+<select idref="file_permissions_etc_shadow" selected="true" />
+<select idref="file_owner_etc_group" selected="true" />
+<select idref="file_groupowner_etc_group" selected="true" />
+<select idref="file_permissions_etc_group" selected="true" />
+<select idref="file_owner_etc_gshadow" selected="true" />
+<select idref="file_groupowner_etc_gshadow" selected="true" />
+<select idref="file_permissions_etc_gshadow" selected="true" />
+<select idref="file_owner_etc_passwd" selected="true" />
+<select idref="file_groupowner_etc_passwd" selected="true" />
+<select idref="file_permissions_etc_passwd" selected="true" />
+<select idref="file_user_owner_grub_conf" selected="true" />
+<select idref="file_group_owner_grub_conf" selected="true" />
+<select idref="file_permissions_grub_conf" selected="true" />
+
+<select idref="no_shelllogin_for_systemaccounts" selected="true" />
+
+<select idref="account_disable_post_pw_expiration" selected="true" />
+
+<select idref="display_login_attempts" selected="true" />
+<select idref="accounts_password_pam_retry" selected="true" />
+<select idref="accounts_passwords_pam_faillock_deny" selected="true" />
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
+<select idref="accounts_passwords_pam_fail_interval" selected="true" />
+
+<select idref="accounts_password_pam_maxrepeat" selected="true" />
+<select idref="accounts_password_pam_unix_remember" selected="true" />
+
+<select idref="set_password_hashing_algorithm_systemauth" selected="true" />
+<select idref="set_password_hashing_algorithm_logindefs" selected="true" />
+<select idref="set_password_hashing_algorithm_libuserconf" selected="true" />
+
+<select idref="accounts_max_concurrent_login_sessions" selected="true" />
+
+<select idref="disable_ctrlaltdel_reboot" selected="true" />
+<select idref="disable_interactive_boot" selected="true" />
+<select idref="require_singleuser_auth" selected="true" />
+
+<refine-value idref="login_banner_text"  selector="usgcb_default" />
+<select idref="banner_etc_issue" selected="true" />
+
+
+<!-- R5.1. The Responsible Entity shall ensure that individual and shared
+     system accounts and authorized access permissions are consistent with the
+     concept of "need to know" with respect to work functions perfomed. -->
+
+<select idref="dir_perms_world_writable_sticky_bits" selected="true" />
+<select idref="file_permissions_unauthorized_world_writable" selected="true" />
+<select idref="no_unpackaged_sgid_files" selected="true" />
+<select idref="file_permissions_unauthorized_suid" selected="true" />
+<select idref="no_files_unowned_by_user" selected="true" />
+<select idref="file_permissions_ungroupowned" selected="true" />
+<select idref="world_writable_files_system_ownership" selected="true" />
+<select idref="file_permissions_library_dirs" selected="true" />
+<select idref="file_ownership_library_dirs" selected="true" />
+<select idref="file_permissions_binary_dirs" selected="true" />
+<select idref="file_ownership_binary_dirs" selected="true" />
+<select idref="rsyslog_files_ownership" selected="true" />
+<select idref="rsyslog_files_groupownership" selected="true" />
+<select idref="rsyslog_files_permissions" selected="true" />
+
+<select idref="umask_for_daemons" selected="true" />
+<select idref="accounts_umask_etc_bashrc" selected="true" />
+<select idref="accounts_umask_etc_csh_cshrc" selected="true" />
+<select idref="accounts_umask_etc_profile" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
+
+<select idref="no_direct_root_logins" selected="true" />
+<select idref="securetty_root_login_console_only" selected="true" />
+<select idref="restrict_serial_port_logins" selected="true" />
+
+<select idref="file_permissions_home_dirs" selected="true" />
+
+<select idref="bootloader_password" selected="true" />
+
+
+<!-- R5.1.1. The Responsible Entity shall ensure that user accounts are
+     implemented as approved by designated personnel. Refer to Standard
+     CIP-003-4 Requirement R5. -->
+<select idref="accounts_no_uid_except_zero" selected="true" />
+<select idref="root_path_default" selected="true" />
+<select idref="no_empty_passwords" selected="true" />
+<select idref="accounts_password_all_shadowed" selected="true" />
+<select idref="gid_passwd_group_same" selected="true" />
+<select idref="no_netrc_files" selected="true" />
+<select idref="account_unique_name" selected="true" />
+<select idref="account_temp_expire_date" selected="true" />
+<select idref="root_path_no_dot" selected="true" />
+<select idref="root_path_no_groupother_writable" selected="true" />
+
+<!-- R5.1.2. The Responsible Entity shall establish methods, processes,
+     and procedures that generate logs of sufficient detail to create
+     historical audit trails of individual user account access activity
+     for a minimum of ninety days. -->
+
+<!-- R5.1.3. The Responsible Entity shall review, at least annually, user
+     accounts to verify access privileges are in accordance with Standard
+     CIP-003-4 Requirement R5 and Standard CIP-004-4 Requirement R4. -->
+
+<!-- R5.2. The Responsible Entity shall implement a policy to minimize
+     and manage the scope and acceptable use of administrator, shared, and
+     other generic account privileges including factory default accounts. -->
+
+<!-- R5.2.1. The policy shall include the removal, disabling, or renaming
+     of such accounts where possible. For such accounts that must renain
+     enabled, passwords shall be changed prior to putting any system
+     into service. -->
+
+<!-- R5.2.2. The Responsible Entity shall identify those individuals with
+     access to shared accounts. -->
+
+<!-- R5.2.3. Where such accunts must be shared, the Responsible Entity shall
+     have a policy for managing the use of such accounts that limits access
+     to only those with authorization, an audit trail of the account use
+     (automated of manual), and steps for securing the account in the event
+     of personnel changes (for example, change in assignment or 
+     termination). -->
+
+<!-- R5.3. At a minimum, the Responsible Entity shall require and use passwords,
+     subject to the following, as technically feasible: -->
+
+<!-- R5.3.1. Each password shall be a minimum of six characters. -->
+<refine-value idref="var_accounts_password_minlen_login_defs" selector="6"/>
+<refine-value idref="var_password_pam_minlen" selector="6"/>
+<select idref="accounts_password_pam_minlen" selected="true"/>
+<select idref="accounts_password_minlen_login_defs" selected="true"/>
+
+<!-- R5.3.2. Each password shall consist of a combination of alpha,
+     numeric, and "special" characters. -->
+<refine-value idref="var_password_pam_minclass" selector="4" />
+<select idref="accounts_password_pam_minclass" selected="true" />
+
+<!-- R5.3.3. Each password shall be changed at least annually, or more
+     frequently based on risk. -->
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="365" />
+<select idref="accounts_maximum_age_login_defs" selected="true" />
+
+<!-- R6. Security Status Monitoring - The Responsible Entity shall ensure that
+     all Cyber Assets within the Electronic Security Perimeter, as technically
+     feasible, implement automated tools or organizational process controls to
+     monitor system events that are related to cyber security. -->
+
+<!-- R6.1. The Responsible Entity shall implement and document the
+     organizational processes and technical and procedural mechanisms
+     for monitoring for security events on all Cyber Assets within the
+     Electronic Security Perimeter. -->
+
+<!-- R6.2. The security monitoring controls shall issue automated or manual
+     alerts for detected Cyber Security Incidents. -->
+
+<!-- R6.3. The Responsible Entity shall maintain logs of system events related
+     to cyber security, where technically feasible, to support incident
+     response as required in Standard CIP-008-4. -->
+<select idref="service_auditd_enabled" selected="true" />
+<select idref="bootloader_audit_argument" selected="true" />
+<select idref="audit_rules_time_adjtimex" selected="true" />
+<select idref="audit_rules_time_settimeofday" selected="true" />
+<select idref="audit_rules_time_stime" selected="true" />
+<select idref="audit_rules_time_clock_settime" selected="true" />
+<select idref="audit_rules_time_watch_localtime" selected="true" />
+<select idref="audit_rules_usergroup_modification" selected="true" />
+<select idref="audit_rules_networkconfig_modification" selected="true" />
+<select idref="audit_rules_mac_modification" selected="true" />
+<select idref="audit_rules_dac_modification_chmod" selected="true" />
+<select idref="audit_rules_dac_modification_chown" selected="true" />
+<select idref="audit_rules_dac_modification_fchmod" selected="true" />
+<select idref="audit_rules_dac_modification_fchmodat" selected="true" />
+<select idref="audit_rules_dac_modification_fchown" selected="true" />
+<select idref="audit_rules_dac_modification_fchownat" selected="true" />
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_lchown" selected="true" />
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_removexattr" selected="true" />
+<select idref="audit_rules_dac_modification_setxattr" selected="true" />
+<select idref="audit_rules_login_events" selected="true" />
+<select idref="audit_manual_session_edits" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
+<select idref="audit_rules_privileged_commands" selected="true" />
+<select idref="audit_rules_media_export" selected="true" />
+<select idref="audit_rules_file_deletion_events" selected="true" />
+<select idref="audit_rules_sysadmin_actions" selected="true" />
+<select idref="audit_rules_kernel_module_loading" selected="true" />
+
+<!-- R6.4. The Responsible Entity shall retain all logs specified in Requirement
+     R6 for ninety calendar days. -->
+
+<!-- R6.5. The Responsible Entity shall review logs of system events
+     related to cyber security and maintain records documenting review of logs.
+     -->
+
+<!-- R7. Disposal or Redeployment - The Responsible Entity shall establish
+     and implement formal methods, processes, and procedures for disposal
+     or redeployment of Cyber Assets within the Electronic Security
+     Perimeter(s) as identified and documented in Standard CIP-005-4. -->
+
+<!-- R7.1. Prior to the disposal of such assets, the Responsible Entity shall
+     destroy or erase the data storage media to prevent unauthorized retrieval
+     of sensitive cyber security or reliability data. -->
+
+<!-- R7.2. Prior to redeployment of such assets, the Responsible Entity shall,
+     at a minimum, erase the data storage media to prevent unauthorized
+     retrieval of sensitive cyber security or reliability data. -->
+
+<!-- R7.3. The Responsible Entity shall maintain records that such assets
+     were disposed of or redeployed in accordance with documented procedures.
+     -->
+
+<!-- R8. Cyber Vulnerability Assessment - The Responsible Entity
+     shall perform a cyber vulnerability assessment of all Cyber Assets within
+     the Electronic Security Perimeter at least annually. The vulnerability
+     assessment shall include, at a minimum, the following: -->
+
+<!-- R8.1. A document identifying the vulnerability assessment process; -->
+
+<!-- R8.2. A review to verify that only ports and services required for
+     operation of the Cyber Assets within the ELectronic Security Perimeter
+     are enabled; -->
+
+<!-- R8.3. A review of controls for default accounts; and, -->
+
+<!-- R8.4. Documentation of the results of the assessment, the action plan to
+     remediate or mitigate vulnerabilities identified in the assessment, and
+     the execution status of that action plan. -->
+
+<!-- R9. Documentation Review and Maintenance - The Responsibile Entity shall
+     review and update the documentation specified in Standard CIP-007-4
+     at least annually. Changes resulting from modifications to the systems
+     or controls shall be documented within thirty calendar days of the change
+     being completed. -->
+
+<!-- D. Compliance -->
+<!--	1. Compliance Monitoring Process -->
+<!--	.... -->
+<!--	1.4 Data Retention -->
+<!--	1.4.1. The Responsible Entity shall keep all documentation and records
+     	from the previous full calendar year unless directed by its Compliance
+     	Enforcement Authority to retain specific evidence for a longer period
+     	of time as part of an investigation. -->
+
+<!--	1.4.2. The Responsible Entity shall retain security-related system event
+     	logs for ninety calendar days, unless longer retention is required
+     	pursuant to Standard CIP-008-4 Requirement R2. -->
+
+<!--	1.4.3. The Compliance Enforcement Authority in conjunction with the
+     	Registered Entity shall keep the last audit records and all
+     	requested and submitted subsequent audit records. -->
+
+</Profile>
