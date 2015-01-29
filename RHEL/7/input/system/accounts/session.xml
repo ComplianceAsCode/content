@@ -205,7 +205,7 @@ operator="equals" interactive="0">
 <value selector="077">077</value>
 </Value>
 
-<Rule id="accounts_umask_bashrc">
+<Rule id="accounts_umask_etc_bashrc">
 <title>Ensure the Default Bash Umask is Set Correctly</title>
 <description>
 To ensure the default umask for users of the Bash shell is set properly,
@@ -231,7 +231,7 @@ umask 077</pre>
 <tested by="JL" on="20140912"/>
 </Rule>
 
-<Rule id="accounts_umask_cshrc">
+<Rule id="accounts_umask_etc_csh_cshrc">
 <title>Ensure the Default C Shell Umask is Set Correctly</title>
 <description>
 To ensure the default umask for users of the C shell is set properly,
@@ -279,7 +279,7 @@ umask 077</pre>
 <ref nist="SA-8" disa="366"/>
 </Rule>
 
-<Rule id="accounts_umask_login_defs">
+<Rule id="accounts_umask_etc_login_defs">
 <title>Ensure the Default Umask is Set Correctly in login.defs</title>
 <description>
 To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
