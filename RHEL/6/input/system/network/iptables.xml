@@ -188,7 +188,7 @@ The output should be similar to the following:
 <ref nist="CM-7" disa="1109" />
 </Rule>
 
-<Group id="iptables_icmp_disabled">
+<Rule id="iptables_icmp_disabled">
 <title>Restrict ICMP Message Types</title>
 <description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages
 types can be restricted. To accept only ICMP echo reply, destination
@@ -218,7 +218,7 @@ care must be taken if any other ICMPv6 types are blocked.
 discoverable to an unsophisticated attacker but is not appropriate for many
 general-purpose use cases and can also make troubleshooting more difficult.
 </rationale> 
-</Group>
+</Rule>
 
 <Group id="iptables_log_and_drop_suspicious">
 <title>Log and Drop Packets with Suspicious Source Addresses</title>
