@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="accounts_minimum_age_login_defs" version="2">
+  <definition class="compliance" id="accounts_minimum_age_login_defs" version="3">
     <metadata>
       <title>Set Password Expiration Parameters</title>
       <affected family="unix">
@@ -26,8 +26,8 @@
     <!-- Read whole /etc/login.defs as single line so we can retrieve last PASS_MIN_DAYS directive occurrence -->
     <ind:behaviors singleline="true" />
     <ind:filepath>/etc/login.defs</ind:filepath>
-    <!-- Retrieve last (uncommented) occurrence of PASS_MIN_DAYS directive (possibly suffixed with a comment) -->
-    <ind:pattern operation="pattern match">.*\n[^#]*(PASS_MIN_DAYS\s+\d+)\s*(?:|(?:#.*))?\n</ind:pattern>
+    <!-- Retrieve last (uncommented) occurrence of PASS_MIN_DAYS directive -->
+    <ind:pattern operation="pattern match">.*\n[^#]*(PASS_MIN_DAYS\s+\d+)\s*\n</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
