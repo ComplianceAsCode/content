@@ -28,11 +28,11 @@ avenue of attack, and should be disabled if not needed.
 <oval id="service_dovecot_disabled" />
 </Rule>
 
-<Rule id="uninstall_dovecot">
+<Rule id="package_dovecot_removed">
 <title>Uninstall dovecot Package</title>
 <description>The <tt>dovecot</tt> package can be uninstalled
 with the following command:
-<pre># yum erase dovecot</pre>
+<pre>$ sudo yum erase dovecot</pre>
 </description>
 <ocil>
 <package-check-macro package="dovecot" />

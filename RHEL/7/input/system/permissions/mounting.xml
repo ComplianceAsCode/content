@@ -10,7 +10,7 @@ allow an attacker to compromise the system.
 <br /><br />
 This command can be used to list the types of filesystems that are
 available to the currently executing kernel:
-<pre># find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
+<pre>$ find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
 If these filesystems are not required then they can be explicitly disabled
 in a configuratio file in  <tt>/etc/modprobe.d</tt>.
 </description>
@@ -104,34 +104,37 @@ statically control filesystem mounting through <tt>/etc/fstab</tt>.
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
 </Rule>
 
-<Rule id="gconf_gnome_disable_automount">
-<title>Disable GNOME Automounting</title>
-<description>The system's default desktop environment, GNOME, will mount
+<Rule id="dconf_gnome_disable_automount">
+<title>Disable GNOME3 Automounting</title>
+<description>The system's default desktop environment, GNOME3, will mount
 devices and removable media (such as DVDs, CDs and USB flash drives) whenever
-they are inserted into the system. Disable automount and autorun within GNOME
-by running the following:
-<pre># gconftool-2 --direct \
-	--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-	--type bool \
-	--set /apps/nautilus/preferences/media_automount false
-# gconftool-2 --direct \
-	--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-	--type bool \
-	--set /apps/nautilus/preferences/media_autorun_never true</pre>
+they are inserted into the system. To disable automount and autorun within GNOME3,
+the <tt>automount</tt>, <tt>automount-open</tt>, and <tt>autorun-never</tt> settings must be set 
+under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
 </description>
 <ocil clause="GNOME automounting is not disabled">
 These settings can be verified by running the following:
-<pre>$ gconftool-2 --direct \
-	--config-source xml:read:/etc/gconf/gconf.xml.mandatory \
-	--get /apps/nautilus/preferences/media_automount
-$ gconftool-2 --direct \
-	--config-source xml:read:/etc/gconf/gconf.xml.mandatory \
-	--get /apps/nautilus/preferences/media_autorun_never</pre>
+<pre>$ gsettings get org.gnome.desktop.media-handling automount
+$ gsettings get org.gnome.desktop.media-handling automount-open
+$ gsettings get org.gnome.desktop.media-handling autorun-never</pre>
+If properly configured, the output for <tt>automount</tt> should be <tt>false</tt>.
+If properly configured, the output for <tt>automount-open</tt>should be <tt>false</tt>.
+If properly configured, the output for <tt>autorun-never</tt> should be <tt>true</tt>.
+To ensure that users cannot enable automount and autorun in GNOME3, run the following:
+<pre>$ grep 'automount\|autorun' /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output for <tt>automount</tt> should be <tt>/org/gnome/desktop/media-handling/automount</tt>
+If properly configured, the output for <tt>automount-open</tt> should be <tt>/org/gnome/desktop/media-handling/auto-open</tt>
+If properly configured, the output for <tt>autorun-never</tt> should be <tt>/org/gnome/desktop/media-handling/autorun-never</tt>
 </ocil>
-<rationale>Disabling 
+<rationale>Disabling automatic mounting in GNOME3 can prevent
+the introduction of malware via removable media.
+It will, however, also prevent desktop users from legitimate use
+of removable media. 
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="gconf_gnome_disable_automount" />
+<oval id="dconf_gnome_disable_automount" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" />
 </Rule>
 
@@ -226,26 +229,33 @@ local system should be disabled.</rationale>
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="disable_gnome_thumbnailers">
-<title>Disable All GNOME Thumbnailers</title>
-<description>The system's default desktop environment, GNOME, uses
+<Rule id="dconf_gnome_disable_thumbnailers">
+<title>Disable All GNOME3 Thumbnailers</title>
+<description>The system's default desktop environment, GNOME3, uses
 a number of different thumbnailer programs to generate thumbnails
-for any new or modified content in an opened folder. The following
-command can disable the execution of these thumbnail applications:
-<pre># gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type bool \
-  --set /desktop/gnome/thumbnailers/disable_all true</pre>
+for any new or modified content in an opened folder. To disable the
+execution of these thumbnail applications, the <tt>disable-all</tt> setting must be set 
+under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
 This effectively prevents an attacker from gaining access to a
-system through a flaw in GNOME's Nautilus thumbnail creators.
+system through a flaw in GNOME3's Nautilus thumbnail creators.
 </description>
-<rationale>An attacker with knowledge of a flaw in a GNOME thumbnailer application could craft a malicious
+<ocil clause="GNOME automounting is not disabled">
+These settings can be verified by running the following:
+<pre>$ gsettings get org.gnome.desktop.thumbnailers disable-all</pre>
+If properly configured, the output should be <tt>true</tt>.
+To ensure that users cannot how long until the the screensaver locks, run the following:
+<pre>$ grep disable-all /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/thumbnailers/disable-all</tt>
+</ocil>
+<rationale>An attacker with knowledge of a flaw in a GNOME3 thumbnailer application could craft a malicious
 file to exploit this flaw. Assuming the attacker could place the malicious file on the local filesystem
 (via a web upload for example) and assuming a user browses the same location using Nautilus, the
 malicious file would exploit the thumbnailer with the potential for malicious code execution. It
 is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="gconf_gnome_disable_thumbnailers" />
+<oval id="dconf_gnome_disable_thumbnailers" />
 <ref nist="CM-7" />
 </Rule>
 

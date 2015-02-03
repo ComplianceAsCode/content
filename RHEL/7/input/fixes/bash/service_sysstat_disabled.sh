@@ -1,9 +1,9 @@
 #
-# Disable sysstat for all run levels
+# Disable sysstat.service for all systemd targets
 #
-chkconfig --level 0123456 sysstat off
+systemctl disable sysstat.service
 
 #
-# Stop sysstat if currently running
+# Stop sysstat.service if currently running
 #
-service sysstat stop
+systemctl stop sysstat.service

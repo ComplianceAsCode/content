@@ -1,11 +1,12 @@
 <def-group>
-  <definition class="compliance" id="audit_rules_usergroup_modification" version="1">
+  <definition class="compliance" id="audit_rules_usergroup_modification" version="2">
     <metadata>
       <title>Audit User/Group Information</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Audit rules should detect modification to system files that hold information about users and groups.</description>
+      <reference source="JL" ref_id="RHEL6_20141204" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="audit /etc/group" test_ref="test_audit_rules_usergroup_modification_etc_group" />
@@ -20,7 +21,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_group" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/etc/group\s+\-p\s+wa\s+\-k\s+\w+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/group[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s+]\-k[\s]+\w+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit /etc/passwd" id="test_audit_rules_usergroup_modification_etc_passwd" version="1">
@@ -28,7 +29,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_passwd" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/etc/passwd\s+\-p\s+wa\s+\-k\s+\w+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/passwd[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+\w+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit /etc/gshadow" id="test_audit_rules_usergroup_modification_etc_gshadow" version="1">
@@ -36,7 +37,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_gshadow" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/etc/gshadow\s+\-p\s+wa\s+\-k\s+\w+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/gshadow[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+\w+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit /etc/shadow" id="test_audit_rules_usergroup_modification_etc_shadow" version="1">
@@ -44,7 +45,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_shadow" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/etc/shadow\s+\-p\s+wa\s+\-k\s+\w+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/shadow[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+\w+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit /etc/security/opasswd" id="test_audit_rules_usergroup_modification_etc_security_opasswd" version="1">
@@ -52,7 +53,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_security_opasswd" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/etc/security/opasswd\s+\-p\s+wa\s+\-k\s+\w+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/security/opasswd[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+\w+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

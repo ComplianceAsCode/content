@@ -10,7 +10,7 @@ allow an attacker to compromise the system.
 <br /><br />
 This command can be used to list the types of filesystems that are
 available to the currently executing kernel:
-<pre># find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
+<pre>$ find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
 If these filesystems are not required then they can be explicitly disabled
 in a configuratio file in  <tt>/etc/modprobe.d</tt>.
 </description>
@@ -110,11 +110,11 @@ statically control filesystem mounting through <tt>/etc/fstab</tt>.
 devices and removable media (such as DVDs, CDs and USB flash drives) whenever
 they are inserted into the system. Disable automount and autorun within GNOME
 by running the following:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
 	--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
 	--type bool \
 	--set /apps/nautilus/preferences/media_automount false
-# gconftool-2 --direct \
+$ sudo gconftool-2 --direct \
 	--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
 	--type bool \
 	--set /apps/nautilus/preferences/media_autorun_never true</pre>
@@ -235,7 +235,7 @@ local system should be disabled.</rationale>
 a number of different thumbnailer programs to generate thumbnails
 for any new or modified content in an opened folder. The following
 command can disable the execution of these thumbnail applications:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /desktop/gnome/thumbnailers/disable_all true</pre>

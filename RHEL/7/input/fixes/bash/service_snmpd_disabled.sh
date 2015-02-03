@@ -1,9 +1,9 @@
 #
-# Disable snmpd for all run levels
+# Disable snmpd.service for all systemd targets
 #
-chkconfig --level 0123456 snmpd off
+systemctl disable snmpd.service
 
 #
-# Stop snmpd if currently running
+# Stop snmpd.service if currently running
 #
-service snmpd stop
+systemctl stop snmpd.service

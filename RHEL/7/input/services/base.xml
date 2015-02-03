@@ -1,7 +1,7 @@
 <Group id="base">
 <title>Base Services</title>
 <description>This section addresses the base services that are installed on a
-RHEL 6 default installation which are not covered in other
+RHEL 7 default installation which are not covered in other
 sections. Some of these services listen on the network and
 should be treated with particular discretion. Other services are local
 system utilities that may or may not be extraneous. In general, system services
@@ -20,9 +20,10 @@ system such as RHTSupport.
 <rationale> Mishandling crash data could expose sensitive information about
 vulnerabilities in software executing on the local machine, as well as sensitive
 information from within a process's address space or registers.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26872-2" />
 <oval id="service_abrtd_disabled" />
-<ref nist="AC-17(8),CM-7" disa="381" />
+<ref nist="AC-17(8),CM-7" disa="" />
+<tested by="JL" on="20140921"/>
 </Rule>
 
 <Rule id="service_acpid_disabled">
@@ -104,25 +105,6 @@ highly desirable or necessary.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="service_cpuspeed_disabled" />
-<ref nist="CM-7" />
-</Rule>
-
-<Rule id="service_haldaemon_disabled">
-<title>Disable Hardware Abstraction Layer Service (haldaemon)</title>
-<description>The Hardware Abstraction Layer Daemon (<tt>haldaemon</tt>) collects
-and maintains information about the system's hardware configuration. 
-This service is required on a workstation
-running a desktop environment, and may be necessary on any system which
-deals with removable media or devices.
-<service-disable-macro service="haldaemon" />
-</description>
-<ocil><service-disable-check-macro service="haldaemon" /></ocil>
-<rationale>The haldaemon provides essential functionality on systems
-that use removable media or devices, but can be disabled for systems
-that do not require these.
-</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="service_haldaemon_disabled" />
 <ref nist="CM-7" />
 </Rule>
 

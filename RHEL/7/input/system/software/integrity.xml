@@ -31,7 +31,7 @@ information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
 <title>Install AIDE</title>
 <description>
 Install the AIDE package with the command:
-<pre># yum install aide</pre>
+<pre>$ sudo yum install aide</pre>
 </description>
 <ocil clause="the package is not installed">
 <package-check-macro package="aide"/>
@@ -39,9 +39,9 @@ Install the AIDE package with the command:
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26741-9" />
 <oval id="package_aide_installed" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="1069"/>
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa=""/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -53,7 +53,7 @@ time.  In order to disable it, change or add the following line inside the file
 <tt>/etc/sysconfig/prelink</tt>:
 <pre>PRELINKING=no</pre>
 Next, run the following command to return binaries to a normal, non-prelinked state:
-<pre># /usr/sbin/prelink -ua</pre>
+<pre>$ sudo /usr/sbin/prelink -ua</pre>
 </description>
 <rationale>
 The prelinking feature can interfere with the operation
@@ -64,19 +64,23 @@ of AIDE, because it changes binaries.
 <ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
 </Rule>
 
-<Rule id="aide_build_database">
+<Rule id="aide_build_database" severity="medium">
 <title>Build and Test AIDE Database</title>
 <description>Run the following command to generate a new database:
-<pre># /usr/sbin/aide --init</pre>
+<pre>$ sudo /usr/sbin/aide --init</pre>
 By default, the database will be written to the file <tt>/var/lib/aide/aide.db.new.gz</tt>.
 Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
 <tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
 The newly-generated database can be installed as follows:
-<pre># cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+<pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
 To initiate a manual check, run the following command:
-<pre># /usr/sbin/aide --check</pre>
+<pre>$ sudo /usr/sbin/aide --check</pre>
 If this check produces any unexpected output, investigate.
 </description>
+<ocil clause="there is no database file">
+To find the location of the AIDE databse file, run the following command:
+<pre>$ sudo ls -l <i>DBDIR</i>/<i>database_file_name</i></pre>
+</ocil>
 <rationale>
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
@@ -94,7 +98,7 @@ AIDE can be executed periodically through other means; this is merely one exampl
 </description>
 <ocil clause="there is no output">
 To determine that periodic AIDE execution has been scheduled, run the following command:
-<pre># grep aide /etc/crontab</pre>
+<pre>$ grep aide /etc/crontab</pre>
 </ocil>
 <rationale>
 By default, AIDE does not install itself for periodic execution. Periodically
@@ -114,7 +118,7 @@ package metadata stored in the RPM database. Although an attacker
 could corrupt the RPM database (analogous to attacking the AIDE
 database as described above), this check can still reveal
 modification of important files. To list which files on the system differ from what is expected by the RPM database:
-<pre># rpm -qVa</pre>
+<pre>$ rpm -qVa</pre>
 See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 </description>
 
@@ -125,15 +129,15 @@ The RPM package management system can check file access
 permissions of installed software packages, including many that are
 important to system security. 
 After locating a file with incorrect permissions, run the following command to determine which package owns it:
-<pre># rpm -qf <i>FILENAME</i></pre>
+<pre>$ rpm -qf <i>FILENAME</i></pre>
 Next, run the following command to reset its permissions to 
 the correct values:
-<pre># rpm --setperms <i>PACKAGENAME</i></pre>
+<pre>$ sudo rpm --setperms <i>PACKAGENAME</i></pre>
 </description>
 <ocil clause="there is output">
 The following command will list which files on the system have permissions different from what
 is expected by the RPM database:
-<pre># rpm -Va | grep '^.M'</pre>
+<pre>$ rpm -Va | grep '^.M'</pre>
 </ocil>
 <rationale>
 Permissions on system binaries and configuration files that are too generous
@@ -151,21 +155,21 @@ this baseline should be investigated.</rationale>
 installed software packages, including many that are important to system
 security. Run the following command to list which files on the system
 have hashes that differ from what is expected by the RPM database:
-<pre># rpm -Va | grep '^..5'</pre>
+<pre>$ rpm -Va | grep '^..5'</pre>
 A "c" in the second column indicates that a file is a configuration file, which
 may appropriately be expected to change.  If the file was not expected to
 change, investigate the cause of the change using audit logs or other means.
 The package can then be reinstalled to restore the file.
 Run the following command to determine which package owns the file:
-<pre># rpm -qf <i>FILENAME</i></pre>
+<pre>$ rpm -qf <i>FILENAME</i></pre>
 The package can be reinstalled from a yum repository using the command:
-<pre>yum reinstall <i>PACKAGENAME</i></pre>
+<pre>$ sudo yum reinstall <i>PACKAGENAME</i></pre>
 Alternatively, the package can be reinstalled from trusted media using the command:
-<pre>rpm -Uvh <i>PACKAGENAME</i></pre> 
+<pre>$ sudo rpm -Uvh <i>PACKAGENAME</i></pre> 
 </description>
 <ocil clause="there is output"> The following command will list which files on the system 
 have file hashes different from what is expected by the RPM database. 
-<pre># rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
+<pre>$ rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
 </ocil>
 <rationale>
 The hashes of important files like system executables should match the
@@ -190,13 +194,19 @@ software may not be appropriate for some specialized systems.
 <Rule id="install_hids" severity="high">
 <title>Install Intrusion Detection Software</title>
 <description>
-The Red Hat platform includes a sophisticated auditing system 
-and SELinux, which provide host-based intrusion detection capabilities.
+The base Red Hat platform already includes a sophisticated auditing system that
+can detect intruder activity, as well as SELinux, which provides host-based
+intrusion prevention capabilities by confining privileged programs and user
+sessions which may become compromised.<br />
+In DoD environments, supplemental intrusion detection tools, such as, the McAfee
+Host-based Security System, are available to integrate with existing infrastructure.
+When these supplemental tools interfere with the proper functioning of SELinux, SELinux
+takes precedence.
+<br/>
 </description>
-<ocil clause="SELinux is installed, this is not a finding.  However, if neither SELinux nor HBSS is used on the system">
+<ocil clause="no host-based intrusion detection tools are installed">
 Inspect the system to determine if intrusion detection software has been installed. 
-SELinux is the intrusion detection system included with RHEL. Another one is 
-McAfee HBSS, which is available through Cybercom.
+Verify this intrusion detection software is active.
 </ocil>
 <rationale>
 Host-based intrusion detection tools provide a system-level defense when an
@@ -211,7 +221,7 @@ intruder gains access to a system or network.
 <description>
 Install virus scanning software, which uses signatures to search for the
 presence of viruses on the filesystem. 
-The McAfee uvscan virus scanning tool is provided for DoD systems.
+The McAfee VirusScan Enterprise for Linux virus scanning tool is provided for DoD systems.
 Ensure virus definition files are no older than 7 days, or their last release.
 <!-- need info here on where DoD admins can go to get this -->
 Configure the virus scanning software to perform scans dynamically on all
@@ -224,24 +234,24 @@ to scan all received mail.
      with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
      particular neighborhood) should occur? -->
 </description>
-<ocil clause="virus scanning software does not run daily, or has signatures that are out of date">
+<ocil clause="virus scanning software does not run continuously, or at least daily, or has signatures that are out of date">
 Inspect the system for a cron job or system service which executes
 a virus scanning tool regularly.
 <br/>
 <!-- this should be handled as DoD-specific text in a future revision -->
-To verify the McAfee command line scan tool (uvscan) is scheduled for
-regular execution, run the following command to check for a cron job:
-<pre># grep uvscan /etc/cron* /var/spool/cron/*</pre>
-This will reveal if and when the uvscan program will be run.
+To verify the McAfee VSEL system service is operational,
+run the following command:
+<pre>$ sudo /sbin/service nails status</pre>
 <br/>
 To check on the age of uvscan virus definition files, run the following command:
-<pre># cd /usr/local/uvscan
-# ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
+<pre>$ sudo cd /opt/NAI/LinuxShield/engine/dat
+$ sudo ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
 </ocil>
 <rationale>
 Virus scanning software can be used to detect if a system has been compromised by
 computer viruses, as well as to limit their spread to other systems. 
 </rationale>
+<oval id="install_antivirus" />
 <ident cce="RHEL7-CCE-TBD" />
 <ref nist="SC-28, SI-3" disa="1239,1668"/>
 </Rule>

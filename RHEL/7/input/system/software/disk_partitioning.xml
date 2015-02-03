@@ -37,9 +37,9 @@ The <tt>/tmp</tt> partition is used as temporary storage by many programs.
 Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27173-4" />
 <oval id="partition_for_tmp" />
-<ref nist="" disa="1208"/>
+<ref nist="" disa=""/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -55,11 +55,11 @@ Ensuring that <tt>/var</tt> is mounted on its own partition enables the
 setting of more restrictive mount options. This helps protect
 system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
-world-writable directories, installed by other software packages.
+world-writable directories installed by other software packages.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26404-4" />
 <oval id="partition_for_var" />
-<ref nist="" disa="1208"/>
+<ref nist="" disa=""/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -76,9 +76,9 @@ Placing <tt>/var/log</tt> in its own partition
 enables better separation between log files
 and other files in <tt>/var/</tt>.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26967-0" />
 <oval id="partition_for_var_log" />
-<ref nist="AU-9" disa="1208"/>
+<ref nist="AU-9" disa=""/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -98,9 +98,9 @@ and other files, and helps ensure that
 auditing cannot be halted due to the partition running out
 of space.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26971-2" />
 <oval id="partition_for_var_log_audit" />
-<ref nist="AU-4,AU-9" disa="137,138,1208"/>
+<ref nist="AU-4,AU-9" disa=""/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -128,7 +128,7 @@ users cannot trivially fill partitions used for log or audit data storage.
 <Rule id="encrypt_partitions" >
 <title>Encrypt Partitions</title>
 <description>
-Red Hat Enterprise Linux 6 natively supports partition encryption through the
+Red Hat Enterprise Linux 7 natively supports partition encryption through the
 Linux Unified Key Setup-on-disk-format (LUKS) technology. The easiest way to 
 encrypt a partition is during installation time.
 <br /><br />
@@ -147,8 +147,8 @@ Omitting the <tt>--passphrase=</tt> option from the partition definition will ca
 installer to pause and interactively ask for the passphrase during installation.
 <br /><br />
 Detailed information on encrypting partitions using LUKS can be found on
-the Red Had Documentation web site:<br />
-https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/sect-Security_Guide-LUKS_Disk_Encryption.html
+the Red Hat Documentation web site:<br />
+https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html
 </description>
 <ocil clause="encryption must be used and is not employed">
 Determine if encryption must be used to protect data on the system. 

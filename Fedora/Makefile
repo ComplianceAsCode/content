@@ -1,6 +1,9 @@
 IN = input
 OUT = output
 TRANS = transforms
+SHARED = ../shared
+REFS = $(SHARED)/references
+CONF = ../config
 UTILS = utils
 DIST = dist
 
@@ -24,25 +27,26 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(ID)-$(PROD)-shorthand.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
 	# Include fixes
-	./$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
+	$(SHARED)/$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
 	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
 	xmlwf $(IN)/checks/*.xml
-	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
 #       remove auxiliary Groups which are only for use in tables, and not guide output.
-#       specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xsltproc -o $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removetested.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(ID)-$(PROD)-guide.html
+#       OpenSCAP-1.1.1 expects exact profile name in order to include also rules into guide
+#       Create guide for common profile
+	oscap xccdf generate guide --profile common $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(ID)-$(PROD)-common-guide.html
 
 content: shorthand2xccdf guide checks
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 #       Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
 		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml

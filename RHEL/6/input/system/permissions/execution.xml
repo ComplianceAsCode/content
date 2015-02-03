@@ -29,8 +29,8 @@ for system daemons.
 parameters for most or all daemons started at boot time.  The default umask of
 022 prevents creation of group- or world-writable files.  To set the default
 umask for daemons, edit the following line, inserting 022 or 027 for
-<i>UMASK</i> appropriately:
-<pre>umask <i>UMASK</i></pre>
+<i>umask</i> appropriately:
+<pre>umask <i><sub idref="var_umask_for_daemons" /></i></pre>
 Setting the umask to too restrictive a setting can cause serious errors at
 runtime.  Many daemons on the system already individually restrict themselves to
 a umask of 077 in their own init scripts.
@@ -46,6 +46,7 @@ being created with insecure permissions.</rationale>
 <ident cce="27031-4" />
 <oval id="umask_for_daemons" value="var_umask_for_daemons"/>
 <ref nist="AC-6"/>
+<tested by="JL" on="20140912"/>
 </Rule>
 
 </Group>
@@ -174,7 +175,7 @@ x86 kernel already includes this support. However, if the system is
 32-bit and also supports the PAE and NX features as
 determined in the previous section, the kernel-PAE package should
 be installed to enable XD or NX support:
-<pre># yum install kernel-PAE</pre>
+<pre>$ sudo yum install kernel-PAE</pre>
 The installation process should also have configured the
 bootloader to load the new kernel at boot. Verify this at reboot
 and modify <tt>/etc/grub.conf</tt> if necessary.</description>

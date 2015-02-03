@@ -1,0 +1,1 @@
+chgrp root /etc/passwd

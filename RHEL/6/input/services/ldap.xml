@@ -56,7 +56,7 @@ Then review the LDAP server and ensure TLS has been configured.
 </description>
 <ocil clause="there is no output, or the lines are commented out">
 To ensure TLS is configured with trust certificates, run the following command:
-<pre># grep cert /etc/pam_ldap.conf</pre>
+<pre>$ grep cert /etc/pam_ldap.conf</pre>
 </ocil>
 <rationale>The tls_cacertdir or tls_cacertfile directives are required when
 tls_checkpeer is configured (which is the default for openldap versions 2.1 and
@@ -81,7 +81,7 @@ https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/ht
 <title>Uninstall openldap-servers Package</title>
 <description>The <tt>openldap-servers</tt> package should be removed if not in use.
 Is this machine the OpenLDAP server? If not, remove the package.
-<pre># yum erase openldap-servers</pre>
+<pre>$ sudo yum erase openldap-servers</pre>
 The openldap-servers RPM is not installed by default on RHEL 6
 machines. It is needed only by the OpenLDAP server, not by the
 clients which use LDAP for authentication. If the system is not
@@ -108,9 +108,9 @@ server, it is not necessary on typical desktop or workstation systems.
 <Group id="ldap_server_config_certificate_files">
 <title>Install and Protect LDAP Certificate Files</title>
 <description>Create the PKI directory for LDAP certificates if it does not already exist:
-<pre># mkdir /etc/pki/tls/ldap
-# chown root:root /etc/pki/tls/ldap
-# chmod 755 /etc/pki/tls/ldap</pre>
+<pre>$ sudo mkdir /etc/pki/tls/ldap
+$ sudo chown root:root /etc/pki/tls/ldap
+$ sudo chmod 755 /etc/pki/tls/ldap</pre>
 Using removable media or some other secure transmission format, install the certificate files
 onto the LDAP server:
 <ul>
@@ -118,15 +118,15 @@ onto the LDAP server:
 <li><tt>/etc/pki/tls/ldap/servercert.pem</tt>: the certificate file <tt>ldapservercert.pem</tt></li>
 </ul>
 Verify the ownership and permissions of these files:
-<pre># chown root:ldap /etc/pki/tls/ldap/serverkey.pem
-# chown root:ldap /etc/pki/tls/ldap/servercert.pem
-# chmod 640 /etc/pki/tls/ldap/serverkey.pem
-# chmod 640 /etc/pki/tls/ldap/servercert.pem</pre>
+<pre>$ sudo chown root:ldap /etc/pki/tls/ldap/serverkey.pem
+$ sudo chown root:ldap /etc/pki/tls/ldap/servercert.pem
+$ sudo chmod 640 /etc/pki/tls/ldap/serverkey.pem
+$ sudo chmod 640 /etc/pki/tls/ldap/servercert.pem</pre>
 Verify that the CA's public certificate file has been installed as
 <tt>/etc/pki/tls/CA/cacert.pem</tt>, and has the correct permissions:
-<pre># mkdir /etc/pki/tls/CA
-# chown root:root /etc/pki/tls/CA/cacert.pem
-# chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
+<pre>$ sudo mkdir /etc/pki/tls/CA
+$ sudo chown root:root /etc/pki/tls/CA/cacert.pem
+$ sudo chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
 
 As a result of these steps, the LDAP server will have access to its own private
 certificate and the key with which that certificate is encrypted, and to the

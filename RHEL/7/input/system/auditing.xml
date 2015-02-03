@@ -97,7 +97,7 @@ actions will be taken if other obstacles exist.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="enable_auditd_bootloader" severity="medium">
+<Rule id="bootloader_audit_argument" severity="medium">
 <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
 <description>To ensure all processes can be audited, even
 those which start prior to the audit daemon, add the argument
@@ -118,7 +118,7 @@ process during boot.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="bootloader_audit_argument" />
-<ref nist="AC-17(1),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-10,IR-5" disa="1464,130" />
+<ref nist="AC-17(1),AU-14(1),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-10,IR-5" disa="1464,130" />
 </Rule>
 
 <Group id="configure_auditd_data_retention">
@@ -239,7 +239,7 @@ Note that values less than 2 result in no log rotation.</description>
 <ocil clause="the system log file retention has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how many logs the system is configured to retain after rotation:
-<tt># grep num_logs /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep num_logs /etc/audit/auditd.conf</tt>
 <pre>num_logs = 5</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
@@ -264,7 +264,7 @@ support retention of even more audit data.</description>
 <ocil clause="the system audit data threshold has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how much data the system will retain in each audit log file:
-<tt># grep max_log_file /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep max_log_file /etc/audit/auditd.conf</tt>
 <pre>max_log_file = 6</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
@@ -298,7 +298,7 @@ occurs.  This is the default.  The setting is case-insensitive.
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
 maximum size: 
-<tt># grep max_log_file_action /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep max_log_file_action /etc/audit/auditd.conf</tt>
 <pre>max_log_file_action <tt>rotate</tt></pre>
 </ocil>
 <rationale>Automatically rotating logs (by setting this to <tt>rotate</tt>)
@@ -353,7 +353,7 @@ disk space is starting to run low">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to email the administrator when
 disk space is starting to run low:
-<tt># grep space_left_action /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep space_left_action /etc/audit/auditd.conf</tt>
 <pre>space_left_action</pre>
 Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
 </ocil>
@@ -423,11 +423,11 @@ administrators of the system, who can take appropriate action.</rationale>
 <tt>audispd</tt> plugin, set the <tt>active</tt> line in 
 <tt>/etc/audisp/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
 Restart the <tt>auditd</tt>service:
-<pre># service auditd restart</pre>
+<pre>$ sudo service auditd restart</pre>
 </description>
 <ocil clause="it is not">
 To verify the audispd plugin is active, run the following command:
-<pre># grep active /etc/audisp/plugins.d/syslog.conf</pre>
+<pre>$ sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>
 If the plugin is active, the output will show <tt>yes</tt>.
 </ocil>
 <rationale>The auditd service does not include the ability to send audit 
@@ -476,7 +476,7 @@ architecture.
 <br /><br />
 After reviewing all the rules, reading the following sections, and
 editing as needed, the new rules can be activated as follows:
-<pre># service auditd restart</pre>
+<pre>$ sudo service auditd restart</pre>
 </description>
 
 <Group id="audit_time_rules">
@@ -510,7 +510,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_time_adjtimex" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -538,7 +538,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_time_settimeofday" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -556,6 +556,8 @@ See an example of multiple combined syscalls:
 -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
+If the system is not configured to audit time changes, this is a finding.
+If the system is 64-bit only, this is not applicable<br />
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -564,7 +566,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_time_stime" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -592,7 +594,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_time_clock_settime" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -608,7 +610,7 @@ should always be used.
 To determine if the system is configured to audit attempts to
 alter time via the /etc/localtime file, run the following
 command:
-<pre># auditctl -l | grep "watch=/etc/localtime"</pre>
+<pre>$ sudo auditctl -l | grep "watch=/etc/localtime"</pre>
 If the system is configured to audit this activity, it will return a line.
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -617,21 +619,21 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_time_watch_localtime" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(b),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
 
-<Rule id="audit_account_changes">
+<Rule id="audit_rules_usergroup_modification">
 <title>Record Events that Modify User/Group Information</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, in order
 to capture events that modify account changes:
-<pre># audit_account_changes
--w /etc/group -p wa -k audit_account_changes
--w /etc/passwd -p wa -k audit_account_changes
--w /etc/gshadow -p wa -k audit_account_changes
--w /etc/shadow -p wa -k audit_account_changes
--w /etc/security/opasswd -p wa -k audit_account_changes</pre>
+<pre># audit_rules_usergroup_modification
+-w /etc/group -p wa -k audit_rules_usergroup_modification
+-w /etc/passwd -p wa -k audit_rules_usergroup_modification
+-w /etc/gshadow -p wa -k audit_rules_usergroup_modification
+-w /etc/shadow -p wa -k audit_rules_usergroup_modification
+-w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit account changes">
 To determine if the system is configured to audit account changes,
@@ -646,19 +648,19 @@ unexpected users, groups, or modifications should be investigated for
 legitimacy.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_usergroup_modification" />
-<ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
+<ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
 </Rule>
 
-<Rule id="audit_network_modifications">
+<Rule id="audit_rules_networkconfig_modification">
 <title>Record Events that Modify the System's Network Environment</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
-<pre># audit_network_modifications
--a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
--w /etc/issue -p wa -k audit_network_modifications
--w /etc/issue.net -p wa -k audit_network_modifications
--w /etc/hosts -p wa -k audit_network_modifications
--w /etc/sysconfig/network -p wa -k audit_network_modifications</pre>
+<pre># audit_rules_networkconfig_modification
+-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
+-w /etc/issue -p wa -k audit_rules_networkconfig_modification
+-w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
+-w /etc/hosts -p wa -k audit_rules_networkconfig_modification
+-w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit changes of the network configuration">
 To determine if the system is configured to audit changes to its network configuration,
@@ -672,26 +674,26 @@ than administrator action. Any change to network parameters should be
 audited.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_networkconfig_modification" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
 <Rule id="file_permissions_var_log_audit">
 <title>System Audit Logs Must Have Mode 0640 or Less Permissive</title>
 <description>
 Change the mode of the audit log files with the following command:
-<pre># chmod 0640 <i>audit_file</i></pre>
+<pre>$ sudo chmod 0640 <i>audit_file</i></pre>
 </description>
 <ocil clause="any are more permissive">
 Run the following command to check the mode of the system audit logs:
-<pre>ls -l /var/log/audit</pre>
+<pre>$ sudo ls -l /var/log/audit</pre>
 Audit logs must be mode 0640 or less permissive.
 </ocil>
 <rationale>
 If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27004-1" />
 <oval id="file_permissions_var_log_audit" />
-<ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="166" />
+<ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="" />
 <tested by="DS" on="20121024"/>
 </Rule> 
 
@@ -711,7 +713,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <tested by="DS" on="20121024"/>
 </Rule> 
 
-<Rule id="audit_mac_changes">
+<Rule id="audit_rules_mac_modification">
 <title>Record Events that Modify the System's Mandatory Access Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
@@ -719,7 +721,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <ocil clause="the system is not configured to audit attempts to change the MAC policy">
 To determine if the system is configured to audit changes to its SELinux
 configuration files, run the following command:
-<pre># auditctl -l | grep "dir=/etc/selinux"</pre>
+<pre>$ sudo auditctl -l | grep "dir=/etc/selinux"</pre>
 If the system is configured to watch for changes to its SELinux
 configuration, a line should be returned (including
 <tt>perm=wa</tt> indicating permissions that are watched).
@@ -729,7 +731,7 @@ arbitrarily changed by anything other than administrator action. All changes to
 MAC policy should be audited.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_mac_modification" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
 <Group id="audit_dac_actions">
@@ -742,14 +744,14 @@ calls.  Additionally, these rules can be configured in a number of ways while
 still achieving the desired effect.  An example of this is that the "-S" calls 
 could be split up and placed on separate lines, however, this is less efficient.
 Add the following to <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If your system is 64 bit then these lines should be duplicated and the 
 arch=b32 replaced with arch=b64 as follows:
-<pre>-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
+    -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <rationale>The changing of file permissions could indicate that a user is 
 attempting to gain access to information that would otherwise be disallowed. 
@@ -761,9 +763,9 @@ abuse among both authorized and unauthorized users.</rationale>
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -779,7 +781,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_chmod" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_chown">
@@ -787,9 +789,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="chown" />
@@ -805,7 +807,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_chown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmod">
@@ -813,9 +815,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchmod" />
@@ -831,7 +833,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_fchmod" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmodat">
@@ -839,9 +841,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchmodat" />
@@ -857,7 +859,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_fchmodat" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchown">
@@ -865,9 +867,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchown" />
@@ -883,7 +885,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_fchown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchownat">
@@ -891,9 +893,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchownat" />
@@ -909,7 +911,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_fchownat" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fremovexattr">
@@ -917,9 +919,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fremovexattr" />
@@ -935,7 +937,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_fremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fsetxattr">
@@ -943,9 +945,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fsetxattr" />
@@ -961,7 +963,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_fsetxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lchown">
@@ -969,9 +971,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file 
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lchown" />
@@ -987,7 +989,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_lchown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lremovexattr">
@@ -995,9 +997,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lremovexattr" />
@@ -1013,7 +1015,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_lremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lsetxattr">
@@ -1021,9 +1023,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lsetxattr" />
@@ -1039,7 +1041,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_lsetxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_removexattr">
@@ -1047,9 +1049,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="removexattr" />
@@ -1065,7 +1067,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_removexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_setxattr">
@@ -1073,9 +1075,9 @@ calls with others as identifying earlier in this guide is more efficient.
 <description>At a minimum the audit system should collect file
 permission changes for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 If the system is 64 bit then also add the following:
-<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="setxattr" />
@@ -1091,12 +1093,12 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_dac_modification_setxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
 
-<Rule id="audit_manual_logon_edits">
+<Rule id="audit_rules_login_events">
 <title>Record Attempts to Alter Logon and Logout Events</title>
 <description> 
 The audit system already collects login info for all users and root. To watch for attempted manual edits of
@@ -1108,7 +1110,7 @@ files involved in storing logon events, add the following to <tt>/etc/audit/audi
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_login_events" />
-<ref nist="AC-17(7),AU-1(b),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
 <Rule id="audit_manual_session_edits">
@@ -1125,47 +1127,56 @@ storing such process information, add the following to
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_session_events" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
-<Rule id="audit_file_access">
+<Rule id="audit_rules_unsuccessful_file_modification">
 <title>Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
 <description>At a minimum the audit system should collect
 unauthorized file accesses for all users and root. Add the following
-to <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
-appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
--a always,exit -F arch=ARCH -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
+to <tt>/etc/audit/audit.rules</tt>:
+<pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access</pre>
+If the system is 64 bit then also add the following:
+<pre>
+-a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access</pre>
 </description>
-<ocil clause="either command lacks output">
+<ocil clause="32-bit and 64-bit system calls to creat, open, openat, open_by_handle_at, truncate, and ftruncate are not audited during EACCES and EPERM">
 To verify that the audit system collects unauthorized file accesses, run the following commands:
-<pre># grep EACCES /etc/audit/audit.rules</pre>
-<pre># grep EPERM /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_unsuccessful_file_modification" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" />
 </Rule>
 
-<Rule id="audit_privileged_commands">
+<Rule id="audit_rules_privileged_commands">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum the audit system should collect the
-execution of privileged commands for all users and root. 
-To find the relevant setuid programs:
-<pre># find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
-Then, for each setuid program on the system, add a line of the following form to 
-<tt>/etc/audit/audit.rules</tt>, where <i>SETUID_PROG_PATH</i> is the full path to each setuid program
+execution of privileged commands for all users and root.
+To find the relevant setuid / setgid programs, run the following command
+for each local partition <i>PART</i>:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null</pre>
+Then, for each setuid / setgid program on the system, add a line of the
+following form to <tt>/etc/audit/audit.rules</tt>, where
+<i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
 in the list:
-<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
+<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged</pre>
 </description>
 <ocil clause="it is not the case">
-To verify that auditing of privileged command use is configured, run the following command to find relevant setuid programs:
-<pre># find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
-Run the following command to verify entries in the audit rules for all programs found with the previous command:
-<pre># grep path /etc/audit/audit.rules</pre>
-It should be the case that all relevant setuid programs have a line in the audit rules.
+To verify that auditing of privileged command use is configured, run the
+following command for each local partition <i>PART</i> to find relevant
+setuid / setgid programs:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null</pre>
+Run the following command to verify entries in the audit rules for all programs
+found with the previous command:
+<pre>$ sudo grep path /etc/audit/audit.rules</pre>
+It should be the case that all relevant setuid / setgid programs have a line
+in the audit rules.
 </ocil>
 <rationale>Privileged programs are subject to escalation-of-privilege attacks,
 which attempt to subvert their normal role of providing some necessary but
@@ -1174,21 +1185,21 @@ unusual activity.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_privileged_commands" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),IR-5" disa="40" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),AU-12(a),AU-12(c),IR-5" disa="40" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_media_exports">
+<Rule id="audit_rules_media_export">
 <title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
 <description>At a minimum the audit system should collect media
 exportation events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=500 -F auid!=4294967295 -k export</pre>
+<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for all media exportation events, run the following command:
-<pre># auditctl -l | grep syscall | grep mount</pre>
+<pre>$ sudo auditctl -l | grep syscall | grep mount</pre>
 </ocil>
 <rationale>The unauthorized exportation of data to external media could result in an information leak
 where classified information, Privacy Act information, and intellectual property could be lost. An audit
@@ -1196,31 +1207,33 @@ trail should be created each time a filesystem is mounted to help identify and g
 loss.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_media_export" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_file_deletions">
+<Rule id="audit_rules_file_deletion_events">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User</title>
 <description>At a minimum the audit system should collect file
 deletion events for all users and root. Add the following to
 <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=500 -F auid!=4294967295 -k delete</pre>
+<pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="unlink" />
+<audit-syscall-check-macro syscall="unlinkat" />
 <audit-syscall-check-macro syscall="rename" />
+<audit-syscall-check-macro syscall="renameat" />
 </ocil>
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_file_deletion_events" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
-<Rule id="audit_sysadmin_actions">
+<Rule id="audit_rules_sysadmin_actions">
 <title>Ensure <tt>auditd</tt> Collects System Administrator Actions</title>
 <description>At a minimum the audit system should collect
 administrator actions for all users and root. Add the following to
@@ -1229,17 +1242,17 @@ administrator actions for all users and root. Add the following to
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for system administrator actions, run the following command:
-<pre># auditctl -l | grep "watch=/etc/sudoers"</pre>
+<pre>$ sudo auditctl -l | grep "watch=/etc/sudoers"</pre>
 </ocil>
 <rationale>The actions taken by system administrators should be audited to keep a record
 of what was executed on the system, as well as, for accountability purposes.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_sysadmin_actions" />
-<ref nist="AC-2(7)(b),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-2(7)(b),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_kernel_module_loading">
+<Rule id="audit_rules_kernel_module_loading">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to capture kernel module loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
@@ -1257,10 +1270,10 @@ the kernel and potentially introduce malicious code into kernel space. It is imp
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="audit_rules_kernel_module_loading" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
-<Rule id="audit_config_immutable">
+<Rule id="audit_rules_immutable">
 <title>Make the <tt>auditd</tt> Configuration Immutable</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to make the configuration immutable:

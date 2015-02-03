@@ -118,7 +118,7 @@ process during boot.
 </rationale>
 <ident cce="26785-6" />
 <oval id="bootloader_audit_argument" />
-<ref nist="AC-17(1),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-10,IR-5" disa="1464,130" />
+<ref nist="AC-17(1),AU-14(1),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-10,IR-5" disa="1464,130" />
 </Rule>
 
 <Group id="configure_auditd_data_retention">
@@ -207,7 +207,7 @@ normally.</i>
 </Value>
 
 <Value id="var_auditd_admin_space_left_action" type="string" >
-<title>Action for auditd to take when disk space just starts to run low</title>
+<title>Action for auditd to take when disk space runs dangerously low</title>
 <description>The setting for space_left_action in /etc/audit/auditd.conf</description>
 <value selector="">single</value>
 <value selector="ignore">ignore</value>
@@ -232,14 +232,14 @@ normally.</i>
 <description>Determine how many log files
 <tt>auditd</tt> should retain when it rotates logs.
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following
-line, substituting <i>NUMLOGS</i> with the correct value:
+line, substituting <i>NUMLOGS</i> with the correct value of <sub idref="var_auditd_num_logs" />:
 <pre>num_logs = <i>NUMLOGS</i></pre>
 Set the value to 5 for general-purpose systems. 
 Note that values less than 2 result in no log rotation.</description>
 <ocil clause="the system log file retention has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how many logs the system is configured to retain after rotation:
-<tt># grep num_logs /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep num_logs /etc/audit/auditd.conf</tt>
 <pre>num_logs = 5</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
@@ -256,7 +256,7 @@ file size and the number of logs retained.</rationale>
 <description>Determine the amount of audit data (in megabytes)
 which should be retained in each log file. Edit the file
 <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line, substituting
-the correct value for <i>STOREMB</i>:
+the correct value of <sub idref="var_auditd_max_log_file" /> for <i>STOREMB</i>:
 <pre>max_log_file = <i>STOREMB</i></pre>
 Set the value to <tt>6</tt> (MB) or higher for general-purpose systems.
 Larger values, of course,
@@ -264,7 +264,7 @@ support retention of even more audit data.</description>
 <ocil clause="the system audit data threshold has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine how much data the system will retain in each audit log file:
-<tt># grep max_log_file /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep max_log_file /etc/audit/auditd.conf</tt>
 <pre>max_log_file = 6</pre>
 </ocil>
 <rationale>The total storage for audit log files must be large enough to retain
@@ -298,7 +298,7 @@ occurs.  This is the default.  The setting is case-insensitive.
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
 maximum size: 
-<tt># grep max_log_file_action /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep max_log_file_action /etc/audit/auditd.conf</tt>
 <pre>max_log_file_action <tt>rotate</tt></pre>
 </ocil>
 <rationale>Automatically rotating logs (by setting this to <tt>rotate</tt>)
@@ -353,7 +353,7 @@ disk space is starting to run low">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to email the administrator when
 disk space is starting to run low:
-<tt># grep space_left_action /etc/audit/auditd.conf</tt>
+<tt>$ sudo grep space_left_action /etc/audit/auditd.conf</tt>
 <pre>space_left_action</pre>
 Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
 </ocil>
@@ -372,17 +372,17 @@ when disk space is running low but prior to running out of space completely.
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
 substituting <i>ACTION</i> appropriately:
 <pre>admin_space_left_action = <i>ACTION</i></pre>
-Set this value to <tt>single</tt> to cause the system to switch to single user
+Set this value to <tt>single</tt> to cause the system to switch to single-user
 mode for corrective action. Acceptable values also include <tt>suspend</tt> and
 <tt>halt</tt>. For certain systems, the need for availability
 outweighs the need to log all actions, and a different setting should be
 determined. Details regarding all possible values for <i>ACTION</i> are described in the
 <tt>auditd.conf</tt> man page.
 </description>
-<ocil clause="the system is not configured to switch to single user
+<ocil clause="the system is not configured to switch to single-user
 mode for corrective action">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
-determine if the system is configured to either suspend, switch to single user mode,
+determine if the system is configured to either suspend, switch to single-user mode,
 or halt when disk space has run low:
 <pre>admin_space_left_action single</pre>
 </ocil>
@@ -402,7 +402,7 @@ is used, running low on space for audit records should never occur.
 a designated account in certain situations. Add or correct the following line
 in <tt>/etc/audit/auditd.conf</tt> to ensure that administrators are notified
 via email for those situations:
-<pre>action_mail_acct = root</pre>
+<pre>action_mail_acct = <sub idref="var_auditd_action_mail_acct" /></pre>
 </description>
 <ocil clause="auditd is not configured to send emails per identified actions">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
@@ -423,11 +423,11 @@ administrators of the system, who can take appropriate action.</rationale>
 <tt>audispd</tt> plugin, set the <tt>active</tt> line in 
 <tt>/etc/audisp/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
 Restart the <tt>auditd</tt>service:
-<pre># service auditd restart</pre>
+<pre>$ sudo service auditd restart</pre>
 </description>
 <ocil clause="it is not">
 To verify the audispd plugin is active, run the following command:
-<pre># grep active /etc/audisp/plugins.d/syslog.conf</pre>
+<pre>$ sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>
 If the plugin is active, the output will show <tt>yes</tt>.
 </ocil>
 <rationale>The auditd service does not include the ability to send audit 
@@ -476,7 +476,7 @@ architecture.
 <br /><br />
 After reviewing all the rules, reading the following sections, and
 editing as needed, the new rules can be activated as follows:
-<pre># service auditd restart</pre>
+<pre>$ sudo service auditd restart</pre>
 </description>
 
 <Group id="audit_time_rules">
@@ -510,7 +510,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="26242-8" />
 <oval id="audit_rules_time_adjtimex" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -538,7 +538,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27203-9" />
 <oval id="audit_rules_time_settimeofday" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -565,7 +565,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27169-2" />
 <oval id="audit_rules_time_stime" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -593,7 +593,7 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27170-0" />
 <oval id="audit_rules_time_clock_settime" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 
@@ -609,7 +609,7 @@ should always be used.
 To determine if the system is configured to audit attempts to
 alter time via the /etc/localtime file, run the following
 command:
-<pre># auditctl -l | grep "watch=/etc/localtime"</pre>
+<pre>$ sudo auditctl -l | grep "watch=/etc/localtime"</pre>
 If the system is configured to audit this activity, it will return a line.
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate 
@@ -618,21 +618,21 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident cce="27172-6" />
 <oval id="audit_rules_time_watch_localtime" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 <ref disa="1487,169" />
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
 
-<Rule id="audit_account_changes">
+<Rule id="audit_rules_usergroup_modification">
 <title>Record Events that Modify User/Group Information</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, in order
 to capture events that modify account changes:
-<pre># audit_account_changes
--w /etc/group -p wa -k audit_account_changes
--w /etc/passwd -p wa -k audit_account_changes
--w /etc/gshadow -p wa -k audit_account_changes
--w /etc/shadow -p wa -k audit_account_changes
--w /etc/security/opasswd -p wa -k audit_account_changes</pre>
+<pre># audit_rules_usergroup_modification
+-w /etc/group -p wa -k audit_rules_usergroup_modification
+-w /etc/passwd -p wa -k audit_rules_usergroup_modification
+-w /etc/gshadow -p wa -k audit_rules_usergroup_modification
+-w /etc/shadow -p wa -k audit_rules_usergroup_modification
+-w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit account changes">
 To determine if the system is configured to audit account changes,
@@ -647,19 +647,19 @@ unexpected users, groups, or modifications should be investigated for
 legitimacy.</rationale>
 <ident cce="26664-3" />
 <oval id="audit_rules_usergroup_modification" />
-<ref nist="AC-2(4),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
+<ref nist="AC-2(4),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
 </Rule>
 
-<Rule id="audit_network_modifications">
+<Rule id="audit_rules_networkconfig_modification">
 <title>Record Events that Modify the System's Network Environment</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
 ARCH to either b32 or b64 as appropriate for your system:
-<pre># audit_network_modifications
--a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_network_modifications
--w /etc/issue -p wa -k audit_network_modifications
--w /etc/issue.net -p wa -k audit_network_modifications
--w /etc/hosts -p wa -k audit_network_modifications
--w /etc/sysconfig/network -p wa -k audit_network_modifications</pre>
+<pre># audit_rules_networkconfig_modification
+-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
+-w /etc/issue -p wa -k audit_rules_networkconfig_modification
+-w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
+-w /etc/hosts -p wa -k audit_rules_networkconfig_modification
+-w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit changes of the network configuration">
 To determine if the system is configured to audit changes to its network configuration,
@@ -673,18 +673,18 @@ than administrator action. Any change to network parameters should be
 audited.</rationale>
 <ident cce="26648-6" />
 <oval id="audit_rules_networkconfig_modification" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
 <Rule id="file_permissions_var_log_audit">
 <title>System Audit Logs Must Have Mode 0640 or Less Permissive</title>
 <description>
 Change the mode of the audit log files with the following command:
-<pre># chmod 0640 <i>audit_file</i></pre>
+<pre>$ sudo chmod 0640 <i>audit_file</i></pre>
 </description>
 <ocil clause="any are more permissive">
 Run the following command to check the mode of the system audit logs:
-<pre>ls -l /var/log/audit</pre>
+<pre>$ sudo ls -l /var/log/audit</pre>
 Audit logs must be mode 0640 or less permissive.
 </ocil>
 <rationale>
@@ -712,7 +712,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <tested by="DS" on="20121024"/>
 </Rule> 
 
-<Rule id="audit_mac_changes">
+<Rule id="audit_rules_mac_modification">
 <title>Record Events that Modify the System's Mandatory Access Controls</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
@@ -720,7 +720,7 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <ocil clause="the system is not configured to audit attempts to change the MAC policy">
 To determine if the system is configured to audit changes to its SELinux
 configuration files, run the following command:
-<pre># auditctl -l | grep "dir=/etc/selinux"</pre>
+<pre>$ sudo auditctl -l | grep "dir=/etc/selinux"</pre>
 If the system is configured to watch for changes to its SELinux
 configuration, a line should be returned (including
 <tt>perm=wa</tt> indicating permissions that are watched).
@@ -730,12 +730,12 @@ arbitrarily changed by anything other than administrator action. All changes to
 MAC policy should be audited.</rationale>
 <ident cce="26657-7" />
 <oval id="audit_rules_mac_modification" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
 <Group id="audit_dac_actions">
 <title>Record Events that Modify the System's Discretionary Access Controls</title>
-<description>At a minimum the audit system should collect file permission 
+<description>At a minimum, the audit system should collect file permission 
 changes for all users and root.  Note that the "-F arch=b32" lines should be 
 present even on a 64 bit system.  These commands identify system calls for 
 auditing.  Even if the system is 64 bit it can still execute 32 bit system 
@@ -780,7 +780,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="26280-8" />
 <oval id="audit_rules_dac_modification_chmod" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_chown">
@@ -806,7 +806,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27173-4" />
 <oval id="audit_rules_dac_modification_chown" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmod">
@@ -832,7 +832,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27174-2" />
 <oval id="audit_rules_dac_modification_fchmod" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmodat">
@@ -858,7 +858,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27175-9" />
 <oval id="audit_rules_dac_modification_fchmodat" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchown">
@@ -884,7 +884,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27177-5" />
 <oval id="audit_rules_dac_modification_fchown" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchownat">
@@ -910,7 +910,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27178-3" />
 <oval id="audit_rules_dac_modification_fchownat" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fremovexattr">
@@ -936,7 +936,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27179-1" />
 <oval id="audit_rules_dac_modification_fremovexattr" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fsetxattr">
@@ -962,7 +962,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27180-9" />
 <oval id="audit_rules_dac_modification_fsetxattr" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lchown">
@@ -988,7 +988,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27181-7" />
 <oval id="audit_rules_dac_modification_lchown" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lremovexattr">
@@ -1014,7 +1014,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27182-5" />
 <oval id="audit_rules_dac_modification_lremovexattr" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lsetxattr">
@@ -1040,7 +1040,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27183-3" />
 <oval id="audit_rules_dac_modification_lsetxattr" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_removexattr">
@@ -1066,7 +1066,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27184-1" />
 <oval id="audit_rules_dac_modification_removexattr" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_setxattr">
@@ -1092,16 +1092,16 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27185-8" />
 <oval id="audit_rules_dac_modification_setxattr" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
 
-<Rule id="audit_manual_logon_edits">
-<title>Record Attempts to Alter Logon and Logout Events</title>
+<Rule id="audit_rules_login_events">
+<title>Record Attempts to Alter Login and Logout Events</title>
 <description> 
 The audit system already collects login info for all users and root. To watch for attempted manual edits of
-files involved in storing logon events, add the following to <tt>/etc/audit/audit.rules</tt>:
+files involved in storing login events, add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-w /var/log/faillog -p wa -k logins 
 -w /var/log/lastlog -p wa -k logins</pre>
 </description> 
@@ -1109,7 +1109,7 @@ files involved in storing logon events, add the following to <tt>/etc/audit/audi
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="26691-6" />
 <oval id="audit_rules_login_events" />
-<ref nist="AC-3(10),AU-1(b),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
 <Rule id="audit_manual_session_edits">
@@ -1126,7 +1126,7 @@ storing such process information, add the following to
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="26610-6" />
 <oval id="audit_rules_session_events" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification">
@@ -1135,39 +1135,47 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 unauthorized file accesses for all users and root. Add the following
 to <tt>/etc/audit/audit.rules</tt>:
 <pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
--a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
+If the system is 64 bit then also add the following:
+<pre>
 -a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
 -a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
 </description>
 <ocil clause="32-bit and 64-bit system calls to creat, open, openat, open_by_handle_at, truncate, and ftruncate are not audited during EACCES and EPERM">
 To verify that the audit system collects unauthorized file accesses, run the following commands:
-<pre># grep EACCES /etc/audit/audit.rules</pre>
-<pre># grep EPERM /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
 <ident cce="26712-0" />
 <oval id="audit_rules_unsuccessful_file_modification" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126" />
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum the audit system should collect the
 execution of privileged commands for all users and root.
-To find the relevant setuid / setgid programs:
-<pre># find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
-Then, for each setuid / setgid program on the system, add a line of the following form to
-<tt>/etc/audit/audit.rules</tt>, where <i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
+To find the relevant setuid / setgid programs, run the following command
+for each local partition <i>PART</i>:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null</pre>
+Then, for each setuid / setgid program on the system, add a line of the
+following form to <tt>/etc/audit/audit.rules</tt>, where
+<i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
 in the list:
 <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
 </description>
-<ocil clause="it is not the case">
-To verify that auditing of privileged command use is configured, run the following command to find relevant setuid / setgid programs:
-<pre># find / -xdev -type f -perm -4000 -o -perm -2000 2>/dev/null</pre>
-Run the following command to verify entries in the audit rules for all programs found with the previous command:
-<pre># grep path /etc/audit/audit.rules</pre>
-It should be the case that all relevant setuid / setgid programs have a line in the audit rules.
+<ocil clause="that is not the case">
+To verify that auditing of privileged command use is configured, run the
+following command for each local partition <i>PART</i> to find relevant
+setuid / setgid programs:
+<pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null</pre>
+Run the following command to verify entries in the audit rules for all programs
+found with the previous command:
+<pre>$ sudo grep path /etc/audit/audit.rules</pre>
+It should be the case that all relevant setuid / setgid programs have a line
+in the audit rules.
 </ocil>
 <rationale>Privileged programs are subject to escalation-of-privilege attacks,
 which attempt to subvert their normal role of providing some necessary but
@@ -1176,11 +1184,11 @@ unusual activity.
 </rationale>
 <ident cce="26457-2" />
 <oval id="audit_rules_privileged_commands" />
-<ref nist="AC-3(10)),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AC-6(9),IR-5" disa="40" />
+<ref nist="AC-3(10)),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AC-6(9),AU-12(a),AU-12(c),IR-5" disa="40" />
 <tested by="JL" on="20140703"/>
 </Rule>
 
-<Rule id="audit_media_exports">
+<Rule id="audit_rules_media_export">
 <title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
 <description>At a minimum the audit system should collect media
 exportation events for all users and root. Add the following to
@@ -1190,7 +1198,7 @@ appropriate for your system:
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for all media exportation events, run the following command:
-<pre># auditctl -l | grep syscall | grep mount</pre>
+<pre>$ sudo auditctl -l | grep syscall | grep mount</pre>
 </ocil>
 <rationale>The unauthorized exportation of data to external media could result in an information leak
 where classified information, Privacy Act information, and intellectual property could be lost. An audit
@@ -1198,7 +1206,7 @@ trail should be created each time a filesystem is mounted to help identify and g
 loss.</rationale>
 <ident cce="26573-6" />
 <oval id="audit_rules_media_export" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -1221,10 +1229,10 @@ from the system. The audit trail could aid in system troubleshooting, as well as
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
 <ident cce="26651-0" />
 <oval id="audit_rules_file_deletion_events" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
-<Rule id="audit_sysadmin_actions">
+<Rule id="audit_rules_sysadmin_actions">
 <title>Ensure <tt>auditd</tt> Collects System Administrator Actions</title>
 <description>At a minimum the audit system should collect
 administrator actions for all users and root. Add the following to
@@ -1233,13 +1241,13 @@ administrator actions for all users and root. Add the following to
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for system administrator actions, run the following command:
-<pre># auditctl -l | grep "watch=/etc/sudoers"</pre>
+<pre>$ sudo auditctl -l | grep "watch=/etc/sudoers"</pre>
 </ocil>
 <rationale>The actions taken by system administrators should be audited to keep a record
 of what was executed on the system, as well as, for accountability purposes.</rationale>
 <ident cce="26662-7" />
 <oval id="audit_rules_sysadmin_actions" />
-<ref nist="AC-2(7)(b),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-2(7)(b),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -1261,10 +1269,10 @@ the kernel and potentially introduce malicious code into kernel space. It is imp
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident cce="26611-4" />
 <oval id="audit_rules_kernel_module_loading" />
-<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" disa="126"/>
+<ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
-<Rule id="audit_config_immutable">
+<Rule id="audit_rules_immutable">
 <title>Make the <tt>auditd</tt> Configuration Immutable</title>
 <description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
 to make the configuration immutable:

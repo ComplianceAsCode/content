@@ -27,14 +27,14 @@ operator="equals" interactive="0">
 <Rule id="accounts_max_concurrent_login_sessions">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
-Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
-Service attacks. This addresses concurrent sessions for a single account and does not address 
-concurrent sessions by a single user via multiple accounts.  The DoD requirement is 10.   To set the number of concurrent
+Limiting the number of allowed users and sessions per user can limit risks related to Denial of
+Service attacks. This addresses concurrent sessions for a single account and does not address
+concurrent sessions by a single user via multiple accounts. The DoD requirement is 10. To set the number of concurrent
 sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
-<pre>* hard maxlogins 10</pre>
+<pre>* hard maxlogins <sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
 </description>
-<rationale>Limiting simultaneous user logins can insulate the system from denial of service 
-problems caused by excessive logins. Automated login processes operating improperly or 
+<rationale>Limiting simultaneous user logins can insulate the system from denial of service
+problems caused by excessive logins. Automated login processes operating improperly or
 maliciously may result in an exceptional number of simultaneous login sessions.
 </rationale>
 <ocil clause="it is not similar">
@@ -42,11 +42,11 @@ Run the following command to ensure the <tt>maxlogins</tt> value is configured f
 on the system:
 <pre># grep "maxlogins" /etc/security/limits.conf</pre>
 You should receive output similar to the following:
-<pre>*		hard	maxlogins	10</pre>
+<pre>*		hard	maxlogins	<sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
 </ocil>
+<ident cce="27081-9" />
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
-<ident cce="RHEL7-CCE-TBD" />
-<ref nist="AC-10" disa="54"/>
+<ref nist="AC-10" disa="54" srg="27" />
 </Rule>
 
 <Group id="root_paths">
@@ -148,7 +148,7 @@ groups or ACLs.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="file_permissions_home_dirs" />
-<ref nist=""/>
+<ref nist="AC-6"/>
 </Rule>
 
 <Group id="user_umask">
@@ -226,9 +226,9 @@ umask 077
 umask 077</pre>
 </ocil>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="accounts_umask_bashrc" value="var_accounts_user_umask"/>
-<ref nist="" disa="366"/>
-<tested by="swells" on="20120929"/>
+<oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/>
+<ref nist="SA-8" disa="366"/>
+<tested by="JL" on="20140912"/>
 </Rule>
 
 <Rule id="accounts_umask_cshrc">
@@ -250,9 +250,9 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 umask 077</pre>
 </ocil>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="accounts_umask_cshrc" value="var_accounts_user_umask"/>
-<ref nist="" disa="366"/>
-<tested by="swells" on="20120929"/>
+<oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/>
+<ref nist="SA-8" disa="366"/>
+<tested by="JL" on="20140912"/>
 </Rule>
 
 <Rule id="accounts_umask_etc_profile">
@@ -276,7 +276,7 @@ umask 077</pre>
 </ocil>
 <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
 <tested by="swells" on="20120929"/>
-<ref nist="" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_login_defs">
@@ -287,7 +287,7 @@ add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as
 <pre>UMASK 077<!-- <sub idref="umask_user_value" /> --></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
-A misconfigured umask value could result in files with excessive permissions that can be read and 
+A misconfigured umask value could result in files with excessive permissions that can be read and
 written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
@@ -298,9 +298,9 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 umask 077</pre>
 </ocil>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="accounts_umask_login_defs" value="var_accounts_user_umask" />
-<ref nist="" disa="366"/>
-<tested by="swells" on="20120929" />
+<oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
+<ref nist="SA-8" disa="366"/>
+<tested by="JL" on="20140912" />
 </Rule>
 
 </Group>

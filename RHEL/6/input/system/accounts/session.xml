@@ -27,20 +27,20 @@ operator="equals" interactive="0">
 <Rule id="accounts_max_concurrent_login_sessions">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
-Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
-Service attacks. This addresses concurrent sessions for a single account and does not address 
-concurrent sessions by a single user via multiple accounts.  The DoD requirement is 10.   To set the number of concurrent
+Limiting the number of allowed users and sessions per user can limit risks related to Denial of
+Service attacks. This addresses concurrent sessions for a single account and does not address
+concurrent sessions by a single user via multiple accounts. The DoD requirement is 10. To set the number of concurrent
 sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
-<pre>* hard maxlogins 10</pre>
+<pre>* hard maxlogins <sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
 </description>
-<rationale>Limiting simultaneous user logins can insulate the system from denial of service 
-problems caused by excessive logins. Automated login processes operating improperly or 
+<rationale>Limiting simultaneous user logins can insulate the system from denial of service
+problems caused by excessive logins. Automated login processes operating improperly or
 maliciously may result in an exceptional number of simultaneous login sessions.
 </rationale>
 <ocil clause="it is not similar">
 Run the following command to ensure the <tt>maxlogins</tt> value is configured for all users
 on the system:
-<pre># grep "maxlogins" /etc/security/limits.conf</pre>
+<pre>$ grep "maxlogins" /etc/security/limits.conf</pre>
 You should receive output similar to the following:
 <pre>*		hard	maxlogins	10</pre>
 </ocil>
@@ -53,7 +53,7 @@ You should receive output similar to the following:
 <title>Ensure that No Dangerous Directories Exist in Root's Path</title>
 <description>The active path of the root account can be obtained by
 starting a new root shell and running:
-<pre># echo $PATH</pre>
+<pre>$ sudo echo $PATH</pre>
 This will produce a colon-separated list of
 directories in the path.
 <br /><br />
@@ -97,14 +97,14 @@ execute code from an untrusted location.
 <title>Ensure that Root's Path Does Not Include World or Group-Writable Directories</title>
 <description>
 For each element in root's path, run:
-<pre># ls -ld <i>DIR</i></pre>
+<pre>$ sudo ls -ld <i>DIR</i></pre>
 and ensure that write permissions are disabled for group and
 other.
 </description>
 <ocil clause="group or other write permissions exist">
 To ensure write permissions are disabled for group and other
  for each element in root's path, run the following command:
-<pre># ls -ld <i>DIR</i></pre>
+<pre>$ sudo ls -ld <i>DIR</i></pre>
 </ocil>
 <rationale>
 Such entries increase the risk that root could
@@ -121,15 +121,15 @@ and potentially malicious code.
 <title>Ensure that User Home Directories are not Group-Writable or World-Readable</title>
 <description>For each human user of the system, view the
 permissions of the user's home directory:
-<pre># ls -ld /home/<i>USER</i></pre>
+<pre>$ sudo ls -ld /home/<i>USER</i></pre>
 Ensure that the directory is not group-writable and that it
 is not world-readable. If necessary, repair the permissions:
-<pre># chmod g-w /home/<i>USER</i>
-# chmod o-rwx /home/<i>USER</i></pre>
+<pre>$ sudo chmod g-w /home/<i>USER</i>
+$ sudo chmod o-rwx /home/<i>USER</i></pre>
 </description>
 <ocil clause="the user home directory is group-writable or world-readable">
 To ensure the user home directory is not group-writable or world-readable, run the following:
-<pre># ls -ld /home/<i>USER</i></pre>
+<pre>$ sudo ls -ld /home/<i>USER</i></pre>
 </ocil>
 <warning category="general">This action may involve
 modifying user home directories. Notify your user community, and
@@ -148,7 +148,7 @@ groups or ACLs.
 </rationale>
 <ident cce="26981-1" />
 <oval id="file_permissions_home_dirs" />
-<ref nist=""/>
+<ref nist="AC-6"/>
 </Rule>
 
 <Group id="user_umask">
@@ -211,7 +211,7 @@ operator="equals" interactive="0">
 To ensure the default umask for users of the Bash shell is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
 as follows:
-<pre>umask 077<!-- <sub idref="var_accounts_user_umask" /> --></pre>
+<pre>umask <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -219,16 +219,16 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
 running the following command:
-<pre># grep "umask" /etc/bashrc</pre>
+<pre>$ grep "umask" /etc/bashrc</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown below:
-<pre># grep "umask" /etc/bashrc
+<pre>$ grep "umask" /etc/bashrc
 umask 077
 umask 077</pre>
 </ocil>
 <ident cce="26917-5" />
-<oval id="accounts_umask_bashrc" value="var_accounts_user_umask"/>
-<ref nist="" disa="366"/>
-<tested by="swells" on="20120929"/>
+<oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/>
+<ref nist="SA-8" disa="366"/>
+<tested by="JL" on="20140912"/>
 </Rule>
 
 <Rule id="accounts_umask_cshrc">
@@ -236,7 +236,7 @@ umask 077</pre>
 <description>
 To ensure the default umask for users of the C shell is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/csh.cshrc</tt> to read as follows:
-<pre>umask 077<!-- <sub idref="var_accounts_user_umask" /> --></pre>
+<pre>umask <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -244,15 +244,15 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/csh.cshrc</tt> file by
 running the following command:
-<pre># grep "umask" /etc/csh.cshrc</pre>
+<pre>$ grep "umask" /etc/csh.cshrc</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
-<pre># grep "umask" /etc/csh.cshrc
+<pre>$ grep "umask" /etc/csh.cshrc
 umask 077</pre>
 </ocil>
 <ident cce="27034-8" />
-<oval id="accounts_umask_cshrc" value="var_accounts_user_umask"/>
-<ref nist="" disa="366"/>
-<tested by="swells" on="20120929"/>
+<oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/>
+<ref nist="SA-8" disa="366"/>
+<tested by="JL" on="20140912"/>
 </Rule>
 
 <Rule id="accounts_umask_etc_profile">
@@ -260,7 +260,7 @@ umask 077</pre>
 <description>
 To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as follows:
-<pre>umask 077<!--<sub idref="var_accounts_user_umask" /> --></pre>
+<pre>umask <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -269,14 +269,14 @@ written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
-<pre># grep "umask" /etc/profile</pre>
+<pre>$ grep "umask" /etc/profile</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
-<pre># grep "umask" /etc/profile
+<pre>$ grep "umask" /etc/profile
 umask 077</pre>
 </ocil>
 <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
 <tested by="swells" on="20120929"/>
-<ref nist="" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_login_defs">
@@ -284,23 +284,23 @@ umask 077</pre>
 <description>
 To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
 add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
-<pre>UMASK 077<!-- <sub idref="var_accounts_user_umask" /> --></pre>
+<pre>UMASK <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
-A misconfigured umask value could result in files with excessive permissions that can be read and 
+A misconfigured umask value could result in files with excessive permissions that can be read and
 written to by unauthorized users.</rationale>
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
 running the following command:
-<pre># grep -i "UMASK" /etc/login.defs</pre>
+<pre>$ grep -i "UMASK" /etc/login.defs</pre>
 All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
-<pre># grep -i "UMASK" /etc/login.defs
+<pre>$ grep -i "UMASK" /etc/login.defs
 umask 077</pre>
 </ocil>
 <ident cce="26371-5" />
-<oval id="accounts_umask_login_defs" value="var_accounts_user_umask" />
-<ref nist="" disa="366"/>
-<tested by="swells" on="20120929" />
+<oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
+<ref nist="SA-8" disa="366"/>
+<tested by="JL" on="20140912" />
 </Rule>
 
 </Group>

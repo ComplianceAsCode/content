@@ -5,6 +5,7 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
       </affected>
       <description>The root account is the only system account that should have a login shell.</description>
       <reference source="swells" ref_id="20130918" ref_url="test_attestation" />
@@ -18,7 +19,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_no_shelllogin_for_systemaccounts" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!root).*:x:[\d]*:0*([0-9]{1,2}|[1-4][0-9]{2}):[^:]*:[^:]*:(?!\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!root).*:x:0*([0-9]{1,2}|[1-4][0-9]{2}):[\d]*:[^:]*:[^:]*:(?!\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

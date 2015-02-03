@@ -30,13 +30,13 @@ should be disabled if not needed.
 <oval id="service_snmpd_disabled" />
 </Rule>
 
-<Rule id="uninstall_net-snmp">
+<Rule id="package_net-snmp_removed">
 <title>Uninstall <tt>net-snmp</tt> Package</title>
 <description>The <tt>net-snmp</tt> package provides the snmpd service.
-<package-remove-macro package="net-snmpd" />
+<package-remove-macro package="net-snmp" />
 </description>
 <ocil>
-<package-check-macro package="net-snmpd" />
+<package-check-macro package="net-snmp" />
 </ocil>
 <rationale>
 If there is no need to run SNMP server software,
@@ -72,11 +72,11 @@ stations</li>
 <description>
 Edit <tt>/etc/snmp/snmpd.conf</tt>, removing any references to <tt>rocommunity</tt>, <tt>rwcommunity</tt>, or <tt>com2sec</tt>.
 Upon doing that, restart the SNMP service:
-<pre># service snmpd restart</pre>
+<pre>$ sudo service snmpd restart</pre>
 </description>
 <ocil clause="there is output">
 To ensure only SNMPv3 or newer is used, run the following command:
-<pre># grep 'rocommunity\|rwcommunity\|com2sec' /etc/snmp/snmpd.conf | grep -v "^#"</pre>
+<pre>$ sudo grep 'rocommunity\|rwcommunity\|com2sec' /etc/snmp/snmpd.conf | grep -v "^#"</pre>
 There should be no output.
 </ocil>
 <rationale>
@@ -92,11 +92,11 @@ unauthorized access to detailed system management information.
 <description>
 Edit <tt>/etc/snmp/snmpd.conf</tt>, remove default community string <tt>public</tt>.  
 Upon doing that, restart the SNMP service:
-<pre># service snmpd restart</pre>
+<pre>$ sudo service snmpd restart</pre>
 </description>
 <ocil clause="there is output">
 To ensure the default password is not set, run the following command:
-<pre># grep -v "^#" /etc/snmp/snmpd.conf| grep public</pre>
+<pre>$ sudo grep -v "^#" /etc/snmp/snmpd.conf| grep public</pre>
 There should be no output.
 </ocil>
 <rationale>

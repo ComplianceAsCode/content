@@ -69,7 +69,7 @@ this service should be disabled.
 <title>Disable netfs if Possible</title>
 <description>To determine if any network filesystems handled by netfs are
 currently mounted on the system execute the following command:
-<pre># mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
+<pre>$ mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
 If the command did not return any output then disable netfs.
 </description>
 <Rule id="service_netfs_disabled">
@@ -208,11 +208,19 @@ clients.</description>
 <title>Specify UID and GID for Anonymous NFS Connections</title>
 <description>To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:
 <pre>
-anonuid=-1
-anongid=-1
+anonuid=<tt>value greater than UID_MAX from /etc/login.defs</tt>
+anongid=<tt>value greater than GID_MAX from /etc/login.defs</tt>
 </pre>
+Note that a value of "-1" is technically acceptable as this will randomize the <tt>anonuid</tt> and
+<tt>anongid</tt> values on a RHEL 6 based NFS server. While acceptable from a security perspective,
+a value of <tt>-1</tt>  may cause interoperability issues, particularly with RHEL 7 client systems.
 </description>
-<rationale>Specifying the anonymous UID and GID as -1 ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
+<ocil clause="anonuid or anongid are not set to a value greater than UID_MAX (for anonuid) and GID_MAX (for anongid)">
+Inspect the mounts configured in <tt>/etc/exports</tt>. Each mount should specify a value
+greater than UID_MAX and GID_MAX as defined in /etc/login.defs.
+</ocil>
+<rationale>Specifying the anonymous UID and GID ensures that the remote root user is mapped
+to a local account which has no permissions on the system.</rationale>
 <ident cce="27414-2" />
 </Rule>
 
@@ -283,7 +291,7 @@ server.</description>
 </description>
 <ocil clause="the setting does not show">
 To verify the <tt>nodev</tt> option is configured for all NFS mounts, run the following command:
-<pre>$ mount  | grep nfs</pre>
+<pre>$ mount | grep nfs</pre>
 All NFS mounts should show the <tt>nodev</tt> setting in parentheses.  This is not applicable if NFS is 
 not implemented.
 </ocil>
@@ -292,6 +300,7 @@ should not present device files to users.</rationale>
 <ident cce="27090-0" />
 <oval id="mount_option_nodev_remote_filesystems" />
 <tested by="DS" on="20121025"/>
+<ref nist="CM-7,MP-2" />
 </Rule>
 
 <Rule id="use_nosuid_option_on_nfs_mounts" severity="medium">
@@ -301,7 +310,7 @@ should not present device files to users.</rationale>
 </description>
 <ocil clause="the setting does not show">
 To verify the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command:
-<pre>$ mount  | grep nfs</pre>
+<pre>$ mount | grep nfs</pre>
 All NFS mounts should show the <tt>nosuid</tt> setting in parentheses.  This is not applicable if NFS is 
 not implemented.
 </ocil>
@@ -410,11 +419,12 @@ Remove any instances of the
 </description>
 <ocil clause="there is output">
 To verify insecure file locking has been disabled, run the following command:
-<pre># grep insecure_locks /etc/exports</pre>
+<pre>$ grep insecure_locks /etc/exports</pre>
 </ocil>
 <rationale>Allowing insecure file locking could allow for sensitive data to be
 viewed or edited by an unauthorized user.
 </rationale>
+<oval id="no_insecure_locks_exports" />
 <ident cce="27167-6" />
 <ref disa="764" />
 </Rule>

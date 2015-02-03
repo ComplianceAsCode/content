@@ -8,7 +8,7 @@ due to its long history, syslog is a de facto standard which is supported by
 almost all Unix applications.
 <br/>
 <br/>
-In RHEL 6, rsyslog has replaced ksyslogd as the
+In RHEL 7, rsyslog has replaced ksyslogd as the
 syslog daemon of choice, and it includes some additional security features
 such as reliable, connection-oriented (i.e. TCP) transmission of logs, the
 option to log to database formats, and the encryption of log data en route to
@@ -39,7 +39,7 @@ system logging services.
 
 <Rule id="service_rsyslog_enabled" severity="medium">
 <title>Enable rsyslog Service</title>
-<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 6.
+<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on RHEL 7.
 <service-enable-macro service="rsyslog" />
 </description>
 <ocil>
@@ -64,7 +64,7 @@ These are controlled by lines called <i>rules</i>, which consist of a
 These rules are often customized depending on the role of the system, the
 requirements of the environment, and whatever may enable
 the administrator to most effectively make use of log data.
-The default rules in RHEL 6 are:
+The default rules in RHEL 7 are:
 <pre>*.info;mail.none;authpriv.none;cron.none                /var/log/messages
 authpriv.*                                              /var/log/secure
 mail.*                                                  -/var/log/maillog
@@ -108,7 +108,7 @@ run the following command to inspect the file's owner:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 If the owner is not <tt>root</tt>, run the following command to
 correct this:
-<pre># chown root <i>LOGFILE</i></pre>
+<pre>$ sudo chown root <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the owner is not root">
 The owner of all log files written by <tt>rsyslog</tt> should be root.
@@ -137,7 +137,7 @@ run the following command to inspect the file's group owner:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 If the owner is not <tt>root</tt>, run the following command to
 correct this:
-<pre># chgrp root <i>LOGFILE</i></pre>
+<pre>$ sudo chgrp root <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the group-owner is not root">
 The group-owner of all log files written by <tt>rsyslog</tt> should be root.
@@ -167,7 +167,7 @@ run the following command to inspect the file's permissions:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 If the permissions are not 600 or more restrictive,
 run the following command to correct this:
-<pre># chmod 0600 <i>LOGFILE</i></pre>
+<pre>$ sudo chmod 0600 <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the permissions are not correct">
 The file permissions for all log files written by <tt>rsyslog</tt> 
@@ -290,7 +290,7 @@ rsyslog by configuring it not to listen on the network.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="rsyslog_nolisten" />
-<ref nist="AU-9(2)" />
+<ref nist="AU-9(2),AC-4" />
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_tcp">
@@ -369,7 +369,7 @@ that they fill up the /var/log partition. Valuable logging information could be 
 if the /var/log partition becomes full.</rationale>
 <ocil clause="logrotate is not configured to run daily">
 To determine the status and frequency of logrotate, run the following command:
-<pre># grep logrotate /var/log/cron*</pre>
+<pre>$ sudo grep logrotate /var/log/cron*</pre>
 If logrotate is configured properly, output should include references to 
 <tt>/etc/cron.daily</tt>.
 </ocil>
@@ -424,7 +424,7 @@ the logserver.</description> -->
 Does your site have a central logserver which has been configured to report on logs received from all systems? 
 If so:
 <pre> 
-# rm /etc/cron.daily/0logwatch 
+$ sudo rm /etc/cron.daily/0logwatch 
 </pre>
 If no logserver exists, it will be necessary for each machine to run Logwatch individually. Using a central 
 logserver provides the security and reliability benefits discussed earlier, and also makes monitoring logs easier 

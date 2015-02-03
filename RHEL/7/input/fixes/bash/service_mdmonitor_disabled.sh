@@ -1,9 +1,9 @@
 #
-# Disable mdmonitor for all run levels
+# Disable mdmonitor.service for all systemd targets
 #
-chkconfig --level 0123456 mdmonitor off
+systemctl disable mdmonitor.service
 
 #
-# Stop mdmonitor if currently running
+# Stop mdmonitor.service if currently running
 #
-service mdmonitor stop
+systemctl stop mdmonitor.service

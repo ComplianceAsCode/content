@@ -1,9 +1,9 @@
 #
-# Enable psacct for all run levels
+# Enable psacct.service for all systemd targets
 #
-chkconfig --level 0123456 psacct on
+systemctl enable psacct.service
 
 #
-# Start psacct if not currently running
+# Start psacct.service if not currently running
 #
-service psacct start
+systemctl start psacct.service

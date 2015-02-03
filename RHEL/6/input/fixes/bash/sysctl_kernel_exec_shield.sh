@@ -1,7 +1,7 @@
 #
 # Set runtime for kernel.exec-shield
 #
-sysctl -q -n -w kernel.exec-shield=1
+/sbin/sysctl -q -n -w kernel.exec-shield=1
 
 #
 # If kernel.exec-shield present in /etc/sysctl.conf, change value to "1"

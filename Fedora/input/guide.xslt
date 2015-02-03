@@ -24,17 +24,10 @@
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('system/settings/settings.xml')" />
       <xsl:apply-templates select="document('system/software/software.xml')" />
       <xsl:apply-templates select="document('system/permissions/permissions.xml')" />
       <xsl:apply-templates select="document('system/accounts/accounts.xml')" />
-    </xsl:copy>
-  </xsl:template>
-
-  <xsl:template match="Group[@id='settings']">
-    <xsl:copy>
-      <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('system/settings/disable_prelink.xml')" />
+      <xsl:apply-templates select="document('system/network/network.xml')" />
     </xsl:copy>
   </xsl:template>
 
@@ -42,15 +35,22 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/software/updating.xml')" />
+      <xsl:apply-templates select="document('system/software/integrity.xml')" />
     </xsl:copy>
   </xsl:template>
+
 
   <xsl:template match="Group[@id='accounts']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('system/accounts/restrictions/restrictions.xml')" />
+      <xsl:apply-templates select="document('system/accounts/session.xml')" />
+      <xsl:apply-templates select="document('system/accounts/pam.xml')" />
+      <xsl:apply-templates select="document('system/accounts/physical.xml')" />
+      <xsl:apply-templates select="document('system/accounts/banners.xml')" />
     </xsl:copy>
   </xsl:template>
+
 
   <xsl:template match="Group[@id='accounts-restrictions']">
     <xsl:copy>
@@ -58,23 +58,40 @@
       <xsl:apply-templates select="document('system/accounts/restrictions/root_logins.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_storage.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_expiration.xml')" />
+     <!--  <xsl:apply-templates select="document('system/accounts/restrictions/account_expiration.xml')" /> -->
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="Group[@id='permissions']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/permissions/mounting.xml')" />
       <xsl:apply-templates select="document('system/permissions/files.xml')" />
+      <xsl:apply-templates select="document('system/permissions/execution.xml')" /> 
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='network']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('system/network/kernel.xml')" />
+      <xsl:apply-templates select="document('system/network/wireless.xml')" />
+      <xsl:apply-templates select="document('system/network/ipv6.xml')" />
+      <xsl:apply-templates select="document('system/network/iptables.xml')" />
+      <xsl:apply-templates select="document('system/network/ssl.xml')" />
+      <xsl:apply-templates select="document('system/network/uncommon.xml')" />
+      <xsl:apply-templates select="document('system/network/ipsec.xml')" />
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('services/ntp.xml')" />
       <xsl:apply-templates select="document('services/ssh.xml')" />
+      <xsl:apply-templates select="document('services/ntp.xml')" />
       <xsl:apply-templates select="document('services/ftp.xml')" />
       <xsl:apply-templates select="document('services/snmp.xml')" />
+      <xsl:apply-templates select="document('services/nfs.xml')" />
     </xsl:copy>
   </xsl:template>
 

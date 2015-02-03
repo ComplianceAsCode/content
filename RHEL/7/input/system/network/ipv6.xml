@@ -16,37 +16,36 @@ effectively prevent execution of the IPv6 networking stack is to
 instruct the system not to activate the IPv6 kernel module.
 </description>
 
-<Rule id="kernel_module_ipv6_option_disabled" severity="medium">
+<Rule id="sysctl_kernel_ipv6_disable" severity="medium">
 <title>Disable IPv6 Networking Support Automatic Loading</title>
-<description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from loading the
-IPv6 networking stack, add the following line to
-<tt>/etc/modprobe.d/disabled.conf</tt> (or another file in
-<tt>/etc/modprobe.d</tt>):
-<pre>options ipv6 disable=1</pre>
-This permits the IPv6 module to be loaded (and thus satisfy other modules that
-depend on it), while disabling support for the IPv6 protocol.
+<description>To disable support for (<tt>ipv6</tt>) add the following line to
+<tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in
+<tt>/etc/sysctl.d</tt>):
+<pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
+This disables IPv6 on all network interfaces as other services and system
+functionality require the IPv6 stack loaded to work.
 </description>
-<ocil clause="the ipv6 kernel module is loaded">
+<ocil clause="the ipv6 support is disabled on network interfaces">
 If the system uses IPv6, this is not applicable.
 <br /><br />
-If the system is configured to prevent the loading of the
-<tt>ipv6</tt> kernel module, it will contain a line
+If the system is configured to prevent the usage of the
+<tt>ipv6</tt> on network interfaces, it will contain a line
 of the form:
-<pre>options ipv6 disable=1</pre>
-Such lines may be inside any file in <tt>/etc/modprobe.d</tt> or the
-deprecated<tt>/etc/modprobe.conf</tt>.  This permits insertion of the IPv6
-kernel module (which other parts of the system expect to be present), but
-otherwise keeps it inactive.  Run the following command to search for such
-lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
-<tt>/etc/modprobe.conf</tt>:
-<pre xml:space="preserve">$ grep -r ipv6 /etc/modprobe.conf /etc/modprobe.d</pre>
+<pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
+Such lines may be inside any file in the <tt>/etc/sysctl.d</tt> directory. 
+This permits insertion of the IPv6 kernel module (which other parts of 
+the system expect to be present), but otherwise keeps all network interfaces
+from using IPv6.
+Run the following command to search for such
+lines in all files in <tt>/etc/sysctl.d</tt>:
+<pre xml:space="preserve">$ grep -r ipv6 /etc/sysctl.d</pre>
 </ocil>
 <rationale>
 Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_ipv6_option_disabled" />
+<oval id="sysctl_kernel_ipv6_disable" />
 <ref nist="CM-7" disa="1551"/>
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -138,7 +137,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="sysctl_ipv6_default_accept_redirects" severity="medium">
+<Rule id="sysctl_net_ipv6_conf_default_accept_redirects" severity="medium">
 <title>Disable Accepting IPv6 Redirects</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
@@ -218,21 +217,21 @@ net.ipv6.conf.default.max_addresses = 1</pre>
 The <tt>router_solicitations</tt> setting determines how many router
 solicitations are sent when bringing up the interface. If addresses are
 statically assigned, there is no need to send any solicitations.
-<br />
+<br /><br />
 The <tt>accept_ra_pinfo</tt> setting controls whether the system will accept
 prefix info from the router.
-<br />
+<br /><br />
 The <tt>accept_ra_defrtr</tt> setting controls whether the system will accept
 Hop Limit settings from a router advertisement. Setting it to 0 prevents a
 router from changing your default IPv6 Hop Limit for outgoing packets.
-<br />
+<br /><br />
 The <tt>autoconf</tt> setting controls whether router advertisements can cause
 the system to assign a global unicast address to an interface.
-<br />
+<br /><br />
 The <tt>dad_transmits</tt> setting determines how many neighbor solicitations
 to send out per address (global and link-local) when bringing up an interface
 to ensure the desired address is unique on the network.
-<br />
+<br /><br />
 The <tt>max_addresses</tt> setting determines how many global unicast IPv6
 addresses can be assigned to each interface.  The default is 16, but it should
 be set to exactly the number of statically configured global addresses

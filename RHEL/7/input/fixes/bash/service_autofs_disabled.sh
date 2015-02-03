@@ -1,9 +1,9 @@
 #
-# Disable autofs for all run levels
+# Disable autofs.service for all systemd targets
 #
-chkconfig --level 0123456 autofs off
+systemctl disable autofs.service
 
 #
-# Stop autofs if currently running
+# Stop autofs.service if currently running
 #
-service autofs stop
+systemctl stop autofs.service

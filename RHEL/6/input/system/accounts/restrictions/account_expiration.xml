@@ -8,7 +8,7 @@ and also on a per-account basis, such as for accounts that are known to be tempo
 To configure automatic expiration of an account following
 the expiration of its password (that is, after the password has expired and not been changed),
 run the following command, substituting <tt><i>NUM_DAYS</i></tt> and <tt><i>USER</i></tt> appropriately:
-<pre># chage -I <i>NUM_DAYS USER</i></pre>
+<pre>$ sudo chage -I <i>NUM_DAYS USER</i></pre>
 Accounts, such as temporary accounts, can also be configured to expire on an explicitly-set date with the
 <tt>-E</tt> option.
 The file <tt>/etc/default/useradd</tt> controls
@@ -51,7 +51,7 @@ To verify the <tt>INACTIVE</tt> setting, run the following command:
 <pre>grep "INACTIVE" /etc/default/useradd</pre>
 The output should indicate the <tt>INACTIVE</tt> configuration option is set
 to an appropriate integer as shown in the example below:
-<pre># grep "INACTIVE" /etc/default/useradd
+<pre>$ sudo grep "INACTIVE" /etc/default/useradd
 INACTIVE=35</pre></ocil>
 <rationale>
 Disabling inactive accounts ensures that accounts which may not
@@ -70,7 +70,7 @@ Change usernames, or delete accounts, so each has a unique name.
 </description>
 <ocil clause="a line is returned">
 Run the following command to check for duplicate account names:
-<pre># pwck -qr</pre>
+<pre>$ sudo pwck -qr</pre>
 If there are no duplicate names, no line will be returned.
 </ocil>
 <rationale>
@@ -87,13 +87,13 @@ In the event temporary or emergency accounts are required, configure the system
 to terminate them after a documented time period. For every temporary and
 emergency account, run the following command to set an expiration date on it,
 substituting <tt><i>USER</i></tt> and <tt><i>YYYY-MM-DD</i></tt> appropriately:
-<pre># chage -E <i>YYYY-MM-DD USER</i></pre>
+<pre>$ sudo chage -E <i>YYYY-MM-DD USER</i></pre>
 <tt><i>YYYY-MM-DD</i></tt> indicates the documented expiration date for the account.
 </description>
 <ocil clause="any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame">
 For every temporary and emergency account, run the following command
 to obtain its account aging and expiration information:
-<pre># chage -l <i>USER</i></pre>
+<pre>$ sudo chage -l <i>USER</i></pre>
 Verify each of these accounts has an expiration date set as documented.
 </ocil>
 <rationale>

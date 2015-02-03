@@ -1,9 +1,9 @@
 #
-# Disable cgred for all run levels
+# Disable cgred.service for all systemd targets
 #
-chkconfig --level 0123456 cgred off
+systemctl disable cgred.service
 
 #
-# Stop cgred if currently running
+# Stop cgred.service if currently running
 #
-service cgred stop
+systemctl stop cgred.service

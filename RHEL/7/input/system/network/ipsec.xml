@@ -1,24 +1,24 @@
 <Group id="network-ipsec">
 <title>IPSec Support</title>
 <description>Support for Internet Protocol Security (IPsec)
-is provided in RHEL 6 with Openswan.
+is provided in RHEL 7 with Libreswan.
 </description>
 
-<Rule id="install_openswan">
-<title>Install openswan Package</title>
-<description>The Openswan package provides an implementation of IPsec
+<Rule id="package_libreswan_installed">
+<title>Install libreswan Package</title>
+<description>The Libreswan package provides an implementation of IPsec
 and IKE, which permits the creation of secure tunnels over
-untrusted networks. <package-install-macro package="openswan"/> 
+untrusted networks. <package-install-macro package="libreswan"/> 
 </description>
 <ocil clause="the package is not installed" >
-<package-check-macro package="openswan" />
+<package-check-macro package="libreswan" />
 </ocil>
 <rationale>Providing the ability for remote users or systems
 to initiate a secure VPN connection protects information when it is
 transmitted over a wide area network.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="package_openswan_installed" />
+<oval id="package_libreswan_installed" />
 <ref nist="AC-17, MA-4, SC-9" disa="1130,1131" />
 </Rule>
 </Group>

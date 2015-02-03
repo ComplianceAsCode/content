@@ -12,13 +12,13 @@
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="7"/>
 <refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="5" />
 <refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
-<refine-value idref="var_password_pam_cracklib_retry" selector="3"/>
-<refine-value idref="var_password_pam_cracklib_dcredit" selector="1"/>
-<refine-value idref="var_password_pam_cracklib_ucredit" selector="2"/>
-<refine-value idref="var_password_pam_cracklib_ocredit" selector="2"/>
-<refine-value idref="var_password_pam_cracklib_lcredit" selector="2"/>
-<refine-value idref="var_password_pam_cracklib_difok" selector="3"/>
-<refine-value idref="var_password_history_retain_limit" selector="5"/>
+<refine-value idref="var_password_pam_retry" selector="3"/>
+<refine-value idref="var_password_pam_dcredit" selector="1"/>
+<refine-value idref="var_password_pam_ucredit" selector="2"/>
+<refine-value idref="var_password_pam_ocredit" selector="2"/>
+<refine-value idref="var_password_pam_lcredit" selector="2"/>
+<refine-value idref="var_password_pam_difok" selector="3"/>
+<refine-value idref="var_password_pam_unix_remember" selector="5"/>
 <refine-value idref="var_accounts_user_umask" selector="077"/>
 <refine-value idref="login_banner_text" selector="usgcb_default"/>
 
@@ -43,20 +43,20 @@
 <select idref="package_aide_installed" selected="true"/>
 
 <!-- ACCOUNT MANAGEMENT CHECKS -->
-<select idref="accounts_password_reuse_limit" selected="true"/>
+<select idref="accounts_password_pam_unix_remember" selected="true"/>
 <select idref="no_shelllogin_for_systemaccounts" selected="true"/>
 <select idref="no_empty_passwords" selected="true"/>
-<select idref="no_hashes_outside_shadow" selected="true"/>
+<select idref="accounts_password_all_shadowed" selected="true"/>
 <select idref="accounts_no_uid_except_zero" selected="true"/>
 <select idref="accounts_password_minlen_login_defs" selected="true"/>
 <select idref="accounts_minimum_age_login_defs" selected="true"/>
 <select idref="accounts_password_warn_age_login_defs" selected="true"/>
-<select idref="accounts_password_pam_cracklib_retry" selected="true"/>
-<select idref="accounts_password_pam_cracklib_dcredit" selected="true"/>
-<select idref="accounts_password_pam_cracklib_ucredit" selected="true"/>
-<select idref="accounts_password_pam_cracklib_ocredit" selected="true"/>
-<select idref="accounts_password_pam_cracklib_lcredit" selected="true"/>
-<select idref="accounts_password_pam_cracklib_difok" selected="true"/>
+<select idref="accounts_password_pam_retry" selected="true"/>
+<select idref="accounts_password_pam_dcredit" selected="true"/>
+<select idref="accounts_password_pam_ucredit" selected="true"/>
+<select idref="accounts_password_pam_ocredit" selected="true"/>
+<select idref="accounts_password_pam_lcredit" selected="true"/>
+<select idref="accounts_password_pam_difok" selected="true"/>
 <select idref="accounts_passwords_pam_faillock_deny" selected="true"/>
 <select idref="set_password_hashing_algorithm_systemauth" selected="true"/>
 <select idref="set_password_hashing_algorithm_logindefs" selected="true"/>
@@ -82,48 +82,51 @@
 <select idref="file_ownership_binary_dirs" selected="true"/>
 <select idref="file_permissions_var_log_audit" selected="true"/>
 
-<!-- These checks need to be updated for RHEL7,
-     specifically new locations of grub
-<select idref="user_owner_grub_conf" selected="true"/> 
-<select idref="group_owner_grub_conf" selected="true"/>
-<select idref="permissions_grub_conf" selected="true"/>
-<select idref="bootloader_password" selected="true"/> -->
+<select idref="file_user_owner_grub2_cfg" selected="true"/> 
+<select idref="file_group_owner_grub2_cfg" selected="true"/>
+<select idref="file_permissions_grub2_cfg" selected="true"/>
+<select idref="bootloader_password" selected="true"/>
 
-<!-- KERNEL SETTINGS
-<select idref="sysctl_kernel_randomize_va_space" selected="true"/>
+<!-- KERNEL SETTINGS -->
+<select idref="kernel_module_dccp_disabled" selected="true"/>
+<select idref="kernel_module_sctp_disabled" selected="true"/>
+<select idref="service_iptables_enabled" selected="true"/>
+
+<!-- <select idref="sysctl_kernel_randomize_va_space" selected="true"/>
 <select idref="enable_execshield" selected="true"/>
 <select idref="kernel_module_ipv6_option_disabled" selected="true"/>
 <select idref="service_ip6tables_enabled" selected="true"/>
-<select idref="service_iptables_enabled" selected="true"/>
 <select idref="set_iptables_default_rule" selected="true"/>
-<select idref="kernel_module_dccp_disabled" selected="true"/>
-<select idref="kernel_module_sctp_disabled" selected="true"/>
+
+This requirement does not apply against Red Hat Enterprise Linux 7:
+see: https://github.com/OpenSCAP/scap-security-guide/issues/66 for details.
 <select idref="kernel_module_rds_disabled" selected="true"/>
+
+This requirement does not apply against Red Hat Enterprise Linux 7:
+see: https://github.com/OpenSCAP/scap-security-guide/issues/67 for details.
 <select idref="kernel_module_tipc_disabled" selected="true"/>
 
 ANTIQUATED SERVICES
 <select idref="disable_xinetd" selected="true"/>
 <select idref="uninstall_xinetd" selected="true"/>
-<select idref="uninstall_telnet_server" selected="true"/>
-<select idref="disable_telnet_service" selected="true"/>
-<select idref="uninstall_rsh-server" selected="true"/>
-<select idref="disable_rsh" selected="true"/>
-<select idref="disable_rexec" selected="true"/>
-<select idref="disable_rlogin" selected="true"/>
+<select idref="package_rsh-server_removed" selected="true"/>
 <select idref="uninstall_ypserv" selected="true"/>
 <select idref="disable_ypbind" selected="true"/>
 <select idref="uninstall_tftp-server" selected="true"/>
-<select idref="disable_tftp" selected="true"/>
+<select idref="service_tftp_disabled" selected="true"/>
 <select idref="disable_avahi" selected="true"/>
-<select idref="service_abrtd_disabled" selected="true"/>
 <select idref="service_atd_disabled" selected="true"/>
 <select idref="service_autofs_disabled" selected="true"/>
 <select idref="service_ntpdate_disabled" selected="true"/>
 <select idref="service_oddjobd_disabled" selected="true"/>
 <select idref="service_qpidd_disabled" selected="true"/>
-<select idref="service_rdisc_disabled" selected="true"/>
+<select idref="service_rdisc_disabled" selected="true"/-->
+<select idref="service_abrtd_disabled" selected="true"/>
+<select idref="service_telnetd_disabled" selected="true"/>
+<select idref="package_telnet_removed" selected="true"/>
+<select idref="uninstall_telnet_server" selected="true"/>
 
-SSH / REMOTE ACCESS CHECKS -->
+<!-- SSH / REMOTE ACCESS CHECKS -->
 <select idref="sshd_allow_only_protocol2" selected="true"/>
 <select idref="sshd_set_idle_timeout" selected="true"/>
 <select idref="sshd_set_keepalive" selected="true"/>

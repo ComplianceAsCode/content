@@ -22,7 +22,7 @@ with a password and ensure its configuration file's permissions
 are set properly.
 </description>
 
-<Rule id="user_owner_grub_conf" severity="medium">
+<Rule id="file_user_owner_grub_conf" severity="medium">
 <title>Verify /etc/grub.conf User Ownership</title>
 <description>The file <tt>/etc/grub.conf</tt> should 
 be owned by the <tt>root</tt> user to prevent destruction 
@@ -39,7 +39,7 @@ Only root should be able to modify important boot parameters.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="group_owner_grub_conf" severity="medium">
+<Rule id="file_group_owner_grub_conf" severity="medium">
 <title>Verify /etc/grub.conf Group Ownership</title>
 <description>The file <tt>/etc/grub.conf</tt> should 
 be group-owned by the <tt>root</tt> group to prevent 
@@ -57,7 +57,7 @@ file should not have any access privileges anyway.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="permissions_grub_conf" severity="medium">
+<Rule id="file_permissions_grub_conf" severity="medium">
 <title>Verify /boot/grub/grub.conf Permissions</title>
 <description>File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
 is the default.
@@ -65,7 +65,7 @@ is the default.
 </description>
 <ocil clause ="it does not">
 To check the permissions of /etc/grub.conf, run the command:
-<pre># ls -lL /etc/grub.conf</pre>
+<pre>$ sudo ls -lL /etc/grub.conf</pre>
 If properly configured, the output should indicate the following 
 permissions: <tt>-rw-------</tt>
 </ocil>
@@ -84,7 +84,7 @@ parameters.
 <description>The grub boot loader should have password protection
 enabled to protect boot-time settings.
 To do so, select a password and then generate a hash from it by running the following command:
-<pre># grub-crypt --sha-512</pre>
+<pre>$ grub-crypt --sha-512</pre>
 When prompted to enter a password, insert the following line into <tt>/etc/grub.conf</tt>
 immediately after the header comments. (Use the output from <tt>grub-crypt</tt> as the
 value of <b>password-hash</b>):
@@ -93,7 +93,7 @@ NOTE: To meet FISMA Moderate, the bootloader password MUST differ from the root 
 </description>
 <ocil clause="it does not">
 To verify the boot loader password has been set and encrypted, run the following command:
-<pre># grep password /etc/grub.conf</pre>
+<pre>$ sudo grep password /etc/grub.conf</pre>
 The output should show the following:
 <pre>password --encrypted <b>password-hash</b></pre>
 </ocil>
@@ -105,7 +105,7 @@ and whether to enter single-user mode.
 </rationale>
 <ident cce="26911-8" />
 <oval id="bootloader_password" />
-<ref nist="IA-2(1),IA-5(e)" disa="213" />
+<ref nist="IA-2(1),IA-5(e) AC-3" disa="213" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -136,7 +136,7 @@ by configuring the bootloader password.
 </rationale>
 <ident cce="27040-5" />
 <oval id="require_singleuser_auth" />
-<ref nist="IA-2(1)" disa="213" />
+<ref nist="IA-2(1),AC-3" disa="213" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -199,7 +199,7 @@ services, weakening system security.
 </rationale>
 <ident cce="27043-9" />
 <oval id="disable_interactive_boot" />
-<ref nist="SC-2" disa="213"/>
+<ref nist="SC-2,AC-3" disa="213"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -253,16 +253,16 @@ the man page <tt>gconftool-2(1)</tt>.</description>
 <value selector="15_minutes">15</value>
 </Value>
 
-<Rule id="set_screensaver_inactivity_timeout" severity="medium">
+<Rule id="gconf_gnome_screensaver_idle_delay" severity="medium">
 <title>Set GNOME Login Inactivity Timeout</title>
 <description>
 Run the following command to set the idle time-out value for
-inactivity in the GNOME desktop to 15 minutes:
-<pre># gconftool-2 \
+inactivity in the GNOME desktop to <sub idref="inactivity_timeout_value" /> minutes:
+<pre>$ sudo gconftool-2 \
   --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type int \
-  --set /desktop/gnome/session/idle_delay 15</pre>
+  --set /desktop/gnome/session/idle_delay <sub idref="inactivity_timeout_value" /></pre>
 </description>
 <ocil clause="it is not">
 To check the current idle time-out value, run the following command:
@@ -279,12 +279,12 @@ screen locking to prevent access from passersby.
 <ref nist="AC-11(a)" disa="57"/>
 </Rule>
 
-<Rule id="enable_screensaver_after_idle" severity="medium">
+<Rule id="gconf_gnome_screensaver_idle_activation_enabled" severity="medium">
 <title>GNOME Desktop Screensaver Mandatory Use</title>
 <description>
 Run the following command to activate the screensaver
 in the GNOME desktop after a period of inactivity:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
@@ -305,12 +305,12 @@ controlled-access area.
 <ref nist="AC-11(a)" disa="57" />
 </Rule>
 
-<Rule id="enable_screensaver_password_lock" severity="medium">
+<Rule id="gconf_gnome_screensaver_lock_enabled" severity="medium">
 <title>Enable Screen Lock Activation After Idle Period</title>
 <description>
 Run the following command to activate locking of the screensaver
 in the GNOME desktop when it is activated:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gnome-screensaver/lock_enabled true</pre>
@@ -330,12 +330,12 @@ access the system, preventing access by passersby.
 <ref nist="AC-11(a)" disa="57" />
 </Rule>
 
-<Rule id="set_blank_screensaver">
+<Rule id="gconf_gnome_screensaver_mode_blank">
 <title>Implement Blank Screensaver</title>
 <description>
 Run the following command to set the screensaver mode
 in the GNOME desktop to a blank screen:
-<pre># gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type string \
   --set /apps/gnome-screensaver/mode blank-only</pre>
@@ -368,7 +368,7 @@ A console screen locking mechanism is provided in the
 <title>Install the screen Package</title>
 <description>
 To enable console screen locking, install the <tt>screen</tt> package:
-<pre># yum install screen</pre>
+<pre>$ sudo yum install screen</pre>
 Instruct users to begin new terminal sessions with the following command:
 <pre>$ screen</pre>
 The console can now be locked with the following key combination:

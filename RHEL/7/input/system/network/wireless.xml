@@ -4,7 +4,7 @@
 (WiFi) and Bluetooth, can present a security risk to sensitive or
 classified systems and networks. Wireless networking hardware is
 much more likely to be included in laptop or portable systems than
-desktops or servers. 
+in desktops or servers. 
 <br /><br />
 Removal of hardware provides the greatest assurance that the wireless
 capability remains disabled. Acquisition policies often include provisions to
@@ -24,7 +24,7 @@ prevent malicious software or careless users from re-activating the
 devices.</description>
 
 <Rule id="wireless_disable_in_bios">
-<title>Disable WiFi or Bluetooth BIOS</title>
+<title>Disable WiFi or Bluetooth in BIOS</title>
 <description>Some systems that include built-in wireless support offer the
 ability to disable the device through the BIOS. This is system-specific;
 consult your hardware manual or explore the BIOS setup during
@@ -44,20 +44,20 @@ to reboot the system first.
 normal usage of the wireless capability.
 <br /><br />
 First, identify the interfaces available with the command:
-<pre># ifconfig -a</pre>
-Additionally,the following command may also be used to
-determine whether wireless support ('extensions') is included for a
+<pre>$ ifconfig -a</pre>
+Additionally, the following command may be used to
+determine whether wireless support is included for a
 particular interface, though this may not always be a clear
 indicator:
-<pre># iwconfig</pre>
+<pre>$ iwconfig</pre>
 After identifying any wireless interfaces (which may have
 names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
 <tt>eth0</tt>), deactivate the interface with the command:
-<pre># ifdown <i>interface</i></pre>
+<pre>$ sudo ifdown <i>interface</i></pre>
 These changes will only last until the next reboot. To
 disable the interface for future boots, remove the appropriate
 interface file from <tt>/etc/sysconfig/network-scripts</tt>:
-<pre># rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+<pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 </description>
 <rationale>Wireless networking allows attackers within physical proximity to
 launch network-based attacks against systems, including those against local LAN
@@ -73,7 +73,7 @@ protocols which were not designed with security in mind.
 <title>Disable Bluetooth Service</title>
 <description>
 <service-disable-macro service="bluetooth" />
-<pre># service bluetooth stop</pre>
+<pre>$ sudo service bluetooth stop</pre>
 </description>
 <ocil>
 <service-disable-check-macro service="bluetooth" />
@@ -94,12 +94,10 @@ utility of Bluetooth connectivity and its limited range.</rationale>
 loading of the Bluetooth module. Add the following to
 the appropriate <tt>/etc/modprobe.d</tt> configuration file
 to prevent the loading of the Bluetooth module:
-<pre>install net-pf-31 /bin/false
-install bluetooth /bin/false</pre>
+<pre>install bluetooth /bin/false</pre>
 </description>
 <ocil>
 <module-disable-check-macro module="bluetooth" />
-<module-disable-check-macro module="net-pf-31" />
 </ocil>
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
@@ -107,7 +105,7 @@ activation.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="kernel_module_bluetooth_disabled" />
 <ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
-<tested by="DS" on="20121025"/>
+<tested by="JL" on="20141031"/>
 </Rule>
 
 </Group><!--<Group id="wireless_software">-->

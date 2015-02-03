@@ -1,9 +1,9 @@
 #
-# Disable certmonger for all run levels
+# Disable certmonger.service for all systemd targets
 #
-chkconfig --level 0123456 certmonger off
+systemctl disable certmonger.service
 
 #
-# Stop certmonger if currently running
+# Stop certmonger.service if currently running
 #
-service certmonger stop
+systemctl stop certmonger.service

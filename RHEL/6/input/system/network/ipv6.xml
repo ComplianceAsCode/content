@@ -18,7 +18,7 @@ instruct the system not to activate the IPv6 kernel module.
 
 <Rule id="kernel_module_ipv6_option_disabled" severity="medium">
 <title>Disable IPv6 Networking Support Automatic Loading</title>
-<description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from loading the
+<description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from binding to the
 IPv6 networking stack, add the following line to
 <tt>/etc/modprobe.d/disabled.conf</tt> (or another file in
 <tt>/etc/modprobe.d</tt>):
@@ -26,10 +26,10 @@ IPv6 networking stack, add the following line to
 This permits the IPv6 module to be loaded (and thus satisfy other modules that
 depend on it), while disabling support for the IPv6 protocol.
 </description>
-<ocil clause="the ipv6 kernel module is loaded">
+<ocil clause="the ipv6 kernel module is not disabled">
 If the system uses IPv6, this is not applicable.
 <br /><br />
-If the system is configured to prevent the loading of the
+If the system is configured to disable the
 <tt>ipv6</tt> kernel module, it will contain a line
 of the form:
 <pre>options ipv6 disable=1</pre>

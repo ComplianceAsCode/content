@@ -18,13 +18,13 @@ To ensure the system can cryptographically verify base software
 packages come from Red Hat (and to connect to the Red Hat Network to
 receive them), the Red Hat GPG key must properly be installed.  
 To install the Red Hat GPG key, run:
-<pre># rhn_register</pre>
+<pre>$ sudo rhn_register</pre>
 If the system is not connected to the Internet or an RHN Satellite,
 then install the Red Hat GPG key from trusted media such as
 the Red Hat installation CD-ROM or DVD. Assuming the disc is mounted
 in <tt>/media/cdrom</tt>, use the following command as the root user to import
 it into the keyring:
-<pre># rpm --import /media/cdrom/RPM-GPG-KEY</pre>
+<pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>
 </description>
 <ocil clause="the Red Hat GPG Key is not installed">
 To ensure that the GPG key is installed, run:
@@ -36,9 +36,9 @@ The command should return the string below:
 The Red Hat GPG key is necessary to cryptographically verify packages
 are from Red Hat.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26957-1" />
 <oval id="ensure_redhat_gpgkey_installed" />
-<ref nist="SI-7,MA-1(b)" disa="351"/>
+<ref nist="SI-7,MA-1(b)" disa=""/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -68,9 +68,9 @@ Ensuring the validity of packages' cryptographic signatures prior to
 installation ensures the authenticity of the software and
 protects against malicious tampering.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="yum_gpgcheck_global_activation" />
-<ref nist="SI-7,MA-1(b)" disa="352,663" />
+<ident cce="26989-4" />
+<oval id="ensure_gpgcheck_globally_activated" />
+<ref nist="SI-7,MA-1(b)" disa="" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -93,9 +93,9 @@ Ensuring all packages' cryptographic signatures are valid prior to
 installation ensures the authenticity of the software and
 protects against malicious tampering.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26915-9" />
 <oval id="ensure_gpgcheck_never_disabled" />
-<ref nist="SI-7,MA-1(b)" disa="352,663"/>
+<ref nist="SI-7,MA-1(b)" disa=""/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -103,7 +103,7 @@ protects against malicious tampering.
 <title>Ensure Software Patches Installed</title>
 <description>If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
 or a yum server, run the following command to install updates:
-<pre># yum update</pre>
+<pre>$ sudo yum update</pre>
 If the system is not configured to use one of these sources, updates (in the form of RPM packages)
 can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
 </description>
@@ -111,7 +111,7 @@ can be manually downloaded from the Red Hat Network and installed using <tt>rpm<
 If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
 a yum server which provides updates, invoking the following command will
 indicate if updates are available:
-<pre># yum check-update</pre>
+<pre>$ sudo yum check-update</pre>
 If the system is not configured to update from one of these sources,
 run the following command to list when each package was last updated:
 <pre>$ rpm -qa -last</pre>
@@ -123,8 +123,8 @@ to determine if the system is missing applicable updates.
 Installing software updates is a fundamental mitigation against
 the exploitation of publicly-known vulnerabilities.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<ref nist="SI-2,MA-1(b)" disa="1227,1233"/>
+<ident cce="26853-2" />
+<ref nist="SI-2,MA-1(b)" disa=""/>
 <tested by="MM" on="20120928"/>
 </Rule>
 </Group>

@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="kernel_module_bluetooth_disabled" version="1">
+    <metadata>
+      <title>Disable bluetooth Kernel Module</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The kernel module bluetooth should be disabled.</description>
+      <reference source="JL" ref_id="RHEL6_20141031" ref_url="test_attestation"/>
+      <reference source="JL" ref_id="RHEL7_20141031" ref_url="test_attestation"/>
+    </metadata>
+    <!-- OR operator for the following two tests is sufficient since net-pf-31 it's just Bluetooth kernel module built-in alias
+         for bluetooth. See https://github.com/OpenSCAP/scap-security-guide/issues/319 for further details -->
+    <criteria operator="OR">
+      <criterion test_ref="test_kernmod_bluetooth_disabled" comment="kernel module bluetooth disabled" />
+      <criterion test_ref="test_kernmod_bluetooth_alias_disabled" comment="kernel module net-pf-31 disabled" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_kernmod_bluetooth_disabled" version="1" check="all" check_existence="all_exist"
+  comment="kernel module bluetooth disabled">
+    <ind:object object_ref="obj_kernmod_bluetooth_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_kernmod_bluetooth_disabled" version="1" comment="kernel module bluetooth disabled">
+    <ind:path>/etc/modprobe.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*install\s+bluetooth\s+/bin/false$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_kernmod_bluetooth_alias_disabled" version="1" check="all" check_existence="all_exist"
+  comment="kernel module net-pf-31 disabled">
+    <ind:object object_ref="obj_kernmod_bluetooth_alias_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_kernmod_bluetooth_alias_disabled" version="1" comment="kernel module net-pf-31 disabled">
+    <ind:path>/etc/modprobe.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*install\s+net-pf-31\s+/bin/false$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

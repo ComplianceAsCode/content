@@ -1,9 +1,9 @@
 #
-# Enable iptables for all run levels
+# Enable iptables.service for all systemd targets
 #
-chkconfig --level 0123456 iptables on
+systemctl enable iptables.service
 
 #
-# Start iptables if not currently running
+# Start iptables.service if not currently running
 #
-service iptables start
+systemctl start iptables.service

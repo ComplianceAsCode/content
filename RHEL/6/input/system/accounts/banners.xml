@@ -67,7 +67,7 @@ run the following command:
 <pre>$ cat /etc/issue</pre>
 </ocil>
 <rationale>
-An appropriate warning message reinforces policy awareness during the logon
+An appropriate warning message reinforces policy awareness during the login
 process and facilitates possible legal action against attackers.
 </rationale>
 <ident cce="26974-6" />
@@ -86,12 +86,12 @@ The following sections describe how to configure the GDM login
 banner.
 </description>
 
-<Rule id="enable_gdm_login_banner" severity="medium">
+<Rule id="gconf_gdm_enable_warning_gui_banner" severity="medium">
 <title>Enable GUI Warning Banner</title>
 <description>
 To enable displaying a login warning banner in the GNOME
 Display Manager's login screen, run the following command:
-<pre>sudo gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gdm/simple-greeter/banner_message_enable true</pre>
@@ -105,20 +105,20 @@ Search for the <tt>banner_message_enable</tt> schema.
 If properly configured, the <tt>default</tt> value should be <tt>true</tt>.
 </ocil>
 <rationale>
-An appropriate warning message reinforces policy awareness during the logon
+An appropriate warning message reinforces policy awareness during the login
 process and facilitates possible legal action against attackers.
 </rationale>
 <ident cce="27195-7" />
-<oval id="banner_gui_enabled" />
+<oval id="gconf_gdm_enable_warning_gui_banner" />
 <ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48,50" />
 </Rule>
 
-<Rule id="set_gdm_login_banner_text" severity="medium">
+<Rule id="gconf_gdm_set_login_banner_text" severity="medium">
 <title>Set GUI Warning Banner Text</title>
 <description>
 To set the text shown by the GNOME Display Manager
 in the login screen, run the following command:
-<pre>sudo gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type string \
   --set /apps/gdm/simple-greeter/banner_message_text \
@@ -135,24 +135,24 @@ To ensure the login warning banner text is properly set, run the following:
 If properly configured, the proper banner text will appear within this schema.
 </ocil>
 <rationale>
-An appropriate warning message reinforces policy awareness during the logon
+An appropriate warning message reinforces policy awareness during the login
 process and facilitates possible legal action against attackers.
 </rationale>
-<oval id="set_gdm_login_banner_text" value="login_banner_text"/>
+<oval id="gconf_gdm_set_login_banner_text" value="login_banner_text"/>
 <ident cce="27017-3" />
 <ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48,1384,1385,1386,1387,1388" />
 </Rule>
 
 </Group>
 
-<Rule id="disable_user_list">
+<Rule id="gconf_gdm_disable_user_list">
 <title>Disable the User List</title>
 <description>In the default graphical environment, users logging
 directly into the system are greeted with a login screen that displays
 all known users. This functionality should be disabled.
 <br /><br />
 Run the following command to disable the user list:
-<pre>sudo gconftool-2 --direct \
+<pre>$ sudo gconftool-2 --direct \
   --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
   --type bool \
   --set /apps/gdm/simple-greeter/disable_user_list true</pre>
@@ -165,6 +165,7 @@ The output should be <tt>true</tt>.
 <rationale>Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.</rationale>
+<oval id="gconf_gdm_disable_user_list" />
 <ident cce="27230-2" />
 <ref nist="AC-23" />
 </Rule>

@@ -39,7 +39,7 @@ of attack, and should be disabled if not needed.
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="uninstall_httpd">
+<Rule id="package_httpd_removed">
 <title>Uninstall httpd Package</title>
 <description>
 <package-remove-macro package="httpd" />
@@ -64,7 +64,7 @@ removing it provides a safeguard against its activation.
 needs to act as a web server, then it should be installed on the system. Follow these
 guidelines to install it defensively. The <tt>httpd</tt> package can be installed with
 the following command:
-<pre># yum install httpd</pre>
+<pre>$ sudo yum install httpd</pre>
 This method of installation is recommended over installing the "Web Server"
 package group during the system installation process. The Web Server package
 group includes many packages which are likely extraneous, while the
@@ -154,7 +154,7 @@ are associated with each DSO.
 <br /><br />
 Following each DSO removal, the configuration can be tested with the following command
 to check if everything still works:
-<pre># service httpd configtest</pre>
+<pre>$ sudo service httpd configtest</pre>
 The purpose of each of the modules loaded by default will now be addressed one at a time.
 If none of a module's directives are being used, remove it.
 </description>
@@ -590,7 +590,7 @@ then <tt>mod_ssl</tt> should be used.
 <title>Install <tt>mod_ssl</tt></title>
 <description>
 Install the <tt>mod_ssl</tt> module:
-<pre># yum install mod_ssl</pre>
+<pre>$ sudo yum install mod_ssl</pre>
 </description>
 <rationale>
 <tt>mod_ssl</tt> provides encryption capabilities for the <tt>httpd</tt> Web server. Unencrypted
@@ -618,7 +618,7 @@ For more information on EPEL please refer to http://fedoraproject.org/wiki/EPEL.
 <title>Install <tt>mod_security</tt></title>
 <description>
 Install the <tt>security</tt> module:
-<pre># yum install mod_security</pre>
+<pre>$ sudo yum install mod_security</pre>
 <!-- this is in EPEL and this rule should not be included in any RHEL-only baselines -->
 </description>
 <rationale>
@@ -710,7 +710,7 @@ Minimize access to critical <tt>httpd</tt> files and directories.
 <title>Set Permissions on the <tt>/var/log/httpd/</tt> Directory</title>
 <description>
 Ensure that the permissions on the web server log directory is set to 700:
-<pre># chmod 700 /var/log/httpd/</pre>
+<pre>$ sudo chmod 700 /var/log/httpd/</pre>
 This is its default setting.
 </description>
 <rationale>
@@ -726,7 +726,7 @@ to access information about the web server or alter the server's log files.
 <title>Set Permissions on the <tt>/etc/httpd/conf/</tt> Directory</title>
 <description>
 Set permissions on the web server configuration directory to 750:
-<pre># chmod 750 /etc/httpd/conf/</pre>
+<pre>$ sudo chmod 750 /etc/httpd/conf/</pre>
 </description>
 <rationale>
 Access to the web server's configuration files may allow an unauthorized user or attacker
@@ -740,7 +740,7 @@ to access information about the web server or alter the server's configuration f
 <title>Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf/</tt></title>
 <description>
 Set permissions on the web server configuration files to 640:
-<pre># chmod 640 /etc/httpd/conf/*</pre>
+<pre>$ sudo chmod 640 /etc/httpd/conf/*</pre>
 </description>
 <rationale>
 Access to the web server's configuration files may allow an unauthorized user or attacker
@@ -770,7 +770,7 @@ blocks access to the ports used by the web server.
 Running <tt>httpd</tt> inside a <tt>chroot</tt> jail is designed to isolate the
 web server process to a small section of the filesystem, limiting the damage if
 it is compromised. Versions of Apache greater than 2.2.10 (such as the one
-included with RHEL 6) provide the <tt>ChrootDir</tt> directive. To run Apache
+included with RHEL 7) provide the <tt>ChrootDir</tt> directive. To run Apache
 inside a chroot jail in <tt>/chroot/apache</tt>, add the following line to
 <tt>/etc/httpd/conf/httpd.conf</tt>: <pre>ChrootDir /chroot/apache</pre> This
 necessitates placing all files required by <tt>httpd</tt> inside

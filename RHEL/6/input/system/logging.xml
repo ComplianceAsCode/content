@@ -108,7 +108,7 @@ run the following command to inspect the file's owner:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 If the owner is not <tt>root</tt>, run the following command to
 correct this:
-<pre># chown root <i>LOGFILE</i></pre>
+<pre>$ sudo chown root <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the owner is not root">
 The owner of all log files written by <tt>rsyslog</tt> should be root.
@@ -137,7 +137,7 @@ run the following command to inspect the file's group owner:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 If the owner is not <tt>root</tt>, run the following command to
 correct this:
-<pre># chgrp root <i>LOGFILE</i></pre>
+<pre>$ sudo chgrp root <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the group-owner is not root">
 The group-owner of all log files written by <tt>rsyslog</tt> should be root.
@@ -167,7 +167,7 @@ run the following command to inspect the file's permissions:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 If the permissions are not 600 or more restrictive,
 run the following command to correct this:
-<pre># chmod 0600 <i>LOGFILE</i></pre>
+<pre>$ sudo chmod 0600 <i>LOGFILE</i></pre>
 </description>
 <ocil clause="the permissions are not correct">
 The file permissions for all log files written by <tt>rsyslog</tt> 
@@ -176,7 +176,9 @@ These log files are determined by the second part of each Rule line in
 <tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
 To see the permissions of a given log file, run the following command:
 <pre>$ ls -l <i>LOGFILE</i></pre>
-The permissions should be 600, or more restrictive.
+The permissions should be 600, or more restrictive. Some log files referenced
+in /etc/rsyslog.conf may be created by other programs and may require 
+exclusion from consideration, such as /var/log/boot.log.
 </ocil>
 <rationale>Log files can contain valuable information regarding system
 configuration. If the system log files are not protected unauthorized
@@ -290,7 +292,7 @@ rsyslog by configuring it not to listen on the network.
 </rationale>
 <ident cce="26803-7" />
 <oval id="rsyslog_nolisten" />
-<ref nist="AU-9(2)" />
+<ref nist="AU-9(2),AC-4" />
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_tcp">
@@ -369,7 +371,7 @@ that they fill up the /var/log partition. Valuable logging information could be 
 if the /var/log partition becomes full.</rationale>
 <ocil clause="logrotate is not configured to run daily">
 To determine the status and frequency of logrotate, run the following command:
-<pre># grep logrotate /var/log/cron*</pre>
+<pre>$ sudo grep logrotate /var/log/cron*</pre>
 If logrotate is configured properly, output should include references to 
 <tt>/etc/cron.daily</tt>.
 </ocil>
@@ -424,7 +426,7 @@ the logserver.</description> -->
 Does your site have a central logserver which has been configured to report on logs received from all systems? 
 If so:
 <pre> 
-# rm /etc/cron.daily/0logwatch 
+$ sudo rm /etc/cron.daily/0logwatch 
 </pre>
 If no logserver exists, it will be necessary for each machine to run Logwatch individually. Using a central 
 logserver provides the security and reliability benefits discussed earlier, and also makes monitoring logs easier 

@@ -1,9 +1,9 @@
 #
 # Disable qpidd for all run levels
 #
-chkconfig --level 0123456 qpidd off
+/sbin/chkconfig --level 0123456 qpidd off
 
 #
 # Stop qpidd if currently running
 #
-service qpidd stop
+/sbin/service qpidd stop

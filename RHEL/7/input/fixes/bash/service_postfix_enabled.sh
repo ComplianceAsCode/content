@@ -1,9 +1,9 @@
 #
-# Enable postfix for all run levels
+# Enable postfix.service for all systemd targets
 #
-chkconfig --level 0123456 postfix on
+systemctl enable postfix.service
 
 #
-# Start postfix if not currently running
+# Start postfix.service if not currently running
 #
-service postfix start
+systemctl start postfix.service

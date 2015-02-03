@@ -48,7 +48,7 @@ attacks against xinetd itself.
 <Rule id="uninstall_xinetd">
 <title>Uninstall xinetd Package</title>
 <description>The <tt>xinetd</tt> package can be uninstalled with the following command:
-<pre># yum erase xinetd</pre>
+<pre>$ sudo yum erase xinetd</pre>
 </description>
 <ocil>
 If network services are using the xinetd service, this is not applicable.
@@ -72,7 +72,7 @@ for information transmitted on the network. This includes authentication
 information such as passwords. Organizations which use telnet should be
 actively working to migrate to a more secure protocol.</description>
 
-<Rule id="disable_telnet_service" severity="high">
+<Rule id="service_telnetd_disabled" severity="high">
 <title>Disable telnet Service</title>
 <description>
 <service-disable-macro service="telnet" />
@@ -95,7 +95,7 @@ subject to man-in-the-middle attacks.
 <title>Uninstall telnet-server Package</title>
 <description>The <tt>telnet-server</tt> package can be uninstalled with
 the following command:
-<pre># yum erase telnet-server</pre></description>
+<pre>$ sudo yum erase telnet-server</pre></description>
 <ocil><package-check-macro package="telnet-server" /> </ocil>
 <rationale>
 Removing the <tt>telnet-server</tt> package decreases the risk of the
@@ -129,11 +129,11 @@ Enterprise Linux.</rationale>
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="uninstall_rsh-server" severity="high">
+<Rule id="package_rsh-server_removed" severity="high">
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
 the following command:
-<pre># yum erase rsh-server</pre>
+<pre>$ sudo yum erase rsh-server</pre>
 </description>
 <ocil><package-check-macro package="rsh-server" /> </ocil>
 <rationale>The <tt>rsh-server</tt> package provides several obsolete and insecure
@@ -147,7 +147,7 @@ activation.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="disable_rexec" severity="high">
+<Rule id="service_rexec_disabled" severity="high">
 <title>Disable rexec Service</title>
 <description>The <tt>rexec</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -166,7 +166,7 @@ stolen by eavesdroppers on the network.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="disable_rsh" severity="high">
+<Rule id="service_rsh_disabled" severity="high">
 <title>Disable rsh Service</title>
 <description>The <tt>rsh</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -202,7 +202,7 @@ the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 <tested by="JL" on="20140530"/>
 </Rule>
 
-<Rule id="disable_rlogin" severity="high">
+<Rule id="service_rlogin_disabled" severity="high">
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -228,7 +228,7 @@ each user's home directory) list remote hosts and users that are trusted by the
 local system when using the rshd daemon.
 To remove these files, run the following command to delete them from any
 location:
-<pre># rm /etc/hosts.equiv</pre>
+<pre>$ sudo rm /etc/hosts.equiv</pre>
 <pre>$ rm ~/.rhosts</pre>
 </description>
 <ocil clause="these files exist">
@@ -259,7 +259,7 @@ important authentication information.</description>
 <title>Uninstall ypserv Package</title>
 <description>The <tt>ypserv</tt> package can be uninstalled with
 the following command:
-<pre># yum erase ypserv</pre>
+<pre>$ sudo yum erase ypserv</pre>
 </description>
 <ocil><package-check-macro package="ypserv" /> </ocil>
 <rationale>Removing the <tt>ypserv</tt> package decreases the risk of the
@@ -316,7 +316,7 @@ more secure protocols. A TFTP server should be run only if no more
 secure method of supporting existing equipment can be
 found.</description>
 
-<Rule id="disable_tftp" severity="medium">
+<Rule id="service_tftp_disabled" severity="medium">
 <title>Disable tftp Service</title>
 <description>The <tt>tftp</tt> service should be disabled.
 <service-disable-macro service="tftp" />
@@ -380,14 +380,14 @@ reduces the risk of sharing files which should remain private.
 <ocil clause="this flag is missing">
 If TFTP is not installed, this is not applicable.  To determine if TFTP is installed, 
 run the following command:
-<pre># rpm -qa | grep tftp</pre>
+<pre>$ rpm -qa | grep tftp</pre>
 <br /><br />
 Verify <tt>tftp</tt> is configured by with the <tt>-s</tt> option by running the
 following command:
 <pre>grep "server_args" /etc/xinetd.d/tftp</pre>
 The output should indicate the <tt>server_args</tt> variable is configured with the <tt>-s</tt>
 flag, matching the example below:
-<pre> # grep "server_args" /etc/xinetd.d/tftp
+<pre> $ grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
 <ident cce="27272-4" />

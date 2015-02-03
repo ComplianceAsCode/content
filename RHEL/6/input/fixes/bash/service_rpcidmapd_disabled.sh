@@ -1,9 +1,9 @@
 #
 # Disable rpcidmapd for all run levels
 #
-chkconfig --level 0123456 rpcidmapd off
+/sbin/chkconfig --level 0123456 rpcidmapd off
 
 #
 # Stop rpcidmapd if currently running
 #
-service rpcidmapd stop
+/sbin/service rpcidmapd stop

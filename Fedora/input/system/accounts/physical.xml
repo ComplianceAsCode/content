@@ -1,0 +1,424 @@
+<Group id="accounts-physical">
+<title>Protect Physical Console Access</title>
+<description>It is impossible to fully protect a system from an
+attacker with physical access, so securing the space in which the
+system is located should be considered a necessary step. However,
+there are some steps which, if taken, make it more difficult for an
+attacker to quickly or undetectably modify a system from its
+console.</description>
+
+<Group id="bootloader">
+<title>Set Boot Loader Password</title>
+<description>During the boot process, the boot loader is
+responsible for starting the execution of the kernel and passing
+options to it. The boot loader allows for the selection of
+different kernels - possibly on different partitions or media.
+The default Fedora boot loader for x86 systems is called GRUB2.
+Options it can pass to the kernel include <i>single-user mode</i>, which
+provides root access without any authentication, and the ability to
+disable SELinux. To prevent local users from modifying the boot
+parameters and endangering security, protect the boot loader configuration
+with a password and ensure its configuration file's permissions
+are set properly.
+</description>
+
+<Rule id="file_user_owner_grub2_cfg" severity="medium">
+<title>Verify /boot/grub2/grub.cfg User Ownership</title>
+<description>The file <tt>/boot/grub2/grub.cfg</tt> should 
+be owned by the <tt>root</tt> user to prevent destruction 
+or modification of the file.
+<fileowner-desc-macro file="/boot/grub2/grub.cfg" owner="root"/>
+</description>
+<ocil><fileowner-check-macro file="/boot/grub2/grub.cfg" owner="root"/></ocil>
+<rationale>
+Only root should be able to modify important boot parameters.
+</rationale>
+<oval id="file_user_owner_grub2_cfg" />
+<ref nist="" disa="225"/>
+</Rule>
+
+<Rule id="file_group_owner_grub2_cfg" severity="medium">
+<title>Verify /boot/grub2/grub.cfg Group Ownership</title>
+<description>The file <tt>/boot/grub2/grub.cfg</tt> should 
+be group-owned by the <tt>root</tt> group to prevent 
+destruction or modification of the file.
+<filegroupowner-desc-macro file="/boot/grub2/grub.cfg" group="root"/>
+</description>
+<ocil><filegroupowner-check-macro file="/boot/grub2/grub.cfg" group="root"/></ocil>
+<rationale>
+The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
+file should not have any access privileges anyway.
+</rationale>
+<oval id="file_group_owner_grub2_cfg" />
+<ref nist="" disa="225"/>
+</Rule>
+
+<Rule id="file_permissions_grub2_cfg" severity="medium">
+<title>Verify /boot/grub2/grub.cfg Permissions</title>
+<description>File permissions for <tt>/boot/grub2/grub.cfg</tt> should be set to 600, which
+is the default.
+<fileperms-desc-macro file="/boot/grub2/grub.cfg" perms="600"/>
+</description>
+<ocil clause ="it does not">
+To check the permissions of /boot/grub2/grub.cfg, run the command:
+<pre>$ sudo ls -lL /boot/grub2/grub.cfg</pre>
+If properly configured, the output should indicate the following 
+permissions: <tt>-rw-------</tt>
+</ocil>
+<rationale>
+Proper permissions ensure that only the root user can modify important boot
+parameters.
+</rationale>
+<oval id="file_permissions_grub2_cfg" />
+<ref nist="" disa="225"/>
+</Rule>
+
+<Rule id="bootloader_password" severity="medium">
+<title>Set Boot Loader Password</title>
+<description>The grub2 boot loader should have a superuser account and password
+protection enabled to protect boot-time settings.
+<br /><br />
+To do so, select a superuser account and password and add them into the
+appropriate grub2 configuration file(s) under <tt>/etc/grub.d</tt>.
+Since plaintext passwords are a security risk, generate a hash for the pasword
+by running the following command:
+<pre>$ grub2-mkpasswd-pbkdf2</pre>
+When prompted, enter the password that was selected and insert the returned 
+password hash into the appropriate grub2 configuration file(s) under
+<tt>/etc/grub.d</tt> immediately after the superuser account.
+(Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of 
+<b>password-hash</b>):
+<pre>password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
+NOTE: It is recommended not to use common administrator account names like root,
+admin, or administrator for the grub2 superuser account. 
+<br />
+To meet FISMA Moderate, the bootloader superuser account and password MUST 
+differ from the root account and password.
+Once the superuser account and password have been added, update the 
+<tt>grub.cfg</tt> file by running:
+<pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+NOTE: Do NOT manually add the superuser account and password to the 
+<tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
+</description>
+<ocil clause="it does not">
+To verify the boot loader superuser account and superuser account password have
+been set, and the password encrypted, run the following command:
+<pre>sudo grep -A1 "superusers\|password" /etc/grub2.cfg</pre>
+The output should show the following:
+<pre>set superusers="<b>superusers-account</b>"
+password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
+</ocil>
+<rationale>
+Password protection on the boot loader configuration ensures
+users with physical access cannot trivially alter
+important bootloader settings. These include which kernel to use,
+and whether to enter single-user mode. For more information on how to configure 
+the grub2 superuser account and password, please refer to 
+<ul>
+<li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-GRUB_2_Password_Protection.html</li>.
+</ul>
+</rationale>
+<oval id="bootloader_password" />
+<ref nist="IA-2(1),IA-5(e)" disa="213" />
+</Rule>
+
+</Group>
+
+<Rule id="require_singleuser_auth" severity="medium">
+<title>Require Authentication for Single User Mode</title>
+<description>Single-user mode is intended as a system recovery
+method, providing a single user root access to the system by
+providing a boot option at startup. By default, no authentication
+is performed if single-user mode is selected.
+<br /><br />
+By default, single-user mode is protected by requiring a password and is set
+in <tt>/usr/lib/systemd/system/rescue.service</tt>.
+</description>
+<ocil clause="the output is different">
+To check if authentication is required for single-user mode, run the following command:
+<pre>$ grep sulogin /usr/lib/systemd/system/rescue.service</pre>
+The output should be similar to the following, and the line must begin with
+ExecStart and /sbin/sulogin:
+<pre>ExecStart=-/sbin/sulogin</pre>
+</ocil>
+<rationale>
+This prevents attackers with physical access from trivially bypassing security
+on the machine and gaining root access. Such accesses are further prevented
+by configuring the bootloader password.
+</rationale>
+<oval id="require_singleuser_auth" />
+<ref nist="IA-2(1)" disa="213" />
+</Rule>
+
+<Rule id="disable_ctrlaltdel_reboot" severity="high">
+<title>Disable Ctrl-Alt-Del Reboot Activation</title>
+<description>
+By default, the system includes the following line in
+<tt>/etc/init/control-alt-delete.conf</tt>
+to reboot the system when the Ctrl-Alt-Del key sequence is pressed:
+<pre>exec /sbin/shutdown -r now "Control-Alt-Delete pressed"</pre>
+<br/>
+To configure the system to log a message instead of
+rebooting the system, alter that line to read as follows:
+<pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
+</description>
+<ocil clause="the system is configured to run the shutdown command">
+To ensure the system is configured to log a message instead of rebooting the system when 
+Ctrl-Alt-Del is pressed, ensure the following line is in <tt>/etc/init/control-alt-delete.conf</tt>:
+<pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
+</ocil>
+<rationale>
+A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
+can reboot the system. If accidentally pressed, as could happen in
+the case of mixed OS environment, this can create the risk of short-term
+loss of availability of systems due to unintentional reboot.
+In the GNOME graphical environment, risk of unintentional reboot from the
+Ctrl-Alt-Del sequence is reduced because the user will be
+prompted before any action is taken.
+</rationale>
+</Rule>
+
+<Rule id="disable_interactive_boot" severity="medium">
+<title>Disable Interactive Boot</title>
+<description>
+To disable the ability for users to perform interactive startups,
+edit the file <tt>/etc/sysconfig/init</tt>.
+Add or correct the line:
+<pre>PROMPT=no</pre>
+The <tt>PROMPT</tt> option allows the console user to perform an
+interactive system startup, in which it is possible to select the
+set of services which are started on boot.
+</description>
+<ocil clause="it does not">
+To check whether interactive boot is disabled, run the following command:
+<pre>$ grep PROMPT /etc/sysconfig/init</pre>
+If interactive boot is disabled, the output will show:
+<pre>PROMPT=no</pre>
+</ocil>
+<rationale>
+Using interactive boot,
+the console user could disable auditing, firewalls, or other
+services, weakening system security.
+</rationale>
+<!--oval id="disable_interactive_boot" /-->
+<ref nist="SC-2" disa="213"/>
+</Rule>
+
+<Group id="screen_locking">
+<title>Configure Screen Locking</title>
+<description>When a user must temporarily leave an account
+logged-in, screen locking should be employed to prevent passersby
+from abusing the account. User education and training is
+particularly important for screen locking to be effective, and policies
+can be implemented to reinforce this.
+<br /><br />
+Automatic screen locking is only meant as a safeguard for
+those cases where a user forgot to lock the screen.</description>
+
+<Group id="gui_screen_locking">
+<title>Configure GUI Screen Locking</title>
+<description>In the default GNOME3 desktop, the screen can be locked
+by selecting the user name in the far right corner of the main panel and
+selecting <b>Lock</b>.
+<br /><br />
+The following sections detail commands to enforce idle activation of the screensaver,
+screen locking, a blank-screen screensaver, and an idle
+activation time.
+<br /><br />
+Because users should be trained to lock the screen when they
+step away from the computer, the automatic locking feature is only
+meant as a backup.
+<br /><br />
+The root account can be screen-locked; however,
+the root account should <i>never</i> be used
+to log into an X Windows environment and should only be used to
+for direct login via console in emergency circumstances.
+<br /><br />
+For more information about enforcing preferences in the GNOME3 environment using the DConf
+configuration system, see <b>http://wiki.gnome.org/dconf</b> and
+the man page <tt>dconf(1)</tt>. For Red Hat specific information on configuring DConf
+settings, see <b>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/Desktop_Migration_and_Administration_Guide/part-Configuration_and_Administration.html</b>
+
+</description>
+
+<Value id="inactivity_timeout_value" type="number" operator="equals">
+<title>Inactivity timeout</title>
+<description>Choose allowed duration of inactive SSH connections, shells, and X sessions</description>
+<value>900</value>
+<value selector="5_minutes">300</value>
+<value selector="10_minutes">600</value>
+<value selector="15_minutes">900</value>
+</Value>
+
+<Rule id="dconf_gnome_screensaver_idle_delay" severity="medium">
+<title>Set GNOME3 Screensaver Inactivity Timeout</title>
+<description>
+To set the idle time-out value for inactivity in the GNOME3 desktop to 5 minutes (in seconds),
+the <tt>idle-delay</tt> setting must be set under an appropriate 
+configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">
+To check the current idle time-out value, run the following command:
+<pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
+If properly configured, the output should be <tt>300</tt>.
+To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
+<pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
+</ocil>
+<rationale>
+Setting the idle delay controls when the
+screensaver will start, and can be combined with
+screen locking to prevent access from passersby.
+</rationale>
+<oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
+<ref nist="AC-11(a)" disa="57"/>
+</Rule>
+
+<Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium">
+<title>Enable GNOME3 Screensaver Idle Activation</title>
+<description>
+To activate the screensaver in the GNOME3 desktop after a period of inactivity,
+the <tt>idle-activation-enabled</tt> setting must be set under an appropriate 
+configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver idle-activation-enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+To ensure that users cannot disable the screensaver idle inactivity setting, run the following:
+<pre>$ grep idle-activation-enabled /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/idle-activation-enabled</tt>
+</ocil>
+<rationale>
+Enabling idle activation of the screensaver ensures the screensaver will
+be activated after the idle delay.  Applications requiring continuous,
+real-time screen display (such as network management products) require the
+login session does not have administrator rights and the display station is located in a
+controlled-access area.
+</rationale>
+<oval id="dconf_gnome_screensaver_idle_activation_enabled" />
+<ref nist="AC-11(a)" disa="57" />
+</Rule>
+
+<Rule id="dconf_gnome_screensaver_lock_enabled" severity="medium">
+<title>Enable GNOME3 Screensaver Lock After Idle Period</title>
+<description>
+To activate locking of the screensaver in the GNOME3 desktop when it is activated,
+the <tt>lock-enabled</tt> and <tt>lock-delay</tt> setting must be set under an appropriate 
+configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">
+To check the status of the idle screen lock activation, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver lock-enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+To check that the screen locks when activated, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
+If properly configured, the output should be <tt>0</tt>.
+To ensure that users cannot change how long until the the screensaver locks, run the following:
+<pre>$ grep 'lock-enabled\|lock-delay' /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>
+If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+</ocil>
+<rationale>
+Enabling the activation of the screen lock after an idle period
+ensures password entry will be required in order to
+access the system, preventing access by passersby.
+</rationale>
+<oval id="dconf_gnome_screensaver_lock_enabled" />
+<ref nist="AC-11(a)" disa="57" />
+</Rule>
+
+<Rule id="dconf_gnome_screensaver_mode_blank">
+<title>Implement Blank Screensaver</title>
+<description>
+To set the screensaver mode in the GNOME3 desktop to a blank screen,
+the <tt>picture-uri</tt> setting must be set under an appropriate 
+configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">
+To ensure the screensaver is configured to be blank, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver picture-uri</pre>
+If properly configured, the output should be <tt>''</tt>.
+To ensure that users cannot set the screensaver background, run the following:
+<pre>$ grep picture-uri /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/picture-uri</tt>
+</ocil>
+<rationale>
+Setting the screensaver mode to blank-only conceals the
+contents of the display from passersby.
+</rationale>
+<oval id="dconf_gnome_screensaver_mode_blank" />
+<ref nist="AC-11(b)" disa="60" />
+</Rule>
+
+</Group>
+
+
+<Group id="console_screen_locking">
+<title>Configure Console Screen Locking</title>
+<description>
+A console screen locking mechanism is provided in the
+<tt>screen</tt> package, which is not installed by default.
+</description>
+
+<Rule id="package_screen_installed">
+<title>Install the screen Package</title>
+<description>
+To enable console screen locking, install the <tt>screen</tt> package:
+<pre>$ sudo yum install screen</pre>
+Instruct users to begin new terminal sessions with the following command:
+<pre>$ screen</pre>
+The console can now be locked with the following key combination:
+<pre>ctrl+a x</pre>
+</description>
+<ocil clause="the package is not installed">
+<package-check-macro package="screen" />
+</ocil>
+<rationale>
+Installing <tt>screen</tt> ensures a console locking capability is available
+for users who may need to suspend console logins.
+</rationale>
+<ref disa="58" />
+<!--oval id="package_screen_installed" /-->
+</Rule>
+</Group>
+
+<Group id="smart_card_login">
+<title>Hardware Tokens for Authentication</title>
+<description>
+The use of hardware tokens such as smart cards for system login
+provides stronger, two-factor authentication than using a username/password.
+In Fedora servers and workstations, hardware token login
+is not enabled by default and must be enabled in the system settings.
+</description>
+
+<Rule id="smartcard_auth" severity="medium">
+<title>Enable Smart Card Login</title>
+<description>
+To enable smart card authentication, consult the documentation at:
+<ul>
+<li>https://docs.fedoraproject.org/docs/en-US/Fedora/18/html/Security_Guide/sect-Security_Guide-Single_Sign_on_SSO-Getting_Started_with_your_new_Smart_Card.html</li>
+</ul>
+</description>
+<ocil clause="non-exempt accounts are not using CAC authentication">
+Interview the SA to determine if all accounts not exempted by policy are
+using CAC authentication. 
+</ocil>
+<rationale>Smart card login provides two-factor authentication stronger than
+that provided by a username and password combination. Smart cards leverage PKI
+(public key infrastructure) in order to provide and verify credentials.
+</rationale>
+<ref disa="765,766,767,768,771,772,884" />
+</Rule>
+
+</Group>
+
+</Group>
+</Group>

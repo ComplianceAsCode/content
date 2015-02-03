@@ -1,4 +1,4 @@
-%global		redhatssgversion	18
+%global		redhatssgversion	20
 
 Name:		scap-security-guide
 Version:	0.1.%{redhatssgversion}
@@ -14,8 +14,8 @@ Source0:	http://repos.ssgproject.org/sources/%{name}-%{version}.tar.gz
 
 BuildArch:	noarch
 
-BuildRequires:	libxslt, expat, python, openscap-utils >= 0.9.1, python-lxml
-Requires:	xml-common, openscap-utils >= 0.9.1
+BuildRequires:	libxslt, expat, python, openscap-utils >= 1.0.8, python-lxml
+Requires:	xml-common, openscap-utils >= 1.0.8
 
 %description
 The scap-security-guide project provides a guide for configuration of the
@@ -38,21 +38,32 @@ guideline. Refer to scap-security-guide(8) manual page for further information.
 %install
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 mkdir -p %{buildroot}%{_mandir}/en/man8/
+mkdir -p %{buildroot}%{_datadir}/%{name}
 
 # Add in core content (SCAP)
 cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
+# Add in RHEL-6 functions library for remediations
+cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name}/functions
+
 # Add in manpage
 cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
 %files
 %{_datadir}/xml/scap
+%{_datadir}/%{name}/functions
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 %doc RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER JBossEAP5/docs/JBossEAP5_Guide.html
 
 %changelog
+* Thu Jan 15 2015 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.20-1
+- Make new 0.1.20 release
+
+* Sun Sep 28 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.19-1
+- Make new 0.1.19 release
+
 * Sun Jun 22 2014 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.18-1
 - Make new 0.1.18 release
 

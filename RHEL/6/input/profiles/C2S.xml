@@ -42,7 +42,7 @@ baseline.
 <select idref="partition_for_var" selected="true"/>
 
 <!-- CIS 1.1.6 Bind Mount the /var/tmp directory to /tmp (Scored) -->
-<select idref="mount_option_var_tmp_bind_var" selected="true" />
+<select idref="mount_option_var_tmp_bind" selected="true" />
 
 <!-- CIS 1.1.7 Create Separate Partition for /var/log -->
 <select idref="partition_for_var_log" selected="true"/>
@@ -54,16 +54,16 @@ baseline.
 <select idref="partition_for_home" selected="true"/>
 
 <!-- CIS 1.1.10 Add nodev Option to /home (Scored) -->
-<select idref="mountopt_nodev_on_nonroot_partitions" selected="true" />
+<select idref="mount_option_nodev_nonroot_local_partitions" selected="true" />
 
 <!-- CIS 1.1.11 Add nodev Option to Removable Media Partitions (Not Scored) -->
-<select idref="mountopt_nodev_on_removable_partitions" selected="true" />
+<select idref="mount_option_nodev_removable_partitions" selected="true" />
 
 <!-- CIS 1.1.12 Add noexec Option to Removable Media Partitions (Not Scored)  -->
 <select idref="mount_option_noexec_removable_partitions" selected="true" />
 
 <!-- CIS 1.1.13 Add nosuid Option to Removable Media Partitions (Not Scored)  -->
-<select idref="mountopt_nosuid_on_removable_partitions" selected="true" />
+<select idref="mount_option_nosuid_removable_partitions" selected="true" />
 
 <!-- CIS 1.1.14 Add nodev Option to /dev/shm Partition (Scored) -->
 <select idref="mount_option_dev_shm_nodev" selected="true" />
@@ -149,11 +149,11 @@ baseline.
 
 <!-- CIS 1.5 Secure Boot Settings -->
 <!-- CIS 1.5.1 Set User/Group Owner on /etc/grub.conf (Scored) -->
-<select idref="user_owner_grub_conf" selected="true"/>
-<select idref="group_owner_grub_conf" selected="true"/>
+<select idref="file_user_owner_grub_conf" selected="true"/>
+<select idref="file_group_owner_grub_conf" selected="true"/>
 
 <!-- CIS 1.5.2 Set Permissions on /etc/grub.conf (Scored) -->
-<select idref="permissions_grub_conf" selected="true"/>
+<select idref="file_permissions_grub_conf" selected="true"/>
 
 <!-- CIS 1.5.3 Set Boot Loader Password (Scored) --> 
 <select idref="bootloader_password" selected="true"/>
@@ -185,7 +185,7 @@ baseline.
 <select idref="package_telnet_removed" selected="true" />
 
 <!-- CIS 2.1.3 Remove rsh-server (Scored) -->
-<select idref="uninstall_rsh-server" selected="true"/>
+<select idref="package_rsh-server_removed" selected="true"/>
 
 <!-- CIS 2.1.4 Remove rsh (Scored) -->
 <select idref="package_rsh_removed" selected="true" />
@@ -266,7 +266,7 @@ baseline.
 <select idref="uninstall_vsftpd" selected="true" />
 
 <!-- CIS 3.11 Remove HTTP Server (Not Scored) -->
-<select idref="uninstall_httpd" selected="true" />
+<select idref="package_httpd_removed" selected="true" />
 
 <!-- CIS 3.12 Remove Dovecot (IMAP and POP3 services) (Not Scored) -->
 <!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED. -->
@@ -278,7 +278,7 @@ baseline.
 <!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED. -->
 
 <!-- CIS 3.15 Remove SNMP Server (Not Scored) -->
-<select idref="uninstall_net-snmp" selected="true"/>
+<select idref="package_net-snmp_removed" selected="true"/>
 
 <!-- CIS 3.16 Configure Mail Transfer Agent for Local-Only Mode (Scored) -->
 <select idref="postfix_network_listening" selected="true" />
@@ -421,16 +421,16 @@ baseline.
 <select idref="audit_rules_time_watch_localtime" selected="true" />
 
 <!-- CIS 5.2.5 Record Events That Modify User/Group Information (Scored) -->
-<select idref="audit_account_changes" selected="true" />
+<select idref="audit_rules_usergroup_modification" selected="true" />
 
 <!-- CIS 5.2.6 Record Events That Modify the System's Network Environment (Scored) -->
-<select idref="audit_network_modifications" selected="true" />
+<select idref="audit_rules_networkconfig_modification" selected="true" />
 
 <!-- CIS 5.2.7 Record Events That Modify the System's Mandatory Access Controls (Scored) -->
-<select idref="audit_mac_changes" selected="true" />
+<select idref="audit_rules_mac_modification" selected="true" />
 
 <!-- CIS 5.2.8 Collect Login and Logout Events (Scored) -->
-<select idref="audit_manual_logon_edits" selected="true" />
+<select idref="audit_rules_login_events" selected="true" />
 
 <!-- CIS 5.2.9 Collect Session Initiation Information (Scored) -->
 <select idref="audit_manual_session_edits" selected="true" />
@@ -445,13 +445,13 @@ baseline.
 <select idref="audit_rules_privileged_commands" selected="true" />
 
 <!-- CIS 5.2.13 Collect Successful File System Mounts (Scored)-->
-<select idref="audit_media_exports" selected="true" />
+<select idref="audit_rules_media_export" selected="true" />
 
 <!-- CIS 5.2.14 Collect File Deletion Events by User (Scored) -->
 <select idref="audit_rules_file_deletion_events" selected="true" />
 
 <!-- CIS 5.2.15 Collect Changes to System Administration Scope (sudoers) (Scored) -->
-<select idref="audit_sysadmin_actions" selected="true" />
+<select idref="audit_rules_sysadmin_actions" selected="true" />
 
 <!-- CIS 5.2.16 Collect System Administrator Actions (sudolog) (Scored) -->
 <!-- NEEDS RULE -->
@@ -461,7 +461,7 @@ baseline.
 <select idref="audit_rules_kernel_module_loading" selected="true" />
 
 <!-- CIS 5.2.18 Make the Audit Configuration Immutable (Scored) -->
-<select idref="audit_config_immutable" selected="true" />
+<select idref="audit_rules_immutable" selected="true" />
 
 <!-- CIS 5.3 Configure logrotate (Not Scored) -->
 <select idref="ensure_logrotate_activated" selected="true" />
@@ -600,8 +600,8 @@ baseline.
 <!-- Handled in Section 8.1 -->
 
 <!-- CIS 8.3 Set GNOME Warning Banner (Not Scored) -->
-<select idref="enable_gdm_login_banner" selected="true" />
-<select idref="set_gdm_login_banner_text" selected="true" />
+<select idref="gconf_gdm_enable_warning_gui_banner" selected="true" />
+<select idref="gconf_gdm_set_login_banner_text" selected="true" />
 
 <!-- CIS 9 System Maintenance -->
 <!-- CIS 9.1 Verify System File Permissions -->

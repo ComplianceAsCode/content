@@ -26,10 +26,13 @@
   id="state_file_permissions_ungroupowned" version="1">
     <unix:group_id datatype="int">0</unix:group_id>
   </unix:file_state>
-  <unix:file_object comment="all local files"
-  id="object_file_permissions_ungroupowned" version="1">
-    <unix:behaviors recurse="symlinks and directories"
-    recurse_file_system="local" />
+
+  <unix:file_object comment="all local files" id="object_file_permissions_ungroupowned" version="1">
+    <!-- We can't traverse symlinks here since e.g. /sys file system might contain symlink loops
+         resulting into excessive memory use by the scanner process & possible subsequent OOM killer
+         termination of it. See e.g.: https://www.redhat.com/archives/open-scap-list/2014-May/msg00005.html
+         Therefore traverse only directories -->
+    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
     <unix:path>/</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
   </unix:file_object>

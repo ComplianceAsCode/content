@@ -70,10 +70,10 @@ the chances that it will remain off during system operation.
 
 <Rule id="selinux_state" severity="medium">
 <title>Ensure SELinux State is Enforcing</title>
-<description>The SELinux state should be set to <tt>enforcing</tt> at
+<description>The SELinux state should be set to <tt><sub idref="var_selinux_state" /></tt> at
 system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
 following line to configure the system to boot into enforcing mode:
-<pre>SELINUX=enforcing</pre>
+<pre>SELINUX=<sub idref="var_selinux_state" /></pre>
 </description>
 <ocil clause="SELINUX is not set to enforcing">
 Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
@@ -97,7 +97,7 @@ privileges.
 general-purpose desktops and servers, as well as systems in many other roles.
 To configure the system to use this policy, add or correct the following line
 in <tt>/etc/selinux/config</tt>:
-<pre>SELINUXTYPE=targeted</pre>
+<pre>SELINUXTYPE=<sub idref="var_selinux_policy_name" /></pre>
 Other policies, such as <tt>mls</tt>, provide additional security labeling
 and greater confinement but are not compatible with many general-purpose
 use cases.
@@ -173,7 +173,7 @@ startup and descend from the <tt>init</tt> process, they inherit the <tt>initrc_
 <br/>
 <br/>
 To check for unconfined daemons, run the following command:
-<pre># ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'</pre>
+<pre>$ sudo ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'</pre>
 It should produce no output in a well-configured system.
 </description>
 <rationale>
@@ -192,7 +192,7 @@ files carry the SELinux type <tt>unlabeled_t</tt>, investigate the cause and
 correct the file's context.
 </description>
 <ocil clause="there is output">To check for unlabeled device files, run the following command:
-<pre># ls -RZ /dev | grep unlabeled_t</pre>
+<pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
 If a device file carries the SELinux type <tt>unlabeled_t</tt>, then SELinux

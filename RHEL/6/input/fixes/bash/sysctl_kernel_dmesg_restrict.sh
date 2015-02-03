@@ -1,7 +1,7 @@
 #
 # Set runtime for kernel.dmesg_restrict
 #
-sysctl -q -n -w kernel.dmesg_restrict=1
+/sbin/sysctl -q -n -w kernel.dmesg_restrict=1
 
 #
 # If kernel.dmesg_restrict present in /etc/sysctl.conf, change value to "1"

@@ -1,7 +1,7 @@
 #
 # Set runtime for kernel.randomize_va_space
 #
-sysctl -q -n -w kernel.randomize_va_space=2
+/sbin/sysctl -q -n -w kernel.randomize_va_space=2
 
 #
 # If kernel.randomize_va_space present in /etc/sysctl.conf, change value to "2"

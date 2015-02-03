@@ -1,9 +1,9 @@
 #
-# Disable qpidd for all run levels
+# Disable qpidd.service for all systemd targets
 #
-chkconfig --level 0123456 qpidd off
+systemctl disable qpidd.service
 
 #
-# Stop qpidd if currently running
+# Stop qpidd.service if currently running
 #
-service qpidd stop
+systemctl stop qpidd.service

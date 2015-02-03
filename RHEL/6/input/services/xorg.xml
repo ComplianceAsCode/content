@@ -22,14 +22,14 @@ features a <tt>3</tt> as shown:
 </description>
 <ocil clause="it does not">
 To verify the default runlevel is 3, run the following command:
-<pre># grep initdefault /etc/inittab</pre>
+<pre>$ grep initdefault /etc/inittab</pre>
 The output should show the following:
 <pre>id:3:initdefault:</pre>
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident cce="27119-7" />
 <oval id="xwindows_runlevel_setting" />
-<ref disa="366" />
+<ref nist="AC-3" disa="366" />
 <tested by="DS" on="20121025"/>
 </Rule>
 
@@ -39,7 +39,7 @@ The output should show the following:
 <description>Removing all packages which constitute the X Window System
 ensures users or malicious software cannot start X.
 To do so, run the following command:
-<pre># yum groupremove "X Window System"</pre>
+<pre>$ sudo yum groupremove "X Window System"</pre>
 </description>
 <ocil clause="it is not">
 To ensure the X Windows package group is removed, run the following command:

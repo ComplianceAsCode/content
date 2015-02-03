@@ -1,9 +1,9 @@
 #
-# Disable httpd for all run levels
+# Disable httpd.service for all systemd targets
 #
-chkconfig --level 0123456 httpd off
+systemctl disable httpd.service
 
 #
-# Stop httpd if currently running
+# Stop httpd.service if currently running
 #
-service httpd stop
+systemctl stop httpd.service

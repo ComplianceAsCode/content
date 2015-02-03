@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="install_antivirus"
+  version="1">
+    <metadata>
+      <title>Package Antivirus Installed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Fedora 20</platform>
+      </affected>
+      <description>Antivirus software should be installed.</description>
+      <reference source="galford" ref_id="20140813" ref_url="test_attestation"/>
+    </metadata>
+    <criteria comment="Antivirus is not being used or conditions are met">
+      <criterion comment="Linuxshield AntiVirus package is installed"
+      test_ref="test_linuxshield_install_antivirus" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_linuxshield_install_antivirus" version="1"
+  comment="AntiVirus package is installed">
+    <linux:object object_ref="obj_linuxshield_install_antivirus" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_linuxshield_install_antivirus" version="1">
+    <linux:name>McAfeeVSEForLinux</linux:name>
+  </linux:rpminfo_object>
+</def-group>

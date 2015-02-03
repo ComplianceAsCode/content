@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/file_ownership_binary_dirs.sh
