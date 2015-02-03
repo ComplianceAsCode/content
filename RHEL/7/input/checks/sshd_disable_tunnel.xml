@@ -7,7 +7,7 @@
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>
-          OpenSSH also provides secure VPN tunneling capabilities. Ensure to explicitely disable it.
+          As of version 4.3, OpenSSH can use the tun/tap device to create a VPN tunnel. Such a VPN tunnel could be used by a malicious user to circumvent the security policy of the organisation in order to exfiltrate data or bypass filtering devices. Unless it is specifically required and supported by the deployed version of SSHd, it must be disabled. 
       </description>
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"

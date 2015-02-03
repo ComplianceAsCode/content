@@ -7,7 +7,7 @@
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>
-       SSH supports "tunneling", where packets are forwarded over a (partially) secure channel towards another location. If you do not need this, disable TCP forwarding through 'AllowTcpForwarding no'.
+          AllowTcpForwarding allows users to create tunnels via the SSH service. This could allow an attacker to bypass ACL or firewall rules. Therefore, such tunneling poses a threat to the organisation as it could allow data exfiltration. Consequently, it should be disabled unless it is explicitly required.
       </description>
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"

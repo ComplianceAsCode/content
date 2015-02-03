@@ -73,7 +73,7 @@ line appears:
 </description>
 <ocil clause="it is not">
 To check which SSH protocol version is allowed, run the following command:
-<pre># grep Protocol /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
 If configured properly, output should be <pre>Protocol 2</pre>
 </ocil>
 <rationale>
@@ -102,6 +102,7 @@ possibility of unauthorized access to the system.
 </rationale>
 <ident cce="27556-0" />
 <!-- <oval id="sshd_limit_user_access" /> -->
+<ref nist="AC-3" disa="" />
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
@@ -150,7 +151,7 @@ automatically logged out.
 <br /><br />
 To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
 follows:
-<pre>ClientAliveInterval <b>interval</b></pre>
+<pre>ClientAliveInterval <b><sub idref="sshd_idle_timeout_value" /></b></pre>
 The timeout <b>interval</b> is given in seconds. To have a timeout
 of 15 minutes, set <b>interval</b> to 900.
 <br /><br />
@@ -161,7 +162,7 @@ from correctly detecting that the user is idle.
 </description>
 <ocil clause="it is not">
 Run the following command to see what the timeout interval is:
-<pre># grep ClientAliveInterval /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
 If properly configured, the output should be:
 <pre>ClientAliveInterval 900</pre>
 </ocil>
@@ -172,7 +173,7 @@ to compromises on another.
 </rationale>
 <ident cce="26919-1" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
-<ref disa="879,1133"/>
+<ref nist="AC-2(5),SA-8" disa="879,1133"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -186,7 +187,7 @@ follows:
 </description>
 <ocil clause="it is not">
 To ensure the SSH idle timeout will occur when the <tt>ClientAliveCountMax</tt> is set, run the following command:
-<pre># grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
 <pre>ClientAliveCountMax 0</pre>
 </ocil>
@@ -196,7 +197,7 @@ is reached.
 </rationale>
 <ident cce="26282-4" />
 <oval id="sshd_set_keepalive" />
-<ref disa="879,1133"/>
+<ref nist="AC-2(5),SA-8" disa="879,1133"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -220,7 +221,7 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="27124-7" />
 <oval id="sshd_disable_rhosts" />
-<ref disa="765,766"/>
+<ref nist="AC-3" disa="765,766"/>
 </Rule>
 
 
@@ -244,7 +245,7 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="27091-8" />
 <oval id="disable_host_auth" />
-<ref disa="765,766"/>
+<ref nist="AC-3" disa="765,766"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -267,7 +268,7 @@ and also allows direct attack attempts on root's password.
 </rationale>
 <ident cce="27100-7" />
 <oval id="sshd_disable_root_login" />
-<ref nist="AC-6(2),IA-2(1)" disa="770" />
+<ref nist="AC-3,AC-6(2),IA-2(1)" disa="770" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -291,7 +292,7 @@ even in the event of misconfiguration elsewhere.
 </rationale>
 <ident cce="26887-0" />
 <oval id="sshd_disable_empty_passwords" />
-<ref disa="765,766"/>
+<ref nist="AC-3" disa="765,766"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -308,14 +309,14 @@ appropriate system-wide warning banner.
 <sshd-check-macro option="Banner" value="/etc/issue" default="no" />
 </ocil>
 <rationale>
-The warning message reinforces policy awareness during the logon process and
+The warning message reinforces policy awareness during the login process and
 facilitates possible legal action against attackers.  Alternatively, systems
 whose ownership should not be obvious should ensure usage of a banner that does
 not provide easy attribution.
 </rationale>
 <ident cce="27112-2" />
 <oval id="sshd_enable_warning_banner" />
-<ref disa="48" />
+<ref nist="AC-8(a)" disa="48" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -329,7 +330,7 @@ in <tt>/etc/ssh/sshd_config</tt>:
 </description>
 <ocil clause="it is not">
 To ensure users are not able to present environment daemons, run the following command:
-<pre># grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
 <pre>PermitUserEnvironment no</pre>
 </ocil>
@@ -355,7 +356,7 @@ The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 <ocil clause="that is not the case">
 Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
 ciphers are in use, run the following command:
-<pre># grep Ciphers /etc/ssh/sshd_config</pre>
+<pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
 The output should contain only those ciphers which are FIPS-approved, namely, the 
 AES and 3DES ciphers.
 </ocil>
@@ -394,24 +395,13 @@ server to attacks from unauthorized networks.</rationale>
 <Group id="sshd_disable_tunneling_capabilities">
   <title>Disable Tunneling Capabilities</title>
   <description>
-  By default, you can tunnel network connections through an SSH session. For example,
-  you could connect over the Internet to your PC, tunnel a remote desktop connection,
-  and access your desktop. This is known as "port forwarding".<p />
-  
-  By default, you can also tunnel specific graphical applications through an SSH session.
-  For example, you could connect over the Internet to your PC and run nautilus 
-  "file://$HOME" to see your PC's home folder. This is known as "X11 forwarding". <p />
-  
-  While both of these are very useful, they also give more options to an attacker who has 
-  already guessed your password. Disabling these options gives you a little security, 
-  but not as much as you'd think.
-  <br />
-  With access to a normal shell, a resourceful attacker can replicate both of these 
-  techniques and a specially-modified SSH client.
+      By default, OpenSSH enables network connections to be tunneled through an SSH session.
+      This features could be used to circumvent the security policy of an organisation by
+      bypassing the filtering devices and environment segregation. Such features could also
+      be used to exfiltrate sensitive/classified information from the production systems.
+      <p />
+      On top of this, graphical applications could be tunneled through an SSH session.
   <p />
-  Therefore, it's only recommended to disable forwarding if you also use SSH keys 
-  with specified commands. 
-  <br />
   To disable X11 forwarding and SSH tunneling, the following lines need to be set in sshd_config:
   <pre>
   AllowTcpForwarding no
@@ -430,18 +420,22 @@ server to attacks from unauthorized networks.</rationale>
 <Rule id="sshd_disable_tcpfwd">
   <title>SSH disable TCP forwarding</title>
   <description>
-      SSH supports "tunneling", where packets are forwarded over a (partially) secure channel towards
-      another location. If you do not need this, disable TCP forwarding through  
+      Unless specifically required, SSH tunneling must be explicitely disabled in order to prevent
+      malicious users to bypass firewall rules.
       <code>AllowTcpForwarding no</code>
       <br />
       <pre>### /etc/ssh/sshd_config : AllowTcpForwarding
            # If not needed, disable TCP forwarding
            AllowTcpForwarding no
       </pre>
-      <br />
-      <br />
-      file /etc/ssh/sshd_config must have a line that matches ^AllowTcpForwarding.*no
+      <p />
+      In /etc/ssh/sshd_config, ensure the AllowTcpForwarding configuration value is set to "no".
   </description>
+  <ocil clause="AllowTcpForwarding is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>AllowTcpForwarding</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep AllowTcpForwarding /etc/ssh/sshd_config</pre>
+  </ocil>
   <rationale>
       Disable tunneling of insecure protocols via SSH or abusing SSH access to pivot 
       through the network.
@@ -452,8 +446,9 @@ server to attacks from unauthorized networks.</rationale>
 <Rule id="sshd_disable_x11fwd">
   <title>SSH disable X11 forwarding</title>
   <description>
-      SSH supports forwarding X11 packets, so X11 applications started on the remote
-      system have their display shown on the client. This behavior is by default disabled.
+      SSH supports forwarding of X11 sessions. This behavior must be explicitely disabled
+      in order to reduce the attack surface of the system by preventing it from running graphical
+      application remotely.
       <br />
       <pre>### /etc/ssh/sshd_config : X11Forwarding
            # If set, X11Forwarding must be set to no (which is the default)
@@ -461,29 +456,45 @@ server to attacks from unauthorized networks.</rationale>
       </pre>
       <br />
       <br />
-      File /etc/ssh/sshd_config may not have a line that matches ^X11Forwarding.*yes
+      In file /etc/ssh/sshd_config, ensure that X11Forwarding configuration value is set to "no".
   </description>
+  <ocil clause="X11Forwarding is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>X11Forwarding</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep X11Forwarding /etc/ssh/sshd_config</pre>
+  </ocil>
   <rationale>
-      Prevent remote users from running X applications
+      Prevent remote users from running X applications in order to reduce attack surface.
   </rationale>
   <oval id="sshd_disable_x11fwd" />
 </Rule>
 
 <Rule id="sshd_disable_tunnel">
   <title>Disable Tunneling</title>
-  <description>OpenSSH includes the ability to provide tunneling, which allows
+  <description>OpenSSH includes the ability to provide create VPN sessions which allows
   a user to effectively establish a VPN connection with a firewall/gateway machine and then access resources
-  sitting behind it. This feature is disabled by default. To explicitly
-  disable it:
+  sitting behind it. This feature must be disabled explicitely.
+  <p />
+  Ensure that PermitTunnel configuration value is set to "no" in /etc/sshd/sshd_config file.
   <pre>PermitTunnel no</pre>
   </description>
+  <ocil clause="PermitTunnel is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>PermitTunnel</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep PermitTunnel /etc/ssh/sshd_config</pre>
+  </ocil>
   <rationale>
-      Explicitely disable VPN capability of SSH
+      Explicitely disable VPN capability of SSH to prevent malicious users to circumvent controls of data flow
+      throughout the whole organisation.
   </rationale>
   <oval id="sshd_disable_tunnel" />
 </Rule>
 
 </Group> <!-- Group id="sshd_disable_tunneling capabilities" -->
 
+
 </Group>
 </Group>
+
+
+
