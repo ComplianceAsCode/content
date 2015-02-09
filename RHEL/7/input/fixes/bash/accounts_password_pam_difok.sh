@@ -1,8 +1,8 @@
 source ./templates/support.sh
 populate var_password_pam_difok
 
-if grep -q "difok=" /etc/pam.d/system-auth; then   
-	sed -i --follow-symlink "s/\(difok *= *\).*/\1$var_password_pam_difok/" /etc/pam.d/system-auth
+if egrep -q ^difok[[:space:]]*=[[:space:]]*[-]?[[:digit:]]+ /etc/security/pwquality.conf; then
+	sed -i "s/^\(difok *= *\).*/\1$var_password_pam_difok/" /etc/security/pwquality.conf
 else
-	sed -i --follow-symlink "/pam_pwquality.so/ s/$/ difok=$var_password_pam_difok/" /etc/pam.d/system-auth
+	sed -i "/\(difok *= *\).*/a difok = $var_password_pam_difok" /etc/security/pwquality.conf
 fi
