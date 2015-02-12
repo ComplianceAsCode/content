@@ -19,7 +19,7 @@
     `$ cd scap-security-guide/`  
     `$ make rpm` 
 
-  * To build an RPM for official release
+  * To build an RPM for official release use:
 
     `$ cd scap-security-guide/`
     `$ make SSG_VERSION_IS_GIT_SNAPSHOT=no rpm` 

@@ -88,7 +88,7 @@ tarball: rpmroot
 	cd $(RPMBUILD) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPMBUILD)/$(PKG).tar.gz $(TARBALL)
 
-zipfile: rpmroot
+zipfile: rhel6 rpmroot
 	# Create a zipfile release, since many SCAP
 	# tools desire content in that format
 	# (Note: By default zip will store the full path
