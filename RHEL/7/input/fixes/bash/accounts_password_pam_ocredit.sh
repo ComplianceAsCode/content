@@ -1,8 +1,8 @@
 source ./templates/support.sh
 populate var_password_pam_ocredit
 
-if grep -q "ocredit=" /etc/pam.d/system-auth; then   
-	sed -i --follow-symlink "s/\(ocredit *= *\).*/\1$var_password_pam_ocredit/" /etc/pam.d/system-auth
+if egrep -q ^ocredit[[:space:]]*=[[:space:]]*[-]?[[:digit:]]+ /etc/security/pwquality.conf; then
+	sed -i "s/^\(ocredit *= *\).*/\1$var_password_pam_ocredit/" /etc/security/pwquality.conf
 else
-	sed -i --follow-symlink "/pam_pwquality.so/ s/$/ ocredit=$var_password_pam_ocredit/" /etc/pam.d/system-auth
+	sed -i "/\(ocredit *= *\).*/a ocredit = $var_password_pam_ocredit" /etc/security/pwquality.conf
 fi
