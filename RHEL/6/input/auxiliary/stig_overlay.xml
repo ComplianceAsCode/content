@@ -811,7 +811,7 @@
 		<VMSinfo VKey="38637" SVKey="50438" VRelease="2" />
 		<title>The system package management tool must verify contents of all files associated with the audit package.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="world_writeable_files" ownerid="RHEL-06-000282" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_permissions_unauthorized_world_writable" ownerid="RHEL-06-000282" disa="366" severity="medium">
 		<VMSinfo VKey="38643" SVKey="50444" VRelease="2" />
 		<title>There must be no world-writable files on the system.</title>
 	</overlay>
@@ -874,7 +874,7 @@
 	<overlay owner="disastig" ruleid="no_files_unowned_by_user" ownerid="RHEL-06-000300" disa="224" severity="low">
 		<title>All files and directories must have a valid owner.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="no_files_unowned_by_group" ownerid="RHEL-06-000301" disa="224" severity="low">
+	<overlay owner="disastig" ruleid="file_permissions_ungroupowned" ownerid="RHEL-06-000301" disa="224" severity="low">
 		<title>All files must be owned by a group.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="aide_periodic_cron_checking" ownerid="RHEL-06-000302" disa="374" severity="medium">
@@ -981,11 +981,11 @@
 		<VMSinfo VKey="38653" SVKey="50454" VRelease="1" />
 		<title>The snmpd service must not use a default password.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_umask_bashrc" ownerid="RHEL-06-000342" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_umask_etc_bashrc" ownerid="RHEL-06-000342" disa="366" severity="low">
 		<VMSinfo VKey="38651" SVKey="50452" VRelease="1" />
 		<title>The system default umask for the bash shell must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_umask_cshrc" ownerid="RHEL-06-000343" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_umask_etc_csh_cshrc" ownerid="RHEL-06-000343" disa="366" severity="low">
 		<VMSinfo VKey="38649" SVKey="50450" VRelease="1" />
 		<title>The system default umask for the csh shell must be 077.</title>
 	</overlay>
@@ -993,7 +993,7 @@
 		<VMSinfo VKey="38647" SVKey="50448" VRelease="1" />
 		<title>The system default umask in /etc/profile must be 077.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_umask_login_defs" ownerid="RHEL-06-000345" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="accounts_umask_etc_login_defs" ownerid="RHEL-06-000345" disa="366" severity="low">
 		<VMSinfo VKey="38645" SVKey="50446" VRelease="1" />
 		<title>The system default umask in /etc/login.defs must be 077.</title>
 	</overlay>

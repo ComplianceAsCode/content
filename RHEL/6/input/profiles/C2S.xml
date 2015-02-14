@@ -585,7 +585,7 @@ baseline.
      Modify User/Group Information" -->
 
 <!-- CIS 7.4 Set Default umask for Users (Scored) -->
-<select idref="accounts_umask_bashrc" selected="true" />
+<select idref="accounts_umask_etc_bashrc" selected="true" />
 <select idref="accounts_umask_etc_profile" selected="true" />
 
 <!-- CIS 7.5 Lock Inactive User Accounts (Scored) -->
@@ -638,16 +638,16 @@ baseline.
 
 <!-- CIS 9.1.10 Find World Writable Files (Not Scored) -->
 <select idref="file_permissions_binary_dirs" selected="true" />
-<select idref="world_writeable_files" selected="true" />
+<select idref="file_permissions_unauthorized_world_writable" selected="true" />
 
 <!-- CIS 9.1.11 Find Un-owned Files and Directories (Scored) -->
 <select idref="no_files_unowned_by_user" selected="true" />
 
 <!-- CIS 9.1.12 Find Un-grouped Files and Directories (Scored) -->
-<select idref="no_files_unowned_by_group" selected="true" />
+<select idref="file_permissions_ungroupowned" selected="true" />
 
 <!-- CIS 9.1.13 Find SUID System Executables (Not Scored) -->
-<select idref="no_unpackaged_suid_files" selected="true" />
+<select idref="file_permissions_unauthorized_suid" selected="true" />
 
 <!-- CIS 9.1.14 Find SGID System Executables (Not Scored) -->
 <select idref="no_unpackaged_sgid_files" selected="true" />
@@ -672,7 +672,7 @@ baseline.
 <select idref="root_path_default" selected="true" />
 
 <!-- CIS 9.2.7 Check Permissions on User Home Directories (Scored) -->
-<select idref="homedir_perms_no_groupwrite_worldread" selected="true" />
+<select idref="file_permissions_home_dirs" selected="true" />
 
 <!-- CIS 9.2.8 Check User Dot File Permissions (Scored) -->
 <!-- Addressed via  9.1.10 Find World Writable Files -->

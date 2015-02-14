@@ -61,9 +61,9 @@
 <select idref="kernel_module_udf_disabled" selected="true" />
 
 <select idref="sticky_world_writable_dirs" selected="true" />
-<select idref="world_writeable_files" selected="true" />
+<select idref="file_permissions_unauthorized_world_writable" selected="true" />
 <select idref="no_files_unowned_by_user" selected="true" />
-<select idref="no_files_unowned_by_group" selected="true" />
+<select idref="file_permissions_ungroupowned" selected="true" />
 <select idref="world_writable_files_system_ownership" selected="true" />
 
 <select idref="umask_for_daemons" selected="true" />
@@ -84,13 +84,13 @@
 
 <select idref="root_paths" selected="true" />
 <select idref="root_path_no_groupother_writable" selected="true" />
-<select idref="accounts_umask_bashrc" selected="true" />
-<select idref="accounts_umask_login_defs" selected="true" />
+<select idref="accounts_umask_etc_bashrc" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
 <refine-value idref="var_accounts_user_umask" selector="077" />
 <select idref="no_shelllogin_for_systemaccounts" selected="true"/>
 <select idref="root_path_default" selected="true" />
 <select idref="no_empty_passwords" selected="true"/>
-<select idref="accounts_umask_cshrc" selected="true" />
+<select idref="accounts_umask_etc_csh_cshrc" selected="true" />
 <select idref="accounts_umask_etc_profile" selected="true" />
 
 <select idref="no_netrc_files" selected="true" />
@@ -165,7 +165,7 @@
 <select idref="file_permissions_binary_dirs" selected="true"/>
 <select idref="file_ownership_binary_dirs" selected="true"/>
 <select idref="gid_passwd_group_same" selected="true"/>
-<select idref="homedir_perms_no_groupwrite_worldread" selected="true" />
+<select idref="file_permissions_home_dirs" selected="true" />
 <select idref="file_user_owner_grub_conf" selected="true"/>
 <select idref="file_group_owner_grub_conf" selected="true"/>
 <select idref="file_permissions_grub_conf" selected="true"/>

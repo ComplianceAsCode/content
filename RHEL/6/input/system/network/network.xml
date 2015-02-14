@@ -14,7 +14,7 @@ hosts, and networks. The rules can also specify which of the
 system's network services are available to particular hosts or
 networks.</description>
 
-<Group id="network_disable_unused_interfaces">
+<Rule id="network_disable_unused_interfaces">
 <title>Disable Unused Interfaces</title>
 <description>Network interfaces expand the attack surface of the 
 system.  Unused interfaces are not monitored or controlled, and 
@@ -29,7 +29,7 @@ If the system is a standalone machine with no need for network access or even
 communication over the loopback device, then disable this service.
 <service-disable-macro service="network" />
 </description>
-</Group> 
+</Rule> 
 
 <Rule id="network_disable_zeroconf">
 <title>Disable Zeroconf Networking</title>

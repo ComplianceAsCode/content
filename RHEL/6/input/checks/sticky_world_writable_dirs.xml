@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="dir_perms_world_writable_sticky_bits" version="1">
+  <definition class="compliance" id="sticky_world_writable_dirs" version="1">
     <metadata>
       <title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
       <affected family="unix">
@@ -8,10 +8,10 @@
       <description>The sticky bit should be set for all world-writable directories.</description>
     </metadata>
     <criteria>
-      <criterion comment="all local world writable directories have sticky bit set" test_ref="test_dir_perms_world_writable_sticky_bits" negate="true" />
+      <criterion comment="all local world writable directories have sticky bit set" test_ref="test_sticky_world_writable_dirs" negate="true" />
     </criteria>
   </definition>
-  <unix:file_test check="all" check_existence="all_exist" comment="all local world-writable directories have sticky bit set" id="test_dir_perms_world_writable_sticky_bits" version="1">
+  <unix:file_test check="all" check_existence="all_exist" comment="all local world-writable directories have sticky bit set" id="test_sticky_world_writable_dirs" version="1">
     <unix:object object_ref="object_only_local_directories" />
     <unix:state state_ref="state_world_writable_and_not_sticky" />
   </unix:file_test>
