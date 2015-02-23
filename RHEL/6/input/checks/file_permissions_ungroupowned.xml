@@ -14,13 +14,12 @@
     </criteria>
   </definition>
   <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-  check="all" comment="files with no group owner"
+  check="all" comment="files with no group owner" check_existence="none_exist"
   id="test_file_permissions_ungroupowned" version="1">
     <notes>
       <note>This will enumerate all files on local partitions</note>
     </notes>
     <unix:object object_ref="object_file_permissions_ungroupowned" />
-    <unix:state state_ref="state_file_permissions_ungroupowned" />
   </unix:file_test>
   <unix:file_state comment="Executables with suid set"
   id="state_file_permissions_ungroupowned" version="1">
@@ -35,5 +34,6 @@
     <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
     <unix:path>/</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="include">state_file_permissions_ungroupowned</filter>
   </unix:file_object>
 </def-group>
