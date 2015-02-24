@@ -96,6 +96,12 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
+          <xsl:when test="name() = 'stig'">
+            <xsl:attribute name="system">
+              <xsl:value-of select="$cceuri" />
+            </xsl:attribute>
+            <xsl:value-of select="." />
+          </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="." />
           </xsl:otherwise>
