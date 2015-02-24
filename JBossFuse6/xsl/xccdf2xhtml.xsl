@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (C) 2012 Red Hat, Inc.
-  ~ All rights reserved.
-  ~  
-  ~ This file is part of JBoss Fuse 6.x SCAP Content.
-  ~  
-  ~ JBoss Fuse 6.x SCAP Content is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Lesser General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~  
-  ~ JBoss Fuse 6.x SCAP Content is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Lesser General Public License for more details.
-  ~  
-  ~ You should have received a copy of the GNU Lesser General Public License
-  ~ along with JBoss Fuse 6.x SCAP Content.  If not, see <http://www.gnu.org/licenses/>.
-  -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0"

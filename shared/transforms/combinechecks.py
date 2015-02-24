@@ -3,8 +3,13 @@
 import sys
 import os
 import lxml.etree as ET
+from ConfigParser import SafeConfigParser
 
-header = '''<?xml version="1.0" encoding="UTF-8"?>
+conf_file = 'oval.config'
+footer = '</oval_definitions>'
+
+def _header(schema_version):
+    header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
     xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
@@ -20,12 +25,29 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
     <generator>
         <oval:product_name>python</oval:product_name>
         <oval:product_version>2.6.6</oval:product_version>
-        <oval:schema_version>5.10</oval:schema_version>
+        <oval:schema_version>%s</oval:schema_version>
         <oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
-    </generator>'''
+    </generator>''' % schema_version
 
-footer = '</oval_definitions>'
+    return header
 
+def parse_conf_file(conf_file):
+    parser = SafeConfigParser()
+    parser.read(conf_file)
+    oval_version = None
+
+    for section in parser.sections():
+        for name, setting in parser.items(section):
+            if name == 'oval_version':
+                oval_version =  setting
+            else:
+                pass
+
+    if oval_version is not None:
+        return oval_version
+    else:
+        print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
+        sys.exit(1)
 
 # append new child ONLY if it's not a duplicate
 def append(element, newchild):
@@ -44,12 +66,21 @@ def main():
         print "Provide a directory name, which contains the checks."
         sys.exit(1)
 
+    # Get header with schema version
+    oval_config = sys.argv[1] + "/" + conf_file
+    
+    if os.path.isfile(oval_config):
+        header = _header(parse_conf_file(oval_config))
+    else:
+        print 'The directory specified does not contain the %s file!' % conf_file
+        sys.exit(1)
+
     # concatenate all XML files in the checks directory, to create the
     # document body
     body = ""
-    for filename in os.listdir(sys.argv[1]):
+    for filename in os.listdir(sys.argv[2]):
         if filename.endswith(".xml"):
-            with open(sys.argv[1] + "/" + filename, 'r') as xml_file:
+            with open(sys.argv[2] + "/" + filename, 'r') as xml_file:
                 body = body + xml_file.read()
 
     # parse new file(string) as an ElementTree, so we can reorder elements
