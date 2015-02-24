@@ -17,7 +17,7 @@ maintenance tasks, such as notifying root of system activity.
 <rationale>Due to its usage for maintenance and security-supporting tasks,
 enabling the cron daemon is essential.
 </rationale>
-<ident cce="27070-2" />
+<ident cce="27070-2"  stig="RHEL-06-000224" />
 <oval id="service_crond_enabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -58,7 +58,7 @@ out activities outside of a normal login session, which could complicate
 accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
 <tt>batch</tt> is not common.
 </rationale>
-<ident cce="27249-2" />
+<ident cce="27249-2"  stig="RHEL-06-000262" />
 <oval id="service_atd_disabled" />
 <ref nist="CM-7" disa="381" />
 </Rule>
