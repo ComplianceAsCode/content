@@ -39,9 +39,9 @@ Install the AIDE package with the command:
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
-<ident cce="27024-9" />
+<ident cce="27024-9"  stig="RHEL-06-000016" />
 <oval id="package_aide_installed" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28, SI-7" disa="1069"/>
+<ref nist="" disa="1069" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -85,8 +85,8 @@ To find the location of the AIDE databse file, run the following command:
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ident cce="27135-3" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" />
+<ident cce="27135-3"  stig="RHEL-06-000018" />
+<ref nist="" disa="366" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
@@ -105,8 +105,8 @@ By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
 <oval id="aide_periodic_cron_checking" />
-<ident cce="27222-9" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
+<ident cce="27222-9"  stig="RHEL-06-000306" />
+<ref nist="" disa="1263" />
 </Rule>
 </Group>
 
@@ -145,9 +145,9 @@ Permissions on system binaries and configuration files that are too generous
 could allow an unauthorized user to gain privileges that they should not have.
 The permissions set by the vendor should be maintained. Any deviations from
 this baseline should be investigated.</rationale>
-<ident cce="26731-0" />
+<ident cce="26731-0"  stig="RHEL-06-000518" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,CM-6(d),SI-7" disa="1493,1494,1495" />
+<ref nist="" disa="366" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
@@ -176,9 +176,9 @@ have file hashes different from what is expected by the RPM database.
 The hashes of important files like system executables should match the
 information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
-<ident cce="27223-7" />
+<ident cce="27223-7"  stig="RHEL-06-000519" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),SI-7" disa="1496" />
+<ref nist="" disa="366" />
 </Rule>
 
 </Group>
@@ -192,7 +192,7 @@ security capabilities to those provided by the base platform.  Add-on
 software may not be appropriate for some specialized systems.
 </description>
 
-<Rule id="install_hids" severity="high">
+<Rule id="install_hids" severity="medium">
 <title>Install Intrusion Detection Software</title>
 <description>
 The base Red Hat platform already includes a sophisticated auditing system that
@@ -213,8 +213,8 @@ Verify this intrusion detection software is active.
 Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.  
 </rationale>
-<ident cce="27409-2"/>
-<ref nist="SC-7" disa="1263"/>
+<ident cce="27409-2" stig="RHEL-06-000285" />
+<ref nist="" disa="1263" />
 </Rule>
 
 <Rule id="install_antivirus">
@@ -253,8 +253,8 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems. 
 </rationale>
 <oval id="install_antivirus" />
-<ident cce="27529-7"/>
-<ref nist="SC-28, SI-3" disa="1239,1668"/>
+<ident cce="27529-7" stig="RHEL-06-000284" />
+<ref nist="" disa="1668" />
 </Rule>
 
 </Group>
