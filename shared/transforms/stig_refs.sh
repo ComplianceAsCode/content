@@ -18,7 +18,7 @@ if [ -e input/auxiliary/stig_overlay.xml ]; then
 			VRELEASE=$(awk "/<Group id=\"${VKEY}\"/,/<\/Group/" $XCCDF_FILE | grep -i 'Rule id=' | sed -e 's/.*Rule id="SV-[0-9]*//' -e 's/r\([0-9]\).*/\1/')
 			IACONTROLS=$(awk "/<Group id=\"${VKEY}\"/,/<\/Group/" $XCCDF_FILE | grep "&lt;IAControls&gt;" | sed -e 's/.*&lt;IAControls&gt;//' -e 's/&.*//' -e 's/,[ ]*/,/g')
 			TITLE=$(awk "/<Group id=\"${VKEY}\"/,/<\/Group/" $XCCDF_FILE | awk "/<Rule /,/<\/Rule>/" | grep '<title>' | sed -e "s/.*<title>//" -e "s/<\/title>.*//")
-			RULE_ID=$(grep "<overlay.*ownerid=\"${STIG_ID}\"" auxiliary/stig_overlay.xml | sed -e 's/.*ruleid="//' -e 's/".*//')
+			RULE_ID=$(grep "<overlay.*ownerid=\"${STIG_ID}\"" input/auxiliary/stig_overlay.xml | sed -e 's/.*ruleid="//' -e 's/".*//')
 			echo "${VKEY}|${STIG_ID}|${CCI}|${CCE}|${SEVERITY}|${SVKEY}|${VRELEASE}|${IACONTROLS}|${TITLE}|${RULE_ID}"
 			sed -i -e "/<overlay.*ownerid=\"${STIG_ID}\"/,/<\/overlay>/s/disa=\"[0-9]*\"/disa=\"$(echo ${CCI} | cut -d"," -f1)\"/" -e "/<overlay.*ownerid=\"${STIG_ID}\"/,/<\/overlay>/s/severity=\"[a-z]*\"/severity=\"${SEVERITY}\"/" -e "/<overlay.*ownerid=\"${STIG_ID}\"/,/<\/overlay>/s/VKey=\"[0-9]*\"/VKey=\"$(echo ${VKEY}|sed 's/[vV]-//')\"/" -e "/<overlay.*ownerid=\"${STIG_ID}\"/,/<\/overlay>/s/SVKey=\"[0-9]*\"/SVKey=\"${SVKEY}\"/" -e "/<overlay.*ownerid=\"${STIG_ID}\"/,/<\/overlay>/s/VRelease=\"[0-9]*\"/VRelease=\"${VRELEASE}\"/" -e "\|<overlay.*ownerid=\"${STIG_ID}\"|,\|</overlay>|s|<title>.*</title>|<title>${TITLE}</title>|" input/auxiliary/stig_overlay.xml
 			if [ "$(grep -R "<Rule id=\"${RULE_ID}\"" input/services input/system 2>/dev/null| grep -c ^)" != 0 ]; then
