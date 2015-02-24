@@ -1,0 +1,138 @@
+<Group id="ftp">
+<title>FTP Server</title>
+<description>FTP is a common method for allowing remote access to
+files. Like telnet, the FTP protocol is unencrypted, which means
+that passwords and other data transmitted during the session can be
+captured and that the session is vulnerable to hijacking.
+Therefore, running the FTP server software is not recommended.
+<br /><br />
+However, there are some FTP server configurations which may
+be appropriate for some environments, particularly those which
+allow only read-only anonymous access as a means of downloading
+data available to the public.</description>
+
+<Rule id="service_unencrypted_ftp_disabled">
+<title>Disable Unencrypted FTP Services</title>
+<description>
+<service-disable-macro service="vsftpd" />
+</description>
+<ocil>
+<service-disable-check-macro service="vsftpd" />
+</ocil>
+<rationale>
+Running unencrypted FTP server software provides a network-based avenue
+of attack, and should be disabled if not needed.
+Furthermore, the FTP protocol is unencrypted and creates
+a risk of compromising sensitive information.
+</rationale>
+<ident stig="GEN004800" />
+<oval id="service_unencrypted_ftp_disabled" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="ftp_log_transactions">
+<title>Enable Logging of All FTP Transactions</title>
+<description>Add or correct the following configuration options within the <tt>vsftpd</tt>
+configuration file, located at <tt>/etc/vsftpd/vsftpd.conf</tt>:
+<pre>xferlog_enable=YES
+xferlog_std_format=NO
+log_ftp_protocol=YES</pre>
+</description>
+<ocil clause="xferlog_enable is missing, or is not set to yes">
+Find if logging is applied to the FTP daemon.
+<br/><br/>
+Procedures:
+<br/><br/>
+If vsftpd is started by xinetd the following command will indicate the xinetd.d startup file:
+<pre># grep vsftpd /etc/xinetd.d/*</pre>
+<pre># grep server_args <i>vsftpd xinetd.d startup file</i></pre>
+This will indicate the vsftpd config file used when starting through xinetd.
+If the <i>server_args</i> line is missing or does not include the vsftpd configuration file, then the default config file (/etc/vsftpd/vsftpd.conf) is used.
+<pre># grep xferlog_enable <i>vsftpd config file</i></pre>
+</ocil>
+<rationale>To trace malicious activity facilitated by the FTP service, it must be configured to ensure that all commands sent to
+the FTP server are logged using the verbose vsftpd log
+format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
+<warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
+<ident stig="GEN004980" />
+<oval id="ftp_log_transactions" />
+<ref nist="ECAR-1,ECAR-2,ECAR-3" disa="130" />
+</Rule>
+
+<Rule id="ftp_default_umask">
+<title>FTP Umask Must Be 077.</title>
+<description>
+All FTP users must have a default umask of 077.
+</description>
+<rationale>
+The umask controls the default access mode assigned to newly 
+created files. An umask of 077 limits new files to mode 700 
+or less permissive. Although umask is stored as a 4-digit 
+number, the first digit representing special access 
+modes is typically ignored or required to be zero (0).
+</rationale>
+<ident stig="GEN005040" />
+<oval id="ftp_default_umask" />
+<ref nist="ECCD-1,ECCD-2" disa="225" />
+</Rule>
+
+<Rule id="ftp_ftpusers_file_empty">
+<title>Ftpusers File Contains Users</title>
+<description>
+The ftpusers file must contain account names not allowed to use FTP.
+</description>
+<rationale>
+The ftpusers file contains a list of accounts not allowed to use FTP to transfer files. 
+If the file does not contain the names of all accounts not authorized to use FTP, then 
+unauthorized use of FTP may take place.
+</rationale>
+<ident stig="GEN004900" />
+<oval id="ftp_ftpusers_file_empty" />
+<ref nist="ECCD-1,ECCD-2" disa="225" />
+</Rule>
+
+<Rule id="ftp_ftpusers_file_exists">
+<title>Ftpusers File Exists</title>
+<description>
+The ftpusers file must exist.
+</description>
+<rationale>
+The ftpusers file contains a list of accounts not allowed to use FTP to transfer files. 
+If this file does not exist, then unauthorized accounts can utilize FTP.
+</rationale>
+<ident stig="GEN004880" />
+<oval id="ftp_ftpusers_file_exists" />
+<ref nist="ECCD-1,ECCD-2" disa="225" />
+</Rule>
+
+<Rule id="ftp_anonymous_shell">
+<title>FTP User Has Shell</title>
+<description>
+Anonymous FTP accounts must not have a functional shell.
+</description>
+<rationale>
+If an anonymous FTP account has been configured to use a functional shell, 
+attackers could gain access to the shell if the account is compromised.
+</rationale>
+<ident stig="GEN005000" />
+<oval id="ftp_anonymous_shell" />
+<ref nist="ECCD-1,ECCD-2" disa="225" />
+</Rule>
+
+<Rule id="tftpd_user_shell">
+<title>TFTP User Has Shell</title>
+<description>
+The TFTP daemon must be configured to vendor specifications, including 
+a dedicated TFTP user account, a non-login shell such as /bin/false, 
+and a home directory owned by the TFTP user.
+</description>
+<rationale>
+If TFTP has a valid shell, it increases the likelihood someone could 
+log on to the TFTP account and compromise the system.
+</rationale>
+<ident stig="GEN005120" />
+<oval id="tftpd_user_shell" />
+<ref nist="ECSC-1" disa="225" />
+</Rule>
+
+</Group> <!-- <Group id="ftp"> -->

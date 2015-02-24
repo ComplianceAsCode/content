@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="network_ipv6_disable_interfaces" version="1">
+    <metadata>
+      <title>The IPv6 Protocol Binding.</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The IPv6 protocol handler must not be bound to the network stack unless needed.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_network_ipv6_disable_interfaces_conf" comment="Look for argument 'NETWORKING_IPV6=no' in /etc/sysconfig/network" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Look for argument 'NETWORKING_IPV6=no' in /etc/sysconfig/network" id="test_network_ipv6_disable_interfaces_conf" version="1">
+    <ind:object object_ref="object_network_ipv6_disable_interfaces_conf" />
+    <ind:state state_ref="state_network_ipv6_disable_interfaces_conf" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_network_ipv6_disable_interfaces_conf" version="1">
+    <ind:filepath>/etc/sysconfig/network</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*NETWORKING_IPV6[\s]*=[\s]*([a-z]+)[\s]*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_network_ipv6_disable_interfaces_conf" version="1">
+    <ind:subexpression datatype="string" operation="equals">no</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

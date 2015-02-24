@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_ldap_certs" version="1">
+    <metadata>
+      <title>LDAP TLS Cert File Group Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Group owner for the LDAP TLS cert must be root.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_groupowner_ldap_certs" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_file_groupowner_ldap_certs_list" comment="LDAP TLS cert" datatype="string" version="1">
+		<object_component item_field="subexpression" object_ref="object_file_groupowner_ldap_certs_list" />
+  </local_variable>
+  <ind:textfilecontent54_object id="object_file_groupowner_ldap_certs_list" version="1">
+    <ind:filepath>/etc/ldap.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^tls_cert\s.*\s(/.*)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing LDAP TLS cert group owner" id="test_file_groupowner_ldap_certs" version="1">
+    <unix:object object_ref="object_file_groupowner_ldap_certs" />
+    <unix:state state_ref="state_file_groupowner_ldap_certs" />
+  </unix:file_test>
+  <unix:file_object comment="LDAP TLS cert" id="object_file_groupowner_ldap_certs" version="1">
+    <unix:filepath var_ref="var_file_groupowner_ldap_certs_list" var_check="at least one" />
+  </unix:file_object>
+  <unix:file_state id="state_file_groupowner_ldap_certs" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+
+</def-group>

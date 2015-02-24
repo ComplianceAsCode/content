@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="accounts_cracklib_present" version="1">
+    <metadata>
+      <title>Set Cracklib Password Module</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The system must prevent the use of dictionary words for passwords.</description>
+    </metadata>
+    <criteria comment="The /etc/pam.d/system-auth file must have pam_cracklib defined.">
+      <criterion test_ref="test_accounts_cracklib_present" />
+      <extend_definition comment="global account settings configured" definition_ref="accounts_global_setting" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Tests the presence of pam_cracklib in /etc/pam.d/system-auth" id="test_accounts_cracklib_present" version="1">
+    <ind:object object_ref="object_accounts_cracklib_present" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_cracklib_present" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^password[\s]+(?:requisite|required)[\s]+(?:/lib/security/(?:\$ISA/)*)*pam_cracklib.so[\s]+.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

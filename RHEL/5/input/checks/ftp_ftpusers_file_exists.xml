@@ -1,0 +1,52 @@
+<def-group>
+  <definition class="compliance" id="ftp_ftpusers_file_exists"
+  version="1">
+    <metadata>
+      <title>FTP Users File Must Exist</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The ftpusers file must exist.</description>
+    </metadata>
+	<criteria>
+		<criteria comment="package krb5-workstation removed or service gssftp is not configured to start" operator="OR">
+			<extend_definition comment="krb5-workstation removed" definition_ref="package_krb5-workstation_removed" />
+			<criteria operator="AND" comment="service gssftp is not configured to start">
+				<criterion test_ref="test_ftp_ftpusers_file_exists_gssftp" />
+			</criteria>
+		</criteria>
+		<criteria comment="package vsftpd removed or service vsftpd is not configured to start" operator="OR">
+			<extend_definition comment="vsftpd removed" definition_ref="package_vsftpd_removed" />
+			<criteria operator="OR" comment="service gssftp is not configured to start">
+				<criterion test_ref="test_ftp_ftpusers_file_exists_vsftpd1" />
+				<criterion test_ref="test_ftp_ftpusers_file_exists_vsftpd2" />
+			</criteria>
+		</criteria>
+	</criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="gssftp users" id="test_ftp_ftpusers_file_exists_gssftp" version="1">
+    <unix:object object_ref="object_ftp_ftpusers_file_exists_gssftp" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/ftpusers" id="object_ftp_ftpusers_file_exists_gssftp" version="1">
+    <unix:filepath>/etc/ftpusers</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="vsftpd users" id="test_ftp_ftpusers_file_exists_vsftpd1" version="1">
+    <unix:object object_ref="object_ftp_ftpusers_file_exists_vsftpd1" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/vsftpd.ftpusers" id="object_ftp_ftpusers_file_exists_vsftpd1" version="1">
+    <unix:filepath>/etc/vsftpd.ftpusers</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="vsftpd users" id="test_ftp_ftpusers_file_exists_vsftpd2" version="1">
+    <unix:object object_ref="object_ftp_ftpusers_file_exists_vsftpd2" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/vsftpd/ftpusers" id="object_ftp_ftpusers_file_exists_vsftpd2" version="1">
+    <unix:filepath>/etc/vsftpd/ftpusers</unix:filepath>
+  </unix:file_object>
+
+</def-group>

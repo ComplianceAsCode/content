@@ -1,0 +1,237 @@
+<Group id="integrity">
+<title>Software Integrity Checking</title>
+<description>
+Both the AIDE (Advanced Intrusion Detection Environment)
+software and the RPM package management system provide
+mechanisms for verifying the integrity of installed software.
+AIDE uses snapshots of file metadata (such as hashes) and compares these
+to current system files in order to detect changes.
+The RPM package management system can conduct integrity
+checks by comparing information in its metadata database with
+files installed on the system.
+<br /><br />
+Integrity checking cannot <i>prevent</i> intrusions,
+but can detect that they have occurred. Requirements
+for software integrity checking may be highly dependent on
+the environment in which the system will be used. Snapshot-based
+approaches such as AIDE may induce considerable overhead
+in the presence of frequent software updates.
+</description>
+
+<Group id="aide">
+<title>Verify Integrity with AIDE</title>
+<description>AIDE conducts integrity checks by comparing information about
+files with previously-gathered information. Ideally, the AIDE database is
+created immediately after initial system configuration, and then again after any
+software update.  AIDE is highly configurable, with further configuration
+information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
+</description>
+
+<Rule id="aide_build_database">
+<title>Build and Test AIDE Database</title>
+<description>Run the following command to generate a new database:
+<pre># /usr/sbin/aide --init</pre>
+By default, the database will be written to the file <tt>/var/lib/aide/aide.db.new.gz</tt>.
+Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
+<tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
+The newly-generated database can be installed as follows:
+<pre># cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+To initiate a manual check, run the following command:
+<pre># /usr/sbin/aide --check</pre>
+If this check produces any unexpected output, investigate.
+</description>
+<rationale>
+For AIDE to be effective, an initial database of "known-good" information about files
+must be captured and it should be able to be verified against the installed files.
+</rationale>
+<ident stig="GEN000140-2" />
+<oval id="aide_build_database" />
+<ref nist="DCSW-1" disa="293" />
+</Rule>
+
+<Rule id="aide_periodic_cron_checking" severity="medium">
+<title>Configure Periodic Execution of AIDE</title>
+<description>
+To implement a daily execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
+<pre>05 4 * * * root /usr/sbin/aide --check</pre>
+AIDE can be executed periodically through other means; this is merely one example.
+</description>
+<ocil clause="there is no output">
+To determine that periodic AIDE execution has been scheduled, run the following command:
+<pre># grep aide /etc/crontab</pre>
+</ocil>
+<rationale>
+By default, AIDE does not install itself for periodic execution. Periodically
+running AIDE is necessary to reveal unexpected changes in installed files.
+</rationale>
+<ident stig="GEN000220" />
+<oval id="aide_periodic_cron_checking" />
+<ref nist="DCSL-1" disa="1069" />
+</Rule>
+</Group>
+
+<Group id="rpm_verification">
+<title>Verify Integrity with RPM</title>
+<description>The RPM package management system includes the ability
+to verify the integrity of installed packages by comparing the
+installed files with information about the files taken from the
+package metadata stored in the RPM database. Although an attacker
+could corrupt the RPM database (analogous to attacking the AIDE
+database as described above), this check can still reveal
+modification of important files. To list which files on the system differ from what is expected by the RPM database:
+<pre># rpm -qVa</pre>
+See the man page for <tt>rpm</tt> to see a complete explanation of each column.
+</description>
+
+<Rule id="rpm_verify_hashes">
+<title>Verify File Hashes with RPM</title>
+<description>The RPM package management system can check the hashes of
+installed software packages, including many that are important to system
+security. Run the following command to list which files on the system
+have hashes that differ from what is expected by the RPM database:
+<pre># rpm -Va | grep '^..5'</pre>
+A "c" in the second column indicates that a file is a configuration file, which
+may appropriately be expected to change.  If the file was not expected to
+change, investigate the cause of the change using audit logs or other means.
+The package can then be reinstalled to restore the file.
+Run the following command to determine which package owns the file:
+<pre># rpm -qf <i>FILENAME</i></pre>
+The package can be reinstalled from a yum repository using the command:
+<pre>yum reinstall <i>PACKAGENAME</i></pre>
+Alternatively, the package can be reinstalled from trusted media using the command:
+<pre>rpm -Uvh <i>PACKAGENAME</i></pre> 
+</description>
+<ocil clause="there is output"> The following command will list which files on the system 
+have file hashes different from what is expected by the RPM database. 
+<pre># rpm -Va | grep '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
+</ocil>
+<rationale>
+The hashes of important files like system executables should match the
+information given by the RPM database. Executables with erroneous hashes could
+be a sign of nefarious activity on the system.</rationale>
+<ident stig="GEN006565" />
+<oval id="rpm_verify_hashes" />
+<ref nist="ECAT-1" disa="366,698" />
+</Rule>
+
+</Group>
+
+<Group id="additional_security_software">
+<title>Additional Security Software</title>
+<description>
+Additional security software that is not provided or supported
+by Red Hat can be installed to provide complementary or duplicative
+security capabilities to those provided by the base platform.  Add-on
+software may not be appropriate for some specialized systems.
+</description>
+
+<Rule id="package_hids_installed" severity="medium">
+<title>Install Intrusion Detection Software</title>
+<description>
+The Red Hat platform includes a sophisticated auditing system 
+and SELinux, which provide host-based intrusion detection capabilities.
+</description>
+<ocil clause="SELinux is installed, this is not a finding.  However, if neither SELinux nor HBSS is used on the system">
+Inspect the system to determine if intrusion detection software has been installed. 
+SELinux is the intrusion detection system included with RHEL. Another one is 
+McAfee HBSS, which is available through Cybercom.
+</ocil>
+<rationale>
+Host-based intrusion detection tools provide a system-level defense when an
+intruder gains access to a system or network.  
+</rationale>
+<oval id="package_hids_installed" />
+<ref nist="ECID-1" disa="1259" />
+<ident stig="GEN006480" />
+</Rule>
+
+<Rule id="package_av_installed">
+<title>Install Virus Scanning Software</title>
+<description>
+Install virus scanning software, which uses signatures to search for the
+presence of viruses on the filesystem. 
+The McAfee uvscan virus scanning tool is provided for DoD systems.
+Ensure virus definition files are no older than 7 days, or their last release.
+<!-- need info here on where DoD admins can go to get this -->
+Configure the virus scanning software to perform scans dynamically on all
+accessed files.  If this is not possible, configure the
+system to scan all altered files on the system on a daily
+basis. If the system processes inbound SMTP mail, configure the virus scanner
+to scan all received mail.
+<!-- what's the basis for the IAO language? would not failure of a check
+     imply a discussion, for every check in this document, 
+     with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
+     particular neighborhood) should occur? -->
+</description>
+<ocil clause="virus scanning software does not run daily, or has signatures that are out of date">
+Inspect the system for a cron job or system service which executes
+a virus scanning tool regularly.
+<br/>
+<!-- this should be handled as DoD-specific text in a future revision -->
+To verify the McAfee command line scan tool (uvscan) is scheduled for
+regular execution, run the following command to check for a cron job:
+<pre># grep uvscan /etc/cron* /var/spool/cron/*</pre>
+This will reveal if and when the uvscan program will be run.
+<br/>
+To check on the age of uvscan virus definition files, run the following command:
+<pre># cd /usr/local/uvscan
+# ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
+</ocil>
+<rationale>
+Virus scanning software can be used to detect if a system has been compromised by
+computer viruses, as well as to limit their spread to other systems. 
+</rationale>
+<oval id="package_av_installed" />
+<ref nist="ECVP-1" disa="1668" />
+<ident stig="GEN006640" />
+</Rule>
+
+<Rule id="baseline_device_files" severity="low">
+<title>Create a Baseline For Device Files</title>
+<description>
+A baseline of device files needs to be generated, and verified on at least a weekly basis.
+</description>
+<rationale>
+If an unauthorized device is allowed to exist on the system, there is the possibility the 
+system may perform unauthorized operations.
+</rationale>
+<oval id="baseline_device_files" />
+<ref nist="DCSW-1,ECSC-1" disa="318" />
+<ident stig="GEN002260" />
+</Rule>
+
+<Rule id="baseline_sgid_files" severity="medium">
+<title>Create a Baseline For SGID Files</title>
+<description>
+A baseline of sgid files needs to be generated, and verified on at least a weekly basis.
+</description>
+<rationale>
+Files with the setgid bit set will allow anyone running these files to be temporarily 
+assigned the group id of the file. While many system files depend on these attributes for 
+proper operation, security problems can result if setgid is assigned to programs allowing 
+reading and writing of files, or shell escapes.
+</rationale>
+<oval id="baseline_sgid_files" />
+<ref nist="DCSL-1" disa="318" />
+<ident stig="GEN002460" />
+</Rule>
+
+<Rule id="baseline_suid_files" severity="medium">
+<title>Create a Baseline For SUID Files</title>
+<description>
+A baseline of suid files needs to be generated, and verified on at least a weekly basis.
+</description>
+<rationale>
+Files with the setuid bit set will allow anyone running these files to be temporarily 
+assigned the UID of the file. While many system files depend on these attributes for 
+proper operation, security problems can result if setuid is assigned to programs allowing 
+reading and writing of files, or shell escapes.
+</rationale>
+<oval id="baseline_suid_files" />
+<ref nist="DCSL-1" disa="318" />
+<ident stig="GEN002400" />
+</Rule>
+
+</Group>
+
+</Group>

@@ -1,0 +1,17 @@
+# Requred CVS values are as follows:
+#
+#   directory path,file name or [NULL],external OVAL variable,OVAL check title,OVAL check description,custom OVAL check id or [NULL]
+#
+# To use generated OVAL check id specify [NULL] as OVAL check id, e.g:
+#
+#   dir_path,file_name,oval_ext_var,title,desc,[NULL]
+#
+# While to use custom OVAL check id e.g. 'umask_for_daemons' use:
+#
+#   dir_path,file_name,oval_ext_var,title,desc,umask_for_daemons
+#
+/etc,profile,var_accounts_user_umask,Ensure that Users Have Sensible Umask Values in /etc/profile,The default umask for all users should be set correctly,[NULL]
+/etc,login.defs,var_accounts_user_umask,Ensure that Users Have Sensible Umask Values in /etc/login.defs,The default umask for all users specified in /etc/login.defs,[NULL]
+/etc,bashrc,var_accounts_user_umask,Ensure that Users Have Sensible Umask Values set for bash,The default umask for users of the bash shell,[NULL]
+/etc,csh.cshrc,var_accounts_user_umask,Ensure that Users Have Sensible Umask Values set for csh,The default umask for users of the csh shell,[NULL]
+/etc/init.d,functions,var_umask_for_daemons,Set Daemon umask,The daemon umask should be set as appropriate,umask_for_daemons

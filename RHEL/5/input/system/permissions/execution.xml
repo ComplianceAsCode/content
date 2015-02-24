@@ -1,0 +1,111 @@
+<Group id="restrictions">
+<title>Restrict Programs from Dangerous Execution Patterns</title>
+<description>The recommendations in this section are designed to
+ensure that the system's features to protect against potentially
+dangerous program execution are activated.
+These protections are applied at the system initialization or
+kernel level, and defend against certain types of badly-configured
+or compromised programs.</description>
+
+<Group id="coredumps">
+<title>Disable Core Dumps</title>
+<description>A core dump file is the memory image of an executable
+program when it was terminated by the operating system due to
+errant behavior. In most cases, only software developers
+legitimately need to access these files. The core dump files may
+also contain sensitive information, or unnecessarily occupy large
+amounts of disk space.
+<br /><br />
+Once a hard limit is set in <tt>/etc/security/limits.conf</tt>, a
+user cannot increase that limit within his or her own session. If access
+to core dumps is required, consider restricting them to only
+certain users or groups. See the <tt>limits.conf</tt> man page for more
+information.
+<br /><br />
+The core dumps of setuid programs are further protected. The
+<tt>sysctl</tt> variable <tt>fs.suid_dumpable</tt> controls whether
+the kernel allows core dumps from these programs at all. The default
+value of 0 is recommended.</description>
+
+<Rule id="disable_users_coredumps">
+<title>Disable Core Dumps for All Users</title>
+<description>To disable core dumps for all users, add the following line to
+<tt>/etc/security/limits.conf</tt>:
+<pre>*     hard   core    0</pre>
+</description>
+<ocil clause="it is not">
+To verify that core dumps are disabled for all users, run the following command:
+<pre>$ grep core /etc/security/limits.conf</pre>
+The output should be:
+<pre>*     hard   core    0</pre>
+</ocil>
+<rationale>A core dump includes a memory image taken at the time the operating system
+terminates an application. The memory image could contain sensitive data and is generally useful
+only for developers trying to debug problems.</rationale>
+<ident stig="GEN003500" />
+<oval id="disable_users_coredumps" />
+<ref nist="ECCD-1,ECCD-2" disa="366" />
+</Rule>
+</Group>
+
+<Group id="enable_execshield_settings">
+<title>Enable ExecShield</title>
+<description>ExecShield describes kernel features that provide
+protection against exploitation of memory corruption errors such as buffer
+overflows. These features include random placement of the stack and other
+memory regions, prevention of execution in memory that should only hold data,
+and special handling of text buffers. These protections are enabled by default and
+controlled through <tt>sysctl</tt> variables <tt>kernel.exec-shield</tt> and
+<tt>kernel.randomize_va_space</tt>.
+</description>
+
+<Rule id="sysctl_kernel_nonexec_stack" severity="medium">
+<title>Enable ExecShield and Randomized Layout of Virtual Address Space</title>
+<description>
+<sysctl-desc-macro sysctl="kernel.exec-shield" value="1" />
+<sysctl-desc-macro sysctl="kernel.randomize_va_space" value="1" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="kernel.exec-shield" value="1" />
+<sysctl-check-macro sysctl="kernel.randomize_va_space" value="1" />
+</ocil>
+<rationale>ExecShield uses the segmentation feature on all x86 systems
+to prevent execution in memory higher than a certain address. It
+writes an address as a limit in the code segment descriptor, to
+control where code can be executed, on a per-process basis. When
+the kernel places a process's memory regions such as the stack and
+heap higher than this address, the hardware prevents execution in that
+address range.
+Address space layout randomization (ASLR) makes it more difficult
+for an attacker to predict the location of attack code they have introduced
+into a process's address space during an attempt at exploitation.  Additionally, ASLR 
+makes it more difficult for an attacker to know the location of existing code
+in order to re-purpose it using return oriented programming (ROP) techniques.</rationale>
+<ident stig="GEN003540" />
+<oval id="sysctl_kernel_nonexec_stack" />
+<ref nist="ECCD-1,ECCD-2,ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="sysctl_kernel_execshield" severity="low">
+<title>Enable ExecShield</title>
+<description>
+<sysctl-desc-macro sysctl="kernel.exec-shield" value="1" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="kernel.exec-shield" value="1" />
+</ocil>
+<rationale>ExecShield uses the segmentation feature on all x86 systems
+to prevent execution in memory higher than a certain address. It
+writes an address as a limit in the code segment descriptor, to
+control where code can be executed, on a per-process basis. When
+the kernel places a process's memory regions such as the stack and
+heap higher than this address, the hardware prevents execution in that
+address range.
+</rationale>
+<ident stig="GEN008420" />
+<oval id="sysctl_kernel_execshield" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group>
+</Group>

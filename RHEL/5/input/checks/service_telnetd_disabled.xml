@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance"
+  id="service_telnetd_disabled" version="1">
+    <metadata>
+      <title>Disable telnet Service</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Disable telnet Service</description>
+    </metadata>
+    <criteria comment="package telnet-server removed or service telnetd is not configured to start" operator="OR">
+      <extend_definition comment="rpm package telnet-server removed" definition_ref="package_telnet-server_removed" />
+      <criterion comment="Disable telnet Service" test_ref="test_disable_telnet_service" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist" comment="Disable Telnet Service"
+  id="test_disable_telnet_service" version="1">
+    <ind:object object_ref="obj_disable_telnet_service" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Disable Telnet Service"
+  id="obj_disable_telnet_service" version="1">
+    <ind:path>/etc/xinetd.d</ind:path>
+    <ind:filename>telnet</ind:filename>
+    <ind:pattern operation="pattern match">^\s*disable\s+=\s+yes\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

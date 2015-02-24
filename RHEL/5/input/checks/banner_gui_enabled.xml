@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="banner_gui_enabled" version="1">
+    <metadata>
+      <title>Enable GUI Warning Banner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Enable the GUI warning banner.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check settings" test_ref="test_banner_gui_enabled" />
+      <criterion comment="check settings" test_ref="test_set_gdm_login_banner_text" />
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" comment="Check if the GUI warning banner is enabled." id="test_banner_gui_enabled" version="1">
+    <ind:object object_ref="object_banner_gui_enabled" />
+    <ind:state state_ref="state_banner_gui_enabled" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_banner_gui_enabled" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/gdm/simple-greeter/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='banner_message_enable']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_banner_gui_enabled" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <ind:xmlfilecontent_test check="all" comment="Check if the GUI warning banner is configured correctly." id="test_set_gdm_login_banner_text" version="1">
+    <ind:object object_ref="object_set_gdm_login_banner_text" />
+    <ind:state state_ref="state_set_gdm_login_banner_text" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_set_gdm_login_banner_text" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/gdm/simple-greeter/%gconf.xml</ind:filepath>
+    <ind:xpath datatype="string" operation="equals">/gconf/entry[@name='banner_message_text']/stringvalue[1]/text()</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_set_gdm_login_banner_text" version="1">
+    <ind:value_of datatype="string" operation="pattern match" var_check="all" var_ref="gui_login_banner_text" />
+  </ind:xmlfilecontent_state>
+  <external_variable comment="warning banner text variable" datatype="string" id="gui_login_banner_text" version="1" />
+
+</def-group>

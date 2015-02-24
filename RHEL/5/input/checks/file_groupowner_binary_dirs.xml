@@ -1,0 +1,168 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_binary_dirs" version="1">
+    <metadata>
+      <title>Verify that System Executables Have System Group Ownership</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Checks that /etc, /bin, /usr/bin, /usr/lbin, /usr/usb, /sbin, /usr/sbin and objects therein, are group owned by a system account.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_groupowner_binary_dirs_etc_dir" />
+      <criterion test_ref="test_groupowner_binary_dirs_etc_files" />
+      <criterion test_ref="test_groupowner_binary_dirs_bin_dir" />
+      <criterion test_ref="test_groupowner_binary_dirs_bin_files" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_bin_dir" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_bin_files" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_lbin_dir" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_lbin_files" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_usb_dir" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_usb_files" />
+      <criterion test_ref="test_groupowner_binary_dirs_sbin_dir" />
+      <criterion test_ref="test_groupowner_binary_dirs_sbin_files" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_sbin_dir" />
+      <criterion test_ref="test_groupowner_binary_dirs_usr_sbin_files" />
+    </criteria>
+  </definition>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="/etc directories uid root" id="test_groupowner_binary_dirs_etc_dir" version="1">
+    <unix:object object_ref="file_groupowner_binary_dirs_object_etc_dir" />
+  </unix:file_test>
+  <unix:file_test  check="all" check_existence="none_exist" comment="/etc files uid root" id="test_groupowner_binary_dirs_etc_files" version="1">
+    <unix:object object_ref="object_file_groupowner_binary_dirs_etc_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc directories" id="file_groupowner_binary_dirs_object_etc_dir" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/etc</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  <unix:file_object comment="/etc files" id="object_file_groupowner_binary_dirs_etc_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/etc</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="/bin directories uid root" id="test_groupowner_binary_dirs_bin_dir" version="1">
+    <unix:object object_ref="file_groupowner_binary_dirs_object_bin_dir" />
+  </unix:file_test>
+  <unix:file_test  check="all" check_existence="none_exist" comment="/bin files uid root" id="test_groupowner_binary_dirs_bin_files" version="1">
+    <unix:object object_ref="object_file_groupowner_binary_dirs_bin_files" />
+  </unix:file_test>
+  <unix:file_object comment="/bin directories" id="file_groupowner_binary_dirs_object_bin_dir" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/bin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  <unix:file_object comment="/bin files" id="object_file_groupowner_binary_dirs_bin_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/bin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/bin directories uid root" id="test_groupowner_binary_dirs_usr_bin_dir" version="1">
+    <unix:object object_ref="file_groupowner_binary_dirs_object_usr_bin_dir" />
+  </unix:file_test>
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/bin files uid root" id="test_groupowner_binary_dirs_usr_bin_files" version="1">
+    <unix:object object_ref="object_file_groupowner_binary_dirs_usr_bin_files" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/bin directories" id="file_groupowner_binary_dirs_object_usr_bin_dir" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/bin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  <unix:file_object comment="/usr/bin files" id="object_file_groupowner_binary_dirs_usr_bin_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/bin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/lbin directories uid root" id="test_groupowner_binary_dirs_usr_lbin_dir" version="1">
+    <unix:object object_ref="file_groupowner_binary_dirs_object_usr_lbin_dir" />
+  </unix:file_test>
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/lbin files uid root" id="test_groupowner_binary_dirs_usr_lbin_files" version="1">
+    <unix:object object_ref="object_file_groupowner_binary_dirs_usr_lbin_files" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/lbin directories" id="file_groupowner_binary_dirs_object_usr_lbin_dir" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/lbin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  <unix:file_object comment="/usr/lbin files" id="object_file_groupowner_binary_dirs_usr_lbin_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/lbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/usb directories uid root" id="test_groupowner_binary_dirs_usr_usb_dir" version="1">
+    <unix:object object_ref="file_groupowner_binary_dirs_object_usr_usb_dir" />
+  </unix:file_test>
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/usb files uid root" id="test_groupowner_binary_dirs_usr_usb_files" version="1">
+    <unix:object object_ref="object_file_groupowner_binary_dirs_usr_usb_files" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/usb directories" id="file_groupowner_binary_dirs_object_usr_usb_dir" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/usb</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  <unix:file_object comment="/usr/usb files" id="object_file_groupowner_binary_dirs_usr_usb_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/usb</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="/sbin directories uid root" id="test_groupowner_binary_dirs_sbin_dir" version="1">
+    <unix:object object_ref="file_groupowner_binary_dirs_object_sbin_dir" />
+  </unix:file_test>
+  <unix:file_test  check="all" check_existence="none_exist" comment="/sbin files uid root" id="test_groupowner_binary_dirs_sbin_files" version="1">
+    <unix:object object_ref="object_file_groupowner_binary_dirs_sbin_files" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin directories" id="file_groupowner_binary_dirs_object_sbin_dir" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/sbin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  <unix:file_object comment="/sbin files" id="object_file_groupowner_binary_dirs_sbin_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/sbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/sbin directories uid root" id="test_groupowner_binary_dirs_usr_sbin_dir" version="1">
+    <unix:object object_ref="file_groupowner_binary_dirs_object_usr_sbin_dir" />
+  </unix:file_test>
+  <unix:file_test  check="all" check_existence="none_exist" comment="/usr/sbin files uid root" id="test_groupowner_binary_dirs_usr_sbin_files" version="1">
+    <unix:object object_ref="object_file_groupowner_binary_dirs_usr_sbin_files" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/sbin directories" id="file_groupowner_binary_dirs_object_usr_sbin_dir" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/sbin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  <unix:file_object comment="/usr/sbin files" id="object_file_groupowner_binary_dirs_usr_sbin_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/sbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+   <filter action="include">state_groupowner_usr_sbin_files_owner_is_user</filter>
+  </unix:file_object>
+  
+  <unix:file_state comment="uid greater than or equal to 500" id="state_groupowner_usr_sbin_files_owner_is_user" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">500</unix:user_id>
+  </unix:file_state>
+  
+</def-group>

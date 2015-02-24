@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="dhcp_client_disable_ddns" version="1">
+    <metadata>
+      <title>DHCP Client Dynamic DNS Disabled</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The DHCP client must not send dynamic DNS updates.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check do-forward-updates in /etc/dhclient.conf"
+      test_ref="test_dhcp_client_disable_ddns" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of do-forward-updates setting in the /etc/dhclient.conf file"
+  id="test_dhcp_client_disable_ddns" version="1">
+    <ind:object object_ref="obj_dhcp_client_disable_ddns" />
+    <ind:state state_ref="state_dhcp_client_disable_ddns" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_disable_ddns" version="1">
+    <ind:filepath>/etc/dhclient.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)do-forward-updates[\s]+(.*);[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_dhcp_client_disable_ddns" version="1">
+    <ind:subexpression operation="equals">false</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

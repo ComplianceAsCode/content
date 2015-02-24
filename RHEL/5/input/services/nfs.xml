@@ -1,0 +1,183 @@
+<Group id="nfs_and_rpc">
+<title>NFS and RPC</title>
+<description>The Network File System is a popular distributed filesystem for
+the Unix environment, and is very widely deployed.  This section discusses the
+circumstances under which it is possible to disable NFS and its dependencies,
+and then details steps which should be taken to secure
+NFS's configuration. This section is relevant to machines operating as NFS
+clients, as well as to those operating as NFS servers.
+</description>
+
+<Group id="disabling_nfs">
+<title>Disable All NFS Services if Possible</title>
+<description>If there is not a reason for the system to operate as either an
+NFS client or an NFS server, follow all instructions in this section to disable
+subsystems required by NFS.
+</description>
+<warning category="general">The steps in this section will prevent a machine
+from operating as either an NFS client or an NFS server. Only perform these
+steps on machines which do not need NFS at all.</warning>
+
+<Group id="removing_nfs_services">
+<title>Remove Services Used Only by NFS</title>
+<description>If NFS is not needed, remove the NFS client daemons portmap and rpcbind.
+<br /><br />
+All of these daemons run with elevated privileges, and many listen for network
+connections. If they are not needed, they should be disabled to improve system
+security posture.</description>
+
+<Rule id="package_rpc_removed">
+<title>Remove portmap and rpcbind Packages</title>
+<description>The <tt>portmap</tt> and <tt>rpcbind</tt> packages can be uninstalled with
+the following command:
+<pre># yum erase portmap rpcbind</pre>
+</description>
+<ocil><package-check-macro package="portmap" /> </ocil>
+<ident stig="GEN003815" />
+<oval id="package_rpc_removed" />
+<ref nist="ECSC-1" disa="305" />
+</Rule>
+
+</Group>
+
+<Group id="disabling_nfs_services">
+<title>Disable Services Used Only by NFS</title>
+<description>If NFS is not needed, disable the NFS client daemons nfslock, rpcgssd, and rpcidmapd.
+<br /><br />
+All of these daemons run with elevated privileges, and many listen for network
+connections. If they are not needed, they should be disabled to improve system
+security posture.</description>
+
+<Rule id="service_rpc_disabled">
+<title>Disable portmap and rpcbind Services</title>
+<description>The rpcbind service increase the attack surface of 
+the system and should only be used when needed.  The rpcbind service 
+are used by a variety of services using Remote Procedure Calls (RPCs).
+<service-disable-macro service="rpcbind" />
+</description>
+<ident stig="GEN003810" />
+<oval id="service_rpc_disabled" />
+<ref nist="ECSC-1" disa="1436" />
+</Rule>
+
+</Group>
+</Group>
+
+<Group id="nfs_configuring_all_machines">
+<title>Configure All Machines which Use NFS</title>
+<description>The steps in this section are appropriate for all machines which
+run NFS, whether they operate as clients or as servers.</description>
+
+<Group id="nfs_configuring_clients">
+<title>Configure NFS Clients</title>
+<description>The steps in this section are appropriate for machines which operate as NFS clients.</description>
+
+<Rule id="nfs_mount_option_nosuid_remote_filesystems" severity="medium">
+<title>Mount Remote Filesystems with nosuid</title>
+<description>
+<mount-desc-macro option="nosuid" part="any NFS mounts" />
+</description>
+<ocil clause="the setting does not show">
+To verify the <tt>nosuid</tt> option is configured for all NFS mounts, run the following command:
+<pre>$ mount  | grep nfs</pre>
+All NFS mounts should show the <tt>nosuid</tt> setting in parentheses.  This is not applicable if NFS is 
+not implemented.
+</ocil>
+<rationale>NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables
+should be installed to their default location on the local filesystem.</rationale>
+<ident stig="GEN005900" />
+<oval id="nfs_mount_option_nosuid_remote_filesystems" />
+<ref nist="ECPA-1" disa="225" />
+</Rule>
+
+</Group>
+
+<Group id="nfs_configuring_servers">
+<title>Configure NFS Servers</title>
+<description>The steps in this section are appropriate for machines which operate as NFS servers.</description>
+
+<Rule id="nfs_no_anonymous">
+<title>Specify UID and GID for Anonymous NFS Connections</title>
+<description>To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:
+<pre>
+anonuid=-1
+anongid=-1
+</pre>
+</description>
+<rationale>Specifying the anonymous UID and GID as -1 ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
+<oval id="nfs_no_anonymous" />
+<ident stig="GEN005820" />
+<ref nist="ECSC-1,IAIA-1,IAIA-2" disa="62" />
+</Rule>
+
+<Rule id="nfs_enforce_host_access">
+<title>All Exports Must Define Allowed Targets</title>
+<description>When configuring NFS exports, ensure that each export line in <tt>/etc/exports</tt> contains
+a list of hosts which are allowed to access that export. If no hosts are specified on an export line,
+then that export is available to any remote host which requests it. All lines of the exports file should
+specify the hosts (or subnets, if needed) which are allowed to access the exported directory, so that
+unknown or remote hosts will be denied.
+<br /><br />
+Authorized hosts can be specified in several different formats:
+<ul>
+<li>Name or alias that is recognized by the resolver</li>
+<li>Fully qualified domain name</li>
+<li>IP address</li>
+<li>IP subnets in the format <tt>address/netmask</tt> or <tt>address/CIDR</tt></li>
+</ul>
+</description>
+<rationale>The NFS access option limits user access to the specified level. 
+This assists in protecting exported file systems.  If access is not restricted, 
+unauthorized hosts may be able to access the system's NFS exports.
+</rationale>
+<ident stig="GEN005840" />
+<oval id="nfs_enforce_host_access" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="nfs_use_root_squashing_all_exports">
+<title>Use Root-Squashing on All Exports</title>
+<description>If a filesystem is exported using root squashing, requests from root on the client
+are considered to be unprivileged (mapped to a user such as nobody). This provides some mild
+protection against remote abuse of an NFS server. Root squashing is enabled by default, and
+should not be disabled.
+<br /><br />
+Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>no_root_squash</tt>.
+</description>
+<rationale>If the NFS server allows root access to local file systems from remote hosts, this
+access could be used to compromise the system.
+</rationale>
+<ident stig="GEN005880" />
+<oval id="nfs_use_root_squashing_all_exports" />
+<ref nist="EBRP-1" disa="225" />
+</Rule>
+
+<Rule id="nfs_no_insecure_locks_exports" severity="high">
+<title>Ensure Insecure File Locking is Not Allowed</title>
+<description>By default the NFS server requires secure file-lock requests,
+which require credentials from the client in order to lock a file. Most NFS
+clients send credentials with file lock requests, however, there are a few
+clients that do not send credentials when requesting a file-lock, allowing the
+client to only be able to lock world-readable files. To get around this, the
+<tt>insecure_locks</tt> option can be used so these clients can access the
+desired export. This poses a security risk by potentially allowing the client
+access to data for which it does not have authorization.
+Remove any instances of the 
+<tt>insecure_locks</tt> option from the file <tt>/etc/exports</tt>.
+</description>
+<ocil clause="there is output">
+To verify insecure file locking has been disabled, run the following command:
+<pre># grep insecure_locks /etc/exports</pre>
+</ocil>
+<rationale>Allowing insecure file locking could allow for sensitive data to be
+viewed or edited by an unauthorized user.
+</rationale>
+<ident stig="GEN000000-LNX00560" />
+<oval id="nfs_no_insecure_locks_exports" />
+<ref nist="IAIA-1,IAIA-2" disa="225,764" />
+</Rule>
+
+</Group> <!-- nfs_configuring_servers -->
+
+</Group>
+</Group>

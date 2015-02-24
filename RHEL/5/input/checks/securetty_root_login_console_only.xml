@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="securetty_root_login_console_only" version="1">
+    <metadata>
+      <title>Restrict Virtual Console Root Logins</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Preventing direct root login to virtual console devices
+      helps ensure accountability for actions taken on the system using the
+      root account.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="virtual consoles /etc/securetty" test_ref="test_virtual_consoles_etc_securetty" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="virtual consoles /etc/securetty" id="test_virtual_consoles_etc_securetty" version="1">
+    <ind:object object_ref="object_virtual_consoles_etc_securetty" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="virtual consoles /etc/securetty" id="object_virtual_consoles_etc_securetty" version="1">
+    <ind:filepath>/etc/securetty</ind:filepath>
+    <ind:pattern operation="pattern match">^(tty[0-9]+|console)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

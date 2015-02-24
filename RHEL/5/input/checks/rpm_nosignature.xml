@@ -1,0 +1,69 @@
+<def-group>
+  <definition class="compliance" id="rpm_nosignature"
+  version="1">
+    <metadata>
+      <title>The RPM package management tool must cryptographically verify the authenticity of all software packages during installation.</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Ensure all rpm configuration files exclude 'nosignature'.</description>
+    </metadata>
+    <criteria comment="Ensure all rpm configuration files exclude 'nosignature'." operator="AND">
+      <criterion negate="true" comment="Ensure 'nosignature' is not included in /etc/rpmrc."
+      test_ref="test_rpm_nosignature_etc_rpmrc" />
+      <criterion negate="true" comment="Ensure 'nosignature' is not included in /usr/lib/rpm/rpmrc."
+      test_ref="test_rpm_nosignature_usr_lib_rpm_rpmrc" />
+      <criterion negate="true" comment="Ensure 'nosignature' is not included in /usr/lib/rpm/redhat/rpmrc."
+      test_ref="test_rpm_nosignature_usr_lib_rpm_redhat_rpmrc" />
+      <criterion negate="true" comment="Ensure 'nosignature' is not included in /root/.rpmrc."
+      test_ref="test_rpm_nosignature_root_rpmrc" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensure 'nosignature' is not included in /etc/rpmrc."
+  id="test_rpm_nosignature_etc_rpmrc" version="1">
+    <ind:object object_ref="obj_rpm_nosignature_etc_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensure 'nosignature' is not included in /usr/lib/rpm/rpmrc."
+  id="test_rpm_nosignature_usr_lib_rpm_rpmrc" version="1">
+    <ind:object object_ref="obj_rpm_nosignature_usr_lib_rpm_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensure 'nosignature' is not included in /usr/lib/rpm/redhat/rpmrc."
+  id="test_rpm_nosignature_usr_lib_rpm_redhat_rpmrc" version="1">
+    <ind:object object_ref="obj_rpm_nosignature_usr_lib_rpm_redhat_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensure 'nosignature' is not included in /root/.rpmrc."
+  id="test_rpm_nosignature_root_rpmrc" version="1">
+    <ind:object object_ref="obj_rpm_nosignature_root_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rpm_nosignature_etc_rpmrc"
+  version="1">
+    <ind:filepath>/etc/rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#).*nosignature.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_rpm_nosignature_usr_lib_rpm_rpmrc"
+  version="1">
+    <ind:filepath>/usr/lib/rpm/rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#).*nosignature.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_rpm_nosignature_usr_lib_rpm_redhat_rpmrc"
+  version="1">
+    <ind:filepath>/usr/lib/rpm/redhat/rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#).*nosignature.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_rpm_nosignature_root_rpmrc"
+  version="1">
+    <ind:filepath>/root/.rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#).*nosignature.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

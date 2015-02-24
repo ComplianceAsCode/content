@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="compliance" id="sshd_disable_root_login" version="1">
+    <metadata>
+      <title>Disable root Login via SSH</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Root login via SSH should be disabled (and dependencies are
+      met)</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+		<criteria comment="No 'PermitRootLogin yes' entries exists and a 'PremitRootLogin no' entry does exist."
+		operator="AND">
+			<criterion comment="Check PermitRootLogin in /etc/ssh/sshd_config" test_ref="test_sshd_permitrootlogin_yes" />
+			<criterion comment="Check PermitRootLogin in /etc/ssh/sshd_config" test_ref="test_sshd_permitrootlogin_no" />
+		</criteria>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of the PermitRootLogin[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_permitrootlogin_yes" version="1">
+    <ind:object object_ref="obj_sshd_permitrootlogin_yes" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sshd_permitrootlogin_yes" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)PermitRootLogin[\s]+yes[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of the PermitRootLogin[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_permitrootlogin_no" version="1">
+    <ind:object object_ref="obj_sshd_permitrootlogin_no" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sshd_permitrootlogin_no" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)PermitRootLogin[\s]+no[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

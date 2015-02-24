@@ -54,6 +54,7 @@ further information.
 %if 0%{?fedora}
 (cd Fedora && make dist)
 %endif
+#(cd RHEL/5 && make dist)
 (cd RHEL/6 && make dist)
 (cd RHEL/7 && make dist)
 
@@ -64,6 +65,7 @@ mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 mkdir -p %{buildroot}%{_datadir}/%{name}
 
 # Add in core content (SCAP)
+#cp -a RHEL/5/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
@@ -75,7 +77,8 @@ cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name
 cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 %endif
 %if 0%{?fedora}
-mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,rhel{6,7}}
+#mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,rhel{5,6,7}}
+#mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,rhel{6,7}}
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 
 # Add in core Fedora content (SCAP XCCDF and OVAL)
@@ -83,6 +86,8 @@ cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/fedora
 # Add in Fedora manpage
 cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
+# Add in datastream form of RHEL-5 benchmark
+#cp -a RHEL/6/dist/content/ssg-rhel5-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel5
 # Add in datastream form of RHEL-6 benchmark
 cp -a RHEL/6/dist/content/ssg-rhel6-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel6
 # Add in datastream form of RHEL-7 benchmark

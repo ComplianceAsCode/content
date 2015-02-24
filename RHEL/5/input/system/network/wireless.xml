@@ -1,0 +1,48 @@
+<Group id="network-wireless">
+<title>Wireless Networking</title>
+<description>Wireless networking, such as 802.11
+(WiFi) and Bluetooth, can present a security risk to sensitive or
+classified systems and networks. Wireless networking hardware is
+much more likely to be included in laptop or portable systems than
+desktops or servers. 
+<br /><br />
+Removal of hardware provides the greatest assurance that the wireless
+capability remains disabled. Acquisition policies often include provisions to
+prevent the purchase of equipment that will be used in sensitive spaces and
+includes wireless capabilities. If it is impractical to remove the wireless
+hardware, and policy permits the device to enter sensitive spaces as long
+as wireless is disabled, efforts should instead focus on disabling wireless capability
+via software.</description>
+
+<Group id="wireless_software">
+<title>Disable Wireless Through Software Configuration</title>
+<description>If it is impossible to remove the wireless hardware
+from the device in question, disable as much of it as possible
+through software. The following methods can disable software
+support for wireless networking, but note that these methods do not
+prevent malicious software or careless users from re-activating the
+devices.</description>
+
+<Rule id="kernel_module_bluetooth_disabled" severity="medium">
+<title>Disable Bluetooth Kernel Modules</title>
+<description>The kernel's module loading system can be configured to prevent
+loading of the Bluetooth module. Add the following to
+the appropriate <tt>/etc/modprobe.d</tt> configuration file
+to prevent the loading of the Bluetooth module:
+<pre>install net-pf-31 /bin/true
+install bluetooth /bin/true</pre>
+</description>
+<ocil>
+<module-disable-check-macro module="bluetooth" />
+<module-disable-check-macro module="net-pf-31" />
+</ocil>
+<rationale>If Bluetooth functionality must be disabled, preventing the kernel
+from loading the kernel module provides an additional safeguard against its
+activation.</rationale>
+<ident stig="GEN007660" />
+<oval id="kernel_module_bluetooth_disabled" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+</Group><!--<Group id="wireless_software">-->
+</Group><!--<Group id="network-wireless">-->

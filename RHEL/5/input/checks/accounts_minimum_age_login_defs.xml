@@ -1,0 +1,54 @@
+<def-group>
+  <definition class="compliance" id="accounts_minimum_age_login_defs" version="1">
+    <metadata>
+      <title>Set Password Expiration Parameters</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The minimum password age policy should be set appropriately.</description>
+    </metadata>
+    <criteria comment="the value PASS_MIN_DAYS should be set appropriately in /etc/login.defs">
+      <criterion test_ref="test_accounts_minimum_age_login_defs" />
+      <criterion test_ref="test_accounts_minimum_age_login_defs_users" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_accounts_minimum_age_login_defs_users" comment="User Accounts" datatype="string" version="1">
+	<object_component item_field="username" object_ref="object_accounts_minimum_age_login_defs_var" />
+  </local_variable>
+  <unix:password_object id="object_accounts_minimum_age_login_defs_var" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+  </unix:password_object>
+
+  <unix:shadow_test check="all" check_existence="all_exist" comment="Testing permissions" id="test_accounts_minimum_age_login_defs_users" version="1">
+    <unix:object object_ref="object_accounts_minimum_age_login_defs_users" />
+    <unix:state state_ref="state_accounts_minimum_age_login_defs_users" />
+  </unix:shadow_test>
+  <unix:shadow_object comment="Users" id="object_accounts_minimum_age_login_defs_users" version="1">
+    <unix:username var_ref="var_accounts_minimum_age_login_defs_users" var_check="at least one" />
+  </unix:shadow_object>
+  <unix:shadow_state comment="Users" id="state_accounts_minimum_age_login_defs_users" version="1">
+    <unix:chg_allow operation="greater than or equal" var_ref="var_accounts_minimum_age_login_defs" datatype="int" />
+  </unix:shadow_state>
+    
+  <ind:textfilecontent54_test check="all"
+  comment="Tests the value of PASS_MIN_DAYS in /etc/login.defs"
+  id="test_accounts_minimum_age_login_defs" version="1">
+    <ind:object object_ref="object_accounts_minimum_age_login_defs" />
+    <ind:state state_ref="state_accounts_minimum_age_login_defs" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_minimum_age_login_defs" version="1">
+    <ind:filepath>/etc/login.defs</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*PASS_MIN_DAYS[\s]+(\d+)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_accounts_minimum_age_login_defs" version="1">
+    <ind:subexpression operation="greater than or equal" var_ref="var_accounts_minimum_age_login_defs" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="minimum password age in days" datatype="int" id="var_accounts_minimum_age_login_defs" version="1" />
+
+</def-group>

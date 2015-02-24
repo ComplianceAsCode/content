@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="at_deny_nonempty" version="1">
+    <metadata>
+      <title>File /etc/at.deny Must Either Not Exist Or Not Be Empty</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The at.deny file must not be empty if it exists.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion test_ref="test_at_deny_nonempty_at_deny_not_exist" />
+      <criterion test_ref="test_at_deny_nonempty_at_deny_empty" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /etc/at.deny existence" id="test_at_deny_nonempty_at_deny_not_exist" version="1">
+    <unix:object object_ref="object_at_deny_nonempty_at_deny_not_exist" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/at.deny" id="object_at_deny_nonempty_at_deny_not_exist" version="1">
+    <unix:filepath>/etc/at.deny</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing any entries in /etc/at.deny" id="test_at_deny_nonempty_at_deny_empty" version="1">
+    <ind:object object_ref="object_at_deny_nonempty_at_deny_empty" />
+  </ind:textfilecontent54_test>
+  
+  <ind:textfilecontent54_object comment="/etc/at.deny" id="object_at_deny_nonempty_at_deny_empty" version="1">
+    <ind:filepath>/etc/at.deny</ind:filepath>
+    <ind:pattern operation="pattern match">^.*(\S).*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

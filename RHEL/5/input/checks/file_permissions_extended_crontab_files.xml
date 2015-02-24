@@ -1,0 +1,91 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_crontab_files" version="1">
+    <metadata>
+      <title>Crontab Files Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for crontab files should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criteria>
+        <criterion test_ref="test_file_permissions_extended_crontab_files_etc_crontab" />
+        <criterion test_ref="test_file_permissions_extended_crontab_files_etc_cron_d" />
+        <criterion test_ref="test_file_permissions_extended_crontab_files_etc_cron_daily" />
+        <criterion test_ref="test_file_permissions_extended_crontab_files_etc_cron_hourly" />
+        <criterion test_ref="test_file_permissions_extended_crontab_files_etc_cron_monthly" />
+        <criterion test_ref="test_file_permissions_extended_crontab_files_etc_cron_weekly" />
+        <criterion test_ref="test_file_permissions_extended_crontab_files_var_spool_cron" />
+      </criteria>
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/crontab extended ACLs" id="test_file_permissions_extended_crontab_files_etc_crontab" version="1">
+    <unix:object object_ref="object_file_permissions_extended_crontab_files_etc_crontab" />
+    <unix:state state_ref="state_file_permissions_extended_crontab_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/crontab" id="object_file_permissions_extended_crontab_files_etc_crontab" version="1">
+    <unix:filepath>/etc/crontab</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.d/* extended ACLs" id="test_file_permissions_extended_crontab_files_etc_cron_d" version="1">
+    <unix:object object_ref="object_file_permissions_extended_crontab_files_etc_cron_d" />
+    <unix:state state_ref="state_file_permissions_extended_crontab_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.d/*" id="object_file_permissions_extended_crontab_files_etc_cron_d" version="1">
+    <unix:path operation="equals">/etc/cron.d</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.daily/* extended ACLs" id="test_file_permissions_extended_crontab_files_etc_cron_daily" version="1">
+    <unix:object object_ref="object_file_permissions_extended_crontab_files_etc_cron_daily" />
+    <unix:state state_ref="state_file_permissions_extended_crontab_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.daily/*" id="object_file_permissions_extended_crontab_files_etc_cron_daily" version="1">
+    <unix:path operation="equals">/etc/cron.daily</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.hourly/* extended ACLs" id="test_file_permissions_extended_crontab_files_etc_cron_hourly" version="1">
+    <unix:object object_ref="object_file_permissions_extended_crontab_files_etc_cron_hourly" />
+    <unix:state state_ref="state_file_permissions_extended_crontab_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.hourly/*" id="object_file_permissions_extended_crontab_files_etc_cron_hourly" version="1">
+    <unix:path operation="equals">/etc/cron.hourly</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.monthly/* extended ACLs" id="test_file_permissions_extended_crontab_files_etc_cron_monthly" version="1">
+    <unix:object object_ref="object_file_permissions_extended_crontab_files_etc_cron_monthly" />
+    <unix:state state_ref="state_file_permissions_extended_crontab_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.monthly/*" id="object_file_permissions_extended_crontab_files_etc_cron_monthly" version="1">
+    <unix:path operation="equals">/etc/cron.monthly</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.weekly/* extended ACLs" id="test_file_permissions_extended_crontab_files_etc_cron_weekly" version="1">
+    <unix:object object_ref="object_file_permissions_extended_crontab_files_etc_cron_weekly" />
+    <unix:state state_ref="state_file_permissions_extended_crontab_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.weekly/*" id="object_file_permissions_extended_crontab_files_etc_cron_weekly" version="1">
+    <unix:path operation="equals">/etc/cron.weekly</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /var/spool/cron/* extended ACLs" id="test_file_permissions_extended_crontab_files_var_spool_cron" version="1">
+    <unix:object object_ref="object_file_permissions_extended_crontab_files_var_spool_cron" />
+    <unix:state state_ref="state_file_permissions_extended_crontab_files" />
+  </unix:file_test>
+  <unix:file_object comment="/var/spool/cron/*" id="object_file_permissions_extended_crontab_files_var_spool_cron" version="1">
+    <unix:path operation="equals">/var/spool/cron</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_crontab_files" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

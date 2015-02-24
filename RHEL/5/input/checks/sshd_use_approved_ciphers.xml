@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="sshd_use_approved_ciphers" version="1">
+    <metadata>
+      <title>Use Only Approved Ciphers</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Limit the ciphers to those which are FIPS-approved.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+      <criterion comment="Check Ciphers in /etc/ssh/sshd_config"
+      test_ref="test_sshd_use_approved_ciphers" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of Ciphers setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_use_approved_ciphers" version="1">
+    <ind:object object_ref="obj_sshd_use_approved_ciphers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sshd_use_approved_ciphers" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[Cc][Ii][Pp][Hh][Ee][Rr][Ss]\s+([,]*(?:aes|3des)+[0-9]+-[a-z]+)+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

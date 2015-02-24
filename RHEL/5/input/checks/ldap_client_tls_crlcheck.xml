@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="compliance"
+  id="ldap_client_tls_crlcheck" version="1">
+    <metadata>
+      <title>Configure LDAP To Require Verifying Certificate Revocation</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>If the system is using LDAP for authentication or 
+	  account information, the system must verify the LDAP server's 
+	  certificate has not been revoked.</description>
+    </metadata>
+    <criteria operator="OR">
+		<criterion comment="look for ldap in /etc/nsswitch.conf" test_ref="test_ldap_client_tls_crlcheck_nsswitch" />
+		<criterion comment="look for tls_crlcheck in /etc/ldap.conf" test_ref="test_ldap_client_tls_crlcheck" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Tests the value of the ldap setting in the /etc/nsswitch.conf file" id="test_ldap_client_tls_crlcheck_nsswitch" version="1">
+    <ind:object object_ref="obj_ldap_client_tls_crlcheck_nsswitch" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ldap_client_tls_crlcheck_nsswitch"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>nsswitch.conf</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)(?:.*)?ldap(?:.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist"
+  comment="Tests the value of the tls_crlcheck setting in the /etc/ldap.conf file"
+  id="test_ldap_client_tls_crlcheck" version="1">
+    <ind:object object_ref="obj_ldap_client_tls_crlcheck" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ldap_client_tls_crlcheck"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>ldap.conf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*tls_crlcheck[\s]*(all)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

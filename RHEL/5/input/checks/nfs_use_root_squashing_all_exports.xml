@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="nfs_use_root_squashing_all_exports" version="1">
+    <metadata>
+      <title>No Remote Root NFS Access</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The Network File System (NFS) server must not allow remote root access.</description>
+    </metadata>
+    <criteria>
+	  <criterion comment="no_root_squash is not used in /etc/exports" test_ref="test_nfs_use_root_squashing_all_exports_no_root_squash" />
+	  <criterion comment="root_squash or all_squash is used for each nfs mount in /etc/exports" test_ref="test_nfs_use_root_squashing_all_exports_squash"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="make sure no_root_squash is not used in /etc/exports" id="test_nfs_use_root_squashing_all_exports_no_root_squash" version="1">
+    <ind:object object_ref="object_nfs_use_root_squashing_all_exports_no_root_squash" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nfs_use_root_squashing_all_exports_no_root_squash" version="1">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">.*no_root_squash.*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="make sure root_squash or all_squash is used in /etc/exports" id="test_nfs_use_root_squashing_all_exports_squash" version="1">
+    <ind:object object_ref="object_nfs_use_root_squashing_all_exports_squash" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nfs_use_root_squashing_all_exports_squash" version="1">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">^(?![\s]*#)(?![\s]*$)(?![\S]+(?:[\s]+(?=[\S]*[(,]{1}(?:all_squash|root_squash))[\S]*)+$).*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

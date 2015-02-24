@@ -1,0 +1,149 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_usergroup_modification" version="1">
+    <metadata>
+      <title>Audit User/Group Information</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Audit rules should detect modification of users and groups.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	      <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+        </criteria>
+        <criterion comment="audit /usr/sbin/usermod" test_ref="test_audit_rules_usergroup_modification_usr_sbin_usermod_el4" />
+        <criterion comment="audit /usr/sbin/groupmod" test_ref="test_audit_rules_usergroup_modification_usr_sbin_groupmod_el4" />
+        <criterion comment="audit /etc/passwd" test_ref="test_audit_rules_usergroup_modification_etc_passwd_el4" />
+        <criterion comment="audit /etc/shadow" test_ref="test_audit_rules_usergroup_modification_etc_shadow_el4" />
+        <criterion comment="audit /etc/group" test_ref="test_audit_rules_usergroup_modification_etc_group_el4" />
+        <criterion comment="audit /etc/gshadow" test_ref="test_audit_rules_usergroup_modification_etc_gshadow_el4" />
+      </criteria>
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 5 is installed" definition_ref="installed_OS_is_centos5" />
+	      <extend_definition comment="RedHat 5 is installed" definition_ref="installed_OS_is_rhel5" />
+        </criteria>
+        <criterion comment="audit /usr/sbin/usermod" test_ref="test_audit_rules_usergroup_modification_usr_sbin_usermod_el5" />
+        <criterion comment="audit /usr/sbin/groupmod" test_ref="test_audit_rules_usergroup_modification_usr_sbin_groupmod_el5" />
+        <criterion comment="audit /etc/passwd" test_ref="test_audit_rules_usergroup_modification_etc_passwd_el5" />
+        <criterion comment="audit /etc/shadow" test_ref="test_audit_rules_usergroup_modification_etc_shadow_el5" />
+        <criterion comment="audit /etc/group" test_ref="test_audit_rules_usergroup_modification_etc_group_el5" />
+        <criterion comment="audit /etc/gshadow" test_ref="test_audit_rules_usergroup_modification_etc_gshadow_el5" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit /usr/sbin/usermod" id="test_audit_rules_usergroup_modification_usr_sbin_usermod_el4" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_usr_sbin_usermod_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_usr_sbin_usermod_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/usermod\s+\-p\s+(?:w)?(?:a)?x(?:w)?(?:a)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /usr/sbin/groupmod" id="test_audit_rules_usergroup_modification_usr_sbin_groupmod_el4" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_usr_sbin_groupmod_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_usr_sbin_groupmod_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/groupmod\s+\-p\s+(?:w)?(?:a)?x(?:w)?(?:a)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/passwd" id="test_audit_rules_usergroup_modification_etc_passwd_el4" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_passwd_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_passwd_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/passwd\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/shadow" id="test_audit_rules_usergroup_modification_etc_shadow_el4" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_shadow_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_shadow_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/shadow\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/group" id="test_audit_rules_usergroup_modification_etc_group_el4" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_group_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_group_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/group\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/gshadow" id="test_audit_rules_usergroup_modification_etc_gshadow_el4" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_gshadow_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_gshadow_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/gshadow\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /usr/sbin/usermod" id="test_audit_rules_usergroup_modification_usr_sbin_usermod_el5" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_usr_sbin_usermod_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_usr_sbin_usermod_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/usermod\s+\-p\s+(?:w)?(?:a)?x(?:w)?(?:a)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /usr/sbin/groupmod" id="test_audit_rules_usergroup_modification_usr_sbin_groupmod_el5" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_usr_sbin_groupmod_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_usr_sbin_groupmod_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/groupmod\s+\-p\s+(?:w)?(?:a)?x(?:w)?(?:a)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/passwd" id="test_audit_rules_usergroup_modification_etc_passwd_el5" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_passwd_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_passwd_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/passwd\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/shadow" id="test_audit_rules_usergroup_modification_etc_shadow_el5" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_shadow_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_shadow_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/shadow\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/group" id="test_audit_rules_usergroup_modification_etc_group_el5" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_group_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_group_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/group\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/gshadow" id="test_audit_rules_usergroup_modification_etc_gshadow_el5" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_gshadow_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_gshadow_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/etc/gshadow\s+\-p\s+(?:a)?(?:x)?w(?:a)?(?:x)?</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,101 @@
+<def-group>
+  <definition class="compliance" id="accounts_executable_dangerous_path_for_root" version="1">
+    <metadata>
+      <title>The PATH Environment Variable For Root Must Contain Absolute Paths</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The PATH environment variable for root must contain absolute paths.</description>
+    </metadata>
+    <criteria comment="environment variable PATH contains dangerous path" operator="AND">
+      <criterion comment="environment variable PATH starts with : or ." test_ref="test_env_var_path_begins" />
+      <criterion comment="environment variable PATH contains : twice in a row" test_ref="test_env_var_path_contains_doublecolon" />
+      <criterion comment="environment variable PATH contains . twice in a row" test_ref="test_env_var_path_contains_doubleperiod" />
+      <criterion comment="environment variable PATH ends with : or ." test_ref="test_env_var_path_ends" />
+      <criterion comment="environment variable PATH doesn't begin with a /" test_ref="test_env_var_path_begins_slash" />
+      <criterion comment="environment variable PATH doesn't contain relative paths" test_ref="test_env_var_path_contains_relative_path" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="object_env_var_path"
+  version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>PATH</ind:name>
+  </ind:environmentvariable58_object>
+
+  <ind:environmentvariable58_test check="none satisfy" check_existence="any_exist"
+  comment="environment variable PATH starts with : or ."
+  id="test_env_var_path_begins" version="1">
+    <ind:object object_ref="object_env_var_path" />
+    <ind:state state_ref="state_path_begins_colon_period" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_test check="none satisfy" check_existence="any_exist"
+  comment="environment variable PATH doesn't contain : twice in a row"
+  id="test_env_var_path_contains_doublecolon" version="1">
+    <ind:object object_ref="object_env_var_path" />
+    <ind:state state_ref="state_path_contains_double_colon" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_test check="none satisfy" check_existence="any_exist"
+  comment="environment variable PATH doesn't contain . twice in a row"
+  id="test_env_var_path_contains_doubleperiod" version="1">
+    <ind:object object_ref="object_env_var_path" />
+    <ind:state state_ref="state_path_contains_double_period" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_test check="none satisfy" check_existence="any_exist"
+  comment="environment variable PATH ends with : or ." id="test_env_var_path_ends"
+  version="1">
+    <ind:object object_ref="object_env_var_path" />
+    <ind:state state_ref="state_path_ends_colon_period" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_test check="none satisfy" check_existence="any_exist"
+  comment="environment variable PATH starts with an absolute path /"
+  id="test_env_var_path_begins_slash" version="1">
+    <ind:object object_ref="object_env_var_path" />
+    <ind:state state_ref="state_path_begins_slash" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_test check="none satisfy" check_existence="any_exist"
+  comment="environment variable PATH contains relative paths"
+  id="test_env_var_path_contains_relative_path" version="1">
+    <ind:object object_ref="object_env_var_path" />
+    <ind:state state_ref="state_path_contains_relative_path" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_state comment="starts with colon or period"
+  id="state_path_begins_colon_period" version="1">
+    <ind:value operation="pattern match">^[:\.]</ind:value>
+  </ind:environmentvariable58_state>
+
+  <ind:environmentvariable58_state comment="colon twice in a row"
+  id="state_path_contains_double_colon" version="1">
+    <ind:value operation="pattern match">::</ind:value>
+  </ind:environmentvariable58_state>
+
+  <ind:environmentvariable58_state comment="period twice in a row"
+  id="state_path_contains_double_period" version="1">
+    <ind:value operation="pattern match">\.\.</ind:value>
+  </ind:environmentvariable58_state>
+
+  <ind:environmentvariable58_state comment="ends with colon or period"
+  id="state_path_ends_colon_period" version="1">
+    <ind:value operation="pattern match">[:\.]$</ind:value>
+  </ind:environmentvariable58_state>
+
+  <ind:environmentvariable58_state comment="begins with a slash"
+  id="state_path_begins_slash" version="1">
+    <ind:value operation="pattern match">^[^/]</ind:value>
+  </ind:environmentvariable58_state>
+
+  <ind:environmentvariable58_state comment="elements begin with a slash"
+  id="state_path_contains_relative_path" version="1">
+    <ind:value operation="pattern match">[^\\]:[^/]</ind:value>
+  </ind:environmentvariable58_state>
+
+</def-group>

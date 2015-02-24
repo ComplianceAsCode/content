@@ -1,0 +1,1 @@
+chmod 0600 /etc/grub.conf /boot/grub/grub.conf

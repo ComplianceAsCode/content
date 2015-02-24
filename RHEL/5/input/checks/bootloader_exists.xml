@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="bootloader_exists" version="1">
+    <metadata>
+      <title>Boot Loader Configuration Exists</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The grub boot loader configuration should exist.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="make sure /boot/grub/grub.conf exists" test_ref="test_bootloader_exists" />
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="all_exist" comment="make sure /boot/grub/grub.conf exists" id="test_bootloader_exists" version="1">
+    <unix:object object_ref="object_bootloader_exists" />
+  </unix:file_test>
+  <unix:file_object id="object_bootloader_exists" version="1">
+    <unix:filepath operation="equals">/boot/grub/grub.conf</unix:filepath>
+  </unix:file_object>
+
+</def-group>

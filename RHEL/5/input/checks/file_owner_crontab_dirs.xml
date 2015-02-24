@@ -1,0 +1,81 @@
+<def-group>
+  <definition class="compliance" id="file_owner_crontab_dirs" version="1">
+    <metadata>
+      <title>Crontab Directories Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Owner for crontab directories must be root or the crontab creator.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_owner_dir_etc_cron_d" />
+      <criterion test_ref="test_file_owner_dir_etc_cron_daily" />
+      <criterion test_ref="test_file_owner_dir_etc_cron_hourly" />
+      <criterion test_ref="test_file_owner_dir_etc_cron_monthly" />
+      <criterion test_ref="test_file_owner_dir_etc_cron_weekly" />
+      <criterion test_ref="test_file_owner_dir_var_spool_cron" />
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.d/ owner" id="test_file_owner_dir_etc_cron_d" version="1">
+    <unix:object object_ref="object_file_owner_dir_etc_cron_d" />
+    <unix:state state_ref="state_file_owner_crontab_dir" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.d/" id="object_file_owner_dir_etc_cron_d" version="1">
+    <unix:path>/etc/cron.d</unix:path>
+    <unix:filename xsi:nil="true"></unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.daily/ owner" id="test_file_owner_dir_etc_cron_daily" version="1">
+    <unix:object object_ref="object_file_owner_dir_etc_cron_daily" />
+    <unix:state state_ref="state_file_owner_crontab_dir" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.daily/" id="object_file_owner_dir_etc_cron_daily" version="1">
+    <unix:path>/etc/cron.daily</unix:path>
+    <unix:filename xsi:nil="true"></unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.hourly/ owner" id="test_file_owner_dir_etc_cron_hourly" version="1">
+    <unix:object object_ref="object_file_owner_dir_etc_cron_hourly" />
+    <unix:state state_ref="state_file_owner_crontab_dir" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.hourly/" id="object_file_owner_dir_etc_cron_hourly" version="1">
+    <unix:path>/etc/cron.hourly</unix:path>
+    <unix:filename xsi:nil="true"></unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.monthly/ owner" id="test_file_owner_dir_etc_cron_monthly" version="1">
+    <unix:object object_ref="object_file_owner_dir_etc_cron_monthly" />
+    <unix:state state_ref="state_file_owner_crontab_dir" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.monthly/" id="object_file_owner_dir_etc_cron_monthly" version="1">
+    <unix:path>/etc/cron.monthly</unix:path>
+    <unix:filename xsi:nil="true"></unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.weekly/ owner" id="test_file_owner_dir_etc_cron_weekly" version="1">
+    <unix:object object_ref="object_file_owner_dir_etc_cron_weekly" />
+    <unix:state state_ref="state_file_owner_crontab_dir" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.weekly/" id="object_file_owner_dir_etc_cron_weekly" version="1">
+    <unix:path>/etc/cron.weekly</unix:path>
+    <unix:filename xsi:nil="true"></unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /var/spool/cron/ owner" id="test_file_owner_dir_var_spool_cron" version="1">
+    <unix:object object_ref="object_file_owner_dir_var_spool_cron" />
+    <unix:state state_ref="state_file_owner_crontab_dir" />
+  </unix:file_test>
+  <unix:file_object comment="/var/spool/cron/" id="object_file_owner_dir_var_spool_cron" version="1">
+    <unix:path operation="equals">/var/spool/cron</unix:path>
+    <unix:filename xsi:nil="true"></unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_owner_crontab_dir" version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+
+</def-group>
