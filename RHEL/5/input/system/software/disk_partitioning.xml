@@ -37,7 +37,7 @@ The <tt>/tmp</tt> partition is used as temporary storage by many programs.
 Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
-<ident cce="" stig="GEN003624" />
+<ident stig="GEN003624" />
 <oval id="partition_for_tmp" />
 <ref nist="ECSC-1" disa="1208" />
 </Rule>
@@ -56,7 +56,7 @@ system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories, installed by other software packages.
 </rationale>
-<ident cce="" stig="GEN003621" />
+<ident stig="GEN003621" />
 <oval id="partition_for_var" />
 <ref nist="ECSC-1" disa="1208" />
 </Rule>
@@ -77,7 +77,7 @@ and other files, and helps ensure that
 auditing cannot be halted due to the partition running out
 of space.
 </rationale>
-<ident cce="" stig="GEN003623" />
+<ident stig="GEN003623" />
 <oval id="partition_for_var_log_audit" />
 <ref nist="ECSC-1" disa="1208" />
 </Rule>
@@ -97,7 +97,7 @@ Ensuring that <tt>/home</tt> is mounted on its own partition enables the
 setting of more restrictive mount options, and also helps ensure that
 users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
-<ident cce="" stig="GEN003620" />
+<ident stig="GEN003620" />
 <oval id="partition_for_home" />
 <ref nist="ECSC-1" disa="1208" />
 </Rule>

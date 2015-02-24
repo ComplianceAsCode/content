@@ -58,7 +58,7 @@ Pam global requirements are generally defined in the /etc/pam.d/system-auth or /
 file. In order for the requirements to be applied the file containing them must be included directly or 
 indirectly in each program's definition file in /etc/pam.d.
 </rationale>
-<ident cce="" stig="GEN000600-2" />
+<ident stig="GEN000600-2" />
 <oval id="accounts_global_setting"/>
 <ref nist="ECSC-1" disa="192" />
 </Rule>
@@ -72,7 +72,7 @@ Monitoring and recording successful and unsuccessful logins assists in tracking 
 the system.  Without this logging, the ability to track unauthorized activity to specific user accounts 
 may be diminished.
 </rationale>
-<ident cce="" stig="GEN000440" />
+<ident stig="GEN000440" />
 <ref nist="ECAR-1,ECAR-2,ECAR-3" disa="126" />
 <oval id="accounts_logins_logged"/>
 </Rule>
@@ -260,7 +260,7 @@ This is generally done by someone with an automated script that uses repeated lo
 the correct account and password pair is guessed.  Utilities, such as cracklib, can be used to 
 validate passwords are not dictionary words and meet other criteria during password changes.
 </rationale>
-<ident cce="" stig="GEN000790" />
+<ident stig="GEN000790" />
 <oval id="accounts_cracklib_present"/>
 <ref nist="IAIA-1,IAIA-2" disa="189" />
 </Rule>
@@ -291,7 +291,7 @@ search space. However, any security benefit from an onerous requirement
 must be carefully weighed against usability problems, support costs, or counterproductive
 behavior that may result.
 </rationale>
-<ident cce="4154-1" stig="GEN000585" />
+<ident stig="GEN000585" />
 <oval id="accounts_password_pam_cracklib_minlen" value="var_password_pam_cracklib_minlen"/>
 <ref nist="IAIA-1,IAIA-2" disa="205" />
 </Rule>
@@ -311,7 +311,7 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
-<ident cce="" stig="GEN000680" />
+<ident stig="GEN000680" />
 <oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_cracklib_maxrepeat"/>
 <ref nist="IAIA-1,IAIA-2" disa="366" />
 </Rule>
@@ -335,7 +335,7 @@ This would appear as <tt>dcredit=-1</tt>.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident cce="14113-5" stig="GEN000620" />
+<ident stig="GEN000620" />
 <oval id="accounts_password_pam_cracklib_dcredit" value="var_password_pam_cracklib_dcredit"/>
 <ref nist="IAIA-1,IAIA-2" disa="194" />
 </Rule>
@@ -359,7 +359,7 @@ This would appear as <tt>ucredit=-1</tt>.
 Requiring a minimum number of uppercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="14672-0" stig="GEN000600" />
+<ident stig="GEN000600" />
 <oval id="accounts_password_pam_cracklib_ucredit" value="var_password_pam_cracklib_ucredit"/>
 <ref nist="IAIA-1,IAIA-2" disa="192" />
 </Rule>
@@ -383,7 +383,7 @@ This would appear as <tt>ocredit=-1</tt>.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="14122-6" stig="GEN000640" />
+<ident stig="GEN000640" />
 <oval id="accounts_password_pam_cracklib_ocredit" value="var_password_pam_cracklib_ocredit"/>
 <ref nist="IAIA-1,IAIA-2" disa="1619" />
 </Rule>
@@ -407,7 +407,7 @@ This would appear as <tt>lcredit=-1</tt>.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="14712-4" stig="GEN000610" />
+<ident stig="GEN000610" />
 <oval id="accounts_password_pam_cracklib_lcredit" value="var_password_pam_cracklib_lcredit"/>
 <ref nist="IAIA-1,IAIA-2" disa="193" />
 </Rule>
@@ -432,7 +432,7 @@ Requiring a minimum number of different characters during password changes ensur
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
-<ident cce="14701-7" stig="GEN000750" />
+<ident stig="GEN000750" />
 <oval id="accounts_password_pam_cracklib_difok" value="var_password_pam_cracklib_difok"/>
 <ref nist="IAIA-1,IAIA-2" disa="195" />
 </Rule>
@@ -454,7 +454,7 @@ The output should show the following at the end of the line:
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
-<ident cce="14939-3" stig="GEN000800" />
+<ident stig="GEN000800" />
 <oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
 <ref nist="IAIA-1,IAIA-2" disa="200" />
 </Rule>
@@ -497,7 +497,7 @@ The output should show <tt>deny=3</tt>.
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident cce="3410-8" stig="GEN000460" />
+<ident stig="GEN000460" />
 <oval id="accounts_password_pam_tally_deny" value="var_accounts_password_pam_tally_deny"/>
 <ref nist="ECLO-1,ECLO-2" disa="44" />
 </Rule>
@@ -511,7 +511,7 @@ Check the value of the FAIL_DELAY variable and the ability to use it.
 Enforcing a delay between successive failed login attempts increases protection against automated 
 password guessing attacks.
 </rationale>
-<ident cce="" stig="GEN000480" />
+<ident stig="GEN000480" />
 <oval id="accounts_fail_delay"/>
 <ref nist="ECLO-1,ECLO-2" disa="43" />
 </Rule>
@@ -544,7 +544,7 @@ ensure that the <tt>pam_unix.so</tt> module includes the argument
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<ident cce="14063-2" stig="GEN000590" />
+<ident stig="GEN000590" />
 <ref nist="DCNR-1,IAIA-1,IAIA-2" disa="803" />
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>

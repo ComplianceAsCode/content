@@ -22,7 +22,7 @@ of network traffic.</description>
 <rationale>Sending ICMP redirects permits the system to instruct other systems
 to update their routing information.  The ability to send ICMP redirects is
 only appropriate for systems acting as routers.</rationale>
-<ident cce="4155-8" stig="GEN003610" />
+<ident stig="GEN003610" />
 <oval id="sysctl_net_ipv4_conf_send_redirects" />
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
@@ -39,7 +39,7 @@ The ability to forward packets is only appropriate for routers.
 <rationale>IP forwarding permits the kernel to forward packets from one network
 interface to another. The ability to forward packets between two networks is
 only appropriate for systems acting as routers.</rationale>
-<ident cce="3561-8" stig="GEN005600" />
+<ident stig="GEN005600" />
 <oval id="sysctl_net_ipv4_ip_forward" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -200,7 +200,7 @@ operator="equals" interactive="0">
 </ocil>
 <rationale>Accepting source-routed packets in the IPv4 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
-<ident cce="" stig="GEN003607" />
+<ident stig="GEN003607" />
 <oval id="sysctl_net_ipv4_conf_accept_source_route" value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
@@ -215,7 +215,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 </ocil>
 <rationale>Accepting ICMP redirects has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
-<ident cce="4217-6" stig="GEN003609" />
+<ident stig="GEN003609" />
 <oval id="sysctl_net_ipv4_conf_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
 <ref nist="ECSC-1" disa="1503,1551" />
 </Rule>
@@ -232,7 +232,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 as well as spoofed packets, source-routed packets, and redirects could be a
 sign of nefarious network activity. Logging these packets enables this activity
 to be detected.</rationale>
-<ident cce="4320-8" stig="GEN003611" />
+<ident stig="GEN003611" />
 <oval id="sysctl_net_ipv4_conf_log_martians" value="sysctl_net_ipv4_conf_all_log_martians_value" />
 <ref nist="ECAT-1" disa="126" />
 </Rule>
@@ -248,7 +248,7 @@ to be detected.</rationale>
 <rationale>Ignoring ICMP echo requests (pings) sent to broadcast or multicast
 addresses makes the system slightly more difficult to enumerate on the network.
 </rationale>
-<ident cce="3644-2" stig="GEN003603" />
+<ident stig="GEN003603" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
@@ -268,7 +268,7 @@ verifying the initiator is attempting a valid connection and is not a flood
 source. This feature is activated when a flood condition is detected, and
 enables the system to continue servicing valid connection requests.
 </rationale>
-<ident cce="4265-5" stig="GEN003612" />
+<ident stig="GEN003612" />
 <oval id="sysctl_net_ipv4_tcp_syncookies" value="sysctl_net_ipv4_tcp_syncookies_value" />
 <ref nist="ECSC-1" disa="1092" />
 </Rule>
@@ -285,7 +285,7 @@ enables the system to continue servicing valid connection requests.
 backlog queue sizes must be set to at least 1280 or in accordance with 
 product-specific guidelines.
 </rationale>
-<ident cce="" stig="GEN003601" />
+<ident stig="GEN003601" />
 <oval id="sysctl_net_ipv4_tcp_max_syn_backlog" value="sysctl_net_ipv4_tcp_max_syn_backlog_value" />
 <ref nist="ECSC-1" disa="" />
 </Rule>

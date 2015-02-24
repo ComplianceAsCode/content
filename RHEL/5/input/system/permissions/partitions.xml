@@ -27,7 +27,7 @@ jails built for system services.
 located on the root partition.  An exception to this is chroot jails, and it is
 not advised to set <tt>nodev</tt> on partitions which contain their root
 filesystems.  </rationale>
-<ident cce="" stig="GEN002430" />
+<ident stig="GEN002430" />
 <oval id="mount_option_nodev_removable_filesystems" value="var_removable_partition" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -45,7 +45,7 @@ files into the system via partitions mounted from removeable media.
 <rationale>The presence of suid and sgid executables should be tightly controlled. Allowing
 users to introduce suid or sgid binaries from partitions mounted off of
 removable media would allow them to introduce their own highly-privileged programs.</rationale>
-<ident cce="" stig="GEN002420" />
+<ident stig="GEN002420" />
 <oval id="mount_option_nosuid_removable_filesystems" value="var_removable_partition" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
