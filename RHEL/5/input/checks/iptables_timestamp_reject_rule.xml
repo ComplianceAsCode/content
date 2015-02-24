@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="iptables_timestamp_reject_rule" version="1">
+    <metadata>
+      <title>Add Reject Rule Timestamp Requests and Timestamp Replies</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Add Reject Rule Timestamp Requests and Timestamp Replies.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Reject rule for timestamp requests" test_ref="test_iptables_timestamp_reject_rule_requests" />
+      <criterion comment="Reject rule for timestamp replies" test_ref="test_iptables_timestamp_reject_rule_replies" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Check /etc/sysconfig/iptables for --icmp-type timestamp-request" id="test_iptables_timestamp_reject_rule_requests" version="1">
+    <ind:object object_ref="obj_iptables_timestamp_reject_rule_requests" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_iptables_timestamp_reject_rule_requests" version="1">
+    <ind:path>/etc/sysconfig</ind:path>
+    <ind:filename>iptables</ind:filename>
+    <ind:pattern operation="pattern match">^(-[I|A]\s+(?:[A-Za-z0-9\-_]*)*INPUT\s+-p\s+icmp\s+-m\s+icmp\s+--icmp-type\s+timestamp-request\s+-j\s+DROP)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Check /etc/sysconfig/iptables for --icmp-type timestamp-reply" id="test_iptables_timestamp_reject_rule_replies" version="1">
+    <ind:object object_ref="obj_iptables_timestamp_reject_rule_replies" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_iptables_timestamp_reject_rule_replies" version="1">
+    <ind:path>/etc/sysconfig</ind:path>
+    <ind:filename>iptables</ind:filename>
+    <ind:pattern operation="pattern match">^(-[I|A]\s+(?:[A-Za-z0-9\-_]*)*INPUT\s+-p\s+icmp\s+-m\s+icmp\s+--icmp-type\s+timestamp-reply\s+-j\s+DROP)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

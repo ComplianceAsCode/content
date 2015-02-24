@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="mail_debug_enabled"
+  version="1">
+    <metadata>
+      <title>SMTP DEBUG Command Disabled</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The sendmail server must have the debug feature disabled.</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="sendmail is not installed" negate="true"
+		  definition_ref="package_sendmail_installed" />
+			<criteria operator="AND">
+				<criterion comment="Installed version of sendmail is greater than 8.13.8-8"
+				test_ref="test_mail_debug_enabled" />
+			</criteria>
+		</criteria>
+    </criteria>
+  </definition>
+
+	<linux:rpminfo_test check="all" check_existence="all_exist" comment="Installed version of sendmail is greater than 8.13.8-8" id="test_mail_debug_enabled" version="1">
+		<linux:object object_ref="obj_mail_debug_enabled" />
+		<linux:state state_ref="state_mail_debug_enabled" />
+	</linux:rpminfo_test>
+	<linux:rpminfo_object id="obj_mail_debug_enabled" version="1">
+		<linux:name>sendmail</linux:name>
+	</linux:rpminfo_object>
+	<linux:rpminfo_state id="state_mail_debug_enabled" version="1">
+		<linux:evr operation="greater than or equal" datatype="evr_string">0:8.13.8-8</linux:evr> 
+	</linux:rpminfo_state>
+
+</def-group>

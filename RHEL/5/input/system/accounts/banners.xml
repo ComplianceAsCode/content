@@ -1,0 +1,170 @@
+<Group id="accounts-banners">
+<title>Warning Banners for System Accesses</title>
+<description>Each system should expose as little information about
+itself as possible.
+<br /><br />
+System banners, which are typically displayed just before a
+login prompt, give out information about the service or the host's
+operating system. This might include the distribution name and the
+system kernel version, and the particular version of a network
+service. This information can assist intruders in gaining access to
+the system as it can reveal whether the system is running
+vulnerable software. Most network services can be configured to
+limit what information is displayed.
+<br /><br />
+Many organizations implement security policies that require a
+system banner provide notice of the system's ownership, provide
+warning to unauthorized users, and remind authorized users of their
+consent to monitoring.</description>
+
+<Value id="system_login_banner_text" type="string" operator="equals" interactive="0">
+<title>Login Banner Verbiage</title>
+<description>Enter an appropriate login banner for your organization. Please note that new lines must
+be expressed by the '\n' character and special characters like parentheses and quotation marks must be escaped with '\'.</description>
+<!-- <value selector="any_text">.+</value> -->
+<value selector="usgcb_default">
+-- WARNING --[\s\n]*This system is for the use of authorized users only. Individuals[\s\n]*using this computer system without authority or in excess of their[\s\n]*authority are subject to having all their activities on this system[\s\n]*monitored and recorded by system personnel. Anyone using this[\s\n]*system expressly consents to such monitoring and is advised that[\s\n]*if such monitoring reveals possible evidence of criminal activity[\s\n]*system personal may provide the evidence of such monitoring to law[\s\n]*enforcement officials.</value>
+<value selector="dod_default">You[\s\n]+are[\s\n]+accessing[\s\n]+a[\s\n]+U.S.[\s\n]+Government[\s\n]+\(USG\)[\s\n]+Information[\s\n]+System[\s\n]+\(IS\)[\s\n]+that[\s\n]+is[\s\n]+provided[\s\n]+for[\s\n]+USG-authorized[\s\n]+use[\s\n]+only.[\s\n]*By[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+\(which[\s\n]+includes[\s\n]+any[\s\n]+device[\s\n]+attached[\s\n]+to[\s\n]+this[\s\n]+IS\),[\s\n]+you[\s\n]+consent[\s\n]+to[\s\n]+the[\s\n]+following[\s\n]+conditions\:[\s\n]*-[\s\n]*The[\s\n]+USG[\s\n]+routinely[\s\n]+intercepts[\s\n]+and[\s\n]+monitors[\s\n]+communications[\s\n]+on[\s\n]+this[\s\n]+IS[\s\n]+for[\s\n]+purposes[\s\n]+including,[\s\n]+but[\s\n]+not[\s\n]+limited[\s\n]+to,[\s\n]+penetration[\s\n]+testing,[\s\n]+COMSEC[\s\n]+monitoring,[\s\n]+network[\s\n]+operations[\s\n]+and[\s\n]+defense,[\s\n]+personnel[\s\n]+misconduct[\s\n]+\(PM\),[\s\n]+law[\s\n]+enforcement[\s\n]+\(LE\),[\s\n]+and[\s\n]+counterintelligence[\s\n]+\(CI\)[\s\n]+investigations.[\s\n]*-[\s\n]*At[\s\n]+any[\s\n]+time,[\s\n]+the[\s\n]+USG[\s\n]+may[\s\n]+inspect[\s\n]+and[\s\n]+seize[\s\n]+data[\s\n]+stored[\s\n]+on[\s\n]+this[\s\n]+IS.[\s\n]*-[\s\n]*Communications[\s\n]+using,[\s\n]+or[\s\n]+data[\s\n]+stored[\s\n]+on,[\s\n]+this[\s\n]+IS[\s\n]+are[\s\n]+not[\s\n]+private,[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+routine[\s\n]+monitoring,[\s\n]+interception,[\s\n]+and[\s\n]+search,[\s\n]+and[\s\n]+may[\s\n]+be[\s\n]+disclosed[\s\n]+or[\s\n]+used[\s\n]+for[\s\n]+any[\s\n]+USG-authorized[\s\n]+purpose.[\s\n]*-[\s\n]*This[\s\n]+IS[\s\n]+includes[\s\n]+security[\s\n]+measures[\s\n]+\(e.g.,[\s\n]+authentication[\s\n]+and[\s\n]+access[\s\n]+controls\)[\s\n]+to[\s\n]+protect[\s\n]+USG[\s\n]+interests[\s\n]+--[\s\n]+not[\s\n]+for[\s\n]+your[\s\n]+personal[\s\n]+benefit[\s\n]+or[\s\n]+privacy.[\s\n]*-[\s\n]*Notwithstanding[\s\n]+the[\s\n]+above,[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+does[\s\n]+not[\s\n]+constitute[\s\n]+consent[\s\n]+to[\s\n]+PM,[\s\n]+LE[\s\n]+or[\s\n]+CI[\s\n]+investigative[\s\n]+searching[\s\n]+or[\s\n]+monitoring[\s\n]+of[\s\n]+the[\s\n]+content[\s\n]+of[\s\n]+privileged[\s\n]+communications,[\s\n]+or[\s\n]+work[\s\n]+product,[\s\n]+related[\s\n]+to[\s\n]+personal[\s\n]+representation[\s\n]+or[\s\n]+services[\s\n]+by[\s\n]+attorneys,[\s\n]+psychotherapists,[\s\n]+or[\s\n]+clergy,[\s\n]+and[\s\n]+their[\s\n]+assistants.[\s\n]+Such[\s\n]+communications[\s\n]+and[\s\n]+work[\s\n]+product[\s\n]+are[\s\n]+private[\s\n]+and[\s\n]+confidential.[\s\n]+See[\s\n]+User[\s\n]+Agreement[\s\n]+for[\s\n]+details.</value>
+<value selector="dod_short">I\'ve read \&amp; consent to terms in IS user agreem\'t.</value>
+</Value>
+
+<Value id="ftp_login_banner_text" type="string" operator="equals" interactive="0">
+<title>Login Banner Verbiage</title>
+<description>Enter an appropriate login banner for your organization. Please note that new lines must
+be expressed by the '\n' character and special characters like parentheses and quotation marks must be escaped with '\'.</description>
+<!-- <value selector="any_text">.+</value> -->
+<value selector="usgcb_default">
+-- WARNING --[\s\n]*This system is for the use of authorized users only. Individuals[\s\n]*using this computer system without authority or in excess of their[\s\n]*authority are subject to having all their activities on this system[\s\n]*monitored and recorded by system personnel. Anyone using this[\s\n]*system expressly consents to such monitoring and is advised that[\s\n]*if such monitoring reveals possible evidence of criminal activity[\s\n]*system personal may provide the evidence of such monitoring to law[\s\n]*enforcement officials.</value>
+<value selector="dod_default">You[\s\n]+are[\s\n]+accessing[\s\n]+a[\s\n]+U.S.[\s\n]+Government[\s\n]+\(USG\)[\s\n]+Information[\s\n]+System[\s\n]+\(IS\)[\s\n]+that[\s\n]+is[\s\n]+provided[\s\n]+for[\s\n]+USG-authorized[\s\n]+use[\s\n]+only.[\s\n]*By[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+\(which[\s\n]+includes[\s\n]+any[\s\n]+device[\s\n]+attached[\s\n]+to[\s\n]+this[\s\n]+IS\),[\s\n]+you[\s\n]+consent[\s\n]+to[\s\n]+the[\s\n]+following[\s\n]+conditions\:[\s\n]*-[\s\n]*The[\s\n]+USG[\s\n]+routinely[\s\n]+intercepts[\s\n]+and[\s\n]+monitors[\s\n]+communications[\s\n]+on[\s\n]+this[\s\n]+IS[\s\n]+for[\s\n]+purposes[\s\n]+including,[\s\n]+but[\s\n]+not[\s\n]+limited[\s\n]+to,[\s\n]+penetration[\s\n]+testing,[\s\n]+COMSEC[\s\n]+monitoring,[\s\n]+network[\s\n]+operations[\s\n]+and[\s\n]+defense,[\s\n]+personnel[\s\n]+misconduct[\s\n]+\(PM\),[\s\n]+law[\s\n]+enforcement[\s\n]+\(LE\),[\s\n]+and[\s\n]+counterintelligence[\s\n]+\(CI\)[\s\n]+investigations.[\s\n]*-[\s\n]*At[\s\n]+any[\s\n]+time,[\s\n]+the[\s\n]+USG[\s\n]+may[\s\n]+inspect[\s\n]+and[\s\n]+seize[\s\n]+data[\s\n]+stored[\s\n]+on[\s\n]+this[\s\n]+IS.[\s\n]*-[\s\n]*Communications[\s\n]+using,[\s\n]+or[\s\n]+data[\s\n]+stored[\s\n]+on,[\s\n]+this[\s\n]+IS[\s\n]+are[\s\n]+not[\s\n]+private,[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+routine[\s\n]+monitoring,[\s\n]+interception,[\s\n]+and[\s\n]+search,[\s\n]+and[\s\n]+may[\s\n]+be[\s\n]+disclosed[\s\n]+or[\s\n]+used[\s\n]+for[\s\n]+any[\s\n]+USG-authorized[\s\n]+purpose.[\s\n]*-[\s\n]*This[\s\n]+IS[\s\n]+includes[\s\n]+security[\s\n]+measures[\s\n]+\(e.g.,[\s\n]+authentication[\s\n]+and[\s\n]+access[\s\n]+controls\)[\s\n]+to[\s\n]+protect[\s\n]+USG[\s\n]+interests[\s\n]+--[\s\n]+not[\s\n]+for[\s\n]+your[\s\n]+personal[\s\n]+benefit[\s\n]+or[\s\n]+privacy.[\s\n]*-[\s\n]*Notwithstanding[\s\n]+the[\s\n]+above,[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+does[\s\n]+not[\s\n]+constitute[\s\n]+consent[\s\n]+to[\s\n]+PM,[\s\n]+LE[\s\n]+or[\s\n]+CI[\s\n]+investigative[\s\n]+searching[\s\n]+or[\s\n]+monitoring[\s\n]+of[\s\n]+the[\s\n]+content[\s\n]+of[\s\n]+privileged[\s\n]+communications,[\s\n]+or[\s\n]+work[\s\n]+product,[\s\n]+related[\s\n]+to[\s\n]+personal[\s\n]+representation[\s\n]+or[\s\n]+services[\s\n]+by[\s\n]+attorneys,[\s\n]+psychotherapists,[\s\n]+or[\s\n]+clergy,[\s\n]+and[\s\n]+their[\s\n]+assistants.[\s\n]+Such[\s\n]+communications[\s\n]+and[\s\n]+work[\s\n]+product[\s\n]+are[\s\n]+private[\s\n]+and[\s\n]+confidential.[\s\n]+See[\s\n]+User[\s\n]+Agreement[\s\n]+for[\s\n]+details.</value>
+<value selector="dod_short">I\'ve read \&amp; consent to terms in IS user agreem\'t.</value>
+</Value>
+
+<Value id="gui_login_banner_text" type="string" operator="equals" interactive="0">
+<title>Login Banner Verbiage</title>
+<description>Enter an appropriate login banner for your organization. Please note that new lines must
+be expressed by the '\n' character and special characters like parentheses and quotation marks must be escaped with '\'.</description>
+<!-- <value selector="any_text">.+</value> -->
+<value selector="usgcb_default">
+-- WARNING --[\s\n]*This system is for the use of authorized users only. Individuals[\s\n]*using this computer system without authority or in excess of their[\s\n]*authority are subject to having all their activities on this system[\s\n]*monitored and recorded by system personnel. Anyone using this[\s\n]*system expressly consents to such monitoring and is advised that[\s\n]*if such monitoring reveals possible evidence of criminal activity[\s\n]*system personal may provide the evidence of such monitoring to law[\s\n]*enforcement officials.</value>
+<value selector="dod_default">You[\s\n]+are[\s\n]+accessing[\s\n]+a[\s\n]+U.S.[\s\n]+Government[\s\n]+\(USG\)[\s\n]+Information[\s\n]+System[\s\n]+\(IS\)[\s\n]+that[\s\n]+is[\s\n]+provided[\s\n]+for[\s\n]+USG-authorized[\s\n]+use[\s\n]+only.[\s\n]*By[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+\(which[\s\n]+includes[\s\n]+any[\s\n]+device[\s\n]+attached[\s\n]+to[\s\n]+this[\s\n]+IS\),[\s\n]+you[\s\n]+consent[\s\n]+to[\s\n]+the[\s\n]+following[\s\n]+conditions\:[\s\n]*-[\s\n]*The[\s\n]+USG[\s\n]+routinely[\s\n]+intercepts[\s\n]+and[\s\n]+monitors[\s\n]+communications[\s\n]+on[\s\n]+this[\s\n]+IS[\s\n]+for[\s\n]+purposes[\s\n]+including,[\s\n]+but[\s\n]+not[\s\n]+limited[\s\n]+to,[\s\n]+penetration[\s\n]+testing,[\s\n]+COMSEC[\s\n]+monitoring,[\s\n]+network[\s\n]+operations[\s\n]+and[\s\n]+defense,[\s\n]+personnel[\s\n]+misconduct[\s\n]+\(PM\),[\s\n]+law[\s\n]+enforcement[\s\n]+\(LE\),[\s\n]+and[\s\n]+counterintelligence[\s\n]+\(CI\)[\s\n]+investigations.[\s\n]*-[\s\n]*At[\s\n]+any[\s\n]+time,[\s\n]+the[\s\n]+USG[\s\n]+may[\s\n]+inspect[\s\n]+and[\s\n]+seize[\s\n]+data[\s\n]+stored[\s\n]+on[\s\n]+this[\s\n]+IS.[\s\n]*-[\s\n]*Communications[\s\n]+using,[\s\n]+or[\s\n]+data[\s\n]+stored[\s\n]+on,[\s\n]+this[\s\n]+IS[\s\n]+are[\s\n]+not[\s\n]+private,[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+routine[\s\n]+monitoring,[\s\n]+interception,[\s\n]+and[\s\n]+search,[\s\n]+and[\s\n]+may[\s\n]+be[\s\n]+disclosed[\s\n]+or[\s\n]+used[\s\n]+for[\s\n]+any[\s\n]+USG-authorized[\s\n]+purpose.[\s\n]*-[\s\n]*This[\s\n]+IS[\s\n]+includes[\s\n]+security[\s\n]+measures[\s\n]+\(e.g.,[\s\n]+authentication[\s\n]+and[\s\n]+access[\s\n]+controls\)[\s\n]+to[\s\n]+protect[\s\n]+USG[\s\n]+interests[\s\n]+--[\s\n]+not[\s\n]+for[\s\n]+your[\s\n]+personal[\s\n]+benefit[\s\n]+or[\s\n]+privacy.[\s\n]*-[\s\n]*Notwithstanding[\s\n]+the[\s\n]+above,[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+does[\s\n]+not[\s\n]+constitute[\s\n]+consent[\s\n]+to[\s\n]+PM,[\s\n]+LE[\s\n]+or[\s\n]+CI[\s\n]+investigative[\s\n]+searching[\s\n]+or[\s\n]+monitoring[\s\n]+of[\s\n]+the[\s\n]+content[\s\n]+of[\s\n]+privileged[\s\n]+communications,[\s\n]+or[\s\n]+work[\s\n]+product,[\s\n]+related[\s\n]+to[\s\n]+personal[\s\n]+representation[\s\n]+or[\s\n]+services[\s\n]+by[\s\n]+attorneys,[\s\n]+psychotherapists,[\s\n]+or[\s\n]+clergy,[\s\n]+and[\s\n]+their[\s\n]+assistants.[\s\n]+Such[\s\n]+communications[\s\n]+and[\s\n]+work[\s\n]+product[\s\n]+are[\s\n]+private[\s\n]+and[\s\n]+confidential.[\s\n]+See[\s\n]+User[\s\n]+Agreement[\s\n]+for[\s\n]+details.</value>
+<value selector="dod_short">I\'ve read \&amp; consent to terms in IS user agreem\'t.</value>
+</Value>
+
+<Rule id="banner_etc_issue" severity="medium">
+<title>Modify the System Login Banner</title>
+<description>
+To configure the system login banner:
+<br /><br />
+Edit <tt>/etc/issue</tt>. Replace the default text with a message
+compliant with the local site policy or a legal disclaimer.
+
+The DoD required text is either:
+<br /><br />
+<tt>You are accessing a U.S. Government (USG) Information System (IS) that is
+provided for USG-authorized use only. By using this IS (which includes any
+device attached to this IS), you consent to the following conditions: 
+<br />-The USG routinely intercepts and monitors communications on this IS for purposes
+including, but not limited to, penetration testing, COMSEC monitoring, network
+operations and defense, personnel misconduct (PM), law enforcement (LE), and
+counterintelligence (CI) investigations. 
+<br />-At any time, the USG may inspect and seize data stored on this IS. 
+<br />-Communications using, or data stored on, this IS are not private, are subject 
+to routine monitoring, interception, and search, and may be disclosed or used 
+for any USG-authorized purpose. 
+<br />-This IS includes security measures (e.g., authentication and access controls) 
+to protect USG interests -- not for your personal benefit or privacy. 
+<br />-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative
+searching or monitoring of the content of privileged communications, or work
+product, related to personal representation or services by attorneys,
+psychotherapists, or clergy, and their assistants. Such communications and work
+product are private and confidential. See User Agreement for details.</tt>
+<br /><br />
+OR:
+<br /><br />
+<tt>I've read &amp; consent to terms in IS user agreem't.</tt>
+</description>
+<ocil clause="it does not display the required banner">
+To check if the system login banner is compliant,
+run the following command:
+<pre>$ cat /etc/issue</pre>
+</ocil>
+<rationale>
+An appropriate warning message reinforces policy awareness during the logon
+process and facilitates possible legal action against attackers.
+</rationale>
+<ident stig="GEN000400" />
+<oval id="banner_etc_issue" value="system_login_banner_text"/>
+<ref nist="ECWM-1" disa="48" />
+</Rule>
+
+<Rule id="ftp_enable_warning_banner" severity="medium">
+<title>Create Warning Banners for All FTP Users</title>
+<description>Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd/vsftpd.conf</tt>
+by default. Add or correct the following configuration options:
+<pre>banner_file=/etc/issue</pre>
+</description>
+<rationale>This setting will cause the system greeting banner to be used for FTP connections as well.</rationale>
+<ident stig="GEN000410" />
+<ref nist="ECWM-1" disa="48" />
+<ocil clause="it does not">
+If FTP services are not installed, this is not applicable.
+<br /><br />
+To verify this configuration, run the following command:
+<pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
+
+The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below:
+<pre># grep "banner_file" /etc/vsftpd/vsftpd.conf
+banner_file=/etc/issue</pre>
+</ocil>
+<oval id="ftp_enable_warning_banner" value="ftp_login_banner_text"/>
+</Rule>
+
+<Group id="gui_login_banner">
+<title>Implement a GUI Warning Banner</title>
+<description>In the default graphical environment, users logging
+directly into the system are greeted with a login screen provided
+by the GNOME Display Manager (GDM). The warning banner should be
+displayed in this graphical environment for these users.
+The following sections describe how to configure the GDM login
+banner.
+</description>
+
+<Rule id="banner_gui_enabled" severity="medium">
+<title>Enable GUI Warning Banner With Proper Text</title>
+<description>
+To enable displaying a login warning banner in the GNOME
+Display Manager's login screen, run the following command:
+<pre>sudo -u gdm gconftool-2 \
+  --type bool \
+  --set /apps/gdm/simple-greeter/banner_message_enable true</pre>
+To set the text shown by the GNOME Display Manager
+in the login screen, run the following command:
+<pre>sudo -u gdm gconftool-2 \
+  --type string \
+  --set /apps/gdm/simple-greeter/banner_message_text \
+  "Text of the warning banner here"</pre>
+When entering a warning banner that spans several lines, remember
+to begin and end the string with <tt>"</tt>. This command writes
+directly to the file <tt>/var/lib/gdm/.gconf/apps/gdm/simple-greeter/%gconf.xml</tt>,
+and this file can later be edited directly if necessary.
+</description>
+<ocil clause="it is not">
+To ensure a login warning banner is enabled, run the following:
+<pre>$ gconftool-2 -g /apps/gdm/simple-greeter/banner_message_enable</pre>
+Search for the <tt>banner_message_enable</tt> schema.
+If properly configured, the <tt>default</tt> value should be <tt>true</tt>.
+To ensure the login warning banner text is properly set, run the following:
+<pre>$ gconftool-2 -g /apps/gdm/simple-greeter/banner_message_text</pre>
+If properly configured, the proper banner text will appear within this schema.
+</ocil>
+<rationale>
+An appropriate warning message reinforces policy awareness during the logon
+process and facilitates possible legal action against attackers.
+</rationale>
+<ident stig="GEN000402" />
+<oval id="banner_gui_enabled" value="gui_login_banner_text"/>
+<ref nist="ECWM-1" disa="48" />
+</Rule>
+</Group>
+</Group>
+

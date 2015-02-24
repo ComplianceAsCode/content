@@ -1,0 +1,1 @@
+chown :root /etc/crontab /etc/cron.d/* /var/spool/cron/* 2>/dev/null

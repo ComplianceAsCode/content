@@ -1,0 +1,56 @@
+<def-group>
+  <definition class="compliance" id="mail_up_to_date"
+  version="1">
+    <metadata>
+      <title>SMTP Service Updated</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The SMTP service must be an up-to-date version.</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="postfix is not installed" negate="true"
+		  definition_ref="package_postfix_installed" />
+			<criteria operator="AND">
+				<criterion comment="Installed version of postfix is greater than 2.3.3-6"
+				test_ref="test_mail_up_to_date_postfix" />
+			</criteria>
+		</criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="sendmail is not installed" negate="true"
+		  definition_ref="package_sendmail_installed" />
+			<criteria operator="AND">
+				<criterion comment="Installed version of sendmail is greater than 8.13.8-8"
+				test_ref="test_mail_up_to_date_sendmail" />
+			</criteria>
+		</criteria>
+    </criteria>
+  </definition>
+
+	<linux:rpminfo_test check="all" check_existence="all_exist" comment="Installed version of sendmail is greater than 8.13.8-8" id="test_mail_up_to_date_sendmail" version="1">
+		<linux:object object_ref="obj_mail_up_to_date_sendmail" />
+		<linux:state state_ref="state_mail_up_to_date_sendmail" />
+	</linux:rpminfo_test>
+	<linux:rpminfo_object id="obj_mail_up_to_date_sendmail" version="1">
+		<linux:name>sendmail</linux:name>
+	</linux:rpminfo_object>
+	<linux:rpminfo_state id="state_mail_up_to_date_sendmail" version="1">
+		<linux:evr operation="greater than or equal" datatype="evr_string">0:8.13.8-8</linux:evr> 
+	</linux:rpminfo_state>
+
+	<linux:rpminfo_test check="all" check_existence="all_exist" comment="Installed version of postfix is greater than 2.3.3-6" id="test_mail_up_to_date_postfix" version="1">
+		<linux:object object_ref="obj_mail_up_to_date_postfix" />
+		<linux:state state_ref="state_mail_up_to_date_postfix" />
+	</linux:rpminfo_test>
+	<linux:rpminfo_object id="obj_mail_up_to_date_postfix" version="1">
+		<linux:name>postfix</linux:name>
+	</linux:rpminfo_object>
+	<linux:rpminfo_state id="state_mail_up_to_date_postfix" version="1">
+		<linux:evr operation="greater than or equal" datatype="evr_string">0:2.3.3-6</linux:evr> 
+	</linux:rpminfo_state>
+
+</def-group>

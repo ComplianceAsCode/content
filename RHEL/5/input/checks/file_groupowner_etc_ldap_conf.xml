@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_etc_ldap_conf" version="1">
+    <metadata>
+      <title>File /etc/ldap.conf Group Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Group owner for /etc/ldap.conf must be root.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_groupowner_etc_ldap_conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/ldap.conf group owner" id="test_file_groupowner_etc_ldap_conf" version="1">
+    <unix:object object_ref="object_file_groupowner_etc_ldap_conf" />
+    <unix:state state_ref="state_file_groupowner_etc_ldap_conf" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/ldap.conf" id="object_file_groupowner_etc_ldap_conf" version="1">
+    <unix:filepath>/etc/ldap.conf</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_groupowner_etc_ldap_conf" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+</def-group>

@@ -1,0 +1,1 @@
+chmod 0640 /etc/xinetd.conf /etc/xinetd.d/*

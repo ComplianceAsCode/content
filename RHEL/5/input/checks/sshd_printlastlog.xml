@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="sshd_printlastlog" version="1">
+    <metadata>
+      <title>Ensure SSH Displays Last Login Details</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The system must display the date and time of the last successful account login upon login.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met" operator="OR">
+      <extend_definition comment="rpm package openssh-server removed"
+      definition_ref="package_openssh-server_removed" />
+      <criteria operator="OR">
+        <criterion comment="Check pam_lastlog in /etc/pam.d/sshd"
+        test_ref="test_sshd_pam_lastlog" />
+        <criterion comment="Check PrintLastLog in /etc/ssh/sshd_config"
+        test_ref="test_sshd_printlastlog" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="pam_lastlog exists and does not include the silent option" id="test_sshd_pam_lastlog" version="1">
+    <ind:object object_ref="object_sshd_pam_lastlog" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_sshd_pam_lastlog" version="2">
+    <ind:path>/etc/pam.d</ind:path>
+    <ind:filename>sshd</ind:filename>
+    <ind:pattern operation="pattern match">^.*pam_lastlog\.so(?:(?!silent).)*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="PrintLastLog equals no does not exist" id="test_sshd_printlastlog" version="1">
+    <ind:object object_ref="object_sshd_printlastlog" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_sshd_printlastlog" version="2">
+    <ind:path>/etc/ssh</ind:path>
+    <ind:filename>sshd_config</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)PrintLastLog[\s]+no[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

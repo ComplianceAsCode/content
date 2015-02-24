@@ -1,0 +1,116 @@
+<Group id="smb">
+<title>Samba(SMB) Microsoft Windows File Sharing Server</title>
+<description>When properly configured, the Samba service allows
+Linux machines to provide file and print sharing to Microsoft
+Windows machines. There are two software packages that provide
+Samba support. The first, <tt>samba-client</tt>, provides a series of
+command line tools that enable a client machine to access Samba
+shares. The second, simply labeled <tt>samba</tt>, provides the Samba
+service. It is this second package that allows a Linux machine to
+act as an Active Directory server, a domain controller, or as a
+domain member. Only the <tt>samba-client</tt> package is installed by
+default.</description>
+
+<Group id="removing_samba">
+<title>Remove Samba if Possible</title>
+<description>
+The Samba server must not be installed unless it provides an operational need.
+</description>
+
+<Rule id="package_samba_removed">
+<title>Remove samba and samba3x Packages</title>
+<description>The <tt>samba</tt> and <tt>samba3x</tt> packages can be uninstalled with
+the following command:
+<pre># yum erase samba samba3x</pre>
+</description>
+<ocil><package-check-macro package="samba" /> </ocil>
+<ident stig="GEN006060" />
+<oval id="package_samba_removed" />
+<ref nist="DCPD-1,ECSC-1" disa="1436" />
+</Rule>
+</Group>
+
+<Group id="configuring_samba">
+<title>Configure Samba if Necessary</title>
+<description>All settings for the Samba daemon can be found in
+<tt>/etc/samba/smb.conf</tt>. Settings are divided between a
+<tt>[global]</tt> configuration section and a series of user
+created share definition sections meant to describe file or print
+shares on the system. By default, Samba will operate in user mode
+and allow client machines to access local home directories and
+printers. It is recommended that these settings be changed or that
+additional limitations be set in place.</description>
+
+<Rule id="samba-swat_restricted">
+<title>Samba Web Administration Tool Must Be Restricted</title>
+<description>The Samba Web Administration Tool (SWAT) must be 
+restricted to the local host or require SSL.
+</description>
+<rationale>
+SWAT is a tool used to configure Samba.  It modifies Samba configuration, 
+which can impact system security, and must be protected from unauthorized 
+access.  SWAT authentication may involve the root password, which must be 
+protected by encryption when traversing the network.
+Restricting access to the local host allows for the use of SSH TCP 
+forwarding, if configured, or administration by a web browser on 
+the local system.
+</rationale>
+<oval id="samba-swat_restricted" />
+<ident stig="GEN006080" />
+<ref nist="EBRP-1,ECCT-1,ECCT-2" disa="1436" />
+</Rule>
+
+<Rule id="samba_hosts_option">
+<title>Configure hosts Option</title>
+<description>
+Samba increases the attack surface of the system and must be restricted to 
+communicate only with systems requiring access.
+</description>
+<rationale>Specifying the anonymous UID and GID as -1 ensures 
+that the remote root user is mapped to a local account which 
+has no permissions on the system.</rationale>
+<oval id="samba_hosts_option" />
+<ident stig="GEN006220" />
+<ref nist="ECSC-1" disa="225" />
+</Rule>
+
+<Rule id="samba_security_option">
+<title>Configure security Option</title>
+<description>
+Samba share authentication does not provide for individual user 
+identification and must not be used.
+</description>
+<rationale>Specifying the anonymous UID and GID as -1 ensures 
+that the remote root user is mapped to a local account which 
+has no permissions on the system.</rationale>
+<oval id="samba_security_option" />
+<ident stig="GEN006225" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="samba_encrypt_passwords_option">
+<title>Configure encrypt passwords Option</title>
+<description>
+</description>
+<rationale>
+Samba must be configured to use encrypted passwords.
+</rationale>
+<oval id="samba_encrypt_passwords_option" />
+<ident stig="GEN006230" />
+<ref nist="IAIA-1,IAIA-2" disa="366" />
+</Rule>
+
+<Rule id="samba_guest_ok_option">
+<title>Configure guest ok Option</title>
+<description>
+</description>
+<rationale>
+Guest access to shares permits anonymous access and is not permitted.
+</rationale>
+<oval id="samba_guest_ok_option" />
+<ident stig="GEN006235" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group>
+</Group>

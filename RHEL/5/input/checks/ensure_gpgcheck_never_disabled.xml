@@ -1,0 +1,82 @@
+<def-group>
+  <definition class="compliance" id="ensure_gpgcheck_never_disabled"
+  version="1">
+    <metadata>
+      <title>Ensure gpgcheck Enabled For All Yum Package Repositories</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Ensure all yum repositories utilize signature checking.</description>
+    </metadata>
+    <criteria comment="ensure all yum repositories utilize signiature checking" operator="AND">
+      <criterion comment="check for nosignature in /etc/rpmrc" test_ref="test_nosignature_etc_rpmrc" />
+      <criterion comment="check for nosignature in /usr/lib/rpm/rpmrc" test_ref="test_nosignature_usr_lib_rpm_rpmrc" />
+      <criterion comment="check for nosignature in /usr/lib/rpm/redhat/rpmrc" test_ref="test_nosignature_usr_lib_rpm_redhat_rpmrc" />
+      <criterion comment="check for nosignature in /root/rpmrc" test_ref="test_nosignature_root_rpmrc" />
+      <criterion comment="verify no gpgpcheck=0 present in /etc/yum.repos.d files" test_ref="test_ensure_gpgcheck_never_disabled_repos" />
+      <criterion comment="verify no gpgpcheck=0 present in /etc/yum.conf" test_ref="test_ensure_gpgcheck_never_disabled_conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="check for nosignature in /etc/rpmrc" id="test_nosignature_etc_rpmrc" version="1">
+    <ind:object object_ref="object_nosignature_etc_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nosignature_etc_rpmrc" comment="check for nosignature in /etc/rpmrc" version="1">
+    <ind:filepath>/etc/rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?:.*)?(nosignature)(?:.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="check for nosignature in /usr/lib/rpm/rpmrc" id="test_nosignature_usr_lib_rpm_rpmrc" version="1">
+    <ind:object object_ref="object_nosignature_usr_lib_rpm_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nosignature_usr_lib_rpm_rpmrc" comment="check for nosignature in /usr/lib/rpm/rpmrc" version="1">
+    <ind:filepath>/usr/lib/rpm/rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?:.*)?(nosignature)(?:.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="check for nosignature in /usr/lib/rpm/redhat/rpmrc" id="test_nosignature_usr_lib_rpm_redhat_rpmrc" version="1">
+    <ind:object object_ref="object_nosignature_usr_lib_rpm_redhat_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nosignature_usr_lib_rpm_redhat_rpmrc" comment="check for nosignature in /usr/lib/rpm/redhat/rpmrc" version="1">
+    <ind:filepath>/usr/lib/rpm/redhat/rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?:.*)?(nosignature)(?:.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="check for nosignature in /root/rpmrc" id="test_nosignature_root_rpmrc" version="1">
+    <ind:object object_ref="object_nosignature_root_rpmrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nosignature_root_rpmrc" comment="check for nosignature in /root/rpmrc" version="1">
+    <ind:filepath>/root/rpmrc</ind:filepath>
+    <ind:pattern operation="pattern match">^(?:.*)?(nosignature)(?:.*)?$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="check for existence of gpgcheck=0 in /etc/yum.repos.d/ files"
+  id="test_ensure_gpgcheck_never_disabled_repos" version="1">
+    <ind:object object_ref="obj_ensure_gpgcheck_never_disabled_repos" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ensure_gpgcheck_never_disabled_repos"
+  version="1">
+    <ind:path>/etc/yum.repos.d</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*0\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="check value of gpgcheck in /etc/yum.conf" id="test_ensure_gpgcheck_never_disabled_conf" version="1">
+    <ind:object object_ref="object_ensure_gpgcheck_never_disabled_conf" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ensure_gpgcheck_never_disabled_conf" comment="gpgcheck set in /etc/yum.conf" version="1">
+    <ind:filepath>/etc/yum.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*0\s*$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

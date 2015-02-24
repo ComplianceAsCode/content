@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="at_access_controlled" version="1">
+    <metadata>
+      <title>Files /etc/at.allow And /etc/at.deny Must Exist</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Group owner for /etc/at.allow and /etc/at.deny must exist.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_at_access_controlled_at_allow" />
+      <criterion test_ref="test_at_access_controlled_at_deny" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing /etc/at.allow existence" id="test_at_access_controlled_at_allow" version="1">
+    <unix:object object_ref="object_at_access_controlled_at_allow" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/at.allow" id="object_at_access_controlled_at_allow" version="1">
+    <unix:filepath>/etc/at.allow</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing /etc/at.deny existence" id="test_at_access_controlled_at_deny" version="1">
+    <unix:object object_ref="object_at_access_controlled_at_deny" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/at.deny" id="object_at_access_controlled_at_deny" version="1">
+    <unix:filepath>/etc/at.deny</unix:filepath>
+  </unix:file_object>
+
+</def-group>

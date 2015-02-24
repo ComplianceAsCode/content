@@ -1,0 +1,1 @@
+grep path.*/ /etc/kdump.conf | awk '{ print $2 }' | chown root

@@ -1,0 +1,1 @@
+chmod 0755 /etc/xinet.d/*
