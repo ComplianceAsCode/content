@@ -45,7 +45,7 @@ lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
 Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
-<ident cce="3562-6" stig="GEN007720" />
+<ident stig="GEN007720" />
 <oval id="kernel_module_ipv6_option_disabled" />
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
@@ -56,7 +56,7 @@ the vulnerability to exploitation.
 <pre>NETWORKING_IPV6=no</pre>
 </description>
 <oval id="network_ipv6_disable_interfaces" />
-<ident cce="" stig="GEN007700" />
+<ident stig="GEN007700" />
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
 
@@ -100,7 +100,7 @@ operator="equals" interactive="0">
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="" stig="GEN007860" />
+<ident stig="GEN007860" />
 <oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
@@ -122,7 +122,7 @@ the router, which can be used to bypass network security measures.
 This requirement applies only to the forwarding of source-routed traffic, 
 such as when IPv6 forwarding is enabled and the system is functioning as a router.
 </rationale>
-<ident cce="" stig="GEN007920" />
+<ident stig="GEN007920" />
 <oval id="sysctl_net_ipv6_conf_forwarding"/>
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
@@ -137,7 +137,7 @@ the following line (substituting your gateway IP as appropriate):
 Router addresses should be manually set and not accepted via any
 auto-configuration or router advertisement.
 </description>
-<ident cce="" stig="GEN005570" />
+<ident stig="GEN005570" />
 <oval id="network_ipv6_default_gateway" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>

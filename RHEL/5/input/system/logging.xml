@@ -71,7 +71,7 @@ system is compromised and its local logs are suspect. Forwarding log messages
 to a remote loghost also provides system administrators with a centralized
 place to view the status of multiple hosts within the enterprise.
 </rationale>
-<ident cce="4260-6" stig="GEN005460" />
+<ident stig="GEN005460" />
 <oval id="syslog_remote_loghost" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -107,7 +107,7 @@ Any process which receives messages from the network incurs some risk
 of receiving malicious messages. This risk can be eliminated for
 syslog by configuring it not to listen on the network.
 </rationale>
-<ident cce="3382-9" stig="GEN005480" />
+<ident stig="GEN005480" />
 <oval id="syslog_nolisten" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -155,7 +155,7 @@ To determine the status and frequency of logrotate, run the following command:
 If logrotate is configured properly, output should include references to 
 <tt>/etc/cron.daily</tt>.
 </ocil>
-<ident cce="" stig="GEN002860" />
+<ident stig="GEN002860" />
 <oval id="logrotate_rotate_all_files" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>

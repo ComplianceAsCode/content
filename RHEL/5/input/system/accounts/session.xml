@@ -45,7 +45,7 @@ You should receive output similar to the following:
 <pre>*		hard	maxlogins	10</pre>
 </ocil>
 <oval id="accounts_max_concurrent_login_sessions" value="max_concurrent_login_sessions_value" />
-<ident cce="" stig="GEN000450" />
+<ident stig="GEN000450" />
 <ref nist="ECSC-1" disa="54" />
 </Rule>
 
@@ -88,7 +88,7 @@ These empty elements have the same effect as a single <tt>.</tt> character.
 Including these entries increases the risk that root could
 execute code from an untrusted location.
 </rationale>
-<ident cce="" stig="GEN000940" />
+<ident stig="GEN000940" />
 <oval id="accounts_executable_dangerous_path_for_root" />
 <ref nist="ECCD-1,ECCD-2,ECSC-1" disa="366" />
 </Rule>
@@ -110,7 +110,7 @@ These empty elements have the same effect as a single <tt>.</tt> character.
 Including these entries increases the risk that root could
 execute code from an untrusted location.
 </rationale>
-<ident cce="" stig="GEN000945" />
+<ident stig="GEN000945" />
 <oval id="accounts_library_dangerous_path_for_root" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -133,7 +133,7 @@ Such entries increase the risk that root could
 execute code provided by unprivileged users,
 and potentially malicious code.
 </rationale>
-<ident cce="" stig="GEN000960" />
+<ident stig="GEN000960" />
 <oval id="accounts_root_path_dirs_no_write" />
 <ref nist="ECCD-1,ECCD-2" disa="366" />
 </Rule>
@@ -213,7 +213,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown below:
 /etc/bashrc:umask 077
 /etc/cshrc:umask 077</pre>
 </ocil>
-<ident cce="" stig="GEN002560" />
+<ident stig="GEN002560" />
 <oval id="accounts_umask" value="var_accounts_user_umask"/>
 <ref nist="ECCD-1,ECCD-2" disa="366" />
 </Rule>
@@ -227,7 +227,7 @@ To ensure all login shells are included in /etc/shells, run the following comman
 <rationale>The shells file lists approved default shells. It helps provide layered defense 
 to the security approach by ensuring users cannot change their default shell to an unauthorized 
 unsecure shell.</rationale>
-<ident cce="" stig="GEN002140" />
+<ident stig="GEN002140" />
 <oval id="shells_file_references"/>
 <ref nist="ECSC-1" disa="366" />
 </Rule>

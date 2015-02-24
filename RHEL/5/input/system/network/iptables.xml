@@ -57,7 +57,7 @@ The <tt>ip6tables</tt> default rules are essentially the same.</description>
 The <tt>iptables</tt> service provides the system's host-based firewalling
 capability for IPv4 and ICMP.
 </rationale>
-<ident cce="4189-7" stig="GEN008520" />
+<ident stig="GEN008520" />
 <oval id="service_iptables_enabled" />
 <ref nist="ECSC-1" disa="1118" />
 </Rule>
@@ -104,7 +104,7 @@ add or correct the following line in
 </description>
 <rationale>The processing of (ICMP) timestamp requests increases 
 the attack surface of the system.</rationale>
-<ident cce="" stig="GEN003602" />
+<ident stig="GEN003602" />
 <oval id="iptables_timestamp_reject_rule" />
 <ref nist="ECSC-1" disa="1551" />
 </Rule>
@@ -126,7 +126,7 @@ the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
-<ident cce="14264-6" stig="GEN008540" />
+<ident stig="GEN008540" />
 <oval id="iptables_input_reject_rule" />
 <ref nist="ECSC-1" disa="1109" />
 </Rule>
@@ -140,7 +140,7 @@ on a broadcast address, add or correct the following line in
 </description>
 <rationale>Responding to broadcast ICMP echo requests facilitates 
 network mapping and provides a vector for amplification attacks.</rationale>
-<ident cce="" stig="GEN007950" />
+<ident stig="GEN007950" />
 <oval id="ip6tables_input_icmpv6_broadcast" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -157,7 +157,7 @@ In addition, make sure the following file is present and includes the following 
 <rationale>If the system's access control program is not configured with appropriate 
 rules for allowing and denying access to system network resources, services may be 
 accessible to unauthorized hosts.</rationale>
-<ident cce="" stig="GEN006620" />
+<ident stig="GEN006620" />
 <oval id="system_access_control" />
 <ref nist="ECCD-1,ECCD-2,ECSC-1" disa="366" />
 </Rule>

@@ -33,7 +33,7 @@ the following command:
 <pre># yum erase portmap rpcbind</pre>
 </description>
 <ocil><package-check-macro package="portmap" /> </ocil>
-<ident cce="" stig="GEN003815" />
+<ident stig="GEN003815" />
 <oval id="package_rpc_removed" />
 <ref nist="ECSC-1" disa="305" />
 </Rule>
@@ -55,7 +55,7 @@ the system and should only be used when needed.  The rpcbind service
 are used by a variety of services using Remote Procedure Calls (RPCs).
 <service-disable-macro service="rpcbind" />
 </description>
-<ident cce="" stig="GEN003810" />
+<ident stig="GEN003810" />
 <oval id="service_rpc_disabled" />
 <ref nist="ECSC-1" disa="1436" />
 </Rule>
@@ -85,7 +85,7 @@ not implemented.
 </ocil>
 <rationale>NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables
 should be installed to their default location on the local filesystem.</rationale>
-<ident cce="4024-6" stig="GEN005900" />
+<ident stig="GEN005900" />
 <oval id="nfs_mount_option_nosuid_remote_filesystems" />
 <ref nist="ECPA-1" disa="225" />
 </Rule>
@@ -106,7 +106,7 @@ anongid=-1
 </description>
 <rationale>Specifying the anonymous UID and GID as -1 ensures that the remote root user is mapped to a local account which has no permissions on the system.</rationale>
 <oval id="nfs_no_anonymous" />
-<ident cce="" stig="GEN005820" />
+<ident stig="GEN005820" />
 <ref nist="ECSC-1,IAIA-1,IAIA-2" disa="62" />
 </Rule>
 
@@ -130,7 +130,7 @@ Authorized hosts can be specified in several different formats:
 This assists in protecting exported file systems.  If access is not restricted, 
 unauthorized hosts may be able to access the system's NFS exports.
 </rationale>
-<ident cce="" stig="GEN005840" />
+<ident stig="GEN005840" />
 <oval id="nfs_enforce_host_access" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -147,7 +147,7 @@ Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>no_root_squ
 <rationale>If the NFS server allows root access to local file systems from remote hosts, this
 access could be used to compromise the system.
 </rationale>
-<ident cce="4544-3" stig="GEN005880" />
+<ident stig="GEN005880" />
 <oval id="nfs_use_root_squashing_all_exports" />
 <ref nist="EBRP-1" disa="225" />
 </Rule>
@@ -172,7 +172,7 @@ To verify insecure file locking has been disabled, run the following command:
 <rationale>Allowing insecure file locking could allow for sensitive data to be
 viewed or edited by an unauthorized user.
 </rationale>
-<ident cce="" stig="GEN000000-LNX00560" />
+<ident stig="GEN000000-LNX00560" />
 <oval id="nfs_no_insecure_locks_exports" />
 <ref nist="IAIA-1,IAIA-2" disa="225,764" />
 </Rule>

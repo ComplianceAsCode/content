@@ -42,7 +42,7 @@ The output should be:
 <rationale>A core dump includes a memory image taken at the time the operating system
 terminates an application. The memory image could contain sensitive data and is generally useful
 only for developers trying to debug problems.</rationale>
-<ident cce="4225-9" stig="GEN003500" />
+<ident stig="GEN003500" />
 <oval id="disable_users_coredumps" />
 <ref nist="ECCD-1,ECCD-2" disa="366" />
 </Rule>
@@ -81,7 +81,7 @@ for an attacker to predict the location of attack code they have introduced
 into a process's address space during an attempt at exploitation.  Additionally, ASLR 
 makes it more difficult for an attacker to know the location of existing code
 in order to re-purpose it using return oriented programming (ROP) techniques.</rationale>
-<ident cce="" stig="GEN003540" />
+<ident stig="GEN003540" />
 <oval id="sysctl_kernel_nonexec_stack" />
 <ref nist="ECCD-1,ECCD-2,ECSC-1" disa="366" />
 </Rule>
@@ -102,7 +102,7 @@ the kernel places a process's memory regions such as the stack and
 heap higher than this address, the hardware prevents execution in that
 address range.
 </rationale>
-<ident cce="" stig="GEN008420" />
+<ident stig="GEN008420" />
 <oval id="sysctl_kernel_execshield" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>

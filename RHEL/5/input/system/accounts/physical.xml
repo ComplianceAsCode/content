@@ -30,7 +30,7 @@ are set properly.
 GRUB is a versatile boot loader used by several platforms that 
 can provide authentication for access to the system or boot loader.
 </rationale>
-<ident cce="" stig="GEN008660" />
+<ident stig="GEN008660" />
 <oval id="bootloader_exists" />
 <ref nist="ECAR-1,ECAR-2,ECAR-3" disa="366" />
 </Rule>
@@ -46,7 +46,7 @@ or modification of the file.
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
-<ident cce="4144-2" stig="GEN008760" />
+<ident stig="GEN008760" />
 <oval id="file_owner_grub_conf" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
@@ -63,7 +63,7 @@ destruction or modification of the file.
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
-<ident cce="4197-0" stig="GEN008780" />
+<ident stig="GEN008780" />
 <oval id="file_groupowner_grub_conf" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
@@ -84,7 +84,7 @@ permissions: <tt>-rw-------</tt>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
-<ident cce="3923-0" stig="GEN008720" />
+<ident stig="GEN008720" />
 <oval id="file_permissions_grub_conf" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
@@ -104,7 +104,7 @@ permissions: <tt>-rw-------</tt>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
-<ident cce="" stig="GEN008740" />
+<ident stig="GEN008740" />
 <oval id="file_permissions_extended_grub_conf" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
@@ -133,7 +133,7 @@ users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
 </rationale>
-<ident cce="3818-2" stig="GEN008700" />
+<ident stig="GEN008700" />
 <oval id="bootloader_password" />
 <ref nist="IAIA-1,IAIA-2" disa="213" />
 </Rule>
@@ -162,7 +162,7 @@ users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
 </rationale>
-<ident cce="" stig="GEN008710" />
+<ident stig="GEN008710" />
 <oval id="bootloader_password_hash" />
 <ref nist="IAIA-1,IAIA-2" disa="213" />
 </Rule>
@@ -192,7 +192,7 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
-<ident cce="4241-6" stig="GEN000020" />
+<ident stig="GEN000020" />
 <oval id="require_singleuser_auth" />
 <ref nist="IAIA-1,IAIA-2" disa="213" />
 </Rule>
@@ -225,7 +225,7 @@ prompted before any action is taken.
 </rationale>
 <oval id="disable_ctrlaltdel_reboot" />
 <ref nist="ECSC-1" disa="366" />
-<ident cce="" stig="GEN000000-LNX00580" />
+<ident stig="GEN000000-LNX00580" />
 </Rule>
 
 <Group id="screen_locking">
@@ -299,7 +299,7 @@ Setting the idle delay controls when the
 screensaver will start, and can be combined with
 screen locking to prevent access from passersby.
 </rationale>
-<ident cce="" stig="GEN000500-2" />
+<ident stig="GEN000500-2" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="PESL-1" disa="57" />
 </Rule>
@@ -325,7 +325,7 @@ real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
-<ident cce="3315-9" stig="GEN000500" />
+<ident stig="GEN000500" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
 <ref nist="PESL-1" disa="57" />
 </Rule>
@@ -350,7 +350,7 @@ Enabling the activation of the screen lock after an idle period
 ensures password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
-<ident cce="" stig="GEN000500-3" />
+<ident stig="GEN000500-3" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
 <ref nist="PESL-1" disa="57" />
 </Rule>
@@ -400,7 +400,7 @@ that provided by a username/password combination. Smart cards leverage a PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
 <ref nist="IAIA-1,IAIA-2" disa="768" />
-<ident cce="" stig="GEN009120" />
+<ident stig="GEN009120" />
 </Rule>
 
 </Group>

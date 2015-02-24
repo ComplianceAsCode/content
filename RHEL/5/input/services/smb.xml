@@ -24,7 +24,7 @@ the following command:
 <pre># yum erase samba samba3x</pre>
 </description>
 <ocil><package-check-macro package="samba" /> </ocil>
-<ident cce="" stig="GEN006060" />
+<ident stig="GEN006060" />
 <oval id="package_samba_removed" />
 <ref nist="DCPD-1,ECSC-1" disa="1436" />
 </Rule>
@@ -56,7 +56,7 @@ forwarding, if configured, or administration by a web browser on
 the local system.
 </rationale>
 <oval id="samba-swat_restricted" />
-<ident cce="" stig="GEN006080" />
+<ident stig="GEN006080" />
 <ref nist="EBRP-1,ECCT-1,ECCT-2" disa="1436" />
 </Rule>
 
@@ -70,7 +70,7 @@ communicate only with systems requiring access.
 that the remote root user is mapped to a local account which 
 has no permissions on the system.</rationale>
 <oval id="samba_hosts_option" />
-<ident cce="" stig="GEN006220" />
+<ident stig="GEN006220" />
 <ref nist="ECSC-1" disa="225" />
 </Rule>
 
@@ -84,7 +84,7 @@ identification and must not be used.
 that the remote root user is mapped to a local account which 
 has no permissions on the system.</rationale>
 <oval id="samba_security_option" />
-<ident cce="" stig="GEN006225" />
+<ident stig="GEN006225" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
 
@@ -96,7 +96,7 @@ has no permissions on the system.</rationale>
 Samba must be configured to use encrypted passwords.
 </rationale>
 <oval id="samba_encrypt_passwords_option" />
-<ident cce="" stig="GEN006230" />
+<ident stig="GEN006230" />
 <ref nist="IAIA-1,IAIA-2" disa="366" />
 </Rule>
 
@@ -108,7 +108,7 @@ Samba must be configured to use encrypted passwords.
 Guest access to shares permits anonymous access and is not permitted.
 </rationale>
 <oval id="samba_guest_ok_option" />
-<ident cce="" stig="GEN006235" />
+<ident stig="GEN006235" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
 

@@ -44,7 +44,7 @@ If this check produces any unexpected output, investigate.
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ident cce="" stig="GEN000140-2" />
+<ident stig="GEN000140-2" />
 <oval id="aide_build_database" />
 <ref nist="DCSW-1" disa="293" />
 </Rule>
@@ -64,7 +64,7 @@ To determine that periodic AIDE execution has been scheduled, run the following 
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
-<ident cce="" stig="GEN000220" />
+<ident stig="GEN000220" />
 <oval id="aide_periodic_cron_checking" />
 <ref nist="DCSL-1" disa="1069" />
 </Rule>
@@ -109,7 +109,7 @@ have file hashes different from what is expected by the RPM database.
 The hashes of important files like system executables should match the
 information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
-<ident cce="" stig="GEN006565" />
+<ident stig="GEN006565" />
 <oval id="rpm_verify_hashes" />
 <ref nist="ECAT-1" disa="366,698" />
 </Rule>
@@ -142,7 +142,7 @@ intruder gains access to a system or network.
 </rationale>
 <oval id="package_hids_installed" />
 <ref nist="ECID-1" disa="1259" />
-<ident cce="" stig="GEN006480" />
+<ident stig="GEN006480" />
 </Rule>
 
 <Rule id="package_av_installed">
@@ -183,7 +183,7 @@ computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <oval id="package_av_installed" />
 <ref nist="ECVP-1" disa="1668" />
-<ident cce="" stig="GEN006640" />
+<ident stig="GEN006640" />
 </Rule>
 
 <Rule id="baseline_device_files" severity="low">
@@ -197,7 +197,7 @@ system may perform unauthorized operations.
 </rationale>
 <oval id="baseline_device_files" />
 <ref nist="DCSW-1,ECSC-1" disa="318" />
-<ident cce="" stig="GEN002260" />
+<ident stig="GEN002260" />
 </Rule>
 
 <Rule id="baseline_sgid_files" severity="medium">
@@ -213,7 +213,7 @@ reading and writing of files, or shell escapes.
 </rationale>
 <oval id="baseline_sgid_files" />
 <ref nist="DCSL-1" disa="318" />
-<ident cce="" stig="GEN002460" />
+<ident stig="GEN002460" />
 </Rule>
 
 <Rule id="baseline_suid_files" severity="medium">
@@ -229,7 +229,7 @@ reading and writing of files, or shell escapes.
 </rationale>
 <oval id="baseline_suid_files" />
 <ref nist="DCSL-1" disa="318" />
-<ident cce="" stig="GEN002400" />
+<ident stig="GEN002400" />
 </Rule>
 
 </Group>

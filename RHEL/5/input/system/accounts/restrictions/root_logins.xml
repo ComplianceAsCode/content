@@ -43,7 +43,7 @@ Preventing direct root login to virtual console devices
 helps ensure accountability for actions taken on the system
 using the root account.
 </rationale>
-<ident cce="" stig="GEN000980" />
+<ident stig="GEN000980" />
 <oval id="securetty_root_login_console_only" />
 <ref nist="ECPA-1,ECSD-2" disa="770" />
 </Rule>
@@ -64,7 +64,7 @@ the entire system could be compromised. Specific exceptions for local service
 administration should be documented in site-defined policy.
 </rationale>
 <oval id="no_root_webbrowsing" />
-<ident cce="" stig="GEN004220" />
+<ident stig="GEN004220" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
 
@@ -87,7 +87,7 @@ guess a password for a privileged account. Proper configuration of
 sudo is recommended to afford multiple system administrators
 access to root privileges in an accountable manner.
 </rationale>
-<ident cce="" stig="GEN000880" />
+<ident stig="GEN000880" />
 <oval id="accounts_no_uid_except_zero" />
 <ref nist="ECLP-1,IAIA-1,IAIA-2" disa="366" />
 </Rule>
@@ -102,7 +102,7 @@ Configuring a supplemental group for users permitted to switch to the root user 
 unauthorized users from accessing the root account, even with knowledge of the root credentials.
 </rationale>
 <oval id="sudo_wheel" />
-<ident cce="15047-4" stig="GEN000850" />
+<ident stig="GEN000850" />
 <ref nist="ECLP-1" disa="9" />
 </Rule>
 

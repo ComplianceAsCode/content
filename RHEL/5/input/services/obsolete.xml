@@ -39,7 +39,7 @@ which is no longer necessary for commonly-used network services. Disabling
 it ensures that these uncommon services are not running, and also prevents
 attacks against xinetd itself.
 </rationale>
-<ident cce="" stig="GEN003700" />
+<ident stig="GEN003700" />
 <oval id="service_xinetd_disabled" />
 <ref nist="ECSC-1" disa="305" />
 </Rule>
@@ -65,7 +65,7 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="3390-2" stig="GEN003850" />
+<ident stig="GEN003850" />
 <oval id="service_telnetd_disabled" />
 <ref nist="DCPP-1" disa="197" />
 </Rule>
@@ -89,7 +89,7 @@ network services. Removing it
 decreases the risk of those services' accidental (or intentional)
 activation.
 </rationale>
-<ident cce="4308-3" stig="GEN003845" />
+<ident stig="GEN003845" />
 <oval id="package_rsh-server_removed" />
 <ref nist="ECSC-1" disa="305" />
 </Rule>
@@ -107,7 +107,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="" stig="GEN003840" />
+<ident stig="GEN003840" />
 <oval id="service_rexec_disabled" />
 <ref nist="EBRP-1,ECSC-1" disa="1435" />
 </Rule>
@@ -125,7 +125,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="4141-8" stig="GEN003820" />
+<ident stig="GEN003820" />
 <oval id="service_rsh_disabled" />
 <ref nist="EBRU-1" disa="68" />
 </Rule>
@@ -143,7 +143,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="3537-8" stig="GEN003830" />
+<ident stig="GEN003830" />
 <oval id="service_rlogin_disabled" />
 <ref nist="DCPP-1" disa="68" />
 </Rule>
@@ -166,7 +166,7 @@ of an Rsh trust relationship.
 <rationale>Trust files are convenient, but when
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
-<ident cce="" stig="GEN002040" />
+<ident stig="GEN002040" />
 <ref nist="ECCD-1,ECCD-2" disa="366" />
 <oval id="no_rsh_trust_files" />
 </Rule>
@@ -184,7 +184,7 @@ particular account without authenticating.
 <rationale>.rhosts files are used to specify a list of hosts permitted remote 
 access to a particular account without authenticating. The use of such a mechanism 
 defeats strong identification and authentication requirements.</rationale>
-<ident cce="" stig="GEN002100" />
+<ident stig="GEN002100" />
 <ref nist="ECCD-1,ECCD-2" disa="366" />
 <oval id="rhosts_auth_pam_files" />
 </Rule>
@@ -210,7 +210,7 @@ a NIS or NIS+ domain, should be disabled.
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
 </rationale>
-<ident cce="" stig="GEN006400" />
+<ident stig="GEN006400" />
 <oval id="service_ypbind_disabled" />
 <ref nist="ECSC-1" disa="1435" />
 </Rule>
@@ -237,7 +237,7 @@ found.</description>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
 </rationale>
-<ident cce="4273-9" stig="GEN005140" />
+<ident stig="GEN005140" />
 <oval id="service_tftp_disabled" />
 <ref nist="DCSW-1" disa="225" />
 </Rule>
@@ -267,7 +267,7 @@ flag, matching the example below:
 <pre> # grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
-<ident cce="" stig="GEN005080" />
+<ident stig="GEN005080" />
 <oval id="tftpd_uses_secure_mode" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>

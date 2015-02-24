@@ -29,7 +29,7 @@ module, but will not prevent an administrator (or another program) from using th
 </ocil>
 <rationale>USB storage devices such as thumb drives can be used to introduce
 malicious software.</rationale>
-<ident cce="" stig="GEN008480" />
+<ident stig="GEN008480" />
 <oval id="kernel_module_usb-storage_disabled" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -48,7 +48,7 @@ infeasible for systems which require USB devices, which is common.</i></descript
 protect against potentially malicious USB devices, although it is only practical
 in specialized systems.
 </rationale>
-<ident cce="4173-1" stig="GEN008460" />
+<ident stig="GEN008460" />
 <oval id="bootloader_nousb_argument" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -71,7 +71,7 @@ rather than relying on the automounter.
 <rationale>Disabling the automounter permits the administrator to 
 statically control filesystem mounting through <tt>/etc/fstab</tt>. 
 </rationale>
-<ident cce="4072-5" stig="GEN008440" />
+<ident stig="GEN008440" />
 <oval id="service_autofs_disabled" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>

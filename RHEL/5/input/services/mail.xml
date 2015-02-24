@@ -39,7 +39,7 @@ The version indicated should be equal to or greater than the following:
 The SMTP service version on the system must be current to avoid exposing 
 vulnerabilities present in unpatched versions.
 </rationale>
-<ident cce="" stig="GEN004600" />
+<ident stig="GEN004600" />
 <oval id="mail_up_to_date" />
 <ref nist="VIVM-1" disa="1230" />
 </Rule>
@@ -62,7 +62,7 @@ The output received should indicate either <tt>mail.crit</tt> or <tt>mail.*</tt>
 If informational and more severe SMTP service messages are not 
 logged, malicious activity on the system may go unnoticed.
 </rationale>
-<ident cce="" stig="GEN004460" />
+<ident stig="GEN004460" />
 <oval id="mail_log_enabled" />
 <ref nist="ECAR-1,ECAR-2,ECAR-3,ECSC-1" disa="126" />
 </Rule>
@@ -79,7 +79,7 @@ If postfix is installed, this check is not applicable.
 If Sendmail is not configured to log at level 9, system logs may not contain the 
 information necessary for tracking unauthorized use of the sendmail service.
 </rationale>
-<ident cce="" stig="GEN004440" />
+<ident stig="GEN004440" />
 <oval id="mail_log_level" />
 <ref nist="ECAR-1,ECAR-2,ECAR-3" disa="366" />
 </Rule>
@@ -126,7 +126,7 @@ Debug mode is a feature present in older versions of sendmail which,
 if not disabled, may allow an attacker to gain access to a system 
 through the sendmail service.
 </rationale>
-<ident cce="" stig="GEN004620" />
+<ident stig="GEN004620" />
 <oval id="mail_debug_enabled" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -147,7 +147,7 @@ converts and stores files. By sending mail to the decode or the uudecode aliases
 systems, a remote attacker may be able to create or overwrite files on the remote host. This 
 could possibly be used to gain remote access.
 </rationale>
-<ident cce="" stig="GEN004640" />
+<ident stig="GEN004640" />
 <oval id="mail_decode_active" />
 <ref nist="ECSC-1" disa="1230" />
 </Rule>
@@ -167,7 +167,7 @@ on a system, providing significant assistance to a brute force attack on user
 accounts. EXPN may also provide additional information concerning users on 
 the system, such as the full names of account owners.
 </rationale>
-<ident cce="" stig="GEN004660" />
+<ident stig="GEN004660" />
 <oval id="mail_expn_active" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -184,7 +184,7 @@ The HELP command should be disabled to mask version information.  The version
 of the SMTP service software could be used by attackers to target vulnerabilities 
 present in specific software versions.
 </rationale>
-<ident cce="" stig="GEN004540" />
+<ident stig="GEN004540" />
 <oval id="mail_help_command" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -204,7 +204,7 @@ on a system, providing significant assistance to a brute force attack
 on user accounts. VRFY may provide additional information about users 
 on the system, such as the full names of account owners.
 </rationale>
-<ident cce="" stig="GEN004680" />
+<ident stig="GEN004680" />
 <oval id="mail_vrfy_active" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -223,7 +223,7 @@ Very old installations of the Sendmail mailing system contained a feature whereb
 a remote user connecting to the SMTP port can enter the WIZ command and be given 
 an interactive shell with root privileges.
 </rationale>
-<ident cce="" stig="GEN004700" />
+<ident stig="GEN004700" />
 <oval id="mail_wiz_active" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -247,7 +247,7 @@ the default value.
 The version of the SMTP service can be used by attackers to plan an attack based 
 on vulnerabilities present in the specific version.
 </rationale>
-<ident cce="" stig="GEN004560" />
+<ident stig="GEN004560" />
 <oval id="mail_version_info" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -268,7 +268,7 @@ The .forward file allows users to automatically forward mail to another system.
 Use of .forward files could allow the unauthorized forwarding of mail and could 
 potentially create mail loops which could degrade system performance.
 </rationale>
-<ident cce="" stig="GEN004580" />
+<ident stig="GEN004580" />
 <oval id="mail_forward_files" />
 <ref nist="ECSC-1" disa="366" />
 </Rule>
@@ -295,7 +295,7 @@ Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following
 If unrestricted mail relaying is permitted, unauthorized senders could use this host 
 as a mail relay for the purpose of sending SPAM or other unauthorized activity.
 </rationale>
-<ident cce="" stig="GEN004710" />
+<ident stig="GEN004710" />
 <oval id="mail_relaying_disabled" />
 <ref nist="ECSC-1" disa="1305" />
 </Rule>
