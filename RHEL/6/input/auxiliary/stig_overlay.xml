@@ -17,7 +17,7 @@
 		<title>The system must use a separate file system for the system audit data path.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="auditd_data_retention_space_left_action" ownerid="RHEL-06-000005" disa="138" severity="medium">
-		<VMSinfo VKey="38470" SVKey="50270" VRelease="1" />
+		<VMSinfo VKey="38470" SVKey="50270" VRelease="2" />
 		<title>The audit system must alert designated staff members when the audit storage volume approaches capacity.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="partition_for_home" ownerid="RHEL-06-000007" disa="366" severity="low">
@@ -52,7 +52,7 @@
 		<VMSinfo VKey="51337" SVKey="65547" VRelease="1" />
 		<title>The system must use a Linux Security Module at boot time.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="aide_build_database" ownerid="RHEL-06-000018" disa="1069" severity="medium">
+	<overlay owner="disastig" ruleid="aide_build_database" ownerid="RHEL-06-000018" disa="366" severity="medium">
 		<VMSinfo VKey="51391" SVKey="65601" VRelease="1" />
 		<title>A file integrity baseline must be created.</title>
 	</overlay>
@@ -197,7 +197,7 @@
 		<title>The system must require at least four characters be changed between the old and new passwords during a password change.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_deny" ownerid="RHEL-06-000061" disa="44" severity="medium">
-		<VMSinfo VKey="38573" SVKey="50374" VRelease="2" />
+		<VMSinfo VKey="38573" SVKey="50374" VRelease="3" />
 		<title>The system must disable accounts after three consecutive unsuccessful logon attempts.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="set_password_hashing_algorithm_systemauth" ownerid="RHEL-06-000062" disa="803" severity="medium">
@@ -239,7 +239,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="package_screen_installed" ownerid="RHEL-06-000071" disa="58" severity="low">
 		<VMSinfo VKey="38590" SVKey="50391" VRelease="1" />
-		<title>The system must allow locking of the console screen.</title>
+		<title>The system must allow locking of the console screen in text mode.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="set_system_login_banner" ownerid="RHEL-06-000073" disa="1384, 1385, 1386, 1387, 1388" severity="medium">
 		<VMSinfo VKey="38593" SVKey="50394" VRelease="1" />
@@ -291,7 +291,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_default_accept_redirects" ownerid="RHEL-06-000091" disa="366" severity="low">
 		<VMSinfo VKey="38533" SVKey="50334" VRelease="2" />
-		<title>The system must ignore IPv4 ICMP redirect messages.</title>
+		<title>The system must ignore ICMPv4 redirect messages by default.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" ownerid="RHEL-06-000092" disa="366" severity="low">
 		<VMSinfo VKey="38535" SVKey="50336" VRelease="1" />
@@ -303,7 +303,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="sysctl_net_ipv4_tcp_syncookies" ownerid="RHEL-06-000095" disa="1095" severity="medium">
 		<VMSinfo VKey="38539" SVKey="50340" VRelease="1" />
-		<title>The system must be configured to use TCP syncookies when experiencing a TCP SYN flood.</title>
+		<title>The system must be configured to use TCP syncookies.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="sysctl_net_ipv4_conf_all_rp_filter" ownerid="RHEL-06-000096" disa="366" severity="medium">
 		<VMSinfo VKey="38542" SVKey="50343" VRelease="1" />
@@ -336,7 +336,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="service_ip6tables_enabled" ownerid="RHEL-06-000107" disa="1100" severity="medium">
 		<VMSinfo VKey="38553" SVKey="50354" VRelease="3" />
-		<title>The operating system must prevent public IPv6 access into an organization's internal networks, except as appropriately mediated by managed interfaces employing boundary protection devices.</title>
+		<title>The operating system must prevent public IPv6 access into an organizations internal networks, except as appropriately mediated by managed interfaces employing boundary protection devices.</title>
 		<check action="prepend">If the system is a cross-domain system, this is not applicable.</check>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_ip6tables_enabled" ownerid="RHEL-06-000108" disa="1097" severity="medium">
@@ -354,11 +354,11 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="service_iptables_enabled" ownerid="RHEL-06-000116" disa="1098" severity="medium">
 		<VMSinfo VKey="38560" SVKey="50361" VRelease="2" />
-		<title>The system must employ a local IPv4 firewall.</title>
+		<title>The operating system must connect to external networks or information systems only through managed IPv4 interfaces consisting of boundary protection devices arranged in accordance with an organizational security architecture.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_iptables_enabled" ownerid="RHEL-06-000117" disa="1100" severity="medium">
 		<VMSinfo VKey="38512" SVKey="50313" VRelease="2" />
-		<title>The system must employ a local IPv4 firewall.</title>
+		<title>The operating system must prevent public IPv4 access into an organizations internal networks, except as appropriately mediated by managed interfaces employing boundary protection devices.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="service_iptables_enabled" ownerid="RHEL-06-000118" disa="1097" severity="medium">
 		<title>The system must employ a local IPv4 firewall.</title>
@@ -368,7 +368,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="set_iptables_default_rule" ownerid="RHEL-06-000120" disa="66" severity="medium">
 		<VMSinfo VKey="38513" SVKey="50314" VRelease="1" />
-		<title>The system's local IPv4 firewall must implement a deny-all, allow-by-exception policy for inbound packets.</title>
+		<title>The systems local IPv4 firewall must implement a deny-all, allow-by-exception policy for inbound packets.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="set_iptables_default_rule" ownerid="RHEL-06-000121" disa="1115" severity="medium">
 		<title>The system's local firewall must implement a deny-all, allow-by-exception policy for inbound packets.</title>
@@ -406,9 +406,9 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="rsyslog_send_messages_to_logserver" ownerid="RHEL-06-000136" disa="1348" severity="medium">
 		<VMSinfo VKey="38520" SVKey="50321" VRelease="1" />
-		<title>The operating system must back up audit records on an organization defined frequency onto a different system or media than the system being audited. </title>
+		<title>The operating system must back up audit records on an organization defined frequency onto a different system or media than the system being audited.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="rsyslog_send_messages_to_logserver" ownerid="RHEL-06-000137" disa="136" severity="medium">
+	<overlay owner="disastig" ruleid="rsyslog_send_messages_to_logserver" ownerid="RHEL-06-000137" disa="169" severity="medium">
 		<VMSinfo VKey="38521" SVKey="50322" VRelease="1" />
 		<title>The operating system must support the requirement to centrally manage the content of audit records generated by organization defined information system components.</title>
 	</overlay>
@@ -506,7 +506,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="audit_rules_mac_modification" ownerid="RHEL-06-000183" disa="366" severity="low">
 		<VMSinfo VKey="38541" SVKey="50342" VRelease="1" />
-		<title>The audit system must be configured to audit modifications to the system's Mandatory Access Control (MAC) configuration (SELinux).</title>
+		<title>The audit system must be configured to audit modifications to the systems Mandatory Access Control (MAC) configuration (SELinux).</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="audit_rules_dac_modification_chmod" ownerid="RHEL-06-000184" disa="172" severity="low">
 		<VMSinfo VKey="38543" SVKey="50344" VRelease="2" />
@@ -578,7 +578,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="audit_rules_sysadmin_actions" ownerid="RHEL-06-000201" disa="172" severity="low">
 		<VMSinfo VKey="38578" SVKey="50379" VRelease="1" />
-		<title>The audit system must be configured to audit changes to the "/etc/sudoers" file.</title>
+		<title>The audit system must be configured to audit changes to the /etc/sudoers file.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="audit_rules_kernel_module_loading" ownerid="RHEL-06-000202" disa="172" severity="medium">
 		<VMSinfo VKey="38580" SVKey="50381" VRelease="1" />
@@ -761,11 +761,11 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="use_nodev_option_on_nfs_mounts" ownerid="RHEL-06-000269" disa="366" severity="medium">
 		<VMSinfo VKey="38652" SVKey="50453" VRelease="2" />
-		<title>Remote file systems must be mounted with the "nodev" option.</title>
+		<title>Remote file systems must be mounted with the nodev option.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="use_nosuid_option_on_nfs_mounts" ownerid="RHEL-06-000270" disa="366" severity="medium">
 		<VMSinfo VKey="38654" SVKey="50455" VRelease="2" />
-		<title>Remote file systems must be mounted with the "nosuid" option.</title>
+		<title>Remote file systems must be mounted with the nosuid option.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="mount_option_noexec_removable_partitions" ownerid="RHEL-06-000271" disa="87" severity="low">
 		<VMSinfo VKey="38655" SVKey="50456" VRelease="1" />
@@ -797,15 +797,15 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000278" disa="1493" severity="medium">
 		<VMSinfo VKey="38663" SVKey="50464" VRelease="1" />
-		<title>The system package management tool must verify permissions on all files and directories associated with the "audit" package.</title>
+		<title>The system package management tool must verify permissions on all files and directories associated with the audit package.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000279" disa="1494" severity="medium">
 		<VMSinfo VKey="38664" SVKey="50465" VRelease="1" />
-		<title>The system package management tool must verify ownership on all files and directories associated with the "audit" package.</title>
+		<title>The system package management tool must verify ownership on all files and directories associated with the audit package.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000280" disa="1495" severity="medium">
 		<VMSinfo VKey="38665" SVKey="50466" VRelease="1" />
-		<title>The system package management tool must verify group-ownership on all files and directories associated with the "audit" package.</title>
+		<title>The system package management tool must verify group-ownership on all files and directories associated with the audit package.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000281" disa="1496" severity="medium">
 		<VMSinfo VKey="38637" SVKey="50438" VRelease="2" />
@@ -816,7 +816,7 @@
 		<title>There must be no world-writable files on the system.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="install_antivirus" ownerid="RHEL-06-000284" disa="1668" severity="high">
-		<VMSinfo VKey="38666" SVKey="50467" VRelease="1" />
+		<VMSinfo VKey="38666" SVKey="50467" VRelease="2" />
 		<title>The system must use and update a DoD-approved virus scan program.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="install_hids" ownerid="RHEL-06-000285" disa="1263" severity="medium">
@@ -843,7 +843,7 @@
 		<VMSinfo VKey="38674" SVKey="50475" VRelease="1" />
 		<title>X Windows must not be enabled unless required.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="packagegroup_xwindows_remove" ownerid="RHEL-06-000291" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="packagegroup_xwindows_remove" ownerid="RHEL-06-000291" disa="" severity="low">
 		<VMSinfo VKey="38676" SVKey="50477" VRelease="1" />
 		<title>The xorg-x11-server-common (X Windows) package must not be installed, unless required.</title>
 	</overlay>
@@ -868,7 +868,7 @@
 		<title>Emergency accounts must be provisioned with an expiration date.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="accounts_password_pam_maxrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
-		<VMSinfo VKey="38693" SVKey="50494" VRelease="1" />
+		<VMSinfo VKey="38693" SVKey="50494" VRelease="2" />
 		<title>The system must require passwords to contain no more than three consecutive repeating characters.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="no_files_unowned_by_user" ownerid="RHEL-06-000300" disa="224" severity="low">
@@ -930,7 +930,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="set_iptables_default_rule_forward" ownerid="RHEL-06-000320" disa="1109" severity="medium">
 		<VMSinfo VKey="38686" SVKey="50487" VRelease="1" />
-		<title>The system's local firewall must implement a deny-all, allow-by-exception policy for forwarded packets.</title>
+		<title>The systems local firewall must implement a deny-all, allow-by-exception policy for forwarded packets.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="package_openswan_installed" ownerid="RHEL-06-000321" disa="1130" severity="low">
 		<VMSinfo VKey="38687" SVKey="50488" VRelease="2" />
@@ -967,7 +967,7 @@
 	</overlay>
 	<overlay owner="disastig" ruleid="tftpd_uses_secure_mode" ownerid="RHEL-06-000338" disa="366" severity="high">
 		<VMSinfo VKey="38701" SVKey="50502" VRelease="1" />
-		<title>The TFTP daemon must operate in "secure mode" which provides access only to a single directory on the host file system.</title>
+		<title>The TFTP daemon must operate in secure mode which provides access only to a single directory on the host file system.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="ftp_log_transactions" ownerid="RHEL-06-000339" disa="130" severity="low">
 		<VMSinfo VKey="38702" SVKey="50503" VRelease="1" />
@@ -1014,12 +1014,12 @@
 		<title>The system must be configured to require the use of a CAC, PIV compliant hardware token, or Alternate Logon Token (ALT) for authentication.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_unlock_time" ownerid="RHEL-06-000356" disa="47" severity="medium">
-		<VMSinfo VKey="38592" SVKey="50393" VRelease="2" />
-		<title>The system must require administrator action to unlock an account locked by excessive failed logon attempts.</title>
+		<VMSinfo VKey="38592" SVKey="50393" VRelease="3" />
+		<title>The system must require administrator action to unlock an account locked by excessive failed login attempts.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="accounts_passwords_pam_fail_interval" ownerid="RHEL-06-000357" disa="1452" severity="medium">
-		<VMSinfo VKey="38501" SVKey="50302" VRelease="2" />
-		<title>The system must disable accounts after excessive logon failures within a 15-minute interval.</title>
+		<VMSinfo VKey="38501" SVKey="50302" VRelease="3" />
+		<title>The system must disable accounts after excessive login failures within a 15-minute interval.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="unselected" ownerid="RHEL-06-000359" disa="20" severity="medium">
 		<title>The operating system must dynamically manage user privileges and associated access authorizations.</title>
@@ -1241,9 +1241,9 @@
 	<overlay owner="disastig" ruleid="unselected" ownerid="RHEL-06-000502" disa="1674" severity="medium">
 		<title>The operating system must respond to security function anomalies in accordance with organization defined responses and alternative action(s).</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="kernel_module_usb-storage_disabled" ownerid="RHEL-06-000503" disa="86" severity="medium">
+	<overlay owner="disastig" ruleid="kernel_module_usb-storage_disabled" ownerid="RHEL-06-000503" disa="" severity="medium">
 		<VMSinfo VKey="38490" SVKey="50291" VRelease="2" />
-		<title>The system must have USB Mass Storage disabled unless needed.</title>
+		<title>The operating system must enforce requirements for the connection of mobile devices to operating systems.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000504" disa="535" severity="medium">
 		<VMSinfo VKey="38488" SVKey="50289" VRelease="1" />
@@ -1311,15 +1311,15 @@
 		<VMSinfo VKey="38446" SVKey="50246" VRelease="1" />
 		<title>The mail system must forward all mail for root to one or more system administrators.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000522" disa="162" severity="medium">
+	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000522" disa="" severity="medium">
 		<VMSinfo VKey="38445" SVKey="50245" VRelease="1" />
 		<title>Audit log files must be group-owned by root.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="set_ip6tables_default_rule" ownerid="RHEL-06-000523" disa="66" severity="medium">
 		<VMSinfo VKey="38444" SVKey="50244" VRelease="2" />
-		<title>The system's local IPv6 firewall must implement a deny-all, allow-by-exception policy for inbound packets.</title>
+		<title>The systems local IPv6 firewall must implement a deny-all, allow-by-exception policy for inbound packets.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000524" disa="15" severity="low">
+	<overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-06-000524" disa="15" severity="medium">
 		<VMSinfo VKey="38439" SVKey="50239" VRelease="1" />
 		<title>The system must provide automated support for account management functions.</title>
 	</overlay>
