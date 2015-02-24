@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="compliance" id="smartcard_auth" version="1">
+    <metadata>
+      <title>Enable Smart Card Login</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Enable Smart Card logins</description>
+      <reference source="galford" ref_id="20140815" ref_url="test_attestation" />
+    </metadata>
+    <criteria operator="AND" comment="Smart Card is required to login">
+      <extend_definition comment="pcscd service is enabled" definition_ref="service_pcscd_enabled" />
+      <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
+      <criterion comment="use smart card login for specific services" test_ref="test_smartcard_services_system-auth" />
+      <criterion comment="require smart card login" test_ref="test_require_smartcard_system-auth" />
+      <criterion comment="enable OCSP" test_ref="test_require_ocsp_configured" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check for specific services for smart card login in /etc/pam.d/system-auth" id="test_smartcard_services_system-auth" version="1">
+    <ind:object object_ref="object_smartcard_services_system-auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="require smart card login in /etc/pam.d/system-auth" id="test_require_smartcard_system-auth" version="1">
+    <ind:object object_ref="object_require_smartcard_system-auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="require OCSP is enabled" id="test_require_ocsp_configured" version="1">
+    <ind:object object_ref="object_require_ocsp_configured" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_smartcard_services_system-auth" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth\s+(?:(?:required)|(?:\[success=1\s*default=ignore\]))\s+pam_succeed_if\.so\s*service\s*notin\s*login.*quiet\s*use_uid$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_require_smartcard_system-auth" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth\s+(?:(?:sufficient)|(?:\[success=done\s*ignore=ignore\s*default=die\]))\s+pam_pkcs11\.so\s*wait_for_card\s*card_only$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_require_ocsp_configured" version="1">
+    <ind:filepath>/etc/pam_pkcs11/pam_pkcs11.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*cert_policy( )=( )ca,( )ocsp_on,( )signature;$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

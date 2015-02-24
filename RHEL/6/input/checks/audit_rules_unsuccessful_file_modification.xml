@@ -1,23 +1,29 @@
 <def-group>
-  <definition class="compliance" id="audit_rules_unsuccessful_file_modification" version="2">
+  <definition class="compliance" id="audit_rules_unsuccessful_file_modification" version="3">
     <metadata>
       <title>Ensure auditd Collects Unauthorized Access Attempts to
       Files (unsuccessful)</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>Audit rules about the Unauthorized Access
-      Attempts to Files (unsuccessful) are enabled</description>
-      <reference source="swells" ref_id="20140817" ref_url="test_attestation" />
+      <description>Audit rules about the Unauthorized Access Attempts to Files (unsuccessful) are enabled</description>
+      <reference source="JL" ref_id="RHEL6_20141211" ref_url="test_attestation" />
     </metadata>
+    <!-- 32-bit unsuccessful file modifications are monitored -->
     <criteria operator="AND">
       <criterion comment="32-bit audit file eacces" test_ref="test_32bit_audit_rules_unsuccessful_file_modification_eacces" />
       <criterion comment="32-bit audit file eperm" test_ref="test_32bit_audit_rules_unsuccessful_file_modification_eperm" />
-      <criterion comment="64-bit audit file eacces" test_ref="test_64bit_audit_rules_unsuccessful_file_modification_eacces" />
-      <criterion comment="64-bit audit file eperm" test_ref="test_64bit_audit_rules_unsuccessful_file_modification_eperm" />
+      <!-- system is not 64-bit or 64-bit unsuccessful file modifications are monitored -->
+      <criteria operator="OR">
+        <extend_definition comment="64-bit" definition_ref="system_info_architecture_x86_64" negate="true" />
+        <criteria operator="AND">
+          <criterion comment="64-bit audit file eacces" test_ref="test_64bit_audit_rules_unsuccessful_file_modification_eacces" />
+          <criterion comment="64-bit audit file eperm" test_ref="test_64bit_audit_rules_unsuccessful_file_modification_eperm" />
+        </criteria>
+      </criteria>
     </criteria>
   </definition>
-  
+
   <ind:textfilecontent54_test check="all" comment="32-bit audit file eacces" id="test_32bit_audit_rules_unsuccessful_file_modification_eacces" version="1">
     <ind:object object_ref="object_32bit_audit_rules_unsuccessful_file_modification_eacces" />
   </ind:textfilecontent54_test>

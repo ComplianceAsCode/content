@@ -553,7 +553,7 @@
               <xsl:choose>
                 <xsl:when test='. != ""'>
                   <xsl:choose>
-                    <xsl:when test='./@href = "http://iase.disa.mil/cci/index.html"'>
+                    <xsl:when test='./@href = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"'>
                       <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
                     </xsl:when>
                     <xsl:when test='./@href = "http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf"'>
@@ -661,7 +661,7 @@
               <xsl:choose>
                 <xsl:when test='. != ""'>
                   <xsl:choose>
-                    <xsl:when test='./@href = "http://iase.disa.mil/cci/index.html"'>
+                    <xsl:when test='./@href = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"'>
                       <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
                     </xsl:when>
                     <xsl:when test='./@href = "http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf"'>

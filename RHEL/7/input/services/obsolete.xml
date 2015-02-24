@@ -72,7 +72,7 @@ for information transmitted on the network. This includes authentication
 information such as passwords. Organizations which use telnet should be
 actively working to migrate to a more secure protocol.</description>
 
-<Rule id="disable_telnet_service" severity="high">
+<Rule id="service_telnetd_disabled" severity="high">
 <title>Disable telnet Service</title>
 <description>
 The <tt>telnet</tt> service configuration file <tt>/etc/xinetd.d/telnet</tt>
@@ -150,7 +150,7 @@ Enterprise Linux.</rationale>
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="uninstall_rsh-server" severity="high">
+<Rule id="package_rsh-server_removed" severity="high">
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
 the following command:
@@ -168,7 +168,7 @@ activation.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="disable_rexec" severity="high">
+<Rule id="service_rexec_disabled" severity="high">
 <title>Disable rexec Service</title>
 <description>The <tt>rexec</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -187,7 +187,7 @@ stolen by eavesdroppers on the network.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="disable_rsh" severity="high">
+<Rule id="service_rsh_disabled" severity="high">
 <title>Disable rsh Service</title>
 <description>The <tt>rsh</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -223,7 +223,7 @@ the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 <tested by="JL" on="20140530"/>
 </Rule>
 
-<Rule id="disable_rlogin" severity="high">
+<Rule id="service_rlogin_disabled" severity="high">
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -337,7 +337,7 @@ more secure protocols. A TFTP server should be run only if no more
 secure method of supporting existing equipment can be
 found.</description>
 
-<Rule id="disable_tftp" severity="medium">
+<Rule id="service_tftp_disabled" severity="medium">
 <title>Disable tftp Service</title>
 <description>The <tt>tftp</tt> service should be disabled.
 <service-disable-macro service="tftp" />

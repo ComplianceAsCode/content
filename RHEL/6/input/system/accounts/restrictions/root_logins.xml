@@ -162,7 +162,7 @@ become inaccessible.
 </warning>
 <ident cce="26966-2" />
 <oval id="no_shelllogin_for_systemaccounts" />
-<ref nist="" disa="178" />
+<ref nist="AC-2" disa="178" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -176,7 +176,7 @@ accounts other than root should be removed or have their UID changed.
 </description>
 <ocil clause="any account other than root has a UID of 0">
 To list all password file entries for accounts with UID 0, run the following command:
-<pre>$ awk -F: '($3 == "0") {print}' /etc/passwd</pre>
+<pre>$ awk -F: '($3 == 0) {print}' /etc/passwd</pre>
 This should print only one line, for the user root.
 </ocil>
 <rationale>
@@ -213,6 +213,7 @@ The root account's executable search path must be the vendor default, and must
 contain only absolute paths.
 </rationale>
 <ident cce="27125-4" />
+<ref nist="SA-8" />
 <tested by="DS" on="20121024"/>
 </Rule>
 

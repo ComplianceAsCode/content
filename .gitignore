@@ -1,1 +1,87 @@
+# Files and directories not to track in git tree
+
+# Global files for the entire tree
+*.swp
+*~
+*.pyc
+
+# RPM build files
 rpmbuild
+scap-security-guide.spec
+
+# Ignore dist directories but remember dist/README files
+**/dist
+!**/dist/README
+
+# Ignore .sh files in the following directories:
+#     */templates/output
+**/templates/output/*.sh
+
+# Ignore .ini files in the following directories
+#     */input/checks
+#     */transforms
+#     */output
+**/input/checks/*.ini
+**/transforms/*.ini
+**/output/*.ini
+
+# Ignore .xml files in the following directories:
+#     */templates/output
+#     */output
+**/templates/output/*.xml
+**/output/*.xml
+
+# Ignore .html files in the following directories:
+#     */output
+**/output/*.html
+
+# Ignore .xhtml files in the following directories:
+#     */output
+**/output/*.xhtml
+
+# Ignore .xslt files in the following directories:
+#     */output
+**/output/*.xslt
+
+# Ignore .pdf files in the following directories:
+#     */output
+#
+**/output/*.pdf
+
+# Ignore .spec files in the following directories:
+#     */output
+**/output/*.spec
+
+# Ignore .tar files in the following directories:
+#     */output
+**/output/*.tar
+
+# Ignore .gz files in the following directories:
+#     */output
+**/output/*.gz
+
+# Ignore .csv files in the following directories:
+#     */output
+**/output/*.csv
+
+# Ignore the following directories in */output
+**/output/scap-security-guide-*/
+**/output/RPMS/
+
+# Ignore docs tmp directories
+docs/Developer_Guide/tmp
+docs/SCAP_and_STIG_Workshop/tmp
+docs/User_Guide/tmp
+
+# Ignore docs publish directories
+docs/Developer_Guide/publish
+docs/SCAP_and_STIG_Workshop/publish
+docs/User_Guide/publish
+
+# Ignore docs SCAP_Security_Guide directory
+docs/html/en-US/SCAP_Security_Guide
+
+# Ignore shared directory .ini files
+shared/*.ini
+shared/modules/*.ini
+shared/oval/*.ini

@@ -11,6 +11,7 @@
     </metadata>
     <criteria>
       <criterion comment="Disable Ctrl-Alt-Del key sequence" test_ref="test_disable_ctrlaltdel" />
+      <criterion comment="Disable Ctrl-Alt-Del key sequence override exists" test_ref="test_disable_ctrlaltdel_exists" />
     </criteria>
   </definition>
 
@@ -22,4 +23,11 @@
     <ind:pattern operation="pattern match">^[\s]*exec[\s]*/sbin/shutdown[\s]*\-r[\s]*now.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Disable Ctrl-Alt-Del key sequence override exists" id="test_disable_ctrlaltdel_exists" version="1">
+    <unix:object object_ref="object_test_disable_ctrlaltdel_exists" />
+  </unix:file_test>
+  <unix:file_object comment="Disable Ctrl-Alt-Del key sequence override exists" id="object_test_disable_ctrlaltdel_exists" version="1">
+    <unix:filepath>/etc/init/control-alt-delete.override</unix:filepath>
+  </unix:file_object>
 </def-group>

@@ -37,9 +37,9 @@
 <select idref="package_aide_installed" selected="true"/>
 <select idref="aide_build_database" selected="true"/>
 
-<select idref="mountopt_nodev_on_removable_partitions" selected="true"/>
+<select idref="mount_option_nodev_removable_partitions" selected="true"/>
 <select idref="mount_option_noexec_removable_partitions" selected="true"/>
-<select idref="mountopt_nosuid_on_removable_partitions" selected="true"/>
+<select idref="mount_option_nosuid_removable_partitions" selected="true"/>
 <select idref="mount_option_tmp_nodev" selected="true"/>
 <select idref="mount_option_tmp_noexec" selected="true"/>
 <select idref="mount_option_tmp_nosuid" selected="true"/>
@@ -119,7 +119,7 @@
 <select idref="audit_rules_time_clock_settime" selected="true"/>
 <select idref="audit_rules_time_watch_localtime" selected="true"/>
 <select idref="audit_rules_usergroup_modification" selected="true"/>
-<select idref="audit_network_modifications" selected="true"/>
+<select idref="audit_rules_networkconfig_modification" selected="true"/>
 <select idref="audit_rules_mac_modification" selected="true"/>
 <select idref="audit_rules_dac_modification_chmod" selected="true"/>
 <select idref="audit_rules_dac_modification_chown" selected="true"/>
@@ -135,14 +135,14 @@
 <select idref="audit_rules_dac_modification_removexattr" selected="true"/>
 <select idref="audit_rules_dac_modification_setxattr" selected="true"/>
 <select idref="audit_rules_kernel_module_loading" selected="true"/>
-<select idref="audit_config_immutable" selected="true" />
+<select idref="audit_rules_immutable" selected="true" />
 <select idref="file_permissions_var_log_audit" selected="true"/>
 <select idref="audit_logs_rootowner" selected="true" />
-<select idref="audit_manual_logon_edits" selected="true" />
+<select idref="audit_rules_login_events" selected="true" />
 <select idref="audit_manual_session_edits" selected="true" />
 <select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
 <select idref="audit_rules_privileged_commands" selected="true"/>
-<select idref="audit_media_exports" selected="true"/>
+<select idref="audit_rules_media_export" selected="true"/>
 <select idref="audit_rules_file_deletion_events" selected="true"/>
 
 <select idref="securetty_root_login_console_only" selected="true" />
@@ -166,9 +166,9 @@
 <select idref="file_ownership_binary_dirs" selected="true"/>
 <select idref="gid_passwd_group_same" selected="true"/>
 <select idref="homedir_perms_no_groupwrite_worldread" selected="true" />
-<select idref="user_owner_grub_conf" selected="true"/>
-<select idref="group_owner_grub_conf" selected="true"/>
-<select idref="permissions_grub_conf" selected="true"/>
+<select idref="file_user_owner_grub_conf" selected="true"/>
+<select idref="file_group_owner_grub_conf" selected="true"/>
+<select idref="file_permissions_grub_conf" selected="true"/>
 
 <select idref="sysctl_fs_suid_dumpable" selected="true" />
 <select idref="service_restorecond_enabled" selected="true" />
@@ -256,10 +256,10 @@
 <select idref="uninstall_xinetd" selected="true"/>
 
 <select idref="uninstall_telnet_server" selected="true"/>
-<select idref="disable_telnet_service" selected="true"/>
+<select idref="service_telnetd_disabled" selected="true"/>
 
-<select idref="uninstall_rsh-server" selected="true"/>
-<select idref="disable_rsh" selected="true"/>
+<select idref="package_rsh-server_removed" selected="true"/>
+<select idref="service_rsh_disabled" selected="true"/>
 
 <select idref="uninstall_ypserv" selected="true"/>
 <select idref="disable_ypbind" selected="true"/>
@@ -320,7 +320,7 @@
 <select idref="dns_server_disable_dynamic_updates" selected="true" />
 
 <select idref="uninstall_tftp-server" selected="true"/>
-<select idref="disable_tftp" selected="true"/>
+<select idref="service_tftp_disabled" selected="true"/>
 <select idref="disable_vsftpd" selected="true"/> 
 <select idref="uninstall_vsftpd" selected="true"/>
 <select idref="ftp_log_transactions" selected="true" />
