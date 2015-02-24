@@ -84,10 +84,10 @@ Earlier versions of SNMP are considered insecure, as they potentially allow
 unauthorized access to detailed system management information.
 </rationale>
 <oval id="snmpd_use_newer_protocol" />
-<ident cce="27365-6"/>
+<ident cce="27365-6" stig="RHEL-06-000340" />
 </Rule>
 
-<Rule id="snmpd_not_default_password" severity="medium">
+<Rule id="snmpd_not_default_password" severity="high">
 <title>Ensure Default Password Is Not Used</title>
 <description>
 Edit <tt>/etc/snmp/snmpd.conf</tt>, remove default community string <tt>public</tt>.  
@@ -104,7 +104,7 @@ Presence of the default SNMP password enables querying of different system
 aspects and could result in unauthorized knowledge of the system.
 </rationale>
 <oval id="snmpd_not_default_password" />
-<ident cce="27593-3"/>
+<ident cce="27593-3" stig="RHEL-06-000341" />
 <tested by="MAN" on="20121214"/>
 </Rule>
 

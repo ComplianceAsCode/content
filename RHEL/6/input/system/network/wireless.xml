@@ -86,7 +86,7 @@ Output should indicate the <code>bluetooth</code> service has either not been in
 connections to Bluetooth devices, which entails some security risk.
 Nevertheless, variation in this risk decision may be expected due to the
 utility of Bluetooth connectivity and its limited range.</rationale>
-<ident cce="27081-9" />
+<ident cce="27081-9"  stig="RHEL-06-000331" />
 <oval id="service_bluetooth_disabled" />
 <ref nist="AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
 <tested by="DS" on="20121025"/>
@@ -106,7 +106,7 @@ to prevent the loading of the Bluetooth module:
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
 activation.</rationale>
-<ident cce="26763-3" />
+<ident cce="26763-3"  stig="RHEL-06-000315" />
 <oval id="kernel_module_bluetooth_disabled" />
 <ref nist="AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
 <tested by="JL" on="20141031"/>

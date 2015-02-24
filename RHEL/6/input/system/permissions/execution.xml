@@ -43,7 +43,7 @@ The output should show either <tt>022</tt> or <tt>027</tt>.
 <rationale>The umask influences the permissions assigned to files created by a
 process at run time.  An unnecessarily permissive umask could result in files
 being created with insecure permissions.</rationale>
-<ident cce="27031-4" />
+<ident cce="27031-4"  stig="RHEL-06-000346" />
 <oval id="umask_for_daemons" value="var_umask_for_daemons"/>
 <ref nist="AC-6"/>
 <tested by="JL" on="20140912"/>
@@ -86,7 +86,7 @@ The output should be:
 <rationale>A core dump includes a memory image taken at the time the operating system
 terminates an application. The memory image could contain sensitive data and is generally useful
 only for developers trying to debug problems.</rationale>
-<ident cce="27033-0" />
+<ident cce="27033-0"  stig="RHEL-06-000308" />
 <oval id="disable_users_coredumps" />
 <ref nist="SC-5" />
 </Rule>
@@ -129,7 +129,7 @@ control where code can be executed, on a per-process basis. When
 the kernel places a process's memory regions such as the stack and
 heap higher than this address, the hardware prevents execution in that
 address range.</rationale>
-<ident cce="27007-4" />
+<ident cce="27007-4"  stig="RHEL-06-000079" />
 <oval id="sysctl_kernel_exec_shield" />
 <ref nist="" />
 <tested by="DS" on="20121024"/>
@@ -145,7 +145,7 @@ into a process's address space during an attempt at exploitation.  Additionally,
 makes it more difficult for an attacker to know the location of existing code
 in order to re-purpose it using return oriented programming (ROP) techniques.
 </rationale>
-<ident cce="26999-3" />
+<ident cce="26999-3"  stig="RHEL-06-000078" />
 <oval id="sysctl_kernel_randomize_va_space" />
 <ref nist="" />
 <tested by="DS" on="20121024"/>

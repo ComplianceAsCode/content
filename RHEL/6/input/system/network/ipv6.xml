@@ -45,7 +45,7 @@ lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
 Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
-<ident cce="27153-6" />
+<ident cce="27153-6"  stig="RHEL-06-000098" />
 <oval id="kernel_module_ipv6_option_disabled" />
 <ref nist="CM-7" disa="1551"/>
 <tested by="DS" on="20121024"/>
@@ -149,7 +149,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="27166-8" />
+<ident cce="27166-8"  stig="RHEL-06-000099" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-7" disa="1551"/>
 </Rule>
