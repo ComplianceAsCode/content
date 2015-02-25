@@ -2,8 +2,11 @@
 
 import sys
 import os
+import datetime
 import lxml.etree as ET
 from ConfigParser import SafeConfigParser
+
+timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
 conf_file = 'oval.config'
 footer = '</oval_definitions>'
@@ -26,8 +29,8 @@ def _header(schema_version):
         <oval:product_name>python</oval:product_name>
         <oval:product_version>2.6.6</oval:product_version>
         <oval:schema_version>%s</oval:schema_version>
-        <oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
-    </generator>''' % schema_version
+        <oval:timestamp>%s</oval:timestamp>
+    </generator>''' % (schema_version, timestamp)
 
     return header
 
