@@ -33,7 +33,7 @@ or modification of the file.
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
-<ident cce="26995-1" />
+<ident cce="26995-1"  stig="RHEL-06-000065" />
 <oval id="file_user_owner_grub_conf" />
 <ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -51,7 +51,7 @@ destruction or modification of the file.
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
-<ident cce="27022-3" />
+<ident cce="27022-3"  stig="RHEL-06-000066" />
 <oval id="file_group_owner_grub_conf" />
 <ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -73,7 +73,7 @@ permissions: <tt>-rw-------</tt>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
-<ident cce="26949-8" />
+<ident cce="26949-8"  stig="RHEL-06-000067" />
 <oval id="file_permissions_grub_conf" />
 <ref nist="" disa="225"/>
 <tested by="DS" on="20121026"/>
@@ -103,7 +103,7 @@ users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
 </rationale>
-<ident cce="26911-8" />
+<ident cce="26911-8"  stig="RHEL-06-000068" />
 <oval id="bootloader_password" />
 <ref nist="IA-2(1),IA-5(e) AC-3" disa="213" />
 <tested by="DS" on="20121026"/>
@@ -134,7 +134,7 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
-<ident cce="27040-5" />
+<ident cce="27040-5"  stig="RHEL-06-000069" />
 <oval id="require_singleuser_auth" />
 <ref nist="IA-2(1),AC-3" disa="213" />
 <tested by="DS" on="20121024"/>
@@ -172,7 +172,7 @@ may be overwritten. Refer to <b>https://access.redhat.com/site/solutions/70464</
 for additional information.
 </rationale>
 <oval id="disable_ctrlaltdel_reboot" />
-<ident cce="27567-7"/>
+<ident cce="27567-7" stig="RHEL-06-000286" />
 </Rule>
 
 <Rule id="disable_interactive_boot" severity="medium">
@@ -197,7 +197,7 @@ Using interactive boot,
 the console user could disable auditing, firewalls, or other
 services, weakening system security.
 </rationale>
-<ident cce="27043-9" />
+<ident cce="27043-9"  stig="RHEL-06-000070" />
 <oval id="disable_interactive_boot" />
 <ref nist="SC-2,AC-3" disa="213"/>
 <tested by="DS" on="20121024"/>
@@ -274,7 +274,7 @@ Setting the idle delay controls when the
 screensaver will start, and can be combined with
 screen locking to prevent access from passersby.
 </rationale>
-<ident cce="26828-4" />
+<ident cce="26828-4"  stig="RHEL-06-000257" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-11(a)" disa="57"/>
 </Rule>
@@ -300,7 +300,7 @@ real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
-<ident cce="26600-7" />
+<ident cce="26600-7"  stig="RHEL-06-000258" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
 <ref nist="AC-11(a)" disa="57" />
 </Rule>
@@ -325,7 +325,7 @@ Enabling the activation of the screen lock after an idle period
 ensures password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
-<ident cce="26235-2" />
+<ident cce="26235-2"  stig="RHEL-06-000259" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
 <ref nist="AC-11(a)" disa="57" />
 </Rule>
@@ -349,7 +349,7 @@ If properly configured, the output should be <tt>blank-only</tt>
 Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
-<ident cce="26638-7" />
+<ident cce="26638-7"  stig="RHEL-06-000260" />
 <oval id="gconf_gnome_screensaver_mode_blank" />
 <ref nist="AC-11(b)" disa="60" />
 </Rule>
@@ -381,7 +381,7 @@ The console can now be locked with the following key combination:
 Installing <tt>screen</tt> ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
-<ident cce="26940-7" />
+<ident cce="26940-7"  stig="RHEL-06-000071" />
 <ref disa="58" />
 <oval id="package_screen_installed" />
 <tested by="DS" on="20121026"/>
@@ -427,7 +427,7 @@ smart card (CAC) authentication:
 that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
-<ident cce="27440-7"/>
+<ident cce="27440-7" stig="RHEL-06-000349" />
 <ref disa="765,766,767,768,771,772,884" />
 <oval id="smartcard_auth" />
 </Rule>
