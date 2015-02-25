@@ -29,7 +29,7 @@ def _header(schema_version):
         <oval:product_name>python</oval:product_name>
         <oval:product_version>2.6.6</oval:product_version>
         <oval:schema_version>%s</oval:schema_version>
-        <oval:timestamp>'''+str(timestamp)+'''</oval:timestamp>
+        <oval:timestamp>%s</oval:timestamp>
     </generator>''' % (schema_version, timestamp)
 
     return header
