@@ -10,7 +10,7 @@
     </metadata>
     <criteria>
       <criterion comment="Check all files and make sure they are owned by a group"
-      negate="true" test_ref="test_file_permissions_ungroupowned" />
+      test_ref="test_file_permissions_ungroupowned" />
     </criteria>
   </definition>
   <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
@@ -23,7 +23,7 @@
   </unix:file_test>
   <unix:file_state comment="Executables with suid set"
   id="state_file_permissions_ungroupowned" version="1">
-    <unix:group_id datatype="int">0</unix:group_id>
+    <unix:group_id datatype="int" var_ref="variable_file_permissions_ungroupowned" var_check="at least one"/>
   </unix:file_state>
 
   <unix:file_object comment="all local files" id="object_file_permissions_ungroupowned" version="1">
@@ -34,6 +34,15 @@
     <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
     <unix:path>/</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
-    <filter action="include">state_file_permissions_ungroupowned</filter>
+    <filter action="exclude">state_file_permissions_ungroupowned</filter>
   </unix:file_object>
+  <ind:textfilecontent54_object id="etc_group_object" version="1">
+        <ind:filepath>/etc/group</ind:filepath>
+        <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
+        <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+   <local_variable id="variable_file_permissions_ungroupowned" datatype="int" version="1" comment="all GIDs on the target system">
+        <object_component object_ref="etc_group_object" item_field="subexpression"/>
+   </local_variable>
 </def-group>
