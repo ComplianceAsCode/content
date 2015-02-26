@@ -45,7 +45,7 @@ You should receive output similar to the following:
 <pre>*		hard	maxlogins	10</pre>
 </ocil>
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
-<ident cce="27457-1" />
+<ident cce="27457-1"  stig="RHEL-06-000319" />
 <ref nist="AC-10" disa="54"/>
 </Rule>
 
@@ -225,7 +225,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown below:
 umask 077
 umask 077</pre>
 </ocil>
-<ident cce="26917-5" />
+<ident cce="26917-5"  stig="RHEL-06-000342" />
 <oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/>
 <ref nist="SA-8" disa="366"/>
 <tested by="JL" on="20140912"/>
@@ -249,7 +249,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 <pre>$ grep "umask" /etc/csh.cshrc
 umask 077</pre>
 </ocil>
-<ident cce="27034-8" />
+<ident cce="27034-8"  stig="RHEL-06-000343" />
 <oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/>
 <ref nist="SA-8" disa="366"/>
 <tested by="JL" on="20140912"/>
@@ -265,7 +265,7 @@ add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as fo
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
 written to by unauthorized users.</rationale>
-<ident cce="26669-2" />
+<ident cce="26669-2"  stig="RHEL-06-000344" />
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
@@ -297,7 +297,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 <pre>$ grep -i "UMASK" /etc/login.defs
 umask 077</pre>
 </ocil>
-<ident cce="26371-5" />
+<ident cce="26371-5"  stig="RHEL-06-000345" />
 <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
 <ref nist="SA-8" disa="366"/>
 <tested by="JL" on="20140912" />

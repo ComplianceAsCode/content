@@ -8,7 +8,10 @@
 
 # the python modules that we need
 import os
+import datetime
 import lxml.etree as ET
+
+timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
 # the "oval_header" variable must be prepended to the body of the check to form
 # valid XML
@@ -29,8 +32,8 @@ oval_header = '''<?xml version="1.0" encoding="UTF-8"?>
         <oval:product_name>testcheck.py</oval:product_name>
         <oval:product_version>0.0.1</oval:product_version>
         <oval:schema_version>5.10</oval:schema_version>
-        <oval:timestamp>2011-09-23T13:44:00</oval:timestamp>
-    </generator>'''
+        <oval:timestamp>%s</oval:timestamp>
+    </generator>''' % (timestamp)
 
 # the "oval_footer" variable must be appended to the body of the check to form
 # valid XML
