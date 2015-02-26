@@ -36,7 +36,7 @@ The command should return the string below:
 The Red Hat GPG key is necessary to cryptographically verify packages
 are from Red Hat.
 </rationale>
-<ident cce="26506-6"/>
+<ident cce="26506-6" stig="RHEL-06-000008" />
 <oval id="ensure_redhat_gpgkey_installed" />
 <ref nist="SI-7,MA-1(b)" disa="351"/>
 <tested by="MM" on="20120928"/>
@@ -45,7 +45,7 @@ are from Red Hat.
 <!-- REMINDER: Before telling people to update their systems
      via the security_patches_up_to_date rule, we must
      ensure they have configured an update source! -->
-<Rule id="ensure_gpgcheck_globally_activated" severity="high">
+<Rule id="ensure_gpgcheck_globally_activated" severity="medium">
 <title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option controls whether
 RPM packages' signatures are always checked prior to installation.
@@ -68,13 +68,13 @@ Ensuring the validity of packages' cryptographic signatures prior to
 installation ensures the authenticity of the software and
 protects against malicious tampering.
 </rationale>
-<ident cce="26709-6" />
+<ident cce="26709-6"  stig="RHEL-06-000013" />
 <oval id="ensure_gpgcheck_globally_activated" />
 <ref nist="SI-7,MA-1(b)" disa="352,663" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
-<Rule id="ensure_gpgcheck_never_disabled" severity="high">
+<Rule id="ensure_gpgcheck_never_disabled" severity="low">
 <title>Ensure gpgcheck Enabled For All Yum Package Repositories</title>
 <description>To ensure signature checking is not disabled for
 any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
@@ -93,13 +93,13 @@ Ensuring all packages' cryptographic signatures are valid prior to
 installation ensures the authenticity of the software and
 protects against malicious tampering.
 </rationale>
-<ident cce="26647-8" />
+<ident cce="26647-8"  stig="RHEL-06-000015" />
 <oval id="ensure_gpgcheck_never_disabled" />
 <ref nist="SI-7,MA-1(b)" disa="352,663"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
-<Rule id="security_patches_up_to_date" severity="high">
+<Rule id="security_patches_up_to_date" severity="medium">
 <title>Ensure Software Patches Installed</title>
 <description>If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
 or a yum server, run the following command to install updates:
@@ -123,7 +123,7 @@ to determine if the system is missing applicable updates.
 Installing software updates is a fundamental mitigation against
 the exploitation of publicly-known vulnerabilities.
 </rationale>
-<ident cce="27635-2"/>
+<ident cce="27635-2" stig="RHEL-06-000011" />
 <ref nist="SI-2,MA-1(b)" disa="1227,1233"/>
 <tested by="MM" on="20120928"/>
 </Rule>

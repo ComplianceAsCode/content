@@ -29,7 +29,7 @@ module, but will not prevent an administrator (or another program) from using th
 </ocil>
 <rationale>USB storage devices such as thumb drives can be used to introduce
 malicious software.</rationale>
-<ident cce="27016-5" />
+<ident cce="27016-5"  stig="RHEL-06-000503" />
 <oval id="kernel_module_usb-storage_disabled" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
 </Rule>
@@ -99,7 +99,7 @@ rather than relying on the automounter.
 <rationale>Disabling the automounter permits the administrator to 
 statically control filesystem mounting through <tt>/etc/fstab</tt>. 
 </rationale>
-<ident cce="26976-1" />
+<ident cce="26976-1"  stig="RHEL-06-000526" />
 <oval id="service_autofs_disabled" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
 </Rule>
