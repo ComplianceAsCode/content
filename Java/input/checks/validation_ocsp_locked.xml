@@ -1,0 +1,98 @@
+<def-group>
+  <definition class="compliance" id="validation_ocsp_locked" version="1">
+    <metadata>
+      <title>The option to enable online certificate validation must be locked.</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <description>Online certificate validation provides a real-time option to 
+	  validate a certificate. When enabled, if a certificate is presented, the 
+	  status of the certificate is requested. The status is sent back as 'current', 
+	  'expired', or 'unknown'. Online certificate validation provides a greater 
+	  degree of validation of certificates when running a signed Java applet. 
+	  Permitting execution of an applet with an invalid certificate may result 
+	  in malware execution , system modification, invasion of privacy, and denial 
+	  of service.
+	  Ensuring users cannot change settings contributes to a more consistent 
+	  security profile.</description>
+    </metadata>
+    <!-- deployment.security.validation.ocsp.locked is configured ... -->
+    <criteria>
+      <criteria operator="OR">
+		<criteria>
+	      <extend_definition comment="Oracle's JRE 1.6.0 is not installed" definition_ref="installed_app_is_oracle_160_java" negate="true" />
+	      <extend_definition comment="Oracle's JRE 1.7.0 is not installed" definition_ref="installed_app_is_oracle_170_java" negate="true" />
+	    </criteria>
+	    <criterion comment="Check deployment.security.validation.ocsp.locked" test_ref="test_validation_ocsp_oracle_java_locked" />
+	  </criteria>
+      <criteria operator="OR">
+		<criteria>
+	      <extend_definition comment="Red Hat's IBM JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_ibm_160_java" negate="true" />
+	      <extend_definition comment="Red Hat's IBM JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_ibm_170_java" negate="true" />
+	    </criteria>
+	    <criterion comment="Check deployment.security.validation.ocsp.locked" test_ref="test_validation_ocsp_rhel_ibm_java_locked" />
+	  </criteria>
+      <criteria operator="OR">
+		<criteria>
+	      <extend_definition comment="Red Hat's OpenJDK JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_openjdk_160_java" negate="true" />
+	      <extend_definition comment="Red Hat's OpenJDK JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_openjdk_170_java" negate="true" />
+	    </criteria>
+	    <criterion comment="Check deployment.security.validation.ocsp.locked" test_ref="test_validation_ocsp_rhel_openjdk_java_locked" />
+	  </criteria>
+      <criteria operator="OR">
+        <extend_definition comment="Red Hat's Sun JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_sun_160_java" negate="true" />
+	    <criterion comment="Check deployment.security.validation.ocsp.locked" test_ref="test_validation_ocsp_rhel_sun_java_locked" />
+	  </criteria>
+      <criteria operator="OR">
+        <extend_definition comment="Red Hat's Oracle JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_oracle_170_java" negate="true" />
+	    <criterion comment="Check deployment.security.validation.ocsp.locked" test_ref="test_validation_ocsp_rhel_oracle_java_locked" />
+	  </criteria>
+	</criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.validation.ocsp.locked" id="test_validation_ocsp_oracle_java_locked" version="1">
+    <ind:object object_ref="object_validation_ocsp_oracle_java_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_validation_ocsp_oracle_java_locked" version="1">
+    <ind:filepath>/usr/java/default/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.validation.ocsp.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.validation.ocsp.locked" id="test_validation_ocsp_rhel_ibm_java_locked" version="1">
+    <ind:object object_ref="object_validation_ocsp_rhel_ibm_java_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_validation_ocsp_rhel_ibm_java_locked" version="1">
+    <ind:filepath>/etc/alternatives/jre_ibm/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.validation.ocsp.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.validation.ocsp.locked" id="test_validation_ocsp_rhel_openjdk_java_locked" version="1">
+    <ind:object object_ref="object_validation_ocsp_rhel_openjdk_java_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_validation_ocsp_rhel_openjdk_java_locked" version="1">
+    <ind:filepath>/etc/alternatives/jre_openjdk/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.validation.ocsp.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.validation.ocsp.locked" id="test_validation_ocsp_rhel_sun_java_locked" version="1">
+    <ind:object object_ref="object_validation_ocsp_rhel_sun_java_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_validation_ocsp_rhel_sun_java_locked" version="1">
+    <ind:filepath>/etc/alternatives/jre_sun/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.validation.ocsp.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.validation.ocsp.locked" id="test_validation_ocsp_rhel_oracle_java_locked" version="1">
+    <ind:object object_ref="object_validation_ocsp_rhel_oracle_java_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_validation_ocsp_rhel_oracle_java_locked" version="1">
+    <ind:filepath>/etc/alternatives/jre_oracle/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.validation.ocsp.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

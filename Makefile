@@ -51,6 +51,9 @@ openstack:
 rhevm3:
 	cd RHEVM3 && $(MAKE)
 
+java:
+	cd Java/ && $(MAKE)
+
 validate: fedora rhel6 rhel7 openstack rhevm3
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
@@ -79,6 +82,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents RHEL/6/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/7/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Java/ $(RPMBUILD)/$(PKG)
 	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
@@ -87,6 +91,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/RHEL/6/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Java/ && $(MAKE) clean)
 
 	# Create the source tar, copy it to TARBALL
 	# (e.g. somewhere in the SOURCES directory)
@@ -161,6 +166,7 @@ clean:
 	cd OpenStack && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
+	cd Java && $(MAKE) clean
 	rm -f scap-security-guide.spec
 
-.PHONY: rhel5 rhel6 tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 java tarball srpm rpm clean all
