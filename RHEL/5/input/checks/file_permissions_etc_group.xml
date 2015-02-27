@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_etc_group" version="1">
+    <metadata>
+      <title>Verify permissions on 'group' file</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /etc/group should be set
+      correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_etc_group" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="Testing /etc/group permissions" id="test_file_permissions_etc_group"
+  version="1">
+    <unix:object object_ref="object_file_permissions_etc_group" />
+    <unix:state state_ref="state_file_permissions_etc_group" />
+  </unix:file_test>
+  <unix:file_state id="state_file_permissions_etc_group" version="1">
+    <unix:uread datatype="boolean">true</unix:uread>
+    <unix:uwrite datatype="boolean">true</unix:uwrite>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gread datatype="boolean">true</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+  <unix:file_object comment="/etc/group" id="object_file_permissions_etc_group"
+  version="1">
+    <unix:filepath>/etc/group</unix:filepath>
+  </unix:file_object>
+</def-group>

@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_screensaver_lock_enabled" version="1">
+    <metadata>
+      <title>Implement idle activation of screen lock</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Idle activation of the screen lock should be enabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="screensaver lock is enabled" test_ref="test_screensaver_lock_enabled" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all" comment="screensaver lock is enabled" id="test_screensaver_lock_enabled" version="1">
+    <ind:object object_ref="object_screensaver_lock_enabled" />
+    <ind:state state_ref="state_screensaver_lock_enabled" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_screensaver_lock_enabled" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='lock_enabled']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_screensaver_lock_enabled" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+</def-group>

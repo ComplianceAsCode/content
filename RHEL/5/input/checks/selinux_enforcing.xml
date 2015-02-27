@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="compliance" id="selinux_enforcing" version="1">
+    <metadata>
+      <title>SELinux Enforcing</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The SELinux state should be enforcing the local policy.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Check for enforcing value" test_ref="test_etc_selinux_config" />
+      <criterion comment="Check policy type" test_ref="test_selinux_policy" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="/selinux/enforce is 1" id="test_etc_selinux_config" version="1">
+    <ind:object object_ref="object_etc_selinux_config" />
+    <ind:state state_ref="state_etc_selinux_config" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_etc_selinux_config" version="1">
+    <ind:path>/etc/selinux</ind:path>
+    <ind:filename>config</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*SELINUX[\s]*=[\s]*([a-z]+)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_etc_selinux_config" version="1">
+    <ind:subexpression datatype="string" operation="equals">enforcing</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Tests the value of SELINUXTYPE in the /etc/selinux/config file" id="test_selinux_policy" version="1">
+    <ind:object object_ref="obj_selinux_policy" />
+    <ind:state state_ref="state_selinux_policy" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_selinux_policy" version="1">
+    <ind:path>/etc/selinux</ind:path>
+    <ind:filename>config</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*SELINUXTYPE[\s]*=[\s]*([a-z]+)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_selinux_policy" version="1">
+    <ind:subexpression datatype="string" operation="equals">targeted</ind:subexpression>
+    <!-- <ind:subexpression datatype="string" operation="equals" var_check="at least one" var_ref="var_selinux_policy_name" /> -->
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="External variable: name of selinux policy in /etc/selinux/config" datatype="string" id="var_selinux_policy_name" version="1" />
+
+</def-group>

@@ -1,0 +1,108 @@
+<def-group>
+  <definition class="compliance" id="global_initialization_files_mesg" version="1">
+    <metadata>
+      <title>Global Initialization Files Messaging</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Global initialization files should have mesg n or mesg -n to disable messaging.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion test_ref="test_global_initialization_files_mesg_etc_bashrc" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_csh_cshrc" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_csh_login" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_csh_logout" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_environment" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_ksh_kshrc" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_profile" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_suid_profile" />
+      <criterion test_ref="test_global_initialization_files_mesg_etc_profiled" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/bashrc" id="test_global_initialization_files_mesg_etc_bashrc" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_bashrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/bashrc" id="object_global_initialization_files_mesg_etc_bashrc" version="1">
+    <ind:filepath>/etc/bashrc</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/csh.cshrc" id="test_global_initialization_files_mesg_etc_csh_cshrc" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_csh_cshrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/csh.cshrc" id="object_global_initialization_files_mesg_etc_csh_cshrc" version="1">
+    <ind:filepath>/etc/csh.cshrc</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/csh.login" id="test_global_initialization_files_mesg_etc_csh_login" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_csh_login" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/csh.login" id="object_global_initialization_files_mesg_etc_csh_login" version="1">
+    <ind:filepath>/etc/csh.login</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/csh.logout" id="test_global_initialization_files_mesg_etc_csh_logout" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_csh_logout" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/csh.logout" id="object_global_initialization_files_mesg_etc_csh_logout" version="1">
+    <ind:filepath>/etc/csh.logout</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/environment" id="test_global_initialization_files_mesg_etc_environment" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_environment" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/environment" id="object_global_initialization_files_mesg_etc_environment" version="1">
+    <ind:filepath>/etc/environment</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/ksh.kshrc" id="test_global_initialization_files_mesg_etc_ksh_kshrc" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_ksh_kshrc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/ksh.kshrc" id="object_global_initialization_files_mesg_etc_ksh_kshrc" version="1">
+    <ind:filepath>/etc/ksh.kshrc</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/profile" id="test_global_initialization_files_mesg_etc_profile" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_profile" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/profile" id="object_global_initialization_files_mesg_etc_profile" version="1">
+    <ind:filepath>/etc/profile</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/suid_profile" id="test_global_initialization_files_mesg_etc_suid_profile" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_suid_profile" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/suid_profile" id="object_global_initialization_files_mesg_etc_suid_profile" version="1">
+    <ind:filepath>/etc/suid_profile</ind:filepath>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing mesg n or mesg -n in /etc/profile.d/*" id="test_global_initialization_files_mesg_etc_profiled" version="1">
+    <ind:object object_ref="object_global_initialization_files_mesg_etc_profiled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/profile.d/*" id="object_global_initialization_files_mesg_etc_profiled" version="1">
+    <ind:path>/etc/profile.d</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">(mesg n|mesg -n)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+</def-group>

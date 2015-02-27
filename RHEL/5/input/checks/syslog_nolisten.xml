@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="syslog_nolisten"
+  version="1">
+    <metadata>
+      <title>Syslog Configured as Log Server</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The syslog daemon must not accept remote 
+	  messages unless it is a syslog server documented using 
+	  site-defined procedures.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_syslog_nolisten" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of '-r' for 'SYSLOGD_OPTIONS' in /etc/sysconfig/syslog"
+  id="test_syslog_nolisten" version="1">
+    <ind:object object_ref="obj_syslog_nolisten" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_syslog_nolisten"
+  version="1">
+    <ind:path>/etc/sysconfig</ind:path>
+    <ind:filename>syslog</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*SYSLOGD_OPTIONS[\s]*=[\s]*".*(-r)[\s"]</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

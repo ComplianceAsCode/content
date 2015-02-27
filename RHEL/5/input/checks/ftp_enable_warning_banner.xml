@@ -1,0 +1,96 @@
+<def-group>
+  <definition class="compliance" id="ftp_enable_warning_banner" version="1">
+    <metadata>
+      <title>Enable a Warning Banner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>FTP warning banner should be enabled (and dependencies are
+      met)</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+			<extend_definition comment="krb5-workstation removed" definition_ref="package_krb5-workstation_removed" />
+			<criteria operator="AND">
+			  <criterion comment="Check gssftp Banner in /etc/xinetd.d/gssftp"
+			  test_ref="test_ftp_enable_warning_banner_gssftp" />
+			  <criterion comment="Check gssftp Banner Text"
+			  test_ref="test_ftp_enable_warning_banner_gssftp_text" />
+			</criteria>
+		</criteria>
+		<criteria operator="OR">
+			<extend_definition comment="vsftpd removed" definition_ref="package_vsftpd_removed" />
+			<criteria operator="AND">
+			  <criterion comment="Check vsftpd Banner in /etc/vsftpd/vsftpd.conf"
+			  test_ref="test_ftp_enable_warning_banner_vsftpd" />
+			  <criterion comment="Check vsftpd Banner Text"
+			  test_ref="test_ftp_enable_warning_banner_vsftpd_text" />
+			</criteria>
+		</criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of the Banner[\s]+/etc/issue setting in the /etc/ssh/ftp_config file"
+  id="test_ftp_enable_warning_banner_gssftp" version="1">
+    <ind:object object_ref="obj_ftp_enable_warning_banner_gssftp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ftp_enable_warning_banner_gssftp" version="1">
+    <ind:filepath>/etc/xinetd.d/gssftp</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)banner[\s]*=[\s]*(/.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="correct banner in /etc/issue" id="test_ftp_enable_warning_banner_gssftp_text" version="1">
+    <ind:object object_ref="object_ftp_enable_warning_banner_gssftp_text" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ftp_enable_warning_banner_gssftp_text" version="1">
+    <ind:filepath var_ref="var_ftp_enable_warning_banner_gssftp" />
+    <ind:pattern var_ref="ftp_login_banner_text" operation="pattern match" />
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_ftp_enable_warning_banner_gssftp" comment="gssftp banner file" datatype="string" version="1">
+		<object_component item_field="subexpression" object_ref="object_ftp_enable_warning_banner_gssftp_list" />
+  </local_variable>
+  <ind:textfilecontent54_object id="object_ftp_enable_warning_banner_gssftp_list" version="1">
+    <ind:filepath>/etc/xinetd.d/gssftp</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)banner[\s]*=[\s]*(/.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of the Banner[\s]+/etc/issue setting in the /etc/vsftpd/vsftpd.conf file"
+  id="test_ftp_enable_warning_banner_vsftpd" version="1">
+    <ind:object object_ref="obj_ftp_enable_warning_banner_vsftpd" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ftp_enable_warning_banner_vsftpd" version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)banner_file[\s]*=[\s]*(/.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="correct banner in /etc/issue" id="test_ftp_enable_warning_banner_vsftpd_text" version="1">
+    <ind:object object_ref="object_ftp_enable_warning_banner_vsftpd_text" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ftp_enable_warning_banner_vsftpd_text" version="1">
+    <ind:filepath var_ref="var_ftp_enable_warning_banner_vsftpd" />
+    <ind:pattern var_ref="ftp_login_banner_text" operation="pattern match" />
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_ftp_enable_warning_banner_vsftpd" comment="vsftpd banner file" datatype="string" version="1">
+		<object_component item_field="subexpression" object_ref="object_ftp_enable_warning_banner_vsftpd_list" />
+  </local_variable>
+  <ind:textfilecontent54_object id="object_ftp_enable_warning_banner_vsftpd_list" version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)banner_file[\s]*=[\s]*(/.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <external_variable comment="warning banner text variable" datatype="string" id="ftp_login_banner_text" version="1" />
+
+</def-group>

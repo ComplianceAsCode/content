@@ -1,0 +1,1 @@
+find /etc/skel 2>/dev/null | xargs setfacl --remove-all

@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="baseline_suid_files" version="1">
+    <metadata>
+      <title>SUID Files Baseline Exists and is Checked Weekly</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>A baseline of suid files on the system should be generated and checked weekly for changes.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="make sure /var/log/suid-file-list exists" test_ref="test_baseline_suid_files_exists" />
+      <criterion comment="make sure /etc/cron.weekly/baseline_checker.sh exists" test_ref="test_baseline_suid_files_cron" />
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="all_exist" comment="make sure /var/log/suid-file-list exists" id="test_baseline_suid_files_exists" version="1">
+    <unix:object object_ref="object_baseline_suid_files_exists" />
+  </unix:file_test>
+  <unix:file_object id="object_baseline_suid_files_exists" version="1">
+    <unix:filepath operation="equals">/var/log/suid-file-list</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="make sure /etc/cron.weekly/baseline_checker.sh exists" id="test_baseline_suid_files_cron" version="1">
+    <unix:object object_ref="object_baseline_suid_files_cron" />
+  </unix:file_test>
+  <unix:file_object id="object_baseline_suid_files_cron" version="1">
+    <unix:filepath operation="equals">/etc/cron.weekly/baseline_checker.sh</unix:filepath>
+  </unix:file_object>
+
+</def-group>

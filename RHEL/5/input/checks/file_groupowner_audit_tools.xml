@@ -1,0 +1,74 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_audit_tools" version="1">
+    <metadata>
+      <title>Audit Tools Group Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Group owner for audit tools must be root.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_groupowner_sbin_auditctl" />
+      <criterion test_ref="test_file_groupowner_sbin_auditd" />
+      <criterion test_ref="test_file_groupowner_sbin_ausearch" />
+      <criterion test_ref="test_file_groupowner_sbin_aureport" />
+      <criterion test_ref="test_file_groupowner_sbin_autrace" />
+      <criterion test_ref="test_file_groupowner_sbin_audispd" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/auditctl group owner" id="test_file_groupowner_sbin_auditctl" version="1">
+    <unix:object object_ref="object_file_groupowner_sbin_auditctl" />
+    <unix:state state_ref="state_file_groupowner_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/auditctl" id="object_file_groupowner_sbin_auditctl" version="1">
+    <unix:filepath>/sbin/auditctl</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/auditd group owner" id="test_file_groupowner_sbin_auditd" version="1">
+    <unix:object object_ref="object_file_groupowner_sbin_auditd" />
+    <unix:state state_ref="state_file_groupowner_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/auditd" id="object_file_groupowner_sbin_auditd" version="1">
+    <unix:filepath>/sbin/auditd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/ausearch group owner" id="test_file_groupowner_sbin_ausearch" version="1">
+    <unix:object object_ref="object_file_groupowner_sbin_ausearch" />
+    <unix:state state_ref="state_file_groupowner_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/ausearch" id="object_file_groupowner_sbin_ausearch" version="1">
+    <unix:filepath>/sbin/ausearch</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/aureport group owner" id="test_file_groupowner_sbin_aureport" version="1">
+    <unix:object object_ref="object_file_groupowner_sbin_aureport" />
+    <unix:state state_ref="state_file_groupowner_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/aureport" id="object_file_groupowner_sbin_aureport" version="1">
+    <unix:filepath>/sbin/aureport</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/autrace group owner" id="test_file_groupowner_sbin_autrace" version="1">
+    <unix:object object_ref="object_file_groupowner_sbin_autrace" />
+    <unix:state state_ref="state_file_groupowner_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/autrace" id="object_file_groupowner_sbin_autrace" version="1">
+    <unix:filepath>/sbin/autrace</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/audispd group owner" id="test_file_groupowner_sbin_audispd" version="1">
+    <unix:object object_ref="object_file_groupowner_sbin_audispd" />
+    <unix:state state_ref="state_file_groupowner_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/audispd" id="object_file_groupowner_sbin_audispd" version="1">
+    <unix:filepath>/sbin/audispd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_groupowner_audit_tools" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+</def-group>

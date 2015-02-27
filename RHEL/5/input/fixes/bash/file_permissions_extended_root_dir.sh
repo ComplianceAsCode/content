@@ -1,0 +1,1 @@
+setfacl -RLb /root/*

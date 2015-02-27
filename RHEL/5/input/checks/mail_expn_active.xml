@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="mail_expn_active"
+  version="1">
+    <metadata>
+      <title>SMTP EXPN Command Disabled</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The SMTP service must not have the EXPN feature active.</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="sendmail is not installed" negate="true"
+		  definition_ref="package_sendmail_installed" />
+			<criteria operator="AND">
+				<criterion comment="Check PrivacyOptions in /etc/mail/sendmail.cf"
+				test_ref="test_mail_expn_active_sendmail" />
+			</criteria>
+		</criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="PrivacyOptions in /etc/mail/sendmail.cf should be set correctly"
+  id="test_mail_expn_active_sendmail" version="1">
+    <ind:object object_ref="obj_mail_expn_active_sendmail" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="PrivacyOptions in /etc/mail/sendmail.cf should be set correctly"
+  id="obj_mail_expn_active_sendmail" version="1">
+    <ind:path>/etc/mail</ind:path>
+    <ind:filename>sendmail.cf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?:O\s*)*(?i)(?:PrivacyOptions).*(noexpn)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,59 @@
+<def-group>
+  <definition class="compliance" id="tftpd_user_shell"
+  version="1">
+    <metadata>
+      <title>TFTP User Shell</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The TFTP daemon must be configured to vendor specifications, including a 
+	  dedicated TFTP user account, a non-login shell such as /bin/false, and a home directory 
+	  owned by the TFTP user.</description>
+    </metadata>
+    <criteria comment="package tftp-server removed or /etc/xinetd.d/tftp configured correctly" operator="OR">
+		<extend_definition comment="rpm package tftp-server removed" definition_ref="package_tftp-server_removed" />
+		<criterion test_ref="test_tftpd_user_shell_disabled" />
+		<criteria operator="AND">
+			<criterion test_ref="test_tftpd_user_shell_user" />
+			<criterion test_ref="test_tftpd_user_shell" />
+		</criteria>
+	</criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tftpd disabled" id="test_tftpd_user_shell_disabled" version="1">
+    <ind:object object_ref="object_tftpd_user_shell_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_tftpd_user_shell_disabled"
+  version="1">
+    <ind:filepath>/etc/xinetd.d/tftp</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)disable.*(yes)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tftpd user" id="test_tftpd_user_shell_user" version="1">
+    <ind:object object_ref="object_tftpd_user_shell_user" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_tftpd_user_shell_user"
+  version="1">
+    <ind:filepath>/etc/xinetd.d/tftp</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)user.*(tftp)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:password_test check="all" check_existence="all_exist" comment="tftpd user shell" id="test_tftpd_user_shell" version="1">
+    <unix:object object_ref="object_tftpd_user_shell" />
+    <unix:state state_ref="state_tftpd_user_shell" />
+  </unix:password_test>
+  
+  <unix:password_object id="object_tftpd_user_shell" version="3">
+    <unix:username datatype="string" operation="pattern match">^tftp$</unix:username>
+  </unix:password_object>
+
+  <unix:password_state id="state_tftpd_user_shell" version="3">
+    <unix:login_shell datatype="string" operation="pattern match">^(/bin/false|/dev/null|/usr/bin/false|/bin/true|/sbin/nologin)$</unix:login_shell>
+  </unix:password_state>
+
+</def-group>

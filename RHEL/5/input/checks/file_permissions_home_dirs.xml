@@ -1,0 +1,51 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_home_dirs" version="1">
+    <metadata>
+      <title>Proper Permissions User Home Directories</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>All user home directories must have mode 0750 or less permissive.</description>
+    </metadata>
+    <criteria >
+      <criterion comment="home directories" test_ref="test_file_permissions_home_dirs" negate="true" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_file_permissions_home_dirs_path_list" comment="User Accounts" datatype="string" version="1">
+	<object_component item_field="home_dir" object_ref="object_file_permissions_home_dirs_path_list" />
+  </local_variable>
+  
+  <unix:password_object id="object_file_permissions_home_dirs_path_list" version="1">
+    <unix:username operation="pattern match">^.*$</unix:username>
+    <filter action="include">state_file_permissions_home_dirs_path_user</filter>
+    <filter action="exclude">state_file_permissions_home_dirs_path_nfs_user</filter>
+  </unix:password_object>
+  <unix:password_state id="state_file_permissions_home_dirs_path_user" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">500</unix:user_id>
+  </unix:password_state>
+  <unix:password_state id="state_file_permissions_home_dirs_path_nfs_user" version="1">
+    <unix:username datatype="string" operation="equals">nfsnobody</unix:username>
+  </unix:password_state>
+  
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="home directories" id="test_file_permissions_home_dirs" version="1">
+    <unix:object object_ref="object_file_permissions_home_dirs" />
+    <unix:state state_ref="state_home_dirs_wrong_perm" />
+  </unix:file_test>
+  <unix:file_object comment="home directories" id="object_file_permissions_home_dirs" version="1">
+    <unix:path operation="equals" var_ref="var_file_permissions_home_dirs_path_list" var_check="at least one" datatype="string" />
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+  <unix:file_state id="state_home_dirs_wrong_perm" version="1" operator="OR">
+    <unix:suid datatype="boolean">true</unix:suid>
+    <unix:sgid datatype="boolean">true</unix:sgid>
+    <unix:sticky datatype="boolean">true</unix:sticky>
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+    <unix:oexec datatype="boolean">true</unix:oexec>
+  </unix:file_state>
+</def-group>

@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_var_log" version="1">
+    <metadata>
+      <title>File /var/log/* Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /var/log/* must be 0640.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_var_log" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing permissions" id="test_file_permissions_var_log" version="1">
+    <unix:object object_ref="object_file_permissions_var_log" />
+    <unix:state state_ref="state_file_permissions_var_log" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log/*" id="object_file_permissions_var_log" version="1">
+    <unix:path>/var/log</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_var_log_wtmp</filter>
+  </unix:file_object>
+
+  <unix:file_state comment="/var/log/wtmp" id="state_file_permissions_var_log_wtmp" version="1">
+    <unix:filepath operation="pattern match">/var/log/wtmp*</unix:filepath>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_var_log" version="1">
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

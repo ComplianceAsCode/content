@@ -1,0 +1,77 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_audit_tools" version="1">
+    <metadata>
+      <title>Audit Tools Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for audit tools must be 0750.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_sbin_auditctl" />
+      <criterion test_ref="test_file_permissions_sbin_auditd" />
+      <criterion test_ref="test_file_permissions_sbin_ausearch" />
+      <criterion test_ref="test_file_permissions_sbin_aureport" />
+      <criterion test_ref="test_file_permissions_sbin_autrace" />
+      <criterion test_ref="test_file_permissions_sbin_audispd" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/auditctl permissions" id="test_file_permissions_sbin_auditctl" version="1">
+    <unix:object object_ref="object_file_permissions_sbin_auditctl" />
+    <unix:state state_ref="state_file_permissions_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/auditctl" id="object_file_permissions_sbin_auditctl" version="1">
+    <unix:filepath>/sbin/auditctl</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/auditd permissions" id="test_file_permissions_sbin_auditd" version="1">
+    <unix:object object_ref="object_file_permissions_sbin_auditd" />
+    <unix:state state_ref="state_file_permissions_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/auditd" id="object_file_permissions_sbin_auditd" version="1">
+    <unix:filepath>/sbin/auditd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/ausearch permissions" id="test_file_permissions_sbin_ausearch" version="1">
+    <unix:object object_ref="object_file_permissions_sbin_ausearch" />
+    <unix:state state_ref="state_file_permissions_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/ausearch" id="object_file_permissions_sbin_ausearch" version="1">
+    <unix:filepath>/sbin/ausearch</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/aureport permissions" id="test_file_permissions_sbin_aureport" version="1">
+    <unix:object object_ref="object_file_permissions_sbin_aureport" />
+    <unix:state state_ref="state_file_permissions_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/aureport" id="object_file_permissions_sbin_aureport" version="1">
+    <unix:filepath>/sbin/aureport</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/autrace permissions" id="test_file_permissions_sbin_autrace" version="1">
+    <unix:object object_ref="object_file_permissions_sbin_autrace" />
+    <unix:state state_ref="state_file_permissions_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/autrace" id="object_file_permissions_sbin_autrace" version="1">
+    <unix:filepath>/sbin/autrace</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/audispd permissions" id="test_file_permissions_sbin_audispd" version="1">
+    <unix:object object_ref="object_file_permissions_sbin_audispd" />
+    <unix:state state_ref="state_file_permissions_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/audispd" id="object_file_permissions_sbin_audispd" version="1">
+    <unix:filepath>/sbin/audispd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_audit_tools" version="1">
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

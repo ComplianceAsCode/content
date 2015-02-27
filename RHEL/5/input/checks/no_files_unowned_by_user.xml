@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance"
+  id="no_files_unowned_by_user" version="1">
+    <metadata>
+      <title>Find files unowned by a user</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>All files should be owned by a
+      user</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all files and make sure they are owned by a user" test_ref="no_files_unowned_by_user_test" />
+    </criteria>
+  </definition>
+
+  <local_variable id="file_permissions_unowned_userid_list" comment="List of valid user ids" datatype="int" version="1">
+    <object_component item_field="subexpression" object_ref="file_permissions_unowned_userid_list_object" />
+  </local_variable>
+  <ind:textfilecontent54_object id="file_permissions_unowned_userid_list_object" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]+:([\d]+):[\d]+:[^:]*:[^:]+:[^:]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Check user ids on all files on the system" id="no_files_unowned_by_user_test" version="1">
+    <unix:object object_ref="file_permissions_unowned_object" />
+  </unix:file_test>
+  <unix:file_object comment="all local files" id="file_permissions_unowned_object" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path>/</unix:path>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">file_permissions_unowned_userid_list_match</filter>
+  </unix:file_object>
+  <unix:file_state id="file_permissions_unowned_userid_list_match" version="1">
+    <unix:user_id var_check="at least one" var_ref="file_permissions_unowned_userid_list" datatype="int" />
+  </unix:file_state>
+  
+</def-group>

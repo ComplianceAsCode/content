@@ -1,0 +1,1 @@
+find / -name *.mib 2>/dev/null | xargs setfacl --remove-all

@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="compliance" id="ftp_log_transactions"
+  version="1">
+    <metadata>
+      <title>FTP Logging Enabled</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The FTP daemon must be configured for logging or verbose mode.</description>
+    </metadata>
+	<criteria>
+		<criteria comment="package krb5-workstation removed or service gssftp is not configured to start" operator="OR">
+			<extend_definition comment="krb5-workstation removed" definition_ref="package_krb5-workstation_removed" />
+			<criteria operator="AND" comment="service gssftp is not configured to start">
+				<criterion test_ref="test_ftp_log_transactions_gssftp" />
+			</criteria>
+		</criteria>
+		<criteria comment="package vsftpd removed or service vsftpd is not configured to start" operator="OR">
+			<extend_definition comment="vsftpd removed" definition_ref="package_vsftpd_removed" />
+			<criteria operator="OR" comment="service gssftp is not configured to start">
+				<criterion test_ref="test_ftp_log_transactions_vsftpd" />
+			</criteria>
+		</criteria>
+	</criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="gssftp log" id="test_ftp_log_transactions_gssftp" version="1">
+    <ind:object object_ref="object_ftp_log_transactions_gssftp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ftp_log_transactions_gssftp"
+  version="1">
+    <ind:filepath>/etc/xinetd.d/gssftp</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)server_args.*(-l)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="vsftpd log" id="test_ftp_log_transactions_vsftpd" version="1">
+    <ind:object object_ref="object_ftp_log_transactions_vsftpd" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ftp_log_transactions_vsftpd"
+  version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)(?i)xferlog_enable.*(yes)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,1 @@
+chown root /etc/at.deny

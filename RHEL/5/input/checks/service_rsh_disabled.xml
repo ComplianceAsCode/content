@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="service_rsh_disabled" version="1">
+    <metadata>
+      <title>Service rsh Disabled</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The rsh service should be disabled if possible.</description>
+    </metadata>
+    <criteria comment="package rsh-server removed or service rsh is not configured to start" operator="OR">
+      <extend_definition comment="rpm package rsh-server removed" definition_ref="package_rsh-server_removed" />
+      <criterion comment="rsh disabled" test_ref="test_etc_xinetd_rsh_disabled" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" comment="rsh disabled" id="test_etc_xinetd_rsh_disabled" version="1">
+    <ind:object object_ref="object_etc_xinetd_rsh_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_etc_xinetd_rsh_disabled" version="1">
+    <!-- the rpm package rsh-server installs a xinetd config file in /etc/xinetd.d which controls rsh -->
+    <!-- in this case /sbin/chkconfig edits /etc/xinetd.d/rsh to enable/disable this service which is why we check it this way -->
+    <ind:filepath>/etc/xinetd.d/rsh</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*disable\s+=\s+yes\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

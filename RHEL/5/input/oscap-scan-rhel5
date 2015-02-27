@@ -1,0 +1,9 @@
+
+#oscap-scan command line options:
+SCAN_OPTIONS="xccdf eval
+		 --remediate
+         --profile stig-rhel5-server
+         --report /var/log/oscap-scan-rhel5-report.html
+         --results /var/log/oscap-scan-rhel5-results.xml
+		 --cpe /usr/share/xml/scap/ssg/content/ssg-rhel5-cpe-dictionary.xml
+         /usr/share/xml/scap/ssg/content/ssg-rhel5-xccdf.xml"

@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="configure_auditd_audispd" version="1">
+    <metadata>
+      <title>Send Audit Logs To Remote Server</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The system must be configured to send audit records to a remote audit server.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_configure_auditd_audispd_enabled" comment="check for audit=1 in /boot/grub/grub.conf" />
+      <criterion test_ref="test_configure_auditd_audispd_remote" comment="check for audit=1 in /boot/grub/grub.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="check for audit=1 in /boot/grub/grub.conf"  id="test_configure_auditd_audispd_enabled" version="1">
+    <ind:object object_ref="object_configure_auditd_audispd_enabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_configure_auditd_audispd_enabled" version="1">
+    <ind:path>/boot/grub</ind:path>
+    <ind:filename>grub.conf</ind:filename>
+    <ind:pattern operation="pattern match">^\s*kernel\s/vmlinuz.*audit=(1).*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="check for audit=1 in /boot/grub/grub.conf"  id="test_configure_auditd_audispd_remote" version="1">
+    <ind:object object_ref="object_configure_auditd_audispd_remote" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_configure_auditd_audispd_remote" version="1">
+    <ind:path>/etc/audisp/plugins.d</ind:path>
+    <ind:filename>syslog.conf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*active[\s]*=[\s]*(yes)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

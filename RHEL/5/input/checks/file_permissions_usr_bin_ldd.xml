@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_usr_bin_ldd" version="1">
+    <metadata>
+      <title>File /usr/bin/ldd Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /usr/bin/ldd must not have executable permission bits set.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_usr_bin_ldd" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /usr/bin/ldd permissions" id="test_file_permissions_usr_bin_ldd" version="1">
+    <unix:object object_ref="object_file_permissions_usr_bin_ldd" />
+    <unix:state state_ref="state_file_permissions_usr_bin_ldd" />
+  </unix:file_test>
+
+  <unix:file_object comment="/usr/bin/ldd" id="object_file_permissions_usr_bin_ldd" version="1">
+    <unix:filepath>/usr/bin/ldd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_usr_bin_ldd" version="1">
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

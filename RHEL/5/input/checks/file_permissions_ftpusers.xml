@@ -1,0 +1,52 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_ftpusers" version="1">
+    <metadata>
+      <title>FTP Users Files Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for the FTP users files must be 0640.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_etc_ftpusers" />
+      <criterion test_ref="test_file_permissions_etc_vsftpd_ftpusers1" />
+      <criterion test_ref="test_file_permissions_etc_vsftpd_ftpusers2" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing permissions of /etc/ftpusers" id="test_file_permissions_etc_ftpusers" version="1">
+    <unix:object object_ref="object_file_permissions_etc_ftpusers" />
+    <unix:state state_ref="state_file_permissions_ftpusers" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/ftpusers" id="object_file_permissions_etc_ftpusers" version="1">
+    <unix:filepath>/etc/ftpusers</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing permissions of /etc/vsftpd.ftpusers" id="test_file_permissions_etc_vsftpd_ftpusers1" version="1">
+    <unix:object object_ref="object_file_permissions_etc_vsftpd_ftpusers1" />
+    <unix:state state_ref="state_file_permissions_ftpusers" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/vsftpd.ftpusers" id="object_file_permissions_etc_vsftpd_ftpusers1" version="1">
+    <unix:filepath>/etc/vsftpd.ftpusers</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing permissions of /etc/vsftpd/ftpusers" id="test_file_permissions_etc_vsftpd_ftpusers2" version="1">
+    <unix:object object_ref="object_file_permissions_etc_vsftpd_ftpusers2" />
+    <unix:state state_ref="state_file_permissions_ftpusers" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/vsftpd/ftpusers" id="object_file_permissions_etc_vsftpd_ftpusers2" version="1">
+    <unix:filepath>/etc/vsftpd/ftpusers</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_ftpusers" version="1">
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

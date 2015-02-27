@@ -1,0 +1,70 @@
+<def-group>
+  <definition class="compliance" id="accounts_global_setting" version="1">
+    <metadata>
+      <title>Configure system-auth Global Settings</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Global settings defined in system-auth must be applied in the pam.d definition files.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="system-auth-ac is not included in /etc/pam.d/*" test_ref="test_accounts_global_setting_not_included" />
+      <criteria comment="The /etc/pam.d/system-auth file must have include statements to /etc/pam.d/system-auth-ac.">
+        <criterion test_ref="test_accounts_global_setting_auth" />
+        <criterion test_ref="test_accounts_global_setting_account" />
+        <criterion test_ref="test_accounts_global_setting_password" />
+        <criterion test_ref="test_accounts_global_setting_session" />
+      </criteria>
+    </criteria>
+  </definition>
+
+   <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="system-auth-ac is not included in /etc/pam.d/*" id="test_accounts_global_setting_not_included" version="1">
+    <ind:object object_ref="object_systemauthac_not_included" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_systemauthac_not_included" version="1">
+    <ind:path>/etc/pam.d</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">.*(system-auth-ac)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+ 
+  <ind:textfilecontent54_test check="all" comment="Tests the presence of auth inclusion in /etc/pam.d/system-auth" id="test_accounts_global_setting_auth" version="1">
+    <ind:object object_ref="object_accounts_global_setting_auth" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_global_setting_auth" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^auth[\s]+include[\s]+system-auth-ac$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Tests the presence of account inclusion in /etc/pam.d/system-auth" id="test_accounts_global_setting_account" version="1">
+    <ind:object object_ref="object_accounts_global_setting_account" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_global_setting_account" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^account[\s]+include[\s]+system-auth-ac$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Tests the presence of password inclusion in /etc/pam.d/system-auth" id="test_accounts_global_setting_password" version="1">
+    <ind:object object_ref="object_accounts_global_setting_password" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_global_setting_password" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^password[\s]+include[\s]+system-auth-ac$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Tests the presence of session inclusion in /etc/pam.d/system-auth" id="test_accounts_global_setting_session" version="1">
+    <ind:object object_ref="object_accounts_global_setting_session" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_global_setting_session" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^session[\s]+include[\s]+system-auth-ac$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
