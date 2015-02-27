@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="syslog_remote_loghost" version="1">
+    <metadata>
+      <title>Send Logs to a Remote Loghost</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Syslog logs should be sent to a remote loghost</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied" test_ref="test_syslog_remote_loghost" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Tests the value of the \*\.\*[\s]+@ setting in the /etc/syslog.conf file" id="test_syslog_remote_loghost" version="1">
+    <ind:object object_ref="object_syslog_remote_loghost" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_syslog_remote_loghost" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>syslog.conf</ind:filename>
+    <ind:pattern operation="pattern match">^\*\.\*[\s]+(?:@|\:omrelp\:)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

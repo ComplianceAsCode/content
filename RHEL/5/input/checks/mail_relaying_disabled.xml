@@ -1,0 +1,90 @@
+<def-group>
+  <definition class="compliance" id="mail_relaying_disabled"
+  version="1">
+    <metadata>
+      <title>Postfix network listening should be disabled</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Postfix network listening should be disabled.</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="postfix is not installed" negate="true"
+		  definition_ref="package_postfix_installed" />
+			<criteria operator="AND">
+				<criterion comment="Check inet_interfaces in /etc/postfix/main.cf for local-only"
+				test_ref="test_mail_external_enabled_postfix" />
+				<criterion comment="Check smtpd_client_restrictions in /etc/postfix/main.mc"
+				test_ref="test_mail_relaying_disabled_postfix" />
+			</criteria>
+		</criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="sendmail is not installed" negate="true"
+		  definition_ref="package_sendmail_installed" />
+			<criteria operator="AND">
+				<criterion comment="Check DaemonPortOptions in /etc/mail/sendmail.cf for local-only"
+				test_ref="test_mail_external_enabled_sendmail" />
+				<criterion comment="Check promiscuous_relay in /etc/mail/sendmail.cf"
+				test_ref="test_mail_relaying_disabled_sendmail" />
+			</criteria>
+		</criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="DaemonPortOptions in /etc/mail/sendmail.cf should be set correctly"
+  id="test_mail_external_enabled_sendmail" version="1">
+    <ind:object object_ref="obj_mail_external_enabled_sendmail" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="DaemonPortOptions in /etc/mail/sendmail.cf should be set correctly"
+  id="obj_mail_external_enabled_sendmail" version="1">
+    <ind:path>/etc/mail</ind:path>
+    <ind:filename>sendmail.cf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?:O\s*)*(?i)DaemonPortOptions.*Addr=(localhost|127.0.0.1|\[::1\])</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="promiscuous_relay in /etc/mail/sendmail.cf should be set correctly"
+  id="test_mail_relaying_disabled_sendmail" version="1">
+    <ind:object object_ref="obj_mail_relaying_disabled_sendmail" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="promiscuous_relay in /etc/mail/sendmail.cf should be set correctly"
+  id="obj_mail_relaying_disabled_sendmail" version="1">
+    <ind:path>/etc/mail</ind:path>
+    <ind:filename>sendmail.mc</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?:O\s*)*(?i)(promiscuous_relay).*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="inet_interfaces in /etc/postfix/main.cf should be set correctly"
+  id="test_mail_external_enabled_postfix" version="1">
+    <ind:object object_ref="obj_mail_external_enabled_postfix" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="inet_interfaces in /etc/postfix/main.cf should be set correctly"
+  id="obj_mail_external_enabled_postfix" version="1">
+    <ind:path>/etc/postfix</ind:path>
+    <ind:filename>main.cf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)inet_interfaces\s+=\s+([,]*[\s]*(?:localhost|loopback-only|127.0.0.1|\[::1\])*)+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="smtpd_client_restrictions in /etc/postfix/main.cf should be set correctly"
+  id="test_mail_relaying_disabled_postfix" version="1">
+    <ind:object object_ref="obj_mail_relaying_disabled_postfix" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="smtpd_client_restrictions in /etc/postfix/main.cf should be set correctly"
+  id="obj_mail_relaying_disabled_postfix" version="1">
+    <ind:path>/etc/postfix</ind:path>
+    <ind:filename>main.cf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)smtpd_client_restrictions\s*=\s*((?!permit.*)reject.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

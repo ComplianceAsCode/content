@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="ip_6to4_tunnels" version="1">
+    <metadata>
+      <title>The system must not have 6to4 enabled.</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>6to4 is an IPv6 transition mechanism involving tunnelling 
+	  IPv6 packets encapsulated in IPv4 packets on an ad-hoc basis.  This is 
+	  not a preferred transition strategy and increases the attack surface of 
+	  the system.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_ip_6to4_tunnels" />
+    </criteria>
+  </definition>
+  
+  <unix:interface_test check="all" check_existence="any_exist" comment="Testing Point-To-Point Interfaces" id="test_ip_6to4_tunnels" version="1">
+    <unix:object object_ref="object_ip_6to4_tunnels" />
+    <unix:state state_ref="state_ip_6to4_tunnels" />
+  </unix:interface_test>
+  <unix:interface_object comment="Network Interfaces" id="object_ip_6to4_tunnels" version="1">
+    <unix:name operation="pattern match">^.*$</unix:name>
+  </unix:interface_object>
+
+  <unix:interface_state id="state_ip_6to4_tunnels" version="1">
+    <unix:flag operation="not equal">POINTOPOINT</unix:flag>
+  </unix:interface_state>
+
+</def-group>

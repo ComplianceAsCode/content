@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_audio_devices" version="1">
+    <metadata>
+      <title>Audio Device Files Group Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Group owner for audio device files must be root.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_groupowner_dev_audio" />
+      <criterion test_ref="test_file_groupowner_dev_snd" />
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /dev/audio* group owner" id="test_file_groupowner_dev_audio" version="1">
+    <unix:object object_ref="object_file_groupowner_dev_audio" />
+    <unix:state state_ref="state_file_groupowner_audio_devices" />
+  </unix:file_test>
+  <unix:file_object comment="/dev/audio*" id="object_file_groupowner_dev_audio" version="1">
+    <unix:path operation="equals">/dev</unix:path>
+    <unix:filename operation="pattern match">^audio.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /dev/snd/* group owner" id="test_file_groupowner_dev_snd" version="1">
+    <unix:object object_ref="object_file_groupowner_dev_snd" />
+    <unix:state state_ref="state_file_groupowner_audio_devices" />
+  </unix:file_test>
+  <unix:file_object comment="/dev/snd/*" id="object_file_groupowner_dev_snd" version="1">
+    <unix:path operation="equals">/dev/snd</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_groupowner_audio_devices" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+</def-group>

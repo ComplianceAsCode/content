@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="ssh_no_cbc" version="1">
+    <metadata>
+      <title>No Cipher-Block Chaining Ciphers</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Ensure no Cipher-Block Chaining ciphers are configured.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="rpm package openssh-clients removed"
+      definition_ref="package_openssh-clients_removed" />
+      <criterion comment="Check Ciphers in /etc/ssh/ssh_config"
+      test_ref="test_ssh_no_cbc" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of Ciphers setting in the /etc/ssh/ssh_config file"
+  id="test_ssh_no_cbc" version="1">
+    <ind:object object_ref="obj_ssh_no_cbc" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ssh_no_cbc" version="1">
+    <ind:filepath>/etc/ssh/ssh_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[Cc][Ii][Pp][Hh][Ee][Rr][Ss]\s+([,]*[a-z]+[0-9]+-(?!cbc)[a-z]+)+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

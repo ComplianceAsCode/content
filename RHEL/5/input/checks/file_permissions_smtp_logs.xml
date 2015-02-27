@@ -1,0 +1,43 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_smtp_logs" version="1">
+    <metadata>
+      <title>SMTP Log File Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>SMTP log file permissions must be 0640.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_smtp_logs" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_file_permissions_smtp_logs_list" comment="List of SMTP log files" datatype="string" version="1">
+		<object_component item_field="subexpression" object_ref="object_file_permissions_smtp_logs_list" />
+  </local_variable>
+  <ind:textfilecontent54_object id="object_file_permissions_smtp_logs_list" version="1">
+    <ind:filepath>/etc/syslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^mail\..*\s[-]?(/.*)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing SMTP log file permissions" id="test_file_permissions_smtp_logs" version="1">
+    <unix:object object_ref="object_file_permissions_smtp_logs" />
+    <unix:state state_ref="state_file_permissions_smtp_logs" />
+  </unix:file_test>
+  <unix:file_object comment="List of SMTP log files" id="object_file_permissions_smtp_logs" version="1">
+    <unix:filepath var_ref="var_file_permissions_smtp_logs_list" var_check="at least one" />
+  </unix:file_object>
+  <unix:file_state id="state_file_permissions_smtp_logs" version="1">
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+</def-group>

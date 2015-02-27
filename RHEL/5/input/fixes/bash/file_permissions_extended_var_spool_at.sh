@@ -1,0 +1,1 @@
+setfacl --remove-all /var/spool/at

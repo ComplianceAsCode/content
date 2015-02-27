@@ -1,0 +1,74 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_cron_files" version="1">
+    <metadata>
+      <title>Crontab Files Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for crontab files must be 0700.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_etc_cron_daily" />
+      <criterion test_ref="test_file_permissions_etc_cron_hourly" />
+      <criterion test_ref="test_file_permissions_etc_cron_monthly" />
+      <criterion test_ref="test_file_permissions_etc_cron_weekly" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.daily/* permissions" id="test_file_permissions_etc_cron_daily" version="1">
+    <unix:object object_ref="object_file_permissions_etc_cron_daily" />
+    <unix:state state_ref="state_file_permissions_cron_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.daily/*" id="object_file_permissions_etc_cron_daily" version="1">
+    <unix:path operation="equals">/etc/cron.daily</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_cron_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.hourly/* permissions" id="test_file_permissions_etc_cron_hourly" version="1">
+    <unix:object object_ref="object_file_permissions_etc_cron_hourly" />
+    <unix:state state_ref="state_file_permissions_cron_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.hourly/*" id="object_file_permissions_etc_cron_hourly" version="1">
+    <unix:path operation="equals">/etc/cron.hourly</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_cron_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.monthly/* permissions" id="test_file_permissions_etc_cron_monthly" version="1">
+    <unix:object object_ref="object_file_permissions_etc_cron_monthly" />
+    <unix:state state_ref="state_file_permissions_cron_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.monthly/*" id="object_file_permissions_etc_cron_monthly" version="1">
+    <unix:path operation="equals">/etc/cron.monthly</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_cron_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/cron.weekly/* permissions" id="test_file_permissions_etc_cron_weekly" version="1">
+    <unix:object object_ref="object_file_permissions_etc_cron_weekly" />
+    <unix:state state_ref="state_file_permissions_cron_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/cron.weekly/*" id="object_file_permissions_etc_cron_weekly" version="1">
+    <unix:path operation="equals">/etc/cron.weekly</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_cron_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_cron_files_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_cron_files" version="1">
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+</def-group>

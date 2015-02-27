@@ -1,0 +1,61 @@
+<def-group>
+  <definition class="compliance"
+  id="ldap_client_start_tls" version="1">
+    <metadata>
+      <title>Configure LDAP to Use TLS for All Transactions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Require the use of TLS for ldap clients.</description>
+    </metadata>
+    <criteria operator="OR">
+		<criterion comment="look for ldap in /etc/nsswitch.conf" test_ref="test_ldap_client_start_tls_nsswitch" />
+		<criteria operator="AND">
+			<criterion comment="look for ssl start_tls in /etc/ldap.conf" test_ref="test_ldap_client_start_tls_ssl" />
+			<criterion comment="look for tls_ciphers in /etc/ldap.conf" test_ref="test_ldap_client_start_tls_ciphers" />
+		</criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Tests the value of the ldap setting in the /etc/nsswitch.conf file" id="test_ldap_client_start_tls_nsswitch" version="1">
+    <ind:object object_ref="obj_ldap_client_start_tls_nsswitch" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ldap_client_start_tls_nsswitch" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>nsswitch.conf</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)(?:.*)?ldap(?:.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="Tests the value of the ssl start_tls setting in the /etc/ldap.conf file"
+  id="test_ldap_client_start_tls_ssl" version="1">
+    <ind:object object_ref="obj_ldap_client_start_tls_ssl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ldap_client_start_tls_ssl"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>ldap.conf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*ssl[\s]+start_tls[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="Tests the value of the tls_ciphers setting in the /etc/ldap.conf file"
+  id="test_ldap_client_start_tls_ciphers" version="1">
+    <ind:object object_ref="obj_ldap_client_start_tls_ciphers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ldap_client_start_tls_ciphers"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>ldap.conf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*tls_ciphers[\s]+(?i)(?:[\:]*(SHA|AES|3DES|TLSv1|SSLv3))+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

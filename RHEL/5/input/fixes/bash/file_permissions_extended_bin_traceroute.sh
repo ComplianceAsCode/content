@@ -1,0 +1,1 @@
+setfacl --remove-all /bin/traceroute

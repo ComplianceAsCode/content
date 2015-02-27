@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="samba-swat_restricted"
+  version="1">
+    <metadata>
+      <title>Restrict Access To SWAT</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The Samba Web Administration Tool (SWAT) 
+	  must be restricted to the local host or require SSL.</description>
+    </metadata>
+    <criteria comment="packages samba-swat and samba3x-swat removed or /etc/xinetd.d/swat configured correctly" operator="OR">
+		<extend_definition comment="rpm packages samba-swat and samba3x-swat removed" definition_ref="package_samba-swat_removed" />
+		<criterion test_ref="test_samba-swat_restricted_disabled" />
+		<criterion test_ref="test_samba-swat_restricted_access" />
+	</criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="samba-swat disabled" id="test_samba-swat_restricted_disabled" version="1">
+    <ind:object object_ref="object_samba-swat_restricted_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_samba-swat_restricted_disabled"
+  version="1">
+    <ind:filepath>/etc/xinetd.d/swat</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)disable.*(yes)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="samba-swat access" id="test_samba-swat_restricted_access" version="1">
+    <ind:object object_ref="object_samba-swat_restricted_access" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_samba-swat_restricted_access"
+  version="1">
+    <ind:filepath>/etc/xinetd.d/swat</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)only_from[\s]*=[\s]*(localhost|127.0.0.1)[\s]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

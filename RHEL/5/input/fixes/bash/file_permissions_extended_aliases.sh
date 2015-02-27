@@ -1,0 +1,1 @@
+setfacl --remove-all /etc/aliases /etc/aliases.db /etc/postfix/aliases /etc/postfix/aliases.db 2>/dev/null

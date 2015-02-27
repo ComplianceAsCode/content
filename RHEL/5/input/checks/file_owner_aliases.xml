@@ -1,0 +1,69 @@
+<def-group>
+  <definition class="compliance" id="file_owner_aliases" version="1">
+    <metadata>
+      <title>Alias Files Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Owner for alias files must be root.</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="postfix is not installed" negate="true"
+		  definition_ref="package_postfix_installed" />
+			<criteria operator="OR">
+				<criterion test_ref="test_file_owner_aliases_postfix_aliases" />
+				<criterion test_ref="test_file_owner_aliases_postfix_aliases_db" />
+			</criteria>
+		</criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="sendmail is not installed" negate="true"
+		  definition_ref="package_sendmail_installed" />
+			<criteria operator="OR">
+				<criterion test_ref="test_file_owner_aliases_sendmail_aliases" />
+				<criterion test_ref="test_file_owner_aliases_sendmail_aliases_db" />
+			</criteria>
+		</criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/postfix/aliases owner" id="test_file_owner_aliases_postfix_aliases" version="1">
+    <unix:object object_ref="object_file_owner_aliases_postfix_aliases" />
+    <unix:state state_ref="state_file_owner_aliases" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/postfix/aliases" id="object_file_owner_aliases_postfix_aliases" version="1">
+    <unix:filepath>/etc/postfix/aliases</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/postfix/aliases.db owner" id="test_file_owner_aliases_postfix_aliases_db" version="1">
+    <unix:object object_ref="object_file_owner_aliases_postfix_aliases_db" />
+    <unix:state state_ref="state_file_owner_aliases" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/postfix/aliases.db" id="object_file_owner_aliases_postfix_aliases_db" version="1">
+    <unix:filepath>/etc/postfix/aliases.db</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/aliases owner" id="test_file_owner_aliases_sendmail_aliases" version="1">
+    <unix:object object_ref="object_file_owner_aliases_sendmail_aliases" />
+    <unix:state state_ref="state_file_owner_aliases" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/aliases" id="object_file_owner_aliases_sendmail_aliases" version="1">
+    <unix:filepath>/etc/aliases</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/aliases.db owner" id="test_file_owner_aliases_sendmail_aliases_db" version="1">
+    <unix:object object_ref="object_file_owner_aliases_sendmail_aliases_db" />
+    <unix:state state_ref="state_file_owner_aliases" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/aliases.db" id="object_file_owner_aliases_sendmail_aliases_db" version="1">
+    <unix:filepath>/etc/aliases.db</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_owner_aliases" version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+
+</def-group>

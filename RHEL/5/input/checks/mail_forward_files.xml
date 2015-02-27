@@ -1,0 +1,53 @@
+<def-group>
+  <definition class="compliance" id="mail_forward_files"
+  version="1">
+    <metadata>
+      <title>SMTP Mail Forwarding Disabled</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The system must not use .forward files.</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+			<extend_definition comment="sendmail is not installed" negate="true"
+			definition_ref="package_sendmail_installed" />
+			<criterion comment="Check ForwardPath in /etc/mail/sendmail.cf"
+			test_ref="test_mail_forward_files_sendmail" />
+		</criteria>
+		<criterion comment="Check for .forward files"
+		test_ref="test_mail_forward_files" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="ForwardPath in /etc/mail/sendmail.cf should be set correctly"
+  id="test_mail_forward_files_sendmail" version="1">
+    <ind:object object_ref="obj_mail_forward_files_sendmail" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="ForwardPath in /etc/mail/sendmail.cf should be set correctly"
+  id="obj_mail_forward_files_sendmail" version="1">
+    <ind:path>/etc/mail</ind:path>
+    <ind:filename>sendmail.cf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?:O\s*)*(?i)(?:ForwardPath).*(/.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing .forward files" id="test_mail_forward_files" version="1">
+    <unix:object object_ref="object_mail_forward_files" />
+  </unix:file_test>
+  <unix:file_object comment=".forward" id="object_mail_forward_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^\.forward$</unix:filename>
+    <filter action="exclude">state_mail_forward_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_mail_forward_files_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+</def-group>
