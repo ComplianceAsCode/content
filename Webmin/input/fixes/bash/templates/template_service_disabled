@@ -1,0 +1,9 @@
+#
+# Disable SERVICENAME for all run levels
+#
+chkconfig --level 0123456 SERVICENAME off
+
+#
+# Stop SERVICENAME if currently running
+#
+service SERVICENAME stop

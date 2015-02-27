@@ -1,0 +1,91 @@
+<def-group>
+  <definition class="compliance" id="sessions_ssl_cipher" version="1">
+    <metadata>
+      <title>Use approved ciphers for encryption.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Use approved ciphers for encryption.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family" test_ref="test_unix_family" />
+	  <criterion comment="Use approved ciphers for encryption." test_ref="test_webmin_sessions_ssl_cipher_order" />
+      <criteria operator="OR">
+        <criteria operator="AND">
+	      <criterion comment="Poodle patch is applied." test_ref="test_webmin_poodle_patch" />
+	      <criterion comment="No SSLv2." test_ref="test_webmin_poodle_no_sslv2" />
+	      <criterion comment="No SSLv3." test_ref="test_webmin_poodle_no_sslv3" />
+	      <criterion comment="Use approved ciphers for encryption." test_ref="test_webmin_sessions_ssl_cipher_list_poodle" />
+        </criteria>
+	    <criterion comment="Use approved ciphers for encryption." test_ref="test_webmin_sessions_ssl_cipher_list" />
+      </criteria>
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check ssl_cipher_list is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_ssl_cipher_list" version="1">
+    <ind:object object_ref="object_webmin_sessions_ssl_cipher_list" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_ssl_cipher_list" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^ssl_cipher_list=ECDHE-RSA-AES256-SHA384\:AES256-SHA256\:RC4\:HIGH\:\+TLSv1.2\:\+TLSv1\:\!MD5\:\!SSLv2\:\!SSLv3\:\!ADH\:\!aNULL\:\!eNULL\:\!NULL\:\!DH\:\!EDH\:\!AESGCM$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check ssl_cipher_order is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_ssl_cipher_order" version="1">
+    <ind:object object_ref="object_webmin_sessions_ssl_cipher_order" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_ssl_cipher_order" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^ssl_honorcipherorder=1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check if webmin is patched to include the no_ssl3 parameter" 
+  id="test_webmin_poodle_patch" version="1">
+    <ind:object object_ref="object_webmin_poodle_patch" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_poodle_patch" version="1">
+    <ind:filepath>/usr/libexec/webmin/miniserv.pl</ind:filepath>
+    <ind:pattern operation="pattern match">.*no_ssl3.*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check ssl_cipher_list is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_ssl_cipher_list_poodle" version="1">
+    <ind:object object_ref="object_webmin_sessions_ssl_cipher_list_poodle" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_ssl_cipher_list_poodle" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^ssl_cipher_list=ECDHE-RSA-AES256-SHA384\:AES256-SHA256\:RC4\:HIGH\:\+TLSv1.2\:\+TLSv1\:\!MD5\:\!SSLv2\:\+SSLv3\:\!ADH\:\!aNULL\:\!eNULL\:\!NULL\:\!DH\:\!EDH\:\!AESGCM$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check no_ssl2 is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_poodle_no_sslv2" version="1">
+    <ind:object object_ref="object_webmin_poodle_no_sslv2" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_poodle_no_sslv2" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^no_ssl2=1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check no_ssl3 is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_poodle_no_sslv3" version="1">
+    <ind:object object_ref="object_webmin_poodle_no_sslv3" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_poodle_no_sslv3" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^no_ssl3=1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,45 @@
+<Group id="accounts">
+	<title>Required User Account Settings</title>
+	<description>To support a secured and compliant configuration, a number of 
+	user account settings need to be modified from there default configuration.</description>
+
+	<Rule id="accounts_use_pam" severity="medium">
+	<title>Use PAM for Unix authentication.</title>
+	<description>
+	Webmin must use the OS-provided Password Authentication Module for validating passwords.
+	</description>
+	<rationale>
+	</rationale>
+	<oval id="accounts_use_pam" />
+	<ident cce="" />
+	<ref nist="SA-2(b)" disa="612"/>
+	</Rule>
+
+	<Rule id="accounts_passwd_cmd" severity="medium">
+	<title>Use passwd for changing passwords.</title>
+	<description>
+	Webmin must use passwd for password changes so that 
+	password requirements configured in the operating system are 
+	enforced on new password selections.
+	</description>
+	<rationale>
+	</rationale>
+	<oval id="accounts_passwd_cmd" />
+	<ident cce="" />
+	<ref nist="SA-2(b)" disa="612"/>
+	</Rule>
+
+	<Rule id="accounts_passwd_mode" severity="medium">
+	<title>Enable the ability for a user to change an expired password.</title>
+	<description>
+	Webmin must enable a user to change their password when 
+	it has expired.
+	</description>
+	<rationale>
+	</rationale>
+	<oval id="accounts_passwd_mode" />
+	<ident cce="" />
+	<ref nist="SA-2(b)" disa="612"/>
+	</Rule>
+
+</Group>
