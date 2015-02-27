@@ -31,7 +31,7 @@ TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
 
 # Define Makefile targets below
 
-all: fedora rhel6 rhel7 openstack rhevm3 rpm zipfile
+all: fedora rhel6 rhel7 openstack rhevm3 webmin rpm zipfile
 
 fedora:
 	cd Fedora/ && $(MAKE)
@@ -47,6 +47,9 @@ openstack:
 
 rhevm3:
 	cd RHEVM3 && $(MAKE)
+
+webmin:
+	cd Webmin/ && $(MAKE)
 
 validate: fedora rhel6 rhel7 openstack rhevm3
 	cd Fedora/ && $(MAKE) validate
@@ -75,6 +78,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents RHEL/6/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/7/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Webmin/ $(RPMBUILD)/$(PKG)
 	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
@@ -82,6 +86,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/RHEL/6/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Webmin/ && $(MAKE) clean)
 
 	# Create the source tar, copy it to TARBALL
 	# (e.g. somewhere in the SOURCES directory)
@@ -155,6 +160,7 @@ clean:
 	cd OpenStack && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
+	cd Webmin && $(MAKE) clean
 	rm -f scap-security-guide.spec
 
-.PHONY: rhel6 tarball srpm rpm clean all
+.PHONY: rhel6 webmin tarball srpm rpm clean all

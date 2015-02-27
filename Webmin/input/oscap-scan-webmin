@@ -1,0 +1,9 @@
+
+#oscap-scan command line options:
+SCAN_OPTIONS="xccdf eval
+		 --remediate
+         --profile webmin-stig-upstream
+         --report /var/log/oscap-scan-webmin-report.html
+         --results /var/log/oscap-scan-webmin-results.xml
+		 --cpe /usr/share/xml/scap/ssg/content/ssg-webmin-cpe-dictionary.xml
+         /usr/share/xml/scap/ssg/content/ssg-webmin-xccdf.xml"
