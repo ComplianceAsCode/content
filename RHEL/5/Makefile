@@ -12,10 +12,7 @@ PROD = rhel5
 
 OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
 
-all: stats shorthand2xccdf tables guide content dist
-
-stats:
-	$(SHARED)/$(TRANS)/stats.sh
+all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
