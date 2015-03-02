@@ -31,7 +31,7 @@ TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
 
 # Define Makefile targets below
 
-all: fedora rhel5 rhel6 rhel7 openstack rhevm3 rpm zipfile
+all: fedora rhel5 rhel6 rhel7 openstack rhevm3 firefox rpm zipfile
 
 fedora:
 	cd Fedora/ && $(MAKE)
@@ -53,6 +53,9 @@ rhevm3:
 
 java:
 	cd Java/ && $(MAKE)
+
+firefox:
+	cd Firefox/ && $(MAKE)
 
 validate: fedora rhel6 rhel7 openstack rhevm3
 	cd Fedora/ && $(MAKE) validate
@@ -83,6 +86,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents RHEL/7/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Java/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
 	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
@@ -92,6 +96,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Java/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Firefox/ && $(MAKE) clean)
 
 	# Create the source tar, copy it to TARBALL
 	# (e.g. somewhere in the SOURCES directory)
@@ -167,6 +172,7 @@ clean:
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
 	cd Java && $(MAKE) clean
+	cd Firefox && $(MAKE) clean
 	rm -f scap-security-guide.spec
 
-.PHONY: rhel5 rhel6 java tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 java firefox tarball srpm rpm clean all
