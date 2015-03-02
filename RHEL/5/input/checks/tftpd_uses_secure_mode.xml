@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="tftpd_uses_secure_mode" version="1">
+    <metadata>
+      <title>TFTP Daemon Uses Secure Mode</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The TFTP daemon should use secure mode.</description>
+    </metadata>
+    <criteria comment="package tftp-server removed or /etc/xinetd.d/tftp configured correctly" operator="OR">
+      <extend_definition comment="rpm package tftp-server removed" definition_ref="package_tftp-server_removed" />
+      <criterion comment="tftpd secure mode" test_ref="test_tftpd_uses_secure_mode" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" comment="tftpd secure mode" id="test_tftpd_uses_secure_mode" version="1">
+    <ind:object object_ref="object_tftpd_uses_secure_mode" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_tftpd_uses_secure_mode" version="1">
+    <ind:filepath>/etc/xinetd.d/tftp</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*server_args[\s]+=[\s]+\-s[\s]+.+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

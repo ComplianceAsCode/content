@@ -1,0 +1,52 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_man_pages" version="1">
+    <metadata>
+      <title>File Man Pages Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for man pages should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criteria>
+        <criterion test_ref="test_file_permissions_extended_usr_share_man" />
+        <criterion test_ref="test_file_permissions_extended_usr_share_info" />
+        <criterion test_ref="test_file_permissions_extended_usr_share_infopage" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /usr/share/man/* extended ACLs" id="test_file_permissions_extended_usr_share_man" version="1">
+    <unix:object object_ref="object_file_permissions_extended_usr_share_man" />
+    <unix:state state_ref="state_file_permissions_extended_man_pages" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/share/man/*" id="object_file_permissions_extended_usr_share_man" version="1">
+    <unix:path>/usr/share/man</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /usr/share/info/* extended ACLs" id="test_file_permissions_extended_usr_share_info" version="1">
+    <unix:object object_ref="object_file_permissions_extended_usr_share_info" />
+    <unix:state state_ref="state_file_permissions_extended_man_pages" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/share/info/*" id="object_file_permissions_extended_usr_share_info" version="1">
+    <unix:path>/usr/share/info</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /usr/share/infopage/* extended ACLs" id="test_file_permissions_extended_usr_share_infopage" version="1">
+    <unix:object object_ref="object_file_permissions_extended_usr_share_infopage" />
+    <unix:state state_ref="state_file_permissions_extended_man_pages" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/share/infopage/*" id="object_file_permissions_extended_usr_share_infopage" version="1">
+    <unix:path>/usr/share/infopage</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_man_pages" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

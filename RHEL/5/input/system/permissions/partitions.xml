@@ -1,0 +1,54 @@
+<Group id="partitions">
+<title>Restrict Partition Mount Options</title>
+<description>System partitions can be mounted with certain options
+that limit what files on those partitions can do. These options
+are set in the <tt>/etc/fstab</tt> configuration file, and can be
+used to make certain types of malicious behavior more difficult.</description>
+
+<Value id="var_removable_partition" type="string" operator="equals" interactive="0">
+<title>Removable Partition</title>
+<description>This value is used by the checks mount_option_nodev_removable_partitions, mount_option_noexec_removable_partitions, 
+and mount_option_nosuid_removable_partitions to ensure that the correct mount options are set on partitions mounted from
+removable media such as CD-ROMs, USB keys, and floppy drives. This value should be modified to reflect any removable
+partitions that are required on the local system.</description>
+<value selector="dev_cdrom">/dev/cdrom</value>
+</Value>
+
+<Rule id="mount_option_nodev_removable_filesystems">
+<title>Add nodev Option to Removable Media Partitions</title>
+<description>The <tt>nodev</tt> mount option prevents files from being
+interpreted as character or block devices. 
+Legitimate character and block devices should exist only in
+the <tt>/dev</tt> directory on the root partition or within chroot
+jails built for system services. 
+<mount-desc-macro option="nodev" part="any removable media partitions" />
+</description>
+<rationale> The only legitimate location for device files is the <tt>/dev</tt> directory
+located on the root partition.  An exception to this is chroot jails, and it is
+not advised to set <tt>nodev</tt> on partitions which contain their root
+filesystems.  </rationale>
+<ident stig="GEN002430" />
+<oval id="mount_option_nodev_removable_filesystems" value="var_removable_partition" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
+<Rule id="mount_option_nosuid_removable_filesystems">
+<title>Add nosuid Option to Removable Media Partitions</title>
+<description>The <tt>nosuid</tt> mount option prevents set-user-identifier (suid)
+and set-group-identifier (sgid) permissions from taking effect. These permissions
+allow users to execute binaries with the same permissions as the owner and group
+of the file respectively. Users should not be allowed to introduce suid and guid
+files into the system via partitions mounted from removeable media.
+<mount-desc-macro option="nosuid" part="any removable media partitions" />
+</description>
+<rationale>The presence of suid and sgid executables should be tightly controlled. Allowing
+users to introduce suid or sgid binaries from partitions mounted off of
+removable media would allow them to introduce their own highly-privileged programs.</rationale>
+<ident stig="GEN002420" />
+<oval id="mount_option_nosuid_removable_filesystems" value="var_removable_partition" />
+<ref nist="ECLP-1" disa="225" />
+</Rule>
+
+
+</Group>

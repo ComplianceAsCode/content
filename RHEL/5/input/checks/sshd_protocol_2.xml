@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="sshd_protocol_2" version="1">
+    <metadata>
+      <title>Ensure Only Protocol 2 Connections Allowed</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The OpenSSH daemon should be running protocol 2.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met" operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+      <extend_definition comment="rpm package openssh-server removed"
+      definition_ref="package_openssh-server_removed" />
+      <criterion comment="Check Protocol in /etc/ssh/sshd_config"
+      test_ref="test_sshd_protocol_2" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="sshd uses protocol 2" id="test_sshd_protocol_2" version="1">
+    <ind:object object_ref="object_sshd_protocol_2" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_sshd_protocol_2" version="2">
+    <ind:path>/etc/ssh</ind:path>
+    <ind:filename>sshd_config</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)Protocol[\s]+2[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

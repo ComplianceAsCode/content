@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="system_access_control" version="1">
+    <metadata>
+      <title>Files /etc/hosts.allow and /etc/hosts.deny Must Exist and Be Configured</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The system's access control program must be configured to grant or deny system access to specific hosts.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_system_access_control_hosts_allow_exists" />
+      <criterion test_ref="test_system_access_control_hosts_deny_configured" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing /etc/hosts.allow existence" id="test_system_access_control_hosts_allow_exists" version="1">
+    <unix:object object_ref="object_system_access_control_hosts_allow_exists" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/hosts.allow" id="object_system_access_control_hosts_allow_exists" version="1">
+    <unix:filepath>/etc/hosts.allow</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing any entries in /etc/hosts.deny" id="test_system_access_control_hosts_deny_configured" version="1">
+    <ind:object object_ref="object_system_access_control_hosts_deny_configured" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="/etc/hosts.deny" id="object_system_access_control_hosts_deny_configured" version="1">
+    <ind:filepath>/etc/hosts.deny</ind:filepath>
+    <ind:pattern operation="pattern match">^(ALL: ALL[:| ]*.*)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

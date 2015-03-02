@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="nfs_mount_option_nosuid_remote_filesystems" version="1">
+    <metadata>
+      <title>All NFS Mounts Have NOSUID Option</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The nosuid option must be enabled on all Network File System (NFS) client mounts.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_nfs_mount_option_nosuid_remote_filesystems" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="NFS Mount Points" id="test_nfs_mount_option_nosuid_remote_filesystems" version="1">
+    <ind:object object_ref="object_nfs_mount_option_nosuid_remote_filesystems" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nfs_mount_option_nosuid_remote_filesystems" version="1">
+    <ind:filepath>/etc/mtab</ind:filepath>
+    <ind:pattern operation="pattern match">^.*[\s]+nfs[4]?[\s]+(?:.(?!nosuid))*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

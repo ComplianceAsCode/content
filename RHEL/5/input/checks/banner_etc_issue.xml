@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="banner_etc_issue" version="1">
+    <metadata>
+      <title>System Login Banner Compliance</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The system login banner text should be set correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="/etc/issue is set appropriately" test_ref="test_banner_etc_issue" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="correct banner in /etc/issue" id="test_banner_etc_issue" version="1">
+    <ind:object object_ref="object_banner_etc_issue" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_banner_etc_issue" version="1">
+    <ind:filepath>/etc/issue</ind:filepath>
+    <ind:pattern var_ref="system_login_banner_text" operation="pattern match" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <external_variable comment="warning banner text variable" datatype="string" id="system_login_banner_text" version="1" />
+</def-group>

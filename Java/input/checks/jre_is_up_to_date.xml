@@ -1,0 +1,257 @@
+<def-group>
+  <definition class="compliance" id="jre_is_up_to_date" version="1">
+    <metadata>
+      <title>Java Runtime Environment (JRE)</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <reference ref_id="cpe:/a:oracle:jre" source="CPE" />
+      <description>The JRE application installed on the system is updated.</description>
+    </metadata>
+    <criteria>
+      <criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Oracle's JRE 1.6.0 is not installed" definition_ref="installed_app_is_oracle_160_java" negate="true" />
+		  <criterion comment="Oracle's JRE 1.6.0 is updated" test_ref="test_oracle_160_java_update" />
+	    </criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Oracle's JRE 1.7.0 is not installed" definition_ref="installed_app_is_oracle_170_java" negate="true" />
+		  <criterion comment="Oracle's JRE 1.7.0 is updated" test_ref="test_oracle_170_java_update" />
+	    </criteria>
+	  </criteria>
+      <criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Red Hat's IBM JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_ibm_160_java" negate="true" />
+          <criteria>
+		    <criterion comment="Red Hat's RHEL5 is installed" test_ref="test_rhel5" />
+		    <criterion comment="Red Hat's RHEL5 IBM JRE 1.6.0 updated" test_ref="test_rhel5_ibm_160_java_update" />
+	      </criteria>
+          <criteria>
+		    <criterion comment="Red Hat's RHEL6 is installed" test_ref="test_rhel6" />
+		    <criterion comment="Red Hat's RHEL6 IBM JRE 1.6.0 updated" test_ref="test_rhel6_ibm_160_java_update" />
+	      </criteria>
+	    </criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Red Hat's IBM JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_ibm_170_java" negate="true" />
+          <criteria>
+		    <criterion comment="Red Hat's RHEL5 is installed" test_ref="test_rhel5" />
+		    <criterion comment="Red Hat's RHEL5 IBM JRE 1.7.0 updated" test_ref="test_rhel5_ibm_170_java_update" />
+	      </criteria>
+          <criteria>
+		    <criterion comment="Red Hat's RHEL6 is installed" test_ref="test_rhel6" />
+		    <criterion comment="Red Hat's RHEL6 IBM JRE 1.7.0 updated" test_ref="test_rhel6_ibm_170_java_update" />
+	      </criteria>
+	    </criteria>
+	  </criteria>
+      <criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Red Hat's OpenJDK JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_openjdk_160_java" negate="true" />
+          <criteria>
+		    <criterion comment="Red Hat's RHEL5 is installed" test_ref="test_rhel5" />
+		    <criterion comment="Red Hat's RHEL5 OpenJDK JRE 1.6.0 updated" test_ref="test_rhel5_openjdk_160_java_update" />
+	      </criteria>
+          <criteria>
+		    <criterion comment="Red Hat's RHEL6 is installed" test_ref="test_rhel6" />
+		    <criterion comment="Red Hat's RHEL6 OpenJDK JRE 1.6.0 updated" test_ref="test_rhel6_openjdk_160_java_update" />
+	      </criteria>
+	    </criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Red Hat's OpenJDK JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_openjdk_170_java" negate="true" />
+          <criteria>
+		    <criterion comment="Red Hat's RHEL5 is installed" test_ref="test_rhel5" />
+		    <criterion comment="Red Hat's RHEL5 OpenJDK JRE 1.7.0 updated" test_ref="test_rhel5_openjdk_170_java_update" />
+	      </criteria>
+          <criteria>
+		    <criterion comment="Red Hat's RHEL6 is installed" test_ref="test_rhel6" />
+		    <criterion comment="Red Hat's RHEL6 OpenJDK JRE 1.7.0 updated" test_ref="test_rhel6_openjdk_170_java_update" />
+	      </criteria>
+	    </criteria>
+	  </criteria>
+      <criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Red Hat's Sun JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_sun_160_java" negate="true" />
+          <criteria>
+		    <criterion comment="Red Hat's RHEL5 is installed" test_ref="test_rhel5" />
+		    <criterion comment="Red Hat's RHEL5 Sun JRE 1.6.0 updated" test_ref="test_rhel5_sun_160_java_update" />
+	      </criteria>
+          <criteria>
+		    <criterion comment="Red Hat's RHEL6 is installed" test_ref="test_rhel6" />
+		    <criterion comment="Red Hat's RHEL6 Sun JRE 1.6.0 updated" test_ref="test_rhel6_sun_160_java_update" />
+	      </criteria>
+	    </criteria>
+		<criteria operator="OR">
+	      <extend_definition comment="Red Hat's Oracle JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_oracle_170_java" negate="true" />
+          <criteria>
+		    <criterion comment="Red Hat's RHEL5 is installed" test_ref="test_rhel5" />
+		    <criterion comment="Red Hat's RHEL5 Oracle JRE 1.7.0 updated" test_ref="test_rhel5_oracle_170_java_update" />
+	      </criteria>
+          <criteria>
+		    <criterion comment="Red Hat's RHEL6 is installed" test_ref="test_rhel6" />
+		    <criterion comment="Red Hat's RHEL6 Oracle JRE 1.7.0 updated" test_ref="test_rhel6_oracle_170_java_update" />
+	      </criteria>
+	    </criteria>
+	  </criteria>
+	</criteria>
+  </definition>
+
+  <!-- RHEL5 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat Enterprise Linux is version 5" id="test_rhel5" version="1">
+    <linux:object object_ref="obj_rhel5" />
+	<linux:state state_ref="state_rhel5" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel5" version="1">
+    <linux:name datatype="string" operation="pattern match">redhat-release</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel5" version="1">
+    <linux:version operation="pattern match">^5.*</linux:version>
+  </linux:rpminfo_state>
+  
+  <!-- RHEL6 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat Enterprise Linux is version 6" id="test_rhel6" version="1">
+    <linux:object object_ref="obj_rhel6" />
+	<linux:state state_ref="state_rhel6" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel6" version="1">
+    <linux:name datatype="string" operation="pattern match">redhat-release-(workstation|server)</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel6" version="1">
+    <linux:version operation="pattern match">^6.*</linux:version>
+  </linux:rpminfo_state>
+
+  <!-- Oracle's JRE 1.6.0 Check -->
+  <linux:rpminfo_test check="at least one" check_existence="at_least_one_exists" comment="Oracle JRE 1.6.0 is updated" id="test_oracle_160_java_update" version="1">
+    <linux:object object_ref="obj_oracle_java_update" />
+	<linux:state state_ref="state_oracle_160_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_oracle_java_update" version="1">
+    <linux:name>jre</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_oracle_160_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">0:1.6.0_45</linux:evr>
+  </linux:rpminfo_state>
+  
+  <!-- Oracle's JRE 1.7.0 Check -->
+  <linux:rpminfo_test check="at least one" check_existence="at_least_one_exists" comment="Oracle JRE 1.7.0 is updated" id="test_oracle_170_java_update" version="1">
+    <linux:object object_ref="obj_oracle_java_update" />
+	<linux:state state_ref="state_oracle_170_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_oracle_170_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">0:1.7.0_67-fcs</linux:evr>
+  </linux:rpminfo_state>
+
+  <!-- Red Hat's IBM JRE 1.6.0 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL5 IBM JRE 1.6.0 is updated" id="test_rhel5_ibm_160_java_update" version="1">
+    <linux:object object_ref="obj_rhel_ibm_160_java_update" />
+	<linux:state state_ref="state_rhel5_ibm_160_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL6 IBM JRE 1.6.0 is updated" id="test_rhel6_ibm_160_java_update" version="1">
+    <linux:object object_ref="obj_rhel_ibm_160_java_update" />
+	<linux:state state_ref="state_rhel6_ibm_160_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel_ibm_160_java_update" version="1">
+    <linux:name>java-1.6.0-ibm</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel5_ibm_160_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.6.0.16.1-1jpp.1.el5_10</linux:evr>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_rhel6_ibm_160_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.6.0.16.1-1jpp.1.el6_5</linux:evr>
+  </linux:rpminfo_state>
+
+  <!-- Red Hat's IBM JRE 1.7.0 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL5 IBM JRE 1.7.0 is updated" id="test_rhel5_ibm_170_java_update" version="1">
+    <linux:object object_ref="obj_rhel_ibm_170_java_update" />
+	<linux:state state_ref="state_rhel5_ibm_170_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL6 IBM JRE 1.7.0 is updated" id="test_rhel6_ibm_170_java_update" version="1">
+    <linux:object object_ref="obj_rhel_ibm_170_java_update" />
+	<linux:state state_ref="state_rhel6_ibm_170_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel_ibm_170_java_update" version="1">
+    <linux:name>java-1.7.0-ibm</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel5_ibm_170_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.7.0.7.1-1jpp.1.el5_10</linux:evr>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_rhel6_ibm_170_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.7.0.7.1-1jpp.1.el6_5</linux:evr>
+  </linux:rpminfo_state>
+
+  <!-- Red Hat's OpenJDK JRE 1.6.0 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL5 OpenJDK JRE 1.6.0 is updated" id="test_rhel5_openjdk_160_java_update" version="1">
+    <linux:object object_ref="obj_rhel_openjdk_160_java_update" />
+	<linux:state state_ref="state_rhel5_openjdk_160_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL6 OpenJDK JRE 1.6.0 is updated" id="test_rhel6_openjdk_160_java_update" version="1">
+    <linux:object object_ref="obj_rhel_openjdk_160_java_update" />
+	<linux:state state_ref="state_rhel6_openjdk_160_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel_openjdk_160_java_update" version="1">
+    <linux:name>java-1.6.0-openjdk</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel5_openjdk_160_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.6.0.0-6.1.13.4.el5_10</linux:evr>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_rhel6_openjdk_160_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.6.0.0-7.1.13.4.el6_5</linux:evr>
+  </linux:rpminfo_state>
+
+  <!-- Red Hat's OpenJDK JRE 1.7.0 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL5 OpenJDK JRE 1.7.0 is updated" id="test_rhel5_openjdk_170_java_update" version="1">
+    <linux:object object_ref="obj_rhel_openjdk_170_java_update" />
+	<linux:state state_ref="state_rhel5_openjdk_170_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL6 OpenJDK JRE 1.7.0 is updated" id="test_rhel6_openjdk_170_java_update" version="1">
+    <linux:object object_ref="obj_rhel_openjdk_170_java_update" />
+	<linux:state state_ref="state_rhel6_openjdk_170_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel_openjdk_170_java_update" version="1">
+    <linux:name>java-1.7.0-openjdk</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel5_openjdk_170_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.7.0.65-2.5.1.2.el5_10</linux:evr>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_rhel6_openjdk_170_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.7.0.65-2.5.1.2.el6_5</linux:evr>
+  </linux:rpminfo_state>
+
+  <!-- Red Hat's Oracle JRE 1.7.0 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL5 Oracle JRE 1.7.0 is updated" id="test_rhel5_oracle_170_java_update" version="1">
+    <linux:object object_ref="obj_rhel_oracle_170_java_update" />
+	<linux:state state_ref="state_rhel5_oracle_170_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL6 Oracle JRE 1.7.0 is updated" id="test_rhel6_oracle_170_java_update" version="1">
+    <linux:object object_ref="obj_rhel_oracle_170_java_update" />
+	<linux:state state_ref="state_rhel6_oracle_170_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel_oracle_170_java_update" version="1">
+    <linux:name>java-1.7.0-oracle</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel5_oracle_170_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.7.0.65-1jpp.2.el5_10</linux:evr>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_rhel6_oracle_170_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.7.0.65-1jpp.1.el6_5</linux:evr>
+  </linux:rpminfo_state>
+  <external_variable comment="dummy var" datatype="int" id="var_dummy" version="1" />
+
+  <!-- Red Hat's Sun JRE 1.6.0 Check -->
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL5 Sun JRE 1.6.0 is updated" id="test_rhel5_sun_160_java_update" version="1">
+    <linux:object object_ref="obj_rhel_sun_160_java_update" />
+	<linux:state state_ref="state_rhel5_sun_160_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Red Hat's RHEL6 Sun JRE 1.6.0 is updated" id="test_rhel6_sun_160_java_update" version="1">
+    <linux:object object_ref="obj_rhel_sun_160_java_update" />
+	<linux:state state_ref="state_rhel6_sun_160_java_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rhel_sun_160_java_update" version="1">
+    <linux:name>java-1.6.0-sun</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rhel5_sun_160_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.6.0.81-1jpp.1.el5_10</linux:evr>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_rhel6_sun_160_java_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">1:1.6.0.81-1jpp.1.el6_5</linux:evr>
+  </linux:rpminfo_state>
+
+</def-group>

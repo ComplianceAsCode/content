@@ -1,0 +1,1 @@
+chmod 0644 /etc/cups/printers.conf

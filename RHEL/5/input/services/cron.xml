@@ -1,0 +1,141 @@
+<Group id="cron_and_at">
+<title>Cron and At Daemons</title>
+<description>The cron and at services are used to allow commands to
+be executed at a later time. The cron service is required by almost
+all systems to perform necessary maintenance tasks, while at may or
+may not be required on a given system. Both daemons should be
+configured defensively.</description>
+
+<Group id="restrict_cron_users">
+<title>Restrict cron to Authorized Users if Necessary</title>
+<description>
+The <tt>/etc/cron.allow</tt> file contain lists of users who are allowed
+to use cron to delay execution of processes. If this file exists and
+if the corresponding file <tt>/etc/cron.deny</tt> does not exist,
+then only users listed in the relevant allow files can run the crontab
+commands to submit jobs to be run at scheduled intervals.
+On many systems, only the system administrator needs the ability to schedule
+jobs. Note that even if a given user is not listed in <tt>cron.allow</tt>, cron jobs can
+still be run as that user.
+<br/>
+<br/>
+To restrict cron to only authorized users:
+<ul>
+<li>Remove the cron.deny file:<pre># rm /etc/cron.deny</pre></li>
+<li>Edit <tt>/etc/cron.allow</tt>, adding one line for each user allowed to use the crontab command to create cron jobs.</li>
+</ul>
+</description>
+
+<Rule id="cron_access_controlled">
+<title>Cron Must Control Access</title>
+<description>The cron service must control access to the execution of cron jobs.
+This is accomplished defining the users allowed/denied in the cron.allow and cron.deny files. 
+To confirm if these files exist, run the following commands:
+<pre># ls -1l /etc/cron.allow
+# ls -1l /etc/cron.deny</pre>
+The cron facility allows users to execute recurring jobs on a regular and unattended basis.  
+The cron.allow file designates accounts allowed to enter and execute jobs using the cron facility.  
+If neither cron.allow nor cron.deny exists, then any account may use the cron facility.  
+This may open the facility up for abuse by system intruders and malicious users.</description>
+<ref nist="ECLP-1" disa="225" />
+<oval id="cron_access_controlled" />
+<ident stig="GEN002960" />
+</Rule>
+
+<Rule id="cron_system_accounts">
+<title>Cron Must Deny System Accounts</title>
+<description>The cron service must deny system accounts (except for root) access to the execution of cron jobs. 
+This includes all accounts with a UID less than 500, except for 0.
+This is accomplished by listing all system users within the cron.deny file and ensuring that they are not listed in the cron.allow file. 
+To confirm these conditions are met, run the following commands:
+<pre># cat /etc/passwd | awk -F: '{ print $1"|"$3 }' | grep -v "^root|" | while read ENTRY; do 
+if [ $(echo $ENTRY | cut -d"|" -f2) -lt 500 ];then 
+if [ $(grep -c "$(echo $ENTRY | cut -d"|" -f1)" /etc/cron.deny) = 0 ] || 
+[ $(grep -c "$(echo $ENTRY | cut -d"|" -f1)" /etc/cron.allow) != 0 ]; then 
+echo $ENTRY | cut -d"|" -f1; fi; fi; done</pre>
+If any users are listed from the above command, then the listed user(s) does not meet the above requirements.
+To centralize the management of privileged account crontabs, of the 
+default system accounts, only root may have a crontab.</description>
+<ref nist="ECPA-1" disa="225" />
+<oval id="cron_system_accounts" />
+<ident stig="GEN003060" />
+</Rule>
+
+</Group>
+
+<Group id="restrict_at_users">
+<title>Restrict at to Authorized Users if Necessary</title>
+<description>
+The <tt>/etc/at.allow</tt> file contain lists of users who are allowed
+to use at to delay execution of processes. If this file exists and
+if the corresponding file <tt>/etc/at.deny</tt> does not exist,
+then only users listed in the relevant allow files can run the at
+commands to submit jobs to be run at scheduled intervals.
+On many systems, only the system administrator needs the ability to schedule
+jobs. Note that even if a given user is not listed in <tt>cron.allow</tt>, cron jobs can
+still be run as that user. The <tt>cron.allow</tt> file controls only administrative access
+to the crontab command for scheduling and modifying cron jobs.
+<br/>
+<br/>
+To restrict at to only authorized users:
+<ul>
+<li>Remove the <tt>at.deny</tt> file:<pre># rm /etc/at.deny</pre></li>
+<li>Edit <tt>/etc/at.allow</tt>, adding one line for each user allowed to use the at command to create at jobs.</li>
+</ul>
+</description>
+
+<Rule id="at_access_controlled">
+<title>At Must Control Access</title>
+<description>The at service must control access to the execution of at jobs.
+This is accomplished defining the users allowed/denied in the at.allow and at.deny files. 
+To confirm if these files exist, run the following commands:
+<pre># ls -1l /etc/at.allow
+# ls -1l /etc/at.deny</pre>
+The at facility allows users to execute recurring jobs on a regular and unattended basis.  
+The at.allow file designates accounts allowed to enter and execute jobs using the at facility.  
+If neither at.allow nor at.deny exists, then any account may use the at facility.  
+This may open the facility up for abuse by system intruders and malicious users.</description>
+<ref nist="ECLP-1" disa="225" />
+<oval id="at_access_controlled" />
+<ident stig="GEN003280" />
+</Rule>
+
+<Rule id="at_system_accounts">
+<title>At Must Deny System Accounts</title>
+<description>The at service must deny system accounts (except for root) access to the execution of at jobs. 
+This includes all accounts with a UID less than 500, except for 0.
+This is accomplished by listing all system users within the at.deny file and ensuring that they are not listed in the at.allow file. 
+To confirm these conditions are met, run the following commands:
+<pre># cat /etc/passwd | awk -F: '{ print $1"|"$3 }' | grep -v "^root|" | while read ENTRY; do 
+if [ $(echo $ENTRY | cut -d"|" -f2) -lt 500 ];then 
+if [ $(grep -c "$(echo $ENTRY | cut -d"|" -f1)" /etc/at.deny) = 0 ] || 
+[ $(grep -c "$(echo $ENTRY | cut -d"|" -f1)" /etc/at.allow) != 0 ]; then 
+echo $ENTRY | cut -d"|" -f1; fi; fi; done</pre>
+If any users are listed from the above command, then the listed user(s) does not meet the above requirements.
+To centralize the management of privileged account at jobs, of the 
+default system accounts, only root may have the ability to schedule at jobs.</description>
+<ref nist="ECPA-1" disa="225" />
+<oval id="at_system_accounts" />
+<ident stig="GEN003320" />
+</Rule>
+
+<Rule id="at_deny_nonempty">
+<title>At.deny Must Either Not Exist Or Not Be Empty</title>
+<description>On some systems, if there is no at.allow file and there is an empty at.deny file, 
+then the system assumes everyone has permission to use the "at" facility.  
+This could create an insecure setting in the case of malicious users or system intruders. 
+To confirm these conditions are met, run the following command:
+<pre># ls -1l /etc/at.deny</pre>
+If the above command returns with details about /etc/at.deny, then it exists.
+If it exists, then run the following command:
+<pre># cat /etc/at.deny</pre>
+If no entries are returned, then configure the at.deny file with the default system accounts, excluding root.
+</description>
+<ref nist="ECLP-1" disa="225" />
+<oval id="at_deny_nonempty" />
+<ident stig="GEN003300" />
+</Rule>
+
+</Group>
+
+</Group>

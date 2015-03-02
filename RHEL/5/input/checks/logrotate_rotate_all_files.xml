@@ -1,0 +1,55 @@
+<def-group>
+  <definition class="compliance" id="logrotate_rotate_all_files" version="1">
+    <metadata>
+      <title>Ensure All Logs are Rotated by logrotate</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The logrotate (syslog rotater) service should be enabled.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="check for logrotate in /etc/crontab" test_ref="test_logrotate_rotate_all_files_etc_crontab" />
+      <criterion comment="check for logrotate in /etc/cron.d/*" test_ref="test_logrotate_rotate_all_files_etc_cron_d" />
+      <criterion comment="check for logrotate in /etc/cron.hourly/*" test_ref="test_logrotate_rotate_all_files_etc_cron_hourly" />
+      <criterion comment="check for logrotate in /etc/cron.daily/*" test_ref="test_logrotate_rotate_all_files_etc_cron_daily" />
+   </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" comment="check if logrotate is executed" id="test_logrotate_rotate_all_files_etc_crontab" version="1">
+    <ind:object object_ref="object_logrotate_rotate_all_files_etc_crontab" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_logrotate_rotate_all_files_etc_crontab" version="1">
+    <ind:filepath>/etc/crontab</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(?:(?:\d*(?:,\d|-\d)?|\*)+\s(?:\d*(?:,\d|-\d)?|\*)+\s\*\s*\s*\s|@hourly|@daily|@midnight)+.*logrotate</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="check if logrotate is executed" id="test_logrotate_rotate_all_files_etc_cron_d" version="1">
+    <ind:object object_ref="object_logrotate_rotate_all_files_etc_cron_d" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_logrotate_rotate_all_files_etc_cron_d" version="1">
+    <ind:path>/etc/cron.d</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)(?:(?:\d*(?:,\d|-\d)?|\*)+\s(?:\d*(?:,\d|-\d)?|\*)+\s\*\s*\s*\s|@hourly|@daily|@midnight)+.*logrotate</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="check if logrotate is executed" id="test_logrotate_rotate_all_files_etc_cron_hourly" version="1">
+    <ind:object object_ref="object_logrotate_rotate_all_files_etc_cron_hourly" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_logrotate_rotate_all_files_etc_cron_hourly" version="1">
+    <ind:path>/etc/cron.hourly</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#).*logrotate</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="check if logrotate is executed" id="test_logrotate_rotate_all_files_etc_cron_daily" version="1">
+    <ind:object object_ref="object_logrotate_rotate_all_files_etc_cron_daily" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_logrotate_rotate_all_files_etc_cron_daily" version="1">
+    <ind:path>/etc/cron.daily</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#).*logrotate</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

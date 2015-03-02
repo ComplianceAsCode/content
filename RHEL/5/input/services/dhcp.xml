@@ -1,0 +1,84 @@
+<Group id="dhcp">
+<title>DHCP</title>
+<description>The Dynamic Host Configuration Protocol (DHCP) allows
+systems to request and obtain an IP address and other configuration
+parameters from a server.
+<br /><br />
+This guide recommends configuring networking on clients by manually editing
+the appropriate files under <tt>/etc/sysconfig</tt>.  Use of DHCP can make client 
+systems vulnerable to compromise by rogue DHCP servers, and should be avoided 
+unless necessary.  If using DHCP is necessary, however, there are best practices 
+that should be followed to minimize security risk.
+</description>
+
+<Group id="disabling_dhcp_client">
+<title>Disable DHCP Client</title>
+<description>
+DHCP is the default network configuration method provided by the system
+installer, and common on many networks. Nevertheless, manual management
+of IP addresses for systems implies a greater degree of management and
+accountability for network activity.
+</description>
+
+<Rule id="sysconfig_networking_bootproto_ifcfg">
+<title>Disable DHCP Client</title>
+<description>
+For each interface on the system (e.g. eth0), edit
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt> and make the
+following changes:
+<ul>
+<li> Correct the BOOTPROTO line to read:
+<pre>BOOTPROTO=static</pre>
+</li>
+<li> Add or correct the following lines, substituting the appropriate
+values based on your site's addressing scheme:
+<pre>NETMASK=255.255.255.0
+IPADDR=192.168.1.2
+GATEWAY=192.168.1.1</pre>
+</li>
+</ul>
+</description>
+<ocil clause="it does not">
+To verify that DHCP is not being used, examine the following file for each interface:
+<pre># /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+Look for the following:
+<pre>BOOTPROTO=static</pre>
+and the following, substituting the appropriate values based on your site's addressing scheme:
+<pre>NETMASK=255.255.255.0
+IPADDR=192.168.1.2
+GATEWAY=192.168.1.1</pre>
+</ocil>
+<rationale>
+DHCP relies on trusting the local network. If the local network is not trusted,
+then it should not be used.  However, the automatic configuration provided by
+DHCP is commonly used and the alternative, manual configuration, presents an
+unacceptable burden in many circumstances.</rationale>
+<ident stig="GEN007840" />
+<oval id="sysconfig_networking_bootproto_ifcfg" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+</Group> <!-- <Group id="disabling_dhcp_client"> -->
+
+<Group id="dhcp_client_configuration">
+<title>Configure DHCP Client if Necessary</title>
+<description>If DHCP must be used, then certain configuration changes can
+minimize the amount of information it receives and applies from the network,
+and thus the amount of incorrect information a rogue DHCP server could
+successfully distribute.  For more information on configuring dhclient, see the
+<tt>dhclient(8)</tt> and <tt>dhclient.conf(5)</tt> man pages.  </description>
+
+<Rule id="dhcp_client_disable_ddns">
+<title>Do Not Use Dynamic DNS</title>
+<description>To prevent the DHCP client from transmitting system information, 
+edit <tt>/etc/dhclient.conf</tt>, and add or correct the following global
+option: <pre>do-forward-updates false;</pre>
+</description>
+<rationale>Dynamic DNS updates transmit unencrypted information about a system 
+including its name and address and should not be used unless needed.</rationale>
+<ident stig="GEN007850" />
+<oval id="dhcp_client_disable_ddns" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group> <!-- <Group id="dhcp_client_configuration"> -->
+</Group> <!-- <Group id="dhcp"> -->

@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_grub_conf" version="1">
+    <metadata>
+      <title>File /boot/grub/grub.conf extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /boot/grub/grub.conf should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criterion test_ref="test_file_permissions_extended_grub_conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs" id="test_file_permissions_extended_grub_conf" version="1">
+    <unix:object object_ref="object_file_permissions_extended_grub_conf" />
+    <unix:state state_ref="state_file_permissions_extended_grub_conf" />
+  </unix:file_test>
+
+  <unix:file_object comment="/boot/grub/grub.conf" id="object_file_permissions_extended_grub_conf" version="1">
+    <unix:path>/boot/grub</unix:path>
+    <unix:filename>grub.conf</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_grub_conf" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

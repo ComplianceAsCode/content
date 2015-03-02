@@ -1,0 +1,69 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_login_events" version="1">
+    <metadata>
+      <title>Audit Login Events</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Audit rules should detect login events.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	      <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+        </criteria>
+        <criterion comment="audit /var/log/faillog" test_ref="test_audit_rules_login_events_var_log_faillog_el4" />
+        <criterion comment="audit /var/log/lastlog" test_ref="test_audit_rules_login_events_var_log_lastlog_el4" />
+      </criteria>
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 5 is installed" definition_ref="installed_OS_is_centos5" />
+	      <extend_definition comment="RedHat 5 is installed" definition_ref="installed_OS_is_rhel5" />
+        </criteria>
+        <criterion comment="audit /var/log/faillog" test_ref="test_audit_rules_login_events_var_log_faillog_el5" />
+        <criterion comment="audit /var/log/lastlog" test_ref="test_audit_rules_login_events_var_log_lastlog_el5" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit /var/log/faillog" id="test_audit_rules_login_events_var_log_faillog_el4" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_var_log_faillog_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_var_log_faillog_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/faillog\s+\-p\s+(wa|aw|xaw|xwa|wxa|axw|awx|wax)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /var/log/lastlog" id="test_audit_rules_login_events_var_log_lastlog_el4" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_var_log_lastlog_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_var_log_lastlog_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+(wa|aw|xaw|xwa|wxa|axw|awx|wax)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /var/log/faillog" id="test_audit_rules_login_events_var_log_faillog_el5" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_var_log_faillog_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_var_log_faillog_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/faillog\s+\-p\s+(wa|aw|xaw|xwa|wxa|axw|awx|wax)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /var/log/lastlog" id="test_audit_rules_login_events_var_log_lastlog_el5" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_var_log_lastlog_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_var_log_lastlog_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+(wa|aw|xaw|xwa|wxa|axw|awx|wax)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

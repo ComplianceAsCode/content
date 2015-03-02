@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_unauthorized_world_writable" version="1">
+    <metadata>
+      <title>Find Unauthorized World-Writable Files</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The world-write permission should be disabled for all files.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_unauthorized_world_write" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="world writable files" id="test_file_permissions_unauthorized_world_write" version="1">
+    <unix:object object_ref="object_file_permissions_unauthorized_world_write" />
+  </unix:file_test>
+  <unix:file_object comment="world writeable" id="object_file_permissions_unauthorized_world_write" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_proc</filter>
+    <filter action="include">state_file_permissions_unauthorized_world_write_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_unauthorized_world_write" version="1">
+    <unix:owrite datatype="boolean">false</unix:owrite>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_unauthorized_world_write_proc" version="1">
+    <unix:path operation="pattern match">^(/proc|/tmp).*</unix:path>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_unauthorized_world_write_symlink" version="1">
+    <unix:type operation="equals">regular</unix:type>
+  </unix:file_state>
+
+</def-group>

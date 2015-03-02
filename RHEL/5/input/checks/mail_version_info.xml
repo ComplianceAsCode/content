@@ -1,0 +1,60 @@
+<def-group>
+  <definition class="compliance" id="mail_version_info"
+  version="1">
+    <metadata>
+      <title>SMTP Version Info Must Not Be Advertised</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The SMTP service's SMTP greeting must not provide version information.</description>
+    </metadata>
+    <criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="postfix is not installed" negate="true"
+		  definition_ref="package_postfix_installed" />
+			<criteria operator="AND">
+				<criterion comment="Check smtpd_banner in /etc/postfix/main.mc"
+				test_ref="test_mail_version_info_postfix" />
+			</criteria>
+		</criteria>
+		<criteria operator="OR">
+		  <extend_definition comment="sendmail is not installed" negate="true"
+		  definition_ref="package_sendmail_installed" />
+			<criteria operator="AND">
+				<criterion comment="Check SmtpGreetingMessage in /etc/mail/sendmail.cf"
+				test_ref="test_mail_version_info_sendmail" />
+			</criteria>
+		</criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="SmtpGreetingMessage in /etc/mail/sendmail.cf should be set correctly"
+  id="test_mail_version_info_sendmail" version="1">
+    <ind:object object_ref="obj_mail_version_info_sendmail" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="SmtpGreetingMessage in /etc/mail/sendmail.cf should be set correctly"
+  id="obj_mail_version_info_sendmail" version="1">
+    <ind:path>/etc/mail</ind:path>
+    <ind:filename>sendmail.cf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?:O\s*)*(?i)(SmtpGreetingMessage[\s]*=[\s]*(?:(?!\$j|\$v|\$Z).)+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="smtpd_banner in /etc/postfix/main.cf should be set correctly"
+  id="test_mail_version_info_postfix" version="1">
+    <ind:object object_ref="obj_mail_version_info_postfix" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="smtpd_banner in /etc/postfix/main.cf should be set correctly"
+  id="obj_mail_version_info_postfix" version="1">
+    <ind:path>/etc/postfix</ind:path>
+    <ind:filename>main.cf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?:O\s*)*(?i)(?:smtpd_banner.*(\$mail_version).*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
