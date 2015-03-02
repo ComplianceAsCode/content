@@ -1,0 +1,122 @@
+<def-group>
+  <definition class="compliance" id="accounts_umask" version="1">
+    <metadata>
+      <title>The system and user default umask must be set</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The default umask for the system and users</description>
+    </metadata>
+    <criteria>
+      <criterion negate="false" test_ref="test_accounts_invalid_umask_system" />
+      <criterion negate="false" test_ref="test_accounts_invalid_umask_user_home" />
+      <criterion negate="false" test_ref="test_accounts_invalid_umask_user_root" />
+	  <criteria operator="OR">
+		  <criterion test_ref="test_accounts_valid_umask_system" />
+		  <criterion test_ref="test_accounts_valid_umask_user_home" />
+		  <criterion test_ref="test_accounts_valid_umask_user_root" />
+	  </criteria>
+   </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="none satisfy" check_existence="any_exist"
+  comment="Tests that no files with a umask statement include an invalid umask setting"
+  id="test_accounts_invalid_umask_system" version="1">
+    <ind:object object_ref="obj_accounts_invalid_umask_system" />
+    <ind:state state_ref="state_accounts_invalid_umask_system" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_accounts_invalid_umask_system" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*[Uu][Mm][Aa][Ss][Kk][\s]+(?:=\s*)*(\d+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_accounts_invalid_umask_system" version="1">
+    <ind:subexpression operation="not equal" var_check="all" var_ref="var_accounts_user_umask" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="none satisfy" check_existence="any_exist"
+  comment="Tests that no files with a umask statement include an invalid umask setting"
+  id="test_accounts_invalid_umask_user_home" version="1">
+    <ind:object object_ref="obj_accounts_invalid_umask_user_home" />
+    <ind:state state_ref="state_accounts_invalid_umask_user_home" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_accounts_invalid_umask_user_home" version="1">
+    <ind:path operation="pattern match">/home/.*</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*[Uu][Mm][Aa][Ss][Kk][\s]+(?:=\s*)*(\d+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_accounts_invalid_umask_user_home" version="1">
+    <ind:subexpression operation="not equal" var_check="all" var_ref="var_accounts_user_umask" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="none satisfy" check_existence="any_exist"
+  comment="Tests that no files with a umask statement include an invalid umask setting"
+  id="test_accounts_invalid_umask_user_root" version="1">
+    <ind:object object_ref="obj_accounts_invalid_umask_user_root" />
+    <ind:state state_ref="state_accounts_invalid_umask_user_root" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_accounts_invalid_umask_user_root" version="1">
+    <ind:path>/root</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*[Uu][Mm][Aa][Ss][Kk][\s]+(?:=\s*)*(\d+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_accounts_invalid_umask_user_root" version="1">
+    <ind:subexpression operation="not equal" var_check="all" var_ref="var_accounts_user_umask" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="at least one" check_existence="all_exist"
+  comment="Tests that at least one file includes a umask statement with the required umask setting"
+  id="test_accounts_valid_umask_system" version="1">
+    <ind:object object_ref="obj_accounts_valid_umask_system" />
+    <ind:state state_ref="state_accounts_valid_umask_system" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_accounts_valid_umask_system" version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*[Uu][Mm][Aa][Ss][Kk][\s]+(?:=\s*)*(\d+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_accounts_valid_umask_system" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_accounts_user_umask" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="at least one" check_existence="all_exist"
+  comment="Tests that at least one file includes a umask statement with the required umask setting"
+  id="test_accounts_valid_umask_user_home" version="1">
+    <ind:object object_ref="obj_accounts_valid_umask_user_home" />
+    <ind:state state_ref="state_accounts_valid_umask_user_home" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_accounts_valid_umask_user_home" version="1">
+    <ind:path operation="pattern match">/home/.*</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*[Uu][Mm][Aa][Ss][Kk][\s]+(?:=\s*)*(\d+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_accounts_valid_umask_user_home" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_accounts_user_umask" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="at least one" check_existence="all_exist"
+  comment="Tests that at least one file includes a umask statement with the required umask setting"
+  id="test_accounts_valid_umask_user_root" version="1">
+    <ind:object object_ref="obj_accounts_valid_umask_user_root" />
+    <ind:state state_ref="state_accounts_valid_umask_user_root" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_accounts_valid_umask_user_root" version="1">
+    <ind:path>/root</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*[Uu][Mm][Aa][Ss][Kk][\s]+(?:=\s*)*(\d+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_accounts_valid_umask_user_root" version="1">
+    <ind:subexpression operation="equals" var_check="all" var_ref="var_accounts_user_umask" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="umask for user shell" datatype="string" id="var_accounts_user_umask" version="1" />
+</def-group>

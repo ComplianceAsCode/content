@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="ssh_use_approved_macs" version="1">
+    <metadata>
+      <title>Use Only Approved Macs</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="rpm package openssh-clients removed"
+      definition_ref="package_openssh-clients_removed" />
+      <criterion comment="Check Macs in /etc/ssh/ssh_config"
+      test_ref="test_ssh_use_approved_macs" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of Macs setting in the /etc/ssh/ssh_config file"
+  id="test_ssh_use_approved_macs" version="1">
+    <ind:object object_ref="obj_ssh_use_approved_macs" />
+    <ind:state state_ref="state_ssh_use_approved_macs" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ssh_use_approved_macs" version="1">
+    <ind:filepath>/etc/ssh/ssh_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MACS[\s]+(.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_ssh_use_approved_macs" version="1">
+    <ind:subexpression operation="equals">hmac-sha1</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

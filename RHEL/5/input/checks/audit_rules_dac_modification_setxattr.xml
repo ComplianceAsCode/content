@@ -1,0 +1,156 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_dac_modification_setxattr" version="1">
+    <metadata>
+      <title>Audit Discretionary Access Control Modification Events - setxattr</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The changing of file permissions and attributes should be 
+      audited.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	      <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+        </criteria>
+        <criteria operator="OR">
+          <criteria>
+            <extend_definition comment="32bit and ..." definition_ref="system_info_architecture_x86" />
+            <criterion comment="dac modification setxattr" test_ref="test_audit_rules_dac_modification_setxattr_el4" />
+          </criteria>
+          <criteria>
+            <extend_definition comment="64bit and ..." definition_ref="system_info_architecture_x86_64" />
+		    <criterion comment="dac modification setxattr x32" test_ref="test_audit_rules_dac_modification_setxattr_x32_el4" />
+            <criterion comment="dac modification setxattr x64" test_ref="test_audit_rules_dac_modification_setxattr_x64_el4" />
+          </criteria>
+        </criteria>
+      </criteria>
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 5 is installed" definition_ref="installed_OS_is_centos5" />
+	      <extend_definition comment="RedHat 5 is installed" definition_ref="installed_OS_is_rhel5" />
+        </criteria>
+        <criteria operator="OR">
+          <criteria>
+            <extend_definition comment="32bit and ..." definition_ref="system_info_architecture_x86" />
+            <criterion comment="dac modification setxattr" test_ref="test_audit_rules_dac_modification_setxattr_el5" />
+          </criteria>
+          <criteria>
+            <extend_definition comment="64bit and ..." definition_ref="system_info_architecture_x86_64" />
+		    <criterion comment="dac modification setxattr x32" test_ref="test_audit_rules_dac_modification_setxattr_x32_el5" />
+            <criterion comment="dac modification setxattr x64" test_ref="test_audit_rules_dac_modification_setxattr_x64_el5" />
+          </criteria>
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="dac modification setxattr" id="test_audit_rules_dac_modification_setxattr_el4" version="1">
+    <ind:object object_ref="object_audit_rules_dac_modification_setxattr_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_setxattr_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <!-- What's going on here?
+         Ensure we have both exit and always in the action list
+         Watch for the setxattr syscall.  
+
+         A typical pattern would be: 
+         -a exit,always -S setxattr
+    -->
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+(.*-S[\s]+setxattr)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" comment="dac modification setxattr x32" id="test_audit_rules_dac_modification_setxattr_x32_el4" version="1">
+    <ind:object object_ref="object_audit_rules_dac_modification_setxattr_x32_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_setxattr_x32_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <!-- What's going on here?
+         Ensure we have both exit and always in the action list
+         Syscall numbers between x64/x32 dont always line up so split them by 
+           arch.  Remember that we can still have x32 libs on x64
+         Watch for the setxattr syscall.  
+
+         A typical pattern would be: 
+         -a exit,always -F arch=b32 -S setxattr
+    -->
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+(?:.*-F[\s]+arch=b32[\s]+)(.*-S[\s]+setxattr)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" comment="dac modification setxattr x64" id="test_audit_rules_dac_modification_setxattr_x64_el4" version="1">
+    <ind:object object_ref="object_audit_rules_dac_modification_setxattr_x64_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_setxattr_x64_el4" version="1">
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <!-- What's going on here?
+         Ensure we have both exit and always in the action list
+         Syscall numbers between x64/x32 dont always line up so split them by 
+           arch. Remember that we can still have x32 libs on x64 
+         Watch for the setxattr syscall.  
+
+         A typical pattern would be: 
+         -a exit,always -F arch=b64 -S setxattr
+    -->
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+(?:.*-F[\s]+arch=b64[\s]+)(.*-S[\s]+setxattr)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" comment="dac modification setxattr" id="test_audit_rules_dac_modification_setxattr_el5" version="1">
+    <ind:object object_ref="object_audit_rules_dac_modification_setxattr_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_setxattr_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <!-- What's going on here?
+         Ensure we have both exit and always in the action list
+         Watch for the setxattr syscall.  
+
+         A typical pattern would be: 
+         -a exit,always -S setxattr
+    -->
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+(.*-S[\s]+setxattr)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" comment="dac modification setxattr x32" id="test_audit_rules_dac_modification_setxattr_x32_el5" version="1">
+    <ind:object object_ref="object_audit_rules_dac_modification_setxattr_x32_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_setxattr_x32_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <!-- What's going on here?
+         Ensure we have both exit and always in the action list
+         Syscall numbers between x64/x32 dont always line up so split them by 
+           arch.  Remember that we can still have x32 libs on x64
+         Watch for the setxattr syscall.  
+
+         A typical pattern would be: 
+         -a exit,always -F arch=b32 -S setxattr
+    -->
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+(?:.*-F[\s]+arch=b32[\s]+)(.*-S[\s]+setxattr)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_test check="all" comment="dac modification setxattr x64" id="test_audit_rules_dac_modification_setxattr_x64_el5" version="1">
+    <ind:object object_ref="object_audit_rules_dac_modification_setxattr_x64_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_setxattr_x64_el5" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <!-- What's going on here?
+         Ensure we have both exit and always in the action list
+         Syscall numbers between x64/x32 dont always line up so split them by 
+           arch. Remember that we can still have x32 libs on x64 
+         Watch for the setxattr syscall.  
+
+         A typical pattern would be: 
+         -a exit,always -F arch=b64 -S setxattr
+    -->
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+(?:.*-F[\s]+arch=b64[\s]+)(.*-S[\s]+setxattr)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+</def-group>

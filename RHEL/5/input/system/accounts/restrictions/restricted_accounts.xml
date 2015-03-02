@@ -1,0 +1,120 @@
+<Group id="restricted-accounts">
+<title>Special Privileged Accounts Exist</title>
+<description>The system must not have special 
+privilege accounts, such as <tt>shutdown</tt>, 
+<tt>reboot</tt>, <tt>halt</tt>, <tt>ftp</tt>, 
+<tt>games</tt>, <tt>gopher</tt>, and <tt>news</tt>.</description>
+
+<Rule id="restricted_accounts" severity="high">
+<title>Special Privileged Accounts</title>
+<description>Remove any special privilege accounts, 
+such as <tt>shutdown</tt>, <tt>reboot</tt>, and 
+<tt>halt</tt>, from the /etc/passwd and /etc/shadow 
+files using the <tt>userdel</tt> or 
+<tt>system-config-users</tt> commands.</description>
+<ocil clause="it is not set to the required value">
+Perform the following to check for unnecessary 
+privileged accounts:
+<pre># grep "^shutdown" /etc/passwd</pre>
+<pre># grep "^halt" /etc/passwd</pre>
+<pre># grep "^reboot" /etc/passwd</pre>
+</ocil>
+<rationale>
+If special privilege accounts are compromised, 
+the accounts could provide privileges to execute 
+malicious commands on a system.
+</rationale>
+<ident stig="GEN000000-LNX00320" />
+<oval id="restricted_accounts" />
+<ref nist="IAAC-1" disa="225,764" />
+</Rule>
+
+<Rule id="restricted_accounts_ftp" severity="medium">
+<title>Ftp Account</title>
+<description>Remove the <tt>ftp</tt> account from the /etc/passwd 
+and /etc/shadow files using the <tt>userdel</tt> or 
+<tt>system-config-users</tt> commands.</description>
+<ocil clause="it is not set to the required value">
+Perform the following to check for unnecessary 
+privileged accounts:
+<pre># grep "^ftp" /etc/passwd</pre>
+</ocil>
+<rationale>
+Accounts that provide no operational purpose provide 
+additional opportunities for system compromise. Unnecessary 
+accounts include user accounts for individuals not requiring 
+access to the system and application accounts for applications 
+not installed on the system.
+</rationale>
+<ident stig="GEN000290-4" />
+<oval id="restricted_accounts_ftp" />
+<ref nist="IAAC-1" disa="12" />
+</Rule>
+
+<Rule id="restricted_accounts_games" severity="medium">
+<title>Games Account</title>
+<description>Remove the <tt>games</tt> account from the /etc/passwd 
+and /etc/shadow files using the <tt>userdel</tt> or 
+<tt>system-config-users</tt> commands.</description>
+<ocil clause="it is not set to the required value">
+Perform the following to check for unnecessary 
+privileged accounts:
+<pre># grep "^games" /etc/passwd</pre>
+</ocil>
+<rationale>
+Accounts that provide no operational purpose provide 
+additional opportunities for system compromise. Unnecessary 
+accounts include user accounts for individuals not requiring 
+access to the system and application accounts for applications 
+not installed on the system.
+</rationale>
+<ident stig="GEN000290-1" />
+<oval id="restricted_accounts_games" />
+<ref nist="IAAC-1" disa="12" />
+</Rule>
+
+<Rule id="restricted_accounts_gopher" severity="medium">
+<title>Gopher Account</title>
+<description>Remove the <tt>gopher</tt> account from the /etc/passwd 
+and /etc/shadow files using the <tt>userdel</tt> or 
+<tt>system-config-users</tt> commands.</description>
+<ocil clause="it is not set to the required value">
+Perform the following to check for unnecessary 
+privileged accounts:
+<pre># grep "^gopher" /etc/passwd</pre>
+</ocil>
+<rationale>
+Accounts that provide no operational purpose provide 
+additional opportunities for system compromise. Unnecessary 
+accounts include user accounts for individuals not requiring 
+access to the system and application accounts for applications 
+not installed on the system.
+</rationale>
+<ident stig="GEN000290-3" />
+<oval id="restricted_accounts_gopher" />
+<ref nist="IAAC-1" disa="12" />
+</Rule>
+
+<Rule id="restricted_accounts_news" severity="medium">
+<title>News Account</title>
+<description>Remove the <tt>news</tt> account from the /etc/passwd 
+and /etc/shadow files using the <tt>userdel</tt> or 
+<tt>system-config-users</tt> commands.</description>
+<ocil clause="it is not set to the required value">
+Perform the following to check for unnecessary 
+privileged accounts:
+<pre># grep "^news" /etc/passwd</pre>
+</ocil>
+<rationale>
+Accounts that provide no operational purpose provide 
+additional opportunities for system compromise. Unnecessary 
+accounts include user accounts for individuals not requiring 
+access to the system and application accounts for applications 
+not installed on the system.
+</rationale>
+<ident stig="GEN000290-2" />
+<oval id="restricted_accounts_news" />
+<ref nist="IAAC-1" disa="12" />
+</Rule>
+
+</Group>

@@ -1,0 +1,104 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_global_initialization_files" version="1">
+    <metadata>
+      <title>Global Initialization Files Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for global initialization files should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criteria>
+        <criterion test_ref="test_file_permissions_extended_etc_bashrc" />
+        <criterion test_ref="test_file_permissions_extended_etc_csh_cshrc" />
+        <criterion test_ref="test_file_permissions_extended_etc_csh_login" />
+        <criterion test_ref="test_file_permissions_extended_etc_csh_logout" />
+        <criterion test_ref="test_file_permissions_extended_etc_environment" />
+        <criterion test_ref="test_file_permissions_extended_etc_ksh_kshrc" />
+        <criterion test_ref="test_file_permissions_extended_etc_profile" />
+        <criterion test_ref="test_file_permissions_extended_etc_suid_profile" />
+        <criterion test_ref="test_file_permissions_extended_etc_profiled" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/bashrc" id="test_file_permissions_extended_etc_bashrc" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_bashrc" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/bashrc" id="object_file_permissions_extended_etc_bashrc" version="1">
+    <unix:filepath>/etc/bashrc</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/csh.cshrc" id="test_file_permissions_extended_etc_csh_cshrc" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_csh_cshrc" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/csh.cshrc" id="object_file_permissions_extended_etc_csh_cshrc" version="1">
+    <unix:filepath>/etc/csh.cshrc</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/csh.login" id="test_file_permissions_extended_etc_csh_login" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_csh_login" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/csh.login" id="object_file_permissions_extended_etc_csh_login" version="1">
+    <unix:filepath>/etc/csh.login</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/csh.logout" id="test_file_permissions_extended_etc_csh_logout" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_csh_logout" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/csh.logout" id="object_file_permissions_extended_etc_csh_logout" version="1">
+    <unix:filepath>/etc/csh.logout</unix:filepath>
+  </unix:file_object>
+  
+   <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/environment" id="test_file_permissions_extended_etc_environment" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_environment" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/environment" id="object_file_permissions_extended_etc_environment" version="1">
+    <unix:filepath>/etc/environment</unix:filepath>
+  </unix:file_object>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/ksh.kshrc" id="test_file_permissions_extended_etc_ksh_kshrc" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_ksh_kshrc" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/ksh.kshrc" id="object_file_permissions_extended_etc_ksh_kshrc" version="1">
+    <unix:filepath>/etc/ksh.kshrc</unix:filepath>
+  </unix:file_object>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/profile" id="test_file_permissions_extended_etc_profile" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_profile" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/profile" id="object_file_permissions_extended_etc_profile" version="1">
+    <unix:filepath>/etc/profile</unix:filepath>
+  </unix:file_object>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/suid_profile" id="test_file_permissions_extended_etc_suid_profile" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_suid_profile" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/suid_profile" id="object_file_permissions_extended_etc_suid_profile" version="1">
+    <unix:filepath>/etc/suid_profile</unix:filepath>
+  </unix:file_object>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing extended ACLs of /etc/profile.d/*" id="test_file_permissions_extended_etc_profiled" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_profiled" />
+    <unix:state state_ref="state_file_permissions_extended_global_initialization_files" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/profile.d/*" id="object_file_permissions_extended_etc_profiled" version="1">
+    <unix:path>/etc/profile.d</unix:path>
+    <unix:filename operation="pattern match">.*</unix:filename>
+  </unix:file_object>
+  
+  <unix:file_state id="state_file_permissions_extended_global_initialization_files" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

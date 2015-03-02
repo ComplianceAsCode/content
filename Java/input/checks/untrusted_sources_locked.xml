@@ -1,0 +1,96 @@
+<def-group>
+  <definition class="compliance" id="untrusted_sources_locked" version="1">
+    <metadata>
+      <title>The dialog to enable users to grant permissions to execute 
+	  signed content from an un-trusted authority must be disabled.</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <description>Java applets exist both signed and unsigned.  Even for 
+	  signed applets, there can be many sources, some of which may be purveyors 
+	  of malware.  Applet sources considered trusted can have their information 
+	  populated into the browser, enabling Java to validate applets against 
+	  trusted sources.  Permitting execution of signed Java applets from 
+	  un-trusted sources may result in acquiring malware, and risks system 
+	  modification, invasion of privacy, or denial of service.</description>
+    </metadata>
+    <!-- deployment.security.askgrantdialog.notinca is configured ... -->
+    <criteria>
+      <criteria operator="OR">
+		<criteria>
+	      <extend_definition comment="Oracle's JRE 1.6.0 is not installed" definition_ref="installed_app_is_oracle_160_java" negate="true" />
+	      <extend_definition comment="Oracle's JRE 1.7.0 is not installed" definition_ref="installed_app_is_oracle_170_java" negate="true" />
+	    </criteria>
+	    <criterion comment="Check deployment.security.askgrantdialog.notinca.locked" test_ref="test_untrusted_sources_oracle_java_lock" />
+	  </criteria>
+      <criteria operator="OR">
+		<criteria>
+	      <extend_definition comment="Red Hat's IBM JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_ibm_160_java" negate="true" />
+	      <extend_definition comment="Red Hat's IBM JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_ibm_170_java" negate="true" />
+	    </criteria>
+	    <criterion comment="Check deployment.security.askgrantdialog.notinca.locked" test_ref="test_untrusted_sources_rhel_ibm_java_lock" />
+	  </criteria>
+      <criteria operator="OR">
+		<criteria>
+	      <extend_definition comment="Red Hat's OpenJDK JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_openjdk_160_java" negate="true" />
+	      <extend_definition comment="Red Hat's OpenJDK JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_openjdk_170_java" negate="true" />
+	    </criteria>
+	    <criterion comment="Check deployment.security.askgrantdialog.notinca.locked" test_ref="test_untrusted_sources_rhel_openjdk_java_lock" />
+	  </criteria>
+      <criteria operator="OR">
+        <extend_definition comment="Red Hat's Sun JRE 1.6.0 not installed" definition_ref="installed_app_is_rhel_sun_160_java" negate="true" />
+	    <criterion comment="Check deployment.security.askgrantdialog.notinca.locked" test_ref="test_untrusted_sources_rhel_sun_java_lock" />
+	  </criteria>
+      <criteria operator="OR">
+        <extend_definition comment="Red Hat's Oracle JRE 1.7.0 not installed" definition_ref="installed_app_is_rhel_oracle_170_java" negate="true" />
+	    <criterion comment="Check deployment.security.askgrantdialog.notinca.locked" test_ref="test_untrusted_sources_rhel_oracle_java_lock" />
+	  </criteria>
+	</criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.askgrantdialog.notinca.lock" id="test_untrusted_sources_oracle_java_lock" version="1">
+    <ind:object object_ref="object_untrusted_sources_oracle_java_lock" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_untrusted_sources_oracle_java_lock" version="1">
+    <ind:filepath>/usr/java/default/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.askgrantdialog.notinca.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.askgrantdialog.notinca.lock" id="test_untrusted_sources_rhel_ibm_java_lock" version="1">
+    <ind:object object_ref="object_untrusted_sources_rhel_ibm_java_lock" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_untrusted_sources_rhel_ibm_java_lock" version="1">
+    <ind:filepath>/etc/alternatives/jre_ibm/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.askgrantdialog.notinca.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.askgrantdialog.notinca.lock" id="test_untrusted_sources_rhel_openjdk_java_lock" version="1">
+    <ind:object object_ref="object_untrusted_sources_rhel_openjdk_java_lock" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_untrusted_sources_rhel_openjdk_java_lock" version="1">
+    <ind:filepath>/etc/alternatives/jre_openjdk/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.askgrantdialog.notinca.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.askgrantdialog.notinca.lock" id="test_untrusted_sources_rhel_sun_java_lock" version="1">
+    <ind:object object_ref="object_untrusted_sources_rhel_sun_java_lock" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_untrusted_sources_rhel_sun_java_lock" version="1">
+    <ind:filepath>/etc/alternatives/jre_sun/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.askgrantdialog.notinca.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.askgrantdialog.notinca.lock" id="test_untrusted_sources_rhel_oracle_java_lock" version="1">
+    <ind:object object_ref="object_untrusted_sources_rhel_oracle_java_lock" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_untrusted_sources_rhel_oracle_java_lock" version="1">
+    <ind:filepath>/etc/alternatives/jre_oracle/lib/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.askgrantdialog.notinca.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

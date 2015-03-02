@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="iptables_input_reject_rule" version="1">
+    <metadata>
+      <title>Add Reject Rule for
+      the INPUT built-in chain</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Add a reject rule 
+      for the INPUT built-in chain.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="-A INPUT -j REJECT --reject-with icmp-host-prohibited"
+      test_ref="test_iptables_input_reject_rule" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="Check /etc/sysconfig/iptables for line -A INPUT -j REJECT --reject-with icmp-host-prohibited"
+  id="test_iptables_input_reject_rule" version="1">
+    <ind:object object_ref="obj_iptables_input_reject_rule" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_iptables_input_reject_rule"
+  version="1">
+    <ind:path>/etc/sysconfig</ind:path>
+    <ind:filename>iptables</ind:filename>
+    <ind:pattern operation="pattern match">^(-[I|A]\s+(?:[A-Za-z0-9\-_]*)*INPUT\s+-j\s+REJECT\s+--reject-with\s+icmp-host-prohibited\s*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

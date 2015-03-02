@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="require_singleuser_auth" version="1">
+    <metadata>
+      <title>Require Authentication for Single-User Mode</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The requirement for a password to boot into single-user mode
+      should be configured correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_require_singleuser_auth" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests that the SINGLE variable in the /etc/inittab file is set to /sbin/sulogin, to ensure that a password must be entered to access single user mode"
+  id="test_require_singleuser_auth" version="1">
+    <ind:object object_ref="obj_require_singleuser_auth" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_require_singleuser_auth" version="1">
+    <ind:filepath>/etc/inittab</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\:S\:.*/sbin/sulogin[\s]*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

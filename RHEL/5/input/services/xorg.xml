@@ -1,0 +1,36 @@
+<Group id="xwindows">
+<title>X Window System</title>
+<description>The X Window System implementation included with the
+system is called X.org.</description>
+
+<Group id="disabling_xwindows">
+<title>Disable X Windows</title>
+<description>Unless there is a mission-critical reason for the
+system to run a graphical user interface, ensure X is not set to start
+automatically at boot and remove the X Windows software packages.
+There is usually no reason to run X Windows
+on a dedicated server machine, as it increases the system's attack surface and consumes
+system resources. Administrators of server systems should instead login via
+SSH or on the text console.</description>
+
+<Rule id="xwindows_runlevel_setting">
+<title>Disable X Windows Startup By Setting Runlevel</title>
+<description>Setting the system's runlevel to 3 will prevent automatic startup
+of the X server. To do so, ensure the following line in <tt>/etc/inittab</tt>
+features a <tt>3</tt> as shown:
+<pre>id:3:initdefault:</pre>
+</description>
+<ocil clause="it does not">
+To verify the default runlevel is 3, run the following command:
+<pre># grep initdefault /etc/inittab</pre>
+The output should show the following:
+<pre>id:3:initdefault:</pre>
+</ocil>
+<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
+<ident stig="GEN005260" />
+<oval id="xwindows_runlevel_setting" />
+<ref nist="ECSC-1" disa="1436" />
+</Rule>
+
+</Group>
+</Group>

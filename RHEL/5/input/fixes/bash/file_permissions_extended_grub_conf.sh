@@ -1,0 +1,1 @@
+setfacl --remove-all /etc/grub.conf /boot/grub/grub.conf

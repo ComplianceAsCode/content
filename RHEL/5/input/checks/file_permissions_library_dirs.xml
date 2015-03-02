@@ -1,0 +1,82 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_library_dirs" version="1">
+    <metadata>
+      <title>Verify that Shared Library Files Have Restrictive Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Checks that /lib, /usr/lib and objects therein, are not group-writable
+      or world-writable.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_perms_lib_dir" />
+      <criterion test_ref="test_perms_usr_lib_dir" />
+      <criterion test_ref="test_perms_lib_files" />
+      <criterion test_ref="test_perms_usr_lib_files" />
+    </criteria>
+  </definition>
+
+<!-- /lib directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/lib directories go-w" id="test_perms_lib_dir" version="1">
+    <unix:object object_ref="object_file_permissions_lib_dir" />
+  </unix:file_test>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="/lib files go-w" id="test_perms_lib_files" version="1">
+    <unix:object object_ref="object_file_permissions_lib_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="/lib directories" id="object_file_permissions_lib_dir" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/lib</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_permissions_library_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="/lib files" id="object_file_permissions_lib_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/lib</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_permissions_library_dirs_symlink</filter>
+  </unix:file_object>
+<!-- end /lib directory and file tests -->
+
+<!-- /usr/lib directory and file tests -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/usr/lib directories go-w" id="test_perms_usr_lib_dir" version="1">
+    <unix:object object_ref="object_file_permissions_usr_lib_dir" />
+  </unix:file_test>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="/usr/lib files go-w" id="test_perms_usr_lib_files" version="1">
+    <unix:object object_ref="object_file_permissions_usr_lib_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="/usr/lib directories" id="object_file_permissions_usr_lib_dir" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/lib</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_permissions_library_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="/usr/lib files" id="object_file_permissions_usr_lib_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/lib</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_perms_nogroupwrite_noworldwrite</filter>
+    <filter action="exclude">state_permissions_library_dirs_symlink</filter>
+  </unix:file_object>
+<!-- /usr/lib directory and file tests -->
+
+  <unix:file_state id="state_permissions_library_dirs_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_perms_nogroupwrite_noworldwrite" version="1" operator="OR">
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+</def-group>

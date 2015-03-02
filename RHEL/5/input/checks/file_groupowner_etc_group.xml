@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner_etc_group" version="1">
+    <metadata>
+      <title>Verify group who owns 'group' file</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The /etc/group file should be owned by the appropriate
+      group.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_groupowner_etc_group" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="Testing group ownership" id="test_file_groupowner_etc_group"
+  version="1">
+    <unix:object object_ref="object_file_groupowner_etc_group" />
+    <unix:state state_ref="state_file_groupowner_etc_group" />
+  </unix:file_test>
+  <unix:file_state id="state_file_groupowner_etc_group" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+  <unix:file_object comment="/etc/group" id="object_file_groupowner_etc_group"
+  version="1">
+    <unix:filepath>/etc/group</unix:filepath>
+  </unix:file_object>
+</def-group>

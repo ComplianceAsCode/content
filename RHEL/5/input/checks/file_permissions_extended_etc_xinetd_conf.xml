@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_etc_xinetd_conf" version="1">
+    <metadata>
+      <title>File /etc/xinetd.conf Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /etc/xinetd.conf should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criterion test_ref="test_file_permissions_extended_etc_xinetd_conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/xinetd.conf extended ACLs" id="test_file_permissions_extended_etc_xinetd_conf" version="1">
+    <unix:object object_ref="object_file_permissions_extended_etc_xinetd_conf" />
+    <unix:state state_ref="state_file_permissions_extended_etc_xinetd_conf" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/xinetd.conf" id="object_file_permissions_extended_etc_xinetd_conf" version="1">
+    <unix:filepath>/etc/xinetd.conf</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_etc_xinetd_conf" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

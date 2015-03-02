@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="disable_users_coredumps" version="1">
+    <metadata>
+      <title>Disable Core Dumps</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Core dumps for all users should be disabled</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Are core dumps disabled"
+      test_ref="test_core_dumps_limitsconf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="Tests the value of the ^[\s]*\*[\s]+(hard|-)[\s]+core[\s]+([\d]+) setting in the /etc/security/limits.conf file"
+  id="test_core_dumps_limitsconf" version="1">
+    <ind:object object_ref="object_core_dumps_limitsconf" />
+    <ind:state state_ref="state_core_dumps_limitsconf" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_core_dumps_limitsconf" version="1">
+    <ind:path>/etc/security</ind:path>
+    <ind:filename>limits.conf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*\*[\s]+hard[\s]+core[\s]+([\d]+)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_core_dumps_limitsconf" version="1">
+    <ind:subexpression operation="equals">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  </def-group>

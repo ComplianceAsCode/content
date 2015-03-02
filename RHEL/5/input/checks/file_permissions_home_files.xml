@@ -1,0 +1,55 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_home_files" version="1">
+    <metadata>
+      <title>Files /home/* Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /home/* must be 0750.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_home_files" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_file_permissions_home_files_path_list" comment="User Accounts" datatype="string" version="1">
+	<object_component item_field="home_dir" object_ref="object_file_permissions_home_files_path_list" />
+  </local_variable>
+  
+  <unix:password_object id="object_file_permissions_home_files_path_list" version="1">
+    <unix:username operation="pattern match">^.*$</unix:username>
+    <filter action="include">state_file_permissions_home_files_path_user</filter>
+    <filter action="exclude">state_file_permissions_home_files_path_nfs_user</filter>
+  </unix:password_object>
+  <unix:password_state id="state_file_permissions_home_files_path_user" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">500</unix:user_id>
+  </unix:password_state>
+  <unix:password_state id="state_file_permissions_home_files_path_nfs_user" version="1">
+    <unix:username datatype="string" operation="equals">nfsnobody</unix:username>
+  </unix:password_state>
+  
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing permissions" id="test_file_permissions_home_files" version="1">
+    <unix:object object_ref="object_file_permissions_home_files" />
+    <unix:state state_ref="state_file_permissions_home_files" />
+  </unix:file_test>
+  <unix:file_object comment="/home/*" id="object_file_permissions_home_files" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals" var_ref="var_file_permissions_home_files_path_list" var_check="at least one" datatype="string" />
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_home_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_home_files_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_home_files" version="1">
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

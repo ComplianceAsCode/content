@@ -1,0 +1,61 @@
+<def-group>
+  <definition class="compliance" id="ftp_default_umask"
+  version="1">
+    <metadata>
+      <title>FTP Users Umask Must Be 077</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>All FTP users must have a default umask of 077.</description>
+    </metadata>
+	<criteria>
+		<criteria comment="package krb5-workstation removed or service gssftp is not configured to start" operator="OR">
+			<extend_definition comment="krb5-workstation removed" definition_ref="package_krb5-workstation_removed" />
+			<criteria operator="AND" comment="service gssftp is not configured to start">
+				<criterion test_ref="test_ftp_default_umask_gssftp" />
+			</criteria>
+		</criteria>
+		<criteria comment="package vsftpd removed or service vsftpd is not configured to start" operator="OR">
+			<extend_definition comment="vsftpd removed" definition_ref="package_vsftpd_removed" />
+			<criteria operator="AND" comment="service gssftp is not configured to start">
+				<criterion test_ref="test_ftp_default_umask_local_vsftpd" />
+				<criterion test_ref="test_ftp_default_umask_anon_vsftpd" />
+			</criteria>
+		</criteria>
+	</criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="default umask" id="test_ftp_default_umask_gssftp" version="1">
+    <ind:object object_ref="object_ftp_default_umask_gssftp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ftp_default_umask_gssftp"
+  version="1">
+    <ind:filepath>/etc/xinetd.d/gssftp</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)server_args.*(-u 077)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="default umask" id="test_ftp_default_umask_local_vsftpd" version="1">
+    <ind:object object_ref="object_ftp_default_umask_local_vsftpd" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ftp_default_umask_local_vsftpd"
+  version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)local_umask.*(077)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="default umask" id="test_ftp_default_umask_anon_vsftpd" version="1">
+    <ind:object object_ref="object_ftp_default_umask_anon_vsftpd" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ftp_default_umask_anon_vsftpd"
+  version="1">
+    <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)anon_umask.*(077)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

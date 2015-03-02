@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_etc_samba_tdb" version="1">
+    <metadata>
+      <title>Files /etc/samba/passdb.tdb /etc/samba/secrets.tdb Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /etc/samba/passdb.tdb and /etc/samba/secrets.tdb must be 0600.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_etc_samba_passdb_tdb" />
+      <criterion test_ref="test_file_permissions_etc_samba_secrets_tdb" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/samba/passdb.tdb permissions" id="test_file_permissions_etc_samba_passdb_tdb" version="1">
+    <unix:object object_ref="object_file_permissions_etc_samba_passdb_tdb" />
+    <unix:state state_ref="state_file_permissions_etc_samba_tdb" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/samba/passdb.tdb" id="object_file_permissions_etc_samba_passdb_tdb" version="1">
+    <unix:filepath>/etc/samba/passdb.tdb</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/samba/secrets.tdb permissions" id="test_file_permissions_etc_samba_secrets_tdb" version="1">
+    <unix:object object_ref="object_file_permissions_etc_samba_secrets_tdb" />
+    <unix:state state_ref="state_file_permissions_etc_samba_tdb" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/samba/secrets.tdb" id="object_file_permissions_etc_samba_secrets_tdb" version="1">
+    <unix:filepath>/etc/samba/secrets.tdb</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_etc_samba_tdb" version="1">
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

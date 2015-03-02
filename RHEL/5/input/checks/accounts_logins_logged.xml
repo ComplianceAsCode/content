@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="accounts_logins_logged" version="1">
+    <metadata>
+      <title>User Logins are Logged</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Successful and unsuccessful logins and logouts must be logged.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="make sure /var/log/btmp exists" test_ref="test_accounts_logins_logged_btmp" />
+      <criterion comment="make sure /var/log/wtmp exists" test_ref="test_accounts_logins_logged_wtmp" />
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="all_exist" comment="make sure /var/log/btmp exists" id="test_accounts_logins_logged_btmp" version="1">
+    <unix:object object_ref="object_accounts_logins_logged_btmp" />
+  </unix:file_test>
+  <unix:file_object id="object_accounts_logins_logged_btmp" version="1">
+    <unix:filepath operation="equals">/var/log/btmp</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="make sure /var/log/wtmp exists" id="test_accounts_logins_logged_wtmp" version="1">
+    <unix:object object_ref="object_accounts_logins_logged_wtmp" />
+  </unix:file_test>
+  <unix:file_object id="object_accounts_logins_logged_wtmp" version="1">
+    <unix:filepath operation="equals">/var/log/wtmp</unix:filepath>
+  </unix:file_object>
+
+</def-group>

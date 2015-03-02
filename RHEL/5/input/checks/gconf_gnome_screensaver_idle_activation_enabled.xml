@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="gconf_gnome_screensaver_idle_activation_enabled" version="1">
+    <metadata>
+      <title>Implement idle activation of screen saver</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Idle activation of the screen saver should be enabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="gnome screensaver is activated on idle" test_ref="test_gnome_screensaver_idle_activated" />
+    </criteria>
+  </definition>
+  <ind:xmlfilecontent_test check="all" comment="gnome screensaver is activated on idle" id="test_gnome_screensaver_idle_activated" version="1">
+    <ind:object object_ref="object_gnome_screensaver_idle_activated" />
+    <ind:state state_ref="state_activated_on_idle" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_state id="state_activated_on_idle" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+  <ind:xmlfilecontent_object id="object_gnome_screensaver_idle_activated" version="1">
+    <ind:filepath>/etc/gconf/gconf.xml.mandatory/apps/gnome-screensaver/%gconf.xml</ind:filepath>
+    <ind:xpath>/gconf/entry[@name='idle_activation_enabled']/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+</def-group>

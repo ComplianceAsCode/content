@@ -1,0 +1,48 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_library_dirs" version="1">
+    <metadata>
+      <title>File /lib/* and /usr/lib/* Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /lib/* and /usr/lib/* should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criteria>
+        <criterion test_ref="test_file_permissions_extended_library_dirs_lib" />
+        <criterion test_ref="test_file_permissions_extended_library_dirs_usr_lib" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /lib/* extended ACLs" id="test_file_permissions_extended_library_dirs_lib" version="1">
+    <unix:object object_ref="object_file_permissions_extended_library_dirs_lib" />
+    <unix:state state_ref="state_file_permissions_extended_library_dirs" />
+  </unix:file_test>
+  <unix:file_object comment="/lib/*" id="object_file_permissions_extended_library_dirs_lib" version="1">
+    <unix:path>/lib</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_library_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /usr/lib/* extended ACLs" id="test_file_permissions_extended_library_dirs_usr_lib" version="1">
+    <unix:object object_ref="object_file_permissions_extended_library_dirs_usr_lib" />
+    <unix:state state_ref="state_file_permissions_extended_library_dirs" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/lib/*" id="object_file_permissions_extended_library_dirs_usr_lib" version="1">
+    <unix:path>/usr/lib</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_library_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_library_dirs_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_extended_library_dirs" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

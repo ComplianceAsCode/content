@@ -1,0 +1,236 @@
+<Group id="accounts-session">
+<title>Secure Session Configuration Files for Login Accounts</title>
+<description>When a user logs into a Unix account, the system
+configures the user's session by reading a number of files. Many of
+these files are located in the user's home directory, and may have
+weak permissions as a result of user error or misconfiguration. If
+an attacker can modify or even read certain types of account
+configuration information, they can often gain full access to the
+affected user's account. Therefore, it is important to test and
+correct configuration file permissions for interactive accounts,
+particularly those of privileged users such as root or system
+administrators.</description>
+
+<Value id="max_concurrent_login_sessions_value" type="number"
+operator="equals" interactive="0">
+<title>Maximum concurrent login sessions</title>
+<description>Maximum number of concurrent sessions by a user</description>
+<value selector="">1</value>
+<value selector="1">1</value>
+<value selector="3">3</value>
+<value selector="5">5</value>
+<value selector="10">10</value>
+<value selector="15">15</value>
+<value selector="20">20</value>
+</Value>
+
+<Rule id="accounts_max_concurrent_login_sessions">
+<title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
+<description>
+Limiting the number of allowed users and sessions per user can limit risks related to Denial of 
+Service attacks. This addresses concurrent sessions for a single account and does not address 
+concurrent sessions by a single user via multiple accounts.  The DoD requirement is 10.   To set the number of concurrent
+sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
+<pre>* hard maxlogins 10</pre>
+</description>
+<rationale>Limiting simultaneous user logins can insulate the system from denial of service 
+problems caused by excessive logins. Automated login processes operating improperly or 
+maliciously may result in an exceptional number of simultaneous login sessions.
+</rationale>
+<ocil clause="it is not similar">
+Run the following command to ensure the <tt>maxlogins</tt> value is configured for all users
+on the system:
+<pre># grep "maxlogins" /etc/security/limits.conf</pre>
+You should receive output similar to the following:
+<pre>*		hard	maxlogins	10</pre>
+</ocil>
+<oval id="accounts_max_concurrent_login_sessions" value="max_concurrent_login_sessions_value" />
+<ident stig="GEN000450" />
+<ref nist="ECSC-1" disa="54" />
+</Rule>
+
+<Group id="root_paths">
+<title>Ensure that No Dangerous Directories Exist in Root's Path</title>
+<description>The active path of the root account can be obtained by
+starting a new root shell and running:
+<pre># echo $PATH</pre>
+This will produce a colon-separated list of
+directories in the path.
+<br /><br />
+Certain path elements could be considered dangerous, as they could lead
+to root executing unknown or
+untrusted programs, which could contain malicious
+code.
+Since root may sometimes work inside
+untrusted directories, the <tt>.</tt> character, which represents the
+current directory, should never be in the root path, nor should any
+directory which can be written to by an unprivileged or
+semi-privileged (system) user.
+<br /><br />
+It is a good practice for administrators to always execute
+privileged commands by typing the full path to the
+command.</description>
+
+<Rule id="accounts_executable_dangerous_path_for_root">
+<title>Ensure that Root's PATH Variable Only Includes Absolute Paths</title>
+<description>
+Ensure that none of the directories in root's executable path is equal to a single
+<tt>.</tt> character, or
+that it contains any instances that lead to relative path traversal, such as
+<tt>..</tt> or beginning a path without the slash (<tt>/</tt>) character.
+Also ensure that there are no "empty" elements in the path, such as in these examples:
+<pre>PATH=:/bin
+PATH=/bin:
+PATH=/bin::/sbin</pre>
+These empty elements have the same effect as a single <tt>.</tt> character.
+</description>
+<rationale>
+Including these entries increases the risk that root could
+execute code from an untrusted location.
+</rationale>
+<ident stig="GEN000940" />
+<oval id="accounts_executable_dangerous_path_for_root" />
+<ref nist="ECCD-1,ECCD-2,ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="accounts_library_dangerous_path_for_root">
+<title>Ensure that Root's LD_LIBRARY_PATH Variable Only Includes Absolute Paths</title>
+<description>
+Ensure that none of the directories in root's library path is equal to a single
+<tt>.</tt> character, or
+that it contains any instances that lead to relative path traversal, such as
+<tt>..</tt> or beginning a path without the slash (<tt>/</tt>) character.
+Also ensure that there are no "empty" elements in the path, such as in these examples:
+<pre>LD_LIBRARY_PATH=:/lib
+LD_LIBRARY_PATH=/lib:
+LD_LIBRARY_PATH=/lib::/usr/lib</pre>
+These empty elements have the same effect as a single <tt>.</tt> character.
+</description>
+<rationale>
+Including these entries increases the risk that root could
+execute code from an untrusted location.
+</rationale>
+<ident stig="GEN000945" />
+<oval id="accounts_library_dangerous_path_for_root" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="accounts_root_path_dirs_no_write">
+<title>Ensure that Root's Path Does Not Include World or Group-Writable Directories</title>
+<description>
+For each element in root's path, run:
+<pre># ls -ld <i>DIR</i></pre>
+and ensure that write permissions are disabled for group and
+other.
+</description>
+<ocil clause="group or other write permissions exist">
+To ensure write permissions are disabled for group and other
+ for each element in root's path, run the following command:
+<pre># ls -ld <i>DIR</i></pre>
+</ocil>
+<rationale>
+Such entries increase the risk that root could
+execute code provided by unprivileged users,
+and potentially malicious code.
+</rationale>
+<ident stig="GEN000960" />
+<oval id="accounts_root_path_dirs_no_write" />
+<ref nist="ECCD-1,ECCD-2" disa="366" />
+</Rule>
+</Group>
+
+<Group id="user_umask">
+<title>Ensure that Users Have Sensible Umask Values</title>
+<description>
+The umask setting controls the default permissions
+for the creation of new files.
+With a default <tt>umask</tt> setting of 077, files and directories
+created by users will not be readable by any other user on the
+system. Users who wish to make specific files group- or
+world-readable can accomplish this by using the chmod command.
+Additionally, users can make all their files readable to their
+group by default by setting a <tt>umask</tt> of 027 in their shell
+configuration files. If default per-user groups exist (that is, if
+every user has a default group whose name is the same as that
+user's username and whose only member is the user), then it may
+even be safe for users to select a <tt>umask</tt> of 007, making it very
+easy to intentionally share files with groups of which the user is
+a member.
+<br /><br />
+<!--In addition, it may be necessary to change root's <tt>umask</tt>
+temporarily in order to install software or files which must be
+readable by other users, or to change the default umasks of certain
+service accounts such as the FTP user. However, setting a
+restrictive default protects the files of users who have not taken
+steps to make their files more available, and preventing files from
+being inadvertently shared.-->
+</description>
+
+<!-- Define a new catch-all Rule?
+<li>View the additional configuration files <tt>/etc/csh.login</tt> and
+<tt>/etc/profile.d/*</tt>, and ensure that none of these files redefine the
+umask to a more permissive value unless there is a good reason for
+it.
+</li>
+<li>-->
+
+<!-- Define a new Rule to check root's umask?
+It seems unlikely to ever be misconfigured.
+Edit the root shell configuration files <tt>/root/.bashrc</tt>,
+<tt>/root/.bash profile</tt>, <tt>/root/.cshrc</tt>, and <tt>/root/.tcshrc</tt>. Add or
+correct the line:
+<pre>umask 077</pre>
+</li>
+-->
+<Value id="var_accounts_user_umask" type="string"
+operator="equals" interactive="0">
+<title>Sensible umask</title>
+<description>Enter default user umask</description>
+<value selector="">027</value>
+<value selector="007">007</value>
+<value selector="022">022</value>
+<value selector="027">027</value>
+<value selector="077">077</value>
+</Value>
+
+<Rule id="accounts_umask">
+<title>Ensure the Default Umask is Set Correctly</title>
+<description>
+To ensure the default umask for users is set properly,
+add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
+as follows:
+<pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
+</description>
+<rationale>The umask value influences the permissions assigned to files when they are created.
+A misconfigured umask value could result in files with excessive permissions that can be read or
+written to by unauthorized users.</rationale>
+<ocil clause="the above command returns no output, or if the umask is configured incorrectly">
+Verify the <tt>umask</tt> setting is configured correctly by
+running the following command:
+<pre># grep "umask" /etc/*</pre>
+All output must show the value of <tt>umask</tt> set to 077, as shown below:
+<pre># grep "umask" /etc/*
+/etc/bashrc:umask 077
+/etc/cshrc:umask 077</pre>
+</ocil>
+<ident stig="GEN002560" />
+<oval id="accounts_umask" value="var_accounts_user_umask"/>
+<ref nist="ECCD-1,ECCD-2" disa="366" />
+</Rule>
+
+<Rule id="shells_file_references">
+<title>Ensure All User Login Shells Are In The Shells File</title>
+<description>
+To ensure all login shells are included in /etc/shells, run the following command:
+<pre># for USHELL in `cut -d: -f7 /etc/passwd`; do if [ $(grep -c "${USHELL}" /etc/shells) == 0 ]; then echo "${USHELL} not in /etc/shells"; fi; done</pre>
+</description>
+<rationale>The shells file lists approved default shells. It helps provide layered defense 
+to the security approach by ensuring users cannot change their default shell to an unauthorized 
+unsecure shell.</rationale>
+<ident stig="GEN002140" />
+<oval id="shells_file_references"/>
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group>
+</Group>
