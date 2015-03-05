@@ -58,7 +58,6 @@ content: shorthand2xccdf guide checks
 validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 
 validate: validate-xml
 	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
