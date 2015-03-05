@@ -33,10 +33,14 @@
   </definition>
 
   <!-- IMPORTANT NOTE: Selected OVAL entities (tests, objects, and states) are used also by the following OVAL checks:
-       * mount_option_noexec_removable_partitions.xml
+       * mount_option_noexec_removable_partitions.xml, and
+       * mount_option_nosuid_removable_partitions.xml.
 
-       therefore DON'T edit the identifiers on these entities WITHOUT editing their corresponding counterparts in those
-       referencing OVAL checks too. See the mount_option_nodev_removable_partitions.xml definition for further details -->
+       Therefore DON'T edit the identifiers on these entities WITHOUT editing their corresponding counterparts in those
+       referencing OVAL checks too.
+
+       See the mount_option_nodev_removable_partitions.xml and mount_option_nosuid_removable_partitions.xml definitions
+       for further details -->
 
   <!-- First check if specified removable partition really exists on the system.
        If not return PASS since there's nothing to check /etc/fstab & runtime settings against. -->
