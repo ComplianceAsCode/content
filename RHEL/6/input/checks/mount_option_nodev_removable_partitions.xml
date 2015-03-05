@@ -32,6 +32,12 @@
     </criteria>
   </definition>
 
+  <!-- IMPORTANT NOTE: Selected OVAL entities (tests, objects, and states) are used also by the following OVAL checks:
+       * mount_option_noexec_removable_partitions.xml
+
+       therefore DON'T edit the identifiers on these entities WITHOUT editing their corresponding counterparts in those
+       referencing OVAL checks too. See the mount_option_nodev_removable_partitions.xml definition for further details -->
+
   <!-- First check if specified removable partition really exists on the system.
        If not return PASS since there's nothing to check /etc/fstab & runtime settings against. -->
   <unix:file_test id="test_removable_partition_doesnt_exist" check="all" check_existence="none_exist" comment="Check if expected removable partitions truly exist on the system" version="1">
