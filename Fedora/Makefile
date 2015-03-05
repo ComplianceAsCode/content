@@ -70,8 +70,6 @@ dist: guide content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
-	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
-	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 
 eval-common: content
 	oscap xccdf eval --profile common $(OUT)/$(ID)-$(PROD)-xccdf.xml
