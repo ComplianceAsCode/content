@@ -1,0 +1,58 @@
+<def-group>
+  <definition class="compliance" id="javaScript_hiding_or_changing_status_bar"  version="1">
+    <metadata>
+      <title>JavaScript hiding or changing status bar</title>
+      <affected family="unix">
+        <platform>Mozila Firefox</platform>
+      </affected>
+      <description>When a user visits some webpages, JavaScript can hide or make changes to the browser’s appearance to hide unauthorized activity. This activity can help disguise an attack taking place in a minimized background window.  Determines whether the text in the browser status bar may be set by JavaScript.  Set and lock to True (default in Firefox) so that JavaScript access to preference settings for is disabled.</description>
+       </metadata>
+      <criteria>
+     	<criteria operator="OR">
+	  <criterion comment="disable javaScript hiding or changing status bar menus configured in /usr/local/lib/firefox" test_ref="test_javaScript_hiding_or_changing_status_bar_in_local_lib" />
+	  <criterion comment="disable javaScript hiding or changing status bar menus configured  in /usr/lib/firefox" test_ref="test_javaScript_hiding_or_changing_status_bar_in_lib" />
+	  <criterion comment="disable javaScript hiding or changing status bar menus configured  in /usr/local/lib64/firefox" test_ref="test_javaScript_hiding_or_changing_status_bar_in_local_lib64" />
+	  <criterion comment="disable javaScript hiding or changing status bar menus configured  in /usr/lib64/firefox" test_ref="test_javaScript_hiding_or_changing_status_bar_in_lib64" />
+	</criteria>
+      </criteria>
+  </definition>
+
+
+  <ind:textfilecontent54_test check="all" comment="Check for disable javaScript hiding or changing status bar configured in /usr/local/lib/firefox" id="test_javaScript_hiding_or_changing_status_bar_in_local_lib" version="1">
+ 	<ind:object object_ref="object_javaScript_hiding_or_changing_status_bar_local_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_javaScript_hiding_or_changing_status_bar_local_lib" version="1">
+ 	<ind:filepath>/usr/local/lib/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("dom.disable_window_status_change", true\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check disable javaScript hiding or changing status bar configured in /usr/lib/firefox" id="test_javaScript_hiding_or_changing_status_bar_in_lib" version="1">
+ 	<ind:object object_ref="object_javaScript_hiding_or_changing_status_bar_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_javaScript_hiding_or_changing_status_bar_lib" version="1">
+ 	<ind:filepath>/usr/lib/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("dom.disable_window_status_change", true\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+ 
+ <ind:textfilecontent54_test check="all" comment="Check disable javaScript hiding or changing status bar configured in /usr/local/lib64/firefox" id="test_javaScript_hiding_or_changing_status_bar_in_local_lib64" version="1">
+ 	<ind:object object_ref="object_javaScript_hiding_or_changing_status_bar_local_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_javaScript_hiding_or_changing_status_bar_local_lib64" version="1">
+ 	<ind:filepath>/usr/local/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("dom.disable_window_status_change", true\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+ <ind:textfilecontent54_test check="all" comment="Check for disable javaScript hiding or changing status bar configured in /usr/lib64/firefox" id="test_javaScript_hiding_or_changing_status_bar_in_lib64" version="1">
+ 	<ind:object object_ref="object_javaScript_hiding_or_changing_status_bar_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_javaScript_hiding_or_changing_status_bar_lib64" version="1">
+ 	<ind:filepath>/usr/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("dom.disable_window_status_change", true\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object> 
+
+
+</def-group>

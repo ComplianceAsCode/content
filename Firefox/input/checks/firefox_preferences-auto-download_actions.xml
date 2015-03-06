@@ -1,0 +1,58 @@
+<def-group>
+ <definition class="compliance" id="firefox_preferences-auto-download_actions"  version="1">
+  <metadata>
+     <title>Firefox Preferences-auto-download actions</title>
+      <affected family="unix">
+        <platform>Mozila Firefox</platform>
+      </affected>
+      <description>The default action for file types for which a plugin is installed is to automatically download and execute the file using the associated plugin. Firefox allows you to change the specified download action so that the file is opened with a selected external application or saved to disk instead. View the list of installed browser plugins and related MIME types by entering about:plugins in the address bar. </description>
+        </metadata>
+     <criteria>
+    	<criteria operator="OR">
+		<criterion comment="Auto download Actions installed in /usr/local/lib/firefox" test_ref="test_auto-download_actions_in_local_lib" />
+		<criterion comment="Auto download Actions installed in /usr/lib/firefox" test_ref="test_auto-download_actions_in_lib" />
+		<criterion comment="Auto download Actions installed in /usr/local/lib64/firefox" test_ref="test_auto-download_actions_in_local_lib64" />
+		<criterion comment="Auto download Actions installed in /usr/lib64/firefox" test_ref="test_auto-download_actions_in_lib64" />
+	</criteria>
+     </criteria>
+ </definition>
+
+
+  <ind:textfilecontent54_test check="all" comment="Check for Auto download Actions installed in /usr/local/lib/firefox" id="test_auto-download_actions_in_local_lib" version="1">
+ 	<ind:object object_ref="object_auto-download_actions_local_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_auto-download_actions_local_lib" version="1">
+ 	<ind:filepath>/usr/local/lib/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.default_personal_cert", "Ask Every Time"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check for Auto download Actions installed in /usr/lib/firefox" id="test_auto-download_actions_in_lib" version="1">
+ 	<ind:object object_ref="object_auto-download_actions_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_auto-download_actions_lib" version="1">
+ 	<ind:filepath>/usr/lib/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.default_personal_cert", "Ask Every Time"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+ 
+ <ind:textfilecontent54_test check="all" comment="Check for Auto download Actions installed in /usr/local/lib64/firefox" id="test_auto-download_actions_in_local_lib64" version="1">
+ 	<ind:object object_ref="object_auto-download_actions_local_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_auto-download_actions_local_lib64" version="1">
+ 	<ind:filepath>/usr/local/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.default_personal_cert", "Ask Every Time"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+ <ind:textfilecontent54_test check="all" comment="Check for Auto download Actions installed in /usr/lib64/firefox" id="test_auto-download_actions_in_lib64" version="1">
+ 	<ind:object object_ref="object_auto-download_actions_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_auto-download_actions_lib64" version="1">
+ 	<ind:filepath>/usr/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.default_personal_cert", "Ask Every Time"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>  
+
+
+</def-group>
