@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="sessions_timeout" version="1">
+    <metadata>
+      <title>Sessions are closed after idling a specified number of minutes.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Sessions are closed after idling a specified number of minutes.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <!-- logouttime is configured in /etc/webmin/miniserv.conf ... -->
+	  <criterion comment="Sessions are closed after idling a specified number of minutes."
+	  test_ref="test_webmin_sessions_timeout" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check logouttime is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_timeout" version="1">
+    <ind:object object_ref="object_webmin_sessions_timeout" />
+    <ind:state state_ref="state_webmin_sessions_timeout" />
+    <ind:state state_ref="state_webmin_sessions_timeout_not_zero" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_timeout" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^logouttime=+(\d+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_webmin_sessions_timeout" version="1">
+    <ind:subexpression operation="less than or equal" var_ref="var_webmin_sessions_timeout" datatype="int" />
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_webmin_sessions_timeout_not_zero" version="1">
+    <ind:subexpression operation="not equal">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <external_variable comment="inactive account expiration in days" datatype="int" id="var_webmin_sessions_timeout" version="1" />
+ 
+</def-group>
