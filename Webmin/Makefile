@@ -12,10 +12,12 @@ PROD = webmin
 
 OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
 
-all: stats shorthand2xccdf tables guide content dist
+all: shorthand2xccdf tables guide content dist
+#all: stats shorthand2xccdf tables guide content dist
 
-stats:
-	$(SHARED)/$(TRANS)/stats.sh
+# will uncomment after PR 452 gets merged
+# stats:
+#	$(SHARED)/$(TRANS)/stats.sh
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
