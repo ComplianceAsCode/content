@@ -33,20 +33,49 @@
     </criteria>
   </definition>
 
-  <!-- The following OVAL items:
+  <!-- First check if specified removable partition really exists on the system.
+       If not return PASS since there's nothing to check /etc/fstab & runtime settings against. -->
+  <unix:file_test id="test_removable_partition_doesnt_exist" check="all" check_existence="none_exist" comment="Check if expected removable partitions truly exist on the system" version="1">
+    <unix:object object_ref="object_removable_partition_doesnt_exist" />
+  </unix:file_test>
 
-       * test_removable_partition_doesnt_exist,
-       * object_removable_partition_doesnt_exist,
-       * test_var_removable_partition_is_cd_dvd_drive,
-       * object_var_removable_partition_is_cd_dvd_drive,
-       * state_var_removable_partition_is_cd_dvd_drive,
-       * variable_cd_dvd_drive_alternative_names,
-       * variable_cd_dvd_drive_regex_pattern,
-       * variable_not_cd_dvd_drive_regex_pattern, and
-       * var_removable_partition
+  <unix:file_object id="object_removable_partition_doesnt_exist" version="1">
+    <unix:filepath var_ref="var_removable_partition" var_check="at least one" />
+  </unix:file_object>
 
-       are defined in RHEL-6's 'mount_option_nodev_removable_partitions.xml' OVAL check. We will reuse them
-       and define only those OVAL items below that (slightly) differ from 'nodev' case -->
+  <!-- Specified removable partition exists on the system. Check if it represents a CD / DVD drive -->
+  <ind:variable_test id="test_var_removable_partition_is_cd_dvd_drive" check="all" comment="Check if removable partition variable value represents CD/DVD drive" version="1">
+    <ind:object object_ref="object_var_removable_partition_is_cd_dvd_drive" />
+    <ind:state state_ref="state_var_removable_partition_is_cd_dvd_drive" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_var_removable_partition_is_cd_dvd_drive" version="1">
+    <ind:var_ref>var_removable_partition</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_var_removable_partition_is_cd_dvd_drive" version="1">
+    <ind:value operation="equals">/dev/cdrom</ind:value>
+  </ind:variable_state>
+
+  <!-- If specified removable partition represents CD / DVD drive, create a variable
+       holding also alternative names for CD / DVD block special device as used by udev -->
+  <constant_variable id="variable_cd_dvd_drive_alternative_names" datatype="string" comment="CD/DVD drive alternative names whitelist" version="1">
+    <value>/dev/cdrom</value>
+    <value>/dev/dvd</value>
+    <value>/dev/scd0</value>
+    <value>/dev/sr0</value>
+  </constant_variable>
+
+  <!-- For each of the CD / DVD drive alternative names create regular expression pattern
+       to be used in textfilecontent54_object below -->
+  <local_variable id="variable_cd_dvd_drive_regex_pattern" datatype="string" comment="Regular expression pattern for CD / DVD drive alternative names" version="1">
+    <concat>
+      <literal_component>^[\s]*</literal_component>
+      <variable_component var_ref="variable_cd_dvd_drive_alternative_names" />
+      <!-- Capture the mount options field (4-th column of /etc/fstab) -->
+      <literal_component>[\s]+[/\w]+[\s]+[\w]+[\s]+([^\s]+)(?:[\s]+[\d]+){2}$</literal_component>
+    </concat>
+  </local_variable>
 
   <!-- If specified removable partition represents CD / DVD drive, use all alternative
        names to check /etc/fstab & runtime settings -->
@@ -91,6 +120,17 @@
     <ind:state state_ref="state_nosuid_etc_fstab_not_cd_dvd_drive" />
   </ind:textfilecontent54_test>
 
+  <!-- Create regular expression pattern for the device to be used in the
+       textfilecontent54_object below -->
+  <local_variable id="variable_not_cd_dvd_drive_regex_pattern" datatype="string" comment="Regular expression pattern for removable block special device other than CD / DVD drive" version="1">
+    <concat>
+      <literal_component>^[\s]*</literal_component>
+      <variable_component var_ref="var_removable_partition" />
+      <!-- Capture the mount options field (4-th column of /etc/fstab) -->
+      <literal_component>[\s]+[/\w]+[\s]+[\w]+[\s]+([^\s]+)(?:[\s]+[\d]+){2}$</literal_component>
+    </concat>
+  </local_variable>
+
   <ind:textfilecontent54_object id="object_nosuid_etc_fstab_not_cd_dvd_drive" version="1">
     <ind:filepath>/etc/fstab</ind:filepath>
     <ind:pattern operation="pattern match" datatype="string" var_ref="variable_not_cd_dvd_drive_regex_pattern" var_check="at least one" />
@@ -119,5 +159,7 @@
     <linux:device datatype="string" operation="equals" var_ref="var_removable_partition" var_check="at least one" />
     <linux:mount_options datatype="string" entity_check="at least one" operation="equals">nosuid</linux:mount_options>
   </linux:partition_state>
+
+  <external_variable comment="removable partition" datatype="string" id="var_removable_partition" version="1" />
 
 </def-group>
