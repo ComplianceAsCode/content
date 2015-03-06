@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="module_useradmin_accounts_warn" version="1">
+    <metadata>
+      <title>Configure new accounts to warn the user about their password expiring.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>New users created through the UserAdmin Webmin module 
+	  must include required account password expiration warning criteria.</description>
+    </metadata>
+    <!-- default_warn is configured in /etc/webmin/useradmin/config ... -->
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <criterion comment="Configure new accounts to warn the user about their password expiring."
+	  test_ref="test_webmin_module_useradmin_accounts_warn" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check default_warn is configured in /etc/webmin/useradmin/config" 
+  id="test_webmin_module_useradmin_accounts_warn" version="1">
+    <ind:object object_ref="object_webmin_module_useradmin_accounts_warn" />
+    <ind:state state_ref="state_webmin_module_useradmin_accounts_warn" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_module_useradmin_accounts_warn" version="1">
+    <ind:filepath>/etc/webmin/useradmin/config</ind:filepath>
+    <ind:pattern operation="pattern match">^default_warn=+(\d+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_webmin_module_useradmin_accounts_warn" version="1">
+    <ind:subexpression operation="greater than or equal" var_ref="var_webmin_module_useradmin_accounts_warn" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="warning days before password expires" datatype="int" id="var_webmin_module_useradmin_accounts_warn" version="1" />
+  
+</def-group>
