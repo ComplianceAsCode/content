@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="accounts_passwd_cmd" version="1">
+    <metadata>
+      <title>Use passwd for changing passwords.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Webmin must use passwd for password changes so that 
+	  password requirements configured in the operating system are 
+	  enforced on new password selections.</description>
+    </metadata>
+    <!-- passwd_cmd=/usr/bin/passwd is configured in /etc/webmin/config ... -->
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <criterion comment="passwd is configured for changing passwords."
+	  test_ref="test_webmin_accounts_passwd_cmd" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check passwd_cmd=/usr/bin/passwd is configured in /etc/webmin/config" 
+  id="test_webmin_accounts_passwd_cmd" version="1">
+    <ind:object object_ref="object_webmin_accounts_passwd_cmd" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_accounts_passwd_cmd" version="1">
+    <ind:filepath>/etc/webmin/config</ind:filepath>
+    <ind:pattern
+    operation="pattern match">^passwd_cmd=/usr/bin/passwd$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

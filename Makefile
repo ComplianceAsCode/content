@@ -31,7 +31,7 @@ TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
 
 # Define Makefile targets below
 
-all: fedora rhel5 rhel6 rhel7 openstack rhevm3 firefox rpm zipfile
+all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox rpm zipfile
 
 fedora:
 	cd Fedora/ && $(MAKE)
@@ -57,7 +57,10 @@ java:
 firefox:
 	cd Firefox/ && $(MAKE)
 
-validate: fedora rhel6 rhel7 openstack rhevm3
+webmin:
+	cd Webmin/ && $(MAKE)
+
+validate: fedora rhel6 rhel7 openstack rhevm3 
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	# Enable below when content validates correctly
@@ -87,6 +90,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Java/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Webmin/ $(RPMBUILD)/$(PKG)
 	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
@@ -97,6 +101,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Java/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Firefox/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Webmin/ && $(MAKE) clean)
 
 	# Create the source tar, copy it to TARBALL
 	# (e.g. somewhere in the SOURCES directory)
@@ -173,6 +178,8 @@ clean:
 	cd Fedora && $(MAKE) clean
 	cd Java && $(MAKE) clean
 	cd Firefox && $(MAKE) clean
+	cd Webmin && $(MAKE) clean
 	rm -f scap-security-guide.spec
 
-.PHONY: rhel5 rhel6 java firefox tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 java firefox webmin tarball srpm rpm clean all
+	rm -f scap-security-guide.spec

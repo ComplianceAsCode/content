@@ -58,7 +58,8 @@ further information.
 (cd RHEL/6 && make dist)
 (cd RHEL/7 && make dist)
 #(cd Java && make dist)
-(cd Firefox && make dist)
+#(cd Firefox && make dist)
+#(cd Webmin && make dist)
 
 %install
 mkdir -p %{buildroot}%{_mandir}/en/man8/
@@ -72,7 +73,8 @@ cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 #cp -a Java/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+#cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+#cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in RHEL-6 functions library for remediations
 cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name}/functions
@@ -81,8 +83,8 @@ cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name
 cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 %endif
 %if 0%{?fedora}
-#mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,java,rhel{5,6,7},firefox}
-mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,rhel{6,7},firefox}
+#mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,java,rhel{5,6,7},firefox,webmin}
+mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,rhel{6,7}}
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 
 # Add in core Fedora content (SCAP XCCDF and OVAL)
@@ -99,7 +101,9 @@ cp -a RHEL/7/dist/content/ssg-rhel7-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/
 # Add in datastream form of Java benchmark
 #cp -a Java/dist/content/ssg-java-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/java
 # Add in datastream form of Firefox benchmark
-cp -a Firefox/dist/content/ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/firefox
+#cp -a Firefox/dist/content/ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/firefox
+# Add in datastream form of Webmin benchmark
+#cp -a Webmin/dist/content/ssg-webmin-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/webmin
 %endif
 
 %files

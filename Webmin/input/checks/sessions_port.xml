@@ -1,0 +1,54 @@
+<def-group>
+  <definition class="compliance" id="sessions_port" version="1">
+    <metadata>
+      <title>Configure approved webmin port.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Configure approved webmin port.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <!-- port is configured in /etc/webmin/miniserv.conf ... -->
+	  <criterion comment="Required port is configured for use."
+	  test_ref="test_webmin_sessions_port" />
+	  <!-- listen is configured in /etc/webmin/miniserv.conf ... -->
+	  <criterion comment="Required port is configured for use."
+	  test_ref="test_webmin_sessions_listen" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check port is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_port" version="1">
+    <ind:object object_ref="object_webmin_sessions_port" />
+    <ind:state state_ref="state_webmin_sessions_port" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_port" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^port=+(\d+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_webmin_sessions_port" version="1">
+    <ind:subexpression operation="equals" var_ref="var_webmin_sessions_port" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" comment="Check port is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_listen" version="1">
+    <ind:object object_ref="object_webmin_sessions_listen" />
+    <ind:state state_ref="state_webmin_sessions_listen" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_listen" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^listen=+(\d+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_webmin_sessions_listen" version="1">
+    <ind:subexpression operation="equals" var_ref="var_webmin_sessions_port" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="inactive account expiration in days" datatype="int" id="var_webmin_sessions_port" version="1" />
+
+</def-group>
