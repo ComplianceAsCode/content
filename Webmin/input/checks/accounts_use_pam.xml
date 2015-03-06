@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="accounts_use_pam" version="1">
+    <metadata>
+      <title>Use PAM for Unix authentication.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Webmin must use the OS-provided Password Authentication 
+	  Module for validating passwords.</description>
+    </metadata>
+    <!-- no_pam=0 is configured in /etc/webmin/miniserv.conf ... -->
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <criterion comment="perl-Authen-PAM is installed."
+	  test_ref="test_webmin_perl_pam" />
+	  <criterion comment="Require PAM to be used."
+	  test_ref="test_webmin_accounts_use_pam" />
+   </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="perl-Authen-PAM is installed" id="test_webmin_perl_pam" version="1">
+    <linux:object object_ref="obj_webmin_perl_pam" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_webmin_perl_pam" version="1">
+    <linux:name>perl-Authen-PAM</linux:name>
+  </linux:rpminfo_object>
+  
+  <ind:textfilecontent54_test check="all" comment="Check no_pam=0 is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_accounts_use_pam" version="1">
+    <ind:object object_ref="object_webmin_accounts_use_pam" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_accounts_use_pam" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern
+    operation="pattern match">^no_pam=0$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

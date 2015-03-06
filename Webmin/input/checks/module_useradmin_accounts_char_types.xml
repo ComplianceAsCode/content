@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="module_useradmin_accounts_char_types" version="1">
+    <metadata>
+      <title>Require passwords to include at least 1 upper-case character, 1 lower-case character, 1 numeric character, and 1 special character.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Passwords created through the UserAdmin Webmin module 
+	must include at least 1 upper-case character, 1 lower-case character, 1 numeric character, and 1 special character.</description>
+    </metadata>
+    <!-- passwd_re is configured in /etc/webmin/config ... -->
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <criterion comment="Require passwords to include at least 1 upper-case character, 1 lower-case character, 1 numeric character, and 1 special character."
+	  test_ref="test_webmin_module_useradmin_accounts_char_types" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check passwd_re is configured in /etc/webmin/config" 
+  id="test_webmin_module_useradmin_accounts_char_types" version="1">
+    <ind:object object_ref="object_webmin_module_useradmin_accounts_char_types" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_module_useradmin_accounts_char_types" version="1">
+    <ind:filepath>/etc/webmin/useradmin/config</ind:filepath>
+    <ind:pattern
+    operation="pattern match">^passwd_re=\^\.\*\(\?=\.\*\[a-z\]\)\(\?=\.\*\[A-Z\]\)\(\?=\.\*\[\\d\]\)\(\?=\.\*\[\\W\]\)\.\*\$$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
