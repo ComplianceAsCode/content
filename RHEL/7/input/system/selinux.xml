@@ -110,6 +110,12 @@ Check the file <tt>/etc/selinux/config</tt> and ensure the following line appear
 Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
 ensures the system will confine processes that are likely to be
 targeted for exploitation, such as network or system services.
+
+Note: During the development or debugging of SELinux modules, it is common to
+temporarily place non-production systems in <tt>permissive</tt> mode. In such
+temporary cases, SELinux policies should be developed, and once work
+is completed, the system should be reconfigured to
+<tt><sub idref="var_selinux_policy_name" /></tt>.
 </rationale>
 <ident cce="27135-3" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
