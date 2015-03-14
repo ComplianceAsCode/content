@@ -27,14 +27,21 @@ endif
 PKG := $(PKGNAME)-$(SSG_VERSION)
 TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
 
+PREFIX=$(DESTDIR)/usr
+DATADIR=share
+
 # Define custom canned sequences / macros below
 
 # Define Makefile targets below
 
 all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox rpm zipfile
+dist: fedora-dist rhel6-dist rhel7-dist
 
 fedora:
 	cd Fedora/ && $(MAKE)
+
+fedora-dist:
+	cd Fedora/ && $(MAKE) dist
 
 rhel5:
 	cd RHEL/5/ && $(MAKE)
@@ -42,8 +49,14 @@ rhel5:
 rhel6:
 	cd RHEL/6/ && $(MAKE)
 
+rhel6-dist:
+	cd RHEL/6/ && $(MAKE) dist
+
 rhel7:
 	cd RHEL/7/ && $(MAKE)
+
+rhel7-dist:
+	cd RHEL/7/ && $(MAKE) dist
 
 openstack:
 	cd OpenStack && $(MAKE)
@@ -180,6 +193,12 @@ clean:
 	cd Firefox && $(MAKE) clean
 	cd Webmin && $(MAKE) clean
 	rm -f scap-security-guide.spec
+
+install: dist
+	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 Fedora/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 RHEL/6/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 
 .PHONY: rhel5 rhel6 rhel7 java firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
