@@ -1,0 +1,20 @@
+<Group id="audit">
+<title>Audit Deamon</title>
+<description>
+The Linux Audit system provides a way to track security-relevant information on your system. Based on pre-configured rules, Audit generates log entries to record as much information about the events that are happening on your system as possible. This information is crucial for mission-critical environments to determine the violator of the security policy and the actions they performed. Audit does not provide additional security to your system; rather, it can be used to discover violations of security policies used on your system. These violations can further be prevented by additional security measures such as SELinux.
+</description>
+
+<Rule id="service_auditd_enabled" severity="medium">
+<title>Enable the Audit Daemon</title>
+<description>
+<service-enable-macro service="audit" />
+</description>
+<ocil><service-enable-check-macro service="audit" /></ocil>
+<rationale>Enabling the <tt>auditd</tt> service ensures that The Linux Audit system is capable
+to watch the system and generate log entries.
+</rationale>
+<oval id="service_auditd_enabled" />
+<ref nist="AU-8(1)" disa="160" />
+</Rule>
+
+</Group>

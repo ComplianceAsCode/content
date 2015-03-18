@@ -11,6 +11,7 @@ ID = ssg
 PROD = fedora
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+OVAL_5_10 := $(shell oscap --version | grep -q "OVAL Version: 5.10.*"; echo $$?)
 
 all: shorthand2xccdf guide content dist
 
@@ -33,7 +34,7 @@ shorthand2xccdf: shorthand-guide
 
 checks:
 	xmlwf $(IN)/checks/*.xml
-	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
@@ -52,16 +53,28 @@ content: shorthand2xccdf guide checks
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
+ifeq ($(OVAL_5_10), 0)
+	echo "Skipping compose datastream, use OpenSCAP 1.2.2 or later"
+else
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+endif
 
 
 validate-xml:
+ifeq ($(OVAL_5_10), 0)
+	echo "Skipping validating, use OpenSCAP 1.2.2 or later"
+else
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
+endif
 
 validate: validate-xml
+ifeq ($(OVAL_5_10), 0)
+	echo "Skipping validating, use OpenSCAP 1.2.2 or later"
+else
 	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+endif
 
 # items in dist are expected for distribution in an rpm
 dist: guide content

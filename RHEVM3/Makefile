@@ -40,7 +40,7 @@ shorthand2xccdf: shorthand-guide
 
 checks:
 	xmlwf $(IN)/checks/*.xml
-	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
