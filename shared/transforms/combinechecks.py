@@ -40,7 +40,7 @@ def _header(schema_version):
     return header
 
 
-def parse_conf_file(conf_file):
+def parse_conf_file(conf_file, product):
     parser = SafeConfigParser()
     parser.read(conf_file)
     multi_platform = {}
@@ -49,7 +49,9 @@ def parse_conf_file(conf_file):
     for section in parser.sections():
         for name, setting in parser.items(section):
             setting = re.sub('.;:', ',', re.sub(' ', '', setting))
-            if name == 'oval_version':
+            if name == product + '_oval_version':
+                oval_version = setting
+            elif not oval_version and name == 'oval_version':
                 oval_version = setting
             else:
                 multi_platform[name] = [item for item in setting.split(",")]
@@ -110,35 +112,36 @@ def checks():
     # concatenate all XML files in the checks directory, to create the
     # document body
     body = ""
-    for filename in os.listdir(sys.argv[2]):
+    for filename in os.listdir(sys.argv[3]):
         if filename.endswith(".xml"):
-            with open(sys.argv[2] + "/" + filename, 'r') as xml_file:
+            with open(sys.argv[3] + "/" + filename, 'r') as xml_file:
                 body = body + xml_file.read()
 
     if len(sys.argv) == 6:
-        for filename in os.listdir(sys.argv[3]):
+        for filename in os.listdir(sys.argv[4]):
             if filename.endswith(".xml"):
-                with open(sys.argv[3] + "/" + filename, 'r') as xml_file:
+                with open(sys.argv[4] + "/" + filename, 'r') as xml_file:
                     filecontent = xml_file.read()
                     if '<platform>multi_platform_all</platform>' in filecontent:
                         body = body + filecontent
-                    elif '<platform>' + sys.argv[4] + '</platform>' in filecontent:
-                        body = body + filecontent
                     elif '<platform>' + sys.argv[5] + '</platform>' in filecontent:
+                        body = body + filecontent
+                    elif '<platform>' + sys.argv[6] + '</platform>' in filecontent:
                         body = body + filecontent
 
     return body
 
 def main():
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 4:
         print "Provide a directory name, which contains the checks."
         sys.exit(1)
 
     # Get header with schema version
     oval_config = sys.argv[1] + "/" + conf_file
+    product = sys.argv[2]
 
     if os.path.isfile(oval_config):
-        (header, multi_platform) = parse_conf_file(oval_config)
+        (header, multi_platform) = parse_conf_file(oval_config, product)
         header = _header(header)
     else:
         print 'The directory specified does not contain the %s file!' % conf_file

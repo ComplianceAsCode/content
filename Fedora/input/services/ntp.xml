@@ -29,13 +29,13 @@ including configuration of cryptographic authentication for
 time data, is available at http://www.ntp.org.
 </description>
 
-<Rule id="service_ntpd_enabled" severity="medium">
-<title>Enable the NTP Daemon</title>
+<Rule id="service_chronyd_enabled" severity="medium">
+<title>Enable the Chrony Daemon</title>
 <description>
 <service-enable-macro service="ntpd" />
 </description>
 <ocil><service-enable-check-macro service="ntpd" /></ocil>
-<rationale>Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>
+<rationale>Enabling the <tt>chronyd</tt> service ensures that the <tt>chronyd</tt>
 service will be running and that the system will synchronize its time to
 any servers specified. This is important whether the system is configured to be
 a client (and synchronize only its own clock) or it is also acting as an NTP
@@ -43,17 +43,17 @@ server to other systems.  Synchronizing time is essential for authentication
 services such as Kerberos, but it is also important for maintaining accurate
 logs and auditing possible security breaches.  
 <br /><br />
-The NTP daemon offers all of the functionality of <tt>ntpdate</tt>, which is now 
+The chrony daemon offers all of the functionality of <tt>ntpdate</tt>, which is now 
 deprecated.  Additional information on this is available at 
 http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate</rationale>
-<oval id="service_ntpd_enabled" />
+<oval id="service_chronyd_enabled" />
 <ref nist="AU-8(1)" disa="160" />
 </Rule>
 
-<Rule id="ntpd_specify_remote_server" severity="medium">
+<Rule id="chronyd_specify_remote_server" severity="medium">
 <title>Specify a Remote NTP Server</title>
 <description>To specify a remote NTP server for time synchronization, edit
-the file <tt>/etc/ntp.conf</tt>. Add or correct the following lines,
+the file <tt>/etc/chrony.conf</tt>. Add or correct the following lines,
 substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>:
 <pre>server <i>ntpserver</i></pre>
 This instructs the NTP software to contact that remote server to obtain time
@@ -62,7 +62,7 @@ data.
 <ocil clause="this is not the case">
 To verify that a remote NTP service is configured for time synchronization,
 open the following file:
-<pre>/etc/ntp.conf</pre>
+<pre>/etc/chrony.conf</pre>
 In the file, there should be a section similar to the following:
 <pre>server <i>ntpserver</i></pre>
 </ocil>
@@ -70,14 +70,14 @@ In the file, there should be a section similar to the following:
 to collate system logs from multiple sources or correlate computer events with
 real time events.
 </rationale>
-<oval id="ntpd_specify_remote_server" />
+<oval id="chronyd_specify_remote_server" />
 <ref nist="AU-8(1)" disa="160" />
 </Rule>
 
-<Rule id="ntpd_specify_multiple_servers">
+<Rule id="chronyd_specify_multiple_servers">
 <title>Specify Additional Remote NTP Servers</title>
 <description>Additional NTP servers can be specified for time synchronization
-in the file <tt>/etc/ntp.conf</tt>.  To do so, add additional lines of the
+in the file <tt>/etc/chrony.conf</tt>.  To do so, add additional lines of the
 following form, substituting the IP address or hostname of a remote NTP server for
 <em>ntpserver</em>:
 <pre>server <i>ntpserver</i></pre>
@@ -87,7 +87,7 @@ accurate time data, in the event that one of the specified servers becomes
 unavailable. This is typical for a system acting as an NTP server for
 other systems.
 </rationale>
-<oval id="ntpd_specify_multiple_servers"/>
+<oval id="chronyd_specify_multiple_servers"/>
 <ref nist="AU-8(1)" />
 </Rule>
 
