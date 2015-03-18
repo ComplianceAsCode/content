@@ -5,9 +5,7 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>
-      Require Avahi to run on IPv4 or IPv6.
-      </description>
+      <description>Require Avahi to run on IPv4 or IPv6.</description>
       <reference source="galford" ref_id="20150316" ref_url="test_attestation" />
     </metadata>
     <criteria comment="Check Avahi IPv4 and IPv6 settings" operator="OR">
@@ -18,6 +16,10 @@
       </criteria>
       <criteria comment="Test that Avahi IPv6 is enabled" operator="AND">
         <criterion comment="Avahi IPv4 setting is disabled" test_ref="test_avahi_ipv4_setting" negate="true"/>
+        <criterion comment="Avahi IPv6 setting is enabled" test_ref="test_avahi_ipv6_setting" />
+      </criteria>
+      <criteria comment="Test that Avahi IPv4 and IPv6 are enabled" operator="AND">
+        <criterion comment="Avahi IPv4 setting is enabled" test_ref="test_avahi_ipv4_setting" />
         <criterion comment="Avahi IPv6 setting is enabled" test_ref="test_avahi_ipv6_setting" />
       </criteria>
     </criteria>
