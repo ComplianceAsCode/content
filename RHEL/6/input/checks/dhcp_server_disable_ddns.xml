@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="dhcp_server_disable_ddns" version="1">
+    <metadata>
+      <title>Disable Dynamic DNS</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Prevents DHCP from publishing information
+      about their clients using Dynamic DNS.</description>
+      <reference source="galford" ref_id="20150317" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="DHCP is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="dhcp package is not installed"
+      definition_ref="package_dhcp_removed" />
+      <criterion comment="Check ddns-update-style in /etc/dhcp/dhcpd.conf"
+      test_ref="test_dhcp_server_disable_ddns" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests that ddns-update-style is set to none"
+  id="test_dhcp_server_disable_ddns" version="1">
+    <ind:object object_ref="obj_dhcp_server_disable_ddns" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_server_disable_ddns"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*ddns\-update\-style[\s]+none\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
