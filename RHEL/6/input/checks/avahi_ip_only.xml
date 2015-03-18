@@ -28,7 +28,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Avahi IPv4 setting" id="object_avahi_ipv4_setting" version="1">
     <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*use\-ipv4[\s]*=[\s]*yes$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*use\-ipv4=yes$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi IPv6 setting" id="test_avahi_ipv6_setting" version="1">
@@ -36,7 +36,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Avahi IPv6 setting" id="object_avahi_ipv6_setting" version="1">
     <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*use\-ipv6[\s]*=[\s]*yes$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*use\-ipv6=yes$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

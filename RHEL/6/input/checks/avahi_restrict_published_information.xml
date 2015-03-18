@@ -27,7 +27,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Avahi Restrict User Publishing" id="object_avahi_restrict_user_publishing" version="1">
     <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*disable\-user\-service\-publishing[\s]*=[\s]*yes$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*disable\-user\-service\-publishing=yes$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi Restrict Address Publishing" id="test_avahi_restrict_address_publishing" version="1">
@@ -35,7 +35,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Avahi Restrict Address Publishing" id="object_avahi_restrict_address_publishing" version="1">
     <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*publish\-addresses[\s]*=[\s]*no$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*publish\-addresses=no$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi Restrict HW Publishing" id="test_avahi_restrict_CPU_publishing" version="1">
@@ -43,7 +43,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Avahi Restrict HW Publishing" id="object_avahi_restrict_CPU_publishing" version="1">
     <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*publish\-hinfo[\s]*=[\s]*no$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*publish\-hinfo=no$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi Restrict Workstation Publishing" id="test_avahi_restrict_workstation_publishing" version="1">
@@ -51,7 +51,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Avahi Restrict Workstation Publishing" id="object_avahi_restrict_workstation_publishing" version="1">
     <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*publish\-workstation[\s]*=[\s]*no$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*publish\-workstation=no$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Avahi Restrict Domain Publishing" id="test_avahi_restrict_domain_publishing" version="1">
@@ -59,7 +59,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Avahi Restrict Domain Publishing" id="object_avahi_restrict_domain_publishing" version="1">
     <ind:filepath>/etc/avahi/avahi-daemon.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*publish\-domain[\s]*=[\s]*no$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*publish\-domain=no$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
