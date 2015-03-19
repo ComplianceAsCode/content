@@ -6,7 +6,7 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Only authorized users should be able to access FTP.</description>
-      <reference source="galford" ref_id="20140812" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20150316" ref_url="test_attestation" />
     </metadata>
     <criteria comment="FTP is not being used or the conditions are met" operator="OR">
       <extend_definition comment="vsftp package is not installed" definition_ref="package_vsftpd_installed" negate="true" />
@@ -23,7 +23,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Enable ftp user list" id="object_ftp_user_list_enable" version="1">
     <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*userlist_enable[\s]*=[\s]*YES$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*userlist_enable=YES$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Set ftp user list file" id="test_ftp_user_list_file" version="1">
@@ -31,7 +31,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Set ftp user list file" id="object_ftp_user_list_file" version="1">
     <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*userlist_file[\s]*=[\s]*\/etc\/vsftp\.ftpusers$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*userlist_file=\/etc\/vsftp\.ftpusers$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Use ftp user list" id="test_ftp_user_list_deny" version="1">
@@ -39,7 +39,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Use ftp user list" id="object_ftp_user_list_deny" version="1">
     <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*userlist_deny[\s]*=[\s]*NO$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*userlist_deny=NO$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
