@@ -7,7 +7,28 @@ such as system logins, account modifications, and authentication
 events performed by programs such as sudo.
 Under its default configuration, <tt>auditd</tt> has modest disk space
 requirements, and should not noticeably impact system performance.
-<br /><br />
+<br />
+NOTE: The Linux Audit daemon <tt>auditd</tt> can be configured to use
+the <tt>augenrules</tt> program to read audit rules files (<tt>*.rules</tt>)
+located in <tt>/etc/audit/rules.d</tt> location and compile them to create
+the resulting form of the <tt>/etc/audit/audit.rules</tt> configuration file
+during the daemon startup (default configuration). Alternatively, the <tt>auditd</tt>
+daemon can use the <tt>auditctl</tt> utility to read audit rules from the
+<tt>/etc/audit/audit.rules</tt> configuration file during daemon startup,
+and load them into the kernel. The expected behavior is configured via the
+appropriate <tt>ExecStartPost</tt> directive setting in the
+<tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+To instruct the <tt>auditd</tt> daemon to use the <tt>augenrules</tt> program
+to read audit rules (default configuration), use the following setting:
+<br /> <pre>ExecStartPost=-/sbin/augenrules --load</pre>
+in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+In order to instruct the <tt>auditd</tt> daemon to use the <tt>auditctl</tt>
+utility to read audit rules, use the following setting:
+<br /> <pre>ExecStartPost=-/sbin/auditctl -R /etc/audit/audit.rules</pre>
+in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+Refer to <tt>[Service]</tt> section of the <tt>/usr/lib/systemd/system/auditd.service</tt>
+configuration file for further details.
+<br />
 Government networks often have substantial auditing
 requirements and <tt>auditd</tt> can be configured to meet these
 requirements.
