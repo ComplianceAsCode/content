@@ -1207,9 +1207,14 @@ malicious processes that attempt to delete log files to conceal their presence.<
 
 <Rule id="audit_rules_sysadmin_actions">
 <title>Ensure <tt>auditd</tt> Collects System Administrator Actions</title>
-<description>At a minimum the audit system should collect
-administrator actions for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<description>At a minimum the audit system should collect administrator actions
+for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the default),
+add the following line to <tt>/etc/audit/audit.rules</tt> file:
+<pre>-w /etc/sudoers -p wa -k actions</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre>-w /etc/sudoers -p wa -k actions</pre>
 </description>
 <ocil clause="there is not output">
