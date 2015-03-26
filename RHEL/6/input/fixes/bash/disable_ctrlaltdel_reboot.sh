@@ -6,11 +6,7 @@ if [ ! -f /etc/init/control-alt-delete.override ]; then
 
 		# then copy .conf to .override to maintain persistency
 		cp /etc/init/control-alt-delete.conf /etc/init/control-alt-delete.override
-	
 	fi
-
-	
 fi
-
-if 
-	sed -i 's,^exec.*,exec /usr/bin/logger -p authpriv.notice -t init "Ctrl-Alt-Del was pressed and ignored",' /etc/init/control-alt-delete.override
+ 
+sed -i 's,^exec.*$,exec /usr/bin/logger -p authpriv.notice -t init "Ctrl-Alt-Del was pressed and ignored",' /etc/init/control-alt-delete.override
