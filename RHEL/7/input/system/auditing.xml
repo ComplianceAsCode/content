@@ -1275,8 +1275,18 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 
 <Rule id="audit_rules_kernel_module_loading">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
-to capture kernel module loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following lines to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+<pre>-w /usr/sbin/insmod -p x -k modules
+-w /usr/sbin/rmmod -p x -k modules
+-w /usr/sbin/modprobe -p x -k modules
+-a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
+b64 as appropriate for your system:
 <pre>-w /usr/sbin/insmod -p x -k modules
 -w /usr/sbin/rmmod -p x -k modules
 -w /usr/sbin/modprobe -p x -k modules
