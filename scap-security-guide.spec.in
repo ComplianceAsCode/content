@@ -106,8 +106,13 @@ cp -a RHEL/7/dist/content/ssg-rhel7-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/
 #cp -a Webmin/dist/content/ssg-webmin-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/webmin
 %endif
 
+# Add in oscap-scan files
+#mkdir -p %{buildroot}%{_sysconfdir}/sysconfig/
+#cp -a {*,*/*}/input/oscap-scan-* %{buildroot}%{_sysconfdir}/sysconfig/
+
 %files
 %{_datadir}/xml/scap
+#%{_sysconfdir}/sysconfig/oscap-scan-*
 %if 0%{?rhel}
 %{_datadir}/%{name}/functions
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
