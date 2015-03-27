@@ -1212,9 +1212,16 @@ unusual activity.
 
 <Rule id="audit_rules_media_export">
 <title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
-<description>At a minimum the audit system should collect media
-exportation events for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
+<description>At a minimum the audit system should collect media exportation
+events for all users and root. If the <tt>auditd</tt> daemon is configured to
+use the <tt>augenrules</tt> program to read audit rules during daemon startup
+(the default), add the following line to a file with suffix <tt>.rules</tt> in
+the directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
 appropriate for your system:
 <pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
 </description>
