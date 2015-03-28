@@ -202,6 +202,8 @@ install: dist
 	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide
 	install -m 0644 RHEL/6/input/fixes/bash/templates/functions $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -d $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
+	install -m 0644 RHEL/6/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -d $(PREFIX)/$(MANDIR)/en/man8/
 	install -m 0644 docs//scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 
