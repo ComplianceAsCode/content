@@ -203,7 +203,7 @@ install: dist
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide
 	install -m 0644 RHEL/6/input/fixes/bash/templates/functions $(PREFIX)/$(DATADIR)/scap-security-guide/
 	install -d $(PREFIX)/$(MANDIR)/en/man8/
-	install -m 0644 RHEL/6/input/auxiliary/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
+	install -m 0644 docs//scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 
 .PHONY: rhel5 rhel6 rhel7 java firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
