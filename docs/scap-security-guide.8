@@ -1,8 +1,8 @@
 .TH scap-security-guide 8 "26 Jan 2013" "version 1"
 
 .SH NAME
-SCAP Security Guide - Delivers security guidance, baselines, and 
-associated validation mechanisms utilizing the Security Content 
+SCAP Security Guide - Delivers security guidance, baselines, and
+associated validation mechanisms utilizing the Security Content
 Automation Protocol (SCAP).
 
 
@@ -22,8 +22,52 @@ The projects homepage is located at:
 https://fedorahosted.org/scap-security-guide/
 
 
-.SH PROFILES
-The SSG content is broken into 'profiles,' groupings of security settings that correlate to a known policy. Available profiles are:
+.SH RHEL6 PROFILES
+The RHEL6 SSG content is broken into 'profiles,' groupings of security settings that correlate to a known policy. Available profiles are:
+
+.I stig-rhel6-server-upstream
+.RS
+The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
+configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
+DISA Field Security Operations (FSO) has played a critical role enhancing the
+security posture of DoD's security systems by providing the Security Technical
+Implementation Guides (STIGs). This profile was created as a collaboration
+effort between the National Security Agency, DISA FSO, and Red Hat.
+
+As a result of the upstream/downstream relationship between the SCAP Security
+Guide project and the official DISA FSO STIG baseline, users should expect
+variance between SSG and DISA FSO content. For additional information relating
+to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide
+package, please note that commercial support of this SCAP content is NOT
+available. This profile is provided as example SCAP content with no
+endorsement for suitability or production readiness. Support for this profile
+is provided by the upstream SCAP Security Guide community on a best-effort
+basis. The upstream project homepage is https://fedorahosted.org/scap-security-guide/.
+
+.RE
+.I usgcb-rhel6-server
+.RS
+The purpose of the United States Government Configuration Baseline (USGCB)
+initiative is to create security configuration baselines for Information
+Technology products widely deployed across the federal agencies. The USGCB
+baseline evolved from the Federal Desktop Core Configuration mandate. The
+USGCB is a Federal government-wide initiative that provides guidance to
+agencies on what should be done to improve and maintain an effective
+configuration settings focusing primarily on security.
+
+.B "NOTE: "
+While the current content maps to USGCB requirements, it has NOT
+been validated by NIST as of yet. This content should be considered
+draft, we are highly interested in feedback.
+
+For additional information relating to USGCB, please refer to the NIST
+webpage at http://usgcb.nist.gov/usgcb_content.html.
+.RE
+
+.SH RHEL7 PROFILES
+The RHEL7 SSG content is broken into 'profiles,' groupings of security settings that correlate to a known policy. Available profiles are:
 
 .I stig-rhel7-server-upstream
 .RS
@@ -50,23 +94,36 @@ basis. The upstream project homepage is https://fedorahosted.org/scap-security-g
 
 .I rht-cpp
 .RS
-Red Hat Corporate Profile for Certified Cloud Providers (RH CCP). This is a 
+Red Hat Corporate Profile for Certified Cloud Providers (RH CCP). This is a
 *draft* SCAP profile for Red Hat Certified Cloud Providers.
 .RE
 
 .I common
 .RS 
-The  common  profile is intended to be used as a base, universal profile for 
+The  common  profile is intended to be used as a base, universal profile for
 scanning of general-purpose RHEL systems.
 .RE
 
-.SH EXAMPLES
-To scan your system utilizing the OpenSCAP utility against the rht-cpp profile:
+.SH Fedora PROFILES
+The Fedora SSG content is broken into 'profiles,' groupings of security settings that
+correlate to a known policy. Currently available profile:
 
-oscap  xccdf eval --profile rht-cpp \ 
+.I common
+.RS
+The common profile is intended to be used as a base, universal profile for
+scanning of general-purpose Fedora systems.
+.RE
+
+
+.SH EXAMPLES
+To scan your system utilizing the OpenSCAP utility against the
+stig-rhel6-server-upstream profile:
+
+oscap  xccdf eval --profile stig-rhel6-server-upstream \
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
-/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml
+--cpe /usr/share/xml/scap/ssg/content/ssg-rhel6-cpe-dictionary.xml \
+/usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
 .PP
 Additional details can be found on the projects wiki page:
 https://fedorahosted.org/scap-security-guide/wiki/usageguide
@@ -104,7 +161,7 @@ conforms to.
 .SH STATEMENT OF SUPPORT
 The SCAP Security Guide, an open source project jointly maintained by Red Hat
 and the NSA, provides XCCDF and OVAL content for Red Hat technologies. As an open
-source project, community participation extends into U.S. Department of Defense 
+source project, community participation extends into U.S. Department of Defense
 agencies, civilian agencies, academia, and other industrial partners.
 
 SCAP Security Guide is provided to consumers through Red Hat's Extended
@@ -116,7 +173,7 @@ Red Hat engineers are involved as maintainers and leaders, there is no
 commercial support contracts or service level agreements provided by Red Hat.
 
 Support, for both users and developers, is provided through the SCAP Security
-Guide community. 
+Guide community.
 
 Homepage: https://fedorahosted.org/scap-security-guide/
 .PP
@@ -136,7 +193,7 @@ with DoD-approved security configuration guidelines" and tasks Defense
 Information Systems Agency (DISA) to "develop and provide security configuration
 guidance for IA and IA-enabled IT products in coordination with Director, NSA."
 The output of this authority is the DISA Security Technical Implementation Guides,
-or STIGs. DISA FSO is in the process of moving the STIGs towards the use 
+or STIGs. DISA FSO is in the process of moving the STIGs towards the use
 of the NIST Security Content Automation Protocol (SCAP) in order to "automate"
 compliance reporting of the STIGs.
 
@@ -155,7 +212,7 @@ The DoD STIG for Red Hat Enterprise Linux 6 was released June 2013. Currently, t
 DoD RHEL6 STIG contains only XCCDF content and is available online:
 http://iase.disa.mil/stigs/os/unix-linux/Pages/red-hat.aspx
 
-Content published against the iase.disa.mil website  is authoritative 
+Content published against the iase.disa.mil website  is authoritative
 STIG content. The SCAP Security Guide project, as noted in the STIG overview,
 is considered upstream content. Unlike DISA FSO, the SCAP Security Guide project
 does publish OVAL automation content. Individual programs and C&A evaluators

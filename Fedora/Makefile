@@ -69,6 +69,8 @@ dist: guide content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
+	mkdir -p $(DIST)/guide
+	cp $(OUT)/*-guide.html $(DIST)/guide
 
 eval-common: content
 	oscap xccdf eval --profile common $(OUT)/$(ID)-$(PROD)-xccdf.xml
