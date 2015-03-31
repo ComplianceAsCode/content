@@ -15,31 +15,15 @@ BuildArch:	noarch
 BuildRequires:	libxslt, expat, python, openscap-utils >= 1.0.3, python-lxml
 Requires:	xml-common, openscap-utils >= 1.0.8
 
-%if 0%{?rhel}
 %description
 The scap-security-guide project provides a guide for configuration of the
 system from the final system's security point of view. The guidance is
 specified in the Security Content Automation Protocol (SCAP) format and
 constitutes a catalog of practical hardening advice, linked to government
 requirements where applicable. The project bridges the gap between generalized
-policy requirements and specific implementation guidelines. The Red Hat
-Enterprise Linux 6 system administrator can use the oscap command-line tool
-from the openscap-utils package to verify that the system conforms to provided
-guideline. Refer to scap-security-guide(8) manual page for further information.
-%endif
-%if 0%{?fedora}
-%description
-The scap-security-guide project provides a guide for configuration of the
-system from the final system's security point of view. The guidance is specified
-in the Security Content Automation Protocol (SCAP) format and constitutes
-a catalog of practical hardening advice, linked to government requirements
-where applicable. The project bridges the gap between generalized policy
-requirements and specific implementation guidelines. The Fedora system
-administrator can use the oscap CLI tool from openscap-utils package, or the
-scap-workbench GUI tool from scap-workbench package to verify that the system
-conforms to provided guideline. Refer to scap-security-guide(8) manual page for
-further information.
-%endif
+policy requirements and specific implementation guidelines. The system
+administrator can use the oscap command-line tool from the openscap-utils
+package to verify that the system conforms to provided guidelines.
 
 %prep
 
