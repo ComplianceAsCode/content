@@ -1,0 +1,143 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_unsuccessful_file_modification" version="1">
+    <metadata>
+      <title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
+      <reference source="JL" ref_id="RHEL7_20150402" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA20_20150402" ref_url="test_attestation" />
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <criterion comment="audit augenrules" test_ref="test_arufm_augenrules" />
+        <criterion comment="audit augenrules 32-bit file eaccess" test_ref="test_32bit_arufm_eaccess_augenrules" />
+        <criterion comment="audit augenrules 32-bit file eperm" test_ref="test_32bit_arufm_eperm_augenrules" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCESS / EPERM rules-->
+          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_x86_64" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criteria operator="AND">
+            <criterion comment="audit augenrules 64-bit file eaccess" test_ref="test_64bit_arufm_eaccess_augenrules" />
+            <criterion comment="audit augenrules 64-bit file eperm" test_ref="test_64bit_arufm_eperm_augenrules" />
+          </criteria>
+        </criteria>
+      </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <criterion comment="audit auditctl" test_ref="test_arufm_auditctl" />
+        <criterion comment="audit auditctl 32-bit file eaccess" test_ref="test_32bit_arufm_eaccess_auditctl" />
+        <criterion comment="audit auditctl 32-bit file eperm" test_ref="test_32bit_arufm_eperm_auditctl" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCESS / EPERM rules -->
+          <extend_definition comment="64-bit_system" definition_ref="system_info_architecture_x86_64" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criteria operator="AND">
+            <criterion comment="audit auditctl 64-bit file eaccess" test_ref="test_64bit_arufm_eaccess_auditctl" />
+            <criterion comment="audit auditctl 64-bit file eperm" test_ref="test_64bit_arufm_eperm_auditctl" />
+          </criteria>
+        </criteria>
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_arufm_augenrules" version="1">
+    <ind:object object_ref="object_arufm_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arufm_augenrules" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eaccess" id="test_32bit_arufm_eaccess_augenrules" version="1">
+    <ind:object object_ref="object_32bit_arufm_eaccess_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eaccess_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b32\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EACCES\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eperm" id="test_32bit_arufm_eperm_augenrules" version="1">
+    <ind:object object_ref="object_32bit_arufm_eperm_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eperm_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b32\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EPERM\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit file eaccess" id="test_64bit_arufm_eaccess_augenrules" version="1">
+    <ind:object object_ref="object_64bit_arufm_eaccess_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eaccess_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b64\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EACCES\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit file eperm" id="test_64bit_arufm_eperm_augenrules" version="1">
+    <ind:object object_ref="object_64bit_arufm_eperm_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eperm_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b64\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EPERM\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test the auditctl case -->
+  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_arufm_auditctl" version="1">
+    <ind:object object_ref="object_arufm_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arufm_auditctl" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit file eaccess" id="test_32bit_arufm_eaccess_auditctl" version="1">
+    <ind:object object_ref="object_32bit_arufm_eaccess_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eaccess_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b32\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EACCES\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit file eperm" id="test_32bit_arufm_eperm_auditctl" version="1">
+    <ind:object object_ref="object_32bit_arufm_eperm_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eperm_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b32\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EPERM\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit file eaccess" id="test_64bit_arufm_eaccess_auditctl" version="1">
+    <ind:object object_ref="object_64bit_arufm_eaccess_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eaccess_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b64\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EACCES\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit file eperm" id="test_64bit_arufm_eperm_auditctl" version="1">
+    <ind:object object_ref="object_64bit_arufm_eperm_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eperm_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch=b64\s+?\-S\s+creat\s+\-S\s+open\s+\-S\s+openat\s+\-S\s+open_by_handle_at\s+\-S\s+truncate\s+\-S\s+ftruncate\s+\-F\s+exit=\-EPERM\s+\-F\s+auid>=1000\s+\-F\s+auid!=4294967295\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
