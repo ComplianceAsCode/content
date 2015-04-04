@@ -14,7 +14,7 @@ footer = '</oval_definitions>'
 
 RHEL = 'Red Hat Enterpise Linux'
 FEDORA = 'Fedora'
-
+CENT = 'Community Enterprise Operating System'
 
 def _header(schema_version):
     header = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -64,6 +64,8 @@ def parse_conf_file(conf_file):
 def multi_os(version):
     if re.findall('rhel', version):
         multi_os = RHEL
+    if re.findall('cent', version):
+        multi_os = CENT
     if re.findall('fedora', version):
         multi_os = FEDORA
 
