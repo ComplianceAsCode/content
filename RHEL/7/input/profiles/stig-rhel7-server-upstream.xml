@@ -15,6 +15,7 @@
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="1" />
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
 <refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
+<refine-value idref="login_banner_text" selector="dod_default" />
 
 <!-- BEGIN STIG RULE SELECTION -->
 
@@ -33,6 +34,11 @@
 <select idref="accounts_minimum_age_login_defs" selected="true" />
 <select idref="accounts_passwords_pam_fail_interval" selected="true" />
 <select idref="accounts_passwords_pam_faillock_deny" selected="true" />
+
+<!-- User Management -->
+<select idref="banner_etc_issue" selected="true" />
+<select idref="sshd_enable_warning_banner" selected="true" />
+<select idref="ftp_present_banner" selected="true" />
 
 <!-- Software/Patch Requirements -->
 <select idref="ensure_redhat_gpgkey_installed" selected="true" />
