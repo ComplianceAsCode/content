@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="installed_version_of_firefox_not_supported"  version="1">
+    <metadata>
+      <title> Installed version of Firefox not supported</title>
+      <affected family="unix">
+        <platform>Mozila Firefox</platform>
+      </affected>
+      <description>Use of versions of an application which are not supported by the vendor are not permitted. Vendors respond to security flaws with updates and patches. These updates are not available for unsupported version which can leave the application vulnerable to attack. </description>
+      </metadata>
+    <criteria>
+  	<criterion comment="installed version of firefox not supported" test_ref="test_installed_version_of_firefox_not_supported" />
+    </criteria>  
+  </definition>
+
+
+  <linux:rpminfo_test check="all" check_existence="any_exist" comment="Installed version of firefox is greater than 3" id="test_installed_version_of_firefox_not_supported" version="1">
+    <linux:object object_ref="obj_installed_version_of_firefox_not_supported" />
+    <linux:state state_ref="state_installed_version_of_firefox_not_supported" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_installed_version_of_firefox_not_supported" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">0:3.0.0</linux:evr> 
+  </linux:rpminfo_state>
+<linux:rpminfo_object id="obj_installed_version_of_firefox_not_supported" version="1">
+    <linux:name>firefox</linux:name>
+ </linux:rpminfo_object>
+
+</def-group>

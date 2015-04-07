@@ -1,0 +1,60 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-use_of_ssl_version_3" version="1">
+  	<metadata>
+  	<title>Firefox Preferences-Use of SSL Version 3</title>
+  	<affected family="unix">
+        	<platform>Mozilla Firefox</platform>
+        </affected>
+        <description>DoD implementations of SSL must use TLS 1.0  in accordance with the Network Infrastructure STIG. Earlier versions of SSL have known security vulnerabilities and are not authorized for use in DOD. Firefox has this set to on by default but this is not apparent in the GUI options screen</description>
+         </metadata>
+	<criteria>
+     		<criteria operator="OR">
+			<criterion comment="SSL V3 installed in /usr/local/lib/firefox" test_ref="test_firefox_SSL_V3_in_local_lib" />
+			<criterion comment="SSL V3 installed in /usr/lib/firefox" test_ref="test_firefox_SSL_V3_in_lib" />
+			<criterion comment="SSL V3 installed in /usr/local/lib64/firefox" test_ref="test_firefox_SSL_V3_in_local_lib64" />
+			<criterion comment="SSL V3 installed in /usr/lib64/firefox" test_ref="test_firefox_SSL_V3_in_lib64" />
+		</criteria>
+ 	</criteria>  
+   
+ </definition>
+
+
+<!-- According to stig: value to "true" or “false” and locked. ?? -->
+ <ind:textfilecontent54_test check="all" comment="Check for SSL Version 3 preferences in local/lib" id="test_firefox_SSL_V3_in_local_lib" version="1">
+ 	<ind:object object_ref="object_SSL_Version_3_local_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_SSL_Version_3_local_lib" version="1">
+ 	<ind:filepath>/usr/local/lib/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.enable_ssl3", false\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check for SSL Version 3 preferences in lib" id="test_firefox_SSL_V3_in_lib" version="1">
+ 	<ind:object object_ref="object_SSL_Version_3_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_SSL_Version_3_lib" version="1">
+ 	<ind:filepath>/usr/lib/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.enable_ssl3", false\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+ 
+ <ind:textfilecontent54_test check="all" comment="Check for SSL Version 3 preferences in local/lib64" id="test_firefox_SSL_V3_in_local_lib64" version="1">
+ 	<ind:object object_ref="object_SSL_Version_3_local_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_SSL_Version_3_local_lib64" version="1">
+ 	<ind:filepath>/usr/local/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.enable_ssl3", false\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+ <ind:textfilecontent54_test check="all" comment="Check for SSL Version 3 preferences in lib64" id="test_firefox_SSL_V3_in_lib64" version="1">
+ 	<ind:object object_ref="object_SSL_Version_3_in_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_SSL_Version_3_in_lib64" version="1">
+ 	<ind:filepath>/usr/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("security.enable_ssl3", false\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+</def-group>
+

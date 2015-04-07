@@ -1,0 +1,60 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-open_confirmation"  version="1">
+    <metadata>
+      <title>Firefox Preferences - Open Confirmation</title>
+      <affected family="unix">
+        <platform>Mozila Firefox</platform>
+      </affected>
+      <description>New file types cannot be added directly to the helper applications or plugins listing. Files with these extensions will not be allowed to use Firefox publicly available plugins and extensions to open.  The application will be configured to open these files using external applications only.  After a helper application or save to disk download action has been set, that action will be taken automatically for those types of files.  When the user receives a dialog box asking if you want to save the file or open it with a specified application, this indicates that a plugin does not exist. The user has not previously selected a download action or helper application to automatically use for that type of file. When prompted, if the user checks the option to Do this automatically for files like this from now on, then an entry will appear for that type of file in the plugins listing and this file type is automatically opened in the future. This can be a security issue.  New file types cannot be added directly to the Application plugin listing.
+</description>
+      </metadata>   
+  <criteria>
+     	<criteria operator="OR">
+	   <criterion comment="open_confirmation installed in /usr/local/lib/firefox" test_ref="test_open_confirmation_in_local_lib" />
+	   <criterion comment="open_confirmation installed in /usr/lib/firefox" test_ref="test_open_confirmation_in_lib" />
+	   <criterion comment="open_confirmation installed in /usr/local/lib64/firefox" test_ref="test_open_confirmation_in_local_lib64" />
+	   <criterion comment="open_confirmation installed in /usr/lib64/firefox" test_ref="test_open_confirmation_in_lib64" />
+	</criteria>
+  </criteria>
+  </definition>
+
+<!-- This pattern match code is from Treys shell script code, need to test -->
+<ind:textfilecontent54_test check="all" comment="Check for open_confirmation installed in /usr/local/lib/firefox" id="test_open_confirmation_in_local_lib" version="1">
+ 	<ind:object object_ref="object_open_confirmation_local_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_open_confirmation_local_lib" version="1">
+ 	<ind:filepath>/usr/local/lib/firefox/mozilla.cfg</ind:filepath>
+
+
+ <ind:pattern operation="pattern match">^lockPref\("plugin.disable_full_page_plugin_for_types", "PDF, FDF, XFDF, LSL, LSO, LSS, IQY, RQY, XLK, XLS, XLT, POT PPS, PPT, DOS, DOT, WKS, BAT, PS, EPS, WCH, WCM, WB1, WB3, RTF, DOC, MDB, MDE, WBK, WB1, WCH, WCM, AD, ADP"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check for open_confirmation installed in /usr/lib/firefox" id="test_open_confirmation_in_lib" version="1">
+ 	<ind:object object_ref="object_open_confirmation_lib" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_open_confirmation_lib" version="1">
+ 	<ind:filepath>/usr/lib/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("plugin.disable_full_page_plugin_for_types", "PDF, FDF, XFDF, LSL, LSO, LSS, IQY, RQY, XLK, XLS, XLT, POT PPS, PPT, DOS, DOT, WKS, BAT, PS, EPS, WCH, WCM, WB1, WB3, RTF, DOC, MDB, MDE, WBK, WB1, WCH, WCM, AD, ADP"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+ 
+ <ind:textfilecontent54_test check="all" comment="Check for open_confirmation installed in /usr/local/lib64/firefox" id="test_open_confirmation_in_local_lib64" version="1">
+ 	<ind:object object_ref="object_open_confirmation_local_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_open_confirmation_local_lib64" version="1">
+ 	<ind:filepath>/usr/local/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("plugin.disable_full_page_plugin_for_types", "PDF, FDF, XFDF, LSL, LSO, LSS, IQY, RQY, XLK, XLS, XLT, POT PPS, PPT, DOS, DOT, WKS, BAT, PS, EPS, WCH, WCM, WB1, WB3, RTF, DOC, MDB, MDE, WBK, WB1, WCH, WCM, AD, ADP"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>
+
+ <ind:textfilecontent54_test check="all" comment="Check for shell_protocol installed in /usr/lib64/firefox" id="test_open_confirmation_in_lib64" version="1">
+ 	<ind:object object_ref="object_open_confirmation_lib64" />
+ </ind:textfilecontent54_test>
+ <ind:textfilecontent54_object id="object_open_confirmation_lib64" version="1">
+ 	<ind:filepath>/usr/lib64/firefox/mozilla.cfg</ind:filepath>
+ <ind:pattern operation="pattern match">^lockPref\("plugin.disable_full_page_plugin_for_types", "PDF, FDF, XFDF, LSL, LSO, LSS, IQY, RQY, XLK, XLS, XLT, POT PPS, PPT, DOS, DOT, WKS, BAT, PS, EPS, WCH, WCM, WB1, WB3, RTF, DOC, MDB, MDE, WBK, WB1, WCH, WCM, AD, ADP"\);$</ind:pattern>
+ <ind:instance datatype="int">1</ind:instance>
+ </ind:textfilecontent54_object>  
+
+</def-group>
