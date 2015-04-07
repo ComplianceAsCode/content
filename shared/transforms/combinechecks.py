@@ -2,6 +2,7 @@
 
 import sys
 import os
+import re
 import datetime
 import lxml.etree as ET
 from ConfigParser import SafeConfigParser
@@ -10,6 +11,10 @@ timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
 conf_file = 'oval.config'
 footer = '</oval_definitions>'
+
+RHEL = 'Red Hat Enterpise Linux'
+FEDORA = 'Fedora'
+
 
 def _header(schema_version):
     header = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -34,23 +39,61 @@ def _header(schema_version):
 
     return header
 
+
 def parse_conf_file(conf_file):
     parser = SafeConfigParser()
     parser.read(conf_file)
+    multi_platform = {}
     oval_version = None
 
     for section in parser.sections():
         for name, setting in parser.items(section):
+            setting = re.sub('.;:', ',', re.sub(' ', '', setting))
             if name == 'oval_version':
-                oval_version =  setting
+                oval_version = setting
             else:
-                pass
+                multi_platform[name] = [item for item in setting.split(",")]
 
-    if oval_version is not None:
-        return oval_version
-    else:
+    if oval_version is None:
         print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
         sys.exit(1)
+
+    return oval_version, multi_platform
+
+
+def multi_os(version):
+    if re.findall('rhel', version):
+        multi_os = RHEL
+    if re.findall('fedora', version):
+        multi_os = FEDORA
+
+    return multi_os
+
+
+def add_platforms(xml_tree, multi_platform):
+    for affected in xml_tree.findall('.//*[@family="unix"]'):
+        for plat_elem in affected:
+            try:
+                if plat_elem.text == 'multi_platform_oval':
+                    for platforms in multi_platform[plat_elem.text]:
+                        for plat in multi_platform[platforms]:
+                            platform = ET.Element('platform')
+                            platform.text = multi_os(platforms) + ' ' + plat
+                            affected.insert(1, platform)
+                else:
+                    for platforms in multi_platform[plat_elem.text]:
+                        platform = ET.Element('platform')
+                        platform.text = multi_os(plat_elem.text) + ' ' + platforms
+                        affected.insert(0, platform)
+            except KeyError:
+                pass
+
+            # Remove multi_platform element
+            if re.findall('multi_platform', plat_elem.text):
+                affected.remove(plat_elem)
+
+    return xml_tree
+
 
 # append new child ONLY if it's not a duplicate
 def append(element, newchild):
@@ -71,9 +114,10 @@ def main():
 
     # Get header with schema version
     oval_config = sys.argv[1] + "/" + conf_file
-    
+
     if os.path.isfile(oval_config):
-        header = _header(parse_conf_file(oval_config))
+        (header, multi_platform) = parse_conf_file(oval_config)
+        header = _header(header)
     else:
         print 'The directory specified does not contain the %s file!' % conf_file
         sys.exit(1)
@@ -88,7 +132,8 @@ def main():
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
-    tree = ET.fromstring(header + body + footer)
+    corrected_tree = ET.fromstring(header + body + footer)
+    tree = add_platforms(corrected_tree, multi_platform)
     definitions = ET.Element("definitions")
     tests = ET.Element("tests")
     objects = ET.Element("objects")

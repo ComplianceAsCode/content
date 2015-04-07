@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_app_is_webmin" version="1">
+    <metadata>
+      <title>Webmin</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <reference ref_id="cpe:/a:gentoo:webmin"
+      source="CPE" />
+      <description>The application installed on the system is
+      webmin</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <criterion comment="Webmin is installed"
+	  test_ref="test_webmin" />
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_unix_family" version="1">
+    <ind:object object_ref="obj_unix_family" />
+    <ind:state state_ref="state_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Webmin is installed" id="test_webmin" version="1">
+    <linux:object object_ref="obj_webmin" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_webmin" version="1">
+    <linux:name>webmin</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

@@ -33,13 +33,16 @@ The command should return the string below:
 <pre>gpg(Red Hat, Inc. (release key 2)  &lt;security@redhat.com&gt;</pre>
 </ocil>
 <rationale>
-The Red Hat GPG key is necessary to cryptographically verify packages
-are from Red Hat.
+Changes to software components can have significant effects on the
+overall security of the operating system. This requirement ensures
+the software has not been tampered with and that it has been provided 
+by a trusted vendor. The Red Hat GPG key is necessary to 
+cryptographically verify packages are from Red Hat.
 </rationale>
 <ident cce="26957-1" />
 <oval id="ensure_redhat_gpgkey_installed" />
-<ref nist="SI-7,MA-1(b)" disa=""/>
-<tested by="MM" on="20120928"/>
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366"/>
+<tested by="sdw" on="20150407"/>
 </Rule>
 
 <!-- REMINDER: Before telling people to update their systems
@@ -64,14 +67,18 @@ A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
 disabled.
 </ocil>
 <rationale>
-Ensuring the validity of packages' cryptographic signatures prior to
-installation ensures the authenticity of the software and
-protects against malicious tampering.
+Verifying the authenticity of the software prior to installation
+validates the integrity of the patch or upgrade received from
+a vendor. This ensures the software has not been tampered with and
+that it has been provided by a trusted vendor. Self-signed
+certificates are disallowed by this requirement. Certificates
+used to verify the software must be from an approved Certificate
+Authority (CA).
 </rationale>
 <ident cce="26989-4" />
 <oval id="ensure_gpgcheck_globally_activated" />
-<ref nist="SI-7,MA-1(b)" disa="" />
-<tested by="MM" on="20120928"/>
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" />
+<tested by="sdw" on="20150407"/>
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled" severity="high">
@@ -89,14 +96,18 @@ sections:
 A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo. 
 </ocil>
 <rationale>
-Ensuring all packages' cryptographic signatures are valid prior to
-installation ensures the authenticity of the software and
-protects against malicious tampering.
+Verifying the authenticity of the software prior to installation
+validates the integrity of the patch or upgrade received from
+a vendor. This ensures the software has not been tampered with and
+that it has been provided by a trusted vendor. Self-signed 
+certificates are disallowed by this requirement. Certificates
+used to verify the software must be from an approved Certificate
+Authority (CA).
 </rationale>
-<ident cce="26915-9" />
+<ident cce="26876-3" />
 <oval id="ensure_gpgcheck_never_disabled" />
-<ref nist="SI-7,MA-1(b)" disa=""/>
-<tested by="MM" on="20120928"/>
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" />
+<tested by="sdw" on="20150407"/>
 </Rule>
 
 <Rule id="security_patches_up_to_date" severity="high">

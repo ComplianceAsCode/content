@@ -7,7 +7,28 @@ such as system logins, account modifications, and authentication
 events performed by programs such as sudo.
 Under its default configuration, <tt>auditd</tt> has modest disk space
 requirements, and should not noticeably impact system performance.
-<br /><br />
+<br />
+NOTE: The Linux Audit daemon <tt>auditd</tt> can be configured to use
+the <tt>augenrules</tt> program to read audit rules files (<tt>*.rules</tt>)
+located in <tt>/etc/audit/rules.d</tt> location and compile them to create
+the resulting form of the <tt>/etc/audit/audit.rules</tt> configuration file
+during the daemon startup (default configuration). Alternatively, the <tt>auditd</tt>
+daemon can use the <tt>auditctl</tt> utility to read audit rules from the
+<tt>/etc/audit/audit.rules</tt> configuration file during daemon startup,
+and load them into the kernel. The expected behavior is configured via the
+appropriate <tt>ExecStartPost</tt> directive setting in the
+<tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+To instruct the <tt>auditd</tt> daemon to use the <tt>augenrules</tt> program
+to read audit rules (default configuration), use the following setting:
+<br /> <pre>ExecStartPost=-/sbin/augenrules --load</pre>
+in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+In order to instruct the <tt>auditd</tt> daemon to use the <tt>auditctl</tt>
+utility to read audit rules, use the following setting:
+<br /> <pre>ExecStartPost=-/sbin/auditctl -R /etc/audit/audit.rules</pre>
+in the <tt>/usr/lib/systemd/system/auditd.service</tt> configuration file.
+Refer to <tt>[Service]</tt> section of the <tt>/usr/lib/systemd/system/auditd.service</tt>
+configuration file for further details.
+<br />
 Government networks often have substantial auditing
 requirements and <tt>auditd</tt> can be configured to meet these
 requirements.
@@ -1191,9 +1212,16 @@ unusual activity.
 
 <Rule id="audit_rules_media_export">
 <title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
-<description>At a minimum the audit system should collect media
-exportation events for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
+<description>At a minimum the audit system should collect media exportation
+events for all users and root. If the <tt>auditd</tt> daemon is configured to
+use the <tt>augenrules</tt> program to read audit rules during daemon startup
+(the default), add the following line to a file with suffix <tt>.rules</tt> in
+the directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
 appropriate for your system:
 <pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
 </description>
@@ -1213,9 +1241,16 @@ loss.</rationale>
 
 <Rule id="audit_rules_file_deletion_events">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User</title>
-<description>At a minimum the audit system should collect file
-deletion events for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
+<description>At a minimum the audit system should collect file deletion events
+for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
 appropriate for your system:
 <pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete</pre>
 </description>
@@ -1235,9 +1270,15 @@ malicious processes that attempt to delete log files to conceal their presence.<
 
 <Rule id="audit_rules_sysadmin_actions">
 <title>Ensure <tt>auditd</tt> Collects System Administrator Actions</title>
-<description>At a minimum the audit system should collect
-administrator actions for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<description>At a minimum the audit system should collect administrator actions
+for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the default),
+add the following line to a file with suffix <tt>.rules</tt> in the directory
+<tt>/etc/audit/rules.d</tt>:
+<pre>-w /etc/sudoers -p wa -k actions</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file:
 <pre>-w /etc/sudoers -p wa -k actions</pre>
 </description>
 <ocil clause="there is not output">
@@ -1254,11 +1295,21 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 
 <Rule id="audit_rules_kernel_module_loading">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
-to capture kernel module loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
-<pre>-w /sbin/insmod -p x -k modules
--w /sbin/rmmod -p x -k modules
--w /sbin/modprobe -p x -k modules
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following lines to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+<pre>-w /usr/sbin/insmod -p x -k modules
+-w /usr/sbin/rmmod -p x -k modules
+-w /usr/sbin/modprobe -p x -k modules
+-a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
+b64 as appropriate for your system:
+<pre>-w /usr/sbin/insmod -p x -k modules
+-w /usr/sbin/rmmod -p x -k modules
+-w /usr/sbin/modprobe -p x -k modules
 -a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
 </description>
 <ocil>

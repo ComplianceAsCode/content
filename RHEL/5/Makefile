@@ -12,10 +12,7 @@ PROD = rhel5
 
 OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
 
-all: stats shorthand2xccdf tables guide content dist
-
-stats:
-	$(SHARED)/$(TRANS)/stats.sh
+all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
@@ -89,8 +86,8 @@ table-stigs: shorthand2xccdf table-srgmap checks
 		$(OUT)/unlinked-$(PROD)-xccdf.xml
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
-tables: table-refs table-ident stigs
-#tables: table-refs table-ident stigs
+tables: table-refs table-idents table-stigs
+#tables: table-refs table-idents table-stigs
 
 content: shorthand2xccdf guide checks
 #	the relabelids.py script chdirs to ./output, so refer to files from there.

@@ -1,0 +1,54 @@
+<def-group>
+  <definition class="compliance" id="sessions_ssl_enabled" version="1">
+    <metadata>
+      <title>Encryption is enabled and enforced.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Encryption is enabled and enforced.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <!-- ssl is configured in /etc/webmin/miniserv.conf ... -->
+	  <criterion comment="Encryption is enabled."
+	  test_ref="test_webmin_sessions_ssl_enabled" />
+	  <!-- ssl_redirect is configured in /etc/webmin/miniserv.conf ... -->
+	  <criterion comment="Encryption is enforced"
+	  test_ref="test_webmin_sessions_ssl_enforced" />
+	  <!-- The perl-Net-SSLeay rpm is installed ... -->
+	  <criterion comment="perl-Net-SSLeay is installed."
+	  test_ref="test_webmin_perl_ssl" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check ssl is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_ssl_enabled" version="1">
+    <ind:object object_ref="object_webmin_sessions_ssl_enabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_ssl_enabled" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^ssl=1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check ssl_redirect is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_sessions_ssl_enforced" version="1">
+    <ind:object object_ref="object_webmin_sessions_ssl_enforced" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_ssl_enforced" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^ssl_redirect=1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="perl-Net-SSLeay is installed" id="test_webmin_perl_ssl" version="1">
+    <linux:object object_ref="obj_webmin_perl_ssl" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_webmin_perl_ssl" version="1">
+    <linux:name>perl-Net-SSLeay</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

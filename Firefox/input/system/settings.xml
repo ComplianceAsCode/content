@@ -1,0 +1,363 @@
+<Group id="settings">
+<title>Required Firefox settings</title>
+<description>To support a secured and compliant configuration, a number of 
+settings need to be modified from there default configuration and locked so 
+that they are prevented from being changed.</description>
+<!--
+<Rule id="dod_root_certificate_is_not_installed">
+<title>DoD Root Certificate is not installed.</title>
+<description>
+The DOD root certificate will ensure that the trust chain is established for server certificate issued from the DOD CA
+</description>
+<rationale>
+
+</rationale>
+<oval id="dod_root_certificate_is_not_installed" />
+<ident cce="27457-1" />
+<ref nist="AC-10" disa="54"/>
+</Rule>
+-->
+
+<Rule id="firefox_preferences-addons_plugin_updates">
+<title>Firefox Preferences-Addons plugin updates</title>
+<description>
+Set this to false to disable checking for updated versions of the Extensions/Themes.  Automatic updates from untrusted sites puts the enclave at risk of attack and may override security settings.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-addons_plugin_updates" />
+<ident stig="DTBF090" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-autofill_forms">
+<title>Firefox Preferences - Autofill forms</title>
+<description>
+In order to protect privacy and sensitive data, Firefox provides the ability to configure Firefox such that data entered into forms is not saved.  This mitigates the risk of a website gleaning private information from prefilled information
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-autofill_forms" />
+<ident stig="DTBF140" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+
+<Rule id="firefox_preferences-autofill_passwords">
+<title>Firefox Preferences - Autofill passwords</title>
+<description>
+While on the internet, it may be possible for an attacker to view the saved password files and gain access to the user's accounts on various hosts.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-autofill_passwords" />
+<ident stig="DTBF150" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+
+<Rule id="firefox_preferences-auto-update_of_firefox">
+<title>Firefox Preferences-Auto-update of Firefox</title>
+<description>
+Allowing software updates from non-trusted sites can introduce settings that will override a secured installation of the application.  This can place DoD information at risk.  If this setting is enabled, then there are many other default settings which point to untrusted sites which must be changed to point to an authorized update site that is not publicly accessible.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-auto-update_of_firefox" />
+<ident stig="DTBF080" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-cookies">
+<title>Firefox Preferences - Cookies</title>
+<description>
+Cookies can help websites perform better but can also be part of spyware.  To mitigate this risk, set browser preferences to perform a Clear Private Data operation when closing the browser in order to clear cookies and other data installed by websites visited during the session.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-cookies" />
+<ident stig="DTBF170" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-lock_settings">
+<title>Firefox Preferences - Lock settings</title>
+<description>
+Locked settings prevents users from accessing about:config and changing the security settings set by the system administrator.  Locked settings should be placed in the mozilla.cfg file. The mozilla.cfg file is an encoded file of javascript commands. The encoding is a simple "byte-shifting" with an offset of 13 (netscape 4 used a similar encoding, but with a 7 instead). This file also needs to be "called" from the configuration file all
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-lock_settings" />
+<ident stig="DTBF070" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-open_confirmation">
+<title>Firefox Preferences - Open Confirmation</title>
+<description>
+New file types cannot be added directly to the helper applications or plugins listing. Files with these extensions will not be allowed to use Firefox publicly available plugins and extensions to open.  The application will be configured to open these files using external applications only.  After a helper application or save to disk download action has been set, that action will be taken automatically for those types of files.  When the user receives a dialog box asking if you want to save the file or open it with a specified application, this indicates that a plugin does not exist. The user has not previously selected a download action or helper application to automatically use for that type of file. When prompted, if the user checks the option to Do this automatically for files like this from now on, then an entry will appear for that type of file in the plugins listing and this file type is automatically opened in the future. This can be a security issue.  New file types cannot be added directly to the Application plugin listing.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-open_confirmation" />
+<ident stig="DTBF110" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-password_store">
+<title>Firefox Preferences - Password store</title>
+<description>
+Firefox can be set to store passwords for sites visited by the user.  These individual passwords are stored in a file and can be protected by a master password. Autofill of the password can then be enabled when the site is visited.  This feature could also be used to autofill the certificate pin which could lead to compromise of DoD information.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-password_store" />
+<ident stig="DTBF160" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-search_update">
+<title>Firefox Preferences -Search update</title>
+<description>
+Updates need to be controlled and installed from authorized and trusted servers.  This setting overrides a number of other settings which may direct the application to access external URLs.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-search_update" />
+<ident stig="DTBF085" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-shell_protocol">
+<title>Firefox Preferences - Shell Protocol</title>
+<description>
+Although current versions of Firefox have this set to disabled by default, use of this option can be harmful.  This would allow the browser to access the Windows shell. This could allow access to the underlying system.  This check verifies that the default setting has not been changed.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-shell_protocol" />
+<ident stig="DTBF105" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-SSL_2.0_protocol">
+<title>Firefox Preferences - SSL 2.0 Protocol</title>
+<description>
+Use of versions prior to TLS 1.0 are not permitted because these versions are non-standard. SSL 2.0 and SSL 3.0 contain a number of security flaws. These versions must be disabled in compliance with the Network Infrastructure and Secure Remote Computing STIGs. SSL 2.0 setting does not appear in the Options dialog and must be disabled using About:Config.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-SSL_2.0_protocol" />
+<ident stig="DTBF010" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-SSL_protocols_TLS">
+<title>Firefox Preferences - SSL Protocols TLS</title>
+<description>
+DoD implementations of SSL must use TLS 1.0 in accordance with the Network Infrastructure STIG. Earlier versions of SSL have known security vulnerabilities and are not authorized for use in DOD
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-SSL_protocols_TLS" />
+<ident stig="DTBF030" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-verification">
+<title>Firefox Preferences - Verification</title>
+<description>
+When a web site asks for a certificate for user authentication, Firefox must be configured to have the user choose which certificate to present. Websites within DOD require user authentication for access which increases security for DoD information. Access will be denied to the user if certificate management is not configured
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-verification" />
+<ident stig="DTBF050" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="firefox_preferences-use_of_ssl_version_3">
+<title>Firefox Preferences-Use of SSL Version 3</title>
+<description>
+DoD implementations of SSL must use TLS 1.0  in accordance with the Network Infrastructure STIG. Earlier versions of SSL have known security vulnerabilities and are not authorized for use in DOD. Firefox has this set to on by default but this is not apparent in the GUI options screen
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-use_of_ssl_version_3" />
+<ident stig="DTBF020" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="home_page">
+<title>Home Page</title>
+<description>
+The browser home page parameter specifies the web page that is to be displayed when the browser is started explicitly and when product-specific buttons or key sequences for the home page are accessed. This helps to mitigate the possibility of automatic inadvertent execution of script added to a previously safe site.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="home_page" />
+<ident stig="DTBF017" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="installed_version_of_firefox_not_supported">
+<title>Installed version of Firefox not supported</title>
+<description>
+Use of versions of an application which are not supported by the vendor are not permitted. Vendors respond to security flaws with updates and patches. These updates are not available for unsupported version which can leave the application vulnerable to attack.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="installed_version_of_firefox_not_supported" />
+<ident stig="DTBF003" />
+<ref nist="DCMC-1" disa="" />
+</Rule>
+
+
+<Rule id="javaScript_can_change_the_status_bar_text">
+<title>JavaScript can change the status bar text</title>
+<description>
+JavaScript can make changes to the browser’s appearance. This activity can help disguise an attack taking place in a minimized background window.  Webpage authors can disable many features of a popup window that they open. Setting these preferences to true will override the author's settings and ensure that the feature is enabled and present in any popup window.  This setting prevents the status bar from being hidden.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="javaScript_can_change_the_status_bar_text" />
+<ident stig="DTBF185" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="javaScript_context_menus">
+<title>JavaScript Context Menus</title>
+<description>
+A context menu (also known as a pop-up menu) is often used in a graphical user interface (GUI) and appears upon user interaction (e.g., a right mouse click). A context menu offers a limited set of choices that are available in the current state, or context, of the operating system or application.  A website may execute JavaScript that can make changes to these context menus.  This can help disguise an attack.  Set this preference to "false" so that webpages will not be able to affect the context menu event.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="javaScript_context_menus" />
+<ident stig="DTBF183" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+
+<Rule id="javaScript_hiding_or_changing_status_bar">
+<title>JavaScript hiding or changing status bar</title>
+<description>
+When a user visits some webpages, JavaScript can hide or make changes to the browser’s appearance to hide unauthorized activity. This activity can help disguise an attack taking place in a minimized background window.  Determines whether the text in the browser status bar may be set by JavaScript.  Set and lock to True (default in Firefox) so that JavaScript access to preference settings for is disabled.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="javaScript_hiding_or_changing_status_bar" />
+<ident stig="DTBF184" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="javaScript_move_or_resize_windows">
+<title>JavaScript move or resize windows</title>
+<description>
+JavaScript can make changes to the browser’s appearance. This activity can help disguise an attack taking place in a minimized background window.  Set browser setting to prevent scripts on visited websites from moving and resizing browser windows.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="javaScript_move_or_resize_windows" />
+<ident stig="DTBF181" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+
+<Rule id="javaScript_raise_or_lower_windows">
+<title>JavaScript raise or lower windows</title>
+<description>
+JavaScript can make changes to the browser’s appearance. Allowing a website to use JavaScript to raise and lower browser windows may disguise an attack. Browser windows may not be set as active via JavaScript.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="javaScript_raise_or_lower_windows" />
+<ident stig="DTBF182" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+<Rule id="non-secure_page_warning">
+<title>Non-secure Page Warning</title>
+<description>
+Users may not be aware that the information being viewed under secure conditions in a previous page are not currently being viewed under the same security settings.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="non-secure_page_warning" />
+<ident stig="DTBF130" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+
+<Rule id="pop-up_windows">
+<title>Pop-up windows</title>
+<description>
+Popup windows may be used to launch an attack within a new browser window with altered settings. This setting blocks popup windows created while the page is loading
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="pop-up_windows" />
+<ident stig="DTBF180" />
+<ref nist="ECSC-1" disa="" />
+</Rule>
+
+
+<Rule id="firefox_preferences-auto-download_actions">
+<title>Firefox Preferences - auto-download actions</title>
+<description>
+The default action for file types for which a plugin is installed is to automatically download and execute the file using the associated plugin. Firefox allows you to change the specified download action so that the file is opened with a selected external application or saved to disk instead. View the list of installed browser plugins and related MIME types by entering about:plugins in the address bar.
+</description>
+<rationale>
+
+</rationale>
+
+<oval id="firefox_preferences-auto-download_actions" />
+<ident stig="DTBF100" />
+<ref nist="DCMC-1" disa="" />
+</Rule>
+</Group>
