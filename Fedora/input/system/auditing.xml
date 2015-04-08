@@ -978,11 +978,18 @@ calls with others as identifying earlier in this guide is more efficient.
 
 <Rule id="audit_rules_dac_modification_lremovexattr">
 <title>Record Events that Modify the System's Discretionary Access Controls - lremovexattr</title>
-<description>At a minimum the audit system should collect file
-permission changes for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<description>At a minimum the audit system should collect file permission
+changes for all users and root. If the <tt>auditd</tt> daemon is configured
+to use the <tt>auditctl</tt> utility to read audit rules during daemon startup
+(the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
-If the system is 64 bit then also add the following:
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
