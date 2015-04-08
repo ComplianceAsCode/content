@@ -26,9 +26,9 @@ system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
-<ident cce="26947-2"  stig="RHEL-06-000033" />
+<ident cce="26947-2" stig="RHEL-06-000033" />
 <oval id="userowner_shadow_file" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -38,9 +38,9 @@ which could weaken the system security posture.</rationale>
 <ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
-<ident cce="26967-0"  stig="RHEL-06-000034" />
+<ident cce="26967-0" stig="RHEL-06-000034" />
 <oval id="groupowner_shadow_file" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -53,9 +53,9 @@ system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
-<ident cce="26992-8"  stig="RHEL-06-000035" />
+<ident cce="26992-8" stig="RHEL-06-000035" />
 <oval id="file_permissions_etc_shadow" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -65,9 +65,9 @@ which could weaken the system security posture.</rationale>
 <ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident cce="26822-7"  stig="RHEL-06-000042" />
+<ident cce="26822-7" stig="RHEL-06-000042" />
 <oval id="file_owner_etc_group" />
-<ref nist="AC-6"/>
+<ref nist="AC-6" disa="366" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -77,9 +77,9 @@ on the system. Protection of this file is important for system security.</ration
 <ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident cce="26930-8"  stig="RHEL-06-000043" />
+<ident cce="26930-8" stig="RHEL-06-000043" />
 <oval id="file_groupowner_etc_group" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -89,9 +89,9 @@ on the system. Protection of this file is important for system security.</ration
 <ocil><fileperms-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident cce="26954-8"  stig="RHEL-06-000044" />
+<ident cce="26954-8" stig="RHEL-06-000044" />
 <oval id="file_permissions_etc_group" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -101,9 +101,9 @@ on the system. Protection of this file is important for system security.</ration
 <ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident cce="27026-4"  stig="RHEL-06-000036" />
+<ident cce="27026-4" stig="RHEL-06-000036" />
 <oval id="file_owner_etc_gshadow" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -113,9 +113,9 @@ is critical for system security.</rationale>
 <ocil><filegroupowner-check-macro file="/etc/gshadow" group="root"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident cce="26975-3"  stig="RHEL-06-000037" />
+<ident cce="26975-3" stig="RHEL-06-000037" />
 <oval id="file_groupowner_etc_gshadow" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -125,9 +125,9 @@ is critical for system security.</rationale>
 <ocil><fileperms-check-macro file="/etc/gshadow" perms="----------"/></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident cce="26951-4"  stig="RHEL-06-000038" />
+<ident cce="26951-4" stig="RHEL-06-000038" />
 <oval id="file_permissions_etc_gshadow" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -137,9 +137,9 @@ is critical for system security.</rationale>
 <ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
 <rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
-<ident cce="26953-0"  stig="RHEL-06-000039" />
+<ident cce="26953-0" stig="RHEL-06-000039" />
 <oval id="file_owner_etc_passwd" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -149,9 +149,9 @@ the system. Protection of this file is critical for system security.</rationale>
 <ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
 <rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
-<ident cce="26856-5"  stig="RHEL-06-000040" />
+<ident cce="26856-5" stig="RHEL-06-000040" />
 <oval id="file_groupowner_etc_passwd" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -163,9 +163,9 @@ the system. Protection of this file is critical for system security.</rationale>
 world the risk of its compromise is increased. The file contains the list of
 accounts on the system and associated information, and protection of this file
 is critical for system security.</rationale>
-<ident cce="26868-0"  stig="RHEL-06-000041" />
+<ident cce="26868-0" stig="RHEL-06-000041" />
 <oval id="file_permissions_etc_passwd" />
-<ref nist="AC-6" disa="225"/>
+<ref nist="AC-6" disa="366"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 </Group>
@@ -364,9 +364,9 @@ or those designed to be temporary file repositories.  The setting is normally re
 used by the system, by users for temporary file storage (such as <tt>/tmp</tt>), and for directories 
 requiring global read/write access.
 </rationale>
-<ident cce="26840-9"  stig="RHEL-06-000336" />
+<ident cce="26840-9" stig="RHEL-06-000336" />
 <oval id="dir_perms_world_writable_sticky_bits" />
-<ref nist="AC-6"/>
+<ref nist="AC-6" disa="366" />
 <tested by="swells" on="20120929"/>
 </Rule>
 
@@ -388,8 +388,8 @@ user on the system. In almost all circumstances, files can be
 configured using a combination of user and group permissions to
 support whatever legitimate access is needed without the risk
 caused by world-writable files.</rationale>
-<ident cce="26910-0"  stig="RHEL-06-000282" />
-<ref nist="AC-6"/>
+<ident cce="26910-0" stig="RHEL-06-000282" />
+<ref nist="AC-6" disa="366" />
 <oval id="file_permissions_unauthorized_world_writable" />
 </Rule>
 
@@ -511,9 +511,9 @@ undesirable because it allows the owner of that directory to remove
 or replace any files that may be placed in the directory by other
 users.
 </rationale>
-<ident cce="26642-9"  stig="RHEL-06-000337" />
+<ident cce="26642-9" stig="RHEL-06-000337" />
 <oval id="dir_perms_world_writable_system_owned" />
-<ref nist="AC-6"/>
+<ref nist="AC-6" disa="366" />
 <tested by="swells" on="20120929"/>
 </Rule>
 </Group>
