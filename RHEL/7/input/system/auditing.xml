@@ -667,9 +667,9 @@ each file specified (and with <tt>perm=wa</tt> for each).
 will alert the system administrator(s) to any modifications. Any
 unexpected users, groups, or modifications should be investigated for
 legitimacy.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27192-4" />
 <oval id="audit_rules_usergroup_modification" />
-<ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
+<ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,172,1403,1404,1405,1684,1683,1685,1686" ossrg="476,239" />
 </Rule>
 
 <Rule id="audit_rules_networkconfig_modification">
@@ -1306,9 +1306,9 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27206-2" />
 <oval id="audit_rules_file_deletion_events" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" ossrg="468" />
 </Rule>
 
 <Rule id="audit_rules_sysadmin_actions">
@@ -1362,9 +1362,9 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27129-6" />
 <oval id="audit_rules_kernel_module_loading" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" ossrg="477" />
 </Rule>
 
 <Rule id="audit_rules_immutable">
