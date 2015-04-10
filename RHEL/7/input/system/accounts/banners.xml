@@ -75,5 +75,100 @@ process and facilitates possible legal action against attackers.
 <tested by="DS" on="20121026"/>
 </Rule>
 
+<Group id="gui_login_banner">
+<title>Implement a GUI Warning Banner</title>
+<description>In the default graphical environment, users logging
+directly into the system are greeted with a login screen provided
+by the GNOME3 Display Manager (GDM). The warning banner should be
+displayed in this graphical environment for these users.
+The following sections describe how to configure the GDM login
+banner.
+</description>
+
+<Rule id="dconf_gnome_banner_enabled" severity="medium">
+<title>Enable GNOME3 Login Warning Banner</title>
+<description>
+To enable displaying a login warning banner in the GNOME
+Display Manager's login screen, the <tt>banner-message-enable</tt> setting must be 
+set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/gdm.d</tt> directory 
+and locked in <tt>/etc/dconf/db/gdm.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+To display a banner, this setting must be enabled, and the user must be prevented
+from making changes. The banner text must also be set.
+</description>
+<ocil clause="it is not">
+To ensure a login warning banner is enabled, run the following:
+<pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/*</pre>
+If properly configured, the output should be <tt>true</tt>.
+To ensure a login warning banner is locked and cannot be changed by a user, run the following:
+<pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-enable</tt>.
+</ocil>
+<rationale>
+An appropriate warning message reinforces policy awareness during the logon
+process and facilitates possible legal action against attackers.
+</rationale>
+<ident cce="27027-2" />
+<oval id="dconf_gnome_banner_enabled" />
+<ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48,50" />
+</Rule>
+
+<Rule id="dconf_gnome_login_banner_text" severity="medium">
+<title>Set the GNOME3 Login Warning Banner Text</title>
+<description>
+To set the text shown by the GNOME3 Display Manager
+in the login screen, the <tt>banner-message-text</tt> setting must be set under an
+appropriate configuration file(s) in the <tt>/etc/dconf/db/gdm.d</tt> directory and locked 
+in <tt>/etc/dconf/db/gdm.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+When entering a warning banner that spans several lines, remember
+to begin and end the string with <tt>'</tt> and use <tt>\n</tt> for new lines.
+</description>
+<ocil clause="it does not">
+To ensure the login warning banner text is properly set, run the following:
+<pre>$ grep banner-message-text /etc/dconf/db/gdm.d/*</pre>
+If properly configured, the proper banner text will appear.
+To ensure the login warning banner text is locked and cannot be changed by a user, run the following:
+<pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-text</tt>.
+</ocil>
+<rationale>
+An appropriate warning message reinforces policy awareness during the logon
+process and facilitates possible legal action against attackers.
+</rationale>
+<ident cce="26892-0" />
+<oval id="dconf_gnome_login_banner_text" value="login_banner_text"/>
+<ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48,50,1384,1385,1386,1387,1388" />
+</Rule>
+
+</Group>
+
+<Rule id="dconf_gnome_disable_user_list">
+<title>Disable the GNOME3 Login User List</title>
+<description>In the default graphical environment, users logging
+directly into the system are greeted with a login screen that displays
+all known users. This functionality should be disabled. 
+<br /><br />
+The <tt>disable-user-list</tt> setting must be 
+set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/gdm.d</tt> directory 
+and locked in <tt>/etc/dconf/db/gdm.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">
+To ensure the user list is disabled, run the following command:
+<pre>$ grep disable-user-list /etc/dconf/db/gdm.d/*</pre>
+The output should be <tt>true</tt>.
+To ensure that users cannot enable displaying the user list, run the following:
+<pre>$ grep disable-user-list /etc/dconf/db/gdm.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/login-screen/disable-user-list</tt>
+</ocil>
+<rationale>Leaving the user list enabled is a security risk since it allows anyone
+with physical access to the system to quickly enumerate known user accounts
+without logging in.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_disable_user_list" />
+<ref nist="AC-23" />
+</Rule>
+
 </Group>
 
