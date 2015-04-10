@@ -1,5 +1,5 @@
 source ./templates/support.sh
-populate var_accounts_passwords_pam_faillock_interval
+populate var_accounts_passwords_pam_faillock_fail_interval
 
 AUTH_FILES[0]="/etc/pam.d/system-auth"
 AUTH_FILES[1]="/etc/pam.d/password-auth"
@@ -14,23 +14,23 @@ do
 		if grep -q "^auth.*[default=die].*pam_faillock.so.*authfail.*interval=" $pamFile; then
 
 			# both pam_faillock.so & interval present, just correct interval directive value
-			sed -i --follow-symlink "s/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\(interval *= *\).*/\1\2$var_accounts_passwords_pam_faillock_interval/" $pamFile
-			sed -i --follow-symlink "s/\(^auth.*[default=die].*pam_faillock.so.*authfail.*\)\(interval *= *\).*/\1\2$var_accounts_passwords_pam_faillock_interval/" $pamFile
+			sed -i --follow-symlink "s/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\(interval *= *\).*/\1\2$var_accounts_passwords_pam_faillock_fail_interval/" $pamFile
+			sed -i --follow-symlink "s/\(^auth.*[default=die].*pam_faillock.so.*authfail.*\)\(interval *= *\).*/\1\2$var_accounts_passwords_pam_faillock_fail_interval/" $pamFile
 
 		# pam_faillock.so present, but interval directive not yet
 		else
 
 			# append correct interval value to appropriate places
-			sed -i --follow-symlink "/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ interval=$var_accounts_passwords_pam_faillock_interval/" $pamFile
-			sed -i --follow-symlink "/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ interval=$var_accounts_passwords_pam_faillock_interval/" $pamFile
+			sed -i --follow-symlink "/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ interval=$var_accounts_passwords_pam_faillock_fail_interval/" $pamFile
+			sed -i --follow-symlink "/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ interval=$var_accounts_passwords_pam_faillock_fail_interval/" $pamFile
 		fi
 
 	# pam_faillock.so not present yet
 	else
 
 		# insert pam_faillock.so preauth & authfail rows with proper value of the 'interval' option
-		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent interval=$var_accounts_passwords_pam_faillock_interval" $pamFile
-		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/a auth        [default=die] pam_faillock.so authfail interval=$var_accounts_passwords_pam_faillock_interval" $pamFile
+		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent interval=$var_accounts_passwords_pam_faillock_fail_interval" $pamFile
+		sed -i --follow-symlink "/^auth.*sufficient.*pam_unix.so.*/a auth        [default=die] pam_faillock.so authfail interval=$var_accounts_passwords_pam_faillock_fail_interval" $pamFile
 		sed -i --follow-symlink "/^account.*required.*pam_unix.so/i account     required      pam_faillock.so" $pamFile
 	fi
 done
