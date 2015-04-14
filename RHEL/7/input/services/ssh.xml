@@ -29,7 +29,7 @@ However, if it can be disabled, do so.
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27054-6" />
 <oval id="service_sshd_disabled" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -50,7 +50,7 @@ remote access.
 If inbound SSH connections are not expected, disallowing access to the SSH port will 
 avoid possible exploitation of the port by an attacker.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27060-3" />
 <oval id="iptables_sshd_disabled" />
 </Rule>
 
@@ -81,9 +81,15 @@ SSH protocol version 1 suffers from design flaws that
 result in security vulnerabilities and
 should not be used.
 </rationale>
+<<<<<<< HEAD
+<ident cce="27072-8" />
+<oval id="sshd_allow_only_protocol2" />
+<ref nist="AC-3(10),IA-5(1)(c)" disa="776,774,1436" />
+=======
 <ident cce="27038-9" />
 <oval id="sshd_allow_only_protocol2" />
 <ref nist="AC-17(7),IA-5(1)(c)" disa="" />
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -100,9 +106,13 @@ Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
 Specifying which accounts are allowed SSH access into the system reduces the 
 possibility of unauthorized access to the system.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27556-0" />
 <!-- <oval id="sshd_limit_user_access" /> -->
+<<<<<<< HEAD
+<ref nist="AC-3" disa="" />
+=======
 <ref nist="AC-3" />
+>>>>>>> master
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
@@ -151,7 +161,7 @@ automatically logged out.
 <br /><br />
 To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
 follows:
-<pre>ClientAliveInterval <b>interval</b></pre>
+<pre>ClientAliveInterval <b><sub idref="sshd_idle_timeout_value" /></b></pre>
 The timeout <b>interval</b> is given in seconds. To have a timeout
 of 15 minutes, set <b>interval</b> to 900.
 <br /><br />
@@ -171,9 +181,15 @@ Causing idle users to be automatically logged out
 guards against compromises one system leading trivially
 to compromises on another.
 </rationale>
+<<<<<<< HEAD
+<ident cce="26919-1" />
+<oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
+<ref nist="AC-2(5),SA-8" disa="879,1133"/>
+=======
 <ident cce="26611-4" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
 <ref nist="AC-2(5),SA-8" disa=""/>
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -195,9 +211,15 @@ If properly configured, output should be:
 This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
+<<<<<<< HEAD
+<ident cce="26282-4" />
+<oval id="sshd_set_keepalive" />
+<ref nist="AC-2(5),SA-8" disa="879,1133"/>
+=======
 <ident cce="27066-0" />
 <oval id="sshd_set_keepalive" />
 <ref nist="AC-2(5),SA-8" disa=""/>
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -219,9 +241,15 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
+<<<<<<< HEAD
+<ident cce="27124-7" />
+<oval id="sshd_disable_rhosts" />
+<ref nist="AC-3" disa="765,766"/>
+=======
 <ident cce="27035-5" />
 <oval id="sshd_disable_rhosts" />
 <ref nist="AC-3" disa=""/>
+>>>>>>> master
 </Rule>
 
 
@@ -243,9 +271,15 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
+<<<<<<< HEAD
+<ident cce="27091-8" />
+<oval id="disable_host_auth" />
+<ref nist="AC-3" disa="765,766"/>
+=======
 <ident cce="26870-6" />
 <oval id="disable_host_auth" />
 <ref nist="AC-3" disa=""/>
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -266,9 +300,15 @@ Permitting direct root login reduces auditable information about who ran
 privileged commands on the system
 and also allows direct attack attempts on root's password.
 </rationale>
+<<<<<<< HEAD
+<ident cce="27100-7" />
+<oval id="sshd_disable_root_login" />
+<ref nist="AC-3,AC-6(2),IA-2(1)" disa="770" />
+=======
 <ident cce="26946-4" />
 <oval id="sshd_disable_root_login" />
 <ref nist="AC-3,AC-6(2),IA-2(1)" disa="" />
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -290,9 +330,15 @@ Configuring this setting for the SSH daemon provides additional assurance that
 remote login via SSH will require a password,
 even in the event of misconfiguration elsewhere.
 </rationale>
+<<<<<<< HEAD
+<ident cce="26887-0" />
+<oval id="sshd_disable_empty_passwords" />
+<ref nist="AC-3" disa="765,766"/>
+=======
 <ident cce="26864-9" />
 <oval id="sshd_disable_empty_passwords" />
 <ref nist="AC-3" disa=""/>
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -309,14 +355,20 @@ appropriate system-wide warning banner.
 <sshd-check-macro option="Banner" value="/etc/issue" default="no" />
 </ocil>
 <rationale>
-The warning message reinforces policy awareness during the logon process and
+The warning message reinforces policy awareness during the login process and
 facilitates possible legal action against attackers.  Alternatively, systems
 whose ownership should not be obvious should ensure usage of a banner that does
 not provide easy attribution.
 </rationale>
+<<<<<<< HEAD
+<ident cce="27112-2" />
+<oval id="sshd_enable_warning_banner" />
+<ref nist="AC-8(a)" disa="48" />
+=======
 <ident cce="26435-8" />
 <oval id="sshd_enable_warning_banner" />
 <ref nist="AC-8(a)" disa="" />
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -338,7 +390,11 @@ If properly configured, output should be:
 SSH environment options potentially allow users to bypass
 access restriction in some configurations.
 </rationale>
+<<<<<<< HEAD
+<ident cce="27201-3" />
+=======
 <ident cce="26974-6" />
+>>>>>>> master
 <oval id="sshd_do_not_permit_user_env" />
 <ref disa="" />
 <tested by="DS" on="20121024"/>
@@ -364,9 +420,15 @@ AES and 3DES ciphers.
 Approved algorithms should impart some level of confidence in their
 implementation. These are also required for compliance.
 </rationale>
+<<<<<<< HEAD
+<ident cce="26555-3" />
+<oval id="sshd_use_approved_ciphers" />
+<ref nist="AC-3,AC-17(2),SI-7,IA-5(1)(c),IA-7" disa="803,1144,1145,1146" />
+=======
 <ident cce="27051-2" />
 <oval id="sshd_use_approved_ciphers" />
 <ref nist="AC-3,AC-17(2),AU-10(5),IA-5(1)(c),IA-7" disa="" />
+>>>>>>> master
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -388,9 +450,110 @@ and replace it with:
 <rationale>
 Restricting SSH access to only trusted network segments reduces exposure of the SSH 
 server to attacks from unauthorized networks.</rationale>
-<!-- <ident cce="RHEL7-CCE-TBD" /> -->
+<!-- <ident cce="26555-3" /> -->
 <!-- <oval id="sshd_strengthen_firewall" /> -->
 </Group>
+
+<Group id="sshd_disable_tunneling_capabilities">
+  <title>Disable Tunneling Capabilities</title>
+  <description>
+      By default, OpenSSH enables network connections to be tunneled through an SSH session.
+      This features could be used to circumvent the security policy of an organisation by
+      bypassing the filtering devices and environment segregation. Such features could also
+      be used to exfiltrate sensitive/classified information from the production systems.
+      <p />
+      On top of this, graphical applications could be tunneled through an SSH session.
+  <p />
+  To disable X11 forwarding and SSH tunneling, the following lines need to be set in sshd_config:
+  <pre>
+  AllowTcpForwarding no
+  X11Forwarding no
+  </pre>
+  Additionally, although it is not enabled by default, beginning with version 4.3, 
+  OpenSSH also provides secure VPN tunneling capabilities at both layer 2 and layer 3 of the OSI model, 
+  by using the tun(4) pseudo-device to encapsulate network traffic within SSH packets.
+  <br />
+  In order to explicitely disable this, PermitTunnel should be set to no in sshd_config file.
+  <pre>
+      PermitTunnel no
+  </pre>
+</description>
+
+<Rule id="sshd_disable_tcpfwd">
+  <title>SSH disable TCP forwarding</title>
+  <description>
+      Unless specifically required, SSH tunneling must be explicitely disabled in order to prevent
+      malicious users to bypass firewall rules.
+      <code>AllowTcpForwarding no</code>
+      <br />
+      <pre>### /etc/ssh/sshd_config : AllowTcpForwarding
+           # If not needed, disable TCP forwarding
+           AllowTcpForwarding no
+      </pre>
+      <p />
+      In /etc/ssh/sshd_config, ensure the AllowTcpForwarding configuration value is set to "no".
+  </description>
+  <ocil clause="AllowTcpForwarding is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>AllowTcpForwarding</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep AllowTcpForwarding /etc/ssh/sshd_config</pre>
+  </ocil>
+  <rationale>
+      Disable tunneling of insecure protocols via SSH or abusing SSH access to pivot 
+      through the network.
+  </rationale>
+  <oval id="sshd_disable_tcpfwd" />
+</Rule>
+
+<Rule id="sshd_disable_x11fwd">
+  <title>SSH disable X11 forwarding</title>
+  <description>
+      SSH supports forwarding of X11 sessions. This behavior must be explicitely disabled
+      in order to reduce the attack surface of the system by preventing it from running graphical
+      application remotely.
+      <br />
+      <pre>### /etc/ssh/sshd_config : X11Forwarding
+           # If set, X11Forwarding must be set to no (which is the default)
+           X11Forwarding no
+      </pre>
+      <br />
+      <br />
+      In file /etc/ssh/sshd_config, ensure that X11Forwarding configuration value is set to "no".
+  </description>
+  <ocil clause="X11Forwarding is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>X11Forwarding</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep X11Forwarding /etc/ssh/sshd_config</pre>
+  </ocil>
+  <rationale>
+      Prevent remote users from running X applications in order to reduce attack surface.
+  </rationale>
+  <oval id="sshd_disable_x11fwd" />
+</Rule>
+
+<Rule id="sshd_disable_tunnel">
+  <title>Disable Tunneling</title>
+  <description>OpenSSH includes the ability to provide create VPN sessions which allows
+  a user to effectively establish a VPN connection with a firewall/gateway machine and then access resources
+  sitting behind it. This feature must be disabled explicitely.
+  <p />
+  Ensure that PermitTunnel configuration value is set to "no" in /etc/sshd/sshd_config file.
+  <pre>PermitTunnel no</pre>
+  </description>
+  <ocil clause="PermitTunnel is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>PermitTunnel</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep PermitTunnel /etc/ssh/sshd_config</pre>
+  </ocil>
+  <rationale>
+      Explicitely disable VPN capability of SSH to prevent malicious users to circumvent controls of data flow
+      throughout the whole organisation.
+  </rationale>
+  <oval id="sshd_disable_tunnel" />
+</Rule>
+
+</Group> <!-- Group id="sshd_disable_tunneling capabilities" -->
+
 
 </Group>
 </Group>

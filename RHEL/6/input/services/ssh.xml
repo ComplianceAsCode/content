@@ -392,6 +392,107 @@ server to attacks from unauthorized networks.</rationale>
 <!-- <oval id="sshd_strengthen_firewall" /> -->
 </Group>
 
+<Group id="sshd_disable_tunneling_capabilities">
+  <title>Disable Tunneling Capabilities</title>
+  <description>
+      By default, OpenSSH enables network connections to be tunneled through an SSH session.
+      This features could be used to circumvent the security policy of an organisation by
+      bypassing the filtering devices and environment segregation. Such features could also
+      be used to exfiltrate sensitive/classified information from the production systems.
+      <p />
+      On top of this, graphical applications could be tunneled through an SSH session.
+  <p />
+  To disable X11 forwarding and SSH tunneling, the following lines need to be set in sshd_config:
+  <pre>
+  AllowTcpForwarding no
+  X11Forwarding no
+  </pre>
+  Additionally, although it is not enabled by default, beginning with version 4.3, 
+  OpenSSH also provides secure VPN tunneling capabilities at both layer 2 and layer 3 of the OSI model, 
+  by using the tun(4) pseudo-device to encapsulate network traffic within SSH packets.
+  <br />
+  In order to explicitely disable this, PermitTunnel should be set to no in sshd_config file.
+  <pre>
+      PermitTunnel no
+  </pre>
+</description>
+
+<Rule id="sshd_disable_tcpfwd">
+  <title>SSH disable TCP forwarding</title>
+  <description>
+      Unless specifically required, SSH tunneling must be explicitely disabled in order to prevent
+      malicious users to bypass firewall rules.
+      <code>AllowTcpForwarding no</code>
+      <br />
+      <pre>### /etc/ssh/sshd_config : AllowTcpForwarding
+           # If not needed, disable TCP forwarding
+           AllowTcpForwarding no
+      </pre>
+      <p />
+      In /etc/ssh/sshd_config, ensure the AllowTcpForwarding configuration value is set to "no".
+  </description>
+  <ocil clause="AllowTcpForwarding is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>AllowTcpForwarding</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep AllowTcpForwarding /etc/ssh/sshd_config</pre>
+  </ocil>
+  <rationale>
+      Disable tunneling of insecure protocols via SSH or abusing SSH access to pivot 
+      through the network.
+  </rationale>
+  <oval id="sshd_disable_tcpfwd" />
+</Rule>
+
+<Rule id="sshd_disable_x11fwd">
+  <title>SSH disable X11 forwarding</title>
+  <description>
+      SSH supports forwarding of X11 sessions. This behavior must be explicitely disabled
+      in order to reduce the attack surface of the system by preventing it from running graphical
+      application remotely.
+      <br />
+      <pre>### /etc/ssh/sshd_config : X11Forwarding
+           # If set, X11Forwarding must be set to no (which is the default)
+           X11Forwarding no
+      </pre>
+      <br />
+      <br />
+      In file /etc/ssh/sshd_config, ensure that X11Forwarding configuration value is set to "no".
+  </description>
+  <ocil clause="X11Forwarding is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>X11Forwarding</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep X11Forwarding /etc/ssh/sshd_config</pre>
+  </ocil>
+  <rationale>
+      Prevent remote users from running X applications in order to reduce attack surface.
+  </rationale>
+  <oval id="sshd_disable_x11fwd" />
+</Rule>
+
+<Rule id="sshd_disable_tunnel">
+  <title>Disable Tunneling</title>
+  <description>OpenSSH includes the ability to provide create VPN sessions which allows
+  a user to effectively establish a VPN connection with a firewall/gateway machine and then access resources
+  sitting behind it. This feature must be disabled explicitely.
+  <p />
+  Ensure that PermitTunnel configuration value is set to "no" in /etc/sshd/sshd_config file.
+  <pre>PermitTunnel no</pre>
+  </description>
+  <ocil clause="PermitTunnel is not set to 'no'">
+      Check the /etc/ssh/sshd_config file to verify <tt>PermitTunnel</tt> is configured to <tt>no</tt>.
+
+      <pre> $ sudo grep PermitTunnel /etc/ssh/sshd_config</pre>
+  </ocil>
+  <rationale>
+      Explicitely disable VPN capability of SSH to prevent malicious users to circumvent controls of data flow
+      throughout the whole organisation.
+  </rationale>
+  <oval id="sshd_disable_tunnel" />
+</Rule>
+
+</Group> <!-- Group id="sshd_disable_tunneling capabilities" -->
+
+
 </Group>
 </Group>
 
