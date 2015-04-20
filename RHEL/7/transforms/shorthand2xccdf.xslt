@@ -322,17 +322,17 @@
 
   <xsl:template match="fileperms-desc-macro">
     To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chmod <xsl:value-of select="@perms"/><xsl:text> </xsl:text><xsl:value-of select="@file"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileowner-desc-macro">
     To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chown <xsl:value-of select="@owner"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chown <xsl:value-of select="@owner"/><xsl:text> </xsl:text><xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="filegroupowner-desc-macro">
     To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/><xsl:text> </xsl:text>xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">

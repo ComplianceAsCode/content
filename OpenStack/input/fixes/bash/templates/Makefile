@@ -2,6 +2,8 @@ templates: sysctls services kernel_modules
 
 SHARED_DIR=../../../../../shared/fixes/bash/templates
 
+OUTPUT:=$(shell mkdir -p output)
+
 sysctls:
 	$(SHARED_DIR)/create_sysctl_bash.py ../../../checks/templates/sysctl_values.csv
 
@@ -20,3 +22,4 @@ copy:
 
 clean:
 	rm -f output/*.sh
+	rm -rf output/

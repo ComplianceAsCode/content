@@ -568,7 +568,7 @@ situations.
 <ref nist="AC-7(b)" disa="47" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_fail_interval" severity="medium">
+<Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
 Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
@@ -595,7 +595,7 @@ Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
 <ident cce="26763-3" />
-<oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
+<oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
 <ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
 

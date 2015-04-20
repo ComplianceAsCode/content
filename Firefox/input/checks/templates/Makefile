@@ -2,6 +2,8 @@ templates: services packages kernel_modules permissions umasks sysctls
 
 SHARED_DIR=../../../../../shared/oval/templates
 
+OUTPUT:=$(shell mkdir -p output)
+
 services:
 	${SHARED_DIR}/create_services_enabled.py services_enabled.csv
 	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
@@ -35,3 +37,4 @@ find-untemplated: templates
 clean:
 	rm -f output/*.xml
 	rm -f output/*.sh
+	rm -rf output/
