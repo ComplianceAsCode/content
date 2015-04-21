@@ -1,1 +1,0 @@
-../../../shared/transforms/oscapsupportssvg.py

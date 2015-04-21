@@ -106,6 +106,28 @@ def append(element, newchild):
     else:
         element.append(newchild)
 
+def checks():
+    # concatenate all XML files in the checks directory, to create the
+    # document body
+    body = ""
+    for filename in os.listdir(sys.argv[2]):
+        if filename.endswith(".xml"):
+            with open(sys.argv[2] + "/" + filename, 'r') as xml_file:
+                body = body + xml_file.read()
+
+    if len(sys.argv) == 6:
+        for filename in os.listdir(sys.argv[3]):
+            if filename.endswith(".xml"):
+                with open(sys.argv[3] + "/" + filename, 'r') as xml_file:
+                    filecontent = xml_file.read()
+                    if '<platform>multi_platform_all</platform>' in filecontent:
+                        body = body + filecontent
+                    elif '<platform>' + sys.argv[4] + '</platform>' in filecontent:
+                        body = body + filecontent
+                    elif '<platform>' + sys.argv[5] + '</platform>' in filecontent:
+                        body = body + filecontent
+
+    return body
 
 def main():
     if len(sys.argv) < 2:
@@ -122,13 +144,7 @@ def main():
         print 'The directory specified does not contain the %s file!' % conf_file
         sys.exit(1)
 
-    # concatenate all XML files in the checks directory, to create the
-    # document body
-    body = ""
-    for filename in os.listdir(sys.argv[2]):
-        if filename.endswith(".xml"):
-            with open(sys.argv[2] + "/" + filename, 'r') as xml_file:
-                body = body + xml_file.read()
+    body = checks()
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
