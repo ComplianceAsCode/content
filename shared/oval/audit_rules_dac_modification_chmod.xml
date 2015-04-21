@@ -1,0 +1,99 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_dac_modification_chmod" version="1">
+    <metadata>
+      <title>Audit Discretionary Access Control Modification Events - chmod</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The changing of file permissions and attributes should be audited.</description>
+      <reference source="JL" ref_id="RHEL7_20150421" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA20_20150421" ref_url="test_attestation" />
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <criterion comment="audit augenrules" test_ref="test_ardm_chmod_augenrules" />
+        <criterion comment="audit augenrules 32-bit chmod" test_ref="test_32bit_ardm_chmod_augenrules" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of 32-bit version of chmod audit DAC rule -->
+          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_x86_64" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of chmod audit DAC rule -->
+          <criterion comment="audit augenrules 64-bit chmod" test_ref="test_64bit_ardm_chmod_augenrules" />
+        </criteria>
+      </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <criterion comment="audit auditctl" test_ref="test_ardm_chmod_auditctl" />
+        <criterion comment="audit auditctl 32-bit chmod" test_ref="test_32bit_ardm_chmod_auditctl" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of 32-bit version of chmod audit DAC rule -->
+          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_x86_64" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of chmod audit DAC rule -->
+          <criterion comment="audit auditctl 64-bit chmod" test_ref="test_64bit_ardm_chmod_auditctl" />
+        </criteria>
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_ardm_chmod_augenrules" version="1">
+    <ind:object object_ref="object_ardm_chmod_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ardm_chmod_augenrules" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit chmod" id="test_32bit_ardm_chmod_augenrules" version="1">
+    <ind:object object_ref="object_32bit_ardm_chmod_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_ardm_chmod_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*-S[\s]+chmod[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*-k[\s]+[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit chmod" id="test_64bit_ardm_chmod_augenrules" version="1">
+    <ind:object object_ref="object_64bit_ardm_chmod_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_ardm_chmod_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*-S[\s]+chmod[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*-k[\s]+[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test the auditctl case -->
+  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_ardm_chmod_auditctl" version="1">
+    <ind:object object_ref="object_ardm_chmod_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ardm_chmod_auditctl" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit chmod" id="test_32bit_ardm_chmod_auditctl" version="1">
+    <ind:object object_ref="object_32bit_ardm_chmod_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_ardm_chmod_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*-S[\s]+chmod[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*-k[\s]+[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit chmod" id="test_64bit_ardm_chmod_auditctl" version="1">
+    <ind:object object_ref="object_64bit_ardm_chmod_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_ardm_chmod_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*-S[\s]+chmod[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*-k[\s]+[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
