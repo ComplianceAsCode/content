@@ -1,0 +1,113 @@
+<def-group>
+  <definition class="compliance" id="dhcp_server_minimize_served_info" version="1">
+    <metadata>
+      <title>Minimize Served DHCP Information</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Limits the amount of information that
+      that the DHCP server provides to clients.</description>
+      <reference source="galford" ref_id="20150317" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="DHCP is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="dhcp package is not installed"
+      definition_ref="package_dhcp_removed" />
+      <criteria comment="Minimize DHCP served info"
+      operator="AND">
+        <criterion comment="Check domain-name in /etc/dhcp/dhcpd.conf"
+        test_ref="test_dhcp_domain-named_info" />
+        <criterion comment="Check domain-name-servers in /etc/dhcp/dhcpd.conf"
+        test_ref="test_dhcp_domain-name-servers_info" />
+        <criterion comment="Check nis-domain in /etc/dhcp/dhcpd.conf"
+        test_ref="test_dhcp_nis-domain_info" />
+        <criterion comment="Check nis-servers in /etc/dhcp/dhcpd.conf"
+        test_ref="test_dhcp_nis-servers_info" />
+        <criterion comment="Check ntp-servers in /etc/dhcp/dhcpd.conf"
+        test_ref="test_dhcp_ntp-servers_info" />
+        <criterion comment="Check routers in /etc/dhcp/dhcpd.conf"
+        test_ref="test_dhcp_routers_info" />
+        <criterion comment="Check time-offset in /etc/dhcp/dhcpd.conf"
+        test_ref="test_dhcp_time-offset_info" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests that domain-name is not set"
+  id="test_dhcp_domain-named_info" version="1">
+    <ind:object object_ref="obj_dhcp_domain-named_info" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_domain-named_info"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*option[\s]+domain\-name[\s]+.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests that domain-name-servers is not set"
+  id="test_dhcp_domain-name-servers_info" version="1">
+    <ind:object object_ref="obj_dhcp_domain-name-servers_info" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_domain-name-servers_info"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*option[\s]+domain\-name\-servers[\s]+.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests that nis-domain is not set"
+  id="test_dhcp_nis-domain_info" version="1">
+    <ind:object object_ref="obj_dhcp_nis-domain_info" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_nis-domain_info"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*option[\s]+nis\-domain[\s]+.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests that nis-servers is not set"
+  id="test_dhcp_nis-servers_info" version="1">
+    <ind:object object_ref="obj_dhcp_nis-servers_info" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_nis-servers_info"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*option[\s]+nis\-servers[\s]+.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests that ntp-servers is not set"
+  id="test_dhcp_ntp-servers_info" version="1">
+    <ind:object object_ref="obj_dhcp_ntp-servers_info" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_ntp-servers_info"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*option[\s]+ntp\-servers[\s]+.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests that routers is not set"
+  id="test_dhcp_routers_info" version="1">
+  <ind:object object_ref="obj_dhcp_routers_info" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_routers_info"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*option[\s]+routers[\s]+.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests that time-offset is not set"
+  id="test_dhcp_time-offset_info" version="1">
+    <ind:object object_ref="obj_dhcp_time-offset_info" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_time-offset_info"
+  version="1">
+    <ind:filepath>/etc/dhcp/dhcpd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*option[\s]+time\-offset[\s]+.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
