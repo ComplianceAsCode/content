@@ -49,6 +49,20 @@ def main():
                 # variable substitution
                 substitute_vars(fix)
 
+    if len(sys.argv) == 4:
+        shared_fixdir = sys.argv[3]
+        for filename in os.listdir(shared_fixdir):
+            if filename.endswith(".sh"):
+                # create and populate new fix element based on shell file
+                fixname = os.path.splitext(filename)[0]
+                fix = etree.SubElement(fixgroup, "fix", rule=fixname)
+                with open(shared_fixdir + "/" + filename, 'r') as fix_file:
+                    # assignment automatically escapes shell characters for XML
+                    fix.text = fix_file.read()
+                    # replace instance of bash function "populate" with XCCDF
+                    # variable substitution
+                    substitute_vars(fix)
+
     tree = etree.ElementTree(fixcontent)
     tree.write(output, pretty_print=True)
 
