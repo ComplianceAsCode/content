@@ -753,11 +753,18 @@ abuse among both authorized and unauthorized users.</rationale>
 
 <Rule id="audit_rules_dac_modification_chmod">
 <title>Record Events that Modify the System's Discretionary Access Controls - chmod</title>
-<description>At a minimum the audit system should collect file
-permission changes for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<description>At a minimum the audit system should collect file permission
+changes for all users and root. If the <tt>auditd</tt> daemon is configured to
+use the <tt>auditctl</tt> utility to read audit rules during daemon startup
+(the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
-If the system is 64 bit then also add the following:
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <rationale>The changing of file permissions could indicate that a user is attempting to
@@ -772,17 +779,24 @@ number of ways while still achieving the desired effect.  Here the system calls
 have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
-<!-- <oval id="audit_rules_dac_modification_chmod" /> -->
+<oval id="audit_rules_dac_modification_chmod" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_chown">
 <title>Record Events that Modify the System's Discretionary Access Controls - chown</title>
-<description>At a minimum the audit system should collect file
-permission changes for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<description>At a minimum the audit system should collect file permission
+changes for all users and root. If the <tt>auditd</tt> daemon is configured to
+use the <tt>auditctl</tt> utility to read audit rules during daemon startup
+(the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
-If the system is 64 bit then also add the following:
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
@@ -797,17 +811,24 @@ number of ways while still achieving the desired effect.  Here the system calls
 have been placed independent of other system calls.  Grouping these system 
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
-<!-- <oval id="audit_rules_dac_modification_chown" /> -->
+<oval id="audit_rules_dac_modification_chown" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmod">
 <title>Record Events that Modify the System's Discretionary Access Controls - fchmod</title>
-<description>At a minimum the audit system should collect file
-permission changes for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<description>At a minimum the audit system should collect file permission
+changes for all users and root. If the <tt>auditd</tt> daemon is configured to
+use the <tt>auditctl</tt> utility to read audit rules during daemon startup
+(the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
-If the system is 64 bit then also add the following:
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
@@ -822,17 +843,24 @@ number of ways while still achieving the desired effect.  Here the system calls
 have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
-<!-- <oval id="audit_rules_dac_modification_fchmod" /> -->
+<oval id="audit_rules_dac_modification_fchmod" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmodat">
 <title>Record Events that Modify the System's Discretionary Access Controls - fchmodat</title>
-<description>At a minimum the audit system should collect file
-permission changes for all users and root. Add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<description>At a minimum the audit system should collect file permission
+changes for all users and root. If the <tt>auditd</tt> daemon is configured to
+use the <tt>auditctl</tt> utility to read audit rules during daemon startup
+(the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
-If the system is 64 bit then also add the following:
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
@@ -847,7 +875,7 @@ number of ways while still achieving the desired effect.  Here the system calls
 have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
-<!-- <oval id="audit_rules_dac_modification_fchmodat" /> -->
+<oval id="audit_rules_dac_modification_fchmodat" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
 </Rule>
 
@@ -1206,15 +1234,23 @@ these events could serve as evidence of potential system compromise.</rationale>
 
 <Rule id="audit_rules_privileged_commands">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
-<description>At a minimum the audit system should collect the
-execution of privileged commands for all users and root.
-To find the relevant setuid / setgid programs, run the following command
-for each local partition <i>PART</i>:
+<description>At a minimum the audit system should collect the execution of
+privileged commands for all users and root. To find the relevant setuid /
+setgid programs, run the following command for each local partition
+<i>PART</i>:
 <pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null</pre>
-Then, for each setuid / setgid program on the system, add a line of the
-following form to <tt>/etc/audit/audit.rules</tt>, where
-<i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
-in the list:
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup (the default), add a line of
+the following form to <tt>/etc/audit/audit.rules</tt> for each setuid / setgid
+program on the system, replacing the <i>SETUID_PROG_PATH</i> part with the full
+path of that setuid / setgid program in the list:
+<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add a line of the following
+form to a file with suffix <tt>.rules</tt> in the directory
+<tt>/etc/audit/rules.d</tt> for each setuid / setgid program on the system,
+replacing the <i>SETUID_PROG_PATH</i> part with the full path of that setuid /
+setgid program in the list:
 <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged</pre>
 </description>
 <ocil clause="it is not the case">
@@ -1233,7 +1269,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<!-- <oval id="audit_rules_privileged_commands" /> -->
+<oval id="audit_rules_privileged_commands" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),AU-12(a),AU-12(c),IR-5" disa="40" />
 </Rule>
 
