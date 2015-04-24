@@ -1,0 +1,150 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_networkconfig_modification" version="1">
+    <metadata>
+      <title>Record Events that Modify the System's Network Environment</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The network environment should not be modified by anything other than
+      administrator action. Any change to network parameters should be audited.</description>
+      <reference source="JL" ref_id="RHEL7_20150424" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA20_20150424" ref_url="test_attestation" />
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <criterion comment="audit augenrules" test_ref="test_arnm_augenrules" />
+        <criterion comment="audit network syscalls augenrules" test_ref="test_arnm_syscall_augenrules" />
+        <criterion comment="audit /etc/issue augenrules" test_ref="test_arnm_etc_issue_augenrules" />
+        <criterion comment="audit /etc/issue.net augenrules" test_ref="test_arnm_etc_issue_net_augenrules" />
+        <criterion comment="audit /etc/hosts augenrules" test_ref="test_arnm_etc_hosts_augenrules" />
+        <criterion comment="audit /etc/sysconfig/network augenrules" test_ref="test_arnm_etc_sysconfig_network_augenrules" />
+      </criteria>
+
+      <!-- Test the auditctl case -->
+      <criteria operator="AND">
+        <criterion comment="audit auditctl" test_ref="test_arnm_auditctl" />
+        <criterion comment="audit network syscalls auditctl" test_ref="test_arnm_syscall_auditctl" />
+        <criterion comment="audit /etc/issue auditctl" test_ref="test_arnm_etc_issue_auditctl" />
+        <criterion comment="audit /etc/issue.net auditctl" test_ref="test_arnm_etc_issue_net_auditctl" />
+        <criterion comment="audit /etc/hosts auditctl" test_ref="test_arnm_etc_hosts_auditctl" />
+        <criterion comment="audit /etc/sysconfig/network auditctl" test_ref="test_arnm_etc_sysconfig_network_auditctl" />
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_arnm_augenrules" version="1">
+    <ind:object object_ref="object_arnm_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_augenrules" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit network syscalls augenrules" id="test_arnm_syscall_augenrules" version="1">
+    <ind:object object_ref="object_arnm_syscall_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_syscall_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+(\-F\s+arch=(b64|b32)\s+)?\-S\s+sethostname\s+\-S\s+setdomainname\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_arnm_etc_issue_augenrules" version="1">
+    <ind:object object_ref="object_arnm_etc_issue_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_issue_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/issue[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue.net augenrules" id="test_arnm_etc_issue_net_augenrules" version="1">
+    <ind:object object_ref="object_arnm_etc_issue_net_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_issue_net_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/issue\.net[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/hosts augenrules" id="test_arnm_etc_hosts_augenrules" version="1">
+    <ind:object object_ref="object_arnm_etc_hosts_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_hosts_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/hosts[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/sysconfig/network augenrules" id="test_arnm_etc_sysconfig_network_augenrules" version="1">
+    <ind:object object_ref="object_arnm_etc_sysconfig_network_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_sysconfig_network_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/sysconfig/network[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test the auditctl case -->
+  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_arnm_auditctl" version="1">
+    <ind:object object_ref="object_arnm_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_auditctl" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit network syscalls auditctl" id="test_arnm_syscall_auditctl" version="1">
+    <ind:object object_ref="object_arnm_syscall_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_syscall_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+(\-F\s+arch=(b64|b32)\s+)?\-S\s+sethostname\s+\-S\s+setdomainname\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue auditctl" id="test_arnm_etc_issue_auditctl" version="1">
+    <ind:object object_ref="object_arnm_etc_issue_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_issue_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/issue[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue.net auditctl" id="test_arnm_etc_issue_net_auditctl" version="1">
+    <ind:object object_ref="object_arnm_etc_issue_net_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_issue_net_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/issue\.net[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/hosts auditctl" id="test_arnm_etc_hosts_auditctl" version="1">
+    <ind:object object_ref="object_arnm_etc_hosts_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_hosts_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/hosts[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/sysconfig/network auditctl" id="test_arnm_etc_sysconfig_network_auditctl" version="1">
+    <ind:object object_ref="object_arnm_etc_sysconfig_network_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arnm_etc_sysconfig_network_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/sysconfig/network[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
