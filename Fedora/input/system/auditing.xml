@@ -652,8 +652,20 @@ legitimacy.</rationale>
 
 <Rule id="audit_rules_networkconfig_modification">
 <title>Record Events that Modify the System's Network Environment</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt>, setting
-ARCH to either b32 or b64 as appropriate for your system:
+<description>If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the
+default), add the following lines to <tt>/etc/audit/audit.rules</tt> file,
+setting ARCH to either b32 or b64 as appropriate for your system:
+<pre># audit_rules_networkconfig_modification
+-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
+-w /etc/issue -p wa -k audit_rules_networkconfig_modification
+-w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
+-w /etc/hosts -p wa -k audit_rules_networkconfig_modification
+-w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following lines to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>,
+setting ARCH to either b32 or b64 as appropriate for your system:
 <pre># audit_rules_networkconfig_modification
 -a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
 -w /etc/issue -p wa -k audit_rules_networkconfig_modification
@@ -671,7 +683,7 @@ each file specified (and <tt>perm=wa</tt> should be indicated for each).
 <rationale>The network environment should not be modified by anything other
 than administrator action. Any change to network parameters should be
 audited.</rationale>
-<!-- <oval id="audit_rules_networkconfig_modification" /> -->
+<oval id="audit_rules_networkconfig_modification" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
@@ -709,7 +721,13 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 
 <Rule id="audit_rules_mac_modification">
 <title>Record Events that Modify the System's Mandatory Access Controls</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt>:
+<description>If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the
+default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
+<pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
 </description>
 <ocil clause="the system is not configured to audit attempts to change the MAC policy">
@@ -723,7 +741,7 @@ configuration, a line should be returned (including
 <rationale>The system's mandatory access policy (SELinux) should not be
 arbitrarily changed by anything other than administrator action. All changes to
 MAC policy should be audited.</rationale>
-<!-- <oval id="audit_rules_mac_modification" /> -->
+<oval id="audit_rules_mac_modification" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
