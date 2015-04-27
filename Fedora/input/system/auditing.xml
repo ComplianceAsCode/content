@@ -574,17 +574,27 @@ to the system time should be audited.</rationale>
 
 <Rule id="audit_rules_time_clock_settime">
 <title>Record Attempts to Alter Time Through clock_settime</title>
-<description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<description>If the <tt>auditd</tt> daemon is configured
+to use the <tt>auditctl</tt> utility to read audit rules during daemon startup
+(the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
-On a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+If the system is 64 bit then also add the following line:
 <pre># audit_time_rules
 -a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
-The -k option allows for the specification of a key in string form that can 
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre># audit_time_rules
+-a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
+If the system is 64 bit then also add the following line:
+<pre># audit_time_rules
+-a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
+The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport.
-Multiple system calls can be defined on the same line to save space if 
+Multiple system calls can be defined on the same line to save space if
 desired, but is not required. See an example of multiple combined syscalls:
-<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime
 -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
