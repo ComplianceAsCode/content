@@ -601,9 +601,15 @@ to the system time should be audited.</rationale>
 
 <Rule id="audit_rules_time_watch_localtime">
 <title>Record Attempts to Alter the localtime File</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt>:
+<description>If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the default),
+add the following line to <tt>/etc/audit/audit.rules</tt> file:
 <pre>-w /etc/localtime -p wa -k audit_time_rules</pre>
-The -k option allows for the specification of a key in string form that can 
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-w /etc/localtime -p wa -k audit_time_rules</pre>
+The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport and
 should always be used.
 </description>
@@ -626,8 +632,20 @@ to the system time should be audited.</rationale>
 
 <Rule id="audit_rules_usergroup_modification">
 <title>Record Events that Modify User/Group Information</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt>, in order
-to capture events that modify account changes:
+<description>If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the
+default), add the following lines to <tt>/etc/audit/audit.rules</tt> file,
+in order to capture events that modify account changes:
+<pre># audit_rules_usergroup_modification
+-w /etc/group -p wa -k audit_rules_usergroup_modification
+-w /etc/passwd -p wa -k audit_rules_usergroup_modification
+-w /etc/gshadow -p wa -k audit_rules_usergroup_modification
+-w /etc/shadow -p wa -k audit_rules_usergroup_modification
+-w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following lines to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>,
+in order to capture events that modify account changes:
 <pre># audit_rules_usergroup_modification
 -w /etc/group -p wa -k audit_rules_usergroup_modification
 -w /etc/passwd -p wa -k audit_rules_usergroup_modification
@@ -643,9 +661,8 @@ If the system is configured to watch for account changes, lines should be return
 each file specified (and with <tt>perm=wa</tt> for each).
 </ocil>
 <rationale>In addition to auditing new user and group accounts, these watches
-will alert the system administrator(s) to any modifications. Any
-unexpected users, groups, or modifications should be investigated for
-legitimacy.</rationale>
+will alert the system administrator(s) to any modifications. Any unexpected
+users, groups, or modifications should be investigated for legitimacy.</rationale>
 <oval id="audit_rules_usergroup_modification" />
 <ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,1403,1404,1405,1684,1683,1685,1686"/>
 </Rule>
