@@ -47,6 +47,10 @@ package to verify that the system conforms to provided guidelines.
 
 %install
 mkdir -p %{buildroot}%{_mandir}/en/man8/
+
+# Add in manpage
+cp -a docs/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
+
 %if 0%{?rhel}
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 mkdir -p %{buildroot}%{_datadir}/%{name}
@@ -62,9 +66,6 @@ cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in RHEL-6 functions library for remediations
 cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name}/functions
-
-# Add in manpage
-cp -a RHEL/6/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 %endif
 %if 0%{?fedora}
 #mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/{fedora,java,rhel{5,6,7},firefox,webmin}
@@ -73,8 +74,6 @@ mkdir -p %{buildroot}%{_mandir}/en/man8/
 
 # Add in core Fedora content (SCAP XCCDF and OVAL)
 cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/fedora
-# Add in Fedora manpage
-cp -a Fedora/input/auxiliary/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
 # Add in datastream form of RHEL-5 benchmark
 #cp -a RHEL/6/dist/content/ssg-rhel5-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel5
@@ -97,13 +96,12 @@ cp -a RHEL/7/dist/content/ssg-rhel7-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/
 %files
 %{_datadir}/xml/scap
 #%{_sysconfdir}/sysconfig/oscap-scan-*
+%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 %if 0%{?rhel}
 %{_datadir}/%{name}/functions
-%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 %doc Contributors.md README.md BUILD.md RHEL/6/LICENSE RHEL/6/output/rhel6-guide.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER JBossEAP5/docs/JBossEAP5_Guide.html
 %endif
 %if 0%{?fedora}
-%lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
 %doc Contributors.md README.md BUILD.md Fedora/LICENSE Fedora/output/ssg-fedora*guide.html
 %endif
 
