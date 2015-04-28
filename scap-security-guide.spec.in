@@ -13,6 +13,9 @@ Source0:	http://repos.ssgproject.org/sources/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 
 BuildRequires:	libxslt, expat, python, openscap-utils >= 1.0.3, python-lxml
+%if 0%{?fedora}
+BuildRequires:	openscap-utils >= 1.2.2
+%endif
 Requires:	xml-common, openscap-utils >= 1.0.8
 
 %description
