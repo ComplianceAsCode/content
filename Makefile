@@ -97,6 +97,7 @@ tarball: rpmroot
 	mkdir -p $(RPMBUILD)/$(PKG)
 	cp {BUILD.md,Contributors.md,LICENSE,README.md} $(RPMBUILD)/$(PKG)
 	cp -r config/ $(RPMBUILD)/$(PKG)
+	cp -r docs/ $(RPMBUILD)/$(PKG)
 	cp -r shared/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/5/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/6/ $(RPMBUILD)/$(PKG)
