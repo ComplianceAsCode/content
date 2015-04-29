@@ -16,6 +16,7 @@
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
 <refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
 <refine-value idref="login_banner_text" selector="dod_default" />
+<refine-value idref="var_auditd_disk_full_action" selector="halt" />
 
 <!-- BEGIN STIG RULE SELECTION -->
 
@@ -50,6 +51,7 @@
 <select idref="security_patches_up_to_date" selected="true" />
 
 <!-- System Audit Requirements -->
+<select idref="auditd_disk_full_action" selected="true" />
 <select idref="audit_rules_file_deletion_events" selected="true" />
 <select idref="audit_rules_kernel_module_loading" selected="true" />
 

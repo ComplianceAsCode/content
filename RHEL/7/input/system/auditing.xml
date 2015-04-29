@@ -248,6 +248,34 @@ normally.</i>
 <value selector="admin">admin</value>
 </Value>
 
+<Value id="var_auditd_disk_full_action" type="string">
+<title>Configure auditd's disk_full_action</title>
+<description>Action for auditd to take when the system has detected
+that the partition for which audit log files are written has become full.</description>
+<value selector="">halt</value>
+<value selector="ignore">ignore</value>
+<value selector="syslog">syslog</value>
+<value selector="email">rotate</value>
+<value selector="exec">exec</value>
+<value selector="suspend">suspend</value>
+<value selector="single">single</value>
+<value selector="halt">halt</value>
+</Value>
+
+<Value id="var_auditd_disk_error_action" type="string">
+<title>Configure auditd's disk_error_action</title>
+<description>This parameter tells the system what action to take whenever
+there is an error detected when writing audit events to disk or
+rotating logs.</description>
+<value selector="">halt</value>
+<value selector="ignore">ignore</value>
+<value selector="syslog">syslog</value>
+<value selector="exec">exec</value>
+<value selector="suspend">suspend</value>
+<value selector="single">single</value>
+<value selector="halt">halt</value>
+</Value>
+
 <Rule id="configure_auditd_num_logs" severity="medium">
 <title>Configure auditd Number of Logs Retained</title>
 <description>Determine how many log files
@@ -457,6 +485,124 @@ include an audit event multiplexor plugin (audispd) to pass audit records
 to the local syslog server</rationale>
 <ref nist="AU-1(b),AU-3(2),IR-5" disa="136" />
 <ident cce="RHEL7-CCE-TBD" />
+</Rule>
+
+<Rule id="auditd_disk_full_action" severity="high">
+<title>Configure auditd disk_full_action on No Disk Space</title>
+<description>The operating system must shut down by default upon audit
+failure (unless availability is an overriding concern). In situations
+where the audit failure is caused because the partition to which log 
+files are written has become full, the <tt>disk_full_action</tt> option 
+in <tt>/etc/audit/auditd.conf</tt> must be configured. This parameter 
+tells the system what action to take when the system has detected 
+that the partition to which log files are written has become 
+full. Valid values are:
+
+<ul>
+<li><tt>ignore</tt>, the audit daemon does nothing.</li>
+<li><tt>syslog</tt>, the audit daemon will issue a warning to syslog.</li>
+<li><tt>rotate</tt>, the audit daemon will rotate logs, losing the oldest to free up space</li>
+<li><tt>email</tt>, the audit daemon will send a warning to the email account specified
+in <tt>action_mail_acct</tt> as well as sending the message to syslog.</li>
+<li><tt>exec</tt> /path-to-script, will execute the script. You cannot pass parameters to the script.
+The script is also responsible for telling the auditd daemon to resume logging once its completed
+its action. This can be done by adding <tt>service auditd resume</tt> to the script.</li>
+<li><tt>suspend</tt>, will cause the audit daemon to stop writing records to the disk.
+The daemon will still be alive.</li>
+<li><tt>single</tt>, will cause the audit daemon to put the computer system in single user mode.</li>
+<li><tt>halt</tt>, will cause the audit daemon to shutdown the computer system.</li>
+</ul>
+
+To configure <tt>disk_full_action</tt>, add or correct the following line
+in <tt>/etc/audit/auditd.conf</tt>:
+<pre>disk_full_action = <sub idref="var_auditd_disk_full_action" /></pre>
+</description>
+<ocil clause="disk_full_action is not configured appropriately">
+Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+determine if the system is configured appropriately:
+<pre>disk_full_action = <sub idref="var_auditd_disk_full_action" /></pre>
+</ocil>
+<rationale>It is critical that when the operating system is at risk of failing
+to process audit logs as required, it take action to mitigate the failure. Audit
+processing failures include: software/hardware errors; failures in the audit capturing
+mechanisms; and audit storage capacity being reached or exceeded. Responses
+to audit failure depend upon the nature of the failure mode.
+
+When availability is an overriding concern, other approved actions in response
+to an audit failure are as follows:
+
+(i) If the failure was caused by the lack of audit record storage capacity, the
+operating system must continue generating audit records if possible (automatically
+restarting the audit service if necessary), overwriting the oldest audit records
+in a first-in-first-out manner.
+
+(ii) If audit records are sent to a centralized collection server and communication
+with this server is lost or if the server fails, the operating system must queue audit 
+records locally until communication is restored or until the audit records are
+retrieved manually. Upon restoration of the connection to the centralized collection
+server, action should be taken to synchronize the local audit data with the collection
+server.</rationale>
+<ident cce="27218-7" />
+<oval id="auditd_disk_full_action" value="var_auditd_disk_full_action" />
+<ref nist="AU-5(b)" disa="140" ossrg="47" />
+</Rule>
+
+
+
+
+
+<Rule id="auditd_disk_error_action" severity="high">
+<title>Configure auditd disk_error_action on Disk Error</title>
+<description>The operating system must shut down by default upon audit
+failure (unless availability is an overriding concern). In situations
+when there is an error detected when writing audit events to disk or
+rotating logs, the <tt>disk_error_action</tt> option
+in <tt>/etc/audit/auditd.conf</tt> must be configured. Valid values are:
+
+<ul>
+<li><tt>ignore</tt>, the audit daemon does nothing.</li>
+<li><tt>syslog</tt>, the audit daemon will issue a warning to syslog.</li>
+<li><tt>exec</tt> /path-to-script, will execute the script. You cannot pass parameters to the script.
+The script is also responsible for telling the auditd daemon to resume logging once its completed
+its action. This can be done by adding <tt>service auditd resume</tt> to the script.</li>
+<li><tt>suspend</tt>, will cause the audit daemon to stop writing records to the disk.
+The daemon will still be alive.</li>
+<li><tt>single</tt>, will cause the audit daemon to put the computer system in single user mode.</li>
+<li><tt>halt</tt>, will cause the audit daemon to shutdown the computer system.</li>
+</ul>
+
+To configure <tt>disk_error_action</tt>, add or correct the following line
+in <tt>/etc/audit/auditd.conf</tt>:
+<pre>disk_error_action = <sub idref="var_auditd_disk_error_action" /></pre>
+</description>
+<ocil clause="disk_error_action is not configured appropriately">
+Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+determine if the system is configured appropriately:
+<pre>disk_error_action = <sub idref="var_auditd_disk_error_action" /></pre>
+</ocil>
+<rationale>It is critical that when the operating system is at risk of failing
+to process audit logs as required, it take action to mitigate the failure. Audit
+processing failures include: software/hardware errors; failures in the audit capturing
+mechanisms; and audit storage capacity being reached or exceeded. Responses
+to audit failure depend upon the nature of the failure mode.
+
+When availability is an overriding concern, other approved actions in response
+to an audit failure are as follows:
+
+(i) If the failure was caused by the lack of audit record storage capacity, the
+operating system must continue generating audit records if possible (automatically
+restarting the audit service if necessary), overwriting the oldest audit records
+in a first-in-first-out manner.
+
+(ii) If audit records are sent to a centralized collection server and communication
+with this server is lost or if the server fails, the operating system must queue audit
+records locally until communication is restored or until the audit records are
+retrieved manually. Upon restoration of the connection to the centralized collection
+server, action should be taken to synchronize the local audit data with the collection
+server.</rationale>
+<ident cce="27311-0" />
+<oval id="auditd_disk_error_action" value="var_auditd_disk_error_action" />
+<ref nist="AU-5(b)" disa="140" ossrg="47" />
 </Rule>
 
 </Group>
