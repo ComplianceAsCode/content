@@ -32,8 +32,8 @@ Government networks often have substantial auditing
 requirements and <tt>auditd</tt> can be configured to meet these
 requirements.
 Examining some example audit records demonstrates how the Linux audit system
-satisfies common requirements.  
-The following example from Fedora Documentation available at 
+satisfies common requirements.
+The following example from Fedora Documentation available at
 <tt>http://docs.fedoraproject.org/en-US/Fedora/13/html/Security-Enhanced_Linux/sect-Security-Enhanced_Linux-Fixing_Problems-Raw_Audit_Messages.html</tt>
 shows the substantial amount of information captured in a
 two typical "raw" audit messages, followed by a breakdown of the most important
@@ -42,10 +42,10 @@ denial (and the associated system call) that occurred when the Apache HTTP
 Server attempted to access the <tt>/var/www/html/file1</tt> file (labeled with
 the <tt>samba_share_t</tt> type):
 <pre>type=AVC msg=audit(1226874073.147:96): avc:  denied  { getattr } for pid=2465 comm="httpd"
-path="/var/www/html/file1" dev=dm-0 ino=284133 scontext=unconfined_u:system_r:httpd_t:s0 
+path="/var/www/html/file1" dev=dm-0 ino=284133 scontext=unconfined_u:system_r:httpd_t:s0
 tcontext=unconfined_u:object_r:samba_share_t:s0 tclass=file
 
-type=SYSCALL msg=audit(1226874073.147:96): arch=40000003 syscall=196 success=no exit=-13 
+type=SYSCALL msg=audit(1226874073.147:96): arch=40000003 syscall=196 success=no exit=-13
 a0=b98df198 a1=bfec85dc a2=54dff4 a3=2008171 items=0 ppid=2463 pid=2465 auid=502 uid=48
 gid=48 euid=48 suid=48 fsuid=48 egid=48 sgid=48 fsgid=48 tty=(none) ses=6 comm="httpd"
 exe="/usr/sbin/httpd" subj=unconfined_u:system_r:httpd_t:s0 key=(null)
@@ -235,7 +235,7 @@ normally.</i>
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following
 line, substituting <i>NUMLOGS</i> with the correct value:
 <pre>num_logs = <i>NUMLOGS</i></pre>
-Set the value to 5 for general-purpose systems. 
+Set the value to 5 for general-purpose systems.
 Note that values less than 2 result in no log rotation.</description>
 <ocil clause="the system log file retention has not been properly configured">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
@@ -294,7 +294,7 @@ occurs.  This is the default.  The setting is case-insensitive.
 <ocil clause="the system has not been properly configured to rotate audit logs">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
 determine if the system is configured to rotate logs when they reach their
-maximum size: 
+maximum size:
 <tt>$ sudo grep max_log_file_action /etc/audit/auditd.conf</tt>
 <pre>max_log_file_action <tt>rotate</tt></pre>
 </ocil>
@@ -324,7 +324,7 @@ installation time. The partition should be larger than the maximum space which
 <Rule id="auditd_data_retention_space_left_action" severity="medium">
 <title>Configure auditd space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
-when disk space <i>starts</i> to run low. 
+when disk space <i>starts</i> to run low.
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Modify the following line,
 substituting <i>ACTION</i> appropriately:
 <pre>space_left_action = <i>ACTION</i></pre>
@@ -361,7 +361,7 @@ allow them to take corrective action prior to any disruption.</rationale>
 <Rule id="auditd_data_retention_admin_space_left_action" severity="medium">
 <title>Configure auditd admin_space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
-when disk space is running low but prior to running out of space completely. 
+when disk space is running low but prior to running out of space completely.
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
 substituting <i>ACTION</i> appropriately:
 <pre>admin_space_left_action = <i>ACTION</i></pre>
@@ -409,8 +409,8 @@ administrators of the system, who can take appropriate action.</rationale>
 
 <Rule id="configure_auditd_audispd" severity="medium">
 <title>Configure auditd to use audispd plugin</title>
-<description>To configure the <tt>auditd</tt> service to use the 
-<tt>audispd</tt> plugin, set the <tt>active</tt> line in 
+<description>To configure the <tt>auditd</tt> service to use the
+<tt>audispd</tt> plugin, set the <tt>active</tt> line in
 <tt>/etc/audisp/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
 Restart the <tt>auditd</tt>service:
 <pre>$ sudo service auditd restart</pre>
@@ -420,9 +420,9 @@ To verify the audispd plugin is active, run the following command:
 <pre>$ sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>
 If the plugin is active, the output will show <tt>yes</tt>.
 </ocil>
-<rationale>The auditd service does not include the ability to send audit 
-records to a centralized server for management directly.  It does, however, 
-include an audit event multiplexor plugin (audispd) to pass audit records 
+<rationale>The auditd service does not include the ability to send audit
+records to a centralized server for management directly.  It does, however,
+include an audit event multiplexor plugin (audispd) to pass audit records
 to the local syslog server</rationale>
 <ref nist="AU-1(b),AU-3(2),IR-5" disa="136" />
 </Rule>
@@ -470,32 +470,41 @@ editing as needed, the new rules can be activated as follows:
 
 <Group id="audit_time_rules">
 <title>Records Events that Modify Date and Time Information</title>
-<description>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activities in log files, as well as to confuse network services that 
-are highly dependent upon an accurate system time. All changes to the system 
+<description>Arbitrary changes to the system time can be used to obfuscate
+nefarious activities in log files, as well as to confuse network services that
+are highly dependent upon an accurate system time. All changes to the system
 time should be audited.</description>
 
 <Rule id="audit_rules_time_adjtimex">
 <title>Record attempts to alter time through adjtimex</title>
-<description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<description>If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the
+default), add the following lines to <tt>/etc/audit/audit.rules</tt> file:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
-On a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+If the system is 64 bit then also add the following lines:
 <pre># audit_time_rules
 -a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
-The -k option allows for the specification of a key in string form that can 
-be used for better reporting capability through ausearch and aureport.
-Multiple system calls can be defined on the same line to save space if 
-desired, but is not required. See an example of multiple combined syscalls:
-<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
--k audit_time_rules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following lines to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre># audit_time_rules
+-a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
+If the system is 64 bit then also add the following lines:
+<pre># audit_time_rules
+-a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
+The -k option allows for the specification of a key in string form that can be
+used for better reporting capability through ausearch and aureport. Multiple
+system calls can be defined on the same line to save space if desired, but is
+not required. See an example of multiple combined syscalls:
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="adjtimex" />
 </ocil>
-<rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activities in log files, as well as to confuse network services that 
-are highly dependent upon an accurate system time (such as sshd). All changes 
+<rationale>Arbitrary changes to the system time can be used to obfuscate
+nefarious activities in log files, as well as to confuse network services that
+are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <oval id="audit_rules_time_adjtimex" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
@@ -506,18 +515,18 @@ to the system time should be audited.</rationale>
 <title>Record attempts to alter time through settimeofday</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>auditctl</tt> utility to read audit rules during daemon startup (the
-default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
+default), add the following lines to <tt>/etc/audit/audit.rules</tt> file:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
-If the system is 64 bit then also add the following line:
+If the system is 64 bit then also add the following lines:
 <pre># audit_time_rules
 -a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
-program to read audit rules during daemon startup, add the following line to a
+program to read audit rules during daemon startup, add the following lines to a
 file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
-If the system is 64 bit then also add the following line:
+If the system is 64 bit then also add the following lines:
 <pre># audit_time_rules
 -a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
 The -k option allows for the specification of a key in string form that can be
@@ -542,13 +551,13 @@ to the system time should be audited.</rationale>
 <title>Record Attempts to Alter Time Through stime</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>auditctl</tt> utility to read audit rules during daemon startup (the
-default), then on a 32-bit system add the following line to
+default), then on a 32-bit system add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
 On a 64-bit system, the "-S stime" is not necessary. If the <tt>auditd</tt>
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
-during daemon startup, then on a 32-bit system add the following line to a file
+during daemon startup, then on a 32-bit system add the following lines to a file
 with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
@@ -564,9 +573,9 @@ If the system is not configured to audit time changes, this is a finding.
 If the system is 64-bit only, this is not applicable<br />
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
-<rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activities in log files, as well as to confuse network services that 
-are highly dependent upon an accurate system time (such as sshd). All changes 
+<rationale>Arbitrary changes to the system time can be used to obfuscate
+nefarious activities in log files, as well as to confuse network services that
+are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <oval id="audit_rules_time_stime" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
@@ -577,18 +586,18 @@ to the system time should be audited.</rationale>
 <title>Record Attempts to Alter Time Through clock_settime</title>
 <description>If the <tt>auditd</tt> daemon is configured
 to use the <tt>auditctl</tt> utility to read audit rules during daemon startup
-(the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
+(the default), add the following lines to <tt>/etc/audit/audit.rules</tt> file:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
-If the system is 64 bit then also add the following line:
+If the system is 64 bit then also add the following lines:
 <pre># audit_time_rules
 -a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
-program to read audit rules during daemon startup, add the following line to a
+program to read audit rules during daemon startup, add the following lines to a
 file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre># audit_time_rules
 -a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
-If the system is 64 bit then also add the following line:
+If the system is 64 bit then also add the following lines:
 <pre># audit_time_rules
 -a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
 The -k option allows for the specification of a key in string form that can
@@ -601,9 +610,9 @@ desired, but is not required. See an example of multiple combined syscalls:
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="clock_settime" />
 </ocil>
-<rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activities in log files, as well as to confuse network services that 
-are highly dependent upon an accurate system time (such as sshd). All changes 
+<rationale>Arbitrary changes to the system time can be used to obfuscate
+nefarious activities in log files, as well as to confuse network services that
+are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <oval id="audit_rules_time_clock_settime" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
@@ -631,9 +640,9 @@ command:
 <pre>$ sudo auditctl -l | grep "watch=/etc/localtime"</pre>
 If the system is configured to audit this activity, it will return a line.
 </ocil>
-<rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activities in log files, as well as to confuse network services that 
-are highly dependent upon an accurate system time (such as sshd). All changes 
+<rationale>Arbitrary changes to the system time can be used to obfuscate
+nefarious activities in log files, as well as to confuse network services that
+are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <oval id="audit_rules_time_watch_localtime" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(b),IR-5" />
@@ -731,7 +740,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
 <!-- <oval id="file_permissions_var_log_audit" /> -->
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="" />
-</Rule> 
+</Rule>
 
 <Rule id="audit_logs_rootowner">
 <title>System Audit Logs Must Be Owned By Root</title>
@@ -741,11 +750,11 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <ocil>
 <fileowner-check-macro file="/var/log" owner="root"/>
 </ocil>
-<rationale>Failure to give ownership of the audit log files to root allows the designated 
+<rationale>Failure to give ownership of the audit log files to root allows the designated
 owner, and unauthorized users, potential access to sensitive information.</rationale>
 <!-- <oval id="file_ownership_var_log_audit" /> -->
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="166" />
-</Rule> 
+</Rule>
 
 <Rule id="audit_rules_mac_modification">
 <title>Record Events that Modify the System's Mandatory Access Controls</title>
@@ -775,26 +784,26 @@ MAC policy should be audited.</rationale>
 
 <Group id="audit_dac_actions">
 <title>Record Events that Modify the System's Discretionary Access Controls</title>
-<description>At a minimum the audit system should collect file permission 
-changes for all users and root.  Note that the "-F arch=b32" lines should be 
-present even on a 64 bit system.  These commands identify system calls for 
-auditing.  Even if the system is 64 bit it can still execute 32 bit system 
-calls.  Additionally, these rules can be configured in a number of ways while 
-still achieving the desired effect.  An example of this is that the "-S" calls 
+<description>At a minimum the audit system should collect file permission
+changes for all users and root.  Note that the "-F arch=b32" lines should be
+present even on a 64 bit system.  These commands identify system calls for
+auditing.  Even if the system is 64 bit it can still execute 32 bit system
+calls.  Additionally, these rules can be configured in a number of ways while
+still achieving the desired effect.  An example of this is that the "-S" calls
 could be split up and placed on separate lines, however, this is less efficient.
 Add the following to <tt>/etc/audit/audit.rules</tt>:
 <pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
     -a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
     -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
-If your system is 64 bit then these lines should be duplicated and the 
+If your system is 64 bit then these lines should be duplicated and the
 arch=b32 replaced with arch=b64 as follows:
 <pre>-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
     -a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
     -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
-<rationale>The changing of file permissions could indicate that a user is 
-attempting to gain access to information that would otherwise be disallowed. 
-Auditing DAC modifications can facilitate the identification of patterns of 
+<rationale>The changing of file permissions could indicate that a user is
+attempting to gain access to information that would otherwise be disallowed.
+Auditing DAC modifications can facilitate the identification of patterns of
 abuse among both authorized and unauthorized users.</rationale>
 
 <Rule id="audit_rules_dac_modification_chmod">
@@ -820,8 +829,8 @@ unauthorized users.</rationale>
 <ocil clause="the system is not configured to audit permission changes">
 <audit-syscall-check-macro syscall="chmod" />
 </ocil>
-<warning category="general">Note that these rules can be configured in a 
-number of ways while still achieving the desired effect.  Here the system calls 
+<warning category="general">Note that these rules can be configured in a
+number of ways while still achieving the desired effect.  Here the system calls
 have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
@@ -852,9 +861,9 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<warning category="general">Note that these rules can be configured in a 
-number of ways while still achieving the desired effect.  Here the system calls 
-have been placed independent of other system calls.  Grouping these system 
+<warning category="general">Note that these rules can be configured in a
+number of ways while still achieving the desired effect.  Here the system calls
+have been placed independent of other system calls.  Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <oval id="audit_rules_dac_modification_chown" />
@@ -886,7 +895,7 @@ can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect.  Here the system calls
-have been placed independent of other system calls.  Grouping these system
+have been placed independent of other system calls. Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <oval id="audit_rules_dac_modification_fchmod" />
@@ -1046,7 +1055,7 @@ can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect.  Here the system calls
-have been placed independent of other system calls.  Grouping these system
+have been placed independent of other system calls. Grouping these system
 calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <oval id="audit_rules_dac_modification_fsetxattr" />
@@ -1220,8 +1229,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <description> 
 The audit system already collects login info for all users and root. To watch for attempted manual edits of
 files involved in storing logon events, add the following to <tt>/etc/audit/audit.rules</tt>:
-<pre>-w /var/log/faillog -p wa -k logins 
--w /var/log/lastlog -p wa -k logins</pre>
+<pre>-w /var/log/faillog -p wa -k logins -w /var/log/lastlog -p wa -k logins</pre>
 </description> 
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
