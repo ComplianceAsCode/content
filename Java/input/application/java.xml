@@ -1,15 +1,40 @@
-<Group id="settings">
-<title>Required Java Settings</title>
-<description>To support a secured and compliant configuration, a number of 
-settings need to be modified from there default configuration and locked so 
-that they are prevented from being changed.</description>
+<Group id="java">
+<title>Java</title>
+<description>
+Java is a general-purpose computer programming language. It is intended to
+let application developers "write once, run anywhere." Java applications are
+typically compiled to bytecode that can run on any Java virtual machine (JVM)
+regardless of computer architecture. As such, the Java runtime environment (JRE)
+is required to be installed so that Java applications can run. This section
+provides settings for configuring Java policies to meet compliance
+settings for Java running on Red Hat Enterprise Linux systems.
+<br /><br />
+<ul>Refer to <li>https://docs.oracle.com/javase/6/docs/technotes/guides/deployment/deployment-guide/properties.html</li>
+for a list of currently supported Java version 6 settings.</ul>
+<ul>Refer to <li>https://docs.oracle.com/javase/7/docs/technotes/guides/jweb/jcp/properties.html</li>
+for a list of currently supported Java version 7 settings.</ul>
+<ul>Refer to <li>https://docs.oracle.com/javase/8/docs/technotes/guides/jweb/jcp/properties.html</li>
+for a list of currently supported Java version 8 settings.</ul>
+</description>
+
+<Group id="java_jre_deployment_config_configured">
+<title>Configure the <tt>deployment.config</tt> File</title>
+<description>
+The <tt>deployment.config</tt> file if used for specifying the System-level
+<tt>deployment.properties</tt> file. The System-level configuration for Java is 
+configured in <tt>/etc/.java/deployment</tt>. By default, no <tt>deployment.config</tt>
+file exists. To ensure that the Java <tt>/etc/.java/deployment/deployment.config</tt> file
+is configured correctly, <tt>deployment.system.config</tt> and
+<tt>deployment.system.config.mandatory</tt> need to be set correctly.
+</description>
+<ref nist="DCBP-1" disa="" />
 
 <Rule id="java_jre_deployment_config_exists" severity="medium">
 <title>The Java Configuration File Exists</title>
 <description>
 If the Java configuration file does not exist, it can be added by running:
 <pre>$ sudo mkdir -p -m 755 /etc/.java/deployment
-$ sudo touch /etc/.java/deployment/deployment.config 
+$ sudo touch /etc/.java/deployment/deployment.config
 $ sudo chmod 644 /etc/.java/deployment/deployment.config</pre>
 </description>
 <ocil clause="it does not exist">
@@ -31,22 +56,20 @@ control panel is impossible.
 <ref nist="DCBP-1" disa="" />
 </Rule>
 
-<Rule id="java_jre_deployment_config_configured" severity="medium">
-<title>The Java Configuration File Is Configured Correctly</title>
+<Rule id="java_jre_deployment_config_properties" severity="medium">
+<title>Configure the <tt>deployment.properties</tt> File Path</title>
 <description>
-To ensure that the Java <tt>/etc/.java/deployment/deployment.config</tt> file is
-configured correctly, add or modify
+To ensure that the Java properties file is set in 
+<tt>/etc/.java/deployment/deployment.config</tt>, add or modify 
 <tt>deployment.system.config</tt> to equal 
-<tt>file:///etc/.java/deployment/deployment.properties</tt>. Also add or modify
-<tt>deployment.system.config.mandatory</tt> to equal <tt>false</tt>.
+<tt>file:///etc/.java/deployment/deployment.properties</tt>.
 </description>
 <ocil clause="it is not configured">
 To verify that <tt>deployment.config</tt> is configured properly,
 run the following command:
-<pre>$ grep 'deployment.system.config' /etc/.java/deployment/deployment.config</pre>
+<pre>$ grep 'deployment.system.config=file' /etc/.java/deployment/deployment.config</pre>
 If properly configured, the output should return:
-<pre>deployment.system.config=file:///etc/.java/deployment/deployment.properties
-deployment.system.config.mandatory=false</pre>
+<pre>deployment.system.config=file:///etc/.java/deployment/deployment.properties</pre>
 </ocil>
 <rationale>
 Without a proper path for the properties file, deployment would not be possible. 
@@ -55,10 +78,38 @@ If the path specified does not lead to a properties file, the value of the
 If the value of this key is true, JRE will not run if the path to the properties
 file is invalid.
 </rationale>
-<oval id="java_jre_deployment_config_configured" />
+<oval id="java_jre_deployment_config_properties" />
 <ident cce="" stig="JRE0060-UX" />
 <ref nist="DCBP-1" disa="" />
 </Rule>
+
+<Rule id="java_jre_deployment_config_mandatory" severity="medium">
+<title>Configure The Java Deployment Mandatory Setting</title>
+<description>
+To configure the Java mandatory deployment setting, add or modify
+<tt>deployment.system.config.mandatory</tt> to equal <tt>false</tt>
+in <tt>/etc/.java/deployment/deployment.config</tt>.
+</description>
+<ocil clause="it is not configured">
+To verify that <tt>deployment.config</tt> is configured properly,
+run the following command:
+<pre>$ grep 'deployment.system.config.mandatory' /etc/.java/deployment/deployment.config</pre>
+If properly configured, the output should return:
+<pre>deployment.system.config.mandatory=false</pre>
+</ocil>
+<rationale>
+Without a proper path for the properties file, deployment would not be possible.
+If the path specified does not lead to a properties file, the value of the
+'deployment.system.config.mandatory' key determines how to handle the situation.
+If the value of this key is true, JRE will not run if the path to the properties
+file is invalid.
+</rationale>
+<oval id="java_jre_deployment_config_mandatory" />
+<ident cce="" stig="JRE0060-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+</Group>
 
 <Rule id="java_jre_deployment_properties_exists" severity="medium">
 <title>The Java Properties File Exists</title>
