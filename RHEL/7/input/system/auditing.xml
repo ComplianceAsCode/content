@@ -502,8 +502,6 @@ full. Valid values are:
 <li><tt>ignore</tt>, the audit daemon does nothing.</li>
 <li><tt>syslog</tt>, the audit daemon will issue a warning to syslog.</li>
 <li><tt>rotate</tt>, the audit daemon will rotate logs, losing the oldest to free up space</li>
-<li><tt>email</tt>, the audit daemon will send a warning to the email account specified
-in <tt>action_mail_acct</tt> as well as sending the message to syslog.</li>
 <li><tt>exec</tt> /path-to-script, will execute the script. You cannot pass parameters to the script.
 The script is also responsible for telling the auditd daemon to resume logging once its completed
 its action. This can be done by adding <tt>service auditd resume</tt> to the script.</li>
