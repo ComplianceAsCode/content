@@ -68,20 +68,20 @@ table-idents: shorthand2xccdf
 table-srgmap: shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
 	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: shorthand2xccdf table-srgmap checks
-	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
-	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+	xsltproc -o $(OUT)/table-firefox-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
+	xsltproc -o $(OUT)/table-firefox-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
 	# asdasd
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
-	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
+	xsltproc -stringparam profile "stig-$(PROD)-upstream" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt \
 		$(OUT)/unlinked-$(PROD)-xccdf.xml
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
@@ -117,7 +117,7 @@ content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
 
 submission-stig-check: table-stigs
-	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-server-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
+	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
 # content-usgcb: coming soon
