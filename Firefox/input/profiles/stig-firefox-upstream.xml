@@ -1,0 +1,50 @@
+<Profile id="stig-firefox-upstream" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Upstream Firefox STIG</title>
+<description>This profile is developed under the DoD consensus model and DISA FSO Vendor STIG process,
+serving as the upstream development environment for the Firefox STIG.
+
+As a result of the upstream/downstream relationship between the SCAP Security Guide project
+and the official DISA FSO STIG baseline, users should expect variance between SSG and DISA FSO content.
+For official DISA FSO STIG content, refer to http://iase.disa.mil/stigs/app-security/browser-guidance/Pages/index.aspx.
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide package, please note
+that commercial support of this SCAP content is NOT available. This profile is provided as example
+SCAP content with no endorsement for suitability or production readiness. Support for this
+profile is provided by the upstream SCAP Security Guide community on a best-effort basis. The
+upstream project homepage is https://fedorahosted.org/scap-security-guide/.
+</description>
+
+<!-- CONFIGURATION OPTIONS -->
+<refine-value idref="var_default_home_page" selector="about_blank" />
+<refine-value idref="var_required_file_types" selector="default" />
+
+<!-- Firefox CHECKS -->
+<select idref="firefox_preferences-dod_root_certificate_installed" selected="true"/>
+<select idref="firefox_preferences-enable_ca_trust" selected="true"/>
+<select idref="firefox_preferences-addons_plugin_updates" selected="true"/>
+<select idref="firefox_preferences-auto-download_actions" selected="true"/>
+<select idref="firefox_preferences-autofill_forms" selected="true"/>
+<select idref="firefox_preferences-autofill_passwords" selected="true"/>
+<select idref="firefox_preferences-auto-update_of_firefox" selected="true"/>
+<select idref="firefox_preferences-cookies_clear" selected="true"/>
+<select idref="firefox_preferences-cookies_user_notice" selected="true"/>
+<select idref="firefox_preferences-lock_settings_obscure" selected="true"/>
+<select idref="firefox_preferences-lock_settings_config_file" selected="true"/>
+<select idref="firefox_preferences-open_confirmation" selected="true"/>
+<select idref="firefox_preferences-password_store" selected="true"/>
+<select idref="firefox_preferences-search_update" selected="true"/>
+<select idref="firefox_preferences-shell_protocol" selected="true"/>
+<select idref="firefox_preferences-ssl_version_2" selected="true"/>
+<select idref="firefox_preferences-ssl_protocol_tls" selected="true"/>
+<select idref="firefox_preferences-verification" selected="true"/>
+<select idref="firefox_preferences-ssl_version_3" selected="true"/>
+<select idref="firefox_preferences-home_page" selected="true"/>
+<select idref="installed_firefox_version_supported" selected="true"/>
+<select idref="firefox_preferences-javascript_status_bar_text" selected="true"/>
+<select idref="firefox_preferences-javascript_context_menus" selected="true"/>
+<select idref="firefox_preferences-javascript_status_bar_changes" selected="true"/>
+<select idref="firefox_preferences-javascript_window_resizing" selected="true"/>
+<select idref="firefox_preferences-javascript_window_changes" selected="true"/>
+<select idref="firefox_preferences-non-secure_page_warning" selected="true"/>
+<select idref="firefox_preferences-pop-up_windows" selected="true"/>
+</Profile>
