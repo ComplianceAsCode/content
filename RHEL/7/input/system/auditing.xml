@@ -35,7 +35,7 @@ requirements.
 Examining some example audit records demonstrates how the Linux audit system
 satisfies common requirements.
 The following example from Fedora Documentation available at
-<tt>http://docs.fedoraproject.org/en-US/Fedora/13/html/Security-Enhanced_Linux/sect-Security-Enhanced_Linux-Fixing_Problems-Raw_Audit_Messages.html</tt>
+<tt>https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide/sect-Security-Enhanced_Linux-Troubleshooting-Fixing_Problems.html#sect-Security-Enhanced_Linux-Fixing_Problems-Raw_Audit_Messages</tt>
 shows the substantial amount of information captured in a
 two typical "raw" audit messages, followed by a breakdown of the most important
 fields. In this example the message is SELinux-related and reports an AVC
@@ -511,21 +511,17 @@ time should be audited.</description>
 <title>Record attempts to alter time through adjtimex</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
-default), add the following lines to a file with suffix <tt>.rules</tt> in the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
-If the system is 64 bit then also add the following lines:
-<pre># audit_time_rules
--a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-utility to read audit rules during daemon startup, add the following lines to
+utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
-If the system is 64 bit then also add the following lines:
-<pre># audit_time_rules
--a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
 The -k option allows for the specification of a key in string form that can be
 used for better reporting capability through ausearch and aureport. Multiple
 system calls can be defined on the same line to save space if desired, but is
@@ -549,21 +545,17 @@ to the system time should be audited.</rationale>
 <title>Record attempts to alter time through settimeofday</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
-default), add the following lines to a file with suffix <tt>.rules</tt> in the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
-If the system is 64 bit then also add the following lines:
-<pre># audit_time_rules
--a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-utility to read audit rules during daemon startup, add the following lines to
+utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
-If the system is 64 bit then also add the following lines:
-<pre># audit_time_rules
--a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
 The -k option allows for the specification of a key in string form that can be
 used for better reporting capability through ausearch and aureport. Multiple
 system calls can be defined on the same line to save space if desired, but is
@@ -587,21 +579,25 @@ to the system time should be audited.</rationale>
 <title>Record Attempts to Alter Time Through stime</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
-default), then on a 32-bit system add the following lines to a file with suffix
-<tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
-On a 64-bit system, the "-S stime" is not necessary. If the <tt>auditd</tt>
-daemon is configured to use the <tt>auditctl</tt> utility to read audit rules
-during daemon startup, then on a 32-bit system add the following lines to
-<tt>/etc/audit/audit.rules</tt> file:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
-On a 64-bit system, the "-S stime" is not necessary. The -k option allows for
-the specification of a key in string form that can be used for better reporting
-capability through ausearch and aureport. Multiple system calls can be defined
-on the same line to save space if desired, but is not required. See an example
-of multiple combined syscalls:
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt> for both 32 bit and 64 bit systems:
+<pre>-a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
+Since the 64 bit version of the "stime" system call is not defined in the audit
+lookup table, the corresponding "-F arch=b64" form of this rule is not expected
+to be defined on 64 bit systems (the aforementioned "-F arch=b32" stime rule
+form itself is sufficient for both 32 bit and 64 bit systems). If the
+<tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to
+read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file for both 32 bit and 64 bit systems:
+<pre>-a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
+Since the 64 bit version of the "stime" system call is not defined in the audit
+lookup table, the corresponding "-F arch=b64" form of this rule is not expected
+to be defined on 64 bit systems (the aforementioned "-F arch=b32" stime rule
+form itself is sufficient for both 32 bit and 64 bit systems). The -k option
+allows for the specification of a key in string form that can be used for
+better reporting capability through ausearch and aureport. Multiple system
+calls can be defined on the same line to save space if desired, but is not
+required. See an example of multiple combined system calls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
@@ -623,21 +619,17 @@ to the system time should be audited.</rationale>
 <title>Record Attempts to Alter Time Through clock_settime</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
-default), add the following lines to a file with suffix <tt>.rules</tt> in the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
-If the system is 64 bit then also add the following lines:
-<pre># audit_time_rules
--a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-utility to read audit rules during daemon startup, add the following lines to
+utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre># audit_time_rules
--a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
-If the system is 64 bit then also add the following lines:
-<pre># audit_time_rules
--a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
+If the system is 64 bit then also add the following line:
+<pre>-a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
 The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport.
 Multiple system calls can be defined on the same line to save space if
@@ -697,8 +689,7 @@ to the system time should be audited.</rationale>
 default), add the following lines to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>, in order to capture events that modify
 account changes:
-<pre># audit_rules_usergroup_modification
--w /etc/group -p wa -k audit_rules_usergroup_modification
+<pre>-w /etc/group -p wa -k audit_rules_usergroup_modification
 -w /etc/passwd -p wa -k audit_rules_usergroup_modification
 -w /etc/gshadow -p wa -k audit_rules_usergroup_modification
 -w /etc/shadow -p wa -k audit_rules_usergroup_modification
@@ -707,8 +698,7 @@ If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file, in order to capture events that modify
 account changes:
-<pre># audit_rules_usergroup_modification
--w /etc/group -p wa -k audit_rules_usergroup_modification
+<pre>-w /etc/group -p wa -k audit_rules_usergroup_modification
 -w /etc/passwd -p wa -k audit_rules_usergroup_modification
 -w /etc/gshadow -p wa -k audit_rules_usergroup_modification
 -w /etc/shadow -p wa -k audit_rules_usergroup_modification
@@ -736,8 +726,7 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 default), add the following lines to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre># audit_rules_networkconfig_modification
--a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
+<pre>-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
 -w /etc/issue -p wa -k audit_rules_networkconfig_modification
 -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
 -w /etc/hosts -p wa -k audit_rules_networkconfig_modification
@@ -746,8 +735,7 @@ If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre># audit_rules_networkconfig_modification
--a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
+<pre>-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
 -w /etc/issue -p wa -k audit_rules_networkconfig_modification
 -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
 -w /etc/hosts -p wa -k audit_rules_networkconfig_modification
