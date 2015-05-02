@@ -1,1 +1,1 @@
-echo "install tipc /bin/false" > /etc/modprobe.d/tipc.conf
+echo "install tipc /bin/true" > /etc/modprobe.d/tipc.conf

@@ -1,1 +1,1 @@
-echo "install rds /bin/false" > /etc/modprobe.d/rds.conf
+echo "install rds /bin/true" > /etc/modprobe.d/rds.conf
