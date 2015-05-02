@@ -1,1 +1,1 @@
-echo "install udf /bin/false" > /etc/modprobe.d/udf.conf
+echo "install udf /bin/true" > /etc/modprobe.d/udf.conf

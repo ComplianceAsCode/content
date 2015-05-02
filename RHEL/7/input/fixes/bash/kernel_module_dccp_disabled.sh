@@ -1,1 +1,1 @@
-echo "install dccp /bin/false" > /etc/modprobe.d/dccp.conf
+echo "install dccp /bin/true > /etc/modprobe.d/dccp.conf
