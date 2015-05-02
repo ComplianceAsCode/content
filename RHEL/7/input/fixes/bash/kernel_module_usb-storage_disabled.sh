@@ -1,1 +1,1 @@
-echo "install usb-storage /bin/false" > /etc/modprobe.d/usb-storage.conf
+echo "install usb-storage /bin/true" > /etc/modprobe.d/usb-storage.conf
