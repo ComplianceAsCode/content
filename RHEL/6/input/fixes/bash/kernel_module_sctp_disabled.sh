@@ -1,1 +1,1 @@
-echo "install sctp /bin/false" > /etc/modprobe.d/sctp.conf
+echo "install sctp /bin/true" > /etc/modprobe.d/sctp.conf
