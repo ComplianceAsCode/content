@@ -1,58 +1,26 @@
 <def-group>
   <definition class="compliance" id="firefox_preferences-auto-update_of_firefox"  version="1">
     <metadata>
-      <title>Firefox Preferences-Auto-update of Firefox</title>
+      <title>Disable Firefox Auto-Update Capability</title>
       <affected family="unix">
-        <platform>Mozila Firefox</platform>
+        <platform>Mozilla Firefox</platform>
       </affected>
-      <description>Allowing software updates from non-trusted sites can introduce settings that will override a secured installation of the application.  This can place DoD information at risk.  If this setting is enabled, then there are many other default settings which point to untrusted sites which must be changed to point to an authorized update site that is not publicly accessible.</description>
-       </metadata>
+      <description>Firefox should not be able to automatically
+      update itself.</description>
+      <reference source="galford" ref_id="20150424" ref_url="test_attestation"/>
+    </metadata>
     <criteria>
-     	<criteria operator="OR">
-	  <criterion comment="auto-update of firefox configured in /usr/local/lib/firefox" test_ref="test_firefox_preferences-auto-update_of_firefox_in_local_lib" />
-	  <criterion comment="auto-update of firefox configured in /usr/lib/firefox" test_ref="test_firefox_preferences-auto-update_of_firefox_in_lib" />			
-          <criterion comment="auto-update of firefox configured in /usr/local/lib64/firefox" test_ref="test_firefox_preferences-auto-update_of_firefox_local_lib64" />
-	  <criterion comment="auto-update of firefox configured in /usr/lib64/firefox" test_ref="test_firefox_preferences-auto-update_of_firefox_in_lib64" />
-        </criteria>
+      <criterion comment="auto-update is disabled" test_ref="test_firefox_preferences-auto-update_of_firefox" />
     </criteria>
-  
   </definition>
 
- <ind:textfilecontent54_test check="all" comment="Check for auto-update of firefox configured in /usr/local/lib/firefox" id="test_firefox_preferences-auto-update_of_firefox_in_local_lib" version="1">
- 	<ind:object object_ref="object_firefox_preferences-auto-update_of_firefox_local_lib" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_firefox_preferences-auto-update_of_firefox_local_lib" version="1">
- 	<ind:filepath>/usr/local/lib/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("app.update.enabled", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" comment="Check auto-update of firefox configured in /usr/lib/firefox" id="test_firefox_preferences-auto-update_of_firefox_in_lib" version="1">
- 	<ind:object object_ref="object_firefox_preferences-auto-update_of_firefox_lib" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_firefox_preferences-auto-update_of_firefox_lib" version="1">
- 	<ind:filepath>/usr/lib/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("app.update.enabled", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object>
- 
- <ind:textfilecontent54_test check="all" comment="Check auto-update of firefox configured in /usr/local/lib64/firefox" id="test_firefox_preferences-auto-update_of_firefox_local_lib64" version="1">
- 	<ind:object object_ref="object_firefox_preferences-auto-update_of_firefox_local_lib64" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_firefox_preferences-auto-update_of_firefox_local_lib64" version="1">
- 	<ind:filepath>/usr/local/lib64/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("app.update.enabled", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object>
-
- <ind:textfilecontent54_test check="all" comment="Check for auto-update of firefox in /usr/lib64/firefox" id="test_firefox_preferences-auto-update_of_firefox_in_lib64" version="1">
- 	<ind:object object_ref="object_firefox_preferences-auto-update_of_firefox_lib64" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_firefox_preferences-auto-update_of_firefox_lib64" version="1">
- 	<ind:filepath>/usr/lib64/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("app.update.enabled", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object> 
-
-
+  <ind:textfilecontent54_test check="all" comment="Check that auto-update of firefox is disabled" id="test_firefox_preferences-auto-update_of_firefox" version="1">
+    <ind:object object_ref="object_firefox_preferences-auto-update_of_firefox" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-auto-update_of_firefox" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("app.update.enabled",[\s]+false\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object> 
 </def-group>

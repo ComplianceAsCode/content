@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
-	<overlay owner="disastig" ruleid="installed_version_of_firefox_not_supported" ownerid="DTBF003" disa="" severity="High">
+	<overlay owner="disastig" ruleid="installed_firefox_version_supported" ownerid="DTBF003" disa="" severity="high">
 		<VMSinfo VKey="17988" SVKey="19509" VRelease="1" />
 		<title>Installed version of Firefox unsupported.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="firefox_preferences-SSL_2.0_protocol" ownerid="DTBF010" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-SSL_protocol_version_2_0" ownerid="DTBF010" disa="" severity="medium">
 		<VMSinfo VKey="15982" SVKey="16924" VRelease="2" />
 		<title>The Firefox SSLV2 parameter is configured to allow use of SSL 2.0.</title>
 	</overlay>
@@ -40,10 +40,10 @@
 		<VMSinfo VKey="19742" SVKey="21888" VRelease="3" />
 		<title>Firefox automatically updates installed add-ons and plugins.</title>
 	</overlay>
-	<!-- <overlay owner="disastig" ruleid="firefox_preferences-auto-download_actions" ownerid="DTBF100" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-auto-download_actions" ownerid="DTBF100" disa="" severity="medium">
 		<VMSinfo VKey="15770" SVKey="16709" VRelease="1" />
 		<title>Firefox automatically executes or downloads MIME types which are not authorized for auto-download.</title>
-	</overlay> -->
+	</overlay>
 	<overlay owner="disastig" ruleid="firefox_preferences-shell_protocol" ownerid="DTBF105" disa="" severity="medium">
 		<VMSinfo VKey="15771" SVKey="16710" VRelease="3" />
 		<title>Network shell protocol is enabled in FireFox.</title>
@@ -52,11 +52,11 @@
 		<VMSinfo VKey="15772" SVKey="16711" VRelease="2" />
 		<title>Firefox not configured to prompt user before download and opening for required file types.</title>
 	</overlay>
-	<!-- <overlay owner="disastig" ruleid="XXXX" ownerid="DTBF120" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="XXXX" ownerid="DTBF120" disa="" severity="medium">
 		<VMSinfo VKey="15773" SVKey="16712" VRelease="1" />
 		<title>FireFox plug-in for ActiveX controls is installed.</title>
-	</overlay> -->
-	<overlay owner="disastig" ruleid="non-secure_page_warning" ownerid="DTBF130" disa="" severity="medium">
+	</overlay>
+	<overlay owner="disastig" ruleid="firefox_preferences-non-secure_page_warning" ownerid="DTBF130" disa="" severity="medium">
 		<VMSinfo VKey="15989" SVKey="16931" VRelease="1" />
 		<title>Firefox is not configured to provide warnings when a user switches from a secure (SSL-enabled) to a non-secure page.</title>
 	</overlay>
@@ -76,32 +76,32 @@
 		<VMSinfo VKey="15777" SVKey="16716" VRelease="1" />
 		<title>Firefox does not clear cookies upon closing.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="pop-up_windows" ownerid="DTBF180" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-pop-up_windows" ownerid="DTBF180" disa="" severity="medium">
 		<VMSinfo VKey="15778" SVKey="16717" VRelease="1" />
 		<title>FireFox is not configured to block pop-up windows.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="javaScript_move_or_resize_windows" ownerid="DTBF181" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-javascript_window_resizing" ownerid="DTBF181" disa="" severity="medium">
 		<VMSinfo VKey="15779" SVKey="16718" VRelease="1" />
 		<title>FireFox is configured to allow JavaScript to move or resize windows.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="javaScript_raise_or_lower_windows" ownerid="DTBF182" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-javascript_window_changes" ownerid="DTBF182" disa="" severity="medium">
 		<VMSinfo VKey="15985" SVKey="16927" VRelease="1" />
 		<title>Firefox is configured to allow JavaScript to raise or lower windows.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="javaScript_context_menus" ownerid="DTBF183" disa="" severity="medium">
-		<VMSinfo VKey="15986" SVKey="66005" VRelease="1" />
+	<overlay owner="disastig" ruleid="firefox_preferences-javascript_context_menus" ownerid="DTBF183" disa="" severity="medium">
+		<VMSinfo VKey="15986" SVKey="16928" VRelease="1" />
 		<title>Firefox is must be configured to prevent JavaScript from disable or replace context menus.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="javaScript_hiding_or_changing_status_bar" ownerid="DTBF184" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-javascript_status_bar_changes" ownerid="DTBF184" disa="" severity="medium">
 		<VMSinfo VKey="15987" SVKey="16929" VRelease="1" />
 		<title>Firefox is configured to allow JavaScript to hide or change the status bar.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="javaScript_can_change_the_status_bar_text" ownerid="DTBF185" disa="" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-javascript_status_bar_text" ownerid="DTBF185" disa="" severity="medium">
 		<VMSinfo VKey="15988" SVKey="16930" VRelease="1" />
 		<title>Firefox is configured to allow JavaScript to change the status bar text.</title>
 	</overlay>
-	<!-- <overlay owner="disastig" ruleid="dod_root_certificate_is_not_installed" ownerid="DTBG010" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="firefox_preferences-dod_root_certificate" ownerid="DTBG010" disa="366" severity="medium">
 		<VMSinfo VKey="6318" SVKey="33373" VRelease="1" />
 		<title>The DOD Root Certificate is not installed.</title>
-	</overlay> -->
+	</overlay>
 </overlays>
