@@ -178,7 +178,8 @@ def main():
     tree.append(tests)
     tree.append(objects)
     tree.append(states)
-    tree.append(variables)
+    if list(variables):
+        tree.append(variables)
 
     ET.dump(tree)
     sys.exit(0)
