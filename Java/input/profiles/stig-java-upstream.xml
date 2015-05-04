@@ -1,0 +1,25 @@
+<Profile id="stig-java-upstream" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Java Runtime Environment (JRE) STIG</title>
+<description>The Java Runtime Environment (JRE) is a bundle developed
+and offered by Oracle Corporation which includes the Java Virtual Machine
+(JVM), class libraries, and other components necessary to run Java
+applications and applets. Certain default settings within the JRE pose
+a security risk so it is necessary to deploy system wide properties to
+ensure a higher degree of security when utilizing the JRE.
+
+The IBM Corporation also develops and bundles the Java Runtime Environment
+(JRE) as well as Red Hat with OpenJDK.</description>
+
+<select idref="java_jre_deployment_config_exists" selected="true"/>
+<select idref="java_jre_deployment_config_properties" selected="true"/>
+<select idref="java_jre_deployment_config_mandatory" selected="true"/>
+<select idref="java_jre_deployment_properties_exists" selected="true"/>
+<select idref="java_jre_untrusted_sources" selected="true"/>
+<select idref="java_jre_untrusted_sources_locked" selected="true"/>
+<select idref="java_jre_validation_crl" selected="true"/>
+<select idref="java_jre_validation_crl_locked" selected="true"/>
+<select idref="java_jre_validation_ocsp" selected="true"/>
+<select idref="java_jre_validation_ocsp_locked" selected="true"/>
+<select idref="java_jre_updated" selected="true"/>
+
+</Profile>

@@ -5,7 +5,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
        <!-- adding profiles here -->
-		<xsl:apply-templates select="document('profiles/jre.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-java-upstream.xml')" />
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>
                  <description>A conditional clause for check statements.</description>
@@ -13,7 +13,7 @@
        </Value>
 
       <xsl:apply-templates select="document('intro/intro.xml')" />
-      <xsl:apply-templates select="document('system/settings.xml')" />
+      <xsl:apply-templates select="document('application/java.xml')" />
     </xsl:copy>
   </xsl:template>
   
