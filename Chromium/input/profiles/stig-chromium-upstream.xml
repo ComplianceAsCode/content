@@ -1,0 +1,66 @@
+<Profile id="stig-chromium-upstream" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Upstream STIG for Google Chromium</title>
+<description>This profile is developed under the DoD consensus model and DISA FSO Vendor STIG process,
+serving as the upstream development environment for the Google Chromium STIG.
+
+As a result of the upstream/downstream relationship between the SCAP Security Guide project
+and the official DISA FSO STIG baseline, users should expect variance between SSG and DISA FSO content.
+For official DISA FSO STIG content, refer to http://iase.disa.mil/stigs/app-security/browser-guidance/Pages/index.aspx.
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide package, please note
+that commercial support of this SCAP content is NOT available. This profile is provided as example
+SCAP content with no endorsement for suitability or production readiness. Support for this
+profile is provided by the upstream SCAP Security Guide community on a best-effort basis. The
+upstream project homepage is https://fedorahosted.org/scap-security-guide/.
+</description>
+
+<!-- CONFIGURATION OPTIONS -->
+<refine-value idref="var_default_search_provider_name" selector="google" />
+<refine-value idref="var_url_blacklist" selector="javascript" />
+<refine-value idref="var_session_cookies" selector="none" />
+<refine-value idref="var_enable_approved_plugins" selector="none" />
+<refine-value idref="var_enable_encrypted_searching" selector="google" />
+<refine-value idref="var_extension_whitelist" selector="none" />
+<refine-value idref="var_auth_schema" selector="negotiate" />
+<refine-value idref="var_trusted_home_page" selector="blank" />
+<refine-value idref="var_whitelist_plugin_urls" selector="none" />
+
+<!-- Chromium CHECKS -->
+<select idref="chromium_policy_file" selected="true"/>
+<select idref="chromium_disable_firewall_traversal" selected="true"/>
+<select idref="chromium_block_desktop_notifications" selected="true"/>
+<select idref="chromium_disable_popups" selected="true"/>
+<select idref="chromium_disallow_location_tracking" selected="true"/>
+<select idref="chromium_blacklist_extension_installation" selected="true"/>
+<select idref="chromium_extension_whitelist" selected="true"/>
+<select idref="chromium_default_search_provider_name" selected="true"/>
+<select idref="chromium_enable_encrypted_searching" selected="true"/>
+<select idref="chromium_default_search_provider" selected="true"/>
+<select idref="chromium_disable_cleartext_passwords" selected="true"/>
+<select idref="chromium_disable_password_manager" selected="true"/>
+<select idref="chromium_http_authentication" selected="true"/>
+<select idref="chromium_disable_outdated_plugins" selected="true"/>
+<select idref="chromium_plugins_require_authorization" selected="true"/>
+<select idref="chromium_disable_thirdparty_cookies" selected="true"/>
+<select idref="chromium_disable_background_processing" selected="true"/>
+<select idref="chromium_disable_3d_graphics_api" selected="true"/>
+<select idref="chromium_disable_google_sync" selected="true"/>
+<select idref="chromium_disable_protocol_schemas" selected="true"/>
+<select idref="chromium_disable_autocomplete" selected="true"/>
+<select idref="chromium_disable_cloud_print_sharing" selected="true"/>
+<select idref="chromium_disable_network_prediction" selected="true"/>
+<select idref="chromium_disable_metrics_reporting" selected="true"/>
+<select idref="chromium_disable_search_suggestions" selected="true"/>
+<select idref="chromium_disable_saved_passwords" selected="true"/>
+<select idref="chromium_disable_incognito_mode" selected="true"/>
+<select idref="chromium_disable_plugin_blacklist" selected="true"/>
+<select idref="chromium_enable_approved_plugins" selected="true"/>
+<select idref="chromium_disable_automatic_installation" selected="true"/>
+<select idref="chromium_check_cert_revocation" selected="true"/>
+<select idref="chromium_enable_safe_browsing" selected="true"/>
+<select idref="chromium_enable_browser_history" selected="true"/>
+<select idref="chromium_default_block_plugins" selected="true"/>
+<select idref="chromium_disable_session_cookies" selected="true"/>
+<select idref="chromium_trusted_home_page" selected="true"/>
+<select idref="chromium_whitelist_plugin_urls" selected="true"/>
+</Profile>

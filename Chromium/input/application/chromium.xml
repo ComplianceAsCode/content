@@ -1,0 +1,945 @@
+<Group id="chromium">
+<title>Chromium</title>
+<description>Chromium is an open-source web browser, powered by WebKit (Blink),
+and developed by Google. Web browsers such as Chromium are used for a number of
+reasons. This section provides settings for configuring Chromium policies to 
+meet compliance settings for Chromium running on Red Hat Enterprise Linux 
+systems.
+
+Refer to <ul><li>https://www.chromium.org/administrators/policy-list-3</li></ul> for
+a list of currently supported Chromium policies.
+Refer to <ul><li>https://www.chromium.org/administrators/policy_templates</li></ul> for 
+pre-created Chromium <tt>JSON</tt> policy files.
+</description>
+
+<Value id="var_default_search_provider_name" type="string" >
+<title>The Default Search provider in Chromium</title>
+<description>The URL for the Default Search provider in Chromium</description>
+<value selector="">https://www.google.com</value>
+<value selector="google">https://www.google.com</value>
+<value selector="yahoo">https://www.yahoo.com</value>
+<value selector="bing">https://www.bing.com</value>
+</Value>
+
+<Value id="var_url_blacklist" type="string" >
+<title>Blacklisted Chromium Protocols</title>
+<description>Blacklisted Protocol Schemas in Chromium</description>
+<value selector="">javascript://*</value>
+<value selector="javascript">javascript://*</value>
+</Value>
+
+<!--Value id="var_session_cookies" type="string" >
+<title>Chromium Sessions Cookies URL</title>
+<description>Approved Chromium Cookie URLs for sessions only</description>
+<value selector="">none</value>
+<value selector="none">none</value>
+</Value>
+
+<Value id="var_enable_approved_plugins" type="string" >
+<title>Approved Chromium Plugins</title>
+<description>Approved plugins allowed for use in Chromium</description>
+<value selector="">none</value>
+<value selector="none">none</value>
+</Value-->
+
+<Value id="var_enable_encrypted_searching" type="string" >
+<title>Encrypted Chromium Search URLs</title>
+<description>Encrypted search URL for the Default Search Provider</description>
+<value selector="">https://www.google.com/#q={searchTerms}</value>
+<value selector="google">https://www.google.com/#q={searchTerms}</value>
+<value selector="yahoo">https://www.yahoo.com/search?q={searchTerms}</value>
+<value selector="bing">https://www.bing.com/search?q={searchTerms}</value>
+</Value>
+
+<Value id="var_extension_whitelist" type="string" >
+<title>Whitelisted Chromium Extenstions</title>
+<description>Chromium extensions approved for use</description>
+<value selector="">oiigbmnaadbkfbmpbfijlflahbdbdgdf</value>
+<value selector="none">oiigbmnaadbkfbmpbfijlflahbdbdgdf</value>
+</Value>
+
+<Value id="var_auth_schema" type="string" >
+<title>Chromium HTTP Authentication Setting</title>
+<description>Chromium HTTP Authentication Types</description>
+<value selector="">negotiate</value>
+<value selector="basic">basic</value>
+<value selector="digest">digest</value>
+<value selector="ntlm">ntlm</value>
+<value selector="negotiate">negotiate</value>
+<value selector="all">basic,digest,ntlm,negotiate</value>
+</Value>
+
+<Value id="var_trusted_home_page" type="string" >
+<title>Default Chromium Homepage</title>
+<description>Default homepage for Chromium users</description>
+<value selector="">about:blank</value>
+<value selector="blank">about:blank</value>
+</Value>
+
+<!--Value id="var_whitelist_plugin_urls" type="string" >
+<title>Whitelisted Chromium Plugin URLs</title>
+<description>Whitelisted URLs allowed to run plugins</description>
+<value selector="">none</value>
+<value selector="none">none</value>
+</Value-->
+
+<Rule id="chromium_policy_file">
+<title>Ensure the Chromium Policy Configuration File Exists</title>
+<description>
+Chromium can be configured with numerous policies and settings. These
+settings can be set so that a user is unable to edit or change them.
+To prevent users from setting or changing Chromium settings, a 
+<tt>JavaScript Object Notation (JSON)</tt> file (contains the <tt>.json</tt>
+extension) must exist in <tt>/etc/chromium/policies/managed</tt>.
+<br /><br />
+<ul><li>Refer to https://www.chromium.org/administrators/policy-list-3 for
+a list of currently supported Chromium policies.</li></ul>
+<ul><li>Refer to https://www.chromium.org/administrators/policy_templates for
+pre-created Chromium <tt>JSON</tt> policy files.</li></ul>
+<br />
+</description>
+<ocil clause="it does not exist or is not configured correctly">
+To verify that the Chromium policy file exists, run the following command:
+<pre>$ ls /etc/chromium/policies/managed</pre>
+The output should show file(s) ending in <tt>.json</tt> extension.
+For example:
+<pre>chrome-stig-policy.json</pre>
+</ocil>
+<rationale>
+The Chromium policy file must exist as this file contains configuration 
+settings set by the System's Administrator to meet organization and/or 
+security requirements.
+</rationale>
+<warning category="general">If the <tt>.json</tt> file in
+<tt>/etc/chromium/policies/managed</tt> is not formatted correctly,
+no policies will be configured or set correctly.</warning>
+<ident stig="" />
+<oval id="chromium_policy_file" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_firewall_traversal">
+<title>Disable Chromium's Ability to Traverse Firewalls</title>
+<description>
+Chromium has the ability to bypass and ignore the system firewall. This
+ability should be disabled. To disable this setting, set 
+<tt>RemoteAccessHostFirewallTraversal</tt> to <tt>false</tt> in the 
+Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that Chromium's abililty to traverse the system firewall is 
+disabled, run the following command:
+<pre>$ grep RemoteAccessHostFirewallTraversal /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"RemoteAccessHostFirewallTraversal": false,</pre>
+</ocil>
+<rationale>
+Remote connections should never be allowed to bypass the system firewall
+as there is no way to verify if they can be trusted.
+</rationale>
+<ident stig="DTBC0001" />
+<oval id="chromium_disable_firewall_traversal" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_block_desktop_notifications">
+<title>Prevent Desktop Notifications</title>
+<description>
+Chromium by default allows websites to display notifications on the desktop.
+To disable this setting, set <tt>DefaultNotificationsSetting</tt> to <tt>2</tt>
+in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that desktop notification is
+disabled, run the following command:
+<pre>$ grep DefaultNotificationsSetting /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DefaultNotificationsSetting": 2,</pre>
+</ocil>
+<rationale>
+Disabling Chromium's ability to display notifications on the desktop helps prevent 
+malicious websites from controlling desktop notifications or fooling users into
+clicking on a potentially compromised notification.
+</rationale>
+<ident stig="DTBC0003" />
+<oval id="chromium_block_desktop_notifications" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_popups">
+<title>Disable Popups</title>
+<description>
+Chromium allows you to manage whether or not unwanted pop-up windows appear.
+To disable pop-ups, set <tt>DefaultPopupsSetting</tt> to <tt>2</tt> 
+in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that pop-ups are disabled, run the following command:
+<pre>$ grep DefaultPopupsSetting /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DefaultPopupsSetting": 2,</pre>
+</ocil>
+<rationale>
+Pop-up windows should be disabled to prevent malicious websites from controlling
+pop-up windows or fooling users into clicking on the wrong window.
+</rationale>
+<ident stig="DTBC0004" />
+<oval id="chromium_disable_popups" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disallow_location_tracking">
+<title>Disable Location Tracking</title>
+<description>
+Location tracking is enabled by default and can track user's browsing habits.
+Location tracking should be disabled by setting <tt>DefaultGeolocationSetting</tt> 
+to <tt>2</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that location tracking is disabled, run the following command:
+<pre>$ grep DefaultGeolocationSetting /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DefaultGeolocationSetting": 2,</pre>
+</ocil>
+<rationale>
+Website tracking is the practice of gathering information as to which websites
+were accesses by a browser. The common method of doing this is to have a website
+create a tracking cookie on the browser. If the information of what sites are
+being accessed is made available to unauthorized persons, this violates 
+confidentiality requirements, and over time poses a significant OPSEC issue.
+</rationale>
+<ident stig="DTBC0002" />
+<oval id="chromium_disallow_location_tracking" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_blacklist_extension_installation">
+<title>Disable All Extensions by Default</title>
+<description>
+Extensions are developed by third party sources and are designed to extend 
+Google Chromium's functionality. As an extension can be made by anyone, all extensions
+should be blacklisted from installation by default. To blacklist all extensions, set the 
+<tt>ExtensionInstallBlacklist</tt> to <tt>*</tt> in the Chromium policy file.
+</description>
+<ocil clause="extensions are not blacklisted">
+To verify that all extensions are blacklisted from installing, run the following command:
+<pre>$ grep ExtensionInstallBlacklist /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"ExtensionInstallBlacklist": ["*"],</pre>
+</ocil>
+<rationale>
+Extensions can access almost anything on a system. This means they pose a high risk
+to any system that would allow all extensions to be installed by default.
+</rationale>
+<ident stig="DTBC0006" />
+<oval id="chromium_blacklist_extension_installation" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_extension_whitelist">
+<title>Enable Only Approved Extensions</title>
+<description>
+An organization might need to use an internal or third party developed extension. Any
+organizationally approved extenstion should be enabled. To enable approved extensions,
+set <tt>ExtensionInstallWhitelist</tt> to <tt><sub idref="var_extension_whitelist" /></tt>
+in the Chromium policy file.
+If there are no approved extensions, <tt>ExtensionInstallWhitelist</tt> should be set to
+<tt><sub idref="var_extension_whitelist" selector="default"/></tt>.
+</description>
+<ocil clause="approved extensions are not set">
+To verify that approved extensions are whitelisted, run the following command:
+<pre>$ grep ExtensionInstallWhitelist /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"ExtensionInstallWhitelist": ["<sub idref="var_extension_whitelist" />"],</pre>
+</ocil>
+<rationale>
+The whitelist should only contain organizationally approved extensions. This is to prevent
+a user from accidently whitelisitng a malicious extension.
+</rationale>
+<ident stig="DTBC0003" />
+<oval id="chromium_extension_whitelist" value="var_extension_whitelist" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_default_search_provider_name">
+<title>Set the Default Search Provider's URL</title>
+<description>
+Specifies the URL of the default search provider that is to be used. To set the 
+URL of the default search provider, set <tt>DefaultSearchProviderName</tt> to 
+<tt><sub idref="var_default_search_provider" /></tt> in the Chromium policy file.
+</description>
+<ocil clause="a default search provider is not set">
+To verify that a default search provider is set, run the following command:
+<pre>$ grep DefaultSearchProviderName /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DefaultSearchProviderName": "<sub idref="var_default_search_provider" />",</pre>
+</ocil>
+<rationale>
+When doing internet searches, it is important to set an organizationally approved search
+provider as well as use an encrypted connection via https.
+</rationale>
+<ident stig="DTBC0007" />
+<oval id="chromium_default_search_provider_name" value="var_default_search_provider_name" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_enable_encrypted_searching">
+<title>Enable Encrypted Searching</title>
+<description>
+Specifies the URL of the search engine used when doing a default search.
+The URL should contain the string <tt>{searchTerms}</tt>. To set the URL of the
+search engine, set <tt>DefaultSearchProviderSearchURL</tt> to
+<tt><sub idref="var_enable_encrypted_searching" /></tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not set">
+To verify that the URL of the search engine is set, run the following command:
+<pre>$ grep DefaultSearchProviderSearchURL /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DefaultSearchProviderSearchURL": "<sub idref="var_enable_encrypted_searching" />",</pre>
+</ocil>
+<rationale>
+When doing internet searches, it is important to use an encrypted connection via https.
+</rationale>
+<ident stig="DTBC0008" />
+<oval id="chromium_enable_encrypted_searching" value="var_enable_encrypted_searching" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_default_search_provider">
+<title>Enable the Default Search Provider</title>
+<description>
+By default users, can change search provider settings. To disable this, set
+<tt>DefaultSearchProviderEnabled</tt> to <tt>true</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not enabled">
+To verify that users cannot change the default search provider, run the following command:
+<pre>$ grep DefaultSearchProviderEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DefaultSearchProviderEnabled": true,</pre>
+</ocil>
+<rationale>
+A default search is performed when the user types text in the omnibox that is not a URL.
+This should be organizationally defined and not allowed to be changed by a user.
+</rationale>
+<ident stig="DTBC0009" />
+<oval id="chromium_default_search_provider" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_cleartext_passwords">
+<title>Disable Use of Cleartext Passwords</title>
+<description>
+Chromium allows users to import and store passwords in cleartext. This should be 
+disabled by setting <tt>PasswordManagerAllowShowPasswords</tt> to <tt>false</tt>
+in the Chromium policy file.
+</description>
+<ocil clause="use of cleartext passwords are not disabled">
+To verify that the use of cleartext passwords is disabled, run the following command:
+<pre>$ grep PasswordManagerAllowShowPasswords /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"PasswordManagerAllowShowPasswords": false,</pre>
+</ocil>
+<rationale>
+Cleartext passwords would allow another individual to see password via shoulder surfing.
+</rationale>
+<ident stig="DTBC0010" />
+<oval id="chromium_disable_cleartext_passwords" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_password_manager">
+<title>Disable Chromium Password Manager</title>
+<description>
+Chromium Password Manager allows the saving and using of passwords in Chromium. This
+should be disabled by setting <tt>PasswordManagerEnabled</tt> to <tt>false</tt> in 
+the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that the use of Password Manager is disabled, run the following command:
+<pre>$ grep PasswordManagerEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"PasswordManagerEnabled": false,</pre>
+</ocil>
+<rationale>
+Enables saving passwords and using saved passwords in Google Chromium. Malicious
+sites may take advantage of this feature by using hidden fields gain access
+to the stored information.
+</rationale>
+<ident stig="DTBC0011" />
+<oval id="chromium_disable_password_manager" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_http_authentication">
+<title>Set Chromium's HTTP Authentication Scheme</title>
+<description>
+To set the default Chromium's HTTP Authentication Scheme, set 
+<tt>AuthSchemes</tt> to <tt><sub idref="var_auth_schemes" /></tt> in the 
+Chromium policy file.
+</description>
+<ocil clause="it is not set">
+To verify that the HTTP Authentication Scheme is set, run the following command:
+<pre>$ grep AuthSchemes /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"AuthSchemes": "<sub idref="var_auth_schemes" />",</pre>
+</ocil>
+<rationale>
+Specifies which HTTP Authentication schemes are supported by Google Chromium.
+</rationale>
+<ident stig="DTBC0012" />
+<oval id="chromium_http_authentication" value="var_trusted_home_page" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_outdated_plugins">
+<title>Disable Outdated Plugins</title>
+<description>
+Outdated plugins should be disabled by setting <tt>AllowOutdatedPlugins</tt>
+to <tt>false</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that outdated plugins are disabled, run the following command:
+<pre>$ grep AllowOutdatedPlugins /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"AllowOutdatedPlugins": false,</pre>
+</ocil>
+<rationale>
+Running outdated plugins could lead to system compromise through the use
+of known exploits. Having plugins updated to the most current version
+ensures the smallest attack surfuce possible. 
+</rationale>
+<ident stig="DTBC0013" />
+<oval id="chromium_disable_outdated_plugins" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_plugins_require_authorization">
+<title>Require Outdated Plugins to be Authorized</title>
+<description>
+Chromium should prompt users for authorization to run outdated plugins. This
+can be enabled by setting <tt>AlwaysAuthorizePlugins</tt> to <tt>false</tt>
+in the Chromium policy file.
+</description>
+<ocil clause="it is not set">
+To verify that plugins require authorization to run, run the following command:
+<pre>$ grep AlwaysAuthorizePlugins /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"AlwaysAuthorizePlugins": false,</pre>
+</ocil>
+<rationale>
+Outdated plugins can compromise security and should request authorization from
+the user before running.
+</rationale>
+<ident stig="DTBC0014" />
+<oval id="chromium_plugins_require_authorization" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_thirdparty_cookies">
+<title>Disable 3rd Party Cookies</title>
+<description>
+Third party cookies should be be enabled. To disable third party cookies,
+set <tt>BlockThirdPartyCookies</tt> to <tt>true</tt> in the Chromium policy
+file.
+</description>
+<ocil clause="it is not disabled">
+To verify that third party cookies are disabled, run the following command:
+<pre>$ grep BlockThirdPartyCookies /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"BlockThirdPartyCookies": true,</pre>
+</ocil>
+<rationale>
+Third party cookies are cookies which can be set by web page elements that
+are not from the domain that is in the browser's address bar. This prevents
+cookies from being set by web page elements that are not from the domain
+that is in the browser's address bar.
+</rationale>
+<ident stig="DTBC0015" />
+<oval id="chromium_disable_thirdparty_cookies" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_background_processing">
+<title>Disable Background Processing</title>
+<description>
+Chromium can be set to run at all times and process in the background. This
+should be disabled by setting <tt>BackgroundModeEnabled</tt> to <tt>false</tt>
+in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that background processing is disabled, run the following command:
+<pre>$ grep BackgroundModeEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"BackgroundModeEnabled": false,</pre>
+</ocil>
+<rationale>
+There is two reasons that this is not wanted. First, it can tie up system
+resources that might otherwise be needed. Second, it does not make it
+obvious to the user that it is running and poorly written extensions could
+cause instability on the system.
+</rationale>
+<ident stig="DTBC0017" />
+<oval id="chromium_disable_background_processing" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_3d_graphics_api">
+<title>Disable the 3D Graphics APIs</title>
+<description>
+Chromium uses WebGL to render graphics using the GPU which allows website
+access to the GPU. This should be disabled by setting <tt>Disable3DAPIs</tt>
+to <tt>true</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that 3D graphics are disabled, run the following command:
+<pre>$ grep Disable3DAPIs /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"Disable3DAPIs": true,</pre>
+</ocil>
+<rationale>
+This setting prevents web pages from accessing the graphics processing unit
+(GPU). Specifically, web pages cannot access the WebGL API and plugins cannot
+use the Pepper 3D API in order to reduce the attack surface.
+</rationale>
+<ident stig="DTBC0019" />
+<oval id="chromium_disable_3d_graphics_api" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_google_sync">
+<title>Disable Data Synchronization to Google</title>
+<description>
+<tt>SyncDisabled</tt> to <tt>true</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that data synchronization is disabled, run the following command:
+<pre>$ grep SyncDisabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"SyncDisabled": true,</pre>
+</ocil>
+<rationale>
+Google Sync is used to sync information between different user devices,
+this data is then stored on Google owned servers. The synced data may consist
+of information such as email, calendars, viewing history, etc. This feature must
+be disabled because the organization does not have control over the servers the
+data is stored on.
+</rationale>
+<ident stig="DTBC0020" />
+<oval id="chromium_disable_google_sync" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_protocol_schemas">
+<title>Disable Insecure And Obsolete Protocol Schemas</title>
+<description>
+Each access to a URL is handled by the browser according to the URL's "scheme".
+The "scheme" of a URL is the section before the ":". The term "protocol" is often
+mistakenly used for a "scheme". The difference is that the scheme is how the browser
+handles a URL and the protocol is how the browser communicates with a service. To
+disable insecure and obsolete protocol schema, set <tt>URLBlacklist</tt> to
+<tt><sub idref="var_url_blacklist" /></tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that data synchronization is disabled, run the following command:
+<pre>$ grep URLBlacklist /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"URLBlacklist": ["<sub idref="var_url_blacklist" />"],</pre>
+</ocil>
+<rationale>
+If a scheme or its associated protocol used by a browser is insecure or obsolete,
+vulnerabilities can be exploited resulting in exposed data or unrestricted access
+to the browser's system.
+</rationale>
+<ident stig="DTBC0021" />
+<oval id="chromium_disable_protocol_schemas" value="var_url_blacklist" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_autocomplete">
+<title>Disable the AutoFill Feature</title>
+<description>
+The AutoFill feature suggests possible matches when users are filling in forms. To
+disable the AutoFill feature, set <tt>AutoFillEnabled</tt> to <tt>false</tt> in
+the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that the AutoFill feature is disabled, run the following command:
+<pre>$ grep AutoFillEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"AutoFillEnabled": false,</pre>
+</ocil>
+<rationale>
+It is possible with the AutoFill feature that it will cache sensitive data and store
+it in the user's profile, where it might not be protected as rigorously as required by
+organizational policy.
+</rationale>
+<ident stig="DTBC0022" />
+<oval id="chromium_disable_autocomplete" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_cloud_print_sharing">
+<title>Disable Cloud Print Sharing</title>
+<description>
+Chromium has cloud sharing capabilities including sharing printers connected to the
+system. This is done via a proxy. To disable printer sharing, set <tt>CloudPrintProxyEnabled</tt>
+to <tt>false</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that the Cloud Print Sharing feature is disabled, run the following command:
+<pre>$ grep CloudPrintProxyEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"CloudPrintProxyEnabled": false,</pre>
+</ocil>
+<rationale>
+Google Chromium has the capability to act as a proxy between Google Cloud Print
+and legacy printers connected to the machine. Users can then enable the cloud
+print proxy by authentication with their Google account. 
+</rationale>
+<ident stig="DTBC0023" />
+<oval id="chromium_disable_cloud_print_sharing" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_network_prediction">
+<title>Disable Network Prediction</title>
+<description>
+To disable the network prediction feature, set <tt>DnsPrefetchingEnabled</tt>
+to <tt>false</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that network prediction is disabled, run the following command:
+<pre>$ grep DnsPrefetchingEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DnsPrefetchingEnabled": false,</pre>
+</ocil>
+<rationale>
+This controls not only DNS prefetching but also TCP and SSL preconnection
+and prerendering of web pages.
+</rationale>
+<ident stig="DTBC0025" />
+<oval id="chromium_disable_network_prediction" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_metrics_reporting">
+<title>Disable Metrics Reporting</title>
+<description>
+Whenever Chromium crashes, it sends its usage and crash-related data to Google.
+This should be disabled by setting <tt>MetricsReportingEnabled</tt> to 
+<tt>false</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that metrics reporting is disabled, run the following command:
+<pre>$ grep MetricsReportingEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"MetricsReportingEnabled": false,</pre>
+</ocil>
+<rationale>
+Anonymous reporting of usage and crash-related data is sent to Google.
+A crash report could contain sensitive information from the computer's memory.
+</rationale>
+<ident stig="DTBC0026" />
+<oval id="chromium_disable_metrics_reporting" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_search_suggestions">
+<title>Disable Search Suggestion</title>
+<description>
+Chromium tries to guess what users are searching for when users enter
+search data in the search Omnibox. This should be disabled by 
+setting <tt>SearchSuggestEnabled</tt> to <tt>false</tt> in the Chromium 
+policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that search suggestion is disabled, run the following command:
+<pre>$ grep SearchSuggestEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"SearchSuggestEnabled": false,</pre>
+</ocil>
+<rationale>
+Search suggestion should be disabled as it could lead to searches being conducted
+that were never intended to be made.
+</rationale>
+<ident stig="DTBC0027" />
+<oval id="chromium_disable_search_suggestions" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_saved_passwords">
+<title>Disable Saved Passwords</title>
+<description>
+Disable by setting <tt>ImportSavedPasswords</tt> to <tt>false</tt> in the Chromium
+policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that importing passwords is disabled, run the following command:
+<pre>$ grep ImportSavedPasswords /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"ImportSavedPasswords": false,</pre>
+</ocil>
+<rationale>
+Importing of saved passwords should be disabled as it could lead to
+unencrypted account passwords stored on the system from another browser
+to be viewed.
+</rationale>
+<ident stig="DTBC0029" />
+<oval id="chromium_disable_saved_passwords" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_incognito_mode">
+<title>Disable Incognito Mode</title>
+<description>
+Incognito Mode allows users to browse in private which prevents monitoring
+and validating user browsing habits. This capability should be disabled by
+setting <tt>IncognitoModeAvailability</tt> to <tt>1</tt> in the Chromium
+policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that incognito mode is disabled, run the following command:
+<pre>$ grep IncognitoModeAvailability /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"IncognitoModeAvailability": 1,</pre>
+</ocil>
+<rationale>
+Incognito mode allows the user to browse the Internet without recording their
+browsing history/activity. From a forensics perspective, this is unacceptable.
+Best practice requires that browser history is retained.   
+</rationale>
+<ident stig="DTBC0030" />
+<oval id="chromium_disable_incognito_mode" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_plugin_blacklist">
+<title>Disable All Plugins by Default</title>
+<description>
+Plugins are developed internally or by third party sources and are designed to extend
+Google Chromium's functionality. All plugins should be blacklisted from 
+installation by default. To blacklist all plugins set <tt>DisabledPlugins</tt>
+to <tt>*</tt> in the Chromium policy file.
+</description>
+<ocil clause="they are not disabled">
+To verify that all plugins are blacklisted, run the following command:
+<pre>$ grep DisabledPlugins /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DisabledPlugins": ["*"],</pre>
+</ocil>
+<rationale>
+Plugins can access almost anything on a system and users can enable or install them
+at will. This means they pose a high risk to any system that would allow all plugins
+to be installed by default.
+</rationale>
+<ident stig="DTBC0034" />
+<oval id="chromium_disable_plugin_blacklist" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_enable_approved_plugins">
+<title>Enable Only Approved Plugins</title>
+<description>
+An organization might need to use an internal or third party developed plugins. Any
+organizationally approved plugin should be enabled. To enable approved plugins,
+set <tt>EnabledPlugins</tt> to the list of organizationally approved plugins
+in the Chromium policy file.
+</description>
+<ocil clause="no plugins exist or it is not set to none">
+To verify that approved plugins are set, run the following command:
+<pre>$ grep EnabledPlugins /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"EnabledPlugins": ["<tt>approved_plugin1</tt>", "<tt>approved_plugin2</tt>"],</pre>
+</ocil>
+<rationale>
+The whitelist should only contain organizationally approved plugins. This is to prevent
+a user from accidently whitelisitng a malicious plugin.
+</rationale>
+<ident stig="DTBC0035" />
+<oval id="chromium_enable_approved_plugins" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_automatic_installation">
+<title>Disable Automatic Search And Installation of Plugins</title>
+<description>
+Chromium will automatically detect, search, and install plugins as required. This
+should be disabled by setting <tt>DisablePluginFinder</tt> to <tt>true</tt> in the
+Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that plugins cannot be automatically installed, run the following command:
+<pre>$ grep DisablePluginFinder /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DisablePluginFinder": true,</pre>
+</ocil>
+<rationale>
+The automatic search and installation of missing or not installed plugins should be
+disabled as this can cause significant risk if a unapproved or vulnerable plugin were
+to be installed without proper permissions or authorization.
+</rationale>
+<ident stig="DTBC0036" />
+<oval id="chromium_disable_automatic_installation" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_check_cert_revocation">
+<title>Enable Online OCSP/CRL Certificate Checks</title>
+<description>
+Certificates can become compromised, and Chromium should check that the
+certificates in its store are valid by setting <tt>EnableOnlineRevocationChecks</tt>
+to <tt>true</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not enabled">
+To verify that online OCSP/CRL checks are enabled, run the following command:
+<pre>$ grep EnableOnlineRevocationChecks /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"EnableOnlineRevocationChecks": true,</pre>
+</ocil>
+<rationale>
+Certificates are revoked when they have been compromised or are no longer valid,
+and this option protects users from submitting confidential data to a site that
+may be fraudulent or not secure.
+</rationale>
+<ident stig="DTBC0037" />
+<oval id="chromium_check_cert_revocation" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_enable_safe_browsing">
+<title>Enable the Safe Browsing Feature</title>
+<description>
+Chromium has the capability to check URLs for known malware and phishing 
+associated with websites through the Safe Browsing Feature. This can be 
+enabled by setting <tt>SafeBrowsingEnabled</tt> to <tt>true</tt> in the Chromium
+policy file.
+</description>
+<ocil clause="it is not enabled">
+To verify that the safe browsing feature is enabled, run the following command:
+<pre>$ grep SafeBrowsingEnabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"SafeBrowsingEnabled": true,</pre>
+</ocil>
+<rationale>
+Safe browsing uses a signature database to test sites when they are be loaded
+to ensure that sites do not contain any known malware.
+</rationale>
+<ident stig="DTBC0038" />
+<oval id="chromium_enable_safe_browsing" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_enable_browser_history">
+<title>Enable Saving the Browser History</title>
+<description>
+Users can enable or disable the saving of browser history in Chromium. Browser
+history should be retained by setting <tt>SavingBrowserHistoryDisabled</tt> to
+<tt>false</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not enabled">
+To verify that saving the browser history is enabled, run the following command:
+<pre>$ grep SavingBrowserHistoryDisabled /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"SavingBrowserHistoryDisabled": false,</pre>
+</ocil>
+<rationale>
+Best practice requires that browser history is retained.
+</rationale>
+<ident stig="DTBC0039" />
+<oval id="chromium_enable_browser_history" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_default_block_plugins">
+<title>Block Plugins by Default</title>
+<description>
+By default, websites are allowed to automatically run plugins.
+Users should be prompted to allow plugins to execute plugins by setting
+<tt>DefaultPluginsSetting</tt> to <tt>3</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not set correctly">
+To verify that plugins cannot run automatically, run the following command:
+<pre>$ grep DefaultPluginsSetting /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"DefaultPluginsSetting": 3,</pre>
+</ocil>
+<rationale>
+Websites should not be allowed to automatically run plugins as the plugins
+may be outdated or compromised.
+</rationale>
+<ident stig="DTBC0040" />
+<oval id="chromium_default_block_plugins" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_disable_session_cookies">
+<title>Disable Session Cookies</title>
+<description>
+To disable session only cookies sites, set <tt>CookiesSessionOnlyForUrls</tt>
+to <tt>none</tt> in the Chromium policy file.
+</description>
+<ocil clause="it is not disabled">
+To verify that sessions cookies for approved sites only are enabled,
+run the following command:
+<pre>$ grep CookiesSessionOnlyForUrls /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"CookiesSessionOnlyForUrls": ["none"],</pre>
+</ocil>
+<rationale>
+Cookies should only be allowed per session and only for approved URLs as 
+permanently stored cookies can be used for malicious intent.
+</rationale>
+<ident stig="DTBC0045" />
+<oval id="chromium_disable_session_cookies" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_trusted_home_page">
+<title>Set the Default Home Page</title>
+<description>
+When a browser is started the first web page displayed is the "home page".
+While the home page can be selected by the user, the default home page needs
+to be defined to display an approved page. To set the default home page,
+set <tt>HomepageLocation</tt> to <tt><sub idref="var_trusted_home_page" /></tt>
+in the Chromium policy file.
+</description>
+<ocil clause="it is not set correctly">
+To verify that the defaut home page is set, run the following command:
+<pre>$ grep HomepageLocation /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"HomepageLocation": "<sub idref="var_trusted_home_page" />",</pre>
+</ocil>
+<rationale>
+If no home page is defined then there is a possibility that a URL to a malicious
+site may be used as a home page which could effectively cause a denial of service
+to the browser.
+</rationale>
+<ident stig="DTBC0048" />
+<oval id="chromium_trusted_home_page" />
+<ref nist="" disa="" />
+</Rule>
+
+<Rule id="chromium_whitelist_plugin_urls">
+<title>Enable Plugins for Only Approved URLs</title>
+<description>
+In some cases, plugins utilized by organizationally approved websites may be allowed
+to be used by those websites, configure the approved URLs allowed to run plugins by
+setting <tt>PluginsAllowedForUrls</tt> to organizationally approved URLs
+in the Chromium policy file. If there are no approved URLs, this should be set
+to <tt>none</tt>
+</description>
+<ocil clause="no urls exist or it is not set to none">
+To verify that plugins are allowed for only approved URLs, 
+run the following command:
+<pre>$ grep PluginsAllowedForUrls /etc/chromium/policies/managed/*.json</pre>
+The output should contain:
+<pre>"PluginsAllowedForUrls": ["[*.]mil", "[*.]example.com", "www.example.com"],</pre>
+</ocil>
+<rationale>
+Only approved plugins for approved sites should be allowed to be utilized.
+</rationale>
+<ident stig="DTBC0051" />
+<oval id="chromium_whitelist_plugin_urls" />
+<ref nist="" disa="" />
+</Rule>
+</Group>
