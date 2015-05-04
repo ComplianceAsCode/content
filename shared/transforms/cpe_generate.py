@@ -86,12 +86,13 @@ def main():
     [objects.append(cpe_object) for cpe_object in cpe_objects]
 
     variables = ovaltree.find("./{%s}variables" % oval_ns)
-    cpe_variables = extract_referred_nodes(tests, variables, "var_ref")
-    if cpe_variables:
-        variables.clear()
-        [variables.append(cpe_variable) for cpe_variable in cpe_variables]
-    else:
-        ovaltree.remove(variables)
+    if variables:
+        cpe_variables = extract_referred_nodes(tests, variables, "var_ref")
+        if cpe_variables:
+            variables.clear()
+            [variables.append(cpe_variable) for cpe_variable in cpe_variables]
+        else:
+            ovaltree.remove(variables)
 
     # turn IDs into meaningless numbers
     translator = idtranslate.idtranslator("./output/"+idname+".ini", idname)
