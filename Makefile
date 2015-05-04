@@ -35,7 +35,7 @@ MANDIR=man
 
 # Define Makefile targets below
 
-all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox rpm zipfile
+all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox chromium rpm zipfile
 dist: fedora-dist rhel6-dist rhel7-dist
 
 fedora:
@@ -74,9 +74,13 @@ firefox:
 webmin:
 	cd Webmin/ && $(MAKE)
 
-validate: fedora rhel6 rhel7 openstack rhevm3 
+chromium:
+	cd Chromium/ && $(MAKE)
+
+validate: fedora rhel6 rhel7 openstack rhevm3 chromium
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
+	cd Chromium/ && $(MAKE) validate
 	# Enable below when content validates correctly
 	#cd RHEL/7/ && $(MAKE) validate
 	#cd OpenStack && $(MAKE) validate
@@ -106,6 +110,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents Java/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Webmin/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Chromium $(RPMBUILD)/$(PKG)
 	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
