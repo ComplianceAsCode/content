@@ -109,6 +109,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents Java/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Webmin/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Chromium $(RPMBUILD)/$(PKG)
 	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
