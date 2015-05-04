@@ -1,57 +1,27 @@
 <def-group>
   <definition class="compliance" id="firefox_preferences-shell_protocol"  version="1">
     <metadata>
-      <title>Firefox Preferences - Shell Protocol</title>
+      <title>Disable Firefox Access to Shell Protocols</title>
       <affected family="unix">
-        <platform>Mozila Firefox</platform>
+        <platform>Mozilla Firefox</platform>
       </affected>
-      <description>Although current versions of Firefox have this set to disabled by default, use of this option can be harmful.  This would allow the browser to access the Windows shell. This could allow access to the underlying system.  This check verifies that the default setting has not been changed. </description>
+      <description>Firefox can be configured to access systems shells which
+      could potentially allow Firefox and other users to access to the
+      underlying system.</description>
+      <reference source="galford" ref_id="20150424" ref_url="test_attestation"/>
       </metadata>
-  <criteria>
-     	<criteria operator="OR">
-	  <criterion comment="shell_protocol installed in /usr/local/lib/firefox" test_ref="test_shell_protocol_in_local_lib" />
-	  <criterion comment="shell_protocol installed in /usr/lib/firefox" test_ref="test_shell_protocol_in_lib" />
-	  <criterion comment="shell_protocol installed in /usr/local/lib64/firefox" test_ref="test_shell_protocol_in_local_lib64" />
-	  <criterion comment="shell_protocol installed in /usr/lib64/firefox" test_ref="test_shell_protocol_in_lib64" />
-	</criteria>
-  </criteria> 
+    <criteria>
+      <criterion comment="Disable Firefox Shell Protocol Access" test_ref="test_firefox_preferences-shell_protocol" />
+    </criteria>
   </definition>
 
-
-
-<ind:textfilecontent54_test check="all" comment="Check for shell_protocol installed in /usr/local/lib/firefox" id="test_shell_protocol_in_local_lib" version="1">
- 	<ind:object object_ref="object_shell_protocol_local_lib" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_shell_protocol_local_lib" version="1">
- 	<ind:filepath>/usr/local/lib/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("network.protocol-handler.external.shell", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" comment="Check for shell_protocol installed in /usr/lib/firefox" id="test_shell_protocol_in_lib" version="1">
- 	<ind:object object_ref="object_shell_protocol_lib" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_shell_protocol_lib" version="1">
- 	<ind:filepath>/usr/lib/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("network.protocol-handler.external.shell", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object>
- 
- <ind:textfilecontent54_test check="all" comment="Check for shell_protocol installed in /usr/local/lib64/firefox" id="test_shell_protocol_in_local_lib64" version="1">
- 	<ind:object object_ref="object_shell_protocol_local_lib64" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_shell_protocol_local_lib64" version="1">
- 	<ind:filepath>/usr/local/lib64/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("network.protocol-handler.external.shell", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object>
-
- <ind:textfilecontent54_test check="all" comment="Check for shell_protocol installed in /usr/lib64/firefox" id="test_shell_protocol_in_lib64" version="1">
- 	<ind:object object_ref="object_shell_protocol_lib64" />
- </ind:textfilecontent54_test>
- <ind:textfilecontent54_object id="object_shell_protocol_lib64" version="1">
- 	<ind:filepath>/usr/lib64/firefox/mozilla.cfg</ind:filepath>
- <ind:pattern operation="pattern match">^lockPref\("network.protocol-handler.external.shell", false\);$</ind:pattern>
- <ind:instance datatype="int">1</ind:instance>
- </ind:textfilecontent54_object>  
+  <ind:textfilecontent54_test check="all" comment="Check that the hell_protocol is disabled" id="test_firefox_preferences-shell_protocol" version="1">
+    <ind:object object_ref="object_firefox_preferences-shell_protocol" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-shell_protocol" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("network.protocol-handler.external.shell",[\s]+false\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>
