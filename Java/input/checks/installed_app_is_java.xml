@@ -68,4 +68,8 @@
   <linux:rpminfo_object id="obj_openjdk_java" version="1">
     <linux:name datatype="string" operation="pattern match">^java.*openjdk.*$</linux:name>
   </linux:rpminfo_object>
+
+  <!-- the external variable below can be removed when a valid external_variable gets used by 
+       the OVAL check content. Until such time, keep this dummy external variable in place. -->
+  <external_variable datatype="string" comment="Dummy external variable" id="var_external_var_dummy" version="1"/>
 </def-group>
