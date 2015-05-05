@@ -73,10 +73,16 @@ cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 # Add in RHEL-6 functions library for remediations
 cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name}/functions
 %endif
-%if 0%{?fedora}
 
+%if 0%{?fedora}
 # Add in core Fedora content (SCAP XCCDF and OVAL)
 cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
+
+# Add in datastream form of RHEL-5 benchmark
+#cp -a RHEL/6/dist/content/ssg-rhel5-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel5
+# Add in datastream form of RHEL benchmark(s)
+cp -a RHEL/6/dist/content/ssg-rhel6-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
+cp -a RHEL/7/dist/content/ssg-rhel7-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
 
 # Add in application content (SCAP XCCDF and OVAL)
 cp -a Java/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
