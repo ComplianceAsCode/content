@@ -77,10 +77,12 @@ webmin:
 chromium:
 	cd Chromium/ && $(MAKE)
 
-validate: fedora rhel6 rhel7 openstack rhevm3 chromium
+validate: fedora rhel6 rhel7 openstack rhevm3 chromium firefox java
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
+	cd Firefox/ && $(MAKE) validate
+	cd Java/ && $(MAKE) validate
 	# Enable below when content validates correctly
 	#cd RHEL/7/ && $(MAKE) validate
 	#cd OpenStack && $(MAKE) validate
@@ -119,6 +121,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/RHEL/6/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Chromium/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Java/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Firefox/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Webmin/ && $(MAKE) clean)
@@ -199,6 +202,7 @@ clean:
 	cd Java && $(MAKE) clean
 	cd Firefox && $(MAKE) clean
 	cd Webmin && $(MAKE) clean
+	cd Chromium && $(MAKE) clean
 	rm -f scap-security-guide.spec
 
 install: dist
