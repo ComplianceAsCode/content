@@ -36,7 +36,7 @@ MANDIR=man
 # Define Makefile targets below
 
 all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox chromium rpm zipfile
-dist: chromium-dist firefox-dist fedora-dist rhel6-dist rhel7-dist
+dist: chromium-dist firefox-dist fedora-dist java-dist rhel6-dist rhel7-dist
 
 fedora:
 	cd Fedora/ && $(MAKE)
@@ -67,6 +67,9 @@ rhevm3:
 
 java:
 	cd Java/ && $(MAKE)
+
+java-dist:
+	cd Java/ && $(MAKE) dist
 
 firefox:
 	cd Firefox/ && $(MAKE)
