@@ -38,6 +38,18 @@ states = ET.Element("states")
 variables = ET.Element("variables")
 
 
+# append new child ONLY if it's not a duplicate
+def append(element, newchild):
+    newid = newchild.get("id")
+    existing = element.find(".//*[@id='" + newid + "']")
+    if existing is not None:
+        sys.stderr.write("Notification: this ID is used more than once " +
+                         "and should represent equivalent elements: " +
+                         newid + "\n")
+    else:
+        element.append(newchild)
+
+
 def add_oval_elements(body):
     """add oval elements to the global Elements defined above"""
 
@@ -50,7 +62,7 @@ def add_oval_elements(body):
         if childnode.tag is ET.Comment:
             continue
         if childnode.tag == (ovalns + "definition"):
-            definitions.append(childnode)
+            append(definitions, childnode)
             defname = childnode.get("id")
             # extend_definition is a special case:  must include a whole other
             # definition
@@ -61,13 +73,13 @@ def add_oval_elements(body):
                 # recursively add the elements in the other file
                 add_oval_elements(includedbody)
         if childnode.tag.endswith("_test"):
-            tests.append(childnode)
+            append(tests, childnode)
         if childnode.tag.endswith("_object"):
-            objects.append(childnode)
+            append(objects, childnode)
         if childnode.tag.endswith("_state"):
-            states.append(childnode)
+            append(states, childnode)
         if childnode.tag.endswith("_variable"):
-            variables.append(childnode)
+            append(variables, childnode)
     return defname
 
 
@@ -90,7 +102,7 @@ def replace_external_vars(tree):
         node.tag = ovalns + "local_variable"
         literal = ET.Element("literal_component")
         literal.text = os.environ[extvar_id]
-        node.append(literal)
+        append(node, literal)
         # TODO: assignment of external_variable via environment vars, for
         # testing
     return tree
