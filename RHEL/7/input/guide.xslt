@@ -9,6 +9,7 @@
 
        <!-- adding profiles here -->
 		<xsl:apply-templates select="document('profiles/test.xml')" />
+		<xsl:apply-templates select="document('profiles/pci-dss.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
 		<xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
