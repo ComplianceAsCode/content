@@ -43,15 +43,16 @@ def append(element, newchild):
     newid = newchild.get("id")
     existing = element.find(".//*[@id='" + newid + "']")
     if existing is not None:
-        sys.stderr.write("Notification: this ID is used more than once " +
-                         "and should represent equivalent elements: " +
-                         newid + "\n")
+        if not silent_mode:
+            sys.stderr.write("Notification: this ID is used more than once " +
+                             "and should represent equivalent elements: " +
+                             newid + "\n")
     else:
         element.append(newchild)
 
 
 def add_oval_elements(body):
-    """add oval elements to the global Elements defined above"""
+    """Add oval elements to the global Elements defined above"""
 
     tree = ET.fromstring(header + body + footer)
     tree = replace_external_vars(tree)
@@ -84,20 +85,21 @@ def add_oval_elements(body):
 
 
 def replace_external_vars(tree):
-    """replace external_variables with local_variables, so the definition can be
+    """Replace external_variables with local_variables, so the definition can be
        tested independently of an XCCDF file"""
 
     # external_variable is a special case: we turn it into a local_variable so
     # we can test
     for node in tree.findall(".//"+ovalns+"external_variable"):
-        print "external_variable with id : " + node.get("id")
+        print ("External_variable with id : " + node.get("id"))
         extvar_id = node.get("id")
         # for envkey, envval in os.environ.iteritems():
         #     print envkey + " = " + envval
         # sys.exit()
         if extvar_id not in os.environ.keys():
-            sys.exit("external_variable specified, but no value provided via "
-                     + "environment variable")
+            print ("External_variable specified, but no value provided via "
+                  + "environment variable")
+            sys.exit(2)
         # replace tag name: external -> local
         node.tag = ovalns + "local_variable"
         literal = ET.Element("literal_component")
@@ -109,10 +111,16 @@ def replace_external_vars(tree):
 
 
 def read_ovaldefgroup_file(testfile):
-    """read oval files"""
+    """Read oval files"""
     with open(testfile, 'r') as test_file:
         body = test_file.read()
     return body
+
+
+def usage():
+    """Display script usage and exit"""
+    print ("Usage: " + sys.argv[0] + " [-q | --quiet | --silent] definition_file.xml")
+    sys.exit(2)
 
 
 def main():
@@ -121,37 +129,65 @@ def main():
     global objects
     global states
     global variables
+    global silent_mode
 
-    if len(sys.argv) < 2:
+    silent_mode = False
+    silent_mode_options = ['-q', '--quiet', '--silent']
+
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
         print ("Provide the name of an XML file, which contains" +
                " the definition to test.")
+        usage()
+
+    if len(sys.argv) == 3 and sys.argv[1] in silent_mode_options:
+        if sys.argv[2].rfind('.xml') != -1:
+            silent_mode = True
+            sys.argv.pop(1)
+        else:
+            usage()
+
+    if len(sys.argv) != 2 or sys.argv[1].rfind('.xml') == -1:
+        usage()
+
+    testfile = sys.argv[1]
+    body = read_ovaldefgroup_file(testfile)
+    defname = add_oval_elements(body)
+    ovaltree = ET.fromstring(header + footer)
+    # append each major element type, if it has subelements
+    for element in [definitions, tests, objects, states, variables]:
+        if element.getchildren():
+            ovaltree.append(element)
+    # re-map all the element ids from meaningful names to meaningless
+    # numbers
+    testtranslator = idtranslate.idtranslator("testids.ini",
+                                              "scap-security-guide.testing")
+    ovaltree = testtranslator.translate(ovaltree)
+    (ovalfile, fname) = tempfile.mkstemp(prefix=defname, suffix=".xml")
+    os.write(ovalfile, ET.tostring(ovaltree))
+    os.close(ovalfile)
+    if not silent_mode:
+        print ("Evaluating with OVAL tempfile : " + fname)
+        print ("Writing results to : " + fname + "-results")
+    cmd = "oscap oval eval --results " + fname + "-results " + fname
+    oscap_child = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+    cmd_out = oscap_child.communicate()[0]
+    if not silent_mode:
+        print cmd_out
+    if oscap_child.returncode != 0:
+        if not silent_mode:
+            print ("Error launching 'oscap' command: \n\t" + cmd)
+        sys.exit(2)
+    if 'false' in cmd_out:
+        # at least one from the evaluated OVAL definitions evaluated to
+        # 'false' result, exit with '1' to indicate OVAL scan FAIL result
         sys.exit(1)
+    # perhaps delete tempfile?
+    definitions = ET.Element("definitions")
+    tests = ET.Element("tests")
+    objects = ET.Element("objects")
+    states = ET.Element("states")
+    variables = ET.Element("variables")
 
-    for testfile in sys.argv[1:]:
-        body = read_ovaldefgroup_file(testfile)
-        defname = add_oval_elements(body)
-        ovaltree = ET.fromstring(header + footer)
-        # append each major element type, if it has subelements
-        for element in [definitions, tests, objects, states, variables]:
-            if element.getchildren():
-                ovaltree.append(element)
-        # re-map all the element ids from meaningful names to meaningless
-        # numbers
-        testtranslator = idtranslate.idtranslator("testids.ini",
-                                                  "scap-security-guide.testing")
-        ovaltree = testtranslator.translate(ovaltree)
-        (ovalfile, fname) = tempfile.mkstemp(prefix=defname, suffix=".xml")
-        os.write(ovalfile, ET.tostring(ovaltree))
-        os.close(ovalfile)
-        print "Evaluating with OVAL tempfile : " + fname
-        print "Writing results to : " + fname + "-results"
-        subprocess.call("oscap oval eval --results " + fname
-                        + "-results " + fname, shell=True)
-        # perhaps delete tempfile?
-        definitions = ET.Element("definitions")
-        tests = ET.Element("tests")
-        objects = ET.Element("objects")
-        states = ET.Element("states")
-        variables = ET.Element("variables")
-
+    # 'false' keyword wasn't found in oscap's command output
+    # exit with '0' to indicate OVAL scan TRUE result
     sys.exit(0)
