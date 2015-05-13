@@ -4,6 +4,10 @@
 
  `# yum -y install git openscap-utils python-lxml`
 
+1a. FEDORA ONLY: Install the ShellCheck package.
+
+ `# dnf -y install ShellCheck`
+
 2. Download the source code 
 
  `$ git clone https://github.com/OpenSCAP/scap-security-guide.git`
