@@ -69,6 +69,7 @@ else
 endif
 
 validate: validate-xml
+	cd $(IN)/fixes/bash; shellcheck -s bash *.sh
 ifeq ($(OVAL_5_10), 0)
 	echo "Skipping validating, use OpenSCAP 1.2.2 or later"
 else
