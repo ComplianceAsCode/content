@@ -10,7 +10,6 @@ sysctl -q -n -w SYSCTLVAR=SYSCTLVAL
 if grep --silent ^SYSCTLVAR /etc/sysctl.conf ; then
 	sed -i 's/^SYSCTLVAR.*/SYSCTLVAR = SYSCTLVAL/g' /etc/sysctl.conf
 else
-	echo "" >> /etc/sysctl.conf
-	echo "# Set SYSCTLVAR to SYSCTLVAL per security requirements" >> /etc/sysctl.conf
+	echo -e "\n# Set SYSCTLVAR to SYSCTLVAL per security requirements" >> /etc/sysctl.conf
 	echo "SYSCTLVAR = SYSCTLVAL" >> /etc/sysctl.conf
 fi
