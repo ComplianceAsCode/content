@@ -23,6 +23,7 @@ umasks:
 
 sysctls:
 	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
+	${SHARED_DIR}/create_sysctl_ipv6_checks.py sysctl_ipv6_values.csv
 
 compare:
 	diff output/ ../ | grep -v "Only in ../"
