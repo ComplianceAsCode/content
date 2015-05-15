@@ -12,6 +12,7 @@ PROD = fedora
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 OVAL_5_10 := $(shell oscap --version | grep -q "OVAL Version: 5.10.*"; echo $$?)
+SHELLCHECK_AVAIL := $(shell which shellcheck >& /dev/null; echo $$?)
 
 all: shorthand2xccdf guide content dist
 
@@ -54,7 +55,7 @@ content: shorthand2xccdf guide checks
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 ifeq ($(OVAL_5_10), 0)
-	echo "Skipping compose datastream, use OpenSCAP 1.2.2 or later"
+	@echo "Skipping datastream composition, use OpenSCAP 1.2.2 or later!"
 else
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 endif
@@ -62,16 +63,20 @@ endif
 
 validate-xml:
 ifeq ($(OVAL_5_10), 0)
-	echo "Skipping validating, use OpenSCAP 1.2.2 or later"
+	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
 else
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
 endif
 
 validate: validate-xml
+ifeq ($(SHELLCHECK_AVAIL), 0)
 	cd $(IN)/fixes/bash; shellcheck -s bash *.sh
+else
+	@echo "Skipping ShellCheck analysis, ensure shellcheck executable is present in the PATH!"
+endif
 ifeq ($(OVAL_5_10), 0)
-	echo "Skipping validating, use OpenSCAP 1.2.2 or later"
+	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
 else
 	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
