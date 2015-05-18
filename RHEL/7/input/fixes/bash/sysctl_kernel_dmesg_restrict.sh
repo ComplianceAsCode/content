@@ -10,7 +10,6 @@ sysctl -q -n -w kernel.dmesg_restrict=1
 if grep --silent ^kernel.dmesg_restrict /etc/sysctl.conf ; then
 	sed -i 's/^kernel.dmesg_restrict.*/kernel.dmesg_restrict = 1/g' /etc/sysctl.conf
 else
-	echo "" >> /etc/sysctl.conf
-	echo "# Set kernel.dmesg_restrict to 1 per security requirements" >> /etc/sysctl.conf
+	echo -e "\n# Set kernel.dmesg_restrict to 1 per security requirements" >> /etc/sysctl.conf
 	echo "kernel.dmesg_restrict = 1" >> /etc/sysctl.conf
 fi
