@@ -1236,7 +1236,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
-<Rule id="audit_manual_session_edits">
+<Rule id="audit_rules_session_events">
 <title> Record Attempts to Alter Process and Session Initiation Information</title>
 <description> The audit system already collects process information for all
 users and root. To watch for attempted manual edits of files involved in
@@ -1248,7 +1248,7 @@ storing such process information, add the following to
 </description>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
-<!-- <oval id="audit_rules_session_events" /> -->
+<oval id="audit_rules_session_events" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" />
 </Rule>
 
