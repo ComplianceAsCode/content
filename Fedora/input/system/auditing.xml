@@ -1423,11 +1423,18 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 
 <Rule id="audit_rules_immutable">
 <title>Make the <tt>auditd</tt> Configuration Immutable</title>
-<description>Add the following to <tt>/etc/audit/audit.rules</tt> in order
-to make the configuration immutable:
+<description>If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the
+default), add the following line to <tt>/etc/audit/audit.rules</tt> file in
+order to make the auditd configuration immutable:
 <pre>-e 2</pre>
-With this setting, a reboot will be required to change any
-audit rules.</description>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following line to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> in
+order to make the auditd configuration immutable:
+<pre>-e 2</pre>
+With this setting, a reboot will be required to change any audit rules.
+</description>
 <rationale>Making the audit configuration immutable prevents accidental as
 well as malicious modification of the audit rules, although it may be
 problematic if legitimate changes are needed during system
