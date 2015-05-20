@@ -1,0 +1,89 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_login_events" version="1">
+    <metadata>
+      <title>Record Attempts to Alter Login and Logout Events</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Audit rules should be configured to log successful and unsuccessful login and logout events.</description>
+      <reference source="JL" ref_id="RHEL7_20150518" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA20_20150518" ref_url="test_attestation" />
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <criterion comment="audit augenrules" test_ref="test_arle_augenrules" />
+        <criterion comment="audit augenrules faillog" test_ref="test_arle_faillog_augenrules" />
+        <criterion comment="audit augenrules lastlog" test_ref="test_arle_lastlog_augenrules" />
+      </criteria>
+
+      <!-- Test the auditctl case -->
+      <criteria operator="AND">
+        <criterion comment="audit auditctl" test_ref="test_arle_auditctl" />
+        <criterion comment="audit auditctl faillog" test_ref="test_arle_faillog_auditctl" />
+        <criterion comment="audit auditctl lastlog" test_ref="test_arle_lastlog_auditctl" />
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_arle_augenrules" version="1">
+    <ind:object object_ref="object_arle_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_augenrules" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules faillog" id="test_arle_faillog_augenrules" version="1">
+    <ind:object object_ref="object_arle_faillog_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_faillog_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/faillog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules lastlog" id="test_arle_lastlog_augenrules" version="1">
+    <ind:object object_ref="object_arle_lastlog_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_lastlog_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test the auditctl case -->
+  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_arle_auditctl" version="1">
+    <ind:object object_ref="object_arle_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_auditctl" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl faillog" id="test_arle_faillog_auditctl" version="1">
+    <ind:object object_ref="object_arle_faillog_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_faillog_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/faillog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl lastlog" id="test_arle_lastlog_auditctl" version="1">
+    <ind:object object_ref="object_arle_lastlog_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_lastlog_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
