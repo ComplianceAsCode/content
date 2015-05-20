@@ -1237,11 +1237,21 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 </Rule>
 
 <Rule id="audit_rules_session_events">
-<title> Record Attempts to Alter Process and Session Initiation Information</title>
-<description> The audit system already collects process information for all
-users and root. To watch for attempted manual edits of files involved in
-storing such process information, add the following to
-<tt>/etc/audit/audit.rules</tt>:
+<title>Record Attempts to Alter Process and Session Initiation Information</title>
+<description>The audit system already collects process information for all
+users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>auditctl</tt> utility to read audit rules during daemon startup (the
+default), add the following lines to <tt>/etc/audit/audit.rules</tt> file in
+order to watch for attempted manual edits of files involved in storing such
+process information:
+<pre>-w /var/run/utmp -p wa -k session
+-w /var/log/btmp -p wa -k session
+-w /var/log/wtmp -p wa -k session</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+program to read audit rules during daemon startup, add the following lines to a
+file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>
+in order to watch for attempted manual edits of files involved in storing such
+process information:
 <pre>-w /var/run/utmp -p wa -k session
 -w /var/log/btmp -p wa -k session
 -w /var/log/wtmp -p wa -k session</pre>
