@@ -12,8 +12,13 @@ timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 conf_file = 'oval.config'
 footer = '</oval_definitions>'
 
-RHEL = 'Red Hat Enterpise Linux'
+# SSG Makefile to official product name mapping
+CHROMIUM = 'Google Chromium Browser'
 FEDORA = 'Fedora'
+FIREFOX = 'Mozilla Firefox'
+JAVA = 'Java Runtime Environment'
+RHEL = 'Red Hat Enterpise Linux'
+WEBMIN = 'Webmin'
 
 
 def _header(schema_version):
@@ -63,13 +68,25 @@ def parse_conf_file(conf_file, product):
     return oval_version, multi_platform
 
 
-def multi_os(version):
-    if re.findall('rhel', version):
-        multi_os = RHEL
-    if re.findall('fedora', version):
-        multi_os = FEDORA
+def map_product(version):
+    """Maps SSG Makefile internal product name to official product name"""
 
-    return multi_os
+    product_name = None
+
+    if re.findall('chromium', version):
+        product_name = CHROMIUM
+    if re.findall('fedora', version):
+        product_name = FEDORA
+    if re.findall('firefox', version):
+        product_name = FIREFOX
+    if re.findall('java', version):
+        product_name = JAVA
+    if re.findall('rhel', version):
+        product_name = RHEL
+    if re.findall('webmin', version):
+        product_name = WEBMIN
+
+    return product_name
 
 
 def add_platforms(xml_tree, multi_platform):
@@ -80,12 +97,12 @@ def add_platforms(xml_tree, multi_platform):
                     for platforms in multi_platform[plat_elem.text]:
                         for plat in multi_platform[platforms]:
                             platform = ET.Element('platform')
-                            platform.text = multi_os(platforms) + ' ' + plat
+                            platform.text = map_product(platforms) + ' ' + plat
                             affected.insert(1, platform)
                 else:
                     for platforms in multi_platform[plat_elem.text]:
                         platform = ET.Element('platform')
-                        platform.text = multi_os(plat_elem.text) + ' ' + platforms
+                        platform.text = map_product(plat_elem.text) + ' ' + platforms
                         affected.insert(0, platform)
             except KeyError:
                 pass
