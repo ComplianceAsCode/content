@@ -1,7 +1,9 @@
 IN = input
 OUT = output
+BUILD = build
 TRANS = transforms
 SHARED = ../shared
+SHARED_CHECKS = $(SHARED)/oval
 REFS = $(SHARED)/references
 CONF = ../config
 UTILS = utils
@@ -9,6 +11,7 @@ DIST = dist
 
 ID = ssg
 PROD = fedora
+PROD_CHECKS = $(BUILD)/$(PROD)_checks
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 OVAL_5_10 := $(shell oscap --version | grep -q "OVAL Version: 5.10.*"; echo $$?)
@@ -34,8 +37,13 @@ shorthand2xccdf: shorthand-guide
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
-	xmlwf $(IN)/checks/*.xml
-	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+	# Make intermediate $(PROD_CHECKS) directory to hold final list of OVAL checks for $(PROD)
+	mkdir -p $(PROD_CHECKS)
+	# Search $(SHARED_CHECKS) and $(IN)/checks directories to find all product specific OVAL checks,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_CHECKS) directory
+	find $(SHARED_CHECKS) $(IN)/checks -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	xmlwf $(PROD_CHECKS)/*.xml
+	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(PROD_CHECKS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
@@ -98,3 +106,4 @@ clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -f $(IN)/fixes/bash/templates/output/*.sh
 	rm -rf $(DIST)/content
+	rm -rf $(BUILD)
