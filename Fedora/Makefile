@@ -66,7 +66,8 @@ ifeq ($(OVAL_5_10), 0)
 	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
 else
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 endif
 
 validate: validate-xml
@@ -79,7 +80,6 @@ ifeq ($(OVAL_5_10), 0)
 	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
 else
 	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
-	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 endif
 
 # items in dist are expected for distribution in an rpm
