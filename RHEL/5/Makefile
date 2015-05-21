@@ -121,12 +121,13 @@ submission-stig-check: table-stigs
 
 validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
+	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate: validate-xml
 	cd output; ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
-	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
