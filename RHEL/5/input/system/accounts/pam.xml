@@ -437,7 +437,7 @@ Note that passwords which are changed on compromised systems will still be compr
 <ref nist="IAIA-1,IAIA-2" disa="195" />
 </Rule>
 
-<Rule id="accounts_password_reuse_limit" severity="medium">
+<Rule id="accounts_password_pam_unix_remember" severity="medium">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can
 be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
@@ -455,7 +455,7 @@ The output should show the following at the end of the line:
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
 <ident stig="GEN000800" />
-<oval id="accounts_password_reuse_limit" value="password_history_retain_number" />
+<oval id="accounts_password_pam_unix_remember" value="password_history_retain_number" />
 <ref nist="IAIA-1,IAIA-2" disa="200" />
 </Rule>
 </Group>
