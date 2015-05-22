@@ -27,7 +27,7 @@ be expressed by the '\n' character and special characters like parentheses and q
 <value selector="dod_short">I\'ve[\s\n]+read[\s\n]+\&amp;[\s\n]+consent[\s\n]+to[\s\n]+terms[\s\n]+in[\s\n]+IS[\s\n]+user[\s\n]+agreem\'t.</value>
 </Value>
 
-<Rule id="set_system_login_banner" severity="medium">
+<Rule id="banner_etc_issue" severity="medium">
 <title>Modify the System Login Banner</title>
 <description>
 To configure the system login banner:
@@ -161,7 +161,7 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/disable
 <rationale>Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.</rationale>
-<!--oval id="dconf_gnome_disable_user_list" /-->
+<oval id="dconf_gnome_disable_user_list" />
 <ref nist="AC-23" />
 </Rule>
 
