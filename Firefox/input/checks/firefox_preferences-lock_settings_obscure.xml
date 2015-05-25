@@ -3,7 +3,7 @@
     <metadata>
       <title>Prevent Users from Changing Firefox Configuration Settings</title>
       <affected family="unix">
-        <platform>Mozila Firefox</platform>
+        <platform>Mozilla Firefox</platform>
       </affected>
       <description>Locked settings prevents users from accessing about:config and
       changing the security settings set by the system administrator.</description>
@@ -22,5 +22,5 @@
     <ind:filename operation="pattern match">^.*\.js$</ind:filename>
     <ind:pattern operation="pattern match">^pref\("general.config.obscure_value",[\s]+0\);$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>  
+  </ind:textfilecontent54_object>
 </def-group>
