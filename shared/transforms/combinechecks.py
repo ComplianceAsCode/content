@@ -12,8 +12,13 @@ timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 conf_file = 'oval.config'
 footer = '</oval_definitions>'
 
-RHEL = 'Red Hat Enterpise Linux'
+# SSG Makefile to official product name mapping
+CHROMIUM = 'Google Chromium Browser'
 FEDORA = 'Fedora'
+FIREFOX = 'Mozilla Firefox'
+JAVA = 'Java Runtime Environment'
+RHEL = 'Red Hat Enterprise Linux'
+WEBMIN = 'Webmin'
 
 
 def _header(schema_version):
@@ -63,13 +68,68 @@ def parse_conf_file(conf_file, product):
     return oval_version, multi_platform
 
 
-def multi_os(version):
-    if re.findall('rhel', version):
-        multi_os = RHEL
-    if re.findall('fedora', version):
-        multi_os = FEDORA
+def map_product(version):
+    """Maps SSG Makefile internal product name to official product name"""
 
-    return multi_os
+    product_name = None
+
+    if re.findall('chromium', version):
+        product_name = CHROMIUM
+    if re.findall('fedora', version):
+        product_name = FEDORA
+    if re.findall('firefox', version):
+        product_name = FIREFOX
+    if re.findall('java', version):
+        product_name = JAVA
+    if re.findall('rhel', version):
+        product_name = RHEL
+    if re.findall('webmin', version):
+        product_name = WEBMIN
+
+    return product_name
+
+def check_is_applicable_for_product(oval_check_def, product):
+    """Based on the <platform> specifier of the OVAL check determine if this
+    OVAL check is applicable for this product. Return 'True' if so, 'False'
+    otherwise"""
+
+    product_version = None
+    match = re.search(r'\d+$', product)
+    if match is not None:
+        product_version = product[-1:]
+        product = product[:-1]
+
+    # Define general platforms
+    multi_platforms = ['<platform>multi_platform_all',
+                       '<platform>multi_platform_' + product ]
+
+    # First test if OVAL check isn't for 'multi_platform_all' or
+    # 'multi_platform_' + product
+    for mp in multi_platforms:
+        if mp in oval_check_def and product in ['rhel', 'fedora']:
+            return True
+
+    # Current SSG checks aren't unified which element of '<platform>'
+    # and '<product>' to use as OVAL AffectedType metadata element,
+    # e.g. Chromium content uses both of them across the various checks
+    # Thus for now check both of them when checking concrete platform / product
+    affected_type_elements = ['<platform>', '<product>']
+
+    for afftype in affected_type_elements:
+        # Get official name for product (prefixed with content of afftype)
+        product_name = afftype + map_product(product)
+        # Append the product version to the official name
+        if product_version is not None:
+            product_name += ' ' + product_version
+
+        # Test if this OVAL check is for the concrete product version
+        if product_name in oval_check_def:
+            return True
+
+    # OVAL check isn't neither a multi platform one, nor isn't applicable
+    # for this product => return False to indicate that
+
+    return False
 
 
 def add_platforms(xml_tree, multi_platform):
@@ -80,12 +140,12 @@ def add_platforms(xml_tree, multi_platform):
                     for platforms in multi_platform[plat_elem.text]:
                         for plat in multi_platform[platforms]:
                             platform = ET.Element('platform')
-                            platform.text = multi_os(platforms) + ' ' + plat
+                            platform.text = map_product(platforms) + ' ' + plat
                             affected.insert(1, platform)
                 else:
                     for platforms in multi_platform[plat_elem.text]:
                         platform = ET.Element('platform')
-                        platform.text = multi_os(plat_elem.text) + ' ' + platforms
+                        platform.text = map_product(plat_elem.text) + ' ' + platforms
                         affected.insert(0, platform)
             except KeyError:
                 pass
@@ -108,14 +168,18 @@ def append(element, newchild):
     else:
         element.append(newchild)
 
-def checks():
+def checks(product):
     # concatenate all XML files in the checks directory, to create the
     # document body
     body = ""
+    included_checks_count = 0
     for filename in os.listdir(sys.argv[3]):
         if filename.endswith(".xml"):
             with open(sys.argv[3] + "/" + filename, 'r') as xml_file:
-                body = body + xml_file.read()
+                xml_content = xml_file.read()
+                if check_is_applicable_for_product(xml_content, product):
+                    body = body + xml_content
+                    included_checks_count += 1
 
     if len(sys.argv) == 6:
         for filename in os.listdir(sys.argv[4]):
@@ -128,6 +192,8 @@ def checks():
                         body = body + filecontent
                     elif '<platform>' + sys.argv[6] + '</platform>' in filecontent:
                         body = body + filecontent
+
+    sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL document.\n" % included_checks_count)
 
     return body
 
@@ -147,7 +213,7 @@ def main():
         print 'The directory specified does not contain the %s file!' % conf_file
         sys.exit(1)
 
-    body = checks()
+    body = checks(product)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
