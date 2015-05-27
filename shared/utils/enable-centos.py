@@ -36,11 +36,12 @@ CENTOS_NOTICE = \
     "<ul>\n" \
     "<li><i>CentOS</i> is not an exact copy of " \
     "<i>Red Hat Enterprise Linux</i>. There may be configuration differences " \
-    "that produce both false positives and false negatives. If this occurs " \
+    "that produce false positives and/or false negatives. If this occurs " \
     "please file a bug report.</li>\n" \
     "\n" \
     "<li><i>CentOS</i> has its own build system, compiler options, patchsets, " \
-    "and is a community-led operating system, <i>CentOS</i> does not inherit " \
+    "and is a community supported, non-commercial operating system. " \
+    "<i>CentOS</i> does not inherit " \
     "certifications or evaluations from <i>Red Hat Enterprise Linux</i>. As " \
     "such, some configuration rules (such as those requiring " \
     "<i>FIPS 140-2</i> encryption) will continue to fail on <i>CentOS</i>.</li>\n" \
