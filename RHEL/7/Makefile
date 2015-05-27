@@ -113,6 +113,9 @@ content: shorthand2xccdf guide checks
 #       Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+#   Make CentOS variants of XCCDF and Source DataStream
+	$(SHARED)/$(UTILS)/enable-centos.py $(OUT)/$(ID)-$(PROD)-xccdf.xml $(OUT)/$(ID)-centos7-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-centos.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-centos7-ds.xml
 
 content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml 
@@ -132,6 +135,8 @@ validate-xml:
 	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
+	oscap xccdf validate-xml $(OUT)/$(ID)-centos7-xccdf.xml
+	oscap ds sds-validate $(OUT)/$(ID)-centos7-ds.xml
 
 validate: validate-xml
 	cd output; ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
@@ -152,6 +157,8 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide.html $(DIST)/guide
+	cp $(OUT)/$(ID)-centos7-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-centos7-ds.xml $(DIST)/content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
