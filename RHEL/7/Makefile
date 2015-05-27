@@ -149,6 +149,8 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide.html $(DIST)/guide
+	cp $(OUT)/$(ID)-centos7-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-centos7-ds.xml $(DIST)/content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
