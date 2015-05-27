@@ -73,7 +73,7 @@ def add_centos_cpes(elem, namespace):
         affected = affected or add_centos_cpes(child, namespace)
 
     # precompute this so that we can affect the tree while iterating
-    children = list(elem.iterfind("{%s}platform" % (namespace)))
+    children = list(elem.findall(".//{%s}platform" % (namespace)))
 
     for child in children:
         idref = child.get("idref")
@@ -98,14 +98,14 @@ def add_centos_notice(benchmark, namespace):
 
     index = -1
     prev_element = None
-    existing_notices = list(benchmark.iterfind("{%s}notice" % (namespace)))
+    existing_notices = list(benchmark.findall("./{%s}notice" % (namespace)))
     if len(existing_notices) > 0:
         prev_element = existing_notices[0]
         # insert before the first notice
         index = list(benchmark).index(prev_element)
     else:
         existing_descriptions = list(
-            benchmark.iterfind("{%s}description" % (namespace))
+            benchmark.findall("./{%s}description" % (namespace))
         )
         prev_element = existing_descriptions[-1]
         # insert after the last description
@@ -142,14 +142,16 @@ def main():
     tree = ElementTree.ElementTree()
     tree.parse(input_)
 
+    root = tree.getroot()
+
     benchmarks = []
     benchmarks.extend([
         (XCCDF11_NS, elem)
-        for elem in list(tree.iter("{%s}Benchmark" % (XCCDF11_NS)))
+        for elem in list(root.findall(".//{%s}Benchmark" % (XCCDF11_NS)))
     ])
     benchmarks.extend([
         (XCCDF12_NS, elem)
-        for elem in list(tree.iter("{%s}Benchmark" % (XCCDF12_NS)))
+        for elem in list(root.findall(".//{%s}Benchmark" % (XCCDF12_NS)))
     ])
 
     for namespace, benchmark in benchmarks:
