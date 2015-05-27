@@ -29,10 +29,9 @@ CENTOS_NOTICE = \
     "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
     "benchmark developed for <i>Red Hat Enterprise Linux</i>. It has been " \
     "modified through an automated process to remove specific dependencies " \
-    "on <i>Red Hat Enterprise Linux</i> and to function with <i>CentOS</i> " \
-    "&#8212; <i>Community Enterprise Operating System</i>. The result is a " \
-    "generally useful <i>SCAP Security Guide</i> benchmark with the following " \
-    "caveats:</p>\n" \
+    "on <i>Red Hat Enterprise Linux</i> and to function with <i>CentOS</i>. " \
+    "The result is a generally useful <i>SCAP Security Guide</i> benchmark " \
+    "with the following caveats:</p>\n" \
     "<ul>\n" \
     "<li><i>CentOS</i> is not an exact copy of " \
     "<i>Red Hat Enterprise Linux</i>. There may be configuration differences " \
