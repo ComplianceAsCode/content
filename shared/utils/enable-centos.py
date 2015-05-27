@@ -96,17 +96,21 @@ def add_centos_notice(benchmark, namespace):
     """Adds CentOS notice as the first notice to given benchmark.
     """
 
+    index = -1
     prev_element = None
     existing_notices = list(benchmark.iterfind("{%s}notice" % (namespace)))
     if len(existing_notices) > 0:
         prev_element = existing_notices[0]
+        # insert before the first notice
+        index = list(benchmark).index(prev_element)
     else:
         existing_descriptions = list(
             benchmark.iterfind("{%s}description" % (namespace))
         )
         prev_element = existing_descriptions[-1]
+        # insert after the last description
+        index = list(benchmark).index(prev_element) + 1
 
-    index = list(benchmark).index(prev_element)
     if index == -1:
         raise RuntimeError(
             "Can't find existing notices or description in benchmark '%s'." %
