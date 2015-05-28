@@ -34,11 +34,16 @@ SL_NOTICE = \
     "with the following caveats:</p>\n" \
     "<ul>\n" \
     "<li><i>Scientifc Linux</i> is not an exact copy of " \
-    "<i>Red Hat Enterprise Linux</i>. There may be configuration differences " \
-    "that produce false positives and/or false negatives. If this occurs " \
-    "please file a bug report.</li>\n" \
+    "<i>Red Hat Enterprise Linux</i>. Scientific Linux is a Linux distribution" \
+    "produced by <i>Fermi National Accelerator Laboratory</i>. It is a free and" \
+    "open source operating system based on <i>Red Hat Enterprise Linux</i> and aims" \
+    "to be \"as close to the commercial enterprise distribution as we can get it.\"" \
+    "There may be configuration differences that produce false positives and/or" \
+    "false negatives. If this occurs please file a bug report.</li>\n" \
     "\n" \
-    "<li><i>Scientifc Linux</i> has its own build system, compiler options, patchsets, " \
+    "<li><i>Scientifc Linux</i> is derived from the free and open source software" \
+    "made available by Red Hat, but it is not produced, maintained or supported by <i>Red Hat</i>." \
+    "<i>Scientifc Linux</i> has its own build system, compiler options, patchsets, " \
     "and is a community supported, non-commercial operating system. " \
     "<i>Scientifc Linux</i> does not inherit " \
     "certifications or evaluations from <i>Red Hat Enterprise Linux</i>. As " \
