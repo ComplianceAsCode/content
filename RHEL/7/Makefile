@@ -116,6 +116,9 @@ content: shorthand2xccdf guide checks
 #   Make CentOS variants of XCCDF and Source DataStream
 	$(SHARED)/$(UTILS)/enable-centos.py $(OUT)/$(ID)-$(PROD)-xccdf.xml $(OUT)/$(ID)-centos7-xccdf.xml
 	$(SHARED)/$(UTILS)/enable-centos.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-centos7-ds.xml
+#   Make Scientific Linux variants of XCCDF and Source DataStream
+	$(SHARED)/$(UTILS)/enable-sl.py $(OUT)/$(ID)-$(PROD)-xccdf.xml $(OUT)/$(ID)-sl7-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-sl.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-sl7-ds.xml
 
 content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml 
@@ -137,6 +140,8 @@ validate-xml:
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 	oscap xccdf validate-xml $(OUT)/$(ID)-centos7-xccdf.xml
 	oscap ds sds-validate $(OUT)/$(ID)-centos7-ds.xml
+	oscap xccdf validate-xml $(OUT)/$(ID)-sl7-xccdf.xml
+	oscap ds sds-validate $(OUT)/$(ID)-sl7-ds.xml
 
 validate: validate-xml
 	cd output; ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
@@ -159,6 +164,8 @@ dist: tables guide content
 	cp $(OUT)/*-guide.html $(DIST)/guide
 	cp $(OUT)/$(ID)-centos7-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-centos7-ds.xml $(DIST)/content
+	cp $(OUT)/$(ID)-sl7-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-sl7-ds.xml $(DIST)/content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
