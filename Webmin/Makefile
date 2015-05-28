@@ -10,7 +10,7 @@ DIST = dist
 ID = ssg
 PROD = webmin
 
-OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
+OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 
 all: shorthand2xccdf tables guide content dist
 #all: stats shorthand2xccdf tables guide content dist
@@ -21,7 +21,7 @@ all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(TRANS)/includelogo.xslt $(IN)/guide.xml
+	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
 	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
 else
 	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
