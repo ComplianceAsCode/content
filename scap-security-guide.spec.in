@@ -59,6 +59,9 @@ mkdir -p %{buildroot}%{_mandir}/en/man8/
 # Add in manpage
 cp -a docs/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
 
+# Add functions library for remediations
+cp -a shared/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name}/functions
+
 %if 0%{?rhel}
 mkdir -p %{buildroot}%{_datadir}/%{name}
 
@@ -70,9 +73,6 @@ cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 #cp -a Java/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 #cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 #cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-
-# Add in RHEL-6 functions library for remediations
-cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name}/functions
 %endif
 
 %if 0%{?fedora}

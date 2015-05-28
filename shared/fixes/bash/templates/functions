@@ -1,8 +1,8 @@
 # -*-Shell-script-*-
 #
 # functions     This file contains functions to be used by most or all
-#               audit remediation shell scripts in the scap-security-guide's
-#               RHEL/6/input/fixes/bash/ directory.
+#               scripts in the scap-security-guide's 
+#               content/input/fixes/bash/ directory.
 #
 
 
@@ -192,4 +192,19 @@ else
 
         echo "-w $path -p $required_access_bits -k $key" >> $AUDIT_RULES
 fi
+}
+
+
+# Function to consistently append to file as well as make 
+# sure that a newline is added before appending the strings
+function append_to_file {
+        local data_string=$"$1"
+        local filepath=$2
+
+        if ! [[ $(tail -c1 "$filepath" | wc -l) -gt 0 ]]
+        then
+                echo -e "\n$data_string" >> "$filepath"
+        else
+                echo -e "$data_string" >> "$filepath"
+        fi
 }
