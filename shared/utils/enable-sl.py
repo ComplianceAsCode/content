@@ -18,10 +18,10 @@ XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 
 RHEL_SL_CPE_MAPPING = {
-    "cpe:/o:redhat:enterprise_linux:4": "cpe:/o:scientific:linux:4",
-    "cpe:/o:redhat:enterprise_linux:5": "cpe:/o:scientific:linux:5",
-    "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:scientific:linux:6",
-    "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientific:linux:7",
+    "cpe:/o:redhat:enterprise_linux:4": "cpe:/o:scientificlinux:scientificlinux:4",
+    "cpe:/o:redhat:enterprise_linux:5": "cpe:/o:scientificlinux:scientificlinux:5",
+    "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:scientificlinux:scientificlinux:6",
+    "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
 }
 
 SL_NOTICE = \
