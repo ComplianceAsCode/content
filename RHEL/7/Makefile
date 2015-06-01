@@ -114,11 +114,11 @@ content: shorthand2xccdf guide checks
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 #   Make CentOS variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-centos.py $(OUT)/$(ID)-$(PROD)-xccdf.xml $(OUT)/$(ID)-centos7-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-centos.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-centos7-ds.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-centos7-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-centos7-ds.xml
 #   Make Scientific Linux variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-sl.py $(OUT)/$(ID)-$(PROD)-xccdf.xml $(OUT)/$(ID)-sl7-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-sl.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-sl7-ds.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl7-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl7-ds.xml
 
 content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml 
