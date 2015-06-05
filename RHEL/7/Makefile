@@ -14,6 +14,7 @@ PROD = rhel7
 PROD_CHECKS = $(BUILD)/$(PROD)_checks
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
 
 all: shorthand2xccdf tables guide content dist
 
@@ -45,6 +46,13 @@ checks:
 	# Search $(SHARED_CHECKS) and $(IN)/checks directories to find all product specific OVAL checks,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_CHECKS) directory
 	find $(SHARED_CHECKS) $(IN)/checks -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
+	# into final list of OVAL checks
+ifeq ($(OVAL_5_11), 0)
+	find $(IN)/checks/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	# Update requested RHEL-7 OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
+	sed -i "s/^\(rhel7_oval_version = \).*/\15.11/" $(CONF)/oval\.config
+endif
 	xmlwf $(PROD_CHECKS)/*.xml
 	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(PROD_CHECKS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
