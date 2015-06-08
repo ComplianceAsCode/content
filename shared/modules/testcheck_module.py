@@ -104,7 +104,7 @@ def replace_external_vars(tree):
         node.tag = ovalns + "local_variable"
         literal = ET.Element("literal_component")
         literal.text = os.environ[extvar_id]
-        append(node, literal)
+        node.append(literal)
         # TODO: assignment of external_variable via environment vars, for
         # testing
     return tree
