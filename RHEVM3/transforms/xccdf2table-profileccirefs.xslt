@@ -142,7 +142,7 @@
 
 			<td>
 			<!-- print pretty visual indication of testing data -->
-			<xsl:if test="$testinfo and cdf:reference[@href='test_attestation']">
+			<xsl:if test="$testinfo and cdf:reference[@href=$ssg-contributors-uri]">
 				<!-- add green border on left if test attestation found -->
 				<xsl:attribute name="style">border-left:solid thick lime</xsl:attribute>
 			</xsl:if>
@@ -152,8 +152,11 @@
 
 			<!-- print the test attestation info -->
 			<xsl:if test="$testinfo">
-				<xsl:for-each select="cdf:reference[@href='test_attestation']">
-					<br/><br/><i>Tested on <xsl:value-of select="dc:date"/> by <xsl:value-of select="dc:contributor"/>.</i>
+				<!-- in the XCCDF -->
+				<xsl:for-each select="cdf:reference[@href=$ssg-contributors-uri]">
+					<!--    Process the text() of test_attestation reference to drop
+						'Test attestation on' prefix and keep only date and contributor -->
+					<br/><i>Manual check tested on <xsl:value-of select="substring-after(text(), 'Test attestation on ')"/>.</i>
 				</xsl:for-each>
 			</xsl:if>
 			</td>

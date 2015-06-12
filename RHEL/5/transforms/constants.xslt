@@ -12,6 +12,7 @@
 <xsl:variable name="dcid63uri">not_officially_available</xsl:variable>
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/cci/index.html</xsl:variable>
 <xsl:variable name="disa-srguri">http://iase.disa.mil/srgs</xsl:variable>
+<xsl:variable name="ssg-contributors-uri">https://github.com/OpenSCAP/scap-security-guide/wiki/Contributors</xsl:variable>
 
 <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
 
