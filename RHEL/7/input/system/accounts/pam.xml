@@ -102,12 +102,7 @@ are not the previous password reversed, and are not simply a change
 of case from the previous password. It can also require passwords to
 be in certain character classes.
 <br /><br />
-The <tt>pam_passwdqc</tt> PAM module also provides the ability to enforce
-stringent password strength requirements. It is provided
-in an RPM of the same name and can be configured by setting the configuration
-settings in <tt>/etc/passwdqc.conf</tt>.
-<br /><br />
-The man pages <tt>pam_cracklib(8)</tt> and <tt>pam_passwdqc(8)</tt>
+The man pages <tt>pam_pwquality(8)</tt> and <tt>pam_cracklib(8)</tt>
 provide information on the capabilities and configuration of
 each.</description>
 
@@ -459,12 +454,13 @@ Note that passwords which are changed on compromised systems will still be compr
 
 <Rule id="accounts_password_pam_minclass">
 <title>Set Password Strength Minimum Different Categories</title>
-<description>The pam_cracklib module's <tt>minclass</tt> parameter controls requirements for
-usage of different character classes, or types, of character that must exist in a password
-before it is considered valid. For example, setting this value to three (3) requires that
-any password must have characters from at least three different categories in order to be
-approved. The default value is zero (0), meaning there are no required classes. There are
-four categories available:
+<description>The pam_pwquality module's <tt>minclass</tt> parameter controls
+requirements for usage of different character classes, or types, of character
+that must exist in a password before it is considered valid. For example,
+setting this value to three (3) requires that any password must have characters
+from at least three different categories in order to be approved. The default
+value is zero (0), meaning there are no required classes. There are four
+categories available:
 <pre>
 * Upper-case characters
 * Lower-case characters
