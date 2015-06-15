@@ -235,9 +235,8 @@
 
    <xsl:template match="tested">
       <reference>
-        <xsl:attribute name="href">test_attestation</xsl:attribute>
-            <dc:contributor><xsl:value-of select="@by" /></dc:contributor>
-            <dc:date><xsl:value-of select="@on" /></dc:date>
+        <xsl:attribute name="href"><xsl:value-of select="$ssg-contributors-uri" /></xsl:attribute>
+        <xsl:value-of select="concat('Test attestation on ', @on, ' by ', @by)" />
       </reference>
    </xsl:template>
 
