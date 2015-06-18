@@ -98,13 +98,15 @@ tables: table-refs table-idents table-stigs
 #tables: table-refs table-idents table-srgmap table-stigs
 
 content: shorthand2xccdf guide checks
-#	the relabelids.py script chdirs to ./output, so refer to files from there.
-#	its second argument controls the IDs, as well as the output filenames.
-#	thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
+#	The relabelids.py script chdirs to ./output, so refer to files from there.
+#	Its second argument controls the IDs, as well as the output filenames.
+#	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
-# 	Once things are relabelled, create a datastream
+#	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
+	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
+#	Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
 		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
@@ -114,10 +116,10 @@ content: shorthand2xccdf guide checks
 #	Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-#   Make CentOS variants of XCCDF and Source DataStream
+#	Make CentOS variants of XCCDF and Source DataStream
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-centos6-xccdf.xml
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-centos6-ds.xml
-#   Make Scientific Linux variants of XCCDF and Source DataStream
+#	Make Scientific Linux variants of XCCDF and Source DataStream
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl6-xccdf.xml
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl6-ds.xml
 
