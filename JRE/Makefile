@@ -8,7 +8,7 @@ UTILS = utils
 DIST = dist
 
 ID = ssg
-PROD = java
+PROD = jre
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 

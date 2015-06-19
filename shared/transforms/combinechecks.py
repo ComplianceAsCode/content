@@ -16,7 +16,7 @@ footer = '</oval_definitions>'
 CHROMIUM = 'Google Chromium Browser'
 FEDORA = 'Fedora'
 FIREFOX = 'Mozilla Firefox'
-JAVA = 'Java Runtime Environment'
+JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 
@@ -79,8 +79,8 @@ def map_product(version):
         product_name = FEDORA
     if re.findall('firefox', version):
         product_name = FIREFOX
-    if re.findall('java', version):
-        product_name = JAVA
+    if re.findall('jre', version):
+        product_name = JRE
     if re.findall('rhel', version):
         product_name = RHEL
     if re.findall('webmin', version):

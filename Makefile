@@ -65,11 +65,11 @@ openstack:
 rhevm3:
 	cd RHEVM3 && $(MAKE)
 
-java:
-	cd Java/ && $(MAKE)
+jre:
+	cd JRE/ && $(MAKE)
 
-java-dist:
-	cd Java/ && $(MAKE) dist
+jre-dist:
+	cd JRE/ && $(MAKE) dist
 
 firefox:
 	cd Firefox/ && $(MAKE)
@@ -91,7 +91,7 @@ validate: fedora rhel6 rhel7 openstack rhevm3 chromium firefox java
 	cd RHEL/6/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
-	cd Java/ && $(MAKE) validate
+	cd JRE/ && $(MAKE) validate
 	# Enable below when content validates correctly
 	#cd RHEL/7/ && $(MAKE) validate
 	#cd OpenStack && $(MAKE) validate
@@ -118,7 +118,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents RHEL/6/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/7/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
-	cp -r --preserve=links --parents Java/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents JRE/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Webmin/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Chromium $(RPMBUILD)/$(PKG)
@@ -131,7 +131,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Chromium/ && $(MAKE) clean)
-	(cd $(RPMBUILD)/$(PKG)/Java/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/JRE/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Firefox/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Webmin/ && $(MAKE) clean)
 
@@ -208,7 +208,7 @@ clean:
 	cd OpenStack && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
-	cd Java && $(MAKE) clean
+	cd JRE && $(MAKE) clean
 	cd Firefox && $(MAKE) clean
 	cd Webmin && $(MAKE) clean
 	cd Chromium && $(MAKE) clean
