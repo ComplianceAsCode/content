@@ -5,7 +5,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
        <!-- adding profiles here -->
-		<xsl:apply-templates select="document('profiles/webmin.xml')" />
+		<xsl:apply-templates select="document('profiles/common.xml')" />
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>
                  <description>A conditional clause for check statements.</description>
