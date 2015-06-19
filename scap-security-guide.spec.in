@@ -41,15 +41,15 @@ package to verify that the system conforms to provided guidelines.
 %build
 %if 0%{?fedora}
 (cd Fedora && make dist)
-(cd Java && make dist)
+(cd JRE && make dist)
 (cd Firefox && make dist)
 (cd Chromium && make dist)
 %endif
 #(cd RHEL/5 && make dist)
 (cd RHEL/6 && make dist)
 (cd RHEL/7 && make dist)
-#(cd Java && make dist)
-#(cd Firefox && make dist)
+(cd JRE && make dist)
+(cd Firefox && make dist)
 #(cd Webmin && make dist)
 
 %install
@@ -67,9 +67,11 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-#cp -a Java/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-#cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 #cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+
+# Add in datastream form of Firefox and JRE benchmarks
+cp -a JRE/dist/content/ssg-jre-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
+cp -a Firefox/dist/content/ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
 
 # Add in RHEL-6 functions library for remediations
 cp -a RHEL/6/input/fixes/bash/templates/functions %{buildroot}%{_datadir}/%{name}/functions
@@ -85,10 +87,10 @@ cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
 cp -a RHEL/6/dist/content/ssg-rhel6-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
 cp -a RHEL/7/dist/content/ssg-rhel7-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
 
-# Add in application content (SCAP XCCDF and OVAL)
-cp -a Java/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
-cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
-cp -a Chromium/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
+# Add in datastream form of Firefox, JRE, and Chromium benchmarks
+cp -a JRE/dist/content/ssg-jre-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
+cp -a Firefox/dist/content/ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
+cp -a Chromium/dist/content/ssg-chromium-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
 
 # Add in datastream form of Webmin benchmark
 #cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
