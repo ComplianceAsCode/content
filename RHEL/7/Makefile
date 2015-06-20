@@ -16,14 +16,18 @@ PROD_CHECKS = $(BUILD)/$(PROD)_checks
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
 
+# Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
+# Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
+INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
+
 all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
 	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
-	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
 else
-	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
 endif
 	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
 
@@ -137,7 +141,7 @@ content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
 
 submission-stig-check: table-stigs
-	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-server --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
+	cd $(OUT); ../$(UTILS)/verify-references.py -p stig-$(PROD)-server --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
 # content-usgcb: coming soon
@@ -154,15 +158,19 @@ validate-xml:
 	oscap ds sds-validate $(OUT)/$(ID)-sl7-ds.xml
 
 validate: validate-xml
-	cd output; ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
 eval-test:
+	# Rebuild the content indicating the 'test' profile should be included
+	make content INCLUDE_TEST_PROFILE=$(shell true; echo $$?)
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
-eval-common:
-	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
+eval-common: content
+	# Based on oscap(8) OVAL results are always stored into CWD. Therefore
+	# not to pollute CWD -- first change CWD to $(OUT), only then evaluate "common" profile
+	cd $(OUT); oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(ID)-$(PROD)-xccdf.xml
 
-# items in dist are expected for distribution in an rpm
+# Items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
