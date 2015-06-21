@@ -5,9 +5,9 @@
 
 <xsl:template match="table" >
 	<table>
-	<xsl:apply-templates> 
+	<xsl:apply-templates>
 	<xsl:sort select="td" />
-	</xsl:apply-templates> 
+	</xsl:apply-templates>
 	</table>
 </xsl:template>
 

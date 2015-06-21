@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<xsl:stylesheet version="1.0" 
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" exclude-result-prefixes="cdf"
-xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+xmlns:xhtml="http://www.w3.org/1999/xhtml"
 xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" >
 
 <!-- This transform expects checks with system "ocil-transitional" and that these contain check-content

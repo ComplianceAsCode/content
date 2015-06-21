@@ -16,7 +16,7 @@
 <xsl:template match="xccdf:status"/>
 <!--
 <xsl:template match="xccdf:Profile">
-<xsl:comment> Profile removed: <xsl:value-of select="@id" /> </xsl:comment> 
+<xsl:comment> Profile removed: <xsl:value-of select="@id" /> </xsl:comment>
 </xsl:template>
 -->
 
@@ -34,7 +34,7 @@
 <xsl:template match="xccdf:ident[@system='http://cce.mitre.org']">
 	<ident xmlns="http://checklists.nist.gov/xccdf/1.1">
 		<xsl:attribute name="cce">
-			<xsl:value-of select="substring-after(node(),'CCE-')"/> 
+			<xsl:value-of select="substring-after(node(),'CCE-')"/>
 		</xsl:attribute>
 	</ident>
 </xsl:template>
@@ -56,7 +56,7 @@
 <oval xmlns="http://checklists.nist.gov/xccdf/1.1">
 	<xsl:variable name="ovalid" select="@name"/>
 	<xsl:attribute name="id">
-		<xsl:value-of select="substring-after($ovalid,'oval:gov.nist.usgcb.rhel:def:')"/> 
+		<xsl:value-of select="substring-after($ovalid,'oval:gov.nist.usgcb.rhel:def:')"/>
 	</xsl:attribute>
 </oval>
 </xsl:template>

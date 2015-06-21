@@ -16,7 +16,7 @@
       <xsl:apply-templates select="document('application/java.xml')" />
     </xsl:copy>
   </xsl:template>
-  
+
   <!-- copy everything else through to final output -->
   <xsl:template match="@*|node()">
     <xsl:copy>

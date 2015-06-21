@@ -62,12 +62,12 @@
 			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
 			<!-- need to resolve <sub idref=""> here  -->
 			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
-			<td> 
+			<td>
 				<xsl:for-each select="cdf:reference[@href=$nist800-53uri]">
 					<xsl:value-of select="text()"/>
 					<br/>
 				</xsl:for-each>
-			</td> 
+			</td>
 		</tr>
 		</xsl:if>
 	</xsl:template>

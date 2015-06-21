@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-<!-- This style sheet takes as input a XCCDF file.  It outputs each Rule and CCE ident element, in document order.  
+<!-- This style sheet takes as input a XCCDF file.  It outputs each Rule and CCE ident element, in document order.
      If provided parameter $ref, this style sheet will display the referenced CCE file side-by-side for comparison -->
 
 <xsl:param name="ref" select="''" />
@@ -63,7 +63,7 @@
 		<xsl:variable name="cce-id" select="cdf:ident[@system=$cceuri]"/>
 
 		<tr>
-			<td><xsl:value-of select="$cce-id"/></td> 
+			<td><xsl:value-of select="$cce-id"/></td>
 			<td><xsl:value-of select="cdf:title" /></td>
 			<td><xsl:apply-templates select="cdf:description"/> </td>
 			<xsl:if test="$ref">

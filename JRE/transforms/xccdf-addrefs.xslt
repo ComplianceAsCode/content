@@ -19,7 +19,7 @@
 
 
 <!-- if a CCI is found, add corresponding SRG ID -->
-	<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
+	<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
 		<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 		<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 			<xsl:for-each select="$os_srg/cdf:Group">
@@ -30,9 +30,9 @@
 					</xsl:element>
 				</xsl:if>
 			</xsl:for-each>
-	</xsl:for-each> 
+	</xsl:for-each>
 
-	<xsl:if test="not(cdf:reference[@href=$disa-cciuri])"> 
+	<xsl:if test="not(cdf:reference[@href=$disa-cciuri])">
 		<xsl:variable name="rule_id" select="@id"/>
 <!-- this can be uncommented when oscap xccdf resolve passes check-content through -->
 <!--		<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:select">
@@ -48,7 +48,7 @@
 	          </xsl:element>
 <!--			</xsl:if>
 		</xsl:for-each> -->
-	</xsl:if> 
+	</xsl:if>
 	
 	<xsl:apply-templates select="node()[not(self::cdf:title|self::cdf:description|self::cdf:warning)]"/>
 	</xsl:copy>

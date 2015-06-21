@@ -11,14 +11,14 @@
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:variable name="rule_id" select="@id"/>
-      <xsl:for-each select="$titles/xccdf:title"> 
+      <xsl:for-each select="$titles/xccdf:title">
         <xsl:if test="@rule=$rule_id">
       	  <!-- copy in the new title -->
           <xsl:element name="title" namespace="http://checklists.nist.gov/xccdf/1.1">
           <xsl:value-of select="text()"/>
           </xsl:element>
         </xsl:if>
-      </xsl:for-each> 
+      </xsl:for-each>
       <!-- copy everything else that isn't the title-->
       <xsl:apply-templates select="node()[not(self::xccdf:title)]"/>
 

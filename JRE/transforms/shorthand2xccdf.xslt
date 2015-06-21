@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml" 
-  xmlns:dc="http://purl.org/dc/elements/1.1/" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
   exclude-result-prefixes="xccdf xhtml dc">
 
@@ -49,16 +49,16 @@
       </xsl:if>
       <xsl:apply-templates select="title"/>
       <xsl:apply-templates select="description"/>
-      <xsl:apply-templates select="warning"/> 
-      <xsl:apply-templates select="ref"/> 
-      <xsl:apply-templates select="tested"/> 
-      <xsl:apply-templates select="rationale"/> 
-      <xsl:apply-templates select="ident"/> 
+      <xsl:apply-templates select="warning"/>
+      <xsl:apply-templates select="ref"/>
+      <xsl:apply-templates select="tested"/>
+      <xsl:apply-templates select="rationale"/>
+      <xsl:apply-templates select="ident"/>
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
-      <xsl:apply-templates select="oval"/> 
+      <xsl:apply-templates select="oval"/>
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::tested|self::rationale|self::ident|self::oval)]"/>
     </Rule>
-  </xsl:template> 
+  </xsl:template>
 
 
   <xsl:template match="Group">
@@ -66,12 +66,12 @@
       <xsl:apply-templates select="@*" />
       <xsl:apply-templates select="title"/>
       <xsl:apply-templates select="description"/>
-      <xsl:apply-templates select="warning"/> 
-      <xsl:apply-templates select="ref"/> 
-      <xsl:apply-templates select="rationale"/> 
+      <xsl:apply-templates select="warning"/>
+      <xsl:apply-templates select="ref"/>
+      <xsl:apply-templates select="rationale"/>
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale)]"/>
     </Group>
-  </xsl:template> 
+  </xsl:template>
 
   <!-- XHTML, such as tt, is not allowed in titles -->
   <xsl:template match="title/tt">
@@ -111,7 +111,7 @@
   </xsl:template>
 
   <!-- expand ref attributes to reference tags, one item per reference -->
-  <xsl:template match="ref"> 
+  <xsl:template match="ref">
     <xsl:for-each select="@*">
        <xsl:call-template name="ref-info" >
           <xsl:with-param name="refsource" select="name()" />
@@ -185,7 +185,7 @@
         <xsl:value-of select="@value" />
       </xsl:attribute>
       </check-export>
-      </xsl:if> 
+      </xsl:if>
 
       <check-content-ref>
         <xsl:attribute name="href">
@@ -241,7 +241,7 @@
    </xsl:template>
 
   <!-- The next set of templates places elements into the correct namespaces,
-       so that content authors never have to bother with them. 
+       so that content authors never have to bother with them.
        XHTML elements are explicitly identified and the xhtml
        namespace is added.  Any element with an empty namespace
        is assigned to the xccdf namespace. -->
@@ -309,7 +309,7 @@
 	systems fail compliance checks when they shouldn't.)
 
     <xhtml:br />
-    To verify persistent configuration of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter, 
+    To verify persistent configuration of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     verify that the following line is present in <xhtml:code>/etc/sysctl.conf</xhtml:code>:
     <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    -->
   </xsl:template>
@@ -398,9 +398,9 @@
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
-    To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command: 
+    To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
     <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
-    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, 
+    Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
     <xhtml:pre># chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
@@ -461,32 +461,32 @@ system call, run the following command:
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
-  <!--Example usage: <iptables-desc-macro allow="true" net="false" proto="tcp" 
+  <!--Example usage: <iptables-desc-macro allow="true" net="false" proto="tcp"
        port="80" />  -->
-    <!-- allow (boolean): optional attribute which defaults to true, or to 
+    <!-- allow (boolean): optional attribute which defaults to true, or to
          allow this traffic through -->
-    <!-- net (boolean): optional attribute which determines if -s netwk/mask 
+    <!-- net (boolean): optional attribute which determines if -s netwk/mask
          is put in.  By defaults this is false -->
     <!-- proto (string): protocol in question, typically tcp or udp -->
     <!-- port (integer): port in question -->
   <xsl:template match="iptables-desc-macro">
     <xsl:choose>
-      <xsl:when test="@allow = 'false'"> 
+      <xsl:when test="@allow = 'false'">
       <!-- allow: optional attribute which defaults to true, or to allow this traffic through -->
-        To configure <xhtml:code>iptables</xhtml:code> to not allow port 
-        <xsl:value-of select="@port"/> traffic one must edit 
+        To configure <xhtml:code>iptables</xhtml:code> to not allow port
+        <xsl:value-of select="@port"/> traffic one must edit
         <xhtml:code>/etc/sysconfig/iptables</xhtml:code> and
         <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
-        Remove the following line, ensuring that it does not appear in the INPUT 
+        Remove the following line, ensuring that it does not appear in the INPUT
         chain:
         <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
       </xsl:when>
       <xsl:otherwise>
-        To configure <xhtml:code>iptables</xhtml:code> to allow port 
-        <xsl:value-of select="@port"/> traffic one must edit 
-        <xhtml:code>/etc/sysconfig/iptables</xhtml:code>  and 
+        To configure <xhtml:code>iptables</xhtml:code> to allow port
+        <xsl:value-of select="@port"/> traffic one must edit
+        <xhtml:code>/etc/sysconfig/iptables</xhtml:code>  and
         <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
-        Add the following line, ensuring that it appears before the final LOG 
+        Add the following line, ensuring that it appears before the final LOG
         and DROP lines for the INPUT chain:
         <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
       </xsl:otherwise>
