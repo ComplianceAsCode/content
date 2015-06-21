@@ -91,7 +91,7 @@
 			</xsl:if>
 
 			<!-- print the manual check text -->
-			<xsl:apply-templates select="cdf:check" /> 
+			<xsl:apply-templates select="cdf:check" />
 
 			<!-- print the test attestation info -->
 			<xsl:if test="$testinfo">
@@ -109,7 +109,7 @@
 			</xsl:if>
 			</td>
 
-			<td> 
+			<td>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 				<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
@@ -120,18 +120,18 @@
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
-			</td> 
+			</td>
 
-			<td> 
+			<td>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 				<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 				<xsl:value-of select="$cci_expanded"/>
 				<br/>
 			</xsl:for-each>
-			</td> 
+			</td>
 
-			<td> 
+			<td>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
             	<xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 				<xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
@@ -146,7 +146,7 @@
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
-			</td> 
+			</td>
 		</tr>
 		</xsl:if>
 	</xsl:template>
@@ -157,7 +157,7 @@
 			<xsl:apply-templates select="cdf:check-content" />
 			<!-- print clause with "finding" text -->
 			 <xsl:if test="cdf:check-export/@export-name != ''">
-			 <br/>If <xsl:value-of select="cdf:check-export/@export-name" />, this is a finding. 
+			 <br/>If <xsl:value-of select="cdf:check-export/@export-name" />, this is a finding.
 			 </xsl:if>
 		</xsl:if>
 <!--	    <xsl:if test="@system=$ovaluri">

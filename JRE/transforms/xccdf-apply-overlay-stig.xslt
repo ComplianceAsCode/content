@@ -40,12 +40,12 @@
           	</check>
 		  	<ident system="http://iase.disa.mil/cci"><xsl:value-of select="concat('CCI-', format-number($overlay_ref,'000000'))" /></ident>
           	<fixtext><xsl:copy-of select="xccdf:description/node()" /></fixtext>
-          </Rule> 
+          </Rule>
           </Group>
         </xsl:if>
-      </xsl:for-each> 
+      </xsl:for-each>
 
-    </xsl:for-each> 
+    </xsl:for-each>
     </xsl:copy>
   </xsl:template>
 

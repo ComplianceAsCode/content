@@ -59,9 +59,9 @@
 	<xsl:template name="rule-output">
           <xsl:param name="refinfo"/>
 		<tr>
-			<td> 
+			<td>
 			<xsl:value-of select="$refinfo"/>
-			</td> 
+			</td>
 			<!--<td> <xsl:value-of select="cdf:ident" /></td>-->
 			<td> <xsl:value-of select="../cdf:title" /></td>
 			<td> <xsl:apply-templates select="../cdf:description"/> </td>

@@ -80,7 +80,7 @@
 			</td>
 			</xsl:when>
 			<xsl:otherwise>
-				<td><xsl:value-of select="@id"/></td> 
+				<td><xsl:value-of select="@id"/></td>
 				<td> <xsl:value-of select="cdf:Rule/cdf:ident" /></td>
 				<!--<td> <xsl:value-of select="cdf:title" /></td>-->
 				<td> <xsl:value-of select="cdf:Rule/@severity" /></td>

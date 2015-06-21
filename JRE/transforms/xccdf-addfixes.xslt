@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
 <!-- This transform expects a stringparam "fixes" specifying a filename
-     containing a list of fixes.  It inserts these into the Rules 
+     containing a list of fixes.  It inserts these into the Rules
      specified inside the fixes file. -->
 
 <xsl:variable name="fixgroup" select="document($fixes)/xccdf:fix-content/xccdf:fix-group" />
@@ -15,14 +15,14 @@
       <xsl:apply-templates select="@*|node()[not(self::xccdf:check)]"/>
 
       <xsl:variable name="rule_id" select="@id"/>
-      <xsl:for-each select="$fixgroup/xccdf:fix"> 
+      <xsl:for-each select="$fixgroup/xccdf:fix">
         <xsl:if test="@rule=$rule_id">
           <xsl:element name="fix" namespace="http://checklists.nist.gov/xccdf/1.1">
           <xsl:attribute name="system"><xsl:value-of select="$fixsystem"/></xsl:attribute>
           <xsl:apply-templates select="node()"/>
           </xsl:element>
         </xsl:if>
-      </xsl:for-each> 
+      </xsl:for-each>
       <xsl:apply-templates select="node()[self::xccdf:check]"/>
 
     </xsl:copy>
@@ -48,7 +48,7 @@
         <xsl:attribute name="id"><xsl:value-of select="$fix_common_id"/></xsl:attribute>
         <xsl:value-of select="text()"/>
         </xsl:element>
-      </xsl:for-each> 
+      </xsl:for-each>
       <xsl:apply-templates select="node()[not(self::xccdf:status|self::xccdf:dc-title|self::xccdf:title|self::xccdf:description|self::xccdf:notice|self::xccdf:front-matter|self::xccdf:rear-matter|self::xccdf:reference)]"/>
 <!--
       <xsl:apply-templates select="node()[not(self::xccdf:status)]"/>

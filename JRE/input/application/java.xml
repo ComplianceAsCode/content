@@ -21,7 +21,7 @@ for a list of currently supported Java version 8 settings.</ul>
 <title>Configure the <tt>deployment.config</tt> File</title>
 <description>
 The <tt>deployment.config</tt> file if used for specifying the System-level
-<tt>deployment.properties</tt> file. The System-level configuration for Java is 
+<tt>deployment.properties</tt> file. The System-level configuration for Java is
 configured in <tt>/etc/.java/deployment</tt>. By default, no <tt>deployment.config</tt>
 file exists. To ensure that the Java <tt>/etc/.java/deployment/deployment.config</tt> file
 is configured correctly, <tt>deployment.system.config</tt> and
@@ -59,9 +59,9 @@ control panel is impossible.
 <Rule id="java_jre_deployment_config_properties" severity="medium">
 <title>Configure the <tt>deployment.properties</tt> File Path</title>
 <description>
-To ensure that the Java properties file is set in 
-<tt>/etc/.java/deployment/deployment.config</tt>, add or modify 
-<tt>deployment.system.config</tt> to equal 
+To ensure that the Java properties file is set in
+<tt>/etc/.java/deployment/deployment.config</tt>, add or modify
+<tt>deployment.system.config</tt> to equal
 <tt>file:///etc/.java/deployment/deployment.properties</tt>.
 </description>
 <ocil clause="it is not configured">
@@ -72,7 +72,7 @@ If properly configured, the output should return:
 <pre>deployment.system.config=file:///etc/.java/deployment/deployment.properties</pre>
 </ocil>
 <rationale>
-Without a proper path for the properties file, deployment would not be possible. 
+Without a proper path for the properties file, deployment would not be possible.
 If the path specified does not lead to a properties file, the value of the
 'deployment.system.config.mandatory' key determines how to handle the situation.
 If the value of this key is true, JRE will not run if the path to the properties
@@ -153,8 +153,8 @@ If properly configured, the output should return:
 <pre>deployment.security.askgrantdialog.notinca=false</pre>
 </ocil>
 <rationale>
-Permitting execution of signed Java applets from un-trusted sources 
-may result in acquiring malware, and risks system modification, invasion of 
+Permitting execution of signed Java applets from un-trusted sources
+may result in acquiring malware, and risks system modification, invasion of
 privacy, or denial of service.
 </rationale>
 <oval id="java_jre_untrusted_sources" />
@@ -177,8 +177,8 @@ If properly configured, the output should return:
 <pre>deployment.security.askgrantdialog.notinca.locked</pre>
 </ocil>
 <rationale>
-Permitting execution of signed Java applets from un-trusted sources may 
-result in malware running on the system, and risks system modification, 
+Permitting execution of signed Java applets from un-trusted sources may
+result in malware running on the system, and risks system modification,
 invasion of privacy, or denial of service. As such, ensuring users cannot
 change the permission settings which control the execution of signed Java
 applets contributes to a more consistent security profile.
@@ -217,7 +217,7 @@ invasion of privacy, and denial of service.
 <title>Disable User Access to Revocation Check Settings</title>
 <description>
 To ensure that users cannot change certificate revocation check settings,
-add <tt>deployment.security.validation.crl.locked</tt> to 
+add <tt>deployment.security.validation.crl.locked</tt> to
 <tt>/etc/.java/deployment/deployment.properties</tt>.
 </description>
 <ocil clause="it does not exist or is not configured properly">
@@ -267,7 +267,7 @@ and denial of service.
 <title>Disable User Access to Online Certificate Validation Settings</title>
 <description>
 To ensure that users cannot change the online certificate verification settings,
-add <tt>deployment.security.validation.ocsp.locked</tt> to 
+add <tt>deployment.security.validation.ocsp.locked</tt> to
 <tt>/etc/.java/deployment/deployment.properties</tt>.
 </description>
 <ocil clause="it does not exist or is not configured properly">

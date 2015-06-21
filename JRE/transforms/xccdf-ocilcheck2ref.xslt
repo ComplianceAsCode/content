@@ -15,7 +15,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- remove check-content nodes and replace them with a check-content-ref node, using the Rule id 
+  <!-- remove check-content nodes and replace them with a check-content-ref node, using the Rule id
        to create a reference name -->
   <xsl:template match="xccdf:check-content">
 	<xsl:element name="check-content-ref" namespace="http://checklists.nist.gov/xccdf/1.1">
