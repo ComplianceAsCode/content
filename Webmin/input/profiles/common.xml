@@ -1,0 +1,43 @@
+<Profile id="common" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Common Profile for Webmin system administration tool</title>
+<description></description>
+
+	<select idref="webmin_is_up_to_date" selected="true"/>
+	<select idref="module_useradmin_accounts_char_types" selected="true"/>
+	<select idref="module_useradmin_accounts_home_perms" selected="true"/>
+	<select idref="module_useradmin_accounts_inactive" selected="true"/>
+		<refine-value idref="var_webmin_module_useradmin_accounts_inactive" selector="35"/>
+	<select idref="module_useradmin_accounts_last_login" selected="true"/>
+	<select idref="module_useradmin_accounts_max" selected="true"/>
+		<refine-value idref="var_webmin_module_useradmin_accounts_max" selector="60"/>
+	<select idref="module_useradmin_accounts_min" selected="true"/>
+		<refine-value idref="var_webmin_module_useradmin_accounts_min" selector="1"/>
+	<select idref="module_useradmin_accounts_min_length" selected="true"/>
+		<refine-value idref="var_webmin_module_useradmin_accounts_min_length" selector="14"/>
+	<select idref="accounts_passwd_cmd" selected="true"/>
+	<select idref="accounts_passwd_mode" selected="true"/>
+	<select idref="module_useradmin_accounts_password_dictionary" selected="true"/>
+	<select idref="module_useradmin_accounts_password_hash" selected="true"/>
+		<refine-value idref="var_webmin_module_useradmin_accounts_password_hash" selector="SHA512"/>
+	<select idref="module_useradmin_accounts_password_masked" selected="true"/>
+	<select idref="module_useradmin_accounts_password_same" selected="true"/>
+	<select idref="accounts_use_pam" selected="true"/>
+	<select idref="module_useradmin_accounts_warn" selected="true"/>
+		<refine-value idref="var_webmin_module_useradmin_accounts_warn" selector="7"/>
+	<select idref="logs_webmin_actions_cleared" selected="true"/>
+	<select idref="logs_webmin_actions_enabled" selected="true"/>
+	<select idref="logs_webmin_actions_perms" selected="true"/>
+	<select idref="logs_webmin_requests_cleared" selected="true"/>
+	<select idref="logs_webmin_requests_enabled" selected="true"/>
+	<select idref="logs_webmin_requests_perms" selected="true"/>
+	<select idref="sessions_login_banner" selected="true"/>
+		<refine-value idref="var_webmin_sessions_login_banner_text" selector="dod_default"/>
+	<select idref="sessions_port" selected="true"/>
+		<refine-value idref="var_webmin_sessions_port" selector="15000"/>
+	<select idref="sessions_save_password" selected="true"/>
+	<select idref="sessions_ssl_cipher" selected="true"/>
+	<select idref="sessions_ssl_enabled" selected="true"/>
+	<select idref="sessions_timeout" selected="true"/>
+		<refine-value idref="var_webmin_sessions_timeout" selector="15"/>
+
+</Profile>

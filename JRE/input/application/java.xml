@@ -1,0 +1,322 @@
+<Group id="java">
+<title>Java</title>
+<description>
+Java is a general-purpose computer programming language. It is intended to
+let application developers "write once, run anywhere." Java applications are
+typically compiled to bytecode that can run on any Java virtual machine (JVM)
+regardless of computer architecture. As such, the Java runtime environment (JRE)
+is required to be installed so that Java applications can run. This section
+provides settings for configuring Java policies to meet compliance
+settings for Java running on Red Hat Enterprise Linux systems.
+<br /><br />
+<ul>Refer to <li>https://docs.oracle.com/javase/6/docs/technotes/guides/deployment/deployment-guide/properties.html</li>
+for a list of currently supported Java version 6 settings.</ul>
+<ul>Refer to <li>https://docs.oracle.com/javase/7/docs/technotes/guides/jweb/jcp/properties.html</li>
+for a list of currently supported Java version 7 settings.</ul>
+<ul>Refer to <li>https://docs.oracle.com/javase/8/docs/technotes/guides/jweb/jcp/properties.html</li>
+for a list of currently supported Java version 8 settings.</ul>
+</description>
+
+<Group id="java_jre_deployment_config_configured">
+<title>Configure the <tt>deployment.config</tt> File</title>
+<description>
+The <tt>deployment.config</tt> file if used for specifying the System-level
+<tt>deployment.properties</tt> file. The System-level configuration for Java is
+configured in <tt>/etc/.java/deployment</tt>. By default, no <tt>deployment.config</tt>
+file exists. To ensure that the Java <tt>/etc/.java/deployment/deployment.config</tt> file
+is configured correctly, <tt>deployment.system.config</tt> and
+<tt>deployment.system.config.mandatory</tt> need to be set correctly.
+</description>
+<ref nist="DCBP-1" disa="" />
+
+<Rule id="java_jre_deployment_config_exists" severity="medium">
+<title>The Java Configuration File Exists</title>
+<description>
+If the Java configuration file does not exist, it can be added by running:
+<pre>$ sudo mkdir -p -m 755 /etc/.java/deployment
+$ sudo touch /etc/.java/deployment/deployment.config
+$ sudo chmod 644 /etc/.java/deployment/deployment.config</pre>
+</description>
+<ocil clause="it does not exist">
+To verify that the <tt>deployment.config</tt> file exists,
+run the following command:
+<pre>$ ls /etc/.java/deployment</pre>
+The output should contain:
+<pre>deployment.config</pre>
+</ocil>
+<rationale>
+The deployment.config file is used for specifying the location and execution of
+system-level properties for the Java Runtime Environment. By default no
+deployment.config file exists; thus, no system-wide deployment.properties file exists.
+Without the deployment.config file, setting particular options for the Java
+control panel is impossible.
+</rationale>
+<oval id="java_jre_deployment_config_exists" />
+<ident cce="" stig="JRE0070-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_deployment_config_properties" severity="medium">
+<title>Configure the <tt>deployment.properties</tt> File Path</title>
+<description>
+To ensure that the Java properties file is set in
+<tt>/etc/.java/deployment/deployment.config</tt>, add or modify
+<tt>deployment.system.config</tt> to equal
+<tt>file:///etc/.java/deployment/deployment.properties</tt>.
+</description>
+<ocil clause="it is not configured">
+To verify that <tt>deployment.config</tt> is configured properly,
+run the following command:
+<pre>$ grep 'deployment.system.config=file' /etc/.java/deployment/deployment.config</pre>
+If properly configured, the output should return:
+<pre>deployment.system.config=file:///etc/.java/deployment/deployment.properties</pre>
+</ocil>
+<rationale>
+Without a proper path for the properties file, deployment would not be possible.
+If the path specified does not lead to a properties file, the value of the
+'deployment.system.config.mandatory' key determines how to handle the situation.
+If the value of this key is true, JRE will not run if the path to the properties
+file is invalid.
+</rationale>
+<oval id="java_jre_deployment_config_properties" />
+<ident cce="" stig="JRE0060-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_deployment_config_mandatory" severity="medium">
+<title>Configure The Java Deployment Mandatory Setting</title>
+<description>
+To configure the Java mandatory deployment setting, add or modify
+<tt>deployment.system.config.mandatory</tt> to equal <tt>false</tt>
+in <tt>/etc/.java/deployment/deployment.config</tt>.
+</description>
+<ocil clause="it is not configured">
+To verify that <tt>deployment.config</tt> is configured properly,
+run the following command:
+<pre>$ grep 'deployment.system.config.mandatory' /etc/.java/deployment/deployment.config</pre>
+If properly configured, the output should return:
+<pre>deployment.system.config.mandatory=false</pre>
+</ocil>
+<rationale>
+Without a proper path for the properties file, deployment would not be possible.
+If the path specified does not lead to a properties file, the value of the
+'deployment.system.config.mandatory' key determines how to handle the situation.
+If the value of this key is true, JRE will not run if the path to the properties
+file is invalid.
+</rationale>
+<oval id="java_jre_deployment_config_mandatory" />
+<ident cce="" stig="JRE0060-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+</Group>
+
+<Rule id="java_jre_deployment_properties_exists" severity="medium">
+<title>The Java Properties File Exists</title>
+<description>
+If the Java properties file does not exist, it can be added by running:
+<pre>$ sudo mkdir -p -m 755 /etc/.java/deployment
+$ sudo touch /etc/.java/deployment/deployment.properties
+$ sudo chmod 644 /etc/.java/deployment/deployment.properties</pre>
+</description>
+<ocil clause="it does not exist">
+To verify that the <tt>deployment.properties</tt> file exists,
+run the following command:
+<pre>$ ls /etc/.java/deployment</pre>
+The output should contain:
+<pre>deployment.properties</pre>
+</ocil>
+<rationale>
+Each option in the Java control panel is represented by property keys.
+These keys adjust the options in the Java control panel based on the value
+assigned to that key. By default no deployment.properties file exists; thus,
+no system-wide exists. Without the deployment.properties file, setting particular
+options for the Java control panel is impossible.
+</rationale>
+<oval id="java_jre_deployment_properties_exists" />
+<ident cce="" stig="JRE0080-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_untrusted_sources" severity="medium">
+<title>Disable Java Execution From Untrusted Sources</title>
+<description>
+To ensure that Java cannot execute from untrusted sources, set
+<tt>deployment.security.askgrantdialog.notinca</tt> to equal <tt>false</tt>
+in <tt>/etc/.java/deployment/deployment.properties</tt>.
+</description>
+<ocil clause="it does not exist or is not configured properly">
+To verify that Java cannot execute from untrusted sources,
+run the following command:
+<pre>$ grep 'askgrantdialog.notinca=false' /etc/.java/deployment/deployment.properties</pre>
+If properly configured, the output should return:
+<pre>deployment.security.askgrantdialog.notinca=false</pre>
+</ocil>
+<rationale>
+Permitting execution of signed Java applets from un-trusted sources
+may result in acquiring malware, and risks system modification, invasion of
+privacy, or denial of service.
+</rationale>
+<oval id="java_jre_untrusted_sources" />
+<ident cce="" stig="JRE0001-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_untrusted_sources_locked" severity="medium">
+<title>Disable User Access to Untrusted Sources Settings</title>
+<description>
+To ensure that users cannot change the untrusted sources settings,
+add <tt>deployment.security.askgrantdialog.notinca.locked</tt> to
+<tt>/etc/.java/deployment/deployment.properties</tt>.
+</description>
+<ocil clause="it does not exist or is not configured properly">
+To verify that users cannot change the untrusted sources settings,
+run the following command:
+<pre>$ grep 'askgrantdialog.notinca.locked' /etc/.java/deployment/deployment.properties</pre>
+If properly configured, the output should return:
+<pre>deployment.security.askgrantdialog.notinca.locked</pre>
+</ocil>
+<rationale>
+Permitting execution of signed Java applets from un-trusted sources may
+result in malware running on the system, and risks system modification,
+invasion of privacy, or denial of service. As such, ensuring users cannot
+change the permission settings which control the execution of signed Java
+applets contributes to a more consistent security profile.
+</rationale>
+<oval id="java_jre_untrusted_sources_locked" />
+<ident cce="" stig="JRE0010-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_validation_crl" severity="medium">
+<title>Enable Revocation Checks for Publisher Certificates</title>
+<description>
+To ensure that certificate revocation checks are enabled, set
+<tt>deployment.security.validation.crl</tt> to equal <tt>true</tt>
+in <tt>/etc/.java/deployment/deployment.properties</tt>.
+</description>
+<ocil clause="it does not exist or is not configured properly">
+To verify that revocation checks are enabled, run the following command:
+<pre>$ grep 'validation.crl=true' /etc/.java/deployment/deployment.properties</pre>
+If properly configured, the output should return:
+<pre>deployment.security.validation.crl=true</pre>
+</ocil>
+<rationale>
+Certificates may be revoked due to improper issuance, compromise of the certificate,
+and failure to adhere to policy. Therefore, any certificate found on a CRL
+should not be trusted. Permitting execution of an applet published with a
+revoked certificate may result in spoofing, malware, system modification,
+invasion of privacy, and denial of service.
+</rationale>
+<oval id="java_jre_validation_crl" />
+<ident cce="" stig="JRE0020-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_validation_crl_locked" severity="medium">
+<title>Disable User Access to Revocation Check Settings</title>
+<description>
+To ensure that users cannot change certificate revocation check settings,
+add <tt>deployment.security.validation.crl.locked</tt> to
+<tt>/etc/.java/deployment/deployment.properties</tt>.
+</description>
+<ocil clause="it does not exist or is not configured properly">
+To verify that users cannot change revocation check settings,
+run the following command:
+<pre>$ grep 'validation.crl.locked' /etc/.java/deployment/deployment.properties</pre>
+If properly configured, the output should return:
+<pre>deployment.security.validation.crl.locked</pre>
+</ocil>
+<rationale>
+Permitting execution of an applet published with a revoked certificate may
+result in spoofing, malware, system modification, invasion of privacy,
+and denial of service. As such, ensuring users cannot change settings
+contributes to a more consistent security profile.
+</rationale>
+<oval id="java_jre_validation_crl_locked" />
+<ident cce="" stig="JRE0030-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_validation_ocsp" severity="medium">
+<title>Enable Online Certificate Validation</title>
+<description>
+To ensure that online certificate verification is enabled, set
+<tt>deployment.security.validation.ocsp</tt> to equal <tt>true</tt>
+in <tt>/etc/.java/deployment/deployment.properties</tt>.
+</description>
+<ocil clause="it does not exist or is not configured properly">
+To verify that online certificate verification is enabled,
+run the following command:
+<pre>$ grep 'validation.ocsp=true' /etc/.java/deployment/deployment.properties</pre>
+If properly configured, the output should return:
+<pre>deployment.security.validation.ocsp=true</pre>
+</ocil>
+<rationale>
+Online certificate validation provides a greater degree of validation of certificates
+when running a signed Java applet. Permitting execution of an applet with an invalid
+certificate may result in malware execution , system modification, invasion of privacy,
+and denial of service.
+</rationale>
+<oval id="java_jre_validation_ocsp" />
+<ident cce="" stig="JRE0040-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_validation_ocsp_locked" severity="medium">
+<title>Disable User Access to Online Certificate Validation Settings</title>
+<description>
+To ensure that users cannot change the online certificate verification settings,
+add <tt>deployment.security.validation.ocsp.locked</tt> to
+<tt>/etc/.java/deployment/deployment.properties</tt>.
+</description>
+<ocil clause="it does not exist or is not configured properly">
+To verify that users cannot change online certificate verification,
+run the following command:
+<pre>$ grep 'validation.ocsp.locked' /etc/.java/deployment/deployment.properties</pre>
+If properly configured, the output should return:
+<pre>deployment.security.validation.ocsp.locked</pre>
+</ocil>
+<rationale>
+Online certificate validation provides a greater degree of validation of certificates
+when running a signed Java applet. Permitting execution of an applet with an invalid
+certificate may result in malware execution , system modification, invasion of privacy,
+and denial of service. As such, ensuring users cannot change settings contributes to
+a more consistent security profile.
+</rationale>
+<oval id="java_jre_validation_ocsp_locked" />
+<ident cce="" stig="JRE0050-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+<Rule id="java_jre_updated" severity="medium">
+<title>Ensure Java Patches Installed</title>
+<description>
+If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
+or a yum server, run the following command to install updates:
+<pre>$ sudo yum update</pre>
+If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+can be manually downloaded and installed using <tt>rpm</tt>.
+</description>
+<ocil clause="it is not updated">
+If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
+a yum server which provides updates, invoking the following command will
+indicate if updates are available:
+<pre>$ sudo yum check-update</pre>
+If the system is not configured to update from one of these sources,
+run the following command to list when each package was last updated:
+<pre>$ rpm -qa -last</pre>
+Compare this to Red Hat Security Advisories (RHSA) listed at
+https://access.redhat.com/security/updates/active/
+to determine if the system is missing applicable updates.
+</ocil>
+<rationale>
+Running an older version of the JRE can introduce security
+vulnerabilities to the system.
+</rationale>
+<!--oval id="java_jre_updated" /-->
+<ident cce="" stig="JRE0090-UX" />
+<ref nist="DCBP-1" disa="" />
+</Rule>
+
+</Group>

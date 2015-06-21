@@ -45,7 +45,6 @@ checks:
 
 guide: shorthand2xccdf
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
-#	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	
 #	Begin Guide Creation
