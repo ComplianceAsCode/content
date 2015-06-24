@@ -168,7 +168,8 @@ eval-common:
 # items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/guide $(DIST)/content $(DIST)/policytables
-	cp $(OUT)/*-guide-*.html $(DIST)/guide
+	# No profiles available, uncomment this when OpenStack content gets any profiles
+	#cp $(OUT)/*-guide-*.html $(DIST)/guide
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
