@@ -176,7 +176,6 @@ def main():
 
     input_tree = ElementTree.parse(options.input_content)
     benchmarks = get_benchmark_ids_titles_for_input(input_tree)
-    print(benchmarks)
     if len(benchmarks) != 1:
         raise RuntimeError(
             "Expected input file '%s' to contain exactly 1 xccdf:Benchmark. "
@@ -190,7 +189,7 @@ def main():
             "No profiles were found in '%s'." % (options.input_content)
         )
 
-    # TODO: Make the index file nicer, allow switching between profiles, etc...
+    # TODO: Make the index file nicer
 
     index_links = []
     index_initial_src = None
