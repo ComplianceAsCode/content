@@ -28,7 +28,40 @@ PROFILE_ID_BLACKLIST = ["test"]
 PROFILE_ID_PREFIX = "xccdf_org.ssgproject.content_profile_"
 
 
-def get_profile_choices_for_input(input_file, tailoring_file):
+def get_benchmark_ids_titles_for_input(input_tree):
+    ret = {}
+
+    def scrape_benchmarks(root_element, namespace, dest):
+        candidates = \
+            list(root_element.findall(".//{%s}Benchmark" % (namespace)))
+        if root_element.tag == "{%s}Benchmark" % (namespace):
+            candidates.append(root_element)
+
+        for elem in candidates:
+            id_ = elem.get("id")
+            if id_ is None:
+                continue
+
+            title = "<unknown>"
+            for element in elem.findall("{%s}title" % (namespace)):
+                title = element.text
+                break
+
+            dest[id_] = title
+
+    input_root = input_tree.getroot()
+
+    scrape_benchmarks(
+        input_root, XCCDF11_NS, ret
+    )
+    scrape_benchmarks(
+        input_root, XCCDF12_NS, ret
+    )
+
+    return ret
+
+
+def get_profile_choices_for_input(input_tree, tailoring_tree):
     """Returns a dictionary that maps profile_ids to their respective titles.
     """
 
@@ -51,7 +84,6 @@ def get_profile_choices_for_input(input_file, tailoring_file):
 
             dest[id_] = title
 
-    input_tree = ElementTree.parse(input_file)
     input_root = input_tree.getroot()
 
     scrape_profiles(
@@ -61,8 +93,7 @@ def get_profile_choices_for_input(input_file, tailoring_file):
         input_root, XCCDF12_NS, ret
     )
 
-    if tailoring_file is not None:
-        tailoring_tree = ElementTree.parse(tailoring_file)
+    if tailoring_tree is not None:
         tailoring_root = tailoring_tree.getroot()
 
         scrape_profiles(
@@ -143,7 +174,16 @@ def main():
     elif path_base.endswith("-xccdf"):
         path_base = path_base[:-6]
 
-    profiles = get_profile_choices_for_input(options.input_content, None)
+    input_tree = ElementTree.parse(options.input_content)
+    benchmarks = get_benchmark_ids_titles_for_input(input_tree)
+    print(benchmarks)
+    if len(benchmarks) != 1:
+        raise RuntimeError(
+            "Expected input file '%s' to contain exactly 1 xccdf:Benchmark. "
+            "Instead we found %i benchmarks" %
+            (options.input_content, len(benchmarks))
+        )
+    profiles = get_profile_choices_for_input(input_tree, None)
 
     if not profiles:
         raise RuntimeError(
@@ -185,6 +225,8 @@ def main():
         )
 
     index_source = "<html>\n"
+    index_source += "\t<head><title>%s</title></head>" % \
+                    (benchmarks.itervalues().next())
     index_source += "\t<body>\n"
     index_source += "\t\tProfile selector: \n"
     index_source += "\t\t<select style=\"margin-bottom: 5px\" onchange=\""
