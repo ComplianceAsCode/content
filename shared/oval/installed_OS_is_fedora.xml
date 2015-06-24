@@ -3,15 +3,15 @@
     <metadata>
       <title>Installed operating system is Fedora</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_all</platform>
       </affected>
       <reference ref_id="cpe:/o:fedoraproject:fedora:21" source="CPE" />
       <reference ref_id="cpe:/o:fedoraproject:fedora:22" source="CPE" />
       <reference ref_id="cpe:/o:fedoraproject:fedora:23" source="CPE" />
       <description>The operating system installed on the system is Fedora</description>
+      <reference source="JL" ref_id="RHEL6_20150624" ref_url="test_attestation" />
       <reference source="JL" ref_id="RHEL7_20150522" ref_url="test_attestation" />
-      <reference source="JL" ref_id="Fedora21_20150624" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA21_20150624" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="Installed operating system is part of the unix family" test_ref="test_unix_family" />
