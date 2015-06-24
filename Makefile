@@ -86,7 +86,7 @@ chromium:
 chromium-dist:
 	cd Chromium/ && $(MAKE) dist
 
-validate: fedora rhel6 rhel7 openstack rhevm3 chromium firefox java
+validate: fedora rhel6 rhel7 openstack rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
@@ -229,5 +229,5 @@ install: dist
 	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DATADIR)/scap-security-guide/
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 
-.PHONY: rhel5 rhel6 rhel7 java firefox webmin tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 jre firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
