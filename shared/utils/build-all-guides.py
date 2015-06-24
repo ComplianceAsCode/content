@@ -162,9 +162,15 @@ def main():
     parser = OptionParser(usage=usage)
     parser.add_option(
         "-i", "--input", dest="input_content",
-        action="store", help="INPUT can be XCCDF or Source DataStream"
+        action="store", help="INPUT can be XCCDF or Source DataStream. XCCDF "
+        "is supported with all OpenSCAP versions. You need OpenSCAP 1.1.0 or "
+        "higher to generate guides from Source DataStream!"
     )
     (options, args) = parser.parse_args()
+
+    if options.input_content is None:
+        parser.print_help()
+        raise RuntimeError("No INPUT file provided, please use --input.")
 
     parent_dir = os.path.dirname(os.path.abspath(options.input_content))
     path_base, _ = os.path.splitext(os.path.basename(options.input_content))
