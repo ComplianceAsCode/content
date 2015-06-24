@@ -41,13 +41,6 @@ checks:
 	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
-guide: shorthand2xccdf
-#	remove auxiliary Groups which are only for use in tables, and not guide output.
-	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xsltproc -o $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removetested.xslt $(OUT)/unlinked-$(PROD)-xccdf-guide.xml
-	oscap xccdf generate guide --profile stig-chromium-upstream $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/stig-$(PROD)-upstream-guide.html
-	xsltproc -o $(OUT)/stig-$(PROD)-upstream-guide-custom.html $(TRANS)/xccdf2html.xslt $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml
-
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
 #	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
@@ -88,10 +81,13 @@ table-stigs: shorthand2xccdf table-srgmap checks
 tables: table-refs table-idents table-stigs
 #tables: table-refs table-idents table-srgmap table-stigs
 
-content: shorthand2xccdf guide checks
+content: shorthand2xccdf checks
+#	remove auxiliary Groups which are only for use in tables, and not guide output.
+#	specifying a nonexistent profile, "allrules," to make oscap print all Rules
+	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
-#	Its second argument controls the IDs, as well as the output filenames.
-#	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
+#	its second argument controls the IDs, as well as the output filenames.
+#	thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
@@ -113,6 +109,9 @@ content-stig: shorthand2xccdf guide checks
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml disa-predraft
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-$(PROD)-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
+
+guide: content
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
 submission-stig-check: table-stigs
 	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
@@ -145,7 +144,7 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 	mkdir -p $(DIST)/guide
-	cp $(OUT)/*-guide.html $(DIST)/guide
+	cp $(OUT)/*-guide-*.html $(DIST)/guide
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
