@@ -199,9 +199,10 @@ def main():
         for blacklisted_id in PROFILE_ID_BLACKLIST:
             if profile_id.endswith(blacklisted_id):
                 skip = True
+                break
 
         if skip:
-            break
+            continue
 
         guide_html = generate_guide_for_input_content(
             options.input_content, profile_id
