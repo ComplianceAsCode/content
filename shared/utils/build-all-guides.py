@@ -130,7 +130,7 @@ def main():
     usage = "usage: %prog [options]"
     parser = OptionParser(usage=usage)
     parser.add_option(
-        "-i", "--input", dest="input_content", default=False,
+        "-i", "--input", dest="input_content",
         action="store", help="INPUT can be XCCDF or Source DataStream"
     )
     (options, args) = parser.parse_args()
@@ -145,8 +145,15 @@ def main():
 
     profiles = get_profile_choices_for_input(options.input_content, None)
 
+    if not profiles:
+        raise RuntimeError(
+            "No profiles were found in '%s'." % (options.input_content)
+        )
+
     # TODO: Make the index file nicer, allow switching between profiles, etc...
-    index_source = "<html><body>"
+
+    index_links = []
+    index_initial_src = None
 
     for profile_id, profile_title in profiles.iteritems():
         skip = False
@@ -167,15 +174,31 @@ def main():
         with open(guide_path, "w") as f:
             f.write(guide_html.encode("utf-8"))
 
-        index_source += "<a href=\"%s\">%s</a><br>" % \
-            (guide_filename, profile_title)
+        index_links.append("<option value=\"%s\">%s</option>" %
+                           (guide_filename, profile_title))
+        if index_initial_src is None:
+            index_initial_src = guide_path
 
         print(
             "Generated '%s' for profile ID '%s'." %
             (guide_filename, profile_id)
         )
 
-    index_source += "</body></html>"
+    index_source = "<html>\n"
+    index_source += "\t<body>\n"
+    index_source += "\t\tProfile selector: \n"
+    index_source += "\t\t<select style=\"margin-bottom: 5px\" onchange=\""
+    index_source += \
+        "window.open(this.options[this.selectedIndex].value,'guide');"
+    index_source += "\">\n"
+    index_source += "\n".join(index_links)
+    index_source += "\t\t</select><br />\n"
+    index_source += \
+        "\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
+    index_source += "style=\"width: 100%; height: calc(100% - 50px)\">\n"
+    index_source += "\t\t</iframe>\n"
+    index_source += "\t</body>\n"
+    index_source += "</html>\n"
 
     index_path = os.path.join(parent_dir, "%s-guide-index.html" % (path_base))
     with open(index_path, "w") as f:
