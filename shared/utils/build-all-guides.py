@@ -26,7 +26,7 @@ XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 
 # if a profile ID ends with a string listed here we skip it
-PROFILE_ID_BLACKLIST = ["test"]
+PROFILE_ID_BLACKLIST = ["test", "index", "default"]
 # filler XCCDF 1.2 prefix which we will strip to avoid very long filenames
 PROFILE_ID_PREFIX = "xccdf_org.ssgproject.content_profile_"
 
@@ -152,7 +152,8 @@ def generate_guide_for_input_content(input_content, profile_id):
     """
 
     args = [OSCAP_PATH, "xccdf", "generate", "guide"]
-    args.extend(["--profile", profile_id])
+    if profile_id != "":
+        args.extend(["--profile", profile_id])
     args.append(input_content)
 
     ret = subprocess_check_output(args).decode("utf-8")
@@ -197,6 +198,8 @@ def main():
             (options.input_content, len(benchmarks))
         )
     profiles = get_profile_choices_for_input(input_tree, None)
+    # add the default profile
+    profiles[""] = "(default)"
 
     if not profiles:
         raise RuntimeError(
@@ -220,8 +223,13 @@ def main():
         if skip:
             continue
 
+        profile_id_for_path = profile_id
+        if profile_id_for_path == "":
+            profile_id_for_path = "default"
+
         guide_filename = \
-            "%s-guide-%s.html" % (path_base, get_profile_short_id(profile_id))
+            "%s-guide-%s.html" % \
+            (path_base, get_profile_short_id(profile_id_for_path))
         guide_path = os.path.join(parent_dir, guide_filename)
 
         index_links.append("<option value=\"%s\">%s</option>" %
