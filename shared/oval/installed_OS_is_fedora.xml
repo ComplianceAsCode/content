@@ -1,0 +1,48 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_fedora" version="2">
+    <metadata>
+      <title>Installed operating system is Fedora</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:fedoraproject:fedora:21" source="CPE" />
+      <reference ref_id="cpe:/o:fedoraproject:fedora:22" source="CPE" />
+      <reference ref_id="cpe:/o:fedoraproject:fedora:23" source="CPE" />
+      <description>The operating system installed on the system is Fedora</description>
+      <reference source="JL" ref_id="RHEL6_20150624" ref_url="test_attestation" />
+      <reference source="JL" ref_id="RHEL7_20150522" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA21_20150624" ref_url="test_attestation" />
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family" test_ref="test_unix_family" />
+      <criterion comment="fedora-release RPM package is installed" test_ref="test_fedora_release_rpm" />
+      <criterion comment="CPE vendor is 'fedoraproject' and product is 'fedora'" test_ref="test_fedora_vendor_product" />
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_unix_family" version="1">
+    <ind:object object_ref="obj_unix_family" />
+    <ind:state state_ref="state_unix_family" />
+  </ind:family_test>
+  <ind:family_object id="obj_unix_family" version="1" />
+  <ind:family_state id="state_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+
+  <linux:rpminfo_test check="all" check_existence="only_one_exists" comment="fedora-release RPM package is installed" id="test_fedora_release_rpm" version="1">
+    <linux:object object_ref="object_fedora_release_rpm" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="object_fedora_release_rpm" version="1">
+    <linux:name>fedora-release</linux:name>
+  </linux:rpminfo_object>
+
+  <ind:textfilecontent54_test check="all" comment="CPE vendor is 'fedoraproject' and 'product' is fedora" id="test_fedora_vendor_product" version="1">
+    <ind:object object_ref="object_fedora_vendor_product" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_fedora_vendor_product" version="1">
+    <ind:filepath>/etc/system-release-cpe</ind:filepath>
+    <ind:pattern operation="pattern match">^cpe:\/o:fedoraproject:fedora:[\d]+$</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
