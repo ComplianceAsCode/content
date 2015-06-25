@@ -17,6 +17,9 @@ import os.path
 from optparse import OptionParser
 import subprocess
 
+import threading
+import Queue
+
 OSCAP_PATH = "oscap"
 
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
@@ -161,10 +164,15 @@ def main():
     usage = "usage: %prog [options]"
     parser = OptionParser(usage=usage)
     parser.add_option(
-        "-i", "--input", dest="input_content",
+        "-i", "--input", dest="input_content", type="string",
         action="store", help="INPUT can be XCCDF or Source DataStream. XCCDF "
         "is supported with all OpenSCAP versions. You need OpenSCAP 1.1.0 or "
         "higher to generate guides from Source DataStream!"
+    )
+    parser.add_option(
+        "-j", "--jobs", dest="parallel_jobs", type="int",
+        action="store", help="How many workers should generate guides in "
+        "parallel. Defaults to 4.", default=4
     )
     (options, args) = parser.parse_args()
 
@@ -195,6 +203,8 @@ def main():
             "No profiles were found in '%s'." % (options.input_content)
         )
 
+    queue = Queue.Queue()
+
     # TODO: Make the index file nicer
 
     index_links = []
@@ -210,25 +220,48 @@ def main():
         if skip:
             continue
 
-        guide_html = generate_guide_for_input_content(
-            options.input_content, profile_id
-        )
-
         guide_filename = \
             "%s-guide-%s.html" % (path_base, get_profile_short_id(profile_id))
         guide_path = os.path.join(parent_dir, guide_filename)
-        with open(guide_path, "w") as f:
-            f.write(guide_html.encode("utf-8"))
 
         index_links.append("<option value=\"%s\">%s</option>" %
                            (guide_filename, profile_title))
         if index_initial_src is None:
             index_initial_src = guide_path
 
-        print(
-            "Generated '%s' for profile ID '%s'." %
-            (guide_filename, profile_id)
+        queue.put((profile_id, profile_title, guide_path))
+
+    def builder():
+        while True:
+            try:
+                profile_id, profile_title, guide_path = queue.get(False)
+
+                guide_html = generate_guide_for_input_content(
+                    options.input_content, profile_id
+                )
+                with open(guide_path, "w") as f:
+                    f.write(guide_html.encode("utf-8"))
+
+                queue.task_done()
+
+                print(
+                    "Generated '%s' for profile ID '%s'." %
+                    (guide_filename, profile_id)
+                )
+
+            except Queue.Empty:
+                break
+
+    workers = []
+    for worker_id in range(options.parallel_jobs):
+        worker = threading.Thread(
+            name="Guide generate worker #%i" % (worker_id),
+            target=builder
         )
+        workers.append(worker)
+        worker.start()
+
+    queue.join()
 
     index_source = "<html>\n"
     index_source += "\t<head><title>%s</title></head>" % \
