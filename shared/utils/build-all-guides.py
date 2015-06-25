@@ -182,7 +182,8 @@ def main():
         raise RuntimeError("No INPUT file provided, please use --input.")
 
     parent_dir = os.path.dirname(os.path.abspath(options.input_content))
-    path_base, _ = os.path.splitext(os.path.basename(options.input_content))
+    input_basename = os.path.basename(options.input_content)
+    path_base, _ = os.path.splitext(input_basename)
     # avoid -ds and -xccdf suffices in guide filenames
     if path_base.endswith("-ds"):
         path_base = path_base[:-3]
@@ -240,8 +241,10 @@ def main():
             (path_base, get_profile_short_id(profile_id_for_path))
         guide_path = os.path.join(parent_dir, guide_filename)
 
-        index_links.append("<option value=\"%s\">%s</option>" %
-                           (guide_filename, profile_title))
+        index_links.append(
+            "<option value=\"%s\" data-profile-id=\"%s\">%s</option>" %
+            (guide_filename, profile_id, profile_title)
+        )
         if index_initial_src is None:
             index_initial_src = guide_path
 
@@ -279,17 +282,36 @@ def main():
 
     queue.join()
 
-    index_source = "<html>\n"
-    index_source += "\t<head><title>%s</title></head>" % \
+    index_source = "<html lang=\"en\">\n"
+    index_source += "\t<head>\n"
+    index_source += "\t\t<meta charset=\"utf-8\">\n"
+    index_source += "\t\t<title>%s</title>\n" % \
                     (benchmarks.itervalues().next())
+    index_source += "\t\t<script>\n"
+    index_source += "\t\t\tfunction change_profile(option_element)\n"
+    index_source += "\t\t\t{\n"
+    index_source += "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n"
+    index_source += "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n"
+    index_source += "\t\t\t\tvar input_path='/usr/share/xml/scap/ssg/content/%s';\n" % (input_basename)
+    index_source += "\t\t\t\tif (profile_id == '')\n"
+    index_source += "\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n"
+    index_source += "\t\t\t\telse\n"
+    index_source += "\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n"
+    index_source += "\t\t\t\twindow.open(option_element.value, 'guide');\n"
+    index_source += "\t\t\t}\n"
+    index_source += "\t\t</script>\n"
+    index_source += "\t</head>\n"
     index_source += "\t<body>\n"
-    index_source += "\t\tProfile selector: \n"
-    index_source += "\t\t<select style=\"margin-bottom: 5px\" onchange=\""
-    index_source += \
-        "window.open(this.options[this.selectedIndex].value,'guide');"
-    index_source += "\">\n"
-    index_source += "\n".join(index_links)
-    index_source += "\t\t</select><br />\n"
+    index_source += "\t\tProfile: \n"
+    index_source += "\t\t<select style=\"margin-bottom: 5px\" "
+    index_source += "onchange=\"change_profile(this.options[this.selectedIndex]);\""
+    index_source += ">\n"
+    index_source += "\n".join(index_links) + "\n"
+    index_source += "\t\t</select>\n"
+    index_source += "\t\t&nbsp;&nbsp;<span id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
+    index_source += "select a profile to display its guide and a command line snippet needed to use it"
+    index_source += "</span>\n"
+    index_source += "\t\t<br>\n"
     index_source += \
         "\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
     index_source += "style=\"width: 100%; height: calc(100% - 50px)\">\n"
