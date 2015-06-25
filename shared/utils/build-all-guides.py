@@ -213,7 +213,17 @@ def main():
     index_links = []
     index_initial_src = None
 
-    for profile_id, profile_title in profiles.iteritems():
+    def profile_sort_key(profiles, profile_id):
+        if profile_id == "":
+            # make sure (default) is last
+            return "zzz(default)"
+
+        # otherwise sort by profile title
+        return profiles[profile_id]
+
+    for profile_id in sorted(profiles.iterkeys(),
+                             key=lambda x: profile_sort_key(profiles, x)):
+        profile_title = profiles[profile_id]
         skip = False
         for blacklisted_id in PROFILE_ID_BLACKLIST:
             if profile_id.endswith(blacklisted_id):
