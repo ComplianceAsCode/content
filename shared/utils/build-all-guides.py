@@ -233,9 +233,7 @@ def main():
         if skip:
             continue
 
-        profile_id_for_path = profile_id
-        if profile_id_for_path == "":
-            profile_id_for_path = "default"
+        profile_id_for_path = "default" if not profile_id else profile_id
 
         guide_filename = \
             "%s-guide-%s.html" % \
@@ -264,7 +262,7 @@ def main():
 
                 print(
                     "Generated '%s' for profile ID '%s'." %
-                    (guide_filename, profile_id)
+                    (guide_path, profile_id)
                 )
 
             except Queue.Empty:
