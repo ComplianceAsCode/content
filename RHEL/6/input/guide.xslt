@@ -2,13 +2,17 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <!-- This transform assembles all fragments into one "shorthand" XCCDF document -->
+<!-- It expects a numeric parameter "withtest" specifying if the 'test' profile should
+     be included ("withtest=0") into the benchmark or not ("withtest=1"). -->
 
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
 
        <!-- adding profiles here -->
-		<xsl:apply-templates select="document('profiles/test.xml')" />
+		<xsl:if test=" number($withtest) = number(0) ">
+			<xsl:apply-templates select="document('profiles/test.xml')" />
+		</xsl:if>
 		<xsl:apply-templates select="document('profiles/CS2.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
 		<!-- <xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
@@ -19,6 +23,7 @@
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/CSCF-RHEL6-MLS.xml')" />
 		<xsl:apply-templates select="document('profiles/C2S.xml')" />
+		<xsl:apply-templates select="document('profiles/pci-dss.xml')" />
 
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>

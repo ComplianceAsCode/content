@@ -50,6 +50,7 @@ keep the user from alternating between the same password too
 frequently.</description>
 <value selector="">5</value>
 <value selector="0">0</value>
+<value selector="4">4</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
 <value selector="24">24</value>
@@ -58,13 +59,16 @@ frequently.</description>
 <Rule id="display_login_attempts">
 <title>Set Last Logon/Access Notification</title>
 <description>To configure the system to notify users of last logon/access
-using <tt>pam_lastlog</tt>, add the following line immediately after <tt>session  required  pam_limits.so</tt>:
-<pre>session       required     pam_lastlog.so showfailed</pre>
+using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt> settings in
+<tt>/etc/pam.d/postlogin</tt> to read as follows:
+<pre>session     [success=1 default=ignore] pam_succeed_if.so service !~ gdm* service !~ su* quiet
+session     [default=1]   pam_lastlog.so nowtmp showfailed
+session     optional      pam_lastlog.so silent noupdate showfailed</pre>
 </description>
 <ocil clause="that is not the case">
 To ensure that last logon/access notification is configured correctly, run
 the following command:
-<pre>$ grep pam_lastlog.so /etc/pam.d/system-auth</pre>
+<pre>$ grep pam_lastlog.so /etc/pam.d/postlogin</pre>
 The output should show output <tt>showfailed</tt>.
 </ocil>
 <rationale>
@@ -81,34 +85,45 @@ and gives them an opportunity to notify administrators.
 
 <Group id="password_quality">
 <title>Set Password Quality Requirements</title>
-<description>The default <tt>pam_cracklib</tt> PAM module provides strength
+<description>The default <tt>pam_pwquality</tt> PAM module provides strength
 checking for passwords. It performs a number of checks, such as
 making sure passwords are not similar to dictionary words, are of
 at least a certain length, are not the previous password reversed,
 and are not simply a change of case from the previous password. It
-can also require passwords to be in certain character classes.
+can also require passwords to be in certain character classes. The
+<tt>pam_pwquality</tt> module is the preferred way of configuring
+password requirements.
 <br /><br />
-The <tt>pam_passwdqc</tt> PAM module also provides the ability to enforce
-stringent password strength requirements. It is provided
-in an RPM of the same name.
+The <tt>pam_cracklib</tt> PAM module can also provide strength
+checking for passwords as the <tt>pam_pwquality</tt> module.
+It performs a number of checks, such as making sure passwords are
+not similar to dictionary words, are of at least a certain length,
+are not the previous password reversed, and are not simply a change
+of case from the previous password. It can also require passwords to
+be in certain character classes.
 <br /><br />
-The man pages <tt>pam_cracklib(8)</tt> and <tt>pam_passwdqc(8)</tt>
+The man pages <tt>pam_pwquality(8)</tt> and <tt>pam_cracklib(8)</tt>
 provide information on the capabilities and configuration of
 each.</description>
 
-<Group id="password_quality_pamcracklib">
-<title>Set Password Quality Requirements, if using
-pam_cracklib</title>
-<description>The <tt>pam_cracklib</tt> PAM module can be configured to meet
+<Group id="password_quality_pwquality">
+<title>Set Password Quality Requirements with pam_pwquality</title>
+<description>The <tt>pam_pwquality</tt> PAM module can be configured to meet
 requirements for a variety of policies.
 <br /><br />
-For example, to configure <tt>pam_cracklib</tt> to require at least one uppercase
+For example, to configure <tt>pam_pwquality</tt> to require at least one uppercase
 character, lowercase character, digit, and other (special)
-character, locate the following line in <tt>/etc/pam.d/system-auth</tt>:
-<pre>password requisite pam_cracklib.so try_first_pass retry=3</pre>
-and then alter it to read:
-<pre>password required pam_cracklib.so try_first_pass retry=3 maxrepeat=3 minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1 difok=4</pre>
+character, make sure that <tt>pam_pwquality</tt> exists in <tt>/etc/pam.d/system-auth</tt>:
+<pre>password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=</pre>
 If no such line exists, add one as the first line of the password section in <tt>/etc/pam.d/system-auth</tt>.
+Next, modify the settings in <tt>/etc/security/pwquality.conf</tt> to match the following:
+<pre>difok = 4
+minlen = 14
+dcredit = -1
+ucredit = -1
+lcredit = -1
+ocredit = -1
+maxrepeat = 3</pre>
 The arguments can be modified to ensure compliance with
 your organization's security policy. Discussion of each parameter follows.
 </description>
@@ -140,6 +155,7 @@ reason.</warning>
 <value selector="">15</value>
 <value selector="6">6</value>
 <!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
+<value selector="7">7</value>
 <value selector="8">8</value>
 <value selector="10">10</value>
 <value selector="12">12</value>
@@ -215,6 +231,7 @@ passwords</warning>
 <value selector="">3</value>
 <value selector="3">3</value>
 <value selector="5">5</value>
+<value selector="6">6</value>
 <value selector="10">10</value>
 </Value>
 
@@ -245,7 +262,7 @@ passwords</warning>
 <description>To configure the number of retry prompts that are permitted per-session:
 <br /><br />
 Edit the <tt>pam_pwquality.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to 
-show <tt>retry=3</tt>, or a lower value if site policy is more restrictive.
+show <tt>retry=<sub idref="var_password_pam_retry" /></tt>, or a lower value if site policy is more restrictive.
 <br /><br />
 The DoD requirement is a maximum of 3 prompts per session.
 </description>
@@ -268,22 +285,24 @@ is different from account lockout, which is provided by the pam_faillock module.
 <tested by="swells" on="20140925"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_maxrepeat">
+<Rule id="accounts_password_pam_maxrepeat">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
-<description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
+<description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
-which contain more than that number of consecutive characters. Add <tt>maxrepeat=3</tt>
-after pam_cracklib.so to prevent a run of four or more identical characters.
+which contain more than that number of consecutive characters. Modify the <tt>maxrepeat</tt> setting
+in <tt>/etc/security/pwquality.conf</tt> to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
-<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
-Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3.
+<pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
+Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3 which would 
+appear as <tt>maxrepeat = 3</tt>.
 </ocil>
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
+<oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
@@ -292,15 +311,14 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <description>The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
 contain that many digits. When set to a positive number, pam_pwquality will grant +1 additional
-length credit for each digit.  
-Add <tt>dcredit=-1</tt> after pam_pwquality.so to require use of a digit in passwords.
+length credit for each digit. Modify the <tt>dcredit</tt> setting in 
+<tt>/etc/security/pwquality.conf</tt> to require the use of a digit in passwords.
 </description>
 <ocil clause="dcredit is not found or not set to the required value">
 To check how many digits are required in a password, run the following command:
-<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
+<pre>$ grep dcredit /etc/security/pwquality.conf</pre>
 The <tt>dcredit</tt> parameter (as a negative number) will indicate how many digits are required.
-The DoD requires at least one digit in a password.
-This would appear as <tt>dcredit=-1</tt>.
+The DoD requires at least one digit in a password. This would appear as <tt>dcredit = -1</tt>.
 </ocil>
 <rationale>
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
@@ -320,8 +338,8 @@ after pam_pwquality to set minimum password length requirements.
 </description>
 <ocil clause="minlen is not found or not set to the required value (or higher)">
 To check how many characters are required in a password, run the following command:
-<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
-Your output should contain <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+<pre>$ grep minlen /etc/security/pwquality.conf</pre>
+Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /></tt>
 </ocil>
 <rationale>
 Password length is one factor of several that helps to determine
@@ -341,15 +359,15 @@ required to compromise the password.
 <description>The pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
 contain that many uppercase characters. When set to a positive number, pam_pwquality will grant +1 additional
-length credit for each uppercase character.
-Add <tt>ucredit=-1</tt> after pam_pwquality.so to require use of an upper case character in passwords.
+length credit for each uppercase character. Modify the <tt>ucredit</tt> setting in
+<tt>/etc/security/pwquality.conf</tt> to require the use of an uppercase character in passwords.
 </description>
 <ocil clause="ucredit is not found or not set to the required value">
 To check how many uppercase characters are required in a password, run the following command:
-<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
+<pre>$ grep ucredit /etc/security/pwquality.conf</pre>
 The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
 The DoD and FISMA require at least one uppercase character in a password.
-This would appear as <tt>ucredit=-1</tt>.
+This would appear as <tt>ucredit = -1</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of uppercase characters makes password guessing attacks
@@ -364,17 +382,17 @@ more difficult by ensuring a larger search space.
 <Rule id="accounts_password_pam_ocredit">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
-usage of special (or "other") characters in a password. When set to a negative number, any password will be required to
-contain that many special characters. When set to a positive number, pam_pwquality will grant +1 additional
-length credit for each special character.
-Add <tt>ocredit=<sub idref="var_password_pam_ocredit" /></tt> after pam_pwquality.so to 
-require use of a special character in passwords.</description>
+usage of special (or "other") characters in a password. When set to a negative number, any password will be
+required to contain that many special characters. When set to a positive number, pam_pwquality will grant +1 
+additional length credit for each special character. Modify the <tt>ocredit</tt> setting in 
+<tt>/etc/security/pwquality.conf</tt> to require use of a special character in passwords.
+</description>
 <ocil clause="ocredit is not found or not set to the required value">
 To check how many special characters are required in a password, run the following command:
-<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
+<pre>$ grep ocredit /etc/security/pwquality.conf</pre>
 The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
 The DoD and FISMA require at least one special character in a password.
-This would appear as <tt>ocredit=-1</tt>.
+This would appear as <tt>ocredit = -1</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of special characters makes password guessing attacks
@@ -388,18 +406,18 @@ more difficult by ensuring a larger search space.
 
 <Rule id="accounts_password_pam_lcredit">
 <title>Set Password Strength Minimum Lowercase Characters</title>
-<description>The pam_pwquality module's <tt>lcredit=</tt> parameter controls requirements for
+<description>The pam_pwquality module's <tt>lcredit</tt> parameter controls requirements for
 usage of lowercase letters in a password. When set to a negative number, any password will be required to
 contain that many lowercase characters. When set to a positive number, pam_pwquality will grant +1 additional
-length credit for each lowercase character.
-Add <tt>lcredit=-1</tt> after pam_pwquality.so to require use of a lowercase character in passwords.
+length credit for each lowercase character. Modify the <tt>lcredit</tt> setting in 
+<tt>/etc/security/pwquality.conf</tt> to require the use of a lowercase character in passwords.
 </description>
 <ocil clause="lcredit is not found or not set to the required value">
 To check how many lowercase characters are required in a password, run the following command:
-<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
+<pre>$ grep lcredit /etc/security/pwquality.conf</pre>
 The <tt>lcredit</tt> parameter (as a negative number) will indicate how many special characters are required.
 The DoD and FISMA require at least one lowercase character in a password.
-This would appear as <tt>lcredit=-1</tt>.
+This would appear as <tt>lcredit = -1</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of lowercase characters makes password guessing attacks
@@ -413,18 +431,15 @@ more difficult by ensuring a larger search space.
 
 <Rule id="accounts_password_pam_difok">
 <title>Set Password Strength Minimum Different Characters</title>
-<description>The pam_pwquality module's <tt>difok</tt> parameter controls requirements for
-usage of different characters during a password change.
-Add <tt>difok=<i>NUM</i></tt> after pam_pwquality.so to require differing
-characters when changing passwords, substituting <i>NUM</i> appropriately.
-The DoD requirement is <tt>15</tt>.
+<description>The pam_pwquality module's <tt>difok</tt> parameter controls requirements for usage of different
+characters during a password change. Modify the <tt>difok</tt> setting in <tt>/etc/security/pwquality.conf</tt>
+to require differing characters when changing passwords. The DoD requirement is <tt>4</tt>.
 </description>
 <ocil clause="difok is not found or not set to the required value">
 To check how many characters must differ during a password change, run the following command:
-<pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
-The <tt>difok</tt> parameter will indicate how many characters must differ.
-The DoD requires 15 characters differ during a password change.
-This would appear as <tt>difok=15</tt>.
+<pre>$ grep difok /etc/security/pwquality.conf</pre>
+The <tt>difok</tt> parameter will indicate how many characters must differ. The DoD requires four characters
+differ during a password change. This would appear as <tt>difok = 4</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of different characters during password changes ensures that
@@ -437,39 +452,38 @@ Note that passwords which are changed on compromised systems will still be compr
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_minclass">
+<Rule id="accounts_password_pam_minclass">
 <title>Set Password Strength Minimum Different Categories</title>
-<description>The pam_cracklib module's <tt>minclass</tt> parameter controls requirements for
-usage of different character classes, or types, of character that must exist in a password
-before it is considered valid. For example, setting this value to three (3) requires that
-any password must have characters from at least three different categories in order to be
-approved. The default value is zero (0), meaning there are no required classes. There are
-four categories available:
+<description>The pam_pwquality module's <tt>minclass</tt> parameter controls
+requirements for usage of different character classes, or types, of character
+that must exist in a password before it is considered valid. For example,
+setting this value to three (3) requires that any password must have characters
+from at least three different categories in order to be approved. The default
+value is zero (0), meaning there are no required classes. There are four
+categories available:
 <pre>
 * Upper-case characters
 * Lower-case characters
 * Digits
 * Special characters (for example, punctuation)
 </pre>
-Add <tt>minclass=<i>NUM</i></tt> after pam_cracklib.so entry into the
-<tt>/etc/pam.d/system-auth</tt> file in order to require differing categories of
-characters when changing passwords, substituting <i>NUM</i> appropriately (for example to
-require at least three character classes to be used in password, use <tt>minclass=3</tt>).
+Modify the <tt>minclass</tt> setting in <tt>/etc/security/pwquality.conf</tt> entry to require
+differing categories of characters when changing passwords. The minimum requirement is <tt>3</tt>.
 </description>
 <ocil clause="minclass is not found or not set to the required value">
 To check how many categories of characters must be used in password during a password change,
 run the following command:
-<pre>$ grep pam_cracklib /etc/pam.d/system-auth</pre>
+<pre>$ grep minclass /etc/security/pwquality.conf</pre>
 The <tt>minclass</tt> parameter will indicate how many character classes must be used. If
 the requirement was for the password to contain characters from three different categories,
-then this would appear as <tt>minclass=3</tt>.
+then this would appear as <tt>minclass = 3</tt>.
 </ocil>
 <rationale>
 Requiring a minimum number of character categories makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
-<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_minclass"/>
+<oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
@@ -498,17 +512,22 @@ and a second to use unlock_time and set it to a Value
 <title>Set Deny For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
-attempts using <tt>pam_faillock.so</tt>:
+attempts using <tt>pam_faillock.so</tt>, modify the content of both
+<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
-Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
-both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
-<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
-<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<ul>
+<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<pre>account required pam_faillock.so</pre></li>
+</ul>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>deny=<id subref="var_accounts_passwords_pam_faillock_deny" /></tt>.
+The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /></tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -523,11 +542,17 @@ prevents direct password guessing attacks.
 <title>Set Lockout Time For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
-attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
+attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>,
+modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
-Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
-<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<ul>
+<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<pre>account required pam_faillock.so</pre></li>
+</ul>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -540,27 +565,31 @@ prevents direct password guessing attacks.  Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26884-7" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
 <ref nist="AC-7(b)" disa="47" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_fail_interval" severity="medium">
+<Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
 Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
-attempts.
+attempts. Modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
-Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
-<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=<id subref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
-<pre>auth required pam_faillock.so authsucc deny=<id subref="var_accounts_passwords_pam_faillock_deny" />  unlock_time=604800 fail_interval=<id subref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<ul>
+<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<pre>account required pam_faillock.so</pre></li>
+</ul>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
 For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 
-<tt><id subref="var_accounts_passwords_pam_faillock_fail_interval" /></tt>  or greater. 
+<tt><sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></tt>  or greater. 
 If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
@@ -568,7 +597,7 @@ Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
 <ident cce="26763-3" />
-<oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
+<oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
 <ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
 

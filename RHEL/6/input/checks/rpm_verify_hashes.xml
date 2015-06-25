@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="rpm_verify_hashes" version="1">
+  <definition class="compliance" id="rpm_verify_hashes" version="2">
     <metadata>
       <title>Verify File Hashes with RPM</title>
       <affected family="unix">
@@ -25,6 +25,10 @@
   <linux:rpmverifyfile_object id="object_files_fail_md5_hash" version="1" comment="rpm verify of all files">
     <linux:behaviors nomd5="false"/>
     <linux:name operation="pattern match">.*</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
     <linux:filepath operation="pattern match">^.*bin/.*$</linux:filepath>
     <filter action="include">state_files_fail_md5_hash</filter>
   </linux:rpmverifyfile_object>

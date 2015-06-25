@@ -38,8 +38,8 @@
 <note ref="29249" auth="GG" rule="">This is not covered in RHEL 6 content</note>
 <note ref="29248" auth="GG" rule="">This is not covered in RHEL 6 content</note>
 
-<note ref="29247" auth="GG" rule="audit_network_modifications">This is covered in RHEL 6 content</note>
-<note ref="29246" auth="GG" rule="audit_network_modifications">This is covered in RHEL 6 content</note>
+<note ref="29247" auth="GG" rule="audit_rules_networkconfig_modification">This is covered in RHEL 6 content</note>
+<note ref="29246" auth="GG" rule="audit_rules_networkconfig_modification">This is covered in RHEL 6 content</note>
 
 <note ref="29245" auth="GG" rule="audit_rules_time_clock_settime">This is covered in RHEL 6 content</note>
 
@@ -1065,7 +1065,7 @@ rule=audit_rules_file_deletion_events manual=no
 <note ref="818" auth="KS">
 Check exists in the RHEL6 prose, it can be automated and the OVAL for it 
 appears to already exist. 
-rule=audit_manual_logon_edits manual=no
+rule=audit_rules_login_events manual=no
 Has no NIST controls associated
 </note>
 
@@ -1294,7 +1294,7 @@ Not sure what the argument is for singling these specific things out.
 <note ref="4083" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=enable_screensaver_after_idle manual=no
+rule=gconf_gnome_screensaver_idle_activation_enabled manual=no
 </note>
 
 <note ref="4084" auth="KS">
@@ -1523,7 +1523,7 @@ Any automated effort to check this is at best a token effort.
 <note ref="22301" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and the OVAL for it 
 does exist.
-rule=set_blank_screensaver manual=no
+rule=gconf_gnome_screensaver_mode_blank manual=no
 </note>
 
 <note ref="22303" auth="KS">
@@ -1566,7 +1566,7 @@ rule=auditd_data_retention_space_left_action manual=no
 <note ref="22376,22377" auth="KS">
 Partial check does exist in the RHEL6 prose, it can be automated and a partial
 OVAL for it does exist.
-rule=audit_account_changes manual=no
+rule=audit_rules_usergroup_modification manual=no
 Auditing of the files is in place but not the commands.
 </note>
 
@@ -1643,7 +1643,7 @@ rule=service_rpcbind_disabled manual=no
 <note ref="22431,22432,22433,22434" auth="KS">
 Check does exist in the RHEL6 prose, it can be automated and OVAL for it does 
 exist.
-rule=uninstall_rsh-server manual=no
+rule=package_rsh-server_removed manual=no
 </note>
 
 <note ref="22456,22461,22462,22463,22474" auth="KS">

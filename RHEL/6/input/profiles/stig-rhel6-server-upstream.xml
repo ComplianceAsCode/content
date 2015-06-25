@@ -1,11 +1,11 @@
 <Profile id="stig-rhel6-server-upstream" extends="common">
-<title>Upstream STIG for RHEL 6 Server</title>
-<description>This profile is developed under the DoD consensus model and DISA FSO Vendor STIG process,
+<title override="true">Upstream STIG for RHEL 6 Server</title>
+<description override="true">This profile is developed under the DoD consensus model and DISA FSO Vendor STIG process,
 serving as the upstream development environment for the Red Hat Enterprise Linux 6 Server STIG.
 
 As a result of the upstream/downstream relationship between the SCAP Security Guide project 
 and the official DISA FSO STIG baseline, users should expect variance between SSG and DISA FSO content.
-For official DISA FSO STIG content, refer to http://iase.disa.mil/stigs/os/unix/red_hat.html.
+For official DISA FSO STIG content, refer to http://iase.disa.mil/stigs/os/unix-linux/Pages/red-hat.aspx.
 
 While this profile is packaged by Red Hat as part of the SCAP Security Guide package, please note 
 that commercial support of this SCAP content is NOT available. This profile is provided as example 
@@ -39,7 +39,7 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 <select idref="account_unique_name" selected="true"/>
 <select idref="account_temp_expire_date" selected="true"/>
 
-<select idref="accounts_password_pam_cracklib_maxrepeat" selected="true"/>
+<select idref="accounts_password_pam_maxrepeat" selected="true"/>
 
 <select idref="no_files_unowned_by_user" selected="true"/>
 <select idref="no_files_unowned_by_group" selected="true"/>
@@ -59,9 +59,9 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 <select idref="set_iptables_default_rule_forward" selected="true"/>
 
 <select idref="package_openswan_installed" selected="true" />
-<select idref="enable_gdm_login_banner" selected="true" />
+<select idref="gconf_gdm_enable_warning_gui_banner" selected="true" />
 
-<select idref="set_gdm_login_banner_text" selected="true" />
+<select idref="gconf_gdm_set_login_banner_text" selected="true" />
 <refine-value idref="login_banner_text" selector="dod_default"/>
 
 <select idref="service_bluetooth_disabled" selected="true" />
@@ -95,7 +95,7 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 
 <select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
 <refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800"/>
-<select idref="accounts_passwords_pam_fail_interval" selected="true" />
+<select idref="accounts_passwords_pam_faillock_interval" selected="true" />
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900"/>
 
 <!-- from inherited Rule, accounts_password_pam_unix_remember -->

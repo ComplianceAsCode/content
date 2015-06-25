@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="no_root_webbrowsing" version="1">
+    <metadata>
+      <title>File /root/* Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Owner for /root/* must be root.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_no_root_webbrowsing" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing permissions" id="test_no_root_webbrowsing" version="1">
+    <unix:object object_ref="object_no_root_webbrowsing" />
+  </unix:file_test>
+
+  <unix:file_object comment="/root/*" id="object_no_root_webbrowsing" version="1">
+	<unix:path>/root/.mozilla</unix:path>
+	<unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+</def-group>

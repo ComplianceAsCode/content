@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="ip6tables_input_icmpv6_broadcast" version="1">
+    <metadata>
+      <title>Ignore ICMPv6 Echo Requests On a Broadcast Address.</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Add Drop Rule for the INPUT built-in chain to ignore any 
+	  ICMPv6 echo requests sent to a broadcast address.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="-A INPUT -p icmpv6 -d ff02::1 --icmpv6-type 128 -j DROP"
+      test_ref="test_ip6tables_input_icmpv6_broadcast" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all"
+  check_existence="at_least_one_exists"
+  comment="Check /etc/sysconfig/ip6tables for line -A INPUT -p icmpv6 -d ff02::1 --icmpv6-type 128 -j DROP"
+  id="test_ip6tables_input_icmpv6_broadcast" version="1">
+    <ind:object object_ref="obj_ip6tables_input_icmpv6_broadcast" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ip6tables_input_icmpv6_broadcast"
+  version="1">
+    <ind:path>/etc/sysconfig</ind:path>
+    <ind:filename>ip6tables</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*-A[\s]+INPUT[\s]+-p[\s]+icmpv6[\s]+-d[\s]+ff02::1[\s]+--icmpv6-type[\s]+128[\s]+-j[\s]+DROP$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="restricted_accounts" version="1">
+    <metadata>
+      <title>Special Privilege Accounts Must Not Exist</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>If special privilege accounts are compromised, the 
+	  accounts could provide privileges to execute malicious commands 
+	  on a system.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_restricted_accounts" />
+    </criteria>
+  </definition>
+  
+  <unix:password_test check="all" check_existence="none_exist" comment="Testing existence of shutdown, halt, and reboot user accounts" id="test_restricted_accounts" version="1">
+    <unix:object object_ref="object_restricted_accounts" />
+  </unix:password_test>
+  
+  <unix:password_object id="object_restricted_accounts" version="3" comment="The shutdown, halt, and reboot user accounts.">
+    <unix:username datatype="string" operation="pattern match">^(shutdown|halt|reboot)$</unix:username>
+  </unix:password_object>
+  
+</def-group>

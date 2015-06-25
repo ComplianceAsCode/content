@@ -26,7 +26,7 @@ port, it is subject to network attacks. Its functionality
 is convenient but is only appropriate if the local network
 can be trusted.
 </rationale>
-<ident cce="27087-6" />
+<ident cce="27087-6"  stig="RHEL-06-000246" />
 <oval id="service_avahi-daemon_disabled" />
 <ref nist="CM-7" disa="366"/>
 </Rule>
@@ -54,6 +54,7 @@ Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
 </description>
 <ref nist="CM-7" />
 <ident cce="27590-9" />
+<oval id="avahi_ip_only"/>
 </Rule>
 
 <Rule id="avahi_check_ttl">
@@ -74,6 +75,7 @@ are not permitted.
 </rationale>
 <ref nist="CM-7" />
 <ident cce="27340-9" />
+<oval id="avahi_check_ttl"/>
 </Rule>
 
 <Rule id="avahi_prevent_port_sharing">
@@ -89,21 +91,22 @@ that port on the system.
 </rationale>
 <ident cce="27308-6" />
 <ref nist="CM-7" />
+<oval id="avahi_prevent_port_sharing"/>
 </Rule>
 
 <Rule id="avahi_disable_publishing">
 <title>Disable Avahi Publishing</title>
 <description>
-To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
-and ensure the following line appears in the <tt>[server]</tt> section:
-<pre>disallow-other-stacks=yes</pre>
+To prevent Avahi from publishing its records, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
+and ensure the following line appears in the <tt>[publish]</tt> section:
+<pre>disable-publishing=yes</pre>
 </description>
 <rationale>
-This helps ensure that only Avahi is responsible for mDNS traffic coming from
-that port on the system.
+This helps ensure that no record will be published by Avahi.
 </rationale>
 <ref nist="CM-7" />
 <ident cce="27526-3" />
+<oval id="avahi_disable_publishing"/>
 </Rule>
 
 <Rule id="avahi_restrict_published_information">
@@ -134,6 +137,7 @@ must be published.
 </rationale>
 <ident cce="27300-3" />
 <ref nist="CM-7" />
+<oval id="avahi_restrict_published_information"/>
 </Rule>
 </Group>
 </Group>

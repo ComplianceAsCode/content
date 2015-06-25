@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="firefox_preferences-autofill_forms"  version="1">
+    <metadata>
+      <title>Disable Autofill Form Assistance</title>
+      <affected family="unix">
+        <platform>Mozilla Firefox</platform>
+      </affected>
+      <description>Firefox formfill assistance option is disabled.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="autofill_forms disabled" test_ref="test_firefox_preferences-autofill_forms" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check for autofill_forms disabled" id="test_firefox_preferences-autofill_forms" version="1">
+    <ind:object object_ref="object_firefox_preferences-autofill_forms" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firefox_preferences-autofill_forms" version="1">
+    <ind:path operation="pattern match">^\/usr\/(|local\/)lib(|64)\/firefox</ind:path>
+    <ind:filename operation="pattern match">^.*\.cfg$</ind:filename>
+    <ind:pattern operation="pattern match">^lockPref\("browser.formfill.enable",[\s]+false\);$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>  
+</def-group>

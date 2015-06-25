@@ -28,6 +28,7 @@
     <!-- <select idref="root_path_default" selected="true"/> -->
     <!-- Verify Proper Storage and Existence of Password Hashes section rules -->
     <select idref="no_empty_passwords" selected="true"/>
+    <select idref="display_login_attempts" selected="true"/>
     <select idref="no_hashes_outside_shadow" selected="true"/>
     <!-- <select idref="gid_passwd_group_same" selected="true"/> -->
     <select idref="no_netrc_files" selected="true"/>
@@ -40,11 +41,51 @@
     <select idref="accounts_maximum_age_login_defs" selected="true"/>
     <refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
     <select idref="accounts_password_warn_age_login_defs" selected="true"/>
+  <!-- Secure Session Configuration Files for Login Accounts -->
+    <!-- Ensure that No Dangerous Directories Exist in Root's Path -->
+      <select idref="root_path_no_groupother_writable" selected="true"/>
+
+<!-- Audit section rules -->
+
+  <select idref="audit_rules_time_adjtimex" selected="true"/>
+  <select idref="audit_rules_time_settimeofday" selected="true"/>
+  <select idref="audit_rules_time_stime" selected="true"/>
+  <select idref="audit_rules_time_clock_settime" selected="true"/>
+  <select idref="audit_rules_time_watch_localtime" selected="true"/>
+
+  <select idref="audit_rules_usergroup_modification" selected="true"/>
+  <select idref="audit_rules_networkconfig_modification" selected="true"/>
+  <select idref="audit_rules_mac_modification" selected="true"/>
+
+  <!-- Audit DAC modifications -->
+  <select idref="audit_rules_dac_modification_chmod" selected="true"/>
+  <select idref="audit_rules_dac_modification_chown" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchmod" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchmodat" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchown" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchownat" selected="true"/>
+  <select idref="audit_rules_dac_modification_fremovexattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_fsetxattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_lchown" selected="true"/>
+  <select idref="audit_rules_dac_modification_lremovexattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_lsetxattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_removexattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_setxattr" selected="true"/>
+  <select idref="audit_rules_login_events" selected="true"/>
+  <select idref="audit_rules_session_events" selected="true"/>
+  <select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
+  <select idref="audit_rules_privileged_commands" selected="true"/>
+  <select idref="audit_rules_media_export" selected="true"/>
+  <select idref="audit_rules_file_deletion_events" selected="true"/>
+  <select idref="audit_rules_sysadmin_actions" selected="true"/>
+  <select idref="audit_rules_kernel_module_loading" selected="true"/>
+  <select idref="audit_rules_immutable" selected="true" />
 
 <!-- Services -->
   <!-- Network Time Protocol -->
-  <select idref="service_ntpd_enabled" selected="true"/>
-  <select idref="ntpd_specify_remote_server" selected="true"/>
+  <select idref="service_chronyd_enabled" selected="true"/>
+  <select idref="chronyd_specify_remote_server" selected="true"/>
+  <select idref="service_auditd_enabled" selected="true"/>
   <!-- SSH Server -->
   <select idref="sshd_disable_root_login" selected="true"/>
   <select idref="sshd_disable_empty_passwords" selected="true"/>

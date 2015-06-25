@@ -1,6 +1,6 @@
 <Profile id="stig-rhel7-server-upstream" extends="common">
-<title>Pre-release Draft STIG for RHEL 7 Server</title>
-<description>This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
+<title override="true">Pre-release Draft STIG for RHEL 7 Server</title>
+<description override="true">This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
 
 <!-- STIG refinement values. Note these are set by DISA FSO,
      and should not be manipulated -->
@@ -15,6 +15,7 @@
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="1" />
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
 <refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
+<refine-value idref="login_banner_text" selector="dod_default" />
 
 <!-- BEGIN STIG RULE SELECTION -->
 
@@ -31,7 +32,27 @@
 <select idref="accounts_password_pam_minlen" selected="true" />
 <select idref="accounts_password_pam_difok" selected="true" />
 <select idref="accounts_minimum_age_login_defs" selected="true" />
-<select idref="accounts_passwords_pam_fail_interval" selected="true" />
+<select idref="accounts_passwords_pam_faillock_interval" selected="true" />
 <select idref="accounts_passwords_pam_faillock_deny" selected="true" />
+
+<!-- Account Management Requirements -->
+<select idref="account_temp_expire_date" selected="true" />
+
+<!-- User Management -->
+<select idref="banner_etc_issue" selected="true" />
+<select idref="sshd_enable_warning_banner" selected="true" />
+<select idref="ftp_present_banner" selected="true" />
+<select idref="dconf_gnome_banner_enabled" selected ="true" />
+<select idref="dconf_gnome_login_banner_text" selected="true" />
+
+<!-- Software/Patch Requirements -->
+<select idref="ensure_redhat_gpgkey_installed" selected="true" />
+<select idref="ensure_gpgcheck_globally_activated" selected="true" />
+<select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="security_patches_up_to_date" selected="true" />
+
+<!-- System Audit Requirements -->
+<select idref="audit_rules_file_deletion_events" selected="true" />
+<select idref="audit_rules_kernel_module_loading" selected="true" />
 
 </Profile>

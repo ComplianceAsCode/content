@@ -1,26 +1,26 @@
 <Profile id="desktop" extends="common">
 <title>Desktop Baseline</title>
 <description>This profile is for a desktop installation of RHEL 6.</description>
-<select idref="enable_gdm_login_banner" selected="true"/>
-<select idref="set_gdm_login_banner_text" selected="true"/>
-<select idref="set_screensaver_inactivity_timeout" selected="true"/>
-<select idref="enable_screensaver_after_idle" selected="true"/>
-<select idref="enable_screensaver_password_lock" selected="true"/>
-<select idref="set_blank_screensaver" selected="true"/>
+<select idref="gconf_gdm_enable_warning_gui_banner" selected="true"/>
+<select idref="gconf_gdm_set_login_banner_text" selected="true"/>
+<select idref="gconf_gnome_screensaver_idle_delay" selected="true"/>
+<select idref="gconf_gnome_screensaver_idle_activation_enabled" selected="true"/>
+<select idref="gconf_gnome_screensaver_lock_enabled" selected="true"/>
+<select idref="gconf_gnome_screensaver_mode_blank" selected="true"/>
 <select idref="package_openswan_installed" selected="true"/>
 <select idref="disable_vsftpd" selected="true"/>
 <select idref="uninstall_vsftpd" selected="true"/>
 <select idref="disable_dns_server" selected="true"/>
 <select idref="uninstall_bind" selected="true"/>
 <select idref="disable_httpd" selected="true"/>
-<select idref="uninstall_httpd" selected="true"/>
+<select idref="package_httpd_removed" selected="true"/>
 <select idref="disable_smb_server" selected="true"/>
 <select idref="disable_squid" selected="true"/>
 <select idref="uninstall_squid" selected="true"/>
 <select idref="disable_snmpd" selected="true"/>
-<select idref="uninstall_net-snmp" selected="true"/>
+<select idref="package_net-snmp_removed" selected="true"/>
 <select idref="disable_dovecot" selected="true"/>
-<select idref="uninstall_dovecot" selected="true"/>
+<select idref="package_dovecot_removed" selected="true"/>
 <select idref="service_nfs_disabled" selected="true"/> 
 <select idref="service_rpcsvcgssd_disabled" selected="true"/>
 <select idref="service_nfslock_disabled" selected="true"/>

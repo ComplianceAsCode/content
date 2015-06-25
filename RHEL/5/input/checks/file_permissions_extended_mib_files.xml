@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_mib_files" version="1">
+    <metadata>
+      <title>Files *.mib Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for *.mib files should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criterion test_ref="test_file_permissions_extended_mib_files" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing *.mib extended ACLs" id="test_file_permissions_extended_mib_files" version="1">
+    <unix:object object_ref="object_file_permissions_extended_mib_files" />
+    <unix:state state_ref="state_file_permissions_extended_mib_files" />
+  </unix:file_test>
+  <unix:file_object comment="*.mib" id="object_file_permissions_extended_mib_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^.*\.mib$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_mib_files_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_mib_files_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_extended_mib_files" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

@@ -1,0 +1,1 @@
+chown :root /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd

@@ -1,0 +1,109 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_session_events" version="1">
+    <metadata>
+      <title>Record Attempts to Alter Process and Session Initiation Information</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Audit rules should capture information about session initiation.</description>
+      <reference source="JL" ref_id="RHEL7_20150520" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA20_20150520" ref_url="test_attestation" />
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <criterion comment="audit augenrules" test_ref="test_arse_augenrules" />
+        <criterion comment="audit augenrules utmp" test_ref="test_arse_utmp_augenrules" />
+        <criterion comment="audit augenrules btmp" test_ref="test_arse_btmp_augenrules" />
+        <criterion comment="audit augenrules wtmp" test_ref="test_arse_wtmp_augenrules" />
+      </criteria>
+
+      <!-- Test the auditctl case -->
+      <criteria operator="AND">
+        <criterion comment="audit auditctl" test_ref="test_arse_auditctl" />
+        <criterion comment="audit auditctl utmp" test_ref="test_arse_utmp_auditctl" />
+        <criterion comment="audit auditctl btmp" test_ref="test_arse_btmp_auditctl" />
+        <criterion comment="audit auditctl wtmp" test_ref="test_arse_wtmp_auditctl" />
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_arse_augenrules" version="1">
+    <ind:object object_ref="object_arse_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_augenrules" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules utmp" id="test_arse_utmp_augenrules" version="1">
+    <ind:object object_ref="object_arse_utmp_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_utmp_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules btmp" id="test_arse_btmp_augenrules" version="1">
+    <ind:object object_ref="object_arse_btmp_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_btmp_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules wtmp" id="test_arse_wtmp_augenrules" version="1">
+    <ind:object object_ref="object_arse_wtmp_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_wtmp_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test the auditctl case -->
+  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_arse_auditctl" version="1">
+    <ind:object object_ref="object_arse_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_auditctl" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl utmp" id="test_arse_utmp_auditctl" version="1">
+    <ind:object object_ref="object_arse_utmp_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_utmp_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl btmp" id="test_arse_btmp_auditctl" version="1">
+    <ind:object object_ref="object_arse_btmp_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_btmp_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl wtmp" id="test_arse_wtmp_auditctl" version="1">
+    <ind:object object_ref="object_arse_wtmp_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arse_wtmp_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

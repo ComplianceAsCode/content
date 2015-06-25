@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="nfs_enforce_host_access" version="1">
+    <metadata>
+      <title>NFS Restrict Local Access</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The Network File System (NFS) server must be configured to restrict file system access to local hosts.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="make sure ro or rw options are used in /etc/exports" test_ref="test_nfs_enforce_host_access" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="make sure ro or rw options are used in /etc/exports" id="test_nfs_enforce_host_access" version="1">
+    <ind:object object_ref="object_nfs_enforce_host_access" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nfs_enforce_host_access" version="1">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">^(?![\s]*#)(?![\s]*$)(?![\S]+(?:[\s]+(?=[\S]*[(,]{1}(?:ro|rw))[\S]*)+$).*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

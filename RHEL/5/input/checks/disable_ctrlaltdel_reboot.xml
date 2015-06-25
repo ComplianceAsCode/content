@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="disable_ctrlaltdel_reboot" version="1">
+    <metadata>
+      <title>Disable the ability to reboot the system via ctrl+alt+del key sequence.</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Look for argument 'ca::ctrlaltdel:/sbin/shutdown -t3 -r now' in /etc/inittab.</description>
+    </metadata>
+    <criteria>
+      <criterion negate="true" test_ref="test_disable_ctrlaltdel_reboot_conf" comment="Look for argument 'exec /sbin/shutdown -r now' in /etc/init/control-alt-delete.conf" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Look for argument 'exec /sbin/shutdown -r now' in /etc/init/control-alt-delete.conf" id="test_disable_ctrlaltdel_reboot_conf" version="1">
+    <ind:object object_ref="object_disable_ctrlaltdel_reboot_conf" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_disable_ctrlaltdel_reboot_conf" version="1">
+    <ind:filepath>/etc/inittab</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#).*\:ctrlaltdel\:.*(shutdown|reboot).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

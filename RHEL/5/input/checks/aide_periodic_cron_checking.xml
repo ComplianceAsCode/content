@@ -1,0 +1,65 @@
+<def-group>
+  <definition class="compliance" id="aide_periodic_cron_checking" version="1">
+    <metadata>
+      <title>Aide must be configured to run, at least weekly.</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>A cron job must be configured to execute aide, at least weekly.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="check for aide in /etc/crontab" test_ref="test_aide_periodic_cron_checking_etc_crontab" />
+      <criterion comment="check for aide in /etc/cron.d/*" test_ref="test_aide_periodic_cron_checking_etc_cron_d" />
+      <criterion comment="check for aide in /etc/cron.hourly/*" test_ref="test_aide_periodic_cron_checking_etc_cron_hourly" />
+      <criterion comment="check for aide in /etc/cron.daily/*" test_ref="test_aide_periodic_cron_checking_etc_cron_daily" />
+      <criterion comment="check for aide in /etc/cron.weekly/*" test_ref="test_aide_periodic_cron_checking_etc_cron_weekly" />
+   </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" comment="check if aide is executed" id="test_aide_periodic_cron_checking_etc_crontab" version="1">
+    <ind:object object_ref="object_aide_periodic_cron_checking_etc_crontab" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_periodic_cron_checking_etc_crontab" version="1">
+    <ind:filepath>/etc/crontab</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(?:(?:\d*(?:,\d|-\d)?|\*)+\s(?:\d*(?:,\d|-\d)?|\*)+\s\*\s*\s(?:\d*(?:,\d|-\d)?|\*)|@hourly|@weekly|@daily|@midnight)+.*aide\s.*--check</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="check if aide is executed" id="test_aide_periodic_cron_checking_etc_cron_d" version="1">
+    <ind:object object_ref="object_aide_periodic_cron_checking_etc_cron_d" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_periodic_cron_checking_etc_cron_d" version="1">
+    <ind:path>/etc/cron.d</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)(?:(?:\d*(?:,\d|-\d)?|\*)+\s(?:\d*(?:,\d|-\d)?|\*)+\s\*\s*\s(?:\d*(?:,\d|-\d)?|\*)|@hourly|@weekly|@daily|@midnight)+.*aide\s.*--check</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="check if aide is executed" id="test_aide_periodic_cron_checking_etc_cron_hourly" version="1">
+    <ind:object object_ref="object_aide_periodic_cron_checking_etc_cron_hourly" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_periodic_cron_checking_etc_cron_hourly" version="1">
+    <ind:path>/etc/cron.hourly</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#).*aide\s.*--check</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="check if aide is executed" id="test_aide_periodic_cron_checking_etc_cron_daily" version="1">
+    <ind:object object_ref="object_aide_periodic_cron_checking_etc_cron_daily" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_periodic_cron_checking_etc_cron_daily" version="1">
+    <ind:path>/etc/cron.daily</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#).*aide\s.*--check</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="check if aide is executed" id="test_aide_periodic_cron_checking_etc_cron_weekly" version="1">
+    <ind:object object_ref="object_aide_periodic_cron_checking_etc_cron_weekly" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_aide_periodic_cron_checking_etc_cron_weekly" version="1">
+    <ind:path>/etc/cron.weekly</ind:path>
+    <ind:filename operation="pattern match">.*</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#).*aide\s.*--check</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

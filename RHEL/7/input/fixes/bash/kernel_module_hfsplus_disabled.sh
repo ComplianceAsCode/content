@@ -1,1 +1,1 @@
-echo "install hfsplus /bin/false" > /etc/modprobe.d/hfsplus.conf
+echo "install hfsplus /bin/true" > /etc/modprobe.d/hfsplus.conf

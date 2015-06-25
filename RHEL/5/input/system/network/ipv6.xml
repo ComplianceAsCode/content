@@ -1,0 +1,146 @@
+<Group id="network-ipv6">
+<title>IPv6</title>
+<description>The system includes support for Internet Protocol
+version 6. A major and often-mentioned improvement over IPv4 is its
+enormous increase in the number of available addresses. Another
+important feature is its support for automatic configuration of
+many network settings.</description>
+
+<Group id="disabling_ipv6">
+<title>Disable Support for IPv6 Unless Needed</title>
+<description>
+Despite configuration that suggests support for IPv6 has
+been disabled, link-local IPv6 address auto-configuration occurs
+even when only an IPv4 address is assigned. The only way to
+effectively prevent execution of the IPv6 networking stack is to
+instruct the system not to activate the IPv6 kernel module.
+</description>
+
+<Rule id="kernel_module_ipv6_option_disabled" severity="medium">
+<title>Disable IPv6 Networking Support Automatic Loading</title>
+<description>To prevent the IPv6 kernel module (<tt>ipv6</tt>) from loading the
+IPv6 networking stack, add the following line to
+<tt>/etc/modprobe.d/disabled.conf</tt> (or another file in
+<tt>/etc/modprobe.d</tt>):
+<pre>options ipv6 disable=1</pre>
+This permits the IPv6 module to be loaded (and thus satisfy other modules that
+depend on it), while disabling support for the IPv6 protocol.
+</description>
+<ocil clause="the ipv6 kernel module is loaded">
+If the system uses IPv6, this is not applicable.
+<br /><br />
+If the system is configured to prevent the loading of the
+<tt>ipv6</tt> kernel module, it will contain a line
+of the form:
+<pre>options ipv6 disable=1</pre>
+Such lines may be inside any file in <tt>/etc/modprobe.d</tt> or the
+deprecated<tt>/etc/modprobe.conf</tt>.  This permits insertion of the IPv6
+kernel module (which other parts of the system expect to be present), but
+otherwise keeps it inactive.  Run the following command to search for such
+lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
+<tt>/etc/modprobe.conf</tt>:
+<pre xml:space="preserve">$ grep -r ipv6 /etc/modprobe.conf /etc/modprobe.d</pre>
+</ocil>
+<rationale>
+Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
+the vulnerability to exploitation.
+</rationale>
+<ident stig="GEN007720" />
+<oval id="kernel_module_ipv6_option_disabled" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+<Rule id="network_ipv6_disable_interfaces">
+<title>Disable Interface Usage of IPv6</title>
+<description>To disable interface usage of IPv6, add or correct the following lines in <tt>/etc/sysconfig/network</tt>:
+<pre>NETWORKING_IPV6=no</pre>
+</description>
+<oval id="network_ipv6_disable_interfaces" />
+<ident stig="GEN007700" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+</Group>
+
+<Group id="configuring_ipv6">
+<title>Configure IPv6 Settings if Necessary</title>
+<description>A major feature of IPv6 is the extent to which systems
+implementing it can automatically configure their networking
+devices using information from the network. From a security
+perspective, manually configuring important configuration
+information is preferable to accepting it from the network
+in an unauthenticated fashion.</description>
+
+<Group id="disabling_ipv6_autoconfig">
+<title>Disable Automatic Configuration</title>
+<description>Disable the system's acceptance of router
+advertisements and redirects by adding or correcting the following
+line in <tt>/etc/sysconfig/network</tt> (note that this does not disable
+sending router solicitations):
+<pre>IPV6_AUTOCONF=no</pre>
+</description>
+
+<Value id="sysctl_net_ipv6_conf_all_accept_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.default.accept_redirects</title>
+<description>Toggle ICMP Redirect Acceptance</description>
+<value>0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+<Rule id="sysctl_net_ipv6_conf_all_accept_redirects" severity="medium">
+<title>Disable Accepting IPv6 Redirects</title>
+<description>
+<sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />
+</ocil>
+<rationale>
+An illicit ICMP redirect message could result in a man-in-the-middle attack.
+</rationale>
+<ident stig="GEN007860" />
+<oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+<Rule id="sysctl_net_ipv6_conf_forwarding" severity="medium">
+<title>Disable Accepting IPv6 Forwarding</title>
+<description>
+<sysctl-desc-macro sysctl="net.ipv6.conf.all.forwarding" value="0" />
+<sysctl-desc-macro sysctl="net.ipv6.conf.default.forwarding" value="0" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv6.conf.all.forwarding" value="0" />
+<sysctl-check-macro sysctl="net.ipv6.conf.default.forwarding" value="0" />
+</ocil>
+<rationale>
+Source-routed packets allow the source of the packet to suggest that 
+routers forward the packet along a different path than configured on 
+the router, which can be used to bypass network security measures. 
+This requirement applies only to the forwarding of source-routed traffic, 
+such as when IPv6 forwarding is enabled and the system is functioning as a router.
+</rationale>
+<ident stig="GEN007920" />
+<oval id="sysctl_net_ipv6_conf_forwarding"/>
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+</Group>
+
+<Rule id="network_ipv6_default_gateway">
+<title>Manually Assign IPv6 Router Address</title>
+<description>Edit the file
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>, and add or correct
+the following line (substituting your gateway IP as appropriate):
+<pre>IPV6_DEFAULTGW=2001:0DB8::0001</pre>
+Router addresses should be manually set and not accepted via any
+auto-configuration or router advertisement.
+</description>
+<ident stig="GEN005570" />
+<oval id="network_ipv6_default_gateway" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group>
+</Group>

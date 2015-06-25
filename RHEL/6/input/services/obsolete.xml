@@ -39,7 +39,7 @@ which is no longer necessary for commonly-used network services. Disabling
 it ensures that these uncommon services are not running, and also prevents
 attacks against xinetd itself.
 </rationale>
-<ident cce="27046-2" />
+<ident cce="27046-2"  stig="RHEL-06-000203" />
 <oval id="service_xinetd_disabled" />
 <ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -58,7 +58,7 @@ If network services are using the xinetd service, this is not applicable.
 Removing the <tt>xinetd</tt> package decreases the risk of the
 xinetd service's accidental (or intentional) activation.
 </rationale>
-<ident cce="27005-8" />
+<ident cce="27005-8"  stig="RHEL-06-000204" />
 <oval id="package_xinetd_removed" />
 <ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -72,7 +72,7 @@ for information transmitted on the network. This includes authentication
 information such as passwords. Organizations which use telnet should be
 actively working to migrate to a more secure protocol.</description>
 
-<Rule id="disable_telnet_service" severity="high">
+<Rule id="service_telnetd_disabled" severity="high">
 <title>Disable telnet Service</title>
 <description>
 <service-disable-macro service="telnet" />
@@ -85,7 +85,7 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="26836-7" />
+<ident cce="26836-7"  stig="RHEL-06-000211" />
 <oval id="service_telnetd_disabled" />
 <ref nist="CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
 <tested by="DS" on="20121026"/>
@@ -101,7 +101,7 @@ the following command:
 Removing the <tt>telnet-server</tt> package decreases the risk of the
 telnet service's accidental (or intentional) activation.
 </rationale>
-<ident cce="27073-6" />
+<ident cce="27073-6"  stig="RHEL-06-000206" />
 <oval id="package_telnet-server_removed" />
 <ref nist="CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
@@ -129,7 +129,7 @@ Enterprise Linux.</rationale>
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="uninstall_rsh-server" severity="high">
+<Rule id="package_rsh-server_removed" severity="high">
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
 the following command:
@@ -141,13 +141,13 @@ network services. Removing it
 decreases the risk of those services' accidental (or intentional)
 activation.
 </rationale>
-<ident cce="27062-9" />
+<ident cce="27062-9"  stig="RHEL-06-000213" />
 <oval id="package_rsh-server_removed" />
 <ref nist="CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="disable_rexec" severity="high">
+<Rule id="service_rexec_disabled" severity="high">
 <title>Disable rexec Service</title>
 <description>The <tt>rexec</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -160,13 +160,13 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27208-8" />
+<ident cce="27208-8"  stig="RHEL-06-000216" />
 <oval id="service_rexec_disabled" />
 <ref nist="CM-7" disa="68,1436"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="disable_rsh" severity="high">
+<Rule id="service_rsh_disabled" severity="high">
 <title>Disable rsh Service</title>
 <description>The <tt>rsh</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -179,7 +179,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="26994-4" />
+<ident cce="26994-4"  stig="RHEL-06-000214" />
 <oval id="service_rsh_disabled" />
 <ref nist="CM-7,IA-5(1)(c)" disa="68,1436" />
 <tested by="DS" on="20121026"/>
@@ -202,7 +202,7 @@ the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 <tested by="JL" on="20140530"/>
 </Rule>
 
-<Rule id="disable_rlogin" severity="high">
+<Rule id="service_rlogin_disabled" severity="high">
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
@@ -215,7 +215,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="26865-6" />
+<ident cce="26865-6"  stig="RHEL-06-000218" />
 <oval id="service_rlogin_disabled" />
 <ref nist="CM-7,IA-5(1)(c)" disa="1436" />
 <tested by="DS" on="20121026"/>
@@ -239,7 +239,7 @@ of an Rsh trust relationship.
 <rationale>Trust files are convenient, but when
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
-<ident cce="27270-8" />
+<ident cce="27270-8"  stig="RHEL-06-000019" />
 <ref nist="CM-7" disa="1436" />
 <oval id="no_rsh_trust_files" />
 <tested by="DS" on="20121026"/>
@@ -265,7 +265,7 @@ the following command:
 <rationale>Removing the <tt>ypserv</tt> package decreases the risk of the
 accidental (or intentional) activation of NIS or NIS+ services.
 </rationale>
-<ident cce="27079-3" />
+<ident cce="27079-3"  stig="RHEL-06-000220" />
 <oval id="package_ypserv_removed" />
 <ref nist="CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
@@ -282,7 +282,7 @@ a NIS or NIS+ domain, should be disabled.
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
 </rationale>
-<ident cce="26894-6" />
+<ident cce="26894-6"  stig="RHEL-06-000221" />
 <oval id="service_ypbind_disabled" />
 <ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -316,7 +316,7 @@ more secure protocols. A TFTP server should be run only if no more
 secure method of supporting existing equipment can be
 found.</description>
 
-<Rule id="disable_tftp" severity="medium">
+<Rule id="service_tftp_disabled" severity="medium">
 <title>Disable tftp Service</title>
 <description>The <tt>tftp</tt> service should be disabled.
 <service-disable-macro service="tftp" />
@@ -326,7 +326,7 @@ found.</description>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
 </rationale>
-<ident cce="27055-3" />
+<ident cce="27055-3"  stig="RHEL-06-000223" />
 <oval id="service_tftp_disabled" />
 <ref nist="CM-7" disa="1436" />
 <tested by="DS" on="20121026"/>
@@ -344,7 +344,7 @@ as a TFTP server, which does not provide encryption or authentication.
 Removing the <tt>tftp-server</tt> package decreases the risk of the
 accidental (or intentional) activation of tftp services.
 </rationale>
-<ident cce="26946-4" />
+<ident cce="26946-4"  stig="RHEL-06-000222" />
 <oval id="package_tftp-server_removed" />
 <ref nist="CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -390,7 +390,7 @@ flag, matching the example below:
 <pre> $ grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
-<ident cce="27272-4" />
+<ident cce="27272-4"  stig="RHEL-06-000338" />
 <oval id="tftpd_uses_secure_mode" />
 <ref nist="CM-7" disa="366"/>
 </Rule>

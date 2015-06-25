@@ -1,1 +1,1 @@
-echo "install cramfs /bin/false" > /etc/modprobe.d/cramfs.conf
+echo "install cramfs /bin/true" > /etc/modprobe.d/cramfs.conf

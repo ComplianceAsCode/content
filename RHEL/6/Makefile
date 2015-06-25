@@ -1,24 +1,32 @@
 IN = input
 OUT = output
+BUILD = build
 TRANS = transforms
 SHARED = ../../shared
+SHARED_CHECKS = $(SHARED)/oval
 REFS = $(SHARED)/references
+CONF = ../../config
 UTILS = utils
 DIST = dist
 
 ID = ssg
 PROD = rhel6
+PROD_CHECKS = $(BUILD)/$(PROD)_checks
 
-OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
+OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+
+# Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
+# Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
+INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
 all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(TRANS)/includelogo.xslt $(IN)/guide.xml
-	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
+	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
 else
-	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
 endif
 	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
 
@@ -31,13 +39,18 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	./$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
+	$(SHARED)/$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
 	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
-	xmlwf $(IN)/checks/*.xml
-	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+	# Make intermediate $(PROD_CHECKS) directory to hold final list of OVAL checks for $(PROD)
+	mkdir -p $(PROD_CHECKS)
+	# Search $(SHARED_CHECKS) and $(IN)/checks directories to find all product specific OVAL checks,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_CHECKS) directory
+	find $(SHARED_CHECKS) $(IN)/checks -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	xmlwf $(PROD_CHECKS)/*.xml
+	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(PROD_CHECKS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
@@ -89,13 +102,15 @@ tables: table-refs table-idents table-stigs
 #tables: table-refs table-idents table-srgmap table-stigs
 
 content: shorthand2xccdf guide checks
-#	the relabelids.py script chdirs to ./output, so refer to files from there.
-#	its second argument controls the IDs, as well as the output filenames.
-#	thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
+#	The relabelids.py script chdirs to ./output, so refer to files from there.
+#	Its second argument controls the IDs, as well as the output filenames.
+#	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
-# 	Once things are relabelled, create a datastream
+#	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
+	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
+#	Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
 		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
@@ -105,6 +120,12 @@ content: shorthand2xccdf guide checks
 #	Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+#	Make CentOS variants of XCCDF and Source DataStream
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-centos6-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-centos6-ds.xml
+#	Make Scientific Linux variants of XCCDF and Source DataStream
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl6-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl6-ds.xml
 
 content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
@@ -113,27 +134,37 @@ content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
 
 submission-stig-check: table-stigs
-	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-server-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
+	cd $(OUT); ../$(UTILS)/verify-references.py -p stig-$(PROD)-server-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
 # content-usgcb: coming soon
 
 validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
+	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
+	oscap xccdf validate-xml $(OUT)/$(ID)-centos6-xccdf.xml
+	oscap ds sds-validate $(OUT)/$(ID)-centos6-ds.xml
+	oscap xccdf validate-xml $(OUT)/$(ID)-sl6-xccdf.xml
+	oscap ds sds-validate $(OUT)/$(ID)-sl6-ds.xml
+
 
 validate: validate-xml
-	cd output; ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
-	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
 eval-test:
+	# Rebuild the content indicating the 'test' profile should be included
+	make content INCLUDE_TEST_PROFILE=$(shell true; echo $$?)
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
-eval-common:
-	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
+eval-common: content
+	# Based on oscap(8) OVAL results are always stored into CWD. Therefore
+	# not to pollute CWD -- first change CWD to $(OUT), only then evaluate "common" profile
+	cd $(OUT); oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(ID)-$(PROD)-xccdf.xml
 
-# items in dist are expected for distribution in an rpm
+# Items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
@@ -141,7 +172,15 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
+	mkdir -p $(DIST)/guide
+	cp $(OUT)/*-guide.html $(DIST)/guide
+	cp $(OUT)/$(ID)-centos6-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-centos6-ds.xml $(DIST)/content
+	cp $(OUT)/$(ID)-sl6-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-sl6-ds.xml $(DIST)/content
+
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content
+	rm -rf $(BUILD)

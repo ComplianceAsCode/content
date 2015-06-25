@@ -1,0 +1,8 @@
+#oscap-scan command line options:
+SCAN_OPTIONS="xccdf eval
+             --remediate
+             --profile java-stig
+             --report /var/log/oscap-scan-java-report.html
+             --results /var/log/oscap-scan-java-results.xml
+             --cpe /usr/share/xml/scap/ssg/content/ssg-java-cpe-dictionary.xml
+             /usr/share/xml/scap/ssg/content/ssg-java-xccdf.xml"

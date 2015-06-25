@@ -3,8 +3,7 @@
     <metadata>
       <title>Configure Periodic Execution of AIDE</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>By default, AIDE does not install itself for periodic
       execution. Periodically running AIDE is necessary to reveal
@@ -16,6 +15,7 @@
       <extend_definition comment="Aide is installed" negate="true" definition_ref="package_aide_installed" />
       <criterion comment="run aide daily with cron" test_ref="test_aide_periodic_cron_checking" />
       <criterion comment="run aide daily with cron" test_ref="test_aide_crond_checking" />
+      <criterion comment="run aide daily with cron" test_ref="test_aide_var_cron_checking" />
     </criteria>
   </definition>
 
@@ -37,4 +37,14 @@
     <ind:pattern operation="pattern match">^[0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*\*[\s]*root[\s]*/usr/sbin/aide[\s]*\-\-check+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="run aide daily with cron" id="test_aide_var_cron_checking" version="1">
+    <ind:object object_ref="object_aide_var_cron_checking" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="run aide daily with cron" id="object_aide_var_cron_checking" version="1">
+    <ind:filepath>/var/spool/cron/root</ind:filepath>
+    <ind:pattern operation="pattern match">^[0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*\*[\s]*(root|)/usr/sbin/aide[\s]*\-\-check+$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+   
 </def-group>

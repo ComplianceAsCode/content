@@ -50,19 +50,20 @@ keep the user from alternating between the same password too
 frequently.</description>
 <value selector="">5</value>
 <value selector="0">0</value>
+<value selector="4">4</value>
 <value selector="5">5</value>
 <value selector="10">10</value>
 <value selector="24">24</value>
 </Value>
 
 <Rule id="display_login_attempts">
-<title>Set Last Logon/Access Notification</title>
-<description>To configure the system to notify users of last logon/access
+<title>Set Last Login/Access Notification</title>
+<description>To configure the system to notify users of last login/access
 using <tt>pam_lastlog</tt>, add the following line immediately after <tt>session  required  pam_limits.so</tt>:
 <pre>session       required     pam_lastlog.so showfailed</pre>
 </description>
 <ocil clause="that is not the case">
-To ensure that last logon/access notification is configured correctly, run
+To ensure that last login/access notification is configured correctly, run
 the following command:
 <pre>$ grep pam_lastlog.so /etc/pam.d/system-auth</pre>
 The output should show output <tt>showfailed</tt>.
@@ -74,7 +75,7 @@ of unsuccessful attempts that were made to login to their account
 allows the user to determine if any unauthorized activity has occurred
 and gives them an opportunity to notify administrators.
 </rationale>
-<ident cce="27291-4" />
+<ident cce="27291-4"  stig="RHEL-06-000372" />
 <oval id="display_login_attempts" />
 <ref disa="366" />
 </Rule>
@@ -140,6 +141,7 @@ reason.</warning>
 <value selector="">14</value>
 <value selector="6">6</value>
 <!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
+<value selector="7">7</value>
 <value selector="8">8</value>
 <value selector="10">10</value>
 <value selector="12">12</value>
@@ -213,6 +215,7 @@ passwords</warning>
 <value selector="">3</value>
 <value selector="3">3</value>
 <value selector="5">5</value>
+<value selector="6">6</value>
 <value selector="10">10</value>
 </Value>
 
@@ -266,12 +269,13 @@ is different from account lockout, which is provided by the pam_faillock module.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_maxrepeat">
+<Rule id="accounts_password_pam_maxrepeat">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_cracklib module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
 which contain more than that number of consecutive characters. Add <tt>maxrepeat=<sub idref="var_password_pam_maxrepeat" /></tt>
-after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
+after pam_cracklib.so to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters:<br/>
+<pre>password required pam_cracklib.so maxrepeat=<sub idref="var_password_pam_maxrepeat" /></pre>
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
@@ -281,8 +285,8 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
-<ident cce="27227-8" />
-<oval id="accounts_password_pam_cracklib_maxrepeat" value="var_password_pam_maxrepeat" />
+<ident cce="27227-8"  stig="RHEL-06-000299" />
+<oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
 
@@ -305,11 +309,34 @@ This would appear as <tt>dcredit=-1</tt>.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident cce="26374-9" />
+<ident cce="26374-9"  stig="RHEL-06-000056" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
 <ref nist="IA-5(b),IA-5(c),194" disa="194"/>
 <tested by="DS" on="20121024"/>
 </Rule>
+
+<Rule id="accounts_password_pam_minlen">
+<title>Set Password Minimum Length</title>
+<description>The pam_cracklib module's <tt>minlen</tt> parameter controls requirements for
+minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+after pam_pwquality to set minimum password length requirements.
+</description>
+<ocil clause="minlen is not found or not set to the required value (or higher)">
+To check how many characters are required in a password, run the following command:
+<pre>$ grep cracklib /etc/pam.d/system-auth</pre>
+Your output should contain <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+</ocil>
+<rationale>
+Password length is one factor of several that helps to determine
+strength and how long it takes to crack a password. Use of more characters in
+a password helps to exponentially increase the time and/or resources
+required to compromise the password.
+</rationale>
+<ident cce="26615-5" />
+<oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
+<ref nist="IA-5(1)(a)" disa="205" />
+</Rule>
+
 
 <Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
@@ -330,7 +357,7 @@ This would appear as <tt>ucredit=-1</tt>.
 Requiring a minimum number of uppercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26601-5" />
+<ident cce="26601-5"  stig="RHEL-06-000057" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" />
 <tested by="DS" on="20121024"/>
@@ -355,7 +382,7 @@ This would appear as <tt>ocredit=-1</tt>.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26409-3" />
+<ident cce="26409-3"  stig="RHEL-06-000058" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
 <tested by="DS" on="20121024"/>
@@ -380,7 +407,7 @@ This would appear as <tt>lcredit=-1</tt>.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26631-2" />
+<ident cce="26631-2"  stig="RHEL-06-000059" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" />
 <tested by="DS" on="20121024"/>
@@ -405,13 +432,13 @@ Requiring a minimum number of different characters during password changes ensur
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
-<ident cce="26615-5" />
+<ident cce="26615-5"  stig="RHEL-06-000060" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_cracklib_minclass">
+<Rule id="accounts_password_pam_minclass">
 <title>Set Password Strength Minimum Different Categories</title>
 <description>The pam_cracklib module's <tt>minclass</tt> parameter controls requirements for
 usage of different character classes, or types, of character that must exist in a password
@@ -443,7 +470,7 @@ Requiring a minimum number of character categories makes password guessing attac
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
-<oval id="accounts_password_pam_cracklib_minclass" value="var_password_pam_minclass"/>
+<oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
@@ -472,12 +499,17 @@ and a second to use unlock_time and set it to a Value
 <title>Set Deny For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
-attempts using <tt>pam_faillock.so</tt>:
+attempts using <tt>pam_faillock.so</tt>, modify the content of both
+<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
-Add the following lines immediately below the <tt>pam_unix.so</tt> statement in <tt>AUTH</tt> section of
-both <tt>/etc/pam.d/system-auth</tt> and /etc/pam.d/password-auth:
-<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=604800 fail_interval=900</pre>
+<ul>
+<li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<pre>account required pam_faillock.so</pre></li>
+</ul>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -488,7 +520,7 @@ The output should show <tt>deny=3</tt>.
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident cce="26844-1" />
+<ident cce="26844-1"  stig="RHEL-06-000061" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
 <ref nist="AC-7(a)" disa="44" />
 </Rule>
@@ -497,16 +529,22 @@ prevents direct password guessing attacks.
 <title>Set Lockout Time For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
-attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>:
+attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>,
+modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
-Add the following lines immediately below the <tt>pam_env.so</tt> statement in <tt>/etc/pam.d/system-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=900</pre>
+<ul>
+<li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<pre>account required pam_faillock.so</pre></li>
+</ul>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
+<pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>; the largest acceptable value is 604800 seconds (one week).
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -514,21 +552,25 @@ prevents direct password guessing attacks.  Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
-<ident cce="27110-6" />
+<ident cce="27110-6"  stig="RHEL-06-000356" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
 <ref nist="AC-7(b)" disa="47" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_fail_interval" severity="medium">
+<Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
 Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
-attempts.
+attempts. Modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
-Add the following <tt>fail_interval</tt> directives to <tt>pam_faillock.so</tt> immediately below the <tt>pam_env.so</tt> statement in
-<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>:
-<pre>auth [default=die] pam_faillock.so authfail deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
-<pre>auth required pam_faillock.so authsucc deny=3 unlock_time=604800 fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+<ul>
+<li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<pre>account required pam_faillock.so</pre></li>
+</ul>
 </description>
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
@@ -539,8 +581,8 @@ For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&
 Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
-<ident cce="27215-3" />
-<oval id="accounts_passwords_pam_fail_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
+<ident cce="27215-3"  stig="RHEL-06-000357" />
+<oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
 <ref nist="AC-7(a)" disa="1452" />
 </Rule>
 
@@ -561,7 +603,7 @@ The output should show the following at the end of the line:
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
-<ident cce="26741-9" />
+<ident cce="26741-9"  stig="RHEL-06-000274" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
 <ref nist="IA-5(f),IA-5(1)(e)" disa="200" />
 <tested by="DS" on="20121024"/>
@@ -595,7 +637,7 @@ ensure that the <tt>pam_unix.so</tt> module includes the argument
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<ident cce="26303-8" />
+<ident cce="26303-8"  stig="RHEL-06-000062" />
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
 <tested by="DS" on="20121024"/>
@@ -617,7 +659,7 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
-<ident cce="27228-6" />
+<ident cce="27228-6"  stig="RHEL-06-000063" />
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
 <tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_logindefs" />
@@ -640,7 +682,7 @@ in the <tt>[default]</tt> section:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <!-- <oval id="accounts_password_hashing_algorithm" /> -->
-<ident cce="27229-4" />
+<ident cce="27229-4"  stig="RHEL-06-000064" />
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
 <tested by="DS" on="20121026"/>
 <oval id="set_password_hashing_algorithm_libuserconf" />

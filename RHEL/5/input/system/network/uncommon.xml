@@ -1,0 +1,159 @@
+<Group id="network-uncommon">
+<title>Uncommon Network Protocols</title>
+<description>The system includes support for several network
+protocols which are not commonly used. Although security vulnerabilities 
+in kernel networking code are not frequently
+discovered, the consequences can be dramatic. Ensuring uncommon
+network protocols are disabled reduces the system's risk to attacks
+targeted at its implementation of those protocols.</description>
+<warning>
+Although these protocols are not commonly used, avoid disruption
+in your network environment by ensuring they are not needed
+prior to disabling them.
+</warning>
+
+<Rule id="kernel_module_dccp_disabled" severity="medium">
+<title>Disable DCCP Support</title>
+<description>
+The Datagram Congestion Control Protocol (DCCP) is a
+relatively new transport layer protocol, designed to support
+streaming media and telephony.
+<module-disable-macro module="dccp" />
+</description>
+<ocil>
+<module-disable-check-macro module="dccp" />
+</ocil>
+<rationale>
+Disabling DCCP protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident stig="GEN007080" />
+<oval id="kernel_module_dccp_disabled" />
+<ref nist="ECSC-1" disa="382" />
+</Rule>
+
+<Rule id="kernel_module_sctp_disabled" severity="medium">
+<title>Disable SCTP Support</title>
+<description>
+The Stream Control Transmission Protocol (SCTP) is a
+transport layer protocol, designed to support the idea of
+message-oriented communication, with several streams of messages
+within one connection.
+<module-disable-macro module="sctp" />
+</description>
+<ocil>
+<module-disable-check-macro module="sctp" />
+</ocil>
+<rationale>
+Disabling SCTP protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident stig="GEN007020" />
+<oval id="kernel_module_sctp_disabled" />
+<ref nist="ECSC-1" disa="382" />
+</Rule>
+
+<Rule id="kernel_module_rds_disabled">
+<title>Disable RDS Support</title>
+<description>
+The Reliable Datagram Sockets (RDS) protocol is a transport
+layer protocol designed to provide reliable high- bandwidth,
+low-latency communications between nodes in a cluster.
+<module-disable-macro module="rds" />
+</description>
+<ocil>
+<module-disable-check-macro module="rds" />
+</ocil>
+<rationale>
+Disabling RDS protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident stig="GEN007480" />
+<oval id="kernel_module_rds_disabled" />
+<ref nist="ECSC-1" disa="382" />
+</Rule>
+
+<Rule id="kernel_module_tipc_disabled" severity="medium">
+<title>Disable TIPC Support</title>
+<description>
+The Transparent Inter-Process Communication (TIPC) protocol
+is designed to provide communications between nodes in a
+cluster.
+<module-disable-macro module="tipc" />
+</description>
+<ocil>
+<module-disable-check-macro module="tipc" />
+</ocil>
+<rationale>
+Disabling TIPC protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident stig="GEN007540" />
+<oval id="kernel_module_tipc_disabled" />
+<ref nist="ECSC-1" disa="382" />
+</Rule>
+
+<Rule id="kernel_module_appletalk_disabled" severity="medium">
+<title>Disable AppleTalk Support</title>
+<description>
+The AppleTalk suite of protocols is no longer in common use.  
+Binding this protocol to the network stack increases the attack 
+surface of the host.  Unprivileged local processes may be able 
+to cause the system to dynamically load a protocol handler by 
+opening a socket using the protocol.
+<module-disable-macro module="appletalk" />
+</description>
+<ocil>
+<module-disable-check-macro module="appletalk" />
+</ocil>
+<rationale>
+Disabling AppleTalk protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident stig="GEN007260" />
+<oval id="kernel_module_appletalk_disabled" />
+<ref nist="ECSC-1" disa="382" />
+</Rule>
+
+<Rule id="kernel_module_bridge_disabled" severity="medium">
+<title>Disable Network Bridging Support</title>
+<description>
+Some systems have the ability to bridge or switch frames 
+(link-layer forwarding) between multiple interfaces.  This 
+can be useful in a variety of situations but, if enabled when 
+not needed, has the potential to bypass network partitioning and security.
+<module-disable-macro module="bridge" />
+</description>
+<ocil>
+<module-disable-check-macro module="bridge" />
+</ocil>
+<rationale>
+Disabling network bridging protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident stig="GEN003619" />
+<oval id="kernel_module_bridge_disabled" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+<Rule id="kernel_module_ieee1394_disabled" severity="low">
+<title>Disable IEEE1394 (Firewire) Support</title>
+<description>
+Firewire is a common computer peripheral interface. Firewire devices may 
+include storage devices with the potential to install malicious software 
+on a system or exfiltrate data.
+<module-disable-macro module="ieee1394" />
+</description>
+<ocil>
+<module-disable-check-macro module="ieee1394" />
+</ocil>
+<rationale>
+Disabling IEEE1394 (Firewire) protects
+the system against exploitation of any flaws in its implementation.
+</rationale>
+<ident stig="GEN008500" />
+<oval id="kernel_module_ieee1394_disabled" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group>

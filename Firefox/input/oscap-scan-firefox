@@ -1,0 +1,8 @@
+#oscap-scan command line options:
+SCAN_OPTIONS="xccdf eval
+              --remediate
+              --profile stig-firefox-upstream
+              --report /tmp/oscap-scan-firefox-report.html
+              --results /tmp/oscap-scan-firefox-results.xml
+              --cpe /usr/share/xml/scap/ssg/content/ssg-firefox-cpe-dictionary.xml
+              /usr/share/xml/scap/ssg/content/ssg-firefox-xccdf.xml"

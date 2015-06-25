@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_cron_log_files" version="1">
+    <metadata>
+      <title>Cron Log File Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Cron log file permissions must be 0600.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_cron_log_files" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_file_permissions_cron_log_files_list" comment="List of cron log files" datatype="string" version="1">
+		<object_component item_field="subexpression" object_ref="object_file_permissions_cron_log_files_list" />
+  </local_variable>
+  <ind:textfilecontent54_object id="object_file_permissions_cron_log_files_list" version="1">
+    <ind:filepath>/etc/syslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^cron\..*\s[-]?(/.*)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing cron log file permissions" id="test_file_permissions_cron_log_files" version="1">
+    <unix:object object_ref="object_file_permissions_cron_log_files" />
+    <unix:state state_ref="state_file_permissions_cron_log_files" />
+  </unix:file_test>
+  <unix:file_object comment="List of cron log files" id="object_file_permissions_cron_log_files" version="1">
+    <unix:filepath var_ref="var_file_permissions_cron_log_files_list" var_check="at least one" />
+  </unix:file_object>
+  <unix:file_state id="state_file_permissions_cron_log_files" version="1">
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+</def-group>

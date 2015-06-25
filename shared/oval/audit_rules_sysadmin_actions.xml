@@ -1,0 +1,61 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_sysadmin_actions" version="1">
+    <metadata>
+      <title>Audit System Administrator Actions</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Audit actions taken by system administrators on the system.</description>
+      <reference source="JL" ref_id="RHEL7_20150326" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA20_20150326" ref_url="test_attestation" />
+    </metadata>
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion comment="audit augenrules" test_ref="test_audit_rules_sysadmin_actions_augenrules" />
+        <criterion comment="audit augenrules sudoers" test_ref="test_audit_rules_sysadmin_actions_sudoers_augenrules" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="audit auditctl" test_ref="test_audit_rules_sysadmin_actions_auditctl" />
+        <criterion comment="audit auditctl sudoers" test_ref="test_audit_rules_sysadmin_actions_sudoers_auditctl" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_audit_rules_sysadmin_actions_augenrules" version="1">
+    <ind:object object_ref="object_audit_rules_sysadmin_actions_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_sysadmin_actions_augenrules" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit augenrules sudoers" id="test_audit_rules_sysadmin_actions_sudoers_augenrules" version="1">
+    <ind:object object_ref="object_audit_rules_sysadmin_actions_sudoers_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_sysadmin_actions_sudoers_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/sudoers[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test the auditctl case -->
+  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_audit_rules_sysadmin_actions_auditctl" version="1">
+    <ind:object object_ref="object_audit_rules_sysadmin_actions_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_sysadmin_actions_auditctl" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit auditctl sudoers" id="test_audit_rules_sysadmin_actions_sudoers_auditctl" version="1">
+    <ind:object object_ref="object_audit_rules_sysadmin_actions_sudoers_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_sysadmin_actions_sudoers_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/sudoers[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

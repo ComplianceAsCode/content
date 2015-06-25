@@ -2,13 +2,18 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <!-- This transform assembles all fragments into one "shorthand" XCCDF document -->
+<!-- It expects a numeric parameter "withtest" specifying if the 'test' profile should
+     be included ("withtest=0") into the benchmark or not ("withtest=1"). -->
 
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
 
        <!-- adding profiles here -->
-		<xsl:apply-templates select="document('profiles/test.xml')" />
+		<xsl:if test=" number($withtest) = number(0) ">
+			<xsl:apply-templates select="document('profiles/test.xml')" />
+		</xsl:if>
+		<xsl:apply-templates select="document('profiles/pci-dss.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
 		<xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
@@ -67,7 +72,7 @@
       <xsl:apply-templates select="document('system/accounts/restrictions/root_logins.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_storage.xml')" /> 
       <xsl:apply-templates select="document('system/accounts/restrictions/password_expiration.xml')" />
-     <!--  <xsl:apply-templates select="document('system/accounts/restrictions/account_expiration.xml')" /> -->
+      <xsl:apply-templates select="document('system/accounts/restrictions/account_expiration.xml')" />
     </xsl:copy>
   </xsl:template>
 
@@ -87,6 +92,7 @@
       <xsl:apply-templates select="document('system/network/kernel.xml')" />
       <xsl:apply-templates select="document('system/network/wireless.xml')" />
       <xsl:apply-templates select="document('system/network/ipv6.xml')" />
+      <xsl:apply-templates select="document('system/network/firewalld.xml')" />
       <xsl:apply-templates select="document('system/network/iptables.xml')" />
       <xsl:apply-templates select="document('system/network/ssl.xml')" />
       <xsl:apply-templates select="document('system/network/uncommon.xml')" />

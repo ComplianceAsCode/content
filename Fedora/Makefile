@@ -1,19 +1,27 @@
 IN = input
 OUT = output
+BUILD = build
 TRANS = transforms
+SHARED = ../shared
+SHARED_CHECKS = $(SHARED)/oval
+REFS = $(SHARED)/references
+CONF = ../config
 UTILS = utils
 DIST = dist
 
 ID = ssg
 PROD = fedora
+PROD_CHECKS = $(BUILD)/$(PROD)_checks
 
-OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
+OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+OVAL_5_10 := $(shell oscap --version | grep -q "OVAL Version: 5.10.*"; echo $$?)
+SHELLCHECK_AVAIL := $(shell which shellcheck >& /dev/null; echo $$?)
 
 all: shorthand2xccdf guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(TRANS)/includelogo.xslt $(IN)/guide.xml
+	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
 	xsltproc -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
 else
 	xsltproc -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
@@ -24,13 +32,18 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(ID)-$(PROD)-shorthand.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
 	# Include fixes
-	./$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
+	$(SHARED)/$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
 	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
-	xmlwf $(IN)/checks/*.xml
-	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+	# Make intermediate $(PROD_CHECKS) directory to hold final list of OVAL checks for $(PROD)
+	mkdir -p $(PROD_CHECKS)
+	# Search $(SHARED_CHECKS) and $(IN)/checks directories to find all product specific OVAL checks,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_CHECKS) directory
+	find $(SHARED_CHECKS) $(IN)/checks -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	xmlwf $(PROD_CHECKS)/*.xml
+	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(PROD_CHECKS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
@@ -42,28 +55,42 @@ guide: shorthand2xccdf
 	oscap xccdf generate guide --profile common $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(ID)-$(PROD)-common-guide.html
 
 content: shorthand2xccdf guide checks
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
-#       Once things are relabelled, create a datastream
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
+#	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
+	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
+#	Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
 		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
+ifeq ($(OVAL_5_10), 0)
+	@echo "Skipping datastream composition, use OpenSCAP 1.2.2 or later!"
+else
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-#       Add in CPE and OVAL content to datastream
-	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+endif
 
 
 validate-xml:
+ifeq ($(OVAL_5_10), 0)
+	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
+else
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
+endif
 
 validate: validate-xml
+ifeq ($(SHELLCHECK_AVAIL), 0)
+	cd $(IN)/fixes/bash; shellcheck -s bash *.sh
+else
+	@echo "Skipping ShellCheck analysis, ensure shellcheck executable is present in the PATH!"
+endif
+ifeq ($(OVAL_5_10), 0)
+	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
+else
 	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
-	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+endif
 
 # items in dist are expected for distribution in an rpm
 dist: guide content
@@ -71,8 +98,8 @@ dist: guide content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
-	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
-	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
+	mkdir -p $(DIST)/guide
+	cp $(OUT)/*-guide.html $(DIST)/guide
 
 eval-common: content
 	oscap xccdf eval --profile common $(OUT)/$(ID)-$(PROD)-xccdf.xml
@@ -81,3 +108,4 @@ clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -f $(IN)/fixes/bash/templates/output/*.sh
 	rm -rf $(DIST)/content
+	rm -rf $(BUILD)

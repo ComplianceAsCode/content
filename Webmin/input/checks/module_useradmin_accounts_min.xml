@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="module_useradmin_accounts_min" version="1">
+    <metadata>
+      <title>Configure new accounts to prevent changing the password more than once per number of days.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>New users created through the UserAdmin Webmin module 
+	  must include required minimum password life criteria.</description>
+    </metadata>
+    <!-- default_min is configured in /etc/webmin/useradmin/config ... -->
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+	  <criterion comment="Configure new accounts to prevent changing the password more than once per number of days."
+	  test_ref="test_webmin_module_useradmin_accounts_min" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check default_min is configured in /etc/webmin/useradmin/config" 
+  id="test_webmin_module_useradmin_accounts_min" version="1">
+    <ind:object object_ref="object_webmin_module_useradmin_accounts_min" />
+    <ind:state state_ref="state_webmin_module_useradmin_accounts_min" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_module_useradmin_accounts_min" version="1">
+    <ind:filepath>/etc/webmin/useradmin/config</ind:filepath>
+    <ind:pattern operation="pattern match">^default_min=+(\d+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_webmin_module_useradmin_accounts_min" version="1">
+    <ind:subexpression operation="greater than or equal" var_ref="var_webmin_module_useradmin_accounts_min" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="minimum password age" datatype="int" id="var_webmin_module_useradmin_accounts_min" version="1" />
+  
+</def-group>

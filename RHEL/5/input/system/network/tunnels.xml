@@ -1,0 +1,39 @@
+<Group id="network_tunnels">
+<title>IP Tunnelling Support</title>
+<description>
+Support for creating IP encapsulated tunnels between 
+a system and remote endpoints, to also include tunnelling 
+ipv6 over ipv4, is available in Red Hat.
+</description>
+
+<Rule id="ip_tunnels">
+<title>Remove IP Tunnels</title>
+<description>To remove IP tunnels, perform the following command for each IP tunnel:
+<pre># ip tun del <tt>tunnel</tt></pre>
+</description>
+<oval id="ip_tunnels" />
+<ident stig="GEN007820" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+<Rule id="ip_6to4_tunnels">
+<title>Remove 6to4 IP Tunnels</title>
+<description>To remove 6to4 IP tunnels, perform the following command for each IP tunnel:
+<pre># ip tun del <tt>tunnel</tt></pre>
+</description>
+<oval id="ip_6to4_tunnels" />
+<ident stig="GEN007780" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+<Rule id="ip_teredo">
+<title>Disable Teredo Services</title>
+<description>To disable teredo services, perform the following command:
+<pre># ps ax | grep -i miredo | grep -v grep | awk ' { print $1 }' | xargs kill</pre>
+</description>
+<oval id="ip_teredo" />
+<ident stig="GEN007800" />
+<ref nist="ECSC-1" disa="1551" />
+</Rule>
+
+</Group>

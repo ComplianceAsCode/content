@@ -3,11 +3,9 @@
     <metadata>
       <title>Service sshd Disabled</title>
       <affected family="unix">
-        <platform>Fedora 19</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
-      <description>
-        The sshd service should be disabled.
-      </description>
+      <description>The sshd service should be disabled.</description>
     </metadata>
     <criteria comment="package openssh-server removed or service sshd is not configured to start" operator="OR">
     <extend_definition comment="openssh-server removed" definition_ref="package_openssh-server_removed" />

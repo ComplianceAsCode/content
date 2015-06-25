@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="accounts_root_path_dirs_no_write" version="1">
+    <metadata>
+      <title>Roots PATH Does Not Include Group Writeable or World Writeable Directories</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The root account must not have world-writeable directories in its executable search path.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_accounts_root_path_dirs_no_write" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="var_env_accounts_root_path_dirs_no_write"
+  version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>PATH</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="var_accounts_root_path_dirs_no_write" comment="List of root paths" datatype="string" version="1">
+    <split delimiter=":">
+      <object_component item_field="value" object_ref="var_env_accounts_root_path_dirs_no_write" />
+	</split>
+  </local_variable>
+  
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing directories in root's PATH permissions" id="test_accounts_root_path_dirs_no_write" version="1">
+    <unix:object object_ref="object_accounts_root_path_dirs_no_write" />
+    <unix:state state_ref="state_accounts_root_path_dirs_no_write" />
+  </unix:file_test>
+  <unix:file_object comment="List of directories in root's PATH" id="object_accounts_root_path_dirs_no_write" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path var_ref="var_accounts_root_path_dirs_no_write" var_check="at least one" />
+    <unix:filename xsi:nil="true"></unix:filename>
+  </unix:file_object>
+  <unix:file_state id="state_accounts_root_path_dirs_no_write" version="1">
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+  </unix:file_state>
+
+</def-group>

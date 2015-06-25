@@ -4,6 +4,10 @@
 
  `# yum -y install git openscap-utils python-lxml`
 
+1a. FEDORA ONLY: Install the ShellCheck package.
+
+ `# dnf -y install ShellCheck`
+
 2. Download the source code 
 
  `$ git clone https://github.com/OpenSCAP/scap-security-guide.git`
@@ -14,10 +18,15 @@
     `$ cd scap-security-guide/`  
     `$ make`  
 
-  * To build an RPM:  
+  * To build an RPM for development/testing or non-official release use:  
   
     `$ cd scap-security-guide/`  
-    `$ make rpm`  
+    `$ make rpm` 
+
+  * To build an RPM for official release use:
+
+    `$ cd scap-security-guide/`
+    `$ make SSG_VERSION_IS_GIT_SNAPSHOT=no rpm` 
 
   * To build content only for a specific distribution:  
   

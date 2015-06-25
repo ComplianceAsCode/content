@@ -229,9 +229,8 @@
 
    <xsl:template match="tested">
       <reference>
-        <xsl:attribute name="href">test_attestation</xsl:attribute>
-            <dc:contributor><xsl:value-of select="@by" /></dc:contributor>
-            <dc:date><xsl:value-of select="@on" /></dc:date>
+        <xsl:attribute name="href"><xsl:value-of select="$ssg-contributors-uri" /></xsl:attribute>
+        <xsl:value-of select="concat('Test attestation on ', @on, ' by ', @by)" />
       </reference>
    </xsl:template>
 
@@ -322,17 +321,17 @@
 
   <xsl:template match="fileperms-desc-macro">
     To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chmod <xsl:value-of select="@perms"/><xsl:text> </xsl:text><xsl:value-of select="@file"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileowner-desc-macro">
     To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chown <xsl:value-of select="@owner"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chown <xsl:value-of select="@owner"/><xsl:text> </xsl:text><xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="filegroupowner-desc-macro">
     To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/><xsl:text> </xsl:text>xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">
@@ -438,7 +437,7 @@
   <xsl:template match="module-disable-macro">
 To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
 kernel module from being loaded, add the following line to a file in the directory <xhtml:code>/etc/modprobe.d</xhtml:code>:
-<xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/false</xhtml:pre>
+<xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="module-disable-check-macro">
@@ -446,7 +445,7 @@ If the system is configured to prevent the loading of the
 <xhtml:code><xsl:value-of select="@module"/></xhtml:code> kernel module,
 it will contain lines inside any file in <xhtml:code>/etc/modprobe.d</xhtml:code> or the deprecated<xhtml:code>/etc/modprobe.conf</xhtml:code>.
 These lines instruct the module loading system to run another program (such as
-<xhtml:code>/bin/false</xhtml:code>) upon a module <xhtml:code>install</xhtml:code> event.
+<xhtml:code>/bin/true</xhtml:code>) upon a module <xhtml:code>install</xhtml:code> event.
 Run the following command to search for such lines in all files in <xhtml:code>/etc/modprobe.d</xhtml:code>
 and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 <xhtml:pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</xhtml:pre>
@@ -456,7 +455,7 @@ and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 To determine if the system is configured to audit calls to
 the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
 system call, run the following command:
-<xhtml:pre xml:space="preserve">$ sudo auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
+<xhtml:pre xml:space="preserve">$ sudo grep "<xsl:value-of select="@syscall"/>" /etc/audit/audit.rules</xhtml:pre>
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 

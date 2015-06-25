@@ -1,0 +1,139 @@
+<def-group>
+  <definition class="compliance" id="dhcp_client_restrict_options" version="1">
+    <metadata>
+      <title>Minimize DHCP Client Configured Options</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Limit the options that the DHCP gets
+      and applies to the DHCP client.</description>
+      <reference source="galford" ref_id="20150317" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="DHCP is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="dhcp package is not installed"
+      definition_ref="package_dhcp_removed" />
+      <criteria comment="Minimize DHCP client configured options"
+      operator="AND">
+        <criterion comment="Check domain-name in each dhclient .conf files"
+        test_ref="test_dhcp_client_domain-named" />
+        <criterion comment="Check domain-name-servers in each dhclient .conf files"
+        test_ref="test_dhcp_client_domain-name-servers" />
+        <criterion comment="Check nis-domain in each dhclient .conf files"
+        test_ref="test_dhcp_client_nis-domain" />
+        <criterion comment="Check nis-servers in each dhclient .conf files"
+        test_ref="test_dhcp_client_nis-servers" />
+        <criterion comment="Check ntp-servers in each dhclient .conf files"
+        test_ref="test_dhcp_client_ntp-servers" />
+        <criterion comment="Check routers in each dhclient .conf files"
+        test_ref="test_dhcp_client_routers" />
+        <criterion comment="Check time-offset in each dhclient .conf files"
+        test_ref="test_dhcp_client_time-offset" />
+        <criterion comment="Check subnet-mask in each dhclient .conf files"
+        test_ref="test_dhcp_client_subnet-mask" />
+        <criterion comment="Check broadcast-address in each dhclient .conf files"
+        test_ref="test_dhcp_client_broadcast-address" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the domain-name settings"
+  id="test_dhcp_client_domain-named" version="1">
+    <ind:object object_ref="obj_dhcp_client_domain-named" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_domain-named"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+domain\-name[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the domain-name-servers settings"
+  id="test_dhcp_client_domain-name-servers" version="1">
+    <ind:object object_ref="obj_dhcp_client_domain-name-servers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_domain-name-servers"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+domain\-name\-servers[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the clients nis-domain settings"
+  id="test_dhcp_client_nis-domain" version="1">
+    <ind:object object_ref="obj_dhcp_client_nis-domain" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_nis-domain"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+nis\-domain[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the client nis-servers settings"
+  id="test_dhcp_client_nis-servers" version="1">
+    <ind:object object_ref="obj_dhcp_client_nis-servers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_nis-servers"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+nis\-servers[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the client ntp-servers settings"
+  id="test_dhcp_client_ntp-servers" version="1">
+    <ind:object object_ref="obj_dhcp_client_ntp-servers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_ntp-servers"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+ntp\-servers[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the client routers settings"
+  id="test_dhcp_client_routers" version="1">
+  <ind:object object_ref="obj_dhcp_client_routers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_routers"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+routers[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the client time-offset settings"
+  id="test_dhcp_client_time-offset" version="1">
+    <ind:object object_ref="obj_dhcp_client_time-offset" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_time-offset"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+time\-offset[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the client subnet-mask settings"
+  id="test_dhcp_client_subnet-mask" version="1">
+    <ind:object object_ref="obj_dhcp_client_subnet-mask" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_subnet-mask"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+subnet\-mask[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Checks the client broadcast-address settings"
+  id="test_dhcp_client_broadcast-address" version="1">
+    <ind:object object_ref="obj_dhcp_client_broadcast-address" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dhcp_client_broadcast-address"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/dhcp/dhclient.*\.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(request|require|supersede)[\s]+broadcast\-address[\s]*.*\;[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

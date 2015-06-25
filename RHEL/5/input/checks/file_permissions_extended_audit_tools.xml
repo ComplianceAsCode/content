@@ -1,0 +1,76 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_audit_tools" version="1">
+    <metadata>
+      <title>Audit Tools Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for audit tools should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criteria>
+        <criterion test_ref="test_file_permissions_extended_sbin_auditctl" />
+        <criterion test_ref="test_file_permissions_extended_sbin_auditd" />
+        <criterion test_ref="test_file_permissions_extended_sbin_ausearch" />
+        <criterion test_ref="test_file_permissions_extended_sbin_aureport" />
+        <criterion test_ref="test_file_permissions_extended_sbin_autrace" />
+        <criterion test_ref="test_file_permissions_extended_sbin_audispd" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/auditctl extended ACLs" id="test_file_permissions_extended_sbin_auditctl" version="1">
+    <unix:object object_ref="object_file_permissions_extended_sbin_auditctl" />
+    <unix:state state_ref="state_file_permissions_extended_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/auditctl" id="object_file_permissions_extended_sbin_auditctl" version="1">
+    <unix:filepath>/sbin/auditctl</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/auditd extended ACLs" id="test_file_permissions_extended_sbin_auditd" version="1">
+    <unix:object object_ref="object_file_permissions_extended_sbin_auditd" />
+    <unix:state state_ref="state_file_permissions_extended_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/auditd" id="object_file_permissions_extended_sbin_auditd" version="1">
+    <unix:filepath>/sbin/auditd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/ausearch extended ACLs" id="test_file_permissions_extended_sbin_ausearch" version="1">
+    <unix:object object_ref="object_file_permissions_extended_sbin_ausearch" />
+    <unix:state state_ref="state_file_permissions_extended_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/ausearch" id="object_file_permissions_extended_sbin_ausearch" version="1">
+    <unix:filepath>/sbin/ausearch</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/aureport extended ACLs" id="test_file_permissions_extended_sbin_aureport" version="1">
+    <unix:object object_ref="object_file_permissions_extended_sbin_aureport" />
+    <unix:state state_ref="state_file_permissions_extended_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/aureport" id="object_file_permissions_extended_sbin_aureport" version="1">
+    <unix:filepath>/sbin/aureport</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/autrace extended ACLs" id="test_file_permissions_extended_sbin_autrace" version="1">
+    <unix:object object_ref="object_file_permissions_extended_sbin_autrace" />
+    <unix:state state_ref="state_file_permissions_extended_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/autrace" id="object_file_permissions_extended_sbin_autrace" version="1">
+    <unix:filepath>/sbin/autrace</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /sbin/audispd extended ACLs" id="test_file_permissions_extended_sbin_audispd" version="1">
+    <unix:object object_ref="object_file_permissions_extended_sbin_audispd" />
+    <unix:state state_ref="state_file_permissions_extended_audit_tools" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/audispd" id="object_file_permissions_extended_sbin_audispd" version="1">
+    <unix:filepath>/sbin/audispd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_audit_tools" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

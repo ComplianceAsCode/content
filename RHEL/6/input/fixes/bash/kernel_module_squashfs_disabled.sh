@@ -1,1 +1,1 @@
-echo "install squashfs /bin/false" > /etc/modprobe.d/squashfs.conf
+echo "install squashfs /bin/true" > /etc/modprobe.d/squashfs.conf

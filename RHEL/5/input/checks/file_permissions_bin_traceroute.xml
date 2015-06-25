@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_bin_traceroute" version="1">
+    <metadata>
+      <title>File /bin/traceroute Permissions</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for /bin/traceroute must be 0700.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_bin_traceroute" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /bin/traceroute permissions" id="test_file_permissions_bin_traceroute" version="1">
+    <unix:object object_ref="object_file_permissions_bin_traceroute" />
+    <unix:state state_ref="state_file_permissions_bin_traceroute" />
+  </unix:file_test>
+
+  <unix:file_object comment="/bin/traceroute" id="object_file_permissions_bin_traceroute" version="1">
+    <unix:filepath>/bin/traceroute</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_bin_traceroute" version="1">
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

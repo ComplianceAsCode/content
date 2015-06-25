@@ -1,0 +1,53 @@
+<Group id="network">
+<title>Network Configuration and Firewalls</title>
+<description>Most machines must be connected to a network of some
+sort, and this brings with it the substantial risk of network
+attack. This section discusses the security impact of decisions
+about networking which must be made when configuring a system.
+<br /><br />
+This section also discusses firewalls, network access
+controls, and other network security frameworks, which allow
+system-level rules to be written that can limit an attackers' ability
+to connect to your system. These rules can specify that network
+traffic should be allowed or denied from certain IP addresses,
+hosts, and networks. The rules can also specify which of the
+system's network services are available to particular hosts or
+networks.</description>
+
+<Group id="network_disable_unused_interfaces">
+<title>Disable Unused Interfaces</title>
+<description>Network interfaces expand the attack surface of the 
+system.  Unused interfaces are not monitored or controlled, and 
+should be disabled.
+<br /><br />
+If the system does not require network communications but still
+needs to use the loopback interface, remove all files of the form
+<tt>ifcfg-<i>interface</i></tt> except for <tt>ifcfg-lo</tt> from
+<tt>/etc/sysconfig/network-scripts</tt>:
+<pre># rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+If the system is a standalone machine with no need for network access or even
+communication over the loopback device, then disable this service.
+<service-disable-macro service="network" />
+</description>
+</Group> 
+
+<Group id="network_restrict_access">
+<title>Restrict Access to Network Configuration Changes</title>
+<description>The network configuration should only be allowed to be modified by 
+authorized users.</description>
+
+<Rule id="sysconfig_networking_userctl_ifcfg" severity="medium">
+<title>Network interfaces must not be configured to allow user control.</title>
+<description>
+</description>
+<rationale>Configuration of network interfaces should be limited to privileged users.  
+Manipulation of network interfaces may result in a Denial of Service or bypass of network 
+security mechanisms.
+</rationale>
+<ident stig="GEN003581" />
+<oval id="sysconfig_networking_userctl_ifcfg" />
+<ref nist="ECLP-1" disa="225" />
+</Rule>
+</Group> 
+
+</Group>

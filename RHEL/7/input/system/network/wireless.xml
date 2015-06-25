@@ -94,12 +94,10 @@ utility of Bluetooth connectivity and its limited range.</rationale>
 loading of the Bluetooth module. Add the following to
 the appropriate <tt>/etc/modprobe.d</tt> configuration file
 to prevent the loading of the Bluetooth module:
-<pre>install net-pf-31 /bin/false
-install bluetooth /bin/false</pre>
+<pre>install bluetooth /bin/true</pre>
 </description>
 <ocil>
 <module-disable-check-macro module="bluetooth" />
-<module-disable-check-macro module="net-pf-31" />
 </ocil>
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
@@ -107,7 +105,7 @@ activation.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="kernel_module_bluetooth_disabled" />
 <ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
-<tested by="DS" on="20121025"/>
+<tested by="JL" on="20141031"/>
 </Rule>
 
 </Group><!--<Group id="wireless_software">-->

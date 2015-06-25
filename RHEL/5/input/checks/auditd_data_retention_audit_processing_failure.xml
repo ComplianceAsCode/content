@@ -1,0 +1,69 @@
+<def-group>
+  <definition class="compliance" id="auditd_data_retention_audit_processing_failure" version="1">
+    <metadata>
+      <title>Auditd Action to Take When Disk Has Errors</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>disk_error_action setting and disk_full_action in /etc/audit/auditd.conf is set to a certain action</description>
+    </metadata>
+    <criteria operator="OR">
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	      <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+        </criteria>
+       <criterion test_ref="test_auditd_data_retention_disk_error_action_el4" />
+       <criterion test_ref="test_auditd_data_retention_disk_full_action_el4" />
+      </criteria>
+      <criteria>
+        <criteria operator="OR">
+	      <extend_definition comment="CentOS 5 is installed" definition_ref="installed_OS_is_centos5" />
+	      <extend_definition comment="RedHat 5 is installed" definition_ref="installed_OS_is_rhel5" />
+        </criteria>
+       <criterion test_ref="test_auditd_data_retention_disk_error_action_el5" />
+       <criterion test_ref="test_auditd_data_retention_disk_full_action_el5" />
+      </criteria>
+    </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="space left action" id="test_auditd_data_retention_disk_error_action_el4" version="1">
+    <ind:object object_ref="object_auditd_data_retention_disk_error_action_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_auditd_data_retention_disk_error_action_el4" version="1">
+    <ind:filepath>/etc/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^disk_error_action\s*=\s*(exec|halt|single|syslog)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="space left action" id="test_auditd_data_retention_disk_full_action_el4" version="1">
+    <ind:object object_ref="object_auditd_data_retention_disk_full_action_el4" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_auditd_data_retention_disk_full_action_el4" version="1">
+    <ind:filepath>/etc/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^disk_full_action\s*=\s*(exec|halt|single|syslog)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="space left action" id="test_auditd_data_retention_disk_error_action_el5" version="1">
+    <ind:object object_ref="object_auditd_data_retention_disk_error_action_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_auditd_data_retention_disk_error_action_el5" version="1">
+    <ind:filepath>/etc/audit/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^disk_error_action\s*=\s*(exec|halt|single|syslog)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="space left action" id="test_auditd_data_retention_disk_full_action_el5" version="1">
+    <ind:object object_ref="object_auditd_data_retention_disk_full_action_el5" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_auditd_data_retention_disk_full_action_el5" version="1">
+    <ind:filepath>/etc/audit/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^disk_full_action\s*=\s*(exec|halt|single|syslog)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

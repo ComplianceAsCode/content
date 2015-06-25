@@ -1,0 +1,1 @@
+find /etc/cron.d /etc/crontab /etc/cron.daily /etc/cron.hourly /etc/cron.monthly /etc/cron.weekly /var/spool/cron  -type f 2>/dev/null | xargs setfacl --remove-all

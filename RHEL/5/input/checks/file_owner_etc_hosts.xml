@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="file_owner_etc_hosts" version="1">
+    <metadata>
+      <title>File /etc/hosts Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Owner for /etc/hosts must be root.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_owner_etc_hosts" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/hosts owner" id="test_file_owner_etc_hosts" version="1">
+    <unix:object object_ref="object_file_owner_etc_hosts" />
+    <unix:state state_ref="state_file_owner_etc_hosts" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/hosts" id="object_file_owner_etc_hosts" version="1">
+    <unix:filepath>/etc/hosts</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_owner_etc_hosts" version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+</def-group>

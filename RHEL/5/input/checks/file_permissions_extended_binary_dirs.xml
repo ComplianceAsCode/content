@@ -1,0 +1,110 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_extended_binary_dirs" version="1">
+    <metadata>
+      <title>Binary Files Extended ACLs</title>
+      <affected family="unix">
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>File permissions for files in binary directories should not have extended ACLs.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <extend_definition comment="CentOS 4 is installed" definition_ref="installed_OS_is_centos4" />
+	  <extend_definition comment="RedHat 4 is installed" definition_ref="installed_OS_is_rhel4" />
+      <criteria>
+        <criterion test_ref="test_file_permissions_extended_binary_dirs_etc" />
+        <criterion test_ref="test_file_permissions_extended_binary_dirs_bin" />
+        <criterion test_ref="test_file_permissions_extended_binary_dirs_usr_bin" />
+        <criterion test_ref="test_file_permissions_extended_binary_dirs_usr_lbin" />
+        <criterion test_ref="test_file_permissions_extended_binary_dirs_usr_usb" />
+        <criterion test_ref="test_file_permissions_extended_binary_dirs_sbin" />
+        <criterion test_ref="test_file_permissions_extended_binary_dirs_usr_sbin" />
+      </criteria>
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /etc/* extended ACLs" id="test_file_permissions_extended_binary_dirs_etc" version="1">
+    <unix:object object_ref="object_file_permissions_extended_binary_dirs_etc" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/*" id="object_file_permissions_extended_binary_dirs_etc" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/etc/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs</filter>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /bin/* extended ACLs" id="test_file_permissions_extended_binary_dirs_bin" version="1">
+    <unix:object object_ref="object_file_permissions_extended_binary_dirs_bin" />
+  </unix:file_test>
+  <unix:file_object comment="/bin/*" id="object_file_permissions_extended_binary_dirs_bin" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/bin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs</filter>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /usr/bin/* extended ACLs" id="test_file_permissions_extended_binary_dirs_usr_bin" version="1">
+    <unix:object object_ref="object_file_permissions_extended_binary_dirs_usr_bin" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/bin/*" id="object_file_permissions_extended_binary_dirs_usr_bin" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/bin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs</filter>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /usr/lbin/* extended ACLs" id="test_file_permissions_extended_binary_dirs_usr_lbin" version="1">
+    <unix:object object_ref="object_file_permissions_extended_binary_dirs_usr_lbin" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/lbin/*" id="object_file_permissions_extended_binary_dirs_usr_lbin" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/lbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs</filter>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /usr/usb/* extended ACLs" id="test_file_permissions_extended_binary_dirs_usr_usb" version="1">
+    <unix:object object_ref="object_file_permissions_extended_binary_dirs_usr_usb" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/usb/*" id="object_file_permissions_extended_binary_dirs_usr_usb" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/usb</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs</filter>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /sbin/* extended ACLs" id="test_file_permissions_extended_binary_dirs_sbin" version="1">
+    <unix:object object_ref="object_file_permissions_extended_binary_dirs_sbin" />
+  </unix:file_test>
+  <unix:file_object comment="/sbin/*" id="object_file_permissions_extended_binary_dirs_sbin" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/sbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs</filter>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing /usr/sbin/* extended ACLs" id="test_file_permissions_extended_binary_dirs_usr_sbin" version="1">
+    <unix:object object_ref="object_file_permissions_extended_binary_dirs_usr_sbin" />
+  </unix:file_test>
+  <unix:file_object comment="/usr/sbin/*" id="object_file_permissions_extended_binary_dirs_usr_sbin" version="1">
+    <unix:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/usr/sbin</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs</filter>
+    <filter action="exclude">state_file_permissions_extended_binary_dirs_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_extended_binary_dirs_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_extended_binary_dirs" version="1">
+    <unix:has_extended_acl datatype="boolean">false</unix:has_extended_acl>
+  </unix:file_state>
+</def-group>

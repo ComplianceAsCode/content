@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="nfs_no_anonymous" version="1">
+    <metadata>
+      <title>NFS Anonymous IDs Configured Appropriately</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The Network File System (NFS) anonymous UID and GID must be configured to values without permissions.</description>
+    </metadata>
+    <criteria operator="OR">
+	  <criterion comment="/etc/exports is empty" test_ref="test_nfs_no_anonymous_empty"/>
+      <criterion comment="make sure anonuid and anongid options are used in /etc/exports" test_ref="test_nfs_no_anonymous" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="/etc/exports is empty" id="test_nfs_no_anonymous_empty" version="1">
+    <ind:object object_ref="object_nfs_no_anonymous_empty" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nfs_no_anonymous_empty" version="1">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">[\s]*(?!#)[\S]+.*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="make sure anonuid and anongid options are used in /etc/exports" id="test_nfs_no_anonymous" version="1">
+    <ind:object object_ref="object_nfs_no_anonymous" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nfs_no_anonymous" version="1">
+    <ind:filepath>/etc/exports</ind:filepath>
+    <ind:pattern operation="pattern match">^(?![\s]*#)(?![\s]*$)(?![\S]+(?:[\s]+(?=[\S]*anonuid=(?:-1|60001|65534|65535))(?=[\S]*anongid=(?:-1|60001|65534|65535))[\S]*)+$).*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

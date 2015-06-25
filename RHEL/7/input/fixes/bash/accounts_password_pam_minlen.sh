@@ -1,8 +1,8 @@
 source ./templates/support.sh
 populate var_password_pam_minlen
 
-if grep -q "minlen=" /etc/pam.d/system-auth; then   
-	sed -i --follow-symlink "s/\(minlen *= *\).*/\1$var_password_pam_minlen/" /etc/pam.d/system-auth
+if egrep -q ^minlen[[:space:]]*=[[:space:]]*[[:digit:]]+ /etc/security/pwquality.conf; then
+	sed -i "s/^\(minlen *= *\).*/\1$var_password_pam_minlen/" /etc/security/pwquality.conf
 else
-	sed -i --follow-symlink "/pam_pwquality.so/ s/$/ minlen=$var_password_pam_minlen/" /etc/pam.d/system-auth
+	sed -i "/\(minlen *= *\).*/a minlen = $var_password_pam_minlen" /etc/security/pwquality.conf
 fi

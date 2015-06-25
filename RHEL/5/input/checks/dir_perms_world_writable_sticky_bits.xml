@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="dir_perms_world_writable_sticky_bits" version="1">
+    <metadata>
+      <title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The sticky bit should be set for all world-writable directories.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="all local world writable directories have sticky bit set" test_ref="test_dir_perms_world_writable_sticky_bits" negate="true" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist" comment="all local world-writable directories have sticky bit set" id="test_dir_perms_world_writable_sticky_bits" version="1">
+    <unix:object object_ref="object_only_local_directories" />
+    <unix:state state_ref="state_world_writable_and_not_sticky" />
+  </unix:file_test>
+  <unix:file_object comment="only local directories" id="object_only_local_directories" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_world_writable_and_not_sticky</filter>
+  </unix:file_object>
+  <unix:file_state id="state_world_writable_and_not_sticky" version="1">
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+</def-group>

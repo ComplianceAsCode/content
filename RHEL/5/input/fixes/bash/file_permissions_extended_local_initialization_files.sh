@@ -1,0 +1,1 @@
+cut -d: -f6 /etc/passwd | sort -u | xargs -n1 -IDIR find DIR -maxdepth 1 -name .bashrc -o -name .bash_login -o -name .bash_logout -o -name .bash_profile -o -name .cshrc -o -name .kshrc -o -name .login -o -name .logout -o -name .profile -o -name .env -o -name .dtprofile -o -name .dispatch -o -name .emacs -o -name .exrc 2>/dev/null | xargs setfacl --remove-all

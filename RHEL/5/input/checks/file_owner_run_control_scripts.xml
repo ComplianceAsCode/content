@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="file_owner_run_control_scripts" version="1">
+    <metadata>
+      <title>File /etc/rc*/* and /etc/init.d/* Owner</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Owner for /etc/rc*/* and /etc/init.d/* must be root.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_owner_etc_rc" />
+      <criterion test_ref="test_file_owner_etc_initd" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/rc*/* owner" id="test_file_owner_etc_rc" version="1">
+    <unix:object object_ref="object_file_owner_etc_rc" />
+    <unix:state state_ref="state_file_owner_run_control_scripts" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/rc*/*" id="object_file_owner_etc_rc" version="1">
+    <unix:path operation="pattern match">/etc/rc*</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="any_exist" comment="Testing /etc/init.d/* owner" id="test_file_owner_etc_initd" version="1">
+    <unix:object object_ref="object_file_owner_etc_initd" />
+    <unix:state state_ref="state_file_owner_run_control_scripts" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/init.d/*" id="object_file_owner_etc_initd" version="1">
+    <unix:path>/etc/init.d</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_owner_run_control_scripts" version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+</def-group>

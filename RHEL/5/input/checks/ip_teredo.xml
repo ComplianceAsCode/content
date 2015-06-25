@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="ip_teredo" version="1">
+    <metadata>
+      <title>The system must not have Teredo enabled.</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Teredo is an IPv6 transition mechanism involving 
+	  tunneling IPv6 packets encapsulated in IPv4 packets. Unauthorized 
+	  tunneling may circumvent network security.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_ip_teredo" />
+    </criteria>
+  </definition>
+  
+  <unix:process58_test check="all" check_existence="none_exist" comment="Testing miredo process existence" id="test_ip_teredo" version="1">
+    <unix:object object_ref="object_ip_teredo" />
+  </unix:process58_test>
+  <unix:process58_object comment="miredo process" id="object_ip_teredo" version="1">
+    <unix:command_line datatype="string" operation="pattern match">^(?:.*/)*(?i)miredo(?:$|[\s]+.*$)+</unix:command_line>
+    <unix:pid datatype="int" operation="greater than or equal">0</unix:pid>
+  </unix:process58_object>
+
+</def-group>

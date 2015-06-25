@@ -1,63 +1,63 @@
+include VERSION
+
 # Define RHEL6 / JBossEAP5 specific variables below
 ROOT_DIR ?= $(CURDIR)
+RPMBUILD ?= $(ROOT_DIR)/rpmbuild
 RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
-PKGNAME := $(shell sed -ne 's/Name:\t\t\(.*\)/\1/p' $(RPM_SPEC))
-REDHAT_SSG_VERSION := $(shell sed -ne 's/^\(.*\)redhatssgversion\t\(.*\)/\2/p' $(RPM_SPEC))
-REDHAT_RPM_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(RPM_SPEC))
-$(eval REDHAT_RPM_VERSION := $(shell echo $(REDHAT_RPM_VERSION) | sed -ne 's/%{redhatssgversion}/$(REDHAT_SSG_VERSION)/p'))
-VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(RPM_SPEC))
-REDHAT_DIST := $(shell rpm --eval '%{dist}')
-PKG := $(PKGNAME)-$(REDHAT_RPM_VERSION)
+PKGNAME := $(SSG_PROJECT_NAME)
+OS_DIST := $(shell rpm --eval '%{dist}')
 
 ARCH := noarch
-TARBALL = $(RPM_TOPDIR)/SOURCES/$(PKG).tar.gz
+RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)'  --define '_tmppath $(RPMBUILD)'
 
-RPM_DEPS := tarball $(RPM_SPEC) Makefile
-RPM_TMPDIR ?= $(ROOT_DIR)/rpmbuild
-RPM_TOPDIR ?= $(RPM_TMPDIR)/src/redhat
-RPM_BUILDROOT ?= $(RPM_TMPDIR)/rpm-buildroot
-RPMBUILD_ARGS := --define '_topdir $(RPM_TOPDIR)'  --define '_tmppath $(RPM_TMPDIR)'
+DATESTR:=$(shell date -u +'%Y%m%d%H%M')
+RPM_DATESTR := $(shell date -u +'%a %b %d %Y')
 
-# Define Fedora specific variables below
-FEDORA_SPEC := $(ROOT_DIR)/Fedora/scap-security-guide.spec
-# srpm target in FEDORA_RPM_DEPS below is needed to get value of SOURCE
-# variable evaluated for its subsequent use in fedora-srpm target
-FEDORA_RPM_DEPS := $(FEDORA_SPEC) Makefile srpm
-FEDORA_NAME := $(PKGNAME)
-FEDORA_SSG_VERSION := $(shell sed -ne 's/^\(.*\)\tfedorassgversion\t\(.*\)/\2/p' $(FEDORA_SPEC))
-FEDORA_RPM_VERSION := $(shell sed -ne 's/Version:\t\(.*\)/\1/p' $(FEDORA_SPEC))
-$(eval FEDORA_RPM_VERSION := $(shell echo $(FEDORA_RPM_VERSION) | sed -ne 's/%{fedorassgversion}/$(FEDORA_SSG_VERSION)/p'))
-FEDORA_PKG := $(FEDORA_NAME)-$(FEDORA_RPM_VERSION)
-FEDORA_TARBALL := $(RPM_TOPDIR)/SOURCES/$(FEDORA_PKG).tar.gz
-FEDORA_DIST := $(shell rpm --eval '%{dist}')
+ifeq ($(SSG_VERSION_IS_GIT_SNAPSHOT),"yes")
+GIT_VERSION:=$(shell git show --pretty=format:"%h" --stat HEAD 2>/dev/null|head -1)
+ifneq ($(GIT_VERSION),)
+SSG_VERSION=$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION).$(SSG_RELEASE_VERSION).$(DATESTR)GIT$(GIT_VERSION)
+endif # in a git tree and git returned a version
+endif # git
+
+ifndef SSG_VERSION
+SSG_VERSION=$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)
+endif
+
+PKG := $(PKGNAME)-$(SSG_VERSION)
+TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
+
+PREFIX=$(DESTDIR)/usr
+DATADIR=share
+MANDIR=man
 
 # Define custom canned sequences / macros below
 
-MKDIR = test -d $(1) || mkdir -p $(1)
-
-define rpm-prep
-	$(call MKDIR,$(RPM_TMPDIR)/$(PKG))
-	$(call MKDIR,$(RPM_BUILDROOT))
-	$(call MKDIR,$(RPM_TOPDIR)/SOURCES)
-	$(call MKDIR,$(RPM_TOPDIR)/SPECS)
-	$(call MKDIR,$(RPM_TOPDIR)/BUILD)
-	$(call MKDIR,$(RPM_TOPDIR)/RPMS/$(ARCH))
-	$(call MKDIR,$(RPM_TOPDIR)/SRPMS)
-	$(call MKDIR,$(RPM_TOPDIR)/ZIP)
-endef
-
 # Define Makefile targets below
 
-all: fedora rhel6 rhel7 openstack rhevm3 rpm zipfile
+all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox chromium rpm zipfile
+dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist
 
 fedora:
 	cd Fedora/ && $(MAKE)
 
+fedora-dist:
+	cd Fedora/ && $(MAKE) dist
+
+rhel5:
+	cd RHEL/5/ && $(MAKE)
+
 rhel6:
 	cd RHEL/6/ && $(MAKE)
 
+rhel6-dist:
+	cd RHEL/6/ && $(MAKE) dist
+
 rhel7:
 	cd RHEL/7/ && $(MAKE)
+
+rhel7-dist:
+	cd RHEL/7/ && $(MAKE) dist
 
 openstack:
 	cd OpenStack && $(MAKE)
@@ -65,127 +65,169 @@ openstack:
 rhevm3:
 	cd RHEVM3 && $(MAKE)
 
-validate: fedora rhel6 rhel7 openstack rhevm3
+jre:
+	cd JRE/ && $(MAKE)
+
+jre-dist:
+	cd JRE/ && $(MAKE) dist
+
+firefox:
+	cd Firefox/ && $(MAKE)
+
+firefox-dist:
+	cd Firefox/ && $(MAKE) dist
+
+webmin:
+	cd Webmin/ && $(MAKE)
+
+chromium:
+	cd Chromium/ && $(MAKE)
+
+chromium-dist:
+	cd Chromium/ && $(MAKE) dist
+
+validate: fedora rhel6 rhel7 openstack rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
-	# Enable below when content is validates correctly
+	cd Chromium/ && $(MAKE) validate
+	cd Firefox/ && $(MAKE) validate
+	cd JRE/ && $(MAKE) validate
+	# Enable below when content validates correctly
 	#cd RHEL/7/ && $(MAKE) validate
 	#cd OpenStack && $(MAKE) validate
 	#cd RHEVM3 && $(MAKE) validate
 
-tarball:
-	$(call rpm-prep)
+rpmroot:
+	mkdir -p $(RPMBUILD)/BUILD
+	mkdir -p $(RPMBUILD)/RPMS
+	mkdir -p $(RPMBUILD)/SOURCES
+	mkdir -p $(RPMBUILD)/SPECS
+	mkdir -p $(RPMBUILD)/SRPMS
+	mkdir -p $(RPMBUILD)/ZIPS
+	mkdir -p $(RPMBUILD)/BUILDROOT
 
+tarball: rpmroot
 	# Copy in the source trees for both RHEL
 	# and JBossEAP5 content
-	cp -r shared/ $(RPM_TMPDIR)/$(PKG)
-	cp -r --preserve=links --parents RHEL/6/ $(RPM_TMPDIR)/$(PKG)
-	cp -r --preserve=links --parents RHEL/7/ $(RPM_TMPDIR)/$(PKG)
-	cp -r JBossEAP5 $(RPM_TMPDIR)/$(PKG)
+	mkdir -p $(RPMBUILD)/$(PKG)
+	cp {BUILD.md,Contributors.md,LICENSE,README.md} $(RPMBUILD)/$(PKG)
+	cp -r config/ $(RPMBUILD)/$(PKG)
+	cp -r docs/ $(RPMBUILD)/$(PKG)
+	cp -r shared/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents RHEL/5/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents RHEL/6/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents RHEL/7/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents JRE/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Webmin/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Chromium $(RPMBUILD)/$(PKG)
+	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
 	# environment before packaging
-	(cd $(RPM_TMPDIR)/$(PKG)/RHEL/6/ && $(MAKE) clean)
-	(cd $(RPM_TMPDIR)/$(PKG)/RHEL/7/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/RHEL/5/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/RHEL/6/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Chromium/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/JRE/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Firefox/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Webmin/ && $(MAKE) clean)
 
 	# Create the source tar, copy it to TARBALL
 	# (e.g. somewhere in the SOURCES directory)
-	cd $(RPM_TMPDIR) && tar -czf $(PKG).tar.gz $(PKG)
-	cp $(RPM_TMPDIR)/$(PKG).tar.gz $(TARBALL)
+	cd $(RPMBUILD) && tar -czf $(PKG).tar.gz $(PKG)
+	cp $(RPMBUILD)/$(PKG).tar.gz $(TARBALL)
 
-fedora-tarball:
-	$(call rpm-prep)
-
-	# rpm-prep creates $(RPM_TMPDIR)/$(PKG) => move it
-	# to proper Fedora package location first
-	mv $(RPM_TMPDIR)/$(PKG) $(RPM_TMPDIR)/$(FEDORA_PKG)
-
-	# Copy the source tree for Fedora content
-	cp -r Fedora $(RPM_TMPDIR)/$(FEDORA_PKG)
-
-	# Copy the source tree for shared OVAL / XCCDF content
-	cp -r shared $(RPM_TMPDIR)/$(FEDORA_PKG)
-
-	# Don't trust the developers, clean out the build
-	# environment before packaging
-	cd $(RPM_TMPDIR)/$(FEDORA_PKG)/Fedora && $(MAKE) clean
-
-	# Create the source tar, copy it to $TARBALL
-	# (e.g. somewhere in the SOURCES directory)
-	cd $(RPM_TMPDIR) && tar -czf $(FEDORA_PKG).tar.gz $(FEDORA_PKG)
-	cp $(RPM_TMPDIR)/$(FEDORA_PKG).tar.gz $(FEDORA_TARBALL)
-
-zipfile:
+zipfile: rhel6 rpmroot
 	# Create a zipfile release, since many SCAP
 	# tools desire content in that format
 	# (Note: By default zip will store the full path
 	#	 relative to the current directory, need
-	#	 to cd into $(RPM_TMPDIR)
-	cp RHEL/6/output/ssg-* $(RPM_TOPDIR)/ZIP/
-	cp JBossEAP5/eap5-* $(RPM_TOPDIR)/ZIP/
-	# Originally attempted to `cd $(RPM_TOPDIR)/ZIP` and
+	#	 to cd into $(RPMBUILD)
+	cp RHEL/6/output/ssg-* $(RPMBUILD)/ZIPS/
+	cp JBossEAP5/eap5-* $(RPMBUILD)/ZIPS/
+	# Originally attempted to `cd $(RPMBUILD)/ZIPS` and
 	# make the zip from there, however it still placed it
 	# at working directory. Should look into this sometime
 	#
-	#cd $(RPM_TOPDIR)/ZIP
+	#cd $(RPMBUILD)/ZIPS
 	#zip -r $(PKG).zip . * -j
-	zip -r $(PKG).zip $(RPM_TOPDIR)/ZIP/* -j
-	mv $(PKG).zip $(RPM_TOPDIR)/ZIP/
+	zip -r $(PKG).zip $(RPMBUILD)/ZIPS/* -j
+	mv $(PKG).zip $(RPMBUILD)/ZIPS/
 
-srpm: $(RPM_DEPS)
-	# Obtain the source from RedHat's spec file
-	$(eval SOURCE := $(shell sed -ne 's/Source0:\t\(.*\)/\1/p' $(RPM_SPEC)))
-	# Substitute %{name} and %{version} with their actual values
-	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne 's/%{name}/$(PKGNAME)/p'))
-	$(eval SOURCE := $(shell echo $(SOURCE) | sed -ne 's/%{version}/$(REDHAT_RPM_VERSION)/p'))
-	# Download the tarball
-	@echo "Downloading the $(SOURCE) tarball..."
-	# If performing a real RPM build, uncomment the next line
-	# (+remember to upload tarball to repos.ssgproject.org first!)
-	#@wget -O $(TARBALL) $(SOURCE)
-	@echo "Copying the SPEC file to proper location..."
-	cat $(RPM_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(RPM_SPEC))
-	@echo "Building $(PKGNAME) SRPM..."
-	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(RPM_SPEC)) --nodeps
+version-update:
+	@echo -e "\nUpdating $(RPM_SPEC) version, release, and changelog..."
+	sed -e s/__NAME__/$(PKGNAME)/ \
+		$(RPM_SPEC).in > $(RPM_SPEC)
+	sed -i s/__VERSION__/$(SSG_VERSION)/ \
+		$(RPM_SPEC)
+	sed -i s/__RELEASE__/$(SSG_RELEASE_VERSION)/ \
+		$(RPM_SPEC)
+	sed -i 's/__DATE__/$(SSG_RELEASE_DATE)/' \
+		$(RPM_SPEC)
+	sed -i 's/__REL_MANAGER__/$(SSG_REL_MANAGER)/' \
+		$(RPM_SPEC)
+	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
+		$(RPM_SPEC)
 
-fedora-srpm: $(FEDORA_RPM_DEPS)
-	# Create the necessary directory structure
-	$(call rpm-prep)
-	# Obtain the source from Fedora's spec file
-	$(eval FEDORA_SOURCE := $(shell sed -ne 's/Source0:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
-	# Substitute %{name} and %{version} with their actual values
-	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{name}/$(FEDORA_NAME)/p"))
-	$(eval FEDORA_SOURCE := $(shell echo $(FEDORA_SOURCE) | sed -ne "s/%{version}/$(FEDORA_RPM_VERSION)/p"))
-	# Download the tarballs
-	# Fedora one
-	@echo "Downloading the $(FEDORA_SOURCE) tarball..."
-	@wget -O $(FEDORA_TARBALL) $(FEDORA_SOURCE)
-	# RHEL one
-	@echo "Downloading the $(SOURCE) tarball..."
-	@wget -O $(TARBALL) $(SOURCE)
-	@echo "Copying the SPEC file to proper location..."
-	cat $(FEDORA_SPEC) > $(RPM_TOPDIR)/SPECS/$(notdir $(FEDORA_SPEC))
-	@echo "Building Fedora source $(PKGNAME) RPM package..."
-	cd $(RPM_TOPDIR) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(FEDORA_SPEC)) --nodeps
+srpm: tarball version-update
+	cat $(RPM_SPEC) > $(RPMBUILD)/SPECS/$(notdir $(RPM_SPEC))
+	@echo -e "\nBuilding $(PKGNAME) SRPM..."
+	cd $(RPMBUILD) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(RPM_SPEC)) --nodeps
 
 rpm: srpm
-	$(eval REDHAT_RPM_RELEASE := $(shell sed -ne 's/Release:\t\(.*\)/\1/p' $(RPM_SPEC)))
-	$(eval REDHAT_RPM_RELEASE := $(shell echo $(REDHAT_RPM_RELEASE) | sed -ne 's/%{?dist}/$(REDHAT_DIST)/p'))
-	@echo "Building $(PKG) RPM..."
-	cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(PKG)-$(REDHAT_RPM_RELEASE).src.rpm
+	@echo -e "\nBuilding $(PKGNAME) RPM..."
+	cd $(RPMBUILD)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPMBUILD)/BUILDROOT -bb $(PKG)-$(SSG_RELEASE_VERSION)$(OS_DIST).src.rpm
 
-fedora-rpm: fedora-srpm
-	$(eval FEDORA_RPM_RELEASE := $(shell sed -ne 's/Release:\t\(.*\)/\1/p' $(FEDORA_SPEC)))
-	$(eval FEDORA_RPM_RELEASE := $(shell echo $(FEDORA_RPM_RELEASE) | sed -ne 's/%{?dist}/$(FEDORA_DIST)/p'))
-	@echo "Building Fedora $(FEDORA_PKG) RPM package..."
-	cd $(RPM_TOPDIR)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPM_BUILDROOT) -bb $(FEDORA_PKG)-$(FEDORA_RPM_RELEASE).src.rpm
-
+git-tag:
+	@echo -e "\nUpdating $(RPM_SPEC) changelog to reflect new release"
+	sed -i '/\%changelog/{n;s/__DATE__/$(RPM_DATESTR)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__REL_MANAGER__/$(SSG_REL_MANAGER)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__VERSION__/$(SSG_VERSION)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__RELEASE__/$(SSG_RELEASE_VERSION)/}' $(RPM_SPEC).in
+	sed -i '/new/{s/__VERSION__/$(SSG_VERSION)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/a\* __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__\n- Make new __VERSION__ release\n' $(RPM_SPEC).in
+	@echo -e "\nTagging $(PKGNAME) to new release $(NEW_RELEASE)"
+	$(eval NEW_RELEASE:=$(shell git describe $(git rev-list --tags --max-count=1) | awk -F . '{printf "%s.%i.%i", $$1, $$2, $$3 + 1}' | sed 's/^.//'))
+	$(eval NEW_MINOR_RELEASE:=$(shell echo $(NEW_RELEASE) | awk -F . '{printf "%i", $$3}'))
+	@echo -e "\nUpdating VERSION to new minor release $(NEW_RELEASE)"
+	sed -i 's/SSG_MINOR_VERSION.*/SSG_MINOR_VERSION = $(NEW_MINOR_RELEASE)/' $(ROOT_DIR)/VERSION
+	sed -i 's/SSG_RELEASE_DATE.*/SSG_RELEASE_DATE = $(RPM_DATESTR)/' $(ROOT_DIR)/VERSION
+	@echo -e "\nTagging to new release $(NEW_RELEASE)"
+	git add $(RPM_SPEC).in $(ROOT_DIR)/VERSION
+	git commit -m "Make new $(NEW_RELEASE) release"
+	git tag -a -m "Version $(NEW_RELEASE)" v$(NEW_RELEASE)
 clean:
-	rm -rf $(RPM_TMPDIR)
+	rm -rf $(RPMBUILD)
+	cd RHEL/5 && $(MAKE) clean
 	cd RHEL/6 && $(MAKE) clean
 	cd RHEL/7 && $(MAKE) clean
 	cd OpenStack && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
+	cd JRE && $(MAKE) clean
+	cd Firefox && $(MAKE) clean
+	cd Webmin && $(MAKE) clean
+	cd Chromium && $(MAKE) clean
+	rm -f scap-security-guide.spec
 
-.PHONY: rhel6 tarball srpm rpm clean all
+install: dist
+	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -d $(PREFIX)/$(DATADIR)/scap-security-guide
+	install -d $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
+	install -d $(PREFIX)/$(MANDIR)/en/man8/
+	install -m 0644 Fedora/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 Fedora/dist/guide/* $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -m 0644 RHEL/6/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 RHEL/6/input/fixes/bash/templates/functions $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -m 0644 RHEL/6/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
+	install -m 0644 RHEL/6/dist/guide/* $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
+
+.PHONY: rhel5 rhel6 rhel7 jre firefox webmin tarball srpm rpm clean all
+	rm -f scap-security-guide.spec

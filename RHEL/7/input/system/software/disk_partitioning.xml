@@ -141,7 +141,7 @@ every time the system boots.
 For automated/unattended installations, it is possible to use Kickstart by adding
 the <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be
 encrypted. For example, the following line would encrypt the root partition:
-<pre>part / --fstype=ext3 --size=100 --onpart=hda1 --encrypted --passphrase=<i>PASSPHRASE</i></pre>
+<pre>part / --fstype=ext4 --size=100 --onpart=hda1 --encrypted --passphrase=<i>PASSPHRASE</i></pre>
 Any <i>PASSPHRASE</i> is stored in the Kickstart in plaintext, and the Kickstart must then be protected accordingly.
 Omitting the <tt>--passphrase=</tt> option from the partition definition will cause the
 installer to pause and interactively ask for the passphrase during installation.
@@ -158,8 +158,8 @@ The risk of a system's physical compromise, particularly mobile systems such as
 laptops, places its data at risk of compromise.  Encrypting this data mitigates
 the risk of its loss if the system is lost.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<ref nist="SC-13, SC-28" disa="1019,1199,1200" />
+<ident cce="27128-8" />
+<ref nist="SC-13,SC-28" disa="1019,1199,1200" ossrg="185" />
 </Rule>
 
 </Group>

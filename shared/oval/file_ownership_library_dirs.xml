@@ -3,14 +3,14 @@
     <metadata>
       <title>Verify that Shared Library Files Have Root Ownership</title>
       <affected family="unix">
-        <platform>Fedora 19</platform>
-        <platform>Red Hat Enterprise Linux 6</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>
         Checks that /lib, /lib64, /usr/lib, /usr/lib64, /lib/modules, and
         objects therein, are owned by root.
       </description>
+      <reference source="JL" ref_id="FEDORA20_20150522" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion test_ref="test_ownership_lib_dir" />

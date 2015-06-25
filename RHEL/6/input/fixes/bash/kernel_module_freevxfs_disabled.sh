@@ -1,1 +1,1 @@
-echo "install freevxfs /bin/false" > /etc/modprobe.d/freevxfs.conf
+echo "install freevxfs /bin/true" > /etc/modprobe.d/freevxfs.conf

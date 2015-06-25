@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="sshd_listen_addresses" version="1">
+    <metadata>
+      <title>Ensure SSH Listens On Designated Interface</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The SSH daemon must only listen on management network addresses 
+	  unless authorized for uses other than management.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met" operator="OR">
+      <extend_definition comment="rpm package openssh-server removed"
+      definition_ref="package_openssh-server_removed" />
+      <criterion comment="Check ListenAddress in /etc/ssh/sshd_config"
+      test_ref="test_sshd_listen_addresses" />
+    </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="ListenAddress includes an IP" id="test_sshd_listen_addresses" version="1">
+    <ind:object object_ref="object_sshd_listen_addresses" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_sshd_listen_addresses" version="2">
+    <ind:path>/etc/ssh</ind:path>
+    <ind:filename>sshd_config</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ListenAddress\s+(?!0\.0\.0\.0)([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|[A-Fa-f0-9:]+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

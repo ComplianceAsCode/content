@@ -51,7 +51,7 @@ Removing the DHCP server ensures that it cannot be easily or
 accidentally reactivated and disrupt network operation.
 </rationale>
 <ident cce="27120-5" />
-<oval id="package_dhcpd_removed" />
+<oval id="package_dhcp_removed" />
 <ref nist="CM-7" disa="366"/>
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -89,7 +89,7 @@ server itself is correctly configured to reject DDNS attempts, an incorrect
 ddns-update-style setting on the client is harmless (but should be fixed as a
 best practice).</warning>
 <ident cce="27049-6" />
-<!--<oval id="dhcp_server_disable_ddns" /> -->
+<oval id="dhcp_server_disable_ddns" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -104,7 +104,7 @@ issuing many DHCPDECLINE messages, a malicious client can exhaust the DHCP
 server's pool of IP addresses, causing the DHCP server to forget old address
 allocations.</rationale>
 <ident cce="27106-4" />
-<!--<oval id="dhcp_server_deny_decline" /> -->
+<oval id="dhcp_server_deny_decline" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -119,11 +119,11 @@ for this simpler protocol is not needed, it should be disabled to remove attack
 vectors against the DHCP server.
 </rationale>
 <ident cce="27077-7" />
-<!--<oval id="dhcp_server_deny_bootp" /> -->
+<oval id="dhcp_server_deny_bootp" />
 <ref nist="CM-7" />
 </Rule>
 
-<Group id="dhcp_server_minimize_served_info">
+<Rule id="dhcp_server_minimize_served_info">
 <title>Minimize Served Information</title>
 <description>Edit /etc/dhcp/dhcpd.conf. Examine each address range section within
 the file, and ensure that the following options are not defined unless there is
@@ -154,9 +154,9 @@ usually static across machines at a given site.</warning>
 <ident cce="27008-2" />
 <ident cce="27064-5" />
 <ident cce="27065-2" />-->
-<!--<oval id="dhcp_server_minimize_served_info" /> -->
+<oval id="dhcp_server_minimize_served_info" />
 <ref nist="CM-7" />
-</Group>
+</Rule>
 
 <Rule id="dhcp_server_configure_logging">
 <title>Configure Logging</title>
@@ -169,7 +169,7 @@ reported by the dhcpd process.</description>
 daemon messages to a dedicated log file is part of the syslog configuration
 outlined in the Logging and Auditing section</rationale>
 <ident cce="26898-7" />
-<!--<oval id="dhcp_server_configure_logging" /> -->
+<oval id="dhcp_server_configure_logging" />
 <ref nist="" />
 </Rule>
 
@@ -217,7 +217,7 @@ DHCP relies on trusting the local network. If the local network is not trusted,
 then it should not be used.  However, the automatic configuration provided by
 DHCP is commonly used and the alternative, manual configuration, presents an
 unacceptable burden in many circumstances.</rationale>
-<ident cce="27021-5" />
+<ident cce="27021-5"  stig="RHEL-06-000292" />
 <oval id="sysconfig_networking_bootproto_ifcfg" />
 <ref nist="CM-7" disa="366"/>
 <tested by="DS" on="20121024"/>
@@ -232,7 +232,7 @@ and thus the amount of incorrect information a rogue DHCP server could
 successfully distribute.  For more information on configuring dhclient, see the
 <tt>dhclient(8)</tt> and <tt>dhclient.conf(5)</tt> man pages.  </description>
 
-<Group id="dhcp_client_restrict_options">
+<Rule id="dhcp_client_restrict_options">
 <title>Minimize the DHCP-Configured Options</title>
 <description>Create the file <tt>/etc/dhcp/dhclient.conf</tt>, and add an
 appropriate setting for each of the ten configuration settings which can be
@@ -276,9 +276,9 @@ services so that they cannot be set by a hostile DHCP server. If an option is
 set to an empty string, dhclient will typically not attempt to configure the
 service.</warning>
 <!--<ident cce="27120-5" /> -->
-<!--<oval id="dhcp_client_restrict_options" /> -->
+<oval id="dhcp_client_restrict_options" />
 <!--<ref nist="CM-7" /> -->
-</Group>
+</Rule>
 
 </Group> <!-- <Group id="dhcp_client_configuration"> -->
 </Group> <!-- <Group id="dhcp"> -->

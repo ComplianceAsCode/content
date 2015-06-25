@@ -1,0 +1,562 @@
+<Group id="ssh">
+<title>SSH Server</title>
+<description>The SSH protocol is recommended for remote login and
+remote file transfer. SSH provides confidentiality and integrity
+for data exchanged between two systems, as well as server
+authentication, through the use of public key cryptography. The
+implementation included with the system is called OpenSSH, and more
+detailed documentation is available from its website,
+http://www.openssh.org. Its server program is called <tt>sshd</tt> and
+provided by the RPM package <tt>openssh-server</tt>.</description>
+
+<Group id="ssh_server">
+<title>Configure OpenSSH Server if Necessary</title>
+<description>If the system needs to act as an SSH server, then
+certain changes should be made to the OpenSSH daemon configuration
+file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
+applied to this file. See the <tt>sshd_config(5)</tt> man page for more
+detailed information.</description>
+
+<Rule id="sshd_protocol_2" severity="high">
+<title>Allow Only SSH Protocol 2</title>
+<description>Only SSH protocol version 2 connections should be
+permitted. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>Protocol 2</pre>
+</description>
+<ocil clause="it is not">
+To check which SSH protocol version is allowed, run the following command:
+<pre># grep Protocol /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>Protocol 2</pre>
+</ocil>
+<rationale>
+SSH protocol version 1 suffers from design flaws that
+result in security vulnerabilities and
+should not be used.
+</rationale>
+<ident stig="GEN005500" />
+<oval id="sshd_protocol_2" />
+<ref nist="DCPP-1,ECSC-1" disa="1436" />
+</Rule>
+
+<Rule id="sshd_disable_root_login" severity="medium">
+<title>Disable SSH Root Login</title>
+<description>The root user should never be allowed to login to a
+system directly over a network.
+To disable root login via SSH, add or correct the following line
+in <tt>/etc/ssh/sshd_config</tt>:
+<pre>PermitRootLogin no</pre>
+</description>
+<ocil>
+<sshd-check-macro option="PermitRootLogin" value="no" default="no" />
+</ocil>
+<rationale>
+Permitting direct root login reduces auditable information about who ran
+privileged commands on the system
+and also allows direct attack attempts on root's password.
+</rationale>
+<ident stig="GEN001120" />
+<oval id="sshd_disable_root_login" />
+<ref nist="ECPA-1" disa="770" />
+</Rule>
+
+<Rule id="sshd_enable_warning_banner" severity="medium">
+<title>Enable SSH Warning Banner</title>
+<description>
+To enable the warning banner and ensure it is consistent
+across the system, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
+<pre>Banner /etc/issue</pre>
+Another section contains information on how to create an
+appropriate system-wide warning banner.
+</description>
+<ocil>
+<sshd-check-macro option="Banner" value="/etc/issue" default="no" />
+</ocil>
+<rationale>
+The warning message reinforces policy awareness during the logon process and
+facilitates possible legal action against attackers.  Alternatively, systems
+whose ownership should not be obvious should ensure usage of a banner that does
+not provide easy attribution.
+</rationale>
+<ident stig="GEN005550" />
+<oval id="sshd_enable_warning_banner" />
+<ref nist="ECWM-1" disa="48" />
+</Rule>
+
+<Rule id="sshd_use_approved_ciphers" severity="medium">
+<title>Use Only Approved Ciphers</title>
+<description>Limit the ciphers to those algorithms which are FIPS-approved.
+The following line in <tt>/etc/ssh/sshd_config</tt>
+demonstrates use of FIPS-approved ciphers:
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+ciphers are in use, run the following command:
+<pre># grep Ciphers /etc/ssh/sshd_config</pre>
+The output should contain only those ciphers which are FIPS-approved, namely, the 
+AES and 3DES ciphers.
+</ocil>
+<rationale>
+Approved algorithms should impart some level of confidence in their
+implementation. These are also required for compliance.
+</rationale>
+<ident stig="GEN005505" />
+<oval id="sshd_use_approved_ciphers" />
+<ref nist="DCNR-1" disa="68" />
+</Rule>
+
+<Rule id="sshd_no_cbc" severity="medium">
+<title>Do Not Use CBC Mode</title>
+<description>The Cipher-Block Chaining (CBC) mode of encryption as implemented 
+in the SSHv2 protocol is vulnerable to chosen plain text attacks.
+Counter (CTR) mode is preferred over CBC mode.
+The following line in <tt>/etc/ssh/sshd_config</tt>
+demonstrates use of FIPS-approved ciphers:
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+ciphers are in use, run the following command:
+<pre># grep Ciphers /etc/ssh/sshd_config</pre>
+The output should contain only those ciphers which are FIPS-approved, namely, the 
+CTR ciphers.
+</ocil>
+<rationale>
+Approved algorithms should impart some level of confidence in their
+implementation. These are also required for compliance.
+</rationale>
+<ident stig="GEN005506" />
+<oval id="sshd_no_cbc" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="sshd_use_approved_macs" severity="medium">
+<title>Use Only Approved Macs</title>
+<description>Limit the MACs to those hash algorithms which are FIPS-approved.
+The following line in <tt>/etc/ssh/sshd_config</tt>
+demonstrates use of FIPS-approved MACs:
+<pre>Macs hmac-sha1</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of supported macs.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved MACs should be used.  To verify that only FIPS-approved 
+MACs are in use, run the following command:
+<pre># grep -i macs /etc/ssh/sshd_config</pre>
+The output should contain only those MACs which are FIPS-approved, namely, hmac-sha1.
+</ocil>
+<rationale>
+DoD information systems are required to use FIPS 140-2 approved cryptographic hash functions.
+</rationale>
+<ident stig="GEN005507" />
+<oval id="sshd_use_approved_macs" />
+<ref nist="DCNR-1" disa="1453" />
+</Rule>
+
+<Rule id="sshd_gssapiauthentication" severity="low">
+<title>Disable GSSAPIAuthentication</title>
+<description>GSSAPIAuthentication should not be
+permitted. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>GSSAPIAuthentication no</pre>
+</description>
+<ocil clause="it is not">
+To check if GSSAPIAuthentication is allowed, run the following command:
+<pre># grep GSSAPIAuthentication /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>GSSAPIAuthentication no</pre>
+</ocil>
+<rationale>
+GSSAPI authentication is used to provide additional authentication mechanisms 
+to applications. Allowing GSSAPI authentication through SSH exposes the system’s 
+GSSAPI to remote hosts, increasing the attack surface of the system.  GSSAPI 
+authentication must be disabled unless needed.
+</rationale>
+<ident stig="GEN005524" />
+<oval id="sshd_gssapiauthentication" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="sshd_printlastlog" severity="low">
+<title>Display Login Details</title>
+<description>A user should be presented with details on the last attempted access 
+to their account, upon logging in. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>PrintLastLog yes</pre>
+</description>
+<ocil clause="it is not">
+To check if PrintLastLog is enabled, run the following command:
+<pre># grep PrintLastLog /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>PrintLastLog yes</pre>
+</ocil>
+<rationale>
+Providing users with feedback on when account accesses last occurred 
+facilitates user recognition and reporting of unauthorized account use.
+</rationale>
+<ident stig="GEN000452" />
+<oval id="sshd_printlastlog" />
+<ref nist="ECSC-1" disa="52" />
+</Rule>
+
+<Rule id="sshd_users_groups" severity="medium">
+<title>Restrict Users/Groups</title>
+<description>Login access to the SSH server should be restricted to a 
+list of allowed users or groups. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is to allow all users and groups access to login.  
+The user/group restriction can be verified by ensuring that the following 
+line appears:
+<pre>AllowedUsers</pre> or <pre>AllowedGroups</pre>
+</description>
+<ocil clause="it is not">
+To check if user/group restrictions are configured, run the following command:
+<pre># grep ^Allow /etc/ssh/sshd_config</pre>
+If configured properly, output should be either <pre>AllowGroups wheel admin</pre> 
+or <pre>AllowUsers tom jane</pre>, as appropriate. Where the parameters following the 
+Allow statement indicate the list of users or groups to be allowed.
+</ocil>
+<rationale>
+Restricting SSH logins to a limited group of users, such as system administrators, 
+prevents password-guessing and other SSH attacks from reaching system accounts 
+and other accounts not authorized for SSH access.
+</rationale>
+<ident stig="GEN005521" />
+<oval id="sshd_users_groups" />
+<ref nist="ECLP-1" disa="225" />
+</Rule>
+
+<Rule id="sshd_kerberosauthentication" severity="low">
+<title>Disable KerberosAuthentication</title>
+<description>KerberosAuthentication should not be
+permitted. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>KerberosAuthentication no</pre>
+</description>
+<ocil clause="it is not">
+To check if KerberosAuthentication is allowed, run the following command:
+<pre># grep KerberosAuthentication /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>KerberosAuthentication no</pre>
+</ocil>
+<rationale>
+Kerberos authentication for SSH is often implemented using GSSAPI.  
+If Kerberos is enabled through SSH, the SSH daemon provides a means 
+of access to the system's Kerberos implementation.  Vulnerabilities 
+in the system's Kerberos implementation may then be subject to exploitation.  
+To reduce the attack surface of the system, the Kerberos authentication 
+mechanism within SSH must be disabled for systems not using this capability.
+</rationale>
+<ident stig="GEN005526" />
+<oval id="sshd_kerberosauthentication" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="sshd_strictmodes" severity="medium">
+<title>Enable StrictModes</title>
+<description>StrictModes must be enabled. 
+The default setting in
+<tt>/etc/ssh/sshd_config</tt> is not correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>StrictModes yes</pre>
+</description>
+<ocil clause="it is not">
+To check if StrictModes is enabled, run the following command:
+<pre># grep StrictModes /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>StrictModes yes</pre>
+</ocil>
+<rationale>
+If other users have access to modify user-specific SSH configuration files, 
+they may be able to log into the system as another user.
+</rationale>
+<ident stig="GEN005536" />
+<oval id="sshd_strictmodes" />
+<ref nist="ECLP-1" disa="225" />
+</Rule>
+
+<Rule id="sshd_privilegeseparation" severity="medium">
+<title>Enable Privilege Separation</title>
+<description>UsePrivilegeSeparation must be enabled. 
+The default setting in
+<tt>/etc/ssh/sshd_config</tt> is not correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>UsePrivilegeSeparation yes</pre>
+</description>
+<ocil clause="it is not">
+To check if UsePrivilegeSeparation is enabled, run the following command:
+<pre># grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>UsePrivilegeSeparation yes</pre>
+</ocil>
+<rationale>
+SSH daemon privilege separation causes the SSH process to drop root 
+privileges when not needed, which would decrease the impact of 
+software vulnerabilities in the unprivileged section.
+</rationale>
+<ident stig="GEN005537" />
+<oval id="sshd_privilegeseparation" />
+<ref nist="ECLP-1" disa="225" />
+</Rule>
+
+<Rule id="sshd_rhostsrsaauthentication" severity="medium">
+<title>Disable RhostsRSAAuthentication</title>
+<description>RhostsRSAAuthentication should not be
+permitted. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>RhostsRSAAuthentication no</pre>
+</description>
+<ocil clause="it is not">
+To check if RhostsRSAAuthentication is allowed, run the following command:
+<pre># grep RhostsRSAAuthentication /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>RhostsRSAAuthentication no</pre>
+</ocil>
+<rationale>
+If SSH permits rhosts RSA authentication, a user may be able to log in based 
+on the keys of the host originating the request and not any user-specific 
+authentication.
+</rationale>
+<ident stig="GEN005538" />
+<oval id="sshd_rhostsrsaauthentication" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="sshd_compression" severity="medium">
+<title>Disable Or Delay Compression</title>
+<description>Compression should not be
+permitted prior to authentication. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is not correct, and can be
+verified by ensuring that either of the following
+lines appear:
+<pre>Compression no</pre>
+or
+<pre>Compression delayed</pre>
+</description>
+<ocil clause="it is not">
+To check if Compression is allowed prior to authentication, run the following command:
+<pre># grep Compression /etc/ssh/sshd_config</pre>
+If configured properly, output should be either <pre>Compression no</pre> or <pre>Compression delayed</pre>.
+</ocil>
+<rationale>
+If compression is allowed in an SSH connection prior to authentication, 
+vulnerabilities in the compression software could result in compromise 
+of the system from an unauthenticated connection, potentially with root privileges.
+</rationale>
+<ident stig="GEN005539" />
+<oval id="sshd_compression" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Group id="sshd_strengthen_firewall">
+<title>Strengthen Firewall Configuration if Possible</title>
+<description>If the SSH server is expected to only receive connections from 
+the local network, then strengthen the default firewall rule for the SSH service
+to only accept connections from the appropriate network segment(s).
+<br /><br />
+Determine an appropriate network block, <tt>netwk</tt>, and network mask, <tt>mask</tt>, 
+representing the machines on your network which will be allowed to access this SSH server.
+<br /><br />
+Edit the files <tt>etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>
+(if IPv6 is in use). In each file, locate the line:
+<pre>-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>
+and replace it with:
+<pre>-A INPUT -s netwk/mask -m state --state NEW -p tcp --dport 22 -j ACCEPT</pre>
+</description>
+<rationale>
+Restricting SSH access to only trusted network segments reduces exposure of the SSH 
+server to attacks from unauthorized networks.</rationale>
+
+<Rule id="sshd_listen_addresses" severity="medium">
+<title>Assign Designated IP</title>
+<description>The SSH daemon must only listen on management network addresses 
+unless authorized for uses other than management. By default, all addresses are allowed.
+The default setting in <tt>/etc/ssh/sshd_config</tt> must be modified to include the specific IP address 
+that the SSH server should be managed from, for example:
+<pre>ListenAddress 10.10.2.1</pre>
+</description>
+<ocil clause="it is not">
+To check if an IP is configured, run the following command:
+<pre># grep ListenAddress /etc/ssh/sshd_config</pre>
+If configured properly, output should be similar to <pre>ListenAddress 10.10.2.1</pre>.
+</ocil>
+<rationale>
+The SSH daemon should only listen on network addresses designated for management traffic.  
+If the system has multiple network interfaces and SSH listens on addresses not designated 
+for management traffic, the SSH service could be subject to unauthorized access.  
+If SSH is used for purposes other than management, such as providing an SFTP service, 
+the list of approved listening addresses may be documented.
+</rationale>
+<ident stig="GEN005504" />
+<oval id="sshd_listen_addresses" />
+<ref nist="ECSC-1" disa="69" />
+</Rule>
+
+<Rule id="sshd_ipfiltering" severity="medium">
+<title>Enable SSH IP Filtering</title>
+<description>IP filtering should be enabled for SSH in either /etc/hosts.allow or /etc/hosts.deny. 
+By default, no IP filtering is configured. IP filtering for SSH can be
+verified by ensuring that a line similar to the following appears:
+<pre>sshd:10.10.:spawn /bin/echo SSHD accessed on $(/bin/date) from %h>>/var/log/host.access</pre>
+</description>
+<ocil clause="it is not">
+To check if IP filtering is enabled, run the following command:
+<pre># grep sshd /etc/hosts.allow /etc/hosts.deny</pre>
+If configured properly, output should be similar to 
+<pre>sshd:10.10.:spawn /bin/echo SSHD accessed on $(/bin/date) from %h>>/var/log/host.access</pre>
+</ocil>
+<rationale>
+The SSH daemon must be configured for IP filtering to provide a layered defence against connection 
+attempts from unauthorized addresses.
+</rationale>
+<ident stig="GEN005540" />
+<oval id="sshd_ipfiltering" />
+<ref nist="ECSC-1,ECWM-1" disa="366" />
+</Rule>
+
+</Group>
+
+</Group>
+
+<Group id="ssh_client">
+<title>Configure OpenSSH Client if Necessary</title>
+<description>If the system needs to utilize the SSH client, then
+certain changes should be made to the OpenSSH client configuration
+file <tt>/etc/ssh/ssh_config</tt>. The following recommendations can be
+applied to this file. See the <tt>ssh_config(5)</tt> man page for more
+detailed information.</description>
+
+<Rule id="ssh_protocol_2" severity="medium">
+<title>Allow Only SSH Protocol 2</title>
+<description>Only SSH protocol version 2 connections should be
+permitted. The default setting in
+<tt>/etc/ssh/ssh_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>Protocol 2</pre>
+</description>
+<ocil clause="it is not">
+To check which SSH protocol version is allowed, run the following command:
+<pre># grep Protocol /etc/ssh/ssh_config</pre>
+If configured properly, output should be <pre>Protocol 2</pre>
+</ocil>
+<rationale>
+SSH protocol version 1 suffers from design flaws that
+result in security vulnerabilities and
+should not be used.
+</rationale>
+<ident stig="GEN005501" />
+<oval id="ssh_protocol_2" />
+<ref nist="DCPP-1" disa="1436" />
+</Rule>
+
+<Rule id="ssh_use_approved_ciphers" severity="medium">
+<title>Use Only Approved Ciphers</title>
+<description>Limit the ciphers to those algorithms which are FIPS-approved.
+The following line in <tt>/etc/ssh/ssh_config</tt>
+demonstrates use of FIPS-approved ciphers:
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+The man page <tt>ssh_config(5)</tt> contains a list of supported ciphers.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+ciphers are in use, run the following command:
+<pre># grep Ciphers /etc/ssh/ssh_config</pre>
+The output should contain only those ciphers which are FIPS-approved, namely, the 
+AES and 3DES ciphers.
+</ocil>
+<rationale>
+Approved algorithms should impart some level of confidence in their
+implementation. These are also required for compliance.
+</rationale>
+<ident stig="GEN005510" />
+<oval id="ssh_use_approved_ciphers" />
+<ref nist="DCNR-1" disa="68" />
+</Rule>
+
+<Rule id="ssh_no_cbc" severity="medium">
+<title>Do Not Use CBC Mode</title>
+<description>The Cipher-Block Chaining (CBC) mode of encryption as implemented 
+in the SSHv2 protocol is vulnerable to chosen plain text attacks.
+Counter (CTR) mode is preferred over CBC mode.
+The following line in <tt>/etc/ssh/ssh_config</tt>
+demonstrates use of FIPS-approved ciphers:
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+The man page <tt>ssh_config(5)</tt> contains a list of supported ciphers.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+ciphers are in use, run the following command:
+<pre># grep Ciphers /etc/ssh/ssh_config</pre>
+The output should contain only those ciphers which are FIPS-approved, namely, the 
+CTR ciphers.
+</ocil>
+<rationale>
+Approved algorithms should impart some level of confidence in their
+implementation. These are also required for compliance.
+</rationale>
+<ident stig="GEN005511" />
+<oval id="ssh_no_cbc" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+<Rule id="ssh_use_approved_macs" severity="medium">
+<title>Use Only Approved Macs</title>
+<description>Limit the MACs to those hash algorithms which are FIPS-approved.
+The following line in <tt>/etc/ssh/ssh_config</tt>
+demonstrates use of FIPS-approved MACs:
+<pre>Macs hmac-sha1</pre>
+The man page <tt>ssh_config(5)</tt> contains a list of supported macs.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved MACs should be used.  To verify that only FIPS-approved 
+MACs are in use, run the following command:
+<pre># grep -i macs /etc/ssh/ssh_config</pre>
+The output should contain only those MACs which are FIPS-approved, namely, hmac-sha1.
+</ocil>
+<rationale>
+DoD information systems are required to use FIPS 140-2 approved cryptographic hash functions.
+</rationale>
+<ident stig="GEN005512" />
+<oval id="ssh_use_approved_macs" />
+<ref nist="DCNR-1" disa="1453" />
+</Rule>
+
+<Rule id="ssh_gssapiauthentication" severity="low">
+<title>Disable GSSAPIAuthentication</title>
+<description>GSSAPIAuthentication should not be
+permitted. The default setting in
+<tt>/etc/ssh/ssh_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>GSSAPIAuthentication no</pre>
+</description>
+<ocil clause="it is not">
+To check if GSSAPIAuthentication is allowed, run the following command:
+<pre># grep GSSAPIAuthentication /etc/ssh/ssh_config</pre>
+If configured properly, output should be <pre>GSSAPIAuthentication no</pre>
+</ocil>
+<rationale>
+GSSAPI authentication is used to provide additional authentication mechanisms 
+to applications. Allowing GSSAPI authentication through SSH exposes the system’s 
+GSSAPI to remote hosts, increasing the attack surface of the system.  GSSAPI 
+authentication must be disabled unless needed.
+</rationale>
+<ident stig="GEN005525" />
+<oval id="ssh_gssapiauthentication" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group>
+
+</Group>
+
+
+

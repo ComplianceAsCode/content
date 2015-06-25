@@ -1,0 +1,164 @@
+<Group id="logging">
+<title>Configure Syslog</title>
+<description>The syslog service has been the default Unix logging mechanism for
+many years. It has a number of downsides, including inconsistent log format,
+lack of authentication for received messages, and lack of authentication,
+encryption, or reliable transport for messages sent over a network. However,
+due to its long history, syslog is a de facto standard which is supported by
+almost all Unix applications.
+</description>
+
+<Group id="syslog_sending_messages">
+<title>Syslog Logs Sent To Remote Host</title>
+<description>
+If system logs are to be useful in detecting malicious
+activities, it is necessary to send logs to a remote server. An
+intruder who has compromised the root account on a machine may
+delete the log entries which indicate that the system was attacked
+before they are seen by an administrator.
+<br /><br />
+However, it is recommended that logs be stored on the local
+host in addition to being sent to the loghost, especially if
+<tt>syslog</tt> has been configured to use the UDP protocol to send
+messages over a network. UDP does not guarantee reliable delivery,
+and moderately busy sites will lose log messages occasionally,
+especially in periods of high traffic which may be the result of an
+attack. In addition, remote <tt>syslog</tt> messages are not
+authenticated in any way by default, so it is easy for an attacker to
+introduce spurious messages to the central log server. Also, some
+problems cause loss of network connectivity, which will prevent the
+sending of messages to the central server. For all of these reasons, it is
+better to store log messages both centrally and on each host, so
+that they can be correlated if necessary.</description>
+
+<Rule id="syslog_remote_loghost">
+<title>Ensure Logs Sent To Remote Host</title>
+<description>
+To configure syslog to send logs to a remote log server,
+open <tt>/etc/syslog.conf</tt> and read and understand the last section of the file,
+which describes the multiple directives necessary to activate remote
+logging.
+Along with these other directives, the system can be configured
+to forward its logs to a particular log server by
+adding or correcting one of the following lines,
+substituting <tt><i>loghost.example.com</i></tt> appropriately.
+The choice of protocol depends on the environment of the system; 
+although TCP and RELP provide more reliable message delivery, 
+they may not be supported in all environments.
+<br/>
+To use UDP for log message delivery:
+<pre>*.* @<i>loghost.example.com</i></pre>
+<br/>
+To use TCP for log message delivery:
+<pre>*.* @@<i>loghost.example.com</i></pre>
+<br/>
+To use RELP for log message delivery:
+<pre>*.* :omrelp:<i>loghost.example.com</i></pre>
+</description>
+<ocil clause="none of these are present">
+To ensure logs are sent to a remote host, examine the file
+<tt>/etc/syslog.conf</tt>.
+If using UDP, a line similar to the following should be present:
+<pre> *.* @<i>loghost.example.com</i></pre>
+If using TCP, a line similar to the following should be present:
+<pre> *.* @@<i>loghost.example.com</i></pre>
+If using RELP, a line similar to the following should be present:
+<pre> *.* :omrelp:<i>loghost.example.com</i></pre>
+</ocil>
+<rationale>A log server (loghost) receives syslog messages from one or more
+systems. This data can be used as an additional log source in the event a
+system is compromised and its local logs are suspect. Forwarding log messages
+to a remote loghost also provides system administrators with a centralized
+place to view the status of multiple hosts within the enterprise.
+</rationale>
+<ident stig="GEN005460" />
+<oval id="syslog_remote_loghost" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+</Group>
+
+<Group id="syslog_accepting_remote_messages">
+<title>Configure <tt>syslogd</tt> to Accept Remote Messages If Acting as a Log Server</title>
+<description>
+By default, <tt>syslog</tt> does not listen over the network
+for log messages. If needed, modules can be enabled to allow
+the syslog daemon to receive messages from other systems and for the system
+thus to act as a log server.
+If the machine is not a log server, then lines concerning these modules
+should remain commented out.
+<br /><br />
+</description>
+
+<Rule id="syslog_nolisten">
+<title>Ensure syslog Does Not Accept Remote Messages Unless Acting As Log Server</title>
+<description>The <tt>syslog</tt> daemon should not accept remote messages
+unless the system acts as a log server.
+To ensure that it is not listening on the network, ensure the following lines are
+<i>not</i> found in <tt>/etc/syslog.conf</tt>:
+<pre>$ModLoad imtcp.so
+$InputTCPServerRun <i>port</i>
+$ModLoad imudp.so
+$InputUDPServerRun <i>port</i>
+$ModLoad imrelp.so
+$InputRELPServerRun <i>port</i></pre>
+</description>
+<rationale>
+Any process which receives messages from the network incurs some risk
+of receiving malicious messages. This risk can be eliminated for
+syslog by configuring it not to listen on the network.
+</rationale>
+<ident stig="GEN005480" />
+<oval id="syslog_nolisten" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+
+</Group>
+
+<Group id="log_rotation">
+<title>Ensure All Logs are Rotated by <tt>logrotate</tt></title>
+<description>Edit the file <tt>/etc/logrotate.d/syslog</tt>. Find the first
+line, which should look like this (wrapped for clarity):
+<pre>/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler \
+  /var/log/boot.log /var/log/cron {</pre>
+Edit this line so that it contains a one-space-separated
+listing of each log file referenced in <tt>/etc/syslog.conf</tt>.
+<br /><br />
+All logs in use on a system must be rotated regularly, or the
+log files will consume disk space over time, eventually interfering
+with system operation. The file <tt>/etc/logrotate.d/syslog</tt> is the
+configuration file used by the <tt>logrotate</tt> program to maintain all
+log files written by <tt>syslog</tt>. By default, it rotates logs weekly and
+stores four archival copies of each log. These settings can be
+modified by editing <tt>/etc/logrotate.conf</tt>, but the defaults are
+sufficient for purposes of this guide.
+<br /><br />
+Note that <tt>logrotate</tt> is run nightly by the cron job
+<tt>/etc/cron.daily/logrotate</tt>. If particularly active logs need to be
+rotated more often than once a day, some other mechanism must be
+used.</description>
+
+<Rule id="logrotate_rotate_all_files">
+<title>Ensure Logrotate Runs Periodically</title>
+<description>The <tt>logrotate</tt> utility allows for the automatic rotation of 
+log files.  The frequency of rotation is specified in <tt>/etc/logrotate.conf</tt>, 
+which triggers a cron task.  To configure logrotate to run daily, add or correct 
+the following line in <tt>/etc/logrotate.conf</tt>:
+<pre># rotate log files <i>frequency</i>
+daily</pre>
+</description>
+<rationale>Log files that are not properly rotated run the risk of growing so large
+that they fill up the /var/log partition. Valuable logging information could be lost
+if the /var/log partition becomes full.</rationale>
+<ocil clause="logrotate is not configured to run daily">
+To determine the status and frequency of logrotate, run the following command:
+<pre># grep logrotate /var/log/cron*</pre>
+If logrotate is configured properly, output should include references to 
+<tt>/etc/cron.daily</tt>.
+</ocil>
+<ident stig="GEN002860" />
+<oval id="logrotate_rotate_all_files" />
+<ref nist="ECSC-1" disa="366" />
+</Rule>
+</Group>
+
+</Group>

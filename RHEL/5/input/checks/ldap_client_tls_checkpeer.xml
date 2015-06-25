@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="compliance"
+  id="ldap_client_tls_checkpeer" version="1">
+    <metadata>
+      <title>Configure LDAP To Require Trusted CA</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>If the system is using LDAP for authentication or account 
+	  information, the LDAP TLS connection must require the server provide a 
+	  certificate with a valid trust path to a trusted CA.</description>
+    </metadata>
+    <criteria operator="OR">
+		<criterion comment="look for ldap in /etc/nsswitch.conf" test_ref="test_ldap_client_tls_checkpeer_nsswitch" />
+		<criterion comment="look for tls_checkpeer in /etc/ldap.conf" test_ref="test_ldap_client_tls_checkpeer" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Tests the value of the ldap setting in the /etc/nsswitch.conf file" id="test_ldap_client_tls_checkpeer_nsswitch" version="1">
+    <ind:object object_ref="obj_ldap_client_tls_checkpeer_nsswitch" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ldap_client_tls_checkpeer_nsswitch"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>nsswitch.conf</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#)(?:.*)?ldap(?:.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist"
+  comment="Tests the value of the tls_checkpeer setting in the /etc/ldap.conf file"
+  id="test_ldap_client_tls_checkpeer" version="1">
+    <ind:object object_ref="obj_ldap_client_tls_checkpeer" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ldap_client_tls_checkpeer"
+  version="1">
+    <ind:path>/etc</ind:path>
+    <ind:filename>ldap.conf</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*tls_checkpeer[\s]*(yes)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

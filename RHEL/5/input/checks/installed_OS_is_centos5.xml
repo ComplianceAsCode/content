@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_centos5" version="1">
+    <metadata>
+      <title>CentOS 5</title>
+      <affected family="unix">
+        <platform>CentOS 5</platform>
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <reference ref_id="cpe:/o:centos:centos:5"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      CentOS 5</description>
+      <reference source="JL" ref_id="RHEL5_20150522" ref_url="test_attestation" />
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family" test_ref="test_centos5_unix_family" />
+	  <criterion comment="CentOS 5 is installed" test_ref="test_centos_5" />
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_centos5_unix_family" version="1">
+    <ind:object object_ref="obj_centos5_unix_family" />
+    <ind:state state_ref="state_centos5_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_centos5_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_centos5_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="centos-release is version 5" id="test_centos_5" version="1">
+    <linux:object object_ref="obj_centos_5" />
+    <linux:state state_ref="state_centos_5" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_centos_5" version="1">
+    <linux:version operation="pattern match">^5</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_centos_5" version="1">
+    <linux:name>centos-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

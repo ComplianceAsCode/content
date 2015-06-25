@@ -58,7 +58,7 @@ Disabling inactive accounts ensures that accounts which may not
 have been responsibly removed are not available to attackers
 who may have compromised their credentials.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="TBD" />
 <oval id="account_disable_post_pw_expiration" value="var_account_disable_post_pw_expiration"/>
 <ref nist="AC-2(2), AC-2(3)" disa="16,17,795"/>
 </Rule>
@@ -83,12 +83,16 @@ Unique usernames allow for accountability on the system.
 <Rule id="account_temp_expire_date">
 <title>Assign Expiration Date to Temporary Accounts</title>
 <description>
-In the event temporary or emergency accounts are required, configure the system
-to terminate them after a documented time period. For every temporary and
+Temporary accounts are established as part of normal account activation procedures
+when there is a need for short-term accounts. In the event temporary 
+or emergency accounts are required, configure the system to terminate 
+them after a documented time period. For every temporary and
 emergency account, run the following command to set an expiration date on it,
 substituting <tt><i>USER</i></tt> and <tt><i>YYYY-MM-DD</i></tt> appropriately:
 <pre>$ sudo chage -E <i>YYYY-MM-DD USER</i></pre>
 <tt><i>YYYY-MM-DD</i></tt> indicates the documented expiration date for the account.
+For U.S. Government systems, the operating system must be configured to automatically terminate
+these typoes of accounts after a period of 72 hours.
 </description>
 <ocil clause="any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame">
 For every temporary and emergency account, run the following command
@@ -97,13 +101,14 @@ to obtain its account aging and expiration information:
 Verify each of these accounts has an expiration date set as documented.
 </ocil>
 <rationale>
-When temporary and emergency accounts are created, there is a risk they may
-remain in place and active after the need for them no longer exists.  Account
-expiration greatly reduces the risk of accounts being misused or hijacked. 
+If temporary user accounts remain active when no longer needed or for
+an excessive period, these accounts may be used to gain unauthorized access.
+To mitigate this risk, automated termination of all temporary accounts
+must be set upon account creation.
 <br/>
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<ref nist="AC-2(2),AC-2(3)" disa="16,1682"/>
+<ident cce="27498-5" />
+<ref nist="AC-2(2),AC-2(3)" disa="16,1682" ossrg="2" />
 </Rule>
 
 </Group>

@@ -3,19 +3,20 @@ OUT = output
 TRANS = transforms
 SHARED = ../shared
 REFS = references
+CONF = ../config
 UTILS = utils
 DIST = dist
 
 ID = ssg
 PROD = rhevm3
 
-OPENSCAP_SVG := $(shell $(TRANS)/oscapsupportssvg.py; echo $$?)
+OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 
 all: shorthand2xccdf tables guide checks content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(TRANS)/includelogo.xslt $(IN)/guide.xml
+	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
 	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
 else
 	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
@@ -33,18 +34,17 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	./$(TRANS)/combinefixes.sh $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
+	$(SHARED)/$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
 	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
 	xmlwf $(IN)/checks/*.xml
-	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
-#	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	
 #	Begin Guide Creation
@@ -120,12 +120,14 @@ alt-titles: shorthand2xccdf
 	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml
 
 content: shorthand2xccdf guide checks
-#	the relabelids.py script chdirs to ./output, so refer to files from there.
-#	its second argument controls the IDs, as well as the output filenames.
-#	thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
+#	The relabelids.py script chdirs to ./output, so refer to files from there.
+#	Its second argument controls the IDs, as well as the output filenames.
+#	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
+#	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
+	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
 
 # not ready until oscap resolve behavior resolved
 content-stig: shorthand2xccdf guide checks
@@ -148,10 +150,14 @@ submission-stig-check: table-stigs
 
 # content-usgcb: coming soon
 
-validate:
+validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-oval.xml
-	oscap oval validate-xml $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
+	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
+
+validate: validate-xml
+	cd output; ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml

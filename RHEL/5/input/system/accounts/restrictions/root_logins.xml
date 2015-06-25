@@ -1,0 +1,110 @@
+<Group id="root_logins">
+<title>Restrict Root Logins</title>
+<description>
+Direct root logins should be allowed only for emergency use.
+In normal situations, the administrator should access the system
+via a unique unprivileged account, and then use <tt>su</tt> or <tt>sudo</tt> to execute
+privileged commands. Discouraging administrators from accessing the
+root account directly ensures an audit trail in organizations with
+multiple administrators. Locking down the channels through which
+root can connect directly also reduces opportunities for
+password-guessing against the root account. The <tt>login</tt> program
+uses the file <tt>/etc/securetty</tt> to determine which interfaces
+should allow root logins.
+
+The virtual devices <tt>/dev/console</tt>
+and <tt>/dev/tty*</tt> represent the system consoles (accessible via
+the Ctrl-Alt-F1 through Ctrl-Alt-F6 keyboard sequences on a default
+installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
+These are likely to be deprecated in most environments, but may be retained
+for compatibility. Root should also be prohibited from connecting
+via network protocols. Other sections of this document
+include guidance describing how to prevent root from logging in via SSH.
+</description>
+
+<Rule id="securetty_root_login_console_only" severity="medium">
+<title>Restrict Virtual Console Root Logins</title>
+<description>
+To restrict root logins through the (deprecated) virtual console devices,
+ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
+<pre>vc/1
+vc/2
+vc/3
+vc/4</pre>
+</description>
+<ocil clause="root login over virtual console devices is permitted">
+To check for virtual console entries which permit root login, run the
+following command:
+<pre># grep ^vc/[0-9] /etc/securetty</pre>
+If any output is returned, then root logins over virtual console devices is permitted.
+</ocil>
+<rationale>
+Preventing direct root login to virtual console devices
+helps ensure accountability for actions taken on the system
+using the root account.
+</rationale>
+<ident stig="GEN000980" />
+<oval id="securetty_root_login_console_only" />
+<ref nist="ECPA-1,ECSD-2" disa="770" />
+</Rule>
+
+<Rule id="no_root_webbrowsing">
+<title>Restrict Web Browser Use for Administrative Accounts</title>
+<description>
+Enforce policy requiring administrative accounts use web browsers only for
+local service administration.
+</description>
+<ocil clause="this is not the case">
+Check the <tt>root</tt> home directory for a <tt>.mozilla</tt> directory. If
+one exists, ensure browsing is limited to local service administration.
+</ocil>
+<rationale>
+If a browser vulnerability is exploited while running with administrative privileges,
+the entire system could be compromised. Specific exceptions for local service
+administration should be documented in site-defined policy.
+</rationale>
+<oval id="no_root_webbrowsing" />
+<ident stig="GEN004220" />
+<ref nist="ECLP-1" disa="225" />
+</Rule>
+
+<Rule id="accounts_no_uid_except_zero" severity="medium">
+<title>Verify Only Root Has UID 0</title>
+<description>
+If any account other than root has a UID of 0,
+this misconfiguration should be investigated and the
+accounts other than root should be removed or have their UID changed.
+</description>
+<ocil clause="any account other than root has a UID of 0">
+To list all password file entries for accounts with UID 0, run the following command:
+<pre># awk -F: '($3 == "0") {print}' /etc/passwd</pre>
+This should print only one line, for the user root.
+</ocil>
+<rationale>
+An account has root authority if it has a UID of 0. Multiple accounts
+with a UID of 0 afford more opportunity for potential intruders to
+guess a password for a privileged account. Proper configuration of
+sudo is recommended to afford multiple system administrators
+access to root privileges in an accountable manner.
+</rationale>
+<ident stig="GEN000880" />
+<oval id="accounts_no_uid_except_zero" />
+<ref nist="ECLP-1,IAIA-1,IAIA-2" disa="366" />
+</Rule>
+
+<Rule id="sudo_wheel">
+<title>Switching To Root Account Must Require Wheel Membership</title>
+<description>
+Ensure that only members of the wheel group are allowed to switch to the root account.
+</description>
+<rationale>
+Configuring a supplemental group for users permitted to switch to the root user prevents 
+unauthorized users from accessing the root account, even with knowledge of the root credentials.
+</rationale>
+<oval id="sudo_wheel" />
+<ident stig="GEN000850" />
+<ref nist="ECLP-1" disa="9" />
+</Rule>
+
+</Group>
+

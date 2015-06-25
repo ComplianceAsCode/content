@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="xwindows_runlevel_setting" version="1">
+    <metadata>
+      <title>Disable X Windows Startup By Setting Runlevel</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+		<platform>CentOS 5</platform>
+		<platform>Red Hat Enterprise Linux 4</platform>
+		<platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>Checks /etc/inittab to ensure that default runlevel is set to 3.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="default runlevel is 3" test_ref="test_etc_inittab_default_runlevel" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="default runlevel is 3" id="test_etc_inittab_default_runlevel" version="1">
+    <ind:object object_ref="object_etc_inittab_default_runlevel" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_etc_inittab_default_runlevel" version="1">
+    <ind:filepath>/etc/inittab</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*id:3:initdefault:[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
