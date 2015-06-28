@@ -1,5 +1,6 @@
+
 # Include source function library.
-. /usr/share/scap-security-guide/functions
+. /usr/share/scap-security-guide/remediation_functions
 
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
@@ -19,6 +20,6 @@ do
 done
 
 # Then perform the remediations for the watch rules
-fix_audit_watch_rule "/sbin/insmod" "x" "modules"
-fix_audit_watch_rule "/sbin/rmmod" "x" "modules"
-fix_audit_watch_rule "/sbin/modprobe" "x" "modules"
+fix_audit_watch_rule "auditctl" "/sbin/insmod" "x" "modules"
+fix_audit_watch_rule "auditctl" "/sbin/rmmod" "x" "modules"
+fix_audit_watch_rule "auditctl" "/sbin/modprobe" "x" "modules"
