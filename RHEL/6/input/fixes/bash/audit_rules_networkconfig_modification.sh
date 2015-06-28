@@ -1,5 +1,6 @@
+
 # Include source function library.
-. /usr/share/scap-security-guide/functions
+. /usr/share/scap-security-guide/remediation_functions
 
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
@@ -15,7 +16,7 @@ do
 done
 
 # Then perform the remediations for the watch rules
-fix_audit_watch_rule "/etc/issue" "wa" "audit_rules_networkconfig_modification"
-fix_audit_watch_rule "/etc/issue.net" "wa" "audit_rules_networkconfig_modification"
-fix_audit_watch_rule "/etc/hosts" "wa" "audit_rules_networkconfig_modification"
-fix_audit_watch_rule "/etc/sysconfig/network" "wa" "audit_rules_networkconfig_modification"
+fix_audit_watch_rule "auditctl" "/etc/issue" "wa" "audit_rules_networkconfig_modification"
+fix_audit_watch_rule "auditctl" "/etc/issue.net" "wa" "audit_rules_networkconfig_modification"
+fix_audit_watch_rule "auditctl" "/etc/hosts" "wa" "audit_rules_networkconfig_modification"
+fix_audit_watch_rule "auditctl" "/etc/sysconfig/network" "wa" "audit_rules_networkconfig_modification"

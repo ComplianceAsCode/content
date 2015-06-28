@@ -1,5 +1,6 @@
+
 # Include source function library.
-. /usr/share/scap-security-guide/functions
+. /usr/share/scap-security-guide/remediation_functions
 
 # Perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
