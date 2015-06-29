@@ -11,5 +11,5 @@ do
 	PATTERN="-a always,exit -F arch=$ARCH -S .* -k audit_time_rules"
 	GROUP="clock_settime"
 	FULL_RULE="-a always,exit -F arch=$ARCH -S clock_settime -k audit_time_rules"
-	fix_audit_syscall_rule "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 done

@@ -12,7 +12,7 @@ do
 	# Use escaped BRE regex to specify rule group
 	GROUP="set\(host\|domain\)name"
 	FULL_RULE="-a always,exit -F arch=$ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification"
-	fix_audit_syscall_rule "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 done
 
 # Then perform the remediations for the watch rules

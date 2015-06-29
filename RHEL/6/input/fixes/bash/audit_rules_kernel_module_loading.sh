@@ -16,7 +16,7 @@ do
 	# Use escaped BRE regex to specify rule group
 	GROUP="\(init\|delete\)_module"
 	FULL_RULE="-a always,exit -F arch=$ARCH -S init_module -S delete_module -k modules"
-	fix_audit_syscall_rule "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 done
 
 # Then perform the remediations for the watch rules
