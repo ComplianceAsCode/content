@@ -16,13 +16,13 @@ do
 	# Use escaped BRE regex to specify rule group
 	GROUP="\(init\|delete\)_module"
 	FULL_RULE="-a always,exit -F arch=$ARCH -S init_module -S delete_module -k modules"
-	# Perform the remediation for both possible locations 'auditctl' and 'augenrules'
+	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 done
 
 # Then perform the remediations for the watch rules
-# Perform the remediation for both possible locations 'auditctl' and 'augenrules'
+# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 fix_audit_watch_rule "auditctl" "/usr/sbin/insmod" "x" "modules"
 fix_audit_watch_rule "augenrules" "/usr/sbin/insmod" "x" "modules"
 fix_audit_watch_rule "auditctl" "/usr/sbin/rmmod" "x" "modules"
