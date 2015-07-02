@@ -15,6 +15,8 @@ PROD_CHECKS = $(BUILD)/$(PROD)_checks
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 OVAL_5_10 := $(shell oscap --version | grep -q "OVAL Version: 5.10.*"; echo $$?)
+# OpenSCAP 1.1.0+ supports generating guides from datastreams
+OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 SHELLCHECK_AVAIL := $(shell which shellcheck >& /dev/null; echo $$?)
 
 all: shorthand2xccdf guide content dist
@@ -65,7 +67,12 @@ else
 endif
 
 guide: content
+ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+else
+	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
+endif
 
 validate-xml:
 ifeq ($(OVAL_5_10), 0)

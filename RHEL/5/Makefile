@@ -11,6 +11,8 @@ ID = ssg
 PROD = rhel5
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+# OpenSCAP 1.1.0+ supports generating guides from datastreams
+OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 
 all: shorthand2xccdf tables guide content dist
 
@@ -117,9 +119,16 @@ content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
 
 guide: content
+ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos5-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl5-ds.xml
+else
+	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos5-xccdf.xml
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl5-xccdf.xml
+endif
 
 submission-stig-check: table-stigs
 	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-server-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
