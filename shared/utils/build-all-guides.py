@@ -212,6 +212,7 @@ def main():
     # TODO: Make the index file nicer
 
     index_links = []
+    index_options = []
     index_initial_src = None
 
     def profile_sort_key(profiles, profile_id):
@@ -242,6 +243,10 @@ def main():
         guide_path = os.path.join(parent_dir, guide_filename)
 
         index_links.append(
+            "<a target=\"guide\" href=\"%s\">%s</a>" %
+            (guide_filename, profile_title)
+        )
+        index_options.append(
             "<option value=\"%s\" data-profile-id=\"%s\">%s</option>" %
             (guide_filename, profile_id, profile_title)
         )
@@ -301,16 +306,22 @@ def main():
     index_source += "\t\t\t}\n"
     index_source += "\t\t</script>\n"
     index_source += "\t</head>\n"
-    index_source += "\t<body>\n"
-    index_source += "\t\tProfile: \n"
-    index_source += "\t\t<select style=\"margin-bottom: 5px\" "
+    index_source += "\t<body onload=\"document.getElementById('js_switcher').style.display = 'block'\">\n"
+    index_source += "\t\t<noscript>\n"
+    index_source += "Profiles: "
+    index_source += ", ".join(index_links) + "\n"
+    index_source += "\t\t</noscript>\n"
+    index_source += "\t\t<div id=\"js_switcher\" style=\"display: none\">\n"
+    index_source += "\t\t\tProfile: \n"
+    index_source += "\t\t\t<select style=\"margin-bottom: 5px\" "
     index_source += "onchange=\"change_profile(this.options[this.selectedIndex]);\""
     index_source += ">\n"
-    index_source += "\n".join(index_links) + "\n"
-    index_source += "\t\t</select>\n"
-    index_source += "\t\t&nbsp;&nbsp;<span id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
+    index_source += "\n".join(index_options) + "\n"
+    index_source += "\t\t\t</select>\n"
+    index_source += "\t\t\t&nbsp;&nbsp;<span id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
     index_source += "select a profile to display its guide and a command line snippet needed to use it"
     index_source += "</span>\n"
+    index_source += "\t\t</div>\n"
     index_source += "\t\t<br>\n"
     index_source += \
         "\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
