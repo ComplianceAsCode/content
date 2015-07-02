@@ -15,6 +15,8 @@ PROD_CHECKS = $(BUILD)/$(PROD)_checks
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
+# OpenSCAP 1.1.0+ supports generating guides from datastreams
+OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
 # Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
@@ -134,9 +136,16 @@ content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
 
 guide: content
+ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos7-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl7-ds.xml
+else
+	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos7-xccdf.xml
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl7-xccdf.xml
+endif
 
 submission-stig-check: table-stigs
 	cd $(OUT); ../$(UTILS)/verify-references.py -p stig-$(PROD)-server --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
