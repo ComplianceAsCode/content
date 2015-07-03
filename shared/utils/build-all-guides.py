@@ -251,7 +251,7 @@ def main():
             (guide_filename, profile_id, profile_title)
         )
         if index_initial_src is None:
-            index_initial_src = guide_path
+            index_initial_src = guide_filename
 
         queue.put((profile_id, profile_title, guide_path))
 
@@ -318,9 +318,9 @@ def main():
     index_source += ">\n"
     index_source += "\n".join(index_options) + "\n"
     index_source += "\t\t\t</select>\n"
-    index_source += "\t\t\t&nbsp;&nbsp;<span id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
+    index_source += "\t\t\t<div id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
     index_source += "select a profile to display its guide and a command line snippet needed to use it"
-    index_source += "</span>\n"
+    index_source += "</div>\n"
     index_source += "\t\t</div>\n"
     index_source += "\t\t<br>\n"
     index_source += \
