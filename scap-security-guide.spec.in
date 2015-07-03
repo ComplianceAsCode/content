@@ -57,7 +57,6 @@ mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 #cp -a RHEL/5/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JRE/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
@@ -74,6 +73,9 @@ rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-xccdf.xml
 rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-oval.xml
 rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-cpe-dictionary.xml
 %endif
+
+# We do this after the filtering on Fedora because we don't ship JBossEAP5 datastreams
+cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in oscap-scan files
 #mkdir -p %{buildroot}%{_sysconfdir}/sysconfig/
