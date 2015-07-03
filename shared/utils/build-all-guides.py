@@ -251,7 +251,7 @@ def main():
             (guide_filename, profile_id, profile_title)
         )
         if index_initial_src is None:
-            index_initial_src = guide_path
+            index_initial_src = guide_filename
 
         queue.put((profile_id, profile_title, guide_path))
 
