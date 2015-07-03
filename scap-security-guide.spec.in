@@ -69,9 +69,10 @@ cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
 cp -a Chromium/dist/content/ssg-chromium-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
 #cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
 
-# We only want datastreams on Fedora, lets get rid of plain XCCDF and OVAL files
+# We only want datastreams on Fedora, lets get rid of plain XCCDF, OVAL and CPE dict files
 rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-xccdf.xml
 rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-oval.xml
+rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-cpe-dictionary.xml
 %endif
 
 # Add in oscap-scan files
