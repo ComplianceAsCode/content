@@ -39,61 +39,45 @@ package to verify that the system conforms to provided guidelines.
 %endif
 
 %build
-%if 0%{?fedora}
-(cd Fedora && make dist)
-(cd JRE && make dist)
-(cd Firefox && make dist)
-(cd Chromium && make dist)
-%endif
 #(cd RHEL/5 && make dist)
 (cd RHEL/6 && make dist)
 (cd RHEL/7 && make dist)
 (cd JRE && make dist)
 (cd Firefox && make dist)
+# JBossEAP5 has a different build system
+#(cd JBossEAP5 && make dist)
+
+%if 0%{?fedora}
+(cd Fedora && make dist)
+(cd Chromium && make dist)
 #(cd Webmin && make dist)
+%endif
 
 %install
-mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 mkdir -p %{buildroot}%{_mandir}/en/man8/
+cp -a docs/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/
 
-# Add in manpage
-cp -a docs/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/scap-security-guide.8
-
-%if 0%{?rhel}
 mkdir -p %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 
-# Add in core content (SCAP)
 #cp -a RHEL/5/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/6/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a RHEL/7/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-#cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
-
-# Add in datastream form of Firefox and JRE benchmarks
-cp -a JRE/dist/content/ssg-jre-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
-cp -a Firefox/dist/content/ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
+cp -a JRE/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
+cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in functions library for remediations
-cp -a shared/fixes/bash/templates/remediation_functions %{buildroot}%{_datadir}/%{name}/remediation_functions
-%endif
+cp -a shared/fixes/bash/templates/remediation_functions %{buildroot}%{_datadir}/%{name}/
 
 %if 0%{?fedora}
-# Add in core Fedora content (SCAP XCCDF and OVAL)
 cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
-
-# Add in datastream form of RHEL-5 benchmark
-#cp -a RHEL/6/dist/content/ssg-rhel5-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/rhel5
-# Add in datastream form of RHEL benchmark(s)
-cp -a RHEL/6/dist/content/ssg-rhel6-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
-cp -a RHEL/7/dist/content/ssg-rhel7-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
-
-# Add in datastream form of Firefox, JRE, and Chromium benchmarks
-cp -a JRE/dist/content/ssg-jre-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
-cp -a Firefox/dist/content/ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
 cp -a Chromium/dist/content/ssg-chromium-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content
-
-# Add in datastream form of Webmin benchmark
 #cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
+
+# We only want datastreams on Fedora, lets get rid of plain XCCDF and OVAL files
+rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-xccdf.xml
+rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-oval.xml
 %endif
 
 # Add in oscap-scan files
@@ -102,16 +86,24 @@ cp -a Chromium/dist/content/ssg-chromium-ds.xml %{buildroot}%{_datadir}/xml/scap
 
 %files
 %{_datadir}/xml/scap
-#%{_sysconfdir}/sysconfig/oscap-scan-*
-%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
-%if 0%{?rhel}
 %{_datadir}/%{name}/remediation_functions
+
+#%{_sysconfdir}/sysconfig/oscap-scan-*
+
+%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 %doc Contributors.md README.md BUILD.md
+
 %doc RHEL/6/LICENSE RHEL/6/output/*-guide-*.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER
+%doc RHEL/7/LICENSE RHEL/7/output/*-guide-*.html
+%doc JRE/LICENSE Firefox/output/*-guide-*.html
+%doc Firefox/LICENSE Firefox/output/*-guide-*.html
+# outside of the normal build system, different guide
 %doc JBossEAP5/docs/JBossEAP5_Guide.html
-%endif
+
 %if 0%{?fedora}
-%doc Contributors.md README.md BUILD.md Fedora/LICENSE Fedora/output/*-guide-*.html
+%doc Fedora/LICENSE Fedora/output/*-guide-*.html
+%doc Chromium/LICENSE Chromium/output/*-guide-*.html
+#%doc Webmin/LICENSE Webmin/output/*-guide-*.html
 %endif
 
 %changelog
