@@ -91,19 +91,19 @@ rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-oval.xml
 #%{_sysconfdir}/sysconfig/oscap-scan-*
 
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
-%doc Contributors.md README.md BUILD.md
+%doc Contributors.md README.md BUILD.md LICENSE
 
-%doc RHEL/6/LICENSE RHEL/6/output/*-guide-*.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER
-%doc RHEL/7/LICENSE RHEL/7/output/*-guide-*.html
-%doc JRE/LICENSE Firefox/output/*-guide-*.html
-%doc Firefox/LICENSE Firefox/output/*-guide-*.html
+%doc RHEL/6/output/*-guide-*.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER
+%doc RHEL/7/output/*-guide-*.html
+%doc Firefox/output/*-guide-*.html
+%doc Firefox/output/*-guide-*.html
 # outside of the normal build system, different guide
 %doc JBossEAP5/docs/JBossEAP5_Guide.html
 
 %if 0%{?fedora}
-%doc Fedora/LICENSE Fedora/output/*-guide-*.html
-%doc Chromium/LICENSE Chromium/output/*-guide-*.html
-#%doc Webmin/LICENSE Webmin/output/*-guide-*.html
+%doc Fedora/output/*-guide-*.html
+%doc Chromium/output/*-guide-*.html
+#%doc Webmin/output/*-guide-*.html
 %endif
 
 %changelog
