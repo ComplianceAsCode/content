@@ -30,13 +30,7 @@ administrator can use the oscap command-line tool from the openscap-utils
 package to verify that the system conforms to provided guidelines.
 
 %prep
-
-%if 0%{?rhel}
 %setup -q -n %{name}-%{version}
-%endif
-%if 0%{?fedora}
-%setup -q -D -n %{name}-%{version}
-%endif
 
 %build
 #(cd RHEL/5 && make dist)
