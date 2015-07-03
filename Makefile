@@ -30,6 +30,7 @@ TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
 PREFIX=$(DESTDIR)/usr
 DATADIR=share
 MANDIR=man
+DOCDIR=$(DATADIR)/doc
 
 # Define custom canned sequences / macros below
 
@@ -219,14 +220,15 @@ install: dist
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -d $(PREFIX)/$(MANDIR)/en/man8/
+	install -d $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 Fedora/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
-	install -m 0644 Fedora/dist/guide/* $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -m 0644 Fedora/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 RHEL/6/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 shared/fixes/bash/templates/remediation_functions $(PREFIX)/$(DATADIR)/scap-security-guide/
 	install -m 0644 RHEL/6/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
-	install -m 0644 RHEL/6/dist/guide/* $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -m 0644 RHEL/6/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
-	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DATADIR)/scap-security-guide/
+	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 
 .PHONY: rhel5 rhel6 rhel7 jre firefox webmin tarball srpm rpm clean all

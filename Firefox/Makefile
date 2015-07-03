@@ -11,6 +11,8 @@ ID = ssg
 PROD = firefox
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+# OpenSCAP 1.1.0+ supports generating guides from datastreams
+OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 
 all: shorthand2xccdf tables guide content dist
 
@@ -43,13 +45,6 @@ checks:
 	xmlwf $(IN)/checks/*.xml
 	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
-
-guide: shorthand2xccdf
-#	remove auxiliary Groups which are only for use in tables, and not guide output.
-	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xsltproc -o $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removetested.xslt $(OUT)/unlinked-$(PROD)-xccdf-guide.xml
-	oscap xccdf generate guide --profile stig-firefox-upstream $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/stig-$(PROD)-upstream-guide.html
-	xsltproc -o $(OUT)/stig-$(PROD)-upstream-guide-custom.html $(TRANS)/xccdf2html.xslt $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
@@ -91,10 +86,12 @@ table-stigs: shorthand2xccdf table-srgmap checks
 tables: table-refs table-idents table-stigs
 #tables: table-refs table-idents table-srgmap table-stigs
 
-content: shorthand2xccdf guide checks
+content: shorthand2xccdf checks
+#	remove auxiliary Groups which are only for use in tables, and not guide output.
+	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
-#	Its second argument controls the IDs, as well as the output filenames.
-#	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
+#	its second argument controls the IDs, as well as the output filenames.
+#	thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
@@ -116,6 +113,14 @@ content-stig: shorthand2xccdf guide checks
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml disa-predraft
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-$(PROD)-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
+
+guide: content
+ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+else
+	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
+endif
 
 submission-stig-check: table-stigs
 	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
@@ -148,7 +153,7 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 	mkdir -p $(DIST)/guide
-	cp $(OUT)/*-guide.html $(DIST)/guide
+	cp $(OUT)/*-guide-*.html $(DIST)/guide
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
