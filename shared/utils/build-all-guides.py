@@ -306,6 +306,11 @@ def main():
     index_source += "\t\t\t\twindow.open(option_element.value, 'guide');\n"
     index_source += "\t\t\t}\n"
     index_source += "\t\t</script>\n"
+    index_source += "\t\t<style>\n"
+    index_source += "\t\t\thtml, body { margin: 0; height: 100% }\n"
+    index_source += "\t\t\t#js_switcher { position: fixed; right: 30px; top: 10px; padding: 2px; background: #ddd; border: 1px solid #999 }\n"
+    index_source += "\t\t\t#guide_div { margin: auto; width: 99%; height: 99% }\n"
+    index_source += "\t\t</style>\n"
     index_source += "\t</head>\n"
     index_source += "\t<body onload=\"document.getElementById('js_switcher').style.display = 'block'\">\n"
     index_source += "\t\t<noscript>\n"
@@ -323,11 +328,12 @@ def main():
     index_source += "select a profile to display its guide and a command line snippet needed to use it"
     index_source += "</div>\n"
     index_source += "\t\t</div>\n"
-    index_source += "\t\t<br>\n"
+    index_source += "\t\t<div id=\"guide_div\">\n"
     index_source += \
-        "\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
-    index_source += "style=\"width: 100%; height: calc(100% - 50px)\">\n"
-    index_source += "\t\t</iframe>\n"
+        "\t\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
+    index_source += "width=\"100%\" height=\"100%\">\n"
+    index_source += "\t\t\t</iframe>\n"
+    index_source += "\t\t</div>\n"
     index_source += "\t</body>\n"
     index_source += "</html>\n"
 
