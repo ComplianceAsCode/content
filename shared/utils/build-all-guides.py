@@ -287,7 +287,8 @@ def main():
 
     queue.join()
 
-    index_source = "<html lang=\"en\">\n"
+    index_source = "<!DOCTYPE html>\n"
+    index_source += "<html lang=\"en\">\n"
     index_source += "\t<head>\n"
     index_source += "\t\t<meta charset=\"utf-8\">\n"
     index_source += "\t\t<title>%s</title>\n" % \
