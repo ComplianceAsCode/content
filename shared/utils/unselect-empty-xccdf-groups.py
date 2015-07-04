@@ -96,6 +96,9 @@ def main():
             "Make sure the input file is a resolved XCCDF Benchmark."
         )
 
+    # force another oscap resolve to fix namespace prefixes
+    root_element.set("resolved", "0")
+
     group_elements = root_element.findall(".//{%s}Group" % (XCCDF11_NS))
 
     for profile_element in root_element.findall("./{%s}Profile" % (XCCDF11_NS)):
@@ -107,18 +110,29 @@ def main():
                 root_element, profile_element, group_element,
                 group_cache
             ):
-                new_select = ElementTree.Element("{%s}select" % (XCCDF11_NS))
+                existing_selects = \
+                    list(profile_element.findall("./{%s}select" % (XCCDF11_NS)))
+
+                new_select = None
+                for existing_select in existing_selects:
+                    # prevent idref duplication
+                    if existing_select.get("idref") == group_element.get("id"):
+                        new_select = existing_select
+                        break
+
+                if new_select is None:
+                    new_select = \
+                        ElementTree.Element("{%s}select" % (XCCDF11_NS))
+                    index = 0
+                    if len(existing_selects) > 0:
+                        prev_element = existing_selects[-1]
+                        # insert before the first notice
+                        index = list(profile_element).index(prev_element) + 1
+                    profile_element.insert(index, new_select)
+
                 new_select.set("idref", group_element.get("id"))
                 new_select.set("selected", "false")
                 new_select.tail = "\n"
-                existing_selects = \
-                    list(profile_element.findall("./{%s}select" % (XCCDF11_NS)))
-                index = 0
-                if len(existing_selects) > 0:
-                    prev_element = existing_selects[-1]
-                    # insert before the first notice
-                    index = list(profile_element).index(prev_element) + 1
-                profile_element.insert(index, new_select)
 
         print("Unselected empty groups in '%s'." % (profile_element.get("id")))
 
