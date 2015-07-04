@@ -71,18 +71,18 @@ endif
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
 table-refs: shorthand2xccdf
-	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
 	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-nistrefs-common.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
 
 table-idents: shorthand2xccdf
-	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
 
 table-srgmap: shorthand2xccdf
 # the map-to-items filename must be provided relative to the root of the main document being processed
-	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap.html \
+	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
-	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
+	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
