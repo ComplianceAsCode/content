@@ -54,7 +54,7 @@ The upstream manual pages at http://chrony.tuxfamily.org/manual.html for
 information on the capabilities and configuration of each of the NTP daemons.
 </description>
 
-<Rule id="service_ntpd_enabled" severity="medium">
+<Rule id="service_chronyd_or_ntpd_enabled" severity="medium">
 <title>Enable the NTP Daemon</title>
 <description>
 <service-enable-macro service="chronyd" />
@@ -84,7 +84,7 @@ functionality of <tt>ntpdate</tt>, which is now deprecated. Additional
 information on this is available at
 http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate</rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="service_ntpd_enabled" />
+<oval id="service_chronyd_or_ntpd_enabled" />
 <ref nist="AU-8(1)" disa="160" />
 <tested by="DS" on="20121024"/>
 </Rule>
