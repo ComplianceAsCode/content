@@ -14,7 +14,7 @@ PROD = fedora
 PROD_CHECKS = $(BUILD)/$(PROD)_checks
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-OVAL_5_10 := $(shell oscap --version | grep -q "OVAL Version: 5.10.*"; echo $$?)
+OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
 # OpenSCAP 1.1.0+ supports generating guides from datastreams
 OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 SHELLCHECK_AVAIL := $(shell which shellcheck >& /dev/null; echo $$?)
@@ -46,6 +46,13 @@ checks:
 	# Search $(SHARED_CHECKS) and $(IN)/checks directories to find all product specific OVAL checks,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_CHECKS) directory
 	find $(SHARED_CHECKS) $(IN)/checks -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
+	# into final list of OVAL checks
+ifeq ($(OVAL_5_11), 0)
+	find $(IN)/checks/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	# Update requested Fedora OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
+	sed -i "s/^\(fedora_oval_version = \).*/\15.11/" $(CONF)/oval\.config
+endif
 	xmlwf $(PROD_CHECKS)/*.xml
 	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(PROD_CHECKS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
@@ -62,11 +69,7 @@ content: shorthand2xccdf guide checks
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
-ifeq ($(OVAL_5_10), 0)
-	@echo "Skipping datastream composition, use OpenSCAP 1.2.2 or later!"
-else
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-endif
 
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
@@ -77,13 +80,9 @@ else
 endif
 
 validate-xml:
-ifeq ($(OVAL_5_10), 0)
-	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
-else
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
-endif
 
 validate: validate-xml
 ifeq ($(SHELLCHECK_AVAIL), 0)
@@ -91,10 +90,18 @@ ifeq ($(SHELLCHECK_AVAIL), 0)
 else
 	@echo "Skipping ShellCheck analysis, ensure shellcheck executable is present in the PATH!"
 endif
-ifeq ($(OVAL_5_10), 0)
-	@echo "Skipping XML validation, use OpenSCAP 1.2.2 or later!"
-else
+ifeq ($(OVAL_5_11), 0)
 	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+else
+	# If we are building against oscap version not supporting OVAL-5.11 language version yet,
+	# don't call verify-references.py with "--rules-with-invalid-checks" argument, since the
+	# OVAL checks using the 5.11 OVAL version will not be included in that case
+	@echo -e "\nWarning:\n"
+	@echo -e "\tFedora content build using oscap not supporting OVAL-5.11 language version detected!"
+	@echo -e "\tSince the OVAL-5.11 Fedora OVAL checks are missing, will skip test for referenced,"
+	@echo -e "\tbut undefined OVAL definitions during content validation. Consider building Fedora"
+	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
+	cd $(OUT); ../$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 endif
 
 # items in dist are expected for distribution in an rpm
