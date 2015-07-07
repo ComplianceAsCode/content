@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_sl7" version="1">
+    <metadata>
+      <title>Scientific Linux 7</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:scientificlinux:scientificlinux:6"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Scientific Linux 7</description>
+      <reference source="MP" ref_id="SL7_20150707" ref_url="test_attestation" />
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_unix_family" />
+      <criterion comment="Scientific Linux 7 is installed"
+      test_ref="test_sl7" />
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_unix_family" version="1">
+    <ind:object object_ref="obj_unix_family" />
+    <ind:state state_ref="state_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="sl-release is version 7" id="test_sl7" version="1">
+    <linux:object object_ref="obj_sl7" />
+    <linux:state state_ref="state_sl7" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_sl7" version="1">
+    <linux:version operation="pattern match">^7.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_sl7" version="1">
+    <linux:name>sl-release</linux:name>
+  </linux:rpminfo_object>
+</def-group>
