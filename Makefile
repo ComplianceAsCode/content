@@ -29,7 +29,7 @@ TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
 
 PREFIX=$(DESTDIR)/usr
 DATADIR=share
-MANDIR=man
+MANDIR=$(DATADIR)/man
 DOCDIR=$(DATADIR)/doc
 
 # Define custom canned sequences / macros below
