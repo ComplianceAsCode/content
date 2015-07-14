@@ -97,7 +97,7 @@ operator="equals" interactive="0">
 </Value>
 
 
-<Rule id="userowner_rsyslog_files" severity="medium">
+<Rule id="rsyslog_files_ownership" severity="medium">
 <title>Ensure Log Files Are Owned By Appropriate User</title>
 <description>The owner of all log files written by
 <tt>rsyslog</tt> should be root.
@@ -126,7 +126,7 @@ protected from unauthorized access.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="groupowner_rsyslog_files" severity="medium">
+<Rule id="rsyslog_files_groupownership" severity="medium">
 <title>Ensure Log Files Are Owned By Appropriate Group</title>
 <description>The group-owner of all log files written by
 <tt>rsyslog</tt> should be root.
