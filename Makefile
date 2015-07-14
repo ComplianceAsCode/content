@@ -231,6 +231,8 @@ install: dist
 	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
+	install -m 0644 LICENSE $(PREFIX)/scap-security-guide
+	install -m 0644 README.md $(PREFIX)/scap-security-guide
 
 .PHONY: rhel5 rhel6 rhel7 jre firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
