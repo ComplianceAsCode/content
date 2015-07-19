@@ -227,6 +227,16 @@ normally.</i>
 <value selector="admin">admin</value>
 </Value>
 
+<Value id="var_auditd_flush" type="string" >
+<title>Auditd priority for flushing data to disk</title>
+<description>The setting for flush in /etc/audit/auditd.conf</description>
+<value selector="">data</value>
+<value selector="none">none</value>
+<value selector="incremental">incremental</value>
+<value selector="data">data</value>
+<value selector="sync">sync</value>
+</Value>
+
 <Rule id="configure_auditd_num_logs" severity="medium">
 <title>Configure auditd Number of Logs Retained</title>
 <description>Determine how many log files
@@ -415,6 +425,32 @@ administrators of the system, who can take appropriate action.</rationale>
 <ident cce="27241-9"  stig="RHEL-06-000313" />
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
 <ref nist="AU-1(b),AU-4,AU-5(a),IR-5" disa="139,144" />
+</Rule>
+
+<Rule id="auditd_data_retention_flush">
+<title>Configure auditd flush priority</title>
+<description>The <tt>auditd</tt> service can be configured to 
+synchronously write audit event data to disk. Add or correct the following 
+line in <tt>/etc/audit/auditd.conf</tt> to ensure that audit event data is 
+fully synchronized with the log files on the disk:
+<pre>flush = <sub idref="var_auditd_flush" /></pre>
+</description>
+<ocil clause="auditd is not configured to synchronously write audit 
+event data to disk">
+Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+determine if the system is configured to synchronize audit event data 
+with the log files on the disk:
+<tt>$ sudo grep flush /etc/audit/auditd.conf</tt>
+<pre>flush = DATA</pre>
+Acceptable values are <tt>DATA</tt>, and <tt>SYNC</tt>. The setting is 
+case-insensitive.
+</ocil>
+<rationale>Audit data should be synchronously written to disk to ensure 
+log integrity. These parameters assure that all audit event data is fully 
+synchronized with the log files on the disk.</rationale>
+<!-- <ident cce=""  stig="" /> -->
+<oval id="auditd_data_retention_flush" value="var_auditd_flush" />
+<ref nist="AU-9,AU-12(1)" disa="1576" />
 </Rule>
 
 <Rule id="configure_auditd_audispd" severity="low">
