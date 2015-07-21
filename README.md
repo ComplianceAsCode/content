@@ -17,6 +17,8 @@ baselines from a single set of high-quality SCAP content.
 
 The SSG homepage is https://fedorahosted.org/scap-security-guide/
 
+The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
+
 #### Health Checks
 * Python Code via landscape.io: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
 
