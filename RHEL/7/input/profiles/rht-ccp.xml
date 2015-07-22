@@ -90,13 +90,13 @@
 <!-- KERNEL SETTINGS -->
 <select idref="kernel_module_dccp_disabled" selected="true"/>
 <select idref="kernel_module_sctp_disabled" selected="true"/>
-<select idref="service_iptables_enabled" selected="true"/>
+<select idref="service_firewalld_enabled" selected="true"/>
+<select idref="set_firewalld_default_rule" selected="true"/>
 
 <!-- <select idref="sysctl_kernel_randomize_va_space" selected="true"/>
 <select idref="enable_execshield" selected="true"/>
 <select idref="kernel_module_ipv6_option_disabled" selected="true"/>
 <select idref="service_ip6tables_enabled" selected="true"/>
-<select idref="set_iptables_default_rule" selected="true"/>
 
 This requirement does not apply against Red Hat Enterprise Linux 7:
 see: https://github.com/OpenSCAP/scap-security-guide/issues/66 for details.

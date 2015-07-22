@@ -114,7 +114,7 @@ firewalls to protect the NFS daemons from remote access, since NFS servers
 should never be accessible from outside the organization. However, by default
 for NFSv3 and NFSv2, the RPC Bind service assigns each NFS service to a port
 dynamically at service startup time. Dynamic ports cannot be protected by port
-filtering firewalls such as iptables.
+filtering firewalls such as <tt>firewalld</tt>.
 <br /><br />
 Therefore, restrict each service to always use a given port, so that
 firewalling can be done effectively. Note that, because of the way RPC is
