@@ -29,6 +29,13 @@ policy requirements and specific implementation guidelines. The system
 administrator can use the oscap command-line tool from the openscap-utils
 package to verify that the system conforms to provided guidelines.
 
+%package docs
+Summary:	Security guidance and baselines docs in HTML-style format
+Requires:	__NAME__
+
+%description docs
+Includes the scap-security-guide project guides in HTML format
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -52,6 +59,7 @@ mkdir -p %{buildroot}%{_mandir}/en/man8/
 cp -a docs/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}/%{_defaultdocdir}/%{name}/guides
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 
 #cp -a RHEL/5/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
@@ -77,6 +85,20 @@ rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-cpe-dictionary.xml
 # We do this after the filtering on Fedora because we don't ship JBossEAP5 datastreams
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
+# Add in HTML guides
+cp -a RHEL/6/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+cp -a RHEL/7/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+cp -a Firefox/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+cp -a JRE/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+# outside of the normal build system, different guide
+cp -a JBossEAP5/docs/JBossEAP5_Guide.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+
+%if 0%{?fedora}
+cp -a Fedora/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+#cp -a Webmin/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+%endif
+
 # Add in oscap-scan files
 #mkdir -p %{buildroot}%{_sysconfdir}/sysconfig/
 #cp -a {*,*/*}/input/oscap-scan-* %{buildroot}%{_sysconfdir}/sysconfig/
@@ -89,19 +111,10 @@ cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
 %doc Contributors.md README.md BUILD.md LICENSE
+%doc RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER
 
-%doc RHEL/6/output/*-guide-*.html RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER
-%doc RHEL/7/output/*-guide-*.html
-%doc Firefox/output/*-guide-*.html
-%doc JRE/output/*-guide-*.html
-# outside of the normal build system, different guide
-%doc JBossEAP5/docs/JBossEAP5_Guide.html
-
-%if 0%{?fedora}
-%doc Fedora/output/*-guide-*.html
-%doc Chromium/output/*-guide-*.html
-#%doc Webmin/output/*-guide-*.html
-%endif
+%files docs
+%{_defaultdocdir}/%{name}/guides
 
 %changelog
 * __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__
