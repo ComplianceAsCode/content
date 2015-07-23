@@ -10,7 +10,7 @@
     </metadata>
     <criteria comment="package pam_ldap is not present" operator="OR">
       <extend_definition comment="pam_ldap not present or not in use"
-      definition_ref="ldap_client_pam_ldap_present" negate="true" />
+      definition_ref="package_pam_ldap_removed" />
       <criterion comment="look for ssl start_tls in /etc/pam_ldap.conf"
       test_ref="test_ldap_client_start_tls_ssl" />
     </criteria>
