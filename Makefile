@@ -36,7 +36,7 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox chromium rpm zipfile
+all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium rpm zipfile
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist
 
 fedora:
