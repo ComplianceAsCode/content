@@ -3,13 +3,10 @@ Version:	__VERSION__
 Release:	__RELEASE__%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 Vendor:		scap-security-guide
-
-Group:		System Environment/Base
+Group:		Applications/System
 License:	Public Domain
 URL:		https://fedorahosted.org/scap-security-guide/
-
-Source0:	http://repos.ssgproject.org/sources/%{name}-%{version}.tar.gz
-
+Source0:	https://github.com/OpenSCAP/scap-security-guide/archive/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 
 BuildRequires:	libxslt, expat, python, openscap-utils >= 1.0.3, python-lxml
@@ -18,9 +15,10 @@ BuildRequires:	openscap-utils >= 1.2.2
 BuildRequires:	ShellCheck
 %endif
 Requires:	xml-common, openscap-utils >= 1.0.8
+Provides:	openscap-content
 
 %description
-The scap-security-guide project provides a guide for configuration of the
+The %{name} project provides a guide for configuration of the
 system from the final system's security point of view. The guidance is
 specified in the Security Content Automation Protocol (SCAP) format and
 constitutes a catalog of practical hardening advice, linked to government
@@ -29,12 +27,15 @@ policy requirements and specific implementation guidelines. The system
 administrator can use the oscap command-line tool from the openscap-utils
 package to verify that the system conforms to provided guidelines.
 
-%package docs
-Summary:	Security guidance and baselines docs in HTML-style format
-Requires:	__NAME__
+%package	doc
+Summary:	HTML formatted documents containing security guides generated from XCCDF benchmarks.
+Group:		System Environment/Base
+Requires:	%{name} = %{version}-%{release}
 
-%description docs
-Includes the scap-security-guide project guides in HTML format
+%description	doc
+The %{name}-doc package contains HTML formatted documents containing
+hardening guidances that have been generated from XCCDF benchmarks
+present in %{name} package.
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -59,7 +60,6 @@ mkdir -p %{buildroot}%{_mandir}/en/man8/
 cp -a docs/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
-mkdir -p %{buildroot}/%{_defaultdocdir}/%{name}/guides
 mkdir -p %{buildroot}%{_datadir}/xml/scap/ssg/content
 
 #cp -a RHEL/5/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
@@ -85,36 +85,31 @@ rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-cpe-dictionary.xml
 # We do this after the filtering on Fedora because we don't ship JBossEAP5 datastreams
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
-# Add in HTML guides
-cp -a RHEL/6/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
-cp -a RHEL/7/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
-cp -a Firefox/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
-cp -a JRE/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+# Docs
+mkdir -p %{buildroot}/%{_docdir}/%{name}/guides
+cp -a RHEL/6/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
+cp -a RHEL/7/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
+cp -a Firefox/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
+cp -a JRE/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
 # outside of the normal build system, different guide
-cp -a JBossEAP5/docs/JBossEAP5_Guide.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+cp -a JBossEAP5/docs/JBossEAP5_Guide.html %{buildroot}/%{_docdir}/%{name}/guides
 
 %if 0%{?fedora}
-cp -a Fedora/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
-cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+cp -a Fedora/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
+cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
 #cp -a Webmin/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
 %endif
-
-# Add in oscap-scan files
-#mkdir -p %{buildroot}%{_sysconfdir}/sysconfig/
-#cp -a {*,*/*}/input/oscap-scan-* %{buildroot}%{_sysconfdir}/sysconfig/
 
 %files
 %{_datadir}/xml/scap
 %{_datadir}/%{name}/remediation_functions
+%{_datadir}/%{name}
+%lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
+%doc LICENSE
+%doc README.md
 
-#%{_sysconfdir}/sysconfig/oscap-scan-*
-
-%lang(en) %{_mandir}/en/man8/scap-security-guide.8.gz
-%doc Contributors.md README.md BUILD.md LICENSE
-%doc RHEL/6/output/table-rhel6-cces.html RHEL/6/output/table-rhel6-nistrefs-common.html RHEL/6/output/table-rhel6-nistrefs.html RHEL/6/output/table-rhel6-srgmap-flat.html RHEL/6/output/table-rhel6-srgmap-flat.xhtml RHEL/6/output/table-rhel6-srgmap.html RHEL/6/output/table-rhel6-stig.html RHEL/6/input/auxiliary/DISCLAIMER
-
-%files docs
-%{_defaultdocdir}/%{name}/guides
+%files doc
+%doc %{_docdir}/%{name}/guides/*.html
 
 %changelog
 * __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__
