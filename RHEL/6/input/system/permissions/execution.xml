@@ -131,7 +131,7 @@ heap higher than this address, the hardware prevents execution in that
 address range.</rationale>
 <ident cce="27007-4"  stig="RHEL-06-000079" />
 <oval id="sysctl_kernel_exec_shield" />
-<ref nist="" />
+<ref nist="SC-39" disa="2530" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -147,7 +147,7 @@ in order to re-purpose it using return oriented programming (ROP) techniques.
 </rationale>
 <ident cce="26999-3"  stig="RHEL-06-000078" />
 <oval id="sysctl_kernel_randomize_va_space" />
-<ref nist="" />
+<ref nist="SC-30(2)" />
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
@@ -185,7 +185,7 @@ this may prevent them from booting.</warning>
 <rationale>On 32-bit systems that support the XD or NX bit, the vendor-supplied
 PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) support.</rationale>
 <ident cce="27010-8" />
-<ref nist="" />
+<ref nist="CM-6(b)" />
 </Rule>
 
 <Rule id="bios_enable_execution_restrictions">
@@ -196,7 +196,7 @@ under a Security section. Look for Execute Disable (XD) on Intel-based systems a
 on AMD-based systems.</description>
 <rationale>Computers with the ability to prevent this type of code execution frequently put an option in the BIOS that will
 allow users to turn the feature on or off at will.</rationale>
-<ref nist="" />
+<ref nist="CM-6(b)" />
 <ident cce="27163-5" />
 </Rule>
 
