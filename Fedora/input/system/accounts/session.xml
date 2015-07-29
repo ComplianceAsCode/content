@@ -88,7 +88,7 @@ Including these entries increases the risk that root could
 execute code from an untrusted location.
 </rationale>
 <!-- <oval id="root_path_no_dot" /> -->
-<ref nist=""/>
+<ref nist="CM-6(b)" disa="366"/>
 </Rule>
 
 <Rule id="root_path_no_groupother_writable">
@@ -110,7 +110,7 @@ execute code provided by unprivileged users,
 and potentially malicious code.
 </rationale>
 <oval id="accounts_root_path_dirs_no_write" />
-<ref nist=""/>
+<ref nist="CM-6(b)" disa="366"/>
 </Rule>
 </Group>
 
@@ -144,7 +144,7 @@ to one another's home directories, this can be provided using
 groups or ACLs.
 </rationale>
 <oval id="file_permissions_home_dirs" />
-<ref nist=""/>
+<ref nist="AC-6(7)" disa="225"/>
 </Rule>
 
 <Group id="user_umask">
@@ -222,7 +222,7 @@ umask 077
 umask 077</pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/> -->
-<ref nist="" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_cshrc">
@@ -244,7 +244,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 umask 077</pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/> -->
-<ref nist="" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_etc_profile">
@@ -266,7 +266,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 umask 077</pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" /> -->
-<ref nist="" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_login_defs">
@@ -288,7 +288,7 @@ All output must show the value of <tt>umask</tt> set to 077, as shown in the bel
 umask 077</pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" /> -->
-<ref nist="" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 </Group>
