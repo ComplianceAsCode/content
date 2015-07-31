@@ -39,7 +39,7 @@ restrictive mount options, which can help protect programs which use it.
 </rationale>
 <ident cce="26435-8" stig="RHEL-06-000001" />
 <oval id="partition_for_tmp" />
-<ref nist="" disa="1208"/>
+<ref nist="SC-32" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -59,7 +59,7 @@ world-writable directories installed by other software packages.
 </rationale>
 <ident cce="26639-5" stig="RHEL-06-000002" />
 <oval id="partition_for_var" />
-<ref nist="" disa="1208"/>
+<ref nist="SC-32" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -78,7 +78,7 @@ and other files in <tt>/var/</tt>.
 </rationale>
 <ident cce="26215-4"  stig="RHEL-06-000003" />
 <oval id="partition_for_var_log" />
-<ref nist="AU-9" disa="1208"/>
+<ref nist="AU-9,SC-32" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -100,7 +100,7 @@ of space.
 </rationale>
 <ident cce="26436-6"  stig="RHEL-06-000004" />
 <oval id="partition_for_var_log_audit" />
-<ref nist="AU-4,AU-9" disa="137,138,1208"/>
+<ref nist="AU-4,AU-9,SC-32" disa="137,138,1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -121,7 +121,7 @@ users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
 <ident cce="26557-9"  stig="RHEL-06-000007" />
 <oval id="partition_for_home" />
-<ref nist="" disa="1208"/>
+<ref nist="SC-32" disa="1208"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
