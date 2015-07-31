@@ -10,7 +10,7 @@
     </metadata>
     <criteria comment="package pam_ldap is not present" operator="OR">
       <extend_definition comment="pam_ldap not present or in use"
-      definition_ref="package_pam_ldap_removed" />
+      definition_ref="ldap_client_pam_ldap_present" negate="true" />
       <criterion comment="look for tls_cacertdir in /etc/pam_ldap.conf"
       test_ref="test_ldap_client_tls_cacertdir" />
       <criterion comment="look for tls_cacertfile in /etc/pam_ldap.conf"
@@ -24,7 +24,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_ldap_client_tls_cacertdir" version="1">
     <ind:filepath>/etc/pam_ldap.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*tls_cacertdir[\s]+/etc/pki/tls/CA$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*tls_cacertdir[\s]+(.*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
@@ -35,7 +35,7 @@
   <ind:textfilecontent54_object id="obj_ldap_client_tls_cacertfile"
   version="1">
     <ind:filepath>/etc/pam_ldap.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*tls_cacertfile[\s]+/etc/pki/tls/CA/.*\.(pem|crt)$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*tls_cacertfile[\s]+(.*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
