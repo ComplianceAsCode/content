@@ -34,7 +34,7 @@ or modification of the file.
 Only root should be able to modify important boot parameters.
 </rationale>
 <oval id="file_user_owner_grub2_cfg" />
-<ref nist="" disa="225"/>
+<ref nist="AC-6(7)" disa="225"/>
 </Rule>
 
 <Rule id="file_group_owner_grub2_cfg" severity="medium">
@@ -50,7 +50,7 @@ The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-own
 file should not have any access privileges anyway.
 </rationale>
 <oval id="file_group_owner_grub2_cfg" />
-<ref nist="" disa="225"/>
+<ref nist="AC-6(7)" disa="225"/>
 </Rule>
 
 <Rule id="file_permissions_grub2_cfg" severity="medium">
@@ -70,7 +70,7 @@ Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
 <oval id="file_permissions_grub2_cfg" />
-<ref nist="" disa="225"/>
+<ref nist="AC-6(7)" disa="225"/>
 </Rule>
 
 <Rule id="bootloader_password" severity="medium">
