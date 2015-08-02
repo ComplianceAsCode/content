@@ -1,8 +1,8 @@
 <Profile id="ftp" extends="server" xmlns="http://checklists.nist.gov/xccdf/1.1" >
 <!-- Once the OVAL is put in/tested an extended ref to the server profile should be added -->
 <!--<Profile id="ftp" extends="server" xmlns="http://checklists.nist.gov/xccdf/1.1" > -->
-<title>ftp</title>
-<description>This profile is for FTP servers.</description>
+<title override="true">ftp</title>
+<description override="true">This profile is for FTP servers.</description>
 <select idref="package_vsftpd_installed" selected="true"/>
 <select idref="ftp_log_transactions" selected="true"/>
 <select idref="ftp_present_banner" selected="true"/>
