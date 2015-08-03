@@ -5,7 +5,7 @@ used to guard against misconfigured or compromised programs.
 SELinux enforces the idea that programs should be limited in what
 files they can access and what actions they can take.
 <br /><br />
-The default SELinux policy, as configured on RHEL 6, has been
+The default SELinux policy, as configured on RHEL 7, has been
 sufficiently developed and debugged that it should be usable on
 almost any Red Hat machine with minimal configuration and a small
 amount of system administrator training. This policy prevents
@@ -62,10 +62,8 @@ Disabling a major host protection feature, such as SELinux, at boot time prevent
 it from confining system services at boot time.  Further, it increases
 the chances that it will remain off during system operation.
 </rationale>
-<ident cce="26956-3"  stig="RHEL-06-000017" />
-<oval id="enable_selinux_bootloader" />
+<!--oval id="enable_selinux_bootloader" /-->
 <ref nist="AC-3,AC-3(3),AC-6,AU-9" disa="22,32"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="selinux_state" severity="medium">
@@ -85,10 +83,8 @@ potentially compromised processes to the security policy, which is designed to
 prevent them from causing damage to the system or further elevating their
 privileges.
 </rationale>
-<ident cce="26969-6"  stig="RHEL-06-000020" />
-<oval id="selinux_state" value="var_selinux_state"/>
-<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" disa="22,32,26"/>
-<tested by="DS" on="20121024"/>
+<!--oval id="selinux_state" value="var_selinux_state"/-->
+<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" disa=""/>
 </Rule>
 
 <Rule id="selinux_policytype">
@@ -111,33 +107,14 @@ Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
 ensures the system will confine processes that are likely to be
 targeted for exploitation, such as network or system services.
 
-Note: During the development or debugging of SELinux modules, it is common to 
-temporarily place non-production systems in <tt>permissive</tt> mode. In such 
+Note: During the development or debugging of SELinux modules, it is common to
+temporarily place non-production systems in <tt>permissive</tt> mode. In such
 temporary cases, SELinux policies should be developed, and once work
 is completed, the system should be reconfigured to
 <tt><sub idref="var_selinux_policy_name" /></tt>.
 </rationale>
-<ident cce="26875-5"  stig="RHEL-06-000023" />
-<oval id="selinux_policytype" value="var_selinux_policy_name"/>
-<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" disa="22,32"/>
-<tested by="DS" on="20121024"/>
-</Rule>
-
-<Rule id="service_restorecond_enabled">
-<title>Enable the SELinux Context Restoration Service (restorecond)</title>
-<description>The <tt>restorecond</tt> service utilizes <tt>inotify</tt> to look
-for the creation of new files listed in the
-<tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
-created, <tt>restorecond</tt> ensures the file receives the proper SELinux
-security context.
-<service-enable-macro service="restorecond" />
-</description>
-<rationale>The <tt>restorecond</tt> service helps ensure that the default SELinux
-file context is applied to files. This allows automatic correction
-of file contexts created by some programs.</rationale>
-<ident cce="26991-0" />
-<oval id="service_restorecond_enabled" />
-<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" />
+<!--oval id="selinux_policytype" value="var_selinux_policy_name"/-->
+<ref nist="AC-3,AC-3(3),AC-4,AC-6,AU-9" disa=""/>
 </Rule>
 
 <Rule id="package_setroubleshoot_removed">
@@ -150,7 +127,7 @@ unauthorized intrusions, and other potential errors.
 <rationale>The SETroubleshoot service is an unnecessary daemon to
 have running on a server</rationale>
 <ident cce="" />
-<oval id="package_setroubleshoot_removed" />
+<!--oval id="package_setroubleshoot_removed" /-->
 </Rule>
 
 <Rule id="package_mcstrans_removed">
@@ -167,7 +144,7 @@ NOTE: This rule was added in support of the CIS RHEL6 v1.2.0 benchmark. Please
 note that Red Hat does not feel this rule is security relevant.
 </rationale>
 <ident cce="" />
-<oval id="package_mcstrans_removed" />
+<!--oval id="package_mcstrans_removed" /-->
 </Rule>
 
 <Rule id="selinux_confinement_of_daemons" severity="medium">
@@ -187,7 +164,6 @@ Daemons which run with the <tt>initrc_t</tt> context may cause AVC denials,
 or allow privileges that the daemon does not require.
 </rationale>
 <ref nist="AC-6,AU-9,CM-7" />
-<ident cce="27111-4" />
 </Rule>
 
 <Rule id="selinux_all_devicefiles_labeled">
@@ -198,15 +174,13 @@ files carry the SELinux type <tt>unlabeled_t</tt>, investigate the cause and
 correct the file's context.
 </description>
 <ocil clause="there is output">To check for unlabeled device files, run the following command:
-<pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
+<pre>$sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
 If a device file carries the SELinux type <tt>unlabeled_t</tt>, then SELinux
 cannot properly restrict access to the device file.
 </rationale>
-<ident cce="26774-0"  stig="RHEL-06-000025" />
-<oval id="selinux_all_devicefiles_labeled" />
+<!--oval id="selinux_all_devicefiles_labeled" /-->
 <ref nist="AC-6,AU-9,CM-7" disa="22,32"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 </Group>

@@ -34,7 +34,7 @@ normal command line utilities.
 signifies inactivity) until an account is permanently disabled, add or correct
 the following lines in <tt>/etc/default/useradd</tt>, substituting
 <tt><i>NUM_DAYS</i></tt> appropriately:
-<pre>INACTIVE=<i>NUM_DAYS</i></pre>
+<pre>INACTIVE=<i><sub idref="account_disable_post_pw_expiration"/></i></pre>
 A value of 35 is recommended.  
 If a password is currently on the
 verge of expiration, then 35 days remain until the account is automatically
@@ -52,7 +52,7 @@ To verify the <tt>INACTIVE</tt> setting, run the following command:
 The output should indicate the <tt>INACTIVE</tt> configuration option is set
 to an appropriate integer as shown in the example below:
 <pre>$ sudo grep "INACTIVE" /etc/default/useradd
-INACTIVE=35</pre></ocil>
+INACTIVE=<sub idref="account_disable_post_pw_expiration"/></pre></ocil>
 <rationale>
 Disabling inactive accounts ensures that accounts which may not
 have been responsibly removed are not available to attackers
