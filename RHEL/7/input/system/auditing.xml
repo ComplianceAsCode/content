@@ -263,7 +263,7 @@ normally.</i>
 <description>Determine how many log files
 <tt>auditd</tt> should retain when it rotates logs.
 Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following
-line, substituting <i>NUMLOGS</i> with the correct value:
+line, substituting <i>NUMLOGS</i> with the correct value of <sub idref="var_auditd_num_logs" />:
 <pre>num_logs = <i>NUMLOGS</i></pre>
 Set the value to 5 for general-purpose systems. 
 Note that values less than 2 result in no log rotation.</description>
@@ -287,7 +287,7 @@ file size and the number of logs retained.</rationale>
 <description>Determine the amount of audit data (in megabytes)
 which should be retained in each log file. Edit the file
 <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line, substituting
-the correct value for <i>STOREMB</i>:
+the correct value of <sub idref="var_auditd_max_log_file" /> for <i>STOREMB</i>:
 <pre>max_log_file = <i>STOREMB</i></pre>
 Set the value to <tt>6</tt> (MB) or higher for general-purpose systems.
 Larger values, of course,
@@ -433,7 +433,7 @@ is used, running low on space for audit records should never occur.
 a designated account in certain situations. Add or correct the following line
 in <tt>/etc/audit/auditd.conf</tt> to ensure that administrators are notified
 via email for those situations:
-<pre>action_mail_acct = root</pre>
+<pre>action_mail_acct = <sub idref="var_auditd_action_mail_acct" /></pre>
 </description>
 <ocil clause="auditd is not configured to send emails per identified actions">
 Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
