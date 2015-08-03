@@ -11,11 +11,13 @@
       </description>
       <reference source="galford" ref_id="20140808" ref_url="test_attestation" />
     </metadata>
-    <criteria operator="OR">
-      <extend_definition comment="Aide is installed" negate="true" definition_ref="package_aide_installed" />
-      <criterion comment="run aide daily with cron" test_ref="test_aide_periodic_cron_checking" />
-      <criterion comment="run aide daily with cron" test_ref="test_aide_crond_checking" />
-      <criterion comment="run aide daily with cron" test_ref="test_aide_var_cron_checking" />
+    <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
+      <criteria operator="OR">
+        <criterion comment="run aide daily with cron" test_ref="test_aide_periodic_cron_checking" />
+        <criterion comment="run aide daily with cron" test_ref="test_aide_crond_checking" />
+        <criterion comment="run aide daily with cron" test_ref="test_aide_var_cron_checking" />
+      </criteria>
     </criteria>
   </definition>
 
