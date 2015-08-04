@@ -274,7 +274,7 @@ After the settings have been set, run <tt>dconf update</tt>.
 <ocil clause="it is not">
 To check the current idle time-out value, run the following command:
 <pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
-If properly configured, the output should be <tt>300</tt>.
+If properly configured, the output should be <tt><sub idref="inactivity_timeout_value" /></tt>.
 To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
 <pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
 If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>

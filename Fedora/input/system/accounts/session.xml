@@ -42,7 +42,7 @@ Run the following command to ensure the <tt>maxlogins</tt> value is configured f
 on the system:
 <pre>$ grep "maxlogins" /etc/security/limits.conf</pre>
 You should receive output similar to the following:
-<pre>*		hard	maxlogins	10</pre>
+<pre>*		hard	maxlogins	<sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
 </ocil>
 <!-- <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" /> -->
 <ref nist="AC-10" disa="54"/>
@@ -216,10 +216,10 @@ written to by unauthorized users.</rationale>
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
 running the following command:
 <pre>$ grep "umask" /etc/bashrc</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown below:
+All output must show the value of <tt>umask</tt> set as shown below:
 <pre>$ grep "umask" /etc/bashrc
-umask 077
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" />
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/> -->
 <ref nist="SA-8" disa="366"/>
@@ -239,9 +239,9 @@ written to by unauthorized users.</rationale>
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/csh.cshrc</tt> file by
 running the following command:
 <pre>$ grep "umask" /etc/csh.cshrc</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
+All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre>$ grep "umask" /etc/csh.cshrc
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/> -->
 <ref nist="SA-8" disa="366"/>
@@ -261,9 +261,9 @@ written to by unauthorized users.</rationale>
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
 <pre>$ grep "umask" /etc/profile</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
+All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre>$ grep "umask" /etc/profile
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" /> -->
 <ref nist="SA-8" disa="366"/>
@@ -283,9 +283,9 @@ written to by unauthorized users.</rationale>
 Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
 running the following command:
 <pre>$ grep -i "UMASK" /etc/login.defs</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
+All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre>$ grep -i "UMASK" /etc/login.defs
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <!-- <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" /> -->
 <ref nist="SA-8" disa="366"/>

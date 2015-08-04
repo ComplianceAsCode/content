@@ -514,7 +514,7 @@ attempts using <tt>pam_faillock.so</tt>, modify the content of both
 <ocil clause="that is not the case">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>deny=3</tt>.
+The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /></tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
@@ -598,7 +598,7 @@ The DoD STIG requirement is 5 passwords.</description>
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
 The output should show the following at the end of the line:
-<pre>remember=24</pre>
+<pre>remember=<sub idref="var_password_pam_unix_remember" /></pre>
 </ocil>
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
