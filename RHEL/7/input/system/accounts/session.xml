@@ -211,7 +211,7 @@ operator="equals" interactive="0">
 To ensure the default umask for users of the Bash shell is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
 as follows:
-<pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
+<pre>umask <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -220,10 +220,10 @@ written to by unauthorized users.</rationale>
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
 running the following command:
 <pre># grep "umask" /etc/bashrc</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown below:
+All output must show the value of <tt>umask</tt> set as shown below:
 <pre># grep "umask" /etc/bashrc
-umask 077
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" />
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/>
@@ -236,7 +236,7 @@ umask 077</pre>
 <description>
 To ensure the default umask for users of the C shell is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/csh.cshrc</tt> to read as follows:
-<pre>umask 077<!-- <sub idref="umask_user_value" /> --></pre>
+<pre>umask <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -245,9 +245,9 @@ written to by unauthorized users.</rationale>
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/csh.cshrc</tt> file by
 running the following command:
 <pre># grep "umask" /etc/csh.cshrc</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
+All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre># grep "umask" /etc/csh.cshrc
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/>
@@ -260,7 +260,7 @@ umask 077</pre>
 <description>
 To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
 add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as follows:
-<pre>umask 077<!--<sub idref="umask_user_value" /> --></pre>
+<pre>umask <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -270,9 +270,9 @@ written to by unauthorized users.</rationale>
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
 <pre># grep "umask" /etc/profile</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
+All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre># grep "umask" /etc/profile
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
 <tested by="swells" on="20120929"/>
@@ -284,7 +284,7 @@ umask 077</pre>
 <description>
 To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
 add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
-<pre>UMASK 077<!-- <sub idref="umask_user_value" /> --></pre>
+<pre>UMASK <sub idref="var_accounts_user_umask" /></pre>
 </description>
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read and
@@ -293,9 +293,9 @@ written to by unauthorized users.</rationale>
 Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
 running the following command:
 <pre># grep -i "UMASK" /etc/login.defs</pre>
-All output must show the value of <tt>umask</tt> set to 077, as shown in the below:
+All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre># grep -i "UMASK" /etc/login.defs
-umask 077</pre>
+umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
