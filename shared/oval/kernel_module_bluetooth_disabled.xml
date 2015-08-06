@@ -21,10 +21,10 @@
   comment="kernel module bluetooth disabled">
     <ind:object object_ref="obj_kernmod_bluetooth_disabled" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_kernmod_bluetooth_disabled" version="1" comment="kernel module bluetooth disabled">
+  <ind:textfilecontent54_object id="obj_kernmod_bluetooth_disabled" version="2" comment="kernel module bluetooth disabled">
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+bluetooth\s+/bin/false$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*install\s+bluetooth\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -32,10 +32,10 @@
   comment="kernel module net-pf-31 disabled">
     <ind:object object_ref="obj_kernmod_bluetooth_alias_disabled" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_kernmod_bluetooth_alias_disabled" version="1" comment="kernel module net-pf-31 disabled">
+  <ind:textfilecontent54_object id="obj_kernmod_bluetooth_alias_disabled" version="2" comment="kernel module net-pf-31 disabled">
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+net-pf-31\s+/bin/false$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*install\s+net-pf-31\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
