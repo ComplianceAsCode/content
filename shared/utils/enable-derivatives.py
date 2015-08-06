@@ -237,6 +237,9 @@ def main():
         root, XCCDF12_NS, benchmarks
     )
 
+    if len(benchmarks) == 0:
+        raise RuntimeError("No Benchmark found!")
+
     for namespace, benchmark in benchmarks:
         if not add_derivative_cpes(benchmark, namespace, mapping):
             raise RuntimeError(
