@@ -195,7 +195,7 @@ def main():
     parser.add_option("-o", "--output", dest="output", default=False,
                       action="store", help="XML Tree content")
     (options, args) = parser.parse_args()
-     
+
     if options.centos and options.sl:
         print "Cannot enable two derivative OS(s) at the same time"
         parser.print_help()
@@ -221,14 +221,21 @@ def main():
     root = tree.getroot()
 
     benchmarks = []
-    benchmarks.extend([
-        (XCCDF11_NS, elem)
-        for elem in list(root.findall(".//{%s}Benchmark" % (XCCDF11_NS)))
-    ])
-    benchmarks.extend([
-        (XCCDF12_NS, elem)
-        for elem in list(root.findall(".//{%s}Benchmark" % (XCCDF12_NS)))
-    ])
+
+    def scrape_benchmarks(root_element, namespace, dest):
+        dest.extend([
+            (namespace, elem)
+            for elem in list(root.findall(".//{%s}Benchmark" % (namespace)))
+        ])
+        if root_element.tag == "{%s}Benchmark" % (namespace):
+            dest.append((namespace, root_element))
+
+    scrape_benchmarks(
+        root, XCCDF11_NS, benchmarks
+    )
+    scrape_benchmarks(
+        root, XCCDF12_NS, benchmarks
+    )
 
     for namespace, benchmark in benchmarks:
         if not add_derivative_cpes(benchmark, namespace, mapping):
