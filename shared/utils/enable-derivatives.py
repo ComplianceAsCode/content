@@ -230,12 +230,8 @@ def main():
         if root_element.tag == "{%s}Benchmark" % (namespace):
             dest.append((namespace, root_element))
 
-    scrape_benchmarks(
-        root, XCCDF11_NS, benchmarks
-    )
-    scrape_benchmarks(
-        root, XCCDF12_NS, benchmarks
-    )
+    scrape_benchmarks(root, XCCDF11_NS, benchmarks)
+    scrape_benchmarks(root, XCCDF12_NS, benchmarks)
 
     if len(benchmarks) == 0:
         raise RuntimeError("No Benchmark found!")
