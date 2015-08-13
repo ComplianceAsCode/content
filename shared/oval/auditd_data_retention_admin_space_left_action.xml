@@ -1,12 +1,14 @@
 <def-group>
-  <definition class="compliance" id="auditd_data_retention_admin_space_left_action" version="1">
+  <definition class="compliance" id="auditd_data_retention_admin_space_left_action" version="2">
     <metadata>
       <title>Auditd Action to Take When Disk is Low on Space</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_all</platform>
       </affected>
       <description>admin_space_left_action setting in /etc/audit/auditd.conf is set to a certain action</description>
-      <reference source="JL" ref_id="20140312" ref_url="test_attestation" />
+      <reference source="JL" ref_id="RHEL6_20140312" ref_url="test_attestation" />
+      <reference source="JL" ref_id="RHEL7_20150813" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA22_20150813" ref_url="test_attestation" />
     </metadata>
 
     <criteria>
@@ -33,6 +35,5 @@
   </ind:textfilecontent54_state>
 
   <external_variable comment="audit admin_space_left_action setting" datatype="string" id="var_auditd_admin_space_left_action" version="1" />
-
 
 </def-group>
