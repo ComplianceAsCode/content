@@ -38,6 +38,15 @@ all possible choices using:
 # oscap info /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
+### SCAP Workbench
+The SCAP Workbench is a graphical user interface for SCAP evaluation and
+customization. It is suitable for scanning a single machine, either local
+or remote (via SSH). New versions of SCAP Workbench have SSG integration
+and will automatically offer it when the application is started.
+
+Please see the [User Manual](https://fedorahosted.org/scap-workbench/raw-attachment/wiki/UserManual/user_manual.html)
+for more info.
+
 ## Support
 
 The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
