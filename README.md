@@ -39,8 +39,11 @@ go through a few of them here.
 The `oscap` tool is a low-level command line interface that comes from
 the OpenSCAP project. It can be used to scan the local machine.
 ```
-# oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
+# oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
+After evaluation, the `arf.xml` file will contain all results in a reusable
+*Result DataStream* format, `report.html` will contain a human readable
+report that can be opened in a browser.
 
 Replace the profile with other profile of your choice, you can display
 all possible choices using:
@@ -65,7 +68,7 @@ The following command evaluates machine with IP `192.168.1.123` with content
 stored on local machine. Keep in mind that `oscap` has to be installed on the
 remote machine but the SSG content doesn't need to be.
 ```
-# oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
+# oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
 ## Support
