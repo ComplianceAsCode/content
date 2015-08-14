@@ -25,8 +25,8 @@ distribution. On RHEL and Fedora you can use:
 
 If SCAP Security Guide is not packaged in your distribution or if the
 version that is packaged is too old, you need to build the content yourself
-and install it via `make install`. Please see the `BUILD.md` document
-for more info.
+and install it via `make install`. Please see the [BUILD.md](BUILD.md)
+document for more info.
 
 ## Usage
 We assume you have installed SCAP Security Guide system-wide into a
