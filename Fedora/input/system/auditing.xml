@@ -238,7 +238,7 @@ normally.</i>
 <value selector="sync">sync</value>
 </Value>
 
-<Rule id="configure_auditd_num_logs" severity="medium">
+<Rule id="auditd_data_retention_num_logs" severity="medium">
 <title>Configure auditd Number of Logs Retained</title>
 <description>Determine how many log files
 <tt>auditd</tt> should retain when it rotates logs.
@@ -256,11 +256,11 @@ determine how many logs the system is configured to retain after rotation:
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum log
 file size and the number of logs retained.</rationale>
-<!-- <oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" />  -->
+<oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" />
 <ref nist="AU-1(b),AU-11,IR-5" />
 </Rule>
 
-<Rule id="configure_auditd_max_log_file" severity="medium">
+<Rule id="auditd_data_retention_max_log_file" severity="medium">
 <title>Configure auditd Max Log File Size</title>
 <description>Determine the amount of audit data (in megabytes)
 which should be retained in each log file. Edit the file
@@ -279,11 +279,11 @@ determine how much data the system will retain in each audit log file:
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum
 log file size and the number of logs retained.</rationale>
-<!-- <oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" />  -->
+<oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" />
 <ref nist="AU-1(b),AU-11,IR-5" />
 </Rule>
 
-<Rule id="configure_auditd_max_log_file_action" severity="medium">
+<Rule id="auditd_data_retention_max_log_file_action" severity="medium">
 <title>Configure auditd max_log_file_action Upon Reaching Maximum Log Size</title>
 <description> The default action to take when the logs reach their maximum size
 is to rotate the log files, discarding the oldest one. To configure the action taken
@@ -313,7 +313,7 @@ minimizes the chances of the system unexpectedly running out of disk space by
 being overwhelmed with log data. However, for systems that must never discard
 log data, or which use external processes to transfer it and reclaim space,
 <tt>keep_logs</tt> can be employed.</rationale>
-<!-- <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" /> -->
+<oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
 <ref nist="AU-1(b),AU-4,AU-11,IR-5" />
 </Rule>
 
@@ -364,7 +364,7 @@ Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt
 </ocil>
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
-<!-- <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/> -->
+<oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
 <ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,143" />
 </Rule>
 
@@ -393,7 +393,7 @@ or halt when disk space has run low:
 audit records. If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
-<!-- <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" /> -->
+<oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
 <ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,1343" />
 </Rule>
 
@@ -413,7 +413,7 @@ account when it needs to notify an administrator:
 </ocil>
 <rationale>Email sent to the root account is typically aliased to the
 administrators of the system, who can take appropriate action.</rationale>
-<!-- <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" /> -->
+<oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
 <ref nist="AU-1(b),AU-4,AU-5(a),IR-5" disa="139,144" />
 </Rule>
 
@@ -766,7 +766,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="" />
 </Rule>
 
-<Rule id="audit_logs_rootowner">
+<Rule id="file_ownership_var_log_audit">
 <title>System Audit Logs Must Be Owned By Root</title>
 <description>
 <fileowner-desc-macro file="/var/log" owner="root"/>
@@ -776,7 +776,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 </ocil>
 <rationale>Failure to give ownership of the audit log files to root allows the designated
 owner, and unauthorized users, potential access to sensitive information.</rationale>
-<!-- <oval id="file_ownership_var_log_audit" /> -->
+<oval id="file_ownership_var_log_audit" />
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="166" />
 </Rule>
 

@@ -437,15 +437,15 @@
 	<overlay owner="disastig" ruleid="bootloader_audit_argument" ownerid="RHEL-06-000157" disa="1464" severity="low">
 		<title>Auditing must be enabled at boot by setting a kernel parameter.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="configure_auditd_num_logs" ownerid="RHEL-06-000159" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="auditd_data_retention_num_logs" ownerid="RHEL-06-000159" disa="366" severity="medium">
 		<VMSinfo VKey="38636" SVKey="50437" VRelease="1" />
 		<title>The system must retain enough rotated audit logs to cover the required log retention period.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="configure_auditd_max_log_file" ownerid="RHEL-06-000160" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="auditd_data_retention_max_log_file" ownerid="RHEL-06-000160" disa="366" severity="medium">
 		<VMSinfo VKey="38633" SVKey="50434" VRelease="1" />
 		<title>The system must set a maximum audit log file size.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="configure_auditd_max_log_file_action" ownerid="RHEL-06-000161" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="auditd_data_retention_max_log_file_action" ownerid="RHEL-06-000161" disa="366" severity="medium">
 		<VMSinfo VKey="38634" SVKey="50435" VRelease="1" />
 		<title>The system must rotate audit log files that reach the maximum file size.</title>
 	</overlay>
@@ -1057,7 +1057,7 @@
 		<VMSinfo VKey="38498" SVKey="50299" VRelease="1" />
 		<title>Audit log files must have mode 0640 or less permissive.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="audit_logs_rootowner" ownerid="RHEL-06-000384" disa="162" severity="medium">
+	<overlay owner="disastig" ruleid="file_ownership_var_log_audit" ownerid="RHEL-06-000384" disa="162" severity="medium">
 		<VMSinfo VKey="38495" SVKey="50296" VRelease="1" />
 		<title>Audit log files must be owned by root.</title>
 	</overlay>
