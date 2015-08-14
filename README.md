@@ -18,9 +18,19 @@ baselines from a single set of high-quality SCAP content.
 
 The SSG homepage is https://fedorahosted.org/scap-security-guide/
 
-## How to use
+## Installation
+The preferred method of installation is via the package manager of your
+distribution. On RHEL and Fedora you can use:
+`yum install scap-security-guide`.
+
+If SCAP Security Guide is not packaged in your distribution or if the
+version that is packaged is too old, you need to build the content yourself
+and install it via `make install`. Please see the `BUILD.md` document
+for more info.
+
+## Usage
 We assume you have installed SCAP Security Guide system-wide into a
-standard location -- via a package or via `make install`.
+standard location as instructed in the previous section.
 
 There are several ways to consume SCAP Security Guide content, we will only
 go through a few of them here.
