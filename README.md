@@ -57,6 +57,17 @@ and will automatically offer it when the application is started.
 Please see the [User Manual](https://fedorahosted.org/scap-workbench/raw-attachment/wiki/UserManual/user_manual.html)
 for more info.
 
+### `oscap-ssh` tool
+`oscap-ssh` comes bundled with OpenSCAP 1.2.3 and later. It allows scanning
+a remote machine via SSH with an interface resembling the `oscap` tool.
+
+The following command evaluates machine with IP `192.168.1.123` with content
+stored on local machine. Keep in mind that `oscap` has to be installed on the
+remote machine but the SSG content doesn't need to be.
+```
+# oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
+```
+
 ## Support
 
 The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
