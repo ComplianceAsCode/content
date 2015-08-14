@@ -237,7 +237,7 @@ normally.</i>
 <value selector="sync">sync</value>
 </Value>
 
-<Rule id="configure_auditd_num_logs" severity="medium">
+<Rule id="auditd_data_retention_num_logs" severity="medium">
 <title>Configure auditd Number of Logs Retained</title>
 <description>Determine how many log files
 <tt>auditd</tt> should retain when it rotates logs.
@@ -261,7 +261,7 @@ file size and the number of logs retained.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="configure_auditd_max_log_file" severity="medium">
+<Rule id="auditd_data_retention_max_log_file" severity="medium">
 <title>Configure auditd Max Log File Size</title>
 <description>Determine the amount of audit data (in megabytes)
 which should be retained in each log file. Edit the file
@@ -286,7 +286,7 @@ log file size and the number of logs retained.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="configure_auditd_max_log_file_action" severity="medium">
+<Rule id="auditd_data_retention_max_log_file_action" severity="medium">
 <title>Configure auditd max_log_file_action Upon Reaching Maximum Log Size</title>
 <description> The default action to take when the logs reach their maximum size
 is to rotate the log files, discarding the oldest one. To configure the action taken
@@ -732,7 +732,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <tested by="DS" on="20121024"/>
 </Rule> 
 
-<Rule id="audit_logs_rootowner">
+<Rule id="file_ownership_var_log_audit">
 <title>System Audit Logs Must Be Owned By Root</title>
 <description>
 <fileowner-desc-macro file="/var/log" owner="root"/>
