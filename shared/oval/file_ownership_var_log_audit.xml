@@ -1,11 +1,14 @@
 <def-group>
-  <definition class="compliance" id="file_ownership_var_log_audit" version="1">
+  <definition class="compliance" id="file_ownership_var_log_audit" version="2">
     <metadata>
       <title>Verify /var/log/audit Ownership</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_all</platform>
       </affected>
       <description>Checks that all /var/log/audit files and directories are owned by the root user and group.</description>
+      <reference source="JL" ref_id="RHEL6_20150814" ref_url="test_attestation" />
+      <reference source="JL" ref_id="RHEL7_20150814" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA22_20150814" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion test_ref="test_ownership_var_log_audit_files" />
