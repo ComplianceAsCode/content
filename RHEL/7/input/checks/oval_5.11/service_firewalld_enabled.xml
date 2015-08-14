@@ -19,7 +19,7 @@
       <reference source="JL" ref_id="RHEL7_20150605" ref_url="test_attestation" />
     </metadata>
     <criteria comment="package firewall installed and service firewalld is configured to start" operator="AND">
-    <extend_definition comment="firewall installed" definition_ref="package_firewall_installed" />
+    <extend_definition comment="firewall installed" definition_ref="package_firewalld_installed" />
     <criteria operator="OR" comment="service firewalld is configured to start">
       <criterion comment="multi-user.target wants firewalld" test_ref="test_multi_user_wants_firewalld" />
     </criteria>
