@@ -111,7 +111,7 @@ tarball: rpmroot
 	# Copy in the source trees for both RHEL
 	# and JBossEAP5 content
 	mkdir -p $(RPMBUILD)/$(PKG)
-	cp {BUILD.md,Contributors.md,LICENSE,README.md} $(RPMBUILD)/$(PKG)
+	cp BUILD.md Contributors.md LICENSE README.md  $(RPMBUILD)/$(PKG)/
 	cp -r config/ $(RPMBUILD)/$(PKG)
 	cp -r docs/ $(RPMBUILD)/$(PKG)
 	cp -r shared/ $(RPMBUILD)/$(PKG)
