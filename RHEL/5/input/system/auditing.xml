@@ -319,25 +319,25 @@ or halt when disk errors occur:
 <ref nist="ECAT-1" disa="139" />
 </Rule>
 
-<Rule id="configure_auditd_audispd" severity="low">
-<title>Configure auditd to use audispd plugin</title>
-<description>To configure the <tt>auditd</tt> service to use the 
-<tt>audispd</tt> plugin, set the <tt>active</tt> line in 
-<tt>/etc/audisp/plugins.d/syslog.conf</tt> to <tt>yes</tt>.
-Restart the <tt>auditd</tt>service:
+<Rule id="auditd_audispd_syslog_plugin_activated" severity="low">
+<title>Configure auditd to use audispd's syslog plugin</title>
+<description>To configure the <tt>auditd</tt> service to use the
+<tt>syslog</tt> plug-in of the <tt>audispd</tt> audit event multiplexor, set
+the <tt>active</tt> line in <tt>/etc/audisp/plugins.d/syslog.conf</tt> to
+<tt>yes</tt>. Restart the <tt>auditd</tt>service:
 <pre># service auditd restart</pre>
 </description>
 <ocil clause="it is not">
-To verify the audispd plugin is active, run the following command:
+To verify the audispd's syslog plugin is active, run the following command:
 <pre># grep active /etc/audisp/plugins.d/syslog.conf</pre>
 If the plugin is active, the output will show <tt>yes</tt>.
 </ocil>
-<rationale>The auditd service does not include the ability to send audit 
-records to a centralized server for management directly.  It does, however, 
-include an audit event multiplexor plugin (audispd) to pass audit records 
+<rationale>The auditd service does not include the ability to send audit
+records to a centralized server for management directly. It does, however,
+include a plug-in for audit event multiplexor (audispd) to pass audit records
 to the local syslog server</rationale>
 <ref nist="ECTB-1" disa="136" />
-<oval id="configure_auditd_audispd" />
+<oval id="auditd_audispd_syslog_plugin_activated" />
 <ident stig="GEN002870" />
 </Rule>
 
