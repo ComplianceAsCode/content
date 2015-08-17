@@ -120,23 +120,35 @@ actions will be taken if other obstacles exist.
 
 <Rule id="bootloader_audit_argument" severity="medium">
 <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
-<description>To ensure all processes can be audited, even
-those which start prior to the audit daemon, add the argument
-<tt>audit=1</tt> to the kernel line in <tt>/etc/grub.conf</tt>, in the manner below:
-<pre>kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1</pre>
+<description>To ensure all processes can be audited, even those which start
+prior to the audit daemon, add the argument <tt>audit=1</tt> to the default
+GRUB 2 command line for the Linux operating system in
+<tt>/etc/default/grub</tt>, in the manner below:
+<pre>GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=VolGroup/LogVol06 rd.lvm.lv=VolGroup/lv_swap rhgb quiet rd.shell=0 audit=1"</pre>
 </description>
 <ocil clause="auditing is not enabled at boot time">
-Inspect the kernel boot arguments (which follow the word <tt>kernel</tt>) in
-<tt>/etc/grub.conf</tt>. If they include <tt>audit=1</tt>, then
-auditing is enabled at boot time.
+Inspect the form of default GRUB 2 command line for the Linux operating system
+in <tt>/etc/default/grub</tt>. If they include <tt>audit=1</tt>, then auditing
+is enabled at boot time.
 </ocil>
 <rationale>
-Each process on the system carries an "auditable" flag which
-indicates whether its activities can be audited. Although <tt>auditd</tt>
-takes care of enabling this for all processes which launch after it
-does, adding the kernel argument ensures it is set for every
-process during boot.
+Each process on the system carries an "auditable" flag which indicates whether
+its activities can be audited. Although <tt>auditd</tt> takes care of enabling
+this for all processes which launch after it does, adding the kernel argument
+ensures it is set for every process during boot.
 </rationale>
+<warning category="general">The GRUB 2 configuration file, <tt>grub.cfg</tt>,
+is automatically updated each time a new kernel is installed. Note that any
+changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
+file. To update the GRUB 2 configuration file manually, use the
+<pre>grub2-mkconfig -o</pre> command as follows:
+<ul>
+<li>On BIOS-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+<li>On UEFI-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+</ul>
+</warning>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="bootloader_audit_argument" />
 <ref nist="AC-17(1),AU-14(1),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-10,IR-5" disa="1464,130" />
