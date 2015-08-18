@@ -94,7 +94,6 @@
       <xsl:apply-templates select="document('system/network/wireless.xml')" />
       <xsl:apply-templates select="document('system/network/ipv6.xml')" />
       <xsl:apply-templates select="document('system/network/firewalld.xml')" />
-      <xsl:apply-templates select="document('system/network/iptables.xml')" />
       <xsl:apply-templates select="document('system/network/ssl.xml')" />
       <xsl:apply-templates select="document('system/network/uncommon.xml')" />
       <xsl:apply-templates select="document('system/network/ipsec.xml')" />

@@ -459,34 +459,33 @@ system call, run the following command:
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
-  <!--Example usage: <iptables-desc-macro allow="true" net="false" proto="tcp" 
+  <!--Example usage: <firewalld-desc-macro allow="true" service="ssh" proto="tcp"
        port="80" />  -->
-    <!-- allow (boolean): optional attribute which defaults to true, or to 
+    <!-- allow (boolean): optional attribute which defaults to true, or to
          allow this traffic through -->
-    <!-- net (boolean): optional attribute which determines if -s netwk/mask 
-         is put in.  By defaults this is false -->
+    <!-- service (string): type of service e.g. ssh, ftp, etc. -->
     <!-- proto (string): protocol in question, typically tcp or udp -->
     <!-- port (integer): port in question -->
-  <xsl:template match="iptables-desc-macro">
+  <xsl:template match="firewalld-desc-macro">
     <xsl:choose>
-      <xsl:when test="@allow = 'false'"> 
+      <xsl:when test="@allow = 'false'">
       <!-- allow: optional attribute which defaults to true, or to allow this traffic through -->
-        To configure <xhtml:code>iptables</xhtml:code> to not allow port 
-        <xsl:value-of select="@port"/> traffic one must edit 
-        <xhtml:code>/etc/sysconfig/iptables</xhtml:code> and
-        <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
-        Remove the following line, ensuring that it does not appear in the INPUT 
-        chain:
-        <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
+        To configure <xhtml:code>firewalld</xhtml:code> to not allow access, run the following command(s):
+        <xsl:if test="@port">
+          <xhtml:code>firewall-cmd --permanent --remove-port=<xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code>
+        </xsl:if>
+        <xsl:if test="@service">
+          <xhtml:code><xsl:if test="@service = 'true'">firewall-cmd --permanent --remove-service=<xsl:value-of select="@service"/></xsl:if></xhtml:code>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        To configure <xhtml:code>iptables</xhtml:code> to allow port 
-        <xsl:value-of select="@port"/> traffic one must edit 
-        <xhtml:code>/etc/sysconfig/iptables</xhtml:code>  and 
-        <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
-        Add the following line, ensuring that it appears before the final LOG 
-        and DROP lines for the INPUT chain:
-        <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
+        To configure <xhtml:code>firewalld</xhtml:code> to allow access, run the following command(s):
+        <xsl:if test="@port">
+          <xhtml:code>firewall-cmd --permanent --add-port=<xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code> and
+        </xsl:if>
+        <xsl:if test="@service">
+          <xhtml:code>firewall-cmd --permanent --add-service=<xsl:value-of select="@service"/></xhtml:code>
+        </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
