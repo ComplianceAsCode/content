@@ -753,16 +753,16 @@ to access information about the web server or to alter the server's configuratio
 
 </Group> <!-- <Group id="httpd_restrict_file_dir_access"> -->
 
-<Group id="httpd_configure_iptables">
-<title>Configure <tt>iptables</tt> to Allow Access to the Web Server</title>
+<Group id="httpd_configure_firewalld">
+<title>Configure <tt>firewalld</tt> to Allow Access to the Web Server</title>
 <description>
-By default, <tt>iptables</tt>
+By default, <tt>firewalld</tt>
 blocks access to the ports used by the web server.
-<iptables-desc-macro allow="true" proto="tcp" port="80" />
-<iptables-desc-macro allow="true" proto="tcp" port="443" />
+<firewalld-desc-macro allow="true" proto="tcp" service="http" />
+<firewalld-desc-macro allow="true" proto="tcp" service="https" />
 </description>
 
-</Group> <!-- <Group id="httpd_configure_iptables"> -->
+</Group> <!-- <Group id="httpd_configure_firewalld"> -->
 
 <Group id="httpd_chroot">
 <title>Run <tt>httpd</tt> in a <tt>chroot</tt> Jail if Practical</title>
