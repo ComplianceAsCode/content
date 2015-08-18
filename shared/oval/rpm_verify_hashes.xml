@@ -1,11 +1,14 @@
 <def-group>
-  <definition class="compliance" id="rpm_verify_hashes" version="2">
+  <definition class="compliance" id="rpm_verify_hashes" version="3">
     <metadata>
       <title>Verify File Hashes with RPM</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_all</platform>
       </affected>
-      <description>Verify the MD5 hashes of system binaries using the RPM database.</description>
+      <description>Verify the RPM digests of system binaries using the RPM database.</description>
+      <reference source="JL" ref_id="RHEL6_20150818" ref_url="test_attestation" />
+      <reference source="JL" ref_id="RHEL7_20150818" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA22_20150818" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion test_ref="test_files_fail_md5_hash" comment="verify file md5 hashes" />
