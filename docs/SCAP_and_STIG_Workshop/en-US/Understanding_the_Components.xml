@@ -10,7 +10,7 @@
 	<section id="sect-Documentation-SCAP_and_STIG_Workshop-Understanding_the_components-Content_Location">
 		<title>Content Location</title>
 		<para>
-			On RHEL6, SCAP content is stored under <code>/usr/share/xml/scap/</code>, with each content provider responsible for creating their own subdirectories. The SSG project deploys content into <code>/usr/share/xml/scap/ssg/</code> with the following sub directories:
+			On Red Hat Enterpise Linux 6, SCAP content is stored under <code>/usr/share/xml/scap/</code>, with each content provider responsible for creating their own subdirectories. The SSG project deploys content into <code>/usr/share/xml/scap/ssg/</code> with the following sub directories:
 		</para>
 			<itemizedlist>
 				<listitem>
@@ -158,7 +158,7 @@ $ grep -n "&#60;Profile" /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
 				<screen>
 $ sed -n '403,413p' /usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
 &#60;Profile id="stig-rhel6-server" extends="common"&#62;
-&#60;title&#62;Pre-release Draft STIG for RHEL 6 Server&#60;/title&#62;
+&#60;title&#62;Pre-release Draft STIG for Red Hat Enterprise Linux 6 Server&#60;/title&#62;
 &#60;description&#62;This profile is being developed under the DoD consensusi
 model to become a STIG in coordination with DISA FSO.&#60;/description&#62;
 &#60;select idref="encrypt_partitions" selected="true"/&#62;
