@@ -1,6 +1,6 @@
 # Build from source
 
-1. On RHEL and Fedora make sure the packages `openscap-utils` and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in RHEL) as well as `git`. 
+1. On Red Hat Enterprise Linux and Fedora make sure the packages `openscap-utils` and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`. 
 
  `# yum -y install git openscap-utils python-lxml`
 
