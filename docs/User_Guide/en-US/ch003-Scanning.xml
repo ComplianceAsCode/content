@@ -57,7 +57,7 @@
 						Hat product experts have validated the solution so that implimentations
 						begin with a solid foundation" In order to establish an automated security
 						testing process, Red Hat is exploring the use of SCAP profiles to evaluate
-						RHEL baselines/AMIs before public cloud providers release them to their
+						Red Hat Enterprise Linux baselines/AMIs before public cloud providers release them to their
 						customer sets. <emphasis role="underline">This does not reflect a statement
 							of direction for Red Hat, but rather transparency as Red Hat evaluates
 							best practices to evaluate the security posture of public cloud
@@ -70,7 +70,7 @@
 	<section id="sect-User_Guide-Scanning-OpenSCAP">
 		<title>Command Line Interface (CLI)</title>
 		<para>This document outlines the usage of OpenSCAP, a command-line utility packaged within
-			Fedora and RHEL which allows users to load, scan, validate, edit, and export SCAP
+			Fedora and Red Hat Enterprise Linux which allows users to load, scan, validate, edit, and export SCAP
 			documents. Additional details regarding OpenSCAP can be found on the project homepage
 			located at <ulink url="http://open-scap.org/">http://open-scap.org/</ulink>.</para>
 		<para>Five arguments to OpenSCAP are needed to perform a system scan against the upstream
@@ -216,7 +216,7 @@ Result  pass</programlisting></para>
 		<para> SCAP Security Guide embeds bash remediation scripts into the SCAP content. This
 			allows for SCAP compatible tools to extract these remediation scripts to aide in
 			potential remediation of system misconfigurations. </para>
-		<para>OpenSCAP, the CLI delivered with Fedora and RHEL systems, contains the ability to transform
+		<para>OpenSCAP, the CLI delivered with Fedora and Red Hat Enterprise Linux systems, contains the ability to transform
 			XML results into an executable script. The syntax to generate a remediation script
 			is:</para>
 		<para><programlisting>$ oscap xccdf generate fix \
