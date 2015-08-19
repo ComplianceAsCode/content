@@ -13,14 +13,14 @@
 <refine-value idref="var_auditd_num_logs" selector="5"/>
 
 <select idref="service_auditd_enabled" selected="true"/>
-<!-- <select idref="bootloader_audit_argument" selected="true"/> reason: needs to be ported to RHEL-7 -->
+<select idref="bootloader_audit_argument" selected="true"/>
 <select idref="auditd_data_retention_num_logs" selected="true"/>
 <select idref="auditd_data_retention_max_log_file" selected="true"/>
 <select idref="auditd_data_retention_max_log_file_action" selected="true"/>
 <select idref="auditd_data_retention_space_left_action" selected="true"/>
 <select idref="auditd_data_retention_admin_space_left_action" selected="true"/>
 <select idref="auditd_data_retention_action_mail_acct" selected="true"/>
-<!-- <select idref="configure_auditd_audispd" selected="true"/> reason: needs to be implemented for both RHEL-6 && RHEL-7 -->
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true"/>
 <select idref="audit_rules_time_adjtimex" selected="true"/>
 <select idref="audit_rules_time_settimeofday" selected="true"/>
 <select idref="audit_rules_time_stime" selected="true"/>
@@ -56,8 +56,8 @@
 <select idref="service_chronyd_or_ntpd_enabled" selected="true"/>
 <!-- <select idref="chronyd_specify_remote_server" selected="true"/> reason: needs to be implemented for RHEL-7 for chronyd service -->
 <!-- <select idref="chronyd_specify_multiple_servers" selected="true"/> reason: needs to be implemented for RHEL-7 for chronyd service -->
-<!-- <select idref="rpm_verify_permissions" selected="true"/> reason: needs to be ported to RHEL-7 -->
-<!-- <select idref="rpm_verify_hashes" selected="true"/> reason: needs to be ported to RHEL-7 -->
+<select idref="rpm_verify_permissions" selected="true"/>
+<select idref="rpm_verify_hashes" selected="true"/>
 <!-- <select idref="install_hids" selected="true"/> reason: needs to be implemented for both RHEL-6 & RHEL-7 -->
 <!-- <select idref="rsyslog_file_permissions" selected="true"/> reason: needs to be implemented for RHEL-7 -->
 <!-- <select idref="userowner_rsyslog_files" selected="true"/> reason: needs to be implemented for RHEL-7 -->

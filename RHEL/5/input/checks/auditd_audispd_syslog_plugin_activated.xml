@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="auditd_audispd_syslog_plugin_activated" version="2">
+    <metadata>
+      <title>Send Audit Logs To Remote Server</title>
+      <affected family="unix">
+        <platform>CentOS 4</platform>
+        <platform>CentOS 5</platform>
+        <platform>Red Hat Enterprise Linux 4</platform>
+        <platform>Red Hat Enterprise Linux 5</platform>
+      </affected>
+      <description>The system must be configured to send audit records to a remote audit server.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_audit_enabled_on_kernel_cmdline" comment="check for audit=1 in /boot/grub/grub.conf" />
+      <criterion test_ref="test_audispds_syslog_plugin_enabled" comment="check if audispd's syslog plugin activated in /etc/audisp/plugins.d/syslog.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="check for audit=1 in /boot/grub/grub.conf"  id="test_audit_enabled_on_kernel_cmdline" version="1">
+    <ind:object object_ref="object_audit_enabled_on_kernel_cmdline" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_enabled_on_kernel_cmdline" version="1">
+    <ind:filepath>/boot/grub/grub.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*kernel\s/vmlinuz.*audit=(1).*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="check if audispd's syslog plugin activated in /etc/audisp/plugins.d/syslog.conf"  id="test_audispds_syslog_plugin_enabled" version="1">
+    <ind:object object_ref="object_audispds_syslog_plugin_enabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audispds_syslog_plugin_enabled" version="1">
+    <ind:filepath>/etc/audisp/plugins.d/syslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*active[\s]*=[\s]*(yes)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
