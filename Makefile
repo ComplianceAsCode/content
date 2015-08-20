@@ -36,7 +36,7 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium rpm zipfile
+all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium rpm
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist
 
 fedora:
@@ -141,22 +141,20 @@ tarball: rpmroot
 	cd $(RPMBUILD) && tar -czf $(PKG).tar.gz $(PKG)
 	cp $(RPMBUILD)/$(PKG).tar.gz $(TARBALL)
 
-zipfile: rhel6 rpmroot
-	# Create a zipfile release, since many SCAP
-	# tools desire content in that format
-	# (Note: By default zip will store the full path
-	#	 relative to the current directory, need
-	#	 to cd into $(RPMBUILD)
-	cp RHEL/6/output/ssg-* $(RPMBUILD)/ZIPS/
-	cp JBossEAP5/eap5-* $(RPMBUILD)/ZIPS/
-	# Originally attempted to `cd $(RPMBUILD)/ZIPS` and
-	# make the zip from there, however it still placed it
-	# at working directory. Should look into this sometime
-	#
-	#cd $(RPMBUILD)/ZIPS
-	#zip -r $(PKG).zip . * -j
-	zip -r $(PKG).zip $(RPMBUILD)/ZIPS/* -j
-	mv $(PKG).zip $(RPMBUILD)/ZIPS/
+zipfile: dist
+	# ZIP only contains source datastreams and kickstarts, people who
+	# want sources to build from should get the tarball instead.
+	rm -rf $(PKG)
+	mkdir $(PKG)
+	cp README.md $(PKG)/
+	cp Contributors.md $(PKG)/
+	cp LICENSE $(PKG)/
+	cp */dist/content/*-ds.xml $(PKG)/
+	cp */*/dist/content/*-ds.xml $(PKG)/
+	mkdir $(PKG)/kickstart
+	cp RHEL/{6,7}/kickstart/*-ks.cfg $(PKG)/kickstart/
+	zip -r $(PKG).zip $(PKG)/
+	rm -r $(PKG)/
 
 version-update:
 	@echo -e "\nUpdating $(RPM_SPEC) version, release, and changelog..."
