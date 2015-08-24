@@ -677,11 +677,11 @@
 		<VMSinfo VKey="38618" SVKey="50419" VRelease="2" />
 		<title>The avahi service must be disabled.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="service_ntpd_enabled" ownerid="RHEL-06-000247" disa="160" severity="medium">
+	<overlay owner="disastig" ruleid="service_chronyd_or_ntpd_enabled" ownerid="RHEL-06-000247" disa="160" severity="medium">
 		<VMSinfo VKey="38620" SVKey="50421" VRelease="1" />
 		<title>The system clock must be synchronized continuously, or at least daily.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="ntpd_specify_remote_server" ownerid="RHEL-06-000248" disa="160" severity="medium">
+	<overlay owner="disastig" ruleid="chronyd_or_ntpd_specify_remote_server" ownerid="RHEL-06-000248" disa="160" severity="medium">
 		<VMSinfo VKey="38621" SVKey="50422" VRelease="1" />
 		<title>The system clock must be synchronized to an authoritative DoD time source.</title>
 	</overlay>
