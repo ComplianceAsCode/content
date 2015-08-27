@@ -126,12 +126,12 @@ protected from unauthorized access.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="groupowner_rsyslog_files" severity="medium">
+<Rule id="rsyslog_files_groupownership" severity="medium">
 <title>Ensure Log Files Are Owned By Appropriate Group</title>
 <description>The group-owner of all log files written by
 <tt>rsyslog</tt> should be root.
 These log files are determined by the second part of each Rule line in
-<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
 For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
 run the following command to inspect the file's group owner:
 <pre>$ ls -l <i>LOGFILE</i></pre>
@@ -142,7 +142,7 @@ correct this:
 <ocil clause="the group-owner is not root">
 The group-owner of all log files written by <tt>rsyslog</tt> should be root.
 These log files are determined by the second part of each Rule line in
-<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
 To see the group-owner of a given log file, run the following command:
 <pre>$ ls -l <i>LOGFILE</i></pre>
 </ocil>
