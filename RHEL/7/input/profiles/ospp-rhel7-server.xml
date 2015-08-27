@@ -1,0 +1,135 @@
+<Profile id="ospp-rhel7-server" extends="common">
+<title override="true">Protection Profile for General Purpose Operating Systems Version 4.0 - Red Hat Enterprise Linux 7 Server</title>
+<description override="true">This profile is being developed under the National Information Assurance Partnership - The scope of this Protection Profile (PP) is to describe the security functionality of operating systems in terms of Common Criteria and to define functional and assurance requirements for such products. An operating system is software that manages computer hardware and software resources, and provides common services for application programs. The hardware it manages may be physical or virtual.</description>
+
+<!-- Security Management (FMT): FMT_MOF_EXT.1 -->
+<!-- https://www.niap-ccevs.org/pp/PP_OS_v4.0/ -->
+<!-- https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/ -->
+
+<!-- STIG refinement values. -->
+<!-- <refine-value idref="var_password_pam_minlen" selector="15" /> -->
+<!-- <refine-value idref="var_password_pam_ocredit" selector="1" /> -->
+<!-- <refine-value idref="var_password_pam_dcredit" selector="1" /> -->
+<!-- <refine-value idref="var_password_pam_ucredit" selector="1" /> -->
+<!-- <refine-value idref="var_password_pam_lcredit" selector="1" /> -->
+
+<!-- BEGIN STIG RULE SELECTION -->
+
+<!-- configure minimum password length -->
+<select idref="accounts_password_pam_minlen" selected="true" />
+
+<!-- configure minimum number of special characters in password -->
+<select idref="accounts_password_pam_ocredit" selector="true" />
+
+<!-- configure minimum number of numeric characters in password -->
+<select idref="accounts_password_pam_dcredit" selector="true" />
+
+<!-- configure minimum number of uppercase characters in password -->
+<select idref="accounts_password_pam_ucredit" selector="true" />
+
+<!-- configure minimum number of lowercase characters in password -->
+<select idref="accounts_password_pam_lcredit" selector="true" />
+
+<!-- enable/disable screen lock -->
+<select idref="dconf_gnome_screensaver_idle_delay" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_lock_enabled" selected="true"/>
+<!-- needs to be created for RHEL-7 -->
+<select idref="dconf_gnome_screensaver_mode_blank" selected="true"/> 
+
+<!-- configure remote connection inactivity timeout -->
+<select idref="sshd_set_idle_timeout" selected="true"/>
+
+<!-- enable/disable unauthenticated logon -->
+<select idref="accounts_password_all_shadowed" selected="true"/>
+<select idref="no_empty_passwords" selected="true"/>
+<select idref="display_login_attempts" selected="true"/>
+
+<!-- configure lockout policy for unsuccessful authentication attempts through [selection: timeouts between attempts, limiting number of attempts during a time period] -->
+<select idref="accounts_passwords_pam_faillock_deny" selected="true"/>
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true"/>
+
+<!-- configure host-based firewall -->
+<select idref="set_firewalld_default_rule_forward" selected="true"/>
+
+<!-- configure name/address of directory server to bind with -->
+<select idref="configure_openldap_client" selected="true"/>
+
+<!-- configure name/address of remote management server from which to receive management settings -->
+<!-- Should this check for RHN/RHSM settings or for Satellite 5/6 settings> -->
+
+<!-- configure name/address of audit/logging server to which to send audit/logging records --> 
+<select idref="rsyslog_send_messages_to_logserver" selected="true" />
+<!-- needs to be implemented for RHEL-7 -->
+<select idref="rsyslog_file_permissions" selected="true"/>
+<select idref="userowner_rsyslog_files" selected="true"/> 
+<select idref="groupowner_rsyslog_files" selected="true"/> 
+
+<!-- configure local audit storage capacity -->
+<select idref="auditd_data_retention_num_logs" selected="true"/>
+<select idref="auditd_data_retention_max_log_file" selected="true"/>
+<select idref="auditd_data_retention_max_log_file_action" selected="true"/>
+<select idref="auditd_data_retention_space_left_action" selected="true"/>
+<select idref="auditd_data_retention_admin_space_left_action" selected="true"/>
+<select idref="auditd_data_retention_action_mail_acct" selected="true"/>
+
+<!-- configure audit rules -->
+<select idref="service_auditd_enabled" selected="true"/>
+<select idref="bootloader_audit_argument" selected="true"/>
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true"/>
+<select idref="audit_rules_time_adjtimex" selected="true"/>
+<select idref="audit_rules_time_settimeofday" selected="true"/>
+<select idref="audit_rules_time_stime" selected="true"/>
+<select idref="audit_rules_time_clock_settime" selected="true"/>
+<select idref="audit_rules_time_watch_localtime" selected="true"/>
+<select idref="audit_rules_usergroup_modification" selected="true"/>
+<select idref="audit_rules_networkconfig_modification" selected="true"/>
+<select idref="file_permissions_var_log_audit" selected="true"/>
+<select idref="file_ownership_var_log_audit" selected="true"/>
+<select idref="audit_rules_mac_modification" selected="true"/>
+<select idref="audit_rules_dac_modification_chmod" selected="true"/>
+<select idref="audit_rules_dac_modification_chown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmod" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmodat" selected="true"/>
+<select idref="audit_rules_dac_modification_fchown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchownat" selected="true"/>
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lchown" selected="true"/>
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_removexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_setxattr" selected="true"/>
+<select idref="audit_rules_login_events" selected="true"/>
+<select idref="audit_rules_session_events" selected="true"/>
+<select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
+<select idref="audit_rules_privileged_commands" selected="true"/>
+<select idref="audit_rules_media_export" selected="true"/>
+<select idref="audit_rules_file_deletion_events" selected="true"/>
+<select idref="audit_rules_sysadmin_actions" selected="true"/>
+<select idref="audit_rules_kernel_module_loading" selected="true"/>
+<select idref="audit_rules_immutable" selected="true"/>
+
+<!-- configure name/address of network time server -->
+<select idref="service_chronyd_or_ntpd_enabled" selected="true"/>
+<!-- needs to be ported to RHEL-7 -->
+<select idref="chronyd_specify_remote_server" selected="true"/>
+<select idref="chronyd_specify_multiple_servers" selected="true"/> 
+
+<!-- enable/disable automatic software update -->
+<select idref="ensure_redhat_gpgkey_installed" selected="true" />
+<select idref="ensure_gpgcheck_globally_activated" selected="true" />
+<select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="security_patches_up_to_date" selected="true" />
+
+<!-- configure WiFi interface -->
+<!-- Subject to change -->
+
+<!-- enable/disable Bluetooth interface -->
+<select idref="kernel_module_bluetooth_disabled" selected="true"/>
+<select idref="service_bluetooth_disabled" selected="true" />
+
+<!-- configure USB interfaces -->
+<select idref="kernel_module_usb-storage_disabled" selected="true"/>
+
+</Profile>
