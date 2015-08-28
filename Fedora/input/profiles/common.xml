@@ -47,13 +47,11 @@
     <!-- Ensure that No Dangerous Directories Exist in Root's Path -->
       <select idref="root_path_no_groupother_writable" selected="true"/>
 
-<!-- rsyslog section rules -->
+<!-- Network Configuration and Firewalls section rules -->
+  <select idref="service_firewalld_enabled" selected="true"/>
+  <select idref="set_firewalld_default_zone" selected="true"/>
 
-  <select idref="rsyslog_files_permissions" selected="true"/>
-  <select idref="rsyslog_files_ownership" selected="true"/>
-  <select idref="rsyslog_files_groupownership" selected="true"/>
-
-<!-- Audit section rules -->
+<!-- System Accounting with Auditd section rules -->
 
   <select idref="bootloader_audit_argument" selected="true"/>
   <refine-value idref="var_auditd_num_logs" selector="5"/>
