@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="chronyd_or_ntpd_specify_multiple_servers" version="1">
+    <metadata>
+      <title>Specify Multiple Remote chronyd Or ntpd NTP Servers for Time Data</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Multiple remote chronyd or ntpd NTP Servers for time synchronization should be specified (and dependencies are met)</description>
+      <reference source="JL" ref_id="RHEL7_20150824" ref_url="test_attestation" />
+    </metadata>
+
+    <criteria operator="OR">
+      <criteria comment="chronyd enabled and multiple remote servers specified" operator="AND">
+        <extend_definition comment="service chronyd enabled" definition_ref="service_chronyd_enabled" />
+        <extend_definition comment="multiple chronyd remote servers specified" definition_ref="chronyd_specify_multiple_servers" />
+      </criteria>
+      <criteria comment="ntpd enabled and multile remote servers specified" operator="AND">
+        <extend_definition comment="service ntpd enabled" definition_ref="service_ntpd_enabled" />
+        <extend_definition comment="multiple ntpd remote servers specified" definition_ref="ntpd_specify_multiple_servers" />
+      </criteria>
+    </criteria>
+
+  </definition>
+</def-group>

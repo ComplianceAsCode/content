@@ -89,11 +89,25 @@ http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="ntpd_specify_remote_server" severity="medium">
+<Rule id="chronyd_or_ntpd_specify_remote_server" severity="medium">
 <title>Specify a Remote NTP Server</title>
-<description>To specify a remote NTP server for time synchronization, edit
-the file <tt>/etc/ntp.conf</tt>. Add or correct the following lines,
-substituting the IP or hostname of a remote NTP server for <em>ntpserver</em>:
+<description>Depending on specific functional requirements of a concrete
+production environment, the Red Hat Enterprise Linux 7 Server system can be
+configured to utilize the services of the <tt>chronyd</tt> NTP daemon (the
+default), or services of the <tt>ntpd</tt> NTP daemon. Refer to
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html
+for more detailed comparison of the features of both of the choices, and for
+further guidance how to choose between the two NTP daemons.
+<br />
+To specify a remote NTP server for time synchronization, perform the following:
+<ul>
+<li> if the system is configured to use the <tt>chronyd</tt> as the NTP daemon (the
+default), edit the file <tt>/etc/chrony.conf</tt> as follows,</li>
+<li> if the system is configured to use the <tt>ntpd</tt> as the NTP daemon,
+edit the file <tt>/etc/ntp.conf</tt> as documented below.</li>
+</ul>
+Add or correct the following lines, substituting the IP or hostname of a remote
+NTP server for <em>ntpserver</em>:
 <pre>server <i>ntpserver</i></pre>
 This instructs the NTP software to contact that remote server to obtain time
 data.
@@ -101,26 +115,44 @@ data.
 <ocil clause="this is not the case">
 To verify that a remote NTP service is configured for time synchronization,
 open the following file:
-<pre>/etc/ntp.conf</pre>
+<ul>
+<li><pre>/etc/chrony.conf</pre> in the case the system in question is
+configured to use the <tt>chronyd</tt> as the NTP daemon (default setting)</li>
+<li><pre>/etc/ntp.conf</pre> in the case the system in question is configured
+to use the <tt>ntpd</tt> as the NTP daemon</li>
+</ul>
 In the file, there should be a section similar to the following:
 <pre>server <i>ntpserver</i></pre>
 </ocil>
-<rationale>Synchronizing with an NTP server makes it possible
-to collate system logs from multiple sources or correlate computer events with
-real time events.
+<rationale>Synchronizing with an NTP server makes it possible to collate system
+logs from multiple sources or correlate computer events with real time events.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="ntpd_specify_remote_server" />
+<oval id="chronyd_or_ntpd_specify_remote_server" />
 <ref nist="AU-8(1)" disa="160" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="ntpd_specify_multiple_servers">
+<Rule id="chronyd_or_ntpd_specify_multiple_servers">
 <title>Specify Additional Remote NTP Servers</title>
-<description>Additional NTP servers can be specified for time synchronization
-in the file <tt>/etc/ntp.conf</tt>.  To do so, add additional lines of the
-following form, substituting the IP address or hostname of a remote NTP server for
-<em>ntpserver</em>:
+<description>Depending on specific functional requirements of a concrete
+production environment, the Red Hat Enterprise Linux 7 Server system can be
+configured to utilize the services of the <tt>chronyd</tt> NTP daemon (the
+default), or services of the <tt>ntpd</tt> NTP daemon. Refer to
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html
+for more detailed comparison of the features of both of the choices, and for
+further guidance how to choose between the two NTP daemons.
+<br />
+Additional NTP servers can be specified for time synchronization. To do so,
+perform the following:
+<ul>
+<li> if the system is configured to use the <tt>chronyd</tt> as the NTP daemon
+(the default), edit the file <tt>/etc/chrony.conf</tt> as follows,</li>
+<li> if the system is configured to use the <tt>ntpd</tt> as the NTP daemon,
+edit the file <tt>/etc/ntp.conf</tt> as documented below.</li>
+</ul>
+Add additional lines of the following form, substituting the IP address or
+hostname of a remote NTP server for <em>ntpserver</em>:
 <pre>server <i>ntpserver</i></pre>
 </description>
 <rationale>Specifying additional NTP servers increases the availability of
@@ -129,7 +161,7 @@ unavailable. This is typical for a system acting as an NTP server for
 other systems.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="ntpd_specify_multiple_servers"/>
+<oval id="chronyd_or_ntpd_specify_multiple_servers"/>
 <ref nist="AU-8(1)" />
 </Rule>
 
