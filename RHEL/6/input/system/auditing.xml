@@ -714,15 +714,16 @@ audited.</rationale>
 </Rule>
 
 <Rule id="file_permissions_var_log_audit">
-<title>System Audit Logs Must Have Mode 0640 or Less Permissive</title>
+<title>System Audit Logs Must Have Mode 0600 or Less Permissive</title>
 <description>
 Change the mode of the audit log files with the following command:
-<pre>$ sudo chmod 0640 <i>audit_file</i></pre>
+<pre>$ sudo chmod 0600 <i>audit.log</i>
+$ sudo chmod 0400 <i>audit.log.*</i></pre>
 </description>
 <ocil clause="any are more permissive">
 Run the following command to check the mode of the system audit logs:
 <pre>$ sudo ls -l /var/log/audit</pre>
-Audit logs must be mode 0640 or less permissive.
+Audit logs must be mode 0600 or less permissive.
 </ocil>
 <rationale>
 If users can write to audit logs, audit trails can be modified or destroyed.
