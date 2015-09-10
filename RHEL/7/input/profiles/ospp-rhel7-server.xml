@@ -1,4 +1,4 @@
-<Profile id="ospp-rhel7-server" extends="common">
+<Profile id="ospp-rhel7-server">
 <title override="true">United States Government Configuration Baseline</title>
 <description override="true">This profile is being developed under the National Information Assurance Partnership. The scope of this profile is to configure Red Hat Enteprise Linux 7 against the NIAP Protection Profile for General Purpose Operating Systems v4.0</description>
 
@@ -14,19 +14,19 @@
 
 <!-- configure minimum number of special characters in password -->
 <refine-value idref="var_password_pam_ocredit" selector="1" />
-<select idref="accounts_password_pam_ocredit" selector="true" />
+<select idref="accounts_password_pam_ocredit" selected="true" />
 
 <!-- configure minimum number of numeric characters in password -->
 <refine-value idref="var_password_pam_dcredit" selector="1" />
-<select idref="accounts_password_pam_dcredit" selector="true" />
+<select idref="accounts_password_pam_dcredit" selected="true" />
 
 <!-- configure minimum number of uppercase characters in password -->
 <refine-value idref="var_password_pam_ucredit" selector="1" />
-<select idref="accounts_password_pam_ucredit" selector="true" />
+<select idref="accounts_password_pam_ucredit" selected="true" />
 
 <!-- configure minimum number of lowercase characters in password -->
 <refine-value idref="var_password_pam_lcredit" selector="1" />
-<select idref="accounts_password_pam_lcredit" selector="true" />
+<select idref="accounts_passworedpam_lcredit" selected="true" />
 
 <!-- enable/disable screen lock -->
 <select idref="package_screen_installed" selected="true" />
@@ -34,8 +34,6 @@
 <!-- configure screen lock inactivity timeout -->
 <!-- TO DO : enable vlock and bash TMOUT -->
 
-<!-- enable/disable DAR protection -->
-<select idref="encrypt_partitions" selected="true" />
 <!-- configure remote connection inactivity timeout -->
 <select idref="sshd_set_idle_timeout" selected="true"/>
 
@@ -80,12 +78,12 @@
 <select idref="configure_auditd_audispd" selected="true" />
 
 <!-- configure local audit storage capacity -->
-<refine-value idref="var_auditd_num_logs" selector="xxxx" />
-<refine-value idref="var_auditd_max_log_file" selector="xxxx" />
-<refine-value idref="var_auditd_max_log_file_action" selector="xxxx" />
-<refine-value idref="var_auditd_space_left_action" selector="xxx" />
-<refine-value idref="var_auditd_admin_space_left_action" selector="xxx" />
-<refine-value idref="var_auditd_action_mail_acct" selector="xxxx">
+<refine-value idref="var_auditd_num_logs" selector="5" />
+<refine-value idref="var_auditd_max_log_file" selector="6" />
+<refine-value idref="var_auditd_max_log_file_action" selector="rotate" />
+<refine-value idref="var_auditd_space_left_action" selector="email" />
+<refine-value idref="var_auditd_admin_space_left_action" selector="single" />
+<refine-value idref="var_auditd_action_mail_acct" selector="root" />
 
 <select idref="configure_auditd_num_logs" selected="true" />
 <select idref="configure_auditd_max_log_file" selected="true" />
@@ -123,7 +121,7 @@
 <select idref="audit_rules_dac_modification_setxattr" selected="true" />
 <select idref="audit_rules_login_events" selected="true" />
 <select idref="audit_rules_session_events" selected="true" />
-<select idref="audit_rules_unsuccessful_file_modification" selected="true" \>
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
 <select idref="audit_rules_privileged_commands" selected="true" />
 <select idref="audit_rules_media_export" selected="true" />
 <select idref="audit_rules_file_deletion_events" selected="true" />
@@ -182,11 +180,9 @@
 <refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
 
 <select idref="sshd_allow_only_protocol2" selected="true" />
-<select idref="sshd_set_idle_timeout" selected="true" />
 <select idref="sshd_set_keepalive" selected="true" />
 <select idref="sshd_disable_rhosts" selected="true" />
 <select idref="disable_host_auth" selected="true" />
-<select idref="sshd_disable_empty_passwords" selected="true" />
 <select idref="sshd_do_not_permit_user_env" selected="true" />
 <select idref="sshd_use_approved_ciphers" selected="true" />
 <select idref="sshd_use_approved_macs" selected="true" />
