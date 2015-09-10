@@ -5,15 +5,18 @@
     <metadata>
       <title>Disable dccp Kernel Module</title>
       <affected family="unix">
-        <platform>multi_platform_rhel</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>The kernel module dccp should be disabled.</description>
-      <reference source="JL" ref_id="RHEL6_20140915" ref_url="test_attestation"/>
-      <reference source="JL" ref_id="RHEL7_20140915" ref_url="test_attestation"/>
+      <reference source="galford" ref_id="20150819" ref_url="test_attestation"/>
     </metadata>
     <criteria operator="OR">
       <criterion test_ref="test_kernmod_dccp_disabled" comment="kernel module dccp disabled in /etc/modprobe.d" />
       <criterion test_ref="test_kernmod_dccp_modprobeconf" comment="kernel module dccp disabled in /etc/modprobe.conf" />
+      <criterion test_ref="test_kernmod_dccp_etcmodules-load" comment="kernel module dccp disabled in /etc/modules-load.d" />
+      <criterion test_ref="test_kernmod_dccp_runmodules-load" comment="kernel module dccp disabled in /run/modules-load.d" />
+      <criterion test_ref="test_kernmod_dccp_libmodules-load" comment="kernel module dccp disabled in /usr/lib/modules-load.d" />
     </criteria>
   </definition>
 
@@ -27,6 +30,21 @@
     <ind:object object_ref="obj_kernmod_dccp_modprobeconf" />
   </ind:textfilecontent54_test>
 
+  <ind:textfilecontent54_test id="test_kernmod_dccp_etcmodules-load" version="1" check="all"
+  comment="kernel module dccp disabled in /etc/modules-load.d">
+    <ind:object object_ref="obj_kernmod_dccp_etcmodules-load" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_dccp_runmodules-load" version="1" check="all"
+  comment="kernel module dccp disabled in /run/modules-load.d">
+    <ind:object object_ref="obj_kernmod_dccp_runmodules-load" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_dccp_libmodules-load" version="1" check="all"
+  comment="kernel module dccp disabled in /usr/lib/modules-load.d">
+    <ind:object object_ref="obj_kernmod_dccp_libmodules-load" />
+  </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="obj_kernmod_dccp_disabled"
   version="1" comment="kernel module dccp disabled">
     <ind:path>/etc/modprobe.d</ind:path>
@@ -38,6 +56,30 @@
   <ind:textfilecontent54_object id="obj_kernmod_dccp_modprobeconf"
   version="1" comment="Check deprecated /etc/modprobe.conf for disablement of dccp">
     <ind:filepath>/etc/modprobe.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*install\s+dccp\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_dccp_etcmodules-load"
+  version="1" comment="kernel module dccp disabled in /etc/modules-load.d">
+    <ind:path>/etc/modules-load.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*install\s+dccp\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_dccp_runmodules-load"
+  version="1" comment="kernel module dccp disabled in /run/modules-load.d">
+    <ind:path>/run/modules-load.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*install\s+dccp\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_dccp_libmodules-load"
+  version="1" comment="kernel module dccp disabled in /usr/lib/modules-load.d">
+    <ind:path>/usr/lib/modules-load.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^\s*install\s+dccp\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
