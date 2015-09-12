@@ -62,20 +62,19 @@
 <select idref="accounts_passwords_pam_faillock_interval" selected="true" />
 
 <!-- configure host-based firewall -->
-<select idref="service_ip6tables_enabled" selected="true" />
-<select idref="service_iptables_enabled" selected="true" />
-<select idref="set_iptables_default_rule" selected="true" />
-<select idref="set_iptables_default_rule_forward" selected="true" />
+<select idref="service_firewalld_enabled" selected="true" />
+<select idref="set_firewalld_default_zone" selected="true" />
+<!-- <select idref="set_iptables_default_rule_forward" selected="true" /> -->
 
 <!-- configure name/address of directory server to bind with -->
-<select idref="configure_openldap_client" selected="true"/>
+<!-- <select idref="configure_openldap_client" selected="true"/> -->
 
 <!-- configure name/address of remote management server from which to receive management settings -->
 <!-- Should this check for RHN/RHSM settings or for Satellite 5/6 settings> -->
 
 <!-- configure name/address of audit/logging server to which to send audit/logging records --> 
 <select idref="rsyslog_send_messages_to_logserver" selected="true" />
-<select idref="configure_auditd_audispd" selected="true" />
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
 
 <!-- configure local audit storage capacity -->
 <refine-value idref="var_auditd_num_logs" selector="5" />
@@ -85,14 +84,13 @@
 <refine-value idref="var_auditd_admin_space_left_action" selector="single" />
 <refine-value idref="var_auditd_action_mail_acct" selector="root" />
 
-<select idref="configure_auditd_num_logs" selected="true" />
-<select idref="configure_auditd_max_log_file" selected="true" />
-<select idref="configure_auditd_max_log_file_action" selected="true" />
+<select idref="auditd_data_retention_num_logs" selected="true" />
+<select idref="auditd_data_retention_max_log_file" selected="true" />
+<select idref="auditd_data_retention_max_log_file_action" selected="true" />
 <select idref="auditd_data_retention_space_left_action" selected="true" />
 <select idref="auditd_data_retention_admin_space_left_action" selected="true" />
 <select idref="auditd_data_retention_action_mail_acct" selected="true" />
 <select idref="file_permissions_var_log_audit" selected="true" />
-<select idref="audit_logs_rootowner" selected="true" />
 
 <!-- configure audit rules -->
 <select idref="service_auditd_enabled" selected="true" />
@@ -131,11 +129,8 @@
 
 <!-- configure name/address of network time server -->
 <select idref="service_chronyd_or_ntpd_enabled" selected="true"/>
-<select idref="ntpd_specify_remote_server" selected="true" />
-
-<!-- needs to be ported to RHEL-7 -->
-<select idref="chronyd_specify_remote_server" selected="true"/>
-<select idref="chronyd_specify_multiple_servers" selected="true"/> 
+<select idref="chronyd_or_ntpd_specify_remote_server" selected="true"/>
+<select idref="chronyd_or_ntpd_specify_multiple_servers" selected="true"/> 
 
 <!-- enable/disable automatic software update -->
 <select idref="security_patches_up_to_date" selected="true" />
@@ -149,7 +144,7 @@
 <select idref="service_bluetooth_disabled" selected="true" />
 
 <!-- configure USB interfaces -->
-<select idref="kernel_module_usb" selected="true" />
+<select idref="kernel_module_usb-storage_disabled" selected="true" />
 <select idref="bootloader_nousb_argument" selected="true" />
 <select idref="bios_disable_usb_boot" selected="true" />
 
@@ -228,7 +223,6 @@
 
 <!--	ASSIGNMENTS: DAR PROTECTION -->
 <select idref="encrypt_partitions" selected="true" />
-<select idref="auditd_audispd_syslog_plugin_activated" selected="true"/>
 <select idref="ensure_redhat_gpgkey_installed" selected="true" />
 <select idref="ensure_gpgcheck_globally_activated" selected="true" />
 <select idref="ensure_gpgcheck_never_disabled" selected="true" />
