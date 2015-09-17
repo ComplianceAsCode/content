@@ -30,7 +30,7 @@ Rsyslog is installed by default.
 The rsyslog package provides the rsyslog daemon, which provides
 system logging services.
 </rationale>
-<oval id="package_rsyslog_installed" />
+<!--oval id="package_rsyslog_installed" /-->
 <ref nist="AU-9(2)" disa="1311,1312"/>
 </Rule>
 
@@ -46,7 +46,7 @@ system logging services.
 <rationale>The <tt>rsyslog</tt> service must be running in order to provide
 logging services, which are essential to system administration.
 </rationale>
-<oval id="service_rsyslog_enabled" />
+<!--oval id="service_rsyslog_enabled" /-->
 <ref nist="AU-12" disa="1557,1312,1311" />
 </Rule>
 
@@ -242,7 +242,7 @@ system is compromised and its local logs are suspect. Forwarding log messages
 to a remote loghost also provides system administrators with a centralized
 place to view the status of multiple hosts within the enterprise.
 </rationale>
-<oval id="rsyslog_remote_loghost" />
+<!--oval id="rsyslog_remote_loghost" /-->
 <ref nist="AU-3(2),AU-9" disa="1348, 136" />
 </Rule>
 </Group>
@@ -277,7 +277,7 @@ Any process which receives messages from the network incurs some risk
 of receiving malicious messages. This risk can be eliminated for
 rsyslog by configuring it not to listen on the network.
 </rationale>
-<oval id="rsyslog_nolisten" />
+<!--oval id="rsyslog_nolisten" /-->
 <ref nist="AU-9(2),AC-4" />
 </Rule>
 
@@ -359,7 +359,7 @@ To determine the status and frequency of logrotate, run the following command:
 If logrotate is configured properly, output should include references to 
 <tt>/etc/cron.daily</tt>.
 </ocil>
-<oval id="ensure_logrotate_activated" />
+<!--oval id="ensure_logrotate_activated" /-->
 <ref nist="AU-9" disa="366" />
 </Rule>
 </Group>
@@ -376,7 +376,7 @@ Is this machine the central log server? If so, edit the file <tt>/etc/logwatch/c
 on the logserver itself. The <tt>HostLimit</tt> setting tells Logwatch to report on all hosts, not just the one on which it 
 is running. 
 <pre> HostLimit = no </pre> </description>
-<oval id="logwatch_configured_hostlimit" />
+<!--oval id="logwatch_configured_hostlimit" /-->
 </Rule>
 
 <Rule id="configure_logwatch_splithosts">
@@ -386,7 +386,7 @@ If <tt>SplitHosts</tt> is set, Logwatch will separate entries by hostname. This 
 more usable. If it is not set, then Logwatch will not report which host generated a given log entry, and that 
 information is almost always necessary
 <pre> SplitHosts = yes </pre> </description>
-<oval id="logwatch_configured_splithosts" />
+<!--oval id="logwatch_configured_splithosts" /-->
 </Rule>
 
 <!-- Ensure that <tt>logwatch.pl</tt> is run nightly from <tt>cron</tt>. (This is the default): 
