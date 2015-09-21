@@ -87,8 +87,9 @@ chromium:
 chromium-dist:
 	cd Chromium/ && $(MAKE) dist
 
-validate: fedora rhel6 rhel7 openstack rhevm3 chromium firefox jre
+validate: fedora rhel5 rhel6 rhel7 openstack rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
+	cd RHEL/5/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
