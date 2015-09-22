@@ -449,8 +449,9 @@ risk of the accidental (or intentional) activation of talk services.
 Internet talk protocol, which allows the user to chat with other users on
 different systems. Talk is a communication program which copies lines from one
 terminal to the terminal of another user.
+<package-remove-macro package="talk" />
 </description>
-<ocil><package-remove-macro package="talk"/></ocil>
+<ocil><package-check-macro package="talk"/></ocil>
 <rationale>
 The talk software presents a security risk as it uses unencrypted protocols
 for communications. Removing the <tt>talk</tt> package decreases the

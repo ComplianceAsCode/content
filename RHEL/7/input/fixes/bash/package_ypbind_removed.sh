@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/package_ypbind_removed.sh
