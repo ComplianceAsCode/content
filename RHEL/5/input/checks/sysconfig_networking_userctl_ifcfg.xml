@@ -23,7 +23,7 @@
   <ind:textfilecontent54_object id="obj_sysconfig_networking_userctl_ifcfg" version="1">
     <ind:path>/etc/sysconfig/network-scripts</ind:path>
     <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
-    <ind:pattern operation="case insensitive equals">USERCTL=yes</ind:pattern>
+    <ind:pattern operation="pattern match">^USERCTL=yes$</ind:pattern>
     <ind:instance datatype="int" operation="greater than">0</ind:instance>
   </ind:textfilecontent54_object>
 

@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="accounts_unique_id" version="1">
+  <definition class="compliance" id="accounts_unique_uid" version="1">
     <metadata>
       <title>All Accounts Have Unique IDs</title>
       <affected family="unix">
@@ -24,10 +24,10 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <unix:file_test check="all" check_existence="all_exist" comment="Testing account name uniqueness" id="test_accounts_unique_id" version="1">
-    <unix:object object_ref="object_accounts_unique_id" />
-    <unix:state state_ref="state_accounts_unique_id" />
-  </unix:file_test>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Testing account name uniqueness" id="test_accounts_unique_id" version="1">
+    <ind:object object_ref="object_accounts_unique_id" />
+    <ind:state state_ref="state_accounts_unique_id" />
+  </ind:textfilecontent54_test>
   
   <ind:textfilecontent54_object id="object_accounts_unique_id" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
