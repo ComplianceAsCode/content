@@ -1,1 +1,1 @@
-echo "install usb-storage /bin/true" > /etc/modprobe.d/usb-storage.conf
+../../../../../shared/fixes/bash/kernel_module_usb-storage_disabled.sh
