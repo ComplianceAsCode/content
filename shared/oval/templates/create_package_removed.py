@@ -16,15 +16,23 @@ import csv
 
 
 def output_check(package_info):
-    pkgname = package_info[0]
-    if pkgname:
-        with open("./template_package_removed", 'r') as templatefile:
-            filestring = templatefile.read()
-            filestring = filestring.replace("PKGNAME", pkgname)
-            with open("./output/package_" + pkgname +
-                      "_removed.xml", 'w+') as outputfile:
-                outputfile.write(filestring)
-                outputfile.close()
+	pkgname = package_info[0]
+	if pkgname:
+		with open("./template_package_removed", 'r') as templatefile:
+			filestring = templatefile.read()
+			filestring = filestring.replace("PKGNAME", pkgname)
+		with open("./output/package_" + pkgname + "_removed.xml", 'w+') as outputfile:
+			outputfile.write(filestring)
+			outputfile.close()
+
+		with open("./template_BASH_package_removed", 'r') as bash_template_file:
+			filestring = bash_template_file.read()
+			filestring = filestring.replace("PKGNAME", pkgname)
+		with open("./output/package_" + pkgname + "_removed.sh", 'w+') as bash_output_file:
+			bash_output_file.write(filestring)
+			bash_output_file.close()
+	else:
+		print "ERROR: input violation: the package name must be defined"
 
 
 def main():

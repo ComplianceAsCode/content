@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/package_talk_removed.sh
