@@ -1,4 +1,4 @@
-<Profile id="ospp-rhel7-server" extends="common">
+<Profile id="ospp-rhel7-server">
 <title override="true">United States Government Configuration Baseline</title>
 <description override="true">This profile is being developed under the National Information Assurance Partnership. The scope of this profile is to configure Red Hat Enteprise Linux 7 against the NIAP Protection Profile for General Purpose Operating Systems v4.0</description>
 
@@ -14,19 +14,19 @@
 
 <!-- configure minimum number of special characters in password -->
 <refine-value idref="var_password_pam_ocredit" selector="1" />
-<select idref="accounts_password_pam_ocredit" selector="true" />
+<select idref="accounts_password_pam_ocredit" selected="true" />
 
 <!-- configure minimum number of numeric characters in password -->
 <refine-value idref="var_password_pam_dcredit" selector="1" />
-<select idref="accounts_password_pam_dcredit" selector="true" />
+<select idref="accounts_password_pam_dcredit" selected="true" />
 
 <!-- configure minimum number of uppercase characters in password -->
 <refine-value idref="var_password_pam_ucredit" selector="1" />
-<select idref="accounts_password_pam_ucredit" selector="true" />
+<select idref="accounts_password_pam_ucredit" selected="true" />
 
 <!-- configure minimum number of lowercase characters in password -->
 <refine-value idref="var_password_pam_lcredit" selector="1" />
-<select idref="accounts_password_pam_lcredit" selector="true" />
+<select idref="accounts_password_pam_lcredit" selected="true" />
 
 <!-- enable/disable screen lock -->
 <select idref="package_screen_installed" selected="true" />
@@ -34,8 +34,6 @@
 <!-- configure screen lock inactivity timeout -->
 <!-- TO DO : enable vlock and bash TMOUT -->
 
-<!-- enable/disable DAR protection -->
-<select idref="encrypt_partitions" selected="true" />
 <!-- configure remote connection inactivity timeout -->
 <select idref="sshd_set_idle_timeout" selected="true"/>
 
@@ -55,7 +53,7 @@
 <!-- configure lockout policy for unsuccessful authentication attempts through [selection: timeouts between attempts, limiting number of attempts during a time period] -->
 <refine-value idref="var_password_pam_retry" selector="3" />
 <refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
-<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="605800" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800" />
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
 
 <select idref="accounts_password_pam_retry" selected="true" />
@@ -64,37 +62,35 @@
 <select idref="accounts_passwords_pam_faillock_interval" selected="true" />
 
 <!-- configure host-based firewall -->
-<select idref="service_ip6tables_enabled" selected="true" />
-<select idref="service_iptables_enabled" selected="true" />
-<select idref="set_iptables_default_rule" selected="true" />
-<select idref="set_iptables_default_rule_forward" selected="true" />
+<select idref="service_firewalld_enabled" selected="true" />
+<select idref="set_firewalld_default_zone" selected="true" />
+<!-- <select idref="set_iptables_default_rule_forward" selected="true" /> -->
 
 <!-- configure name/address of directory server to bind with -->
-<select idref="configure_openldap_client" selected="true"/>
+<!-- <select idref="configure_openldap_client" selected="true"/> -->
 
 <!-- configure name/address of remote management server from which to receive management settings -->
 <!-- Should this check for RHN/RHSM settings or for Satellite 5/6 settings> -->
 
 <!-- configure name/address of audit/logging server to which to send audit/logging records --> 
 <select idref="rsyslog_send_messages_to_logserver" selected="true" />
-<select idref="configure_auditd_audispd" selected="true" />
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
 
 <!-- configure local audit storage capacity -->
-<refine-value idref="var_auditd_num_logs" selector="xxxx" />
-<refine-value idref="var_auditd_max_log_file" selector="xxxx" />
-<refine-value idref="var_auditd_max_log_file_action" selector="xxxx" />
-<refine-value idref="var_auditd_space_left_action" selector="xxx" />
-<refine-value idref="var_auditd_admin_space_left_action" selector="xxx" />
-<refine-value idref="var_auditd_action_mail_acct" selector="xxxx">
+<refine-value idref="var_auditd_num_logs" selector="5" />
+<refine-value idref="var_auditd_max_log_file" selector="6" />
+<refine-value idref="var_auditd_max_log_file_action" selector="rotate" />
+<refine-value idref="var_auditd_space_left_action" selector="email" />
+<refine-value idref="var_auditd_admin_space_left_action" selector="single" />
+<refine-value idref="var_auditd_action_mail_acct" selector="root" />
 
-<select idref="configure_auditd_num_logs" selected="true" />
-<select idref="configure_auditd_max_log_file" selected="true" />
-<select idref="configure_auditd_max_log_file_action" selected="true" />
+<select idref="auditd_data_retention_num_logs" selected="true" />
+<select idref="auditd_data_retention_max_log_file" selected="true" />
+<select idref="auditd_data_retention_max_log_file_action" selected="true" />
 <select idref="auditd_data_retention_space_left_action" selected="true" />
 <select idref="auditd_data_retention_admin_space_left_action" selected="true" />
 <select idref="auditd_data_retention_action_mail_acct" selected="true" />
 <select idref="file_permissions_var_log_audit" selected="true" />
-<select idref="audit_logs_rootowner" selected="true" />
 
 <!-- configure audit rules -->
 <select idref="service_auditd_enabled" selected="true" />
@@ -123,7 +119,7 @@
 <select idref="audit_rules_dac_modification_setxattr" selected="true" />
 <select idref="audit_rules_login_events" selected="true" />
 <select idref="audit_rules_session_events" selected="true" />
-<select idref="audit_rules_unsuccessful_file_modification" selected="true" \>
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
 <select idref="audit_rules_privileged_commands" selected="true" />
 <select idref="audit_rules_media_export" selected="true" />
 <select idref="audit_rules_file_deletion_events" selected="true" />
@@ -133,11 +129,8 @@
 
 <!-- configure name/address of network time server -->
 <select idref="service_chronyd_or_ntpd_enabled" selected="true"/>
-<select idref="ntpd_specify_remote_server" selected="true" />
-
-<!-- needs to be ported to RHEL-7 -->
-<select idref="chronyd_specify_remote_server" selected="true"/>
-<select idref="chronyd_specify_multiple_servers" selected="true"/> 
+<select idref="chronyd_or_ntpd_specify_remote_server" selected="true"/>
+<select idref="chronyd_or_ntpd_specify_multiple_servers" selected="true"/> 
 
 <!-- enable/disable automatic software update -->
 <select idref="security_patches_up_to_date" selected="true" />
@@ -151,7 +144,7 @@
 <select idref="service_bluetooth_disabled" selected="true" />
 
 <!-- configure USB interfaces -->
-<select idref="kernel_module_usb" selected="true" />
+<select idref="kernel_module_usb-storage_disabled" selected="true" />
 <select idref="bootloader_nousb_argument" selected="true" />
 <select idref="bios_disable_usb_boot" selected="true" />
 
@@ -182,11 +175,9 @@
 <refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
 
 <select idref="sshd_allow_only_protocol2" selected="true" />
-<select idref="sshd_set_idle_timeout" selected="true" />
 <select idref="sshd_set_keepalive" selected="true" />
 <select idref="sshd_disable_rhosts" selected="true" />
 <select idref="disable_host_auth" selected="true" />
-<select idref="sshd_disable_empty_passwords" selected="true" />
 <select idref="sshd_do_not_permit_user_env" selected="true" />
 <select idref="sshd_use_approved_ciphers" selected="true" />
 <select idref="sshd_use_approved_macs" selected="true" />
@@ -232,7 +223,6 @@
 
 <!--	ASSIGNMENTS: DAR PROTECTION -->
 <select idref="encrypt_partitions" selected="true" />
-<select idref="auditd_audispd_syslog_plugin_activated" selected="true"/>
 <select idref="ensure_redhat_gpgkey_installed" selected="true" />
 <select idref="ensure_gpgcheck_globally_activated" selected="true" />
 <select idref="ensure_gpgcheck_never_disabled" selected="true" />
