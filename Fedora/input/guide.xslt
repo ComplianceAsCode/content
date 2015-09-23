@@ -90,6 +90,7 @@
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('services/cron.xml')" />
       <xsl:apply-templates select="document('services/ssh.xml')" />
       <xsl:apply-templates select="document('services/ntp.xml')" />
       <xsl:apply-templates select="document('services/audit.xml')" />
