@@ -39,7 +39,7 @@ which is no longer necessary for commonly-used network services. Disabling
 it ensures that these uncommon services are not running, and also prevents
 attacks against xinetd itself.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27443-1" />
 <oval id="service_xinetd_disabled" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -58,7 +58,7 @@ If network services are using the xinetd service, this is not applicable.
 Removing the <tt>xinetd</tt> package decreases the risk of the
 xinetd service's accidental (or intentional) activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27354-0" />
 <oval id="package_xinetd_removed" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -106,7 +106,7 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="27158-5" />
+<ident cce="27401-9" />
 <oval id="service_telnetd_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" />
 <tested by="JL" on="20140922"/>
@@ -138,7 +138,7 @@ of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
 encrypted session and stronger security and is included in Red Hat
 Enterprise Linux.</rationale>
-<ident cce="27039-7" />
+<ident cce="27305-2" />
 <oval id="package_telnet_removed" />
 </Rule>
 
@@ -162,7 +162,7 @@ network services. Removing it
 decreases the risk of those services' accidental (or intentional)
 activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27342-5" />
 <oval id="package_rsh-server_removed" />
 <ref nist="AC-17(8),CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
@@ -181,7 +181,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27408-4" />
 <oval id="service_rexec_disabled" />
 <ref nist="AC-17(8),CM-7" disa="68,1436"/>
 <tested by="DS" on="20121026"/>
@@ -200,7 +200,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27337-5" />
 <oval id="service_rsh_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" />
 <tested by="DS" on="20121026"/>
@@ -218,7 +218,7 @@ inadvertently attempting to use these commands and therefore exposing
 their credentials. Note that removing the <tt>rsh</tt> package removes
 the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 </rationale>
-<ident cce="" />
+<ident cce="27274-0" />
 <oval id="package_rsh_removed" />
 <tested by="JL" on="20140530"/>
 </Rule>
@@ -236,7 +236,7 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27336-7" />
 <oval id="service_rlogin_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" />
 <tested by="DS" on="20121026"/>
@@ -260,7 +260,7 @@ of an Rsh trust relationship.
 <rationale>Trust files are convenient, but when
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27406-8" />
 <ref nist="AC-17(8),CM-7" disa="1436" />
 <oval id="no_rsh_trust_files" />
 <tested by="DS" on="20121026"/>
@@ -286,7 +286,7 @@ the following command:
 <rationale>Removing the <tt>ypserv</tt> package decreases the risk of the
 accidental (or intentional) activation of NIS or NIS+ services.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27399-5" />
 <oval id="package_ypserv_removed" />
 <ref nist="AC-17(8),CM-7" disa="305,381"/>
 <tested by="DS" on="20121026"/>
@@ -303,7 +303,7 @@ a NIS or NIS+ domain, should be disabled.
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27385-4" />
 <oval id="service_ypbind_disabled" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
@@ -320,7 +320,7 @@ and receive the distributed configuration files.</description>
 to DOS attacks, buffer overflows and has poor authentication for querying NIS maps.
 NIS generally has been replaced by such protocols as Lightweight Directory Access 
 Protocol (LDAP). It is recommended that the service be removed.</rationale>
-<ident cce="" />
+<ident cce="27396-1" />
 <oval id="package_ypbind_removed" />
 </Rule>
 
@@ -438,7 +438,7 @@ The talk software presents a security risk as it uses unencrypted protocols
 for communications. Removing the <tt>talk-server</tt> package decreases the
 risk of the accidental (or intentional) activation of talk services.
 </rationale>
-<ident cce="" />
+<ident cce="27210-4" />
 <oval id="package_talk-server_removed" />
 <tested by="JL" on="20140625"/>
 </Rule>
@@ -456,7 +456,7 @@ The talk software presents a security risk as it uses unencrypted protocols
 for communications. Removing the <tt>talk</tt> package decreases the
 risk of the accidental (or intentional) activation of talk client program.
 </rationale>
-<ident cce="" />
+<ident cce="27432-4" />
 <oval id="package_talk_removed" />
 <tested by="JL" on="20140625"/>
 </Rule>

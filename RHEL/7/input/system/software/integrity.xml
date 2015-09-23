@@ -39,7 +39,7 @@ Install the AIDE package with the command:
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
-<ident cce="26741-9" />
+<ident cce="27096-7" />
 <oval id="package_aide_installed" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa=""/>
 <tested by="DS" on="20121024"/>
@@ -59,7 +59,7 @@ Next, run the following command to return binaries to a normal, non-prelinked st
 The prelinking feature can interfere with the operation
 of AIDE, because it changes binaries.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27078-5" />
 <oval id="disable_prelink" />
 <ref nist="CM-6(d),CM-6(3),SC-28, SI-7" />
 </Rule>
@@ -85,7 +85,7 @@ To find the location of the AIDE databse file, run the following command:
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27220-3" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" />
 </Rule>
 
@@ -104,7 +104,7 @@ To determine that periodic AIDE execution has been scheduled, run the following 
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26952-2" />
 <oval id="aide_periodic_cron_checking"/>
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589"/>
 </Rule>
@@ -145,7 +145,7 @@ Permissions on system binaries and configuration files that are too generous
 could allow an unauthorized user to gain privileges that they should not have.
 The permissions set by the vendor should be maintained. Any deviations from
 this baseline should be investigated.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27209-6" />
 <oval id="rpm_verify_permissions" />
 <ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" />
 </Rule>
@@ -176,7 +176,7 @@ have file hashes different from what is expected by the RPM database.
 The hashes of important files like system executables should match the
 information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27157-7" />
 <oval id="rpm_verify_hashes" />
 <ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" />
 </Rule>
@@ -213,7 +213,7 @@ Verify this intrusion detection software is active.
 Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.  
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="26818-5" />
 <ref nist="SC-7" disa="1263"/>
 </Rule>
 
@@ -253,7 +253,7 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems. 
 </rationale>
 <oval id="install_antivirus" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27140-3" />
 <ref nist="SC-28, SI-3" disa="1239,1668"/>
 </Rule>
 

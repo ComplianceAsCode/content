@@ -74,6 +74,8 @@ table-refs: shorthand2xccdf
 	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
 	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-nistrefs-common.html \
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
+	xsltproc -stringparam profile "ospp-rhel7-server" -o $(OUT)/table-$(PROD)-nistrefs-ospp.html \
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
 
 table-idents: shorthand2xccdf
 	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml

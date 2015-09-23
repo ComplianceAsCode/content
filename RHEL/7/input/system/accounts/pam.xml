@@ -78,7 +78,7 @@ of unsuccessful attempts that were made to login to their account
 allows the user to determine if any unauthorized activity has occurred
 and gives them an opportunity to notify administrators.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27275-7" />
 <oval id="display_login_attempts" />
 <ref disa="53" />
 </Rule>
@@ -279,7 +279,7 @@ requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks. Note that this
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
-<ident cce="27131-2" />
+<ident cce="27160-1" />
 <oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
 <ref nist="IA-5(c)" disa="" />
 <tested by="swells" on="20140925"/>
@@ -324,7 +324,7 @@ The DoD requires at least one digit in a password. This would appear as <tt>dcre
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident cce="27163-5" />
+<ident cce="27214-6" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
 <ref nist="IA-5(b),IA-5(c),194" disa="194" srg="71"/>
 <tested by="DS" on="20121024"/>
@@ -347,7 +347,7 @@ strength and how long it takes to crack a password. Use of more characters in
 a password helps to exponentially increase the time and/or resources
 required to compromise the password.
 </rationale>
-<ident cce="26615-5" />
+<ident cce="27293-0" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
 <ref nist="IA-5(1)(a)" disa="205" srg="78" />
 <tested by="swells" on="20140928" />
@@ -373,7 +373,7 @@ This would appear as <tt>ucredit = -1</tt>.
 Requiring a minimum number of uppercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26988-6" />
+<ident cce="27200-5" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" srg="69" />
 <tested by="DS" on="20121024"/>
@@ -398,7 +398,7 @@ This would appear as <tt>ocredit = -1</tt>.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="27151-0" />
+<ident cce="27360-7" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
 <tested by="DS" on="20121024"/>
@@ -423,7 +423,7 @@ This would appear as <tt>lcredit = -1</tt>.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="27111-4" />
+<ident cce="27345-8" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="70" />
 <tested by="DS" on="20121024"/>
@@ -533,7 +533,7 @@ The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident cce="26891-2" />
+<ident cce="27350-8" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
 <ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
@@ -596,7 +596,7 @@ If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 s
 Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
-<ident cce="26763-3" />
+<ident cce="27297-1" />
 <oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
 <ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
