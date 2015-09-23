@@ -16,7 +16,7 @@ discusses secure configuration of machines which must be
 nameservers.
 </description>
 
-<Rule id="disable_dns_server">
+<Rule id="service_named_disabled">
 <title>Disable DNS Server</title>
 <description>
 <service-disable-macro service="named" />
@@ -31,7 +31,7 @@ implementation flaws and should be disabled if possible.
 <ref nist="CM-7" disa="366"/>
 </Rule>
 
-<Rule id="uninstall_bind">
+<Rule id="package_bind_removed">
 <title>Uninstall bind Package</title>
 <description>To remove the <tt>bind</tt> package, which contains the
 <tt>named</tt> service, run the following command:
