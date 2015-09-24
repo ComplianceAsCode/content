@@ -8,6 +8,9 @@ services:
 	${SHARED_DIR}/create_services_enabled.py services_enabled.csv
 	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
 
+sockets:
+	${SHARED_DIR}/create_sockets_disabled.py sockets_disabled.csv
+
 compare:
 	diff output/ ../ | grep -v "Only in ../"
 

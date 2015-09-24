@@ -72,7 +72,7 @@ for information transmitted on the network. This includes authentication
 information such as passwords. Organizations which use telnet should be
 actively working to migrate to a more secure protocol.</description>
 
-<Rule id="service_telnetd_disabled" severity="high">
+<Rule id="service_telnet_disabled" severity="high">
 <title>Disable telnet Service</title>
 <description>
 The <tt>telnet</tt> service configuration file <tt>/etc/xinetd.d/telnet</tt>
@@ -94,11 +94,13 @@ service telnet
         disable         = yes
 }
 </pre>
-Then the activation of the <tt>telnet</tt> service on system boot can be disabled
+If the <tt>/etc/xinetd.d/telnet</tt> file does not exist, make sure that
+the activation of the <tt>telnet</tt> service on system boot is disabled
 via the following command:
-<pre># systemctl disable telnet.socket</pre>
+<socket-disable-macro socket="rexec" />
 </description>
-<ocil><xinetd-service-disable-check-macro service="telnet" /></ocil>
+<ocil><systemd-socket-disable-check-macro socket="telnet" />
+<xinetd-service-disable-check-macro service="telnet" /></ocil>
 <rationale>
 The telnet protocol uses unencrypted network communication, which
 means that data from the login session, including passwords and
@@ -107,7 +109,7 @@ stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
 <ident cce="27401-9" />
-<oval id="service_telnetd_disabled" />
+<oval id="service_telnet_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" />
 <tested by="JL" on="20140922"/>
 </Rule>
@@ -171,11 +173,13 @@ activation.
 <Rule id="service_rexec_disabled" severity="high">
 <title>Disable rexec Service</title>
 <description>The <tt>rexec</tt> service, which is available with
-the <tt>rsh-server</tt> package and runs as a service through xinetd,
-should be disabled.
-<service-disable-macro service="rexec" />
+the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
+as a systemd socket, should be disabled.
+If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rexec</tt>. 
+If using systemd, <socket-disable-macro socket="rexec" />
 </description> 
-<ocil><xinetd-service-disable-check-macro service="rexec" /></ocil>
+<ocil><systemd-socket-disable-check-macro socket="rexec" />
+<xinetd-service-disable-check-macro service="rexec" /></ocil>
 <rationale>The rexec service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -190,11 +194,13 @@ stolen by eavesdroppers on the network.
 <Rule id="service_rsh_disabled" severity="high">
 <title>Disable rsh Service</title>
 <description>The <tt>rsh</tt> service, which is available with
-the <tt>rsh-server</tt> package and runs as a service through xinetd,
-should be disabled.
-<service-disable-macro service="rsh" />
+the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
+as a systemd socket, should be disabled.
+If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rsh</tt>.
+If using systemd, <socket-disable-macro service="rsh" />
 </description> 
-<ocil><xinetd-service-disable-check-macro service="rsh" /></ocil>
+<ocil><systemd-socket-disable-check-macro socket="rsh" />
+<xinetd-service-disable-check-macro service="rsh" /></ocil>
 <rationale>The rsh service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -226,11 +232,13 @@ the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 <Rule id="service_rlogin_disabled" severity="high">
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
-the <tt>rsh-server</tt> package and runs as a service through xinetd,
-should be disabled.
-<service-disable-macro service="rlogin" />
+the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
+as a systemd socket, should be disabled.
+If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rlogin</tt>.
+If using systemd, <socket-disable-macro service="rlogin" />
 </description> 
-<ocil><xinetd-service-disable-check-macro service="rlogin" /></ocil>
+<ocil><systemd-socket-disable-check-macro socket="rlogin" />
+<xinetd-service-disable-check-macro service="rlogin" /></ocil>
 <rationale>The rlogin service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
