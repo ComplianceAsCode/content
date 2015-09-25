@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash/bootloader_nousb_argument.sh
