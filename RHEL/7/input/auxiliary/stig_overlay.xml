@@ -572,11 +572,11 @@
 		<VMSinfo VKey="38580" SVKey="50381" VRelease="1" />
 		<title>The audit system must be configured to audit the loading and unloading of dynamic kernel modules.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_xinetd" ownerid="RHEL-06-000203" disa="382" severity="medium">
+	<overlay owner="disastig" ruleid="service_xinetd_disabled" ownerid="RHEL-06-000203" disa="382" severity="medium">
 		<VMSinfo VKey="38582" SVKey="50383" VRelease="2" />
 		<title>The xinetd service must be disabled if no network services utilizing it are enabled.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="uninstall_xinetd" ownerid="RHEL-06-000204" disa="382" severity="low">
+	<overlay owner="disastig" ruleid="package_xinetd_removed" ownerid="RHEL-06-000204" disa="382" severity="low">
 		<VMSinfo VKey="38584" SVKey="50385" VRelease="1" />
 		<title>The xinetd service must be uninstalled if no network services utilizing it are enabled.</title>
 	</overlay>
@@ -604,15 +604,15 @@
 		<VMSinfo VKey="38602" SVKey="50403" VRelease="2" />
 		<title>The rlogind service must not be running.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="uninstall_ypserv" ownerid="RHEL-06-000220" disa="381" severity="medium">
+	<overlay owner="disastig" ruleid="package_ypserv_removed" ownerid="RHEL-06-000220" disa="381" severity="medium">
 		<VMSinfo VKey="38603" SVKey="50404" VRelease="1" />
 		<title>The ypserv package must not be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_ypbind" ownerid="RHEL-06-000221" disa="382" severity="medium">
+	<overlay owner="disastig" ruleid="service_ypbind_disabled" ownerid="RHEL-06-000221" disa="382" severity="medium">
 		<VMSinfo VKey="38604" SVKey="50405" VRelease="2" />
 		<title>The ypbind service must not be running.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="uninstall_tftp-server" ownerid="RHEL-06-000222" disa="381" severity="medium">
+	<overlay owner="disastig" ruleid="package_tftp-server_removed" ownerid="RHEL-06-000222" disa="381" severity="medium">
 		<VMSinfo VKey="38606" SVKey="50407" VRelease="1" />
 		<title>The tftp-server package must not be installed.</title>
 	</overlay>
