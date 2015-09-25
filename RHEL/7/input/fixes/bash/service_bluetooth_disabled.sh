@@ -1,3 +1,5 @@
+grep -qi disable /etc/xinetd.d/bluetooth && \
+	sed -i 's/disable.*/disable	= yes/gI' /etc/xinetd.d/bluetooth
 #
 # Disable bluetooth.service for all systemd targets
 #

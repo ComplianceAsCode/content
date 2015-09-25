@@ -10,14 +10,17 @@
       <description>The bluetooth service should be disabled if possible.</description>
       <reference source="DS" ref_id="20131002" ref_url="test_attestation" />
     </metadata>
-    <criteria operator="AND" comment="service bluetooth is not configured to start">
-      <criterion comment="bluetooth runlevel 0" test_ref="test_runlevel0_bluetooth" />
-      <criterion comment="bluetooth runlevel 1" test_ref="test_runlevel1_bluetooth" />
-      <criterion comment="bluetooth runlevel 2" test_ref="test_runlevel2_bluetooth" />
-      <criterion comment="bluetooth runlevel 3" test_ref="test_runlevel3_bluetooth" />
-      <criterion comment="bluetooth runlevel 4" test_ref="test_runlevel4_bluetooth" />
-      <criterion comment="bluetooth runlevel 5" test_ref="test_runlevel5_bluetooth" />
-      <criterion comment="bluetooth runlevel 6" test_ref="test_runlevel6_bluetooth" />
+    <criteria operator="OR">
+      <extend_definition comment="rpm package bluez removed" definition_ref="package_bluez_removed" />
+      <criteria operator="AND" comment="service bluetooth is not configured to start">
+        <criterion comment="bluetooth runlevel 0" test_ref="test_runlevel0_bluetooth" />
+        <criterion comment="bluetooth runlevel 1" test_ref="test_runlevel1_bluetooth" />
+        <criterion comment="bluetooth runlevel 2" test_ref="test_runlevel2_bluetooth" />
+        <criterion comment="bluetooth runlevel 3" test_ref="test_runlevel3_bluetooth" />
+        <criterion comment="bluetooth runlevel 4" test_ref="test_runlevel4_bluetooth" />
+        <criterion comment="bluetooth runlevel 5" test_ref="test_runlevel5_bluetooth" />
+        <criterion comment="bluetooth runlevel 6" test_ref="test_runlevel6_bluetooth" />
+      </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
