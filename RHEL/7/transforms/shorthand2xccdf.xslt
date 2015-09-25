@@ -205,7 +205,9 @@
             <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
             <xsl:if test="partition-check-macro">no line is returned</xsl:if>
             <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
+            <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
             <xsl:if test="xinetd-service-disable-check-macro">the service is running</xsl:if>
+            <xsl:if test="systemd-socket-disable-check-macro">the socket is running</xsl:if>
             <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
             <xsl:if test="package-check-macro">the package is installed</xsl:if>
             <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
@@ -383,12 +385,17 @@
 
   <xsl:template match="service-disable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
-    <xhtml:pre>$ sudo systemctl disable <xsl:value-of select="@service"/></xhtml:pre>
+    <xhtml:pre>$ sudo systemctl disable <xsl:value-of select="@service"/>.service</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-enable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be enabled with the following command:
-    <xhtml:pre>$ sudo systemctl enable <xsl:value-of select="@service"/></xhtml:pre>
+    <xhtml:pre>$ sudo systemctl enable <xsl:value-of select="@service"/>.service</xhtml:pre>
+  </xsl:template>
+
+  <xsl:template match="socket-disable-macro">
+    The <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> socket can be disabled with the following command:
+    <xhtml:pre>$ sudo systemctl disable <xsl:value-of select="@socket"/>.socket</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="service-disable-check-macro">
@@ -405,8 +412,22 @@
     <xhtml:pre>inactive</xhtml:pre>
   </xsl:template>
 
+  <xsl:template match="systemd-socket-disable-check-macro">
+    To check that the <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> socket is disabled in system boot configuration with systemd, run the following command:
+    <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@socket"/></xhtml:code></xhtml:pre>
+    Output should indicate the <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> socket has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@socket"/></xhtml:code><xhtml:br/>disabled</xhtml:pre>
+
+    Run the following command to verify <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> is not active (i.e. not running) through current runtime configuration:
+    <xhtml:pre>$ systemctl is-active <xsl:value-of select="@socket"/></xhtml:pre>
+
+    If the socket is not running the command will return the following output:
+    <xhtml:pre>inactive</xhtml:pre>
+  </xsl:template>
+
   <xsl:template match="xinetd-service-disable-check-macro">
-      To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
+      To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration with xinetd, run the following command:
           <xhtml:pre>$ chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
               Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, or has been disabled, as shown in the example below:
               <xhtml:pre>$ chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
