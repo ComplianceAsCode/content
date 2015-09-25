@@ -24,7 +24,7 @@ controls and perform some logging. It has been largely obsoleted by other
 features, and it is not installed by default. The older Inetd service
 is not even available as part of Red Hat Enterprise Linux 7.</description>
 
-<Rule id="disable_xinetd" severity="medium">
+<Rule id="service_xinetd_disabled" severity="medium">
 <title>Disable xinetd Service</title>
 <description>
 <service-disable-macro service="xinetd" />
@@ -45,7 +45,7 @@ attacks against xinetd itself.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="uninstall_xinetd">
+<Rule id="package_xinetd_removed">
 <title>Uninstall xinetd Package</title>
 <description>The <tt>xinetd</tt> package can be uninstalled with the following command:
 <pre>$ sudo yum erase xinetd</pre>
@@ -114,7 +114,7 @@ subject to man-in-the-middle attacks.
 <tested by="JL" on="20140922"/>
 </Rule>
 
-<Rule id="uninstall_telnet_server" severity="high">
+<Rule id="package_telnet-server_removed" severity="high">
 <title>Uninstall telnet-server Package</title>
 <description>The <tt>telnet-server</tt> package can be uninstalled with
 the following command:
@@ -284,7 +284,7 @@ services. NIS should not be used because it suffers from security
 problems inherent in its design, such as inadequate protection of
 important authentication information.</description>
 
-<Rule id="uninstall_ypserv" severity="medium">
+<Rule id="package_ypserv_removed" severity="medium">
 <title>Uninstall ypserv Package</title>
 <description>The <tt>ypserv</tt> package can be uninstalled with
 the following command:
@@ -300,7 +300,7 @@ accidental (or intentional) activation of NIS or NIS+ services.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="disable_ypbind" severity="medium">
+<Rule id="service_ypbind_disabled" severity="medium">
 <title>Disable ypbind Service</title>
 <description>The <tt>ypbind</tt> service, which allows the system to act as a client in
 a NIS or NIS+ domain, should be disabled.
@@ -361,7 +361,7 @@ as a TFTP server, which does not provide encryption or authentication.
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="uninstall_tftp-server" severity="medium">
+<Rule id="package_tftp-server_removed" severity="medium">
 <title>Uninstall tftp-server Package</title>
 <description>
 <package-remove-macro package="tftp-server" />
@@ -433,7 +433,7 @@ The talk software makes it possible for users to send and receive messages
 across systems through a terminal session.
 </description>
 
-<Rule id="uninstall_talk-server" severity="medium">
+<Rule id="package_talk-server_removed" severity="medium">
 <title>Uninstall talk-server Package</title>
 <description>
 <package-remove-macro package="talk-server" />
