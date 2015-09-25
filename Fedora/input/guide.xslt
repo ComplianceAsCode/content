@@ -60,7 +60,7 @@
       <xsl:apply-templates select="document('system/accounts/restrictions/root_logins.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_storage.xml')" />
       <xsl:apply-templates select="document('system/accounts/restrictions/password_expiration.xml')" />
-     <!--  <xsl:apply-templates select="document('system/accounts/restrictions/account_expiration.xml')" /> -->
+      <xsl:apply-templates select="document('system/accounts/restrictions/account_expiration.xml')" />
     </xsl:copy>
   </xsl:template>
 
@@ -90,6 +90,7 @@
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('services/cron.xml')" />
       <xsl:apply-templates select="document('services/ssh.xml')" />
       <xsl:apply-templates select="document('services/ntp.xml')" />
       <xsl:apply-templates select="document('services/audit.xml')" />

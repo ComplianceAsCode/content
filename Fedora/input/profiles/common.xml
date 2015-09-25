@@ -3,6 +3,7 @@
 <description>This profile contains items common to general-purpose Fedora installations.</description>
 
   <select idref="disable_prelink" selected="true"/>
+  <select idref="aide_build_database" selected="true"/>
 
 <!-- Installing and Maintaining Software section rules -->
   <!-- Updating Software section rules -->
@@ -32,7 +33,7 @@
     <select idref="no_empty_passwords" selected="true"/>
     <select idref="display_login_attempts" selected="true"/>
     <select idref="no_hashes_outside_shadow" selected="true"/>
-    <!-- <select idref="gid_passwd_group_same" selected="true"/> -->
+    <select idref="gid_passwd_group_same" selected="true"/>
     <select idref="no_netrc_files" selected="true"/>
     <!-- Set Password Expiration Parameters section rules -->
     <refine-value idref="var_accounts_password_minlen_login_defs" selector="12"/>
@@ -43,6 +44,8 @@
     <select idref="accounts_maximum_age_login_defs" selected="true"/>
     <refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
     <select idref="accounts_password_warn_age_login_defs" selected="true"/>
+    <!-- Set Account Expiration Parameters section rules -->
+    <select idref="account_unique_name" selected="true"/>
   <!-- Secure Session Configuration Files for Login Accounts -->
     <!-- Ensure that No Dangerous Directories Exist in Root's Path -->
       <select idref="root_path_no_groupother_writable" selected="true"/>
