@@ -1,23 +1,33 @@
 <def-group>
-  <definition class="compliance" id="audit_rules_login_events" version="1">
+  <definition class="compliance" id="audit_rules_login_events" version="2">
     <metadata>
       <title>Record Attempts to Alter Login and Logout Events</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Audit rules should be configured to log successful and unsuccessful login and logout events.</description>
+      <reference source="JL" ref_id="RHEL6_20150926" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
-      <criterion comment="faillog" test_ref="test_audit_rules_login_events_faillog" />
+      <criterion comment="tallylog" test_ref="test_audit_rules_login_events_tallylog" />
+      <criterion comment="faillock" test_ref="test_audit_rules_login_events_faillock" />
       <criterion comment="lastlog" test_ref="test_audit_rules_login_events_lastlog" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" comment="faillog" id="test_audit_rules_login_events_faillog" version="1">
-    <ind:object object_ref="object_audit_rules_login_events_faillog" />
+  <ind:textfilecontent54_test check="all" comment="tallylog" id="test_audit_rules_login_events_tallylog" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_tallylog" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rules_login_events_faillog" version="1">
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_tallylog" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/faillog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/tallylog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="faillock" id="test_audit_rules_login_events_faillock" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_faillock" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_faillock" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/faillock/\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="lastlog" id="test_audit_rules_login_events_lastlog" version="1">
