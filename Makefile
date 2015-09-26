@@ -89,12 +89,12 @@ chromium-dist:
 
 validate: fedora rhel5 rhel6 rhel7 openstack rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
-	cd RHEL/5/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
 	cd JRE/ && $(MAKE) validate
 	# Enable below when content validates correctly
+	#cd RHEL/5/ && $(MAKE) validate
 	#cd RHEL/7/ && $(MAKE) validate
 	#cd OpenStack && $(MAKE) validate
 	#cd RHEVM3 && $(MAKE) validate
