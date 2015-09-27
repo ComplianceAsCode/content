@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="audit_rules_login_events" version="1">
+  <definition class="compliance" id="audit_rules_login_events" version="2">
     <metadata>
       <title>Record Attempts to Alter Login and Logout Events</title>
       <affected family="unix">
@@ -7,8 +7,8 @@
         <platform>multi_platform_fedora</platform>
       </affected>
       <description>Audit rules should be configured to log successful and unsuccessful login and logout events.</description>
-      <reference source="JL" ref_id="RHEL7_20150518" ref_url="test_attestation" />
-      <reference source="JL" ref_id="FEDORA20_20150518" ref_url="test_attestation" />
+      <reference source="JL" ref_id="RHEL7_20150926" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA22_20150926" ref_url="test_attestation" />
     </metadata>
 
     <criteria operator="OR">
@@ -16,14 +16,16 @@
       <!-- Test the augenrules case -->
       <criteria operator="AND">
         <criterion comment="audit augenrules" test_ref="test_arle_augenrules" />
-        <criterion comment="audit augenrules faillog" test_ref="test_arle_faillog_augenrules" />
+        <criterion comment="audit augenrules tallylog" test_ref="test_arle_tallylog_augenrules" />
+        <criterion comment="audit augenrules faillock" test_ref="test_arle_faillock_augenrules" />
         <criterion comment="audit augenrules lastlog" test_ref="test_arle_lastlog_augenrules" />
       </criteria>
 
       <!-- Test the auditctl case -->
       <criteria operator="AND">
         <criterion comment="audit auditctl" test_ref="test_arle_auditctl" />
-        <criterion comment="audit auditctl faillog" test_ref="test_arle_faillog_auditctl" />
+        <criterion comment="audit auditctl tallylog" test_ref="test_arle_tallylog_auditctl" />
+        <criterion comment="audit auditctl faillock" test_ref="test_arle_faillock_auditctl" />
         <criterion comment="audit auditctl lastlog" test_ref="test_arle_lastlog_auditctl" />
       </criteria>
 
@@ -40,12 +42,21 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" comment="audit augenrules faillog" id="test_arle_faillog_augenrules" version="1">
-    <ind:object object_ref="object_arle_faillog_augenrules" />
+  <ind:textfilecontent54_test check="all" comment="audit augenrules tallylog" id="test_arle_tallylog_augenrules" version="1">
+    <ind:object object_ref="object_arle_tallylog_augenrules" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arle_faillog_augenrules" version="1">
+  <ind:textfilecontent54_object id="object_arle_tallylog_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/faillog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/tallylog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules faillock" id="test_arle_faillock_augenrules" version="1">
+    <ind:object object_ref="object_arle_faillock_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_faillock_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/faillock/\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -68,12 +79,21 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" comment="audit auditctl faillog" id="test_arle_faillog_auditctl" version="1">
-    <ind:object object_ref="object_arle_faillog_auditctl" />
+  <ind:textfilecontent54_test check="all" comment="audit auditctl tallylog" id="test_arle_tallylog_auditctl" version="1">
+    <ind:object object_ref="object_arle_tallylog_auditctl" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arle_faillog_auditctl" version="1">
+  <ind:textfilecontent54_object id="object_arle_tallylog_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/faillog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/tallylog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl faillock" id="test_arle_faillock_auditctl" version="1">
+    <ind:object object_ref="object_arle_faillock_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_faillock_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/faillock/\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
