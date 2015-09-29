@@ -14,6 +14,8 @@
 
 <xsl:include href="constants.xslt"/>
 
+<xsl:param name="ssg_version">unknown</xsl:param>
+
 <xsl:variable name="ovalfile">unlinked-jre-oval.xml</xsl:variable>
 <xsl:variable name="defaultseverity" select="'low'" />
 
