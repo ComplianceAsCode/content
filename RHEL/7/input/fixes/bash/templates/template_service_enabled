@@ -1,9 +1,4 @@
-#
-# Enable SERVICENAME for all run levels
-#
-chkconfig --level 0123456 SERVICENAME on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start SERVICENAME if not currently running
-#
-service SERVICENAME start
+service_command enable SERVICENAME
