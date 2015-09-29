@@ -14,6 +14,8 @@
 
 <xsl:include href="constants.xslt"/>
 
+<xsl:param name="ssg_version">unknown</xsl:param>
+
 <xsl:variable name="ovalfile">unlinked-firefox-oval.xml</xsl:variable>
 <xsl:variable name="defaultseverity" select="'low'" />
 
@@ -34,6 +36,11 @@
     <xsl:attribute name="date">
        <xsl:value-of select="date:date()"/>
     </xsl:attribute>
+  </xsl:template>
+
+  <!-- insert SSG version -->
+  <xsl:template match="Benchmark/version">
+    <xccdf:version><xsl:value-of select="$ssg_version"/></xccdf:version>
   </xsl:template>
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
