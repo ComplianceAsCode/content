@@ -35,8 +35,12 @@ shorthand2xccdf: shorthand-guide
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
 	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml --output $(OUT)/unlinked-$(PROD)-xccdf.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
-	# Include fixes
-	$(SHARED)/$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
+	# Make intermediate $(PROD_FIXES) directory to hold final list of remediation scripts for $(PROD)
+	mkdir -p $(PROD_FIXES)
+	# Search $(SHARED_FIXES) and $(IN)/FIXES directories to find all product specific remediation scripts,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_FIXES) directory
+	find $(SHARED_FIXES) $(IN)/fixes/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_FIXES) ';'
+	$(SHARED)/$(TRANS)/combinefixes.py $(CONF) $(PROD) $(PROD_FIXES) $(OUT)/bash-remediations.xml
 	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
