@@ -4,6 +4,7 @@ BUILD = build
 TRANS = transforms
 SHARED = ../shared
 SHARED_CHECKS = $(SHARED)/oval
+SHARED_FIXES = $(SHARED)/fixes/bash
 REFS = $(SHARED)/references
 CONF = ../config
 UTILS = utils
@@ -12,6 +13,7 @@ DIST = dist
 ID = ssg
 PROD = fedora
 PROD_CHECKS = $(BUILD)/$(PROD)_checks
+PROD_FIXES = $(BUILD)/$(PROD)_fixes
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
