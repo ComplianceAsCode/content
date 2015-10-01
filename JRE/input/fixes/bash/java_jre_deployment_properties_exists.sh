@@ -1,3 +1,4 @@
+# platform = Java Runtime Environment
 JAVA_PROPERTIES="/etc/.java/deployment/deployment.properties"
 JAVA_DIR="/etc/.java/deployment"
 

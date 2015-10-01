@@ -1,3 +1,4 @@
+# platform = Google Chromium Browser
 CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"
 POL_SETTING="DefaultGeolocationSetting"

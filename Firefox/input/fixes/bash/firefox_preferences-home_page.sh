@@ -1,3 +1,4 @@
+# platform = Mozilla Firefox
 source ./template/support.sh
 populate var_default_home_page
 
