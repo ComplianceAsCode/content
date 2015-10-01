@@ -83,7 +83,9 @@ def fix_is_applicable_for_product(platform, product):
     # Get official name for product 
     if product_version is not None:
         product_name = map_product(product) + ' ' + product_version
-
+    else:
+        product_name = map_product(product)
+    
     # Test if this is for the concrete product version
     if product_name == platform:
             return True
