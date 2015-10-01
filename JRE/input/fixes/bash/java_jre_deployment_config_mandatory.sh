@@ -1,3 +1,4 @@
+# platform = Java Runtime Environment
 JAVA_CONFIG="/etc/.java/deployment/deployment.config"
 
 grep -q "^deployment.system.config.mandatory=false$" ${JAVA_CONFIG} && \

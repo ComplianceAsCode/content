@@ -1,3 +1,4 @@
+# platform = Mozilla Firefox
 source ./templates/support.sh
 populate var_required_file_types
 
