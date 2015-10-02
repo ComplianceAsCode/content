@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/require_smb_client_signing.sh

@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel
 # CAUTION: This remediation script will remove dovecot
 #	   from the system, and may remove any packages
 #	   that depend on dovecot. Execute this

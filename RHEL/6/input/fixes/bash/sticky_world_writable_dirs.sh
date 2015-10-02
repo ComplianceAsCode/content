@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/sticky_world_writable_dirs.sh
