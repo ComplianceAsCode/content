@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel
 find /bin/ \
 /usr/bin/ \
 /usr/local/bin/ \
