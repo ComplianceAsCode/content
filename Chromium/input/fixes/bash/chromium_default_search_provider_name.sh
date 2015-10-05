@@ -1,3 +1,4 @@
+# platform = Google Chromium Browser
 populate var_default_search_provider_name
 
 CHROME_POL_FILE="chrome_stig_policy.json"

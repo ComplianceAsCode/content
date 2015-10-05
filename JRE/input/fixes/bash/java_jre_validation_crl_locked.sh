@@ -1,3 +1,4 @@
+# platform = Java Runtime Environment
 JAVA_PROPERTIES="/etc/.java/deployment/deployment.properties"
 
 grep -q "^deployment.security.validation.crl.locked$" ${JAVA_PROPERTIES} && \
