@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 grep -qi disable /etc/xinetd.d/rlogin && \
   sed -i "s/disable.*/disable         = yes/gI" /etc/xinetd.d/rlogin
 
