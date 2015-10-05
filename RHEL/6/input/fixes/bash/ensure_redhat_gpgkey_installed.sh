@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/ensure_redhat_gpgkey_installed.sh

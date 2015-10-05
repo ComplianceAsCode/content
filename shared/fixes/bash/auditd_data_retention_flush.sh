@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel
 source ./templates/support.sh
 populate var_auditd_flush
 
