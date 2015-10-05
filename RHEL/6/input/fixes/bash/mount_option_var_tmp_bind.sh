@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 # Delete particular /etc/fstab's row if /var/tmp is already configured to
 # represent a mount point (for some device or filesystem other than /tmp)
 if grep -q -P '.*\/var\/tmp.*' /etc/fstab

@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Set runtime for net.ipv4.conf.all.secure_redirects
 #

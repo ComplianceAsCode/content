@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Enable restorecond for all run levels
 #
