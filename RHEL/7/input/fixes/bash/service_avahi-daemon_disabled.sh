@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Disable avahi-daemon.service for all systemd targets
 #

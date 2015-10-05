@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 source ./templates/support.sh
 populate var_password_pam_difok
 

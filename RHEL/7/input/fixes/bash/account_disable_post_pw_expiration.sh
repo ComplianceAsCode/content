@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 source ./templates/support.sh
 populate var_account_disable_post_pw_expiration
 
