@@ -1,3 +1,4 @@
+# platform = multi_platform_fedora
 #
 # Disable prelinking altogether
 #

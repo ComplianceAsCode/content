@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 
 # Drop 'tcp6' and 'udp6' entries from /etc/netconfig to prevent RPC
 # services for NFSv4 from attempting to start IPv6 network listeners
