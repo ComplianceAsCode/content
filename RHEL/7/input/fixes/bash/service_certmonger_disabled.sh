@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Disable certmonger.service for all systemd targets
 #

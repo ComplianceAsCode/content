@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 source ./templates/support.sh
 populate sshd_idle_timeout_value
 

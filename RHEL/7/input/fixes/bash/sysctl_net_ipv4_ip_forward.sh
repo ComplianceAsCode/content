@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Set runtime for net.ipv4.ip_forward
 #

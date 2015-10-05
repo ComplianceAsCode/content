@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Disable nfs-secure.service (rpcgssd) for all systemd targets
 #
