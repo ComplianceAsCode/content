@@ -1,3 +1,4 @@
+# platform = multi_platform_fedora
 #
 # Install chrony package if necessary
 #
