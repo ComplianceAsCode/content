@@ -352,6 +352,14 @@ function package_command {
 local package_operation=$1
 local package=$2
 
+# Check sanity of the input
+if [ $# -ne "2" ]
+then
+  echo "Usage: package_command 'install/uninstall' 'rpm_package_name"
+  echo "Aborting."
+  exit 1
+fi
+
 # If dnf is installed, use dnf; otherwise, use yum
 if [ -f "/usr/bin/dnf" ] ; then
   install_util="/usr/bin/dnf"
@@ -389,6 +397,17 @@ function service_command {
 local service_state=$1
 local service=$2
 local xinetd=$(echo $3 | cut -d'=' -f2)
+
+# Check sanity of the input
+if [ $# -lt "3" ]
+then
+  echo "Usage: service_command 'enable/disable' 'service_name.service'"
+  echo
+  echo "To enable or disable xinetd services add \'xinetd=service_name\'"
+  echo "as the last argument"  
+  echo "Aborting."
+  exit 1
+fi
 
 # If systemctl is installed, use systemctl command; otherwise, use the service/chkconfig commands
 if [ -f "/usr/bin/systemctl" ] ; then
