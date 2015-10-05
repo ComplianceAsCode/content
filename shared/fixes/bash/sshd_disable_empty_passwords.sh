@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel, multi_platform_fedora
 
 SSHD_CONFIG='/etc/ssh/sshd_config'
 
