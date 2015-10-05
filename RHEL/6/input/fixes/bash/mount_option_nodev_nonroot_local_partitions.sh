@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 
 # NOTE: Run-time reconfiguration of partitions' mount options is not possible.
 # After performing this remediation be sure to also subsequently reboot the

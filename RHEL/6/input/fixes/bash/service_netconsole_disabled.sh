@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Disable netconsole for all run levels
 #

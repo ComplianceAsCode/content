@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Set runtime for fs.suid_dumpable
 #
