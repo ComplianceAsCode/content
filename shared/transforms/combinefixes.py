@@ -85,9 +85,10 @@ def fix_is_applicable_for_product(platform, product):
         product_name = map_product(product) + ' ' + product_version
     else:
         product_name = map_product(product)
-    
+
     # Test if this is for the concrete product version
-    if product_name == platform:
+    for pf in platform.split(','):
+        if product_name == pf.strip():
             return True
 
     # Remediation script isn't neither a multi platform one, nor isn't applicable
