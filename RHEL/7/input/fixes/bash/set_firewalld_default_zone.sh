@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/set_firewalld_default_zone.sh
