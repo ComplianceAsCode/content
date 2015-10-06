@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Enable ntpd.service for all systemd targets
 #

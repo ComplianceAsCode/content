@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel
 source ./templates/support.sh
 populate var_accounts_passwords_pam_faillock_deny
 

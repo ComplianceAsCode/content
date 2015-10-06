@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Disable nfs-idmap.service (rpcidmapd) for all systemd targets
 #

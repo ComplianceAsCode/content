@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 
 # audit.rules file to operate at
 AUDIT_RULES_FILE="/etc/audit/audit.rules"

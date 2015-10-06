@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/accounts_passwords_pam_unix_remember.sh

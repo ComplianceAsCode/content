@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Enable irqbalance for all run levels
 #

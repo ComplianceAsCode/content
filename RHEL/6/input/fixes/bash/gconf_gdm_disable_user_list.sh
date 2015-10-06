@@ -1,3 +1,5 @@
+# platform = Red Hat Enterprise Linux 6
+# platform = Red Hat Enterprise Linux 6
 # Install GConf2 package if not installed
 if ! rpm -q GConf2; then
   yum -y install GConf2

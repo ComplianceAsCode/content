@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 # If system does not contain control-alt-delete.override,
 if [ ! -f /etc/init/control-alt-delete.override ]; then
 

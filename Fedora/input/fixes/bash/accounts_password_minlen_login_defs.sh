@@ -1,3 +1,4 @@
+# platform = multi_platform_fedora
 source ./templates/support.sh
 populate var_accounts_password_minlen_login_defs
 

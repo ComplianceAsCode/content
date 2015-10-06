@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 
 # Load /etc/fstab's /dev/shm row into DEV_SHM_FSTAB variable separating start &
 # end of the filesystem mount options (4-th field) with the '#' character

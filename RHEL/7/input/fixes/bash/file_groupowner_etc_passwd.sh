@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/file_groupowner_etc_passwd.sh

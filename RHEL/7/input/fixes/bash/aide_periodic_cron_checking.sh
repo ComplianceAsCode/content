@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/aide_periodic_cron_checking.sh

@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel, multi_platform_fedora
 source ./templates/support.sh
 populate sshd_idle_timeout_value
 

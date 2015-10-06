@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Enable iptables for all run levels
 #

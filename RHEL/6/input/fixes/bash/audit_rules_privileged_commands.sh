@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 
 readonly AUDIT_RULES='/etc/audit/audit.rules'
 

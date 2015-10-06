@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/sshd_use_approved_macs.sh
