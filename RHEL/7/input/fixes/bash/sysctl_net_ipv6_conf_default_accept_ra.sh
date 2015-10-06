@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Set runtime for net.ipv6.conf.default.accept_ra
 #

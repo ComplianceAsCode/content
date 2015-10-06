@@ -1,3 +1,4 @@
+# platform = Google Chromium Browser
 populate var_enable_approved_plugins
 
 CHROME_POL_FILE="chrome_stig_policy.json"

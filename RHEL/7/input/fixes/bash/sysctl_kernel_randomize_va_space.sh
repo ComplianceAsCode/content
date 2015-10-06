@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Set runtime for kernel.randomize_va_space
 #

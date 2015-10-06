@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/selinux_state.sh

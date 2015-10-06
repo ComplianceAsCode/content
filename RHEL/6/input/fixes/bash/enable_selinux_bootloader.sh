@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/enable_selinux_bootloader.sh

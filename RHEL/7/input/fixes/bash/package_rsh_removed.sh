@@ -1,1 +1,0 @@
-../../../../../shared/fixes/bash/package_rsh_removed.sh

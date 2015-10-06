@@ -1,3 +1,4 @@
+# platform = Google Chromium Browser
 populate var_trusted_home_page
 
 CHROME_POL_FILE="chrome_stig_policy.json"

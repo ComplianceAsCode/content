@@ -1,3 +1,4 @@
+# platform = Java Runtime Environment
 JAVA_PROPERTIES="/etc/.java/deployment/deployment.properties"
 
 grep -q "^deployment.security.askgrantdialog.notinca=false$" ${JAVA_PROPERTIES} && \
