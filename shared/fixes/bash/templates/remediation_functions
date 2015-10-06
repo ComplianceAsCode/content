@@ -439,7 +439,7 @@ local service=$2
 local xinetd=$(echo $3 | cut -d'=' -f2)
 
 # Check sanity of the input
-if [ $# -lt "3" ]
+if [ $# -lt "2" ]
 then
   echo "Usage: service_command 'enable/disable' 'service_name.service'"
   echo
