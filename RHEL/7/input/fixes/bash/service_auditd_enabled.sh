@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Enable auditd.service for all systemd targets
 #

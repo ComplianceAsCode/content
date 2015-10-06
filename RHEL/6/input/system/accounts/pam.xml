@@ -588,11 +588,20 @@ specific period of time prevents direct password guessing attacks.
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
 <title>Limit Password Reuse</title>
-<description>Do not allow users to reuse recent passwords. This can
-be accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt> PAM
-module.  In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_password_pam_unix_remember" /></tt> to the
-line which refers to the <tt>pam_unix.so</tt> module, as shown:
+<description>Do not allow users to reuse recent passwords. This can be
+accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt>
+or <tt>pam_pwhistory</tt> PAM modules. In the file
+<tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_password_pam_unix_remember" /></tt>
+to the line which refers to the <tt>pam_unix.so</tt> or
+<tt>pam_pwhistory.so</tt>module, as shown below:
+<ul>
+<li>for the <tt>pam_unix.so</tt> case:
 <pre>password sufficient pam_unix.so <i>existing_options</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
+</li>
+<li>for the <tt>pam_pwhistory.so</tt> case:
+<pre>password requisite pam_pwhistory.so <i>existing_options</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
+</li>
+</ul>
 The DoD STIG requirement is 5 passwords.</description>
 <ocil clause="it does not">
 To verify the password reuse setting is compliant, run the following command:

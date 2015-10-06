@@ -1,1 +1,0 @@
-audit_rules_time_adjtimex.sh

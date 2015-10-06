@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Set runtime for net.ipv4.conf.default.rp_filter
 #

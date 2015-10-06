@@ -1,3 +1,4 @@
+# platform = Mozilla Firefox
 P11=$(readlink /etc/alternatives/libnssckbi.so*)
 P11LIB="/usr/lib/pkcs11/p11-kit-trust.so"
 P11LIB64="/usr/lib64/pkcs11/p11-kit-trust.so"

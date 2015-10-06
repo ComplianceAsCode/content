@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Disable httpd for all run levels
 #

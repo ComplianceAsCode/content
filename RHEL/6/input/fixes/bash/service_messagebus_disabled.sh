@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Disable messagebus for all run levels
 #

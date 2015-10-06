@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Set runtime for net.ipv4.icmp_echo_ignore_broadcasts
 #
