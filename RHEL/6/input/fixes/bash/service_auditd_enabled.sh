@@ -1,10 +1,4 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable auditd for all run levels
-#
-/sbin/chkconfig --level 0123456 auditd on
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start auditd if not currently running
-#
-/sbin/service auditd start
+service_command enable auditd

@@ -1,10 +1,4 @@
 # platform = Red Hat Enterprise Linux 7
-#
-# Enable auditd.service for all systemd targets
-#
-systemctl enable auditd.service
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start auditd.service if not currently running
-#
-systemctl start auditd.service
+service_command enable auditd.service
