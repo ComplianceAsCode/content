@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Disable vsftpd for all run levels
 #

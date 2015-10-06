@@ -1,3 +1,4 @@
+# platform = Google Chromium Browser
 populate var_url_blacklist
 
 CHROME_POL_FILE="chrome_stig_policy.json"

@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 source ./templates/support.sh
 populate login_banner_text
 

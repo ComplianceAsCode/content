@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 #
 # Enable irqbalance.service for all systemd targets
 #

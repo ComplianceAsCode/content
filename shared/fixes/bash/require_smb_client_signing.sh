@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel
 ######################################################################
 #By Luke "Brisk-OH" Brisk
 #luke.brisk@boeing.com or luke.brisk@gmail.com

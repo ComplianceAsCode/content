@@ -1,9 +1,12 @@
+include ../../VERSION
+
 IN = input
 OUT = output
 BUILD = build
 TRANS = transforms
 SHARED = ../../shared
 SHARED_CHECKS = $(SHARED)/oval
+SHARED_FIXES = $(SHARED)/fixes/bash
 REFS = $(SHARED)/references
 CONF = ../../config
 UTILS = utils
@@ -12,6 +15,7 @@ DIST = dist
 ID = ssg
 PROD = rhel6
 PROD_CHECKS = $(BUILD)/$(PROD)_checks
+PROD_FIXES = $(BUILD)/$(PROD)_fixes
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 # OpenSCAP 1.1.0+ supports generating guides from datastreams
@@ -33,7 +37,7 @@ endif
 	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
-	xsltproc -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(PROD)-shorthand.xml
+	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(PROD)-shorthand.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
 	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml --output $(OUT)/unlinked-$(PROD)-xccdf.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
@@ -43,7 +47,12 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	$(SHARED)/$(TRANS)/combinefixes.py $(IN)/fixes/bash/ $(OUT)/bash-remediations.xml
+	# Make intermediate $(PROD_FIXES) directory to hold final list of remediation scripts for $(PROD)
+	mkdir -p $(PROD_FIXES)
+	# Search $(SHARED_FIXES) and $(IN)/FIXES directories to find all product specific remediation scripts,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_FIXES) directory
+	find $(SHARED_FIXES) $(IN)/fixes/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_FIXES) ';'
+	$(SHARED)/$(TRANS)/combinefixes.py $(CONF) $(PROD) $(PROD_FIXES) $(OUT)/bash-remediations.xml
 	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 

@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 if [ $(getconf LONG_BIT) = "32" ] ; then
   #
   # Set runtime for kernel.exec-shield

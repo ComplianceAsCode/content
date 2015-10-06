@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
 grep -q ^SINGLE /etc/sysconfig/init && \
   sed -i "s/SINGLE.*/SINGLE=\/sbin\/sulogin/g" /etc/sysconfig/init
 if ! [ $? -eq 0 ]; then

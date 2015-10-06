@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 6
 #
 # Enable auditd for all run levels
 #

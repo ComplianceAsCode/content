@@ -1,1 +1,0 @@
-../../../../shared/fixes/bash/sshd_disable_root_login.sh
