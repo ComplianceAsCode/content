@@ -1,18 +1,4 @@
 # platform = multi_platform_fedora
-#
-# Install chrony package if necessary
-#
+. /usr/share/scap-security-guide/remediation_functions
 
-yum -y install chrony
-
-#
-# Enable chronyd service (for current systemd target)
-#
-
-systemctl enable chronyd.service
-
-#
-# Start chronyd if not currently running
-#
-
-systemctl start chronyd.service
+service_command enable chronyd.service
