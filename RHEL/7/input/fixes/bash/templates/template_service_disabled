@@ -1,9 +1,5 @@
-#
-# Disable SERVICENAME for all run levels
-#
-chkconfig --level 0123456 SERVICENAME off
+# platform = Red Hat Enterprise Linux 7
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop SERVICENAME if currently running
-#
-service SERVICENAME stop
+service_command disable SERVICENAME

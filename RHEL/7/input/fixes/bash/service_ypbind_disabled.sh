@@ -1,10 +1,4 @@
 # platform = Red Hat Enterprise Linux 7
-#
-# Disable ypbind.service for all systemd targets
-#
-systemctl disable ypbind.service
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop ypbind.service if currently running
-#
-systemctl stop ypbind.service
+service_command disable ypbind.service
