@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="dconf_gnome_screensaver_mode_blank" version="1">
+  <definition class="compliance" id="dconf_gnome_screensaver_mode_blank" version="2">
     <metadata>
       <title>Implement Blank Screensaver</title>
       <affected family="unix">
@@ -28,7 +28,10 @@
   version="1">
     <ind:path>/etc/dconf/db/local.d/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^\[org/gnome/desktop/screensaver]([^\n]*\n+)+?picture-uri=\'\'$</ind:pattern>
+    <!-- GSettings expects proper datatype specifier when setting 'picture-uri' per:
+         https://bugzilla.redhat.com/show_bug.cgi?id=1141779#c3
+         Thus require 'string' datatype to be specified in 'picture-uri' configuration too -->
+    <ind:pattern operation="pattern match">^\[org/gnome/desktop/screensaver]([^\n]*\n+)+?picture-uri=string[\s]\'\'$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
