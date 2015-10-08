@@ -18,4 +18,4 @@ sed -i "/^${SP}*cert_policy${SP}=.*;/ {/ocsp_on/! s/^${SP}*cert_policy${SP}=${SP
 
 # Enable smartcard authentication (but allow also other ways
 # to login not to possibly cut off the system in question)
-authconfig --enablesmartcard
+authconfig --enablesmartcard --updateall
