@@ -29,7 +29,7 @@
     <linux:object object_ref="object_files_fail_mode"/>
   </linux:rpmverifyfile_test>
   <linux:rpmverifyfile_object id="object_files_fail_user_ownership" version="1" comment="rpm verify of all files">
-    <linux:behaviors nomd5="true"/>
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:epoch operation="pattern match">.*</linux:epoch>
     <linux:version operation="pattern match">.*</linux:version>
@@ -39,7 +39,7 @@
     <filter action="include">state_files_fail_user_ownership</filter>
   </linux:rpmverifyfile_object>
   <linux:rpmverifyfile_object id="object_files_fail_group_ownership" version="1" comment="rpm verify of all files">
-    <linux:behaviors nomd5="true"/>
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:epoch operation="pattern match">.*</linux:epoch>
     <linux:version operation="pattern match">.*</linux:version>
@@ -49,7 +49,7 @@
     <filter action="include">state_files_fail_group_ownership</filter>
   </linux:rpmverifyfile_object>
   <linux:rpmverifyfile_object id="object_files_fail_mode" version="1" comment="rpm verify of all files">
-    <linux:behaviors nomd5="true"/>
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
     <linux:name operation="pattern match">.*</linux:name>
     <linux:epoch operation="pattern match">.*</linux:epoch>
     <linux:version operation="pattern match">.*</linux:version>
