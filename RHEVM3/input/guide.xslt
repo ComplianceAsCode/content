@@ -11,7 +11,7 @@
        </Value>
 
       <xsl:apply-templates select="document('intro/intro.xml')" />
-      <xsl:apply-templates select="document('services/sample.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/sample.xml')" />
       <!-- the auxiliary Groups here will be removed prior to some outputs -->
       <xsl:apply-templates select="document('auxiliary/srg_support.xml')" />
     </xsl:copy>
@@ -20,7 +20,7 @@
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('services/sample.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/sample.xml')" />
     </xsl:copy>
   </xsl:template>
 
