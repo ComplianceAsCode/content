@@ -159,6 +159,31 @@ by configuring the bootloader password.
 <tested by="DS" on="20121024"/>
 </Rule>
 
+<Rule id="service_debug-shell-disabled" severity="medium">
+<title>Disable debug-shell SystemD Service</title>
+<description>SystemD's <tt>debug-shell</tt> service is intended to
+diagnose SystemD related boot issues with various <tt>systemctl</tt>
+commands. Once enabled and following a system reboot, the root shell
+will be available on <tt>tty9</tt> which is access by pressing
+<tt>CTRL-ALT-F9</tt>. The <tt>debug-shell</tt> service should only be used
+for SystemD related issues and should otherwise be disabled.
+<br /><br />
+By default, the <tt>debug-shell</tt> SystemD service is disabled.
+<service-disable-macro service="debug-shell" />
+</description>
+<ocil>
+<service-disable-check-macro service="debug-shell" />
+</ocil>
+<rationale>
+This prevents attackers with physical access from trivially bypassing security
+on the machine through valid troubleshooting configurations and gaining root
+access when the system is rebooted.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_debug-shell_disabled" />
+<!--ref nist="IA-2(1),AC-3" disa="213" /-->
+</Rule>
+
 <Rule id="disable_ctrlaltdel_reboot" severity="high">
 <title>Disable Ctrl-Alt-Del Reboot Activation</title>
 <description>
