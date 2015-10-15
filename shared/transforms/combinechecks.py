@@ -4,6 +4,7 @@ import sys
 import os
 import re
 import datetime
+import platform
 import lxml.etree as ET
 from ConfigParser import SafeConfigParser
 
@@ -37,10 +38,10 @@ def _header(schema_version):
         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
     <generator>
         <oval:product_name>python</oval:product_name>
-        <oval:product_version>2.6.6</oval:product_version>
+        <oval:product_version>%s</oval:product_version>
         <oval:schema_version>%s</oval:schema_version>
         <oval:timestamp>%s</oval:timestamp>
-    </generator>''' % (schema_version, timestamp)
+    </generator>''' % (platform.python_version(), schema_version, timestamp)
 
     return header
 
