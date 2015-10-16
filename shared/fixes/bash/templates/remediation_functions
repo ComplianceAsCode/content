@@ -539,11 +539,15 @@ do
 		continue
 	fi
 
+	# Reset the counter of inspected files when starting to check
+	# presence of existing audit rule for new sbinary
+	local count_of_inspected_files=0
+
 	# For each audit rules file from the list of files to be inspected
 	for afile in "${files_to_inspect[@]}"
 	do
 
-		# Search existing audit rules file's content for match. Match criteria:
+		# Search current audit rules file's content for match. Match criteria:
 		# * existing rule is for the same SUID/SGID binary we are currently processing (but
 		#   can contain multiple -F path= elements covering multiple SUID/SGID binaries)
 		# * existing rule contains all arguments from expected rule form (though can contain
@@ -553,6 +557,9 @@ do
 		    		  -e "/-F path=[^[:space:]]\+/!d" -e "/-F perm=.*/!d"       \
 				  -e "/-F auid>=${min_auid}/!d" -e "/-F auid!=4294967295/!d"  \
 				  -e "/-k privileged/!d" $afile)
+
+		# Increase the count of inspected files for this sbinary
+		count_of_inspected_files=$((count_of_inspected_files + 1))
 
 		# Define expected rule form for this binary
 		expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=4294967295 -k privileged"
@@ -593,11 +600,22 @@ do
 				access_type="$access_type$exec_access"
 				# Reconstruct the permissions section for the rule
 				new_rule_perm="-F perm=$access_type"
-				# Update existing rule in /etc/audit/audit.rules with the new permission section
+				# Update existing rule in current audit rules file with the new permission section
 				sed -i "s#${rule_head}\(.*\)${rule_tail}#${rule_head}${new_rule_perm}${rule_tail}#" $afile
 
 			fi
-		else
+
+		# If the required audit rule for particular sbinary wasn't found yet, insert it under following conditions:
+		#
+		# * in the "auditctl" mode of operation insert particular rule each time
+		#   (because in this mode there's only one file -- /etc/audit/audit.rules to be inspected for presence of this rule),
+		#
+		# * in the "augenrules" mode of operation insert particular rule only once and only in case we have already
+		#   searched all of the files from /etc/audit/rules.d/*.rules location (since that audit rule can be defined
+		#   in any of those files and if not, we want it to be inserted only once into /etc/audit/rules.d/privileged.rules file)
+		#
+		elif [ "$tool" == "auditctl" ] || [[ "$tool" == "augenrules" && $count_of_inspected_files -eq "${#files_to_inspect[@]}" ]]
+		then
 
 			# Current audit rules file's content doesn't contain expected rule for this
 			# SUID/SGID binary yet => append it
