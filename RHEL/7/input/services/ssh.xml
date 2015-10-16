@@ -21,7 +21,7 @@ operator="equals" interactive="0">
 <value selector="120_minutes">7200</value>
 </Value>
 
-<Rule id="ssh_server_disabled">
+<Rule id="service_sshd_disabled">
 <title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
 However, if it can be disabled, do so.
@@ -34,7 +34,7 @@ remote access.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="ssh_server_firewalld_exception">
+<Rule id="firewalld_sshd_disabled">
 <title>Remove SSH Server <tt>firewalld</tt> Firewall exception (Unusual)</title>
 <description>By default, inbound connections to SSH's port are allowed. If 
 the SSH server is not being used, this exception should be removed from the

@@ -335,7 +335,7 @@ execution of these programs cannot be co-opted.
 
 </Group>
 
-<Rule id="sticky_world_writable_dirs">
+<Rule id="dir_perms_world_writable_sticky_bits">
 <title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
 <description>When the so-called 'sticky bit' is set on a directory,
 only the owner of a given file may remove that file from the
@@ -370,7 +370,7 @@ requiring global read/write access.
 <tested by="swells" on="20120929"/>
 </Rule>
 
-<Rule id="world_writeable_files" severity="medium">
+<Rule id="file_permissions_unauthorized_world_writable" severity="medium">
 <title>Ensure No World-Writable Files Exist</title>
 <description>It is generally a good idea to remove global (other) write
 access to a file when it is discovered. However, check with
@@ -463,7 +463,7 @@ and the cause should be discovered and addressed.
 <ref nist="AC-6" disa="224"/>
 </Rule>
 
-<Rule id="no_files_unowned_by_group">
+<Rule id="file_permissions_ungroupowned">
 <title>Ensure All Files Are Owned by a Group</title>
 <description>If any files are not owned by a group, then the
 cause of their lack of group-ownership should be investigated.
@@ -490,7 +490,7 @@ and the cause should be discovered and addressed.
 <ref nist="AC-6" disa="224"/>
 </Rule>
 
-<Rule id="world_writable_files_system_ownership">
+<Rule id="dir_perms_world_writable_system_owned">
 <title>Ensure All World-Writable Directories Are Owned by a System Account</title>
 <description>All directories in local partitions which are
 world-writable should be owned by root or another
