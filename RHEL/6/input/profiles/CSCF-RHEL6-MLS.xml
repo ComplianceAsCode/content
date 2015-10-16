@@ -61,7 +61,7 @@ for production deployment.</description>
 <select idref="auditd_data_retention_space_left_action" selected="true" />
 <select idref="cups_disable_browsing" selected="false" />
 <select idref="cups_disable_printserver" selected="true" />
-<select idref="deactivate_wireless_interfaces" selected="true" />
+<select idref="wireless_disable_interfaces" selected="true" />
 <select idref="accounts_passwords_pam_faillock_unlock_time" selected="false" />
 <select idref="accounts_passwords_pam_faillock_deny" selected="false" />
 <select idref="accounts_passwords_pam_faillock_interval" selected="false" />
@@ -69,12 +69,12 @@ for production deployment.</description>
 <select idref="dhcp_server_deny_decline" selected="true" />
 <select idref="dhcp_server_disable_ddns" selected="true" />
 <select idref="disable_anacron" selected="true" />
-<select idref="disable_avahi" selected="true" />
-<select idref="disable_dhcp_client" selected="true" />
-<select idref="disable_dhcp_server" selected="true" />
-<select idref="disable_dns_server" selected="true" />
-<select idref="disable_gnome_thumbnailers" selected="true" />
-<select idref="disable_httpd" selected="false" />
+<select idref="service_avahi-daemon_disabled" selected="true" />
+<select idref="sysconfig_networking_bootproto_ifcfg" selected="true" />
+<select idref="service_dhcpd_disabled" selected="true" />
+<select idref="service_named_disabled" selected="true" />
+<select idref="gconf_gnome_disable_thumbnailers" selected="true" />
+<select idref="service_httpd_disabled" selected="false" />
 <select idref="kernel_module_ipv6_option_disabled" selected="true" />
 <select idref="kernel_module_cramfs_disabled" selected="true" />
 <select idref="kernel_module_freevxfs_disabled" selected="true" />
@@ -96,11 +96,11 @@ for production deployment.</description>
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true" />
-<select idref="sysctl_ipv4_ip_forward" selected="true" />
+<select idref="sysctl_net_ipv4_ip_forward" selected="true" />
 <select idref="service_telnetd_disabled" selected="false" />
 <select idref="service_tftp_disabled" selected="true" />
-<select idref="disable_vsftpd" selected="true" />
-<select idref="disable_ypbind" selected="true" />
+<select idref="service_vsftpd_disabled" selected="true" />
+<select idref="service_ypbind_disabled" selected="true" />
 <select idref="dns_server_authenticate_zone_transfers" selected="true" />
 <select idref="bootloader_audit_argument" selected="true" />
 <select idref="gconf_gdm_enable_warning_gui_banner" selected="true" />
@@ -119,8 +119,8 @@ for production deployment.</description>
 <select idref="file_groupowner_etc_passwd" selected="true" />
 <select idref="rsyslog_files_groupownership" selected="true" />
 <select idref="groupowner_shadow_file" selected="true" />
-<select idref="httpd_conf_files_permissions" selected="true" />
-<select idref="httpd_logs_permissions" selected="true" />
+<select idref="file_permissions_httpd_server_conf_files" selected="true" />
+<select idref="dir_perms_var_log_httpd" selected="true" />
 <select idref="httpd_servertokens_prod" selected="true" />
 <select idref="kernel_module_bluetooth_disabled" selected="true" />
 <select idref="kernel_module_usb-storage_disabled" selected="true" />
@@ -143,7 +143,7 @@ for production deployment.</description>
 <select idref="network_ipv6_disable_rpc" selected="true" />
 <select idref="network_sniffer_disabled" selected="true" />
 <select idref="no_empty_passwords" selected="true" />
-<select idref="no_files_unowned_by_group" selected="false" />
+<select idref="file_permissions_ungroupowned" selected="false" />
  <select idref="no_files_unowned_by_user" selected="false" />
 <select idref="accounts_password_all_shadowed" selected="true" />
 <select idref="no_netrc_files" selected="true" />
@@ -177,10 +177,10 @@ for production deployment.</description>
 <select idref="restrict_serial_port_logins" selected="true" />
 <select idref="rpm_verify_hashes" selected="false" />
 <select idref="rpm_verify_permissions" selected="false" />
-<select idref="rsyslog_accept_remote_messages_none" selected="true" />
-<select idref="rsyslog_accept_remote_messages_tcp" selected="true" />
+<select idref="rsyslog_nolisten" selected="true" />
+<select idref="rsyslog_listen_tcp" selected="true" />
 <select idref="rsyslog_accept_remote_messages_udp" selected="true" /> 
-<select idref="rsyslog_send_messages_to_logserver" selected="false" />
+<select idref="rsyslog_remote_loghost" selected="false" />
 <select idref="selinux_confinement_of_daemons" selected="true" />
 <select idref="selinux_all_devicefiles_labeled" selected="true" />
 <select idref="service_abrtd_disabled" selected="true" />
@@ -244,17 +244,17 @@ for production deployment.</description>
 <select idref="sshd_allow_only_protocol2" selected="true" />
 <select idref="sshd_disable_root_login" selected="true" />
 <select idref="sshd_use_approved_ciphers" selected="true" />
-<select idref="sticky_world_writable_dirs" selected="false" />
+<select idref="dir_perms_world_writable_sticky_bits" selected="false" />
 <select idref="tftpd_uses_secure_mode" selected="true" />
-<select idref="uninstall_bind" selected="true" />
-<select idref="uninstall_dhcp_server" selected="true" />
+<select idref="package_bind_removed" selected="true" />
+<select idref="package_dhcp_removed" selected="true" />
 <!-- not necessary for UVs -->
 <select idref="package_httpd_removed" selected="false" />
 <select idref="package_rsh-server_removed" selected="true" />
-<select idref="uninstall_telnet_server" selected="false" />
-<select idref="uninstall_tftp-server" selected="true" />
-<select idref="uninstall_vsftpd" selected="true" />
-<select idref="uninstall_ypserv" selected="true" />
+<select idref="package_telnet-server_removed" selected="false" />
+<select idref="package_tftp-server_removed" selected="true" />
+<select idref="package_vsftpd_removed" selected="true" />
+<select idref="package_ypserv_removed" selected="true" />
 <!-- the following may need refinement -->
 <select idref="file_owner_etc_group" selected="true" />
 <select idref="file_owner_etc_gshadow" selected="true" />
@@ -262,7 +262,7 @@ for production deployment.</description>
 <select idref="rsyslog_files_ownership" selected="false" />
 <select idref="userowner_shadow_file" selected="true" />
 <select idref="wireless_disable_in_bios" selected="true" />
-<select idref="world_writable_files_system_ownership" selected="false" />
+<select idref="dir_perms_world_writable_system_owned" selected="false" />
 <select idref="disable_interactive_boot" selected="true" />
 <select idref="install_hids" selected="true" />
 <select idref="install_antivirus" selected="true" />
@@ -270,8 +270,8 @@ for production deployment.</description>
 <select idref="sysctl_kernel_randomize_va_space" selected="true" />
 <select idref="bios_enable_execution_restrictions" selected="true" />
 <select idref="sysctl_fs_suid_dumpable" selected="true" />
-<select idref="disable_xwindows_with_runlevel" selected="true" />
-<select idref="world_writeable_files" selected="false" />
+<select idref="xwindows_runlevel_setting" selected="true" />
+<select idref="file_permissions_unauthorized_world_writable" selected="false" />
 </Profile>
 
 

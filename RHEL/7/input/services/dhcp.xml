@@ -21,7 +21,7 @@ system does not need to act as a DHCP server, it should be disabled
 and removed.
 </description>
 
-<Rule id="disable_dhcp_server" severity="medium">
+<Rule id="service_dhcpd_disabled" severity="medium">
 <title>Disable DHCP Service</title>
 <description>The <tt>dhcpd</tt> service should be disabled on
 any system that does not need to act as a DHCP server.
@@ -39,7 +39,7 @@ DHCP server if there is one.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="uninstall_dhcp_server" severity="medium">
+<Rule id="package_dhcp_removed" severity="medium">
 <title>Uninstall DHCP Server Package</title>
 <description>If the system does not need to act as a DHCP server,
 the dhcp package can be uninstalled.
@@ -184,7 +184,7 @@ of IP addresses for systems implies a greater degree of management and
 accountability for network activity.
 </description>
 
-<Rule id="disable_dhcp_client">
+<Rule id="sysconfig_networking_bootproto_ifcfg">
 <title>Disable DHCP Client</title>
 <description>
 For each interface on the system (e.g. eth0), edit

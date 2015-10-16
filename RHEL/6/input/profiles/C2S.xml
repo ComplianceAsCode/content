@@ -75,7 +75,7 @@ baseline.
 <select idref="mount_option_dev_shm_noexec" selected="true" />
 
 <!-- CIS 1.1.17 Set Sticky Bit on All World-Writable Directories (Scored) -->
-<select idref="sticky_world_writable_dirs" selected="true" />
+<select idref="dir_perms_world_writable_sticky_bits" selected="true" />
 
 <!-- CIS 1.1.18 Disable Mounting of cramfs Filesystems (Not Scored) -->
 <select idref="kernel_module_cramfs_disabled" selected="true" />
@@ -179,7 +179,7 @@ baseline.
 <!-- CIS 2 OS Services -->
 <!-- CIS 2.1 Remove Legacy Services  -->
 <!-- CIS 2.1.1 Remove telnet-server (Scored)  -->
-<select idref="uninstall_telnet_server" selected="true"/>
+<select idref="package_telnet-server_removed" selected="true"/>
 
 <!-- CIS 2.1.2 Remove telnet Clients (Scored) -->
 <select idref="package_telnet_removed" selected="true" />
@@ -194,13 +194,13 @@ baseline.
 <select idref="package_ypbind_removed" selected="true" />
 
 <!-- CIS 2.1.6 Remove NIS Server (Scored) -->
-<select idref="uninstall_ypserv" selected="true" />
+<select idref="package_ypserv_removed" selected="true" />
 
 <!-- CIS 2.1.7 Remove tftp (Scored) -->
 <select idref="package_tftp_removed" selected="true" />
 
 <!-- CIS 2.1.8 Remove tftp-server (Scored) -->
-<select idref="uninstall_tftp-server" selected="true"/>
+<select idref="package_tftp-server_removed" selected="true"/>
 
 <!-- CIS 2.1.9 Remove talk (Scored) -->
 <!-- NEEDS RULE -->
@@ -209,7 +209,7 @@ baseline.
 <!-- NEEDS RULE -->
 
 <!-- CIS 2.1.11 Remove xinetd (Scored) -->
-<select idref="uninstall_xinetd" selected="true"/>
+<select idref="package_xinetd_removed" selected="true"/>
 
 <!-- CIS 2.1.12 Disable chargen-dgram (Scored) -->
 <!-- As this package is not available in RHEL6, not creating a rule -->
@@ -237,16 +237,16 @@ baseline.
 <select idref="umask_for_daemons" selected="true" />
 
 <!-- CIS 3.2 Remove X Windows (Scored) -->
-<select idref="packagegroup_xwindows_remove" selected="true" />
+<select idref="package_xorg-x11-server-common_removed" selected="true" />
 
 <!-- CIS 3.3 Disable Avahi Server (Scored) --> 
-<select idref="disable_avahi" selected="true" />
+<select idref="service_avahi-daemon_disabled" selected="true" />
 
 <!-- CIS 3.4 Disable Print Server - CUPS (Not Scored) --> 
 <select idref="service_cups_disabled" selected="true" />
 
 <!-- CIS 3.5 Remove DHCP Server (Scored) --> 
-<select idref="uninstall_dhcp_server" selected="true" />
+<select idref="package_dhcp_removed" selected="true" />
 
 <!-- CIS 3.6 Configure Network Time Protocol (NTP) (Scored) -->
 <select idref="service_ntpd_enabled" selected="true" />
@@ -263,7 +263,7 @@ baseline.
 <!-- NEEDS RULE. LOW PRIORITY SINCE NOT SCORED. -->
 
 <!-- CIS 3.10 Remove FTP Server (Not Scored) -->
-<select idref="uninstall_vsftpd" selected="true" />
+<select idref="package_vsftpd_removed" selected="true" />
 
 <!-- CIS 3.11 Remove HTTP Server (Not Scored) -->
 <select idref="package_httpd_removed" selected="true" />
@@ -286,7 +286,7 @@ baseline.
 <!-- CIS 4 Network Configuration and Firewalls -->
 <!-- CIS 4.1 Modify Network Parameters (Host Only) -->
 <!-- CIS4.1.1 Disable IP Forwarding (Scored) -->
-<select idref="sysctl_ipv4_ip_forward" selected="true"/>
+<select idref="sysctl_net_ipv4_ip_forward" selected="true"/>
 
 <!-- CIS4.1.2 Disable Send Packet Redirects (Scored) -->
 <select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true"/>
@@ -324,7 +324,7 @@ baseline.
 <!-- CIS 4.3 Wireless Networking -->
 <!-- CIS 4.3.1 Deactivate Wireless Interfaces (Not Scored) -->
 <select idref="wireless_disable_in_bios" selected="true" />
-<select idref="deactivate_wireless_interfaces" selected="true" />
+<select idref="wireless_disable_interfaces" selected="true" />
 
 <!-- CIS 4.4 Disable IPv6 -->
 <!-- CIS 4.4.1 Configure IPv6 -->
@@ -390,10 +390,10 @@ baseline.
 <select idref="rsyslog_files_permissions" selected="true"/>
 
 <!-- CIS 5.1.5 Configure rsyslog to Send Logs to a Remote Log Host (Scored) -->
-<select idref="rsyslog_send_messages_to_logserver" selected="true"/>
+<select idref="rsyslog_remote_loghost" selected="true"/>
 
 <!-- CIS 5.1.6 Accept Remote rsyslog Messages Only on Designated Log Hosts (Not Scored) -->
-<select idref="rsyslog_accept_remote_messages_none" selected="true" />
+<select idref="rsyslog_nolisten" selected="true" />
 
 <!-- CIS 5.2 Configure System Accounting (auditd) -->
 <!-- CIS 5.2.1 Configure Data Retention -->
@@ -585,7 +585,7 @@ baseline.
      Modify User/Group Information" -->
 
 <!-- CIS 7.4 Set Default umask for Users (Scored) -->
-<select idref="accounts_umask_bashrc" selected="true" />
+<select idref="accounts_umask_etc_bashrc" selected="true" />
 <select idref="accounts_umask_etc_profile" selected="true" />
 
 <!-- CIS 7.5 Lock Inactive User Accounts (Scored) -->
@@ -638,13 +638,13 @@ baseline.
 
 <!-- CIS 9.1.10 Find World Writable Files (Not Scored) -->
 <select idref="file_permissions_binary_dirs" selected="true" />
-<select idref="world_writeable_files" selected="true" />
+<select idref="file_permissions_unauthorized_world_writable" selected="true" />
 
 <!-- CIS 9.1.11 Find Un-owned Files and Directories (Scored) -->
 <select idref="no_files_unowned_by_user" selected="true" />
 
 <!-- CIS 9.1.12 Find Un-grouped Files and Directories (Scored) -->
-<select idref="no_files_unowned_by_group" selected="true" />
+<select idref="file_permissions_ungroupowned" selected="true" />
 
 <!-- CIS 9.1.13 Find SUID System Executables (Not Scored) -->
 <select idref="file_permissions_unauthorized_suid" selected="true" />
@@ -672,7 +672,7 @@ baseline.
 <select idref="root_path_default" selected="true" />
 
 <!-- CIS 9.2.7 Check Permissions on User Home Directories (Scored) -->
-<select idref="homedir_perms_no_groupwrite_worldread" selected="true" />
+<select idref="file_permissions_home_dirs" selected="true" />
 
 <!-- CIS 9.2.8 Check User Dot File Permissions (Scored) -->
 <!-- Addressed via  9.1.10 Find World Writable Files -->
