@@ -169,7 +169,7 @@ def append(element, newchild):
         element.append(newchild)
 
 def checks(product):
-    # concatenate all XML files in the checks directory, to create the
+    # concatenate all XML files in the oval directory, to create the
     # document body
     body = ""
     included_checks_count = 0
