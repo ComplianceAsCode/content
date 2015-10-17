@@ -5,7 +5,7 @@ OUT = output
 BUILD = build
 TRANS = transforms
 SHARED = ../shared
-SHARED_CHECKS = $(SHARED)/oval
+SHARED_OVAL = $(SHARED)/oval
 SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
 REFS = $(SHARED)/references
 CONF = ../config
@@ -14,7 +14,7 @@ DIST = dist
 
 ID = ssg
 PROD = fedora
-PROD_CHECKS = $(BUILD)/$(PROD)_checks
+PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
@@ -49,20 +49,20 @@ shorthand2xccdf: shorthand-guide
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
-	# Make intermediate $(PROD_CHECKS) directory to hold final list of OVAL checks for $(PROD)
-	mkdir -p $(PROD_CHECKS)
-	# Search $(SHARED_CHECKS) and $(IN)/checks directories to find all product specific OVAL checks,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_CHECKS) directory
-	find $(SHARED_CHECKS) $(IN)/checks -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
+	mkdir -p $(PROD_OVAL)
+	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
+	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# into final list of OVAL checks
 ifeq ($(OVAL_5_11), 0)
-	find $(IN)/checks/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
+	find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
 	# Update requested Fedora OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
 	sed -i "s/^\(fedora_oval_version = \).*/\15.11/" $(CONF)/oval\.config
 endif
-	xmlwf $(PROD_CHECKS)/*.xml
-	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(PROD_CHECKS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	xmlwf $(PROD_OVAL)/*.xml
+	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 content: shorthand2xccdf guide checks
