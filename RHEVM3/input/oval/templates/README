@@ -8,7 +8,7 @@ to disable services, and store them in the output directory.
 
 The CSV input files should contain all the relevant information
 for each check.  Files should be compared to existing OVAL checks
-for consistency before copying to the main checks directory.
+for consistency before copying to the main oval directory.
 
 
 A Makefile exists to activate all the scripts here and ease comparison
@@ -21,7 +21,7 @@ checks, run:
 	$ make compare
 
 Then, if the changes are agreeable, the following command can be run to copy the
-newly generated files to the main checks directory:
+newly generated files to the main oval directory:
 	$ make copy
 
 To list files that have been manually created (and may potentially be
