@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
-<!-- This transform expects a stringparam "fixes" specifying a filename
-     containing a list of fixes.  It inserts these into the Rules 
-     specified inside the fixes file. -->
+<!-- This transform expects a stringparam "remediations" specifying a filename
+     containing a list of remediations.  It inserts these into the Rules
+     specified inside the remediations file. -->
 
-<xsl:variable name="fixgroup" select="document($fixes)/xccdf:fix-group" />
+<xsl:variable name="fixgroup" select="document($remediations)/xccdf:fix-group" />
 <xsl:variable name="fixsystem" select="$fixgroup/@system"/>
 
   <xsl:template match="xccdf:Rule">
