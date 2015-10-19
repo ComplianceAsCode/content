@@ -6,7 +6,7 @@ BUILD = build
 TRANS = transforms
 SHARED = ../shared
 SHARED_CHECKS = $(SHARED)/oval
-SHARED_FIXES = $(SHARED)/fixes/bash
+SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
 REFS = $(SHARED)/references
 CONF = ../config
 UTILS = utils
@@ -15,7 +15,7 @@ DIST = dist
 ID = ssg
 PROD = fedora
 PROD_CHECKS = $(BUILD)/$(PROD)_checks
-PROD_FIXES = $(BUILD)/$(PROD)_fixes
+PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
@@ -39,13 +39,13 @@ shorthand2xccdf: shorthand-guide
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
 	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml --output $(OUT)/unlinked-$(PROD)-xccdf.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
-	# Make intermediate $(PROD_FIXES) directory to hold final list of remediation scripts for $(PROD)
-	mkdir -p $(PROD_FIXES)
-	# Search $(SHARED_FIXES) and $(IN)/FIXES directories to find all product specific remediation scripts,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_FIXES) directory
-	find $(SHARED_FIXES) $(IN)/fixes/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_FIXES) ';'
-	$(SHARED)/$(TRANS)/combinefixes.py $(CONF) $(PROD) $(PROD_FIXES) $(OUT)/bash-remediations.xml
-	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
+	mkdir -p $(PROD_REMEDIATIONS)
+	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_REMEDIATIONS) directory
+	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_REMEDIATIONS) ';'
+	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(PROD_REMEDIATIONS) $(OUT)/bash-remediations.xml
+	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
@@ -94,7 +94,7 @@ validate-xml:
 
 validate: validate-xml
 ifeq ($(SHELLCHECK_AVAIL), 0)
-	cd $(IN)/fixes/bash; shellcheck -s bash *.sh
+	cd $(IN)/remediations/bash; shellcheck -s bash *.sh
 else
 	@echo "Skipping ShellCheck analysis, ensure shellcheck executable is present in the PATH!"
 endif
@@ -126,6 +126,6 @@ eval-common: content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
-	rm -f $(IN)/fixes/bash/templates/output/*.sh
+	rm -f $(IN)/remediations/bash/templates/output/*.sh
 	rm -rf $(DIST)/content
 	rm -rf $(BUILD)

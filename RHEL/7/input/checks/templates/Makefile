@@ -25,7 +25,7 @@ compare:
 
 copy:
 	cp output/*.xml ../
-	cp output/*.sh ../../fixes/bash/
+	cp output/*.sh ../../remediations/bash/
 
 find-untemplated: templates
 	${SHARED_DIR}/find_untemplated.py

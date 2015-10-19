@@ -1,6 +1,6 @@
 templates: sysctls services kernel_modules
 
-SHARED_DIR=../../../../../shared/fixes/bash/templates
+SHARED_DIR=../../../../../shared/remediations/bash/templates
 
 OUTPUT:=$(shell mkdir -p output)
 

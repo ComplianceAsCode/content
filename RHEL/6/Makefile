@@ -6,7 +6,7 @@ BUILD = build
 TRANS = transforms
 SHARED = ../../shared
 SHARED_CHECKS = $(SHARED)/oval
-SHARED_FIXES = $(SHARED)/fixes/bash
+SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
 REFS = $(SHARED)/references
 CONF = ../../config
 UTILS = utils
@@ -15,7 +15,7 @@ DIST = dist
 ID = ssg
 PROD = rhel6
 PROD_CHECKS = $(BUILD)/$(PROD)_checks
-PROD_FIXES = $(BUILD)/$(PROD)_fixes
+PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 # OpenSCAP 1.1.0+ supports generating guides from datastreams
@@ -47,13 +47,13 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	# Make intermediate $(PROD_FIXES) directory to hold final list of remediation scripts for $(PROD)
-	mkdir -p $(PROD_FIXES)
-	# Search $(SHARED_FIXES) and $(IN)/FIXES directories to find all product specific remediation scripts,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_FIXES) directory
-	find $(SHARED_FIXES) $(IN)/fixes/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_FIXES) ';'
-	$(SHARED)/$(TRANS)/combinefixes.py $(CONF) $(PROD) $(PROD_FIXES) $(OUT)/bash-remediations.xml
-	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	# Make intermediate $(PROD_remediations) directory to hold final list of remediation scripts for $(PROD)
+	mkdir -p $(PROD_REMEDIATIONS)
+	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_REMEDIATIONS) directory
+	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_REMEDIATIONS) ';'
+	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(PROD_REMEDIATIONS) $(OUT)/bash-remediations.xml
+	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
