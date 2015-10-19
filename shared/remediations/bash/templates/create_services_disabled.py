@@ -2,11 +2,11 @@
 
 #
 # create_services_disabled.py
-#   automatically generate fixes for disabled services
+#   automatically generate remediations for disabled services
 #
 # NOTE: The file 'template_service_disabled' should be located in the same
 # working directory as this script. The template contains the following tags
-# that *must* be replaced successfully in order for the fixes to work.
+# that *must* be replaced successfully in order for the remediations to work.
 #
 # SERVICENAME - the name of the service that should be disabled
 # PACKAGENAME - the name of the package that installs the service
