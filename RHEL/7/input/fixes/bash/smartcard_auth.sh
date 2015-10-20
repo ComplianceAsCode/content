@@ -7,7 +7,7 @@ package_command install pam_pkcs11
 
 # Enable smartcard authentication (but allow also other ways
 # to login not to possibly cut off the system in question)
-authconfig --enablesmartcard --updateall
+/usr/sbin/authconfig --enablesmartcard --updateall
 
 # Define constants to be reused below
 SP="[:space:]"
