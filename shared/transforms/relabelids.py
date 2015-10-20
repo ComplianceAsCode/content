@@ -51,6 +51,23 @@ def main():
     # step over xccdf file, and find referenced check files
     xccdftree = parse_xml_file(xccdffile)
 
+    # Check that OVAL IDs and XCCDF Rule IDs match
+    if 'unlinked-ocilref' not in xccdffile:
+        allrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
+        for rule in allrules:
+            xccdf_rule = rule.get("id")
+            if xccdf_rule is not None:
+                checks = rule.find("./{%s}check" % xccdf_ns)
+                if checks is not None:
+                    for check in checks:
+                        oval_id = check.get("name")
+                        if not xccdf_rule == oval_id and oval_id is not None:
+                            print("The OVAL ID does not match the XCCDF Rule ID!\n"
+                                  "\n  OVAL ID:       \'%s\'"
+                                  "\n  XCCDF Rule ID: \'%s\'"
+                                  "\n\nBoth OVAL and XCCDF Rule IDs must match!") % (oval_id, xccdf_rule)
+                            sys.exit(1)
+
     checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
     ovalfiles = get_checkfiles(checks, oval_cs)
     ocilfiles = get_checkfiles(checks, ocil_cs)
