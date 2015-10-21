@@ -69,7 +69,7 @@ cp -a JRE/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in functions library for remediations
-cp -a shared/fixes/bash/templates/remediation_functions %{buildroot}%{_datadir}/%{name}/
+cp -a shared/remediations/bash/templates/remediation_functions %{buildroot}%{_datadir}/%{name}/
 
 %if 0%{?fedora}
 cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
