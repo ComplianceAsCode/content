@@ -11306,7 +11306,7 @@ If it does not, this is a finding. </check-content>
 		<Rule id="SV-65589r1_rule" severity="low" weight="10.0">
 			<version>RHEL-06-000025</version>
 			<title>All device files must be monitored by the system Linux Security Module.</title>
-			<description>&lt;VulnDiscussion&gt;If a device file carries the SELinux type "unlabeled_t", then SELinux cannot properly restrict access to the device file. &lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;&lt;/Responsibility&gt;&lt;IAControls&gt;&lt;/IAControls&gt;</description>
+			<description>&lt;VulnDiscussion&gt;If a device file carries the SELinux type "device_t", then SELinux cannot properly restrict access to the device file. &lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;&lt;/Responsibility&gt;&lt;IAControls&gt;&lt;/IAControls&gt;</description>
 			<reference>
 				<dc:title>DPMS Target Red Hat 6</dc:title>
 				<dc:publisher>DISA FSO</dc:publisher>
@@ -11315,13 +11315,13 @@ If it does not, this is a finding. </check-content>
 				<dc:identifier>2367</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000366</ident>
-			<fixtext fixref="F-56179r1_fix">Device files, which are used for communication with important system resources, should be labeled with proper SELinux types. If any device files carry the SELinux type "unlabeled_t", investigate the cause and correct the file's context. </fixtext>
+			<fixtext fixref="F-56179r1_fix">Device files, which are used for communication with important system resources, should be labeled with proper SELinux types. If any device files carry the SELinux type "device_t", report the bug so that policy can be corrected. Supply information about what the device is and what programs use it. </fixtext>
 			<fix id="F-56179r1_fix"/>
 			<check system="C-53719r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_RHEL_6_STIG.xml"/>
 				<check-content>To check for unlabeled device files, run the following command:
 
-# ls -RZ /dev | grep unlabeled_t
+# ls -RZ /dev | grep device_t
 
 It should produce no output in a well-configured system. 
 

@@ -191,17 +191,16 @@ or allow privileges that the daemon does not require.
 </Rule>
 
 <Rule id="selinux_all_devicefiles_labeled">
-<title>Ensure No Device Files are Unlabeled by SELinux</title>
+<title>Ensure No Device Files are Unknown to SELinux</title>
 <description>Device files, which are used for communication with important
 system resources, should be labeled with proper SELinux types. If any device
-files carry the SELinux type <tt>unlabeled_t</tt>, investigate the cause and
-correct the file's context.
+files carry the SELinux type <tt>device_t</tt>, report the bug so that policy can be corrected. Supply information about what the device is and what programs use it.
 </description>
 <ocil clause="there is output">To check for unlabeled device files, run the following command:
 <pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
-If a device file carries the SELinux type <tt>unlabeled_t</tt>, then SELinux
+If a device file carries the SELinux type <tt>device_t</tt>, then SELinux
 cannot properly restrict access to the device file.
 </rationale>
 <ident cce="26774-0"  stig="RHEL-06-000025" />
