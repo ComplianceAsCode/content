@@ -7,14 +7,14 @@ identify resources on the network, such as printers or web servers.
 This capability is also known as mDNSresponder and is a major part
 of Zeroconf networking. </description>
 
-<Group id="disable_avahi_group">
+<Group id="service_avahi-daemon_disabled_group">
 <title>Disable Avahi Server if Possible</title>
 <description>Because the Avahi daemon service keeps an open network
 port, it is subject to network attacks.
 Disabling it can reduce the system's vulnerability to such attacks.
 </description>
 
-<Rule id="disable_avahi">
+<Rule id="service_avahi-daemon_disabled">
 <title>Disable Avahi Server Software</title>
 <description>
 <service-disable-macro service="avahi-daemon" />
