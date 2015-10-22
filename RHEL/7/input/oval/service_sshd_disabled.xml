@@ -1,0 +1,54 @@
+<def-group>
+
+  <!-- This version of the "service_sshd_disabled" OVAL check for Red Hat
+       Enterprise Linux 7 will be used in the case when the RHEL-7 SCAP content
+       is built with version of the "oscap" tool not supporting the 5.11
+       version of the OVAL language yet.
+
+       DO NOT DELETE IT! IT IS REQUIRED BY OTHER sshd SERVICE RELATED OVAL CHECKS
+       AND NECESSARY IN ORDER THE DATASTREAM OUTPUT FILE TO BUILD SUCCESSFULLY WITH
+       FORMER "oscap" VERSIONS NOT SUPPORTING OVAL-5.11 LANGUAGE VERSION YET.
+
+       In the case RHEL-7 SCAP content was built with "oscap" tool supporting 5.11
+       version of the OVAL language the check defined in the:
+
+           RHEL/7/input/oval/oval_5.11
+
+       directory will be used instead of this one.
+
+  -->
+
+  <definition class="compliance" id="service_sshd_disabled" version="2">
+    <metadata>
+      <title>Service sshd Disabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The sshd service should be disabled if possible.</description>
+      <reference source="JL" ref_id="RHEL7_20150605" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="package openssh-server removed or service sshd is not configured to start" operator="OR">
+    <extend_definition comment="openssh-server removed" definition_ref="package_openssh-server_removed" />
+      <criterion comment="sshd disabled in multi-user.target" test_ref="test_sshd_disabled_multi_user_target" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist"
+   comment="look for sshd.service in /etc/systemd/system/multi-user.target.wants"
+   id="test_sshd_disabled_multi_user_target" version="1">
+
+    <unix:object object_ref="object_sshd_disabled_multi_user_target" />
+  </unix:file_test>
+
+  <unix:file_object comment="look for sshd.service in /etc/systemd/system/multi-user.target.wants"
+   id="object_sshd_disabled_multi_user_target" version="1">
+
+    <unix:filepath>/etc/systemd/system/multi-user.target.wants/sshd.service</unix:filepath>
+    <filter action="include">state_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+</def-group>
