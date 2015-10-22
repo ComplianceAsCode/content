@@ -149,11 +149,11 @@ assurance."</description>
 <select idref="file_ownership_library_dirs" selected="true" />
 <select idref="file_permissions_binary_dirs" selected="true" />
 <select idref="file_ownership_binary_dirs" selected="true" />
-<select idref="sticky_world_writable_dirs" selected="true" />
-<select idref="world_writeable_files" selected="true" />
+<select idref="dir_perms_world_writable_sticky_bits" selected="true" />
+<select idref="file_permissions_unauthorized_world_writable" selected="true" />
 <select idref="no_files_unowned_by_user" selected="true" />
-<select idref="no_files_unowned_by_group" selected="true" />
-<select idref="world_writable_files_system_ownership" selected="true" />
+<select idref="file_permissions_ungroupowned" selected="true" />
+<select idref="dir_perms_world_writable_system_owned" selected="true" />
 <select idref="umask_for_daemons" selected="true" />
 <select idref="accounts_no_uid_except_zero" selected="true" />
 <select idref="rsyslog_files_ownership" selected="true" />
@@ -221,17 +221,17 @@ assurance."</description>
 <select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true" />
 
 <!-- AC-17(8) -->
-<select idref="disable_xinetd" selected="true" />
-<select idref="uninstall_xinetd" selected="true" />
+<select idref="service_xinetd_disabled" selected="true" />
+<select idref="package_xinetd_removed" selected="true" />
 <select idref="service_telnetd_disabled" selected="true" />
-<select idref="uninstall_telnet_server" selected="true" />
+<select idref="package_telnet-server_removed" selected="true" />
 <select idref="uninstall_rsh" selected="true" />
 <select idref="service_rexec_disabled" selected="true" />
 <select idref="service_rsh_disabled" selected="true" />
 <select idref="service_rlogin_disabled" selected="true" />
 <select idref="no_rsh_trust_files" selected="true" />
-<select idref="uninstall_ypserv" selected="true" />
-<select idref="disable_ypbind" selected="true" />
+<select idref="package_ypserv_removed" selected="true" />
+<select idref="service_ypbind_disabled" selected="true" />
 <select idref="service_tftp_disabled" selected="true" />
 <select idref="uninstall_tftp" selected="true" />
 <select idref="tftpd_uses_secure_mode" selected="true" />
@@ -248,7 +248,7 @@ assurance."</description>
 
 <!-- AC-18(a) -->
 <select idref="wireless_disable_in_bios" selected="true" />
-<select idref="deactivate_wireless_interfaces" selected="true" />
+<select idref="wireless_disable_interfaces" selected="true" />
 <select idref="service_bluetooth_disabled" selected="true" />
 <select idref="kernel_module_bluetooth_disabled" selected="true" />
 
@@ -275,7 +275,7 @@ assurance."</description>
      AUDIT RECORD DETAILS -->
 
 <!-- AU-3(2) -->
-<select idref="rsyslog_send_messages_to_logserver" selected="true" />
+<select idref="rsyslog_remote_loghost" selected="true" />
 
 <!-- AU-8(1) -->
 <select idref="service_ntpd_enabled" selected="true" />
@@ -312,7 +312,7 @@ assurance."</description>
 <select idref="set_iptables_default_rule" selected="true" />
 <select idref="set_iptables_default_rule_forward" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
-<select idref="sysctl_ipv4_ip_forward" selected="true" />
+<select idref="sysctl_net_ipv4_ip_forward" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
@@ -324,7 +324,7 @@ assurance."</description>
 <select idref="kernel_module_hfsplus_disabled" selected="true" />
 <select idref="kernel_module_squashfs_disabled" selected="true" />
 <select idref="kernel_module_udf_disabled" selected="true" />
-<select idref="disable_gnome_thumbnailers" selected="true" />
+<select idref="gconf_gnome_disable_thumbnailers" selected="true" />
 <select idref="mount_option_nodev_nonroot_local_partitions" selected="true" />
 <select idref="mount_option_tmp_nodev" selected="true" />
 <select idref="mount_option_tmp_noexec" selected="true" />
@@ -336,13 +336,13 @@ assurance."</description>
 <select idref="service_cups_disabled" selected="true" />
 <select idref="cups_disable_browsing" selected="true" />
 <select idref="cups_disable_printserver" selected="true" />
-<select idref="disable_dhcp_server" selected="true" />
-<select idref="uninstall_dhcp_server" selected="true" />
-<select idref="disable_dhcp_client" selected="true" />
-<select idref="disable_avahi" selected="true" />
+<select idref="service_dhcpd_disabled" selected="true" />
+<select idref="package_dhcp_removed" selected="true" />
+<select idref="sysconfig_networking_bootproto_ifcfg" selected="true" />
+<select idref="service_avahi-daemon_disabled" selected="true" />
 <select idref="service_crond_enabled" selected="true" />
-<select idref="disable_dns_server" selected="true" />
-<select idref="uninstall_bind" selected="true" />
+<select idref="service_named_disabled" selected="true" />
+<select idref="package_bind_removed" selected="true" />
 <select idref="package_openldap-servers_removed" selected="true" />
 <select idref="package_sendmail_removed" selected="true" />
 <select idref="service_acpid_disabled" selected="true" />
@@ -360,10 +360,10 @@ assurance."</description>
 <select idref="service_rhsmcertd_disabled" selected="true" />
 <select idref="service_smartd_disabled" selected="true" />
 <select idref="service_sysstat_disabled" selected="true" />
-<select idref="disable_httpd" selected="true" />
+<select idref="service_httpd_disabled" selected="true" />
 <select idref="package_httpd_removed" selected="true" />
 <select idref="disabling_vsftpd" selected="true" />
-<select idref="uninstall_vsftpd" selected="true" />
+<select idref="package_vsftpd_removed" selected="true" />
 
 
 <!-- REMAINING MAPPINGS
