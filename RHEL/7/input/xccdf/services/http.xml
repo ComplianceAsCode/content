@@ -22,7 +22,7 @@ does not need to act as a web server, then it should be disabled
 and removed from the system.
 </description>
 
-<Rule id="disable_httpd">
+<Rule id="service_httpd_disabled">
 <title>Disable httpd Service</title>
 <description>
 <service-disable-macro service="httpd" />
@@ -706,7 +706,7 @@ web server, in order to provide as safe an environment as possible for the web s
 Minimize access to critical <tt>httpd</tt> files and directories.
 </description>
 
-<Rule id="httpd_logs_permissions">
+<Rule id="dir_perms_var_log_httpd">
 <title>Set Permissions on the <tt>/var/log/httpd/</tt> Directory</title>
 <description>
 Ensure that the permissions on the web server log directory is set to 700:
@@ -722,7 +722,7 @@ to access information about the web server or alter the server's log files.
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="httpd_conf_dir_permissions">
+<Rule id="dir_perms_etc_httpd_conf">
 <title>Set Permissions on the <tt>/etc/httpd/conf/</tt> Directory</title>
 <description>
 Set permissions on the web server configuration directory to 750:
@@ -736,7 +736,7 @@ to access information about the web server or alter the server's configuration f
 <ident cce="RHEL7-CCE-TBD" />
 </Rule>
 
-<Rule id="httpd_conf_files_permissions">
+<Rule id="file_permissions_httpd_server_conf_files">
 <title>Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf/</tt></title>
 <description>
 Set permissions on the web server configuration files to 640:

@@ -15,7 +15,7 @@ does not need to act as a proxy server, then it should be disabled
 and removed.
 </description>
 
-<Rule id="disable_squid">
+<Rule id="service_squid_disabled">
 <title>Disable Squid</title>
 <description>
 <service-disable-macro service="squid" />
@@ -31,7 +31,7 @@ of attack, and should be removed if not needed.
 <oval id="service_squid_disabled" />
 </Rule>
 
-<Rule id="uninstall_squid">
+<Rule id="package_squid_removed">
 <title>Uninstall squid Package</title>
 <description>
 <package-remove-macro package="squid" />

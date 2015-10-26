@@ -76,7 +76,7 @@
 
 <select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true"/>
-<select idref="sysctl_ipv4_ip_forward" selected="true"/>
+<select idref="sysctl_net_ipv4_ip_forward" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true"/>
@@ -105,7 +105,7 @@
 <select idref="rsyslog_files_ownership" selected="true"/>
 <select idref="rsyslog_files_groupownership" selected="true"/>
 <select idref="rsyslog_files_permissions" selected="true"/>
-<select idref="rsyslog_send_messages_to_logserver" selected="true"/>
+<select idref="rsyslog_remote_loghost" selected="true"/>
 <select idref="ensure_logrotate_activated" selected="true"/>
 <select idref="service_auditd_enabled" selected="true"/>
 <select idref="bootloader_audit_argument" selected="true"/>
@@ -149,17 +149,17 @@
 <select idref="audit_rules_sysadmin_actions" selected="true"/>
 <select idref="audit_rules_kernel_module_loading" selected="true"/>
 
-<select idref="disable_xinetd" selected="true"/>
-<select idref="uninstall_xinetd" selected="true"/>
-<select idref="uninstall_telnet_server" selected="true"/>
+<select idref="service_xinetd_disabled" selected="true"/>
+<select idref="package_xinetd_removed" selected="true"/>
+<select idref="package_telnet-server_removed" selected="true"/>
 <select idref="service_telnetd_disabled" selected="true"/>
 <select idref="package_rsh-server_removed" selected="true"/>
 <select idref="service_rsh_disabled" selected="true"/>
 <select idref="service_rexec_disabled" selected="true"/>
 <select idref="service_rlogin_disabled" selected="true"/>
-<select idref="uninstall_ypserv" selected="true"/>
-<select idref="disable_ypbind" selected="true"/>
-<select idref="uninstall_tftp-server" selected="true"/>
+<select idref="package_ypserv_removed" selected="true"/>
+<select idref="service_ypbind_disabled" selected="true"/>
+<select idref="package_tftp-server_removed" selected="true"/>
 <select idref="service_tftp_disabled" selected="true"/>
 <select idref="service_crond_enabled" selected="true"/>
 <select idref="sshd_allow_only_protocol2" selected="true"/>
@@ -173,9 +173,9 @@
 <select idref="sshd_do_not_permit_user_env" selected="true"/>
 <select idref="sshd_use_approved_ciphers" selected="true"/>
 <!-- <select idref="xwindows_remote_listening" selected="true"/> Rule to be rewritten to refer to /etc/gdm/custom.conf -->
-<select idref="disable_avahi" selected="true"/>
-<!-- <select idref="disable_dhcp_server" selected="true"/> -->
-<!-- <select idref="uninstall_dhcp_server" selected="true"/> -->
+<select idref="service_avahi-daemon_disabled" selected="true"/>
+<!-- <select idref="service_dhcpd_disabled" selected="true"/> -->
+<!-- <select idref="package_dhcp_removed" selected="true"/> -->
 <select idref="service_ntpd_enabled" selected="true"/>
 <select idref="ntpd_specify_remote_server" selected="true"/>
 <select idref="postfix_network_listening_disabled" selected="true"/>
@@ -206,24 +206,24 @@ these should likely be moved out of common.
 <select idref="service_qpidd_disabled" selected="true"/>
 <select idref="service_rdisc_disabled" selected="true"/>
 
-<select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
-<select idref="use_nosuid_option_on_nfs_mounts" selected="true"/>
+<select idref="mount_option_nodev_remote_filesystems" selected="true"/>
+<select idref="mount_option_nosuid_remote_filesystems" selected="true"/>
 <select idref="mount_option_noexec_removable_partitions" selected="true"/>
 
-<!-- <select idref="disable_dns_server" selected="true"/> -->
-<!-- <select idref="uninstall_bind" selected="true"/> -->
-<!-- <select idref="disable_vsftpd" selected="true"/> -->
-<!-- <select idref="uninstall_vsftpd" selected="true"/> -->
-<!-- <select idref="disable_httpd" selected="true"/> -->
+<!-- <select idref="service_named_disabled" selected="true"/> -->
+<!-- <select idref="package_bind_removed" selected="true"/> -->
+<!-- <select idref="service_vsftpd_disabled" selected="true"/> -->
+<!-- <select idref="package_vsftpd_removed" selected="true"/> -->
+<!-- <select idref="service_httpd_disabled" selected="true"/> -->
 <!-- <select idref="package_httpd_removed" selected="true"/> -->
-<!-- <select idref="disable_dovecot" selected="true"/> -->
+<!-- <select idref="service_dovecot_disabled" selected="true"/> -->
 <!-- <select idref="package_dovecot_removed" selected="true"/> -->
-<!-- <select idref="disable_smb_server" selected="true"/> -->
+<!-- <select idref="service_smb_disabled" selected="true"/> -->
 <select idref="require_smb_client_signing" selected="true"/>
-<select idref="require_smb_client_signing_mount.cifs" selected="true"/>
-<!-- <select idref="disable_squid" selected="true"/> -->
-<!-- <select idref="uninstall_squid" selected="true"/> -->
-<!-- <select idref="disable_snmpd" selected="true"/> -->
+<select idref="mount_option_smb_client_signing" selected="true"/>
+<!-- <select idref="service_squid_disabled" selected="true"/> -->
+<!-- <select idref="package_squid_removed" selected="true"/> -->
+<!-- <select idref="service_snmpd_disabled" selected="true"/> -->
 <!-- <select idref="package_net-snmp_removed" selected="true"/> -->
 <select idref="accounts_password_pam_unix_remember" selected="true"/>
 <!-- Refine Values -->

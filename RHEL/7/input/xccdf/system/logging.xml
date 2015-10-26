@@ -212,7 +212,7 @@ sending of messages to the central server. For all of these reasons, it is
 better to store log messages both centrally and on each host, so
 that they can be correlated if necessary.</description>
 
-<Rule id="rsyslog_send_messages_to_logserver">
+<Rule id="rsyslog_remote_loghost">
 <title>Ensure Logs Sent To Remote Host</title>
 <description>
 To configure rsyslog to send logs to a remote log server,
@@ -270,7 +270,7 @@ should remain commented out.
 <br /><br />
 </description>
 
-<Rule id="rsyslog_accept_remote_messages_none">
+<Rule id="rsyslog_nolisten">
 <title>Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server</title>
 <description>The <tt>rsyslog</tt> daemon should not accept remote messages
 unless the system acts as a log server.
@@ -385,7 +385,7 @@ If logrotate is configured properly, output should include references to
 Is this machine the central log server? If so, edit the file <tt>/etc/logwatch/conf/logwatch.conf</tt> as shown below.
 </description>
 
-<Rule id="configure_logwatch_hostlimit">
+<Rule id="logwatch_configured_hostlimit">
 <title>Configure Logwatch HostLimit Line</title>
 <description> On a central logserver, you want Logwatch to summarize all syslog entries, including those which did not originate 
 on the logserver itself. The <tt>HostLimit</tt> setting tells Logwatch to report on all hosts, not just the one on which it 
@@ -395,7 +395,7 @@ is running.
 <oval id="logwatch_configured_hostlimit" />
 </Rule>
 
-<Rule id="configure_logwatch_splithosts">
+<Rule id="logwatch_configured_splithosts">
 <title>Configure Logwatch SplitHosts Line</title>
 <description>
 If <tt>SplitHosts</tt> is set, Logwatch will separate entries by hostname. This makes the report longer but significantly 

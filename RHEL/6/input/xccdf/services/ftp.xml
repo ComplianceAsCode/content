@@ -14,7 +14,7 @@ data available to the public.</description>
 <Group id="disabling_vsftpd">
 <title>Disable vsftpd if Possible</title>
 
-<Rule id="disable_vsftpd">
+<Rule id="service_vsftpd_disabled">
 <title>Disable vsftpd Service</title>
 <description>
 <service-disable-macro service="vsftpd" />
@@ -33,7 +33,7 @@ a risk of compromising sensitive information.
 <ref nist="CM-7" disa="1436"/>
 </Rule>
 
-<Rule id="uninstall_vsftpd">
+<Rule id="package_vsftpd_removed">
 <title>Uninstall vsftpd Package</title>
 <description>
 <package-remove-macro package="vsftpd" />

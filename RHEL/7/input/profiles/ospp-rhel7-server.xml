@@ -74,7 +74,7 @@
 <!-- Should this check for RHN/RHSM settings or for Satellite 5/6 settings> -->
 
 <!-- configure name/address of audit/logging server to which to send audit/logging records --> 
-<select idref="rsyslog_send_messages_to_logserver" selected="true" />
+<select idref="rsyslog_remote_loghost" selected="true" />
 <select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
 
 <!-- configure local audit storage capacity -->
@@ -138,7 +138,7 @@
 
 <!-- configure WiFi interface -->
 <select idref="wireless_disable_in_bios" selected="true" />
-<select idref="deactivate_wireless_interfaces" selected="true" />
+<select idref="wireless_disable_interfaces" selected="true" />
 
 <!-- enable/disable Bluetooth interface -->
 <select idref="kernel_module_bluetooth_disabled" selected="true"/>
@@ -215,7 +215,7 @@
 <select idref="sysctl_kernel_randomize_va_space" selected="true" />
 <select idref="install_PAE_kernel_on_x86-32" selected="true" />
 <select idref="bios_enable_execution_restrictions" selected="true" />
-<select idref="enable_dmesg_restriction" selected="true" />
+<select idref="sysctl_kernel_dmesg_restrict" selected="true" />
 <!--	END ASSIGNMENTS: TRUSTED EXECUTION -->
 
 <!--	ASSIGNMENTS: USER/SESSION MANAGEMENT -->
