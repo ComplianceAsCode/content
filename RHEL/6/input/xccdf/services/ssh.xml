@@ -1,0 +1,424 @@
+<Group id="ssh">
+<title>SSH Server</title>
+<description>The SSH protocol is recommended for remote login and
+remote file transfer. SSH provides confidentiality and integrity
+for data exchanged between two systems, as well as server
+authentication, through the use of public key cryptography. The
+implementation included with the system is called OpenSSH, and more
+detailed documentation is available from its website,
+http://www.openssh.org. Its server program is called <tt>sshd</tt> and
+provided by the RPM package <tt>openssh-server</tt>.</description>
+
+<Value id="sshd_idle_timeout_value" type="number"
+operator="equals" interactive="0">
+<title>SSH session Idle time</title>
+<description>Specify duration of allowed idle time.</description>
+<value selector="">300</value>
+<value selector="5_minutes">300</value>
+<value selector="10_minutes">600</value>
+<value selector="15_minutes">900</value>
+<value selector="60_minutes">3600</value>
+<value selector="120_minutes">7200</value>
+</Value>
+
+<Rule id="service_sshd_disabled">
+<title>Disable SSH Server If Possible (Unusual)</title>
+<description>The SSH server service, sshd, is commonly needed.
+However, if it can be disabled, do so.
+<service-disable-macro service="sshd" />
+This is unusual, as SSH is a common method for encrypted and authenticated
+remote access.
+</description>
+<ident cce="27054-6" />
+<oval id="service_sshd_disabled" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="iptables_sshd_disabled">
+<title>Remove SSH Server <tt>iptables</tt> Firewall exception (Unusual)</title>
+<description>By default, inbound connections to SSH's port are allowed. If 
+the SSH server is not being used, this exception should be removed from the
+firewall configuration.
+<br /><br />
+Edit the files <tt>/etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>
+(if IPv6 is in use). In each file, locate and delete the line:
+<pre>-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>
+This is unusual, as SSH is a common method for encrypted and authenticated
+remote access.
+</description>
+<rationale>
+If inbound SSH connections are not expected, disallowing access to the SSH port will 
+avoid possible exploitation of the port by an attacker.
+</rationale>
+<ident cce="27060-3" />
+<oval id="iptables_sshd_disabled" />
+</Rule>
+
+<Group id="ssh_server">
+<title>Configure OpenSSH Server if Necessary</title>
+<description>If the system needs to act as an SSH server, then
+certain changes should be made to the OpenSSH daemon configuration
+file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
+applied to this file. See the <tt>sshd_config(5)</tt> man page for more
+detailed information.</description>
+
+<Rule id="sshd_allow_only_protocol2" severity="high">
+<title>Allow Only SSH Protocol 2</title>
+<description>Only SSH protocol version 2 connections should be
+permitted. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>Protocol 2</pre>
+</description>
+<ocil clause="it is not">
+To check which SSH protocol version is allowed, run the following command:
+<pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>Protocol 2</pre>
+</ocil>
+<rationale>
+SSH protocol version 1 suffers from design flaws that
+result in security vulnerabilities and
+should not be used.
+</rationale>
+<ident cce="27072-8"  stig="RHEL-06-000227" />
+<oval id="sshd_allow_only_protocol2" />
+<ref nist="AC-3(10),IA-5(1)(c)" disa="776,774,1436" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="sshd_limit_user_access">
+<title>Limit Users' SSH Access</title>
+<description>By default, the SSH configuration allows any user with an account
+to access the system. In order to specify the users that are allowed to login
+via SSH and deny all other users, add or correct the following line in the 
+<tt>/etc/ssh/sshd_config</tt> file:
+<pre>DenyUsers USER1 USER2</pre>
+Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
+</description>
+<rationale>
+Specifying which accounts are allowed SSH access into the system reduces the 
+possibility of unauthorized access to the system.
+</rationale>
+<ident cce="27556-0" />
+<!-- <oval id="sshd_limit_user_access" /> -->
+<ref nist="AC-3" disa="" />
+</Rule>
+
+<!-- FIXME: figure out whether/how to say something discrete here -->
+<!--
+<Group id="sshd_disable_extraneous_authentication">
+<title>Disable Extraneous Authentication Schemes</title>
+<description>OpenSSH comes with a wide variety of authentication schemes that may or may not
+be applicable. It is best practice to explicitly disable all authentication schemes except for
+those which are actually required. This reduces the overall attack surface of the daemon.
+<br />
+In the configuration file excerpt below only public key authentication (PubKeyAuthentication)
+and password authentication (PasswordAuthentication) is permitted. All other schemes are disabled.
+<pre>PasswordAuthentication yes
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+GSSAPIAuthentication no
+HostbasedAuthentication no
+KbdInteractiveAuthentication no
+KerberosAuthentication no
+RhostsRSAAuthentication no
+RSAAuthentication no</pre></description>
+</Group>
+-->
+
+<!--
+<Rule id="sshd_disable_tunnel">
+<title>Disable Tunneling</title>
+<description>OpenSSH includes the ability to provide tunneling, which allows
+a user to effectively establish a VPN connection with a firewall/gateway machine and then access resources
+sitting behind it. This feature is disabled by default. To explicitly
+disable it:
+<pre>PermitTunnel no</pre>
+</description>
+<rationale>
+</rationale>
+</Group>
+-->
+
+
+<Rule id="sshd_set_idle_timeout">
+<title>Set SSH Idle Timeout Interval</title>
+<description>SSH allows administrators to set an idle timeout
+interval.
+After this interval has passed, the idle user will be
+automatically logged out.
+<br /><br />
+To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
+follows:
+<pre>ClientAliveInterval <b><sub idref="sshd_idle_timeout_value" /></b></pre>
+The timeout <b>interval</b> is given in seconds. To have a timeout
+of 15 minutes, set <b>interval</b> to 900.
+<br /><br />
+If a shorter timeout has already been set for the login
+shell, that value will preempt any SSH
+setting made here. Keep in mind that some processes may stop SSH
+from correctly detecting that the user is idle.
+</description>
+<ocil clause="it is not">
+Run the following command to see what the timeout interval is:
+<pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
+If properly configured, the output should be:
+<pre>ClientAliveInterval 900</pre>
+</ocil>
+<rationale>
+Causing idle users to be automatically logged out
+guards against compromises one system leading trivially
+to compromises on another.
+</rationale>
+<ident cce="26919-1"  stig="RHEL-06-000230" />
+<oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
+<ref nist="AC-2(5),SA-8" disa="879,1133"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="sshd_set_keepalive">
+<title>Set SSH Client Alive Count</title>
+<description>To ensure the SSH idle timeout occurs precisely when the <tt>ClientAliveCountMax</tt> is set,
+edit <tt>/etc/ssh/sshd_config</tt> as
+follows:
+<pre>ClientAliveCountMax 0</pre>
+</description>
+<ocil clause="it is not">
+To ensure the SSH idle timeout will occur when the <tt>ClientAliveCountMax</tt> is set, run the following command:
+<pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+If properly configured, output should be:
+<pre>ClientAliveCountMax 0</pre>
+</ocil>
+<rationale>
+This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
+is reached.
+</rationale>
+<ident cce="26282-4"  stig="RHEL-06-000231" />
+<oval id="sshd_set_keepalive" />
+<ref nist="AC-2(5),SA-8" disa="879,1133"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="sshd_disable_rhosts" severity="medium">
+<title>Disable SSH Support for .rhosts Files</title>
+<description>SSH can emulate the behavior of the obsolete rsh
+command in allowing users to enable insecure access to their
+accounts via <tt>.rhosts</tt> files.
+<br /><br />
+To ensure this behavior is disabled, add or correct the
+following line in <tt>/etc/ssh/sshd_config</tt>:
+<pre>IgnoreRhosts yes</pre>
+</description>
+<ocil>
+<sshd-check-macro option="IgnoreRhosts" value="yes" default="yes" />
+</ocil>
+<rationale>
+SSH trust relationships mean a compromise on one host
+can allow an attacker to move trivially to other hosts.
+</rationale>
+<ident cce="27124-7"  stig="RHEL-06-000234" />
+<oval id="sshd_disable_rhosts" />
+<ref nist="AC-3" disa="765,766"/>
+</Rule>
+
+
+<Rule id="disable_host_auth" severity="medium">
+<title>Disable Host-Based Authentication</title>
+<description>SSH's cryptographic host-based authentication is
+more secure than <tt>.rhosts</tt> authentication. However, it is
+not recommended that hosts unilaterally trust one another, even
+within an organization.
+<br /><br />
+To disable host-based authentication, add or correct the
+following line in <tt>/etc/ssh/sshd_config</tt>:
+<pre>HostbasedAuthentication no</pre>
+</description>
+<ocil>
+<sshd-check-macro option="HostbasedAuthentication" value="no" default="yes" />
+</ocil>
+<rationale>
+SSH trust relationships mean a compromise on one host
+can allow an attacker to move trivially to other hosts.
+</rationale>
+<ident cce="27091-8"  stig="RHEL-06-000236" />
+<oval id="disable_host_auth" />
+<ref nist="AC-3" disa="765,766"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="sshd_disable_root_login" severity="medium">
+<title>Disable SSH Root Login</title>
+<description>The root user should never be allowed to login to a
+system directly over a network.
+To disable root login via SSH, add or correct the following line
+in <tt>/etc/ssh/sshd_config</tt>:
+<pre>PermitRootLogin no</pre>
+</description>
+<ocil>
+<sshd-check-macro option="PermitRootLogin" value="no" default="no" />
+</ocil>
+<rationale>
+Permitting direct root login reduces auditable information about who ran
+privileged commands on the system
+and also allows direct attack attempts on root's password.
+</rationale>
+<ident cce="27100-7"  stig="RHEL-06-000237" />
+<oval id="sshd_disable_root_login" />
+<ref nist="AC-3,AC-6(2),IA-2(1)" disa="770" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="sshd_disable_empty_passwords" severity="high">
+<title>Disable SSH Access via Empty Passwords</title>
+<description>To explicitly disallow remote login from accounts with
+empty passwords, add or correct the following line in
+<tt>/etc/ssh/sshd_config</tt>:
+<pre>PermitEmptyPasswords no</pre>
+Any accounts with empty passwords should be disabled immediately, and PAM configuration
+should prevent users from being able to assign themselves empty passwords.
+</description>
+<ocil>
+<sshd-check-macro option="PermitEmptyPasswords" value="no" default="yes" />
+</ocil>
+<rationale>
+Configuring this setting for the SSH daemon provides additional assurance that
+remote login via SSH will require a password,
+even in the event of misconfiguration elsewhere.
+</rationale>
+<ident cce="26887-0"  stig="RHEL-06-000239" />
+<oval id="sshd_disable_empty_passwords" />
+<ref nist="AC-3" disa="765,766"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="sshd_enable_warning_banner" severity="medium">
+<title>Enable SSH Warning Banner</title>
+<description>
+To enable the warning banner and ensure it is consistent
+across the system, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
+<pre>Banner /etc/issue</pre>
+Another section contains information on how to create an
+appropriate system-wide warning banner.
+</description>
+<ocil>
+<sshd-check-macro option="Banner" value="/etc/issue" default="no" />
+</ocil>
+<rationale>
+The warning message reinforces policy awareness during the login process and
+facilitates possible legal action against attackers.  Alternatively, systems
+whose ownership should not be obvious should ensure usage of a banner that does
+not provide easy attribution.
+</rationale>
+<ident cce="27112-2"  stig="RHEL-06-000240" />
+<oval id="sshd_enable_warning_banner" />
+<ref nist="AC-8(a)" disa="48" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="sshd_do_not_permit_user_env">
+<title>Do Not Allow SSH Environment Options</title>
+<description>To ensure users are not able to present
+environment options to the SSH daemon, add or correct the following line
+in <tt>/etc/ssh/sshd_config</tt>:
+<pre>PermitUserEnvironment no</pre>
+</description>
+<ocil clause="it is not">
+To ensure users are not able to present environment daemons, run the following command:
+<pre>$ sudo grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
+If properly configured, output should be:
+<pre>PermitUserEnvironment no</pre>
+</ocil>
+<rationale>
+SSH environment options potentially allow users to bypass
+access restriction in some configurations.
+</rationale>
+<ident cce="27201-3"  stig="RHEL-06-000241" />
+<oval id="sshd_do_not_permit_user_env" />
+<ref disa="1414" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="sshd_use_approved_ciphers" severity="medium">
+<title>Use Only Approved Ciphers</title>
+<description>Limit the ciphers to those algorithms which are FIPS-approved.
+Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
+The following line in <tt>/etc/ssh/sshd_config</tt>
+demonstrates use of FIPS-approved ciphers:
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+ciphers are in use, run the following command:
+<pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
+The output should contain only those ciphers which are FIPS-approved, namely, the 
+AES and 3DES ciphers.
+</ocil>
+<rationale>
+Approved algorithms should impart some level of confidence in their
+implementation. These are also required for compliance.
+</rationale>
+<ident cce="26555-3"  stig="RHEL-06-000243" />
+<oval id="sshd_use_approved_ciphers" />
+<ref nist="AC-3,AC-17(2),SI-7,IA-5(1)(c),IA-7" disa="803,1144,1145,1146" />
+<tested by="DS" on="20121024"/>
+</Rule>
+
+
+<Rule id="sshd_use_approved_macs">
+<title>Use Only Approved MACs</title>
+<description>Limit the MACs to those hash algorithms which are FIPS-approved.
+The following line in <tt>/etc/ssh/sshd_config</tt>
+demonstrates use of FIPS-approved MACs:
+<pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
+</description>
+<ocil clause="that is not the case">
+Only FIPS-approved MACs should be used.  To verify that only FIPS-approved
+MACs are in use, run the following command:
+<pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
+The output should contain only those MACs which are FIPS-approved, namely,
+hmac-sha2-512, hmac-sha2-256, and hmac-sha1 hash functions. 
+</ocil>
+<rationale>
+Approved algorithms should impart some level of confidence in their
+implementation. These are also required for compliance.
+</rationale>
+<oval id="sshd_use_approved_macs" />
+<ref nist="AC-17(2),IA-7,SC-13" disa="68,1453,803,2449,2450" />
+</Rule>
+
+
+<Group id="sshd_strengthen_firewall">
+<title>Strengthen Firewall Configuration if Possible</title>
+<description>If the SSH server is expected to only receive connections from 
+the local network, then strengthen the default firewall rule for the SSH service
+to only accept connections from the appropriate network segment(s).
+<br /><br />
+Determine an appropriate network block, <tt>netwk</tt>, and network mask, <tt>mask</tt>, 
+representing the machines on your network which will be allowed to access this SSH server.
+<br /><br />
+Edit the files <tt>etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>
+(if IPv6 is in use). In each file, locate the line:
+<pre>-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>
+and replace it with:
+<pre>-A INPUT -s netwk/mask -m state --state NEW -p tcp --dport 22 -j ACCEPT</pre>
+</description>
+<rationale>
+Restricting SSH access to only trusted network segments reduces exposure of the SSH 
+server to attacks from unauthorized networks.</rationale>
+<!-- <ident cce="26555-3" /> -->
+<!-- <oval id="sshd_strengthen_firewall" /> -->
+</Group>
+
+</Group>
+</Group>
+
+
+

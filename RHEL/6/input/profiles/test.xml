@@ -8,7 +8,7 @@
 <select idref="accounts_password_warn_age_login_defs" selected="true"/>
 <select idref="package_rsyslog_installed" selected="true"/>
 <select idref="service_rsyslog_enabled" selected="true"/>
-<select idref="disable_vsftpd" selected="true"/>
+<select idref="service_vsftpd_disabled" selected="true"/>
 <select idref="selinux_state" selected="true"/>
 <select idref="accounts_password_pam_dcredit" selected="true"/>
 <select idref="tftpd_uses_secure_mode" selected="true"/>
@@ -17,9 +17,9 @@
 <select idref="gconf_gnome_screensaver_mode_blank" selected="true"/>
 <select idref="gconf_gnome_screensaver_idle_activation_enabled" selected="true"/>
 <select idref="gconf_gnome_screensaver_lock_enabled" selected="true"/>
-<select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
+<select idref="mount_option_nodev_remote_filesystems" selected="true"/>
 <select idref="kernel_module_cramfs_disabled" selected="true"/>
-<select idref="packagegroup_xwindows_remove" selected="true"/>
+<select idref="package_xorg-x11-server-common_removed" selected="true"/>
 <refine-value idref="login_banner_text" selector="usgcb_default"/>
 <refine-value idref="var_umask_for_daemons" selector="027"/>
 <refine-value idref="var_selinux_state" selector="enforcing"/>
@@ -43,10 +43,10 @@
 <refine-value idref="var_auditd_admin_space_left_action" selector="single"/>
 <refine-value idref="var_auditd_action_mail_acct" selector="root"/>
 
-<select idref="accounts_umask_bashrc" selected="true" />
-<select idref="accounts_umask_cshrc" selected="true" />
+<select idref="accounts_umask_etc_bashrc" selected="true" />
+<select idref="accounts_umask_etc_csh_cshrc" selected="true" />
 <select idref="accounts_umask_etc_profile" selected="true" />
-<select idref="accounts_umask_login_defs" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
 <refine-value idref="var_accounts_user_umask" selector="077" />
 
 <select idref="umask_for_daemons" selected="true"/>

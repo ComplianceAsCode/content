@@ -5,8 +5,8 @@ OUT = output
 BUILD = build
 TRANS = transforms
 SHARED = ../../shared
-SHARED_CHECKS = $(SHARED)/oval
-SHARED_FIXES = $(SHARED)/fixes/bash
+SHARED_OVAL = $(SHARED)/oval
+SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
 REFS = $(SHARED)/references
 CONF = ../../config
 UTILS = utils
@@ -14,8 +14,8 @@ DIST = dist
 
 ID = ssg
 PROD = rhel6
-PROD_CHECKS = $(BUILD)/$(PROD)_checks
-PROD_FIXES = $(BUILD)/$(PROD)_fixes
+PROD_OVAL = $(BUILD)/$(PROD)_oval
+PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 # OpenSCAP 1.1.0+ supports generating guides from datastreams
@@ -47,23 +47,23 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	# Make intermediate $(PROD_FIXES) directory to hold final list of remediation scripts for $(PROD)
-	mkdir -p $(PROD_FIXES)
-	# Search $(SHARED_FIXES) and $(IN)/FIXES directories to find all product specific remediation scripts,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_FIXES) directory
-	find $(SHARED_FIXES) $(IN)/fixes/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_FIXES) ';'
-	$(SHARED)/$(TRANS)/combinefixes.py $(CONF) $(PROD) $(PROD_FIXES) $(OUT)/bash-remediations.xml
-	xsltproc -stringparam fixes "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addfixes.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	# Make intermediate $(PROD_remediations) directory to hold final list of remediation scripts for $(PROD)
+	mkdir -p $(PROD_REMEDIATIONS)
+	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_REMEDIATIONS) directory
+	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_REMEDIATIONS) ';'
+	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(PROD_REMEDIATIONS) $(OUT)/bash-remediations.xml
+	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
-	# Make intermediate $(PROD_CHECKS) directory to hold final list of OVAL checks for $(PROD)
-	mkdir -p $(PROD_CHECKS)
-	# Search $(SHARED_CHECKS) and $(IN)/checks directories to find all product specific OVAL checks,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_CHECKS) directory
-	find $(SHARED_CHECKS) $(IN)/checks -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_CHECKS) ';'
-	xmlwf $(PROD_CHECKS)/*.xml
-	$(SHARED)/$(TRANS)/combinechecks.py $(CONF) $(PROD) $(PROD_CHECKS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
+	mkdir -p $(PROD_OVAL)
+	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
+	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	xmlwf $(PROD_OVAL)/*.xml
+	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 # example, if needed: for converting XCCDF into shorthand
@@ -113,7 +113,7 @@ content: shorthand2xccdf checks
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
 #	Its second argument controls the IDs, as well as the output filenames.
 #	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
-	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
 #	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
@@ -137,7 +137,7 @@ content: shorthand2xccdf checks
 
 content-stig: shorthand2xccdf guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
-	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml disa-predraft
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml disa-predraft
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-$(PROD)-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
 

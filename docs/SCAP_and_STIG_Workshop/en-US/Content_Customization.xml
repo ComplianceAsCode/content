@@ -99,9 +99,9 @@ The directory usages are:
 	<section>
 		<title>Creating your first XCCDF rule</title>
 		<para>For this workshop we will create a rule which mandates installation of the SCAP Security Guide RPM, and we'll identify failure (the lack of installation) as a CAT I / SEV 1 finding.</para>
-		<para>The directory structure, and multiple XML files, can be a bit overwhelming at first. Change directory to  input/system/ and perform a directory listing:
+    <para>The directory structure, and multiple XML files, can be a bit overwhelming at first. Change directory to  input/xccdf/system/ and perform a directory listing:
 			<screen>
-$ cd input/system/; ls -l
+$ cd input/xccdf/system/; ls -l
 
 total 116
 drwxrwxr-x. 3 shawn shawn  4096 Mar 20 19:06 accounts
@@ -202,9 +202,9 @@ Now, onto OVAL content creation...</para>
 	<section>
         	<title>OVAL Authoring</title>
 		<para>OVAL standardizes the assessment and reporting of machine state. It's very comprehensive, with capabilities to examine boot-time and run-time configuration. MITRE has documented OVAL's built-in functions at http://oval.mitre.org/language/version5.10.1/ovaldefinition/documentation/linux-definitions-schema.html</para>
-		<para>The SSG project maintains all OVAL code under shared/oval/ and RHEL/6/input/checks/, and provides template utilities in RHEL/6/input/checks/templates/. Change directories to templates/ and perform a directory listing:
+		<para>The SSG project maintains all OVAL code under shared/oval/ and RHEL/6/input/oval/, and provides template utilities in RHEL/6/input/oval/templates/. Change directories to templates/ and perform a directory listing:
 			<screen>
-$ cd /var/www/html/scap-security-guide/RHEL6/input/checks/templates/; ls
+$ cd /var/www/html/scap-security-guide/RHEL6/input/oval/templates/; ls
 create_kernel_modules_disabled.py  packages_removed.csv
 create_package_installed.py        README
 create_package_removed.py          services_disabled.csv
@@ -313,8 +313,8 @@ If added correctly, you will have inserted a line that matches the following:
 		<title>Patch Creation and Submission</title>
 		<para>Throughout this workshop, we've made several modifications to the SSG source code. Specifically:
 			<simplelist>
-				<member>Creation of a new XCCDF rule, package_scap-security-guide_installed, which was placed into RHEL/6/input/system/software/integrity.xml.</member>
-				<member>Creation of a new OVAL rule, package_scap-security-guide_installed.xml, which also involved updating the OVAL template file RHEL/6/input/checks/templates/packages_installed.csv.</member>
+        <member>Creation of a new XCCDF rule, package_scap-security-guide_installed, which was placed into RHEL/6/input/xccdf/system/software/integrity.xml.</member>
+				<member>Creation of a new OVAL rule, package_scap-security-guide_installed.xml, which also involved updating the OVAL template file RHEL/6/input/oval/templates/packages_installed.csv.</member>
 				<member>Modification of the STIG profile, located at RHEL/6/input/profiles/stig-rhel6-server.xml.</member>
 			</simplelist>
 		</para>
@@ -327,23 +327,23 @@ $ cd /var/www/html/scap-security-guide/; git commit
 #   (use "git add [file]..." to update what will be committed)
 #   (use "git checkout -- [file]..." to discard changes in working directory)
 #
-#	modified:   RHEL/6/input/checks/templates/packages_installed.csv
+#	modified:   RHEL/6/input/oval/templates/packages_installed.csv
 #	modified:   RHEL/6/input/profiles/stig-rhel6-server.xml
-#	modified:   RHEL/6/input/system/software/integrity.xml
+#	modified:   RHEL/6/input/xccdf/system/software/integrity.xml
 #
 # Untracked files:
 #   (use "git add [file]..." to include in what will be committed)
 #
-#	RHEL/6/input/checks/package_scap-security-guide_installed.xml
+#	RHEL/6/input/oval/package_scap-security-guide_installed.xml
 no changes added to commit (use "git add" and/or "git commit -a")
 </screen>
 		</para>
 		<para>From the output above, our patch must reflect changes to the “modified” files and include the net-new “untracked” file. To do so, run the following commands:
 <screen>
-$ git add RHEL/6/input/checks/package_scap-security-guide_installed.xml 
-$ git commit RHEL/6/input/checks/templates/packages_installed.csv \ RHEL6/input/profiles/stig-rhel6-server.xml \
-RHEL/6/input/system/software/integrity.xml \
-RHEL/6/input/checks/package_scap-security-guide_installed.xml 
+$ git add RHEL/6/input/oval/package_scap-security-guide_installed.xml 
+$ git commit RHEL/6/input/oval/templates/packages_installed.csv \ RHEL6/input/profiles/stig-rhel6-server.xml \
+RHEL/6/input/xccdf/system/software/integrity.xml \
+RHEL/6/input/oval/package_scap-security-guide_installed.xml 
 </screen>
 		</para>
 		<para>The “git commit” command will bring you into a vi editor, prompting you to enter details of your patch. The first line, which is the default location of your cursor at this point, is where you create the patch title. At the EOF you place details of the patch.</para>

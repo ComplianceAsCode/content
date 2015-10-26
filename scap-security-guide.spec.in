@@ -69,7 +69,7 @@ cp -a JRE/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 cp -a Firefox/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
 # Add in functions library for remediations
-cp -a shared/fixes/bash/templates/remediation_functions %{buildroot}%{_datadir}/%{name}/
+cp -a shared/remediations/bash/templates/remediation_functions %{buildroot}%{_datadir}/%{name}/
 
 %if 0%{?fedora}
 cp -a Fedora/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
@@ -113,6 +113,9 @@ cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
 %changelog
 * __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__
 - Make new __VERSION__ release
+
+* Mon Oct 19 2015 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.26-1
+- Make new 0.1.26 upstream release
 
 * Wed Aug 19 2015 Jan iankko Lieskovsky <jlieskov@redhat.com> 0.1.25-1
 - Make new 0.1.25 upstream release

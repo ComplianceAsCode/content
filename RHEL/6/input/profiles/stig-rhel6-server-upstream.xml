@@ -18,7 +18,7 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 
 <select idref="rpm_verify_permissions" selected="true"/>
 <select idref="rpm_verify_hashes" selected="true"/>
-<select idref="world_writeable_files" selected="true"/>
+<select idref="file_permissions_unauthorized_world_writable" selected="true"/>
 
 <select idref="install_antivirus" selected="true"/>
 <select idref="install_hids" selected="true"/>
@@ -30,9 +30,9 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 
 <select idref="service_netconsole_disabled" selected="true"/>
 
-<select idref="disable_xwindows_with_runlevel" selected="true"/>
-<select idref="packagegroup_xwindows_remove" selected="true"/>
-<select idref="disable_dhcp_client" selected="true"/>
+<select idref="xwindows_runlevel_setting" selected="true"/>
+<select idref="package_xorg-x11-server-common_removed" selected="true"/>
+<select idref="sysconfig_networking_bootproto_ifcfg" selected="true"/>
 <select idref="accounts_password_pam_unix_remember" selected="true"/>
 
 <select idref="gid_passwd_group_same" selected="true"/>
@@ -42,7 +42,7 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 <select idref="accounts_password_pam_maxrepeat" selected="true"/>
 
 <select idref="no_files_unowned_by_user" selected="true"/>
-<select idref="no_files_unowned_by_group" selected="true"/>
+<select idref="file_permissions_ungroupowned" selected="true"/>
 
 <select idref="aide_periodic_cron_checking" selected="true"/>
 <select idref="disable_users_coredumps" selected="true"/>
@@ -67,18 +67,18 @@ upstream project homepage is https://fedorahosted.org/scap-security-guide/.
 <select idref="service_bluetooth_disabled" selected="true" />
 <select idref="account_disable_post_pw_expiration" selected="true" />
 
-<select idref="sticky_world_writable_dirs" selected="true" />
-<select idref="world_writable_files_system_ownership" selected="true" />
+<select idref="dir_perms_world_writable_sticky_bits" selected="true" />
+<select idref="dir_perms_world_writable_system_owned" selected="true" />
 <select idref="tftpd_uses_secure_mode" selected="true" />
 
 <select idref="ftp_log_transactions" selected="true" />
 <select idref="snmpd_use_newer_protocol" selected="true" />
 <select idref="snmpd_not_default_password" selected="true" />
 
-<select idref="accounts_umask_bashrc" selected="true" />
-<select idref="accounts_umask_cshrc" selected="true" />
+<select idref="accounts_umask_etc_bashrc" selected="true" />
+<select idref="accounts_umask_etc_csh_cshrc" selected="true" />
 <select idref="accounts_umask_etc_profile" selected="true" />
-<select idref="accounts_umask_login_defs" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
 <refine-value idref="var_accounts_user_umask" selector="077" />
 
 <select idref="umask_for_daemons" selected="true" />

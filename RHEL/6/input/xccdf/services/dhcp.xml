@@ -1,0 +1,284 @@
+<Group id="dhcp">
+<title>DHCP</title>
+<description>The Dynamic Host Configuration Protocol (DHCP) allows
+systems to request and obtain an IP address and other configuration
+parameters from a server.
+<br /><br />
+This guide recommends configuring networking on clients by manually editing
+the appropriate files under <tt>/etc/sysconfig</tt>.  Use of DHCP can make client 
+systems vulnerable to compromise by rogue DHCP servers, and should be avoided 
+unless necessary.  If using DHCP is necessary, however, there are best practices 
+that should be followed to minimize security risk.
+</description>
+
+
+<Group id="disabling_dhcp_server">
+<title>Disable DHCP Server</title>
+<description>
+The DHCP server <tt>dhcpd</tt> is not installed or activated by
+default. If the software was installed and activated, but the
+system does not need to act as a DHCP server, it should be disabled
+and removed.
+</description>
+
+<Rule id="service_dhcpd_disabled" severity="medium">
+<title>Disable DHCP Service</title>
+<description>The <tt>dhcpd</tt> service should be disabled on
+any system that does not need to act as a DHCP server.
+<service-disable-macro service="dhcpd" />
+</description>
+<ocil><service-disable-check-macro service="dhcpd" /></ocil>
+<rationale>
+Unmanaged or unintentionally activated DHCP servers may provide faulty information
+to clients, interfering with the operation of a legitimate site
+DHCP server if there is one.
+</rationale>
+<ident cce="27074-4" />
+<oval id="service_dhcpd_disabled" />
+<ref nist="CM-7" disa="366"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+<Rule id="package_dhcp_removed" severity="medium">
+<title>Uninstall DHCP Server Package</title>
+<description>If the system does not need to act as a DHCP server,
+the dhcp package can be uninstalled.
+<package-remove-macro package="dhcp" />
+</description>
+<ocil><package-check-macro package="dhcp" /></ocil>
+<rationale>
+Removing the DHCP server ensures that it cannot be easily or
+accidentally reactivated and disrupt network operation.
+</rationale>
+<ident cce="27120-5" />
+<oval id="package_dhcp_removed" />
+<ref nist="CM-7" disa="366"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+
+</Group> <!-- <Group id="disabling_dhcp_server"> -->
+
+<Group id="dhcp_server_configuration">
+<title>Disable DHCP Server</title>
+<description>If the system must act as a DHCP server, the configuration
+information it serves should be minimized. Also, support for other protocols
+and DNS-updating schemes should be explicitly disabled unless needed. The
+configuration file for dhcpd is called <tt>/etc/dhcp/dhcpd.conf</tt>. The file
+begins with a number of global configuration options. The remainder of the file
+is divided into sections, one for each block of addresses offered by dhcpd,
+each of which contains configuration options specific to that address
+block.</description>
+
+<Rule id="dhcp_server_disable_ddns">
+<title>Do Not Use Dynamic DNS</title>
+<description>To prevent the DHCP server from receiving DNS information from
+clients, edit <tt>/etc/dhcp/dhcpd.conf</tt>, and add or correct the following global
+option: <pre>ddns-update-style none;</pre>
+</description>
+<rationale>The Dynamic DNS protocol is used to remotely update the data served
+by a DNS server. DHCP servers can use Dynamic DNS to publish information about
+their clients. This setup carries security risks, and its use is not
+recommended.  If Dynamic DNS must be used despite the risks it poses, it is
+critical that Dynamic DNS transactions be protected using TSIG or some other
+cryptographic authentication mechanism. See dhcpd.conf(5) for more information
+about protecting the DHCP server from passing along malicious DNS data from its
+clients.  </rationale>
+<warning category="general">The ddns-update-style option controls only whether
+the DHCP server will attempt to act as a Dynamic DNS client. As long as the DNS
+server itself is correctly configured to reject DDNS attempts, an incorrect
+ddns-update-style setting on the client is harmless (but should be fixed as a
+best practice).</warning>
+<ident cce="27049-6" />
+<oval id="dhcp_server_disable_ddns" />
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="dhcp_server_deny_decline">
+<title>Deny Decline Messages</title>
+<description>Edit <tt>/etc/dhcp/dhcpd.conf</tt> and add or correct the following
+global option to prevent the DHCP server from responding the DHCPDECLINE
+messages, if possible: <pre>deny declines;</pre> </description>
+<rationale>The DHCPDECLINE message can be sent by a DHCP client to indicate
+that it does not consider the lease offered by the server to be valid. By
+issuing many DHCPDECLINE messages, a malicious client can exhaust the DHCP
+server's pool of IP addresses, causing the DHCP server to forget old address
+allocations.</rationale>
+<ident cce="27106-4" />
+<oval id="dhcp_server_deny_decline" />
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="dhcp_server_deny_bootp">
+<title>Deny BOOTP Queries</title>
+<description>Unless your network needs to support older BOOTP clients, disable
+support for the bootp protocol by adding or correcting the global option:
+<pre>deny bootp;</pre>
+</description>
+<rationale>The bootp option tells dhcpd to respond to BOOTP queries. If support
+for this simpler protocol is not needed, it should be disabled to remove attack
+vectors against the DHCP server.
+</rationale>
+<ident cce="27077-7" />
+<oval id="dhcp_server_deny_bootp" />
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="dhcp_server_minimize_served_info">
+<title>Minimize Served Information</title>
+<description>Edit /etc/dhcp/dhcpd.conf. Examine each address range section within
+the file, and ensure that the following options are not defined unless there is
+an operational need to provide this information via DHCP:
+<pre>option domain-name
+option domain-name-servers
+option nis-domain
+option nis-servers
+option ntp-servers
+option routers
+option time-offset</pre>
+</description>
+<rationale>Because the configuration information provided by the DHCP server
+could be maliciously provided to clients by a rogue DHCP server, the amount of
+information provided via DHCP should be minimized. Remove these definitions
+from the DHCP server configuration to ensure that legitimate clients do not
+unnecessarily rely on DHCP for this information.
+</rationale>
+<warning category="general">By default, the Red Hat Enterprise Linux client installation uses DHCP
+to request much of the above information from the DHCP server. In particular,
+domain-name, domain-name-servers, and routers are configured via DHCP.  These
+settings are typically necessary for proper network functionality, but are also
+usually static across machines at a given site.</warning>
+<!--<ident cce="26897-9" />
+<ident cce="27042-1" />
+<ident cce="27103-1" />
+<ident cce="26943-1" />
+<ident cce="27008-2" />
+<ident cce="27064-5" />
+<ident cce="27065-2" />-->
+<oval id="dhcp_server_minimize_served_info" />
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="dhcp_server_configure_logging">
+<title>Configure Logging</title>
+<description>Ensure that the following line exists in
+<tt>/etc/rsyslog.conf</tt>:
+<pre>daemon.*           /var/log/daemon.log</pre>
+Configure logwatch or other log monitoring tools to summarize error conditions
+reported by the dhcpd process.</description>
+<rationale>By default, dhcpd logs notices to the daemon facility. Sending all
+daemon messages to a dedicated log file is part of the syslog configuration
+outlined in the Logging and Auditing section</rationale>
+<ident cce="26898-7" />
+<oval id="dhcp_server_configure_logging" />
+<ref nist="AU-12" />
+</Rule>
+
+</Group> <!-- <Group id="dhcp_server_configuration"> -->
+
+<Group id="disabling_dhcp_client">
+<title>Disable DHCP Client</title>
+<description>
+DHCP is the default network configuration method provided by the system
+installer, and common on many networks. Nevertheless, manual management
+of IP addresses for systems implies a greater degree of management and
+accountability for network activity.
+</description>
+
+<Rule id="sysconfig_networking_bootproto_ifcfg">
+<title>Disable DHCP Client</title>
+<description>
+For each interface on the system (e.g. eth0), edit
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt> and make the
+following changes:
+<ul>
+<li> Correct the BOOTPROTO line to read:
+<pre>BOOTPROTO=none</pre>
+</li>
+<li> Add or correct the following lines, substituting the appropriate
+values based on your site's addressing scheme:
+<pre>NETMASK=255.255.255.0
+IPADDR=192.168.1.2
+GATEWAY=192.168.1.1</pre>
+</li>
+</ul>
+</description>
+<ocil clause="it does not">
+To verify that DHCP is not being used, examine the following file for each interface:
+<pre># /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+Look for the following:
+<pre>BOOTPROTO=none</pre>
+and the following, substituting the appropriate values based on your site's addressing scheme:
+<pre>NETMASK=255.255.255.0
+IPADDR=192.168.1.2
+GATEWAY=192.168.1.1</pre>
+</ocil>
+<rationale>
+DHCP relies on trusting the local network. If the local network is not trusted,
+then it should not be used.  However, the automatic configuration provided by
+DHCP is commonly used and the alternative, manual configuration, presents an
+unacceptable burden in many circumstances.</rationale>
+<ident cce="27021-5"  stig="RHEL-06-000292" />
+<oval id="sysconfig_networking_bootproto_ifcfg" />
+<ref nist="CM-7" disa="366"/>
+<tested by="DS" on="20121024"/>
+</Rule>
+</Group> <!-- <Group id="disabling_dhcp_client"> -->
+
+<Group id="dhcp_client_configuration">
+<title>Configure DHCP Client if Necessary</title>
+<description>If DHCP must be used, then certain configuration changes can
+minimize the amount of information it receives and applies from the network,
+and thus the amount of incorrect information a rogue DHCP server could
+successfully distribute.  For more information on configuring dhclient, see the
+<tt>dhclient(8)</tt> and <tt>dhclient.conf(5)</tt> man pages.  </description>
+
+<Rule id="dhcp_client_restrict_options">
+<title>Minimize the DHCP-Configured Options</title>
+<description>Create the file <tt>/etc/dhcp/dhclient.conf</tt>, and add an
+appropriate setting for each of the ten configuration settings which can be
+obtained via DHCP. For each setting, do one of the following:
+<br/>
+If the setting should <i>not</i> be configured remotely by the DHCP server,
+select an appropriate static value, and add the line:
+<pre>supersede <tt>setting value</tt>;</pre>
+If the setting should be configured remotely by the DHCP server, add the lines:
+<pre>request <tt>setting</tt>;
+require <tt>setting</tt>;</pre>
+For example, suppose the DHCP server should provide only the IP address itself
+and the subnet mask. Then the entire file should look like:
+<pre>supersede domain-name "example.com";
+supersede domain-name-servers 192.168.1.2;
+supersede nis-domain "";
+supersede nis-servers "";
+supersede ntp-servers "ntp.example.com ";
+supersede routers 192.168.1.1;
+supersede time-offset -18000;
+request subnet-mask;
+require subnet-mask;</pre>
+</description>
+<rationale>By default, the DHCP client program, dhclient, requests and applies
+ten configuration options (in addition to the IP address) from the DHCP server.
+subnet-mask, broadcast-address, time-offset, routers, domain-name,
+domain-name-servers, host-name, nis-domain, nis-servers, and ntp-servers.  Many
+of the options requested and applied by dhclient may be the same for every
+system on a network. It is recommended that almost all configuration options be
+assigned statically, and only options which must vary on a host-by-host basis
+be assigned via DHCP. This limits the damage which can be done by a rogue DHCP
+server.  If appropriate for your site, it is also possible to supersede the
+host-name directive in <tt>/etc/dhcp/dhclient.conf</tt>, establishing a static
+hostname for the machine. However, dhclient does not use the host name option
+provided by the DHCP server (instead using the value provided by a reverse DNS
+lookup).</rationale>
+<warning category="general">In this example, the options nis-servers and
+nis-domain are set to empty strings, on the assumption that the deprecated NIS
+protocol is not in use. It is necessary to supersede settings for unused
+services so that they cannot be set by a hostile DHCP server. If an option is
+set to an empty string, dhclient will typically not attempt to configure the
+service.</warning>
+<!--<ident cce="27120-5" /> -->
+<oval id="dhcp_client_restrict_options" />
+<!--<ref nist="CM-7" /> -->
+</Rule>
+
+</Group> <!-- <Group id="dhcp_client_configuration"> -->
+</Group> <!-- <Group id="dhcp"> -->
