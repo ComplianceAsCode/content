@@ -1,13 +1,32 @@
 import sys
 import os
+import re
 import tempfile
 import subprocess
+import datetime
 import lxml.etree as ET
+from ConfigParser import SafeConfigParser
 
 # always use /shared/transforms' version of idtranslate.py
 from transforms import idtranslate
 
-header = '''<?xml version="1.0" encoding="UTF-8"?>
+SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/oval/'
+timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+
+
+conf_file = re.sub('shared.*', '', __file__) + '/config/oval.config'
+footer = '</oval_definitions>'
+ovalns = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
+
+# globals, to make recursion easier in case we encounter extend_definition
+definitions = ET.Element("definitions")
+tests = ET.Element("tests")
+objects = ET.Element("objects")
+states = ET.Element("states")
+variables = ET.Element("variables")
+
+def _header(schema_version):
+    header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
     xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
@@ -23,19 +42,29 @@ header = '''<?xml version="1.0" encoding="UTF-8"?>
        <generator>
         <oval:product_name>testcheck.py</oval:product_name>
         <oval:product_version>0.0.1</oval:product_version>
-        <oval:schema_version>5.10</oval:schema_version>
-        <oval:timestamp>2011-09-23T13:44:00</oval:timestamp>
-    </generator>'''
-footer = '</oval_definitions>'
+        <oval:schema_version>%s</oval:schema_version>
+        <oval:timestamp>%s</oval:timestamp>
+    </generator>''' % (schema_version, timestamp)
 
-ovalns = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
+    return header
 
-# globals, to make recursion easier in case we encounter extend_definition
-definitions = ET.Element("definitions")
-tests = ET.Element("tests")
-objects = ET.Element("objects")
-states = ET.Element("states")
-variables = ET.Element("variables")
+
+def parse_conf_file(conf_file):
+    parser = SafeConfigParser()
+    parser.read(conf_file)
+    oval_version = None
+
+    for section in parser.sections():
+        for name, setting in parser.items(section):
+            setting = re.sub('.;:', ',', re.sub(' ', '', setting))
+            if not oval_version and name == 'oval_version':
+                oval_version = setting
+
+    if oval_version is None:
+        print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
+        sys.exit(1)
+
+    return oval_version
 
 
 # append new child ONLY if it's not a duplicate
@@ -51,7 +80,7 @@ def append(element, newchild):
         element.append(newchild)
 
 
-def add_oval_elements(body):
+def add_oval_elements(body, header):
     """Add oval elements to the global Elements defined above"""
 
     tree = ET.fromstring(header + body + footer)
@@ -70,9 +99,10 @@ def add_oval_elements(body):
             for defchild in childnode.findall(".//" + ovalns +
                                               "extend_definition"):
                 defid = defchild.get("definition_ref")
-                includedbody = read_ovaldefgroup_file(defid+".xml")
+                extend_ref = find_testfile(defid+".xml")
+                includedbody = read_ovaldefgroup_file(extend_ref)
                 # recursively add the elements in the other file
-                add_oval_elements(includedbody)
+                add_oval_elements(includedbody, header)
         if childnode.tag.endswith("_test"):
             append(tests, childnode)
         if childnode.tag.endswith("_object"):
@@ -108,6 +138,25 @@ def replace_external_vars(tree):
         # TODO: assignment of external_variable via environment vars, for
         # testing
     return tree
+
+
+def find_testfile(testfile):
+    """Find OVAL files in CWD or shared/oval"""
+    for path in ['.', SHARED_OVAL]:
+        for root, folder, files in os.walk(path):
+            searchfile = root + '/' + testfile
+            if not os.path.isfile(searchfile):
+                searchfile = ""
+            else:
+                testfile = searchfile.strip()
+                # Most likely found file, exit this loop
+                break
+
+    if not os.path.isfile(testfile):
+        print ("ERROR: %s does not exist! Please specify a valid OVAL file.") % testfile
+        sys.exit(1)
+
+    return testfile
 
 
 def read_ovaldefgroup_file(testfile):
@@ -149,9 +198,17 @@ def main():
     if len(sys.argv) != 2 or sys.argv[1].rfind('.xml') == -1:
         usage()
 
+    if not len(sys.argv) == 4:
+        schema = parse_conf_file(conf_file)
+    else:
+        # FUTURE: replace with sys arg
+        schema = '5.10'
+
     testfile = sys.argv[1]
+    header = _header(schema)
+    testfile = find_testfile(testfile)
     body = read_ovaldefgroup_file(testfile)
-    defname = add_oval_elements(body)
+    defname = add_oval_elements(body, header)
     ovaltree = ET.fromstring(header + footer)
     # append each major element type, if it has subelements
     for element in [definitions, tests, objects, states, variables]:
