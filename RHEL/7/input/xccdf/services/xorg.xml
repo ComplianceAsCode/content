@@ -13,7 +13,7 @@ on a dedicated server machine, as it increases the system's attack surface and c
 system resources. Administrators of server systems should instead login via
 SSH or on the text console.</description>
 
-<Rule id="disable_xwindows_with_target">
+<Rule id="xwindows_runlevel_setting">
 <title>Disable X Windows Startup By Setting Default Target</title>
 <description>Setting the system's default target to multi-user will prevent
 automatic startup of the X server. To do so, run:
@@ -36,7 +36,7 @@ The output should show the following:
 </Rule>
 
 
-<Rule id="packagegroup_xwindows_remove">
+<Rule id="package_xorg-x11-server-common_removed">
 <title>Remove the X Windows Package Group</title>
 <description>Removing all packages which constitute the X Window System
 ensures users or malicious software cannot start X.
