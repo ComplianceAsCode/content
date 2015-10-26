@@ -1,0 +1,35 @@
+These templates are designed to make generation of OVAL tests
+which have repetitive structure easier.
+
+For example:
+	$ ./create_services_disabled.py services_disabled.csv
+will produce all the OVAL checks (in a shorthand format)
+to disable services, and store them in the output directory.
+
+The CSV input files should contain all the relevant information
+for each check.  Files should be compared to existing OVAL checks
+for consistency before copying to the main oval directory.
+
+
+A Makefile exists to activate all the scripts here and ease comparison
+with existing checks. For example, to run all scripts to generate
+OVAL checks from the available templates:
+	$ make templates
+
+To compare the newly-generated files in the output directory to the existing
+checks, run:
+	$ make compare
+
+Then, if the changes are agreeable, the following command can be run to copy the
+newly generated files to the main oval directory:
+	$ make copy
+
+To list files that have been manually created (and may potentially be
+templated), run:
+	# make find-untemplated
+
+Note, however, that some checks may have been intentionally hand-edited.
+For example, some sysctl checks (such as for IPv6) may include additional
+tests so that they pass if the IPv6 module is disabled.  Never blindly
+copy over existing checks.
+

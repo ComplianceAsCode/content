@@ -60,11 +60,11 @@
 <select idref="kernel_module_squashfs_disabled" selected="true" />
 <select idref="kernel_module_udf_disabled" selected="true" />
 
-<select idref="sticky_world_writable_dirs" selected="true" />
-<select idref="world_writeable_files" selected="true" />
+<select idref="dir_perms_world_writable_sticky_bits" selected="true" />
+<select idref="file_permissions_unauthorized_world_writable" selected="true" />
 <select idref="no_files_unowned_by_user" selected="true" />
-<select idref="no_files_unowned_by_group" selected="true" />
-<select idref="world_writable_files_system_ownership" selected="true" />
+<select idref="file_permissions_ungroupowned" selected="true" />
+<select idref="dir_perms_world_writable_system_owned" selected="true" />
 
 <select idref="umask_for_daemons" selected="true" />
 <refine-value idref="var_umask_for_daemons" selector="027"/>
@@ -83,14 +83,14 @@
 <select idref="set_password_hashing_algorithm_libuserconf" selected="true"/>
 
 <select idref="root_paths" selected="true" />
-<select idref="root_path_no_groupother_writable" selected="true" />
-<select idref="accounts_umask_bashrc" selected="true" />
-<select idref="accounts_umask_login_defs" selected="true" />
+<select idref="accounts_root_path_dirs_no_write" selected="true" />
+<select idref="accounts_umask_etc_bashrc" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
 <refine-value idref="var_accounts_user_umask" selector="077" />
 <select idref="no_shelllogin_for_systemaccounts" selected="true"/>
 <select idref="root_path_default" selected="true" />
 <select idref="no_empty_passwords" selected="true"/>
-<select idref="accounts_umask_cshrc" selected="true" />
+<select idref="accounts_umask_etc_csh_cshrc" selected="true" />
 <select idref="accounts_umask_etc_profile" selected="true" />
 
 <select idref="no_netrc_files" selected="true" />
@@ -104,14 +104,14 @@
 
 <select idref="package_rsyslog_installed" selected="true"/>
 <select idref="service_rsyslog_enabled" selected="true"/>
-<select idref="rsyslog_send_messages_to_logserver" selected="true"/>
+<select idref="rsyslog_remote_loghost" selected="true"/>
 <select idref="ensure_logrotate_activated" selected="true"/>
 <select idref="disable_logwatch_for_logserver" selected="true" />
 <select idref="rsyslog_files_ownership" selected="true" />
 <select idref="rsyslog_files_groupownership" selected="true" />
 <select idref="rsyslog_files_permissions" selected="true" />
-<select idref="rsyslog_accept_remote_messages_none" selected="true" />
-<select idref="configure_logwatch_splithosts" selected="true" />
+<select idref="rsyslog_nolisten" selected="true" />
+<select idref="logwatch_configured_splithosts" selected="true" />
 
 <select idref="audit_rules_time_adjtimex" selected="true"/>
 <select idref="audit_rules_time_settimeofday" selected="true"/>
@@ -165,7 +165,7 @@
 <select idref="file_permissions_binary_dirs" selected="true"/>
 <select idref="file_ownership_binary_dirs" selected="true"/>
 <select idref="gid_passwd_group_same" selected="true"/>
-<select idref="homedir_perms_no_groupwrite_worldread" selected="true" />
+<select idref="file_permissions_home_dirs" selected="true" />
 <select idref="file_user_owner_grub_conf" selected="true"/>
 <select idref="file_group_owner_grub_conf" selected="true"/>
 <select idref="file_permissions_grub_conf" selected="true"/>
@@ -189,13 +189,13 @@
 <select idref="gconf_gdm_enable_warning_gui_banner" selected="true" />
 <select idref="gconf_gdm_set_login_banner_text" selected="true" />
 <refine-value idref="login_banner_text" selector="dod_default"/>
-<select idref="disable_gnome_thumbnailers" selected="true" />
+<select idref="gconf_gnome_disable_thumbnailers" selected="true" />
 <select idref="gconf_gnome_disable_automount" selected="true"/>
 
 <select idref="network_disable_zeroconf" selected="true" />
 <select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true"/>
-<select idref="sysctl_ipv4_ip_forward" selected="true"/>
+<select idref="sysctl_net_ipv4_ip_forward" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true"/>
 <select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true"/>
@@ -221,7 +221,7 @@
 
 <select idref="network_sniffer_disabled" selected="true" />
 <select idref="wireless_disable_in_bios" selected="true" />
-<select idref="deactivate_wireless_interfaces" selected="true" />
+<select idref="wireless_disable_interfaces" selected="true" />
 <select idref="service_bluetooth_disabled" selected="true" />
 <select idref="kernel_module_bluetooth_disabled" selected="true"/>
 
@@ -252,19 +252,19 @@
 <select idref="service_smartd_disabled" selected="true" />
 <select idref="service_sysstat_disabled" selected="true" />
 
-<select idref="disable_xinetd" selected="true"/>
-<select idref="uninstall_xinetd" selected="true"/>
+<select idref="service_xinetd_disabled" selected="true"/>
+<select idref="package_xinetd_removed" selected="true"/>
 
-<select idref="uninstall_telnet_server" selected="true"/>
+<select idref="package_telnet-server_removed" selected="true"/>
 <select idref="service_telnetd_disabled" selected="true"/>
 
 <select idref="package_rsh-server_removed" selected="true"/>
 <select idref="service_rsh_disabled" selected="true"/>
 
-<select idref="uninstall_ypserv" selected="true"/>
-<select idref="disable_ypbind" selected="true"/>
+<select idref="package_ypserv_removed" selected="true"/>
+<select idref="service_ypbind_disabled" selected="true"/>
 
-<select idref="ssh_server_disabled" selected="true" />
+<select idref="service_sshd_disabled" selected="true" />
 <select idref="sshd_allow_only_protocol2" selected="true"/>
 <refine-value idref="sshd_idle_timeout_value" selector="60_minutes"/>
 <select idref="sshd_set_keepalive" selected="true"/>
@@ -276,13 +276,13 @@
 <select idref="sshd_limit_user_access" selected="true" />
 <select idref="sshd_use_approved_ciphers" selected="true"/>
 
-<select idref="disable_xwindows_with_runlevel" selected="true"/>
-<select idref="packagegroup_xwindows_remove" selected="true"/>
+<select idref="xwindows_runlevel_setting" selected="true"/>
+<select idref="package_xorg-x11-server-common_removed" selected="true"/>
 
 <select idref="service_cups_disabled" selected="true" />
 <select idref="cups_disable_browsing" selected="true" />
 
-<select idref="disable_dhcp_client" selected="true"/>
+<select idref="sysconfig_networking_bootproto_ifcfg" selected="true"/>
 
 <select idref="dhcp_server_disable_ddns" selected="true" />
 <select idref="dhcp_server_deny_decline" selected="true" />
@@ -308,21 +308,21 @@
 <select idref="nfs_fixed_mountd_port" selected="true" />
 <select idref="service_nfs_disabled" selected="true"/> 
 <select idref="service_rpcsvcgssd_disabled" selected="true"/> 
-<select idref="use_nodev_option_on_nfs_mounts" selected="true"/>
-<select idref="use_nosuid_option_on_nfs_mounts" selected="true"/>
+<select idref="mount_option_nodev_remote_filesystems" selected="true"/>
+<select idref="mount_option_nosuid_remote_filesystems" selected="true"/>
 <select idref="use_root_squashing_all_exports" selected="true" />
 <select idref="restrict_nfs_clients_to_privileged_ports" selected="true" />
 <select idref="no_insecure_locks_exports" selected="true" />
 <select idref="nfs_no_anonymous" selected="true"/>
 
-<select idref="disable_dns_server" selected="true"/>
-<select idref="uninstall_bind" selected="true"/>
+<select idref="service_named_disabled" selected="true"/>
+<select idref="package_bind_removed" selected="true"/>
 <select idref="dns_server_disable_dynamic_updates" selected="true" />
 
-<select idref="uninstall_tftp-server" selected="true"/>
+<select idref="package_tftp-server_removed" selected="true"/>
 <select idref="service_tftp_disabled" selected="true"/>
-<select idref="disable_vsftpd" selected="true"/> 
-<select idref="uninstall_vsftpd" selected="true"/>
+<select idref="service_vsftpd_disabled" selected="true"/> 
+<select idref="package_vsftpd_removed" selected="true"/>
 <select idref="ftp_log_transactions" selected="true" />
 <select idref="ftp_present_banner" selected="true" />
 
@@ -346,30 +346,30 @@
 <select idref="httpd_limit_available_methods" selected="true" />
 <select idref="httpd_install_mod_ssl" selected="true" />
 <select idref="httpd_install_mod_security" selected="true" />
-<select idref="httpd_conf_dir_permissions" selected="true" />
-<select idref="httpd_conf_files_permissions" selected="true" />
+<select idref="dir_perms_etc_httpd_conf" selected="true" />
+<select idref="file_permissions_httpd_server_conf_files" selected="true" />
 
-<select idref="disable_dovecot" selected="true"/>
+<select idref="service_dovecot_disabled" selected="true"/>
 <select idref="package_dovecot_removed" selected="true"/>
 <select idref="dovecot_enable_ssl" selected="true" />
 <select idref="dovecot_configure_ssl_cert" selected="true" />
 <select idref="dovecot_configure_ssl_key" selected="true" />
 
-<select idref="disable_smb_server" selected="true"/>
+<select idref="service_smb_disabled" selected="true"/>
 <select idref="require_smb_client_signing" selected="true"/>
-<select idref="require_smb_client_signing_mount.cifs" selected="true"/>
+<select idref="mount_option_smb_client_signing" selected="true"/>
 <select idref="smb_server_disable_root" selected="true" />
 
-<select idref="disable_squid" selected="true"/>
-<select idref="uninstall_squid" selected="true"/>
-<select idref="disable_snmpd" selected="true"/>
+<select idref="service_squid_disabled" selected="true"/>
+<select idref="package_squid_removed" selected="true"/>
+<select idref="service_snmpd_disabled" selected="true"/>
 <select idref="package_net-snmp_removed" selected="true"/>
 
 <select idref="package_openswan_installed" selected="true" />
 <select idref="no_rsh_trust_files" selected="true"/>
 <select idref="tftpd_uses_secure_mode" selected="true" />
 
-<select idref="disable_avahi" selected="true"/>
+<select idref="service_avahi-daemon_disabled" selected="true"/>
 <select idref="avahi_ip_only" selected="true" />
 <select idref="avahi_check_ttl" selected="true" />
 <select idref="avahi_prevent_port_sharing" selected="true" />
