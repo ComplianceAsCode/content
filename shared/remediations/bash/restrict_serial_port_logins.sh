@@ -1,2 +1,2 @@
 # platform = multi_platform_all
-echo > /etc/securetty
+sed -i '/ttyS/d' /etc/securetty
