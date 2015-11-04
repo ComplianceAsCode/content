@@ -4,7 +4,6 @@ import re
 import tempfile
 import subprocess
 import datetime
-from openscap import oscap_get_version
 import lxml.etree as ET
 from ConfigParser import SafeConfigParser
 
