@@ -199,7 +199,14 @@ def main():
         usage()
 
     if not len(sys.argv) == 4:
-        schema = parse_conf_file(conf_file)
+        try:
+            from openscap import oscap_get_version
+            if oscap_get_version() < 1.2:
+                schema = 5.10
+            else:
+                schema = 5.11
+        except ImportError:
+            schema = parse_conf_file(conf_file)
     else:
         # FUTURE: replace with sys arg
         schema = '5.10'

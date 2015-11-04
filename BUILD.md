@@ -1,8 +1,8 @@
 # Build from source
 
-1. On Red Hat Enterprise Linux and Fedora make sure the packages `openscap-utils` and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`. 
+1. On Red Hat Enterprise Linux and Fedora make sure the packages `openscap-utils`, `openscap-python`, and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`. 
 
- `# yum -y install git openscap-utils python-lxml`
+ `# yum -y install git openscap-utils openscap-python python-lxml`
 
 1a. FEDORA ONLY: Install the ShellCheck package.
 
