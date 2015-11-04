@@ -4,10 +4,10 @@
     <metadata>
       <title>Kernel "kernel.dmesg_restrict" Parameter Runtime Check</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>The kernel "kernel.dmesg_restrict" parameter should be set to "1" in system runtime.</description>
-      <reference source="JL" ref_id="RHEL6_20150216" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20151029" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter kernel.dmesg_restrict set to 1" test_ref="test_runtime_kernel_dmesg_restrict" />
