@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="selinux_confinement_of_daemons" version="1">
+    <metadata>
+      <title>Ensure No Daemons are Unconfined by SELinux</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>All pids in /proc should be assigned an SELinux security context other than 'initrc_t'.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="device_t in /dev" test_ref="test_selinux_confinement_of_daemons" />
+    </criteria>
+  </definition>
+  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="device_t in /dev" id="test_selinux_confinement_of_daemons" version="2">
+    <linux:object object_ref="object_selinux_confinement_of_daemons" />
+    <linux:state state_ref="state_selinux_confinement_of_daemons" />
+  </linux:selinuxsecuritycontext_test>
+  <linux:selinuxsecuritycontext_object comment="device_t in /dev" id="object_selinux_confinement_of_daemons" version="1">
+    <linux:behaviors max_depth="1" recurse_direction="down" />
+    <linux:path>/proc</linux:path>
+    <linux:filename operation="pattern match">^.*$</linux:filename>
+    <filter action="include">state_selinux_confinement_of_daemons</filter>
+  </linux:selinuxsecuritycontext_object>
+  <linux:selinuxsecuritycontext_state comment="do it" id="state_selinux_confinement_of_daemons" version="1">
+    <linux:type datatype="string" operation="equals">initrc_t</linux:type>
+  </linux:selinuxsecuritycontext_state>
+</def-group>
