@@ -401,8 +401,7 @@ The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport.
 Multiple system calls can be defined on the same line to save space if 
 desired, but is not required. See an example of multiple combined syscalls:
-<pre>-a exit,always -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
--k audit_time_rules</pre>
+<pre>-a exit,always -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="adjtimex" />
@@ -429,8 +428,7 @@ The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport.
 Multiple system calls can be defined on the same line to save space if 
 desired, but is not required. See an example of multiple combined syscalls:
-<pre>-a exit,always -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
--k audit_time_rules</pre>
+<pre>-a exit,always -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="settimeofday" />
@@ -447,23 +445,26 @@ to the system time should be audited.</rationale>
 
 <Rule id="audit_rules_time_stime">
 <title>Record Attempts to Alter Time Through stime</title>
-<description>On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:
+<description>Add the following line to <tt>/etc/audit/audit.rules</tt> for both
+32-bit and 64-bit systems:
 <pre># audit_time_rules
--a exit,always -F arch=b32 -S stime -k audit_time_rules</pre>
-On a 64-bit system, the "-S stime" is not necessary. The -k option allows for 
-the specification of a key in string form that can be used for better 
-reporting capability through ausearch and aureport. Multiple system calls 
-can be defined on the same line to save space if desired, but is not required.
-See an example of multiple combined syscalls:
-<pre>-a exit,always -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
--k audit_time_rules</pre>
+-a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
+Since the 64-bit version of the "stime" system call is not defined in the audit
+lookup table, the corresponding "-F arch=b64" form of this rule is not expected
+to be defined on 64-bit systems (the aforementioned "-F arch=b32" stime rule
+form itself is sufficient for both 32-bit and 64-bit systems). The -k option
+allows for the specification of a key in string form that can be used for
+better reporting capability through ausearch and aureport. Multiple system
+calls can be defined on the same line to save space if desired, but is not
+required. See an example of multiple combined syscalls:
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="stime" />
 </ocil>
-<rationale>Arbitrary changes to the system time can be used to obfuscate 
-nefarious activities in log files, as well as to confuse network services that 
-are highly dependent upon an accurate system time (such as sshd). All changes 
+<rationale>Arbitrary changes to the system time can be used to obfuscate
+nefarious activities in log files, as well as to confuse network services that
+are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident stig="GEN002760-5" />
 <oval id="audit_rules_time_stime" />
@@ -483,8 +484,7 @@ The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport.
 Multiple system calls can be defined on the same line to save space if 
 desired, but is not required. See an example of multiple combined syscalls:
-<pre>-a exit,always -F arch=b64 -S adjtimex -S settimeofday -S clock_settime 
--k audit_time_rules</pre>
+<pre>-a exit,always -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="clock_settime" />
