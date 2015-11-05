@@ -2413,11 +2413,12 @@ execution of these programs cannot be co-opted.
 <description>
 System executables are stored in the following directories by default:
 <pre>/bin
-/usr/bin
-/usr/local/bin
 /sbin
-/usr/sbin
-/usr/local/sbin</pre>
+/usr/bin
+/usr/libexec
+/usr/local/bin
+/usr/local/sbin
+/usr/sbin</pre>
 All files in these directories should be owned by the <tt>root</tt> user.
 If any file <i>FILE</i> in these directories is found
 to be owned by a user other than root, correct its ownership with the
@@ -2427,11 +2428,12 @@ following command:
 <ocil clause="any system executables are found to not be owned by root">
 System executables are stored in the following directories by default:
 <pre>/bin
-/usr/bin
-/usr/local/bin
 /sbin
-/usr/sbin
-/usr/local/sbin</pre>
+/usr/bin
+/usr/libexec
+/usr/local/bin
+/usr/local/sbin
+/usr/sbin</pre>
 To find system executables that are not owned by <tt>root</tt>,
 run the following command for each directory <i>DIR</i> which contains system executables:
 <pre>$ find <i>DIR</i> \! -user root</pre>
