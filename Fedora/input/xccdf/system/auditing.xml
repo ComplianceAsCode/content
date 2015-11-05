@@ -633,15 +633,15 @@ to the system time should be audited.</rationale>
 <description>If the <tt>auditd</tt> daemon is configured
 to use the <tt>auditctl</tt> utility to read audit rules during daemon startup
 (the default), add the following line to <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S clock_settime -F a0=0x0 -F key=time-change</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S clock_settime -F a0=0x0 -F key=time-change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
 program to read audit rules during daemon startup, add the following line to a
 file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S clock_settime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S clock_settime -F a0=0x0 -F key=time-change</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S clock_settime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S clock_settime -F a0=0x0 -F key=time-change</pre>
 The -k option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport.
 Multiple system calls can be defined on the same line to save space if
