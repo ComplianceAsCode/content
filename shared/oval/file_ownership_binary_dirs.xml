@@ -1,14 +1,18 @@
 <def-group>
-  <definition class="compliance" id="file_ownership_binary_dirs" version="1">
+  <definition class="compliance" id="file_ownership_binary_dirs" version="2">
     <metadata>
       <title>Verify that System Executables Have Root Ownership</title>
       <affected family="unix">
+        <platform>CentOS 4</platform>
+        <platform>CentOS 5</platform>
+        <platform>Red Hat Enterprise Linux 4</platform>
+        <platform>Red Hat Enterprise Linux 5</platform>
         <platform>multi_platform_rhel</platform>
         <platform>multi_platform_fedora</platform>
       </affected>
       <description>
         Checks that /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
-        /usr/local/sbin, and objects therein, are owned by root.
+        /usr/local/sbin, /usr/libexec, and objects therein, are owned by root.
       </description>
       <reference source="JL" ref_id="FEDORA20_20150522" ref_url="test_attestation" />
     </metadata>
@@ -27,17 +31,17 @@
   </unix:file_test>
 
   <unix:file_object comment="binary directories" id="object_file_ownership_binary_directories" version="1">
-    <!-- Check that /bin, /sbin, /usr/sbin, /usr/sbin, /usr/local/bin, and
-         /usr/local/sbin directories belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin</unix:path>
+    <!-- Check that /bin, /sbin, /usr/sbin, /usr/sbin, /usr/local/bin,
+         /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
+    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_owner_binaries_not_root</filter>
   </unix:file_object>
 
   <unix:file_object comment="binary files" id="object_file_ownership_binary_files" version="1">
-    <!-- Check that files within /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, and
-         /usr/local/sbin directories belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin</unix:path>
+    <!-- Check that files within /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
+         /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
+    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_owner_binaries_not_root</filter>
   </unix:file_object>
