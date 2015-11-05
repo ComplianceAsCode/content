@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="file_permissions_binary_dirs" version="1">
+  <definition class="compliance" id="file_permissions_binary_dirs" version="2">
     <metadata>
       <title>Verify that System Executables Have Restrictive Permissions</title>
       <affected family="unix">
@@ -8,7 +8,7 @@
       </affected>
       <description>
         Checks that binary files under /bin, /sbin, /usr/bin, /usr/sbin,
-        /usr/local/bin, and /usr/local/sbin, are not group-writable or world-writable.
+        /usr/local/bin, /usr/local/sbin, and /usr/libexec are not group-writable or world-writable.
       </description>
       <reference source="JL" ref_id="FEDORA20_20150522" ref_url="test_attestation" />
     </metadata>
@@ -23,8 +23,8 @@
 
   <unix:file_object comment="binary files" id="object_file_permissions_binary_files" version="1">
     <!-- Check that binary files under /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
-         and /usr/local/sbin directories have safe permissions (go-w) -->
-    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin</unix:path>
+         /usr/local/sbin, and /usr/libexec directories have safe permissions (go-w) -->
+    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_perms_binary_files_nogroupwrite_noworldwrite</filter>
     <filter action="exclude">state_perms_binary_files_symlink</filter>
