@@ -54,6 +54,14 @@ The upstream manual pages at http://chrony.tuxfamily.org/manual.html for
 information on the capabilities and configuration of each of the NTP daemons.
 </description>
 
+<Value id="var_multiple_time_servers" type="string" >
+<title>Vendor Approved Time Servers</title>
+<description>The list of vendor-approved time servers</description>
+<value selector="rhel">0.rhel.pool.ntp.org,1.rhel.pool.ntp.org,2.rhel.pool.ntp.org,3.rhel.pool.ntp.org</value>
+<value selector="fedora">0.fedora.pool.ntp.org,1.fedora.pool.ntp.org,2.fedora.pool.ntp.org,3.fedora.pool.ntp.org</value>
+</Value>
+
+
 <Rule id="service_chronyd_or_ntpd_enabled" severity="medium">
 <title>Enable the NTP Daemon</title>
 <description>
