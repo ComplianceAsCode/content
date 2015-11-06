@@ -1,13 +1,13 @@
 <def-group>
   <definition class="compliance"
-  id="audit_rules_time_clock_settime" version="1">
+  id="audit_rules_time_clock_settime" version="2">
     <metadata>
       <title>Record Attempts to Alter Time Through Clock_settime</title>
       <affected family="unix">
         <platform>CentOS 4</platform>
-		<platform>CentOS 5</platform>
-		<platform>Red Hat Enterprise Linux 4</platform>
-		<platform>Red Hat Enterprise Linux 5</platform>
+        <platform>CentOS 5</platform>
+        <platform>Red Hat Enterprise Linux 4</platform>
+        <platform>Red Hat Enterprise Linux 5</platform>
       </affected>
       <description>Record attempts to alter time through clock_settime.
       </description>
@@ -52,8 +52,10 @@
     <ind:object object_ref="obj_audit_rules_time_clock_settime_x86_el4" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_audit_rules_time_clock_settime_x86_el4" version="1">
-    <ind:path>/etc</ind:path>
-    <ind:filename>audit.rules</ind:filename>
+    <!-- Standard location of 'audit.rules' file on RHEL-4 is '/etc/audit.rules' -->
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <!-- The version of audit package on RHEL-4 doesn't support '-F a0=' argument yet.
+         Therefore use simplified 'clock_settime' audit rule form below -->
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+-F[\s]+arch=b32.*-S[\s]+clock_settime</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -62,8 +64,10 @@
     <ind:object object_ref="obj_audit_rules_time_clock_settime_x86_64_el4" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_audit_rules_time_clock_settime_x86_64_el4" version="1">
-    <ind:path>/etc</ind:path>
-    <ind:filename>audit.rules</ind:filename>
+    <!-- Standard location of 'audit.rules' file on RHEL-4 is '/etc/audit.rules' -->
+    <ind:filepath>/etc/audit.rules</ind:filepath>
+    <!-- The version of audit package on RHEL-4 doesn't suppport '-F a0=' argument yet.
+         Therefore use simplified 'clock_settime' audit rule form below -->
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+-F[\s]+arch=b64.*-S[\s]+clock_settime</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -72,9 +76,12 @@
     <ind:object object_ref="obj_audit_rules_time_clock_settime_x86_el5" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_audit_rules_time_clock_settime_x86_el5" version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+-F[\s]+arch=b32.*-S[\s]+clock_settime</ind:pattern>
+    <!-- Standard location of 'audit.rules' file on RHEL-5 and above is '/etc/audit/audit.rules' -->
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <!-- The version of audit package on RHEL-5 already supports '-F a0=' argument. Therefore
+         use more advanced 'clock_settime' audit rule version -->
+    <ind:pattern 
+    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+clock_settime[\s]+-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -82,9 +89,12 @@
     <ind:object object_ref="obj_audit_rules_time_clock_settime_x86_64_el5" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_audit_rules_time_clock_settime_x86_64_el5" version="1">
-    <ind:path>/etc/audit</ind:path>
-    <ind:filename>audit.rules</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+exit,always[\s]+-F[\s]+arch=b64.*-S[\s]+clock_settime</ind:pattern>
+    <!-- Standard location of 'audit.rules' file on RHEL-5 and above is '/etc/audit/audit.rules' -->
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <!-- The version of audit package on RHEL-5 already supports '-F a0=' argument. Therefore
+         use more advanced 'clock_settime' audit rule version -->
+    <ind:pattern 
+    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+clock_settime[\s]+-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
