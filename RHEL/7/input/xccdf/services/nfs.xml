@@ -65,27 +65,6 @@ this service should be disabled.
 </Rule>
 </Group>
 
-<Group id="disabling_netfs">
-<title>Disable netfs if Possible</title>
-<description>To determine if any network filesystems handled by netfs are
-currently mounted on the system execute the following command:
-<pre>$ mount -t nfs,nfs4,smbfs,cifs,ncpfs</pre>
-If the command did not return any output then disable netfs.
-</description>
-<Rule id="service_netfs_disabled">
-<title>Disable Network File Systems (netfs)</title>
-<description>The netfs script manages the boot-time mounting of several types
-of networked filesystems, of which NFS and Samba are the most common. If these
-filesystem types are not in use, the script can be disabled, protecting the
-system somewhat against accidental or malicious changes to <tt>/etc/fstab</tt>
-and against flaws in the netfs script itself.
-<service-disable-macro service="netfs" />
-</description>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="service_netfs_disabled" />
-</Rule>
-</Group>
-
 </Group>
 
 <Group id="nfs_configuring_all_machines">
