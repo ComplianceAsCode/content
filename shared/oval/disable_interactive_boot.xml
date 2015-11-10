@@ -3,7 +3,7 @@
     <metadata>
       <title>Disable Interactive Boot</title>
       <affected family="unix">
-        <platform>multi_platform_rhel</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>The ability for users to perform interactive startups should
       be disabled.</description>
@@ -11,6 +11,10 @@
     </metadata>
     <criteria>
       <criterion test_ref="test_disable_interactive_boot" />
+      <!-- This needs to be enhanced yet to properly cover case of 'systemd.confirm_spawn=1'
+           use case on RHEL-7 and Fedora per:
+             https://rhsummit.files.wordpress.com/2014/04/summit_demystifying_systemd1.pdf Page #20
+           SSG Upstream ticket to come yet -->
     </criteria>
   </definition>
 
