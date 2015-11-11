@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="kernel_disable_entropy_contribution_for_solid_state_drives" version="1">
+    <metadata>
+      <title>Configure solid-state drives (SSDs) not to contribute to random-number entropy pool</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The add_random sysfs variable should be set correctly for each SSD drive on the system.</description>
+      <reference source="JL" ref_id="RHEL6_20151111" ref_url="test_attestation"/>
+    </metadata>
+
+    <criteria>
+      <criterion comment="Check add_random sysfs variable set to '0' for each SSD drive. Fail if not"
+                 test_ref="test_kernel_disable_entropy_contribution_for_solid_state_drives" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="object_system_ssd_drives" version="1">
+    <ind:behaviors recurse="symlinks and directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <ind:filepath operation="pattern match">/sys/block/(.*)/queue/rotational</ind:filepath>
+    <ind:pattern operation="pattern match">^0$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Construct final path to "add_random" tunable of particular system's SSD drive -->
+  <local_variable id="variable_system_solid_state_drives_paths" datatype="string"
+  comment="Path to 'add_random' tunable for all SSD drives on system" version="1">
+    <concat>
+      <object_component item_field="path" object_ref="object_system_ssd_drives" />
+      <literal_component>/add_random</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_test id="test_kernel_disable_entropy_contribution_for_solid_state_drives"
+  comment="Verify there doesn't exist SSD drive on system with 'add_random' set to '1'"
+  check="all" check_existence="none_exist" version="1">
+    <ind:object object_ref="object_kernel_disable_entropy_contribution_for_solid_state_drives" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_kernel_disable_entropy_contribution_for_solid_state_drives" version="1">
+    <ind:filepath var_ref="variable_system_solid_state_drives_paths" var_check="at least one" datatype="string" />
+    <ind:pattern operation="pattern match">^1$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
