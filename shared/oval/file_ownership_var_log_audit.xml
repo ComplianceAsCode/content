@@ -10,12 +10,28 @@
       <reference source="JL" ref_id="RHEL7_20150814" ref_url="test_attestation" />
       <reference source="JL" ref_id="FEDORA22_20150814" ref_url="test_attestation" />
     </metadata>
-    <criteria operator="AND">
-      <criterion test_ref="test_ownership_var_log_audit_files" />
-      <criterion test_ref="test_ownership_var_log_audit_directories" />
+    <criteria operator="OR">
+      <criteria operator="AND" comment="directories are root owned">
+        <criterion test_ref="test_ownership_var_log_audit_files" />
+        <criterion test_ref="test_ownership_var_log_audit_directories" />
+      </criteria>
+      <criteria operator="AND" comment="log_group in auditd.conf is not root">
+        <criterion test_ref="test_auditd_conf_log_group_root" />
+        <criterion test_ref="test_ownership_var_log_audit_files-non_root" />
+        <criterion test_ref="test_ownership_var_log_audit_directories-non_root" />
+      </criteria>
     </criteria>
   </definition>
 
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="log_group = root" id="test_auditd_conf_log_group_root" version="1">
+    <ind:object object_ref="object_auditd_conf_log_group_root" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="log_group = root" id="object_auditd_conf_log_group_root" version="1">
+    <ind:filepath operation="equals">/etc/audit/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[ ]*log_group[ ]+=[ ]+root[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
   <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit directories uid root gid root" id="test_ownership_var_log_audit_directories" version="1">
     <unix:object object_ref="object_ownership_var_log_audit_directories" />
   </unix:file_test>
@@ -42,5 +58,33 @@
     <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
     <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
   </unix:file_state>
+
+    <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit directories uid root gid root" id="test_ownership_var_log_audit_directories-non_root" version="1">
+    <unix:object object_ref="object_ownership_var_log_audit_directories-non_root" />
+  </unix:file_test>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files uid root gid root" id="test_ownership_var_log_audit_files-non_root" version="1">
+    <unix:object object_ref="object_ownership_var_log_audit_files-non_root" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log/audit directories" id="object_ownership_var_log_audit_directories-non_root" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_owner_not_root_var_log_audit-non_root</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="/var/log/audit files" id="object_ownership_var_log_audit_files-non_root" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_owner_not_root_var_log_audit-non_root</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_owner_not_root_var_log_audit-non_root" version="1" operator="OR">
+    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
+  </unix:file_state>
+
 
 </def-group>
