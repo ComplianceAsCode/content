@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = multi_platform_rhel
 
 grep -q ^active /etc/audisp/plugins.d/syslog.conf && \
   sed -i "s/active.*/active = yes/g" /etc/audisp/plugins.d/syslog.conf
