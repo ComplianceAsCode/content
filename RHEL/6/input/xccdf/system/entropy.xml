@@ -1,0 +1,24 @@
+<Group id="entropy">
+<title>Protect Random-Number Entropy Pool</title>
+<description>
+The I/O operations of the Linux kernel block layer due to their inherently
+unpredictable execution times have been traditionally considered as a reliable
+source to contribute to random-number entropy pool of the Linux kernel. This
+has changed with introduction of solid-state storage devices (SSDs) though.
+</description>
+
+<Rule id="kernel_disable_entropy_contribution_for_solid_state_drives" severity="medium">
+<title>Ensure Solid State Drives Do Not Contribute To Random-Number Entropy Pool</title>
+<description>For each solid-state drive on the system, run:
+<pre> # echo 0 > /sys/block/DRIVE/queue/add_random</pre>
+</description>
+<rationale>
+In contrast to traditional electromechanical magnetic disks, containing
+spinning disks and / or movable read / write heads, the solid-state storage
+devices (SSDs) do not contain moving / mechanical components. Therefore the
+I/O operation completion times are much more predictable for them.</rationale>
+<tested by="JL" on="20151111"/>
+<oval id="kernel_disable_entropy_contribution_for_solid_state_drives" />
+</Rule>
+
+</Group>
