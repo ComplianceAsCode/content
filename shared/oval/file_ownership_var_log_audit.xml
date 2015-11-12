@@ -59,11 +59,11 @@
     <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
   </unix:file_state>
 
-    <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit directories uid root gid root" id="test_ownership_var_log_audit_directories-non_root" version="1">
+    <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit directories uid root gid root" id="test_ownership_var_log_audit_directories-non_root" version="1">
     <unix:object object_ref="object_ownership_var_log_audit_directories-non_root" />
   </unix:file_test>
 
-  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files uid root gid root" id="test_ownership_var_log_audit_files-non_root" version="1">
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit files uid root gid root" id="test_ownership_var_log_audit_files-non_root" version="1">
     <unix:object object_ref="object_ownership_var_log_audit_files-non_root" />
   </unix:file_test>
 
