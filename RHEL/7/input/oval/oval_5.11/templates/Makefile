@@ -4,6 +4,10 @@ SHARED_DIR=../../../../../../shared/oval/templates
 
 OUTPUT:=$(shell mkdir -p output)
 
+packages:
+	${SHARED_DIR}/create_package_installed.py packages_installed.csv
+	${SHARED_DIR}/create_package_removed.py packages_removed.csv
+
 services:
 	${SHARED_DIR}/create_services_enabled.py services_enabled.csv
 	${SHARED_DIR}/create_services_disabled.py services_disabled.csv

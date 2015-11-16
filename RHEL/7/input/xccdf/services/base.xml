@@ -91,20 +91,20 @@ service is not necessary.
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="service_cpuspeed_disabled">
-<title>Disable CPU Speed (cpuspeed)</title>
-<description>The <tt>cpuspeed</tt> service can adjust the clock speed of supported CPUs based upon
+<Rule id="service_cpupower_disabled">
+<title>Disable CPU Speed (cpupower)</title>
+<description>The <tt>cpupower</tt> service can adjust the clock speed of supported CPUs based upon
 the current processing load thereby conserving power and reducing heat.
-<service-disable-macro service="cpuspeed" />
+<service-disable-macro service="cpupower" />
 </description>
-<ocil><service-disable-check-macro service="cpuspeed" /></ocil>
-<rationale>The <tt>cpuspeed</tt> service is only necessary if adjusting the CPU clock speed
+<ocil><service-disable-check-macro service="cpupower" /></ocil>
+<rationale>The <tt>cpupower</tt> service is only necessary if adjusting the CPU clock speed
 provides benefit. Traditionally this has included laptops (to enhance battery life),
 but may also apply to server or desktop environments where conserving power is
 highly desirable or necessary.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="service_cpuspeed_disabled" />
+<oval id="service_cpupower_disabled" />
 <ref nist="CM-7" />
 </Rule>
 
