@@ -716,8 +716,12 @@ audited.</rationale>
 <Rule id="file_permissions_var_log_audit">
 <title>System Audit Logs Must Have Mode 0640 or Less Permissive</title>
 <description>
-Change the mode of the audit log files with the following command:
+If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the <tt>root</tt>
+group account, change the mode of the audit log files with the following command:
 <pre>$ sudo chmod 0640 <i>audit_file</i></pre>
+<br/>
+Otherwise, change the mode of the audit log files with the following command:
+<pre>$ sudo chmod 0600 <i>audit_file</i></pre>
 </description>
 <ocil clause="any are more permissive">
 Run the following command to check the mode of the system audit logs:
