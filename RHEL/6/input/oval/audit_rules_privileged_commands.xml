@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_privileged_commands"
-  version="2">
+  version="3">
     <metadata>
       <title>
         Ensure auditd Collects Information on the Use of Privileged Commands
@@ -35,8 +35,7 @@
   <unix:file_object id="object_system_privileged_commands"
   comment="system files with setuid or setgid permission set"
   version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down"
-    recurse_file_system="local" max_depth="-1" />
+    <unix:behaviors recurse_file_system="local" />
     <!-- Skip selected directories (like /dev, /proc, and /sys) when traversing
          filesystem hierarchy, since:
          * these directories don't contain executables, but
