@@ -85,6 +85,9 @@ table-refs: shorthand2xccdf
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
 	xsltproc -stringparam profile "ospp-rhel7-server" -o $(OUT)/table-$(PROD)-nistrefs-ospp.html \
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
+	xsltproc -stringparam ref "pcidss" -o $(OUT)/table-$(PROD)-pcidss.html $(TRANS)/xccdf2table-byref.xslt \
+		$(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
+
 
 table-idents: shorthand2xccdf
 	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
