@@ -97,14 +97,14 @@ def fix_is_applicable_for_product(platform, product):
 
 def substitute_vars(fix):
     # brittle and troubling code to assign environment vars to XCCDF values
-    env_var = re.match("(\s*source\s+\S+)\n+(\s*populate\s+)(\S+)\n(.*)",
+    env_var = re.match("(\s*source\s+\S+)\n+(\s*declare\s+\S+)\n+(\s*populate\s+)(\S+)\n(.*)",
                        fix.text, re.DOTALL)
     if not env_var:
         # no need to alter fix.text
         return
     # otherwise, create node to populate environment variable
-    varname = env_var.group(3)
-    mainscript = env_var.group(4)
+    varname = env_var.group(4)
+    mainscript = env_var.group(5)
     fix.text = varname + "=" + '"'
     # new <sub> element to reference XCCDF variable
     xccdf_sub = etree.SubElement(fix, "sub", idref=varname)
