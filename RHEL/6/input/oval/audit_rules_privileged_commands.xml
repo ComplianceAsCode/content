@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_privileged_commands"
-  version="1">
+  version="3">
     <metadata>
       <title>
         Ensure auditd Collects Information on the Use of Privileged Commands
@@ -10,7 +10,7 @@
       </affected>
       <description>Audit rules about the Information on the Use of Privileged
       Commands are enabled</description>
-      <reference source="JL" ref_id="RHEL6_20140703" ref_url="test_attestation"/>
+      <reference source="JL" ref_id="RHEL6_20151119" ref_url="test_attestation"/>
     </metadata>
     <criteria>
 
@@ -35,21 +35,21 @@
   <unix:file_object id="object_system_privileged_commands"
   comment="system files with setuid or setgid permission set"
   version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down"
-    recurse_file_system="local" max_depth="-1" />
-    <unix:path operation="equals">/</unix:path>
+    <unix:behaviors recurse_file_system="local" />
+    <!-- Skip selected directories (like /dev, /proc, and /sys) when traversing
+         filesystem hierarchy, since:
+         * these directories don't contain executables, but
+         * can contain lot of symbolic link entries, possibly leading this OVAL
+         rule scan to return 'error' on systems with not enough memory. Fixes:
+         https://github.com/OpenSCAP/scap-security-guide/issues/841 -->
+    <unix:path operation="pattern match">\/(?:(?!dev|proc|sys).)+</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_setuid_or_setgid_set</filter>
-    <filter action="exclude">state_irrelevant_system_dirs</filter>
   </unix:file_object>
 
   <unix:file_state id="state_setuid_or_setgid_set" version="1" operator="OR">
     <unix:suid datatype="boolean">true</unix:suid>
     <unix:sgid datatype="boolean">true</unix:sgid>
-  </unix:file_state>
-
-  <unix:file_state id="state_irrelevant_system_dirs" version="1">
-    <unix:filepath operation="pattern match">^/(dev|proc|sys)/.*$</unix:filepath>
   </unix:file_state>
 
   <!-- Based on the above list create a variable holding full / expanded
