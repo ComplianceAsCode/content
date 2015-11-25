@@ -1,0 +1,248 @@
+<Group id="mounting">
+<title>Restrict Dynamic Mounting and Unmounting of
+Filesystems</title>
+<description>Linux includes a number of facilities for the automated addition
+and removal of filesystems on a running system.  These facilities may be
+necessary in many environments, but this capability also carries some risk -- whether direct
+risk from allowing users to introduce arbitrary filesystems,
+or risk that software flaws in the automated mount facility itself could
+allow an attacker to compromise the system.
+<br /><br />
+This command can be used to list the types of filesystems that are
+available to the currently executing kernel:
+<pre>$ find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
+If these filesystems are not required then they can be explicitly disabled
+in a configuratio file in  <tt>/etc/modprobe.d</tt>.
+</description>
+
+<Rule id="kernel_module_usb-storage_disabled">
+<title>Disable Modprobe Loading of USB Storage Driver</title>
+<description>
+To prevent USB storage devices from being used, configure the kernel module loading system
+to prevent automatic loading of the USB storage driver. 
+<module-disable-macro module="usb-storage" />
+This will prevent the <tt>modprobe</tt> program from loading the <tt>usb-storage</tt>
+module, but will not prevent an administrator (or another program) from using the
+<tt>insmod</tt> program to load the module manually.</description>
+<ocil>
+<module-disable-check-macro module="usb-storage" />
+</ocil>
+<rationale>USB storage devices such as thumb drives can be used to introduce
+malicious software.</rationale>
+<oval id="kernel_module_usb-storage_disabled" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
+</Rule>
+
+<Rule id="bootloader_nousb_argument">
+<title>Disable Kernel Support for USB via Bootloader Configuration</title>
+<description>
+All USB support can be disabled by adding the <tt>nousb</tt>
+argument to the kernel's boot loader configuration. To do so, 
+append "nousb" to the kernel line in <tt>/etc/grub.conf</tt> as shown:
+<pre>kernel /vmlinuz-<i>VERSION</i> ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet nousb</pre>
+<i><b>WARNING:</b> Disabling all kernel support for USB will cause problems for
+systems with USB-based keyboards, mice, or printers. This configuration is
+infeasible for systems which require USB devices, which is common.</i></description>
+<rationale>Disabling the USB subsystem within the Linux kernel at system boot will
+protect against potentially malicious USB devices, although it is only practical
+in specialized systems.
+</rationale>
+<!--oval id="bootloader_nousb_argument" /-->
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
+</Rule>
+
+<Rule id="bios_disable_usb_boot">
+<title>Disable Booting from USB Devices in Boot Firmware</title>
+<description>Configure the system boot firmware (historically called BIOS on PC
+systems) to disallow booting from USB drives. 
+</description>
+<rationale>Booting a system from a USB device would allow an attacker to
+circumvent any security measures provided by the operating system. Attackers
+could mount partitions and modify the configuration of the OS.</rationale>
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
+</Rule>
+
+<Rule id="bios_assign_password">
+<title>Assign Password to Prevent Changes to Boot Firmware Configuration</title>
+<description>Assign a password to the system boot firmware (historically called BIOS on PC 
+systems) to require a password for any configuration changes.  
+</description>
+<rationale>Assigning a password to the system boot firmware prevents anyone
+with physical access from configuring the system to boot
+from local media and circumvent the operating system's access controls.
+For systems in physically secure locations, such as
+a data center or Sensitive Compartmented Information Facility (SCIF), this risk must be weighed
+against the risk of administrative personnel being unable to conduct recovery operations in
+a timely fashion.
+</rationale>
+</Rule>
+
+<Rule id="service_autofs_disabled">
+<title>Disable the Automounter</title>
+<description>The <tt>autofs</tt> daemon mounts and unmounts filesystems, such as user
+home directories shared via NFS, on demand. In addition, autofs can be used to handle
+removable media, and the default configuration provides the cdrom device as <tt>/misc/cd</tt>.
+However, this method of providing access to removable media is not common, so autofs
+can almost always be disabled if NFS is not in use. Even if NFS is required, it may be
+possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
+rather than relying on the automounter.
+<br /><br />
+<service-disable-macro service="autofs" />
+</description>
+<ocil>
+<service-disable-check-macro service="autofs" />
+</ocil>
+<rationale>Disabling the automounter permits the administrator to 
+statically control filesystem mounting through <tt>/etc/fstab</tt>. 
+</rationale>
+<!--oval id="service_autofs_disabled" /-->
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
+</Rule>
+
+<Rule id="dconf_gnome_disable_automount">
+<title>Disable GNOME3 Automounting</title>
+<description>The system's default desktop environment, GNOME3, will mount
+devices and removable media (such as DVDs, CDs and USB flash drives) whenever
+they are inserted into the system. To disable automount and autorun within GNOME3,
+the <tt>automount</tt>, <tt>automount-open</tt>, and <tt>autorun-never</tt> settings must be set 
+under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="GNOME automounting is not disabled">
+These settings can be verified by running the following:
+<pre>$ gsettings get org.gnome.desktop.media-handling automount
+$ gsettings get org.gnome.desktop.media-handling automount-open
+$ gsettings get org.gnome.desktop.media-handling autorun-never</pre>
+If properly configured, the output for <tt>automount</tt> should be <tt>false</tt>.
+If properly configured, the output for <tt>automount-open</tt>should be <tt>false</tt>.
+If properly configured, the output for <tt>autorun-never</tt> should be <tt>true</tt>.
+To ensure that users cannot enable automount and autorun in GNOME3, run the following:
+<pre>$ grep 'automount\|autorun' /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output for <tt>automount</tt> should be <tt>/org/gnome/desktop/media-handling/automount</tt>
+If properly configured, the output for <tt>automount-open</tt> should be <tt>/org/gnome/desktop/media-handling/auto-open</tt>
+If properly configured, the output for <tt>autorun-never</tt> should be <tt>/org/gnome/desktop/media-handling/autorun-never</tt>
+</ocil>
+<rationale>Disabling automatic mounting in GNOME3 can prevent
+the introduction of malware via removable media.
+It will, however, also prevent desktop users from legitimate use
+of removable media. 
+</rationale>
+<oval id="dconf_gnome_disable_automount" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" />
+</Rule>
+
+<Rule id="kernel_module_cramfs_disabled">
+<title>Disable Mounting of <tt>cramfs</tt></title>
+<description>
+<module-disable-macro module="cramfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
+<rationale>Linux kernel modules which implement filesystems that are not needed by the
+local system should be disabled.</rationale>
+<!--oval id="kernel_module_cramfs_disabled" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="kernel_module_freevxfs_disabled">
+<title>Disable Mounting of <tt>freevxfs</tt></title>
+<description>
+<module-disable-macro module="freevxfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
+<rationale>Linux kernel modules which implement filesystems that are not needed by the
+local system should be disabled.</rationale>
+<!--oval id="kernel_module_freevxfs_disabled" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="kernel_module_jffs2_disabled">
+<title>Disable Mounting of <tt>jffs2</tt></title>
+<description>
+<module-disable-macro module="jffs2" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
+<rationale>Linux kernel modules which implement filesystems that are not needed by the
+local system should be disabled.</rationale>
+<!--oval id="kernel_module_jffs2_disabled" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="kernel_module_hfs_disabled">
+<title>Disable Mounting of <tt>hfs</tt></title>
+<description>
+<module-disable-macro module="hfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
+<rationale>Linux kernel modules which implement filesystems that are not needed by the
+local system should be disabled.</rationale>
+<!--oval id="kernel_module_hfs_disabled" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="kernel_module_hfsplus_disabled">
+<title>Disable Mounting of <tt>hfsplus</tt></title>
+<description>
+<module-disable-macro module="hfsplus" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
+<rationale>Linux kernel modules which implement filesystems that are not needed by the
+local system should be disabled.</rationale>
+<!--oval id="kernel_module_hfsplus_disabled" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="kernel_module_squashfs_disabled">
+<title>Disable Mounting of <tt>squashfs</tt></title>
+<description>
+<module-disable-macro module="squashfs" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
+<rationale>Linux kernel modules which implement filesystems that are not needed by the
+local system should be disabled.</rationale>
+<!--oval id="kernel_module_squashfs_disabled" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="kernel_module_udf_disabled">
+<title>Disable Mounting of <tt>udf</tt></title>
+<description>
+<module-disable-macro module="udf" />
+This effectively prevents usage of this uncommon filesystem.
+</description>
+<rationale>Linux kernel modules which implement filesystems that are not needed by the
+local system should be disabled.</rationale>
+<!--oval id="kernel_module_udf_disabled" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="dconf_gnome_disable_thumbnailers">
+<title>Disable All GNOME3 Thumbnailers</title>
+<description>The system's default desktop environment, GNOME3, uses
+a number of different thumbnailer programs to generate thumbnails
+for any new or modified content in an opened folder. To disable the
+execution of these thumbnail applications, the <tt>disable-all</tt> setting must be set 
+under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+After the settings have been set, run <tt>dconf update</tt>.
+This effectively prevents an attacker from gaining access to a
+system through a flaw in GNOME3's Nautilus thumbnail creators.
+</description>
+<ocil clause="GNOME automounting is not disabled">
+These settings can be verified by running the following:
+<pre>$ gsettings get org.gnome.desktop.thumbnailers disable-all</pre>
+If properly configured, the output should be <tt>true</tt>.
+To ensure that users cannot how long until the the screensaver locks, run the following:
+<pre>$ grep disable-all /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/thumbnailers/disable-all</tt>
+</ocil>
+<rationale>An attacker with knowledge of a flaw in a GNOME3 thumbnailer application could craft a malicious
+file to exploit this flaw. Assuming the attacker could place the malicious file on the local filesystem
+(via a web upload for example) and assuming a user browses the same location using Nautilus, the
+malicious file would exploit the thumbnailer with the potential for malicious code execution. It
+is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
+<oval id="dconf_gnome_disable_thumbnailers" />
+<ref nist="CM-7" />
+</Rule>
+
+</Group>
