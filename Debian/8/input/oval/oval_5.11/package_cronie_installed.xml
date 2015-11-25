@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="package_cronie_installed"
+  version="1">
+    <metadata>
+      <title>Package cronie Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The RPM package cronie should be installed.</description>
+      <reference source="galford" ref_id="20150923" ref_url="test_attestation"/>
+    </metadata>
+    <criteria>
+      <criterion comment="package cronie is installed"
+      test_ref="test_package_cronie_installed" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_package_cronie_installed" version="1"
+  comment="package cronie is installed">
+    <linux:object object_ref="obj_package_cronie_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_cronie_installed" version="1">
+    <linux:name>cronie</linux:name>
+  </linux:rpminfo_object>
+</def-group>
