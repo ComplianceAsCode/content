@@ -15,6 +15,7 @@
 		</xsl:if>
 		<xsl:apply-templates select="document('profiles/standard.xml')" />
 		<xsl:apply-templates select="document('profiles/pci-dss.xml')" />
+		<xsl:apply-templates select="document('profiles/C2S.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
 		<xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />

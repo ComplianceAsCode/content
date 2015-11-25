@@ -266,66 +266,66 @@ baseline.
 <select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true" />
 
 <!-- 4.2.1 Disable Source Routed Packet Acceptance (Scored) -->
-<refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="0" />
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="disabled" />
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
 
-<refine-value idref="sysctl_net_ipv4_conf_default_accept_source_route_value" selector="0" />
+<refine-value idref="sysctl_net_ipv4_conf_default_accept_source_route_value" selector="disabled" />
 <select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
 
 <!-- 4.2.2 Disable ICMP Redirect Acceptance (Scored) -->
-<refine-value idref="sysctl_net_ipv4_conf_all_accept_redirects_value" selector="0" />
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_redirects_value" selector="disabled" />
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
 
-<select idef="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
 
 <!-- 4.2.3 Disable Secure ICMP Redirect Acceptance (Scored) -->
-<refine-value idref="sysctl_net_ipv4_conf_all_secure_redirects_value" selector="0" />
+<refine-value idref="sysctl_net_ipv4_conf_all_secure_redirects_value" selector="disabled" />
 <select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true" />
 
-<refine-value idref="sysctl_net_ipv4_conf_default_secure_redirects_value" selector="0" />
+<refine-value idref="sysctl_net_ipv4_conf_default_secure_redirects_value" selector="disabled" />
 <select idref="sysctl_net_ipv4_conf_default_secure_redirects" selected="true" />
 
 <!-- 4.2.4 Log Suspicious Packets (Scored) -->
-<refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="enabled" />
 <select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true" />
 
-<refine-value idref="sysctl_net_ipv4_conf_default_log_martians_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_conf_default_log_martians_value" selector="enabled" />
 <select idref="sysctl_net_ipv4_conf_default_log_martians" selected="true" />
 
 <!-- 4.2.5 Enable Ignore Broadcast Requests (Scored) -->
-<refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" selector="enabled" />
 <select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
 
 <!-- 4.2.6 Enable Bad Error Message Protection (Scored) -->
-<refine-value idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" selector="enabled" />
 <select idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true" />
 
 <!-- 4.2.7 Enable RFC-recommended Source Route Validation (Scored) -->
-<refine-value idref="sysctl_net_ipv4_conf_all_rp_filter_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_conf_all_rp_filter_value" selector="enabled" />
 <select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
 
-<refine-value idref="sysctl_net_ipv4_conf_default_rp_filter_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_conf_default_rp_filter_value" selector="enabled" />
 <select idref="sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
 
 <!-- 4.2.8 Enable TCP SYN Cookies (Scored) -->
-<refine-value idref="sysctl_net_ipv4_tcp_syncookies_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_tcp_syncookies_value" selector="enabled" />
 <select idref="sysctl_net_ipv4_tcp_syncookies" selected="true" />
 
 <!-- 4.3.1 Deactivate Wireless Interfaces (Not Scored) -->
 <select idref="wireless_disable_interfaces" selected="true" />
 
 <!-- 4.4.1.1 Disable IPv6 Router Advertisements (Not Scored) -->
-<refine-value idref="sysctl_net_ipv6_conf_all_accept_ra_value" selector="0" />
+<refine-value idref="sysctl_net_ipv6_conf_all_accept_ra_value" selector="disabled" />
 <select idref="sysctl_net_ipv6_conf_all_accept_ra" selected="true" />
 
-<refine-value idref="sysctl_net_ipv6_conf_default_accept_ra_value" selector="0" />
+<refine-value idref="sysctl_net_ipv6_conf_default_accept_ra_value" selector="disabled" />
 <select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
 
 <!-- 4.4.1.2 Disable IPv6 Redirect Acceptance (Not Scored) -->
-<refine-value idref="sysctl_net_ipv6_conf_all_accept_redirects_value" selector="0" />
+<refine-value idref="sysctl_net_ipv6_conf_all_accept_redirects_value" selector="disabled" />
 <select idref="sysctl_net_ipv6_conf_all_accept_redirects" selected="true" />
 
-<refine-value idref="sysctl_net_ipv6_conf_default_accept_redirects_value" selector="0" />
+<refine-value idref="sysctl_net_ipv6_conf_default_accept_redirects_value" selector="disabled" />
 <select idref="sysctl_net_ipv6_conf_default_accept_redirects" selected="true" />
 
 <!-- 4.4.2 Disable IPv6 (Not Scored) -->
@@ -389,7 +389,7 @@ baseline.
 <refine-value idref="var_auditd_space_left_action" selector="email" />
 <select idref="auditd_data_retention_space_left_action" selected="true" />
 
-<refine-value idref="var_auditd_action_mail_acct" selected="root" />
+<refine-value idref="var_auditd_action_mail_acct" selector="root" />
 <select idref="auditd_data_retention_action_mail_acct" selected="true" />
 
 <refine-value idref="var_auditd_admin_space_left_action" selector="halt" />

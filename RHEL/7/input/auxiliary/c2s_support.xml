@@ -8,20 +8,20 @@ not clearly relate.
 
 <Rule id="c2s_procedural_requirement">
 <title>Procedural Requirement</title>
-<rational>This requirement is procedural, and can not be met through
-automated means.</rational>
+<rationale>This requirement is procedural, and can not be met through
+automated means.</rationale>
 <ocil>TBD</ocil>
 <description>This requirement is procedural, and can not be met
-through automated means.</description>
+through automated means.
 </description>
 <ref cis="" />
 </Rule>
 
 <Rule id="c2s_not_OS_applicable">
 <title>Not Applicable to Operating System</title>
-<rationale>This requirement is not applicable to an operating system.</rational>
+<rationale>This requirement is not applicable to an operating system.</rationale>
 <description>While this requirement is applicable at an information system level, implementation
-is not performed within the Operating System.</rational>
+is not performed within the Operating System.</description>
 <ref cis="" /> 
 </Rule>
 
@@ -52,5 +52,6 @@ This requirement is permanent not a finding. No fix is required.
 from the system</rationale>
 <description>The upstream CIS guidance is incorrect, stating that xinetd services can be managed through systemctl. The proper way to disable xinetd services, such as chargen-dgram, is to create a <tt>/etc/xinetd.d/SERVICE</tt> file which disables the service. Regardless, these rules are inherently compliant with C2S/CIS policies through the removal of xinetd itself.</description>
 <ref cis="2.1.12, 2.1.13, 2.1.14, 2.1.15, 2.1.16, 2.1.17, 2.1.18" />
+</Rule>
 
 </Group>
