@@ -30,6 +30,7 @@
       <xsl:apply-templates select="document('xccdf/services/services.xml')" />
       <!-- the auxiliary Groups here will be removed prior to some outputs -->
       <xsl:apply-templates select="document('auxiliary/srg_support.xml')" />
+      <xsl:apply-templates select="document('auxiliary/c2s_support.xml')" />
     </xsl:copy>
   </xsl:template>
 
