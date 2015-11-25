@@ -1,0 +1,262 @@
+<Group id="network-firewalld">
+<title>firewalld</title>
+<description>The dynamic firewall daemon <tt>firewalld</tt> provides a
+dynamically managed firewall with support for network “zones” to assign
+a level of trust to a network and its associated connections and interfaces.
+It has support for IPv4 and IPv6 firewall settings. It supports Ethernet
+bridges and has a separation of runtime and permanent configuration options.
+It also has an interface for services or applications to add firewall rules
+directly.
+<br/>
+A graphical configuration tool, <tt>firewall-config</tt>, is used to configure
+<tt>firewalld</tt>, which in turn uses <tt>iptables</tt> tool to communicate
+with <tt>Netfilter</tt> in the kernel which implements packet filtering.
+<br/>
+The firewall service provided by <tt>firewalld</tt> is dynamic rather than
+static because changes to the configuration can be made at anytime and are
+immediately implemented. There is no need to save or apply the changes. No
+unintended disruption of existing network connections occurs as no part of
+the firewall has to be reloaded.
+</description>
+
+<Group id="firewalld_activation">
+<title>Inspect and Activate Default firewalld Rules</title>
+<description>Firewalls can be used to separate networks into different zones
+based on the level of trust the user has decided to place on the devices and
+traffic within that network. <tt>NetworkManager</tt> informs firewalld to which
+zone an interface belongs. An interface's assigned zone can be changed by
+<tt>NetworkManager</tt> or via the <tt>firewall-config</tt> tool.
+<br/>
+The zone settings in <tt>/etc/firewalld/</tt> are a range of preset settings
+which can be quickly applied to a network interface. These are the zones
+provided by firewalld sorted according to the default trust level of the
+zones from untrusted to trusted:
+<ul>
+<li><tt>drop</tt><br /><p>Any incoming network packets are dropped, there is no
+reply. Only outgoing network connections are possible.</p></li>
+<li><tt>block</tt><br /><p>Any incoming network connections are rejected with an
+<tt>icmp-host-prohibited</tt> message for IPv4 and <tt>icmp6-adm-prohibited</tt>
+for IPv6. Only network connections initiated from within the system are
+possible.</p></li>
+<li><tt>public</tt><br /><p>For use in public areas. You do not trust the other
+computers on the network to not harm your computer. Only selected incoming
+connections are accepted.</p></li>
+<li><tt>external</tt><br /><p>For use on external networks with masquerading enabled
+especially for routers. You do not trust the other computers on the network to
+not harm your computer. Only selected incoming connections are accepted.</p></li>
+<li><tt>dmz</tt><br /><p>For computers in your demilitarized zone that are
+publicly-accessible with limited access to your internal network. Only selected
+incoming connections are accepted.</p></li>
+<li><tt>work</tt><br /><p>For use in work areas. You mostly trust the other computers
+on networks to not harm your computer. Only selected incoming connections are
+accepted.</p></li>
+<li><tt>home</tt><br /><p>For use in home areas. You mostly trust the other computers
+on networks to not harm your computer. Only selected incoming connections are
+accepted.</p></li>
+<li><tt>internal</tt><br /><p>For use on internal networks. You mostly trust the
+other computers on the networks to not harm your computer. Only selected
+incoming connections are accepted.</p></li>
+<li><tt>trusted</tt><br /><p>All network connections are accepted.</p></li>
+</ul>
+<br/>
+It is possible to designate one of these zones to be the default zone. When
+interface connections are added to <tt>NetworkManager</tt>, they are assigned
+to the default zone. On installation, the default zone in firewalld is set to
+be the public zone.
+<br/>
+To find out all the settings of a zone, for example the <tt>public zone,</tt>
+enter the following command as root:
+<pre># firewall-cmd --zone=public --list-all</pre>
+Example output of this command might look like the following:
+<pre>
+# firewall-cmd --zone=public --list-all
+public
+  interfaces:
+  services: mdns dhcpv6-client ssh
+  ports:
+  forward-ports:
+  icmp-blocks: source-quench
+</pre>
+To view the network zones currently active, enter the following command as root:
+<pre># firewall-cmd --get-service</pre>
+The following listing displays the result of this command on common Fedora
+Server system:
+<pre>
+# firewall-cmd --get-service
+amanda-client amanda-k5-client bacula bacula-client cockpit dhcp dhcpv6
+dhcpv6-client dns dropbox-lansync freeipa-ldap freeipa-ldaps
+freeipa-replication ftp high-availability http https imaps ipp ipp-client ipsec
+iscsi-target kadmin kerberos kpasswd ldap ldaps libvirt libvirt-tls mdns mosh
+mountd ms-wbt mysql nfs ntp openvpn pmcd pmproxy pmwebapi pmwebapis pop3s
+postgresql privoxy proxy-dhcp ptp puppetmaster radius rpc-bind rsyncd samba
+samba-client sane smtp squid ssh synergy telnet tftp tftp-client tinc tor-socks
+transmission-client vdsm vnc-server wbem-https xmpp-bosh xmpp-client xmpp-local
+xmpp-server
+</pre>
+Finally to view the network zones that will be active after the next firewalld
+service reload, enter the following command as root:
+<pre># firewall-cmd --get-service --permanent</pre>
+</description>
+
+<Rule id="service_firewalld_enabled" severity="medium">
+<title>Verify firewalld Enabled</title>
+<description>
+<service-enable-macro service="firewalld" />
+</description>
+<ocil><service-enable-check-macro service="firewalld" /></ocil>
+<rationale>
+The dynamic firewall daemon <tt>firewalld</tt> provides a dynamically managed
+firewall with support for network “zones”, Ethernet bridges, and has a
+separation of runtime and permanent configuration options. It has support for
+both IPv4 and IPv6 firewall settings.
+</rationale>
+<oval id="service_firewalld_enabled" />
+</Rule>
+
+</Group><!--<Group id="firewalld_activation">-->
+
+<Group id="ruleset_modifications">
+<title>Strengthen the Default Ruleset</title>
+<description>The default rules can be strengthened. The system
+scripts that activate the firewall rules expect them to be defined
+in configuration files under the <tt>/etc/firewalld/services</tt>
+and <tt>/etc/firewalld/zones</tt> directories.
+<br /><br />
+The following recommendations describe how to strengthen the
+default ruleset configuration file. An alternative to editing this
+configuration file is to create a shell script that makes calls to
+the <tt>firewall-cmd</tt> program to load in rules under the <tt>/etc/firewalld/services</tt>
+and <tt>/etc/firewalld/zones</tt> directories.
+<br /><br />
+Instructions apply to both unless otherwise noted. Language and address
+conventions for regular firewalld rules are used throughout this section.
+</description>
+<warning category="general">The program <tt>firewall-config</tt>
+allows additional services to penetrate the default firewall rules
+and automatically adjusts the <tt>firewalld</tt> ruleset(s).</warning>
+
+<Rule id="set_firewalld_default_zone" severity="medium">
+<title>Set Default firewalld Zone for Incoming Packets</title>
+<description>To set the default zone to <tt>drop</tt> for
+the built-in default zone which processes incoming IPv4 and IPv6 packets,
+modify the following line in
+<tt>/etc/firewalld/firewalld.conf</tt> to be:
+<pre>DefaultZone=drop</pre>
+</description>
+<ocil clause="the default zone is not set to DROP">
+Inspect the file <tt>/etc/firewalld/firewalld.conf</tt> to determine
+the default zone for the <tt>firewalld</tt>. It should be set to <tt>DefaultZone=drop</tt>:
+<pre>$ sudo grep DefaultZone /etc/firewalld/firewalld.conf</pre>
+</ocil>
+<rationale>In <tt>firewalld</tt> the default zone is applied only after all
+the applicable rules in the table are examined for a match. Setting the
+default zone to <tt>drop</tt> implements proper design for a firewall, i.e.
+any packets which are not explicitly permitted should not be
+accepted.</rationale>
+<oval id="set_firewalld_default_zone" />
+<ref nist="CM-7" disa="66,1109,1154,1414" />
+</Rule>
+
+
+<!--
+<Rule id="set_firewalld_default_rule_forward" severity="medium">
+<title>Set Default firewalld Policy for Forwarded Packets</title>
+<description>To set the default policy to DROP (instead of ACCEPT) for
+the built-in FORWARD chain which processes packets that will be forwarded from
+one interface to another,
+add or correct the following line in
+<tt>/etc/sysconfig/iptables</tt>:
+<pre>:FORWARD DROP [0:0]</pre>
+</description>
+<rationale>In <tt>firewalld</tt>, the default policy is applied only after all
+the applicable rules in the table are examined for a match. Setting the
+default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
+any packets which are not explicitly permitted should not be
+accepted.</rationale>
+<ocil clause="the default policy for the FORWARD chain is not set to DROP">
+Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
+<pre>grep ":FORWARD" /etc/sysconfig/iptables</pre>
+The output should be similar to the following:
+<pre>$ sudo grep ":FORWARD" /etc/sysconfig/iptables
+:FORWARD DROP [0:0</pre></ocil>
+<ref nist="CM-7" disa="1109" />
+</Rule>
+
+<Group id="firewalld_icmp_disabled">
+<title>Restrict ICMP Message Types</title>
+<description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages
+types can be restricted. To accept only ICMP echo reply, destination
+unreachable, and time exceeded messages, remove the line:<br />
+<pre>-A INPUT -p icmp -icmp-type any -j ACCEPT</pre>
+and insert the lines:
+<pre>-A INPUT -p icmp -icmp-type echo-reply -j ACCEPT
+-A INPUT -p icmp -icmp-type destination-unreachable -j ACCEPT
+-A INPUT -p icmp -icmp-type time-exceeded -j ACCEPT</pre>
+To allow the system to respond to pings, also insert the following line:
+<pre>-A INPUT -p icmp -icmp-type echo-request -j ACCEPT</pre>
+Ping responses can also be limited to certain networks or hosts by using the -s
+option in the previous rule.  Because IPv6 depends so heavily on ICMPv6, it is
+preferable to deny the ICMPv6 packets you know you don't need (e.g. ping
+requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else
+through:
+<pre>-A INPUT -p icmpv6 -icmpv6-type echo-request -j DROP</pre>
+If you are going to statically configure the machine's address, it should
+ignore Router Advertisements which could add another IPv6 address to the
+interface or alter important network settings:
+<pre>-A INPUT -p icmpv6 -icmpv6-type router-advertisement -j DROP</pre>
+Restricting ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not
+recommended because the operation of IPv6 depends heavily on ICMPv6. Thus, great
+care must be taken if any other ICMPv6 types are blocked.
+</description>
+<rationale>Restricting ICMP messages may make a system slightly less
+discoverable to an unsophisticated attacker but is not appropriate for many
+general-purpose use cases and can also make troubleshooting more difficult.
+</rationale>
+</Group>
+
+<Group id="firewalld_log_and_drop_suspicious">
+<title>Log and Drop Packets with Suspicious Source Addresses</title>
+<description>Packets with non-routable source addresses should be rejected, as they may indicate spoofing. Because the
+modified policy will reject non-matching packets, you only need to add these rules if you are interested in also
+logging these spoofing or suspicious attempts before they are dropped. If you do choose to log various suspicious
+traffic, add identical rules with a target of <tt>DROP</tt> after each <i>LOG</i>.
+To log and then drop these IPv4 packets, insert the following rules in <tt>/etc/sysconfig/iptables</tt> (excepting
+any that are intentionally used):
+<pre>-A INPUT -s 10.0.0.0/8 -j LOG -log-prefix "IP DROP SPOOF A: "
+-A INPUT -s 172.16.0.0/12 -j LOG -log-prefix "IP DROP SPOOF B: "
+-A INPUT -s 192.168.0.0/16 -j LOG -log-prefix "IP DROP SPOOF C: "
+-A INPUT -s 224.0.0.0/4 -j LOG -log-prefix "IP DROP MULTICAST D: "
+-A INPUT -s 240.0.0.0/5 -j LOG -log-prefix "IP DROP SPOOF E: "
+-A INPUT -d 127.0.0.0/8 -j LOG -log-prefix "IP DROP LOOPBACK: "</pre>
+Similarly, you might wish to log packets containing some IPv6 reserved addresses if they are not expected
+on your network:
+<pre>-A INPUT -i eth0 -s ::1 -j LOG -log-prefix "IPv6 DROP LOOPBACK: "
+-A INPUT -s 2002:E000::/20 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:7F00::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:0000::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:FF00::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:0A00::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:AC10::/28 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
+-A INPUT -s 2002:C0A8::/32 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "</pre>
+If you are not expecting to see site-local multicast or auto-tunneled traffic, you can log those:
+<pre>-A INPUT -s FF05::/16 -j LOG -log-prefix "IPv6 SITE-LOCAL MULTICAST: "
+-A INPUT -s ::0.0.0.0/96 -j LOG -log-prefix "IPv4 COMPATIBLE IPv6 ADDR: "</pre>
+If you wish to block multicasts to all link-local nodes (e.g. if you are not using router auto-configuration and
+do not plan to have any services that multicast to the entire local network), you can block the link-local
+all-nodes multicast address (before accepting incoming ICMPv6):
+<pre>-A INPUT -d FF02::1 -j LOG -log-prefix "Link-local All-Nodes Multicast: "</pre>
+However, if you're going to allow IPv4 compatible IPv6 addresses (of the form ::0.0.0.0/96), you should
+then consider logging the non-routable IPv4-compatible addresses:
+<pre>-A INPUT -s ::0.0.0.0/104 -j LOG -log-prefix "IP NON-ROUTABLE ADDR: "
+-A INPUT -s ::127.0.0.0/104 -j LOG -log-prefix "IP DROP LOOPBACK: "
+-A INPUT -s ::224.0.0.0.0/100 -j LOG -log-prefix "IP DROP MULTICAST D: "
+-A INPUT -s ::255.0.0.0/104 -j LOG -log-prefix "IP BROADCAST: "</pre>
+If you are not expecting to see any IPv4 (or IPv4-compatible) traffic on your network, consider logging it before it gets dropped:
+<pre>-A INPUT -s ::FFFF:0.0.0.0/96 -j LOG -log-prefix "IPv4 MAPPED IPv6 ADDR: "
+-A INPUT -s 2002::/16 -j LOG -log-prefix "IPv6 6to4 ADDR: "</pre>
+The following rule will log all traffic originating from a site-local address, which is deprecated address space:
+<pre>-A INPUT -s FEC0::/10 -j LOG -log-prefix "SITE-LOCAL ADDRESS TRAFFIC: "</pre>
+</description>
+</Group> -->
+</Group><!--Group id="ruleset_modifications"-->
+</Group>
