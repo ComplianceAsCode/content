@@ -2,4 +2,4 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-package_command install vsftpd
+package_command install chrony
