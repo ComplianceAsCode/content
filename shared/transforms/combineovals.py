@@ -15,6 +15,7 @@ footer = '</oval_definitions>'
 
 # SSG Makefile to official product name mapping
 CHROMIUM = 'Google Chromium Browser'
+DEBIAN = 'Debian'
 FEDORA = 'Fedora'
 FIREFOX = 'Mozilla Firefox'
 JRE = 'Java Runtime Environment'
