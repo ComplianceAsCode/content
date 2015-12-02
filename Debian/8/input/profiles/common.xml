@@ -1,8 +1,12 @@
 <Profile id="common">
 <title>Common Profile for General-Purpose Debian Systems</title>
-<description>This profile contains items common to general-purpose Fedora installations.</description>
+<description>This profile contains items common to general-purpose Debian 8 installations.</description>
 
-<select idref="ensure_gpgcheck_globally_activated" selected="true"/>
-<select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+<select idref="rule_file_owner_etc_group" selected="true"/>
+<select idref="rule_file_owner_etc_gshadow" selected="true"/>
+<select idref="rule_file_owner_etc_passwd" selected="true"/>
+<select idref="rule_file_permissions_etc_group" selected="true"/>
+<select idref="rule_file_permissions_etc_shadow" selected="true"/>
+<select idref="rule_file_permissions_etc_passwd" selected="true"/>
 
 </Profile>
