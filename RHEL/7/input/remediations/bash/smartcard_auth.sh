@@ -5,6 +5,9 @@
 package_command install esc
 package_command install pam_pkcs11
 
+# Enable pcscd.socket systemd activation socket
+service_command enable pcscd.socket
+
 # Enable smartcard authentication (but allow also other ways
 # to login not to possibly cut off the system in question)
 /usr/sbin/authconfig --enablesmartcard --updateall
