@@ -3,7 +3,8 @@
     <metadata>
       <title>Bind Mount /var/tmp To /tmp</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>The /var/tmp directory should be bind mounted to /tmp in
       order to consolidate temporary storage into one location protected by the
@@ -17,6 +18,7 @@
       test_ref="test_mount_option_var_tmp_bind" />
     </criteria>
   </definition>
+
   <linux:partition_test id="test_mount_option_var_tmp" version="1"
   comment="Ensure /var/tmp is mounted" check="all">
     <linux:object object_ref="object_mount_option_var_tmp" />
