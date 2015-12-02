@@ -1,5 +1,6 @@
 # platform = multi_platform_rhel, multi_platform_fedora
 source ./templates/support.sh
+declare sshd_idle_timeout_value
 populate sshd_idle_timeout_value
 
 SSHD_CONFIG='/etc/ssh/sshd_config'
