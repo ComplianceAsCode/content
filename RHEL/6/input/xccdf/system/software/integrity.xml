@@ -145,7 +145,13 @@ is expected by the RPM database:
 Permissions on system binaries and configuration files that are too generous
 could allow an unauthorized user to gain privileges that they should not have.
 The permissions set by the vendor should be maintained. Any deviations from
-this baseline should be investigated.</rationale>
+this baseline should be investigated.
+</rationale>
+<warning category="general"><b>Note: Due to a bug in the <tt>gdm</tt> package,
+the RPM verify command may continue to fail even after file permissions have
+been correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
+Bugzilla #1277603.</b>
+</warning>
 <ident cce="26731-0"  stig="RHEL-06-000518" />
 <oval id="rpm_verify_permissions" />
 <ref nist="AC-6,CM-6(d),SI-7" disa="1493,1494,1495" />
