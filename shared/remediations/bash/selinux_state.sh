@@ -1,8 +1,8 @@
+# platform = multi_platform_rhel
 source ./templates/support.sh
 populate var_selinux_state
 
-grep -q ^SELINUX= /etc/selinux/config && \
-  sed -i "s/SELINUX=.*/SELINUX=$var_selinux_state/g" /etc/selinux/config
-if ! [ $? -eq 0 ]; then
-    echo "SELINUX=$var_selinux_state" >> /etc/selinux/config
-fi
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
+
+replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' $var_selinux_state 'CCENUM' '%s=%s'
