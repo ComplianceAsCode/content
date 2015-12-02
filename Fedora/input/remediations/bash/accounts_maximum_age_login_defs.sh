@@ -1,5 +1,6 @@
 # platform = multi_platform_fedora
 source ./templates/support.sh
+declare var_accounts_maximum_age_login_defs
 populate var_accounts_maximum_age_login_defs
 
 grep -q ^PASS_MAX_DAYS /etc/login.defs && \
