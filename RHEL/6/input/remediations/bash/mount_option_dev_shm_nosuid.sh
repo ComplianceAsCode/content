@@ -10,6 +10,7 @@ if [ $? -ne 0 ]; then
 	echo "/dev/shm not found in /etc/fstab, quitting"
 	exit 1
 fi
+
 # Save the:
 # * 1-th, 2-nd, 3-rd fields into DEV_SHM_HEAD variable
 # * 4-th field into DEV_SHM_OPTS variable, and
