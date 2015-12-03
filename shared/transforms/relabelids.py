@@ -28,12 +28,18 @@ def parse_xml_file(xmlfile):
 
 
 def get_checkfiles(checks, checksystem):
-    # iterate over all checks, grab the OVAL files referenced within
+    # Iterate over all checks, grab the OVAL files referenced within
     checkfiles = set()
     for check in checks:
         if check.get("system") == checksystem:
             checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
-            checkfiles.add(checkcontentref.get("href"))
+            checkcontentref_hrefattr = checkcontentref.get("href")
+            # Include the file in the particular check system only if it's NOT
+            # a remotely located file (to allow OVAL checks to reference http://
+            # and https:// formatted URLs)
+            if not checkcontentref_hrefattr.startswith("http://") and \
+               not checkcontentref_hrefattr.startswith("https://"):
+                checkfiles.add(checkcontentref_hrefattr)
     return checkfiles
 
 
@@ -98,7 +104,18 @@ def main():
     # rename all IDs and file refs in the xccdf file
     for check in checks:
         checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
+
+        # Don't attempt to relabel ID on empty <check-content-ref> element
         if checkcontentref is None:
+            continue
+        # Obtain the value of the 'href' attribute of particular
+        # <check-content-ref> element
+        checkcontentref_hrefattr = checkcontentref.get("href")
+
+        # Don't attempt to relabel ID on <check-content-ref> element having
+        # its "href" attribute set either to "http://" or to "https://" values
+        if checkcontentref_hrefattr.startswith("http://") or \
+           checkcontentref_hrefattr.startswith("https://"):
             continue
 
         if check.get("system") == oval_cs:
