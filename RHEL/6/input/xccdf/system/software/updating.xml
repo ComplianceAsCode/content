@@ -107,6 +107,13 @@ or a yum server, run the following command to install updates:
 If the system is not configured to use one of these sources, updates (in the form of RPM packages)
 can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
 </description>
+<!-- Directly define remotely located OVAL to be executed when scanning this rule -->
+<!-- Since OpenSCAP for now supports only "http://" protocol being specified when
+     fetching remote resources (see https://fedorahosted.org/openscap/ticket/213
+     for further details) use "http://" version of the remotely located OVAL below -->
+<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+  <check-content-ref href="http://www.redhat.com/security/data/oval/Red_Hat_Enterprise_Linux_6.xml" />
+</check>
 <ocil clause="updates are not installed">
 If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
 a yum server which provides updates, invoking the following command will
@@ -115,7 +122,7 @@ indicate if updates are available:
 If the system is not configured to update from one of these sources,
 run the following command to list when each package was last updated:
 <pre>$ rpm -qa -last</pre>
-Compare this to Red Hat Security Advisories (RHSA) listed at 
+Compare this to Red Hat Security Advisories (RHSA) listed at
 https://access.redhat.com/security/updates/active/
 to determine if the system is missing applicable updates.
 </ocil>
@@ -124,6 +131,8 @@ Installing software updates is a fundamental mitigation against
 the exploitation of publicly-known vulnerabilities.
 </rationale>
 <ident cce="27635-2" stig="RHEL-06-000011" />
+<!-- Particular OVAL check is defined directly via <check> element above -->
+<!-- DO NOT REFERENCE an OVAL id here !!! -->
 <ref nist="SI-2,MA-1(b)" disa="1227,1233"/>
 <tested by="MM" on="20120928"/>
 </Rule>
