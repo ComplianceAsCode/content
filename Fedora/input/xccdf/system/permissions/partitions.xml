@@ -1,0 +1,188 @@
+<Group id="partitions">
+<title>Restrict Partition Mount Options</title>
+<description>System partitions can be mounted with certain options
+that limit what files on those partitions can do. These options
+are set in the <tt>/etc/fstab</tt> configuration file, and can be
+used to make certain types of malicious behavior more difficult.</description>
+
+<Value id="var_removable_partition" type="string" operator="equals" interactive="0">
+<title>Removable Partition</title>
+<description>This value is used by the checks mount_option_nodev_removable_partitions, mount_option_nodev_removable_partitions,
+and mount_option_nodev_removable_partitions to ensure that the correct mount options are set on partitions mounted from
+removable media such as CD-ROMs, USB keys, and floppy drives. This value should be modified to reflect any removable
+partitions that are required on the local system.</description>
+<value selector="dev_cdrom">/dev/cdrom</value>
+</Value>
+
+<Rule id="mount_option_nodev_nonroot_local_partitions">
+<title>Add nodev Option to Non-Root Local Partitions</title>
+<description>The <tt>nodev</tt> mount option prevents files from being
+interpreted as character or block devices.
+Legitimate character and block devices should exist only in
+the <tt>/dev</tt> directory on the root partition or within chroot
+jails built for system services.
+<mount-desc-macro option="nodev" part="any non-root local partitions" />
+</description>
+<rationale>The <tt>nodev</tt> mount option prevents files from being
+interpreted as character or block devices. The only legitimate location
+for device files is the <tt>/dev</tt> directory located on the root partition.
+The only exception to this is chroot jails, for which it is not advised
+to set <tt>nodev</tt> on these filesystems.</rationale>
+<!-- <oval id="mount_option_nodev_nonroot_local_partitions" /> -->
+<ref nist="CM-7"/>
+</Rule>
+
+<Rule id="mount_option_nodev_removable_partitions">
+<title>Add nodev Option to Removable Media Partitions</title>
+<description>The <tt>nodev</tt> mount option prevents files from being
+interpreted as character or block devices.
+Legitimate character and block devices should exist only in
+the <tt>/dev</tt> directory on the root partition or within chroot
+jails built for system services.
+<mount-desc-macro option="nodev" part="any removable media partitions" />
+</description>
+<rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
+located on the root partition. An exception to this is chroot jails, and it is
+not advised to set <tt>nodev</tt> on partitions which contain their root
+filesystems.</rationale>
+<!-- <oval id="mount_option_nodev_removable_partitions" value="var_removable_partition" /> -->
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
+</Rule>
+
+<Rule id="mount_option_noexec_removable_partitions">
+<title>Add noexec Option to Removable Media Partitions</title>
+<description>The <tt>noexec</tt> mount option prevents the direct
+execution of binaries on the mounted filesystem.
+Preventing the direct execution of binaries from removable media (such as a USB
+key) provides a defense against malicious software that may be present on such
+untrusted media.
+<mount-desc-macro option="noexec" part="any removable media partitions" />
+</description>
+<rationale>Allowing users to execute binaries from removable media such as USB keys exposes
+the system to potential compromise.</rationale>
+<ocil clause="removable media partitions are present">
+To verify that binaries cannot be directly executed from removable media, run the following command:
+<pre>$ grep -v noexec /etc/fstab</pre>
+The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
+in the output are not removable media.
+</ocil>
+<!-- <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" /> -->
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" />
+</Rule>
+
+<!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
+<Rule id="mount_option_nosuid_removable_partitions">
+<title>Add nosuid Option to Removable Media Partitions</title>
+<description>The <tt>nosuid</tt> mount option prevents set-user-identifier (SUID)
+and set-group-identifier (SGID) permissions from taking effect. These permissions
+allow users to execute binaries with the same permissions as the owner and group
+of the file respectively. Users should not be allowed to introduce SUID and SGID
+files into the system via partitions mounted from removeable media.
+<mount-desc-macro option="nosuid" part="any removable media partitions" />
+</description>
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Allowing
+users to introduce SUID or SGID binaries from partitions mounted off of
+removable media would allow them to introduce their own highly-privileged programs.</rationale>
+<!-- <oval id="mount_option_nosuid_removable_partitions" value="var_removable_partition" /> -->
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
+</Rule>
+
+<Rule id="mount_option_tmp_nodev">
+<title>Add nodev Option to /tmp</title>
+<description>
+The <tt>nodev</tt> mount option can be used to prevent device files from
+being created in <tt>/tmp</tt>.
+Legitimate character and block devices should not exist
+within temporary directories like <tt>/tmp</tt>.
+<mount-desc-macro option="nodev" part="/tmp" />
+</description>
+<rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
+located on the root partition. The only exception to this is chroot jails.</rationale>
+<oval id="mount_option_tmp_nodev" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mount_option_tmp_noexec">
+<title>Add noexec Option to /tmp</title>
+<description>The <tt>noexec</tt> mount option can be used to prevent binaries
+from being executed out of <tt>/tmp</tt>.
+<mount-desc-macro option="noexec" part="/tmp" />
+</description>
+<rationale>Allowing users to execute binaries from world-writable directories
+such as <tt>/tmp</tt> should never be necessary in normal operation and
+can expose the system to potential compromise.</rationale>
+<!-- <oval id="mount_option_tmp_noexec" /> -->
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mount_option_tmp_nosuid">
+<title>Add nosuid Option to /tmp</title>
+<description>The <tt>nosuid</tt> mount option can be used to prevent
+execution of setuid programs in <tt>/tmp</tt>. The SUID and SGID permissions
+should not be required in these world-writable directories.
+<mount-desc-macro option="nosuid" part="/tmp" />
+</description>
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Users
+should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
+<oval id="mount_option_tmp_nosuid" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mount_option_dev_shm_nodev">
+<title>Add nodev Option to /dev/shm</title>
+<description>The <tt>nodev</tt> mount option can be used to prevent creation
+of device files in <tt>/dev/shm</tt>.
+Legitimate character and block devices should not exist
+within temporary directories like <tt>/dev/shm</tt>.
+<mount-desc-macro option="nodev" part="/dev/shm" />
+</description>
+<rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
+located on the root partition. The only exception to this is chroot jails.</rationale>
+<oval id="mount_option_dev_shm_nodev" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mount_option_dev_shm_noexec">
+<title>Add noexec Option to /dev/shm</title>
+<description>The <tt>noexec</tt> mount option can be used to prevent binaries
+from being executed out of <tt>/dev/shm</tt>.
+It can be dangerous to allow the execution of binaries
+from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
+<mount-desc-macro option="noexec" part="/dev/shm" />
+</description>
+<rationale>Allowing users to execute binaries from world-writable directories
+such as <tt>/dev/shm</tt> can expose the system to potential compromise.</rationale>
+<oval id="mount_option_dev_shm_noexec" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mount_option_dev_shm_nosuid">
+<title>Add nosuid Option to /dev/shm</title>
+<description>The <tt>nosuid</tt> mount option can be used to prevent execution
+of setuid programs in <tt>/dev/shm</tt>.  The SUID and SGID permissions should not
+be required in these world-writable directories.
+<mount-desc-macro option="nosuid" part="/dev/shm" />
+</description>
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Users
+should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
+<oval id="mount_option_dev_shm_nosuid" />
+<ref nist="CM-7, MP-2"/>
+</Rule>
+
+<Rule id="mount_option_var_tmp_bind">
+<title>Bind Mount /var/tmp To /tmp</title>
+<description>The <tt>/var/tmp</tt> directory is a world-writable directory.
+Bind-mount it to <tt>/tmp</tt> in order to consolidate temporary storage into
+one location protected by the same techniques as <tt>/tmp</tt>.  To do so, edit
+<tt>/etc/fstab</tt> and add the following line:
+<pre>/tmp     /var/tmp     none     rw,nodev,noexec,nosuid,bind     0 0</pre>
+See the <tt>mount(8)</tt> man page for further explanation of bind mounting.
+</description>
+<rationale>Having multiple locations for temporary storage is not required. Unless absolutely
+necessary to meet requirements, the storage location <tt>/var/tmp</tt> should be bind mounted to
+<tt>/tmp</tt> and thus share the same protections.</rationale>
+<oval id="mount_option_var_tmp_bind" />
+<ref nist="CM-7" />
+</Rule>
+
+</Group>
