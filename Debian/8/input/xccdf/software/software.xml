@@ -168,7 +168,7 @@ on the system. Protection of this file is important for system security.</ration
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
 <ident cce="26933-2" />
-<oval id="file_owner_etc_group" />
+<oval id="file_permissions_etc_group" />
 <ref nist="AC-6" pcidss="Req-8" />
 <tested by="DS" on="20121026"/>
 </Rule>
@@ -176,8 +176,8 @@ on the system. Protection of this file is important for system security.</ration
 <!-- /etc/shadow  -->
 <Rule id="file_permissions_etc_shadow" severity="medium">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
-<description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
-<ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
+<description><fileperms-desc-macro file="/etc/shadow" perms="0640"/></description>
+<ocil><fileperms-check-macro file="/etc/shadow" perms="-rw-r-----"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
 system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
@@ -192,7 +192,7 @@ which could weaken the system security posture.</rationale>
 
 <Rule id="file_owner_etc_gshadow" severity="high">
 <title>Verify User Who Owns <tt>shadow</tt> File</title>
-<description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
+<description><fileowner-desc-macro file="/etc/shadow" owner="root:shadow"/></description>
 <ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
 <ident cce="26795-5" />
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
@@ -200,23 +200,11 @@ system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
-<oval id="file_owner_etc_gshadow" />
+<oval id="file_permissions_etc_gshadow" />
 <ref nist="AC-6" disa="" pcidss="Req-8" />
 </Rule>
 
 <!-- /etc/passwd -->
-<Rule id="file_owner_etc_passwd" severity="medium">
-<title>Verify User Who Owns <tt>passwd</tt> File</title>
-<description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
-<ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
-<rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
-the system. Protection of this file is critical for system security.</rationale>
-<ident cce="27138-7" />
-<oval id="file_owner_etc_passwd" />
-<ref nist="AC-6" disa="" pcidss="Req-8" />
-<tested by="DS" on="20121026"/>
-</Rule>
-
 <Rule id="file_permissions_etc_passwd" severity="medium">
 <title>Verify Permissions on <tt>passwd</tt> File</title>
 <description><fileperms-desc-macro file="/etc/passwd" perms="0644"/></description>
@@ -230,6 +218,20 @@ is critical for system security.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8" />
 <tested by="DS" on="20121026"/>
 </Rule>
+
+<Rule id="file_owner_etc_passwd" severity="medium">
+<title>Verify User Who Owns <tt>passwd</tt> File</title>
+<description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
+<ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
+<rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
+the system. Protection of this file is critical for system security.</rationale>
+<ident cce="27138-7" />
+<oval id="file_permissions_etc_passwd" />
+<ref nist="AC-6" disa="" pcidss="Req-8" />
+<tested by="DS" on="20121026"/>
+</Rule>
+
+
 
 </Group>
 </Group>
