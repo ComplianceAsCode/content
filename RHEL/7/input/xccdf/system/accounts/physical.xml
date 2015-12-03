@@ -35,7 +35,7 @@ Only root should be able to modify important boot parameters.
 </rationale>
 <ident cce="26860-7" />
 <oval id="file_user_owner_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7" />
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -53,7 +53,7 @@ file should not have any access privileges anyway.
 </rationale>
 <ident cce="26812-8" />
 <oval id="file_group_owner_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7" />
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -311,7 +311,7 @@ screen locking to prevent access from passersby.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium">
@@ -339,7 +339,7 @@ controlled-access area.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_lock_enabled" severity="medium">
@@ -370,7 +370,7 @@ access the system, preventing access by passersby.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_mode_blank">
@@ -396,7 +396,7 @@ contents of the display from passersby.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_mode_blank" />
-<ref nist="AC-11(b)" disa="60" pcidss="Req-8" />
+<ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" />
 </Rule>
 
 </Group>
@@ -474,7 +474,7 @@ that provided by a username and password combination. Smart cards leverage PKI
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="smartcard_auth" />
-<ref disa="765,766,767,768,771,772,884" pcidss="Req-8" />
+<ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
 </Rule>
 
 </Group>

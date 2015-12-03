@@ -41,7 +41,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident cce="27096-7" />
 <oval id="package_aide_installed" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="" pcidss="Req-11" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="" pcidss="Req-11.5" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -61,7 +61,7 @@ of AIDE, because it changes binaries.
 </rationale>
 <ident cce="27078-5" />
 <oval id="disable_prelink" />
-<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11" />
+<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" />
 </Rule>
 
 <Rule id="aide_build_database" severity="medium">
@@ -87,7 +87,7 @@ must be captured and it should be able to be verified against the installed file
 </rationale>
 <ident cce="27220-3" />
 <oval id="aide_build_database" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
@@ -107,7 +107,7 @@ running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
 <ident cce="26952-2" />
 <oval id="aide_periodic_cron_checking"/>
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" pcidss="Req-11" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" pcidss="Req-11.5" />
 </Rule>
 </Group>
 
@@ -154,7 +154,7 @@ Bugzilla #1275532.
 </warning>
 <ident cce="27209-6" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" pcidss="Req-11" />
+<ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" pcidss="Req-11.5" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
@@ -185,7 +185,7 @@ information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
 <ident cce="27157-7" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" pcidss="Req-11" />
+<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" pcidss="Req-11.5" />
 </Rule>
 
 </Group>
@@ -221,7 +221,7 @@ Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.  
 </rationale>
 <ident cce="26818-5" />
-<ref nist="SC-7" disa="1263" pcidss="Req-11" />
+<ref nist="SC-7" disa="1263" pcidss="Req-11.4" />
 </Rule>
 
 <Rule id="install_antivirus">
