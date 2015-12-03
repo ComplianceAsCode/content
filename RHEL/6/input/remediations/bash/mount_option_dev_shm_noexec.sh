@@ -4,6 +4,13 @@
 # end of the filesystem mount options (4-th field) with the '#' character
 DEV_SHM_FSTAB=$(sed -n "s/\(.*[[:space:]]\+\/dev\/shm[[:space:]]\+tmpfs[[:space:]]\+\)\([^[:space:]]\+\)/\1#\2#/p" /etc/fstab)
 
+#Rest of script can trash /etc/fstab if $DEV_SHM_FSTAB is empty
+echo $DEV_SHM_FSTAB | grep -q -P '/dev/shm'
+if [ $? -ne 0 ]; then
+	echo "/dev/shm not found in /etc/fstab, quitting"
+	exit 1
+fi
+
 # Save the:
 # * 1-th, 2-nd, 3-rd fields into DEV_SHM_HEAD variable
 # * 4-th field into DEV_SHM_OPTS variable, and
