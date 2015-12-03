@@ -3,6 +3,9 @@ OUT = output
 TRANS = transforms
 UTILS = utils
 DIST = dist
+SHARED:=../../shared
+CONF = ../../config
+REMEDIATIONS:=input/remediations/bash
 
 ID = ssg
 PROD = debian8
@@ -16,10 +19,18 @@ shorthand-guide:
 shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(ID)-$(PROD)-shorthand.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
+	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(REMEDIATIONS) $(OUT)/bash-remediations.xml
+	xsltproc -stringparam remediations "$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
-checks:
-	xmlwf $(IN)/checks/*.xml
-	$(TRANS)/combinechecks.py $(IN)/checks > $(OUT)/unlinked-$(PROD)-oval.xml
+templates:
+	$(MAKE) -C input/checks/templates all
+	$(MAKE) -C input/checks/templates copy
+
+checks: templates
+	cp $(IN)/checks/*.xml $(IN)/checks/templates/output/
+	xmlwf $(IN)/checks/templates/output/*.xml
+	$(TRANS)/combinechecks.py $(IN)/checks/templates/output > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
@@ -57,3 +68,4 @@ eval-common: content
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content $(DIST)/guide
+	$(MAKE) -C $(IN)/checks/templates clean
