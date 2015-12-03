@@ -24,13 +24,13 @@ shorthand2xccdf: shorthand-guide
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 templates:
-	$(MAKE) -C input/checks/templates all
-	$(MAKE) -C input/checks/templates copy
+	$(MAKE) -C input/oval/templates all
+	$(MAKE) -C input/oval/templates copy
 
 checks: templates
-	cp $(IN)/checks/*.xml $(IN)/checks/templates/output/
-	xmlwf $(IN)/checks/templates/output/*.xml
-	$(TRANS)/combinechecks.py $(IN)/checks/templates/output > $(OUT)/unlinked-$(PROD)-oval.xml
+	cp $(IN)/oval/*.xml $(IN)/oval/templates/output/
+	xmlwf $(IN)/oval/templates/output/*.xml
+	$(TRANS)/combinechecks.py $(IN)/oval/templates/output > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
@@ -41,7 +41,7 @@ guide: shorthand2xccdf
 	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(ID)-$(PROD)-guide.html
 
 content: shorthand2xccdf guide checks
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/checks/platform/$(PROD)-cpe-dictionary.xml $(ID)
+	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 
 validate-xml:
@@ -68,4 +68,4 @@ eval-common: content
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content $(DIST)/guide
-	$(MAKE) -C $(IN)/checks/templates clean
+	$(MAKE) -C $(IN)/oval/templates clean
