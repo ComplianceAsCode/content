@@ -93,6 +93,9 @@ chromium:
 chromium-dist:
 	cd Chromium/ && $(MAKE) dist
 
+validate-debian8: debian8
+	cd Debian/8/ && $(MAKE) validate
+
 validate: fedora rhel5 rhel6 rhel7 debian8 openstack rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate

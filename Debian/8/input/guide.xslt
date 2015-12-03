@@ -8,29 +8,36 @@
       <xsl:copy-of select="@*|node()" />
 
       <!-- adding profiles here -->
-      <xsl:apply-templates select="document('profiles/common.xml')" />
+          <!---
+          <xsl:if test=" number($withtest) = number(0) ">
+	       <xsl:apply-templates select="document('profiles/test.xml')" />
+          </xsl:if>
+          -->
+          <xsl:apply-templates select="document('profiles/common.xml')" />
 
       <Value id="conditional_clause" type="string" operator="equals">
                 <title>A conditional clause for check statements.</title>
                 <description>A conditional clause for check statements.</description>
                 <value>This is a placeholder.</value>
       </Value>
+      
       <xsl:apply-templates select="document('intro/intro.xml')" />
-      <xsl:apply-templates select="document('system/system.xml')" />
+      <xsl:apply-templates select="document('xccdf/system.xml')" />
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('system/software/software.xml')" />
+      <xsl:apply-templates select="document('xccdf/software/software.xml')" />
+      <xsl:apply-templates select="document('xccdf/software/services.xml')" />
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="Group[@id='software']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('system/software/updating.xml')" />
+      <xsl:apply-templates select="document('xccdf/software/updating.xml')" />
     </xsl:copy>
   </xsl:template>
 
@@ -38,6 +45,7 @@
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
-    </xsl:copy>
+    
+</xsl:copy>
   </xsl:template>
 </xsl:stylesheet>

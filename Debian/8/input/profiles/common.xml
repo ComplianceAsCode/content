@@ -2,11 +2,22 @@
 <title>Common Profile for General-Purpose Debian Systems</title>
 <description>This profile contains items common to general-purpose Debian 8 installations.</description>
 
-<select idref="rule_file_owner_etc_group" selected="true"/>
-<select idref="rule_file_owner_etc_gshadow" selected="true"/>
-<select idref="rule_file_owner_etc_passwd" selected="true"/>
-<select idref="rule_file_permissions_etc_group" selected="true"/>
-<select idref="rule_file_permissions_etc_shadow" selected="true"/>
-<select idref="rule_file_permissions_etc_passwd" selected="true"/>
+<!-- partitioning -->
+<select idref="partition_for_tmp" selected="true"/>
+<select idref="partition_for_var" selected="true"/>
+<select idref="partition_for_var_log" selected="true"/>
+<select idref="partition_for_var_log_audit" selected="true"/>
+<select idref="partition_for_home" selected="true"/>
+
+<!-- services -->
+<select idref="package_telnetd_removed" selected="true"/>
+
+<!-- critical files -->
+<select idref="file_owner_etc_group" selected="true"/>
+<select idref="file_owner_etc_gshadow" selected="true"/>
+<select idref="file_owner_etc_passwd" selected="true"/>
+<select idref="file_permissions_etc_group" selected="true"/>
+<select idref="file_permissions_etc_shadow" selected="true"/>
+<select idref="file_permissions_etc_passwd" selected="true"/>
 
 </Profile>
