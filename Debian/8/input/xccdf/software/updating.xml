@@ -1,6 +1,6 @@
 <Group id="updating">
 <title>Updating Software</title>
-<description>The <tt>yum</tt> command line tool is used to install and
+<description>The <tt>apt-get</tt> command line tool is used to install and
 update software packages. The system also provides a graphical
 software update tool in the <b>System</b> menu, in the <b>Administration</b> submenu,
 called <b>Software Update</b>.
@@ -11,6 +11,27 @@ the RPM database, which records metadata of installed packages.  Tools such as
 packages for software installation.  This allows for insight into the current
 inventory of installed software on the system, and is highly recommended.
 </description>
+
+<Group id="dsa_check">
+<title>Checking up-to-date update compared with current Debian Security Announces</title>
+<description>
+Debian proposes regular security updates, formalized though DSA (Debian Security Annonces). The system should be kept
+up-to-date by applying Debian DSA regulary.
+</description>
+
+<Rule id="libtasn1_update" severity="high">
+<title>libtasn1-6 -- security update</title>
+<description>Update the libtasn1 package</description>
+<rationale>
+Hanno Boeck discovered a heap-based buffer overflow flaw in the way Libtasn1, a library to manage ASN.1 structures, decoded certain DER-encoded input. A specially crafted DER-encoded input could cause an application using the Libtasn1 library to crash, or potentially to execute arbitrary code. 
+</rationale>
+<!--
+<ident cve="CVE-2015-3622" system="http://oval.mitre.org/XMLSchema/oval-definitions-5" />
+-->
+<oval id="oval:org.cisecurity:def:11" />
+</Rule>
+
+</Group>
 
 <!-- REMINDER: Before telling people to update their systems
      via the security_patches_up_to_date rule, we must
