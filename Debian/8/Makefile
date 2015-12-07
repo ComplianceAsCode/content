@@ -1,61 +1,46 @@
-include ../../VERSION
-
 IN = input
 OUT = output
+BUILD = build
 TRANS = transforms
+SHARED = ../../shared
+SHARED_OVAL = $(SHARED)/oval
+CONF = ../../config
 UTILS = utils
 DIST = dist
-SHARED:=../../shared
-SHARED_OVAL = $(SHARED)/oval
-SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
-REFS = $(SHARED)/references
-CONF = ../../config
-REMEDIATIONS:=input/remediations/bash
 
 ID = ssg
 PROD = debian8
-
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
-
-# OpenSCAP 1.1.0+ supports generating guides from datastreams
-OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
-
-# Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
-# Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
-INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
+PROD_OVAL = $(BUILD)/$(PROD)_oval
 
 all: shorthand2xccdf guide content dist
 
 shorthand-guide:
-ifeq ($(OPENSCAP_SVG), 1)
-	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
-else
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
-endif
+	xsltproc -o $(OUT)/$(ID)-$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
 	xmllint --format --output $(OUT)/$(ID)-$(PROD)-shorthand.xml $(OUT)/$(ID)-$(PROD)-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
-	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(ID)-$(PROD)-shorthand.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
-	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml --output $(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml 
-	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(REMEDIATIONS) $(OUT)/bash-remediations.xml
-	xsltproc -stringparam remediations "$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+	xsltproc -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(ID)-$(PROD)-shorthand.xml
+	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
 
-templates:
-	$(MAKE) -C input/oval/templates all
-	$(MAKE) -C input/oval/templates copy
+checks:
+	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
+	mkdir -p $(PROD_OVAL)
+	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
+	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
+	# add local Debian8 specific templated ovals
+	$(MAKE) -C $(IN)/oval/templates all
+	$(MAKE) -C $(IN)/oval/templates copy
+	# into final list of OVAL checks
+ifeq ($(OVAL_5_11), 0)
+	find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	# Update requested debian8 OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
+	sed -i "s/^\(debian8_oval_version = \).*/\15.11/" $(CONF)/oval\.config
+endif
 
-checks: templates
-	cp $(IN)/oval/*.xml $(IN)/oval/templates/output/
-	xmlwf $(IN)/oval/templates/output/*.xml
-	$(TRANS)/combinechecks.py $(IN)/oval/templates/output > $(OUT)/unlinked-$(PROD)-oval.xml
+	xmlwf $(PROD_OVAL)/*.xml
+	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 guide: shorthand2xccdf
@@ -68,16 +53,6 @@ guide: shorthand2xccdf
 content: shorthand2xccdf guide checks
 	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
-	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
-#	Once things are relabelled, create a datastream
-	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
-		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
-	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
-		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
-	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
-	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-#	Add in CPE and OVAL content to datastream
-	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
@@ -104,3 +79,4 @@ clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content $(DIST)/guide
 	$(MAKE) -C $(IN)/oval/templates clean
+	rm -rf $(BUILD)

@@ -5,9 +5,9 @@
     <metadata>
       <title>Package PKGNAME Installed</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Debian 8</platform>
       </affected>
-      <description>The RPM package PKGNAME should be installed.</description>
+      <description>The DEB package PKGNAME should be installed.</description>
       <reference source="JL" ref_id="RHEL7_20140921" ref_url="test_attestation"/>
     </metadata>
     <criteria>
@@ -15,12 +15,12 @@
       test_ref="test_package_PKGNAME_installed" />
     </criteria>
   </definition>
-  <linux:rpminfo_test check="all" check_existence="all_exist"
+  <linux:dpkginfo_test check="all" check_existence="all_exist"
   id="test_package_PKGNAME_installed" version="1"
   comment="package PKGNAME is installed">
     <linux:object object_ref="obj_package_PKGNAME_installed" />
-  </linux:rpminfo_test>
-  <linux:rpminfo_object id="obj_package_PKGNAME_installed" version="1">
+  </linux:dpkginfo_test>
+  <linux:dpkginfo_object id="obj_package_PKGNAME_installed" version="1">
     <linux:name>PKGNAME</linux:name>
-  </linux:rpminfo_object>
+  </linux:dpkginfo_object>
 </def-group>

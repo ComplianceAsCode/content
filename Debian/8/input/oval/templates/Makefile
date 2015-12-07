@@ -7,6 +7,7 @@ all:
 
 copy:
 	cp output/*.sh ../../remediations/bash/
+	cp output/*.xml ../../../build/debian8_oval/
 
 clean:
 	rm -rf output/*.xml
