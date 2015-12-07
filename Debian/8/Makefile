@@ -1,3 +1,5 @@
+include ../../VERSION
+
 IN = input
 OUT = output
 BUILD = build
@@ -7,6 +9,8 @@ SHARED_OVAL = $(SHARED)/oval
 CONF = ../../config
 UTILS = utils
 DIST = dist
+
+OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
 
 ID = ssg
 PROD = debian8
