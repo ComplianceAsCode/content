@@ -19,18 +19,6 @@ Debian proposes regular security updates, formalized though DSA (Debian Security
 up-to-date by applying Debian DSA regulary.
 </description>
 
-<Rule id="libtasn1_update" severity="high">
-<title>libtasn1-6 -- security update</title>
-<description>Update the libtasn1 package</description>
-<rationale>
-Hanno Boeck discovered a heap-based buffer overflow flaw in the way Libtasn1, a library to manage ASN.1 structures, decoded certain DER-encoded input. A specially crafted DER-encoded input could cause an application using the Libtasn1 library to crash, or potentially to execute arbitrary code. 
-</rationale>
-<!--
-<ident cve="CVE-2015-3622" system="http://oval.mitre.org/XMLSchema/oval-definitions-5" />
--->
-<oval id="oval:org.cisecurity:def:11" />
-</Rule>
-
 </Group>
 
 <!-- REMINDER: Before telling people to update their systems
