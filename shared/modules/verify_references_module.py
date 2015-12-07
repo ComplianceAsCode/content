@@ -66,12 +66,18 @@ def parse_options():
 
 def get_ovalfiles(checks):
     global exit_value
-    # iterate over all checks, grab the OVAL files referenced within
+    # Iterate over all checks, grab the OVAL files referenced within
     ovalfiles = set()
     for check in checks:
         if check.get("system") == oval_ns:
             checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
-            ovalfiles.add(checkcontentref.get("href"))
+            checkcontentref_hrefattr = checkcontentref.get("href")
+            # Include the file in the particular check system only if it's NOT
+            # a remotely located file (to allow OVAL checks to reference http://
+            # and https:// formatted URLs)
+            if not checkcontentref_hrefattr.startswith("http://") and \
+               not checkcontentref_hrefattr.startswith("https://"):
+                ovalfiles.add(checkcontentref_hrefattr)
         elif check.get("system") != "ocil-transitional":
             print "Non-OVAL checking system found: " + check.get("system")
             exit_value = 1
@@ -139,6 +145,19 @@ def main():
     # now we can actually do the verification work here
     if options.rules_with_invalid_checks or options.all_checks:
         for check_content_ref in check_content_refs:
+
+            # Obtain the value of the 'href' attribute of particular
+            # <check-content-ref> element
+            check_content_ref_href_attr = check_content_ref.get("href")
+
+            # Don't attempt to obtain refname on <check-content-ref> element
+            # having its "href" attribute set either to "http://" or to
+            # "https://" values (since the "name" attribute will be empty for
+            # these two cases)
+            if check_content_ref_href_attr.startswith("http://") or \
+               check_content_ref_href_attr.startswith("https://"):
+                continue
+
             refname = check_content_ref.get("name")
             if refname not in ovaldef_ids:
                 rule = check_content_ref.getparent().getparent()
