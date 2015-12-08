@@ -6,16 +6,30 @@
 <xsl:include href="constants.xslt"/>
 <xsl:include href="table-style.xslt"/>
 
+	<xsl:template name="ref-translate">
+		<xsl:param name="ref" />
+		<xsl:choose>
+			<xsl:when test="$ref='pcidss'">PCI DSS</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$ref" /></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<xsl:template match="/">
 		<html>
 		<head>
-			<title> Rules with <xsl:value-of select="$ref"/> Reference in <xsl:value-of select="/cdf:Benchmark/cdf:title" /> </title>
+			<title> Rules with
+			<xsl:call-template name="ref-translate">
+				<xsl:with-param name="ref" select="$ref" />
+			</xsl:call-template>
+			Reference in <xsl:value-of select="/cdf:Benchmark/cdf:title" /> </title>
 		</head>
 		<body>
 			<br/>
 			<br/>
 			<div style="text-align: center; font-size: x-large; font-weight:bold">
-			Rules with <xsl:value-of select="$ref"/> Reference in <xsl:value-of select="/cdf:Benchmark/cdf:title" />
+			Rules with  <xsl:call-template name="ref-translate">
+							<xsl:with-param name="ref" select="$ref" />
+						</xsl:call-template> Reference in <xsl:value-of select="/cdf:Benchmark/cdf:title" />
 			</div>
 			<br/>
 			<br/>
@@ -29,7 +43,7 @@
 		<xsl:call-template name="table-style" />
 		<table>
 			<thead>
-				<td>Reference (<xsl:value-of select="$ref"/>)</td>
+				<td>Reference (<xsl:call-template name="ref-translate"><xsl:with-param name="ref" select="$ref" /></xsl:call-template>)</td>
 				<td>Rule Title</td>
 				<td>Description</td>
 				<td>Rationale</td>
