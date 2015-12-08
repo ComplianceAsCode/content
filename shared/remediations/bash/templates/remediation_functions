@@ -749,9 +749,9 @@ function replace_or_append {
   # Test if the config_file is a symbolic link. If so, use --follow-symlinks with sed.
   # Otherwise, regular sed command will do.
   if test -L $config_file; then
-    sed_command="sed --follow-symlinks"
+    sed_command="sed -i --follow-symlinks"
   else
-    sed_command="sed"
+    sed_command="sed -i"
   fi
 
   # Test that the cce arg is not empty or does not equal CCENUM.
@@ -777,8 +777,6 @@ function replace_or_append {
   if grep -qi $key $config_file ; then
     $sed_command "s/$key.*/$formatted_output/g" $config_file
   else
-#    echo -ne "\n# Per $cce: Set $formatted_output in $config_file" >> $config_file
-#    echo -ne "\n$formatted_output" >> $config_file
     echo -ne "\n# Per $cce: Set $formatted_output in $config_file"
     echo -ne "\n$formatted_output"
   fi
