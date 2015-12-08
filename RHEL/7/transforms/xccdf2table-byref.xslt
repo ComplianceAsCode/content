@@ -14,6 +14,46 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<!-- Return page to PCI-DSS v3 document-->
+	<xsl:template name="pci-dss-links">
+		<xsl:param name="ref" />
+			<xsl:choose>
+				<xsl:when test="starts-with($ref,'Req-12')">97</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-11')">89</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-10')">82</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-9')">73</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-8')">64</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-7')">61</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-6')">49</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-5')">46</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-4')">44</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-3')">34</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-2')">28</xsl:when>
+				<xsl:when test="starts-with($ref,'Req-1')">19</xsl:when>
+				<xsl:otherwise>0</xsl:otherwise>
+			</xsl:choose>
+	</xsl:template>
+
+	<!-- Return link PCI-DSS pdf document with corresponding #page -->
+	<xsl:template name="get-pci-dss-href">
+		<xsl:param name="ref" />
+
+		<xsl:variable name="page">
+			<xsl:call-template name="pci-dss-links">
+				<xsl:with-param name="ref" select="$ref" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:choose>
+			<xsl:when test="$page=0">
+				<xsl:value-of select="$pcidssuri" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat($pcidssuri,concat('#page=',$page))" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<xsl:template match="/">
 		<html>
 		<head>
@@ -69,15 +109,36 @@
 			<xsl:if test="$ref='pcidss'">
 				<xsl:for-each select="//cdf:reference[@href=$pcidssuri]" >
 					<xsl:sort select="substring-after(.,'-')" data-type="number" />
-					<xsl:call-template name="rule-output">
+					<xsl:call-template name="pci-dss-rule-output">
 						<xsl:with-param name="refinfo" select="." />
 					</xsl:call-template>
+
 				</xsl:for-each>
 			</xsl:if>
 
 		</table>
 	</xsl:template>
 
+	<xsl:template name="pci-dss-rule-output">
+		<xsl:param name="refinfo"/>
+		<tr>
+			<td>
+			<a>
+				<xsl:attribute name="href">
+					<xsl:call-template name="get-pci-dss-href">
+						<xsl:with-param name="ref" select="$refinfo" />
+					</xsl:call-template>
+				</xsl:attribute>
+				<xsl:value-of select="$refinfo" />
+			</a>
+			</td>
+
+			<td> <xsl:value-of select="../cdf:title" /></td>
+			<td> <xsl:apply-templates select="../cdf:description"/> </td>
+			<td> <xsl:apply-templates select="../cdf:rationale"/> </td>
+			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
+		</tr>
+	</xsl:template>
 
 	<xsl:template name="rule-output">
           <xsl:param name="refinfo"/>
