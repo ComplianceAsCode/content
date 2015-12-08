@@ -6,8 +6,8 @@ software update tool in the <b>System</b> menu, in the <b>Administration</b> sub
 called <b>Software Update</b>.
 <br /><br />
 Debian systems contain an installed software catalog called
-the RPM database, which records metadata of installed packages.  Tools such as
-<tt>yum</tt> or the graphical <b>Software Update</b> ensure usage of RPM
+the apt database, which records metadata of installed packages.  Tools such as
+<tt>apt</tt> or the graphical <b>Software Update</b> ensure usage of apt
 packages for software installation.  This allows for insight into the current
 inventory of installed software on the system, and is highly recommended.
 </description>
@@ -28,7 +28,7 @@ up-to-date by applying Debian DSA regulary.
 <Rule id="ensure_gpgcheck_globally_activated" severity="high">
 <title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option should be used to ensure
-checking of an RPM package's signature always occurs prior to its
+checking of an APT package's signature always occurs prior to its
 installation. To configure yum to check package signatures before installing
 them, ensure the following line appears in <tt>/etc/yum.conf</tt> in
 the <tt>[main]</tt> section:
