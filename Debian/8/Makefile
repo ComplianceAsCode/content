@@ -55,8 +55,8 @@ guide: shorthand2xccdf
 	oscap xccdf generate guide --profile allrules $(OUT)/unlinked-notest-$(PROD)-xccdf-guide.xml > $(OUT)/$(ID)-$(PROD)-guide.html
 
 content: shorthand2xccdf guide checks
-	$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
-	$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 
 validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
