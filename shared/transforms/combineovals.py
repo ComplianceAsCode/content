@@ -15,6 +15,7 @@ footer = '</oval_definitions>'
 
 # SSG Makefile to official product name mapping
 CHROMIUM = 'Google Chromium Browser'
+DEBIAN = 'Debian'
 FEDORA = 'Fedora'
 FIREFOX = 'Mozilla Firefox'
 JRE = 'Java Runtime Environment'
@@ -86,7 +87,8 @@ def map_product(version):
         product_name = RHEL
     if re.findall('webmin', version):
         product_name = WEBMIN
-
+    if re.findall('debian', version):
+        product_name = DEBIAN
     return product_name
 
 def check_is_applicable_for_product(oval_check_def, product):

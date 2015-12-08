@@ -15,6 +15,7 @@ FIREFOX = 'Mozilla Firefox'
 JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
+DEBIAN = 'Debian'
 
 def parse_conf_file(conf_file, product):
     parser = SafeConfigParser()
@@ -56,6 +57,8 @@ def map_product(version):
         product_name = RHEL
     if re.findall('webmin', version):
         product_name = WEBMIN
+    if re.findall('debian', version):
+        product_name = DEBIAN
 
     return product_name
 
