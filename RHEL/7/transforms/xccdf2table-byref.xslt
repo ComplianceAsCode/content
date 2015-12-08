@@ -54,6 +54,7 @@
 
 			<xsl:if test="$ref='pcidss'">
 				<xsl:for-each select="//cdf:reference[@href=$pcidssuri]" >
+					<xsl:sort select="substring-after(.,'-')" data-type="number" />
 					<xsl:call-template name="rule-output">
 						<xsl:with-param name="refinfo" select="." />
 					</xsl:call-template>
