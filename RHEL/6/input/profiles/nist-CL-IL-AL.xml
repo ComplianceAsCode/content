@@ -30,7 +30,7 @@ assurance."</description>
 <!--	AC-4:	TBD 
 
 	-->
-<refine-value idref="sysctl_net_ipv4_conf_all_secure_redirects_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_conf_all_secure_redirects_value" selector="enabled" />
 
 
 <!--	AC-6: Least privilege
@@ -81,17 +81,17 @@ assurance."</description>
 		- 5	(minutes)
 		- 10	(minutes)
 		- 15	(minutes) -->
-<refine-value idref="inactivity_timeout_value" selector="15" />
+<refine-value idref="inactivity_timeout_value" selector="15_minutes" />
 
 
 <!-- STATIC VARIABLES: DO NOT ALTER -->
 <refine-value idref="login_banner_text" selector="usgcb_default" />
-<refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="0" />
-<refine-value idref="sysctl_net_ipv4_conf_all_accept_redirects_value" selector="0" />
-<refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="1" />
-<refine-value idref="sysctl_net_ipv4_conf_default_secure_redirects_value" selector="1" />
-<refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" selector="1" />
-<refine-value idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" selector="1" />
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="disabled" />
+<refine-value idref="sysctl_net_ipv4_conf_all_accept_redirects_value" selector="disabled" />
+<refine-value idref="sysctl_net_ipv4_conf_all_log_martians_value" selector="enabled" />
+<refine-value idref="sysctl_net_ipv4_conf_default_secure_redirects_value" selector="enabled" />
+<refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" selector="enabled" />
+<refine-value idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" selector="enabled" />
 
 
 <!-- MAYBE
