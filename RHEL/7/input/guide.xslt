@@ -15,6 +15,7 @@
 		</xsl:if>
 		<xsl:apply-templates select="document('profiles/standard.xml')" />
 		<xsl:apply-templates select="document('profiles/pci-dss.xml')" />
+		<xsl:apply-templates select="document('profiles/C2S.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
 		<xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
@@ -30,6 +31,7 @@
       <xsl:apply-templates select="document('xccdf/services/services.xml')" />
       <!-- the auxiliary Groups here will be removed prior to some outputs -->
       <xsl:apply-templates select="document('auxiliary/srg_support.xml')" />
+      <xsl:apply-templates select="document('auxiliary/c2s_support.xml')" />
     </xsl:copy>
   </xsl:template>
 

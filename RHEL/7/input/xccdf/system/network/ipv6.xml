@@ -16,7 +16,7 @@ effectively prevent execution of the IPv6 networking stack is to
 instruct the system not to activate the IPv6 kernel module.
 </description>
 
-<Rule id="sysctl_kernel_ipv6_disable" severity="medium">
+<Rule id="sysctl_net_ipv6_conf_all_disable_ipv6" severity="medium">
 <title>Disable IPv6 Networking Support Automatic Loading</title>
 <description>To disable support for (<tt>ipv6</tt>) add the following line to
 <tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in
@@ -45,8 +45,8 @@ Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="sysctl_kernel_ipv6_disable" />
-<ref nist="CM-7" disa="1551"/>
+<oval id="sysctl_net_ipv6_conf_all_disable_ipv6" />
+<ref nist="CM-7" disa="1551" cis="4.4.2" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -106,7 +106,16 @@ forwarding is disabled)</description>
 <Value id="sysctl_net_ipv6_conf_default_accept_ra_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv6.conf.default.accept_ra</title>
-<description>Accept default router advertisements?</description>
+<description>Accept default router advertisements by default?</description>
+<value>0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+<Value id="sysctl_net_ipv6_conf_all_accept_ra_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.all.accept_ra</title>
+<description>Accept all router advertisements?</description>
 <value>0</value>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
@@ -115,11 +124,37 @@ operator="equals" interactive="0">
 <Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv6.conf.default.accept_redirects</title>
+<description>Toggle ICMP Redirect Acceptance By Default</description>
+<value>0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+<Value id="sysctl_net_ipv6_conf_all_accept_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.all.accept_redirects</title>
 <description>Toggle ICMP Redirect Acceptance</description>
 <value>0</value>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+
+<Rule id="sysctl_net_ipv6_conf_all_accept_ra">
+<title>Disable Accepting IPv6 Router Advertisements</title>
+<description>
+<sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_ra" value="0" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv6.conf.all.accept_ra" value="0" />
+</ocil>
+<rationale>
+An illicit router advertisement message could result in a man-in-the-middle attack.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sysctl_net_ipv6_conf_all_accept_ra" value="sysctl_net_ipv6_conf_all_accept_ra_value" />
+<ref nist="CM-7" cis="4.4.1.1" />
+</Rule>
+
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_ra">
 <title>Disable Accepting IPv6 Router Advertisements</title>
@@ -134,11 +169,27 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
-<ref nist="CM-7" />
+<ref nist="CM-7" cis="4.4.1.1" />
+</Rule>
+
+<Rule id="sysctl_net_ipv6_conf_all_accept_redirects" severity="medium">
+<title>Disable Accepting IPv6 Redirects By Default</title>
+<description>
+<sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />
+</ocil>
+<rationale>
+An illicit ICMP redirect message could result in a man-in-the-middle attack.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
+<ref nist="CM-7" disa="1551" cis="4.4.1.2" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_redirects" severity="medium">
-<title>Disable Accepting IPv6 Redirects</title>
+<title>Disable Accepting IPv6 Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
 </description>
@@ -150,7 +201,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
-<ref nist="CM-7" disa="1551"/>
+<ref nist="CM-7" disa="1551" cis="4.4.1.2" />
 </Rule>
 
 </Group><!--<Group id="disabling_ipv6_autoconfig">-->
