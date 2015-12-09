@@ -78,7 +78,7 @@ def tagname_to_abbrev(tag):
     sys.exit("Error: unknown checksystem referenced in tag : %s" % tag)
 
 
-class idtranslator:
+class idtranslator(object):
     def __init__(self, fname, content_id):
         self.fname = fname
         self.content_id = content_id
@@ -110,9 +110,12 @@ class idtranslator:
             idnum = self.__get_next_id()
             self.config.set("assigned", name, str(idnum))
 
-        str_id = "%s:%s:%s:%d" % (namespace_to_prefix(tagname),
-                                  self.content_id, tagname_to_abbrev(tagname),
-                                  idnum)
+        str_id = "%s:%s-%s:%s:%d" % (
+            namespace_to_prefix(tagname),
+            self.content_id, name,
+            tagname_to_abbrev(tagname),
+            idnum
+        )
         return str_id
 
     def translate(self, tree, store_defname=False):
