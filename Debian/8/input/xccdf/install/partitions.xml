@@ -1,0 +1,120 @@
+<!-- partitioning -->
+<Group id="installation-storage-partitioning">
+<title>Partitioning</title>
+<description>
+  Separating various locations of the file systems in different partitions allows a more restrictive
+  segregation, distinctly from one location to another. Moreover, some native restrictions can be made by
+partitioning, such as no hard link between different filesystems, and reduce the corruption impact to the
+affected filesystem instead of the entire system. The last gain is to allow a differenciated usage of storage
+media, depending on the operational needs (speed, resilience, etc.).
+</description>
+<reference href="http://www.pathname.com/fhs/">Filesystem Hierarchy Standard</reference>
+
+<Rule id="partition_for_tmp">
+<title>Ensure /tmp Located On Separate Partition</title>
+<description>
+The <tt>/tmp</tt> directory is a world-writable directory used
+for temporary file storage. Ensure it has its own partition or
+logical volume at installation time, or migrate it using LVM (when non-ephemeral is needed) or use tmpfs if possible.
+</description>
+<!--
+<fixtext ffixref="partition_for_tmp_fix">
+  When tmpfs is possible, just add a specific tmpfs line on the <h:code>fstab</h:code> file (or via systemd), and specify the maximum
+  associated size by using <h:code>size=</h:code> argument.
+</fixtext>
+-->
+<rationale>
+The <tt>/tmp</tt> partition is used as temporary storage by many programs.
+Placing <tt>/tmp</tt> in its own partition enables the setting of more
+restrictive mount options, which can help protect programs which use it.
+</rationale>
+<ocil><partition-check-macro part="/tmp "/></ocil>
+<ident cce="27173-4" />
+<oval id="partition_for_tmp" />
+<ref nist="SC-32" />
+<tested by="MM" on="20120928"/>
+</Rule>
+
+<Rule id="partition_for_var">
+<title>Ensure /var Located On Separate Partition</title>
+<description>The <tt>/var</tt> directory is used by daemons and other system
+services to store frequently-changing data. Ensure that <tt>/var</tt> has its own partition
+or logical volume at installation time, or migrate it using LVM.
+</description>
+<ocil><partition-check-macro part="/var "/></ocil>
+<rationale>
+Ensuring that <tt>/var</tt> is mounted on its own partition enables the
+setting of more restrictive mount options. This helps protect
+system services such as daemons or other programs which use it.
+It is not uncommon for the <tt>/var</tt> directory to contain
+world-writable directories installed by other software packages.
+</rationale>
+<ident cce="26404-4" />
+<oval id="partition_for_var" />
+<ref nist="SC-32" />
+<tested by="MM" on="20120928"/>
+</Rule>
+
+<Rule id="partition_for_var_log">
+<title>Ensure /var/log Located On Separate Partition</title>
+<description>
+System logs are stored in the <tt>/var/log</tt> directory.
+Ensure that it has its own partition or logical
+volume at installation time, or migrate it using LVM.
+</description>
+<ocil><partition-check-macro part="/var/log "/></ocil>
+<rationale>
+Placing <tt>/var/log</tt> in its own partition
+enables better separation between log files
+and other files in <tt>/var/</tt>.
+</rationale>
+<ident cce="26967-0" />
+<oval id="partition_for_var_log" />
+<ref nist="AU-9,SC-32" disa=""/>
+<tested by="MM" on="20120928"/>
+</Rule>
+
+<Rule id="partition_for_var_log_audit">
+<title>Ensure /var/log/audit Located On Separate Partition</title>
+<description>
+Audit logs are stored in the <tt>/var/log/audit</tt> directory.  Ensure that it
+has its own partition or logical volume at installation time, or migrate it
+later using LVM. Make absolutely certain that it is large enough to store all
+audit logs that will be created by the auditing daemon.
+</description>
+<ocil><partition-check-macro part="/var/log/audit "/></ocil>
+<rationale>
+Placing <tt>/var/log/audit</tt> in its own partition
+enables better separation between audit files
+and other files, and helps ensure that
+auditing cannot be halted due to the partition running out
+of space.
+</rationale>
+<ident cce="26971-2" />
+<oval id="partition_for_var_log_audit" />
+<ref nist="AU-4,AU-9,SC-32" disa=""/>
+<tested by="MM" on="20120928"/>
+</Rule>
+
+<Rule id="partition_for_home">
+<title>Ensure /home Located On Separate Partition</title>
+<description>
+If user home directories will be stored locally, create a separate partition
+for <tt>/home</tt> at installation time (or migrate it later using LVM). If
+<tt>/home</tt> will be mounted from another system such as an NFS server, then
+creating a separate partition is not necessary at installation time, and the
+mountpoint can instead be configured later.
+</description>
+<ocil><partition-check-macro part="/home "/></ocil>
+<rationale>
+Ensuring that <tt>/home</tt> is mounted on its own partition enables the
+setting of more restrictive mount options, and also helps ensure that
+users cannot trivially fill partitions used for log or audit data storage.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="partition_for_home" />
+<ref nist="SC-32" disa="1208"/>
+<tested by="MM" on="20120928"/>
+</Rule>
+
+</Group>
