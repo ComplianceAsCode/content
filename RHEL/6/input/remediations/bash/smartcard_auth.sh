@@ -44,9 +44,9 @@ pam_pkcs11.so card_only"
 if ! grep -q 'pam_pkcs11.so' "$SYSTEM_AUTH"
 then
 	# Append (expected) pam_succeed_if.so row past the pam_env.so into SYSTEM_AUTH_CONF file
-	sed -i --follow-symlink -e '/^'"$SYSTEM_AUTH_ENV_SO"'/a '"$SYSTEM_AUTH_PAM_SUCCEED" "$SYSTEM_AUTH_CONF"
+	sed -i --follow-symlinks -e '/^'"$SYSTEM_AUTH_ENV_SO"'/a '"$SYSTEM_AUTH_PAM_SUCCEED" "$SYSTEM_AUTH_CONF"
 	# Append (expected) pam_pkcs11.so row past the pam_succeed_if.so into SYSTEM_AUTH_CONF file
-	sed -i --follow-symlink -e '/^'"$SYSTEM_AUTH_PAM_SUCCEED"'/a '"$SYSTEM_AUTH_PAM_PKCS11" "$SYSTEM_AUTH_CONF"
+	sed -i --follow-symlinks -e '/^'"$SYSTEM_AUTH_PAM_SUCCEED"'/a '"$SYSTEM_AUTH_PAM_PKCS11" "$SYSTEM_AUTH_CONF"
 fi
 
 # Perform /etc/pam_pkcs11/pam_pkcs11.conf settings below
