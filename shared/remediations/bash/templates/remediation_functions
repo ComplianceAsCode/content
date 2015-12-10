@@ -764,7 +764,7 @@ function replace_or_append {
 
   # Strip any search characters in the key arg so that the key can be replaced without
   # adding any search characters to the config file.
-  stripped_key=${key//[!a-z]/}
+  stripped_key=${key//[!a-zA-Z]/}
 
   # If there is no print format specified in the last arg, use the default format.
   if ! [ "x$format" = x ] ; then
