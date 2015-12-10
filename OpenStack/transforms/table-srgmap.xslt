@@ -8,6 +8,7 @@
 
 <xsl:param name="flat" select="''"/>
 <xsl:include href="constants.xslt"/>
+<xsl:include href="table-style.xslt"/>
 
 <!-- expecting external variable "map-to-items", a filename to an XCCDF document with Rules and Groups -->
 <!-- put everything in it with a reference into "items" (should only be Rules and Groups) -->
@@ -33,23 +34,8 @@
 	</xsl:template>
 
 	<xsl:template match="cdf:Benchmark">
-		<style type="text/css">
-		table
-		{
-			border-collapse:collapse;
-		}
-		table,th, td
-		{
-			border: 1px solid black;
-			vertical-align: top;
-			padding: 3px;
-		}
-		thead
-		{
-			display: table-header-group;
-			font-weight: bold;
-		}
-		</style>
+		<xsl:call-template name="table-style" />
+
 		<table>
 			<thead>
 				<td>SRG ID</td>
