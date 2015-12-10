@@ -155,4 +155,5 @@ clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content $(DIST)/guide
 	$(MAKE) -C $(IN)/oval/templates clean
+	$(MAKE) -C $(IN)/oval/oval_5.11/templates clean
 	rm -rf $(BUILD)
