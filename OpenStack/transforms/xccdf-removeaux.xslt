@@ -8,8 +8,7 @@
 
   <!-- remove the srg_support Group from final output, as it exists only to
        support the OS SRG mapping -->
-  <xsl:template match="xccdf:Group[@id='srg_support']">
-  </xsl:template>
+  <xsl:template match="xccdf:Group[@id='srg_support']" />
 
 
   <!-- copy everything else through to final output -->

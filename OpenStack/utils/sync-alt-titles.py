@@ -3,7 +3,7 @@
 import sys
 
 # always use shared/modules version
-SHARED_MODULE_PATH = "../../shared/modules"
+SHARED_MODULE_PATH = "../../../shared/modules"
 sys.path.insert(0, SHARED_MODULE_PATH)
 import sync_alt_titles_module
 

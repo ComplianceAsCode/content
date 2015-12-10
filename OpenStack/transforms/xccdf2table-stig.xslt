@@ -8,17 +8,18 @@
 <xsl:variable name="notegroup" select="document($notes)/notegroup" />
 
 <xsl:include href="constants.xslt"/>
+<xsl:include href="table-style.xslt"/>
 
 	<xsl:template match="/">
 		<html>
 		<head>
-			<title>Rules In <xsl:value-of select="/cdf:Benchmark/cdf:title" /><xsl:if test="$notes"> with Notes for Transition to RHEL 6 Consensus</xsl:if></title>
+			<title>Rules In <xsl:value-of select="/cdf:Benchmark/cdf:title" /><xsl:if test="$notes"> with Notes for Transition to RHEL 7 Consensus</xsl:if></title>
 		</head>
 		<body>
 			<br/>
 			<br/>
 			<div style="text-align: center; font-size: x-large; font-weight:bold">
-			Rules In <i><xsl:value-of select="/cdf:Benchmark/cdf:title" /></i><xsl:if test="$notes"> with Notes for Transition to RHEL 6 Consensus</xsl:if>
+			Rules In <i><xsl:value-of select="/cdf:Benchmark/cdf:title" /></i><xsl:if test="$notes"> with Notes for Transition to RHEL 7 Consensus</xsl:if>
 			</div>
 			<br/>
 			<br/>
@@ -29,25 +30,8 @@
 
 
 	<xsl:template match="cdf:Benchmark">
-		<style type="text/css">
-		table
-		{
-			border-collapse:collapse;
-		}
-		table,th,td
-		{
-			border: 1px solid black;
-			vertical-align: top;
-			padding: 3px;
-		}
-		.bl, table.bl tr td { border:none; }
-		.bbl, table.bbl tr td { border:none; font-weight: bold;}
-		thead
-		{
-			display: table-header-group;
-			font-weight: bold;
-		}
-		</style>
+		<xsl:call-template name="table-style" />
+
 		<table>
 			<thead>
 			<xsl:choose>
@@ -56,14 +40,14 @@
 			<table class="bbl">
 				<tr><td class="bl">Title</td></tr>
 				<tr><td>V-ID</td></tr>
-				<!--<tr><td>GEN-ID</td></tr>-->
+				<tr><td>CCI</td></tr>
 				<tr><td>CAT</td></tr>
 			</table>
 			</td>
 			</xsl:when>
 			<xsl:otherwise>
 				<td>V-ID</td>
-				<!--<td>GEN-ID</td>-->
+				<td>CCI</td>
 				<td>CAT</td>
 				<td>Title</td>
 			</xsl:otherwise>
@@ -97,7 +81,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<td><xsl:value-of select="@id"/></td> 
-				<!--<td> <xsl:value-of select="cdf:ident" /></td>-->
+				<td> <xsl:value-of select="cdf:Rule/cdf:ident" /></td>
 				<!--<td> <xsl:value-of select="cdf:title" /></td>-->
 				<td> <xsl:value-of select="cdf:Rule/@severity" /></td>
 				<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
