@@ -22,22 +22,32 @@
       </Value>
       
       <xsl:apply-templates select="document('intro/intro.xml')" />
-      <xsl:apply-templates select="document('xccdf/system.xml')" />
+      <xsl:apply-templates select="document('xccdf/install/install.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/system.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/permissions/permissions.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/services.xml')" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="Group[@id='install']">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('xccdf/install/partitions.xml')" />
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/software/software.xml')" />
-      <xsl:apply-templates select="document('xccdf/software/services.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/permissions/files.xml')" />
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="Group[@id='software']">
+  <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/software/updating.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/deprecated.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/basics.xml')" />
     </xsl:copy>
   </xsl:template>
 
