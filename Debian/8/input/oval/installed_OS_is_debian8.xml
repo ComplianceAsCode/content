@@ -1,20 +1,17 @@
 <def-group>
-  <definition class="inventory"
-  id="installed_OS_is_debian8" version="1">
+  <definition class="inventory" id="installed_OS_is_debian8" version="2">
     <metadata>
       <title>Debian 8</title>
       <affected family="unix">
-        <platform>Debian8</platform>
+        <platform>Debian 8</platform>
       </affected>
       <reference ref_id="cpe:/o:debian:debian:8" source="CPE" />
       <description>The operating system installed on the system is Debian 8</description>
-      <reference source="MP" ref_id="DEBIAN8_20151125" ref_url="test_attestation" />
+      <reference source="JL" ref_id="DEBIAN8_20151210" ref_url="test_attestation" />
     </metadata>
     <criteria>
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
-      <criterion comment="Debian8 is installed"
-      test_ref="test_debian8" />
+      <criterion comment="Installed operating system is part of the unix family" test_ref="test_unix_family" />
+      <criterion comment="Debian8 is installed" test_ref="test_debian_8" />
     </criteria>
   </definition>
 
@@ -27,9 +24,14 @@
   </ind:family_state>
   <ind:family_object id="obj_unix_family" version="1" />
 
-  <ind:textfilecontent54_object id="test_debian8" version="1" comment="Check Debian version">
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check Debian version" id="test_debian_8" version="1">
+    <ind:object object_ref="obj_debian_8" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_debian_8" version="1" comment="Check Debian version">
     <ind:filepath>/etc/debian_version</ind:filepath>
     <ind:pattern operation="pattern match">^8.[0-9]+$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
 </def-group>
