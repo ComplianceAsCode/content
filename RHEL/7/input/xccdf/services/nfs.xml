@@ -38,6 +38,7 @@ this service should be disabled.
 </description>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="service_nfslock_disabled" />
+<ref cis="3.8" />
 </Rule>
 
 <Rule id="service_rpcgssd_disabled">
@@ -51,6 +52,23 @@ service should be disabled.
 </description>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="service_rpcgssd_disabled" />
+<ref cis="3.8" />
+</Rule>
+
+<Rule id="service_rpcbind_disabled">
+<title>Disable rpcbind Service</title>
+<description>
+The rpcbind utility maps RPC services to the ports on which they listen. RPC
+processes notify rpcbind when they start, registering the ports they are
+listening on and the RPC program numbers they expect to serve. The rpcbind
+service redirects the client to the proper port number so it can communicate 
+with the requested service. If the system does not require RPC (such as for NFS
+servers) then this service should be disabled.
+<service-disable-macro service="rpcbind" />
+</description>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="service_rpcbind_disabled" />
+<ref cis="3.8" />
 </Rule>
 
 <Rule id="service_rpcidmapd_disabled">
@@ -62,10 +80,11 @@ this service should be disabled.
 </description>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="service_rpcidmapd_disabled" />
+<ref cis="3.8" />
 </Rule>
-</Group>
+</Group> <!-- end disabling_nfs_services -->
 
-</Group>
+</Group> <!-- end disabling_nfs -->
 
 <Group id="nfs_configuring_all_machines">
 <title>Configure All Machines which Use NFS</title>
@@ -82,7 +101,6 @@ which act as NFS servers to also mount filesystems via NFS. At the least,
 crossed mounts (the situation in which each of two servers mounts a filesystem
 from the other) should never be used.
 </description>
-
 </Group> <!-- <Group id="nfs_client_or_server_not_both"> -->
 
 
@@ -168,9 +186,9 @@ to be done more effectively.
 <ident cce="RHEL7-CCE-TBD" />
 </Rule>
 
-</Group> <!-- <Group id="nfs_configure_fixed_ports"> -->
+</Group> <!-- end nfs_configure_fixed_ports -->
 
-</Group> <!-- <Group id="nfs_configuring_all_machines"> -->
+</Group> <!-- <Group id="nfs_client_or_server_not_both"> -->
 
 <Group id="nfs_configuring_clients">
 <title>Configure NFS Clients</title>
