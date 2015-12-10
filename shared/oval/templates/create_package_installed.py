@@ -47,7 +47,13 @@ def main():
     with open(sys.argv[1], 'r') as csv_file:
         csv_lines = csv.reader(csv_file)
         for line in csv_lines:
+
+            # Skip lines of input file starting with comment '#' character
+            if line[0].startswith('#'):
+                continue
+
             output_check(line)
+
     sys.exit(0)
 
 if __name__ == "__main__":
