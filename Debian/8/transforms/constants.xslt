@@ -7,11 +7,13 @@
 <xsl:variable name="cceuri">http://cce.mitre.org</xsl:variable>
 
 <!-- abbreviated as references in the XCCDF-->
-<xsl:variable name="nist800-53uri">http://csrc.nist.gov/publications/nistpubs/800-53-Rev3/sp800-53-rev3-final.pdf</xsl:variable>
+<xsl:variable name="nist800-53uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf</xsl:variable>
 <xsl:variable name="cnss1253uri">http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf</xsl:variable>
 <xsl:variable name="dcid63uri">not_officially_available</xsl:variable>
-<xsl:variable name="disa-cciuri">http://iase.disa.mil/cci/index.html</xsl:variable>
-<xsl:variable name="disa-srguri">http://iase.disa.mil/srgs</xsl:variable>
+<xsl:variable name="disa-cciuri">http://iase.disa.mil/stigs/cci/Pages/index.aspx</xsl:variable>
+<xsl:variable name="disa-srguri">http://iase.disa.mil/stigs/srgs/Pages/index.aspx</xsl:variable>
+<xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3.pdf</xsl:variable>
+<xsl:variable name="ssg-contributors-uri">https://github.com/OpenSCAP/scap-security-guide/wiki/Contributors</xsl:variable>
 
 <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
 
