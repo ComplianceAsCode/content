@@ -15,7 +15,7 @@ OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
 OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 
 ID = ssg
-PROD = debian8
+PROD = debian_jessie
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
@@ -58,7 +58,7 @@ ifeq ($(OVAL_5_11), 0)
 	$(MAKE) -C $(IN)/oval/oval_5.11/templates copy
 	find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
 	# Update requested debian8 OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
-	sed -i "s/^\(debian8_oval_version = \).*/\15.11/" $(CONF)/oval\.config
+	sed -i "s/^\(debian_jessie_oval_version = \).*/\15.11/" $(CONF)/oval\.config
 endif
 	xmlwf $(PROD_OVAL)/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml

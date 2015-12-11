@@ -26,7 +26,7 @@ oval_header = '''<?xml version="1.0" encoding="UTF-8"?>
        <generator>
         <oval:product_name>testcheck.py</oval:product_name>
         <oval:product_version>0.0.1</oval:product_version>
-        <oval:schema_version>5.10</oval:schema_version>
+        <oval:schema_version>5.11.1</oval:schema_version>
         <oval:timestamp>2011-09-23T13:44:00</oval:timestamp>
     </generator>'''
 
