@@ -37,6 +37,11 @@ def main():
         # put the CSV line's items into a list
         sysctl_lines = csv.reader(csv_file)
         for line in sysctl_lines:
+
+            # Skip lines of input file starting with comment '#' character
+            if line[0].startswith('#'):
+                continue
+
             output_checkfile(line)
 
     sys.exit(0)
