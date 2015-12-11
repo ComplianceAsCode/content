@@ -1,4 +1,4 @@
-# platform = Debian 8
+# platform = Debian Jessie
 # CAUTION: This remediation script will remove talkd
 #	   from the system, and may remove any packages
 #	   that depend on talkd. Execute this

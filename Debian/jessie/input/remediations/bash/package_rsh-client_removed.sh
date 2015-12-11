@@ -1,4 +1,4 @@
-# platform = Debian 8
+# platform = Debian Jessie
 # CAUTION: This remediation script will remove rsh-client
 #	   from the system, and may remove any packages
 #	   that depend on rsh-client. Execute this
