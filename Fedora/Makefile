@@ -7,7 +7,6 @@ PROD = fedora
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 SHELLCHECK_AVAIL := $(shell which shellcheck >& /dev/null; echo $$?)
 
 shorthand-guide:

@@ -8,8 +8,6 @@ REFS = references
 
 PROD = rhevm3
 
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
 	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml

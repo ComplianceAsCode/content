@@ -5,8 +5,6 @@ include $(SHARED)/product-make.include
 
 PROD = webmin
 
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-
 # will uncomment after PR 452 gets merged
 # also put stats into the all: target
 # stats:
