@@ -1,5 +1,5 @@
 # platform = Mozilla Firefox
-source ./template/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_default_home_page
 
 FIREFOX_DIRS="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"

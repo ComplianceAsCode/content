@@ -1,5 +1,5 @@
 # platform = multi_platform_fedora
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 declare var_accounts_minimum_age_login_defs
 populate var_accounts_minimum_age_login_defs
 

@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_password_pam_unix_remember
 
 if grep -q "remember=" /etc/pam.d/system-auth; then   

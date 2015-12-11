@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_user_umask
 
 egrep -li ^[[:blank:]]*umask `find /etc /root /home/* -maxdepth 1 -type f 2>/dev/null` | while read FILE; do

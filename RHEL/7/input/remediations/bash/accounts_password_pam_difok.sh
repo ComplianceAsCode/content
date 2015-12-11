@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_password_pam_difok
 
 if egrep -q ^difok[[:space:]]*=[[:space:]]*[-]?[[:digit:]]+ /etc/security/pwquality.conf; then
