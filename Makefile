@@ -60,11 +60,11 @@ rhel7:
 rhel7-dist:
 	cd RHEL/7/ && $(MAKE) dist
 
-debian8:
-	cd Debian/8/ && $(MAKE)
+debian_jessie:
+	cd Debian/jessie/ && $(MAKE)
 
-debian8-dist:
-	cd Debian/8/ && $(MAKE) dist
+debian_jessie-dist:
+	cd Debian/jessie/ && $(MAKE) dist
 
 openstack:
 	cd OpenStack && $(MAKE)
@@ -93,13 +93,13 @@ chromium:
 chromium-dist:
 	cd Chromium/ && $(MAKE) dist
 
-validate-debian8: debian8
-	cd Debian/8/ && $(MAKE) validate
+validate-debian_jessie: debian_jessie
+	cd Debian/jessie/ && $(MAKE) validate
 
-validate: fedora rhel5 rhel6 rhel7 debian8 openstack rhevm3 chromium firefox jre
+validate: fedora rhel5 rhel6 rhel7 debian_jessie openstack rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
-	cd Debian/8/ && $(MAKE) validate
+	cd Debian/jessie/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
 	cd JRE/ && $(MAKE) validate
@@ -129,7 +129,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents RHEL/5/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/6/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/7/ $(RPMBUILD)/$(PKG)
-	cp -r --preserve=links --parents Debian/8/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Debian/jessie/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents JRE/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
@@ -142,7 +142,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/RHEL/5/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/RHEL/6/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
-	(cd $(RPMBUILD)/$(PKG)/Debian/8/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Debian/jessie/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Chromium/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/JRE/ && $(MAKE) clean)
@@ -217,7 +217,7 @@ clean:
 	cd RHEL/5 && $(MAKE) clean
 	cd RHEL/6 && $(MAKE) clean
 	cd RHEL/7 && $(MAKE) clean
-	cd Debian/8 && $(MAKE) clean
+	cd Debian/jessie && $(MAKE) clean
 	cd OpenStack && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
@@ -248,10 +248,10 @@ install: dist
 	install -m 0644 Firefox/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 JRE/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 JRE/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 Debian/8/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 Debian/jessie/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
 
-.PHONY: rhel5 rhel6 rhel7 debian8 jre firefox webmin tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 debian_jessie jre firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
