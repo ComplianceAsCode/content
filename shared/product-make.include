@@ -1,0 +1,28 @@
+#
+# product-make.include
+#
+# The common Makefile snippets used by other Makefiles in various product subfolders
+#
+# The snippets assume that the following variables are set by each product:
+#  * $(SHARED)
+#
+#
+
+# Include project level information
+include $(SHARED)/../VERSION
+
+# Defaults for the global variables - directories
+IN = input
+OUT = output
+BUILD = build
+TRANS = transforms
+SHARED_OVAL = $(SHARED)/oval
+SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
+REFS = $(SHARED)/references
+CONF = $(SHARED)/../config
+UTILS = utils
+DIST = dist
+
+# Defaults for the global variables - others
+ID = ssg
+
