@@ -3,8 +3,6 @@ all: shorthand2xccdf tables guide content dist
 SHARED = ../../shared
 include $(SHARED)/product-make.include
 
-OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
-
 PROD = debian8
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
