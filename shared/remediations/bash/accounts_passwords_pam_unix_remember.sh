@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_passwords_pam_unix_remember
 
 if grep -q "remember=" /etc/pam.d/system-auth; then

@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_password_pam_ocredit
 
 if grep -q "ocredit=" /etc/pam.d/system-auth; then   

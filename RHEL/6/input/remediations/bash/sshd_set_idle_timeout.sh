@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate sshd_idle_timeout_value
 
 grep -q ^ClientAliveInterval /etc/ssh/sshd_config && \

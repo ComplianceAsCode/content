@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel, multi_platform_fedora
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 declare sshd_idle_timeout_value
 populate sshd_idle_timeout_value
 

@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_selinux_policy_name
 
 if [ "`grep -c ^SELINUX= /etc/sysconfig/selinux`" = "0" ]; then

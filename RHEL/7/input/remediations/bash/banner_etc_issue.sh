@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate login_banner_text
 
 # There was a regular-expression matching various banners, needs to be expanded
