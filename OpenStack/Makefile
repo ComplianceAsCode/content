@@ -1,21 +1,16 @@
+all: shorthand2xccdf tables guide checks content dist
+
 SHARED = ../shared
+include $(SHARED)/product-make.include
 
-IN = input
-OUT = output
-TRANS = transforms
+# todo: remove this local override of REFS variable
 REFS = references
-CONF = $(SHARED)/../config
-UTILS = utils
-DIST = dist
 
-ID = ssg
 PROD = openstack
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 # OpenSCAP 1.1.0+ supports generating guides from datastreams
 OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
-
-all: shorthand2xccdf tables guide checks content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)

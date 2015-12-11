@@ -1,19 +1,8 @@
+all: shorthand2xccdf tables guide content dist
+
 SHARED = ../../shared
+include $(SHARED)/product-make.include
 
-include $(SHARED)/../VERSION
-
-IN = input
-OUT = output
-BUILD = build
-TRANS = transforms
-SHARED_OVAL = $(SHARED)/oval
-SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
-REFS = $(SHARED)/references
-CONF = $(SHARED)/../config
-UTILS = utils
-DIST = dist
-
-ID = ssg
 PROD = rhel5
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations

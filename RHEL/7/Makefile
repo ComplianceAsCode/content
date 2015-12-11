@@ -1,19 +1,8 @@
+all: shorthand2xccdf tables guide content dist
+
 SHARED = ../../shared
+include $(SHARED)/product-make.include
 
-include $(SHARED)/../VERSION
-
-IN = input
-OUT = output
-BUILD = build
-TRANS = transforms
-SHARED_OVAL = $(SHARED)/oval
-SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
-REFS = $(SHARED)/references
-CONF = $(SHARED)/../config
-UTILS = utils
-DIST = dist
-
-ID = ssg
 PROD = rhel7
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
@@ -26,8 +15,6 @@ OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command 
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
 # Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
-
-all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)

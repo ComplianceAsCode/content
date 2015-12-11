@@ -1,26 +1,16 @@
+all: shorthand2xccdf tables guide content dist
+
 SHARED = ../shared
+include $(SHARED)/product-make.include
 
-include $(SHARED)/../VERSION
-
-IN = input
-OUT = output
-TRANS = transforms
-REFS = $(SHARED)/references
-CONF = $(SHARED)/../config
-UTILS = utils
-DIST = dist
-
-ID = ssg
 PROD = webmin
 
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
 # OpenSCAP 1.1.0+ supports generating guides from datastreams
 OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 
-all: shorthand2xccdf tables guide content dist
-#all: stats shorthand2xccdf tables guide content dist
-
 # will uncomment after PR 452 gets merged
+# also put stats into the all: target
 # stats:
 #	$(SHARED)/$(TRANS)/stats.sh
 
