@@ -5,8 +5,6 @@ include $(SHARED)/product-make.include
 
 PROD = jre
 
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-
 #stats:
 #	$(SHARED)/$(TRANS)/stats.sh
 

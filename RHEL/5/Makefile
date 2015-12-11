@@ -7,8 +7,6 @@ PROD = rhel5
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-
 all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
