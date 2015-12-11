@@ -99,7 +99,7 @@ else
 	@echo "Skipping ShellCheck analysis, ensure shellcheck executable is present in the PATH!"
 endif
 ifeq ($(OVAL_5_11), 0)
-	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 else
 	# If we are building against oscap version not supporting OVAL-5.11 language version yet,
 	# don't call verify-references.py with "--rules-with-invalid-checks" argument, since the
@@ -109,7 +109,7 @@ else
 	@echo -e "\tSince the OVAL-5.11 Fedora OVAL checks are missing, will skip test for referenced,"
 	@echo -e "\tbut undefined OVAL definitions during content validation. Consider building Fedora"
 	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
-	cd $(OUT); ../$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 endif
 
 # items in dist are expected for distribution in an rpm

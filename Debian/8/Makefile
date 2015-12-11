@@ -135,7 +135,7 @@ validate-xml:
 #	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate: validate-xml
-	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 
 # items in dist are expected for distribution in an rpm
