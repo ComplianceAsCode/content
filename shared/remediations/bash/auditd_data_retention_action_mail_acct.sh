@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_auditd_action_mail_acct
 
 AUDITCONFIG=/etc/audit/auditd.conf

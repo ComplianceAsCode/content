@@ -100,8 +100,9 @@ def fix_is_applicable_for_product(platform, product):
 
 def substitute_vars(fix):
     # brittle and troubling code to assign environment vars to XCCDF values
-    env_var = re.match("(\s*source\s+\S+)\n+(\s*declare\s+\S+\n+)?(\s*populate\s+)(\S+)\n(.*)",
-        fix.text, re.DOTALL)
+    lib = "(\s*\. \/usr\/share\/scap-security-guide\/remediation_functions\s*\S*)"
+    regex = lib + "\n+(\s*declare\s+\S+\n+)?(\s*populate\s+)(\S+)\n(.*)"
+    env_var = re.match(regex, fix.text, re.DOTALL)
 
     if not env_var:
         # no need to alter fix.text

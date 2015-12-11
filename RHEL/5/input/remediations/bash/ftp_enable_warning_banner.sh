@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate ftp_login_banner_text
 
 if [ -e /etc/xinetd.d/gssftp ]; then

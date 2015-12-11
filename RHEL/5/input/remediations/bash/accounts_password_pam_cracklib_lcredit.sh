@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_password_pam_cracklib_lcredit
 
 if [ $(grep -c "lcredit=" /etc/pam.d/system-auth) != 0 ]; then

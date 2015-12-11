@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_password_minlen_login_defs
 
 grep -q ^PASS_MIN_LEN /etc/login.defs && \

@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_webmin_module_useradmin_accounts_inactive
 
 if [ "$(grep -c '^default_inactive=' /etc/webmin/useradmin/config)" = "0" ]; then

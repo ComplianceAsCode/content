@@ -60,7 +60,7 @@ function generate_replace_or_append_remediation_script {
 
   # Generate the remediation script
   cat > $REMEDIATION << EOF
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate $variable
 
 grep -q $pattern_prefix$pattern $file && \\
