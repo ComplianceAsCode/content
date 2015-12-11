@@ -36,7 +36,7 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium rpm
+all: validate-buildsystem fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium rpm
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist
 
 fedora:
@@ -95,6 +95,14 @@ chromium-dist:
 
 validate-debian8: debian8
 	cd Debian/8/ && $(MAKE) validate
+
+validate-buildsystem:
+	for makefile in `find -name Makefile`; do \
+		if grep '[[:space:]]\+$$' $$makefile; then \
+			echo "Trailing Whitespace in $$makefile"; \
+			exit 1; \
+		fi \
+	done
 
 validate: fedora rhel5 rhel6 rhel7 debian8 openstack rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
