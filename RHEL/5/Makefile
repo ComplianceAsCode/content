@@ -8,8 +8,8 @@ SHARED = ../../shared
 SHARED_OVAL = $(SHARED)/oval
 SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
 REFS = $(SHARED)/references
-UTILS = utils
 CONF = ../../config
+UTILS = utils
 DIST = dist
 
 ID = ssg
@@ -103,7 +103,6 @@ tables: table-refs table-idents table-stigs
 
 content: shorthand2xccdf checks
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
-#	Specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
 #	Its second argument controls the IDs, as well as the output filenames.

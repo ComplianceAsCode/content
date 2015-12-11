@@ -47,7 +47,7 @@ shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	# Make intermediate $(PROD_remediations) directory to hold final list of remediation scripts for $(PROD)
+	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
 	mkdir -p $(PROD_REMEDIATIONS)
 	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_REMEDIATIONS) directory
@@ -107,7 +107,6 @@ tables: table-refs table-idents table-stigs
 
 content: shorthand2xccdf checks
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
-#	Specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
 #	Its second argument controls the IDs, as well as the output filenames.
