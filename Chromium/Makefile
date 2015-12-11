@@ -1,11 +1,12 @@
-include ../VERSION
+SHARED = ../shared
+
+include $(SHARED)/../VERSION
 
 IN = input
 OUT = output
 TRANS = transforms
-SHARED = ../shared
 REFS = $(SHARED)/references
-CONF = ../config
+CONF = $(SHARED)/../config
 UTILS = utils
 DIST = dist
 
