@@ -45,6 +45,11 @@ def main():
         # put the CSV line's items into a list
         socketlines = csv.reader(csv_file)
         for line in socketlines:
+
+            # Skip lines of input file starting with comment '#' character
+            if line[0].startswith('#'):
+                continue
+
             output_checkfile(line)
 
     sys.exit(0)
