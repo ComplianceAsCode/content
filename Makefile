@@ -36,8 +36,8 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: validate-buildsystem fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium rpm
-dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist
+all: validate-buildsystem fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium debian8 rpm
+dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist debian8-dist
 
 fedora:
 	cd Fedora/ && $(MAKE)
@@ -256,6 +256,7 @@ install: dist
 	install -m 0644 Firefox/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 JRE/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 JRE/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 Debian/8/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 Debian/8/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
