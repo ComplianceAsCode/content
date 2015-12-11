@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate password_history_retain_number
 
 if [ $(egrep -c "password\s*(sufficient|required)\s*(pam_unix.so|pam_pwhistory).*remember" /etc/pam.d/system-auth) != 0 ]; then

@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_password_pam_tally_deny
 
 if [ $(grep auth.*required.*pam_tally2 /etc/pam.d/system-auth | grep -c "deny=") != 0 ]; then

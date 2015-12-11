@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_multiple_time_servers
 
 if ! `/usr/sbin/pidof ntpd`; then

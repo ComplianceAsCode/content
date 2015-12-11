@@ -1,4 +1,4 @@
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_webmin_sessions_port
 
 if [ "$(grep -c '^port=' /etc/webmin/miniserv.conf)" = "0" ]; then

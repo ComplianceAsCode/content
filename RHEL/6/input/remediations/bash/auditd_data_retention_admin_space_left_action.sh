@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_auditd_admin_space_left_action
 
 grep -q ^admin_space_left_action /etc/audit/auditd.conf && \

@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate inactivity_timeout_value
 
 # Define constants to be reused below

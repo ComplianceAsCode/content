@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_auditd_flush
 
 AUDITCONFIG=/etc/audit/auditd.conf

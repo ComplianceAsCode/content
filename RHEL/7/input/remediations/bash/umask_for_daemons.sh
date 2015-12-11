@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-source ./templates/support.sh
+. /usr/share/scap-security-guide/remediation_functions
 populate var_umask_for_daemons
 
 grep -q ^umask /etc/init.d/functions && \
