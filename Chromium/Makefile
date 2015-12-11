@@ -88,7 +88,6 @@ tables: table-refs table-idents table-stigs
 
 content: shorthand2xccdf checks
 #	remove auxiliary Groups which are only for use in tables, and not guide output.
-#	specifying a nonexistent profile, "allrules," to make oscap print all Rules
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
 #	its second argument controls the IDs, as well as the output filenames.
