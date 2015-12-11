@@ -51,6 +51,9 @@ all possible choices using:
 # oscap info /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
+Please see the [User Manual](http://static.open-scap.org/openscap-1.0/oscap_user_manual.html)
+for more info.
+
 ### SCAP Workbench
 The SCAP Workbench is a graphical user interface for SCAP evaluation and
 customization. It is suitable for scanning a single machine, either local
