@@ -1,9 +1,10 @@
+SHARED = ../shared
+
 IN = input
 OUT = output
 TRANS = transforms
-SHARED = ../shared
 REFS = references
-CONF = ../config
+CONF = $(SHARED)/../config
 UTILS = utils
 DIST = dist
 
