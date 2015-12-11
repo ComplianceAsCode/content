@@ -8,8 +8,8 @@ SHARED = ../../shared
 SHARED_OVAL = $(SHARED)/oval
 SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
 REFS = $(SHARED)/references
-UTILS = utils
 CONF = ../../config
+UTILS = utils
 DIST = dist
 
 ID = ssg
