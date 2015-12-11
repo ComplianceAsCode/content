@@ -10,7 +10,7 @@ sysctls:
 services:
 	$(SHARED_DIR)/create_services_disabled.py ../../../oval/templates/services_disabled.csv
 	$(SHARED_DIR)/create_services_enabled.py ../../../oval/templates/services_enabled.csv
-	
+
 compare:
 	diff output/ ../ | grep -v "Only in ../"
 
