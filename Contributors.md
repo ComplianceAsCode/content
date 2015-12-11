@@ -15,7 +15,7 @@ Developers:
 * Andrew Gilmore
 * Jeremiah Jahn
 * Luke Kordell
-* Jan Lieskovsky
+* Ján Lieskovský
 * Šimon Lukašík
 * Michael McConachie
 * Rodney Mercer
@@ -39,5 +39,10 @@ Developers:
 * Paul Tittle
 * Jeb Trayer
 * Shawn Wells
+* Jan Černý
+* Zbyněk Moravec
+* Michal Šrubař
+* Jean-Baptiste Donnette
+* Philippe Thierry
 
 Testing:
