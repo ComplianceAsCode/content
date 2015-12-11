@@ -46,7 +46,7 @@ shorthand2xccdf: shorthand-guide
 #		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml 
+	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
 	mkdir -p $(PROD_REMEDIATIONS)
@@ -103,8 +103,8 @@ table-srgmap: shorthand2xccdf
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: shorthand2xccdf table-srgmap checks
-	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
-	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
+	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
+	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
@@ -115,7 +115,7 @@ table-stigs: shorthand2xccdf table-srgmap checks
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
 		$(TRANS)/xccdf-apply-overlay-stig.xslt \
 		$(OUT)/unlinked-$(PROD)-xccdf.xml
-	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml  
+	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
 tables: table-refs table-idents table-srgmap table-stigs
 
@@ -148,7 +148,7 @@ content: shorthand2xccdf checks
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl7-ds.xml
 
 content-stig: shorthand2xccdf guide checks
-	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml 
+	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml disa-predraft
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-$(PROD)-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
