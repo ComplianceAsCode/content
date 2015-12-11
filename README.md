@@ -57,7 +57,7 @@ customization. It is suitable for scanning a single machine, either local
 or remote (via SSH). New versions of SCAP Workbench have SSG integration
 and will automatically offer it when the application is started.
 
-Please see the [User Manual](https://fedorahosted.org/scap-workbench/raw-attachment/wiki/UserManual/user_manual.html)
+Please see the [User Manual](http://static.open-scap.org/scap-workbench-1.1/)
 for more info.
 
 ### `oscap-ssh` tool
