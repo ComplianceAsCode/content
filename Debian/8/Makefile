@@ -1,25 +1,11 @@
-include ../../VERSION
+all: shorthand2xccdf tables guide content dist
 
-IN = input
-OUT = output
-BUILD = build
-TRANS = transforms
 SHARED = ../../shared
-SHARED_OVAL = $(SHARED)/oval
-CONF = ../../config
-UTILS = utils
-DIST = dist
-REFS = $(SHARED)/references
+include $(SHARED)/product-make.include
 
-OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
-OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
-
-ID = ssg
 PROD = debian8
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
-
-all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml

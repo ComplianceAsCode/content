@@ -1,32 +1,15 @@
-include ../../VERSION
+all: shorthand2xccdf tables guide content dist
 
-IN = input
-OUT = output
-BUILD = build
-TRANS = transforms
 SHARED = ../../shared
-SHARED_OVAL = $(SHARED)/oval
-SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
-REFS = $(SHARED)/references
-CONF = ../../config
-UTILS = utils
-DIST = dist
+include $(SHARED)/product-make.include
 
-ID = ssg
 PROD = rhel7
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
-# OpenSCAP 1.1.0+ supports generating guides from datastreams
-OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
-
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
 # Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
-
-all: shorthand2xccdf tables guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
