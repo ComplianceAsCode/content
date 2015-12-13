@@ -140,7 +140,8 @@ else
 endif
 
 submission-stig-check: table-stigs
-	cd output; ../$(UTILS)/verify-references.py -p stig-$(PROD)-server --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
+	cd output; ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server \
+		--rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
 # content-usgcb: coming soon
@@ -152,7 +153,7 @@ validate-xml:
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 
 validate: validate-xml
-	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml

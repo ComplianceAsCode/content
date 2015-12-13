@@ -136,7 +136,8 @@ else
 endif
 
 submission-stig-check: table-stigs
-	cd $(OUT); ../$(UTILS)/verify-references.py -p stig-$(PROD)-server-upstream --rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server-upstream \
+		--rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
 # content-usgcb: coming soon
@@ -154,7 +155,7 @@ validate-xml:
 
 
 validate: validate-xml
-	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
 eval-test:
 	# Rebuild the content indicating the 'test' profile should be included
