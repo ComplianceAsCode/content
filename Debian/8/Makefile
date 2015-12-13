@@ -45,13 +45,13 @@ shorthand2xccdf: shorthand-guide
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
 	mkdir -p $(PROD_OVAL)
+	$(MAKE) -C $(IN)/oval/templates all
+	$(MAKE) -C $(IN)/oval/templates copy
 	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
 	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# add local Debian8 specific templated ovals
-	$(MAKE) -C $(IN)/oval/templates all
-	$(MAKE) -C $(IN)/oval/templates copy
 	# into final list of OVAL checks
 ifeq ($(OVAL_5_11), 0)
 	$(MAKE) -C $(IN)/oval/oval_5.11/templates all
