@@ -159,7 +159,7 @@ eval-ftp:
 eval-common:
 	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
-# items in dist are expected for distribution in an rpm
+# Items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/guide $(DIST)/content $(DIST)/policytables
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
