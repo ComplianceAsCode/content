@@ -1,29 +1,13 @@
-include ../VERSION
+all: shorthand2xccdf guide content dist
 
-IN = input
-OUT = output
-BUILD = build
-TRANS = transforms
 SHARED = ../shared
-SHARED_OVAL = $(SHARED)/oval
-SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
-REFS = $(SHARED)/references
-CONF = ../config
-UTILS = utils
-DIST = dist
+include $(SHARED)/product-make.include
 
-ID = ssg
 PROD = fedora
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
-# OpenSCAP 1.1.0+ supports generating guides from datastreams
-OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 SHELLCHECK_AVAIL := $(shell which shellcheck >& /dev/null; echo $$?)
-
-all: shorthand2xccdf guide content dist
 
 shorthand-guide:
 ifeq ($(OPENSCAP_SVG), 0)
