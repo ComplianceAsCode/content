@@ -140,7 +140,7 @@ else
 endif
 
 submission-stig-check: table-stigs
-	cd output; ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server \
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server \
 		--rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
