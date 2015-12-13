@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 
 from subprocess import Popen, PIPE
 from tempfile import mkstemp
