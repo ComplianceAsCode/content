@@ -34,3 +34,11 @@ OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command 
 
 # Query environment - ask openscap if it has SVG support in guides
 OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+
+# Common build targets - include the SSG logo into the XCCDF header
+$(OUT)/guide.xml: $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
+ifeq ($(OPENSCAP_SVG), 0)
+	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
+else
+	cp $(IN)/guide.xml $(OUT)/
+endif

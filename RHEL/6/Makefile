@@ -11,13 +11,8 @@ PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 # Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
-shorthand-guide:
-ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
+shorthand-guide: $(OUT)/guide.xml
 	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
-else
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
-endif
 	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
