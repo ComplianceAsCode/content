@@ -5,13 +5,8 @@ include $(SHARED)/product-make.include
 
 PROD = chromium
 
-shorthand-guide:
-ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
+shorthand-guide: $(OUT)/guide.xml
 	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
-else
-	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
-endif
 	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
 
 shorthand2xccdf: shorthand-guide
