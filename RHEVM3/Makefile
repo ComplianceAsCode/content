@@ -130,7 +130,7 @@ guide: content
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
 submission-stig-check: table-stigs
-	cd output; ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server \
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server \
 		--rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
@@ -143,7 +143,7 @@ validate-xml:
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 
 validate: validate-xml
-	cd output; ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
@@ -154,7 +154,7 @@ eval-ftp:
 eval-common:
 	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
-# items in dist are expected for distribution in an rpm
+# Items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/guide $(DIST)/content $(DIST)/policytables
 	cp $(OUT)/*-guide-*.html $(DIST)/guide

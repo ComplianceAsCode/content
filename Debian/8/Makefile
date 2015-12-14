@@ -124,7 +124,7 @@ validate: validate-xml
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 
-# items in dist are expected for distribution in an rpm
+# Items in dist are expected for distribution in an rpm
 dist: guide content
 	mkdir -p $(DIST)/guide $(DIST)/content
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
