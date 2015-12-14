@@ -69,7 +69,7 @@ tables: table-refs table-idents table-stigs
 #tables: table-refs table-idents table-srgmap table-stigs
 
 content: shorthand2xccdf checks
-#	remove auxiliary Groups which are only for use in tables, and not guide output.
+#	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
 #	its second argument controls the IDs, as well as the output filenames.
@@ -105,7 +105,7 @@ else
 endif
 
 submission-stig-check: table-stigs
-	cd output; ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-upstream \
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-upstream \
 		--rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
 
@@ -119,7 +119,7 @@ validate-xml:
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate: validate-xml
-	cd output; ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
@@ -127,7 +127,7 @@ eval-test:
 eval-common:
 	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
-# items in dist are expected for distribution in an rpm
+# Items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
