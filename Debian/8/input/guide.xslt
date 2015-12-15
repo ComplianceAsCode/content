@@ -48,6 +48,7 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('xccdf/services/deprecated.xml')" />
       <xsl:apply-templates select="document('xccdf/services/basics.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/ssh.xml')" />
     </xsl:copy>
   </xsl:template>
 
