@@ -27,7 +27,7 @@ Pass: If user and group ownership of all these config files is set to keystone. 
 <br />
 Fail: If the above commands does not return any output as the user or group ownership might have set to any user other than keystone.
 </description>
-<oval id="keystone_file_ownership" />
+<!-- <oval id="keystone_file_ownership" /> -->
 </Rule>
 
 <Rule id="keystone_file_perms">
@@ -55,7 +55,7 @@ Pass: If permissions are set to 640 or stricter.
 <br />
 Fail: If permissions are not set to at least 640.
 </description>
-<oval id="keystone_file_perms" />
+<!-- <oval id="keystone_file_perms" /> -->
 </Rule>
 
 <Rule id="keystone_use_ssl">
@@ -70,7 +70,7 @@ Pass: If value of parameter enable under [ssl] section in /etc/keystone/keystone
 <br />
 Fail: If value of parameter enable under [ssl] section is not set to True.
 </description>
-<oval id="keystone_use_ssl" />
+<!-- <oval id="keystone_use_ssl" /> -->
 </Rule>
 
 <Rule id="keystone_algorithm_hashing">
@@ -86,7 +86,7 @@ Pass: If value of parameter hash_algorithm under [token] section in /etc/keyston
 
 Fail: If value of parameter hash_algorithm under [token]section is set to MD5.
 </description>
-<oval id="keystone_algorithm_hashing" />
+<!-- <oval id="keystone_algorithm_hashing" /> -->
 </Rule>
 
 <Rule id="keystone_max_request_body_size">
@@ -102,7 +102,7 @@ Pass: If value of parameter max_request_body_size in /etc/keystone/keystone.conf
 <br />
 Fail: If value of parameter max_request_body_size is not set.
 </description>
-<oval id="keystone_max_request_body_size" />
+<!-- <oval id="keystone_max_request_body_size" /> -->
 </Rule>
 
 <Rule id="keystone_disable_admin_token">
@@ -118,7 +118,7 @@ Pass: If admin_token under [DEFAULT] section in /etc/keystone/keystone.conf is d
 <br />
 Fail: If admin_token under [DEFAULT] section is set and AdminTokenAuthMiddleware exists in keystone-paste.ini.
 </description>
-<oval id="keystone_disable_admin_token" />
+<!-- <oval id="keystone_disable_admin_token" /> -->
 </Rule>
 
 </Group>

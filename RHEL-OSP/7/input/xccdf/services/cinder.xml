@@ -27,7 +27,7 @@ Pass: If user and group ownership of all these config files is set to root and c
 <br />
 Fail: If the above commands does not return any output as the user and group ownership might have set to any user other than root or any group other than cinder.
 </description>
-<oval id="cinder_file_ownership" />
+<!-- <oval id="cinder_file_ownership" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
@@ -75,7 +75,7 @@ other        ---
 <br />
 Fail: If permissions are not set to at least 640.
 </description>
-<oval id="cinder_file_perms" />
+<!-- <oval id="cinder_file_perms" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
@@ -93,7 +93,7 @@ Pass: If value of parameter auth_strategy under [DEFAULT] section in /etc/cinder
 <br />
 Fail: If value of parameter auth_strategy under [DEFAULT] section is set to noauth.
 </description>
-<oval id="cinder_using_keystone" />
+<!-- <oval id="cinder_using_keystone" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
@@ -109,7 +109,7 @@ Pass: If value of parameter auth_protocol under [keystone_authtoken] section in 
 <br />
 Fail: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/cinder/cinder.conf is set to http, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/cinder/cinder.conf is not set to Identity API endpoint starting with https:// or value of parameter insecure under the same [keystone_authtoken] section in the same /etc/cinder/cinder.conf is set to True.
 </description>
-<oval id="cinder_tls_enabled" />
+<!-- <oval id="cinder_tls_enabled" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
@@ -127,7 +127,7 @@ Pass: If value of parameter nova_api_insecure under [DEFAULT] section in /etc/ci
 <br />
 Fail: If value of parameter nova_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to True.
 </description>
-<oval id="cinder_nova_tls" />
+<!-- <oval id="cinder_nova_tls" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
@@ -145,7 +145,7 @@ Pass: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/
 <br />
 Fail: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to True.
 </description>
-<oval id="cinder_glance_tls" />
+<!-- <oval id="cinder_glance_tls" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
@@ -163,7 +163,7 @@ Pass: If value of parameter nas_secure_file_permissions under [DEFAULT] section 
 <br />
 Fail: If value of parameter nas_secure_file_permissions under [DEFAULT] section in /etc/cinder/cinder.conf is set to False and if value of parameter nas_secure_file_operations under [DEFAULT] section in /etc/cinder/cinder.conf is set to False.
 </description>
-<oval id="cinder_nas_secure_file_permissions" />
+<!-- <oval id="cinder_nas_secure_file_permissions" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
@@ -181,7 +181,7 @@ Pass: If value of parameter osapi_max_request_body_size under [DEFAULT] section 
 <br />
 Fail: If value of parameter osapi_max_request_body_size under [DEFAULT] section in /etc/cinder/cinder.conf is not set to 114688 or if value of parameter max_request_body_size under [oslo_middleware] section in /etc/cinder/cinder.conf is not set to 114688.
 </description>
-<oval id="cinder_osapi_max_request_body" />
+<!-- <oval id="cinder_osapi_max_request_body" /> -->
 <ident cce="RHELOSP-CCE-TBD" />
 <ref nist="FOO-1(a)" />
 </Rule>
