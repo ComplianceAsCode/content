@@ -49,3 +49,7 @@ guide_xslt_deps= $(wildcard $(IN)/auxiliary/*.xml) $(wildcard $(IN)/profiles/*.x
 $(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
 	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
 	xmllint --format --output $@ $@
+
+# Common build targets - convert shorthand format to an XCCDF stub
+$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt
+	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $@ $(TRANS)/shorthand2xccdf.xslt $<
