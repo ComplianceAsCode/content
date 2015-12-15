@@ -8,9 +8,8 @@ PROD = firefox
 #stats:
 #	$(SHARED)/$(TRANS)/stats.sh
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-unresolved.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml $<
-	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml --output $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-empty-groups.xml
+	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $< --output $(OUT)/unlinked-$(PROD)-xccdf.xml
 	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
 #		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
