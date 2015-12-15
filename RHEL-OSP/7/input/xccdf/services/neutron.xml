@@ -22,7 +22,7 @@ Pass: If user and group ownership of all these config files is set to root and n
 
 Fail: If the above commands does not return any output as the user and group ownership might have set to any user other than root or any group other than neutron.
 </description>
-<oval id="neutron_file_ownership" />
+<!-- <oval id="neutron_file_ownership" /> -->
 </Rule>
 
 <Rule id="neutron_file_perms">
@@ -70,7 +70,7 @@ other           ---
 <br />
 Fail: If permissions are not set to at least 640.
 </description>
-<oval id="neutron_file_perms" />
+<!-- <oval id="neutron_file_perms" /> -->
 </Rule>
 
 <Rule id="neutron_use_keystone">
@@ -86,7 +86,7 @@ Pass: If value of parameter auth_strategy under [DEFAULT] section in /etc/neutro
 <br />
 Fail: If value of parameter auth_strategy under [DEFAULT] section is set to noauth or noauth2.
 </description>
-<oval id="neutron_use_keystone" />
+<!-- <oval id="neutron_use_keystone" /> -->
 </Rule>
 
 <Rule id="neutron_use_https">
@@ -102,7 +102,7 @@ Pass: If value of parameter auth_protocol under [keystone_authtoken] section in 
 <br />
 Fail: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/neutron/neutron.conf is set to http`, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/neutron/neutron.conf is not set to Identity API endpoint starting with https://.
 </description>
-<oval id="neutron_use_https" />
+<!-- <oval id="neutron_use_https" /> -->
 </Rule>
 
 <Rule id="neutron_api_use_ssl">
@@ -118,7 +118,7 @@ Pass: If value of parameter use_ssl under [DEFAULT] section in /etc/neutron/neut
 <br />
 Fail: If value of parameter use_ssl under [DEFAULT] section in /etc/neutron/neutron.conf is set to False.
 </description>
-<oval id="neutron_api_use_ssl" />
+<!-- <oval id="neutron_api_use_ssl" /> -->
 </Rule>
 
 </Group>
