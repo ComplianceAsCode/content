@@ -46,6 +46,6 @@ endif
 
 # Common build targets - compose single shorthand XCCDF guide from all the sources
 guide_xslt_deps= $(wildcard $(IN)/auxiliary/*.xml) $(wildcard $(IN)/profiles/*.xml) $(wildcard $(IN)/xccdf/**/*.xml)
-shorthand-guide: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
-	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
+$(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
+	xmllint --format --output $@ $@
