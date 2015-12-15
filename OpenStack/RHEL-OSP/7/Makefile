@@ -1,14 +1,14 @@
-include ../../VERSION
+include ../../../VERSION
 
 IN = input
 OUT = output
 BUILD = build
 TRANS = transforms
-SHARED = ../../shared
+SHARED = ../../../shared
 SHARED_OVAL = $(SHARED)/oval
 SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
 REFS = $(SHARED)/references
-CONF = ../../config
+CONF = ../../../config
 UTILS = utils
 DIST = dist
 
