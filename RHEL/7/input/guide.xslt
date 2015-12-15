@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <!-- This transform assembles all fragments into one "shorthand" XCCDF document -->
-<!-- It expects a numeric parameter "withtest" specifying if the 'test' profile should
-     be included ("withtest=0") into the benchmark or not ("withtest=1"). -->
+<!-- An optional parameter "withtest 0" specifies whether the 'test' profile should
+     be included into the benchmark. -->
 
   <xsl:template match="Benchmark">
     <xsl:copy>

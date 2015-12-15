@@ -8,10 +8,6 @@ REFS = references
 
 PROD = openstack
 
-shorthand-guide: $(OUT)/guide.xml
-	xsltproc -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
-	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
-
 shorthand2xccdf: shorthand-guide
 	xsltproc -o $(OUT)/unlinked-noprofiles-$(PROD)-shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(PROD)-shorthand.xml
 	xsltproc -o $(OUT)/unlinked-noprofiles-$(PROD)-xccdf.xml $(TRANS)/add_xccdf_namespace.xslt $(OUT)/unlinked-noprofiles-$(PROD)-shorthand.xml

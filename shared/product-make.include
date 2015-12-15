@@ -25,6 +25,7 @@ DIST = dist
 
 # Defaults for the global variables - others
 ID = ssg
+INCLUDE_TEST_PROFILE = 0
 
 # Query environment - ask openscap if it can do OVAL 5.11
 OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
@@ -42,3 +43,8 @@ ifeq ($(OPENSCAP_SVG), 0)
 else
 	cp $(IN)/guide.xml $(OUT)/
 endif
+
+# Common build targets - compose single shorthand XCCDF guide from all the sources
+shorthand-guide: $(OUT)/guide.xml
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
+	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
