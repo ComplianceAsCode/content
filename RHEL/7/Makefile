@@ -8,7 +8,7 @@ PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
-# Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
+# Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
 shorthand-guide: $(OUT)/guide.xml
