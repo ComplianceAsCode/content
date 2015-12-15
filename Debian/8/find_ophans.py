@@ -9,14 +9,21 @@ import glob
 # The goal of this script is to find orphans rules that are in xccdf files
 # and remove it/them
 
-def find_xccdf_files(folder_name, xccdf_list):
+def find_xccdf_files (folder_name, xccdf_list):
     for element in os.listdir(folder_name):
-        if os.path.isdir(element):
-            find_xccdf_files(element, xccdf_list)
-        else:
-            #vérifier qu'il soit un fichier oval et ajouter les régles à la liste
+        print(element)
+        if element.endswith('.xml'):
             xccdf_list.append(element)
+        else:
+            find_xccdf_files(element, xccdf_list)
 
+def find_oval_def (file_xccdf, xccdf_list):
+    file_open = open (file_xccdf)
+    for line in file_open:
+        if "<oval id=" in line:
+            #remove balises
+            xccdf_list.append(line[10:-5])
+    file_open.close()
 
 
 
@@ -32,9 +39,8 @@ def main():
     #create a liste from all oval def
     oval_list = glob.glob(build_dir + '*.xml')
     xccdf_list = []
-    print xccdf_list
-
-    #oval id="name"
+    find_xccdf_files (xccdf_directory, xccdf_list)
+    print(xccdf_list)
 
 
 if __name__ == "__main__":
