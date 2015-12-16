@@ -7,9 +7,8 @@ PROD = debian8
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-empty-groups.xml
-	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $< --output $(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-empty-groups-unselected.xml
+	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $<
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml

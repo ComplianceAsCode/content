@@ -11,9 +11,8 @@ PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 # Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-empty-groups.xml
-	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $< --output $(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-empty-groups-unselected.xml
+	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $<
 #	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
 #		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file

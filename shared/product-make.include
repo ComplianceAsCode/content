@@ -57,3 +57,7 @@ $(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(TRANS)/shorthand2xc
 # Common build targets - improve the XCCDF stub - first resolve
 $(OUT)/xccdf-unlinked-empty-groups.xml: $(OUT)/xccdf-unlinked-unresolved.xml
 	oscap xccdf resolve -o $@ $<
+
+# Common build targets - improve the XCCDF stub - second resolve
+$(OUT)/xccdf-unlinked-empty-groups-unselected.xml: $(OUT)/xccdf-unlinked-empty-groups.xml $(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py
+	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $< --output $@
