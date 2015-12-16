@@ -21,8 +21,22 @@ def find_oval_def (file_xccdf, xccdf_list):
     for line in file_open:
         if "<oval id=" in line:
             #remove balises
-            xccdf_list.append(line[10:-5])
+            xccdf_list.append(get_oval_id(line))
     file_open.close()
+
+
+def get_oval_id(line):
+    right = 0
+    left = -1
+    for letter in line:
+        if (letter == '"' and left < 0):
+            right = right + 1
+            left = right
+            continue
+        if (letter == '"' and right > 0):
+            break
+        right = right + 1
+    return line[left: right]
 
 
 
