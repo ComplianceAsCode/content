@@ -11,11 +11,10 @@ import glob
 
 def find_xccdf_files (folder_name, xccdf_list):
     for element in os.listdir(folder_name):
-        print(element)
         if element.endswith('.xml'):
-            xccdf_list.append(element)
+            find_oval_def(folder_name + '/' +  element, xccdf_list)
         else:
-            find_xccdf_files(element, xccdf_list)
+            find_xccdf_files(folder_name + '/' + element, xccdf_list)
 
 def find_oval_def (file_xccdf, xccdf_list):
     file_open = open (file_xccdf)
