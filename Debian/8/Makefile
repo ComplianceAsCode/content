@@ -3,7 +3,7 @@ all: shorthand2xccdf tables guide content dist
 SHARED = ../../shared
 include $(SHARED)/product-make.include
 
-LOCAL_UTILS = ./utils
+LOCAL_UTILS := ./utils
 PROD = debian8
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
@@ -38,7 +38,7 @@ ifeq ($(OVAL_5_11), 0)
 endif
 # 	if needed, list found orphans
 #	$(LOCAL_UTILS)/find_orphans.py $(PROD)|sort
-	./find_orphans.py $(PROD) | xargs rm -f
+	$(LOCAL_UTILS)/find_orphans.py $(PROD) | xargs rm
 	xmlwf $(PROD_OVAL)/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
