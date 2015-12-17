@@ -61,3 +61,7 @@ $(OUT)/xccdf-unlinked-empty-groups.xml: $(OUT)/xccdf-unlinked-unresolved.xml
 # Common build targets - improve the XCCDF stub - second resolve
 $(OUT)/xccdf-unlinked-empty-groups-unselected.xml: $(OUT)/xccdf-unlinked-empty-groups.xml $(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py
 	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $< --output $@
+
+# Common build targets - improve the XCCDF stub - third resolve
+$(OUT)/xccdf-unlinked-resolved.xml: $(OUT)/xccdf-unlinked-empty-groups-unselected.xml
+	oscap xccdf resolve -o $@ $<

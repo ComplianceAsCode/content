@@ -1,10 +1,16 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
-xmlns:xhtml="http://www.w3.org/1999/xhtml" 
-xmlns:dc="http://purl.org/dc/elements/1.1/" 
-xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
-exclude-result-prefixes="xccdf xhtml dc">
+  xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date"
+  exclude-result-prefixes="xccdf xhtml dc">
+
+  <!-- This transform takes a "shorthand" variant of XCCDF
+       and expands its elements into proper XCCDF elements.
+       It also assigns all elements into the proper namespace,
+       whether it be xccdf, xhtml, or simply maintained from the
+       input. -->
 
 <xsl:include href="constants.xslt"/>
 
@@ -20,6 +26,7 @@ exclude-result-prefixes="xccdf xhtml dc">
       <xsl:apply-templates select="@*|node()" />
     </xsl:copy>
   </xsl:template>
+
 
   <!-- insert current date -->
   <xsl:template match="Benchmark/status/@date">
@@ -236,11 +243,11 @@ exclude-result-prefixes="xccdf xhtml dc">
 
 
 
-  <!-- convenience macros for XCCDF prose -->
+  <!-- The next set of templates expand convenience macros for XCCDF prose -->
   <xsl:template match="sysctl-desc-macro">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     run the following command:
-    <xhtml:pre xml:space="preserve"># sysctl -w <xsl:value-of select="@sysctl"/>=<xsl:value-of select="@value"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo sysctl -w <xsl:value-of select="@sysctl"/>=<xsl:value-of select="@value"/></xhtml:pre>
 
 	<!-- The following text could also be included conditionally, if the defaultness of the sysctl were indicated. -->
     If this is not the system's default value, add the following line to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
@@ -280,17 +287,17 @@ exclude-result-prefixes="xccdf xhtml dc">
 
   <xsl:template match="fileperms-desc-macro">
     To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chmod <xsl:value-of select="@perms"/> <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chmod <xsl:value-of select="@perms"/><xsl:text> </xsl:text><xsl:value-of select="@file"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileowner-desc-macro">
     To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chown <xsl:value-of select="@owner"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chown <xsl:value-of select="@owner"/><xsl:text> </xsl:text><xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="filegroupowner-desc-macro">
     To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve"># chgrp <xsl:value-of select="@group"/> <xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/><xsl:text> </xsl:text><xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">
@@ -302,14 +309,14 @@ exclude-result-prefixes="xccdf xhtml dc">
 
   <xsl:template match="fileowner-check-macro">
     To check the ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre>$ ls -lL <xsl:value-of select="@file"/></xhtml:pre>
     If properly configured, the output should indicate the following owner:
     <xhtml:code><xsl:value-of select="@owner"/></xhtml:code>
   </xsl:template>
 
   <xsl:template match="filegroupowner-check-macro">
     To check the group ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
+    <xhtml:pre>$ ls -lL <xsl:value-of select="@file"/></xhtml:pre>
     If properly configured, the output should indicate the following group-owner.
     <xhtml:code><xsl:value-of select="@group"/></xhtml:code>
   </xsl:template>
@@ -323,12 +330,12 @@ exclude-result-prefixes="xccdf xhtml dc">
 
   <xsl:template match="package-install-macro">
     The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
-    <xhtml:pre># yum install <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre>$ sudo yum install <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="package-remove-macro">
     The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
-    <xhtml:pre># yum erase <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre>$ sudo yum erase <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="partition-check-macro">
@@ -374,14 +381,13 @@ exclude-result-prefixes="xccdf xhtml dc">
 
   <xsl:template match="package-check-macro">
     Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed:
-    <xhtml:pre># rpm -q <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre>$ rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
-
 
   <xsl:template match="module-disable-macro">
 To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
 kernel module from being loaded, add the following line to a file in the directory <xhtml:code>/etc/modprobe.d</xhtml:code>:
-<xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/false</xhtml:pre>
+<xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</xhtml:pre>
   </xsl:template>
 
   <xsl:template match="module-disable-check-macro">
@@ -389,7 +395,7 @@ If the system is configured to prevent the loading of the
 <xhtml:code><xsl:value-of select="@module"/></xhtml:code> kernel module,
 it will contain lines inside any file in <xhtml:code>/etc/modprobe.d</xhtml:code> or the deprecated<xhtml:code>/etc/modprobe.conf</xhtml:code>.
 These lines instruct the module loading system to run another program (such as
-<xhtml:code>/bin/false</xhtml:code>) upon a module <xhtml:code>install</xhtml:code> event.
+<xhtml:code>/bin/true</xhtml:code>) upon a module <xhtml:code>install</xhtml:code> event.
 Run the following command to search for such lines in all files in <xhtml:code>/etc/modprobe.d</xhtml:code>
 and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 <xhtml:pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</xhtml:pre>
@@ -440,7 +446,7 @@ If the system is configured to audit this activity, it will return a line.
     To determine how the SSH daemon's
     <xhtml:code><xsl:value-of select="@option"/></xhtml:code>
     option is set, run the following command:
-    <xhtml:pre xml:space="preserve"># grep -i <xsl:value-of select="@option"/> /etc/ssh/sshd_config</xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo grep -i <xsl:value-of select="@option"/> /etc/ssh/sshd_config</xhtml:pre>
     <xsl:if test="@default='yes'">
       If no line, a commented line, or a line indicating the value
       <xhtml:code><xsl:value-of select="@value"/></xhtml:code> is returned, then the required value is set.
