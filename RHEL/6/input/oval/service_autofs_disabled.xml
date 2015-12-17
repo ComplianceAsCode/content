@@ -8,8 +8,9 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The autofs service should be disabled if possible.</description>
-      <reference source="DS" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
+   <criteria comment="package autofs removed or service autofs is not configured to start" operator="OR">
+    <extend_definition comment="autofs removed" definition_ref="package_autofs_removed" />
     <criteria operator="AND" comment="service autofs is not configured to start">
       <criterion comment="autofs runlevel 0" test_ref="test_runlevel0_autofs" />
       <criterion comment="autofs runlevel 1" test_ref="test_runlevel1_autofs" />
@@ -18,6 +19,7 @@
       <criterion comment="autofs runlevel 4" test_ref="test_runlevel4_autofs" />
       <criterion comment="autofs runlevel 5" test_ref="test_runlevel5_autofs" />
       <criterion comment="autofs runlevel 6" test_ref="test_runlevel6_autofs" />
+    </criteria>
     </criteria>
   </definition>
   <unix:runlevel_test check="all" check_existence="any_exist"
