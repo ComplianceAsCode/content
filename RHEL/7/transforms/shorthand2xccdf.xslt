@@ -346,7 +346,7 @@
 
   <xsl:template match="filegroupowner-desc-macro">
     To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/><xsl:text> </xsl:text>xsl:value-of select="@file"/> </xhtml:pre>
+    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/><xsl:text> </xsl:text><xsl:value-of select="@file"/> </xhtml:pre>
   </xsl:template>
 
   <xsl:template match="fileperms-check-macro">
