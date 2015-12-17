@@ -59,8 +59,8 @@ table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 	xsltproc -stringparam profile "C2S" -o $(OUT)/table-$(PROD)-cisrefs-c2s.html \
 		$(TRANS)/xccdf2table-profilecisrefs.xslt $<
-	xsltproc -stringparam ref "pcidss" -o $(OUT)/table-$(PROD)-pcidss.html $(TRANS)/xccdf2table-byref.xslt \
-		$<
+	xsltproc -stringparam ref "pcidss" -o $(OUT)/table-$(PROD)-pcidss.html \
+		$(TRANS)/xccdf2table-byref.xslt $<
 
 table-idents: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $<
