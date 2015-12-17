@@ -1,5 +1,18 @@
 #!/usr/bin/python2
 
+"""
+This script lists all oval files made for all platforms (set as multi_platform_all), and check
+orphan oval files by parsing the XCCDF content. This allows newly added distributions to
+support shared oval and multi-platform oval without having a complete XCCDF checklist written,
+avoiding errors in validate target.
+
+This script is only a helper script, and should be used only while the XCCDF files are being
+written, giving some time to the authors. This is not for indefinite usage.
+
+Author: Jean-Baptiste Donnette <donnet_j@epita.fr>
+updated by: Philippe Thierry <phil@reseau-libre.net>
+"""
+
 import sys
 import os
 import re
