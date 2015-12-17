@@ -3,6 +3,7 @@ all: shorthand2xccdf tables guide content dist
 SHARED = ../../shared
 include $(SHARED)/product-make.include
 
+LOCAL_UTILS = ./utils
 PROD = debian8
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
@@ -35,6 +36,9 @@ ifeq ($(OVAL_5_11), 0)
 	# Update requested debian8 OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
 	sed -i "s/^\(debian8_oval_version = \).*/\15.11/" $(CONF)/oval\.config
 endif
+# 	if needed, list found orphans
+#	$(LOCAL_UTILS)/find_orphans.py $(PROD)|sort
+	./find_orphans.py $(PROD) | xargs rm -f
 	xmlwf $(PROD_OVAL)/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml

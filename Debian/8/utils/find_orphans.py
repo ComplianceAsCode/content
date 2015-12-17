@@ -52,11 +52,11 @@ def get_oval_id(line):
 def find_build_oval(folder_name, oval_list):
     for element in os.listdir(folder_name):
         if element.endswith('.xml'):
-            oval_list.append(element)
-        else:
-            find_xccdf_files(folder_name + '/' + element, xccdf_list)
-
-
+            file_open = open (folder_name + '/' + element)
+            for line in file_open:
+                if "multi_platform_all" in line:
+                   oval_list.append(element)
+            file_open.close()
 
 def main():
     if len(sys.argv) < 2:
@@ -69,14 +69,14 @@ def main():
     xccdf_directory = "input/xccdf/"
 
     find_build_oval(build_dir, oval_list)
-    find_xccdf_files (xccdf_directory, xccdf_list)
+    find_xccdf_files(xccdf_directory, xccdf_list)
     for element_build in oval_list:
         find = False
         for element_xccdf in xccdf_list:
             if (element_build == element_xccdf):
                 find = True
         if not find:
-            print element_build
+            print build_dir + element_build
 
 
 if __name__ == "__main__":
