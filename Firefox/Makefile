@@ -8,11 +8,8 @@ PROD = firefox
 #stats:
 #	$(SHARED)/$(TRANS)/stats.sh
 
-shorthand2xccdf: shorthand-guide
-	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(PROD)-shorthand.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
-	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml --output $(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-empty-groups-unselected.xml
+	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $<
 #	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
 #		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #   extract manual check instructions from xccdf into an ocil file

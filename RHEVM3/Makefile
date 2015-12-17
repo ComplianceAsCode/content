@@ -8,8 +8,8 @@ REFS = references
 
 PROD = rhevm3
 
-shorthand2xccdf: shorthand-guide
-	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $(OUT)/unlinked-noprofiles-$(PROD)-shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(PROD)-shorthand.xml
+shorthand2xccdf: $(OUT)/shorthand.xml
+	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $(OUT)/unlinked-noprofiles-$(PROD)-shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/shorthand.xml
 	xsltproc -o $(OUT)/unlinked-noprofiles-$(PROD)-xccdf.xml $(TRANS)/add_xccdf_namespace.xslt $(OUT)/unlinked-noprofiles-$(PROD)-shorthand.xml
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-$(PROD)-xccdf-prerefs.xml \
 		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-$(PROD)-xccdf.xml
