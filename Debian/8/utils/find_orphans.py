@@ -15,12 +15,9 @@ updated by: Philippe Thierry <phil@reseau-libre.net>
 
 import sys
 import os
-import re
-import glob
+from lxml import etree
 
 
-# The goal of this script is to find orphans rules that are in xccdf files
-# and remove it/them
 '''
 This fonction find every xccdf file that are in the input/xccdf/
 '''
@@ -38,12 +35,9 @@ This fonction find every oval definition countainin the file_xccdf and add it
 into the xccdf_list
 '''
 def find_oval_def (file_xccdf, xccdf_list):
-    file_open = open (file_xccdf)
-    for line in file_open:
-        if "<oval id=" in line:
-            #remove balises
-            xccdf_list.append(get_oval_id(line))
-    file_open.close()
+    tree  = etree.parse(file_xccdf)
+    for user in tree.xpath("/Group/Rule"):
+        xccdf_list.append(user.get("id"))
 
 
 '''
