@@ -65,3 +65,8 @@ $(OUT)/xccdf-unlinked-empty-groups-unselected.xml: $(OUT)/xccdf-unlinked-empty-g
 # Common build targets - improve the XCCDF stub - third resolve
 $(OUT)/xccdf-unlinked-resolved.xml: $(OUT)/xccdf-unlinked-empty-groups-unselected.xml
 	oscap xccdf resolve -o $@ $<
+
+# Common build targets - create OCIL questionnaire stub for further processing
+$(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(TRANS)/xccdf-create-ocil.xslt
+	xsltproc -o $@ $(TRANS)/xccdf-create-ocil.xslt $<
+	xmllint --format --output $@ $@
