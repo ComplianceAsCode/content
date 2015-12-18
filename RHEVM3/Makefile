@@ -8,15 +8,10 @@ REFS = references
 
 PROD = rhevm3
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml
-	xsltproc -stringparam profile "stig-$(PROD)-server" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
-		$(TRANS)/xccdf-addrefs.xslt $<
-#   extract manual check instructions from xccdf into an ocil file
-	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
-	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml
+	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $<
 	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(IN)/remediations/bash $(OUT)/bash-remediations.xml
-	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
