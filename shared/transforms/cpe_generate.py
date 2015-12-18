@@ -68,8 +68,14 @@ def main():
     defs = ovaltree.find("./{%s}definitions" % oval_ns)
     inventory_defs = defs.findall(".//{%s}definition[@class='inventory']"
                                   % oval_ns)
+    # Keep the list of 'id' attributes from untranslated inventory def elements
+    inventory_defs_id_attrs = []
+
     defs.clear()
     [defs.append(inventory_def) for inventory_def in inventory_defs]
+    # Fill in that list
+    [inventory_defs_id_attrs.append(inventory_def.get("id")) for \
+    inventory_def in inventory_defs]
 
     tests = ovaltree.find("./{%s}tests" % oval_ns)
     cpe_tests = extract_referred_nodes(defs, tests, "test_ref")
@@ -110,11 +116,12 @@ def main():
         checkhref = check.get("href")
         # If CPE OVAL references another OVAL file
         if checkhref == 'filename':
-            # Verify the referenced OVAL is truly defined somewhere in the
-            # (sub)directory tree below CWD. In correct scenario is should be:
+            # Sanity check -- Verify the referenced OVAL is truly defined
+            # somewhere in the (sub)directory tree below CWD. In correct
+            # scenario is should be located:
             # * either in input/oval/*.xml
-            # * or copied by former run of "combineovals.py" script from shared/
-            #   directory into build/ subdirectory
+            # * or copied by former run of "combineovals.py" script from
+            #   shared/ directory into build/ subdirectory
             refovalfilename = check.text
             refovalfilefound = False
             for dirpath, dirnames, filenames in os.walk(os.curdir, topdown=True):
@@ -133,10 +140,28 @@ def main():
             #   to include the necessary referenced file.
             # Therefore display an error and exit with failure in such cases
             if not refovalfilefound:
-                sys.stderr.write("\nError: Can't locate '%s' OVAL file in the list of OVAL checks for this product! Exiting..\n" % refovalfilename)
+                error_msg = "\n\tError: Can't locate \"%s\" OVAL file in the \
+                \n\tlist of OVAL checks for this product! Exiting..\n" % refovalfilename
+                sys.stderr.write(error_msg)
                 sys.exit(1)
         check.set("href", os.path.basename(newovalfile))
+
+        # Sanity check to verify if inventory check OVAL id is present in the
+        # list of known "id" attributes of inventory definitions. If not it
+        # means provided ovalfile (sys.argv[1]) doesn't contain this OVAL
+        # definition (it wasn't included due to <platform> tag restrictions)
+        # Therefore display an error and exit with failure, since otherwise
+        # we might end up creating invalid $(ID)-$(PROD)-cpe-oval.xml file
+        if check.text not in inventory_defs_id_attrs:
+            error_msg = "\n\tError: Can't locate \"%s\" definition in \"%s\". \
+            \n\tEnsure <platform> element is configured properly for \"%s\".  \
+            \n\tExiting..\n" % (check.text, ovalfile, check.text)
+            sys.stderr.write(error_msg)
+            sys.exit(1)
+
+        # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.assign_id("{" + oval_ns + "}definition", check.text)
+
     ET.ElementTree(cpedicttree).write("./output/"+newcpedictfile)
 
     sys.exit(0)
