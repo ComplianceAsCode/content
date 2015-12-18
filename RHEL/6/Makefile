@@ -12,8 +12,6 @@ PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
 shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml
-#	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
-#		$(TRANS)/xccdf-addrefs.xslt $<
 #   extract manual check instructions from xccdf into an ocil file
 	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $<
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
