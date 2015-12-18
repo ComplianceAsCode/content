@@ -19,12 +19,15 @@
 <xsl:variable name="ovalfile">unlinked-rhevm3-oval.xml</xsl:variable>
 <xsl:variable name="defaultseverity" select="'low'" />
 
+<!-- put elements created in this stylesheet into the xccdf namespace,
+     if no namespace explicitly indicated -->
+<xsl:namespace-alias result-prefix="xccdf" stylesheet-prefix="#default" />
 
-  <!-- Content:template -->
+
   <xsl:template match="Benchmark">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()" />
-    </xsl:copy>
+    <xsl:element name="{local-name()}" namespace="http://checklists.nist.gov/xccdf/1.1">
+        <xsl:apply-templates select="node()|@*"/>
+    </xsl:element>
   </xsl:template>
 
 
@@ -42,7 +45,8 @@
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
   <xsl:template match="Rule">
-    <xsl:copy>
+    <Rule selected="false">
+    <!-- set selected attribute to false, to enable profile-driven evaluation -->
       <xsl:apply-templates select="@*" />
       <!-- also: add severity of "low" to each Rule if otherwise unspecified -->
       <xsl:if test="not(@severity)">
@@ -60,12 +64,12 @@
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/> 
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::tested|self::rationale|self::ident|self::oval)]"/>
-    </xsl:copy>
+    </Rule>
   </xsl:template> 
 
 
   <xsl:template match="Group">
-    <xsl:copy>
+    <Group>
       <xsl:apply-templates select="@*" />
       <xsl:apply-templates select="title"/>
       <xsl:apply-templates select="description"/>
@@ -73,9 +77,13 @@
       <xsl:apply-templates select="ref"/> 
       <xsl:apply-templates select="rationale"/> 
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale)]"/>
-    </xsl:copy>
+    </Group>
   </xsl:template> 
 
+  <!-- XHTML, such as tt, is not allowed in titles -->
+  <xsl:template match="title/tt">
+        <xsl:apply-templates select="@*|node()" />
+  </xsl:template>
 
   <!-- expand reference to ident types -->
   <xsl:template match="Rule/ident">
@@ -235,7 +243,42 @@
       </reference>
    </xsl:template>
 
-  <xsl:template match="@*|node()">
+  <!-- The next set of templates places elements into the correct namespaces,
+       so that content authors never have to bother with them.
+       XHTML elements are explicitly identified and the xhtml
+       namespace is added.  Any element with an empty namespace
+       is assigned to the xccdf namespace. -->
+
+  <!-- put table and list-related xhtml tags into xhtml namespace -->
+  <xsl:template match="table | tr | th | td | ul | li | ol" >
+    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- put general formatting xhtml into xhtml namespace -->
+  <xsl:template match="p | code | strong | b | em | i | pre | br | hr" >
+    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- convert tt to code, which seems better-supported -->
+  <xsl:template match="tt">
+    <xhtml:code>
+      <xsl:apply-templates select="@*|node()"/>
+    </xhtml:code>
+  </xsl:template>
+
+  <!-- if no namespace is indicated, put into xccdf namespace-->
+  <xsl:template match="*[namespace-uri()='']" priority="-1">
+    <xsl:element name="{local-name()}" namespace="http://checklists.nist.gov/xccdf/1.1">
+      <xsl:apply-templates select="node()|@*"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- identity transform: pass anything else through -->
+  <xsl:template match="@*|node()" priority="-2">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
     </xsl:copy>
@@ -456,82 +499,4 @@ If the system is configured to audit this activity, it will return a line.
     </xsl:if>
   </xsl:template>
 
-
-  <!-- CORRECTING TERRIBLE ABUSE OF NAMESPACES BELOW -->
-  <!-- (expanding xhtml tags back into the xhtml namespace) -->
-  <xsl:template match="br">
-    <xhtml:br />
-  </xsl:template>
-
-  <xsl:template match="ul">
-    <xhtml:ul>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:ul>
-  </xsl:template>
-
-  <xsl:template match="li">
-    <xhtml:li>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:li>
-  </xsl:template>
-
-  <xsl:template match="tt">
-    <xhtml:code>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:code>
-  </xsl:template>
-
-
-  <!-- remove use of tt in titles; xhtml in titles is not allowed -->
-  <xsl:template match="title/tt">
-        <xsl:apply-templates select="@*|node()" />
-  </xsl:template>
-
-  <xsl:template match="p">
-    <xhtml:p>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:p>
-  </xsl:template>
-
-  <xsl:template match="code">
-    <xhtml:code>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:code>
-  </xsl:template>
-
-  <xsl:template match="strong">
-    <xhtml:strong>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:strong>
-  </xsl:template>
-
-  <xsl:template match="b">
-    <xhtml:b>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:b>
-  </xsl:template>
-
-  <xsl:template match="em">
-    <xhtml:em>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:em>
-  </xsl:template>
-
-  <xsl:template match="i">
-    <xhtml:i>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:i>
-  </xsl:template>
-
-  <xsl:template match="ol">
-    <xhtml:ol>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:ol>
-  </xsl:template>
-
-  <xsl:template match="pre">
-    <xhtml:pre>
-        <xsl:apply-templates select="@*|node()" />
-    </xhtml:pre>
-  </xsl:template>
 </xsl:stylesheet>
