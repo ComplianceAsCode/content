@@ -11,10 +11,7 @@ PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 # Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml
-#   extract manual check instructions from xccdf into an ocil file
-	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $<
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml
 	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $<
 	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
 	mkdir -p $(PROD_REMEDIATIONS)
