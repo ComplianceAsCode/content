@@ -4,6 +4,9 @@
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+
+       <xsl:apply-templates select="document('profiles/stig-rhevm3.xml')" />
+
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>
                  <description>A conditional clause for check statements.</description>
