@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 
+import fnmatch
 import sys
 import os
 import idtranslate
@@ -106,9 +107,36 @@ def main():
     cpedicttree = parse_xml_file(cpedictfile)
     newcpedictfile = idname + "-" + os.path.basename(cpedictfile)
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
+        checkhref = check.get("href")
+        # If CPE OVAL references another OVAL file
+        if checkhref == 'filename':
+            # Verify the referenced OVAL is truly defined somewhere in the
+            # (sub)directory tree below CWD. In correct scenario is should be:
+            # * either in input/oval/*.xml
+            # * or copied by former run of "combineovals.py" script from shared/
+            #   directory into build/ subdirectory
+            refovalfilename = check.text
+            refovalfilefound = False
+            for dirpath, dirnames, filenames in os.walk(os.curdir, topdown=True):
+                # Case when referenced OVAL file exists
+                for location in fnmatch.filter(filenames, refovalfilename + '.xml'):
+                    refovalfilefound = True
+                    break                     # break from the inner for loop
+
+                if refovalfilefound:
+                    break                     # break from the outer for loop
+
+            # Referenced OVAL doesn't exist in the subdirtree below CWD:
+            # * there's either typo in the refenced OVAL filename, or
+            # * is has been forgotten to be placed into input/oval, or
+            # * the <platform> tag of particular shared/ OVAL wasn't modified
+            #   to include the necessary referenced file.
+            # Therefore display an error and exit with failure in such cases
+            if not refovalfilefound:
+                sys.stderr.write("\nError: Can't locate '%s' OVAL file in the list of OVAL checks for this product! Exiting..\n" % refovalfilename)
+                sys.exit(1)
         check.set("href", os.path.basename(newovalfile))
-        check.text = translator.assign_id("{" + oval_ns + "}definition",
-                                          check.text)
+        check.text = translator.assign_id("{" + oval_ns + "}definition", check.text)
     ET.ElementTree(cpedicttree).write("./output/"+newcpedictfile)
 
     sys.exit(0)
