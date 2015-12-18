@@ -8,7 +8,7 @@ REFS = references
 
 PROD = openstack
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-unresolved.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml
 	xsltproc -stringparam profile "stig-$(PROD)-server" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
 		$(TRANS)/xccdf-addrefs.xslt $<
 #   extract manual check instructions from xccdf into an ocil file
