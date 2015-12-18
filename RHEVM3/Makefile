@@ -9,9 +9,8 @@ REFS = references
 PROD = rhevm3
 
 shorthand2xccdf: $(OUT)/xccdf-unlinked-unresolved.xml
-	xsltproc -o $(OUT)/unlinked-noprofiles-$(PROD)-xccdf.xml $(TRANS)/add_xccdf_namespace.xslt $<
 	xsltproc -stringparam profile "allprofiles" -o $(OUT)/unlinked-$(PROD)-xccdf-prerefs.xml \
-		$(TRANS)/xccdf-addprofiles.xslt $(OUT)/unlinked-noprofiles-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf-addprofiles.xslt $<
 	xsltproc -stringparam profile "stig-$(PROD)-server" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
 		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf-prerefs.xml
 #   extract manual check instructions from xccdf into an ocil file
