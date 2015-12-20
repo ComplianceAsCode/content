@@ -227,7 +227,7 @@ clean:
 	cd RHEL/6 && $(MAKE) clean
 	cd RHEL/7 && $(MAKE) clean
 	cd Debian/8 && $(MAKE) clean
-	cd OpenStack && $(MAKE) clean
+	cd OpenStack/RHEL-OSP/7 && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
 	cd JRE && $(MAKE) clean
