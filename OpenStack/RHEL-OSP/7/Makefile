@@ -1,15 +1,7 @@
 all: shorthand2xccdf tables guide content dist
 
-# The following VERSION line is kept intentionally till we enhance RHEL-OSP/7 content
-# to support OVAL-5.11 too
-#include ../../../VERSION
-
 SHARED = ../../../shared
 include $(SHARED)/product-make.include
-
-# The following CONF line is kept intentionally till we enhance RHEL-OSP/7 content
-# to support OVAL-5.11 too
-#CONF = ../../../config
 
 PROD = rhel-osp7
 PROD_OVAL = $(BUILD)/$(PROD)_oval
