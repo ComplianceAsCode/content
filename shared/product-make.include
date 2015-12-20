@@ -51,7 +51,7 @@ $(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
 	xmllint --format --output $@ $@
 
 # Common build targets - convert shorthand format to an XCCDF stub
-$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt
+$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $@ $(TRANS)/shorthand2xccdf.xslt $<
 
 # Common build targets - improve the XCCDF stub - first resolve
@@ -72,5 +72,5 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(TRANS)/xccdf-crea
 	xmllint --format --output $@ $@
 
 # Common build targets - an XCCDF that refers to OCIL document
-$(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(TRANS)/constants.xslt
+$(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc -o $@ $(TRANS)/xccdf-ocilcheck2ref.xslt $<
