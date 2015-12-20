@@ -1,0 +1,131 @@
+<Group id="nova">
+<title>Nova STIG Checklist</title>
+<description>High level overview of Nova STIG settings to go here!</description>
+
+<Rule id="nova_file_ownership">
+<title>Check-Compute-01: Is user/group ownership of config files set to root/nova?</title>
+<description>
+Configuration files contain critical parameters and information required for smooth functioning of the component. If an unprivileged user, either intentionally or accidentally modifies or deletes any of the parameters or the file itself then it would cause severe availability issues causing a denial of service to the other end users. Thus user ownership of such critical configuration files must be set to root and group ownership must be set to nova.
+<br />
+<br />
+Run the following commands:
+
+<br />
+<br />
+<tt>
+$ stat -L -c "%U %G" /etc/nova/nova.conf | egrep "root nova"
+<br />
+$ stat -L -c "%U %G" /etc/nova/api-paste.ini | egrep "root nova"
+<br />
+$ stat -L -c "%U %G" /etc/nova/policy.json | egrep "root nova"
+<br />
+$ stat -L -c "%U %G" /etc/nova/rootwrap.conf | egrep "root nova"
+</tt>
+<br />
+<br />
+Pass: If user and group ownership of all these config files is set to root and nova respectively. The above commands show output of root nova.
+<br />
+<br />
+
+Fail: If the above commands does not return any output as the user and group ownership might have set to any user other than root or any group other than nova.
+</description>
+<!-- <oval id="nova_file_ownership" /> -->
+</Rule>
+
+<Rule id="nova_file_perms">
+<title>Check-Compute-02: Are strict permissions set for Compute configuration files?</title>
+<description>
+Similar to the previous check, it is recommended to set strict access permissions for such configuration files.
+<br />
+<br />
+
+Run the following commands:
+<br />
+<tt>
+$ stat -L -c "%a" /etc/nova/nova.conf
+<br />
+$ stat -L -c "%a" /etc/nova/api-paste.ini
+<br />
+$ stat -L -c "%a" /etc/nova/policy.json
+<br />
+$ stat -L -c "%a" /etc/nova/rootwrap.conf
+</tt>
+<br />
+<br />
+
+Pass: If permissions are set to 640 or stricter. The permissions of 640 translates into owner r/w, group r, and no rights to others i.e. “u=rw,g=r,o=”. Note that with Check-Compute-01: Is user/group ownership of config files set to root/nova? and permissions set to 640, root has read/write access and nova has read access to these configuration files. The access rights can also be validated using the following command. This command will only be available on your system if it supports ACLs.
+
+<br />
+<tt>
+$ getfacl --tabular -a /etc/nova/nova.conf
+<br />
+getfacl: Removing leading '/' from absolute path names
+<br />
+# file: etc/nova/nova.conf
+<br />
+USER   root  rw-
+<br />
+GROUP  nova  r--
+<br />
+mask         r--
+<br />
+other        ---
+</tt>
+<br />
+<br />
+Fail: If permissions are not set to at least 640.
+</description>
+<!-- <oval id="nova_file_perms" /> -->
+</Rule>
+
+<Rule id="nova_use_keystone">
+<title>Check-Compute-03: Is keystone used for authentication?</title>
+<description>
+OpenStack supports various authentication strategies like noauth, keystone etc. If the ‘noauth’ strategy is used then the users could interact with OpenStack services without any authentication. This could be a potential risk since an attacker might gain unauthorized access to the OpenStack components. Thus it is strongly recommended that all services must be authenticated with keystone using their service accounts.
+<br />
+<br />
+
+Pass: If value of parameter auth_strategy under [DEFAULT] section in /etc/nova/nova.conf is set to keystone.
+<br />
+<br />
+
+Fail: If value of parameter auth_strategy under [DEFAULT] section is set to noauth or noauth2.
+</description>
+<!-- <oval id="nova_use_keystone" /> -->
+</Rule>
+
+<Rule id="nova_secure_authentication">
+<title>Check-Compute-04: Is secure protocol used for authentication?</title>
+<description>
+OpenStack components communicate with each other using various protocols and the communication might involve sensitive / confidential data. An attacker may try to eavesdrop on the channel in order to get access to sensitive information. Thus all the components must communicate with each other using a secured communication protocol.
+
+<br />
+<br />
+Pass: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/nova/nova.conf is set to https, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/nova/nova.conf is set to Identity API endpoint starting with https://.
+<br />
+<br />
+
+Fail: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/nova/nova.conf is set to http`, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/nova/nova.conf is not set to Identity API endpoint starting with https://.
+</description>
+<!-- <oval id="nova_secure_authentication" /> -->
+</Rule>
+
+<Rule id="nova_secure_glance">
+<title>Check-Compute-05: Does Nova communicates with Glance securely?</title>
+<description>
+OpenStack components communicate with each other using various protocols and the communication might involve sensitive / confidential data. An attacker may try to eavesdrop on the channel in order to get access to sensitive information. Thus all the components must communicate with each other using a secured communication protocol.
+<br />
+<br />
+
+Pass: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/nova/nova.conf is set to False, or if value of parameter api_insecure under [glance] section in /etc/nova/nova.conf is set to False.
+<br />
+<br />
+
+Fail: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/nova/nova.conf is set to True, or if value of parameter api_insecure under [glance] section in /etc/nova/nova.conf is set to True.
+<br />
+<br />
+</description>
+<!-- <oval id="nova_secure_glance" /> -->
+</Rule>
+
+</Group>
