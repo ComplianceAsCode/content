@@ -36,7 +36,7 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: validate-buildsystem fedora rhel5 rhel6 rhel7 openstack rhevm3 webmin firefox jre chromium debian8 rpm
+all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 rpm
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist debian8-dist
 jenkins: clean all validate dist rpm
 
@@ -67,8 +67,8 @@ debian8:
 debian8-dist:
 	cd Debian/8/ && $(MAKE) dist
 
-openstack:
-	cd OpenStack && $(MAKE)
+rhel-osp7:
+	cd OpenStack/RHEL-OSP/7 && $(MAKE)
 
 rhevm3:
 	cd RHEVM3 && $(MAKE)
@@ -105,17 +105,17 @@ validate-buildsystem:
 		fi \
 	done
 
-validate: fedora rhel5 rhel6 rhel7 debian8 openstack rhevm3 chromium firefox jre
+validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	cd Debian/8/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
 	cd JRE/ && $(MAKE) validate
+	cd OpenStack/RHEL-OSP/7/ && $(MAKE) validate
 	# Enable below when content validates correctly
 	#cd RHEL/5/ && $(MAKE) validate
 	#cd RHEL/7/ && $(MAKE) validate
-	#cd OpenStack && $(MAKE) validate
 	#cd RHEVM3 && $(MAKE) validate
 
 rpmroot:
