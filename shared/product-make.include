@@ -70,3 +70,7 @@ $(OUT)/xccdf-unlinked-resolved.xml: $(OUT)/xccdf-unlinked-empty-groups-unselecte
 $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(TRANS)/xccdf-create-ocil.xslt
 	xsltproc -o $@ $(TRANS)/xccdf-create-ocil.xslt $<
 	xmllint --format --output $@ $@
+
+# Common build targets - an XCCDF that refers to OCIL document
+$(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(TRANS)/constants.xslt
+	xsltproc -o $@ $(TRANS)/xccdf-ocilcheck2ref.xslt $<
