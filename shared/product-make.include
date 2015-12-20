@@ -72,5 +72,5 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(TRANS)/xccdf-crea
 	xmllint --format --output $@ $@
 
 # Common build targets - an XCCDF that refers to OCIL document
-$(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
-	xsltproc -o $@ $(TRANS)/xccdf-ocilcheck2ref.xslt $<
+$(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
+	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
