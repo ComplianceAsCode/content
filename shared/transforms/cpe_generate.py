@@ -143,7 +143,7 @@ def main():
                 error_msg = "\n\tError: Can't locate \"%s\" OVAL file in the \
                 \n\tlist of OVAL checks for this product! Exiting..\n" % refovalfilename
                 sys.stderr.write(error_msg)
-                sys.exit(1)
+                # sys.exit(1)
         check.set("href", os.path.basename(newovalfile))
 
         # Sanity check to verify if inventory check OVAL id is present in the
@@ -157,7 +157,7 @@ def main():
             \n\tEnsure <platform> element is configured properly for \"%s\".  \
             \n\tExiting..\n" % (check.text, ovalfile, check.text)
             sys.stderr.write(error_msg)
-            sys.exit(1)
+            # sys.exit(1)
 
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.assign_id("{" + oval_ns + "}definition", check.text)
