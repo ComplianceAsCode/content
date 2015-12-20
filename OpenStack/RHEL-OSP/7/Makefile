@@ -1,60 +1,33 @@
-include ../../../VERSION
+all: shorthand2xccdf tables guide content dist
 
-IN = input
-OUT = output
-BUILD = build
-TRANS = transforms
+# The following VERSION line is kept intentionally till we enhance RHEL-OSP/7 content
+# to support OVAL-5.11 too
+#include ../../../VERSION
+
 SHARED = ../../../shared
-SHARED_OVAL = $(SHARED)/oval
-SHARED_REMEDIATIONS = $(SHARED)/remediations/bash
-REFS = $(SHARED)/references
-CONF = ../../../config
-UTILS = utils
-DIST = dist
+include $(SHARED)/product-make.include
 
-ID = ssg
+# The following CONF line is kept intentionally till we enhance RHEL-OSP/7 content
+# to support OVAL-5.11 too
+#CONF = ../../../config
+
 PROD = rhel-osp7
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
-
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
-OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
-# OpenSCAP 1.1.0+ supports generating guides from datastreams
-OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
 # Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
-all: shorthand2xccdf tables guide content dist
-
-shorthand-guide:
-ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(OUT)/guide.xml
-else
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $(OUT)/$(PROD)-shorthand.xml $(IN)/guide.xslt $(IN)/guide.xml
-endif
-	xmllint --format --output $(OUT)/$(PROD)-shorthand.xml $(OUT)/$(PROD)-shorthand.xml
-
-shorthand2xccdf: shorthand-guide
-	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml $(TRANS)/shorthand2xccdf.xslt $(OUT)/$(PROD)-shorthand.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml $(OUT)/unlinked-unresolved-$(PROD)-xccdf.xml
-	$(SHARED)/$(UTILS)/unselect-empty-xccdf-groups.py --input $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml --output $(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
-#	xsltproc -stringparam profile "stig-$(PROD)-server" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
-#		$(TRANS)/xccdf-addrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-#   extract manual check instructions from xccdf into an ocil file
-	xsltproc -o $(OUT)/unlinked-$(PROD)-ocil.xml $(TRANS)/xccdf-create-ocil.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $(OUT)/unlinked-$(PROD)-ocil.xml 
-	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml
+	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $<
 	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
 	mkdir -p $(PROD_REMEDIATIONS)
 	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_REMEDIATIONS) directory
 	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_REMEDIATIONS) ';'
 	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(PROD_REMEDIATIONS) $(OUT)/bash-remediations.xml
-	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
@@ -80,27 +53,27 @@ endif
 #	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
-table-refs: shorthand2xccdf
-	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
+table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
+	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
 	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-nistrefs-common.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 	xsltproc -stringparam profile "ospp-rhel7-server" -o $(OUT)/table-$(PROD)-nistrefs-ospp.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 
-table-idents: shorthand2xccdf
-	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml
+table-idents: $(OUT)/xccdf-unlinked-empty-groups.xml
+	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $<
 
-table-srgmap: shorthand2xccdf
+table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 # the map-to-items filename must be provided relative to the root of the main document being processed
-	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap.html \
+	xsltproc -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
-	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-empty-groups-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
+	xsltproc -stringparam flat "y" -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: shorthand2xccdf table-srgmap checks
-#	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml  
-#	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml  
+#	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
+#	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
@@ -111,7 +84,7 @@ table-stigs: shorthand2xccdf table-srgmap checks
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/nist_overlay.xml" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
 		$(TRANS)/xccdf-apply-overlay-stig.xslt \
 		$(OUT)/unlinked-$(PROD)-xccdf.xml
-	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml  
+	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
 tables: table-refs table-idents table-srgmap table-stigs
 
@@ -144,7 +117,7 @@ content: shorthand2xccdf checks
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl7-ds.xml
 
 content-stig: shorthand2xccdf guide checks
-	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml 
+	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml disa-predraft
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-$(PROD)-xccdf.xml disa-predraft
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
@@ -179,7 +152,7 @@ validate-xml:
 	oscap ds sds-validate $(OUT)/$(ID)-sl7-ds.xml
 
 validate: validate-xml
-	cd $(OUT); ../$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
 eval-test:
 	# Rebuild the content indicating the 'test' profile should be included
