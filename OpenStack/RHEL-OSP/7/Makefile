@@ -1,26 +1,13 @@
 all: shorthand2xccdf tables guide content dist
 
-# The following VERSION line is kept intentionally till we enhance RHEL-OSP/7 content
-# to support OVAL-5.11 too
-#include ../../../VERSION
-
 SHARED = ../../../shared
 include $(SHARED)/product-make.include
-
-# The following CONF line is kept intentionally till we enhance RHEL-OSP/7 content
-# to support OVAL-5.11 too
-#CONF = ../../../config
 
 PROD = rhel-osp7
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
-# Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
-# Value '0' means 'test' will be included. Value '1' means 'test' will NOT be included.
-INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
-
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml
-	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $<
+shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml
 	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
 	mkdir -p $(PROD_REMEDIATIONS)
 	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
@@ -96,7 +83,7 @@ content: shorthand2xccdf checks
 #	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
-	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py xccdf-unlinked-ocilrefs.xml $(ID)
 #	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
 	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
 #	Once things are relabelled, create a datastream
