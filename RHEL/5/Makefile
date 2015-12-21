@@ -9,8 +9,7 @@ PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
 all: shorthand2xccdf tables guide content dist
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml
-	xsltproc -o $(OUT)/unlinked-ocilrefs-$(PROD)-xccdf.xml $(TRANS)/xccdf-ocilcheck2ref.xslt $<
+shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml
 	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
 	mkdir -p $(PROD_REMEDIATIONS)
 	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
@@ -77,7 +76,7 @@ content: shorthand2xccdf checks
 #	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
-	$(SHARED)/$(TRANS)/relabelids.py unlinked-ocilrefs-$(PROD)-xccdf.xml $(ID)
+	$(SHARED)/$(TRANS)/relabelids.py xccdf-unlinked-ocilrefs.xml $(ID)
 #	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
 	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
 #	Once things are relabelled, create a datastream
