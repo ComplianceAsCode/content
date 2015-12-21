@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 
+import fnmatch
 import sys
 import os
 import idtranslate
@@ -67,8 +68,14 @@ def main():
     defs = ovaltree.find("./{%s}definitions" % oval_ns)
     inventory_defs = defs.findall(".//{%s}definition[@class='inventory']"
                                   % oval_ns)
+    # Keep the list of 'id' attributes from untranslated inventory def elements
+    inventory_defs_id_attrs = []
+
     defs.clear()
     [defs.append(inventory_def) for inventory_def in inventory_defs]
+    # Fill in that list
+    [inventory_defs_id_attrs.append(inventory_def.get("id")) for \
+    inventory_def in inventory_defs]
 
     tests = ovaltree.find("./{%s}tests" % oval_ns)
     cpe_tests = extract_referred_nodes(defs, tests, "test_ref")
@@ -106,9 +113,55 @@ def main():
     cpedicttree = parse_xml_file(cpedictfile)
     newcpedictfile = idname + "-" + os.path.basename(cpedictfile)
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
+        checkhref = check.get("href")
+        # If CPE OVAL references another OVAL file
+        if checkhref == 'filename':
+            # Sanity check -- Verify the referenced OVAL is truly defined
+            # somewhere in the (sub)directory tree below CWD. In correct
+            # scenario is should be located:
+            # * either in input/oval/*.xml
+            # * or copied by former run of "combineovals.py" script from
+            #   shared/ directory into build/ subdirectory
+            refovalfilename = check.text
+            refovalfilefound = False
+            for dirpath, dirnames, filenames in os.walk(os.curdir, topdown=True):
+                # Case when referenced OVAL file exists
+                for location in fnmatch.filter(filenames, refovalfilename + '.xml'):
+                    refovalfilefound = True
+                    break                     # break from the inner for loop
+
+                if refovalfilefound:
+                    break                     # break from the outer for loop
+
+            # Referenced OVAL doesn't exist in the subdirtree below CWD:
+            # * there's either typo in the refenced OVAL filename, or
+            # * is has been forgotten to be placed into input/oval, or
+            # * the <platform> tag of particular shared/ OVAL wasn't modified
+            #   to include the necessary referenced file.
+            # Therefore display an error and exit with failure in such cases
+            if not refovalfilefound:
+                error_msg = "\n\tError: Can't locate \"%s\" OVAL file in the \
+                \n\tlist of OVAL checks for this product! Exiting..\n" % refovalfilename
+                sys.stderr.write(error_msg)
+                # sys.exit(1)
         check.set("href", os.path.basename(newovalfile))
-        check.text = translator.assign_id("{" + oval_ns + "}definition",
-                                          check.text)
+
+        # Sanity check to verify if inventory check OVAL id is present in the
+        # list of known "id" attributes of inventory definitions. If not it
+        # means provided ovalfile (sys.argv[1]) doesn't contain this OVAL
+        # definition (it wasn't included due to <platform> tag restrictions)
+        # Therefore display an error and exit with failure, since otherwise
+        # we might end up creating invalid $(ID)-$(PROD)-cpe-oval.xml file
+        if check.text not in inventory_defs_id_attrs:
+            error_msg = "\n\tError: Can't locate \"%s\" definition in \"%s\". \
+            \n\tEnsure <platform> element is configured properly for \"%s\".  \
+            \n\tExiting..\n" % (check.text, ovalfile, check.text)
+            sys.stderr.write(error_msg)
+            # sys.exit(1)
+
+        # Referenced OVAL checks passed both of the above sanity tests
+        check.text = translator.assign_id("{" + oval_ns + "}definition", check.text)
+
     ET.ElementTree(cpedicttree).write("./output/"+newcpedictfile)
 
     sys.exit(0)
