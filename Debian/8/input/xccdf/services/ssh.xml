@@ -60,8 +60,7 @@ should not be used.
 </rationale>
 <ident cce="27320-1" />
 <oval id="sshd_allow_only_protocol2" />
-<ref nist="AC-17(7),IA-5(1)(c)" disa="" cis="6.2.1" />
-<tested by="DS" on="20121024"/>
+<ref nist="AC-17(7),IA-5(1)(c)" cis="6.2.1" debian="dsg-5.1" />
 </Rule>
 
 <Rule id="sshd_set_idle_timeout">
@@ -93,8 +92,7 @@ to compromises on another.
 </rationale>
 <ident cce="27433-2" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
-<ref nist="AC-2(5),SA-8" disa="" pcidss="Req-8.1.8" cis="6.2.12" />
-<tested by="DS" on="20121024"/>
+<ref nist="AC-2(5),SA-8" pcidss="Req-8.1.8" cis="6.2.12" />
 </Rule>
 
 
@@ -117,8 +115,7 @@ is reached.
 </rationale>
 <ident cce="27082-7" />
 <oval id="sshd_set_keepalive" />
-<ref nist="AC-2(5),SA-8" disa="" cis="6.2.12" />
-<tested by="DS" on="20121024"/>
+<ref nist="AC-2(5),SA-8" cis="6.2.12" />
 </Rule>
 
 <Rule id="sshd_disable_root_login" severity="medium">
@@ -139,8 +136,7 @@ and also allows direct attack attempts on root's password.
 </rationale>
 <ident cce="27445-6" />
 <oval id="sshd_disable_root_login" />
-<ref nist="AC-3,AC-6(2),IA-2(1)" disa="" cis="6.2.8" />
-<tested by="DS" on="20121024"/>
+<ref nist="AC-3,AC-6(2),IA-2(1)" cis="6.2.8" debian="dsg-5.1" />
 </Rule>
 
 
@@ -163,8 +159,7 @@ even in the event of misconfiguration elsewhere.
 </rationale>
 <ident cce="27471-2" />
 <oval id="sshd_disable_empty_passwords" />
-<ref nist="AC-3" disa=""/>
-<tested by="DS" on="20121024"/>
+<ref nist="AC-3" debian="dsg-5.1"/>
 </Rule>
 
 </Group>
