@@ -36,9 +36,6 @@ ifeq ($(OVAL_5_11), 0)
 	# Update requested debian8 OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
 	sed -i "s/^\(debian8_oval_version = \).*/\15.11/" $(CONF)/oval\.config
 endif
-# 	if needed, list found orphans
-#	$(LOCAL_UTILS)/find_orphans.py $(PROD)|sort
-	$(LOCAL_UTILS)/find_orphans.py $(PROD) | xargs rm
 	xmlwf $(PROD_OVAL)/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
@@ -114,20 +111,20 @@ validate-xml:
 #	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate: validate-xml
-ifeq ($(OVAL_5_11), 0)
-	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
-else
-	# If we are building against oscap version not supporting OVAL-5.11 language version yet,
-	# don't call verify-references.py with "--rules-with-invalid-checks" argument, since the
-	# OVAL checks using the 5.11 OVAL version will not be included in that case
-	@echo -e "\nWarning:\n"
-	@echo -e "\tDebian 8 content build using oscap not supporting OVAL-5.11 language version detected!"
-	@echo -e "\tSince the OVAL-5.11 Fedora OVAL checks are missing, will skip test for referenced,"
-	@echo -e "\tbut undefined OVAL definitions during content validation. Consider building Debian 8"
-	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
-	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
-endif
-	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
+#ifeq ($(OVAL_5_11), 0)
+#	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+#else
+#	# If we are building against oscap version not supporting OVAL-5.11 language version yet,
+#	# don't call verify-references.py with "--rules-with-invalid-checks" argument, since the
+#	# OVAL checks using the 5.11 OVAL version will not be included in that case
+#	@echo -e "\nWarning:\n"
+#	@echo -e "\tDebian 8 content build using oscap not supporting OVAL-5.11 language version detected!"
+#	@echo -e "\tSince the OVAL-5.11 Fedora OVAL checks are missing, will skip test for referenced,"
+#	@echo -e "\tbut undefined OVAL definitions during content validation. Consider building Debian 8"
+#	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
+#	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+#endif
+#	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 
 # Items in dist are expected for distribution in an rpm
 dist: guide content
