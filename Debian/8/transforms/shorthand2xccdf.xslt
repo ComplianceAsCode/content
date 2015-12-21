@@ -164,9 +164,6 @@
           <xsl:if test="$refsource = 'cis'">
             <xsl:value-of select="$cisuri" />
           </xsl:if>
-	  <xsl:if test="$refsource = 'debian'">
-            <xsl:value-of select="$debianuri" />
-          </xsl:if>
         </xsl:attribute>
         <xsl:value-of select="normalize-space($refitem)" />
       </reference>
