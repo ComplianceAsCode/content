@@ -38,8 +38,9 @@ def find_oval_def(file_xccdf, xccdf_list):
     it into the xccdf_list
     '''
     tree = etree.parse(file_xccdf)
-    for user in tree.xpath("/Group/Rule"):
-        xccdf_list.append(user.get("id"))
+    for element in tree.iter():
+        if element.tag == "oval":
+            xccdf_list.append(element.get("id"))
 
 
 def find_build_oval(folder_name, oval_list):
@@ -62,7 +63,6 @@ def main():
     if len(sys.argv) < 2:
         print "Usage : ./find_orphans name_of distribution target"
         sys.exit(1)
-
     oval_list = []
     xccdf_list = []
     build_dir = "build/" + sys.argv[1] + '_oval/'
@@ -73,7 +73,7 @@ def main():
     for element_build in oval_list:
         find = False
         for element_xccdf in xccdf_list:
-            if element_build == element_xccdf:
+            if element_build == element_xccdf + ".xml":
                 find = True
         if not find:
             print build_dir + element_build
@@ -81,3 +81,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
