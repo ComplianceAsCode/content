@@ -85,7 +85,7 @@ def main():
     ovalfile = ovalfiles.pop() if ovalfiles else None
     ocilfile = ocilfiles.pop() if ocilfiles else None
 
-    translator = idtranslate.idtranslator(idname+".ini", idname)
+    translator = idtranslate.idtranslator(idname)
 
     # rename all IDs in the oval file
     if ovalfile:
@@ -119,25 +119,25 @@ def main():
             continue
 
         if check.get("system") == oval_cs:
-            checkid = translator.assign_id("{" + oval_ns + "}definition",
-                                           checkcontentref.get("name"))
+            checkid = translator.generate_id("{" + oval_ns + "}definition",
+                                             checkcontentref.get("name"))
             checkcontentref.set("name", checkid)
             checkcontentref.set("href", newovalfile)
             checkexport = check.find("./{%s}check-export" % xccdf_ns)
             if checkexport is not None:
-                newexportname = translator.assign_id("{" + oval_ns + "}variable",
-                                                     checkexport.get("export-name"))
+                newexportname = translator.generate_id("{" + oval_ns + "}variable",
+                                                       checkexport.get("export-name"))
                 checkexport.set("export-name", newexportname)
 
         if check.get("system") == ocil_cs:
-            checkid = translator.assign_id("{" + ocil_ns + "}questionnaire",
-                                           checkcontentref.get("name"))
+            checkid = translator.generate_id("{" + ocil_ns + "}questionnaire",
+                                             checkcontentref.get("name"))
             checkcontentref.set("name", checkid)
             checkcontentref.set("href", newocilfile)
             checkexport = check.find("./{%s}check-export" % xccdf_ns)
             if checkexport is not None:
-                newexportname = translator.assign_id("{" + oval_ns + "}variable",
-                                                     checkexport.get("export-name"))
+                newexportname = translator.generate_id("{" + oval_ns + "}variable",
+                                                       checkexport.get("export-name"))
                 checkexport.set("export-name", newexportname)
 
     newxccdffile = xccdffile.replace("unlinked", idname)

@@ -102,7 +102,7 @@ def main():
             ovaltree.remove(variables)
 
     # turn IDs into meaningless numbers
-    translator = idtranslate.idtranslator("./output/"+idname+".ini", idname)
+    translator = idtranslate.idtranslator(idname)
     ovaltree = translator.translate(ovaltree)
 
     newovalfile = ovalfile.replace("oval", "cpe-oval")
@@ -160,7 +160,7 @@ def main():
             # sys.exit(1)
 
         # Referenced OVAL checks passed both of the above sanity tests
-        check.text = translator.assign_id("{" + oval_ns + "}definition", check.text)
+        check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
 
     ET.ElementTree(cpedicttree).write("./output/"+newcpedictfile)
 
