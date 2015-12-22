@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 import sys
 import csv
@@ -10,17 +10,32 @@ def output_checkfile(serviceinfo):
     sysctl_var, sysctl_val = serviceinfo
     # convert variable name to a format suitable for 'id' tags
     sysctl_var_id = re.sub('[-\.]', '_', sysctl_var)
-    # open the template and perform the conversions
-    with open("template_sysctl", 'r') as templatefile:
-        filestring = templatefile.read()
-        filestring = filestring.replace("SYSCTLID", sysctl_var_id)
-        filestring = filestring.replace("SYSCTLVAR", sysctl_var)
-        filestring = filestring.replace("SYSCTLVAL", sysctl_val)
-        # write the check
-        with open("./output/sysctl_" + sysctl_var_id +
-                  ".sh", 'w+') as outputfile:
-            outputfile.write(filestring)
-            outputfile.close()
+
+    # if the sysctl value is not present, use the variable template
+    if not sysctl_val.strip():
+        # open the template and perform the conversions 
+        with open("template_sysctl_var", 'r') as templatefile:
+            filestring = templatefile.read()
+            filestring = filestring.replace("SYSCTLID", sysctl_var_id)
+            filestring = filestring.replace("SYSCTLVAR", sysctl_var)
+	    # write the check
+            with open("./output/sysctl_"  + sysctl_var_id +
+                      ".sh", 'w+') as outputfile:
+                outputfile.write(filestring)
+                outputfile.close()
+
+    else:
+        # open the template and perform the conversions
+        with open("template_sysctl", 'r') as templatefile:
+            filestring = templatefile.read()
+            filestring = filestring.replace("SYSCTLID", sysctl_var_id)
+            filestring = filestring.replace("SYSCTLVAR", sysctl_var)
+            filestring = filestring.replace("SYSCTLVAL", sysctl_val)
+            # write the check
+            with open("./output/sysctl_" + sysctl_var_id +
+                      ".sh", 'w+') as outputfile:
+                outputfile.write(filestring)
+                outputfile.close()
 
 
 def main():
@@ -32,6 +47,11 @@ def main():
         # put the CSV line's items into a list
         sysctl_lines = csv.reader(csv_file)
         for line in sysctl_lines:
+
+            # Skip lines of input file starting with comment '#' character
+            if line[0].startswith('#'):
+                continue
+
             output_checkfile(line)
 
     sys.exit(0)
