@@ -6,11 +6,11 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
-      <description>The kernel "net.ipv4.tcp_syncookies" parameter should be set to "1" in system runtime.</description>
+      <description>The kernel "net.ipv4.tcp_syncookies" parameter should be set to the appropriate value in system runtime.</description>
       <reference source="JL" ref_id="RHEL6_20150216" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
-      <criterion comment="kernel runtime parameter net.ipv4.tcp_syncookies set to 1" test_ref="test_runtime_net_ipv4_tcp_syncookies" />
+      <criterion comment="kernel runtime parameter net.ipv4.tcp_syncookies set to the appropriate value" test_ref="test_runtime_net_ipv4_tcp_syncookies" />
     </criteria>
   </definition>
 
@@ -24,7 +24,8 @@
   </unix:sysctl_object>
 
   <unix:sysctl_state id="state_runtime_net_ipv4_tcp_syncookies" version="1">
-    <unix:value datatype="int" operation="equals">1</unix:value>
+    <unix:value datatype="int" operation="equals" var_ref="sysctl_net_ipv4_tcp_syncookies_value" />
   </unix:sysctl_state>
 
+  <external_variable comment="External variable for net.ipv4.tcp_syncookies" datatype="int" id="sysctl_net_ipv4_tcp_syncookies_value" version="1" />
 </def-group>

@@ -2,7 +2,7 @@
 #
 # Set runtime for SYSCTLVAR
 #
-sysctl -q -n -w SYSCTLVAR=SYSCTLVAL
+/sbin/sysctl -q -n -w SYSCTLVAR=SYSCTLVAL
 
 #
 # If SYSCTLVAR present in /etc/sysctl.conf, change value to "SYSCTLVAL"
