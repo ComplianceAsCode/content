@@ -44,11 +44,28 @@
 				</xsl:for-each>
 			</xsl:if>
 
+			<xsl:if test="$ref='cis'">
+				<xsl:for-each select="//cdf:reference[@href=$cisuri]" >
+					<xsl:call-template name="rule-output">
+						<xsl:with-param name="refinfo" select="." />
+					</xsl:call-template>
+				</xsl:for-each>
+			</xsl:if>
 			<xsl:if test="$ref='cnss'">
 				<xsl:for-each select="//cdf:reference[@href=$cnss1253uri]" >
 					<xsl:call-template name="rule-output">
 						<xsl:with-param name="refinfo" select="." />
 					</xsl:call-template>
+				</xsl:for-each>
+			</xsl:if>
+
+			<xsl:if test="$ref='pcidss'">
+				<xsl:for-each select="//cdf:reference[@href=$pcidssuri]" >
+					<xsl:sort select="substring-after(.,'-')" data-type="number" />
+					<xsl:call-template name="pci-dss-rule-output">
+						<xsl:with-param name="refinfo" select="." />
+					</xsl:call-template>
+
 				</xsl:for-each>
 			</xsl:if>
 
