@@ -94,9 +94,6 @@ chromium:
 chromium-dist:
 	cd Chromium/ && $(MAKE) dist
 
-validate-debian8: debian8
-	cd Debian/8/ && $(MAKE) validate
-
 validate-buildsystem:
 	for makefile in `find -name Makefile`; do \
 		if grep '[[:space:]]\+$$' $$makefile; then \
@@ -108,7 +105,7 @@ validate-buildsystem:
 validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
-	cd Debian/8/ && $(MAKE) validate
+	#cd Debian/8/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
 	cd JRE/ && $(MAKE) validate
