@@ -109,7 +109,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for mp in multi_platforms:
-        if mp in oval_check_def and product in ['rhel', 'fedora', 'rhel-osp']:
+        if mp in oval_check_def and product in ['rhel', 'fedora', 'rhel-osp', 'debian']:
             return True
 
     # Current SSG checks aren't unified which element of '<platform>'

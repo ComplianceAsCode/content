@@ -26,6 +26,16 @@
 <select idref="service_ntpd_enabled" selected="true"/>
 <select idref="service_rsyslog_enabled" selected="true"/>
 
+<refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
+
+<!-- SSH SERVER HARDENING (Debian security guide 5.1) -->
+<select idref="sshd_set_idle_timeout" selected="true"/>
+<select idref="sshd_disable_root_login" selected="true" />
+<select idref="sshd_disable_empty_passwords" selected="true" />
+<select idref="sshd_allow_only_protocol2" selected="true" />
+<select idref="sshd_set_keepalive" selected="true" />
+<!-- END OF SSH SERVER HARDENING -->
+
 <!-- critical files -->
 <select idref="file_owner_etc_group" selected="true"/>
 <select idref="file_owner_etc_gshadow" selected="true"/>
