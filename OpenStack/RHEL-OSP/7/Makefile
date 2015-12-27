@@ -50,7 +50,7 @@ table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
-table-stigs: shorthand2xccdf table-srgmap checks
+table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 #	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
 #	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
@@ -58,11 +58,9 @@ table-stigs: shorthand2xccdf table-srgmap checks
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
 	xsltproc -stringparam profile "stig-$(PROD)-server" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
-		$(TRANS)/xccdf2table-profileccirefs.xslt \
-		$(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profileccirefs.xslt $<
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/nist_overlay.xml" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
-		$(TRANS)/xccdf-apply-overlay-stig.xslt \
-		$(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf-apply-overlay-stig.xslt $<
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
 tables: table-refs table-idents table-srgmap table-stigs
