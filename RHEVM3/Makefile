@@ -1,4 +1,4 @@
-all: shorthand2xccdf tables guide checks content dist
+all: tables guide checks content dist
 
 SHARED = ../shared
 include $(SHARED)/product-make.include
