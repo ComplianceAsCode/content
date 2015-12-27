@@ -11,7 +11,12 @@ PROD = webmin
 #	$(SHARED)/$(TRANS)/stats.sh
 
 shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml
-	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(IN)/remediations/bash $(OUT)/bash-remediations.xml
+	# Make intermediate $(BUILD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
+	mkdir -p $(BUILD_REMEDIATIONS)
+	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
+	# which are regular files (not symlinks). Merge the final list into $(BUILD_REMEDIATIONS) directory
+	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(BUILD_REMEDIATIONS) ';'
+	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(BUILD_REMEDIATIONS) $(OUT)/bash-remediations.xml
 	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
