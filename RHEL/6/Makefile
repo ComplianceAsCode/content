@@ -10,9 +10,8 @@ PROD_OVAL = $(BUILD)/$(PROD)_oval
 # Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/bash-remediations.xml
-	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
