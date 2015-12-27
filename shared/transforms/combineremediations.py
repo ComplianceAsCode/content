@@ -16,6 +16,7 @@ JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
+RHEVM = 'Red Hat Enterprise Virtualization Manager'
 
 def parse_conf_file(conf_file, product):
     parser = SafeConfigParser()
@@ -59,6 +60,8 @@ def map_product(version):
         product_name = WEBMIN
     if re.findall('debian', version):
         product_name = DEBIAN
+    if re.findall('rhevm', version):
+        product_name = RHEVM
 
     return product_name
 
