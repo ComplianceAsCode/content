@@ -65,7 +65,7 @@ xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" 
     </xsl:template>
 
   <xsl:template match="cdf:check-content">
-			<xsl:apply-templates select="node()"/>
+	<xsl:apply-templates select="node()"/>
   </xsl:template>
 
 </xsl:stylesheet>
