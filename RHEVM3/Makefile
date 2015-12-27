@@ -21,64 +21,39 @@ checks:
 #	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
-table-profilenistrefs: shorthand2xccdf
+table-profilenistrefs: $(OUT)/xccdf-unlinked-final.xml
 	xsltproc -stringparam profile "desktop" -o $(OUT)/table-$(PROD)-nistrefs-desktop.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 	xsltproc -stringparam profile "server" -o $(OUT)/table-$(PROD)-nistrefs-server.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-nistrefs-common.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 	xsltproc -stringparam profile "ftp" -o $(OUT)/table-$(PROD)-nistrefs-ftp.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 
-table-refs: shorthand2xccdf
-	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+table-refs: $(OUT)/xccdf-unlinked-final.xml
+	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
 # break apart references by delimiter:
-	xsltproc -stringparam ref "nist" -stringparam delim "," -o $(OUT)/table-$(PROD)-nistrefs-delim.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+	xsltproc -stringparam ref "nist" -stringparam delim "," -o $(OUT)/table-$(PROD)-nistrefs-delim.html $(TRANS)/xccdf2table-byref.xslt $<
 # then sort them:
 	xsltproc --html -o $(OUT)/table-$(PROD)-nistrefs-delim-sorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/table-$(PROD)-nistrefs-delim.html
 
-table-idents: shorthand2xccdf
-	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xsltproc -stringparam ref "../$(REFS)/cce-rhel5.xml" -o $(OUT)/table-$(PROD)-cces-rhel5.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+table-idents: $(OUT)/xccdf-unlinked-final.xml
+	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $<
+	xsltproc -stringparam ref "../$(REFS)/cce-rhel5.xml" -o $(OUT)/table-$(PROD)-cces-rhel5.html $(TRANS)/xccdf2table-cce.xslt $<
 
-table-srgmap: shorthand2xccdf
+table-srgmap: $(OUT)/xccdf-unlinked-final.xml
 # the map-to-items filename must be provided relative to the root of the main document being processed
-	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap.html \
+	xsltproc -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/U_Application_SRG_V1R1_Manual-xccdf.xml
-	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
+	xsltproc -stringparam flat "y" -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/U_Application_SRG_V1R1_Manual-xccdf.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
-table-stigs: shorthand2xccdf table-srgmap
-#	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
-#	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
-#	xsltproc --html -o $(OUT)/table-rhel5-stig-manual-ccisorted.html $(TRANS)/table-sortbyref.xslt $(OUT)/table-rhel5-stig-manual.html
-#	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
-#		$(TRANS)/xccdf2table-stig.xslt \
-#		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
-#	temporarily retain an output file showing the short titles as well
-#	xsltproc -stringparam profile "stig-$(PROD)-server" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-server-shorttitles.html \
-#		$(TRANS)/xccdf2table-profileccirefs.xslt \
-#		$(OUT)/unlinked-$(PROD)-xccdf.xml
-#	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
-#		$(TRANS)/xccdf-alt-titles.xslt \
-#		$(OUT)/unlinked-$(PROD)-xccdf.xml
-#	xsltproc -stringparam profile "stig-$(PROD)-server" -o $(OUT)/table-stig-$(PROD)-server.html \
-#		$(TRANS)/xccdf2table-profileccirefs.xslt \
-#		$(OUT)/unlinked-stig-$(PROD)-xccdf.xml
-#	xsltproc --html -o $(OUT)/table-stig-$(PROD)-server.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-$(PROD)-server.html
-#	xsltproc -stringparam profile "stig-$(PROD)-server" -stringparam format "flat" -o $(OUT)/table-stig-$(PROD)-server-flat.html \
-#		$(TRANS)/xccdf2table-profileccirefs.xslt \
-#		$(OUT)/unlinked-stig-$(PROD)-xccdf.xml
-#	xsltproc --novalid --html -o $(OUT)/table-stig-$(PROD)-server-flat-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-$(PROD)-server-flat.html
-#	xsltproc --novalid --html -o $(OUT)/table-stig-$(PROD)-server-srgs.html $(TRANS)/table-add-srgitems.xslt $(OUT)/table-stig-$(PROD)-server.html
-#	xsltproc --html -o $(OUT)/table-stig-$(PROD)-server-flat.html $(TRANS)/table-add-vulnids.xslt $(OUT)/table-stig-$(PROD)-server-flat.html
+tables: table-refs table-idents table-profilenistrefs table-srgmap
 
-tables: table-refs table-idents table-profilenistrefs table-srgmap table-stigs
-
-alt-titles: shorthand2xccdf
-	$(UTILS)/sync-alt-titles.py -p stig-$(PROD)-server -f $(IN)/auxiliary/alt-titles-stig.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+alt-titles: $(OUT)/xccdf-unlinked-final.xml
+	$(UTILS)/sync-alt-titles.py -p stig-$(PROD)-server -f $(IN)/auxiliary/alt-titles-stig.xml $<
 	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml
 
 content: shorthand2xccdf checks
@@ -116,8 +91,6 @@ submission-stig-check: table-stigs
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server \
 		--rules-with-disarefs-outside-profile unlinked-$(PROD)-xccdf-prerefs.xml
 #	$(TRANS)/xccdf2csv-stig.py $(OUT)/unlinked-stig-$(PROD)-xccdf.xml > $(OUT)/table-stig.csv
-
-# content-usgcb: coming soon
 
 validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
