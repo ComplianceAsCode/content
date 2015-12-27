@@ -5,19 +5,18 @@ include $(SHARED)/product-make.include
 
 PROD = rhel7
 PROD_OVAL = $(BUILD)/$(PROD)_oval
-PROD_REMEDIATIONS = $(BUILD)/$(PROD)_remediations
 
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
 # Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
 shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml
-	# Make intermediate $(PROD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
-	mkdir -p $(PROD_REMEDIATIONS)
+	# Make intermediate $(BUILD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
+	mkdir -p $(BUILD_REMEDIATIONS)
 	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_REMEDIATIONS) directory
-	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(PROD_REMEDIATIONS) ';'
-	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(PROD_REMEDIATIONS) $(OUT)/bash-remediations.xml
+	# which are regular files (not symlinks). Merge the final list into $(BUILD_REMEDIATIONS) directory
+	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(BUILD_REMEDIATIONS) ';'
+	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(BUILD_REMEDIATIONS) $(OUT)/bash-remediations.xml
 	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
