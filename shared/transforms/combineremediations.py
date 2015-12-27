@@ -4,9 +4,6 @@ import sys
 import os
 import re
 import lxml.etree as etree
-from ConfigParser import SafeConfigParser
-
-conf_file = 'oval.config'
 
 # SSG Makefile to official product name mapping
 CHROMIUM = 'Google Chromium Browser'
@@ -17,29 +14,6 @@ RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
 RHEVM = 'Red Hat Enterprise Virtualization Manager'
-
-def parse_conf_file(conf_file, product):
-    parser = SafeConfigParser()
-    parser.read(conf_file)
-    multi_platform = {}
-    oval_version = None
-
-    for section in parser.sections():
-        for name, setting in parser.items(section):
-            setting = re.sub('.;:', ',', re.sub(' ', '', setting))
-            if name == product + '_oval_version':
-                oval_version = setting
-            elif not oval_version and name == 'oval_version':
-                oval_version = setting
-            else:
-                multi_platform[name] = [item for item in setting.split(",")]
-
-    if oval_version is None:
-        print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
-        sys.exit(1)
-
-    return oval_version, multi_platform
-
 
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
@@ -125,16 +99,9 @@ def main():
         print "Provide a directory name, which contains the fixes."
         sys.exit(1)
 
-    oval_config = sys.argv[1] + "/" + conf_file
-    product = sys.argv[2]
-    fixdir = sys.argv[3]
-    output = sys.argv[4]
-
-    if os.path.isfile(oval_config):
-        (header, multi_platform) = parse_conf_file(oval_config, product)
-    else:
-        print 'The directory specified does not contain the %s file!' % conf_file
-        sys.exit(1)
+    product = sys.argv[1]
+    fixdir = sys.argv[2]
+    output = sys.argv[3]
 
     fixcontent = etree.Element("fix-content", system="urn:xccdf:fix:script:sh",
                                xmlns="http://checklists.nist.gov/xccdf/1.1")
