@@ -1,4 +1,4 @@
-all: shorthand2xccdf tables guide content dist
+all: tables guide content dist
 
 SHARED = ../../shared
 include $(SHARED)/product-make.include
@@ -6,7 +6,7 @@ include $(SHARED)/product-make.include
 PROD = rhel5
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 
-all: shorthand2xccdf tables guide content dist
+all: tables guide content dist
 
 shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
 	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
