@@ -68,8 +68,8 @@ $(OUT)/xccdf-unlinked-resolved.xml: $(OUT)/xccdf-unlinked-empty-groups-unselecte
 	oscap xccdf resolve -o $@ $<
 
 # Common build targets - create OCIL questionnaire stub for further processing
-$(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(TRANS)/xccdf-create-ocil.xslt
-	xsltproc -o $@ $(TRANS)/xccdf-create-ocil.xslt $<
+$(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt
+	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt $<
 	xmllint --format --output $@ $@
 
 # Common build targets - an XCCDF that refers to OCIL document
