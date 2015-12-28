@@ -8,8 +8,7 @@ REFS = references
 
 PROD = rhevm3
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml
-	$(SHARED)/$(TRANS)/combineremediations.py $(CONF) $(PROD) $(IN)/remediations/bash $(OUT)/bash-remediations.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/bash-remediations.xml
 	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
 
