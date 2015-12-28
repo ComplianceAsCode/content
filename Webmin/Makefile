@@ -1,4 +1,4 @@
-all: shorthand2xccdf tables guide content dist
+all: tables guide content dist
 
 SHARED = ../shared
 include $(SHARED)/product-make.include
@@ -10,9 +10,8 @@ PROD = webmin
 # stats:
 #	$(SHARED)/$(TRANS)/stats.sh
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/bash-remediations.xml
-	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
 	xmlwf $(IN)/oval/*.xml
@@ -24,23 +23,23 @@ checks:
 #	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
-table-refs: shorthand2xccdf
-	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+table-refs: $(OUT)/xccdf-unlinked-final.xml
+	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
 	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-nistrefs-common.html \
-		$(TRANS)/xccdf2table-profilenistrefs.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 
-table-idents: shorthand2xccdf
-	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
+table-idents: $(OUT)/xccdf-unlinked-final.xml
+	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $<
 
-table-srgmap: shorthand2xccdf
+table-srgmap: $(OUT)/xccdf-unlinked-final.xml
 # the map-to-items filename must be provided relative to the root of the main document being processed
-	xsltproc -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap.html \
+	xsltproc -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
-	xsltproc -stringparam flat "y" -stringparam map-to-items "../$(OUT)/unlinked-$(PROD)-xccdf.xml" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
+	xsltproc -stringparam flat "y" -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
-table-stigs: shorthand2xccdf table-srgmap checks
+table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
 	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
@@ -48,11 +47,9 @@ table-stigs: shorthand2xccdf table-srgmap checks
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
 	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
-		$(TRANS)/xccdf2table-profileccirefs.xslt \
-		$(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profileccirefs.xslt $<
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
-		$(TRANS)/xccdf-apply-overlay-stig.xslt \
-		$(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf-apply-overlay-stig.xslt $<
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
 tables: table-refs table-idents table-stigs
