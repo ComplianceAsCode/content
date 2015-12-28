@@ -1,4 +1,4 @@
-all: shorthand2xccdf tables guide content dist
+all: tables guide content dist
 
 SHARED = ../../shared
 include $(SHARED)/product-make.include
@@ -6,9 +6,8 @@ include $(SHARED)/product-make.include
 PROD = debian8
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/bash-remediations.xml
-	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml $(TRANS)/xccdf-addremediations.xslt $<
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
+shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
@@ -50,16 +49,14 @@ table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
-table-stigs: shorthand2xccdf table-srgmap checks
+table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-$(PROD)-v1r0.6-xccdf.xml
 	xsltproc -o $(OUT)/table-$(PROD)-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-$(PROD)-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
 	xsltproc -stringparam profile "stig-$(PROD)-server" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
-		$(TRANS)/xccdf2table-profileccirefs.xslt \
-		$(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf2table-profileccirefs.xslt $<
 	xsltproc -stringparam overlay "../$(IN)/auxiliary/stig_overlay.xml" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
-		$(TRANS)/xccdf-apply-overlay-stig.xslt \
-		$(OUT)/unlinked-$(PROD)-xccdf.xml
+		$(TRANS)/xccdf-apply-overlay-stig.xslt $<
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
 tables: table-refs table-idents table-srgmap
