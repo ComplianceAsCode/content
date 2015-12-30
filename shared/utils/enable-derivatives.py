@@ -22,6 +22,15 @@ from optparse import OptionParser
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 
+RHEL_CENTOS_TITLE_MAPPING = {
+    "Red Hat Enterprise Linux": "CentOS Linux",
+}
+
+RHEL_SL_TITLE_MAPPING = {
+    "Red Hat Enterprise Linux": "Scientific Linux",
+}
+
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:4": "cpe:/o:centos:centos:4",
     "cpe:/o:redhat:enterprise_linux:5": "cpe:/o:centos:centos:5",
@@ -182,6 +191,29 @@ def add_derivative_notice(benchmark, namespace, notice, warning):
 
     return True
 
+def set_derivative_titles(elem, namespace, mapping):
+    """The derivative benchmarks should not say they apply to RHEL
+       the notice provides note of possible incompatibilites.
+       This should be sufficient to allow debranding of the benchmarks.
+    """
+
+    affected = False
+
+    for child in list(elem):
+        affected = affected or set_derivative_titles(child, namespace, mapping)
+
+    # update titles, not altering tree structure so no need to precompute
+    for child in elem.findall(".//{%s}Profile/{%s}title" % (namespace, namespace)):
+        for maptext in mapping.keys():
+            child.text = child.text.replace(maptext, mapping[maptext])
+
+    # update description, not altering tree structure so no need to precompute
+    for child in elem.findall(".//{%s}Profile/{%s}description" % (namespace, namespace)):
+        for maptext in mapping.keys():
+            child.text = child.text.replace(maptext, mapping[maptext])
+
+    return True
+ 
 
 def main():
     usage = "usage: %prog [options]"
@@ -209,11 +241,13 @@ def main():
         mapping = RHEL_CENTOS_CPE_MAPPING
         notice = CENTOS_NOTICE_ELEMENT
         warning = CENTOS_WARNING
+        title = RHEL_CENTOS_TITLE_MAPPING
 
     if options.sl:
         mapping = RHEL_SL_CPE_MAPPING
         notice = SL_NOTICE_ELEMENT
         warning = SL_WARNING
+        title = RHEL_SL_TITLE_MAPPING
 
     tree = ElementTree.ElementTree()
     tree.parse(options.input_content)
@@ -237,6 +271,10 @@ def main():
         raise RuntimeError("No Benchmark found!")
 
     for namespace, benchmark in benchmarks:
+        if not set_derivative_titles(benchmark, namespace, title):
+            raise RuntimeError(
+                "Could not add derivative OS CPEs to Benchmark '%s'." % (benchmark)
+            )
         if not add_derivative_cpes(benchmark, namespace, mapping):
             raise RuntimeError(
                 "Could not add derivative OS CPEs to Benchmark '%s'." % (benchmark)
