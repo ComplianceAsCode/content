@@ -8,9 +8,6 @@ REFS = references
 
 PROD = rhevm3
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
-	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
-
 checks:
 	xmlwf $(IN)/oval/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
@@ -65,7 +62,8 @@ alt-titles: $(OUT)/xccdf-unlinked-final.xml
 	$(UTILS)/sync-alt-titles.py -p stig-$(PROD)-server -f $(IN)/auxiliary/alt-titles-stig.xml $<
 	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml
 
-content: shorthand2xccdf checks
+content: $(OUT)/xccdf-unlinked-final.xml checks
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
