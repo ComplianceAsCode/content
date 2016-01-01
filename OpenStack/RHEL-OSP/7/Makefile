@@ -6,9 +6,6 @@ include $(SHARED)/product-make.include
 PROD = rhel-osp7
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
-	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
-
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
 	mkdir -p $(PROD_OVAL)
@@ -65,7 +62,8 @@ table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 
 tables: table-refs table-idents table-srgmap table-stigs
 
-content: shorthand2xccdf checks
+content: $(OUT)/xccdf-unlinked-final.xml checks
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.

@@ -5,9 +5,6 @@ include $(SHARED)/product-make.include
 
 PROD = chromium
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
-	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
-
 checks:
 	xmlwf $(IN)/oval/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
@@ -50,7 +47,8 @@ table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 tables: table-refs table-idents table-stigs
 #tables: table-refs table-idents table-srgmap table-stigs
 
-content: shorthand2xccdf checks
+content: $(OUT)/xccdf-unlinked-final.xml checks
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
