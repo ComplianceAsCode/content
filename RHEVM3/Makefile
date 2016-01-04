@@ -8,9 +8,6 @@ REFS = references
 
 PROD = rhevm3
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
-	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
-
 checks:
 	xmlwf $(IN)/oval/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
@@ -50,13 +47,23 @@ table-srgmap: $(OUT)/xccdf-unlinked-final.xml
 		$(TRANS)/table-srgmap.xslt $(REFS)/U_Application_SRG_V1R1_Manual-xccdf.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
+table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
+	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $< \
+		$(TRANS)/xccdf-alt-titles.xslt \
+		$<
+	xsltproc -stringparam profile "stig-$(PROD)-server" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
+		$(TRANS)/xccdf2stigformat.xslt $<
+	xsltproc -o $(OUT)/table-stig-$(PROD)-server-stigformat.html \
+		$(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
+
 tables: table-refs table-idents table-profilenistrefs table-srgmap
 
 alt-titles: $(OUT)/xccdf-unlinked-final.xml
 	$(UTILS)/sync-alt-titles.py -p stig-$(PROD)-server -f $(IN)/auxiliary/alt-titles-stig.xml $<
 	XMLLINT_INDENT="" xmllint --format --output $(IN)/auxiliary/alt-titles-stig.xml $(IN)/auxiliary/alt-titles-stig.xml
 
-content: shorthand2xccdf checks
+content: $(OUT)/xccdf-unlinked-final.xml checks
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
@@ -69,15 +76,7 @@ content: shorthand2xccdf checks
 	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
 
 # not ready until oscap resolve behavior resolved
-content-stig: shorthand2xccdf checks
-	xsltproc -stringparam alttitles "../$(IN)/auxiliary/alt-titles-stig.xml" -o $(OUT)/unlinked-$(PROD)-xccdf.xml \
-		$(TRANS)/xccdf-alt-titles.xslt \
-		$(OUT)/unlinked-$(PROD)-xccdf.xml
-	oscap xccdf resolve -o $(OUT)/unlinked-resolved-$(PROD)-xccdf.xml $(OUT)/unlinked-$(PROD)-xccdf.xml
-	xsltproc -stringparam profile "stig-$(PROD)-server" -o $(OUT)/unlinked-stig-$(PROD)-xccdf.xml \
-		$(TRANS)/xccdf2stigformat.xslt $(OUT)/unlinked-resolved-$(PROD)-xccdf.xml
-	xsltproc -o $(OUT)/table-stig-$(PROD)-server-stigformat.html \
-		$(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
+content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml disa-predraft
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-$(PROD)-xccdf.xml disa-predraft
