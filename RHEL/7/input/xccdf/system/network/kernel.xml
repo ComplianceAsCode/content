@@ -209,7 +209,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="sysctl_net_ipv4_conf_all_accept_source_route" severity="medium">
-<title>Disable Kernel Parameter for Accepting Source-Routed Packets for All Interfaces</title>
+<title>Configure Kernel Parameter for Accepting Source-Routed Packets for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.accept_source_route" value="0" />
 </description>
@@ -225,7 +225,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_accept_redirects" severity="medium">
-<title>Disable Kernel Parameter for Accepting ICMP Redirects for All Interfaces</title>
+<title>Configure Kernel Parameter for Accepting ICMP Redirects for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.accept_redirects" value="0" />
 </description>
@@ -242,7 +242,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 
 
 <Rule id="sysctl_net_ipv4_conf_all_secure_redirects" severity="medium">
-<title>Disable Kernel Parameter for Accepting Secure Redirects for All Interfaces</title>
+<title>Configure Kernel Parameter for Accepting Secure Redirects for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />
 </description>
@@ -259,7 +259,7 @@ absolutely required.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_log_martians">
-<title>Enable Kernel Parameter to Log Martian Packets</title>
+<title>Configure Kernel Parameter to Log Martian Packets</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />
 </description>
@@ -277,7 +277,7 @@ to be detected.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_log_martians">
-<title>Enable Kernel Parameter to Log Martian Packets By Default</title>
+<title>Configure Kernel Parameter to Log Martian Packets By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.log_martians" value="1" />
 </description>
@@ -295,7 +295,7 @@ to be detected.</rationale>
 
 
 <Rule id="sysctl_net_ipv4_conf_default_accept_source_route" severity="medium">
-<title>Disable Kernel Parameter for Accepting Source-Routed Packets By Default</title>
+<title>Configure Kernel Parameter for Accepting Source-Routed Packets By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_source_route" value="0" />
 </description>
@@ -311,7 +311,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_accept_redirects">
-<title>Disable Kernel Parameter for Accepting ICMP Redirects By Default</title>
+<title>Configure Kernel Parameter for Accepting ICMP Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />
 </description>
@@ -327,7 +327,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_secure_redirects" severity="medium">
-<title>Disable Kernel Parameter for Accepting Secure Redirects By Default</title>
+<title>Configure Kernel Parameter for Accepting Secure Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.secure_redirects" value="0" />
 </description>
@@ -344,7 +344,7 @@ absolutely required.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts">
-<title>Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests</title>
+<title>Configure Kernel Parameter to Ignore ICMP Broadcast Echo Requests</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />
 </description>
@@ -361,7 +361,7 @@ addresses makes the system slightly more difficult to enumerate on the network.
 </Rule>
 
 <Rule id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses">
-<title>Enable Kernel Parameter to Ignore Bogus ICMP Error Responses</title>
+<title>Configure Kernel Parameter to Ignore Bogus ICMP Error Responses</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.icmp_ignore_bogus_error_responses" value="1" />
 </description>
@@ -377,7 +377,7 @@ log size, although some activity would not be logged.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_tcp_syncookies" severity="medium">
-<title>Enable Kernel Parameter to Use TCP Syncookies</title>
+<title>Configure Kernel Parameter to Use TCP Syncookies</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.tcp_syncookies" value="1" />
 </description>
@@ -398,7 +398,7 @@ enables the system to continue servicing valid connection requests.
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_rp_filter" severity="medium">
-<title>Enable Kernel Parameter to Use Reverse Path Filtering for All Interfaces</title>
+<title>Configure Kernel Parameter to Use Reverse Path Filtering for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.rp_filter" value="1" />
 </description>
@@ -417,7 +417,7 @@ networks.</rationale>
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_rp_filter" severity="medium">
-<title>Enable Kernel Parameter to Use Reverse Path Filtering by Default</title>
+<title>Configure Kernel Parameter to Use Reverse Path Filtering by Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.rp_filter" value="1" />
 </description>
