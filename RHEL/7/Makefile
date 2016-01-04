@@ -10,9 +10,6 @@ PROD_OVAL = $(BUILD)/$(PROD)_oval
 # Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
-shorthand2xccdf: $(OUT)/xccdf-unlinked-final.xml
-	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
-
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
 	mkdir -p $(PROD_OVAL)
@@ -73,7 +70,8 @@ table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 
 tables: table-refs table-idents table-srgmap table-stigs
 
-content: shorthand2xccdf checks
+content: $(OUT)/xccdf-unlinked-final.xml checks
+	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
@@ -101,7 +99,7 @@ content: shorthand2xccdf checks
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl7-xccdf.xml
 	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl7-ds.xml
 
-content-stig: shorthand2xccdf guide checks
+content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml disa-predraft
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-stig-$(PROD)-xccdf.xml disa-predraft
