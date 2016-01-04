@@ -6,6 +6,7 @@ OUTPUT:=$(shell mkdir -p output)
 
 sysctls:
 	$(SHARED_DIR)/create_sysctl_bash.py ../../../oval/templates/sysctl_values.csv
+	$(SHARED_DIR)/create_sysctl_bash.py ../../../oval/templates/sysctl_ipv6_values.csv
 
 services:
 	$(SHARED_DIR)/create_services_disabled.py ../../../oval/templates/services_disabled.csv
