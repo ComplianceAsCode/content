@@ -140,7 +140,7 @@ operator="equals" interactive="0">
 </Value>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_ra">
-<title>Disable Accepting IPv6 Router Advertisements</title>
+<title>Configure Accepting IPv6 Router Advertisements</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_ra" value="0" />
 </description>
@@ -157,7 +157,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_ra">
-<title>Disable Accepting IPv6 Router Advertisements</title>
+<title>Configure Accepting IPv6 Router Advertisements</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_ra" value="0" />
 </description>
@@ -173,7 +173,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_redirects" severity="medium">
-<title>Disable Accepting IPv6 Redirects By Default</title>
+<title>Configure Accepting IPv6 Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />
 </description>
@@ -189,7 +189,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_redirects" severity="medium">
-<title>Disable Accepting IPv6 Redirects By Default</title>
+<title>Configure Accepting IPv6 Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
 </description>
