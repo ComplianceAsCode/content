@@ -32,6 +32,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('xccdf/system/partitions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
       <xsl:apply-templates select="document('xccdf/system/permissions/files.xml')" />
     </xsl:copy>
   </xsl:template>
