@@ -18,8 +18,13 @@ import re
 
 
 def output_checkfile(serviceinfo):
-    # get the items out of the list
-    servicename, packagename = serviceinfo
+    try:
+        # get the items out of the list
+        servicename, packagename, daemonname = serviceinfo
+    except ValueError as e:
+        print "Error unpacking servicename, packagename, and daemonname: ", str(e)
+        sys.exit(1)
+
     with open("./template_service_disabled", 'r') as templatefile:
         filestring = templatefile.read()
         filestring = filestring.replace("SERVICENAME", servicename)
@@ -30,6 +35,10 @@ def output_checkfile(serviceinfo):
                                 "", filestring)
             filestring = re.sub("\s*</criteria>\n\s*</criteria>",
                                 "\n    </criteria>", filestring)
+        if not daemonname:
+            daemonname = servicename
+        filestring = filestring.replace("DAEMONNAME", daemonname)
+
         with open("./output/service_" + servicename +
                   "_disabled.xml", 'w+') as outputfile:
             outputfile.write(filestring)
