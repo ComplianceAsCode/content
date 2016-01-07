@@ -91,37 +91,4 @@ Time synchronization (using NTP) is required by almost all network and administr
 <ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" />
 </Rule>
 
-<Rule id="package_rsyslog_installed" severity="high">
-<title>Install the rsyslog service</title>
-<description>
-The rsyslog service should be installed.
-</description>
-<rationale>
-A syslog server should be installed in order to manage properly local logs and, depending on the configuration, send logs to a remote log server. A log server ensure traceability of all events on the systems and centralized informations from all services using the syslog ffacility.<br />
-Rsyslog supports TCP connexions, authentication from remote log services and can authenticate itself to others. It also supports TLS encryption.
-</rationale>
-<ident cce="27323-5" />
-<oval id="package_rsyslog_installed" />
-<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" />
-</Rule>
-
-
-
-<Rule id="service_rsyslog_enabled" severity="high">
-<title>Enable the rsyslog service</title>
-<description>
-The rsyslog service should be enabled.
-</description>
-<rationale>
-A syslog server should be installed in order to manage properly local logs and, depending on the configuration, send logs to a remote log server. A log server ensure traceability of all events on the systems and centralized informations from all services using the syslog ffacility.<br />
-Rsyslog supports TCP connexions, authentication from remote log services and can authenticate itself to others. It also supports TLS encryption.
-</rationale>
-<ocil>
-  <service-enable-check-macro service="rsyslog" />
-</ocil>
-<ident cce="27323-5" />
-<oval id="service_rsyslog_enabled" />
-<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" />
-</Rule>
-
 </Group>
