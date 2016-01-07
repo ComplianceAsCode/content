@@ -22,7 +22,8 @@ def output_checkfile(serviceinfo):
         # get the items out of the list
         servicename, packagename, daemonname = serviceinfo
     except ValueError as e:
-        print "Error unpacking servicename, packagename, and daemonname: ", str(e)
+        print "\tEntry: %s\n" % serviceinfo
+        print "\tError unpacking servicename, packagename, and daemonname: ", str(e)
         sys.exit(1)
 
     with open("./template_service_disabled", 'r') as templatefile:
