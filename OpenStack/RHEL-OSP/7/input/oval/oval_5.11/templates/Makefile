@@ -1,6 +1,6 @@
 templates: services
 
-SHARED_DIR=../../../../../../shared/oval/templates
+SHARED_DIR=../../../../../../../shared/oval/templates
 
 OUTPUT:=$(shell mkdir -p output)
 
