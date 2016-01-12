@@ -31,7 +31,7 @@ restrictive mount options, which can help protect programs which use it.
 <ocil><partition-check-macro part="/tmp "/></ocil>
 <ident cce="27173-4" />
 <oval id="partition_for_tmp" />
-<ref nist="SC-32" />
+<ref nist="SC-32" anssi-nt28="R12" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -51,7 +51,7 @@ world-writable directories installed by other software packages.
 </rationale>
 <ident cce="26404-4" />
 <oval id="partition_for_var" />
-<ref nist="SC-32"  />
+<ref nist="SC-32"  anssi-nt28="R12" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -70,7 +70,7 @@ and other files in <tt>/var/</tt>.
 </rationale>
 <ident cce="26967-0" />
 <oval id="partition_for_var_log" />
-<ref nist="AU-9,SC-32" disa="" />
+<ref nist="AU-9,SC-32" disa=""  anssi-nt28="R12,R47"/>
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -112,8 +112,29 @@ setting of more restrictive mount options, and also helps ensure that
 users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
 <oval id="partition_for_home" />
-<ref nist="SC-32" disa="1208" />
+<ref nist="SC-32" disa="1208" anssi-nt28="R12" />
 <tested by="MM" on="20120928"/>
 </Rule>
+
+<Rule id="partition_for_srv">
+<title>Ensure /srv Located On Separate Partition</title>
+<description>
+If a file server (FTP, TFTP...) is hosted locally, create a separate partition
+for <tt>/srv</tt> at installation time (or migrate it later using LVM). If
+<tt>/srv</tt> will be mounted from another system such as an NFS server, then
+creating a separate partition is not necessary at installation time, and the
+mountpoint can instead be configured later.
+</description>
+<ocil><partition-check-macro part="/home "/></ocil>
+<rationale>
+Srv deserves files for local network file server such as FTP. Ensuring
+that <tt>/srv</tt> is mounted on its own partition enables the setting of
+more restrictive mount options, and also helps ensure that
+users cannot trivially fill partitions used for log or audit data storage.
+</rationale>
+<oval id="partition_for_srv" />
+<ref anssi-nt28="R12" />
+</Rule>
+
 
 </Group>
