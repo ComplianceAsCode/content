@@ -13,6 +13,7 @@
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/stigs/cci/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-srguri">http://iase.disa.mil/stigs/srgs/Pages/index.aspx</xsl:variable>
 <xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3.pdf</xsl:variable>
+<xsl:variable name="anssi-nt28uri">http://www.ssi.gouv.fr/uploads/2012/07/NP_Linux_Configuration.pdf</xsl:variable>
 <xsl:variable name="ssg-contributors-uri">https://github.com/OpenSCAP/scap-security-guide/wiki/Contributors</xsl:variable>
 
 <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>

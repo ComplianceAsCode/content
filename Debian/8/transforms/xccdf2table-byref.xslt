@@ -69,9 +69,37 @@
 				</xsl:for-each>
 			</xsl:if>
 
+			<xsl:if test="$ref='anssi-nt28'">
+				<xsl:for-each select="//cdf:reference[@href=$anssi-nt28uri]" >
+					<xsl:call-template name="rule-output">
+						<xsl:with-param name="refinfo" select="." />
+					</xsl:call-template>
+				</xsl:for-each>
+			</xsl:if>
+
 		</table>
 	</xsl:template>
 
+	<xsl:template name="pci-dss-rule-output">
+		<xsl:param name="refinfo"/>
+		<tr>
+			<td>
+			<a>
+				<xsl:attribute name="href">
+					<xsl:call-template name="get-pci-dss-href">
+						<xsl:with-param name="ref" select="$refinfo" />
+					</xsl:call-template>
+				</xsl:attribute>
+				<xsl:value-of select="$refinfo" />
+			</a>
+			</td>
+
+			<td> <xsl:value-of select="../cdf:title" /></td>
+			<td> <xsl:apply-templates select="../cdf:description"/> </td>
+			<td> <xsl:apply-templates select="../cdf:rationale"/> </td>
+			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
+		</tr>
+	</xsl:template>
 
 	<xsl:template name="rule-output">
           <xsl:param name="refinfo"/>
