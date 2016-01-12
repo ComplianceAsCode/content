@@ -8,6 +8,31 @@ permission restrictions which can be verified
 to ensure that no harmful discrepancies have
 arisen.</description>
 
+<Group id="permission_important_state_files">
+<title>Verify permissions on files containing sensitive informations about the system</title>
+<description>Various files contains sensitive informations that can leads to specific weaknesses or
+give structural informations for local exploits.</description>
+
+<Rule id="file_permissions_systemmap">
+  <title>Verify that local System.map file (if exists) is readable only by root</title>
+  <description>Files containing sensitive informations should be protected by restrictive
+  permissions. Most of the time, there is no need that these files need to be read by any non-root user
+    <fileperms-desc-macro file="/boot/System.map-*" perms="0600"/>
+    <fileowner-desc-macro file="/boot/System.map-*" owner="root"/>
+  </description>
+  <ocil>
+    <fileperms-check-macro file="/boot/Sysem.map-*" perms="-rw-------"/>
+    <fileowner-check-macro file="/boot/System.map-*" owner="root"/>
+  </ocil>
+  <rationale>The <tt>System.map</tt> file contains information about kernel symbols and
+  can give some hints to generate local exploitation.
+  </rationale>
+  <oval id="file_permissions_systemmap" />
+  <ref anssi-nt28="R13" />
+</Rule>
+
+</Group>
+
 <Group id="permissions_important_account_files">
 <title>Verify Permissions on Files with Local Account Information and Credentials</title>
 <description>The default restrictive permissions for files which act as
