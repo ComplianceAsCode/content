@@ -14,7 +14,7 @@
     </criteria>
   </definition>
 
-  <unix:file_test  check="all" check_existence="none_exist" comment="system.map files readable only by root" id="test_permissions_systemmap_files" version="1">
+  <unix:file_test  check="all" check_existence="all_exist" comment="system.map files readable only by root" id="test_permissions_systemmap_files" version="1">
     <unix:object object_ref="object_file_permissions_systemmap_files" />
     <unix:state state_ref="state_owner_systemmap" />
     <unix:state state_ref="state_file_permissions_systemmap" />
