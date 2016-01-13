@@ -161,8 +161,8 @@
           <xsl:if test="$refsource = 'pcidss'">
             <xsl:value-of select="$pcidssuri" />
           </xsl:if>
-          <xsl:if test="$refsource = 'anssi-nt28'">
-            <xsl:value-of select="$anssi-nt28uri" />
+          <xsl:if test="$refsource = 'anssi'">
+            <xsl:value-of select="$anssiuri" />
           </xsl:if>
           <xsl:if test="$refsource = 'cis'">
             <xsl:value-of select="$cisuri" />

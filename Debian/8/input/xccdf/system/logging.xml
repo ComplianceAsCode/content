@@ -30,7 +30,7 @@ The rsyslog package provides the rsyslog daemon, which provides
 system logging services.
 </rationale>
 <oval id="package_rsyslog_installed" />
-<ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" />
+<ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" anssi="NT28(R46)" />
 <tested by="PT" on="20160106"/>
 </Rule>
 
@@ -47,7 +47,7 @@ system logging services.
 logging services, which are essential to system administration.
 </rationale>
 <oval id="service_rsyslog_enabled" />
-<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" anssi-nt28="R46" />
+<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" anssi="NT28(R46)" />
 <tested by="PT" on="20160106"/>
 </Rule>
 
@@ -125,7 +125,7 @@ To see the owner of a given log file, run the following command:
 configuration, user authentication, and other such information. Log files should be
 protected from unauthorized access.</rationale>
 <oval id="rsyslog_files_ownership" />
-<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2"  anssi-nt28="R46"/>
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2"  anssi="NT28(R46)"/>
 <tested by="PT" on="20160106"/>
 </Rule>
 
@@ -153,7 +153,7 @@ To see the group-owner of a given log file, run the following command:
 configuration, user authentication, and other such information. Log files should be
 protected from unauthorized access.</rationale>
 <oval id="rsyslog_files_groupownership" />
-<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" anssi="NT28(R46)" />
 <tested by="PT" on="20160106"/>
 </Rule>
 
@@ -185,7 +185,7 @@ configuration. If the system log files are not protected unauthorized
 users could change the logged data, eliminating their forensic value.
 </rationale>
 <oval id="rsyslog_files_permissions" />
-<ref nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" cis="5.1.4" />
+<ref nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" cis="5.1.4"  anssi="NT28(R36)"/>
 <tested by="PT" on="20160106"/>
 </Rule>
 </Group>
