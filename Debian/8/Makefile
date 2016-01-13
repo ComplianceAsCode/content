@@ -20,7 +20,10 @@ checks:
 ifeq ($(OVAL_5_11), 0)
 	$(MAKE) -C $(IN)/oval/oval_5.11/templates all
 	$(MAKE) -C $(IN)/oval/oval_5.11/templates copy
-	find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	# Search $(SHARED_OVAL_5_11) and $(IN)/oval/oval_5.11 directories to find all product specific
+	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
+	# directory
+	find $(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
 	# Update requested debian8 OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
 	sed -i "s/^\(debian8_oval_version = \).*/\15.11/" $(CONF)/oval\.config
 endif
