@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="disable_ctrlaltdel_reboot" version="1">
+    <metadata>
+      <title>Disable Ctrl-Alt-Del Reboot Activation</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>By default, the system will reboot when the
+      Ctrl-Alt-Del key sequence is pressed.</description>
+      <reference source="galford" ref_id="20160111" ref_url="test_attestation" />
+    </metadata>
+    <criteria>
+      <criterion comment="Disable Ctrl-Alt-Del systemd softlink exists" test_ref="test_disable_ctrlaltdel_exists" />
+    </criteria>
+  </definition>
+  <unix:symlink_test check="all" check_existence="all_exist" comment="Disable Ctrl-Alt-Del key sequence override exists" id="test_disable_ctrlaltdel_exists" version="1">
+    <unix:object object_ref="object_disable_ctrlaltdel_exists" />
+    <unix:state state_ref="state_disable_ctrlaltdel_exists" />
+  </unix:symlink_test>
+  <unix:symlink_object comment="Disable Ctrl-Alt-Del key sequence override exists" id="object_disable_ctrlaltdel_exists" version="1">
+    <unix:filepath>/etc/systemd/system/ctrl-alt-del.target</unix:filepath>
+  </unix:symlink_object>
+  <unix:symlink_state comment="Disable Ctrl-Alt-Del key sequence override exists" id="state_disable_ctrlaltdel_exists" version="1">
+    <unix:filepath>/etc/systemd/system/ctrl-alt-del.target</unix:filepath>
+    <unix:canonical_path>/dev/null</unix:canonical_path>
+  </unix:symlink_state>
+</def-group>
+
