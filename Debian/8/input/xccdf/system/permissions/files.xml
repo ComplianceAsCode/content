@@ -28,7 +28,7 @@ give structural informations for local exploits.</description>
   can give some hints to generate local exploitation.
   </rationale>
   <oval id="file_permissions_systemmap" />
-  <ref anssi-nt28="R13" />
+  <ref anssi="NT28(R13)" />
 </Rule>
 
 </Group>
@@ -60,7 +60,7 @@ critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
 <oval id="file_permissions_etc_shadow" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" />
+<ref nist="AC-6" disa="" pcidss="Req-8.7.c" anssi="NT28(R36)" />
 </Rule>
 
 <Rule id="file_permissions_etc_gshadow" severity="medium">
@@ -78,7 +78,7 @@ which could weaken the system security posture.</rationale>
 <rationale>The <tt>/etc/shadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
 <oval id="file_permissions_etc_gshadow" />
-<ref nist="AC-6" disa=""/>
+<ref nist="AC-6" disa="" anssi="NT28(R36)"/>
 </Rule>
 
 <Rule id="file_permissions_etc_passwd" severity="medium">
