@@ -13,11 +13,23 @@ INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
 	mkdir -p $(PROD_OVAL)
+	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
+	# into final list of OVAL checks
+ifeq ($(OVAL_5_11), 0)
+	# Search $(SHARED_OVAL_5_11) and $(IN)/oval/oval_5.11 directories to find all product specific
+	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
+	# directory
+	find $(SHARED_OVAL_5_11) -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	# RHEL/6/input/oval/oval_5.11 is empty for now!!! Uncomment the next statement once required
+	# find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
+	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
+endif
 	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
 	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
 	xmlwf $(PROD_OVAL)/*.xml
-	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 # example, if needed: for converting XCCDF into shorthand
@@ -124,7 +136,19 @@ validate-xml:
 
 
 validate: validate-xml
-	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+ifeq ($(OVAL_5_11), 0)
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+else
+	# If we are building against oscap version not supporting OVAL-5.11 language version yet,
+	# don't call verify-references.py with "--rules-with-invalid-checks" argument, since the
+	# OVAL checks using the 5.11 OVAL version will not be included in that case
+	@echo -e "\nWarning:\n"
+	@echo -e "\tRHEL-6 content build using oscap not supporting OVAL-5.11 language version detected!"
+	@echo -e "\tSince the OVAL-5.11 RHEL-6 OVAL checks are missing, will skip test for referenced,"
+	@echo -e "\tbut undefined OVAL definitions during content validation. Consider building RHEL-6"
+	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+endif
 
 eval-test:
 	# Rebuild the content indicating the 'test' profile should be included
