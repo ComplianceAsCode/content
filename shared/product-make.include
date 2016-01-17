@@ -89,7 +89,15 @@ $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_r
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 $(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/bash-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
-	xsltproc -stringparam remediations "../$(OUT)/bash-remediations.xml" -o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $<
+	# $(CURDIR) Makefile variable represents pathname of the CWD:
+	# https://www.gnu.org/software/make/manual/html_node/Recursion.html (last paragraph)
+	# Therefore from the $(CURDIR) value extract the relative pathname of the current product, turning
+	# e.g. "/tmp/github/scap-security-guide/OpenStack/RHEL-OSP/7" => "OpenStack/RHEL-OSP/7",
+	# or   "/tmp/github/scap-security-guide/RHEL/7" =>  "RHEL/7"
+	$(eval PROD_PATH=$(shell expr "$(CURDIR)" : '.*scap-security-guide\/\(.*\)'))
+	# And use that extracted relative pathname to construct proper path to the "$(OUT)/bash-remediations.xml" external
+	# XML entity which needs to be loaded properly in order the remediations to get actually included into the benchmark
+	xsltproc -stringparam remediations "../../$(PROD_PATH)/$(OUT)/bash-remediations.xml" -o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $@ $@
 
 # Sanity check to verify if intended remediations got truly included into the benchmark being currently build
