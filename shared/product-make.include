@@ -102,7 +102,7 @@ $(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-resolved.xml $
 # Resign to continue building the benchmark in that case (since it would miss the remediations), print out an error
 # message and exit with failure
 #
-$(OUT)/xccdf-unlinked-final.xml: $(OUT)/bash-remediations.xml $(OUT)/xccdf-unlinked-withremediations.xml
+$(OUT)/xccdf-unlinked-final.xml: $(OUT)/xccdf-unlinked-withremediations.xml $(OUT)/bash-remediations.xml
 	@if grep -q '<fix rule' "$(OUT)/bash-remediations.xml"; \
 	then \
 	# At least one "<fix rule" element is included in "$(OUT)/bash-remediations.xml" \
