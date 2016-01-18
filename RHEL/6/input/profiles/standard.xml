@@ -1,0 +1,21 @@
+<Profile id="standard">
+<title>Standard System Security Profile</title>
+<description>This profile contains rules to ensure standard security base of Red Hat Enterprise Linux 6 system.
+Regardless of your system's workload all of these checks should pass.</description>
+
+<select idref="ensure_redhat_gpgkey_installed" selected="true" />
+<select idref="ensure_gpgcheck_globally_activated" selected="true" />
+<select idref="rpm_verify_permissions" selected="true" />
+<select idref="rpm_verify_hashes" selected="true" />
+
+<select idref="security_patches_up_to_date" selected="true"/>
+<select idref="accounts_password_all_shadowed" selected="true"/>
+<select idref="file_permissions_unauthorized_sgid" selected="true"/>
+<select idref="file_permissions_unauthorized_suid" selected="true"/>
+
+<select idref="mount_option_dev_shm_nodev" selected="true" />
+<select idref="mount_option_dev_shm_nosuid" selected="true" />
+
+<select idref="dir_perms_world_writable_sticky_bits" selected="true" />
+
+</Profile>

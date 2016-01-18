@@ -13,6 +13,7 @@
 		<xsl:if test=" number($withtest) = number(0) ">
 			<xsl:apply-templates select="document('profiles/test.xml')" />
 		</xsl:if>
+		<xsl:apply-templates select="document('profiles/standard.xml')" />
 		<xsl:apply-templates select="document('profiles/CS2.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
 		<!-- <xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
