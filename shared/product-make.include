@@ -133,9 +133,8 @@ $(OUT)/xccdf-unlinked-final.xml: $(OUT)/xccdf-unlinked-withremediations.xml $(OU
 		\
 			echo -e "\n\tError: Can't locate remediation (\"<fix system\") elements in \"$(OUT)/xccdf-unlinked-withremediations.xml\". Exiting!\n"; \
 			exit 1; \
-		else \
-		# Remediations got included properly => \
-		# Move "$(OUT)/xccdf-unlinked-withremediations.xml" to "$(OUT)/xccdf-unlinked-final.xml" \
-			mv "$(OUT)/xccdf-unlinked-withremediations.xml" "$(OUT)/xccdf-unlinked-final.xml"; \
 		fi \
-	fi
+	fi \
+	# Rename "$(OUT)/xccdf-unlinked-withremediations.xml" to "$(OUT)/xccdf-unlinked-final.xml" \
+	# (so subsequent targets can find the "$(OUT)/xccdf-unlinked-final.xml" prerequisite) \
+	mv "$(OUT)/xccdf-unlinked-withremediations.xml" "$(OUT)/xccdf-unlinked-final.xml"
