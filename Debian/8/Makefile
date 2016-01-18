@@ -24,11 +24,11 @@ ifeq ($(OVAL_5_11), 0)
 	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
 	# directory
 	find $(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
-	# Update requested debian8 OVAL version in $(CONF)/oval.config to be the 5.11 OVAL language version
-	sed -i "s/^\(debian8_oval_version = \).*/\15.11/" $(CONF)/oval\.config
+	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
+	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
 endif
 	xmlwf $(PROD_OVAL)/*.xml
-	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml

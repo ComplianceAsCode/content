@@ -209,9 +209,17 @@ def main():
     oval_config = sys.argv[1] + "/" + conf_file
     product = sys.argv[2]
 
+    oval_schema_version = None
+    runtime_oval_schema_version = os.getenv('RUNTIME_OVAL_VERSION', None)
+
     if os.path.isfile(oval_config):
-        (header, multi_platform) = parse_conf_file(oval_config, product)
-        header = _header(header)
+        (config_oval_schema_version, multi_platform) = parse_conf_file(oval_config, product)
+        if runtime_oval_schema_version is not None and \
+           runtime_oval_schema_version != config_oval_schema_version:
+            oval_schema_version = runtime_oval_schema_version
+        else:
+            oval_schema_version = config_oval_schema_version
+        header = _header(oval_schema_version)
     else:
         print 'The directory specified does not contain the %s file!' % conf_file
         sys.exit(1)
