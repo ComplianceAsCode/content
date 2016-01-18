@@ -89,15 +89,27 @@ $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_r
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 $(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/bash-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
-	# $(CURDIR) Makefile variable represents pathname of the CWD:
-	# https://www.gnu.org/software/make/manual/html_node/Recursion.html (last paragraph)
-	# Therefore from the $(CURDIR) value extract the relative pathname of the current product, turning
-	# e.g. "/tmp/github/scap-security-guide/OpenStack/RHEL-OSP/7" => "OpenStack/RHEL-OSP/7",
-	# or   "/tmp/github/scap-security-guide/RHEL/7" =>  "RHEL/7"
-	$(eval PROD_PATH=$(shell expr "$(CURDIR)" : '.*scap-security-guide\/\(.*\)'))
-	# And use that extracted relative pathname to construct proper path to the "$(OUT)/bash-remediations.xml" external
-	# XML entity which needs to be loaded properly in order the remediations to get actually included into the benchmark
-	xsltproc -stringparam remediations "../../$(PROD_PATH)/$(OUT)/bash-remediations.xml" -o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $<
+	# What's happening below? We need to obtain the correct product path (e.g. "OpenStack/RHEL-OSP/7") \
+	# from the value of ${PWD} of current Makefile and realpath of ${SHARED}/${TRANS} string. \
+	# And use that product path to specify correct location of "$(OUT)/bash-remediations.xml" \
+	# depending on the particular Makefile for a concrete product we are currently building \
+	# \
+	# Therefore: \
+	# 1) Get real path for "$(SHARED)/$(TRANS)" location \
+	SHARED_TRANS_REAL_PATH=$(realpath $(SHARED)/$(TRANS)); \
+	# 2) Drop every '../' sequence from beginning of "$(SHARED)/$(TRANS)" string \
+	SHARED_TRANS="${SHARED}/${TRANS}"; \
+	SHARED_TRANS_WITHOUT_DOTS=$${SHARED_TRANS//\.\.\/}; \
+	# 3) Find the common directory prefix for ${PWD} and "${SHARED}/${TRANS}" realpath by \
+	# deleting the longest match of ${SHARED_TRANS_WITHOUT_DOTS} from the back of \
+	# ${SHARED_TRANS_REAL_PATH} string \
+	SSG_DIR_LOCATION=$${SHARED_TRANS_REAL_PATH%%$${SHARED_TRANS_WITHOUT_DOTS}}; \
+	# 4) Finally obtain the current product path by deleting the longest match of ${SSD_DIR_LOCATION} \
+	# from the front of ${PWD} string \
+	PRODUCT_PATH=$${PWD##$${SSG_DIR_LOCATION}}; \
+	# 5) Use the obtained ${PRODUCT_PATH} (e.g. "OpenStack/RHEL-OSP/7" or "RHEL/6") to specify the \
+	# correct path to $(OUT)/bash-remediations.xml external XML entity file \
+	xsltproc -stringparam remediations "../../$${PRODUCT_PATH}/$(OUT)/bash-remediations.xml" -o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $@ $@
 
 # Sanity check to verify if intended remediations got truly included into the benchmark being currently build
