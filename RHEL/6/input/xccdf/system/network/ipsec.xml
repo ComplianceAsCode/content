@@ -1,17 +1,21 @@
 <Group id="network-ipsec">
 <title>IPSec Support</title>
 <description>Support for Internet Protocol Security (IPsec)
-is provided in Red Hat Enterprise Linux 6 with Openswan.
+is provided in Red Hat Enterprise Linux 6 with openswan
+and libreswan packages respectively.
 </description>
 
 <Rule id="package_openswan_installed">
-<title>Install openswan Package</title>
-<description>The Openswan package provides an implementation of IPsec
-and IKE, which permits the creation of secure tunnels over
-untrusted networks. <package-install-macro package="openswan"/> 
+<title>Install openswan or libreswan Package</title>
+<description>The openswan and libreswan packages provide an implementation of
+IPsec and IKE, which permits the creation of secure tunnels over untrusted
+networks.
+<package-install-macro package="openswan"/>
+<package-install-macro package="libreswan"/>
 </description>
 <ocil clause="the package is not installed" >
 <package-check-macro package="openswan" />
+<package-check-macro package="libreswan" />
 </ocil>
 <rationale>Providing the ability for remote users or systems
 to initiate a secure VPN connection protects information when it is
