@@ -4,10 +4,10 @@
     <metadata>
       <title>Verify Permissions On Apache Web Server Configuration Files</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>The /etc/httpd/conf/* files should have the appropriate permissions (0640 or stronger).</description>
-      <reference source="JL" ref_id="20140403" ref_url="test_attestation"/>
+      <reference source="galford" ref_id="20160120" ref_url="test_attestation"/>
     </metadata>
     <criteria>
       <criterion test_ref="test_file_permissions_httpd_server_conf_files" />
