@@ -378,12 +378,12 @@ fi
 
 if [ "$package_operation" != 'remove' ] ; then
   # If the rpm is not installed, install the rpm
-  if ! /usr/bin/rpm -q --quiet $package; then
+  if ! /bin/rpm -q --quiet $package; then
     $install_util -y $package_operation $package
   fi
 else
   # If the rpm is installed, uninstall the rpm
-  if /usr/bin/rpm -q --quiet $package; then
+  if /bin/rpm -q --quiet $package; then
     $install_util -y $package_operation $package
   fi
 fi
