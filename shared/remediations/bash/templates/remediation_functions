@@ -533,7 +533,8 @@ do
 	# Replace possible slash '/' character in sbinary definition so we could use it in sed expressions below
 	sbinary_esc=${sbinary//$'/'/$'\/'}
 	# Check if this sbinary wasn't already handled in some of the previous iterations
-	if [[ $(sed -ne "/$sbinary_esc/p" <<< ${sbinaries_to_skip[@]}) ]]
+	# Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
+	if [[ $(sed -ne "/${sbinary_esc}$/p" <<< ${sbinaries_to_skip[@]}) ]]
 	then
 		# If so, don't process it second time & go to process next sbinary
 		continue
@@ -553,7 +554,7 @@ do
 		# * existing rule contains all arguments from expected rule form (though can contain
 		#   them in arbitrary order)
 	
-		base_search=$(sed -e "/-a always,exit/!d" -e "/-F path=${sbinary_esc}/!d"   \
+		base_search=$(sed -e "/-a always,exit/!d" -e "/-F path=${sbinary_esc}$/!d"   \
 		    		  -e "/-F path=[^[:space:]]\+/!d" -e "/-F perm=.*/!d"       \
 				  -e "/-F auid>=${min_auid}/!d" -e "/-F auid!=4294967295/!d"  \
 				  -e "/-k privileged/!d" $afile)
