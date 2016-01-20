@@ -3,10 +3,10 @@
     <metadata>
       <title>Ensure Logwatch HostLimit Configured</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>Test if HostLimit line in logwatch.conf is set appropriately.</description>
-      <reference source="MED" ref_id="20130819" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20160120" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="Test value of HostLimit" test_ref="test_logwatch_configured_hostlimit" />
