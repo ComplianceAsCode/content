@@ -55,46 +55,4 @@ the system against exploitation of any flaws in its implementation.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="kernel_module_rds_disabled">
-<title>Disable RDS Support</title>
-<description>
-The Reliable Datagram Sockets (RDS) protocol is a transport
-layer protocol designed to provide reliable high- bandwidth,
-low-latency communications between nodes in a cluster.
-<module-disable-macro module="rds" />
-</description>
-<ocil>
-<module-disable-check-macro module="rds" />
-</ocil>
-<rationale>
-Disabling RDS protects
-the system against exploitation of any flaws in its implementation.
-</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_rds_disabled" />
-<ref nist="CM-7" disa="382" cis="4.6.3" />
-<tested by="DS" on="20121024"/>
-</Rule>
-
-<Rule id="kernel_module_tipc_disabled" severity="medium">
-<title>Disable TIPC Support</title>
-<description>
-The Transparent Inter-Process Communication (TIPC) protocol
-is designed to provide communications between nodes in a
-cluster.
-<module-disable-macro module="tipc" />
-</description>
-<ocil>
-<module-disable-check-macro module="tipc" />
-</ocil>
-<rationale>
-Disabling TIPC protects
-the system against exploitation of any flaws in its implementation.
-</rationale>
-<ident cce="RHEL7-CCE-TBD" />
-<oval id="kernel_module_tipc_disabled" />
-<ref nist="CM-7" disa="382" cis="4.6.4" />
-<tested by="DS" on="20121024"/>
-</Rule>
-
 </Group>
