@@ -8,6 +8,7 @@
       <xsl:copy-of select="@*|node()" />
 
       <!-- adding profiles here -->
+      <xsl:apply-templates select="document('profiles/standard.xml')" />
       <xsl:apply-templates select="document('profiles/common.xml')" />
 
       <Value id="conditional_clause" type="string" operator="equals">
