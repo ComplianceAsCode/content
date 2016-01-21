@@ -9,27 +9,28 @@
       <description>The /etc/httpd/conf/* files should have the appropriate permissions (0640 or stronger).</description>
       <reference source="galford" ref_id="20160120" ref_url="test_attestation"/>
     </metadata>
-    <criteria>
-      <criterion test_ref="test_file_permissions_httpd_server_conf_files" />
+    <criteria operator="OR">
+      <extend_definition comment="httpd not present or in use"
+      definition_ref="package_httpd_removed" />
+      <criterion test_ref="test_file_permissions_httpd_server_conf_files" negate="true"/>
     </criteria>
   </definition>
   <unix:file_test check="all" check_existence="all_exist" comment="/etc/httpd/conf/* permissions"
   id="test_file_permissions_httpd_server_conf_files" version="1">
     <unix:object object_ref="object_file_permissions_httpd_server_conf_files" />
-    <unix:state state_ref="state_file_permissions_httpd_server_conf_files" />
+    <unix:state state_ref="state_wrong_file_permissions_httpd_server_conf_files" />
   </unix:file_test>
-  <unix:file_state id="state_file_permissions_httpd_server_conf_files"
-  version="2">
-    <unix:suid datatype="boolean">false</unix:suid>
-    <unix:sgid datatype="boolean">false</unix:sgid>
-    <unix:sticky datatype="boolean">false</unix:sticky>
-    <unix:uexec datatype="boolean">false</unix:uexec>
-    <unix:gread datatype="boolean">true</unix:gread>
-    <unix:gwrite datatype="boolean">false</unix:gwrite>
-    <unix:gexec datatype="boolean">false</unix:gexec>
-    <unix:oread datatype="boolean">false</unix:oread>
-    <unix:owrite datatype="boolean">false</unix:owrite>
-    <unix:oexec datatype="boolean">false</unix:oexec>
+  <unix:file_state id="state_wrong_file_permissions_httpd_server_conf_files"
+  version="2" operator="OR">
+    <unix:suid datatype="boolean">true</unix:suid>
+    <unix:sgid datatype="boolean">true</unix:sgid>
+    <unix:sticky datatype="boolean">true</unix:sticky>
+    <unix:uexec datatype="boolean">true</unix:uexec>
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:gexec datatype="boolean">true</unix:gexec>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+    <unix:oexec datatype="boolean">true</unix:oexec>
   </unix:file_state>
   <unix:file_object comment="/etc/httpd/conf/* permissions"
   id="object_file_permissions_httpd_server_conf_files" version="1">
