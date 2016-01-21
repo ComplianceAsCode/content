@@ -8,7 +8,9 @@
       <description>Directory permissions for /var/log/httpd should be set to 0700 (or stronger).</description>
       <reference source="galford" ref_id="20160120" ref_url="test_attestation"/>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="httpd not present or in use"
+      definition_ref="package_httpd_removed" />
       <criterion test_ref="test_dir_perms_var_log_httpd" />
     </criteria>
   </definition>
