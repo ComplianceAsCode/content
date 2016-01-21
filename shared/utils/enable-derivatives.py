@@ -22,6 +22,15 @@ from optparse import OptionParser
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 
+RHEL_CENTOS_TITLE_MAPPING = {
+    "Red Hat Enterprise Linux": "CentOS Linux",
+}
+
+RHEL_SL_TITLE_MAPPING = {
+    "Red Hat Enterprise Linux": "Scientific Linux",
+}
+
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:4": "cpe:/o:centos:centos:4",
     "cpe:/o:redhat:enterprise_linux:5": "cpe:/o:centos:centos:5",
@@ -81,15 +90,15 @@ SL_NOTICE = \
     "with the following caveats:</p>\n" \
     "<ul>\n" \
     "<li><i>Scientifc Linux</i> is not an exact copy of " \
-    "<i>Red Hat Enterprise Linux</i>. Scientific Linux is a Linux distribution" \
-    "produced by <i>Fermi National Accelerator Laboratory</i>. It is a free and" \
-    "open source operating system based on <i>Red Hat Enterprise Linux</i> and aims" \
-    "to be \"as close to the commercial enterprise distribution as we can get it.\"" \
-    "There may be configuration differences that produce false positives and/or" \
+    "<i>Red Hat Enterprise Linux</i>. Scientific Linux is a Linux distribution " \
+    "produced by <i>Fermi National Accelerator Laboratory</i>. It is a free and " \
+    "open source operating system based on <i>Red Hat Enterprise Linux</i> and aims " \
+    "to be \"as close to the commercial enterprise distribution as we can get it.\" " \
+    "There may be configuration differences that produce false positives and/or " \
     "false negatives. If this occurs please file a bug report.</li>\n" \
     "\n" \
-    "<li><i>Scientifc Linux</i> is derived from the free and open source software" \
-    "made available by Red Hat, but it is not produced, maintained or supported by <i>Red Hat</i>." \
+    "<li><i>Scientifc Linux</i> is derived from the free and open source software " \
+    "made available by <i>Red Hat</i>, but it is <b>not</b> produced, maintained or supported by <i>Red Hat</i>. " \
     "<i>Scientifc Linux</i> has its own build system, compiler options, patchsets, " \
     "and is a community supported, non-commercial operating system. " \
     "<i>Scientifc Linux</i> does not inherit " \
@@ -182,6 +191,29 @@ def add_derivative_notice(benchmark, namespace, notice, warning):
 
     return True
 
+def set_derivative_titles(elem, namespace, mapping):
+    """The derivative benchmarks should not say they apply to RHEL
+       the notice provides note of possible incompatibilites.
+       This should be sufficient to allow debranding of the benchmarks.
+    """
+
+    affected = False
+
+    for child in list(elem):
+        affected = affected or set_derivative_titles(child, namespace, mapping)
+
+    # update titles, not altering tree structure so no need to precompute
+    for child in elem.findall(".//{%s}Profile/{%s}title" % (namespace, namespace)):
+        for maptext in mapping.keys():
+            child.text = child.text.replace(maptext, mapping[maptext])
+
+    # update description, not altering tree structure so no need to precompute
+    for child in elem.findall(".//{%s}Profile/{%s}description" % (namespace, namespace)):
+        for maptext in mapping.keys():
+            child.text = child.text.replace(maptext, mapping[maptext])
+
+    return True
+ 
 
 def main():
     usage = "usage: %prog [options]"
@@ -209,11 +241,13 @@ def main():
         mapping = RHEL_CENTOS_CPE_MAPPING
         notice = CENTOS_NOTICE_ELEMENT
         warning = CENTOS_WARNING
+        title = RHEL_CENTOS_TITLE_MAPPING
 
     if options.sl:
         mapping = RHEL_SL_CPE_MAPPING
         notice = SL_NOTICE_ELEMENT
         warning = SL_WARNING
+        title = RHEL_SL_TITLE_MAPPING
 
     tree = ElementTree.ElementTree()
     tree.parse(options.input_content)
@@ -237,6 +271,10 @@ def main():
         raise RuntimeError("No Benchmark found!")
 
     for namespace, benchmark in benchmarks:
+        if not set_derivative_titles(benchmark, namespace, title):
+            raise RuntimeError(
+                "Could not add derivative OS CPEs to Benchmark '%s'." % (benchmark)
+            )
         if not add_derivative_cpes(benchmark, namespace, mapping):
             raise RuntimeError(
                 "Could not add derivative OS CPEs to Benchmark '%s'." % (benchmark)
