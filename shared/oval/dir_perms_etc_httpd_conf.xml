@@ -3,12 +3,14 @@
     <metadata>
       <title>Directory /etc/httpd/conf/ Permissions</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>Directory permissions for /etc/httpd/conf/ should be set to 0750 (or stronger).</description>
-      <reference source="JL" ref_id="20140403" ref_url="test_attestation"/>
+      <reference source="galford" ref_id="20160120" ref_url="test_attestation"/>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="httpd not present or in use"
+      definition_ref="package_httpd_removed" />
       <criterion test_ref="test_dir_perms_etc_httpd_conf" />
     </criteria>
   </definition>
@@ -23,13 +25,11 @@
     <unix:filename xsi:nil="true" />
   </unix:file_object>
 
-  <unix:file_state id="state_dir_perms_etc_httpd_conf" version="2">
+  <unix:file_state id="state_dir_perms_etc_httpd_conf" operator="AND" version="2">
     <unix:suid datatype="boolean">false</unix:suid>
     <unix:sgid datatype="boolean">false</unix:sgid>
     <unix:sticky datatype="boolean">false</unix:sticky>
-    <unix:gread datatype="boolean">true</unix:gread>
     <unix:gwrite datatype="boolean">false</unix:gwrite>
-    <unix:gexec datatype="boolean">true</unix:gexec>
     <unix:oread datatype="boolean">false</unix:oread>
     <unix:owrite datatype="boolean">false</unix:owrite>
     <unix:oexec datatype="boolean">false</unix:oexec>
