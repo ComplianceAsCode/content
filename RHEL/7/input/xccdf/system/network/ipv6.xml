@@ -16,7 +16,7 @@ effectively prevent execution of the IPv6 networking stack is to
 instruct the system not to activate the IPv6 kernel module.
 </description>
 
-<Rule id="sysctl_net_ipv6_conf_all_disable_ipv6" severity="medium">
+<Rule id="sysctl_kernel_ipv6_disable" severity="medium">
 <title>Disable IPv6 Networking Support Automatic Loading</title>
 <description>To disable support for (<tt>ipv6</tt>) add the following line to
 <tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in
@@ -45,7 +45,7 @@ Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="sysctl_net_ipv6_conf_all_disable_ipv6" />
+<oval id="sysctl_kernel_ipv6_disable" />
 <ref nist="CM-7" disa="1551" cis="4.4.2" />
 <tested by="DS" on="20121024"/>
 </Rule>
