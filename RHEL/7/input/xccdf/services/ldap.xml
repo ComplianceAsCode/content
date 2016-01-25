@@ -26,13 +26,13 @@ network.</warning>
 <Rule id="ldap_client_start_tls" severity="medium">
 <title>Configure LDAP Client to Use TLS For All Transactions</title>
 <description>Configure LDAP to enforce TLS use. First, edit the file 
-<tt>/etc/openldap/ldap.conf</tt>, and add or correct the following lines:
+<tt>/etc/nslcd.conf</tt>, and add or correct the following lines:
 <pre>ssl start_tls</pre>
 Then review the LDAP server and ensure TLS has been configured.
 </description>
 <ocil clause="no lines are returned">
 To ensure LDAP is configured to use TLS for all transactions, run the following command:
-<pre>$ grep start_tls /etc/openldap/ldap.conf</pre>
+<pre>$ grep start_tls /etc/nslcd.conf</pre>
 </ocil>
 <rationale>The ssl directive specifies whether to use ssl or not. If
 not specified it will default to no. It should be set to start_tls rather
@@ -48,7 +48,7 @@ than doing LDAP over SSL.</rationale>
 <description>Ensure a copy of a trusted CA certificate has been placed in
 the file <tt>/etc/pki/tls/CA/cacert.pem</tt>. Configure LDAP to enforce TLS 
 use and to trust certificates signed by that CA. First, edit the file 
-<tt>/etc/openldap/ldap.conf</tt>, and add or correct either of the following lines:
+<tt>/etc/nslcd.conf</tt>, and add or correct either of the following lines:
 <pre>tls_cacertdir /etc/pki/tls/CA</pre>
 or
 <pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>
@@ -56,7 +56,7 @@ Then review the LDAP server and ensure TLS has been configured.
 </description>
 <ocil clause="there is no output, or the lines are commented out">
 To ensure TLS is configured with trust certificates, run the following command:
-<pre>$ grep cert /etc/openldap/ldap.conf</pre>
+<pre>$ grep cert /etc/nslcd.conf</pre>
 </ocil>
 <rationale>The tls_cacertdir or tls_cacertfile directives are required when
 tls_checkpeer is configured (which is the default for openldap versions 2.1 and
