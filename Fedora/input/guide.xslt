@@ -99,6 +99,7 @@
       <xsl:apply-templates select="document('xccdf/services/ftp.xml')" />
       <xsl:apply-templates select="document('xccdf/services/snmp.xml')" />
       <xsl:apply-templates select="document('xccdf/services/nfs.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/xorg.xml')" />
     </xsl:copy>
   </xsl:template>
 
