@@ -10,7 +10,7 @@
       <reference source="sdw" ref_id="RHEL7_20150408" ref_url="test_attestation" />
     </metadata>
     <criteria comment="IPv6 disabled or net.ipv6.conf.default.accept_ra set correctly" operator="OR">
-      <extend_definition comment="is IPv6 enabled?" definition_ref="kernel_module_ipv6_option_disabled" />
+      <extend_definition comment="is IPv6 enabled?" definition_ref="sysctl_kernel_ipv6_disable" />
       <criteria operator="AND">
         <extend_definition comment="net.ipv6.conf.default.accept_ra configuration setting check" definition_ref="sysctl_static_net_ipv6_conf_default_accept_ra" />
         <extend_definition comment="net.ipv6.conf.default.accept_ra runtime setting check" definition_ref="sysctl_runtime_net_ipv6_conf_default_accept_ra" />
