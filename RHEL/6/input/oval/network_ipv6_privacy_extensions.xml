@@ -4,13 +4,13 @@
     <metadata>
       <title>Enable Privacy Extensions for IPv6</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Enable privacy extensions for IPv6</description>
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="IPv6 disabled or..."
-      definition_ref="sysctl_kernel_ipv6_disable" />
+      definition_ref="kernel_module_ipv6_option_disabled" />
       <criterion comment="Enable privacy extensions per interface" 
       test_ref="test_network_ipv6_privacy_extensions" />
     </criteria>
