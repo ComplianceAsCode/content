@@ -36,7 +36,6 @@ Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
 <ocil><partition-check-macro part="/tmp "/></ocil>
-<ident cce="27173-4" />
 <oval id="partition_for_tmp" />
 <ref nist="SC-32" anssi="NT28(R12)" />
 <tested by="MM" on="20120928"/>
@@ -56,7 +55,6 @@ system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories installed by other software packages.
 </rationale>
-<ident cce="26404-4" />
 <oval id="partition_for_var" />
 <ref nist="SC-32"  anssi="NT28(R12)" />
 <tested by="MM" on="20120928"/>
@@ -75,7 +73,6 @@ Placing <tt>/var/log</tt> in its own partition
 enables better separation between log files
 and other files in <tt>/var/</tt>.
 </rationale>
-<ident cce="26967-0" />
 <oval id="partition_for_var_log" />
 <ref nist="AU-9,SC-32" disa=""  anssi="NT28(R12),NT28(R47)"/>
 <tested by="MM" on="20120928"/>
@@ -97,7 +94,6 @@ and other files, and helps ensure that
 auditing cannot be halted due to the partition running out
 of space.
 </rationale>
-<ident cce="26971-2" />
 <oval id="partition_for_var_log_audit" />
 <ref nist="AU-4,AU-9,SC-32" disa=""/>
 <tested by="MM" on="20120928"/>
@@ -159,7 +155,6 @@ partitioning.</description>
 <rationale>Disallowing such symlink mitigate vulnerabilities based on insecure file system
 accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
 <tt>open()</tt> or <tt>creat()</tt>.</rationale>
-<ident cce="26900-1" />
 <oval id="sysctl_fs_protected_symlinks" />
 <ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
 </Rule>
@@ -171,7 +166,6 @@ accessed by privilegied programs, avoiding an exploitation vector exploiting uns
 <rationale>Disallowing such hardlink mitigate vulnerabilities based on insecure file system
 accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
 <tt>open()</tt> or <tt>creat()</tt>.</rationale>
-<ident cce="26900-1" />
 <oval id="sysctl_fs_protected_hardlinks" />
 <ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
 </Rule>
