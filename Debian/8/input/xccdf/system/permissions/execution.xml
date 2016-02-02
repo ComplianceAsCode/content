@@ -36,7 +36,6 @@ wve data, as the program itself runs with greater privileges than the
 user who initiated execution of the program.  Disabling the ability for any
 setuid program to write a core file decreases the risk of unauthorized access
 of such data.</rationale>
-<ident cce="26900-1" />
 <oval id="sysctl_fs_suid_dumpable" />
 <ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
 </Rule>
@@ -66,10 +65,24 @@ into a process's address space during an attempt at exploitation.  Additionally,
 makes it more difficult for an attacker to know the location of existing code
 in order to re-purpose it using return oriented programming (ROP) techniques.
 </rationale>
-<ident cce="27127-0" />
 <oval id="sysctl_kernel_randomize_va_space" />
 <ref nist="SC-30(2)" cis="1.6.1" anssi="NT28(R23)" />
 </Rule>
+
+<Rule id="sysctl_kernel_kptr_restrict" severity="low">
+<title>Restrict exposed kernel pointers addresses access</title>
+<description><sysctl-desc-macro sysctl="kernel.kptr_restrict" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.kptr_restrict" value="1" /></ocil>
+<rationale>Exposing kernel pointers (through procfs or <tt>seq_printf()</tt>) exposes
+kernel writeable structures that can contain functions pointers. If a write vulnereability occurs
+in the kernel allowing a write access to any of this structure, the kernel can be compromise. This
+option disallow any program withtout the CAP_SYSLOG capability from getting the kernel pointers addresses,
+replacing them with 0.
+</rationale>
+<oval id="sysctl_kernel_kptr_restrict" />
+<ref anssi="NT28(R23)" />
+</Rule>
+
 
 </Group>
 
