@@ -12,7 +12,7 @@
 <xsl:variable name="dcid63uri">not_officially_available</xsl:variable>
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/stigs/cci/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-srguri">http://iase.disa.mil/stigs/srgs/Pages/index.aspx</xsl:variable>
-<xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3.pdf</xsl:variable>
+<xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf</xsl:variable>
 <xsl:variable name="anssiuri">http://www.ssi.gouv.fr/administration/bonnes-pratiques/</xsl:variable>
 <xsl:variable name="ssg-contributors-uri">https://github.com/OpenSCAP/scap-security-guide/wiki/Contributors</xsl:variable>
 
