@@ -117,7 +117,7 @@ def main():
             try:
                 oval_name = ref.attrib['name']
             except KeyError:
-                if ref.attrib['href'] is not None:
+                if 'href' in ref.attrib:
                     print("\nInfo: Skipping remotely referenced OVAL:")
                     continue
                 else:
