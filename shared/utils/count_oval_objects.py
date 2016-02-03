@@ -111,7 +111,19 @@ def main():
         rule_id = rule.attrib['id']
         oval_refs = []
         for ref in rule.findall(".//check-content-ref"):
-            oval_name = ref.attrib['name']
+
+            # Skip remotely referenced OVAL checks since they won't have the
+            # 'name' attribute set (just 'href' would be set in that case)
+            try:
+                oval_name = ref.attrib['name']
+            except KeyError:
+                if 'href' in ref.attrib:
+                    print("\nInfo: Skipping remotely referenced OVAL:")
+                    continue
+                else:
+                    print("\nError: Invalid OVAL check detected! Exiting..")
+                    sys.exit(1)
+
             oval_file = ref.attrib['href']
             oval_refs.append((oval_name, oval_file))
         if oval_refs:
