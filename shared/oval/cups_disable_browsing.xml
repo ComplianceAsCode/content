@@ -3,7 +3,7 @@
     <metadata>
       <title>Disable Printer Browsing Entirely if Possible</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>The CUPS print service can be configured to broadcast a list
       of available printers to the network. Other machines on the network, also
@@ -11,7 +11,7 @@
       broadcasts and add and configure these printers for immediate use. By
       disabling this browsing capability, the machine will no longer generate
       or receive such broadcasts.</description>
-      <reference source="JL" ref_id="20140306" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20160120" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="Ensure remote printer browsing is off"

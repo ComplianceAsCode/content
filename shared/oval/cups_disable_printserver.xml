@@ -3,7 +3,7 @@
     <metadata>
       <title>Disable Printer Server if Possible</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>By default, locally configured printers will not be shared
       over the network, but if this functionality has somehow been enabled,
@@ -12,7 +12,7 @@
       locally configured printers, even if they cannot actually print to them.
       To limit print serving to a particular set of users, use the Policy
       directive.</description>
-      <reference source="JL" ref_id="20140306" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20160120" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="Don't use port directive" test_ref="test_cups_disable_printserver_disable_port" />
