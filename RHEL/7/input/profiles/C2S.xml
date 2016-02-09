@@ -106,7 +106,7 @@ baseline.
 <!-- 1.3.2 Implement Periodic Execution of File Integrity (Scored) -->
 <select idref="aide_periodic_cron_checking" selected="true" />
 
-<!-- 1.4.1 Enable SELinux in /etc/grub.conf (Scored) -->
+<!-- 1.4.1 Enable SELinux in /etc/default/grub (Scored) -->
 <select idref="enable_selinux_bootloader" selected="true" />
 
 <!-- 1.4.2 Set the SELinux State (Scored) -->
@@ -130,10 +130,7 @@ baseline.
 <select idref="file_user_owner_grub2_cfg" selected="true" />
 <select idref="file_group_owner_grub2_cfg" selected="true" />
 
-<!-- 1.5.2 Set Permissions on /etc/grub.conf (Scored) -->
-<!-- NOTE: CIS guidance improperly uses /etc/grub.conf. 
-           In RHEL7, this was changed to /boot/grub2/grub.cfg,
-	   which is what SSG content will check -->
+<!-- 1.5.2 Set Permissions on /boot/grub2/grub.cfg (Scored) -->
 <select idref="file_permissions_grub2_cfg" selected="true" />
 
 <!-- 1.5.3 Set Boot Loader Password (Scored) -->
