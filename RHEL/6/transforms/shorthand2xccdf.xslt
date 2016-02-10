@@ -19,6 +19,10 @@
 <xsl:variable name="ovalfile">unlinked-rhel6-oval.xml</xsl:variable>
 <xsl:variable name="defaultseverity" select="'low'" />
 
+<!-- Specify location of official DISA FSO Zip benchmark (RHEL-6 specific URI) -->
+<!-- Fix for issue https://github.com/OpenSCAP/scap-security-guide/issues/1035 -->
+<xsl:variable name="disa_fso_rhel6_uri">http://iasecontent.disa.mil/stigs/zip/Jan2016/U_RedHat_6_V1R10_STIG.zip</xsl:variable>
+
 <!-- put elements created in this stylesheet into the xccdf namespace,
      if no namespace explicitly indicated -->
 <xsl:namespace-alias result-prefix="xccdf" stylesheet-prefix="#default" />
@@ -105,7 +109,7 @@
           </xsl:when>
           <xsl:when test="name() = 'stig'">
             <xsl:attribute name="system">
-              <xsl:value-of select="$cceuri" />
+              <xsl:value-of select="$disa_fso_rhel6_uri" />
             </xsl:attribute>
             <xsl:value-of select="concat('DISA FSO ', .)" />
           </xsl:when>
