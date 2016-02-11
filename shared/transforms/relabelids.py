@@ -67,7 +67,11 @@ def main():
                 if checks is not None:
                     for check in checks:
                         oval_id = check.get("name")
+                        # Verify match of XCCDF vs OVAL / OCIL IDs for
+                        # * the case of OVAL <check>
+                        # * the case of OCIL <check>
                         if not xccdf_rule == oval_id and oval_id is not None \
+                            and not xccdf_rule + '_ocil' == oval_id \
                             and not xccdf_rule == 'sample_rule':
                             print("The OVAL ID does not match the XCCDF Rule ID!\n"
                                   "\n  OVAL ID:       \'%s\'"
