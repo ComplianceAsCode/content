@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
+<!-- Include shared XSLT constants -->
 <xsl:include href="shared_constants.xslt"/>
 
 <!-- This transform replaces check-content with a check-content-ref, using the enclosing Rule id to create

@@ -5,6 +5,7 @@
      STIG. It expects an XCCDF file with exactly one Profile.
      -->
 
+<!-- Include shared XSLT constants -->
 <xsl:include href="constants.xslt"/>
 
 <xsl:strip-space elements="*" />
@@ -85,7 +86,7 @@ xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 http://nvd.nist.gov/sch
 		</fixtext>
 		<check system="{concat('C-',position(),'_chk')}">
 			<check-content>
-				<xsl:value-of select="cdf:check[@system='ocil-transitional']/cdf:check-content"/>
+				<xsl:value-of select="cdf:check[@system=$ocil_cs]/cdf:check-content"/>
 			</check-content>
 		</check>
     </Rule>
