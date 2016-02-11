@@ -77,8 +77,9 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 #	Its second argument controls the IDs, as well as the output filenames.
 #	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
+#	We replace OCIL <check-content> elements with OCIL <check-content-ref> elements directly in the XCCDF,
+#	thus there's no need to call relabelids on 'xccdf-unlinked-ocilrefs.xml' anymore
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
-	$(SHARED)/$(TRANS)/relabelids.py xccdf-unlinked-ocilrefs.xml $(ID)
 #	Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
 	xsltproc -o $(OUT)/$(ID)-$(PROD)-oval.xml $(TRANS)/oval-fix-test-attestation-urls.xslt $(OUT)/$(ID)-$(PROD)-oval.xml
 #	Once things are relabelled, create a datastream

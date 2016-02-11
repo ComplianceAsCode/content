@@ -74,8 +74,9 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/
 	xmllint --format --output $@ $@
 
 # Common build targets - an XCCDF that refers to OCIL document
+# Replace OCIL <check-content> elements with <check-content-ref> elements directly in the produced XCCDF file
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
-	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
+	xsltproc -o $< $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
 # Common build targets - a catalogue of XCCDF remediations
 bash_remediations_deps= $(wildcard $(IN)/remediations/bash/*.sh) $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
