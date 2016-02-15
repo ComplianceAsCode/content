@@ -105,7 +105,7 @@
           </xsl:when>
           <xsl:when test="name() = 'stig'">
             <xsl:attribute name="system">
-              <xsl:value-of select="$cceuri" />
+              <xsl:value-of select="$disa-stigs-os-unix-linux-uri" />
             </xsl:attribute>
             <xsl:value-of select="concat('DISA FSO ', .)" />
           </xsl:when>
