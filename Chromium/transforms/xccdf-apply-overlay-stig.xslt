@@ -8,6 +8,8 @@
      content will be projected.  New Rules can thus be created based on external
      parties' identifiers or titles. -->
 
+<!-- Include shared XSLT constants -->
+<xsl:include href="constants.xslt"/>
 <xsl:variable name="overlays" select="document($overlay)/xccdf:overlays" />
 
   <xsl:template match="xccdf:Benchmark">
@@ -33,9 +35,9 @@
           	<title><xsl:value-of select="$overlay_title"/></title>
           	<description><xsl:copy-of select="xccdf:rationale/node()" /></description>
           	<check system="C-{$overlay_id}_chk">
-          		<check-content><xsl:copy-of select="xccdf:check[@system='ocil-transitional']/xccdf:check-content/node()" />
+          		<check-content><xsl:copy-of select="xccdf:check[@system=$ocil_cs]/xccdf:check-content/node()" />
 
-          		If <xsl:value-of select="xccdf:check[@system='ocil-transitional']/xccdf:check-export/@export-name" />, this is a finding.
+          		If <xsl:value-of select="xccdf:check[@system=$ocil_cs]/xccdf:check-export/@export-name" />, this is a finding.
           		</check-content>
           	</check>
 		  	<ident system="http://iase.disa.mil/cci"><xsl:value-of select="concat('CCI-', format-number($overlay_ref,'000000'))" /></ident>
