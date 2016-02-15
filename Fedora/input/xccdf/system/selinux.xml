@@ -46,14 +46,14 @@ appropriate.
 </Value>
 
 <Rule id="enable_selinux_bootloader" severity="medium">
-<title>Ensure SELinux Not Disabled in /etc/grub.conf</title>
+<title>Ensure SELinux Not Disabled in /etc/default/grub</title>
 <description>SELinux can be disabled at boot time by an argument in
-<tt>/etc/grub.conf</tt>.
+<tt>/etc/default/grub</tt>.
 Remove any instances of <tt>selinux=0</tt> from the kernel arguments in that
 file to prevent SELinux from being disabled at boot.
 </description>
 <ocil clause="SELinux is disabled at boot time">
-Inspect <tt>/etc/grub.conf</tt> for any instances of <tt>selinux=0</tt>
+Inspect <tt>/etc/default/grub</tt> for any instances of <tt>selinux=0</tt>
 in the kernel boot arguments.  Presence of <tt>selinux=0</tt> indicates
 that SELinux is disabled at boot time.
 </ocil>
