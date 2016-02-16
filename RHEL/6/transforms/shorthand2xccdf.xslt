@@ -12,6 +12,7 @@
        whether it be xccdf, xhtml, or simply maintained from the
        input. -->
 
+<!-- Include shared XSLT constants -->
 <xsl:include href="constants.xslt"/>
 
 <xsl:param name="ssg_version">unknown</xsl:param>
@@ -209,7 +210,7 @@
   <!-- expand reference to would-be OCIL (inline) -->
   <xsl:template match="Rule/ocil">
       <check>
-        <xsl:attribute name="system">ocil-transitional</xsl:attribute>
+        <xsl:attribute name="system"><xsl:value-of select="$ocil_cs" /></xsl:attribute>
           <check-export>
 
           <xsl:attribute name="export-name">

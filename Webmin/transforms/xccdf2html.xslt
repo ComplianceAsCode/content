@@ -56,6 +56,9 @@
 <!-- Set up an id key to match on all Profiles -->
 <xsl:key name="profiles" match="cdf:Profile" use="@id"/>
 
+<!-- Include shared XSLT constants -->
+<xsl:include href="constants.xslt"/>
+
 <!-- TEMPLATE for cdf:Benchmark
   -  This template takes care of the top-level structure of the
   -  generated XHTML document.  It handles the Benchmark element
@@ -630,9 +633,9 @@
      </xsl:for-each>
   </xsl:if>
 
-  <xsl:if test="./cdf:check[@system='ocil-transitional']">
+  <xsl:if test="./cdf:check[@system=$ocil_cs]">
   <xsl:variable name="manualcheck" select="concat('manualcheck-', @id)"/>
-    <xsl:for-each select="./cdf:check[@system='ocil-transitional']/cdf:check-content">
+    <xsl:for-each select="./cdf:check[@system=$ocil_cs]/cdf:check-content">
       <h4 class="expandstyle">
         <a href="javascript:toggle('{$manualcheck}', 'link-{$manualcheck}');" style="height:25px; line-height: 25px">
       	<span style="display:inline-block; vertical-align:middle"><img id="link-{$manualcheck}" src="images/collapsed.png" height="15" width="15" style="vertical-align: middle"/> Check Procedure</span>

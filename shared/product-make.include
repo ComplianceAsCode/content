@@ -73,7 +73,7 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/
 	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt $<
 	xmllint --format --output $@ $@
 
-# Common build targets - an XCCDF that refers to OCIL document
+# Common build targets - produce separate XCCDF with OCIL <check-content> elements replaced with OCIL <check-content-ref> elements
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
@@ -87,8 +87,10 @@ $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_r
 	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(BUILD_REMEDIATIONS) ';'
 	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(BUILD_REMEDIATIONS) $(OUT)/bash-remediations.xml
 
-# Common build targets - an XCCDF with remediations but not linked to OVAL yet
-$(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/bash-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
+# Common build targets - an XCCDF with remediations and OCIL <check-content-ref> expanded but not linked to OVAL yet
+$(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/bash-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
+	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1037
+	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1038
 	xsltproc -stringparam remediations "$(realpath $(OUT)/bash-remediations.xml)" -o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $<
 	xmllint --format --output $@ $@
 

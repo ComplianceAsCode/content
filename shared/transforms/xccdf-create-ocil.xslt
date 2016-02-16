@@ -5,20 +5,23 @@ xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" exclude-result-prefixes="cdf"
 xmlns:xhtml="http://www.w3.org/1999/xhtml"
 xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" >
 
-<!-- This transform expects checks with system "ocil-transitional" and that these contain check-content
+<!-- This transform expects checks with system "$ocil_cs" and that these contain check-content
      that can transformed into OCIL questionnaires.
      -->
+
+<!-- Include shared XSLT constants -->
+<xsl:include href="shared_constants.xslt"/>
 
   <xsl:template match="/">
   <ocil xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://scap.nist.gov/schema/ocil/2.0" >
    <generator>
    <schema_version>2.0</schema_version>
-   <timestamp><xsl:value-of select="date:date()"/></timestamp>
+   <timestamp><xsl:value-of as="xs:dateTime" select="date:date-time()"/></timestamp>
    </generator>
 
 	<questionnaires>
 	<xsl:for-each select=".//cdf:Rule">
-	<xsl:if test="cdf:check[@system='ocil-transitional']/cdf:check-content">
+	<xsl:if test="cdf:check[@system=$ocil_cs]/cdf:check-content">
 		<questionnaire id="{@id}_ocil">
 			<title><xsl:value-of select="cdf:title"/></title>
 			<actions>
@@ -31,7 +34,7 @@ xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" 
 
 	<test_actions>
 	<xsl:for-each select=".//cdf:Rule">
-	<xsl:if test="cdf:check[@system='ocil-transitional']/cdf:check-content">
+	<xsl:if test="cdf:check[@system=$ocil_cs]/cdf:check-content">
 		<boolean_question_test_action id="{@id}_action" question_ref="{@id}_question">
 			<when_true>
 				<result>PASS</result>
@@ -46,11 +49,11 @@ xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" 
 
 	<questions>
 	<xsl:for-each select=".//cdf:Rule">
-	<xsl:if test="cdf:check[@system='ocil-transitional']/cdf:check-content">
+	<xsl:if test="cdf:check[@system=$ocil_cs]/cdf:check-content">
 		<boolean_question id="{@id}_question">
 			<question_text>
-			<xsl:apply-templates select="cdf:check[@system='ocil-transitional']/cdf:check-content"/>
-			Is it the case that <xsl:value-of select="cdf:check[@system='ocil-transitional']/cdf:check-export/@export-name"/>?
+			<xsl:apply-templates select="cdf:check[@system=$ocil_cs]/cdf:check-content"/>
+			Is it the case that <xsl:value-of select="cdf:check[@system=$ocil_cs]/cdf:check-export/@export-name"/>?
 			</question_text>
 		</boolean_question>
 	</xsl:if>
