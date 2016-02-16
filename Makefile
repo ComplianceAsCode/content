@@ -105,6 +105,7 @@ validate-buildsystem:
 validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
+	cd RHEL/7/ && $(MAKE) validate
 	#cd Debian/8/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
@@ -112,7 +113,6 @@ validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
 	cd OpenStack/RHEL-OSP/7/ && $(MAKE) validate
 	# Enable below when content validates correctly
 	#cd RHEL/5/ && $(MAKE) validate
-	#cd RHEL/7/ && $(MAKE) validate
 	#cd RHEVM3 && $(MAKE) validate
 
 rpmroot:
