@@ -139,7 +139,19 @@ validate-xml:
 	oscap ds sds-validate $(OUT)/$(ID)-sl7-ds.xml
 
 validate: validate-xml
-	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+ifeq ($(OVAL_5_11), 0)
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+else
+	# If we are building against oscap version not supporting OVAL-5.11 language version yet,
+	# don't call verify-references.py with "--rules-with-invalid-checks" argument, since the
+	# OVAL checks using the 5.11 OVAL version will not be included in that case
+	@echo -e "\nWarning:\n"
+	@echo -e "\tRHEL/7 content build using oscap not supporting OVAL-5.11 language version detected!"
+	@echo -e "\tSince the OVAL-5.11 RHEL/7 OVAL checks are missing, will skip test for referenced,"
+	@echo -e "\tbut undefined OVAL definitions during content validation. Consider building RHEL/7"
+	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+endif
 
 eval-test:
 	# Rebuild the content indicating the 'test' profile should be included
