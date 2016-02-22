@@ -4,9 +4,11 @@
       <title>Specify Multiple Remote chronyd NTP Servers for Time Data</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>Multiple chronyd NTP Servers for time synchronization should be specified.</description>
       <reference source="JL" ref_id="RHEL7_20150824" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA22_20160221" ref_url="test_attestation" />
     </metadata>
     <criteria comment="chrony.conf conditions are met">
       <criterion test_ref="test_chronyd_multiple_servers" />
