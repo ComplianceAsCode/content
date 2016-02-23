@@ -18,7 +18,7 @@ import csv
 
 def output_checkfile(serviceinfo):
     # get the items out of the list
-    servicename, packagename = serviceinfo
+    servicename, packagename,daemonname = serviceinfo
     with open("./template_service_disabled", 'r') as templatefile:
         filestring = templatefile.read()
         filestring = filestring.replace("SERVICENAME", servicename)
@@ -37,6 +37,11 @@ def main():
         # put the CSV line's items into a list
         servicelines = csv.reader(csv_file)
         for line in servicelines:
+
+            # Skip lines of input file starting with comment '#' character
+            if line[0].startswith('#'):
+                continue
+
             output_checkfile(line)
 
     sys.exit(0)
