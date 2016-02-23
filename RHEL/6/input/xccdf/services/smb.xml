@@ -36,6 +36,23 @@ should be disabled if not needed.
 <oval id="service_smb_disabled" />
 <ref disa="1436" />
 </Rule>
+
+<Rule id="package_samba_removed">
+<title>Uninstall samba Package</title>
+<description>
+<package-remove-macro package="samba" />
+</description>
+<ocil>
+<package-check-macro package="samba" />
+</ocil>
+<rationale>
+If there is no need to mount directories and file systems to
+Windows systems, then this service can be deleted to reduce 
+the potential attack surface.
+</rationale>
+<ident cce="TODO" />
+<oval id="package_samba_removed" />
+</Rule>
 </Group> <!--<Group id="disabling_samba">-->
 
 <Group id="configuring_samba">
