@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable rpcbind for all run levels
-#
-/sbin/chkconfig --level 0123456 rpcbind off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop rpcbind if currently running
-#
-/sbin/service rpcbind stop
+service_command disable rpcbind

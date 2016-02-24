@@ -1,4 +1,4 @@
 # platform = Red Hat Enterprise Linux 6
-if rpm -qa | grep -q samba; then
-	yum -y remove samba
-fi
+. /usr/share/scap-security-guide/remediation_functions
+
+package_command remove samba
