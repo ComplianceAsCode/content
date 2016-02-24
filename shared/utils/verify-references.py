@@ -34,6 +34,7 @@ Usage:
 
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+ocil_cs = "http://scap.nist.gov/schema/ocil/2"
 
 # we use these strings to look for references within the XCCDF rules
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"
@@ -98,7 +99,7 @@ def get_ovalfiles(checks):
             if not checkcontentref_hrefattr.startswith("http://") and \
                not checkcontentref_hrefattr.startswith("https://"):
                 ovalfiles.add(checkcontentref_hrefattr)
-        elif check.get("system") != "ocil-transitional":
+        elif check.get("system") != ocil_cs:
             print "Non-OVAL checking system found: " + check.get("system")
             exit_value = 1
     return ovalfiles
@@ -165,6 +166,11 @@ def main():
     # now we can actually do the verification work here
     if options.rules_with_invalid_checks or options.all_checks:
         for check_content_ref in check_content_refs:
+
+            # Skip those <check-content-ref> elements using OCIL as the checksystem
+            # (since we are checking just referenced OVAL definitions)
+            if check_content_ref.getparent().get("system") == ocil_cs:
+                continue
 
             # Obtain the value of the 'href' attribute of particular
             # <check-content-ref> element

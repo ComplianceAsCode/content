@@ -13,7 +13,7 @@ xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" 
   <ocil xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://scap.nist.gov/schema/ocil/2.0" >
    <generator>
    <schema_version>2.0</schema_version>
-   <timestamp><xsl:value-of select="date:date()"/></timestamp>
+   <timestamp><xsl:value-of as="xs:dateTime" select="date:date-time()"/></timestamp>
    </generator>
 
 	<questionnaires>
