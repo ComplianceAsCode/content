@@ -66,17 +66,20 @@ def main():
                 checks = rule.find("./{%s}check" % xccdf_ns)
                 if checks is not None:
                     for check in checks:
-                        oval_id = check.get("name")
+                        check_name = check.get("name")
                         # Verify match of XCCDF vs OVAL / OCIL IDs for
                         # * the case of OVAL <check>
                         # * the case of OCIL <check>
-                        if not xccdf_rule == oval_id and oval_id is not None \
-                            and not xccdf_rule + '_ocil' == oval_id \
-                            and not xccdf_rule == 'sample_rule':
-                            print("The OVAL ID does not match the XCCDF Rule ID!\n"
-                                  "\n  OVAL ID:       \'%s\'"
-                                  "\n  XCCDF Rule ID: \'%s\'"
-                                  "\n\nBoth OVAL and XCCDF Rule IDs must match!") % (oval_id, xccdf_rule)
+                        if (not xccdf_rule == check_name and check_name is not None \
+                            and not xccdf_rule + '_ocil' == check_name \
+                            and not xccdf_rule == 'sample_rule'):
+                            print("The OVAL / OCIL ID does not match the XCCDF Rule ID!\n")
+                            if '_ocil' in check_name:
+                                print("\n  OCIL ID:       \'%s\'" % check_name)
+                            else:
+                                print("\n  OVAL ID:       \'%s\'" % check_name)
+                            print("\n  XCCDF Rule ID: \'%s\'"
+                                  "\n\nBoth OVAL and XCCDF Rule IDs must match!" % xccdf_rule)
                             sys.exit(1)
 
     checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
