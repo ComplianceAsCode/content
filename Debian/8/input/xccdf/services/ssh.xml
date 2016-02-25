@@ -58,7 +58,7 @@ SSH protocol version 1 suffers from design flaws that
 result in security vulnerabilities and
 should not be used.
 </rationale>
-<ident cce="27320-1" />
+<ident cce="" />
 <oval id="sshd_allow_only_protocol2" />
 <ref nist="AC-17(7),IA-5(1)(c)" anssi="NT007(R1)" />
 </Rule>
@@ -90,7 +90,7 @@ Causing idle users to be automatically logged out
 guards against compromises one system leading trivially
 to compromises on another.
 </rationale>
-<ident cce="27433-2" />
+<ident cce="" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
 <ref nist="AC-2(5),SA-8" pcidss="Req-8.1.8" />
 </Rule>
@@ -113,7 +113,7 @@ If properly configured, output should be:
 This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
-<ident cce="27082-7" />
+<ident cce="" />
 <oval id="sshd_set_keepalive" />
 <ref nist="AC-2(5),SA-8"  />
 </Rule>
@@ -134,7 +134,7 @@ Permitting direct root login reduces auditable information about who ran
 privileged commands on the system
 and also allows direct attack attempts on root's password.
 </rationale>
-<ident cce="27445-6" />
+<ident cce="" />
 <oval id="sshd_disable_root_login" />
 <ref nist="AC-3,AC-6(2),IA-2(1)" anssi="NT007(R21)"  />
 </Rule>
@@ -157,7 +157,7 @@ Configuring this setting for the SSH daemon provides additional assurance that
 remote login via SSH will require a password,
 even in the event of misconfiguration elsewhere.
 </rationale>
-<ident cce="27471-2" />
+<ident cce="" />
 <oval id="sshd_disable_empty_passwords" />
 <ref nist="AC-3" anssi="NT007(R17)" />
 </Rule>
