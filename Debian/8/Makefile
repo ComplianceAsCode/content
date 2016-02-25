@@ -37,6 +37,9 @@ table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 	xsltproc -stringparam profile "ospp-$(PROD)-server" -o $(OUT)/table-$(PROD)-nistrefs-ospp.html \
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
+	xsltproc -stringparam ref "anssi" -o $(OUT)/table-$(PROD)-anssirefs.html $(TRANS)/xccdf2table-byref.xslt $<
+	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-anssirefs-common.html \
+		$(TRANS)/xccdf2table-profileanssirefs.xslt $<
 
 table-idents: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $<
