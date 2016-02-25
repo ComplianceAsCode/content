@@ -6,6 +6,7 @@ all:
 	${SHARED_DIR}/create_package_installed.py packages_installed.csv
 	${SHARED_DIR}/create_permission_checks.py file_dir_permissions.csv
 	${SHARED_DIR}/create_services_disabled.py services_disabled.csv
+	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
 
 copy:
 	cp output/*.sh ../../remediations/bash/

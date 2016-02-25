@@ -1,4 +1,11 @@
 <!-- partitioning -->
+<Group id="fs-part">
+<title>Hardening the filesystem</title>
+<description>Hardening the filesystem and its usage is an efficient way to ensure an efficient separation of services,
+data and configurations while ensuring a more precise management of filesystem level access rights, enabling deactivation
+of some specific rights at the filesystem level. Moreover, the Linux Virtual file system support various hardening mechanisms
+that can be set using sysctl.</description>
+
 <Group id="installation-storage-partitioning">
 <title>Partitioning</title>
 <description>
@@ -29,7 +36,6 @@ Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
 <ocil><partition-check-macro part="/tmp "/></ocil>
-<ident cce="27173-4" />
 <oval id="partition_for_tmp" />
 <ref nist="SC-32" anssi="NT28(R12)" />
 <tested by="MM" on="20120928"/>
@@ -49,7 +55,6 @@ system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories installed by other software packages.
 </rationale>
-<ident cce="26404-4" />
 <oval id="partition_for_var" />
 <ref nist="SC-32"  anssi="NT28(R12)" />
 <tested by="MM" on="20120928"/>
@@ -68,7 +73,6 @@ Placing <tt>/var/log</tt> in its own partition
 enables better separation between log files
 and other files in <tt>/var/</tt>.
 </rationale>
-<ident cce="26967-0" />
 <oval id="partition_for_var_log" />
 <ref nist="AU-9,SC-32" disa=""  anssi="NT28(R12),NT28(R47)"/>
 <tested by="MM" on="20120928"/>
@@ -90,7 +94,6 @@ and other files, and helps ensure that
 auditing cannot be halted due to the partition running out
 of space.
 </rationale>
-<ident cce="26971-2" />
 <oval id="partition_for_var_log_audit" />
 <ref nist="AU-4,AU-9,SC-32" disa=""/>
 <tested by="MM" on="20120928"/>
@@ -136,5 +139,37 @@ users cannot trivially fill partitions used for log or audit data storage.
 <ref anssi="NT28(R12)" />
 </Rule>
 
+</Group>
+
+<Group id="fs-restrict">
+<title>filesystem rights management</title>
+<description>Adding filesystem specific hardening seriously limits various exploitation vectors based on
+  filesystem invalid usage, such as invalid file types in invalid places (devices or setuid root files in external
+media, executable file in insecure filesystems, etc.). Some of these hardening require an efficient system
+partitioning.</description>
+
+<Rule id="sysctl_fs_protected_symlinks">
+<title>Disallow creating symlinks to a file you not own</title>
+<description><sysctl-desc-macro sysctl="fs.protected_symlinks" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="fs.protected_symlinks" value="1" /></ocil>
+<rationale>Disallowing such symlink mitigate vulnerabilities based on insecure file system
+accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
+<tt>open()</tt> or <tt>creat()</tt>.</rationale>
+<oval id="sysctl_fs_protected_symlinks" />
+<ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
+<Rule id="sysctl_fs_protected_hardlinks">
+<title>Disallow creating symlinks to a file you not own</title>
+<description><sysctl-desc-macro sysctl="fs.protected_hardlinks" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="fs.protected_hardlinks" value="1" /></ocil>
+<rationale>Disallowing such hardlink mitigate vulnerabilities based on insecure file system
+accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
+<tt>open()</tt> or <tt>creat()</tt>.</rationale>
+<oval id="sysctl_fs_protected_hardlinks" />
+<ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
+</Group>
 
 </Group>

@@ -373,12 +373,12 @@
 
   <xsl:template match="package-install-macro">
     The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
-    <xhtml:pre># yum install <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre># apt-get install <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="package-remove-macro">
     The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
-    <xhtml:pre># yum erase <xsl:value-of select="@package"/></xhtml:pre>
+    <xhtml:pre># apt-get remove <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <xsl:template match="partition-check-macro">
