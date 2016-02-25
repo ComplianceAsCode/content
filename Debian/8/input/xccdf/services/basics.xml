@@ -13,7 +13,7 @@ The auditd service should be installed.
 <rationale>
 The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparision with potential local access control policy such as SELinux policy.
 </rationale>
-<ident cce="27407-6" />
+<ident cce="" />
 <oval id="package_auditd_installed" />
 <ref anssi="NT28(R50)" />
 </Rule>
@@ -30,7 +30,7 @@ The auditd service is an access monitoring and accounting daemon, watching syste
 <ocil>
   <service-enable-check-macro service="auditd" />
 </ocil>
-<ident cce="27407-6" />
+<ident cce="" />
 <oval id="service_auditd_enabled" />
 <ref anssi="NT28(R50)" nist="AC-17(1),AU-1(b),AU-10,AU-12(a),AU-12(c),IR-5" disa="347,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" pcidss="Req-10" />
 </Rule>
@@ -43,7 +43,7 @@ The Cron service should be installed.
 <rationale>
 The cron service allow periodic job execution, needed for almost all administrative tasks and services (software update, log rotating, etc.). Access to cron service should be restricted to administrative accounts only.
 </rationale>
-<ident cce="27323-5" />
+<ident cce="" />
 <oval id="package_cron_installed" />
 <ref nist="CM-7" anssi="NT28(R50)" />
 </Rule>
@@ -57,7 +57,7 @@ The Cron service should be enabled.
 <rationale>
 The cron service allow periodic job execution, needed for almost all administrative tasks and services (software update, log rotating, etc.). Access to cron service should be restricted to administrative accounts only.
 </rationale>
-<ident cce="27323-5" />
+<ident cce="" />
 <oval id="service_cron_enabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -70,7 +70,7 @@ The ntpd service should be installed.
 <rationale>
 Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). Ntpd is regulary maintained and updated, supporting security features such as RFC 5906.
 </rationale>
-<ident cce="27323-5" />
+<ident cce="" />
 <oval id="package_ntp_installed" />
 <ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" anssi="NT012(R03)" />
 </Rule>
@@ -87,7 +87,7 @@ Time synchronization (using NTP) is required by almost all network and administr
 <ocil>
   <service-enable-check-macro service="ntpd" />
 </ocil>
-<ident cce="27323-5" />
+<ident cce="" />
 <oval id="service_ntpd_enabled" />
 <ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" anssi="NT012(R03)" />
 </Rule>
