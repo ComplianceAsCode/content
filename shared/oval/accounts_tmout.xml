@@ -1,34 +1,32 @@
 <def-group>
   <definition class="compliance" id="accounts_tmout" version="1">
     <metadata>
-      <title>Ensure that Users Have Sensible TMOUT Values in /etc/profile</title>
+      <title>SELinux Enforcing</title>
       <affected family="unix">
         <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
       </affected>
-      <description>The default umask for all users should be set correctly</description>
-      <reference source="swells" ref_id="20160227" ref_url="test_attestation"/>
+      <description>Checks interactive shell timeout</description>
+      <reference source="swells" ref_id="20160227" ref_url="test_attestation" />
     </metadata>
-    <criteria>
-      <criterion test_ref="tst_accounts_tmout" />
+    <criteria operator="AND">
+      <criterion comment="TMOUT value in /etc/profile >= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="the value TMOUT should be set appropriately in /etc/profile" id="test_accounts_tmout" version="1">
-    <ind:object_ref="object_tmout_from_etc_profile" />
-    <ind:state state_ref="state_accounts_tmout" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="TMOUT in /etc/profile" id="test_etc_profile_tmout" version="1">
+    <ind:object object_ref="object_etc_profile_tmout" />
+    <ind:state state_ref="state_etc_profile_tmout" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_tmout_from_etc_profile" comment="TMOUT value from /etc/profile" version="1">
+  <ind:textfilecontent54_object id="object_etc_profile_tmout" version="1">
     <ind:filepath>/etc/profile</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)TMOUT(?-i)[\s]+([^#\s]*)</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*TMOUT[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_accounts_tmout" version="1">
-    <ind:subexpression operation="greater than or equal" var_ref="var_accounts_tmout" datetype="int" />
-  <ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_etc_profile_tmout" version="1">
+    <ind:subexpression datatype="string" operation="greater than or equal" var_check="all" var_ref="var_accounts_tmout" />
+  </ind:textfilecontent54_state>
 
-  <external_variable id="var_accounts_tmout" datatype="string" version="1" comment="TMOUT from XCCDF profile" />
-
+  <external_variable comment="external variable for TMOUT" datatype="string" id="var_accounts_tmout" version="1" />
 </def-group>

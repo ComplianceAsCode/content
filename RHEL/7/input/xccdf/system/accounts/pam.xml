@@ -300,12 +300,13 @@ is different from account lockout, which is provided by the pam_faillock module.
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
 which contain more than that number of consecutive characters. Modify the <tt>maxrepeat</tt> setting
-in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
+in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent
+a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-Look for the value of the <tt>maxrepeat</tt> parameter. The value should return <sub idref="var_password_pam_maxrepeat" />.
+Look for the value of the <tt>maxrepeat</tt> parameter. The value should return.
 </ocil>
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
@@ -323,10 +324,10 @@ which contain more than that number of consecutive characters from the same char
 <tt>maxclassrepeat</tt> setting in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxclassrepeat" />
 to prevent a run of (<sub idref="var_password_pam_maxclassrepeat" /> + 1) or more identical characters.
 </description>
-<ocil clause="maxclassrepeat is not found or not set to the required value">
-To check the maximum value for consequtive repeating characters, run the following command:
-<pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-Look for the value of the <tt>maxclassrepeat</tt> parameter. The value should return <sub idref="var_password_maxclassrepeat" />.
+<ocil clause="that is not the case">
+To check the value for maximum consecutive repeating characters, run the following command:
+<pre>$ grep maxclassrepeat /etc/security/pwquality.conf</pre>
+The output should show <tt>maxclassrepeat</tt>=600.
 </ocil>
 <rationale>
 Passwords with excessive repeating characters from the same character class may be more vulnerable to 

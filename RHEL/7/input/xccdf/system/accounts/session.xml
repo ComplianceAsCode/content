@@ -30,7 +30,7 @@ operator="equals" interactive="0">
 number of seconds to wait for input after issueing the primary prompt.
 Bash terminates after waiting for that number of seconds if input does
 not arrive.</description>
-<value selector="">
+<value selector="">600</value>
 <value selector="5_min">300</value>
 <value selector="10_min">600</value>
 <value selector="15_min">900</value>
@@ -46,7 +46,7 @@ left unattended.
 </description>
 <rationale>
 </rationale>
-<ocil clause="value of TMOUT is not greater than or equal to "<sub idref="var_accounts_tmout" />">
+<ocil clause="value of TMOUT is not greater than or equal to expected setting">
 Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
 on the system:
 <pre>$ sudo grep TMOUT /etc/profile</pre>
