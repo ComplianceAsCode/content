@@ -295,13 +295,12 @@ in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_m
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3 which would 
-appear as <tt>maxrepeat = 3</tt>.
+Look for the value of the <tt>maxrepeat</tt> parameter. The value should return <sub idref="var_password_pam_maxrepeate" />.
 </ocil>
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27430-8" />
 <oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
 </Rule>
