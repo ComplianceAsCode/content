@@ -35,6 +35,8 @@
 <!-- TO DO : enable vlock and bash TMOUT -->
 
 <!-- configure remote connection inactivity timeout -->
+<refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
+
 <select idref="sshd_set_idle_timeout" selected="true"/>
 
 <!-- enable/disable unauthenticated logon -->
@@ -174,8 +176,6 @@
 <!-- [assignment: list of other management functions to be provided
                        by the TSF] -->
 <!--    ASSIGNMENTS: SSHD -->
-<refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
-
 <select idref="sshd_allow_only_protocol2" selected="true" />
 <select idref="sshd_set_keepalive" selected="true" />
 <select idref="sshd_disable_rhosts" selected="true" />
@@ -223,10 +223,12 @@
 <refine-value idref="var_accounts_max_concurrent_login_sessions" selector="10" />
 <refine-value idref="var_accounts_maximum_age_login_defs" selector="60" />
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="1" />
+<refine-value idref="var_accounts_tmout" selector="10_min" />
 
 <select idref="accounts_max_concurrent_login_sessions" selected="true" />
 <select idref="accounts_maximum_age_login_defs" selected="true" />
 <select idref="accounts_minimum_age_login_defs" selected="true" />
+<select idref="accounts_tmout" selected="true" />
 
 <select idref="display_login_attempts" selected="true"/>
 <!--	END ASSIGNMENTS: USER/SESSION MANAGEMENT -->
