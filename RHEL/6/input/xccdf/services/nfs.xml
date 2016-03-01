@@ -63,6 +63,17 @@ this service should be disabled.
 <ident cce="26870-6" />
 <oval id="service_rpcidmapd_disabled" />
 </Rule>
+
+<Rule id="service_rpcbind_disabled">
+<title>Disable RPC Bind service (rpcbind)</title>
+<description>The rpcbind utility is a server that converts RPC program numbers 
+into universal addresses. If RPC calls are not made to servers on the local 
+system then this service should be disabled.
+<service-disable-macro service="rpcbind" />
+</description>
+<ident cce="CCE-27430-8" />
+<oval id="service_rpcbind_disabled" />
+</Rule>
 </Group>
 
 <Group id="disabling_netfs">
