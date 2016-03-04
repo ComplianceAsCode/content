@@ -1,0 +1,771 @@
+<html xml:lang="en" xmlns:cpe="http://cpe.mitre.org/language/2.0" xmlns:cpe-naming="http://cpe.mitre.org/naming/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"><head><META http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Security Benchmark JBoss Fuse 6.x</title><style type="text/css">
+                    BODY{
+                        font-family:Geneva, Arial, Helvetica, sans-serif;
+                        font-size:90%;
+                    }
+                    OL{
+                        margin-left:20px;
+                        padding-left:5px;
+                        color:#000000;
+                    }
+                    H1{
+                        text-align:center;
+                        color:#CC0000;
+                    }
+                    H2{
+                        font-size:150%;
+                        color:#781F1C;
+                    }
+                    H3{
+                        font-size:125%;
+                        color:#781F1C;
+                    }
+                    A{
+                        color:#CC0000;
+                    }
+                    #TOC{
+                        background:#CECECE;
+                        padding-left:10px;
+                        padding-bottom:5px;
+                        border:1px solid #000000;
+                    }
+                    #TOC P{
+                        margin-left:2em;
+                        margin-bottom:0.2em;
+                        margin-top:0.5em;
+                    }
+                    .group{
+                        font-weight:bold;
+                    }
+                    .rule{
+                        font-style:italic;
+                    }
+                    .padItem{
+                        padding-left:25px;
+                    }
+                    .item{
+                        padding-top:15px;
+                    }
+                    .subItem{
+                        padding:5px;
+                        padding-right:5px;
+                        border:1px solid #000000;
+                        background:#CECECE;
+                    }
+                    .itemHead{
+                        font-weight:bold;
+                        font-style:italic;
+                        color:#781F1C;
+                    }
+                    .itemSubHead{
+                        font-weight:bold;
+                        text-decoration:underline;
+                    }
+                    .label{
+                        font-weight:bold;
+                    }
+                    pre {
+                        white-space: pre-wrap;
+                        white-space: -moz-pre-wrap;
+                        white-space: -o-pre-wrap;
+                        background: #FFE2E0;
+                    }
+                    code {
+                        display: block;
+                        padding: 5px;
+                        font-family: Courier;
+                        border: 1px solid #000000;
+                    }
+                </style></head><body><div align="center"><img src="jboss_logo.png" alt="JBoss" border="0"></div><h1>Security Benchmark JBoss Fuse 6.x</h1><p></p><hr><p style="text-align: center;"><strong>Status: </strong>draft<strong> Date: </strong>2013-09-17</p><hr><h2><a name="SectionNotice">Notice</a></h2>This content was developed by Red Hat, Inc. for use by JBoss Fuse 6.x Administrators and is released under the Public Domain License.<hr><h2><a name="SectionTOC">Table of Contents</a></h2><div id="TOC"><h3><a href="#SectionNotice">Notice</a></h3><h3><a href="#SectionFM">Front Matter</a></h3><h3><a href="#SectionReqs">Requirements</a></h3><h3><a href="#SectionRunning">Steps to Run</a></h3><h3><a href="#SectionProfiles">Profiles</a></h3><ol><li><a href="#profile_pr_jboss_amq">JBoss A-MQ 6</a></li><li><a href="#profile_pr_jboss_fuse">JBoss Fuse 6</a></li></ol><h3><a href="#Sectionguidance">Guidance</a></h3><ol><li><a href="#group_xccdf_com.redhat.fuse6.scap_group_gr_policy"><span class="group">JBoss Fuse Policy Guidelines</span></a><ol></ol></li><li><a href="#group_xccdf_com.redhat.fuse6.scap_group_gr_karaf"><span class="group">Apache Karaf Configuration</span></a><ol><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1001"><span class="rule">Ensure adequate physical protections are in place</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1002"><span class="rule">Assign a JBoss administrator</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1003"><span class="rule">Document incident response procedures</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1004"><span class="rule">Perform periodic incident response exercises</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1005"><span class="rule">Document disaster recovery procedures</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1006"><span class="rule">Perform periodic disaster recovery exercises</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1007"><span class="rule">Identify and document application data flows</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1008"><span class="rule">Java permissions for deployed applications should be documented and reviewed prior to deployment</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1009"><span class="rule">Regular backups should be performed</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1010"><span class="rule">Auditing policy should exist</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1011"><span class="rule">Access control policy and procedures</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1012"><span class="rule">Define an appropriate minimum and maximum password length requirement</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1013"><span class="rule">Define an appropriate minimum password complexity requirement</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1014"><span class="rule">Define an appropriate minimum password expiration interval</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2001"><span class="rule">Jboss Fuse should be a vendor supported version.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2002"><span class="rule">Ensure Java Runtime Environment is a supported version.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2003"><span class="rule">Ensure all downloaded software is authentic</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2004"><span class="rule">Hot deployment must be disabled in production.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2005"><span class="rule">Remove, rename, or comment out default user accounts from production servers.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2006"><span class="rule">Remove, rename, or comment out default roles from production servers.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2007"><span class="rule">Configure Java Security Manager to use an environment specific policy/</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2008"><span class="rule">Ensure proper permissions are configured for deployed applications: java.io.FilePermission</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2009"><span class="rule">Ensure proper permissions are configured for deployed applications: java.net.NetPermission</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2010"><span class="rule">Ensure proper permissions are configured for deployed applications: java.lang.RuntimePermission</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2011"><span class="rule">Ensure proper permissions are configured for deployed applications: java.net.SocketPermission</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2012"><span class="rule">Ensure proper permissions are configured for deployed applications: java.security.AllPermission</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2013"><span class="rule">Ensure default system Java Authentication and Authorization Service configuration is in use.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2014"><span class="rule">Ensure deployed applications requiring authentication utilizes DoD PKI Class 3 or Class 4 certificate and hardware security token or NSA-certified product</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2015"><span class="rule">Enable Federal Information and Processing Systems 140-2 (FIPS) compliant cryptographic modules for use by JBoss Java environment</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2016"><span class="rule">Eliminate clear-text passwords from production servers.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2017"><span class="rule">Ensure JBoss process owner is executing with least privilege.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2018"><span class="rule">Deny the JBoss process owner console access.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2019"><span class="rule">Set JBoss file ownership.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2020"><span class="rule">Set JBoss file permissions.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2021"><span class="rule">Ensure remote access is either secured or disabled.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2022"><span class="rule">Ensure Web Console is either secured or removed.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2023"><span class="rule">Ensure JMX access is either secured or disabled.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2024"><span class="rule">Password hashing must be enabled within the appropriate login module</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2025"><span class="rule">Only application and/or system administrators should be able to change security related configuration attributes.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2026"><span class="rule">Only authorized users should be allowed to associate PKI information.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2027"><span class="rule">SSL should be enabled on the Web Console.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2028"><span class="rule">Remote Access should only be done via SSH or other secure means.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2029"><span class="rule">Logging should be configured to reduce to the likelihood of storage capacity being exceeded.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2030"><span class="rule">Logging should be configured to maintain logs for a organization defined continuous number of days.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2031"><span class="rule">Server configuration changes should be restricted to Jboss Administrators only.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2032"><span class="rule">All non-essential bundles and features should be removed from production servers.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2033"><span class="rule">All non-essential ports, protocols, and services should be disabled.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2034"><span class="rule">All passwords should be encrypted when other means are not being utilized.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2035"><span class="rule">Encryption must be used when LDAP is enabled.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2036"><span class="rule">FIPS 140-2 approved encryption modules must be used.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2037"><span class="rule">DoD or CNS approved PKI Class 3 and Class 4 certificates should be used.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2038"><span class="rule">LDAP should be configured to fail securely.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2039"><span class="rule">Logging should be configured such that sensitive information is not revealed.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2040"><span class="rule">Log files should be restricted so only authorized personnel may view them.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2041"><span class="rule">Ensure Web Console is using PKI.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2042"><span class="rule">All PKI Certificates should be valid DoD Certificates.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2043"><span class="rule">Only administrators should be able to modify configuration files.</span></a></li></ol></li><li><a href="#group_xccdf_com.redhat.fuse6.scap_group_gr_amq"><span class="group">Apache ActiveMQ Configuration</span></a><ol><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3001"><span class="rule">Remove, rename, or comment out default user accounts from production servers.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3002"><span class="rule">Remove, rename, or comment out default roles from production servers.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3003"><span class="rule">Ensure default system Java Authentication and Authorization Service configuration is in use.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3004"><span class="rule">Eliminate clear-text passwords from production servers.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3005"><span class="rule">Only application and/or system administrators should be able to change security related configuration attributes.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3006"><span class="rule">SSL should be enabled on the ActiveMQ Web Console.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3007"><span class="rule">All passwords should be encrypted when other means are not being utilized.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3008"><span class="rule">Ensure ActiveMQ Web Console is using PKI.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3009"><span class="rule">All PKI Certificates should be valid DoD Certificates.</span></a></li><li><a href="#rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3010"><span class="rule">Only administrators should be able to modify configuration files.</span></a></li></ol></li><li><a href="#group_xccdf_com.redhat.fuse6.scap_group_gr_camel"><span class="group">Apache Camel Configuration</span></a><ol></ol></li><li><a href="#group_xccdf_com.redhat.fuse6.scap_group_gr_cxf"><span class="group">Apache CXF Configuration</span></a><ol></ol></li></ol><h3><a href="#SectionRM">Rear Matter</a></h3></div><h2><a name="SectionFM">Front Matter</a></h2>
+		<p>JBoss Fuse is an open source Enterprise Service Bus (ESB) with an elastic footprint that supports integration beyond the data center. The lack of license fees and the ability to deploy JBoss Fuse in several different configurations advances intelligent integration to all facets of your
+			business &ndash; on premise or in the Cloud.
+		</p>
+		<p>JBoss Fuse combines Apache Camel, Apache CXF, Apache ActiveMQ, Apache Karaf and Fuse Fabric in a single integrated distribution. Core messaging is provided by Apache ActiveMQ, services framework (SOAP, XML/HTTP, RESTful HTTP) is provided by Apache CXF and integration framework is provided
+			by Apache Camel. Apache Karaf provides a lightweight OSGI-based runtime container.
+		</p>
+		<p>This benchmark provides security guidance on JBoss Fuse 6 running on Red Hat Enterprise Linux. This document assumes that the reader is familiar with JBoss Fuse 6 and Red Hat Enterprise Linux administration. This document also assumes that the baseline configuration of the operating
+			system and JBoss Fuse 6 are up-to-date in terms of installed patches. The content within this benchmark was tested for compatibility with multiple SCAP tools on Red Hat Enterprise Linux 6. The following compatibility matrix shows our results:
+		</p>
+
+		<table border="1" cellpadding="0" cellspacing="0">
+			<tr>
+				<td></td>
+				<td>
+					<b>XCCDFExec v1.1.4 Build 19</b>
+				</td>
+				<td>
+					<b>SPAWAR Compliance Checker v3.1.1</b>
+				</td>
+				<td>
+					<b>OpenSCAP v0.9.7</b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>RHEL 6 - i386</b>
+				</td>
+				<td bgcolor="#FFAA00">Additional Dependencies Needed</td>
+				<td bgcolor="#00AA00">Fully Compatible</td>
+				<td bgcolor="#00AA00">Fully Compatible</td>
+			</tr>
+			<tr>
+				<td>
+					<b>RHEL 6 - x86_64</b>
+				</td>
+				<td bgcolor="#FFAA00">Additional Dependencies Needed</td>
+				<td bgcolor="#00AA00">Fully Compatible</td>
+				<td bgcolor="#00AA00">Fully Compatible</td>
+			</tr>
+		</table>
+
+		<p>The recommendations included in this benchmark have been derived from various government and industry sources. All rules include a rationale, validation instructions (for OCIL rules), remediation instructions, references, risk assessments, and NIST/DoD Control mappings. </p>
+	<hr><p><strong>Platform(s): </strong></p><ul><li>cpe:/a:redhat:jboss_fuse:6.0</li></ul><hr><h2><a name="SectionReqs">Requirements</a></h2><body>
+        <p>Before running the JBoss Fuse 6.x benchmark, the target machine must meet the following requirements.</p>
+        <ul>
+            <li><b>FUSE_HOME</b> environment variable properly set to JBoss Fuse installation directory.</li>
+			<li><b>JAVA_HOME</b> environment variable properly set to Java installation directory.</li>
+        </ul>
+    </body><hr><h2><a name="SectionRunning">Steps to Run</a></h2><body>
+        <p>The JBoss Fuse 6.x SCAP Benchmark can be run using the XCCDFExec interpreter. Follow the steps below to run the benchmark using XCCDFExec.</p>
+        <ol>
+			<li>Ensure all requirements detailed <a href="#SectionReqs">here</a> have been met.</li>
+            <li>Download the XCCDF Interpreter from sourceforge: http://sourceforge.net/projects/xccdfexec/</li>
+            <li>Unzip and install the XCCDF Interpreter, as directed by its README.txt.</li>
+            <ol>
+                <li>NOTE: The XCCDF Interpreter is packaged with a Win32 build of the OVAL Definition Interpreter. To run OVAL checks on your Linux system you can edit the oval.dir and oval.bin properties within the xccdf_interpreter.properties file to reference your local OVALDI installation.</li>
+                <li>A Linux build of the OVAL Definition Interpreter may be obtained at: http://sourceforge.net/projects/ovaldi/</li>
+            </ol>
+            <li>Navigate to the XCCDF Interpreter directory. For example: <pre><code>cd /xccdf_interpreter_1.1.4_build_19-bin</code></pre></li>
+            <li>To run the interpreter, type the following replacing [PROFILE_NAME] with the name of the profile you want to run (as defined in the next section). The command assumes that the Fuse 6.x SCAP files are in the same directory as the xccdf interpreter: <pre><code>java -jar xccdfexec.jar fuse6-xccdf.xml -c fuse6-cpe-oval.xml -C fuse6-cpe-dictionary.xml -P [PROFILE_NAME]</code></pre></li>
+            <li>When prompted with the OCIL Interpreter, answer each questionnaire, save the results, and exit.</li>
+            <li>The results of the tests will be displayed on the screen and in several output files under the results directory.  The XML result files can be transformed to HTML using transforms available online.</li>
+            <li>A result of PASS indicates that the test passed, a result of FAIL indicates that the test failed and a setting may need to be adjusted. You can review the remediation instructions available for each rule to adjust any settings. A result of "NOT APPLICABLE" means that the recommendation is not applicable to your deployment. A result of "NOT CHECKED" means that the recommendations OCIL questionnaire was not answered.</li>
+        </ol>
+        
+        <h3>Alternative Tools</h3>
+        <p>There are several alternative tools that you can use to run the Fuse 6.x SCAP Benchmark. These tools include: </p>
+        <ul>
+            <li><a href="http://www.open-scap.org">OpenSCAP</a></li>
+            <li><a href="http://www.public.navy.mil/spawar/Atlantic/ProductsServices/Pages/SCAP.aspx">SPAWAR Compliance Checker</a></li>
+        </ul>
+        <p>Please see the included documentation for instructions on how to run these tools.</p>
+    </body><hr><h2><a name="SectionProfiles">Profiles</a></h2><div class="padItem"><div class="item"><span class="itemHead">1. <a name="profile_pr_jboss_amq">JBoss A-MQ 6</a></span><p>Profile for testing a secure deployment of JBoss A-MQ 6.x.</p><span class="label">Profile Name: </span>pr_jboss_amq<br></div></div><div class="padItem"><div class="item"><span class="itemHead">2. <a name="profile_pr_jboss_fuse">JBoss Fuse 6</a></span><p>Profile for testing a secure deployment of JBoss Fuse 6.x.</p><span class="label">Profile Name: </span>pr_jboss_fuse<br></div></div><hr><h2><a name="Sectionguidance">Guidance</a></h2><h3><a name="group_xccdf_com.redhat.fuse6.scap_group_gr_policy">JBoss Fuse Policy Guidelines</a></h3><p>The rules in this group are used to manage Jboss servers in a secure manner. These rules are policy related.</p><h3><a name="group_xccdf_com.redhat.fuse6.scap_group_gr_karaf">Apache Karaf Configuration</a></h3><p>The rules in this group validate Apache Karaf related items.</p><div class="padItem"><div class="item"><span class="itemHead">2.1 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1001">Ensure adequate physical protections are in place</a></span><p>The hardware and software executing JBoss Fuse, as well as the software critical to security policy enforcement must be protected from unauthorized modification including unauthorized modifications by potentially hostile outsiders. Reasonable physical security measures to ensure that
+				unauthorized personnel do not have physical access to the hardware running the JBoss Enterprise Application Platform software must be implemented.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Many software security precautions can easily be bypassed by personnel with physical access to hardware storing data or executing an application.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>PE-1,PE-2,PE-3,PE-7,PE-18<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.2 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1002">Assign a JBoss administrator</a></span><p>There must be one or more competent individuals who are assigned to manage JBoss Fuse, its environment and the security of the information it contains.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Incompetent, careless, or negligent JBoss administrators can completely invalidate a secure JBoss configuration and create numberless problems for JBoss.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>AT-2,AT-3,AT-4<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.3 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1003">Document incident response procedures</a></span><p>Ensure well developed procedures exist for incident handling. Incidents include any events that are anomalous to the environment.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Planning for incidents prior to real-life scenarios increases incident response time and mitigates damages. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IR-1, IR-8<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.4 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1004">Perform periodic incident response exercises</a></span><p>Production environments should exercise incident response procedures at least annually. Environments requiring higher assurances of security should test incident response procedures more often, possibly quarterly or even monthly. Incident response procedures should cover all
+				anomalous
+				events.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Planning for incidents and practicing procedures to be followed prior to real-life scenario improves response time and mitigates damages/losses that occur with incidents.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IR-3<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.5 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1005">Document disaster recovery procedures</a></span><p>Robust disaster recovery documentation and procedures should exist. This documentation should include provisions for the JBoss platform, deployed applications, required source code, and supporting applications (such as authentication stores or database servers).</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Planning for disasters and extended outages prior to a real-life scenario helps mitigate losses associated with identified disasters. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>CP-1,CP-2<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.6 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1006">Perform periodic disaster recovery exercises</a></span><p>Production environments should exercise disaster recovery procedures that include provisions for the JBoss platform, deployed applications, and any required source code at least annually. Environments requiring higher assurances of disaster recovery ability should test procedures
+				more
+				often, possibly quarterly or even monthly.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Planning for disasters and extended outages prior to a real-life scenario helps mitigate losses associated with identified disasters. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>CP-4<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.7 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1007">Identify and document application data flows</a></span><p>It is recommended to identify and document application data flows. This will allow insight into what paths sensitive information takes through the application environment and what data source connections need to be encrypted.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Failure to document an application's data flows reduces security, increases the chance for architectural and configuration errors, and can impede performance. Many applications use network services that are not immediately apparent.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>SC-8,SC-9,SC-23<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.8 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1008">Java permissions for deployed applications should be documented and reviewed prior to deployment</a></span><p>Java permissions for applications should be documented and carefully reviewed prior to deployment. Developers and administrators should strive to balance application permissions and application functionality.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Careful documentation, along with a thorough review will help prevent needlessly insecure permission assignments for applications. An overabundance of Java permissions can
+					allow applications to circumvent one of Java's strongest security features - the Java Security Manager sandbox.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-1<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.9 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1009">Regular backups should be performed</a></span><p>JBoss applications and configuration files should be backed up at least weekly, possibly more if needed by the environment.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Failure to regularly backup JBoss configuration files and deployed applications can result in extensive downtime or information losses in the event of a disaster or other system outage.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>CP-9<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.10 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1010">Auditing policy should exist</a></span><p>In order to effectively audit and review system logs, an audit policy should be written to identify data and trends of interest.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Without a comprehensive audit policy and review procedures, organizations risk missing critical events or event trends within their environment. These missed events may indicate system anomalies ranging from malicious attacks, system instabilities, system misuse, etc.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AU-1,AU-2,AU-3,AU-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.11 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1011">Access control policy and procedures</a></span><p>JBoss administrators must have access to guidance regarding account creation, permissions assignments, role assignments, etc.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>A consistent, cohesive access control policy is impossible to attain without a well-documented access control policy and related procedures. Failure to do so typically results in over-assignment of access permissions for users and applications, stale access for users and applications,
+					and
+					other access control misconfigurations that reduce the effectiveness of the security policy.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-1<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.12 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1012">Define an appropriate minimum and maximum password length requirement</a></span><p>Organizations should create an authenticator management policy that defines minimum and maximum password sizes for user accounts accessing JBoss and its deployed applications.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>In brute force scenarios, passwords of extended lengths increase password security and the length of time required to decrypt the password. However, there are risks associated with requiring passwords of great lengths, as users may take steps to circumvent policy; such as using
+					repetitive
+					passwords, writing password reminders, or writing down their passwords.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.13 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1013">Define an appropriate minimum password complexity requirement</a></span><p>Organizations should create an authenticator management policy that defines a minimum level of complexity for user accounts accessing JBoss and its deployed applications. These requirements should also restrict passwords from containing dictionary words and reusing previous
+				passwords.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Complex passwords increase password security and the length of time required to decrypt the password. Additionally, complex passwords are less likely to be found in password dictionaries. However, there are risks associated with requiring overly complex passwords, as users may take
+					steps
+					to circumvent policy; such as using repetitive passwords, writing password reminders, or writing down their passwords.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.14 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_policy-1014">Define an appropriate minimum password expiration interval</a></span><p>Organizations should create an authenticator management policy that defines a maximum password age for user accounts accessing JBoss and its deployed applications.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>In combination with password length and complexity, regularly changing passwords can defeat many attacks. If a password or password hash is intercepted by a malicious party, changing the password can remove access or render invalid a cracking attempt on the hash. However, there are
+					risks
+					associated with frequently changing passwords. Users may take steps to circumvent policy such as using repetitive passwords or using password derivatives. Additionally, changing passwords for system or application accounts introduces an element of configuration risk. Poorly coordinated or
+					documented changes can result in system outages or create other problems.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.15 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2001">Jboss Fuse should be a vendor supported version.</a></span><p>Evaluated JBoss installation must be a vendor supported version of JBoss Fuse 6. Organizations using JBoss Fuse must use a vendor supported version with an active support contract.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Failure to utilize a supported version of JBoss in a production environment can lead to outages, unresolvable problems, no access to security or functional updates, etc.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>CM-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.16 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2002">Ensure Java Runtime Environment is a supported version.</a></span><p>Evaluated JBoss installation must use a vendor supported Java virtual machine - i.e., one that has not reached end-of-life. Migration strategies should be developed when end-of-life is impending.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Java installations should be a vendor supported version. If the Java virtual machine in use by JBoss is not supported by the vendor, this may result in outages, unresolvable problems, no access to security or functional updates, etc.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>CM-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.17 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2003">Ensure all downloaded software is authentic</a></span><p>Software and packages should be downloaded from redhat.com, and hash validated.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Without validating downloaded files are authentic, malicious users may compromise software before it has even been installed. Attackers may redirect traffic to alternate download locations and attempt to trick administrators into downloading modified software.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>CM-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.18 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2004">Hot deployment must be disabled in production.</a></span><p>Hot deployment should be disabled on production servers. Hot Deployment allows for automatic deployment of Java applications by simply placing Java applications into the deploy directory.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Hot deployments are not a recommended best practice for production environments. By requiring the additional step of restarting the JBoss server, application deployments become more deliberate and purposeful.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT III<br></p><p><span class="label">NIST 800.53 Mapping: </span>CM-7<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.19 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2005">Remove, rename, or comment out default user accounts from production servers.</a></span><p>Remove, rename, or comment out the default user accounts defined in .properties files.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default user accounts makes malicious exploitation more complex.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.20 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2006">Remove, rename, or comment out default roles from production servers.</a></span><p>Remove, rename, or comment out the default roles defined in .properties files.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default roles makes malicious exploitation more complex.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.21 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2007">Configure Java Security Manager to use an environment specific policy/</a></span><p>The Java Security Manager is a crucial piece of the Java security infrastructure. JBoss Fuse should be configured to load a Java security policy that has been vetted for use in the environment.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>A weak, default, or incomplete Java Security Manager policy file can completely compromise the security of a Java installation by granting excessive permissions to applications running within the sandbox. These permissions can be leveraged (maliciously or not) to run code against the
+					operating system.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>SA-13<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.22 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2008">Ensure proper permissions are configured for deployed applications: java.io.FilePermission</a></span><p>Deployed applications must not be granted file permissions - except to those that are dedicated to the application only. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an
+				application-specific, granular manner.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Granting unrestricted access to the host operating system creates a large attack vector for malicious users that have penetrated the JBoss server.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.23 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2009">Ensure proper permissions are configured for deployed applications: java.net.NetPermission</a></span><p>Deployed applications must not be granted network permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.24 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2010">Ensure proper permissions are configured for deployed applications: java.lang.RuntimePermission</a></span><p>Deployed applications must not be granted runtime permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Granting RuntimePermission to applications allows these applications to modify classloaders or modify the running security manager. Either of these actions can be used to
+					elevate permissions and increase the number of potential damaging actions that can be taken.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.25 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2011">Ensure proper permissions are configured for deployed applications: java.net.SocketPermission</a></span><p>Deployed applications must not be granted any socket permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Most well-designed applications will not need to directly manipulate sockets for network access (access to datasources should be handled through datasources, which can be
+					assigned SocketPermission.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.26 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2012">Ensure proper permissions are configured for deployed applications: java.security.AllPermission</a></span><p>Deployed applications must not be granted all permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Using AllPermissions is essentially disabling the Java security sandbox and is inadvisable in nearly every scenario.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.27 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2013">Ensure default system Java Authentication and Authorization Service configuration is in use.</a></span><p>Using the default system JAAS configuration ensures user identification and authentication are performed by JBoss Fuse.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Using an administrator specified JAAS configuration enables a more rigorous security posture.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>CM-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.28 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2014">Ensure deployed applications requiring authentication utilizes DoD PKI Class 3 or Class 4 certificate and hardware security token or NSA-certified product</a></span><p>JBoss applications implementing authentication should utilize the DoD Public Key Infrastructure. The DoD Public Key Infrastructure is designed to use hardware tokens such as the Common Access Card in conjunction with issued X.509 certificates. These tokens are typically protected
+				with
+				a PIN that unlocks access to the private certificate stored on the token.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Leveraging the DoD Public Key Infrastructure increases the security of an application because the DoD PKI raises the bar for exploitation of user identities. Applications that require authentication and do not utilize PKI must then rely on a less secure form of authentication, such as
+					username and password. Additionally, current DoD guidance requires the use of DoD PKI over username and password.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.29 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2015">Enable Federal Information and Processing Systems 140-2 (FIPS) compliant cryptographic modules for use by JBoss Java environment</a></span><p>While JBoss itself has no need to load FIPS compliant modules, the underlying technologies such as Java do. Utilizing only FIPS compliant modules decreases compatibility with applications that are not FIPS enabled.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Enabling FIPS compliant algorithms ensures that the underlying technologies that JBoss works through are using cryptographic modules that have been vetted by NIST for security, stability, and strength. Failure to utilize FIPS certified modules may cause the underlying technologies used
+					by
+					JBoss to utilize older, less secure algorithms. Failure to enable only FIPS compliant modules may also have regulatory consequences, as FIPS 140-2 requires the use of FIPS compliant modules by all federal agencies.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>SC-13<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.30 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2016">Eliminate clear-text passwords from production servers.</a></span><p>Eliminate clear-text passwords in JBoss configuration files. All passwords should be encrypted and all password files should have restricted file permissions.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>SC-28<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.31 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2017">Ensure JBoss process owner is executing with least privilege.</a></span><p>Operating environment permissions assigned to the JBoss process owner should be in compliance with the principle of least privilege.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>n order to reduce the potential impact of exploitation against the JBoss application server (and the rest of the operating environment), the JBoss process owner should execute with as few permissions as possible in the environment (if the account is not local to the operating system or
+					is
+					distributed across multiple operating systems). Failure to limit permissions can dramatically increase the severity of exploits against the JBoss server, such as the execution of arbitrary code.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.32 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2018">Deny the JBoss process owner console access.</a></span><p>The JBoss process owner should not have interactive console login access.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>In order to limit access in the event of an exploitation of the Jboss or one of its deployed applications, the account owning the Jboss process should be limited in its ability to interact with the supporting operating system where possible. Thus, the JBoss process owner account should
+					not have interactive console access.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.33 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2019">Set JBoss file ownership.</a></span><p>All JBoss Fuse files within the installation directory should be owned by the JBoss process owner account.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>To prevent unauthorized modification or disclosure of JBoss configuration settings, all files within the installation directory should be owned by the JBoss process owner account.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-3<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.34 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2020">Set JBoss file permissions.</a></span><p>All JBoss files within the installation directory should be readable by the JBoss process owner and JBoss administrators only.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>To prevent unauthorized modification or disclosure of JBoss configuration settings, access to all files within the installation directory should be restricted to the JBoss process owner account and Jboss administrators.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-3, AC-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.35 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2021">Ensure remote access is either secured or disabled.</a></span><p>Remote access must be secured so it is accessible by trusted administrators only. If this condition is not met, the access must be disabled from the deployment.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Failure to secure against unauthorized access can quickly lead to system compromise. The default access included with JBoss is a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-3<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.36 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2022">Ensure Web Console is either secured or removed.</a></span><p>The Web Console application must be secured so it is accessible by trusted administrators only. If this condition is not met, the application must be removed (deleted) from deployment.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Failure to secure the default consoles against unauthorized access can quickly lead to system compromise. The default consoles included with JBoss are a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-3<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.37 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2023">Ensure JMX access is either secured or disabled.</a></span><p>JMX access must be secured so it is accessible by trusted administrators only. If this condition is not met, the access must be disabled from the deployment.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Failure to secure JMX against unauthorized access can quickly lead to system compromise. The default access included with JBoss is a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>AC-3<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.38 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2024">Password hashing must be enabled within the appropriate login module</a></span><p>Password hashing should be enabled in all security realms where plain-text passwords are currently in use.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Failure to enable password hashing within a login module can result in plain-text exposure client passwords used for authentication.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>SC-8, SC-9<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.39 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2025">Only application and/or system administrators should be able to change security related configuration attributes.</a></span><p>Security attributes are typically associated with internal data structures and configuration (e.g., application deployment, logging, monitoring) within the application server and are used to enable the implementation of access control and flow control policies, reflect special
+				dissemination, handling or distribution instructions, or support other aspects of the organizational information security policy.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>If unauthorized entities were able to change security attributes, the integrity and/or confidentiality of the server could be compromised.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.40 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2026">Only authorized users should be allowed to associate PKI information.</a></span><p>Throughout the course of normal usage, authorized users of application servers will have the need to associate security attributes in the form of PKI credentials with information. The server utilizes a role based authentication model when managing server resources and limits access
+				according to user role.&nbsp;
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>The server must ensure that only the users who are authorized to associate security attributes with information are allowed to do so.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.41 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2027">SSL should be enabled on the Web Console.</a></span><p>The server must utilize cryptography to protect the confidentiality of remote access management sessions.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.42 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2028">Remote Access should only be done via SSH or other secure means.</a></span><p>The server must utilize cryptography to protect the confidentiality of remote access management sessions.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.43 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2029">Logging should be configured to reduce to the likelihood of storage capacity being exceeded.</a></span><p>The server must configure auditing to reduce the likelihood of storage capacity being exceeded.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>server auditing capability is critical for accurate forensic analysis. Alerting administrators when audit log size thresholds are exceeded helps ensure the administrators can respond to heavy activity in a timely manner. Failure to alert increases the probability that an adversary's
+					actions will go undetected.&nbsp; The server or the configured Network Attached Storage Device (SAN) must alert administrators when audit log usage reaches a defined percentage of overall capacity.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT III<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.44 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2030">Logging should be configured to maintain logs for a organization defined continuous number of days.</a></span><p>Logging should be configured to maintain logs for a organization defined continuous number of days.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>If adequate online audit storage capacity is not maintained, intrusion monitoring, security investigations, and forensic analysis can be negatively affected.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.45 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2031">Server configuration changes should be restricted to Jboss Administrators only.</a></span><p>The server must enforce logical access restrictions associated with changes to application configuration.&nbsp;</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>When dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system and/or application can potentially have significant effects on the overall security of the
+					system.&nbsp;Accordingly, only qualified and authorized individuals should be allowed to obtain access to server components for the purposes of initiating changes, including upgrades and application modifications.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.46 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2032">All non-essential bundles and features should be removed from production servers.</a></span><p>All non-essential bundles and features should be removed from production servers.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>The server provide a myriad of differing processes, features and functionalities. Some of these processes may be deemed to be unnecessary or too insecure to run on a production DoD system. Servers must provide the capability to disable or deactivate functionality and services that are
+					deemed to be non-essential to the server mission or can adversely impact server performance.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.47 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2033">All non-essential ports, protocols, and services should be disabled.</a></span><p>The server must prohibit or restrict the use of unauthorized functions, ports, protocols, and/or services.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>
+					The server provides numerous processes, features and functionalities that utilize TCP/IP ports. Some of these processes may be deemed to be unnecessary or too insecure to run on a production system. For a list of approved ports and protocols reference the DoD ports and protocols web site at
+					<a href="https://powhatan.iiie.disa.mil/ports/cal.html">https://powhatan.iiie.disa.mil/ports/cal.html</a>
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.48 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2034">All passwords should be encrypted when other means are not being utilized.</a></span><p>Stored passwords must be encrypted.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Passwords need to be protected at all times and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read and easily compromised.&nbsp;</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.49 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2035">Encryption must be used when LDAP is enabled.</a></span><p>The server must utilize encryption when using LDAP for authentication.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Passwords need to be protected at all times and encryption is the standard method for protecting passwords during transmission.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.50 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2036">FIPS 140-2 approved encryption modules must be used.</a></span><p>The Application Server must utilize FIPS 140-2 approved encryption modules when authenticating users and processes.&nbsp;</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Encryption is only as good as the encryption modules utilized. Unapproved cryptographic module algorithms cannot be verified, and cannot be relied upon to provide confidentiality or integrity and DoD data may be compromised due to weak algorithms.&nbsp;FIPS 140-2 is the current standard for
+					validating cryptographic modules and NSA Type-X (where X=1, 2, 3, 4) products are NSA certified hardware-based encryption modules.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.51 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2037">DoD or CNS approved PKI Class 3 and Class 4 certificates should be used.</a></span><p>The server must use DoD or CNS approved PKI Class 3 or Class 4 certificates.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Class 3 PKI certificates are used for servers and software signing rather than for identifying individuals. Class 4 certificates are used for business-to-business transactions. Utilizing unapproved certificates not issued or approved by DoD or CNS creates an integrity risk.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.52 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2038">LDAP should be configured to fail securely.</a></span><p>The server must fail securely in the event of an operational failure.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Fail secure is a condition achieved by the server in order to ensure that in the event of an operational failure, the system does not enter into an unsecure state where intended security properties no longer hold.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.53 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2039">Logging should be configured such that sensitive information is not revealed.</a></span><p>Only error messages that provide information necessary for corrective actions without revealing sensitive or potentially harmful information in error logs and administrative messages should be generated.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Any application providing too much information in error logs and in administrative messages to the screen risks compromising the data and security of the application and system. The structure and content of error messages needs to be carefully considered by the organization and
+					development team.&nbsp;
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.54 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2040">Log files should be restricted so only authorized personnel may view them.</a></span><p>Only authorized personnel may view log files.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>If the application provides too much information in error logs and administrative messages to the screen, this could lead to compromise. The structure and content of error messages need to be carefully considered by the organization and development team. The extent to which the
+					information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.&nbsp;
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.55 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2041">Ensure Web Console is using PKI.</a></span><p>PKI should be enabled for the Web Console.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>All applications requiring user authentication to access sensitive data must be PK-enabled in compliance with DoDI 8520.2 PKI &amp; PK Enabling and are required to credentials approved under the DoD PKI program.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Security and Development Security Technical Implementation Guide V3R5<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.56 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2042">All PKI Certificates should be valid DoD Certificates.</a></span><p>All PKI Certificates in use should be valid at the time of use.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>By using invalid certificates the server may allow unauthorized users access to the system.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Security and Development Security Technical Implementation Guide V3R5<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">2.57 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2043">Only administrators should be able to modify configuration files.</a></span><p>Server should be protected with permission sets which allow only an application administrator to modify application resource configuration files.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>An access control flaw exists if users or processes can view or modify data to which they should not be permitted. This could result in situations ranging from information disclosure to system compromise and could potentially result in the compromise of other systems on the network.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p>N/A</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Security and Development Security Technical Implementation Guide V3R5<br></p></div><div style="height: 4px;"></div></div></div><h3><a name="group_xccdf_com.redhat.fuse6.scap_group_gr_amq">Apache ActiveMQ Configuration</a></h3><p>The rules in this group validate Apache ActiveMQ related items.</p><div class="padItem"><div class="item"><span class="itemHead">3.1 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3001">Remove, rename, or comment out default user accounts from production servers.</a></span><p>Remove, rename, or comment out the default user accounts defined in .properties files.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default user accounts makes malicious exploitation more complex.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.2 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3002">Remove, rename, or comment out default roles from production servers.</a></span><p>Remove, rename, or comment out the default roles defined in .properties files.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default roles makes malicious exploitation more complex.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>IA-5<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.3 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3003">Ensure default system Java Authentication and Authorization Service configuration is in use.</a></span><p>Using the default system JAAS configuration ensures user identification and authentication are performed by JBoss Fuse.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Using an administrator specified JAAS configuration enables a more rigorous security posture.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>CM-6<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.4 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3004">Eliminate clear-text passwords from production servers.</a></span><p>Eliminate clear-text passwords in JBoss configuration files. All passwords should be encrypted and all password files should have restricted file permissions.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>SC-28<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Recommended Security Controls for Federal Information Systems and Organizations R3<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.5 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3005">Only application and/or system administrators should be able to change security related configuration attributes.</a></span><p>Security attributes are typically associated with internal data structures and configuration (e.g., application deployment, logging, monitoring) within the application server and are used to enable the implementation of access control and flow control policies, reflect special
+				dissemination, handling or distribution instructions, or support other aspects of the organizational information security policy.
+			</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>If unauthorized entities were able to change security attributes, the integrity and/or confidentiality of the server could be compromised.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.6 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3006">SSL should be enabled on the ActiveMQ Web Console.</a></span><p>The server must utilize cryptography to protect the confidentiality of remote access management sessions.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.7 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3007">All passwords should be encrypted when other means are not being utilized.</a></span><p>Stored passwords must be encrypted.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>Passwords need to be protected at all times and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read and easily compromised.&nbsp;</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Server Security Requirements Guide V1R1<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.8 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3008">Ensure ActiveMQ Web Console is using PKI.</a></span><p>PKI should be enabled for the Web Console.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>All applications requiring user authentication to access sensitive data must be PK-enabled in compliance with DoDI 8520.2 PKI &amp; PK Enabling and are required to credentials approved under the DoD PKI program.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Security and Development Security Technical Implementation Guide V3R5<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.9 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3009">All PKI Certificates should be valid DoD Certificates.</a></span><p>All PKI Certificates in use should be valid at the time of use.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>By using invalid certificates the server may allow unauthorized users access to the system.</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT I<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Security and Development Security Technical Implementation Guide V3R5<br></p></div><div style="height: 4px;"></div></div></div><div class="padItem"><div class="item"><span class="itemHead">3.10 - <a name="rule_xccdf_com.redhat.fuse6.scap_rule_gr_amq-3010">Only administrators should be able to modify configuration files.</a></span><p>Server should be protected with permission sets which allow only an application administrator to modify application resource configuration files.</p><div class="subItem"><span class="itemSubHead">Rationale</span><br>
+				<p>An access control flaw exists if users or processes can view or modify data to which they should not be permitted. This could result in situations ranging from information disclosure to system compromise and could potentially result in the compromise of other systems on the network.
+				</p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Additional information</span><br><p><span class="label">CVSSv2 Risk Assessment: </span>N/A
+                                                / N/A
+                                                - CVSSv2 Formula: N/A<br></p><p><span class="label">DoD Risk Category: </span>CAT II<br></p><p><span class="label">NIST 800.53 Mapping: </span>N/A<br></p><p><span class="label">DoD 8500.2 Mapping: </span>N/A<br></p></div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Validation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">Remediation instructions</span><br>
+				<p></p>
+			</div><div style="height: 4px;"></div><div class="subItem"><span class="itemSubHead">References</span><p><span class="label">1. </span>Application Security and Development Security Technical Implementation Guide V3R5<br></p></div><div style="height: 4px;"></div></div></div><h3><a name="group_xccdf_com.redhat.fuse6.scap_group_gr_camel">Apache Camel Configuration</a></h3><p>The rules in this group validate Apache Camel related items.</p><h3><a name="group_xccdf_com.redhat.fuse6.scap_group_gr_cxf">Apache CXF Configuration</a></h3><p>The rules in this group validate Apache CXF related items.</p><hr><h2><a name="SectionRM">Rear Matter</a></h2>
+		<p>
+			For additional information regarding the JBoss Fuse 6.x SCAP benchmark, please visit
+			<a href="https://fedorahosted.org/scap-security-guide/">https://fedorahosted.org/scap-security-guide/</a>
+		</p>
+		<p>You may also contact the authors:</p>
+		<ul>
+			<li>
+				<a href="mailto:bsaunder@redhat.com">Bryan Saunders</a>
+			</li>
+			<li>
+				<a href="mailto:kpeeples@redhat.com">Kenny Peeples</a>
+			</li>
+		</ul>
+	</body></html>

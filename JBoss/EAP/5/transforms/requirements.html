@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>JBoss EAP 5 SCAP Benchmark Requirements</title>
+    </head>
+    <body>
+        <p>Before running the JBoss EAP 5 benchmark, the target machine must meet the following requirements.</p>
+        <ul>
+            <li><b>JBOSS_HOME</b> environment variable properly set</li>
+			<li><b>JAVA_HOME</b> environment variable properly set</li>
+            <li>JBoss server should be started prior to testing</li>
+			<p><b>NOTE:</b> By default, the OVAL content will test the <b>production</b> server profile (use of the <b>production</b> profile is a requirement for JBoss Common Criteria compliance).  To change the profile, perform the following actions:</p>
+			<ul>
+				<li>Edit the eap5-oval.xml file and locate the &lt;constant_variable id="oval:com.redhat.eap5.scap:var:900122"&gt; element.  Update the &lt;value&gt; element with the case-sensitive name of the server profile you wish to test.</li>
+				<li>Perform the same edit on the eap5-cpe-oval.xml file (the id attribute will be slightly different: 800122).</li>				
+			</ul>
+        </ul>
+    </body>
+</html>
