@@ -1,0 +1,70 @@
+XCCDF Files
+------------------------
+Groups: xccdf_com.redhat.eap5.scap_group_<grpName>
+	grpName is one of 4 values:
+		- rhbpGroup
+		- cccGroup
+		- nistGroup
+		- disaGroup
+
+Rules: xccdf_com.redhat.eap5.scap_rule_<GRRR>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	Example: 1001 = RHBP Rule #1
+	
+	
+OCIL Files
+------------------------
+Questionnaires: ocil:com.redhat.eap5.scap:questionnaire:<GRRRCC>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	There will only be one OCIL Questionnaire per Rule, since each can have multiple Test Actions
+
+Test Actions: ocil:eap:testaction:<GRRRCCTT>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	T - Test # (01, 02, .., 99)
+	Example: 10010101 = RHBP Rule #1 Check #1 Test #1
+	
+Questions: ocil:com.redhat.eap5.scap:question:<GRRRCCTT>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	T - Test # (01, 02, .., 99)
+	Questions Match their Test Action since a Test Action can only have one Question
+	
+Choice: ocil:com.redhat.eap5.scap:choice:<GRRRCCTTAA>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	T - Test # (01, 02, .., 99)
+	A - Choice # (01, 02, .., 99)
+	Example: 10010101 = RHBP Rule #1 Check #1 Test #1 Choice #1
+	
+	
+OVAL Files
+------------------------
+Definitions: oval:com.redhat.eap5.scap:def:<GRRRCC>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	
+Tests: oval:com.redhat.eap5.scap:tst:<GRRRCCTT>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	T - Test # (01, 02, .., 99)
+	
+Objects: oval:com.redhat.eap5.scap:obj:<GRRRCCTT>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	T - Test # (01, 02, .., 99)
+
+States: oval:com.redhat.eap5.scap:ste:<GRRRCCTT>
+	G - Group ID (1 = RHBP, 2 = CCC, 3 = DISA, 4 = NIST)
+	R - Rule # from Spreadsheet (001, 002, ..., 999)
+	C - Check # (01, 02, .., 99)
+	T - Test # (01, 02, .., 99)

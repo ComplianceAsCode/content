@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>JBoss EAP 5 SCAP Benchmark Requirements</title>
+    </head>
+    <body>
+        <p>The JBoss EAP 5 SCAP Benchmark can be run using the XCCDFExec interpreter. Follow the steps below to run the benchmark using XCCDFExec.</p>
+        <ol>
+			<li>Ensure all requirements detailed <a href="#SectionReqs">here</a> have been met.</li>
+            <li>Download the XCCDF Interpreter from sourceforge: http://sourceforge.net/projects/xccdfexec/</li>
+            <li>Unzip and install the XCCDF Interpreter, as directed by its README.txt.</li>
+            <ol>
+                <li>NOTE: The XCCDF Interpreter is packaged with a Win32 build of the OVAL Definition Interpreter. To run OVAL checks on your Linux system you can edit the oval.dir and oval.bin properties within the xccdf_interpreter.properties file to reference your local OVALDI installation.</li>
+                <li>A Linux build of the OVAL Definition Interpreter may be obtained at: http://sourceforge.net/projects/ovaldi/</li>
+            </ol>
+            <li>Navigate to the XCCDF Interpreter directory. For example: <pre><code>cd /xccdf_interpreter_1.1.4_build_19-bin</code></pre></li>
+            <li>To run the interpreter, type the following replacing [PROFILE_NAME] with the name of the profile you want to run (as defined in the next section). The command assumes that the EAP5 SCAP files are in the same directory as the xccdf interpreter: <pre><code>java -jar xccdfexec.jar eap5-xccdf.xml -c eap5-cpe-oval.xml -C eap5-cpe-dictionary.xml -P [PROFILE_NAME]</code></pre></li>
+            <li>When prompted with the OCIL Interpreter, answer each questionnaire, save the results, and exit.</li>
+            <li>The results of the tests will be displayed on the screen and in several output files under the results directory.  The XML result files can be transformed to HTML using transforms available online.</li>
+            <li>A result of PASS indicates that the test passed, a result of FAIL indicates that the test failed and a setting may need to be adjusted. You can review the remediation instructions available for each rule to adjust any settings. A result of "NOT APPLICABLE" means that the recommendation is not applicable to your deployment. A result of "NOT CHECKED" means that the recommendations OCIL questionnaire was not answered.</li>
+        </ol>
+        
+        <h3>Alternative Tools</h3>
+        <p>There are several alternative tools that you can use to run the EAP 5 SCAP Benchmark. These tools include: </p>
+        <ul>
+            <li><a href="http://www.open-scap.org">OpenSCAP</a></li>
+            <li><a href="http://www.public.navy.mil/spawar/Atlantic/ProductsServices/Pages/SCAP.aspx">SPAWAR Compliance Checker</a></li>
+        </ul>
+        <p>Please see the included documentation for instructions on how to run these tools.</p>
+    </body>
+</html>
