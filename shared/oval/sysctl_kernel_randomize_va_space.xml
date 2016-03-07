@@ -11,7 +11,10 @@
     </metadata>
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter kernel.randomize_va_space set to 2" test_ref="test_runtime_sysctl_kernel_randomize_va_space" />
-      <criterion comment="kernel /etc/sysctl.conf parameter kernel.randomize_va_space set to 2" test_ref="test_static_sysctl_kernel_randomize_va_space" />
+      <criteria operator="OR">
+        <criterion comment="kernel /etc/sysctl.conf parameter kernel.randomize_va_space set to 2" test_ref="test_static_sysctl_kernel_randomize_va_space" />
+        <criterion comment="kernel /etc/sysctl.d/*.conf parameter kernel.randomize_va_space set to 2" test_ref="test_static_etc_sysctl_kernel_randomize_va_space" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -24,8 +27,19 @@
     <ind:object object_ref="object_static_sysctl_kernel_randomize_va_space" />
   </ind:textfilecontent54_test>
 
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="kernel.randomize_va_space static configuration" id="test_static_etc_sysctl_kernel_randomize_va_space" version="1">
+    <ind:object object_ref="object_static_etc_sysctl_kernel_randomize_va_space" />
+  </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="object_static_sysctl_kernel_randomize_va_space" version="1">
     <ind:filepath>/etc/sysctl.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*kernel.randomize_va_space[\s]*=[\s]*2[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctl_kernel_randomize_va_space" version="1">
+    <ind:path>/etc/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*kernel.randomize_va_space[\s]*=[\s]*2[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -38,3 +52,4 @@
     <unix:value datatype="int" operation="equals">2</unix:value>
   </unix:sysctl_state>
 </def-group>
+
