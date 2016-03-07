@@ -31,7 +31,7 @@ information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
 <title>Install AIDE</title>
 <description>
 Install the AIDE package with the command:
-<pre>$ sudo yum install aide</pre>
+<pre>$ sudo dnf install aide</pre>
 </description>
 <ocil clause="the package is not installed">
 <package-check-macro package="aide"/>
@@ -154,8 +154,8 @@ change, investigate the cause of the change using audit logs or other means.
 The package can then be reinstalled to restore the file.
 Run the following command to determine which package owns the file:
 <pre># rpm -qf <i>FILENAME</i></pre>
-The package can be reinstalled from a yum repository using the command:
-<pre>yum reinstall <i>PACKAGENAME</i></pre>
+The package can be reinstalled from a dnf repository using the command:
+<pre>dnf reinstall <i>PACKAGENAME</i></pre>
 Alternatively, the package can be reinstalled from trusted media using the command:
 <pre>rpm -Uvh <i>PACKAGENAME</i></pre> 
 </description>
