@@ -1,0 +1,1583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd ">
+	<status date="2013-09-17">draft</status>
+	<title>Security Benchmark JBoss Fuse 6.x</title>
+	<description>This XCCDF benchmark is used for evaluating the security of Red Hat JBoss Fuse 6.x.</description>
+	<notice id="Fuse 6">This content was developed by Red Hat, Inc. for use by JBoss Fuse 6.x Administrators and is released under the Public Domain
+	License. </notice>
+	<front-matter xml:lang="en">
+		<xhtml:p>JBoss Fuse is an open source Enterprise Service Bus (ESB) with an elastic footprint that supports integration beyond the data center. The lack of license fees and the ability to deploy JBoss Fuse in several different configurations advances intelligent integration to all facets of your
+			business – on premise or in the Cloud.
+		</xhtml:p>
+		<xhtml:p>JBoss Fuse combines Apache Camel, Apache CXF, Apache ActiveMQ, Apache Karaf and Fuse Fabric in a single integrated distribution. Core messaging is provided by Apache ActiveMQ, services framework (SOAP, XML/HTTP, RESTful HTTP) is provided by Apache CXF and integration framework is provided
+			by Apache Camel. Apache Karaf provides a lightweight OSGI-based runtime container.
+		</xhtml:p>
+		<xhtml:p>This benchmark provides security guidance on JBoss Fuse 6 running on Red Hat Enterprise Linux. This document assumes that the reader is familiar with JBoss Fuse 6 and Red Hat Enterprise Linux administration. This document also assumes that the baseline configuration of the operating
+			system and JBoss Fuse 6 are up-to-date in terms of installed patches. The content within this benchmark was tested for compatibility with multiple SCAP tools on Red Hat Enterprise Linux 6. The following compatibility matrix shows our results:
+		</xhtml:p>
+
+		<xhtml:table border="1" cellpadding="0" cellspacing="0">
+			<xhtml:tr>
+				<xhtml:td></xhtml:td>
+				<xhtml:td>
+					<xhtml:b>XCCDFExec v1.1.4 Build 19</xhtml:b>
+				</xhtml:td>
+				<xhtml:td>
+					<xhtml:b>SPAWAR Compliance Checker v3.1.1</xhtml:b>
+				</xhtml:td>
+				<xhtml:td>
+					<xhtml:b>OpenSCAP v0.9.7</xhtml:b>
+				</xhtml:td>
+			</xhtml:tr>
+			<xhtml:tr>
+				<xhtml:td>
+					<xhtml:b>RHEL 6 - i386</xhtml:b>
+				</xhtml:td>
+				<xhtml:td bgcolor="#FFAA00">Additional Dependencies Needed</xhtml:td>
+				<xhtml:td bgcolor="#00AA00">Fully Compatible</xhtml:td>
+				<xhtml:td bgcolor="#00AA00">Fully Compatible</xhtml:td>
+			</xhtml:tr>
+			<xhtml:tr>
+				<xhtml:td>
+					<xhtml:b>RHEL 6 - x86_64</xhtml:b>
+				</xhtml:td>
+				<xhtml:td bgcolor="#FFAA00">Additional Dependencies Needed</xhtml:td>
+				<xhtml:td bgcolor="#00AA00">Fully Compatible</xhtml:td>
+				<xhtml:td bgcolor="#00AA00">Fully Compatible</xhtml:td>
+			</xhtml:tr>
+		</xhtml:table>
+
+		<xhtml:p>The recommendations included in this benchmark have been derived from various government and industry sources. All rules include a rationale, validation instructions (for OCIL rules), remediation instructions, references, risk assessments, and NIST/DoD Control mappings. </xhtml:p>
+	</front-matter>
+	<rear-matter>
+		<xhtml:p>
+			For additional information regarding the JBoss Fuse 6.x SCAP benchmark, please visit
+			<xhtml:a href="https://fedorahosted.org/scap-security-guide/">https://fedorahosted.org/scap-security-guide/</xhtml:a>
+		</xhtml:p>
+		<xhtml:p>You may also contact the authors:</xhtml:p>
+		<xhtml:ul>
+			<xhtml:li>
+				<xhtml:a href="mailto:bsaunder@redhat.com">Bryan Saunders</xhtml:a>
+			</xhtml:li>
+			<xhtml:li>
+				<xhtml:a href="mailto:kpeeples@redhat.com">Kenny Peeples</xhtml:a>
+			</xhtml:li>
+		</xhtml:ul>
+	</rear-matter>
+
+	<platform idref="cpe:/a:redhat:jboss_fuse:6.0" />
+
+	<version>v1.0</version>
+	<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:title>Security Benchmark JBoss Fuse 6.x</dc:title>
+		<dc:creator>Bryan Saunders</dc:creator>
+		<dc:creator>Kenny Peeples</dc:creator>
+		<dc:publisher>Red Hat</dc:publisher>
+		<dc:subject>Security for JBoss Fuse, version 6</dc:subject>
+		<!-- TODO: Update Contributers -->
+		<dc:contributor>Jason Wong</dc:contributor>
+		<dc:source>JBoss Fuse 6 Security Guide, 2012. Retrieved from website https://access.redhat.com/site/documentation/en-US/JBoss_Fuse/6.0/html/Security_Guide/files/front.html</dc:source>
+		<!-- TODO: Add DISA STIG's as Sources -->
+		<dc:source>Application Security and Development Security Technical Implementation Guide V3R5</dc:source>
+		<dc:source>Application Server Security Requirements Guide V1R1</dc:source>
+		<dc:source>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</dc:source>
+		<dc:source>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guide to Enterprise Password Management (Draft) (800-118). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</dc:source>
+		<dc:source>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guidelines on Securing Public Web Servers (800-44). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</dc:source>
+	</metadata>
+
+	<Profile id="pr_jboss_amq">
+		<title>JBoss A-MQ 6</title>
+		<description>Profile for testing a secure deployment of JBoss A-MQ 6.x.</description>
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_policy" selected="true" />
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_karaf" selected="true" />
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_amq" selected="true" />
+	</Profile>
+
+	<Profile id="pr_jboss_fuse">
+		<title>JBoss Fuse 6</title>
+		<description>Profile for testing a secure deployment of JBoss Fuse 6.x.</description>
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_policy" selected="true" />
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_karaf" selected="true" />
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_amq" selected="true" />
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_camel" selected="true" />
+		<select idref="xccdf_com.redhat.fuse6.scap_group_gr_cxf" selected="true" />
+	</Profile>
+
+	<Value id="warning_banner_text" type="string">
+		<title>Warning banner content</title>
+		<description>This value contains the content for a DoD warning banner.</description>
+		<value selector="DoD">The DoD warning banner should read: "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+			By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+			-The USG routinely
+			intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+			-At any time, the USG may inspect and
+			seize data stored on this IS.
+
+			-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+			-This IS includes security measures (e.g., authentication and access controls)
+			to protect USG interests—not for your personal benefit or privacy.
+
+			-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or
+			services by attorneys, psychotherapists, or clergy, and their assistants. Such
+			communications and work product are private and confidential. See User Agreement for details."
+		</value>
+		<default></default>
+	</Value>
+
+	<Group id="xccdf_com.redhat.fuse6.scap_group_gr_policy" selected="false">
+		<title>JBoss Fuse Policy Guidelines</title>
+		<description>The rules in this group are used to manage Jboss servers in a secure manner. These rules are policy related.</description>
+	</Group>
+
+	<Group id="xccdf_com.redhat.fuse6.scap_group_gr_karaf" selected="false">
+		<title>Apache Karaf Configuration</title>
+		<description>The rules in this group validate Apache Karaf related items.</description>
+
+		<!-- ========================= -->
+		<!-- GENERATED KARAF RULES -->
+		<!-- ========================= -->
+
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1001">
+			<title>Ensure adequate physical protections are in place</title>
+			<description>The hardware and software executing JBoss Fuse, as well as the software critical to security policy enforcement must be protected from unauthorized modification including unauthorized modifications by potentially hostile outsiders. Reasonable physical security measures to ensure that
+				unauthorized personnel do not have physical access to the hardware running the JBoss Enterprise Application Platform software must be implemented.
+			</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Many software security precautions can easily be bypassed by personnel with physical access to hardware storing data or executing an application.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">PE-1,PE-2,PE-3,PE-7,PE-18</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1002">
+			<title>Assign a JBoss administrator</title>
+			<description>There must be one or more competent individuals who are assigned to manage JBoss Fuse, its environment and the security of the information it contains.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Incompetent, careless, or negligent JBoss administrators can completely invalidate a secure JBoss configuration and create numberless problems for JBoss.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AT-2,AT-3,AT-4</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1003">
+			<title>Document incident response procedures</title>
+			<description>Ensure well developed procedures exist for incident handling. Incidents include any events that are anomalous to the environment.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Planning for incidents prior to real-life scenarios increases incident response time and mitigates damages. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IR-1, IR-8</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1004">
+			<title>Perform periodic incident response exercises</title>
+			<description>Production environments should exercise incident response procedures at least annually. Environments requiring higher assurances of security should test incident response procedures more often, possibly quarterly or even monthly. Incident response procedures should cover all
+				anomalous
+				events.
+			</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Planning for incidents and practicing procedures to be followed prior to real-life scenario improves response time and mitigates damages/losses that occur with incidents.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IR-3</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1005">
+			<title>Document disaster recovery procedures</title>
+			<description>Robust disaster recovery documentation and procedures should exist. This documentation should include provisions for the JBoss platform, deployed applications, required source code, and supporting applications (such as authentication stores or database servers).</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Planning for disasters and extended outages prior to a real-life scenario helps mitigate losses associated with identified disasters. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CP-1,CP-2</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1006">
+			<title>Perform periodic disaster recovery exercises</title>
+			<description>Production environments should exercise disaster recovery procedures that include provisions for the JBoss platform, deployed applications, and any required source code at least annually. Environments requiring higher assurances of disaster recovery ability should test procedures
+				more
+				often, possibly quarterly or even monthly.
+			</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Planning for disasters and extended outages prior to a real-life scenario helps mitigate losses associated with identified disasters. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CP-4</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1007">
+			<title>Identify and document application data flows</title>
+			<description>It is recommended to identify and document application data flows. This will allow insight into what paths sensitive information takes through the application environment and what data source connections need to be encrypted.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Failure to document an application's data flows reduces security, increases the chance for architectural and configuration errors, and can impede performance. Many applications use network services that are not immediately apparent.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">SC-8,SC-9,SC-23</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1008">
+			<title>Java permissions for deployed applications should be documented and reviewed prior to deployment</title>
+			<description>Java permissions for applications should be documented and carefully reviewed prior to deployment. Developers and administrators should strive to balance application permissions and application functionality.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Careful documentation, along with a thorough review will help prevent needlessly insecure permission assignments for applications. An overabundance of Java permissions can
+					allow applications to circumvent one of Java's strongest security features - the Java Security Manager sandbox.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-1</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1009">
+			<title>Regular backups should be performed</title>
+			<description>JBoss applications and configuration files should be backed up at least weekly, possibly more if needed by the environment.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Failure to regularly backup JBoss configuration files and deployed applications can result in extensive downtime or information losses in the event of a disaster or other system outage.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CP-9</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1010">
+			<title>Auditing policy should exist</title>
+			<description>In order to effectively audit and review system logs, an audit policy should be written to identify data and trends of interest.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Without a comprehensive audit policy and review procedures, organizations risk missing critical events or event trends within their environment. These missed events may indicate system anomalies ranging from malicious attacks, system instabilities, system misuse, etc.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AU-1,AU-2,AU-3,AU-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1011">
+			<title>Access control policy and procedures</title>
+			<description>JBoss administrators must have access to guidance regarding account creation, permissions assignments, role assignments, etc.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>A consistent, cohesive access control policy is impossible to attain without a well-documented access control policy and related procedures. Failure to do so typically results in over-assignment of access permissions for users and applications, stale access for users and applications,
+					and
+					other access control misconfigurations that reduce the effectiveness of the security policy.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-1</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1012">
+			<title>Define an appropriate minimum and maximum password length requirement</title>
+			<description>Organizations should create an authenticator management policy that defines minimum and maximum password sizes for user accounts accessing JBoss and its deployed applications.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>In brute force scenarios, passwords of extended lengths increase password security and the length of time required to decrypt the password. However, there are risks associated with requiring passwords of great lengths, as users may take steps to circumvent policy; such as using
+					repetitive
+					passwords, writing password reminders, or writing down their passwords.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1013">
+			<title>Define an appropriate minimum password complexity requirement</title>
+			<description>Organizations should create an authenticator management policy that defines a minimum level of complexity for user accounts accessing JBoss and its deployed applications. These requirements should also restrict passwords from containing dictionary words and reusing previous
+				passwords.
+			</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Complex passwords increase password security and the length of time required to decrypt the password. Additionally, complex passwords are less likely to be found in password dictionaries. However, there are risks associated with requiring overly complex passwords, as users may take
+					steps
+					to circumvent policy; such as using repetitive passwords, writing password reminders, or writing down their passwords.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_policy-1014">
+			<title>Define an appropriate minimum password expiration interval</title>
+			<description>Organizations should create an authenticator management policy that defines a maximum password age for user accounts accessing JBoss and its deployed applications.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>In combination with password length and complexity, regularly changing passwords can defeat many attacks. If a password or password hash is intercepted by a malicious party, changing the password can remove access or render invalid a cracking attempt on the hash. However, there are
+					risks
+					associated with frequently changing passwords. Users may take steps to circumvent policy such as using repetitive passwords or using password derivatives. Additionally, changing passwords for system or application accounts introduces an element of configuration risk. Poorly coordinated or
+					documented changes can result in system outages or create other problems.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2001">
+			<title>Jboss Fuse should be a vendor supported version.</title>
+			<description>Evaluated JBoss installation must be a vendor supported version of JBoss Fuse 6. Organizations using JBoss Fuse must use a vendor supported version with an active support contract.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Failure to utilize a supported version of JBoss in a production environment can lead to outages, unresolvable problems, no access to security or functional updates, etc.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CM-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2002">
+			<title>Ensure Java Runtime Environment is a supported version.</title>
+			<description>Evaluated JBoss installation must use a vendor supported Java virtual machine - i.e., one that has not reached end-of-life. Migration strategies should be developed when end-of-life is impending.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Java installations should be a vendor supported version. If the Java virtual machine in use by JBoss is not supported by the vendor, this may result in outages, unresolvable problems, no access to security or functional updates, etc.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CM-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2003">
+			<title>Ensure all downloaded software is authentic</title>
+			<description>Software and packages should be downloaded from redhat.com, and hash validated.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Without validating downloaded files are authentic, malicious users may compromise software before it has even been installed. Attackers may redirect traffic to alternate download locations and attempt to trick administrators into downloading modified software.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CM-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2004">
+			<title>Hot deployment must be disabled in production.</title>
+			<description>Hot deployment should be disabled on production servers. Hot Deployment allows for automatic deployment of Java applications by simply placing Java applications into the deploy directory.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Hot deployments are not a recommended best practice for production environments. By requiring the additional step of restarting the JBoss server, application deployments become more deliberate and purposeful.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT III</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CM-7</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2005">
+			<title>Remove, rename, or comment out default user accounts from production servers.</title>
+			<description>Remove, rename, or comment out the default user accounts defined in .properties files.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default user accounts makes malicious exploitation more complex.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2006">
+			<title>Remove, rename, or comment out default roles from production servers.</title>
+			<description>Remove, rename, or comment out the default roles defined in .properties files.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default roles makes malicious exploitation more complex.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2007">
+			<title>Configure Java Security Manager to use an environment specific policy/</title>
+			<description>The Java Security Manager is a crucial piece of the Java security infrastructure. JBoss Fuse should be configured to load a Java security policy that has been vetted for use in the environment.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>A weak, default, or incomplete Java Security Manager policy file can completely compromise the security of a Java installation by granting excessive permissions to applications running within the sandbox. These permissions can be leveraged (maliciously or not) to run code against the
+					operating system.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">SA-13</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2008">
+			<title>Ensure proper permissions are configured for deployed applications: java.io.FilePermission</title>
+			<description>Deployed applications must not be granted file permissions - except to those that are dedicated to the application only. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an
+				application-specific, granular manner.
+			</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Granting unrestricted access to the host operating system creates a large attack vector for malicious users that have penetrated the JBoss server.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2009">
+			<title>Ensure proper permissions are configured for deployed applications: java.net.NetPermission</title>
+			<description>Deployed applications must not be granted network permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2010">
+			<title>Ensure proper permissions are configured for deployed applications: java.lang.RuntimePermission</title>
+			<description>Deployed applications must not be granted runtime permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Granting RuntimePermission to applications allows these applications to modify classloaders or modify the running security manager. Either of these actions can be used to
+					elevate permissions and increase the number of potential damaging actions that can be taken.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2011">
+			<title>Ensure proper permissions are configured for deployed applications: java.net.SocketPermission</title>
+			<description>Deployed applications must not be granted any socket permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Most well-designed applications will not need to directly manipulate sockets for network access (access to datasources should be handled through datasources, which can be
+					assigned SocketPermission.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2012">
+			<title>Ensure proper permissions are configured for deployed applications: java.security.AllPermission</title>
+			<description>Deployed applications must not be granted all permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Using AllPermissions is essentially disabling the Java security sandbox and is inadvisable in nearly every scenario.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2013">
+			<title>Ensure default system Java Authentication and Authorization Service configuration is in use.</title>
+			<description>Using the default system JAAS configuration ensures user identification and authentication are performed by JBoss Fuse.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Using an administrator specified JAAS configuration enables a more rigorous security posture.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CM-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2014">
+			<title>Ensure deployed applications requiring authentication utilizes DoD PKI Class 3 or Class 4 certificate and hardware security token or NSA-certified product</title>
+			<description>JBoss applications implementing authentication should utilize the DoD Public Key Infrastructure. The DoD Public Key Infrastructure is designed to use hardware tokens such as the Common Access Card in conjunction with issued X.509 certificates. These tokens are typically protected
+				with
+				a PIN that unlocks access to the private certificate stored on the token.
+			</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Leveraging the DoD Public Key Infrastructure increases the security of an application because the DoD PKI raises the bar for exploitation of user identities. Applications that require authentication and do not utilize PKI must then rely on a less secure form of authentication, such as
+					username and password. Additionally, current DoD guidance requires the use of DoD PKI over username and password.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2015">
+			<title>Enable Federal Information and Processing Systems 140-2 (FIPS) compliant cryptographic modules for use by JBoss Java environment</title>
+			<description>While JBoss itself has no need to load FIPS compliant modules, the underlying technologies such as Java do. Utilizing only FIPS compliant modules decreases compatibility with applications that are not FIPS enabled.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Enabling FIPS compliant algorithms ensures that the underlying technologies that JBoss works through are using cryptographic modules that have been vetted by NIST for security, stability, and strength. Failure to utilize FIPS certified modules may cause the underlying technologies used
+					by
+					JBoss to utilize older, less secure algorithms. Failure to enable only FIPS compliant modules may also have regulatory consequences, as FIPS 140-2 requires the use of FIPS compliant modules by all federal agencies.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">SC-13</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2016">
+			<title>Eliminate clear-text passwords from production servers.</title>
+			<description>Eliminate clear-text passwords in JBoss configuration files. All passwords should be encrypted and all password files should have restricted file permissions.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">SC-28</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2017">
+			<title>Ensure JBoss process owner is executing with least privilege.</title>
+			<description>Operating environment permissions assigned to the JBoss process owner should be in compliance with the principle of least privilege.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>n order to reduce the potential impact of exploitation against the JBoss application server (and the rest of the operating environment), the JBoss process owner should execute with as few permissions as possible in the environment (if the account is not local to the operating system or
+					is
+					distributed across multiple operating systems). Failure to limit permissions can dramatically increase the severity of exploits against the JBoss server, such as the execution of arbitrary code.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2018">
+			<title>Deny the JBoss process owner console access.</title>
+			<description>The JBoss process owner should not have interactive console login access.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>In order to limit access in the event of an exploitation of the Jboss or one of its deployed applications, the account owning the Jboss process should be limited in its ability to interact with the supporting operating system where possible. Thus, the JBoss process owner account should
+					not have interactive console access.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2019">
+			<title>Set JBoss file ownership.</title>
+			<description>All JBoss Fuse files within the installation directory should be owned by the JBoss process owner account.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>To prevent unauthorized modification or disclosure of JBoss configuration settings, all files within the installation directory should be owned by the JBoss process owner account.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-3</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2020">
+			<title>Set JBoss file permissions.</title>
+			<description>All JBoss files within the installation directory should be readable by the JBoss process owner and JBoss administrators only.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>To prevent unauthorized modification or disclosure of JBoss configuration settings, access to all files within the installation directory should be restricted to the JBoss process owner account and Jboss administrators.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-3, AC-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2021">
+			<title>Ensure remote access is either secured or disabled.</title>
+			<description>Remote access must be secured so it is accessible by trusted administrators only. If this condition is not met, the access must be disabled from the deployment.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Failure to secure against unauthorized access can quickly lead to system compromise. The default access included with JBoss is a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-3</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2022">
+			<title>Ensure Web Console is either secured or removed.</title>
+			<description>The Web Console application must be secured so it is accessible by trusted administrators only. If this condition is not met, the application must be removed (deleted) from deployment.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Failure to secure the default consoles against unauthorized access can quickly lead to system compromise. The default consoles included with JBoss are a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-3</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2023">
+			<title>Ensure JMX access is either secured or disabled.</title>
+			<description>JMX access must be secured so it is accessible by trusted administrators only. If this condition is not met, the access must be disabled from the deployment.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Failure to secure JMX against unauthorized access can quickly lead to system compromise. The default access included with JBoss is a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">AC-3</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2024">
+			<title>Password hashing must be enabled within the appropriate login module</title>
+			<description>Password hashing should be enabled in all security realms where plain-text passwords are currently in use.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Failure to enable password hashing within a login module can result in plain-text exposure client passwords used for authentication.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">SC-8, SC-9</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2025">
+			<title>Only application and/or system administrators should be able to change security related configuration attributes.</title>
+			<description>Security attributes are typically associated with internal data structures and configuration (e.g., application deployment, logging, monitoring) within the application server and are used to enable the implementation of access control and flow control policies, reflect special
+				dissemination, handling or distribution instructions, or support other aspects of the organizational information security policy.
+			</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If unauthorized entities were able to change security attributes, the integrity and/or confidentiality of the server could be compromised.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2026">
+			<title>Only authorized users should be allowed to associate PKI information.</title>
+			<description>Throughout the course of normal usage, authorized users of application servers will have the need to associate security attributes in the form of PKI credentials with information. The server utilizes a role based authentication model when managing server resources and limits access
+				according to user role. 
+			</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>The server must ensure that only the users who are authorized to associate security attributes with information are allowed to do so.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2027">
+			<title>SSL should be enabled on the Web Console.</title>
+			<description>The server must utilize cryptography to protect the confidentiality of remote access management sessions.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2028">
+			<title>Remote Access should only be done via SSH or other secure means.</title>
+			<description>The server must utilize cryptography to protect the confidentiality of remote access management sessions.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2029">
+			<title>Logging should be configured to reduce to the likelihood of storage capacity being exceeded.</title>
+			<description>The server must configure auditing to reduce the likelihood of storage capacity being exceeded.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>server auditing capability is critical for accurate forensic analysis. Alerting administrators when audit log size thresholds are exceeded helps ensure the administrators can respond to heavy activity in a timely manner. Failure to alert increases the probability that an adversary's
+					actions will go undetected.  The server or the configured Network Attached Storage Device (SAN) must alert administrators when audit log usage reaches a defined percentage of overall capacity.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT III</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2030">
+			<title>Logging should be configured to maintain logs for a organization defined continuous number of days.</title>
+			<description>Logging should be configured to maintain logs for a organization defined continuous number of days.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If adequate online audit storage capacity is not maintained, intrusion monitoring, security investigations, and forensic analysis can be negatively affected.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2031">
+			<title>Server configuration changes should be restricted to Jboss Administrators only.</title>
+			<description>The server must enforce logical access restrictions associated with changes to application configuration. </description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>When dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system and/or application can potentially have significant effects on the overall security of the
+					system. Accordingly, only qualified and authorized individuals should be allowed to obtain access to server components for the purposes of initiating changes, including upgrades and application modifications.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2032">
+			<title>All non-essential bundles and features should be removed from production servers.</title>
+			<description>All non-essential bundles and features should be removed from production servers.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>The server provide a myriad of differing processes, features and functionalities. Some of these processes may be deemed to be unnecessary or too insecure to run on a production DoD system. Servers must provide the capability to disable or deactivate functionality and services that are
+					deemed to be non-essential to the server mission or can adversely impact server performance.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2033">
+			<title>All non-essential ports, protocols, and services should be disabled.</title>
+			<description>The server must prohibit or restrict the use of unauthorized functions, ports, protocols, and/or services.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>
+					The server provides numerous processes, features and functionalities that utilize TCP/IP ports. Some of these processes may be deemed to be unnecessary or too insecure to run on a production system. For a list of approved ports and protocols reference the DoD ports and protocols web site at
+					<xhtml:a href="https://powhatan.iiie.disa.mil/ports/cal.html">https://powhatan.iiie.disa.mil/ports/cal.html</xhtml:a>
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2034">
+			<title>All passwords should be encrypted when other means are not being utilized.</title>
+			<description>Stored passwords must be encrypted.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Passwords need to be protected at all times and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read and easily compromised. </xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2035">
+			<title>Encryption must be used when LDAP is enabled.</title>
+			<description>The server must utilize encryption when using LDAP for authentication.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Passwords need to be protected at all times and encryption is the standard method for protecting passwords during transmission.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2036">
+			<title>FIPS 140-2 approved encryption modules must be used.</title>
+			<description>The Application Server must utilize FIPS 140-2 approved encryption modules when authenticating users and processes. </description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Encryption is only as good as the encryption modules utilized. Unapproved cryptographic module algorithms cannot be verified, and cannot be relied upon to provide confidentiality or integrity and DoD data may be compromised due to weak algorithms. FIPS 140-2 is the current standard for
+					validating cryptographic modules and NSA Type-X (where X=1, 2, 3, 4) products are NSA certified hardware-based encryption modules.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2037">
+			<title>DoD or CNS approved PKI Class 3 and Class 4 certificates should be used.</title>
+			<description>The server must use DoD or CNS approved PKI Class 3 or Class 4 certificates.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Class 3 PKI certificates are used for servers and software signing rather than for identifying individuals. Class 4 certificates are used for business-to-business transactions. Utilizing unapproved certificates not issued or approved by DoD or CNS creates an integrity risk.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2038">
+			<title>LDAP should be configured to fail securely.</title>
+			<description>The server must fail securely in the event of an operational failure.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Fail secure is a condition achieved by the server in order to ensure that in the event of an operational failure, the system does not enter into an unsecure state where intended security properties no longer hold.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2039">
+			<title>Logging should be configured such that sensitive information is not revealed.</title>
+			<description>Only error messages that provide information necessary for corrective actions without revealing sensitive or potentially harmful information in error logs and administrative messages should be generated.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Any application providing too much information in error logs and in administrative messages to the screen risks compromising the data and security of the application and system. The structure and content of error messages needs to be carefully considered by the organization and
+					development team. 
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2040">
+			<title>Log files should be restricted so only authorized personnel may view them.</title>
+			<description>Only authorized personnel may view log files.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If the application provides too much information in error logs and administrative messages to the screen, this could lead to compromise. The structure and content of error messages need to be carefully considered by the organization and development team. The extent to which the
+					information system is able to identify and handle error conditions is guided by organizational policy and operational requirements. 
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2041">
+			<title>Ensure Web Console is using PKI.</title>
+			<description>PKI should be enabled for the Web Console.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>All applications requiring user authentication to access sensitive data must be PK-enabled in compliance with DoDI 8520.2 PKI &amp; PK Enabling and are required to credentials approved under the DoD PKI program.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2042">
+			<title>All PKI Certificates should be valid DoD Certificates.</title>
+			<description>All PKI Certificates in use should be valid at the time of use.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>By using invalid certificates the server may allow unauthorized users access to the system.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_karaf-2043">
+			<title>Only administrators should be able to modify configuration files.</title>
+			<description>Server should be protected with permission sets which allow only an application administrator to modify application resource configuration files.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>An access control flaw exists if users or processes can view or modify data to which they should not be permitted. This could result in situations ranging from information disclosure to system compromise and could potentially result in the compromise of other systems on the network.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p>N/A</xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p>N/A</xhtml:p>
+			</fixtext>
+		</Rule>
+
+		<!-- ========================= -->
+		<!-- END GENERATED KARAF RULES -->
+		<!-- ========================= -->
+	</Group>
+
+	<Group id="xccdf_com.redhat.fuse6.scap_group_gr_amq" selected="false">
+		<title>Apache ActiveMQ Configuration</title>
+		<description>The rules in this group validate Apache ActiveMQ related items.</description>
+
+		<!-- ========================= -->
+		<!-- GENERATED ACTIVEMQ RULES -->
+		<!-- ========================= -->
+
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3001">
+			<title>Remove, rename, or comment out default user accounts from production servers.</title>
+			<description>Remove, rename, or comment out the default user accounts defined in .properties files.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default user accounts makes malicious exploitation more complex.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3002">
+			<title>Remove, rename, or comment out default roles from production servers.</title>
+			<description>Remove, rename, or comment out the default roles defined in .properties files.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default roles makes malicious exploitation more complex.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">IA-5</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3003">
+			<title>Ensure default system Java Authentication and Authorization Service configuration is in use.</title>
+			<description>Using the default system JAAS configuration ensures user identification and authentication are performed by JBoss Fuse.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Using an administrator specified JAAS configuration enables a more rigorous security posture.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">CM-6</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3004">
+			<title>Eliminate clear-text passwords from production servers.</title>
+			<description>Eliminate clear-text passwords in JBoss configuration files. All passwords should be encrypted and all password files should have restricted file permissions.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">SC-28</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3005">
+			<title>Only application and/or system administrators should be able to change security related configuration attributes.</title>
+			<description>Security attributes are typically associated with internal data structures and configuration (e.g., application deployment, logging, monitoring) within the application server and are used to enable the implementation of access control and flow control policies, reflect special
+				dissemination, handling or distribution instructions, or support other aspects of the organizational information security policy.
+			</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If unauthorized entities were able to change security attributes, the integrity and/or confidentiality of the server could be compromised.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3006">
+			<title>SSL should be enabled on the ActiveMQ Web Console.</title>
+			<description>The server must utilize cryptography to protect the confidentiality of remote access management sessions.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3007">
+			<title>All passwords should be encrypted when other means are not being utilized.</title>
+			<description>Stored passwords must be encrypted.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Passwords need to be protected at all times and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read and easily compromised. </xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3008">
+			<title>Ensure ActiveMQ Web Console is using PKI.</title>
+			<description>PKI should be enabled for the Web Console.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>All applications requiring user authentication to access sensitive data must be PK-enabled in compliance with DoDI 8520.2 PKI &amp; PK Enabling and are required to credentials approved under the DoD PKI program.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3009">
+			<title>All PKI Certificates should be valid DoD Certificates.</title>
+			<description>All PKI Certificates in use should be valid at the time of use.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>By using invalid certificates the server may allow unauthorized users access to the system.</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT I</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3010">
+			<title>Only administrators should be able to modify configuration files.</title>
+			<description>Server should be protected with permission sets which allow only an application administrator to modify application resource configuration files.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>An access control flaw exists if users or processes can view or modify data to which they should not be permitted. This could result in situations ranging from information disclosure to system compromise and could potentially result in the compromise of other systems on the network.
+				</xhtml:p>
+			</rationale>
+			<profile-note tag="risk_score">N/A</profile-note>
+			<profile-note tag="risk_level">N/A</profile-note>
+			<profile-note tag="dod_cat">CAT II</profile-note>
+			<profile-note tag="risk_formula">N/A</profile-note>
+			<profile-note tag="nist_mapping">N/A</profile-note>
+			<profile-note tag="disa_mapping">N/A</profile-note>
+			<profile-note tag="validation_text">
+				<xhtml:p></xhtml:p>
+			</profile-note>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+
+		<!-- ========================= -->
+		<!-- END GENERATED ACTIVEMQ RULES -->
+		<!-- ========================= -->
+	</Group>
+
+	<Group id="xccdf_com.redhat.fuse6.scap_group_gr_camel" selected="false">
+		<title>Apache Camel Configuration</title>
+		<description>The rules in this group validate Apache Camel related items.</description>
+	</Group>
+
+	<Group id="xccdf_com.redhat.fuse6.scap_group_gr_cxf" selected="false">
+		<title>Apache CXF Configuration</title>
+		<description>The rules in this group validate Apache CXF related items.</description>
+	</Group>
+
+</Benchmark>

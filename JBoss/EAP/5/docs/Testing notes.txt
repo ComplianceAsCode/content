@@ -1,0 +1,54 @@
+------------------------
++++++Issue
+=====Recommendation
+*****Actions
+------------------------
+
++++++No file labeled README in document root (should be plain-text to accompnay html)
+=====Add a plaintext README file
+
+------------------------
+
++++++ovaldi is a no-go on RHEL 6 64bit without extensive troubleshooting.  On RHEL 5 was able to install pcre.i386 to eliminate depenadcy problem for ovladi.
+=====Not our problem.
+
+------------------------
+
++++++After unziping packaged SCAP content, no root directory created; content just explodes into current directory
+=====Ant script should package content into a root directory as a defacto standard.
+
+------------------------
+
++++++No transform provided for viewing results?  XML contains embedded HTML, but no colors and +++++No instructions on reviewing results
+=====Provide transform for viewing results.
+*****Tim: Find an XSL transform and add use text to the HTML guide
+
+------------------------
+
++++++No descriptions for questionaires.
+=====Use a copy XCCDF DESCRIPTION element.
+*****Tim: Action item for after testing completed
+
+------------------------
+
++++++Many of the complicated ocil test are not usable in xccdfexec without referencing the guide (since at present xccdf is not displyaing OCIL instructions).
+=====Provide better instruction to the auditor.  Possible solutions:
+	=====Add an EAP number and reference to the HTML Guide for each OCIL QUESTION element.
+	=====Add the OCIL_INSTRUCTIONS to STEPS in line with the specification.
+	=====Add the OCIL_INSTRUCTIONS to the OCIL_QUESTION - breaking with the specification.
+******Tim: Add EAP ID links to XCCDF and OCIL question for usability
+
+------------------------
+
++++++Forced to use production profile for all checks (Common Criteria and Best Practices).  Currently, the CPE check for EAP version means that the content only runs on 5.1.0 and 5.1.1, not 5.x
+=====Remove the CPE check for EAP version and use as regular OVAL check for the Common Criteria profile instead.
+=====Use the CPE to check for JBoss EAP version 5.x instead of a specific version.
+*****Bryan: Add additional versions to CPE
+*****All: Revisit CPE problems after move to FedoraHosted
+*****Bryan: Add a variable for [PROFILE] defaults porduction and brief instructions for the user to modify the variable within the XML
+
+
+------------------------
+
+******Kenny: sending EAP-51
+******Tim: add content for last 3 EAP's

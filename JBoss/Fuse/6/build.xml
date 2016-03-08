@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="dist" name="fuse6_scap">
+ 
+ <property name="releaseName" value="JBossFuse_6.x_SCAP" />
+ <property name="releaseVersion" value="1.0_Alpha" />
+ <property name="guideName" value="JBossFuse6_Guide" />
+ 
+ <target name="dist" depends="generateGuide" description="Generates releasable zip package of content">
+  <zip destfile="dist/${releaseName}_v${releaseVersion}.zip">
+   <zipfileset dir="." includes="fuse6-*.xml, COPYING*, README" prefix="jboss_fuse6_scap/"/>
+   <zipfileset dir="docs" includes="jboss_logo.png, ${guideName}.html" prefix="jboss_fuse6_scap/docs/"/>
+   <zipfileset dir="references" includes="*.jpg, *.html, *.pdf" prefix="jboss_fuse6_scap/references/"/>
+  </zip>
+ </target>
+
+ <target name="generateGuide" description="Generates a human readable guide from the XCCDF content">
+  <xslt in="fuse6-xccdf.xml" out="docs/${guideName}.html" style="xsl/xccdf2xhtml.xsl" force="yes"/>
+ </target>
+</project>
