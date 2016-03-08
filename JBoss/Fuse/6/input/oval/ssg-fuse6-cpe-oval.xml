@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<oval_definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd" 
+	xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+	xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+	xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
+	xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent">
+
+	<!-- Default Generator Code -->
+	<generator>
+		<oval:schema_version>5.4</oval:schema_version>
+		<oval:timestamp>2010-07-08T11:19:35.419-04:00</oval:timestamp>
+	</generator>
+
+	<definitions>
+		<definition version="1" class="inventory" id="oval:com.redhat.fuse6.scap:def:1001">
+			<metadata>
+				<title>JBoss Fuse 6.0</title>
+				<description>Fuse Version should be 6.0.</description>
+				<affected family="undefined">
+					<platform>JBoss Fuse 6.0</platform>
+				</affected>
+				<reference source="http://cpe.mitre.org" ref_id="cpe:/a:redhat:jboss_fuse:6.0"/>
+			</metadata>
+			<criteria>
+				<criterion test_ref="oval:com.redhat.fuse6.scap:tst:100101" />
+			</criteria>
+		</definition>
+	</definitions>
+
+	<tests>
+		<ind:textfilecontent54_test id="oval:com.redhat.fuse6.scap:tst:100101" version="1" check="all" comment="Check Fuse Version">
+			<ind:object object_ref="oval:com.redhat.fuse6.scap:obj:100101" />
+			<ind:state state_ref="oval:com.redhat.fuse6.scap:ste:100101" />
+		</ind:textfilecontent54_test>
+	</tests>
+
+	<objects>
+		<ind:environmentvariable_object id="oval:com.redhat.fuse6.scap:obj:2001" version="1">
+			<ind:name>FUSE_HOME</ind:name>
+		</ind:environmentvariable_object>
+
+		<ind:textfilecontent54_object id="oval:com.redhat.fuse6.scap:obj:00000101" version="1">
+			<ind:path var_ref="oval:com.redhat.fuse6.scap:var:2002"/>
+			<ind:filename>config.properties</ind:filename>
+			<ind:pattern operation="pattern match">karaf\.framework\.felix=.*org\.apache\.felix\.framework-([0-9a-z\.-]{18})\.jar</ind:pattern>
+			<ind:instance datatype="int">1</ind:instance>
+		</ind:textfilecontent54_object>
+	</objects>
+
+	<states>
+		<!-- Karaf Version Number for Fuse 6.0 -->
+		<ind:textfilecontent54_state id="oval:com.redhat.fuse6.scap:ste:00000101" version="1">
+			<ind:subexpression>4.0.3.redhat-60024</ind:subexpression>
+		</ind:textfilecontent54_state>
+	</states>
+
+	<variables>
+		<!-- Location of etc Directory -->
+		<local_variable id="oval:com.redhat.fuse6.scap:var:2002" version="1" datatype="string" comment="log location">
+			<concat>
+				<object_component object_ref="oval:com.redhat.fuse6.scap:obj:2001" item_field="value" />
+				<literal_component>/etc/</literal_component>
+			</concat>
+		</local_variable>
+	</variables>
+</oval_definitions>

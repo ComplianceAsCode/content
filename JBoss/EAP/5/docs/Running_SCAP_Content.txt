@@ -1,0 +1,27 @@
+Using the steps below to run the JBoss EAP 5.x SCAP Content on a Red Hat Enterprise Linux 5.x system.
+
+
+Using XCCDFExec
+-------------------------- 
+Requirements
+ - Java 6 JDK must be installed
+ 
+Install OVAL Interpreter
+ - Install OVALDI Libs RPM
+   - http://sourceforge.net/projects/ovaldi/files/ovaldi/5.10.1%20Build%201/ovaldi-libs-5.10.1.1.el5.i386.rpm/download
+ - Install OVALDI RPM
+   - http://sourceforge.net/projects/ovaldi/files/ovaldi/5.10.1%20Build%201/ovaldi-5.10.1.1.el5.i386.rpm/download
+ 
+Install XCCDFExec
+ - Download and Extract 1.1.4 Built 19
+   - http://sourceforge.net/projects/xccdfexec/files/1.1.4_build_19/xccdf_interpreter-bin-1.1.4_build_19.zip/download
+ 
+Configuration
+ - Set xccdf_interpreter.properties
+   - Note: These may be different depending on your installation, "yum -ql ovaldi" will locate your installed files.
+   - Set: oval.dir=/usr/sbin
+   - Set: oval.bin=ovaldi
+ 
+Run
+ - From your XCCDF Directory, Run:
+   - java -jar xccdfexec_v1.2.jar <XCCDF_FILE.xml> -C <CPE_DICT.xml> -c <OVAL_FILE.xml>

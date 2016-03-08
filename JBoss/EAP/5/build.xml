@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="dist" name="eap5_scap">
+ 
+ <property name="releaseName" value="JBossEAP_5.x_SCAP" />
+ <property name="releaseVersion" value="1.0" />
+ <property name="guideName" value="JBossEAP5_Guide" />
+ 
+ <target name="dist" depends="generateGuide" description="Generates releasable zip package of content">
+  <zip destfile="dist/${releaseName}_v${releaseVersion}.zip">
+   <zipfileset dir="." includes="eap5-*.xml, COPYING*, README" prefix="jboss_eap5_scap/"/>
+   <zipfileset dir="docs" includes="jboss_logo.png, ${guideName}.html" prefix="jboss_eap5_scap/docs/"/>
+  </zip>
+ </target>
+
+ <target name="generateGuide" description="Generates a human readable guide from the XCCDF content">
+  <xslt in="eap5-xccdf.xml" out="docs/${guideName}.html" style="xsl/xccdf2xhtml.xsl" force="yes"/>
+ </target>
+</project>

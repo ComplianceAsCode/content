@@ -1,0 +1,2648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ocil xmlns="http://scap.nist.gov/schema/ocil/2.0" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://scap.nist.gov/schema/ocil/2.0 schemas/ocil-2.0.xsd ">
+	<generator>
+		<author>
+			<name>Timothy Falls</name>
+			<organization>Red Hat, Inc.</organization>
+			<email>tfalls@redhat.com</email>
+		</author>
+		<author>
+			<name>Bryan Saunders</name>
+			<organization>Red Hat, Inc.</organization>
+			<email>bsaunder@redhat.com</email>
+		</author>
+		<author>
+			<name>Kenneth Peeples</name>
+			<organization>Red Hat, Inc.</organization>
+			<email>kpeeples@redhat.com</email>
+		</author>
+		<author>
+			<name>James Lopez</name>
+			<organization>Red Hat, Inc.</organization>
+			<email>jalopez@redhat.com</email>
+		</author>
+		<schema_version>2.0</schema_version>
+		<timestamp>2012-04-08T12:00:00</timestamp>
+	</generator>
+	<document>	
+		<title>JBOSS Enterprise Application Platform 5.x</title>
+		<description></description>
+		<notice>This content was developed by Red Hat, Inc. for use by JBoss EAP5 Administrators and is released under the Public Domain License.</notice>
+	</document>
+	
+	<questionnaires>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:200001">
+			<title>JBoss Enterprise Application Platform should be a vendor supported version</title>
+			<description>Evaluated JBoss installation must be a vendor supported version of JBoss Enterprise Application Platform 5. Red Hat typically offers full and production support for the first 7 years following a release. Extended support options can be negotiated with the vendor directly through a separate subscription. Organizations using JBoss EAP must use a vendor supported version with an active support contract.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20000101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:200201">
+			<title>Ensure Java Runtime Environment in use is a supported version</title>
+			<description>Evaluated JBoss installation must use a vendor supported Java virtual machine - i.e., one that has not reached end-of-life. Migration strategies should be developed when end-of-life is impending.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20020101</test_action_ref>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20020102</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:200301">
+			<title>Ensure the operating system in use is the correct version</title>
+<description>Evaluated JBoss installation must reside on one of the following operating systems: Red Hat Enterprise Linux 6 x86, Red Hat Enterprise Linux 6 x86-64, Red Hat Enterprise Linux 5 x86, Red Hat Enterprise Linux 5 x86-64, Red Hat Enterprise Linux 4 x86, Red Hat Enterprise Linux 4 x86-64, Solaris 10 SPARC 64, Solaris 10 x86-64, Solaris 10 x86, Solaris 9 SPARC (64-bit), Solaris 9 SPARC (32-bit), Solaris 9 x86, Microsoft Windows Server 2008 x86-64, Microsoft Windows Server 2008 x86, Microsoft Windows Server 2003 x86-64, Microsoft Windows Server 2003 x86</description>
+<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20030101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:200501">
+			<title>Ensure all configurations are made to the appropriate server profile</title>
+			<description>Production environments should utilize the production server profile. Development and test environments should choose the profile that best fits their needs.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20050101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:110101">
+			<title>Production applications should not implement the default SRPVerifierStore interface for the Secure Remote Password (SRP) protocol</title>
+			<description>The SRP protocol is a public key exchange protocol similar to Diffie-Hellman. The default implementation of the SRPVerifierStore interface is not recommended for a production security environment because it requires all password hash information to be available as a file of serialized objects.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11010101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:203901">
+			<title>Declare an EJB authorization policy for deployed applications</title>
+			<description>When configuring your application specific security policy, you must declare one (or more) of the following authorization modules in the security domain &lt;policy-module&gt; element: org.JBoss.security.authorization.modules.DelegatingAuthorizationModule, org.JBoss.security.authorization.modules.JACCAuthorizationModule.  A security domain does not explicitly require an authorization policy. If an authorization policy is not specified, the default jboss-web-policy and jboss-ejb-policy authorization configured in jboss-as/server/$PROFILE/deploy/security/security-policies-jboss-beans.xml is used. If you do choose to specify an authorization policy, or create a custom deployment descriptor file with a valid authorization policy, these settings override the default settings in security-policies-jboss-beans.xml.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20390101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:204201">
+			<title>Ensure appropriate permissions have been granted to JDBC driver</title>
+			<description>The security manager policy file may require permissions to be set for database drivers. The JBoss administrator can assign permissions to the database drivers that are needed by deployed applications. It is recommended that the most restrictive permissions are added. With some installations, permissions must be granted to database drivers that are not available to deployed applications; such as java.net.SocketPermission.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20420101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:204401">
+			<title>Ensure appropriate DefaultDS is enabled</title>
+			<description>Create a default data store file for the desired database. Templates are located in JBOSS_HOME/docs/examples/jca.  The DefaultDS must not be a HSQLDB.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20440101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:215701">
+			<title>Deployed applications must not write data to DefaultDS</title>
+			<description>Deployed applications (other than JBoss default applications) must not write information to the database defined by the DefaultDS data source. These applications must use a database specific to the application.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:21570101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:204701">
+			<title>Ensure the appropriate JMS persistence configuration file is in use</title>
+			<description>The [database]-persistence-service.xml file contains the persistence service definition for Java Messaging Service, for the database specified by the [database] in the filename. The database must not be HSQLDB.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20470101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205001">
+			<title>Ensure Oracle Database persistence plugin is set correctly</title>
+			<description>When using the Oracle Database as the DefaultDS, the database persistence plugin definition must be updated in JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20500101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:206501">
+			<title>Ensure IBM JRE 1.6 is configured correctly</title>
+			<description>When IBM JRE 1.6 is configured as the Java Runtime Environment, the following configuration changes must be made to ensure compatibility between JBoss EAP and IBM JRE. IBM JRE 1.6 uses a default policy provider which does not work correctly with the JBoss Enterprise Application Platform security policy. The IBM JRE must be reconfigured to use the standard policy provider.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20650101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:110001">
+			<title>Configured security domains are recommended to secure production applications</title>
+			<description>SecurityDomain is an extension of the AuthenticationManager, RealmMapping, and SubjectSecurityManager interfaces. A java.security.KeyStore, and the Java Secure Socket Extension (JSSE) com.sun.net.ssl.KeyManagerFactory and com.sun.net.ssl.TrustManagerFactory interfaces are included in the class.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11000101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:109201">
+			<title>Define &lt;security-role&gt; elements</title>
+			<description>Enable authorization and define &lt;security-role&gt; elements to control access to deployed applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:10920101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300101">
+			<title>Remove, rename, or comment out the default user accounts from production servers</title>
+			<description>Remove, rename, or comment out the default user accounts defined in .properties files and login-config.xml.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30010101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300201">
+			<title>Remove, rename, or comment out the default roles from production servers</title>
+			<description>Remove, rename, or comment out the default role definitions in the default &lt;application-policy&gt; elements.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30020101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:109301">
+			<title>Security constraint elements should exist for all URLs in production environment</title>
+			<description>The content to be secured is declared using one or more &lt;web-resource-collection&gt; elements. Each &lt;web-resource-collection&gt; element contains an optional series of &lt;url-pattern&gt; elements followed by an optional series of &lt;http-method&gt; elements. The &lt;url-pattern&gt; element value specifies a URL pattern against which a request URL must match for the request to correspond to an attempt to access secured content. The &lt;http-method&gt; element value specifies a type of HTTP request to allow.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:10930101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:401101">
+			<title>Harden Tomcat Connectors: limit maxPostSize</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. maxPostSize is the maximum size (in bytes) that the FORM URL parser can handle. Environments that pass large amounts of data through forms (such as file uploads), may need to increase this setting.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40110101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:401201">
+			<title>Harden Tomcat Connectors: limit maxSavePostSize</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. maxSavePostSize is the maximum size (in bytes) that is buffered during CLIENT-CERT and FORM authentication. The default setting of 4096 (4 KB) is sufficient for most environments.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40120101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:401301">
+			<title>Harden Tomcat Connectors: set server header tags</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. The server attribute controls the Server Header tag sent with each HTTP response. The default setting causes the server to return Apache-Coyote/1.1 with each HTTP response.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40130101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:401401">
+			<title>Harden Tomcat Connectors: ciphers attribute</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. The ciphers attribute controls the what ciphers are used to negotiate secure connections. The default setting causes the server to use the ciphers allowed by the running Java Virtual Machine.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40140101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:401501">
+			<title>Harden Tomcat Connectors: limit connectionTimeout</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. connectionTimeout is the time (in milliseconds) that the container will wait for URI content after receiving a connection. The default setting is 60000.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40150101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205101">
+			<title>Ensure proper permissions are configured for interactions with JBoss JMX Kernel MBean</title>
+			<description>Java permissions for MBeans should be carefully restricted to enforce the least privilege principle.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20510101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205201">
+			<title>Ensure proper permissions are configured for deployed applications: java.io.FilePermission</title>
+			<description>Deployed applications must not be granted file permissions (except to those that are dedicated to the application only) in order to maintain a certified configuration.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20520101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205301">
+			<title>Ensure proper permissions are configured for deployed applications: java.net.NetPermission</title>
+			<description>Deployed applications must not be granted network permissions.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20530101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205401">
+			<title>Ensure proper permissions are configured for deployed applications: java.lang.RuntimePermission</title>
+			<description>Deployed applications must not be granted runtime permissions.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20540101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205501">
+			<title>Ensure proper permissions are configured for deployed applications: java.net.SocketPermission</title>
+			<description>Deployed applications must not be granted any socket permissions.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20550101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205601">
+			<title>Ensure proper permissions are configured for deployed applications: java.security.AllPermission</title>
+			<description>Deployed applications must not be granted all permissions.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20560101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:202801">
+			<title>Ensure default system Java Authentication and Authorization Service configuration is in use for JBoss Seam</title>
+			<description>For JBoss Seam, the simplified Java Authentication and Authorization Service configuration provided by the Seam Security API must not be used. The default system JAAS configuration should be used instead. Using the default system JAAS configuration ensures user identification and authentication are performed by the JBoss Enterprise Application Platform. JBoss Seam provides additional interfaces for implementing other security functions such as authorization (for example, entity bean permissions). This functionality is controlled by JBoss Seam, and is therefore outside the scope of the evaluated product.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20280101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:206001">
+			<title>Validate keystore and keystorePasswordURL properties are defined and loaded by Java Security Manager</title>
+			<description>Ensure valid keystore and keystorePasswordURL properties exist and are loaded by Java Security Manager.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20600101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205901">
+			<title>Validate a keystore file for JBoss exists and is accessible to JBoss</title>
+			<description>Validate JBOSS_HOME/server/[PROFILE]/cc.keystore exists or JAVA_HOME/jre/lib/security/cacerts exists.  NOTE: The file names and locations may be different.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20590101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:216001">
+			<title>Validate a password file for the Java keystore exists and is accessible to JBoss</title>
+			<description>Validate a password file for the keystore defined in the properties file exists and is accessible to JBoss.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:21600101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:215801">
+			<title>Validate JBoss keystore is password protected</title>
+			<description>Validate the keystore loaded by the Java Security Manager is password protected. Password protecting the Java keystore used by JBoss issued to protect the integrity of the keystore.  It does not prevent listing the content, but it does prevent modification of the keystore.  Private keys within the keystore are still protected by their own passwords to prevent disclosure.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:21580101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:206101">
+			<title>Ensure JBoss alias is a trusted certificate</title>
+			<description>The jboss alias must be a trustedCertEntry with the JBoss Java keystore. This allows code signed by with the default JBoss certificate to run when using a restrictive policy file.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20610101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400501">
+			<title>Ensure applications deployed by JBoss present valid DoD certificates where applicable</title>
+			<description>JBoss applications implementing encryption should present a valid DoD issued X.509 certificate for purposes of identifying the server.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40050101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400601">
+			<title>Ensure X.509 keystore utilized by JBoss for certificate trusts contains DoD approved Certificate Authorities</title>
+			<description>JBoss applications implementing encryption should utilize the DoD Public Key Infrastructure.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40060101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400701">
+			<title>Ensure deployed applications requiring authentication utilizes DoD PKI Class 3 or Class 4 certificate and hardware security token or NSA-certified product</title>
+			<description>JBoss applications implementing authentication should utilize the DoD Public Key Infrastructure. The DoD Public Key Infrastructure is designed to use hardware tokens such as the Common Access Card in conjunction with issued X.509 certificates.  These tokens are typically protected with a PIN that unlocks access to the private certificate stored on the token.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40070101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400801">
+			<title>Enable Federal Information and Processing Systems 140-2 (FIPS) compliant cryptographic modules for use by JBoss Java environment</title>
+			<description>While JBoss itself has no need to load FIPS compliant modules, the underlying technologies such as Java and the Apache Tomcat webcontainer do. Utilizing only FIPS compliant modules decreases compatibility with applications that are not FIPS enabled.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40080101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:113601">
+			<title>Eliminate clear-text passwords: data sources</title>
+			<description>Eliminate clear-text passwords in data source configuration files. The class org.jboss.resource.security.SecureIdentityLoginModule can be used to both encrypt database passwords and to provide a decrypted version of the password when the data source configuration is required by the server. The SecureIdentityLoginModule uses a hard-coded password to encrypt/decrypt the data source password.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11360101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:116301">
+			<title>Eliminate clear-text passwords: Tomcat Connectors</title>
+			<description>Eliminate clear-text passwords in: Tomcat Connectors.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11630101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:116501">
+			<title>Eliminate clear-text passwords: XML configuration files</title>
+			<description>Using password masking, eliminate clear-text passwords in XML configuration files.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11650101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400201">
+			<title>Change default password: JBoss Messaging MessageSucker</title>
+			<description>JBoss Messaging ships with a default MessageSucker password located within the Messaging ServerPeer configuration.  This password is used by JBoss to create connections and pass messages between nodes.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40020101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400301">
+			<title>Change default password: Java cacerts keystore</title>
+			<description>The Java cacerts keystore is installed by default with most versions of Java.  It contains X.509 public certificates for a set of default commercial Certificate Authorities.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40030101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:202301">
+			<title>Ensure logging is enabled for web-based requests if required by deployed applications</title>
+			<description>In the event that application requirements dictate additional logging for web-based requests, the AccessLogValve should be enabled.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20230101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400401">
+			<title>Ensure JBoss process owner is executing with least privilege</title>
+			<description>Operating environment permissions assigned to the JBoss process owner should be in compliance with the principle of least privilege.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40040101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:109901">
+			<title>Deny the JBoss process owner console access</title>
+			<description>The JBoss Application Server process owner should not have interactive console login access.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:10990101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:116201">
+			<title>Set JBoss file ownership</title>
+			<description>All JBoss Enterprise Application Platform files within JBOSS_HOME should be owned by the JBoss process owner account.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11620101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:109801">
+			<title>Set JBoss file permissions</title>
+			<description>All JBoss Enterprise Application Platform files within JBOSS_HOME should be readable by the JBoss Application Server process owner and JBoss administrators only.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:10980101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300601">
+			<title>Deployed applications should display a system use banner upon access</title>
+			<description>Upon accessing the system, a notification banner, consent to use, or policy warning banner should be displayed to alert system users of the system use details.  This may include items such as implied consent to monitor, privacy practices, or liability waivers.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30060101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300701">
+			<title>Deployed applications should display a classification banner when required</title>
+			<description>Deployed applications should present classification banners at the header and footer of each page in accordance with the applicable DoD classification guide for the environment.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30070101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:201501">
+			<title>Password hashing must be enabled within the appropriate login module</title>
+			<description>A Security Domain is a set of authentication, authorization, and mapping policies defined in XML and are available to applications at runtime using Java Naming and Directory Interface (JNDI).</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20150101
+				</test_action_ref>
+			</actions>
+		</questionnaire>	
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:201701">
+			<title>A password hashing algorithm must be defined within the appropriate login module</title>
+			<description>A Security Domain is a set of authentication, authorization, and mapping policies defined in XML and are available to applications at runtime using Java Naming and Directory Interface (JNDI). An &lt;application-policy&gt; can be defined in the server profile or in an application deployment descriptor.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20170101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:206801">
+			<title>Enterprise JavaBeans Specification v2.1 must be strictly followed</title>
+			<description>The programming restrictions mandated by the Enterprise JavaBeans Specification v2.1 must be strictly followed. For more information, refer to JSR-000153 Enterprise JavaBeans 2.1 specification. (Section 25.2, pages 562-564).</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20680101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:206201">
+			<title>Ensure adequate physical protections are in place</title>
+			<description>The hardware and software executing JBoss Enterprise Application Platform, as well as the software critical to security policy enforcement must be protected from unauthorized modification including unauthorized modifications by potentially hostile outsiders. Reasonable physical security measures to ensure that unauthorized personnel do not have physical access to the hardware running the JBoss Enterprise Application Platform software must be implemented.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20620101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:206301">
+			<title>Assign a JBoss administrator</title>
+			<description>There must be one or more competent individuals who are assigned to manage JBoss Enterprise Application Platform, its environment and the security of the information it contains.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20630101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112901">
+			<title>Document incident response procedures</title>
+			<description>Ensure well developed procedures exist for incident handling. Incidents include any events that are anomalous to the environment, which typically include: intrusions (possibly including attempts), application failures, unexpected platform activity such as restarts or configuration changes, and unusual network traffic to or from the server.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11290101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:113301">
+			<title>Perform periodic incident response exercises</title>
+			<description>Production environments should exercise incident response procedures at least annually. Environments requiring higher assurances of security should test incident response procedures more often, possibly quarterly or even monthly. Incident response procedures should cover all anomalous events.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11330101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:113201">
+			<title>Document disaster recovery procedures</title>
+			<description>Robust disaster recovery documentation and procedures should exist. This documentation should include provisions for the JBoss platform, deployed applications, required source code, and supporting applications (such as authentication stores or database servers).</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11320101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:113401">
+			<title>Perform periodic disaster recovery exercises</title>
+			<description>Production environments should exercise disaster recovery procedures that include provisions for the JBoss platform, deployed applications, and any required source code at least annually. Environments requiring higher assurances of disaster recovery ability should test procedures more often, possibly quarterly or even monthly.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11340101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:113501">
+			<title>Identify and document application data flows</title>
+			<description>It is recommended to identify and document application data flows. This will allow insight into what paths sensitive information takes through the application environment and what data source connections need to be encrypted.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11350101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:115901">
+			<title>Java permissions for deployed applications should be documented and reviewed prior to deployment</title>
+			<description>Java permissions for applications should be documented and carefully reviewed prior to deployment. Developers and administrators should strive to balance application permissions and application functionality.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11590101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:114601">
+			<title>Regular backups should be performed</title>
+			<description>JBoss applications and configuration files should be backed up at least weekly, possibly more if needed by the environment.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11460101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:115301">
+			<title>Auditing policy should exist</title>
+			<description>In order to effectively audit and review system logs, an audit policy should be written to identify data and trends of interest.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11530101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:116401">
+			<title>Access control policy and procedures</title>
+			<description>JBoss administrators must have access to guidance regarding account creation, permissions assignments, role assignments, etc.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11640101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300301">
+			<title>Define an appropriate minimum and maximum password length requirement</title>
+			<description>Organizations should create an authenticator management policy that defines minimum and maximum password sizes for user accounts accessing JBoss and its deployed applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30030101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300401">
+			<title>Define an appropriate minimum password complexity requirement</title>
+			<description>Organizations should create an authenticator management policy that defines a minimum level of complexity for user accounts accessing JBoss and its deployed applications.  These requirements should also restrict passwords from containing dictionary words and reusing previous passwords.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30040101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:300501">
+			<title>Define an appropriate minimum password expiration interval</title>
+			<description>Organizations should create an authenticator management policy that defines a maximum password age for user accounts accessing JBoss and its deployed applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30050101</test_action_ref>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:30050102</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:400101">
+			<title>Production JBoss EAP installations should reside on a dedicated platform</title>
+			<description>Production JBoss servers should be hosted on dedicated operating systems and not sharing a host operating system with other service applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40010101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112401">
+			<title>Avoid multiple JBoss instances per server</title>
+			<description>Multiple instances of JBoss deployed onto a single server should be avoided whenever possible to reduce environmental complexity and administrative burdens. However, occasionally circumstances require that multiple JBoss instances are deployed to the same server. In this scenario, the configurations and justifications should be documented along with the rest of the system's documentation.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11240101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:113101">
+			<title>Bind multiple JBoss instances per server to different IPs</title>
+			<description>If multiple JBoss instances are installed, the servers should be set to bind to different IP addresses on the server rather than changing the default port configuration.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11310101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:206401">
+			<title>Packet filtering should be emplaced around JBoss Enterprise Application Platform</title>
+			<description>JBoss Enterprise Application Platform must operate in a network segment that is logically separated from any other network segment using a packet filtering mechanism. This packet filter must only allow incoming communication that is TCP with destination ports of 8080 or 8443. This packet filter can be resident on the host operating system or a completely separate system entirely.	When JBoss Enterprise Application Platforms are clustered, all outgoing communication from the JBoss Enterprise Application Platform instance must be allowed.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20640101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:109401">
+			<title>Do not transmit sensitive information over unsecured HTTP connections</title>
+			<description>Sensitive information should not be transferred over insecure means. This includes plaintext credential information, application information deemed sensitive, or other information that an may be valuable to a malicious entity.
+				The &lt;auth-method&gt; child element specifies the authentication mechanism for the web application. Using the BASIC authentication method causes the exchange of credentials in clear text.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:10940101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:110401">
+			<title>Use a version control repository</title>
+			<description>All configuration files (such a data sources, custom connectors, etc) and any scripts used for modifications and deployments should be stored in the version control repository. Typical repositories include applications such as SVN or Git.
+				Additionally, a hash-validated 'Gold' version of the JBoss installation package should also be stored in the version control system.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11040101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112501">
+			<title>Automate JBoss Deployments</title>
+			<description>Scripts or other software tools should be used to automatically configure and deploy JBoss applications in environments.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11250101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112701">
+			<title>Application performance testing</title>
+			<description>Ensure routine performance testing is completed before applications are deployed to production.  Establish and document performance profiles.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11270101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112801">
+			<title>Monitor JBoss servers</title>
+			<description>JBoss Enterprise Application Platform servers in production environments should be monitored real-time. Information monitored and alarm thresholds will vary. Common monitoring tools include: JBoss Operations Network (JON), Foglight, HP Openview, and Nagios.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11280101
+				</test_action_ref>
+			</actions>
+		</questionnaire>		
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:205701">
+			<title>Ensure all downloaded software is authentic</title>
+			<description>Software and packages should be downloaded from redhat.com, and hash validated.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20570101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:401001">
+			<title>Ensure JBoss is configured in accordance with Common Criteria configuration guides</title>
+			<description>JBoss deployments in government and DoD organizations require JBoss be deployed in a Common Criteria certified configuration. The Common Criteria configuration is a list of technical configuration items, policy requirements, and other configurations required to certify a JBoss installation at the EAL4+ protection level. Red Hat maintains configuration guidance available online to assist administrators during the installation and configuration of JBoss.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:40100101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:110601">
+			<title>Unused features should be disabled or deleted: Java Universal Description, Discovery, Integration (JUDDI)</title>
+			<description>Features and services not in use should be removed.  JUDDI is an open source Java implementation of the Universal Description, Discovery, and Integration (UDDI v3) specification for (Web) Services.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11060101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:110701">
+			<title>Unused features should be disabled or deleted: Enterprise Java Beans (EJB) Services</title>
+			<description>Features and services not in use should be removed.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11070101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:110801">
+			<title>Unused features should be disabled or deleted: Universal Unique Identifier (UUID) Generator</title>
+			<description>Features and services not in use should be removed.  UUID Generator allows for the generation of unique identifiers for hosted Java applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11080101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:110901">
+			<title>Unused features should be disabled or deleted: Java Message Service (JMS)</title>
+			<description>Features and services not in use should be removed.  Java Message Service is a component of Java Enterprise Edition that enables application to send and receive messages.  It is a cornerstone service that many distributed applications are built on.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11090101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111001">
+			<title>Unused features should be disabled or deleted: JBoss Mail</title>
+			<description>Features and services not in use should be removed.  JBoss Mail is a deployed package for Java Mail - a set of Java API's implementing an email server supporting the SMTP, POP3, and IMAP protocols.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11100101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111101">
+			<title>Unused features should be disabled or deleted: JBoss Scheduling</title>
+			<description>Features and services not in use should be removed.  JBoss Scheduling implements a JBoss service that supports scheduling and running jobs for deployed Java applications.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11110101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111201">
+			<title>Unused features should be disabled or deleted: Hypersonic SQL Database (HSQLDB)</title>
+			<description>Features and services not in use should be removed.  HSQLDB is the default datasource configured to run with JBoss Enterprise Application Platform out of the box. It is not recommended for production usage.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11120101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111301">
+			<title>Unused features should be disabled or deleted: BeanShell (BSH) Deployer</title>
+			<description>Features and services not in use should be removed.  The BSH Deployer allows for the hot deployment of one use execution scripts or services.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11130101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111401">
+			<title>Unused features should be disabled or deleted: JBossWS</title>
+			<description>Features and services not in use should be removed.  JBossWS is a web service framework for use with the JBoss Enterprise Application Platform.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11140101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111501">
+			<title>Unused features should be disabled or deleted: Seam</title>
+			<description>Features and services not in use should be removed.  Seam is an application framework for Java designed to reduce application complexity.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11150101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111601">
+			<title>Unused features should be disabled or deleted: JBoss Internet Inter-ORB Protocol (IIOP)</title>
+			<description>Features and services not in use should be removed.  JBoss IIOP implements a standards compliant CORBA server for JBoss.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11160101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111701">
+			<title>Unused features should be disabled or deleted: Miscellaneous</title>
+			<description>Miscellaneous features and services not in use should be removed.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11170101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111801">
+			<title>Unused features should be disabled or deleted: HTTP Invokers</title>
+			<description>Features and services not in use should be removed.  HTTP invocation allows the JBoss server to receive and act on remote instructions. This can be useful for administrators - especially in large or distributed environments.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11180101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:111901">
+			<title>Unused features should be disabled or deleted: Java Management Extensions (JMX) Invoker</title>
+			<description>Features and services not in use should be removed.  The JMX Invoker exposes the JMX MBeanServer interface via Remote Method Invocation compatible interface. This can be useful for administrators - especially in large or distributed environments.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11190101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112001">
+			<title>Unused features should be disabled or deleted: Pooled Invoker</title>
+			<description>Features and services not in use should be removed.  The org.jboss.invocation.pooled.server.PooledInvoker provides RMI over a custom socket implementation of the Invoker interface.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11200101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112101">
+			<title>Unused features should be disabled or deleted: Java Remote Method Protocol (JRMP) Invoker</title>
+			<description>Features and services not in use should be removed.  The org.jboss.invocation.jrmp.server.JRMPInvoker provides the RMI/JRMP implementation of the Invoker interface.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11210101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+		<questionnaire id="ocil:com.redhat.eap5.scap:questionnaire:112301">
+			<title>Unused features should be disabled or deleted: Clustering</title>
+			<description>Features and services not in use should be removed.  Clustering allows deployed applications to run distributed across multiple JBoss Enterprise Application Platform servers.</description>
+			<actions operation="AND">
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11230101
+				</test_action_ref>
+			</actions>
+		</questionnaire>
+	</questionnaires>
+
+	<test_actions>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20000101" question_ref="ocil:com.redhat.eap5.scap:question:20000101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20020101" question_ref="ocil:com.redhat.eap5.scap:question:20020101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20020102" question_ref="ocil:com.redhat.eap5.scap:question:20020102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30070101" question_ref="ocil:com.redhat.eap5.scap:question:30070101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<!--<choice_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20020101" question_ref="ocil:com.redhat.eap5.scap:question:20020101">
+			<when_choice>
+				<result>PASS</result>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2002010101</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2002010103</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2002010102</choice_ref>
+			</when_choice>
+			<when_choice>
+				<result>FAIL</result>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2002010104</choice_ref>
+			</when_choice>
+		</choice_question_test_action>-->
+		<choice_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20030101" question_ref="ocil:com.redhat.eap5.scap:question:20030101">
+			<when_choice>
+				<result>PASS</result>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010101</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010102</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010103</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010104</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010105</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010106</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010107</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010108</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010109</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010110</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010111</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010112</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010113</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010114</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010115</choice_ref>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010116</choice_ref>
+			</when_choice>
+			<when_choice>
+				<result>FAIL</result>
+				<choice_ref>ocil:com.redhat.eap5.scap:choice:2003010199</choice_ref>
+			</when_choice>
+		</choice_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20050101" question_ref="ocil:com.redhat.eap5.scap:question:20050101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20150101" question_ref="ocil:com.redhat.eap5.scap:question:20150101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20170101" question_ref="ocil:com.redhat.eap5.scap:question:20170101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20230101" question_ref="ocil:com.redhat.eap5.scap:question:20230101">
+			<when_true>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20230102
+				</test_action_ref>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20230102" question_ref="ocil:com.redhat.eap5.scap:question:20230102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+
+
+
+
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20280101" question_ref="ocil:com.redhat.eap5.scap:question:20280101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20390101" question_ref="ocil:com.redhat.eap5.scap:question:20390101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20420101" question_ref="ocil:com.redhat.eap5.scap:question:20420101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20440101" question_ref="ocil:com.redhat.eap5.scap:question:20440101">
+			<when_true>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20440102
+				</test_action_ref>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20440102" question_ref="ocil:com.redhat.eap5.scap:question:20440102">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20470101" question_ref="ocil:com.redhat.eap5.scap:question:20470101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20500101" question_ref="ocil:com.redhat.eap5.scap:question:20500101">
+			<when_true>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20500102
+				</test_action_ref>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20500102" question_ref="ocil:com.redhat.eap5.scap:question:20500102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20510101" question_ref="ocil:com.redhat.eap5.scap:question:20510101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20520101" question_ref="ocil:com.redhat.eap5.scap:question:20520101">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20530101" question_ref="ocil:com.redhat.eap5.scap:question:20530101">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20540101" question_ref="ocil:com.redhat.eap5.scap:question:20540101">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20550101" question_ref="ocil:com.redhat.eap5.scap:question:20550101">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20560101" question_ref="ocil:com.redhat.eap5.scap:question:20560101">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20570101" question_ref="ocil:com.redhat.eap5.scap:question:20570101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40100101" question_ref="ocil:com.redhat.eap5.scap:question:40100101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20590101" question_ref="ocil:com.redhat.eap5.scap:question:20590101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20610101" question_ref="ocil:com.redhat.eap5.scap:question:20610101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20620101" question_ref="ocil:com.redhat.eap5.scap:question:20620101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20630101" question_ref="ocil:com.redhat.eap5.scap:question:20630101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20640101" question_ref="ocil:com.redhat.eap5.scap:question:20640101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20650101" question_ref="ocil:com.redhat.eap5.scap:question:20650101">
+			<when_true>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:20650102
+				</test_action_ref>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20650102" question_ref="ocil:com.redhat.eap5.scap:question:20650102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20680101" question_ref="ocil:com.redhat.eap5.scap:question:20680101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:21570101" question_ref="ocil:com.redhat.eap5.scap:question:21570101">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:10920101" question_ref="ocil:com.redhat.eap5.scap:question:10920101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:10930101" question_ref="ocil:com.redhat.eap5.scap:question:10930101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		
+		
+		
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40110101" question_ref="ocil:com.redhat.eap5.scap:question:40110101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40120101" question_ref="ocil:com.redhat.eap5.scap:question:40120101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40130101" question_ref="ocil:com.redhat.eap5.scap:question:40130101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40140101" question_ref="ocil:com.redhat.eap5.scap:question:40140101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40150101" question_ref="ocil:com.redhat.eap5.scap:question:40150101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		
+		
+		
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:10940101" question_ref="ocil:com.redhat.eap5.scap:question:10940101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:10980101" question_ref="ocil:com.redhat.eap5.scap:question:10980101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11010101" question_ref="ocil:com.redhat.eap5.scap:question:11010101">
+			<when_true>
+				<result>FAIL</result>
+			</when_true>
+			<when_false>
+				<result>PASS</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11040101" question_ref="ocil:com.redhat.eap5.scap:question:11040101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11060101" question_ref="ocil:com.redhat.eap5.scap:question:11060101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11060102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11060102" question_ref="ocil:com.redhat.eap5.scap:question:11060102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11070101" question_ref="ocil:com.redhat.eap5.scap:question:11070101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11070102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11070102" question_ref="ocil:com.redhat.eap5.scap:question:11070102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11080101" question_ref="ocil:com.redhat.eap5.scap:question:11080101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11080102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11080102" question_ref="ocil:com.redhat.eap5.scap:question:11080102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11090101" question_ref="ocil:com.redhat.eap5.scap:question:11090101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11090102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11090102" question_ref="ocil:com.redhat.eap5.scap:question:11090102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11100101" question_ref="ocil:com.redhat.eap5.scap:question:11100101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11100102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11100102" question_ref="ocil:com.redhat.eap5.scap:question:11100102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11110101" question_ref="ocil:com.redhat.eap5.scap:question:11110101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11110102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11110102" question_ref="ocil:com.redhat.eap5.scap:question:11110102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11120101" question_ref="ocil:com.redhat.eap5.scap:question:11120101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11120102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11120102" question_ref="ocil:com.redhat.eap5.scap:question:11120102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11130101" question_ref="ocil:com.redhat.eap5.scap:question:11130101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11130102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11130102" question_ref="ocil:com.redhat.eap5.scap:question:11130102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11140101" question_ref="ocil:com.redhat.eap5.scap:question:11140101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11140102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11140102" question_ref="ocil:com.redhat.eap5.scap:question:11140102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11150101" question_ref="ocil:com.redhat.eap5.scap:question:11150101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11150102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11150102" question_ref="ocil:com.redhat.eap5.scap:question:11150102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11160101" question_ref="ocil:com.redhat.eap5.scap:question:11160101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11160102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11160102" question_ref="ocil:com.redhat.eap5.scap:question:11160102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11170101" question_ref="ocil:com.redhat.eap5.scap:question:11170101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11170102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11170102" question_ref="ocil:com.redhat.eap5.scap:question:11170102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11180101" question_ref="ocil:com.redhat.eap5.scap:question:11180101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11180102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11180102" question_ref="ocil:com.redhat.eap5.scap:question:11180102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11190101" question_ref="ocil:com.redhat.eap5.scap:question:11190101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11190102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11190102" question_ref="ocil:com.redhat.eap5.scap:question:11190102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11200101" question_ref="ocil:com.redhat.eap5.scap:question:11200101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11200102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11200102" question_ref="ocil:com.redhat.eap5.scap:question:11200102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11210101" question_ref="ocil:com.redhat.eap5.scap:question:11210101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11210102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11210102" question_ref="ocil:com.redhat.eap5.scap:question:11210102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11230101" question_ref="ocil:com.redhat.eap5.scap:question:11230101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<test_action_ref>ocil:com.redhat.eap5.scap:testaction:11230102</test_action_ref>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11230102" question_ref="ocil:com.redhat.eap5.scap:question:11230102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11240101" question_ref="ocil:com.redhat.eap5.scap:question:11240101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11250101" question_ref="ocil:com.redhat.eap5.scap:question:11250101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11270101" question_ref="ocil:com.redhat.eap5.scap:question:11270101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11280101" question_ref="ocil:com.redhat.eap5.scap:question:11280101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11290101" question_ref="ocil:com.redhat.eap5.scap:question:11290101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11310101" question_ref="ocil:com.redhat.eap5.scap:question:11310101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11320101" question_ref="ocil:com.redhat.eap5.scap:question:11320101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11330101" question_ref="ocil:com.redhat.eap5.scap:question:11330101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11340101" question_ref="ocil:com.redhat.eap5.scap:question:11340101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11350101" question_ref="ocil:com.redhat.eap5.scap:question:11350101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11360101" question_ref="ocil:com.redhat.eap5.scap:question:11360101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11590101" question_ref="ocil:com.redhat.eap5.scap:question:11590101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:21580101" question_ref="ocil:com.redhat.eap5.scap:question:21580101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:21600101" question_ref="ocil:com.redhat.eap5.scap:question:21600101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:10990101" question_ref="ocil:com.redhat.eap5.scap:question:10990101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11000101" question_ref="ocil:com.redhat.eap5.scap:question:11000101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11620101" question_ref="ocil:com.redhat.eap5.scap:question:11620101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11630101" question_ref="ocil:com.redhat.eap5.scap:question:11630101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11640101" question_ref="ocil:com.redhat.eap5.scap:question:11640101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11530101" question_ref="ocil:com.redhat.eap5.scap:question:11530101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11460101" question_ref="ocil:com.redhat.eap5.scap:question:11460101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:11650101" question_ref="ocil:com.redhat.eap5.scap:question:11650101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:20600101" question_ref="ocil:com.redhat.eap5.scap:question:20600101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>	
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40080101" question_ref="ocil:com.redhat.eap5.scap:question:40080101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>	
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40070101" question_ref="ocil:com.redhat.eap5.scap:question:40070101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>	
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40060101" question_ref="ocil:com.redhat.eap5.scap:question:40060101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40050101" question_ref="ocil:com.redhat.eap5.scap:question:40050101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>	
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40040101" question_ref="ocil:com.redhat.eap5.scap:question:40040101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>	
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40030101" question_ref="ocil:com.redhat.eap5.scap:question:40030101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>	
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40020101" question_ref="ocil:com.redhat.eap5.scap:question:40020101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>	
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:40010101" question_ref="ocil:com.redhat.eap5.scap:question:40010101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30060101" question_ref="ocil:com.redhat.eap5.scap:question:30060101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30040101" question_ref="ocil:com.redhat.eap5.scap:question:30040101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30050101" question_ref="ocil:com.redhat.eap5.scap:question:30050101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30050102" question_ref="ocil:com.redhat.eap5.scap:question:30050102">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30030101" question_ref="ocil:com.redhat.eap5.scap:question:30030101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30020101" question_ref="ocil:com.redhat.eap5.scap:question:30020101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+		<boolean_question_test_action id="ocil:com.redhat.eap5.scap:testaction:30010101" question_ref="ocil:com.redhat.eap5.scap:question:30010101">
+			<when_true>
+				<result>PASS</result>
+			</when_true>
+			<when_false>
+				<result>FAIL</result>
+			</when_false>
+		</boolean_question_test_action>
+	</test_actions>
+
+	<questions>
+	<!--<choice_question id="ocil:com.redhat.eap5.scap:question:20020101" default_answer_ref="ocil:com.redhat.eap5.scap:choice:2002010101">
+			<question_text>What Java Runtime Environment is in use by JBoss?     [Please reference Rule ID #200101 in /docs/JBossEAP5_Guide.html for more information]
+			</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>To determine the version of Java Runtime Environment in use by JBoss EAP, execute run.bat -\-version or run.sh -\-version located within JBOSS_HOME/bin.</description></step>
+				<step><description>The output of the command above will display a variety of information; including the version and build information for the JRE.</description></step>
+			</instructions>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2002010101">Sun JRE 1.6.x</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2002010102">IBM JRE 1.6.x</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2002010103">OpenJDK JRE 1.6.x</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2002010104">Other</choice>
+		</choice_question>
+	-->
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20000101">
+			<question_text>Is the version of JBoss installed actively supported by the vendor?     [Please reference Rule ID #200001 in /docs/JBossEAP5_Guide.html for more information]
+			</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Execute run.bat --version or run.sh --version located within JBOSS_HOME/bin to determine the version of JBoss EAP installed.</description></step>
+				<step><description>Work with JBoss administrators to access the Red Hat Network customer portal in order to review and validate active subscriptions.</description></step>
+				<step><description>Ensure the version of JBoss has not reached end-of-life.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20020101">
+			<question_text>Does JBoss utilize a vendor supported Java Runtime Environment?     [Please reference Rule ID #200201 in /docs/JBossEAP5_Guide.html for more information]
+			</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Execute run.bat --version or run.sh --version located within JBOSS_HOME/bin to identify the version of Java used by JBoss.</description></step>
+				<step><description>Search the vendor's website and support documentation to ensure the vendor actively supports the version of Java virtual machine in use.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20020102">
+			<question_text>If The Java Runtime Environment will reach end-of-life within the next year, has the organization developed migration plans?     [Please reference Rule ID #200201 in /docs/JBossEAP5_Guide.html for more information]
+			</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and review relevant documentation.</description></step>
+			</instructions>
+		</boolean_question>
+		<choice_question id="ocil:com.redhat.eap5.scap:question:20030101" default_answer_ref="ocil:com.redhat.eap5.scap:choice:2003010103">
+			<question_text>What operating system is hosting the Red Hat JBoss Enterprise Application Server (all binaries, configuration files, etc.)?     [Please reference Rule ID #200301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>From a command shell, execute "cat /etc/redhat-release"</description></step>
+				<step><description>The output of the command above will display the host operating system version information.</description></step>
+			</instructions>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010101">Red Hat Enterprise Linux 6 x86</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010102">Red Hat Enterprise Linux 6 x86-64</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010103">Red Hat Enterprise Linux 5 x86</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010104">Red Hat Enterprise Linux 5 x86-64</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010105">Red Hat Enterprise Linux 4 x86</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010106">Red Hat Enterprise Linux 4 x86-64</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010107">Solaris 10 SPARC 64</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010108">Solaris 10 x86-64</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010109">Solaris 10 x86</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010110">Solaris 9 SPARC (64-bit)</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010111">Solaris 9 SPARC (32-bit)</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010112">Solaris 9 x86</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010113">Microsoft Windows Server 2008 x86-64</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010114">Microsoft Windows Server 2008 x86</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010115">Microsoft Windows Server 2003 x86-64</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010116">Microsoft Windows Server 2003 x86</choice>
+			<choice id="ocil:com.redhat.eap5.scap:choice:2003010199">Other</choice>
+		</choice_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20050101">
+			<question_text>Have all configuration changes been made to the JBoss production profile?     [Please reference Rule ID #200501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Ensure that all configuration changes and deployments are made to the production server profile.</description></step>
+			</instructions>
+		</boolean_question>
+
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20150101">
+			<question_text>Do deployed applications requiring authentication by &lt;login-module&gt; require hashed passwords?     [Please reference Rule ID #20150101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>To determine which &lt;application-policy&gt; are in use by deployed applications, search for &lt;security-domain&gt; elements within deployment descriptors.</description></step>
+				<step><description>This element should be included within a deployed application's &lt;application-policy&gt;&lt;login-module&gt;: &lt;module-option name="hashUserPassword"&gt;true&lt;/module-option&gt;</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20170101">
+			<question_text>Do deployed applications requiring authentication by &lt;login-module&gt; define a hashing algorithm?     [Please reference Rule ID #201501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>To determine which &lt;application-policy&gt; are in use by deployed applications, search for &lt;security-domain&gt; elements within deployment descriptors.</description></step>
+				<step><description>Add one of the following child elements to any &lt;application-policy&gt;&lt;login-module&gt; in use:</description></step>
+				<step><description>&lt;module-option name="hashAlgorithm"&gt;MD5&lt;/module-option&gt;</description></step>
+				<step><description>&lt;module-option name="hashAlgorithm"&gt;SHA&lt;/module-option&gt;</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20230101">
+			<question_text>Do any deployed applications require logging for web-based requests?     [Please reference Rule ID #201501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators.  Review application and system documentation.  Determine if the ability to log web-based requests has been identified.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20230102">
+			<question_text>Has the appropriate AccessLogValve been uncommented in JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml?     [Please reference Rule ID #201501 in /docs/JBossEAP5_Guide.html for more information]
+			</question_text>
+			<instructions>
+				<title>Instructions</title>
+				<step><description>If logging of web-based requests has been required for deployed applications the AccessLogValve should be enabled. To check the status of the &lt;Valve&gt;, ensure the following element is defined within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml.</description></step>
+				<step><description>&lt;Valve className="org.apache.catalina.valves.AccessLogValve" prefix="localhost_access_log." suffix=".log" pattern="common" directory="${JBoss.server.home.dir}/log" resolveHosts="false" /&gt;</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20280101">
+			<question_text>Has a valid security domain been specified for the deployed applications (overriding the simplified Seam JAAS configuration)?    [Please reference Rule ID #202801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Check for components.xml for the deployed application.</description></step>
+				<step><description>A security domain must be defined and the security domain must map to a valid JAAS security domain.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20390101">
+			<question_text>Do your application specific security policies declare one of the following authorization modules: org.JBoss.security.authorization.modules.DelegatingAuthorizationModule, org.JBoss.security.authorization.modules.JACCAuthorizationModule?	     [Please reference Rule ID #203901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Applications deploying their own security policies must specify org.JBoss.security.authorization.modules.DelegatingAuthorizationModule or org.JBoss.security.authorization.modules.JACCAuthorizationModule &lt;policy-module&gt; within their 'code' attributes:</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20420101">
+			<question_text>Are the most restrictive Java Database Connectivity (JDBC) permissions assigned via the Java Security Manager (JSM)?     [Please reference Rule ID #204201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>To validate compliance, review all policy files defining permissions for the Java Security Manager.</description></step>
+				<step><description>The systems administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) to applications accessing defined data sources.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20440101">
+			<question_text>Is a DefaultDS defined?     [Please reference Rule ID #204401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Search for a data source with a &lt;jndi-name&gt;DefaultDS&lt;/jndi-name&gt; element.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20440102">
+			<question_text>Is the DefaultDS an instance of HSQLDB?     [Please reference Rule ID #204401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>The DefaultDS CANNOT be HSQL.</description></step>
+				<step><description>An HSQL data source will contain elements like: &lt;driver-class&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; and &lt;type-mapping&gt;Hypersonic SQL&lt;/type-mapping&gt;.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20470101">
+			<question_text>For installations using Java Messaging Service, has the appropriate persistence-service.xml file been installed?     [Please reference Rule ID #204701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview the JBoss administrators and application developers to determine if JMS is in use. A quick check can also be performed by checking for the existence of JBOSS_HOME/server/[PROFILE]/deploy/messaging or JBOSS_HOME/server/[PROFILE]/deploy/jms-ra.rar.</description></step>
+				<step><description>If JMS is installed, a persistence-service.xml file must exist that does not use HSQLDB.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20500101">
+			<question_text>Is Oracle Database configured as the DefaultDS?     [Please reference Rule ID #205001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review the DefaultDS datasource.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20500102">
+			<question_text>Is the Oracle Database persistence plugin configured correctly in JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml?     [Please reference Rule ID #205001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review the persistence plugin located at JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml.</description></step>
+				<step><description>The DatabasePersistencePlugin attribute must be configured specifically for Oracle Database: org.JBoss.ejb.txtimer.OracleDatabasePersistencePlugin</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20510101">
+			<question_text>Are the most restrictive Java Security Manager (JSM) permissions assigned to deployed applications for JBoss JMX Kernel MBean interaction?     [Please reference Rule ID #205101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review all JSM permissions granted to MBeans. Grant statements should be limited to specific users and specific methods.</description></step>
+				<step><description></description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20520101">
+			<question_text>Have java.io.FilePermission been appropriately assigned to deployed applications?     [Please reference Rule ID #205201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review all policy files defining permissions for the Java Security Manager.</description></step>
+				<step><description>Review all permissions granted to user deployed applications.</description></step>
+				<step><description>Grant statements granting file permissions are permitted only when the file permission targets are located within the user application's directory and dedicated for use by the deployed application.  The systems administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20530101">
+			<question_text>Have java.net.NetPermission been assigned to deployed applications?     [Please reference Rule ID #205301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review all policy files defining permissions for the Java Security Manager.</description></step>
+				<step><description>Review all permissions granted to user deployed applications.</description></step>
+				<step><description>Grant statements granting network permissions are not allowed</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20540101">
+			<question_text>Have java.lang.RuntimePermission been assigned to deployed applications?     [Please reference Rule ID #205401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review all policy files defining permissions for the Java Security Manager.</description></step>
+				<step><description>Review all permissions granted to user deployed applications.</description></step>
+				<step><description>Grant statements granting runtime permissions are not allowed.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20550101">
+			<question_text>Have java.net.SocketPermission been assigned to deployed applications?     [Please reference Rule ID #205501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review all policy files defining permissions for the Java Security Manager.</description></step>
+				<step><description>Review all permissions granted to user deployed applications.</description></step>
+				<step><description>Grant statements granting socket permissions are not allowed.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20560101">
+			<question_text>Have java.security.AllPermission (or equivalent for your JDBC driver) been assigned to deployed applications?     [Please reference Rule ID #205601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review all policy files defining permissions for the Java Security Manager.</description></step>
+				<step><description>Review all permissions granted to user deployed applications.</description></step>
+				<step><description>Grant statements granting AllPermission are not allowed.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20570101">
+			<question_text>Has all downloaded and installed software been validated as authentic?     [Please reference Rule ID #205701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. JBoss administrators must demonstrate proficiency in securely acquiring JBoss Enterprise Application Platform installation materials.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40100101">
+			<question_text>Has the JBoss installation been configured and installed according to the JBoss Common Criteria Configuration Guide?     [Please reference Rule ID #401001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and review on-site documentation. Review the JBoss Common Criteria Configuration Guide</description></step>
+				<step><description>Review the JBoss Common Criteria Configuration Guide to ensure JBoss has been installed and configured in accordance with the Common Criteria requirements.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20590101">
+			<question_text>Does a JBoss keystore exist that is accessible only to JBoss and JBoss administrators?     [Please reference Rule ID #205901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Determine which keystore is being used by JBoss.</description></step>
+				<step><description>Next, validate that the keystore exists at the specified path and that the JBoss process owner account and JBoss administrators have READ/WRITE access to the keystore.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20610101">
+			<question_text>Is the jboss alias in the trustedCertEntry?     [Please reference Rule ID #206101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review the JBoss keystore to ensure the jboss alias exists as a trustedCertEntry.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20620101">
+			<question_text>Does the hardware and software executing JBoss Enterprise Application Platform, as well as the software critical to security policy enforcement, have adequate physical protections?     [Please reference Rule ID #206201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and security personnel.</description></step>
+				<step><description>Visually inspect physical security precautions.</description></step>
+				<step><description>Review space certifications where appropriate.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20630101">
+			<question_text>Have administrative personnel requirements been met?     [Please reference Rule ID #206301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review credentials and qualifications.</description></step>
+				<step><description>JBoss Administrators should possess a basic level of proficiency with the software. Additionally, they must not be carelessly or willfully negligent, or hostile, and must follow the instructions provided by the administrator documentation.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20640101">
+			<question_text>Have packet filtering protections been implemented?     [Please reference Rule ID #206401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and architects. Review system network diagrams.</description></step>
+				<step><description>Packet filters must only allow incoming communication that is TCP with destination ports of 8080 or 8443.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20650101">
+			<question_text>Is the JBoss Installation using version 1.6 of the IBM JRE?     [Please reference Rule ID #206501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>See /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20650102">
+			<question_text>Has the IBM JRE 1.6 in use been reconfigured to use the standard policy provider?     [Please reference Rule ID #206501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>See /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20680101">
+			<question_text>Have deployed applications been developed in accordance with Enterprise JavaBeans Specification v2.1 (specifically Section 25.2, pages 562-564)?     [Please reference Rule ID #206801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview developers or review product documentation to determine if deployed applications were developed in accordance with Enterprise JavaBeans 2.1 specifications.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:21570101">
+			<question_text>Do deployed applications store data in the DefaultDS data source?     [Please reference Rule ID #215701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview the application developers and/or review source code to identify when data sources are used. Ensure that the application is not storing data within the DefaultDS.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:10920101">
+			<question_text>Are &lt;security-role&gt; elements used to control access to deployed applications?     [Please reference Rule ID #109201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review the web.xml deployment descriptors for deployed applications.</description></step>
+				<step><description>Ensure that &lt;security-role&gt; elements have been define that are referenced by &lt;security-constraint&gt;&lt;auth-constraint&gt; elements within the &lt;web-app&gt; root element.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:10930101">
+			<question_text>Have HTTP methods been whitelisted to control access to deployed applications via the web?     [Please reference Rule ID #109301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review application deployment descriptors for indications that &lt;http-method&gt; has been used to whitelist HTTP verbs.</description></step>
+			</instructions>
+		</boolean_question>
+		
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40110101">
+			<question_text>Have maxPostSize attributes been set correctly for the Tomcat container?     [Please reference Rule ID #401101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review &lt;Connector&gt; elements in JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml.</description></step>
+				<step><description>Check for &lt;Connector&gt; elements that define a maxPostSize attribute. If a maxPostSize attribute is defined, it should be 104857600 or less (100 MB).</description></step>
+			</instructions>
+		</boolean_question>
+
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40120101">
+			<question_text>Have maxSavePostSize attributes been set correctly for the Tomcat container?     [Please reference Rule ID #401201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review &lt;Connector&gt; elements in JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml.</description></step>
+				<step><description>Check for &lt;Connector&gt; elements that define a maxSavePostSize attribute. If a maxSavePostSize attribute is defined, it should be 12288 or less (12 KB).</description></step>
+			</instructions>
+		</boolean_question>
+		
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40130101">
+			<question_text>Have server attributes been set correctly for the Tomcat container?     [Please reference Rule ID #401301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review HTTP &lt;Connector&gt; elements in JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml.</description></step>
+				<step><description>Check each HTTP &lt;Connector&gt; element to ensure it defines a server attribute. A server attribute should be defined, and it should be set to something other than Apache-Coyote/1.1.</description></step>
+			</instructions>
+		</boolean_question>
+		
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40140101">
+			<question_text>Have ciphers attributes been set correctly for the Tomcat container?     [Please reference Rule ID #401401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review &lt;Connector&gt; elements in JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml.</description></step>
+				<step><description>Check for &lt;Connector&gt; elements that define a secure=true attribute. Check each &lt;Connector&gt; element that contains a secure=true attribute. Ensure this connector does not define a ciphers attribute and instead inherits ciphers defined by the JVM.</description></step>
+			</instructions>
+		</boolean_question>
+		
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40150101">
+			<question_text>Have connectionTimeout attributes been set correctly for the Tomcat container?     [Please reference Rule ID #401501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review HTTP &lt;Connector&gt; elements in JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml.</description></step>
+				<step><description>Check to ensure they define a connectionTimeout attribute. The connectionTimeout attribute should be 20000 or less (20 seconds).</description></step>
+			</instructions>
+		</boolean_question>
+		
+		
+		
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:10940101">
+			<question_text>Is sensitive information transmitted only over secure channels such as SSL or TLS?     [Please reference Rule ID #109401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>>Interview JBoss administrators and application developers. Review application documentation. Descriptive information for sensitive data used by the application should be readily available.</description></step>
+				<step><description>Ensure this information is secured with SSL 3.x or TLS. There are multiple ways to secure the connections.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:10980101">
+			<question_text>Are JBoss EAP file permissions set appropriately?     [Please reference Rule ID #109801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Validate file permissions for JBOSS_HOME files and subdirectories.</description></step>
+				<step><description>File permissions should be restricted to READ/WRITE for JBoss process owner and JBoss administrators. Other accounts that may require READ access include version control accounts or process owners for backup software.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11010101">
+			<question_text>Do any deployed applications implement the default SRPVerifierStore interface?     [Please reference Rule ID #110101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview application developers and review application documentation.</description></step>
+				<step><description>If deployed applications utilize SRP and/or source code is available for reference, review evidence that the default SRPVerifierStore interface is not in use and that the existing code does not use serialized objects for persistence.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11040101">
+			<question_text>Is a version control repository in use for JBoss?     [Please reference Rule ID #110401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. Review evidence of version control system and its use.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11060101">
+			<question_text>Is JUDDI being used by deployed applications?     [Please reference Rule ID #110601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11070101">
+			<question_text>Is the EJB Services being used by deployed applications?     [Please reference Rule ID #110701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11080101">
+			<question_text>Is the UUID Generator being used by deployed applications?     [Please reference Rule ID #110801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11090101">
+			<question_text>Is the Java Messaging Service being used by deployed applications?     [Please reference Rule ID #110901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11100101">
+			<question_text>Is JBoss Mail being used by deployed applications?     [Please reference Rule ID #111001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11110101">
+			<question_text>Is JBoss Scheduling being used by deployed applications?     [Please reference Rule ID #111101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11120101">
+			<question_text>Is the Hypersonic SQL Database being used by deployed applications?     [Please reference Rule ID #111201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11130101">
+			<question_text>Is the BSH Deployer being used by deployed applications?     [Please reference Rule ID #111301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11140101">
+			<question_text>Is JBossWS being used by deployed applications?     [Please reference Rule ID #111401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11150101">
+			<question_text>Is SEAM being used by deployed applications?     [Please reference Rule ID #111501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11160101">
+			<question_text>Is IIOP/Corba being used by deployed applications?     [Please reference Rule ID #111601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11170101">
+			<question_text>Are miscellaneous features being used by deployed applications?     [Please reference Rule ID #111701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11180101">
+			<question_text>Is the HTTP Invoker being used by deployed applications?     [Please reference Rule ID #111801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11190101">
+			<question_text>Is the JMX Invoker being used by deployed applications?     [Please reference Rule ID #111901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11200101">
+			<question_text>Is the Pooled Invoker being used by deployed applications?     [Please reference Rule ID #112001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11210101">
+			<question_text>Is the JRMP Invoker being used by deployed applications?     [Please reference Rule ID #112101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11230101">
+			<question_text>Is Clustering being used by deployed applications?     [Please reference Rule ID #112301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and/or platform administrators. If the feature or service is not used, validate its removal.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11060102">
+			<question_text>Has JUDDI been disabled or deleted?     [Please reference Rule ID #110601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11070102">
+			<question_text>Have the EJB Services been disabled or deleted?     [Please reference Rule ID #110701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11080102">
+			<question_text>Has the UUID Generator been disabled or deleted?     [Please reference Rule ID #110801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11090102">
+			<question_text>Has the Java Messaging Service been disabled or deleted?     [Please reference Rule ID #110901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11100102">
+			<question_text>Has JBoss Mail been disabled or deleted?     [Please reference Rule ID #111001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11110102">
+			<question_text>Has JBoss Scheduling been disabled or deleted?     [Please reference Rule ID #111101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11120102">
+			<question_text>Has the Hypersonic SQL Database been disabled or deleted?    [Please reference Rule ID #111201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11130102">
+			<question_text>Has the BSH Deployer been disabled or deleted?    [Please reference Rule ID #111301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11140102">
+			<question_text>Has JBossWS been disabled or deleted?     [Please reference Rule ID #111401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11150102">
+			<question_text>Has Seam been disabled or deleted?     [Please reference Rule ID #111501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11160102">
+			<question_text>Has IIOP/Corba been disabled or deleted?     [Please reference Rule ID #111601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11170102">
+			<question_text>Have the miscellaneous features disabled or deleted?     [Please reference Rule ID #111701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11180102">
+			<question_text>Has the HTTP Invoker been disabled or deleted?     [Please reference Rule ID #111801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11190102">
+			<question_text>Has the JMX Invoker been disabled or deleted?     [Please reference Rule ID #111901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11200102">
+			<question_text>Has the Pooled Invoker been disabled or deleted?     [Please reference Rule ID #112001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11210102">
+			<question_text>Has the JRMP Invoker been disabled or deleted?     [Please reference Rule ID #112101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11230102">
+			<question_text>Has Clustering been disabled or deleted?     [Please reference Rule ID #112301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11240101">
+			<question_text>Are JBoss installations limited toa single instance per server?     [Please reference Rule ID #112401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators, review system documentation and architecture diagrams. Determine if JBoss Enterprise Application Platform installations are limited to one per server.</description></step>
+				<step><description>If they are not limited to one per server, ensure the configuration, rationale, and risk assessment is well documented.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11250101">
+			<question_text>Is the deployment and configuration of JBoss to new environments automated?     [Please reference Rule ID #112501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and review procedural documentation. Determine if applications are deployed to JBoss Enterprise Application Platforms in an automated manner.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11270101">
+			<question_text>Is performance testing completed for applications prior to their deployment to production environments?     [Please reference Rule ID #112701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss system administrators and application developers. Review product documentation related to performance testing and load limits.</description></step>
+				<step><description>Review policy and procedural documents related to performance testing.</description></step>
+				<step><description>Production environments should have documented and established performance profiles.</description></step>
+				<step><description>Applications should be performance tested prior to deployment to production environments.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11280101">
+			<question_text>Is the JBoss server production environment being monitored in real-time with JON, Foglight, or another similar tool?     [Please reference Rule ID #112801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss system administrators. Review server documentation and system architecture diagrams. Review documents related to server monitoring.</description></step>
+				<step><description>Production environments should have a real-time monitoring solution in place.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11290101">
+			<question_text>Do JBoss administrators possess robust incident response procedures?     [Please reference Rule ID #112901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review system documentation, incident response documentation, contingency documentation, and any other relevant documentation.</description></step>
+				<step><description>Determine if the incident response procedures in place are robust, up-to-date, and clear.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11310101">
+			<question_text>If multiple instances of JBoss Enterprise Application Platform are deployed on any servers, are those servers configured to bind to different IP addresses rather than changing the port binds?     [Please reference Rule ID #113101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators and review system documentation. Examine running JBoss servers and bound ports using commands like netstat.</description></step>
+				<step><description>If multiple JBoss instances are deployed to a single server, it is a best practice to bind each instance to its own IP address.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11320101">
+			<question_text>Do JBoss administrators possess a robust disaster recovery policy?     [Please reference Rule ID #113201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review system documentation, disaster recovery documentation, contingency documentation, and any other relevant documentation.</description></step>
+				<step><description>Determine if the disaster recovery procedures in place are robust, up-to-date, and feasible.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11330101">
+			<question_text>Do JBoss administrators exercise incident response procedures at least annually?     [Please reference Rule ID #113301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review system documentation, incident response documentation, and any other relevant documentation. Review lessons-learned, after-action reports, or other historical documentation.</description></step>
+				<step><description>Determine if the incident response procedures are meaningfully exercised at least annually.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11340101">
+			<question_text>Do JBoss administrators exercise disaster recovery procedures at least annually?     [Please reference Rule ID #113401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review system documentation, disaster recovery documentation, contingency documentation, and any other relevant documentation. Review lessons-learned, after-action reports, or other historical documentation.</description></step>
+				<step><description>Determine if the disaster recovery procedures are meaningfully exercised at least annually.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11350101">
+			<question_text>Are data flows for deployed applications documented?     [Please reference Rule ID #113501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>>Examine application documentation, system architecture documentation, and any other pertinent diagrams. Interview JBoss administrators and application developers.</description></step>
+				<step><description>Application data flows should be identified for all deployed applications.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11360101">
+			<question_text>Have all cleartext passwords been removed from data sources?     [Please reference Rule ID #113601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review data source file located within JBOSS_HOME/server/deploy/ and subdirectories.</description></step>
+				<step><description>Data sources with encrypted passwords will no longer have &lt;user-name&gt; or &lt;password&gt; elements, and will instead reference a &lt;security-domain&gt;.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11590101">
+			<question_text>Have Java permissions for all deployed applications been documented and reviewed?     [Please reference Rule ID #115901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>>Review documentation for an application's permission requirements.</description></step>
+				<step><description>Review policy files to determine if applications are in compliance with their documentation.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:21580101">
+			<question_text>Is the JBoss keystore password protected?     [Please reference Rule ID #215801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Use the keytool command to list the contents of the JBoss keystore.  Validate the requirement for a password prior to access to the keystore.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:21600101">
+			<question_text>Does a password file exist for the JBoss keystore that is accessible only to JBoss and JBoss administrators??     [Please reference Rule ID #216001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review the JBoss security policy file to locate the JBoss keystore password file.  Validate the existence of the file.</description></step>
+				<step><description>Ensure only the JBoss process owner account and JBoss administrators have READ access to the file.</description></step>
+				<step><description>Ensure the correct password for the JBoss keystore is in the file.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:10990101">
+			<question_text>Has console access been removed from the JBoss process owner?     [Please reference Rule ID #109901 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11000101">
+			<question_text>Do deployed production applications utilize SecurityDomains to protect resources?     [Please reference Rule ID #110001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11620101">
+			<question_text>Are all files and folders under in JBOSS_HOME owned by the JBoss process owner account?     [Please reference Rule ID #116201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Validate file ownership for JBOSS_HOME files and subdirectories . Owner is required to be the JBoss process owner account.</description></step>
+				<step><description>The JBoss administrators may have group ownership for operating systems that support it.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11630101">
+			<question_text>Have clear-text passwords been removed for all Tomcat Connectors?     [Please reference Rule ID #116301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml for evidence of clear-text passwords in Connectors. These Connectors will contain a &lt;attribute name="KeyStorePass"&gt; or a keystorePass attribute as part of the &lt;Connector&gt; element, with a clear-text password.</description></step>
+			</instructions>
+		</boolean_question>	
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11640101">
+			<question_text>Has a comprehensive access control policy been created that addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance?     [Please reference Rule ID #116401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review all relevant documentation. </description></step>
+				<step><description>Determine if an access control policy exists that addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance. There should be an associated set of procedures with implementation details for specific tasks such as assigning user roles, creating user accounts, or assigning Java Security Manager permissions.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11530101">
+			<question_text>Do JBoss administrators (or whomever performs regular log review), have access to a comprehensive audit policy and auditing procedures?     [Please reference Rule ID #115301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review any available auditing documentation.</description></step>
+				<step><description>Determine if the auditing policy is comprehensive and the auditing procedures are usable and up-to-date.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11460101">
+			<question_text>Do regular backups of the JBoss configuration files and deployed applications occur at least once a week (or in accordance with organization documentation)?     [Please reference Rule ID #114601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators. Review backup policies, procedures, and other applicable documentation. Review backup media and validate presence of JBoss configuration files and deployed applications.</description></step>
+				<step><description>Determine if JBoss configuration files and deployed applications are backed up at least once a week - or as specified by organization documentation.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:11650101">
+			<question_text>Have clear-text passwords been removed for all JBoss XML configuration files?     [Please reference Rule ID #116501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review configuration files for evidence of clear-text passwords.</description></step>
+				<step><description>No clear-text passwords should exist in XML configuration files (password masking should be used instead).</description></step>
+			</instructions>
+		</boolean_question>
+		<!--<boolean_question id="ocil:com.redhat.eap5.scap:question:30010101">
+			<question_text>NOHTMLQUESTION     [Please reference Rule ID #300101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>NOTHTMLSTEP1</description></step>
+				<step><description>NOTHTMLSTEP2</description></step>
+			</instructions>
+		</boolean_question>
+		-->
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:20600101">
+			<question_text>Is the Java Security Manager used by JBoss configured to load a password-protected keystore file?    [Please reference Rule ID #206001 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Search properties files loaded by Java Security Manager for valid keystore keystorePasswordURL properties.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40080101">
+			<question_text>Do all deployed applications utilize FIPS compliant cryptography?     [Please reference Rule ID #400801 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40070101">
+			<question_text>Do all deployed applications requiring authentication utilize the DoD Public Key Infrastructure for authentication?     [Please reference Rule ID #400701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Due to space and formatting limitations under the OCIL specification, see the /docs/JBossEAP5_Guide.html for details.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40060101">
+			<question_text>Does the keystore used by JBoss contain the active DoD Certificate Authorities as trustedCertEntrys?     [Please reference Rule ID #400601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Determine which keystore is being used by JBoss.</description></step>
+				<step><description>List the contents of the keystore.</description></step>
+				<step><description>Ensure all currently active DoD Certificate Authorities exist as trustedCertEntry.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40050101">
+			<question_text>Do all deployed JBoss applications implementing encryption present valid X.509 certificates?     [Please reference Rule ID #400501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Using a web browser or similar tool, access deployed JBoss applications that implement encryption and certificate exchange.</description></step>
+				<step><description>Examine the X.509 certificate presented to the browser by the server.</description></step>
+				<step><description>The certificate must match the domain name of the webserver being accessed.</description></step>
+				<step><description>The certificate must not be expired.</description></step>
+				<step><description>The certificate must be issued by a DoD approved Certificate Authority.</description></step>
+				<step><description>The certificate must not be revoked.</description></step>
+				<step><description>The certificate public key length must be at least 1024 bits.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30070101">
+			<question_text>Do all deployed applications display classification banners as required by the appropriate classification guide or local security guidance?     [Please reference Rule ID #300701 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Access all deployed applications to determine if classification banners are displayed in accordance with the authoritative classification guide or local security policies.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40040101">
+			<question_text>Is the JBoss process owner executing in accordance with the principle of least privilege?     [Please reference Rule ID #400401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with the JBoss administrator to identify the JBoss process owner account.</description></step>
+				<step><description>Work with the JBoss administrator to identify the permissions the JBoss process owner executes with.</description></step>
+				<step><description>Determine if the JBoss process owner is executing with least privilege.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40030101">
+			<question_text>Has the default Java cacerts keystore password been changed?     [Please reference Rule ID #400301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Attempt to access the contents of the Java cacerts keystore at the default location (JAVA_HOME/lib/security/cacerts).</description></step>
+				<step><description>Ensure the default password has been changed.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40020101">
+			<question_text>Has the default JBoss Messaging MessageSucker password been changed?     [Please reference Rule ID #400201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Review the Jboss Messaging configuration file for the Messaging ServerPeer.</description></step>
+				<step><description>Ensure the &lt;property name="suckerPassword" &gt; has been changed from the default of "CHANGE ME!".</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:40010101">
+			<question_text>Do JBoss installations in a production environment reside on dedicated operating systems?    [Please reference Rule ID #400101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Interview JBoss administrators, review system documentation and architecture diagrams. Review applications hosted by the same operating system as JBoss.</description></step>
+				<step><description>Determine if production environments host JBoss Enterprise Application Platform installations on dedicated operating systems.  JBoss installations should not be hosted by the same operating system that may be hosting other organization resources such as name resolution servers, directory servers, or database servers.</description></step>
+			</instructions>
+		</boolean_question>
+		<!--<boolean_question id="ocil:com.redhat.eap5.scap:question:30060101">
+			<question_text>Do all deployed applications display a system use notification upon access?     <sub var_ref="ocil:com.redhat.eap5.scap:variable:300601"/> [Please reference Rule ID #300601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Access all deployed applications to determine if a warning banner is displayed.  A code reviewing showing the functional code will also suffice.This warning banner should be presented to the user prior to accessing any deployed application - commercial applications, in-house applications, or applications deployed by JBoss.</description></step>
+			</instructions>
+		</boolean_question> variable removed for SCC compatibility-->
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30060101">
+			<question_text>Do all deployed applications display a system use notification upon access?     <sub var_ref="ocil:com.redhat.eap5.scap:variable:300601"/> [Please reference Rule ID #300601 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Access all deployed applications to determine if a warning banner is displayed.  A code reviewing showing the functional code will also suffice.This warning banner should be presented to the user prior to accessing any deployed application - commercial applications, in-house applications, or applications deployed by JBoss.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30040101">
+			<question_text>Has the organization defined password complexity requirements in a policy document?     [Please reference Rule ID #300401 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation.  Password complexity requirements should be defined.  The policy should not allow passwords to be reused or contain dictionary words.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30050101">
+			<question_text>Has the organization defined password expiration requirements in a policy document?     [Please reference Rule ID #300501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation. Password expiration requirements should be defined.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30050102">
+			<question_text>Is evidence maintained of password changes for application or system accounts?     [Please reference Rule ID #300501 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation. Password expiration requirements should be defined.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30030101">
+			<question_text>Has the organization defined password length requirements in a policy document?     [Please reference Rule ID #300301 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Work with JBoss administrators and security team members to identify and review relevant documentation. Minimum and maximum password lengths should be defined.</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30020101">
+			<question_text>Have default role assignments been removed, renamed, or commented out from jbossws-roles.properties, jmx-console-roles.properties, and messaging-roles.properties?     [Please reference Rule ID #300201 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Ensure the default role assignments have been removed, renamed, or commented out from the default properties files located in JBOSS_HOME/server/[PROFILE]/conf/props/</description></step>
+			</instructions>
+		</boolean_question>
+		<boolean_question id="ocil:com.redhat.eap5.scap:question:30010101">
+			<question_text>Have default user accounts been removed, renamed, or commented out from jbossws-users.properties, jmx-console-users.properties, and messaging-users.properties?     [Please reference Rule ID #300101 in /docs/JBossEAP5_Guide.html for more information]</question_text>
+			<instructions><title>Instructions</title>
+				<step><description>Ensure the default user accounts in the default &lt;application-policy&gt; elements located within the configuration file: JBOSS_HOME/server/[PROFILE]/conf/login-config.xml have been removed, renamed, or commented out.</description></step>
+			</instructions>
+		</boolean_question>
+	</questions>
+	<variables>
+		<!--<constant_variable datatype="NUMERIC" id="ocil:com.redhat.eap5.scap:variable:2">
+			<value>1</value>
+		</constant_variable>
+		<external_variable datatype="NUMERIC" id="ocil:com.redhat.eap5.scap:variable:1"/>
+		<local_variable question_ref="ocil:com.redhat.eap5.scap:question:30010101" datatype="NUMERIC" id="ocil:com.redhat.eap5.scap:variable:3">
+			<set>
+			</set>
+		</local_variable>-->
+		<external_variable datatype="TEXT" id="ocil:com.redhat.eap5.scap:variable:300601"/>
+	</variables>
+</ocil>
