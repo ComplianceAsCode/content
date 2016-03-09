@@ -198,7 +198,7 @@ stolen by eavesdroppers on the network.
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
 as a systemd socket, should be disabled.
 If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rsh</tt>.
-If using systemd, <socket-disable-macro service="rsh" />
+If using systemd, <socket-disable-macro socket="rsh" />
 </description> 
 <ocil><systemd-socket-disable-check-macro socket="rsh" />
 <xinetd-service-disable-check-macro service="rsh" /></ocil>
@@ -237,7 +237,7 @@ the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
 as a systemd socket, should be disabled.
 If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rlogin</tt>.
-If using systemd, <socket-disable-macro service="rlogin" />
+If using systemd, <socket-disable-macro socket="rlogin" />
 </description> 
 <ocil><systemd-socket-disable-check-macro socket="rlogin" />
 <xinetd-service-disable-check-macro service="rlogin" /></ocil>
