@@ -13,7 +13,7 @@
        </Value>
 
       <xsl:apply-templates select="document('intro/intro.xml')" /> 
-      <xsl:apply-templates select="document('application/firefox.xml')" />
+      <xsl:apply-templates select="document('xccdf/application/firefox.xml')" />
     </xsl:copy>
   </xsl:template>
   
