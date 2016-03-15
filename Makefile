@@ -36,7 +36,8 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 rpm
+all:
+	grep '23' /etc/system-release && exit 1
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist debian8-dist
 jenkins: clean all validate dist
 
