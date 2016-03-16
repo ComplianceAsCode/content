@@ -123,5 +123,6 @@ dist: tables guide content
 #	cp -r $(PROD)/src/dist/* /usr/share/scap-security-guide/$(PROD)
 
 clean:
-	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini
-	rm -rf $(DIST)/content $(DIST)/policytables $(DIST)/guide
+	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
+	rm -rf $(DIST)/content $(DIST)/guide
+	rm -rf $(BUILD)
