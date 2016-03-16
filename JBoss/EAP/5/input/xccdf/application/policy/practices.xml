@@ -1,0 +1,93 @@
+<Group id="practices">
+<title>Policy</title>
+<description>The rules in this group are used to manage JBoss servers in a secure manner. These rules are related to general best practices.</description>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1104"><!--Use a version control repository-->
+			<title>Use a version control repository</title>
+			<description>All configuration files (such a data sources, custom connectors, etc) and any scripts used for modifications and deployments should be stored in the version control repository. Typical repositories include applications such as SVN or Git.
+				Additionally, a hash-validated 'Gold' version of the JBoss installation package should also be stored in the version control system.</description>
+			<reference>Mallik, R. (2011, May). Jboss in the Trenches. </reference>
+			<rationale><xhtml:p>Configuration management is an essential part long-term success for any software application - especially for complex software or collaborative environments. Using a versioning system allows for tighter control and accountability of application server changes.</xhtml:p>
+				<xhtml:p>Maintaining a 'Gold' version of JBoss is useful for environments that may need to periodically or dynamically deploy JBoss instances. This can also be useful for static environments that simply desire to have a known baseline to deploy from.</xhtml:p> </rationale>
+			<fixtext><xhtml:p>Initiate a version control repository such as Git or SVN for JBoss maintenance and deployments. This will likely be a multi-stage process requiring planning and implementation.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:110401"/>
+			</check>
+		</Rule>
+						
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1125"><!--Automate JBoss Deployments-->
+			<title>Automate JBoss Deployments</title>
+			<description>Scripts or other software tools should be used to automatically configure and deploy JBoss applications in environments.</description>
+			<reference>Mallik, R. (2011, May). Jboss in the Trenches. </reference>
+			<rationale><xhtml:p>As much as possible new application deployments to JBoss should be scripted. This increases standardization in deployments and reduces the possibility of errors and misconfigurations. Smaller environments may see less benefit from implementing an automated process.</xhtml:p> </rationale>
+			<fixtext><xhtml:p>Utilize custom scripts and/or software to automate application deployments to JBoss. Popular applications in this field include Cargo, ANT, JBoss Tools, and Hudson. Software in this category is quickly evolving and adding new features. </xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:112501"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1127"><!--Application performance testing-->
+			<title>Application performance testing</title>
+			<description>Ensure routine performance testing is completed before applications are deployed to production. Establish and document performance profiles.</description>
+			<reference>Mallik, R. (2011, May). Jboss in the Trenches. </reference>
+			<rationale><xhtml:p>Without adequate performance testing, production applications may fail to perform to expectations - resulting in a denial of service.</xhtml:p> </rationale>
+			<fixtext><xhtml:p>Ensure routine performance testing is completed before applications are deployed to production. Establish and document performance profiles. Attempt to test against anticipated peak demands as well as load averages. Individual tests will vary, but commonly consist of testing message throughputs (various message types), application inputs, connections open/closed/expired, data transactions completed, method calls, objects persisted, etc.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:112701"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1128"><!--Monitor JBoss servers-->
+			<title>Monitor JBoss servers</title>
+			<description>JBoss Enterprise Application Platform servers in production environments should be monitored real-time. Information monitored and alarm thresholds will vary. Common monitoring tools include:
+				<xhtml:ul><xhtml:li>JBoss Operations Network (JON)</xhtml:li>
+					<xhtml:li>Foglight</xhtml:li>
+					<xhtml:li>HP Openview</xhtml:li>
+					<xhtml:li>Nagios</xhtml:li></xhtml:ul> </description>
+			<reference>Mallik, R. (2011, May). Jboss in the Trenches. </reference>
+			<rationale><xhtml:p>Production environments should be carefully monitored to ensure the any problems on the server are detected as quickly as possible. Identifying and isolating a problem when it is small may prevent downtime or other problems on the network.</xhtml:p></rationale>	
+			<fixtext><xhtml:p>Research and implement an appropriate monitoring solution for the production environment. Different environments will have different requirements owing to sensitivity to downtime, regulatory requirements, service agreements, and other factors. Be careful when implementing a monitoring solution to minimize performance impact on the servers where possible. Common monitoring tools include:</xhtml:p>
+				<xhtml:ul><xhtml:li>JBoss Operations Network (JON)</xhtml:li>
+					<xhtml:li>Foglight</xhtml:li>
+					<xhtml:li>HP Openview</xhtml:li>
+					<xhtml:li>Nagios</xhtml:li></xhtml:ul>
+				<xhtml:p>Common metrics include:</xhtml:p>
+				<xhtml:ul><xhtml:li>Active threads on the application server</xhtml:li>
+					<xhtml:li>Threads on the front-end http/ajp web connector</xhtml:li>
+					<xhtml:li>Database connection pools</xhtml:li>
+					<xhtml:li>JVM metrics such as memory usage and GCs</xhtml:li>
+					<xhtml:li>Typical host platform metrics such as available hard drive space, CPU usage, etc. </xhtml:li></xhtml:ul></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:112801"/>
+			</check>
+		</Rule>
+					
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2057"><!--Ensure all downloaded software is authentic-->
+			<title>Ensure all downloaded software is authentic</title>
+			<description>Software and packages should be downloaded from redhat.com, and hash validated.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Without validating downloaded files are authentic, malicious users may compromise software before it has even been installed. Attackers may redirect traffic to alternate download locations and attempt to trick administrators into downloading modified software.</xhtml:p></rationale>
+			<fixtext><xhtml:p>When downloading software, first ensure it is coming from the site you expect it to. For instance, when downloading JBoss Enterprise Application Platform from Red Hat, JBoss administrators should review the X.509 certificate presented by the remote server to ensure the authenticity of the site.</xhtml:p>
+				<xhtml:p>Next, JBoss administrators should hash validate files after completed downloads. Hash generation will vary depending on operating system. These hashes should be compared to one of the hashes available on the Red Hat website.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205701"/>
+			</check>
+		</Rule>	
+	
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4010"><!--Ensure JBoss is configured in accordance with Common Criteria configuration guides-->
+			<title>Ensure JBoss is configured in accordance with Common Criteria configuration guides</title>
+			<description>JBoss deployments in government and DoD organizations require JBoss be deployed in a Common Criteria certified configuration. The Common Criteria configuration is a list of technical configuration items, policy requirements, and other configurations required to certify a JBoss installation at the EAL4+ protection level. Red Hat maintains configuration guidance available online to assist administrators during the installation and configuration of JBoss (<xhtml:a href="http://docs.redhat.com/docs/en-US/index.html">http://docs.redhat.com/docs/en-US/index.html</xhtml:a>).</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>By deviating from a Common Criteria configuration, JBoss will no longer be considered certified against any protection level - this may have legislative or regulatory consequences that must be identified and risk assessed dependent on your environment.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Configure JBoss in its Common Criteria certified configuration. The configuration guide can be found <xhtml:a href="http://docs.redhat.com/docs/en-US/index.html">here</xhtml:a> on Red Hat's website.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:401001"/>
+			</check>
+		</Rule>		
+</Group>		
