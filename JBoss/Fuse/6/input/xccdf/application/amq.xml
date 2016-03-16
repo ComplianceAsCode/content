@@ -1,0 +1,136 @@
+<Group id="amq">
+<title>Apache ActiveMQ Configuration</title>
+<description>The rules in this group validate Apache ActiveMQ related items.</description>
+
+		<!-- ========================= -->
+		<!-- GENERATED ACTIVEMQ RULES -->
+		<!-- ========================= -->
+
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3001">
+			<title>Remove, rename, or comment out default user accounts from production servers.</title>
+			<description>Remove, rename, or comment out the default user accounts defined in .properties files.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default user accounts makes malicious exploitation more complex.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3002">
+			<title>Remove, rename, or comment out default roles from production servers.</title>
+			<description>Remove, rename, or comment out the default roles defined in .properties files.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default roles makes malicious exploitation more complex.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3003">
+			<title>Ensure default system Java Authentication and Authorization Service configuration is in use.</title>
+			<description>Using the default system JAAS configuration ensures user identification and authentication are performed by JBoss Fuse.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Using an administrator specified JAAS configuration enables a more rigorous security posture.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3004">
+			<title>Eliminate clear-text passwords from production servers.</title>
+			<description>Eliminate clear-text passwords in JBoss configuration files. All passwords should be encrypted and all password files should have restricted file permissions.</description>
+			<reference>Recommended Security Controls for Federal Information Systems and Organizations R3</reference>
+			<rationale>
+				<xhtml:p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3005">
+			<title>Only application and/or system administrators should be able to change security related configuration attributes.</title>
+			<description>Security attributes are typically associated with internal data structures and configuration (e.g., application deployment, logging, monitoring) within the application server and are used to enable the implementation of access control and flow control policies, reflect special
+				dissemination, handling or distribution instructions, or support other aspects of the organizational information security policy.
+			</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If unauthorized entities were able to change security attributes, the integrity and/or confidentiality of the server could be compromised.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3006">
+			<title>SSL should be enabled on the ActiveMQ Web Console.</title>
+			<description>The server must utilize cryptography to protect the confidentiality of remote access management sessions.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3007">
+			<title>All passwords should be encrypted when other means are not being utilized.</title>
+			<description>Stored passwords must be encrypted.</description>
+			<reference>Application Server Security Requirements Guide V1R1</reference>
+			<rationale>
+				<xhtml:p>Passwords need to be protected at all times and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read and easily compromised. </xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3008">
+			<title>Ensure ActiveMQ Web Console is using PKI.</title>
+			<description>PKI should be enabled for the Web Console.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>All applications requiring user authentication to access sensitive data must be PK-enabled in compliance with DoDI 8520.2 PKI &amp; PK Enabling and are required to credentials approved under the DoD PKI program.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3009">
+			<title>All PKI Certificates should be valid DoD Certificates.</title>
+			<description>All PKI Certificates in use should be valid at the time of use.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>By using invalid certificates the server may allow unauthorized users access to the system.</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+		<Rule id="xccdf_com.redhat.fuse6.scap_rule_gr_amq-3010">
+			<title>Only administrators should be able to modify configuration files.</title>
+			<description>Server should be protected with permission sets which allow only an application administrator to modify application resource configuration files.</description>
+			<reference>Application Security and Development Security Technical Implementation Guide V3R5</reference>
+			<rationale>
+				<xhtml:p>An access control flaw exists if users or processes can view or modify data to which they should not be permitted. This could result in situations ranging from information disclosure to system compromise and could potentially result in the compromise of other systems on the network.
+				</xhtml:p>
+			</rationale>
+				<xhtml:p></xhtml:p>
+			<fixtext>
+				<xhtml:p></xhtml:p>
+			</fixtext>
+		</Rule>
+
+		<!-- ========================= -->
+		<!-- END GENERATED ACTIVEMQ RULES -->
+		<!-- ========================= -->
+</Group>
