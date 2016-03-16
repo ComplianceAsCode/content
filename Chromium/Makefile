@@ -122,4 +122,5 @@ dist: tables guide content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
-	rm -rf $(DIST)/content
+	rm -rf $(DIST)/content $(DIST)/guide
+	rm -rf $(BUILD)
