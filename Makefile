@@ -37,7 +37,7 @@ DOCDIR=$(DATADIR)/doc
 # Define Makefile targets below
 
 all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 rpm
-dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist debian8-dist
+dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist
 jenkins: clean all validate dist
 
 fedora:
@@ -69,6 +69,9 @@ debian8-dist:
 
 rhel-osp7:
 	cd OpenStack/RHEL-OSP/7 && $(MAKE)
+
+rhel-osp7-dist:
+	cd OpenStack/RHEL-OSP/7 && $(MAKE) dist
 
 rhevm3:
 	cd RHEVM3 && $(MAKE)
@@ -170,6 +173,7 @@ zipfile: dist
 	cp LICENSE $(PKG)/
 	cp */dist/content/*-ds.xml $(PKG)/
 	cp */*/dist/content/*-ds.xml $(PKG)/
+	cp */*/*/dist/content/*-ds.xml $(PKG)/
 	mkdir $(PKG)/kickstart
 	cp RHEL/{6,7}/kickstart/*-ks.cfg $(PKG)/kickstart/
 	zip -r $(PKG).zip $(PKG)/
@@ -218,6 +222,7 @@ git-tag:
 	git add $(RPM_SPEC).in $(ROOT_DIR)/VERSION
 	git commit -m "Make new $(NEW_RELEASE) release"
 	git tag -a -m "Version $(NEW_RELEASE)" v$(NEW_RELEASE)
+
 clean:
 	rm -rf $(RPMBUILD)
 	cd RHEL/5 && $(MAKE) clean
@@ -248,6 +253,8 @@ install: dist
 	install -m 0644 RHEL/6/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 OpenStack/RHEL-OSP/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 OpenStack/RHEL-OSP/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 Chromium/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 Chromium/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 Firefox/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
@@ -260,5 +267,5 @@ install: dist
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
 
-.PHONY: rhel5 rhel6 rhel7 debian8 jre firefox webmin tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 jre firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
