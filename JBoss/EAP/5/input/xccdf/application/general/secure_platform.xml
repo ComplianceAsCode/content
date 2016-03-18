@@ -1,0 +1,795 @@
+<Group id="secure_platform">
+<title>Securing JBoss platform</title>
+<description>The rules in this group are used to secure the JBoss platform and its dependencies.</description>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2043"><!--Configure Java Security Manager to use an environment specific policy-->
+			<title>Configure Java Security Manager to use an environment specific policy</title>
+			<description>The Java Security Manager is a crucial piece of the Java security infrastructure. JBoss Enterprise Application Platform should be configured to load a Java security policy that has been vetted for use in the environment. This precludes the use of the simple default policy that ships with JBoss, but does not preclude the use of preconfigured policy files like the security policy designed for use in a Common Criteria environment (See JBoss Common Criteria Configuration Guide for details).</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>A weak, default, or incomplete Java Security Manager policy file can completely compromise the security of a Java installation by granting excessive permissions to applications running within the sandbox. These permissions can be leveraged (maliciously or not) to run code against the operating system.</xhtml:p></rationale>
+			
+			
+			<fixtext><xhtml:p>To load an environment specific security policy, simply append the following line to JBOSS_HOME/bin/run.conf or JBOSS_HOME/bin/run.conf.bat as appropriate (depending on the host operating system).</xhtml:p>
+				<xhtml:pre><xhtml:code>JAVA_OPTS="$JAVA_OPTS -Djava.security.manager -Djava.security.policy==[PATH TO POLICY FILE]"</xhtml:code></xhtml:pre>
+				<xhtml:p>NOTE: Using a prepackaged policy file is acceptable, as long as the policy file has been reviewed for compatibility and security within the current environment.</xhtml:p>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:204301"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2051"><!--Ensure proper permissions are configured for interactions with JBoss JMX Kernel MBean-->
+			<title>Ensure proper permissions are configured for interactions with JBoss JMX Kernel MBean</title>
+			<description>Java permissions for MBeans should be carefully restricted to enforce the least privilege principle. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale>Java permissions for MBeans should be carefully restricted to enforce the least privilege principle. A JMX MBean server might have access to sensitive information and might be able to perform sensitive operations. JMX provides necessary access control that identifies which clients can access that information and who can perform those operations through the use of the Java Security Manager (JSM).  An MBean has a management interface consisting of Named and typed attributes that can be read and written, Named and typed operations that can be invoked and Typed notifications that can be emitted by the MBean.</rationale>
+			
+				
+				<xhtml:li>java.home/lib/security/java.security</xhtml:li>
+				
+				<xhtml:li>JBOSS_HOME/bin/security_cc.policy</xhtml:li>
+				
+				<xhtml:p>Other environments will simply load the java.security properties file by default. Additional policy files can be specified either at runtime (through run.conf or run.conf.bat) or by chaining existing policy files (policy.url.x=file:/user/application/java.policy)</xhtml:p>
+				
+				<xhtml:p>Review all JSM permissions granted to MBeans. Grant statements should be limited to specific users and specific methods.</xhtml:p>
+				
+				<xhtml:p>For example, permission A in the example below is allowed while permission B is not:</xhtml:p>
+				<xhtml:pre><xhtml:code>//Permission A
+grant principal javax.security.auth.x500.X500Principal "CN=Administrator,OU=JBoss,O=RedHat,L=Raleigh,ST=NC,C=US"
+{
+	permission javax.management.MBeanPermission
+	"className#member[objectName]",
+	"invoke";
+}
+grant principal javax.management.remote.JMXPrincipal "guest"
+{
+	permission javax.management.MBeanPermission "*", "queryNames";
+	permission javax.management.remote.SubjectDelegationPermission;
+
+//Permission B
+grant {
+	permission javax.management.MBeanPermission "*","invoke";
+			<fixtext>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for MBeans. This should be done in cooperation with system administrators, application developers and/or application documentation.</fixtext>			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205101"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2052"><!--Ensure proper permissions are configured for deployed applications: java.io.FilePermission-->
+			<title>Ensure proper permissions are configured for deployed applications: java.io.FilePermission</title>
+			<description>Deployed applications must not be granted file permissions - except to those that are dedicated to the application only. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Granting unrestricted access to the host operating system creates a large attack vector for malicious users that have penetrated the JBoss server.</xhtml:p></rationale>
+			
+				<xhtml:ul><xhtml:li>java.home/lib/security/java.security</xhtml:li>
+					<xhtml:li>JBOSS_HOME/bin/security_cc.policy</xhtml:li></xhtml:ul>
+				
+				<xhtml:p>Other environments will simply load the java.security properties file by default. Additional policy files can be specified either at runtime (through run.conf or run.conf.bat) or by chaining existing policy files (policy.url.x=file:/user/application/java.policy).
+				</xhtml:p><xhtml:p>Review all permissions granted to user deployed applications. The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications.</xhtml:p> <xhtml:p>Grant statements granting file permissions are permitted only when the file permission targets are located within the user application's directory and dedicated for use by the deployed application.
+				</xhtml:p>
+				<xhtml:p>For example, permission A in the example below is allowed while permission B is not:</xhtml:p>
+				<xhtml:pre><xhtml:code>//Permission A
+grant codeBase "file:${JBoss.server.home.dir}/deploy/userApplication/" { 
+	permission java.io.FilePermission "${JBoss.server.home.dir}/deploy/userApplication/temp.txt", "read";
+};
+//Permission B
+	grant codeBase "file:${JBoss.server.home.dir}/deploy/userApplication/" { 
+	permission java.io.FilePermission "/etc/shadown", "read";
+			<fixtext>
+				<xhtml:p>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications. This should be done in cooperation with application developers or application documentation.</xhtml:p>
+				<xhtml:p>Application access granted to files by java.io.FilePermission must be located within the deployed application's directory path and be dedicated for use by the deployed application. Grant statements in conflict with this guidance should be modified or removed.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205201"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2053"><!--Ensure proper permissions are configured for deployed applications: java.net.NetPermission-->
+			<title>Ensure proper permissions are configured for deployed applications: java.net.NetPermission</title>
+			<description>Deployed applications must not be granted network permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle.</xhtml:p></rationale>
+			
+			
+					<xhtml:ul><xhtml:li>java.home/lib/security/java.security</xhtml:li>
+						<xhtml:li>JBOSS_HOME/bin/security_cc.policy</xhtml:li></xhtml:ul>
+					<xhtml:p>Other environments will simply load the java.security properties file by default. Additional policy files can be specified either at runtime (through run.conf or run.conf.bat) or by chaining existing policy files (policy.url.x=file:/user/application/java.policy).
+					</xhtml:p>
+					<xhtml:p>Review all permissions granted to user deployed applications. Grant statements granting network permissions are not allowed and will look similar to the following:</xhtml:p>
+					<xhtml:pre><xhtml:code>grant codeBase "file:${JBoss.server.home.dir}/deploy/userApplication/" { 
+	permission java.net.NetPermission [specific permissions];
+				<fixtext><xhtml:p>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications. This should be done in cooperation with application developers or application documentation.</xhtml:p>
+					<xhtml:p>Permissions granted to applications via java.net.NetPermission should be removed.</xhtml:p> </fixtext>
+				
+				<check system="http://scap.nist.gov/schema/ocil/2">
+					<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205301"/>
+				</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2054"><!--Ensure proper permissions are configured for deployed applications: java.lang.RuntimePermission-->
+			<title>Ensure proper permissions are configured for deployed applications: java.lang.RuntimePermission</title>
+			<description>Deployed applications must not be granted runtime permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Granting RuntimePermission to applications allows these applications to modify classloaders or modify the running security manager. Either of these actions can be used to elevate permissions and increase the number of potential damaging actions that can be taken.</xhtml:p></rationale>
+			
+					<xhtml:ul><xhtml:li>java.home/lib/security/java.security</xhtml:li>
+						<xhtml:li>JBOSS_HOME/bin/security_cc.policy</xhtml:li></xhtml:ul>
+					<xhtml:p>Other environments will simply load the java.security properties file by default. Additional policy files can be specified either at runtime (through run.conf or run.conf.bat) or by chaining existing policy files (policy.url.x=file:/user/application/java.policy)</xhtml:p>
+					<xhtml:p>Review all permissions granted to user deployed applications. Grant statements granting runtime permissions are not allowed and will look similar to the following:</xhtml:p>
+					<xhtml:pre><xhtml:code>grant codeBase "file:${JBoss.server.home.dir}/deploy/userApplication/" { 
+	permission java.lang.RuntimePermission [specific permissions];
+				<fixtext><xhtml:p>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications. This should be done in cooperation with application developers or application documentation.</xhtml:p>
+					<xhtml:p>Permissions granted to applications via java.lang.RuntimePermission should be removed.</xhtml:p> </fixtext>
+				
+				<check system="http://scap.nist.gov/schema/ocil/2">
+					<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205401"/>
+				</check>
+			</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2055"><!--Ensure proper permissions are configured for deployed applications: java.net.SocketPermission-->
+			<title>Ensure proper permissions are configured for deployed applications: java.net.SocketPermission</title>
+			<description>Deployed applications must not be granted any socket permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Most well-designed applications will not need to directly manipulate sockets for network access (access to datasources should be handled through datasources, which can be assigned SocketPermission.).</xhtml:p></rationale>
+			
+					<xhtml:ul><xhtml:li>java.home/lib/security/java.security</xhtml:li>
+						<xhtml:li>JBOSS_HOME/bin/security_cc.policy</xhtml:li></xhtml:ul>
+					<xhtml:p>Other environments will simply load the java.security properties file by default. Additional policy files can be specified either at runtime (through run.conf or run.conf.bat) or by chaining existing policy files (policy.url.x=file:/user/application/java.policy)
+					</xhtml:p><xhtml:p>Review all permissions granted to user deployed applications. Grant statements granting socket permissions are not allowed and will look similar to the following:
+					</xhtml:p>
+					<xhtml:pre><xhtml:code>grant codeBase "file:${JBoss.server.home.dir}/deploy/userApplication/" { 
+	permission java.net.SocketPermission [specific permissions];
+				<fixtext><xhtml:p>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications. This should be done in cooperation with application developers or application documentation.</xhtml:p>
+					<xhtml:p>Permissions granted to applications via java.net.SocketPermission should be removed.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205501"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2056"><!--Ensure proper permissions are configured for deployed applications: java.security.AllPermission-->
+			<title>Ensure proper permissions are configured for deployed applications: java.security.AllPermission</title>
+			<description>Deployed applications must not be granted all permissions. These permissions are enforced by the Java Security Manager and the policies it loads at startup. These permissions can be assigned or restricted in an application-specific, granular manner.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Using AllPermissions is essentially disabling the Java security sandbox and is inadvisable in nearly every scenario.</xhtml:p></rationale>
+			
+					<xhtml:ul><xhtml:li>java.home/lib/security/java.security</xhtml:li>
+						<xhtml:li>JBOSS_HOME/bin/security_cc.policy</xhtml:li></xhtml:ul>
+					<xhtml:p>Additional policy files can be specified either at runtime (through run.conf or run.conf.bat) or by chaining existing policy files (policy.url.x=file:/user/application/java.policy)
+					</xhtml:p><xhtml:p>Review all permissions granted to user deployed applications. Grant statements granting AllPermission are not allowed and will look similar to the following:
+					</xhtml:p>
+					<xhtml:pre><xhtml:code>grant codeBase "file:${JBoss.server.home.dir}/deploy/userApplication/" { 
+	permission java.security.AllPermission;
+			<fixtext><xhtml:p>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications. This should be done in cooperation with application developers or application documentation.</xhtml:p>
+				<xhtml:p>Permissions granted to applications via java.security.AllPermission should be removed.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205601"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2028"><!--Ensure default system JAAS configuration is in use for JBoss Seam-->
+			<title>Ensure default system Java Authentication and Authorization Service configuration is in use for JBoss Seam</title>
+			<description>For JBoss Seam, the simplified Java Authentication and Authorization Service configuration provided by the Seam Security API must not be used. The default system JAAS configuration should be used instead. Using the default system JAAS configuration ensures user identification and authentication are performed by the JBoss Enterprise Application Platform. JBoss Seam provides additional interfaces for implementing other security functions such as authorization (for example, entity bean permissions). This functionality is controlled by JBoss Seam, and is therefore outside the scope of the evaluated product.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Using an administrator specified JAAS configuration enables a more rigorous security posture.</xhtml:p></rationale>
+			
+			
+				<xhtml:p>Check for components.xml. These files are typically located within the WEB-INF director of a deployed WAR. However, components.xml can also be located within the META-INF directory of a JAR or any JAR directory containing classes with a @Name annotation.</xhtml:p><xhtml:p>Within components.xml, the security identity should specify a JAAS security domain to override the default Seam configuration. See the example below:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;security:identity jaas-config-name="[security domain]"/&gt;</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>Within components.xml, the security identity should specify a JAAS security domain to override the default Seam configuration. See the example below:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;security:identity jaas-config-name="[security domain]"/&gt;</xhtml:code></xhtml:pre>
+				<xhtml:p>Components.xml is typically located within the WEB-INF director of a deployed WAR. However, components.xml can also be located within the META-INF directory of a JAR or any JAR directory containing classes with a @Name annotation.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:202801"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2060"><!--Validate a password-protected JBoss keystore is configured in a loaded policy file-->
+			<title>Validate keystore and keystorePasswordURL properties are defined and loaded by Java Security Manager</title>
+			<description><xhtml:p>Ensure keystore and keystorePasswordURL properties exist and are loaded by Java Security Manager.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>A keystore should be setup for production environments. Defining a keystore is a basic step towards implementing security and allowing for the use of public/private key cryptography for JBoss. The keystore should be password protected to protect the integrity of the keystore and prevent unauthorized modification.</xhtml:p></rationale>
+				<xhtml:pre><xhtml:code>keystore "file:[PATH TO KEYSTORE]";
+keystorePasswordURL "file:[PATH TO PASSWORD FILE]";</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>Add the following lines to any loaded policy file:</xhtml:p>
+				<xhtml:pre><xhtml:code>keystore "file:[DESIRED PATH TO KEYSTORE]";
+keystorePasswordURL "file:[DESIRED PATH TO PASSWORD FILE]";</xhtml:code></xhtml:pre>
+				<xhtml:p>A typical configuration may look like the following:</xhtml:p>
+				<xhtml:pre><xhtml:code>keystore "file:${JBoss.server.home.dir}/cc.keystore";
+keystorePasswordURL "file:${JBoss.server.home.dir}/cc.password";</xhtml:code></xhtml:pre>
+				<xhtml:p>NOTE: The file names and paths may be different. Those shown are the defaults. If the keystore or password file are in different locations, the policy should reflect that.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:206001"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2059"><!--Validate a keystore file for JBoss exists and is accessible to JBoss-->
+			<title>Validate a keystore file for JBoss exists and is accessible to JBoss</title>
+			<description>Validate a keystore for JBoss exists and is accessible to JBoss.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>A keystore should be setup for production environments. Defining a keystore is a basic step towards implementing security and allowing for the use of public/private key cryptography for JBoss. The keystore should be password protected to protect the integrity of the keystore and prevent unauthorized modification.</xhtml:p></rationale>		
+				<xhtml:pre><xhtml:code>keystore "file:[PATH TO KEYSTORE]";</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>To create a JBoss keystore, run the following command (you will be prompted to create a password):</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -importcert -alias jboss -keystore [PATH TO KEYSTORE AS DEFINED IN POLICY FILE] -file [PATH TO TRUSTED CERTIFICATE TO IMPORT] -noprompt -trustcacerts</xhtml:code></xhtml:pre>
+				<xhtml:p>Setting permissions will vary by operating system, but typically commands like cacls, xacls, chmod, setfacl, etc can all be used to restrict permissions on the keystore. Only the JBoss process owner and JBoss administrators should have READ/WRITE access to the keystore.</xhtml:p>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205901"/>
+			</check>
+		</Rule>
+								
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2160"><!--Validate a password file for keystore exists and is accessible to JBoss-->
+			<title>Validate a password file for the Java keystore exists and is accessible to JBoss</title>
+			<description><xhtml:p>Validate a password file for the keystore defined in the properties file exists and is accessible to JBoss.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>A password-protected keystore should be setup for production environments. The password for the keystore should be stored in a password file to facilitate automated startup of JBoss Enterprise Application Platform.</xhtml:p></rationale>
+			<xhtml:pre><xhtml:code>keystorePasswordURL "file:[PATH TO KEYSTORE PASSWORD FILE]";</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>To add a password file for a JBoss keystore, simply add the plain-text password to a file and then specify that file in a loaded Java Security Manager policy.</xhtml:p>
+			<xhtml:p>First, ensure the password file location is identified in the policy file being loaded by the Java Security Manager:</xhtml:p>
+			<xhtml:pre><xhtml:code>keystorePasswordURL "file:[DESIRED PATH TO KEYSTORE PASSWORD FILE]";</xhtml:code></xhtml:pre>
+			<xhtml:p>Next, add the plain-text password to file whose location you just defined.</xhtml:p>
+			<xhtml:p>Finally, restrict permissions on the password file so that only the JBoss process owner account and JBoss administrators have READ/WRITE access. Setting permissions will vary by operating system, but typically commands like cacls, xacls, chmod, setfacl, etc can all be used to restrict permissions on the keystore. Only the JBoss process owner and JBoss administrators should have READ/WRITE access to the password file.</xhtml:p>
+			</fixtext>
+		
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:216001"/>
+			</check>
+		</Rule>
+	
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2158"><!--Validate JBoss keystore is password protected-->
+			<title>Validate JBoss keystore is password protected</title>
+			<description>Validate the keystore loaded by the Java Security Manager is password protected. Password protecting the Java keystore used by JBoss issued to protect the integrity of the keystore.  It does not prevent listing the content, but it does prevent modification of the keystore.  Private keys within the keystore are still protected by their own passwords to prevent disclosure.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Failure to protect the integrity of the keystore used by JBoss can result in authorized modification of the keystore and subsequent certificate trust compromises for JBoss.</xhtml:p></rationale>
+				<xhtml:pre><xhtml:code>keystore "file:${JBoss.server.home.dir}/cc.keystore";</xhtml:code></xhtml:pre>
+				<xhtml:p>Next, access the contents of the keystore using the following command:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -list -keystore [PATH TO KEYSTORE]</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>Determine which keystore is being used by JBoss. In a default JBoss deployment the following policy file will be utilized by Java Security Manager: java.home/lib/security/java.security (Common Criteria installations are typically configured to use the JBOSS_HOME/bin/security_cc.policy file). Additional policy files can be specified either at runtime (through run.conf or run.conf.bat) or by chaining existing policy files (policy.url.x=file:/user/application/java.policy). Search for a property similar to the following:</xhtml:p>
+				<xhtml:pre><xhtml:code>keystore "file:[PATH TO KEYSTORE]";</xhtml:code></xhtml:pre>
+				<xhtml:p>Add a password to the keystore:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -storepasswd -keystore [PATH TO KEYSTORE]</xhtml:code></xhtml:pre></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:215801"/>
+			</check>
+		</Rule>
+	
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2061"><!--Ensure jboss alias is trusted within the JBoss keystore-->
+			<title>Ensure jboss alias is trusted within the JBoss keystore</title>
+			<description>The jboss alias must be a trustedCertEntry with the JBoss Java keystore. This allows code signed by with the default JBoss certificate to run when using a restrictive policy file.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>A keystore should be setup for production environments with JBoss as a trustedCertEntry for proper functioning of the JBoss Enterprise Application Platform.</xhtml:p></rationale>
+			
+				<xhtml:pre><xhtml:code>keystore "file:${JBoss.server.home.dir}/cc.keystore";</xhtml:code></xhtml:pre>
+				<xhtml:p>Next, list the contents of the keystore using the following command:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -list -keystore [PATH TO KEYSTORE]</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>To ensure the Jboss alias is a trustedCertEntry, the certificate must be imported to the keystore with the proper command:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -importcert -alias jboss -keystore [PATH TO KEYSTORE] -file JBOSS_HOME/bin/JBossPublicKey.RSA -noprompt -trustcacerts</xhtml:code></xhtml:pre>
+				<xhtml:p>You can check the result with the following keytool command:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -list -keystore [PATH TO KEYSTORE]</xhtml:code></xhtml:pre>
+				<xhtml:p>You should get similar results to those below:</xhtml:p>
+				<xhtml:pre><xhtml:code>Your keystore contains 1 entry
+jboss, May 17, 2012, trustedCertEntry,
+Certificate fingerprint (MD5): 93:F2:F1:8B:EF:8A:E0:E3:D0:E7:69:BC:69:96:29:C1</xhtml:code></xhtml:pre>
+				
+				<xhtml:p>Alternatively, the Jboss public key can be added to the Java keystore:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -importcert -alias jboss -keystore JAVA_HOME/jre/lib/security/cacerts -storepass changeit -file JBOSS_HOME/bin/JBossPublicKey.RSA -noprompt -trustcacerts</xhtml:code></xhtml:pre>
+				<xhtml:p>If the system Java keystore is used, the password should be changed with the following command. This may affect the functioning of other applications using the system Java keystore.</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -storepasswd -keystore JAVA_HOME/jre/lib/security/cacerts</xhtml:code></xhtml:pre> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:206101"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4005"><!--Ensure applications deployed by JBoss present valid DoD certificates where applicable-->
+			<title>Ensure applications deployed by JBoss present valid DoD certificates where applicable</title>
+			<description><xhtml:p>JBoss applications implementing encryption should present a valid DoD issued X.509 certificate for purposes of identifying the server.</xhtml:p></description>
+			<rationale><xhtml:p>Establishing trust between clients and servers is an important part of information security.  Presenting a valid X.509 certificate leverages the mutually-trusted DoD Public Key Infrastructure.  Failure to present a valid DoD certificate undermines user confidence, presents an inconsistent user experience for security, and creates potential for abuse of trust by malicious entities.</xhtml:p></rationale>
+				<xhtml:p>
+					<xhtml:ul>
+						<xhtml:li>The certificate must match the domain name of the webserver being accessed. This can be determined by comparing the DNS name used in the browser to the DNS name on the presented certificate.</xhtml:li>
+						<xhtml:li>The certificate must not be expired. This can be determined by reviewing the expiration dates on the server's certificate.</xhtml:li>
+						<xhtml:li>The certificate must be issued by a DoD approved Certificate Authority. This can be determined by examining the issuing hierarchy of the presented certificate.  Valid Certificate Authorities can be found here: <xhtml:a href="https://crl.gds.disa.mil/">https://crl.gds.disa.mil/</xhtml:a></xhtml:li>
+						<xhtml:li>The certificate must not be revoked. This can be determined by enabling revocation checking on the web browser or manually reviewing the revocation list identified by the certificate.</xhtml:li>
+						<xhtml:li>The certificate public key length must be at least 1024 bits.</xhtml:li>
+					</xhtml:ul>
+				</xhtml:p>
+			<fixtext><xhtml:p>The JBoss administrator must work with the local security manager and certificate registrar to successfully request a certificate from a DoD Certificate Authority.</xhtml:p>
+				<xhtml:p>Once a valid X.509 certificate has been obtained from a Certificate Authority within the DoD PKI, the certificate and associated private key can be installed in the JBoss keystore. The following example imports a PCKS12 public/private key pair into a Java Key Store. 
+					<xhtml:pre><xhtml:code>keytool -importkeystore -v -srckeystore KEYSTORE.p12 -srcstoretype PKCS12 -keystore NEW_KEYSTORE.jks</xhtml:code></xhtml:pre>
+				</xhtml:p>
+				<xhtml:p>The final step is to enable TLS on whichever Tomcat connector is used by the deployed application.</xhtml:p>
+				<xhtml:pre><xhtml:code>
+&lt;Connector protocol=&quot;HTTP/1.1&quot; SSLEnabled=&quot;true&quot;
+	port=&quot;8443&quot; address=&quot;${jboss.bind.address}&quot;
+	scheme=&quot;https&quot; secure=&quot;true&quot; clientAuth=&quot;false&quot;
+	keystoreFile=&quot;${jboss.server.home.dir}/conf/NEW_KEYSTORE.jks&quot;
+	keystorePass=&quot;KEYSTORE_PASSWORD&quot; sslProtocol = &quot;TLS&quot; /&gt;
+				</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400501"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4006"><!--Ensure JBoss trust store contains DoD approved Certificate Authorities-->
+			<title>Ensure X.509 keystore utilized by JBoss for certificate trusts contains DoD approved Certificate Authorities</title>
+			<description><xhtml:p>JBoss applications implementing encryption should utilize the DoD Public Key Infrastructure.</xhtml:p></description>
+			<rationale><xhtml:p>Establishing trust between clients and servers is an important part of information security.  Validating client X.509 certificates against the DoD Public Key Infrastructure leverages the enterprise trust system.  Failure to validate client certificates undermines the enterprise trust infrastructure and makes the JBoss server vulnerable to trust abuse exploits.</xhtml:p></rationale>
+				<xhtml:pre><xhtml:code>keystore "file:${JBoss.server.home.dir}/jboss.keystore";</xhtml:code></xhtml:pre>
+				<xhtml:p>List the contents of the keystore using the following command:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -list -keystore [PATH TO KEYSTORE]</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>Download and install the DoD CA certificates. Currently, the CA certificates can be retrieved from https://crl.gds.disa.mil/.</xhtml:p>
+			<xhtml:p>The keys can be added to the keystore with a command similar to the following:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -importcert -keystore [PATH TO KEYSTORE] -storepass [KEYSTORE PASSWORD] -file [PATH TO CERTIFICATE] -noprompt -trustcacerts</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400601"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4007"><!--Ensure deployed applications requiring authentication utilizes DoD PKI Class 3 or Class 4 certificate and hardware security token or NSA-certified product (cert-based module)-->
+			<title>Ensure deployed applications requiring authentication utilizes DoD PKI Class 3 or Class 4 certificate and hardware security token or NSA-certified product</title>
+			<description><xhtml:p>JBoss applications implementing authentication should utilize the DoD Public Key Infrastructure. The DoD Public Key Infrastructure is designed to use hardware tokens such as the Common Access Card in conjunction with issued X.509 certificates.  These tokens are typically protected with a PIN that unlocks access to the private certificate stored on the token.</xhtml:p></description>
+			<reference>JBoss Enterprise Application Platform Security Guide, 2011</reference>
+			<rationale><xhtml:p>Leveraging the DoD Public Key Infrastructure increases the security of an application because the DoD PKI raises the bar for exploitation of user identities. Applications that require authentication and do not utilize PKI must then rely on a less secure form of authentication, such as username and password.  Additionally, current DoD guidance requires the use of DoD PKI over username and password.</xhtml:p></rationale>
+				<xhtml:p>First, determine if authentication is required by the deployed application. Review the deployed application's jboss-web.xml (JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/) file to ensure that a security domain has been referenced. For example:</xhtml:p>
+				<xhtml:p><xhtml:pre><xhtml:code>&lt;security-domain&gt;java:/jaas/JBossTestRealm&lt;/security-domain&gt;</xhtml:code></xhtml:pre></xhtml:p>
+				<xhtml:p>Next, review the deployed application's web.xml (JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/) file to ensure that resources within the web application have been identified to be secured. The &lt;auth-method&gt; element MUST contain CLIENT-CERT in order to implement certificate-based authentication. For example:</xhtml:p>
+				<xhtml:p><xhtml:pre><xhtml:code>&lt;security-constraint&gt;
+	&lt;web-resource-collection&gt;
+		&lt;web-resource-name&gt;TestResource&lt;/web-resource-name&gt;
+		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+	&lt;/web-resource-collection&gt;
+	&lt;auth-constraint&gt;
+		&lt;role-name&gt;JBossTestRole&lt;/role-name&gt;
+	&lt;/auth-constraint&gt;
+&lt;/security-constraint&gt;
+	
+&lt;login-config&gt;
+	&lt;auth-method&gt;CLIENT-CERT&lt;/auth-method&gt;
+	&lt;realm-name&gt;Test realm&lt;/realm-name&gt;
+&lt;/login-config&gt;
+
+&lt;security-role&gt;
+	&lt;role-name&gt;JBossTestRole&lt;/role-name&gt;
+&lt;/security-role&gt;</xhtml:code></xhtml:pre></xhtml:p>
+					<xhtml:p>Next, ensure that an &lt;application-policy&gt; element is defined that matches the &lt;security-domain&gt; referenced by the jboss-web.xml file. These &lt;application-policy&gt; can be defined
+						in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+					<xhtml:p><xhtml:ul>
+						<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+						<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+						<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+						<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>Check the &lt;application-policy&gt; element to ensure it has modules defined for authentication. This &lt;login-module&gt; MUST contain the following attributes:</xhtml:p><xhtml:p><xhtml:ul><xhtml:li>code="org.jboss.security.auth.spi.BaseCertLoginModule"</xhtml:li><xhtml:li>flag="required"</xhtml:li></xhtml:ul></xhtml:p>
+					<xhtml:p>Example of a satisfactory element:</xhtml:p>
+						<xhtml:pre><xhtml:code>&lt;application-policy name="JBossTestRealm"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;testUsers.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;testRoles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre>
+				<xhtml:p>Additional modules can be included to shape the exact functionality desired.  For example, &lt;module&gt;s such as SubjectCNMapping can be included to perform attribute mapping.</xhtml:p>
+				<xhtml:p>Finally, the client certificate's Distinguished Name field must be mapped to a certificate alias stored in the a keystore. The keystore will be defined in the JaasSecurityDomain MBean. For example:</xhtml:p>
+<xhtml:pre><xhtml:code>&lt;mbean code=&quot;org.jboss.security.plugins.JaasSecurityDomain&quot; name=&quot;jboss.ch8:service=SecurityDomain&quot;&gt;
+	&lt;constructor&gt;
+		&lt;arg type=&quot;java.lang.String&quot; value=&quot;JBossTestRealm&quot;/&gt;
+	&lt;/constructor&gt;
+	&lt;attribute name=&quot;KeyStoreURL&quot;&gt;resource:localhost.keystore&lt;/attribute&gt;
+	&lt;attribute name=&quot;KeyStorePass&quot;&gt;cleartext-password-that-should-be-masked&lt;/attribute&gt;
+			<fixtext><xhtml:p>First, setup an &lt;application-policy&gt; that enforces certificate-based authentication.  This can be accomplished in the following files:</xhtml:p>
+				<xhtml:p><xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>The &lt;application-policy&gt; should resemble the example below:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;application-policy name="JBossTestRealm"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;testUsers.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;testRoles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre>
+				<xhtml:p>Next, add the &lt;application-policy&gt; to the deployment descriptors and setup the &lt;security-constraint&gt;.</xhtml:p>
+				
+				<xhtml:p>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/jboss-web.xml</xhtml:p>
+				<xhtml:p><xhtml:pre><xhtml:code>&lt;security-domain&gt;java:/jaas/JBossTestRealm&lt;/security-domain&gt;</xhtml:code></xhtml:pre></xhtml:p>
+				<xhtml:p>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/web.xml</xhtml:p>
+				<xhtml:p><xhtml:pre><xhtml:code>&lt;security-constraint&gt;
+	&lt;web-resource-collection&gt;
+		&lt;web-resource-name&gt;TestResource&lt;/web-resource-name&gt;
+		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+	&lt;/web-resource-collection&gt;
+	
+	&lt;auth-constraint&gt;
+		&lt;role-name&gt;JBossTestRole&lt;/role-name&gt;
+	&lt;/auth-constraint&gt;
+&lt;/security-constraint&gt;
+					
+&lt;login-config&gt;
+	&lt;auth-method&gt;CLIENT-CERT&lt;/auth-method&gt;
+	&lt;realm-name&gt;Test realm&lt;/realm-name&gt;
+&lt;/login-config&gt;
+					
+&lt;security-role&gt;
+	&lt;role-name&gt;JBossTestRole&lt;/role-name&gt;
+&lt;/security-role&gt;</xhtml:code></xhtml:pre></xhtml:p>
+				<xhtml:p>Define a keystore to be used via the JaasSecurityDomain MBean:</xhtml:p>
+				<xhtml:p>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/jboss-service.xml:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;mbean code=&quot;org.jboss.security.plugins.JaasSecurityDomain&quot; name=&quot;jboss.ch8:service=SecurityDomain&quot;&gt;
+	&lt;constructor&gt;
+		&lt;arg type=&quot;java.lang.String&quot; value=&quot;JBossTestRealm&quot;/&gt;
+	&lt;/constructor&gt;
+	
+	&lt;attribute name=&quot;KeyStoreURL&quot;&gt;resource:test.keystore&lt;/attribute&gt;
+	&lt;attribute name=&quot;KeyStorePass&quot;&gt;cleartext-password-that-should-be-masked&lt;/attribute&gt;
+&lt;/mbean&gt;</xhtml:code></xhtml:pre>				
+				<xhtml:p>Finally, import the client certificates into the keystore using the keytool command. For example:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -importcert -alias "DN ON THE CERTIFICATE" -keystore JBOSS_HOME/server/[PROFILE]/conf/test.keystore -file [PATH TO CERTIFICATE]</xhtml:code></xhtml:pre></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400701"/>
+			</check>				
+		</Rule>
+		
+		<!--Ensure revocation checking is configured for two-way X.509 certificate exchanges-->
+		
+		<!--<Rule id="xccdf_com.redhat.eap5.scap_rule_4009">
+			<title>Enable Federal Information and Processing Systems 140-2 (FIPS) compliant cryptographic modules for JBoss Tomcat connectors</title>
+			<description>While JBoss itself has no need to load FIPS compliant modules, the underlying technologies such as Java and the Apache Tomcat webcontainer do. Utilizing only FIPS compliant modules decreases compatibility with applications that are not FIPS enabled.</description>
+			<rationale><xhtml:p>Enabling FIPS compliant algorithms ensures that the underlying technologies that JBoss works through are using cryptographic modules that have been vetted by NIST for security, stability, and strength. Failure to utilize FIPS certified modules may cause the underlying technologies used by JBoss to utilize older, less secure algorithms. Failure to enable only FIPS compliant modules may also have regulatory consequences, as FIPS 140-2 requires the use of FIPS compliant modules by all federal agencies.</xhtml:p> </rationale>				
+			<fixtext></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400801"/>
+			</check>
+		</Rule>-->
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4008"><!--Enable Federal Information and Processing Systems 140-2 (FIPS) compliant cryptographic modules for use by JBoss Java environment-->
+			<title>Enable Federal Information and Processing Systems 140-2 (FIPS) compliant cryptographic modules for use by JBoss Java environment</title>
+			<description>While JBoss itself has no need to load FIPS compliant modules, the underlying technologies such as Java and the Apache Tomcat webcontainer do. Utilizing only FIPS compliant modules decreases compatibility with applications that are not FIPS enabled.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011 </reference>
+			<rationale><xhtml:p>Enabling FIPS compliant algorithms ensures that the underlying technologies that JBoss works through are using cryptographic modules that have been vetted by NIST for security, stability, and strength. Failure to utilize FIPS certified modules may cause the underlying technologies used by JBoss to utilize older, less secure algorithms. Failure to enable only FIPS compliant modules may also have regulatory consequences, as FIPS 140-2 requires the use of FIPS compliant modules by all federal agencies.</xhtml:p> </rationale>				
+				<xhtml:p>For IBM JRE/JDK 6.x:</xhtml:p>
+				<xhtml:p>Check for the following provider in the JAVA_HOME/jre/lib/security/java.security file:</xhtml:p>
+				<xhtml:p><xhtml:ul><xhtml:li>security.provider.1=com.ibm.crypto.fips.provider.IBMJCEFIPS</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>NOTE: The FIPS compliant provider MUST be at the top of the list as #1.</xhtml:p>
+				<xhtml:p>Ensure the following line exists in the System.Defaults properties file:</xhtml:p><xhtml:p><xhtml:ul><xhtml:li>com.ibm.jsse2.usefipsprovider=true</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>Finally, ensure the following two properties are defined in JAVA_HOME/jre/lib/security/java.security:</xhtml:p><xhtml:p><xhtml:ul><xhtml:li>ssl.SocketFactory.provider=com.ibm.jsse2.SSLSocketFactoryImpl</xhtml:li><xhtml:li>ssl.ServerSocketFactory.provider=com.ibm.jsse2.SSLServerSocketFactoryImpl</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>For Sun JRE/JDK 6.x:</xhtml:p>
+				<xhtml:p>Check for the following providers in the JAVA_HOME/jre/lib/security/java.security file:</xhtml:p>
+				<xhtml:p><xhtml:ul><xhtml:li>security.provider.1=com.sun.net.ssl.internal.ssl.Provider SunPKCS11-NSS</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>NOTE: The FIPS compliant provider MUST be at the top of the list as #1</xhtml:p>
+				<xhtml:p>Next, review the application source code to ensure that the proper constructors are utilized for FIPS compliant algorithms. Review the constructor used to initialize SunJSSE and ensure that the FIPS compliant mode has been enabled.</xhtml:p>
+			</xhtml:li>
+				<xhtml:li>Lastly, perform a packet capture of the TLS handshake to ensure that only FIPS 140-2 algorithms are selected by the server (ServerHello message).</xhtml:li>
+			</xhtml:ol>
+			<fixtext><xhtml:p>As this check is not specific to JBoss, validation steps will vary dependent on the Java vendor in use.</xhtml:p>
+				<xhtml:p>For IBM JRE/JDK 6.x:</xhtml:p>
+				<xhtml:p>Add the following provider to the JAVA_HOME/jre/lib/security/java.security file:</xhtml:p>
+				<xhtml:p><xhtml:ul><xhtml:li>security.provider.1=com.ibm.crypto.fips.provider.IBMJCEFIPS</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>NOTE: There will be a list of several providers already in place, numbered 1 to X.  The FIPS compliant providers MUST go at the top of the list as #1 and #2.  The other providers must be re-numbered.</xhtml:p>
+				<xhtml:p>Ensure the following line exists in the System.Defaults properties file:</xhtml:p><xhtml:p><xhtml:ul><xhtml:li>com.ibm.jsse2.usefipsprovider=true</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>Finally, ensure the following two properties are defined in JAVA_HOME/jre/lib/security/java.security:</xhtml:p><xhtml:p><xhtml:ul><xhtml:li>ssl.SocketFactory.provider=com.ibm.jsse2.SSLSocketFactoryImpl</xhtml:li><xhtml:li>ssl.ServerSocketFactory.provider=com.ibm.jsse2.SSLServerSocketFactoryImpl</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>For Sun JRE/JDK 6.x:</xhtml:p>
+				<xhtml:p>Add the following provider to the JAVA_HOME/jre/lib/security/java.security file:</xhtml:p>
+				<xhtml:p><xhtml:ul><xhtml:li>security.provider.1=com.sun.net.ssl.internal.ssl.Provider SunPKCS11-NSS</xhtml:li></xhtml:ul></xhtml:p>
+				<xhtml:p>NOTE: There will be a list of several providers already in place, numbered 1 to X.  The FIPS compliant provider MUST go at the top of the list as #1.  The other providers must be re-numbered.</xhtml:p>
+				<xhtml:p>Now the deployed applications must be written to take advantage of the FIPS enabled providers. The Sun SunJSSE provider must be initialized at run-time with the FIPS boolean value as true.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400801"/>
+			</check>
+		</Rule>	
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1136"><!--Eliminate clear-text passwords: data sources-->
+			<title>Eliminate clear-text passwords: data sources</title>
+			<description>Eliminate clear-text passwords in data source configuration files. The class org.jboss.resource.security.SecureIdentityLoginModule can be used to both encrypt database passwords and to provide a decrypted version of the password when the data source configuration is required by the server. The SecureIdentityLoginModule uses a hard-coded password to encrypt/decrypt the data source password.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011 </reference>
+			<rationale><xhtml:p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</xhtml:p></rationale>		
+			<fixtext><xhtml:p>Following the extensive instructions located within Chapter 17, "Encrypting Data Source Passwords" of the JBoss Enterprise Application Platform 5 Security Guide, 2011. While too lengthy to contain here, the summarized steps include:</xhtml:p>
+				<xhtml:ul><xhtml:li>Encrypt the data source password.</xhtml:li>
+					<xhtml:li>Create an application authentication policy with the encrypted password.</xhtml:li>
+					<xhtml:li>Configure the data source to use the application authentication policy.</xhtml:li></xhtml:ul> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:113601"/>
+			</check>
+		</Rule>		
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1163"><!--Eliminate clear-text passwords: Tomcat Connectors-->
+			<title>Eliminate clear-text passwords: Tomcat Connectors</title>
+			<description>Eliminate clear-text passwords in: Tomcat Connectors.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011 </reference>
+			<rationale><xhtml:p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</xhtml:p> </rationale>
+			<fixtext><xhtml:p>Following the extensive instructions located within Chapter 18, "Encrypting the Keystore Password in a Tomcat Connector" of the JBoss Enterprise Application Platform 5 Security Guide, 2011. While too lengthy to contain here, the summarized steps include:</xhtml:p>
+					<xhtml:ul><xhtml:li>Configure JaasSecurityDomain MBean</xhtml:li>
+						<xhtml:li>Generate encrypted password</xhtml:li>
+						<xhtml:li>Update the Tomcat service MBean</xhtml:li> </xhtml:ul></fixtext>
+				
+				<check system="http://scap.nist.gov/schema/ocil/2">
+					<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:116301"/>
+				</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1165"><!--Eliminate clear-text passwords: XML configuration files-->
+			<title>Eliminate clear-text passwords: XML configuration files</title>
+			<description>Using password masking, eliminate clear-text passwords in XML configuration files.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>Clear-text passwords are an unnecessary security vulnerability. While risk of exposure can be mitigated through configured permissions and file ownership, these methods do not completely remediate the risk.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Follow the extensive instructions located within Chapter 16, "Masking Passwords in XML Configuration" of the JBoss Enterprise Application Platform 5 Security Guide, 2011. These instructions are too lengthy to summarize here.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:116501"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4002"><!--Change default password: JBoss Messaging MessageSucker-->
+			<title>Change default password: JBoss Messaging MessageSucker</title>
+			<description><xhtml:p>JBoss Messaging ships with a default MessageSucker password located within the Messaging ServerPeer configuration. This password is used by JBoss to create connections and pass messages between nodes.</xhtml:p></description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011 </reference>
+			<rationale><xhtml:p>The SuckerPassword ships with a default clear-text password that can be used by attackers to pass messages to default installations of Jboss. The exact content and ramifications of these messages will depend on the listening applications (application logic, input validations, etc.). Failure to change this password can allow an attacker to create connections and pass messages to nodes.</xhtml:p></rationale>
+				
+				JBOSS_HOME/server[PROFILE]/deploy/messaging/messaging-jboss-beans.xml
+				
+			<fixtext><xhtml:p>Open the Jboss Messaging configuration file for the Messaging ServerPeer located here:</xhtml:p> 
+				
+				JBOSS_HOME/server[PROFILE]/deploy/messaging/messaging-jboss-beans.xml
+				
+				<xhtml:p>Locate the element &lt;property name="suckerPassword" &gt; and change the contents to a new password generated in accordance with your organization's password security requirements, restricting the use of predefined XML entities such as &lt;'&gt;@" or escaping them if you do. For example:</xhtml:p>
+				
+				<xhtml:p>&lt;property name="suckerPassword" &gt;Lmf3SdntiDFF6(D5&lt;/property&gt;</xhtml:p>
+
+				<xhtml:p>The encrypted version of this password can be added to JBOSS_HOME/server[PROFILE]/deploy/messaging/messaging-service.xml by following the directions located in Follow the extensive instructions located within Chapter 16, "Masking Passwords in XML Configuration" of the JBoss Enterprise Application Platform 5 Security Guide, 2011.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400201"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4003"><!--Change default password: Java cacerts keystore-->
+			<title>Change default password: Java cacerts keystore</title>
+			<description><xhtml:p>The Java cacerts keystore is installed by default with most versions of Java. It contains X.509 public certificates for a set of default commercial Certificate Authorities.</xhtml:p></description>
+			<rationale><xhtml:p>To prevent compromise of the server's X.509 trust chains, the well-known default password on the cacerts keystore should be changed. Failure to change this password could lead to the malicious modification of trusted X.509 CA's.</xhtml:p><xhtml:p>This would allow attackers to create connections as trusted entities, sign malicious could as a trusted entity, or create any other number of X.509 certificate abuses.</xhtml:p></rationale>
+			<xhtml:pre><xhtml:code>keytool -list -keystore JAVA_HOME/lib/security/cacerts</xhtml:code></xhtml:pre>
+			<xhtml:p>If the cacerts file cannot be found in your JAVA_HOME/lib/security/, try searching the system for the file named cacerts located in the Java install path.</xhtml:p>
+			<xhtml:p>You should be prompted for a password (non-blank). Attempt to authenticate using the default password 'changeit'</xhtml:p>
+			<xhtml:p>If you fail to authenticate, you will receive a warning message (and the contents of the keystore will still be displayed):</xhtml:p>
+			<xhtml:p>***************** WARNING WARNING WARNING *****************</xhtml:p>
+			<xhtml:p>* The integrity of the information stored in your keystore *</xhtml:p>
+			<xhtml:p>* has NOT been verified! In order to verify its integrity, *</xhtml:p>
+			<xhtml:p>* you must provide your keystore password.         *</xhtml:p>
+			<xhtml:p>***************** WARNING WARNING WARNING *****************</xhtml:p>
+			<xhtml:p>Using the default password 'changeit' should fail to authenticate and thus produce the warning. If the default password successfully authenticates, this check fails.</xhtml:p>
+			<fixtext><xhtml:p>Add a password to the default Java cacerts keystore:</xhtml:p>
+				<xhtml:pre><xhtml:code>keytool -storepasswd -keystore [PATH TO KEYSTORE]</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400301"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2019"><!--Ensure Security Audit Appender is enabled-->
+			<title>Ensure Security Audit Appender is enabled</title>
+			<description>The Security Audit Appender must be enabled. The Security Audit Appender and the Security Audit Provider category together set up the audit infrastructure that allows deployed applications to easily audit authentication and authorization events. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Enabling the Security Audit Appender is a necessary component of comprehensive auditing in a secure production environment.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure the Security Audit Appender is defined within JBOSS_HOME/server/[PROFILE]/conf/jboss-log4j.xml. By default, the Security Audit Appender exists and just needs to be uncommented.</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;!-- Security AUDIT Appender --&gt;
+&lt;appender name="AUDIT" class="org.jboss.logging.appender.DailyRollingFileAppender"&gt;
+	&lt;errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/&gt;
+	&lt;param name="File" value="${JBoss.server.log.dir}/audit.log"/&gt;
+	&lt;param name="Append" value="true"/&gt;
+	&lt;param name="DatePattern" value="'.'yyyy-MM-dd"/&gt;
+	&lt;layout class="org.apache.log4j.PatternLayout"&gt;
+		&lt;param name="ConversionPattern" value="%d %-5p [%c] (%t:%x) %m%n"/&gt;
+	&lt;/layout&gt;
+&lt;/appender&gt;</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:201901"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2020"><!--Ensure Security Audit Provider is enabled-->
+			<title>Ensure Security Audit Provider is enabled</title>
+			<description>The Security Audit Provider category must be enabled for production environments. The Security Audit Appender and the Security Audit Provider category together set up the audit infrastructure that allows deployed applications to easily audit authentication and authorization events. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Enabling the Security Audit Provider category is a necessary component of comprehensive auditing in a secure production environment.</xhtml:p>
+				</rationale>
+			<fixtext><xhtml:p>Ensure the Security Audit Provider category is defined within JBOSS_HOME/server/[PROFILE]/conf/jboss-log4j.xml. By default, the Security Audit Provider category exists and just needs to be uncommented.</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;!-- Category specifically for Security Audit Provider --&gt;
+&lt;category name="org.jboss.security.audit.providers.LogAuditProvider" additivity="false"&gt;
+	&lt;priority value="TRACE"/&gt;
+	&lt;appender-ref ref="AUDIT"/&gt;
+&lt;/category&gt;</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:202001"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2021"><!--Ensure Configure SecurityInterceptor logging level is set correctly-->
+			<title>Ensure Configure SecurityInterceptor logging level is set correctly</title>
+			<description>Production environments of JBoss require enhanced auditing on the SecurityInterceptor class. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Enabling TRACE priority logging on the SecurityInterceptor class is a necessary component of comprehensive auditing in a secure production environment.</xhtml:p>
+				</rationale>	
+			<fixtext><xhtml:p>Ensure a category is defined for SecurityInterceptor class with a priority of TRACE within JBOSS_HOME/server/[PROFILE]/conf/jboss-log4j.xml.</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;category name="org.jboss.ejb.plugins.SecurityInterceptor"&gt;
+	&lt;priority value="TRACE" /&gt;
+	&lt;appender-ref ref="AUDIT" /&gt;
+&lt;/category&gt;</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:202101"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2022"><!--Ensure logging is enabled for Microcontainer bootstrap operations-->
+			<title>Ensure logging is enabled for Microcontainer bootstrap operations</title>
+			<description>Production environments of JBoss require auditing for Microcontainer bootstrap operations. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Logging Microcontainer bootstrap operations is a necessary component of comprehensive auditing in a secure production environment.</xhtml:p>
+				</rationale>
+			<fixtext><xhtml:p>Set the priority and appender-ref levels for the Microcontainer bootstrap by adding the &lt;category&gt; block as specified to JBOSS_HOME/server/[PROFILE]/conf/jboss-log4j.xml.</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;category name="org.jboss.bootstrap.microcontainer"&gt;
+	&lt;priority value="INFO"/&gt;
+	&lt;appender-ref ref="AUDIT"/&gt;
+&lt;/category&gt;</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:202201"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2023"><!--Ensure logging is enabled for web-based requests if required by deployed applications-->
+			<title>Ensure logging is enabled for web-based requests if required by deployed applications</title>
+			<description>In the event that application requirements dictate additional logging for web-based requests, the AccessLogValve should be enabled.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>If application owners determine that additional logging of web-based requests is desired, it should be enabled.</xhtml:p>
+				
+			</rationale>
+			
+			
+				<xhtml:p>If logging of web-based requests has been required for deployed applications the AccessLogValve should be enabled. To check the status of the &lt;Valve&gt;, ensure the following element is defined within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml.</xhtml:p>
+			
+			<fixtext>
+				<xhtml:p>Ensure the following &lt;Valve&gt; exists within: JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml. By default, this &lt;Valve&gt; simply needs to be uncommented.</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;Valve className="org.apache.catalina.valves.AccessLogValve" prefix="localhost_access_log." suffix=".log" pattern="common" directory="${JBoss.server.home.dir}/log" resolveHosts="false" /&gt;</xhtml:code></xhtml:pre>
+				
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:202301"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2024"><!--Ensure all required information is displayed in &lt;layout&gt;-->
+			<title>Ensure all required information is displayed in &lt;layout&gt;</title>
+			<description>The Security Audit Appender must log all identified information. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Logging full event information to the Security Audit Appender is a necessary component of comprehensive auditing in a secure production environment.</xhtml:p>
+				</rationale>
+			<fixtext>
+				<xhtml:p>Enable server startup and shutdown events by making the following change to JBOSS_HOME/server/[PROFILE]/conf/jboss-log4j.xml. Update the ConversionPattern parameter in the Security Audit Appender to show thread information by replacing the default ConversionPattern with the pattern below:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;!--The full pattern: Date MS Priority [Category] (Thread:NDC) Message --&gt;
+&lt;layout class="org.apache.log4j.PatternLayout"&gt;
+	&lt;param name="ConversionPattern" value="%d %-5r %-5p [%c] (%t:%x) %m%n"/&gt;
+&lt;/layout&gt;</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:202401"/>
+			</check>
+		</Rule>
+				
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1103"><!--Production applications should not log output to the JBoss console-->
+			<title>Production applications should not log output to the JBoss console</title>
+			<description>Turn off console logging in production. Console logging in a production environment is a needless drain on system resources. </description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011 </reference>			
+			<rationale><xhtml:p>Logging to console is a potentially resource intensive activity that should be disabled in production environments. Additionally, disabling console logging removes a potential source of information leakage.</xhtml:p> </rationale>			
+			<fixtext><xhtml:p>In order to prevent JBoss from logging to console, open the JBOSS_HOME/server/[PROFILE]/conf/jboss-log4j.xml file. Next, remove or comment out the &lt;appender-ref&gt; element with a ref attribute value of 'CONSOLE'. This &lt;appender-ref&gt; element will be a child of the &lt;root&gt; element, typically located near the end of the document.</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;root&gt;
+&lt;!--Set the root logger priority via a system property. Note this is parsed by log4j,
+so the full JBoss system property format is not supported; e.g.
+setting a default via ${jboss.server.log.threshold:WARN} will not work.--&gt;
+	&lt;priority value="${jboss.server.log.threshold}"/&gt;
+		&lt;!-- appender-ref ref="CONSOLE"/ --&gt;
+	&lt;appender-ref ref="ASYNC"/&gt;
+&lt;/root&gt;</xhtml:code></xhtml:pre></fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:110301"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4004"><!--Ensure JBoss process owner is executing with least privilege-->
+			<title>Ensure JBoss process owner is executing with least privilege</title>
+			<description>Operating environment permissions assigned to the JBoss process owner should be in compliance with the principle of least privilege.</description>
+			<rationale><xhtml:p>In order to reduce the potential impact of exploitation against the JBoss application server (and the rest of the operating environment), the JBoss process owner should execute with as few permissions as possible in the environment (if the account is not local to the operating system or is distributed across multiple operating systems). Failure to limit permissions can dramatically increase the severity of exploits against the JBoss server, such as the execution of arbitrary code.</xhtml:p></rationale>
+				<xhtml:p>Next, work with the JBoss administrator to identify the permissions the JBoss process owner executes with. This procedure will vary based on the host operating system. On Red Hat or Linux systems, check the group membership for the account. On Windows systems, review the User Rights Assignments within the Local Security Policy console (secpol.msc).</xhtml:p>
+				<xhtml:p>This check fails if the JBoss process owner is not executing with least privileges. The following list identifies common scenario failures:</xhtml:p>
+				<xhtml:p>
+					<xhtml:ul>
+						<xhtml:li>The JBoss process owner is a privileged account such as root or administrator.</xhtml:li>
+						<xhtml:li>The JBoss process owner is a member of a privileged group, such wheel, root, administrators, power users, domain admins, backup operators, etc.</xhtml:li>
+						<xhtml:li>The JBoss process owner is used by multiple applications via use of username and password or group membership.</xhtml:li>
+						<xhtml:li>The JBoss process owner account has unnecessary network access to other operating systems or other network nodes, typically through the use of a directory based account with no logon restrictions.</xhtml:li>
+					</xhtml:ul>
+				</xhtml:p>
+			<fixtext><xhtml:p>Steps for implementing this configuration will vary dependent upon operating system. On Red Hat or Linux systems, use /etc/group and /etc/passwd to assign the JBoss process owner a unique local account and group (and limit its group membership). Windows systems can create local accounts through the Computer Management console (compmgmt.msc) and User Rights Assignments managed through the Local Security Policy console (secpol.msc)..</xhtml:p>
+				<xhtml:p></xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:400401"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1099"><!--Deny the JBoss process owner console access-->
+			<title>Deny the JBoss process owner console access</title>
+			<description>The JBoss Application Server process owner should not have interactive console login access.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>In order to limit access in the event of an exploitation of the Jboss or one of its deployed applications, the account owning the Jboss process should be limited in its ability to interact with the supporting operating system where possible. Thus, the JBoss process owner account should not have interactive console access. </xhtml:p></rationale>
+				<xhtml:p>Red Hat Enterprise Linux: Interview JBoss administrators or review running processes with ps to identify the JBoss process owner account. Next, review the /etc/passwd file to ensure that the JBoss process owner account is not assigned a login shell (the shell field should read /sbin/nologin).</xhtml:p>
+			<fixtext><xhtml:p>Steps for implementing this configuration will vary, dependent upon operating system:</xhtml:p>
+				<xhtml:p>Red Hat Enterprise Linux: To prevent users from gaining interactive access to the system console, simply ensure that they are assigned no shell interpreter via the /etc/passwd file. For instance, a properly configured passwd entry for the JBoss account owner may resemble this:</xhtml:p>
+				<xhtml:pre><xhtml:code>jboss:x:494:494:JBossAS:/var/lib/jbossas:/sbin/nologin</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:109901"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1162"><!--Set JBoss file ownership-->
+			<title>Set JBoss file ownership</title>
+			<description>All JBoss Enterprise Application Platform files within JBOSS_HOME should be owned by the JBoss process owner account.</description>
+			<rationale><xhtml:p>To prevent unauthorized modification or disclosure of JBoss configuration settings, all files within JBOSS_HOME should be owned by the JBoss process owner account.</xhtml:p> </rationale>
+				<xhtml:p>Use the ls command to ensure the JBoss process owner owns all JBoss configuration files (JBOSS_HOME and subdirectories); JBoss administrators should be the group owners.</xhtml:p>
+			<fixtext><xhtml:p>Steps for implementing this configuration will vary, dependent upon operating system. </xhtml:p>
+				<xhtml:p>On Red Hat and Linux, use chown to ensure the JBoss process owner owns all JBoss configuration files (JBOSS_HOME and subdirectories); JBoss administrators may be the group owners.</xhtml:p>
+				<xhtml:p>Windows environments can use the explorer GUI or cacls/xcacls to ensure the JBoss process owner owns all JBoss configuration files (JBOSS_HOME and subdirectories).</xhtml:p>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:116201"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1098"><!--Set JBoss file permissions-->
+			<title>Set JBoss file permissions</title>
+			<description>All JBoss Enterprise Application Platform files within JBOSS_HOME should be readable by the JBoss Application Server process owner and JBoss administrators only.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>To prevent unauthorized modification or disclosure of JBoss configuration settings, access to all JBoss related files within JBOSS_HOME should be restricted to the JBoss process owner and JBoss administrators.</xhtml:p></rationale>
+				<xhtml:p>Red Hat Enterprise Linux: Use the ls command to check basic file permissions. The getfacl command can be useful as well.</xhtml:p>
+			<fixtext><xhtml:p>Steps for implementing this configuration will vary, dependent upon operating system. </xhtml:p>
+				<xhtml:p>Red Hat Enterprise Linux: Use chmod to restrict permissions on files to at least 660 for all files in JBOSS_HOME and subdirectories.</xhtml:p>
+				<xhtml:p>Windows environments can use the explorer GUI or cacls/xcacls to restrict permissions for all files in JBOSS_HOME and subdirectories.</xhtml:p>
+				<xhtml:p>File permissions should be restricted to READ/WRITE for JBoss process owner and JBoss administrators. Other accounts that may require READ access include version control accounts or process owners for backup software.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:109801"/>
+			</check>
+		</Rule>
+			
+</Group>

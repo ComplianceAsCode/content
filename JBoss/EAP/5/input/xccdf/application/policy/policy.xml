@@ -1,0 +1,224 @@
+<Group id="policy">
+<title>Policy</title>
+<description>The rules in this group are used to manage JBoss servers in a secure manner. These rules are policy related.</description>
+
+<Rule id="xccdf_com.redhat.eap5.scap_rule_2062"><!--Ensure adequate physical protections are in place-->
+			<title>Ensure adequate physical protections are in place</title>
+			<description>The hardware and software executing JBoss Enterprise Application Platform, as well as the software critical to security policy enforcement must be protected from unauthorized modification including unauthorized modifications by potentially hostile outsiders. Reasonable physical security measures to ensure that unauthorized personnel do not have physical access to the hardware running the JBoss Enterprise Application Platform software must be implemented.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Many software security precautions can easily be bypassed by personnel with physical access to hardware storing data or executing an application.</xhtml:p></rationale>		
+			<fixtext><xhtml:p>Implement reasonable physical access controls to protect the hardware running and storing information for JBoss Enterprise Application Platform. Typically, these sorts of protections will include locked doors, locked server cabinets, security alarms, cameras, door guards, etc. What is considered 'reasonable' will scale with the importance of the JBoss server and the sensitivity of the information it processes.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:206201"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2063"><!--Assign a JBoss administrator-->
+			<title>Assign a JBoss administrator</title>
+			<description>There must be one or more competent individuals who are assigned to manage JBoss Enterprise Application Platform, its environment and the security of the information it contains.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Incompetent, careless, or negligent JBoss administrators can completely invalidate a secure JBoss configuration and create numberless problems for JBoss.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure a minimum level of competency / expertise has been established for JBoss administrators before granting them access to production systems.</xhtml:p>
+				<xhtml:p>Ensure documentation and procedures exist (and are followed) for routine administrative tasks.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:206301"/>
+			</check>
+		</Rule>			
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1129"><!--Document incident response procedures-->
+			<title>Document incident response procedures</title>
+			<description>Ensure well developed procedures exist for incident handling. Incidents include any events that are anomalous to the environment, which typically include:
+				<xhtml:ul><xhtml:li>Intrusions (possibly including attempts)</xhtml:li>
+					<xhtml:li>Application failures</xhtml:li>
+					<xhtml:li>Unexpected platform activity such as restarts or configuration changes</xhtml:li>
+					<xhtml:li>Unusual network traffic to or from the server</xhtml:li></xhtml:ul></description>
+			<reference>Mallik, R. (2011, May). Jboss in the Trenches. </reference>
+			<rationale><xhtml:p>Planning for incidents prior to real-life scenarios increases incident response time and mitigates damages. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Draft formal incident response policies and procedures. Utilize national and international standards such as ISO/IEC TR 18044 or NIST Special Publication 800-61.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:112901"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1133"><!--Perform periodic incident response exercises-->
+			<title>Perform periodic incident response exercises</title>
+			<description>Production environments should exercise incident response procedures at least annually. Environments requiring higher assurances of security should test incident response procedures more often, possibly quarterly or even monthly. Incident response procedures should cover all anomalous events.</description>
+			<rationale><xhtml:p>Planning for incidents and practicing procedures to be followed prior to real-life scenario improves response time and mitigates damages/losses that occur with incidents.</xhtml:p> </rationale>		
+			<fixtext><xhtml:p>Draft a schedule to ensure that documented procedures are exercised at least annually. More frequent exercises may be needed for some environments.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:113301"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1132"><!--Document disaster recovery procedures-->
+			<title>Document disaster recovery procedures</title>
+			<description>Robust disaster recovery documentation and procedures should exist. This documentation should include provisions for the JBoss platform, deployed applications, required source code, and supporting applications (such as authentication stores or database servers).</description>
+			<rationale><xhtml:p>Planning for disasters and extended outages prior to a real-life scenario helps mitigate losses associated with identified disasters. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses.</xhtml:p> </rationale>	
+			<fixtext><xhtml:p>Draft formal disaster response policies and procedures. Utilize national and international standards such as ISO 17799 or NIST Special Publication 800-34.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:113201"/>
+			</check>
+		</Rule>
+						
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1134"><!--Perform periodic disaster recovery exercises-->
+			<title>Perform periodic disaster recovery exercises</title>
+			<description>Production environments should exercise disaster recovery procedures that include provisions for the JBoss platform, deployed applications, and any required source code at least annually. Environments requiring higher assurances of disaster recovery ability should test procedures more often, possibly quarterly or even monthly.</description>
+			<rationale><xhtml:p>Planning for disasters and extended outages prior to a real-life scenario helps mitigate losses associated with identified disasters. Failure to adequately prepare, plan, and exercise for these scenarios can result in extensive losses. </xhtml:p></rationale>
+			<fixtext><xhtml:p>Draft a schedule to ensure that documented procedures are exercised at least annually. More frequent exercises may be needed for some environments.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:113401"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1135"><!--Identify and document application data flows-->
+			<title>Identify and document application data flows</title>
+			<description>It is recommended to identify and document application data flows. This will allow insight into what paths sensitive information takes through the application environment and what data source connections need to be encrypted.</description>
+			<rationale><xhtml:p>Failure to document an application's data flows reduces security, increases the chance for architectural and configuration errors, and can impede performance. Many applications use network services that are not immediately apparent. </xhtml:p></rationale>
+				<xhtml:ul><xhtml:li>Relevant protocol information (for instance, TCP traffic should record port information)</xhtml:li>
+					<xhtml:li>Traffic destination</xhtml:li>
+					<xhtml:li>Purpose</xhtml:li>
+					<xhtml:li>Sensitivity of traffic</xhtml:li>
+					<xhtml:li>Applicable security information, such as encryption types, specific vulnerabilities in transport or application protocols, etc.</xhtml:li></xhtml:ul>
+			<fixtext><xhtml:p>Work with JBoss administrators and application developers to document data flows for deployed applications. Information documented should include:</xhtml:p>
+				<xhtml:ul><xhtml:li>Relevant protocol information (for instance, TCP traffic should record port information)</xhtml:li>
+					<xhtml:li>Traffic destination</xhtml:li>
+					<xhtml:li>Purpose</xhtml:li>
+					<xhtml:li>Sensitivity of traffic</xhtml:li>
+					<xhtml:li>Applicable security information, such as encryption types, specific vulnerabilities in transport or application protocols, etc.</xhtml:li></xhtml:ul>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:113501"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1159"><!--Java permissions for deployed applications should be documented and reviewed prior to deployment-->
+			<title>Java permissions for deployed applications should be documented and reviewed prior to deployment</title>
+			<description>Java permissions for applications should be documented and carefully reviewed prior to deployment. Developers and administrators should strive to balance application permissions and application functionality.</description>
+			<rationale><xhtml:p>Java permissions for deployed applications should be carefully restricted to enforce the least privilege principle. Careful documentation, along with a thorough review will help prevent needlessly insecure permission assignments for applications. An overabundance of Java permissions can allow applications to circumvent one of Java's strongest security features - the Java Security Manager sandbox.</xhtml:p></rationale>
+				<xhtml:ul><xhtml:li>java.home/lib/security/java.security</xhtml:li></xhtml:ul>
+			<fixtext><xhtml:p>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) for applications. This should be done in cooperation with application developers or application documentation.</xhtml:p>
+				<xhtml:p>Further, documentation should exist for all applications that have been granted specific permissions.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:115901"/>
+			</check>
+		</Rule>
+						
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1146"><!--Regular backups should be performed-->
+			<title>Regular backups should be performed</title>
+			<description>JBoss applications and configuration files should be backed up at least weekly, possibly more if needed by the environment.</description>
+			<rationale><xhtml:p>Failure to regularly backup JBoss configuration files and deployed applications can result in extensive downtime or information losses in the event of a disaster or other system outage.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure backups are conducted regularly (at least once a week) in accordance with the organization backup-policy. All JBoss configuration files and deployed applications should be backed up.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:114601"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1153"><!--Auditing policy should exist-->
+			<title>Auditing policy should exist</title>
+			<description>In order to effectively audit and review system logs, an audit policy should be written to identify data and trends of interest.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Without a comprehensive audit policy and review procedures, organizations risk missing critical events or event trends within their environment. These missed events may indicate system anomalies ranging from malicious attacks, system instabilities, system misuse, etc.</xhtml:p></rationale>
+			<fixtext><xhtml:p>JBoss system administrators should work security team members to draft a comprehensive audit policy. Along with this auditing policy, a set of written procedures should be created that details what events or trends must be monitored, reactions, etc.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:115301"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1164"><!--Access control policy and procedures-->
+			<title>Access control policy and procedures</title>
+			<description>JBoss administrators must have access to guidance regarding account creation, permissions assignments, role assignments, etc.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>A consistent, cohesive access control policy is impossible to attain without a well-documented access control policy and related procedures. Failure to do so typically results in over-assignment of access permissions for users and applications, stale access for users and applications, and other access control misconfigurations that reduce the effectiveness of the security policy.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Draft an access control policy to address purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance. There should be an associated set of procedures with implementation details for specific tasks such as assigning user roles, creating user accounts, or assigning Java Security Manager permissions.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:116401"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3003"><!--Define an appropriate minimum and maximum password length requirement-->
+			<title>Define an appropriate minimum and maximum password length requirement</title>
+			<description><xhtml:p>Organizations should create an authenticator management policy that defines minimum and maximum password sizes for user accounts accessing JBoss and its deployed applications.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guide to Enterprise Password Management (Draft) (800-118). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>In brute force scenarios, passwords of extended lengths increase password security and the length of time required to decrypt the password.</xhtml:p><xhtml:p>However, there are risks associated with requiring passwords of great lengths, as users may take steps to circumvent policy; such as using repetitive passwords, writing password reminders, or writing down their passwords.</xhtml:p></rationale>
+			<fixtext><xhtml:p>JBoss system administrators should work security team members to draft a comprehensive password policy. Minimum and maximum password lengths should be defined. Further, accounts may be categorized in order to define varying length requirements for particular types of accounts.</xhtml:p>
+				<xhtml:p>
+					For example:
+				</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>User accounts shall require password lengths of between 8 and 24 characters</xhtml:li>
+					<xhtml:li>Administrator shall require password lengths of 24 characters</xhtml:li>
+					<xhtml:li>Web service accounts shall require password lengths of 24 characters</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>
+					Password storage software and password generation software are recommended for organizations to assist in managing a secure password policy.
+					
+					NIST Special Publication 800-118 (Draft) and NIST Special Publication 800-53 both contain extensive guidance on creating a password policy document.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300301"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3004"><!--Define an appropriate minimum password complexity requirement-->
+			<title>Define an appropriate minimum password complexity requirement</title>
+			<description><xhtml:p>Organizations should create an authenticator management policy that defines a minimum level of complexity for user accounts accessing JBoss and its deployed applications. These requirements should also restrict passwords from containing dictionary words and reusing previous passwords.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guide to Enterprise Password Management (Draft) (800-118). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Complex passwords increase password security and the length of time required to decrypt the password. Additionally, complex passwords are less likely to be found in password dictionaries.</xhtml:p><xhtml:p>However, there are risks associated with requiring overly complex passwords, as users may take steps to circumvent policy; such as using repetitive passwords, writing password reminders, or writing down their passwords.</xhtml:p></rationale>
+			<fixtext><xhtml:p>JBoss system administrators should work security team members to draft a comprehensive password policy. Password complexity requirements should be defined. The policy should not allow passwords to be reused or contain dictionary words. Further, accounts may be categorized in order to define varying complexity requirements for particular types of accounts.</xhtml:p>
+				<xhtml:p>
+					For example:
+				</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>User accounts shall require passwords containing at least 1 lowercase alphanumeric character, 1 uppercase alphanumeric character, and 1 number</xhtml:li>
+					<xhtml:li>Administrator accounts shall require passwords containing at least 2 lowercase alphanumeric characters, 2 uppercase alphanumeric characters, 2 numbers, and 2 special characters. Special characters include: !@#$%^&amp;*()</xhtml:li>
+					<xhtml:li>Web service accounts shall require passwords containing at least 3 lowercase alphanumeric characters, 3 uppercase alphanumeric characters, 3 numbers, and 3 special characters. Special characters include: !@#$%^&amp;*()</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>
+					Password storage software and password generation software are recommended for organizations to assist in managing a secure password policy.
+					
+					NIST Special Publication 800-118 (Draft) and NIST Special Publication 800-53 both contain extensive guidance on creating a password policy document.</xhtml:p></fixtext>			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300401"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3005"><!--Define an appropriate minimum password expiration interval-->			
+			<title>Define an appropriate minimum password expiration interval</title>
+			<description><xhtml:p>Organizations should create an authenticator management policy that defines a maximum password age for user accounts accessing JBoss and its deployed applications.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Guide to Enterprise Password Management (Draft) (800-118). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>In combination with password length and complexity, regularly changing passwords can defeat many attacks. If a password or password hash is intercepted by a malicious party, changing the password can remove access or render invalid a cracking attempt on the hash.</xhtml:p><xhtml:p>
+				However, there are risks associated with frequently changing passwords. Users may take steps to circumvent policy such as using repetitive passwords or using password derivatives. Additionally, changing passwords for system or application accounts introduces an element of configuration risk. Poorly coordinated or documented changes can result in system outages or create other problems.</xhtml:p></rationale>
+			<fixtext><xhtml:p>JBoss system administrators should work security team members to draft a comprehensive password policy. Password expiration requirements should be defined. Further, accounts may be categorized in order to define varying length requirements for particular types of accounts.</xhtml:p>
+				<xhtml:p>
+					For example:
+				</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>Passwords for user accounts must expire every 90 days</xhtml:li>
+					<xhtml:li>Passwords for administrator accounts must expire every 30 days</xhtml:li>
+					<xhtml:li>Passwords for web service accounts must expire every 180 days</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>
+					Password storage software and password generation software are recommended for organizations to assist in managing a secure password policy.
+					
+					NIST Special Publication 800-118 (Draft) and NIST Special Publication 800-53 both contain extensive guidance on creating a password policy document.</xhtml:p></fixtext>			
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300501"/>
+			</check>
+		</Rule>
+			
+</Group>
