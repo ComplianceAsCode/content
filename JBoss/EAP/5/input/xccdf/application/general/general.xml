@@ -1,0 +1,599 @@
+<Group id="general_configuration">
+<title>General Configuration</title>
+<description>The rules in this group validation general configuration items.</description>
+		
+<Rule id="xccdf_com.redhat.eap5.scap_rule_2001"><!--JBoss Enterprise Application Platform should be the correct version-->
+			<title>JBoss Enterprise Application Platform should be a vendor supported version</title>
+			<description>Evaluated JBoss installation must be a vendor supported version of JBoss Enterprise Application Platform 5. Red Hat typically offers full and production support for the first 7 years following a release. Extended support options can be negotiated with the vendor directly through a separate subscription. Organizations using JBoss EAP must use a vendor supported version with an active support contract.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>	
+			<rationale>
+				<xhtml:p>Failure to utilize a supported version of JBoss in a production environment can lead to outages, unresolvable problems, no access to security or functional updates, etc.</xhtml:p>
+			</rationale>
+			
+				<xhtml:p>To determine the version of JBoss EAP installed, perform the following actions: <xhtml:ul>
+					<xhtml:li>Execute run.bat --version or run.sh --version located within JBOSS_HOME/bin</xhtml:li>
+				</xhtml:ul></xhtml:p>
+				<xhtml:p>The output of the command above will display a variety of information; including the version and build information for JBoss.</xhtml:p>
+				<xhtml:p>Next, review support documentation and interview JBoss administrators. Work with JBoss administrators to access the Red Hat Network customer portal in order to review and validate active subscriptions (<xhtml:a href="https://access.redhat.com/home">https://access.redhat.com/home</xhtml:a>). Additionally, ensure the version of JBoss has not reached end-of-life. Organizations using JBoss EAP must use a vendor supported version with an active support contract.</xhtml:p>
+			
+			<fixtext>
+				<xhtml:p>Other environments should install a vendor supported version of Red Hat JBoss Enterprise Application Platform and maintain an active subscription. Contact Red Hat directly to subscribe to the JBoss software channel (<xhtml:a href="http://www.redhat.com">http://www.redhat.com</xhtml:a>).</xhtml:p>
+				<xhtml:p>Ensure downloaded software is checked against vendor supplied hashes to ensure the software has not been modified in transit.  Tools such as sha1sum or md5sum (Linux) or File Checksum Integrity Verifier (FCIV) for Windows can be used to generate hash checksums for downloaded files.</xhtml:p>
+			</fixtext>
+			<!-- REMOVED, REWRITE TO OVAL AT A LATER TIME
+				<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+					<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:200101"/>
+				</check>-->
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:200001"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2002"><!--Ensure Java Runtime Environment in use is the correct version-->
+			<title>Ensure Java Runtime Environment in use is a supported version</title>
+			<description>Evaluated JBoss installation must use a vendor supported Java virtual machine - i.e., one that has not reached end-of-life. Migration strategies should be developed when end-of-life is impending.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale>Java installations should be a vendor supported version. If the Java virtual machine in use by JBoss is not supported by the vendor, this may result in outages, unresolvable problems, no access to security or functional updates, etc.</rationale>
+			
+				<xhtml:p>To identify the JRE used by JBoss, perform the following actions:<xhtml:ul>
+					<xhtml:li>Execute run.bat --version or run.sh --version located within JBOSS_HOME/bin</xhtml:li>
+				</xhtml:ul></xhtml:p>
+				<xhtml:p>The output of the command above will display a variety of information; including the vendor and version information for the JRE in use by JBoss. Search the vendor's website and support documentation to ensure the vendor actively supports the version of Java virtual machine in use. If the software will reach end-of-life within the next year, ensure the organization is developing a migration plan.</xhtml:p>
+				<xhtml:p>Java Runtime Environments commonly used with JBoss include:
+					<xhtml:ul>
+						<xhtml:li>Sun JRE 1.6.x</xhtml:li>
+						<xhtml:li>IBM JRE 1.6.x</xhtml:li>
+						<xhtml:li>OpenJDK JRE 1.6.x</xhtml:li>
+					</xhtml:ul></xhtml:p>
+			
+			<fixtext>
+				<xhtml:p>Organizations should install a vendor supported Java Runtime Environment.</xhtml:p>
+				<xhtml:p>Ensure downloaded software is checked against vendor supplied hashes to ensure the software has not been modified in transit.  Tools such as sha1sum or md5sum (Linux) or File Checksum Integrity Verifier (FCIV) for Windows can be used to generate hash checksums for downloaded files.</xhtml:p>
+				<xhtml:p>Finally, organizations must develop migration plans for Java Runtime Environments that reach end-of-life within the next year.</xhtml:p>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:200201"/>
+			</check>
+		</Rule>
+					
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2005"><!--Ensure all configurations are made to the appropriate server profile-->
+			<title>Ensure all configurations are made to the appropriate server profile</title>
+			<description>Production environments should utilize the production server profile. Development and test environments should choose the profile that best fits their needs.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>The JBoss server profiles are preconfigured with various deployed applications.  Using a more restrictive profile ensures that less applications are deployed, minimizing the attack surface of the JBoss server and decreasing the amount of trimming that must be performed.</xhtml:p></rationale>
+			<fixtext><xhtml:p>JBoss administrators should use the profiles as defined in the validation text.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:200501"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2018"><!--Ensure Technology Preview components are disabled-->
+			<title>Ensure Technology Preview components are disabled in production environments</title>
+			<description>Remove the PicketLink technology preview folder. By default, this folder is included at the same level as the JBoss-as folder. If you leave the picketlink folder as originally shipped in the EAP binary, PicketLink is unable to be launched, and subsequently interact with the certified configuration. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Technology Preview components are not production-ready, vendor supported JBoss components.  They may be incomplete, contain bugs, insecure features or architecture, etc.</xhtml:p>
+				</rationale>
+			
+			
+			
+			<fixtext><xhtml:p>Delete the JBOSS_HOME/picketlink/ folder.</xhtml:p> </fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:201801"/>
+			</check>
+		</Rule>
+						
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1130"><!--Disable Hot Deployment in production-->
+			<title>Disable Hot Deployment in production</title>
+			<description>Hot deployment should be disabled on production servers. Hot Deployment allows for automatic deployment of Java applications by simply placing Java applications into the deploy directory.</description>
+			<rationale><xhtml:p>Hot deployments are not a recommended best practice for production environments. By requiring the additional step of restarting the JBoss server, application deployments become more deliberate and purposeful. Additionally, the JBoss Hot Deployment feature has been known to become unstable over time - consuming additional memory and resources.</xhtml:p></rationale>
+			
+			
+			
+			<fixtext><xhtml:p>Delete the following file:</xhtml:p>
+				<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/hdscanner-jboss-beans.xml</xhtml:li></xhtml:ul> </fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:113001"/>
+			</check>
+		</Rule>
+					
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1101"><!--Production applications should not implement the default SRPVerifierStore interface for the Secure Remote Password (SRP) protocol-->
+			<title>Production applications should not implement the default SRPVerifierStore interface for the Secure Remote Password (SRP) protocol</title>
+			<description>The SRP protocol is a public key exchange protocol similar to Diffie-Hellman. The default implementation of the SRPVerifierStore interface is not recommended for a production security environment because it requires all password hash information to be available as a file of serialized objects.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>Serializing objects is not a recommended practice for Java applications.  Object serialization shows poor performance and is not typically scalable for production.  Additionally, object serialization creates dependency concerns within the object hierarchy.</xhtml:p></rationale>			
+			<fixtext><xhtml:p>Application developers should not use the default implementation for SRPVerifierStore, and should extend it to avoid the use of serialized password objects.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:110101"/>
+			</check>
+		</Rule>
+						
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2039"><!--Declare an EJB Authorization Policy-->
+			<title>Declare an EJB authorization policy for deployed applications</title>
+			<description>When configuring your application specific security policy, you must declare one (or more) of the following authorization modules in the security domain &lt;policy-module&gt; element. 
+				<xhtml:ul><xhtml:li>org.JBoss.security.authorization.modules.DelegatingAuthorizationModule</xhtml:li>
+					<xhtml:li>org.JBoss.security.authorization.modules.JACCAuthorizationModule</xhtml:li></xhtml:ul>
+				<xhtml:p>A security domain does not explicitly require an authorization policy. If an authorization policy is not specified, the default jboss-web-policy and jboss-ejb-policy authorization configured in jboss-as/server/$PROFILE/deploy/security/security-policies-jboss-beans.xml is used. If you do choose to specify an authorization policy, or create a custom deployment descriptor file with a valid authorization policy, these settings override the default settings in security-policies-jboss-beans.xml.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Explicitly referencing one of the identified authorization modules ensures that applications extend the security policies defined in security-policies-jboss-beans.xml. This allows JBoss administrators to set a secure baseline that can be tuned on a per-application basis.</xhtml:p>
+				</rationale>
+			
+			
+				<xhtml:p>Review possible locations for definition of &lt;application-policy&gt; elements. Specifically, ensure that 'code' attributes for &lt;authorization&gt;&lt;policy-module&gt; elements are either 'org.JBoss.security.authorization.modules.DelegatingAuthorizationModule' or 'org.JBoss.security.authorization.modules.JACCAuthorizationModule'.</xhtml:p>
+				<xhtml:p>These &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul>
+			<fixtext>
+				<xhtml:p>Applications deploying their own security policies must specify one of the following &lt;policy-module&gt; within their 'code' attributes:</xhtml:p>
+				<xhtml:ul><xhtml:li>org.JBoss.security.authorization.modules.DelegatingAuthorizationModule</xhtml:li>
+					<xhtml:li>org.JBoss.security.authorization.modules.JACCAuthorizationModule</xhtml:li></xhtml:ul>
+				
+				<xhtml:p>Example:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;application-policy name="demo"&gt;
+	&lt;authorization&gt;
+	&lt;policy-module code="org.JBoss.security.authorization.modules.JACCAuthorizationModule"&gt;&lt;/policy-module&gt;
+	&lt;/authorization&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre> 
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:203901"/>
+			</check>
+		</Rule>
+					
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2042"><!--Ensure appropriate permissions have been granted to Java Database Connectivity (JDBC) driver-->
+			<title>Ensure appropriate permissions have been granted to Java Database Connectivity (JDBC) driver</title>
+			<description>The security manager policy file may require permissions to be set for database drivers. The JBoss administrator can assign permissions to the database drivers that are needed by deployed applications. It is recommended that the most restrictive permissions are added. With some installations, permissions must be granted to database drivers that are not available to deployed applications; such as java.net.SocketPermission.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Deployed applications requiring access to data sources should have limited permissions to interact with the database drivers.</xhtml:p></rationale>
+			
+				<xhtml:p>To validate compliance, review all policy files defining permissions for the Java Security Manager. In a default Common Criteria compliant JBoss deployment the following policy files will be utilized by JSM (review run.conf or run.conf.bat for more):</xhtml:p>
+				<xhtml:ul><xhtml:li>java.home/lib/security/java.security</xhtml:li>
+					<xhtml:li>JBOSS_HOME/bin/security_cc.policy</xhtml:li></xhtml:ul>
+			<fixtext>
+				<xhtml:p>The JBoss administrator must assign the most restrictive permissions possible (in accordance with the least privilege principle) to applications accessing defined data sources. This should be done in cooperation with application developers or application documentation. Substitute the directory name of the JDBC driver where [JDBC.DRIVER] is specified in the code sample.</xhtml:p>
+				<xhtml:pre><xhtml:code>// granting permissions to JDBC driver 
+grant codeBase "file:${JBoss.server.home.dir}/lib/[JDBC.DRIVER]" { 
+	//JDBC specific permissions to be granted go here
+};</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:204201"/>
+			</check>
+		</Rule>
+						
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2044"><!--Ensure appropriate DefaultDS is enabled-->
+			<title>Ensure appropriate DefaultDS is enabled</title>
+			<description>Create a default data store file for the desired database. Templates are located in JBOSS_HOME/docs/examples/jca.<xhtml:br/>The DefaultDS must not be a HSQLDB.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>To help ensure robust server operations, a DefaultDS that does not use HSQLDB should be specified. DefaultDS is used by some JBoss components by default.</xhtml:p></rationale>
+			
+				<xhtml:p>Review defined data sources in the JBOSS_HOME/server/[PROFILE]/deploy directory. Data sources will be suffixed as -ds.xml. Search for a data source with a &lt;jndi-name&gt;DefaultDS&lt;/jndi-name&gt; element. OS text searching utilities can help find the DefaultDS. The DefaultDS CANNOT be HSQL. An HSQL data source will contain elements like: &lt;driver-class&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; and &lt;type-mapping&gt;Hypersonic SQL&lt;/type-mapping&gt;.</xhtml:p>
+			<fixtext>
+				<xhtml:p>Create a default DS file for the desired database at JBOSS_HOME/server/[PROFILE]/deploy/DefaultDS.xml. Examples of this file are located in JBOSS_HOME/docs/examples/jca. The DefaultDS must not be a HSQLDB.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:204401"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2157"><!--Deployed applications must not write data to DefaultDS-->
+			<title>Deployed applications must not write data to DefaultDS</title>
+			<description>Deployed applications (other than JBoss default applications) must not write information to the database defined by the DefaultDS data source. These applications must use a database specific to the application.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Sharing databases between applications is a poor security practice that can create injection and leakage vulnerabilities that cross application boundaries.</xhtml:p></rationale>
+			
+				<xhtml:p>Next, review the data source definition files (files suffixed *.xml) used by the deployed user applications to ensure they do not reference the same database used by the DefaultDS.</xhtml:p>
+			<fixtext><xhtml:p>Create and deploy a data source in addition to the DefaultDS to store application data. This new data source must not point to the same database as the DefaultDS data source.</xhtml:p>
+				<xhtml:p>Data source templates can be found in the JBOSS_HOME/docs/examples/jca/ directory.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:215701"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2045"><!--Ensure default HSQLDB is disabled-->
+			<title>Ensure default HSQLDB is disabled</title>
+			<description>The default development HSQL database included with JBoss should be removed.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>HSQL is not meant for production environments - it is there to speed development and enable faster application prototyping. Thus, it is not a full-featured data source intended for production use.</xhtml:p></rationale>
+			
+			
+			<fixtext>
+				<xhtml:p>Delete the following files that refer to the HSQLDB database:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/hsqldb-ds.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/common/lib/hsqldb.jar</xhtml:li>
+					<xhtml:li>JBOSS_HOME/common/lib/hsqldb-plugin.jar</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/messaging/hsqldb-persistence-service.xml</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>Delete the HSLQDB database files:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/data/hypersonic/*</xhtml:li>
+				</xhtml:ul>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:204501"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2046"><!--Ensure HSQLDB Security Domain is removed-->
+			<title>Ensure HSQLDB Security Domain is removed</title>
+			<description>The security domain for HsqlDbRealm should be removed from the JBOSS_HOME/server/[PROFILE]/conf/login-config.xml file.<xhtml:br/>
+			</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>HSQL is not meant for production environments - it is there to speed development and enable faster application prototyping. Thus, it is not a full-featured data source intended for production use.</xhtml:p></rationale>
+			
+			
+			
+			<fixtext>
+				<xhtml:p>Remove the security domain for HsqlDbRealm in the JBOSS_HOME/server/[PROFILE]/conf/login-config.xml file as shown.</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;!-- Security domains for testing new jca framework
+&lt;application-policy name = "HsqlDbRealm"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code = "org.JBoss.resource.security.ConfiguredIdentityLoginModule" flag = "required"&gt;
+		&lt;module-option name = "principal"&gt;sa&lt;/module-option&gt;
+		&lt;module-option name = "userName"&gt;cctest&lt;/module-option&gt;
+		&lt;module-option name = "password"&gt;cc1248&lt;/module-option&gt;
+		&lt;module-option name = "managedConnectionFactoryName"&gt;JBoss.jca:service=LocalTxCM,name=DefaultDS&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;
+--&gt;</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:204601"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2047"><!--Ensure the appropriate Java Messaging Service (JMS) persistence configuration file is in use-->
+			<title>Ensure the appropriate Java Messaging Service (JMS) persistence configuration file is in use</title>
+			<description>The [database]-persistence-service.xml file contains the persistence service definition for Java Messaging Service, for the database specified by the [database] in the filename. The database must not be HSQLDB.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>In order to function properly, JMS should be configured to use the appropriate datastore.  Production environments require a persistence service definition for JMS that does not use HSQLDB.</xhtml:p></rationale>
+
+				<xhtml:p>Interview the JBoss administrators and application developers to determine if JMS is in use. A quick check can also be performed by checking for the existence of the following files:</xhtml:p>
+				<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/messaging</xhtml:li>
+				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jms-ra.rar</xhtml:li></xhtml:ul>
+				<xhtml:p>If JMS is installed, a persistence-service.xml file must exist that does not use HSQLDB. This persistence file will be located in the following location:</xhtml:p>
+			<fixtext><xhtml:p>Copy the [database]-persistence-service.xml file that corresponds to the database you are using from the JBOSS_HOME/docs/examples/jms directory to JBOSS_HOME/server/[PROFILE]/deploy. Make any required content changes to fit the persistence service to the environment.</xhtml:p> </fixtext>
+
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:204701"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2050"><!--Ensure Oracle Database persistence plugin is set correctly-->
+			<title>Ensure Oracle Database persistence plugin is set correctly</title>
+			<description>When using the Oracle Database as the DefaultDS, the database persistence plugin definition must be updated in JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>This is a performance optimization when using Oracle Database as the DefaultDS.</xhtml:p></rationale>
+				<xhtml:p>Review defined data sources in the JBOSS_HOME/server/[PROFILE]/deploy directory. Data sources will be suffixed as -ds.xml. Search for a data source with a <jndi-name>DefaultDS</jndi-name> element. Review the DefaultDS datasource. If the DefaultDS is Oracle Database, review the persistence plugin located at JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml. The DatabasePersistencePlugin attribute must be configured like below:</xhtml:p>
+					<xhtml:pre><xhtml:code>&lt;attribute name="DatabasePersistencePlugin"&gt;
+	org.JBoss.ejb.txtimer.OracleDatabasePersistencePlugin
+&lt;/attribute&gt;</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>When using the Oracle Database as the DefaultDS, the database persistence plugin definition must be updated in
+				JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml to:</xhtml:p>
+<xhtml:pre><xhtml:code>&lt;attribute name="DatabasePersistencePlugin"&gt;
+	org.JBoss.ejb.txtimer.OracleDatabasePersistencePlugin
+&lt;/attribute&gt;</xhtml:code></xhtml:pre></fixtext>
+
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:205001"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2065"><!--Ensure IBM JRE 16 is configured correctly-->
+			<title>Ensure IBM JRE 1.6 is configured correctly</title>
+			<description><xhtml:p>When IBM JRE 1.6 is configured as the Java Runtime Environment, the following configuration changes must be made to ensure compatibility between JBoss EAP and IBM JRE.</xhtml:p>
+<xhtml:p>IBM JRE 1.6 uses a default policy provider which does not work correctly with the JBoss Enterprise Application Platform security policy. The IBM JRE must be reconfigured to use the standard policy provider.</xhtml:p></description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>The IBM JRE 1.6 default policy provider does not work correctly with the JBoss EAP security policy. Failure to assign the correct policy can lead to system instability.</xhtml:p></rationale>
+
+			
+			<fixtext><xhtml:p>When IBM JRE 1.6 is configured as the Java Runtime Environment, the following configuration changes must be made for compatibility:</xhtml:p>
+<xhtml:p>Edit the file JAVA_HOME/jre/lib/security/java.security and set the value of policy.provider to sun.security.provider.PolicyFile</xhtml:p> </fixtext>
+
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:206501"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1100"><!--Configured security domains are recommended to secure production applications-->
+			<title>Configured security domains are recommended to secure production applications</title>
+			<description>SecurityDomain is an extension of the AuthenticationManager, RealmMapping, and SubjectSecurityManager interfaces. A java.security.KeyStore, and the Java Secure Socket Extension (JSSE) com.sun.net.ssl.KeyManagerFactory and com.sun.net.ssl.TrustManagerFactory interfaces are included in the class.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>SecurityDomain is the recommended way to implement security in components, because of the advantages the JAAS Subject offers, and the increased support offered to ASP-style application and resource deployments.</xhtml:p></rationale>
+			
+			
+			<fixtext><xhtml:p>Configure and apply SecurityDomains where appropriate for production applications.</xhtml:p>
+				<xhtml:p>For example, an &lt;application-policy&gt; (SecurityDomain) can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+				<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul>
+				<xhtml:p>To determine which &lt;application-policy&gt; are in use by deployed applications, search for &lt;security-domain&gt; elements within the following deployment descriptors:</xhtml:p>
+				<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/jboss-web.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/jboss.xml </xhtml:li></xhtml:ul></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:110001"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2038"><!--The allRolesMode must be configured to "strict"-->
+			<title>The allRolesMode must be configured to "strict"</title>
+			<description>The allRolesMode within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml must be set to strict for production environments. This requires the authenticated user to be assigned to one of the web-app/security-role/role-name roles in order to be authorized. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>This rule enforces strict authorization, requiring authenticated users to be members of defined roles. This allows JBoss administrators to create a simpler, tighter security policy.</xhtml:p></rationale>
+			
+			
+			<fixtext><xhtml:p>Update allRolesAttribute for the &lt;Realm&gt; element with className="org.jboss.web.tomcat.security.JBossWebRealm" in JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml. Set the attribute value to "strict". By default, the allRolesAttribute is set to "authOnly". For example:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;Realm className="org.jboss.web.tomcat.security.JBossWebRealm" certificatePrincipal="org.jboss.security.auth.certs.SubjectDNMapping" allRolesMode="strict" /&gt;</xhtml:code></xhtml:pre> </fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:203801"/>
+			</check>
+		</Rule>
+					
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1092"><!--Define &lt;security-role&gt; elements-->
+			<title>Define &lt;security-role&gt; elements</title>
+			<description>Enable authorization and define &lt;security-role&gt; elements to control access to deployed applications.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011 </reference>
+			<rationale><xhtml:p>The specification of &lt;security-role&gt; elements is a recommended practice to ensure portability across application servers and for deployment descriptor maintenance.</xhtml:p></rationale>
+
+			
+			<fixtext><xhtml:p>Working with application developers (or available documentation), determine the desired roles for controlling access to the deployed applications.</xhtml:p>
+<xhtml:p>Next, create the roles within web.xml.</xhtml:p>
+<xhtml:pre><xhtml:code>&lt;web-app&gt;
+	&lt;security-role&gt;
+		&lt;description&gt;The role required to access restricted content &lt;/description&gt;
+		&lt;role-name&gt;AuthorizedUser&lt;/role-name&gt;
+	&lt;/security-role&gt;
+&lt;/web-app&gt;</xhtml:code></xhtml:pre>
+<xhtml:p>Finally, require the roles within the application's deployment descriptor, web.xml:</xhtml:p>
+<xhtml:pre><xhtml:code>&lt;web-app&gt;
+	&lt;security-constraint&gt;
+		&lt;auth-constraint&gt;
+			&lt;role-name&gt;AuthorizedUser&lt;/role-name&gt;
+		&lt;/auth-constraint&gt;
+	&lt;/security-constraint&gt;
+&lt;/web-app&gt;</xhtml:code></xhtml:pre> </fixtext>
+
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:109201"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3001"><!--Remove, rename, or comment out the default user accounts from production servers-->
+			<title>Remove, rename, or comment out the default user accounts from production servers</title>
+			<description><xhtml:p>Remove, rename, or comment out the default user accounts defined in .properties files and login-config.xml.</xhtml:p></description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Removing, renaming, or commenting out default user accounts makes malicious exploitation more complex.</xhtml:p></rationale>
+				<xhtml:pre><xhtml:code>
+&lt;module-option name="principal"&gt;sa&lt;/module-option&gt;
+&lt;module-option name="userName"&gt;sa&lt;/module-option&gt;
+&lt;module-option name="password"&gt;&lt;/module-option&gt;
+
+&lt;module-option name="principal"&gt;guest&lt;/module-option&gt;
+&lt;module-option name="userName"&gt;guest&lt;/module-option&gt;
+&lt;module-option name="password"&gt;guest&lt;/module-option&gt;
+				</xhtml:code></xhtml:pre>
+				<xhtml:p>Examine the .properties files located within the JBOSS_HOME/server/[PROFILE]/conf/props/ directory.
+					<xhtml:p>By default, the following files exist:</xhtml:p>
+					<xhtml:ul>
+						<xhtml:li>jbossws-users.properties</xhtml:li>
+						<xhtml:li>jmx-console-users.properties</xhtml:li>
+						<xhtml:li>messaging-users.properties</xhtml:li>
+					</xhtml:ul>
+					<xhtml:p>Ensure the default user accounts have been removed, renamed, or commented out. This includes:</xhtml:p>
+					<xhtml:ul>
+						<xhtml:li>admin</xhtml:li>
+						<xhtml:li>kermit</xhtml:li>
+						<xhtml:li>guest</xhtml:li>
+			<fixtext><xhtml:p>Remove, rename, or comment out the default user accounts in the default &lt;application-policy&gt; elements located within the configuration file: JBOSS_HOME/server/[PROFILE]/conf/login-config.xml.
+				<xhtml:pre><xhtml:code>
+					&lt;module-option name="principal"&gt;sa&lt;/module-option&gt;
+					&lt;module-option name="userName"&gt;sa&lt;/module-option&gt;
+					&lt;module-option name="password"&gt;&lt;/module-option&gt;
+					
+					&lt;module-option name="principal"&gt;guest&lt;/module-option&gt;
+					&lt;module-option name="userName"&gt;guest&lt;/module-option&gt;
+					&lt;module-option name="password"&gt;guest&lt;/module-option&gt;
+				</xhtml:code></xhtml:pre>
+				<xhtml:p>Remove, rename, or comment out the default user accounts in properties files: JBOSS_HOME/server/[PROFILE]/conf/props/</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>jbossws-users.properties</xhtml:li>
+					<xhtml:li>jmx-console-users.properties</xhtml:li>
+					<xhtml:li>messaging-users.properties</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>The default user accounts include:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>admin</xhtml:li>
+					<xhtml:li>kermit</xhtml:li>
+					<xhtml:li>guest</xhtml:li>
+				</xhtml:ul>
+				
+				NOTE: If access is required to the services protected by the &lt;application-policy&gt;, be sure that valid accounts and roles exist!</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300101"/>
+			</check>
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3002"><!--Remove, rename, or comment out the default roles from production servers-->
+			<title>Remove, rename, or comment out the default roles from production servers</title>
+			<description><xhtml:p>Remove, rename, or comment out the default role definitions in the default &lt;application-policy&gt; elements.</xhtml:p>
+				<xhtml:p>Additionally, remove, rename, or comment out the default role assignments in various properties files from JBOSS_HOME/server/[PROFILE]/conf/props/</xhtml:p></description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+			<rationale><xhtml:p>Default configurations are commonly leveraged by attackers to gain entry into closed systems. Renaming, removing, or commenting out default roles can make exploitation more complex. These steps can also prevent inadvertent assignment of permissions.</xhtml:p></rationale>
+				<xhtml:ul>
+					<xhtml:li>jbossws-roles.properties</xhtml:li>
+					<xhtml:li>jmx-console-roles.properties</xhtml:li>
+					<xhtml:li>messaging-roles.properties</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>The default role assignments are JBossAdmin, HttpInvoker, friend, and guest.</xhtml:p>
+				
+				<xhtml:p>Finally, ensure the default role assignments within application specific deployment descriptors have been removed, renamed, or commented out:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/web.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/admin-console.war/WEB-INF/web.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/web.xml</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>These role assignments will fall within &lt;auth-constraint&gt; elements and will look similar to the following:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;security-constraint&gt;
+	&lt;web-resource-collection&gt;
+		&lt;web-resource-name&gt;HtmlAdaptor&lt;/web-resource-name&gt;
+		&lt;description&gt;An example security config that only allows users with the role JBossAdmin to access the HTML JMX console web application&lt;/description&gt;
+		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+	&lt;/web-resource-collection&gt;
+	&lt;auth-constraint&gt;
+		&lt;role-name&gt;JBossAdmin&lt;/role-name&gt;
+	&lt;/auth-constraint&gt;
+&lt;/security-constraint&gt;</xhtml:code></xhtml:pre></xhtml:p>
+			
+			<fixtext><xhtml:p><xhtml:p>Ensure the default role assignments have been removed, renamed, or commented out from the default properties files located in JBOSS_HOME/server/[PROFILE]/conf/props/
+				<xhtml:ul>
+					<xhtml:li>jbossws-roles.properties</xhtml:li>
+					<xhtml:li>jmx-console-roles.properties</xhtml:li>
+					<xhtml:li>messaging-roles.properties</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>The default role assignments are JBossAdmin, HttpInvoker, friend, and guest.</xhtml:p>
+				
+				<xhtml:p>Finally, ensure the default role assignments within application specific deployment descriptors have been removed, renamed, or commented out:</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/web.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/admin-console.war/WEB-INF/web.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/web.xml</xhtml:li>
+				</xhtml:ul>
+				<xhtml:p>These role assignments will fall within &lt;auth-constraint&gt; elements and will look similar to the following:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;security-constraint&gt;
+	&lt;web-resource-collection&gt;
+		&lt;web-resource-name&gt;HtmlAdaptor&lt;/web-resource-name&gt;
+		&lt;description&gt;An example security config that only allows users with the role JBossAdmin to access the HTML JMX console web application&lt;/description&gt;
+		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+	&lt;/web-resource-collection&gt;
+	&lt;auth-constraint&gt;
+		&lt;role-name&gt;JBossAdmin&lt;/role-name&gt;
+	&lt;/auth-constraint&gt;
+&lt;/security-constraint&gt;</xhtml:code></xhtml:pre></xhtml:p></xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300201"/>
+			</check>
+			<!--<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+			<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:300201"/>
+		</check>-->
+		</Rule>
+			
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1093"><!--Security constraint elements should exist for all URLs in production environment-->
+			<title>Security constraint elements should exist for all URLs in production environment</title>
+			<description>The content to be secured is declared using one or more &lt;web-resource-collection&gt; elements. Each &lt;web-resource-collection&gt; element contains an optional series of &lt;url-pattern&gt; elements followed by an optional series of &lt;http-method&gt; elements. The &lt;url-pattern&gt; element value specifies a URL pattern against which a request URL must match for the request to correspond to an attempt to access secured content. The &lt;http-method&gt; element value specifies a type of HTTP request to allow.</description>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011 </reference>
+			<rationale><xhtml:p>Whitelisting allowed HTTP methods against all URL's is a recommended security practice to minimize the attack surface of deployed applications. This must be done carefully to ensure that security loopholes are not created, as JBoss allows all HTTP methods by default..</xhtml:p></rationale>
+
+			
+			<fixtext>Implement a whitelist for HTTP methods accepted by each deployed application.  This will generally take the form of two separate security constraints.<!--<xhtml:pre><xhtml:code></xhtml:code></xhtml:pre>--></fixtext>
+
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:109301"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_1096"><!--DefaultCacheTimeout must be configured properly for active security domains-->
+			<title>DefaultCacheTimeout must be configured properly for active security domains</title>
+			<description>Security domains in use must use DefaultCacheTimeout less than or equal to 1800 seconds.
+If you want to disable caching of security credentials, set this to 0 to force authentication to occur every time. This has no affect if the AuthenticationCacheJndiName has been changed from the default value. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<reference>JBoss Enterprise Application Platform 5 Security Guide, 2011</reference>
+
+			<rationale><xhtml:p>Production applications should be carefully evaluated to determine the appropriate level of cache credential timeouts. Overuse of cached credentials can leave applications vulnerable to stale authentication stores.</xhtml:p> </rationale>
+
+			
+			<fixtext><xhtml:p>Open the JaasSecurityManagerService Mbean configuration file located at JBOSS_HOME/server/[PROFILE]/conf/jboss-service.xml</xhtml:p>
+<xhtml:p>Find the element &lt;mbean code="org.jboss.security.plugins.JaasSecurityManagerService" name="jboss.security:service=JaasSecurityManager"&gt;</xhtml:p>
+<xhtml:p>Change the &lt;DefaultCacheTimeout&gt; to 1800 or less.</xhtml:p> </fixtext>
+
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:109601"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2009"><!--SNMP must not be deployed-->
+			<title>snmp-adaptor.sar must not be deployed</title>
+			<description>The file JBOSS_HOME/server/[PROFILE]/deploy/snmp-adaptor.sar should not exist. snmp-adaptor.sar is the default deployment package for JBoss SNMP.  The manager implements SNMP using joeSNMP, supporting only SNMP versions 1 and 2.</description>
+			<rationale><xhtml:p>The default SNMP package (snmp-adaptor.sar) implements joeSNMP, which itself implements SNMP versions 1 and 2. Both versions of the SNMP protocol have many flaws and known vulnerabilities that can leveraged by attackers. Often these are simple remote exploitations that can be easily used by attackers to penetrate a network.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Delete the directory JBOSS_HOME/server/[PROFILE]/deploy/snmp-adaptor.sar/</xhtml:p> </fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:200901"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4011"><!--Harden Connector: limit maxPostSize-->
+			<title>Harden Tomcat Connectors: limit maxPostSize</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the connectors can be taken quickly and easily. maxPostSize is the maximum size (in bytes) that the FORM URL parser can handle. Environments that pass large amounts of data through forms (such as file uploads), may need to increase this setting.</description>
+			<rationale><xhtml:p>An overly high setting can create a denial of service vulnerability in which an attacker simultaneously performs several large POSTS - tying up server resources and network bandwidth.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure that all &lt;Connector&gt; elements within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml have appropriately configured maxPostSize attributes (104857600 or less).</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:401101"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4012"><!--Harden Connector: limit maxSavePostSize-->
+			<title>Harden Tomcat Connectors: limit maxSavePostSize</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. maxSavePostSize is the maximum size (in bytes) that is buffered during CLIENT-CERT and FORM authentication. The default setting of 4096 (4 KB) is sufficient for most environments.</description>
+			<rationale><xhtml:p>An overly high setting can inadvertently create a denial of service vulnerability in which many users are authenticated and tying up server resources.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure that all &lt;Connector&gt; elements within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml have appropriately configured maxSavePostSize attributes (12288 or less).</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:401201"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4013"><!--Harden Connector: set server header tags-->
+			<title>Harden Tomcat Connectors: set server header tags</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. The server attribute controls the Server Header tag sent with each HTTP response. The default setting causes the server to return Apache-Coyote/1.1 with each HTTP response.</description>
+			<rationale><xhtml:p>Failure to set the server attribute aids malicious users in fingerprinting a web server. However, the server attribute is also used legitimately by some applications for identification.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure that all HTTP &lt;Connector&gt; elements within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml have appropriately configured server attributes (set to something other than Apache-Coyote/1.1).</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:401301"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4014"><!--Harden Connector: ciphers attribute-->
+			<title>Harden Tomcat Connectors: ciphers attribute</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. The ciphers attribute controls the what ciphers are used to negotiate secure connections. The default setting causes the server to use the ciphers allowed by the running Java Virtual Machine.</description>
+			<rationale><xhtml:p>In an environment where FIPS mode has been enabled for the JVM, overriding those settings can lead to system instability or the use of non-FIPS algorithms.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure that all secure &lt;Connector&gt; elements within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml have not defined cipher attributes.</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:401401"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_4015"><!--Harden Connector: limit connectionTimeout-->
+			<title>Harden Tomcat Connectors: limit connectionTimeout</title>
+			<description>The Tomcat container is commonly used to broker connections for JBoss. Several steps to harden the defined connectors can be taken quickly and easily. connectionTimeout is the time (in milliseconds) that the container will wait for URI content after receiving a connection. The default setting is 60000.</description>
+			<rationale><xhtml:p>An overly high setting can be easily exploited to create a denial of service condition by tying up server resources.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Ensure that all HTTP &lt;Connector&gt; elements within JBOSS_HOME/server/[PROFILE]/deploy/jbossweb.sar/server.xml have appropriately configured connectionTimeout attributes (20000 or less).</xhtml:p></fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:401501"/>
+			</check>
+		</Rule>
+		
+		
+</Group>

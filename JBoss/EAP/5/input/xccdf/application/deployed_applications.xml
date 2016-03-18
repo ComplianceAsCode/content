@@ -1,0 +1,440 @@
+<Group id="deployed_applications" >
+<title>Securing deployed applications</title>
+<description>The rules in this group are used to secure applications deployed on JBoss EAP. This includes applications that JBoss packages and deploys by default.</description>
+
+
+
+	<Value id="warning_banner_text" type="string">
+		<title>Warning banner content</title>
+		<description>This value contains the content for a DoD warning banner.</description>
+		<value selector="DoD">The DoD warning banner should read: "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+			
+			By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+			
+			-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+			
+			-At any time, the USG may inspect and seize data stored on this IS.
+			
+			-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+			
+			-This IS includes security measures (e.g., authentication and access controls) to protect USG interests—not for your personal benefit or privacy.
+			
+			-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."</value>
+		<default></default>
+	</Value>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2006"><!--Ensure JMX Console is either secured or removed-->
+			<title>Ensure JMX Console is either secured or removed</title>
+			<description>The JMX Console application must be secured so it is accessible by trusted administrators only. If this condition is not met, the application must be removed (deleted) from deployment.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>The JMX Console should require authentication or be removed. Failure to require authentication may allow unauthenticated users to invoke commands or gather information on the JBoss server.  This access can be leveraged to do many things, including loading additional code from a malicious source.</xhtml:p></rationale>
+			
+				<xhtml:p>This rule can be checked for compliance by either:</xhtml:p>
+				<xhtml:ol>
+					<xhtml:li>Determine the console is not deployed.</xhtml:li>
+					<xhtml:ol>
+						<xhtml:li>To determine if the JMX Console is deployed, check to see if the exploded WAR located is located here: JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/</xhtml:li>
+					</xhtml:ol>
+					<xhtml:li>If the console is deployed, it must require authentication. Review the defined &lt;security-domain&gt; for the console.</xhtml:li>
+					<xhtml:ol>
+						<xhtml:li>To determine if authentication is required, first check the JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/jboss-web.xml file to ensure that a security domain has been referenced (example: &lt;security-domain&gt;java:/jaas/jmx-console&lt;/security-domain&gt;).</xhtml:li>
+						<xhtml:li>Next, ensure that an &lt;application-policy&gt; element is defined that matches the &lt;security-domain&gt; referenced by the jboss-web.xml file. These &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.
+							
+							<xhtml:ul>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/META-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul></xhtml:li>
+						
+						<xhtml:li>Check the &lt;application-policy&gt; element to ensure it requires authentication. Example of a satisfactory element:
+							<xhtml:pre><xhtml:code>&lt;application-policy name="jmx-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;props/jmx-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;props/jmx-console-roles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre></xhtml:li>
+					</xhtml:ol>
+			<fixtext>
+				<xhtml:p>This rule can be made compliant by either:</xhtml:p>
+				<xhtml:ol>
+					<xhtml:li>Require authentication for access to the JBoss JMX Console.</xhtml:li>
+					<xhtml:ol>
+						<xhtml:li>First, ensure that an &lt;application-policy&gt; element is defined that requires authentication. Default policies exist for jmx-console and web-console. Example of a satisfactory element:
+							<xhtml:pre><xhtml:code>&lt;application-policy name="jmx-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;props/jmx-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;props/jmx-console-roles.properties&lt;/module-option&gt;	
+		&lt;/login-module&gt; 
+	&lt;/authentication&gt; 
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre>
+							<xhtml:p>These &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+							<xhtml:p>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml<xhtml:br/>
+								JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/META-INF/*-jboss-beans.xml<xhtml:br/>
+								JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/*-jboss-beans.xml<xhtml:br/>
+								JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:p></xhtml:li>
+						
+						<xhtml:li>Next, check the JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/jboss-web.xml file to ensure that a security domain requiring authentication has been referenced (example: &lt;security-domain&gt;java:/jaas/jmx-console&lt;/security-domain&gt;). If no &lt;security-domain&gt; element exists, add it as a child of &lt;jboss-web&gt;.</xhtml:li>
+						<xhtml:li>Next, review the JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/WEB-INF/web.xml. The &lt;security-constraint&gt; must not contain the default limitations on HTTP verbs. For example: &lt;http-method&gt;GET&lt;/http-method&gt; or &lt;http-method&gt;POST&lt;/http-method&gt;. The default limitations were shown to allow side channel access to malicious users.</xhtml:li>
+						
+						<xhtml:li>Finally, configure the usersProperties defined in the application policy to manage accounts. Example editing JBOSS_HOME/server/[PROFILE]/conf/props/jmx-console-users.properties: <xhtml:br/>
+							<xhtml:pre><xhtml:code># A sample users.properties file for use with the UsersRolesLoginModule
+admin=1qaz!QAZ2wsx@WSX</xhtml:code></xhtml:pre></xhtml:li>
+					</xhtml:ol>
+					<xhtml:li>Remove the JBoss JMX Console from deployment.</xhtml:li>
+					<xhtml:ol><xhtml:li>To remove the JMX Console from deployment, delete the exploded WAR located here: JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war/</xhtml:li></xhtml:ol>
+				</xhtml:ol>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:200601"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2007"><!--Ensure Web Console is either secured or removed-->
+			<title>Ensure Web Console is either secured or removed</title>
+			<description>The Web Console application must be secured so it is accessible by trusted administrators only. If this condition is not met, the application must be removed (deleted) from deployment.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Failure to secure the default consoles against unauthorized access can quickly lead to system compromise. The default consoles included with JBoss are a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</xhtml:p></rationale>
+			
+				<xhtml:p>This rule can be checked for compliance by either:</xhtml:p>
+				<xhtml:ol>
+					<xhtml:li>Determine the console is not deployed.	</xhtml:li>
+					<xhtml:ol><xhtml:li>To determine if the Web Console is deployed, check to see if the exploded SAR located is located here: JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/</xhtml:li></xhtml:ol>
+					<xhtml:li>If the console is deployed, it must require authentication. Review the defined &lt;security-domain&gt; for the console.</xhtml:li>
+					<xhtml:ol><xhtml:li>To determine if authentication is required, first check the JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/jboss-web.xml file to ensure that a security domain has been referenced (example: &lt;security-domain&gt;java:/jaas/web-console&lt;/security-domain&gt;).</xhtml:li>
+						<xhtml:li>Next, ensure that an &lt;application-policy&gt; element is defined that matches the &lt;security-domain&gt; referenced by the jboss-web.xml file. These &lt;application-policy&gt; can be defined
+							in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.
+							<xhtml:ul>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/META-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy//management/console-mgr.sar/web-console.war/WEB-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul></xhtml:li>
+						<xhtml:li>Check the &lt;application-policy&gt; element to ensure it requires authentication. Example of a satisfactory element:
+							<xhtml:pre><xhtml:code>&lt;application-policy name="web-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;web-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;web-console-roles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre></xhtml:li></xhtml:ol>
+			
+			<fixtext>
+				<xhtml:p>This rule can be made compliant by either:</xhtml:p>
+				<xhtml:ol>
+					<xhtml:li>Require authorization for access to the JBoss Web Console.</xhtml:li>
+					<xhtml:ol>
+						<xhtml:li>First, ensure that an &lt;application-policy&gt; element is defined that requires authentication. Default policies exist for jmx-console and web-console. Example of a satisfactory element:
+							<xhtml:pre><xhtml:code>&lt;application-policy name="web-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;web-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;web-console-roles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre>
+							<xhtml:p>These &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+							<xhtml:ul>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/META-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul></xhtml:li>
+						
+						<xhtml:li>Next, check the JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/jboss-web.xml file to ensure that a security domain requiring authentication has been referenced (example: &lt;security-domain&gt;java:/jaas/web-console&lt;/security-domain&gt;). If no &lt;security-domain&gt; element exists, add it as a child of &lt;jboss-web&gt;.</xhtml:li>
+						
+						<xhtml:li>Next, review the JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/web.xml. The &lt;security-constraint&gt; must not contain the default limitations on HTTP verbs. For example: &lt;http-method&gt;GET&lt;/http-method&gt; or &lt;http-method&gt;POST&lt;/http-method&gt;. The default limitations were shown to allow sidechannel access to malicious users.</xhtml:li>
+						<xhtml:li>Finally, configure the usersProperties and rolesProperties files defined in the application policy to manage users and roles. Example editing JBOSS_HOME/server/[PROFILE]/conf/props/web-console-users.properties:
+							<xhtml:pre><xhtml:code># A sample users.properties file for use with the UsersRolesLoginModule
+admin=1qaz!QAZ2wsx@WSX</xhtml:code></xhtml:pre></xhtml:li>
+					</xhtml:ol>
+					<xhtml:li>Remove the JBoss Web Console from deployment.</xhtml:li>
+					<xhtml:ol><xhtml:li>To remove the Web Console from deployment, delete the exploded SAR located here: JBOSS_HOME/server/[PROFILE]/deploy/management/</xhtml:li></xhtml:ol>
+				</xhtml:ol>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:200701"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2008"><!--Ensure Administration Console is either secured or removed-->
+			<title>Ensure Administration Console is either secured or removed</title>
+			<description>The Administration Console application must be secured so it is accessible by trusted administrators only. If this condition is not met, the application must be removed (deleted) from deployment.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Failure to secure the default consoles against unauthorized access can quickly lead to system compromise. The default consoles included with JBoss are a well-known attack vector that can be leveraged to load malicious code to be executed on the server.</xhtml:p></rationale>
+			
+				<xhtml:p>This rule can be checked for compliance by either:</xhtml:p>
+				<xhtml:ol>
+					<xhtml:li>Determine the console is not deployed.</xhtml:li>
+					<xhtml:ol><xhtml:li>To determine if the Administration Console is deployed, check to see if the exploded WAR located is located here: JBOSS_HOME/server/[PROFILE]/deploy/admin-console.war/</xhtml:li></xhtml:ol>
+					<xhtml:li>If the console is deployed, it must require authentication. Review the defined &lt;security-domain&gt; for the console.</xhtml:li>
+					<xhtml:ol><xhtml:li>To determine if authentication is required, first check the JBOSS_HOME/server/[PROFILE]/deploy/Administration-console.war/WEB-INF/jboss-web.xml file to ensure that a security domain has been referenced (example: &lt;security-domain&gt;java:/jaas/jmx-console&lt;/security-domain&gt;).</xhtml:li>
+						<xhtml:li>Next, ensure that an &lt;application-policy&gt; element is defined that matches the &lt;security-domain&gt; referenced by the jboss-web.xml file. These &lt;application-policy&gt; can be defined in the server
+							profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.
+							<xhtml:ul>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/Administration-console.war/META-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/Administration-console.war/WEB-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul></xhtml:li>
+						<xhtml:li>Check the &lt;application-policy&gt; element to ensure it requires authentication. Example of a satisfactory element (this example leverages the pre-existing jmx-console policy):
+							<xhtml:pre><xhtml:code>&lt;application-policy name="jmx-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;props/jmx-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;props/jmx-console-roles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre></xhtml:li>
+						<xhtml:li>Finally, review the JBOSS_HOME/server/[PROFILE]/deploy/Administration-console.war/WEB-INF/web.xml. The &lt;security-constraint&gt; must not contain the default limitations on HTTP verbs. For example: &lt;http-method&gt;GET&lt;/http-method&gt; or &lt;http-method&gt;POST&lt;/http-method&gt;. The default limitations were shown to allow sidechannel access to malicious users.</xhtml:li> 
+			
+			<fixtext>
+				<xhtml:p>This rule can be made compliant by either:</xhtml:p>
+				<xhtml:ol>
+					<xhtml:li>Require authorization for access to the JBoss Administration Console.</xhtml:li>
+					<xhtml:ol>
+						<xhtml:li>First, ensure that an &lt;application-policy&gt; element is defined that requires authentication. Default policies exist for jmx-console and web-console. Example of a satisfactory element:
+							<xhtml:pre><xhtml:code>&lt;application-policy name="jmx-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;web-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;web-console-roles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre>
+							<xhtml:p>These &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+							<xhtml:ul>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/Administration-console.war/META-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/Administration-console.war/WEB-INF/*-jboss-beans.xml</xhtml:li>
+								<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul></xhtml:li>
+						
+						<xhtml:li>Next, check the JBOSS_HOME/server/[PROFILE]/deploy/management/console-mgr.sar/web-console.war/WEB-INF/jboss-web.xml file to ensure that a security domain requiring authentication has been referenced (example: &lt;security-domain&gt;java:/jaas/web-console&lt;/security-domain&gt;). If no &lt;security-domain&gt; element exists, add it as a child of &lt;jboss-web&gt;.</xhtml:li>
+						
+						<xhtml:li>Next, review the JBOSS_HOME/server/[PROFILE]/deploy/Administration-console.war/WEB-INF/web.xml. The &lt;security-constraint&gt; must not contain the default limitations on HTTP verbs. For example: &lt;http-method&gt;GET&lt;/http-method&gt; or &lt;http-method&gt;POST&lt;/http-method&gt;. The default limitations were shown to allow sidechannel access to malicious users.</xhtml:li>
+						<xhtml:li>Finally, configure the usersProperties and rolesProperties files defined in the application policy to manage users and roles. Example editing JBOSS_HOME/server/[PROFILE]/conf/props/jmx-console-users.properties:
+							<xhtml:pre><xhtml:code># A sample users.properties file for use with the UsersRolesLoginModule
+admin=1qaz!QAZ2wsx@WSX</xhtml:code></xhtml:pre></xhtml:li>
+					</xhtml:ol>
+					<xhtml:li>Remove the JBoss Administration Console from deployment.</xhtml:li>
+					<xhtml:ol><xhtml:li>To remove the Administration Console from deployment, delete the exploded SAR located here: JBOSS_HOME/server/[PROFILE]/deploy/admin-console.war/</xhtml:li></xhtml:ol>
+				</xhtml:ol>
+			</fixtext>
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:200801"/>
+			</check>
+		</Rule>
+	
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2029"><!--The JMXInvokerServlet servlet must be secured against web attacks-->
+			<title>The JMXInvokerServlet servlet must be secured against web attacks</title>
+			<description>The httpha-invoker.sar found in the deploy directory is a service that provides RMI/HTTP access for EJBs and the JNDI Naming service. By default older JBoss versions ship with a default set of &lt;http-method&gt; that allow attackers to bypass the security policy for JMX Invoker.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Removing the default &lt;http-method&gt; security constraints allows JBoss to apply configured security settings to all HTTP verbs instead of only those specified. This is a well-known attack vector and failing to remove these constraints may allow attackers to gain authenticated or unauthorized access to the JMXInvokerServlet.</xhtml:p></rationale>
+			
+				<xhtml:p>Review JBOSS_HOME/server/[PROFILE]/deploy/httpha-invoker.sar/invoker.war/WEB-INF/web.xml to ensure the following lines have been removed:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;http-method&gt;GET&lt;/http-method&gt;
+&lt;http-method&gt;POST&lt;/http-method&gt;</xhtml:code></xhtml:pre>
+			<fixtext><xhtml:p>Within the JBOSS_HOME/server/[PROFILE]/deploy/httpha-invoker.sar/invoker.war/WEB-INF/web.xml file, the following lines must be removed from the web-app/security-constraint/web-resource-collection node:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;http-method&gt;GET&lt;/http-method&gt;
+&lt;http-method&gt;POST&lt;/http-method&gt;</xhtml:code></xhtml:pre>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:202901"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2030"><!--The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authentication-->
+			<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authentication</title>
+			<description>The jmx-invoker-service.xml is a service that exposes the JMX MBeanServer interface via an RMI compatible interface using the RMI/JRMP detached invoker service. This interface must be made unavailable to unprivileged users which can be done by using the org.jboss.jmx.connector.invoker.AuthenticationInterceptor interceptor for performing identification and authentication using JAAS. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>The JMXInvokerServlet should require authentication. Failure to require authentication may allow unauthenticated users to invoke commands on the JBoss server.  This access can be leveraged to do many things, including loading additional code from a malicious source.</xhtml:p></rationale>
+			
+			
+			<fixtext>
+				<xhtml:p>Open JBOSS_HOME/server/[PROFILE]/deploy/jmx-invoker-service.xml, and ensure the &lt;operation&gt; element with child element &lt;name&gt;invoke&lt;/name&gt; also contains the following &lt;interceptor&gt;:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;interceptors&gt;
+	&lt;interceptor code="org.jboss.jmx.connector.invoker.AuthenticationInterceptor" securityDomain="java:/jaas/jmx-console"/&gt;
+&lt;/interceptors&gt;</xhtml:code></xhtml:pre>
+				
+				<xhtml:p>Next, ensure a valid authentication module is enabled for the security domain.  For example, the following elements exist within logon-config.xml and implement authentication using the UsersRolesLoginModule:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;application-policy name="jmx-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;props/jmx-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;props/jmx-console-roles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre>
+				<xhtml:p>NOTE: By default, this forces the invoker to authenticate against the jmx-console-users.properties file, located here: JBOSS_HOME/server/PROFILE/conf/prop/
+					<xhtml:br/>NOTE: The securityDomain does not have to be called jmx-console.</xhtml:p> </fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:203001"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2031"><!--The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authorization-->
+			<title>The JMXInvokerServlet servlet must be configured to prevent unprivileged access using authorization</title>
+			<description>The jmx-invoker-service.xml is a service that exposes the JMX MBeanServer interface via an RMI compatible interface using the RMI/JRMP detached invoker service. Access control for authenticated users must be configured using the interceptors of either org.jboss.jmx.connector.invoker.RolesAuthorization or org.jboss.jmx.connector.invoker.ExternalizableRolesAuthorization. </description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>The JMXInvokerServlet should require authorization. Failure to require authorization may allow unauthenticated users to invoke commands on the JBoss server.  This access can be leveraged to do many things, including loading additional code from a malicious source.</xhtml:p>
+				</rationale>
+			
+			
+			<fixtext><xhtml:p>Open JBOSS_HOME/server/[PROFILE]/deploy/jmx-invoker-service.xml, and ensure the &lt;operation&gt; element with child element &lt;name&gt;invoke&lt;/name&gt; also contains the following &lt;interceptor&gt;:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;interceptors&gt;
+	&lt;interceptor code="org.jboss.jmx.connector.invoker.AuthorizationInterceptor" authorizingClass="org.jboss.jmx.connector.invoker.RolesAuthorization"/&gt;
+&lt;/interceptors&gt;</xhtml:code></xhtml:pre>
+				
+				<xhtml:p>Next, ensure a valid authorization module is enabled for the security domain.  For example, the following elements exist within logon-config.xml and implement authorization using the UsersRolesLoginModule:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;application-policy name="jmx-console"&gt;
+	&lt;authentication&gt;
+		&lt;login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required"&gt;
+			&lt;module-option name="usersProperties"&gt;props/jmx-console-users.properties&lt;/module-option&gt;
+			&lt;module-option name="rolesProperties"&gt;props/jmx-console-roles.properties&lt;/module-option&gt;
+		&lt;/login-module&gt;
+	&lt;/authentication&gt;
+&lt;/application-policy&gt;</xhtml:code></xhtml:pre>
+				<xhtml:p>NOTE: By default, this forces the invoker to authenticate against the jmx-console-users.properties file, located here: JBOSS_HOME/server/PROFILE/conf/prop/<xhtml:br/>NOTE: The securityDomain does not have to be called jmx-console. </xhtml:p>
+			</fixtext>
+			
+			<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+				<check-content-ref href="eap5-oval.xml" name="oval:com.redhat.eap5.scap:def:203101"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3006" selected="false"><!--Deployed applications should display a system use banner upon access-->
+			<title>Deployed applications should display a system use banner upon access</title>
+			<description><xhtml:p>Upon accessing the system, a notification banner, consent to use, or policy warning banner should be displayed to alert system users of the system use details. This may include items such as implied consent to monitor, privacy practices, or liability waivers.</xhtml:p></description>
+			<rationale><xhtml:p>Failing to provide adequate notification of system use details to users accessing the system can create legal troubles in the event of a civil lawsuit or criminal investigation.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Create a system use notification message for all users who access the system. This can be done in a variety of ways, but a simple JavaScript alert(); containing a warning message will suffice. This warning banner should be presented to the user prior to accessing any deployed application - commercial applications, in-house applications, or applications deployed by JBoss. The contents of the system use notification should be clear, concise, in keeping with the organizational security policy, and should have been reviewed by the organization's legal team.</xhtml:p>
+				<xhtml:p>On DoD systems, the warning banner should read:</xhtml:p>
+				<xhtml:p>You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.</xhtml:p>
+				<xhtml:p>By using this IS (which includes any device attached to this IS), you consent to the following conditions:</xhtml:p>
+				<xhtml:p>-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.</xhtml:p>
+				<xhtml:p>-At any time, the USG may inspect and seize data stored on this IS.</xhtml:p>
+				<xhtml:p>-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.</xhtml:p>
+				<xhtml:p>-This IS includes security measures (e.g., authentication and access controls) to protect USG interests—not for your personal benefit or privacy.</xhtml:p>
+				<xhtml:p>-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.</xhtml:p>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<!--<check-export value-id="warning_banner_text" export-name="ocil:com.redhat.eap5.scap:variable:300601"/> SCC does not recognize OCIL variables-->
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300601"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_3007" selected="false"><!--Deployed applications should display a classification banner when required-->
+			<title>Deployed applications should display a classification banner when required</title>
+			<description><xhtml:p>Deployed applications should present classification banners at the header and footer of each page in accordance with the applicable DoD classification guide for the environment (or in accordance with local security policies).</xhtml:p></description>
+			<reference>Department of Defense, (1997). Information Security Program (DoD 5200.1-R)</reference>
+			<rationale><xhtml:p>Prominent classification banners reduce the risk of inadvertent information disclosure or data spillage across different classification levels.</xhtml:p></rationale>
+			<fixtext><xhtml:p>Create system classification banners for all deployed applications. This can be done in a variety of ways, but using a simple linked JavaScript to create header/footer SPAN tags with inline CSS will fit the requirements.</xhtml:p>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:300701"/>
+			</check>
+		</Rule>
+
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2015"><!--Password hashing must be enabled within the appropriate login module-->
+			<title>Password hashing must be enabled within the appropriate login module</title>
+			<description>A Security Domain is a set of authentication, authorization, and mapping policies defined in XML and are available to applications at runtime using Java Naming and Directory Interface (JNDI).</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Failure to enable password hashing within a login module can result in plain-text exposure client passwords used for authentication.</xhtml:p></rationale>
+			
+				<xhtml:p>To determine which &lt;application-policy&gt; are in use by deployed applications, search for &lt;security-domain&gt; elements within the following deployment descriptors:</xhtml:p>
+				<xhtml:p>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/jboss-web.xml<xhtml:br/>
+					JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/jboss.xml</xhtml:p>
+				
+				<xhtml:p>An &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul>
+				
+				<xhtml:p>The element below should be included within a deployed application's &lt;application-policy&gt;&lt;login-module&gt;:</xhtml:p>
+			<fixtext>
+				<xhtml:p>Add the following child element to any &lt;application-policy&gt;&lt;login-module&gt; in use:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;module-option name="hashUserPassword"&gt;true&lt;/module-option&gt;</xhtml:code></xhtml:pre>
+				<xhtml:p>An &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:201501"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2017"><!--A password hashing algorithm must be defined within the appropriate login module-->
+			<title>A password hashing algorithm must be defined within the appropriate login module</title>
+			<description>A Security Domain is a set of authentication, authorization, and mapping policies defined in XML and are available to applications at runtime using Java Naming and Directory Interface (JNDI). An &lt;application-policy&gt; can be defined in the server profile or in an application deployment descriptor.</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>By default, a hashing algorithm is not identified for hashing clear-text passwords.  DoD organizations should use the SHA algorithm or higher whenever possible to prevent collision attacks against captured password hashes.</xhtml:p></rationale>
+			
+				<xhtml:p>To determine which &lt;application-policy&gt; are in use by deployed applications, search for &lt;security-domain&gt; elements within the following deployment descriptors:</xhtml:p>
+				<xhtml:p>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/jboss-web.xml<xhtml:br/>
+					JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/jboss.xml<xhtml:br/></xhtml:p>
+				<xhtml:p>An &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>				
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul>
+				<xhtml:p>The element should be included within a deployed application's &lt;application-policy&gt;&lt;login-module&gt;:</xhtml:p>
+			<fixtext>
+				<xhtml:p>Add the following child element to any &lt;application-policy&gt;&lt;login-module&gt; in use:</xhtml:p>
+				<xhtml:pre><xhtml:code>&lt;module-option name="hashAlgorithm"&gt;SHA&lt;/module-option&gt;</xhtml:code></xhtml:pre>
+				<xhtml:p>An &lt;application-policy&gt; can be defined in the server profile conf directory, in an application deployment descriptor, or directly deployed as an MBean.</xhtml:p>				
+				<xhtml:ul>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/login-config.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/META-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/[APPLICATION]/WEB-INF/*-jboss-beans.xml</xhtml:li>
+					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/*-jboss-beans.xml</xhtml:li></xhtml:ul>
+			</fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:201701"/>
+			</check>
+		</Rule>
+		
+		<Rule id="xccdf_com.redhat.eap5.scap_rule_2068"><!--Enterprise JavaBeans Specification v2.1 must be strictly followed-->
+			<title>Enterprise JavaBeans Specification v2.1 must be strictly followed</title>
+			<description>The programming restrictions mandated by the Enterprise JavaBeans Specification v2.1 must be strictly followed. For more information, refer to JSR-000153 Enterprise JavaBeans 2.1 specification. (Section 25.2, pages 562-564).</description>
+			<reference>U.S. Department of Commerce, National Institute of Standards and Technology. (2009). Recommended security controls for federal information systems and organizations (800-53). Retrieved from website: http://csrc.nist.gov/publications/PubsSPs.html</reference>
+			<rationale><xhtml:p>Deployed applications should follow identified standards, procedures, and best practices. Compliance has many benefits, including helping applications stay interoperable with other programs and containers, implementing strong security and code standards, and improving performance and efficiency.</xhtml:p></rationale>
+			
+			
+				<xhtml:ul><xhtml:li>An enterprise bean must not use read/write static fields. Using read-only static fields is allowed. Therefore, it is recommended that all static fields in the enterprise bean class be declared as final.</xhtml:li>
+					<xhtml:li>An enterprise bean must not use thread synchronization primitives to synchronize execution of multiple instances.</xhtml:li>
+					<xhtml:li>An enterprise bean must not use the AWT functionality to attempt to output information to a display, or to input information from a keyboard.</xhtml:li>
+					<xhtml:li>An enterprise bean must not use the java.io package to attempt to access files and directories in the file system.</xhtml:li>
+					<xhtml:li>An enterprise bean must not attempt to listen on a socket, accept connections on a socket, or use a socket for multicast.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to query a class to obtain information about the declared members that are not otherwise accessible to the enterprise bean because of the security rules of the Java language. The enterprise bean must not attempt to use the Reflection API to access information that the security rules of the Java programming language make unavailable.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to create a class loader; obtain the current class loader; set the context class loader; set security manager; create a new security manager; stop the JVM; or change the input, output, and error streams.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to set the socket factory used by ServerSocket, Socket, or the stream handler factory used by URL.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to manage threads. The enterprise bean must not attempt to start, stop, suspend, or resume a thread, or to change a thread’s priority or name. The enterprise bean must not attempt to manage thread groups.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to directly read or write a file descriptor.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to obtain the security policy information for a particular code source.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to load a native library.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to gain access to packages and classes that the usual rules of the Java programming language make unavailable to the enterprise bean.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to define a class in a package.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to access or modify the security configuration objects (Policy, Security, Provider, Signer, and Identity).</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to use the subclass and object substitution features of the Java Serialization Protocol.</xhtml:li>
+					<xhtml:li>The enterprise bean must not attempt to pass this as an argument or method result. The enterprise bean must pass the result of SessionContext.getEJBObject, Session-Context.getEJBLocalObject, EntityContext.getEJBObject,or Entity-Context.getEJBLocalObject instead.</xhtml:li></xhtml:ul>
+			<fixtext><xhtml:p>Developers must follow Enterprise JavaBeans Specification v2.1.</xhtml:p> </fixtext>
+			
+			<check system="http://scap.nist.gov/schema/ocil/2">
+				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:206801"/>
+			</check>
+		</Rule>
+		
+</Group>
