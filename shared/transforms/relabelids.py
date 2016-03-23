@@ -43,6 +43,104 @@ def get_checkfiles(checks, checksystem):
     return checkfiles
 
 
+def create_xccdf_id_to_cce_id_mapping(xccdftree):
+    #
+    # Create dictionary having form of
+    #
+    # 'XCCDF ID' : 'CCE ID'
+    #
+    # for each XCCDF rule having <ident system='http://cce.mitre.org'>CCE-ID</ident>
+    # element set in the XCCDF document
+    xccdftocce_idmapping = {}
+
+    xccdfrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
+    for rule in xccdfrules:
+        xccdfid = rule.get("id")
+        if xccdfid is not None:
+            identcce = rule.find("./{%s}ident[@system='http://cce.mitre.org']" % xccdf_ns)
+            if identcce is not None:
+                cceid = identcce.text
+                xccdftocce_idmapping[xccdfid] = cceid
+
+    return xccdftocce_idmapping
+
+
+def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
+    #
+    # For each XCCDF rule ID having <ident> CCE set and
+    # having OVAL check implemented (remote OVAL isn't sufficient!)
+    # add a new <reference> element into the OVAL definition having the
+    # following form:
+    #
+    # <reference source="CCE" ref_id="CCE-ID" />
+    #
+    # where "CCE-ID" is the CCE identifier for that particular rule
+    # retrieved from the XCCDF file
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
+
+    ovalrules = ovaltree.findall(".//{%s}definition" % oval_ns)
+    for rule in ovalrules:
+        ovalid = rule.get("id")
+        ovaldesc = rule.find(".//{%s}description" % oval_ns)
+        # Assign <reference> CCE elements only to those OVAL checks whose
+        # XCCDF rule ID has <ident> CCE set
+        if ovalid is not None and \
+           ovaldesc is not None and \
+           ovalid in idmappingdict:
+            # Append the <reference source="CCE" ref_id="CCE-ID" /> element right
+            # after <description> element of specific OVAL check
+            xccdfcceid = idmappingdict[ovalid]
+            ccerefelem = ET.Element('reference', ref_id="%s" % xccdfcceid, source="CCE")
+            ovaldesc.addnext(ccerefelem)
+            # Sanity check if appending succeeded
+            if ccerefelem.getprevious() is not ovaldesc:
+                print ("\n\tError trying to add CCE ID to %s. Exiting" % ovalid)
+                sys.exit(1)
+
+
+def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree):
+    # Ensure all OVAL checks referenced by XCCDF are implemented in OVAL file
+    # Drop the reference from XCCDF to OVAL definition if:
+    # * Particular OVAL definition isn't present in OVAL file,
+    # * That OVAL definition doesn't constitute a remote OVAL
+    #   (@href of <check-content-ref> doesn't start with 'http'
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
+
+
+    xccdfrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
+    for rule in xccdfrules:
+        xccdfid = rule.get("id")
+        if xccdfid is not None:
+            # Search OVAL ID in OVAL document
+            ovalid = ovaltree.find(".//{%s}definition[@id=\"%s\"]" % (oval_ns, xccdfid))
+            if ovalid is None:
+                # Search same ID in XCCDF document
+                check = rule.find(".//{%s}check[@system=\"%s\"]" % (xccdf_ns, oval_ns))
+                # Skip XCCDF rules not referencing OVAL checks
+                if check is not None:
+                    checkcontentref = check.find(".//{%s}check-content-ref" % xccdf_ns)
+                    if checkcontentref is not None:
+                        try:
+                            checkcontentref_hrefattr = checkcontentref.get('href')
+                        except KeyError:
+                            # @href attribute of <check-content-ref> is required by XCCDF standard
+                            print("\nError: Invalid OVAL <check-content-ref> detected! Exiting..")
+                            sys.exit(1)
+
+                        # Skip remote OVAL (should cover both 'http://' and 'https://' cases)
+                        if checkcontentref_hrefattr.startswith('http'):
+                            continue
+
+                        # For local OVAL drop the reference to OVAL definition from XCCDF document
+                        # in the case:
+                        # * OVAL definition is referenced from XCCDF file,
+                        # * But not defined in OVAL file
+                        print("Removing <check-content> OVAL element for %s." % xccdfid)
+                        rule.remove(check)
+
+
 def main():
     if len(sys.argv) < 3:
         print "Provide an XCCDF file and an ID name scheme."
@@ -54,8 +152,11 @@ def main():
     idname = sys.argv[2]
 
     os.chdir("./output")
-    # step over xccdf file, and find referenced check files
+    # Step over xccdf file, and find referenced check files
     xccdftree = parse_xml_file(xccdffile)
+
+    # Create XCCDF rule ID to assigned CCE ID mapping
+    xccdf_to_cce_id_mapping = create_xccdf_id_to_cce_id_mapping(xccdftree)
 
     # Check that OVAL IDs and XCCDF Rule IDs match
     if 'unlinked-ocilref' not in xccdffile:
@@ -94,21 +195,35 @@ def main():
 
     translator = idtranslate.idtranslator(idname)
 
-    # rename all IDs in the oval file
+    # Rename all IDs in the oval file
     if ovalfile:
         ovaltree = parse_xml_file(ovalfile)
+
+        # Add new <reference source="CCE" ref_id="CCE-ID" /> element to those OVAL
+        # checks having CCE ID already assigned in XCCDF for particular rule
+        # Exit with failure if the assignment wasn't successful
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
+        add_cce_id_refs_to_oval_checks(ovaltree, xccdf_to_cce_id_mapping)
+
+        # Verify all by XCCDF referenced (local) OVAL checks are defined in OVAL file
+        # If not drop the <check-content> OVAL checksystem reference from XCCDF
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
+        ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree)
+
         ovaltree = translator.translate(ovaltree, store_defname=True)
         newovalfile = ovalfile.replace("unlinked", idname)
         ET.ElementTree(ovaltree).write(newovalfile)
 
-    # rename all IDs in the ocil file
+    # Rename all IDs in the ocil file
     if ocilfile:
         ociltree = parse_xml_file(ocilfile)
         ociltree = translator.translate(ociltree)
         newocilfile = ocilfile.replace("unlinked", idname)
         ET.ElementTree(ociltree).write(newocilfile)
 
-    # rename all IDs and file refs in the xccdf file
+    # Rename all IDs and file refs in the xccdf file
     for check in checks:
         checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
 
