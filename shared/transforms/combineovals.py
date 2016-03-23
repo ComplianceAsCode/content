@@ -21,6 +21,7 @@ FIREFOX = 'Mozilla Firefox'
 JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
+FUSE = 'JBoss Fuse'
 
 
 def _header(schema_version):
@@ -89,6 +90,8 @@ def map_product(version):
         product_name = WEBMIN
     if re.findall('debian', version):
         product_name = DEBIAN
+    if re.findall('fuse', version):
+        product_name = FUSE
     return product_name
 
 def check_is_applicable_for_product(oval_check_def, product):
