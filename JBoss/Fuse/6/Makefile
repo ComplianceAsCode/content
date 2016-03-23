@@ -5,9 +5,6 @@ include $(SHARED)/product-make.include
 
 PROD = fuse6
 
-#stats:
-#	$(SHARED)/$(TRANS)/stats.sh
-
 checks:
 	xmlwf $(IN)/oval/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
@@ -18,25 +15,26 @@ checks:
 #	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
 #	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
 
-table-refs: $(OUT)/xccdf-unlinked-final.xml
+table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
+	xsltproc -stringparam ref "cis" -o $(OUT)/table-$(PROD)-cisrefs.html $(TRANS)/xccdf2table-byref.xslt $<
 	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-nistrefs-common.html \
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 
-table-idents: $(OUT)/xccdf-unlinked-final.xml
+table-idents: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $<
 
-table-srgmap: $(OUT)/xccdf-unlinked-final.xml
+table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-application-srg-v2r1.xml
 	xsltproc -stringparam flat "y" -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-application-srg-v2r1.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
-	xsltproc -o $(OUT)/table-firefox-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
-	xsltproc -o $(OUT)/table-firefox-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
+#	xsltproc -o $(OUT)/table-firefox-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
+#	xsltproc -o $(OUT)/table-firefox-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-firefox-v4r11-xccdf-manual.xml
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
@@ -47,16 +45,15 @@ table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 		$(TRANS)/xccdf-apply-overlay-stig.xslt $<
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
-tables: table-refs table-idents table-stigs
-#tables: table-refs table-idents table-srgmap table-stigs
+tables: table-refs table-idents table-srgmap table-stigs
 
 content: $(OUT)/xccdf-unlinked-final.xml checks
 	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	The relabelids.py script chdirs to ./output, so refer to files from there.
-#	its second argument controls the IDs, as well as the output filenames.
-#	thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
+#	Its second argument controls the IDs, as well as the output filenames.
+#	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
 	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
 	$(SHARED)/$(TRANS)/relabelids.py xccdf-unlinked-ocilrefs.xml $(ID)
@@ -68,6 +65,8 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
+#	Update "style" attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
+	sed -i 's/style="SCAP_1.1"/style="SCAP_1.2"/' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 #	Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
@@ -107,8 +106,10 @@ validate: validate-xml
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
-eval-common:
-	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
+eval-common: content
+	# Based on oscap(8) OVAL results are always stored into CWD. Therefore
+	# not to pollute CWD -- first change CWD to $(OUT), only then evaluate "common" profile
+	cd $(OUT); oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(ID)-$(PROD)-xccdf.xml
 
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content
@@ -123,4 +124,5 @@ dist: tables guide content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
-	rm -rf $(DIST)/content
+	rm -rf $(DIST)/content $(DIST)/guide
+	rm -rf $(BUILD)
