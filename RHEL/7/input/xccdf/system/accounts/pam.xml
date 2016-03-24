@@ -379,7 +379,7 @@ more difficult by ensuring a larger search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_ocredit">
+<Rule id="accounts_password_pam_ocredit" severity="medium">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
 usage of special (or "other") characters in a password. When set to a negative number, any password will be
@@ -387,7 +387,7 @@ required to contain that many special characters. When set to a positive number,
 additional length credit for each special character. Modify the <tt>ocredit</tt> setting in 
 <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_ocredit" /> to require use of a special character in passwords.
 </description>
-<ocil clause="ocredit is not found or not set to the required value">
+<ocil clause="ocredit is not found or not equal to or less than the required value">
 To check how many special characters are required in a password, run the following command:
 <pre>$ grep ocredit /etc/security/pwquality.conf</pre>
 The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
@@ -395,12 +395,20 @@ The DoD and FISMA require at least one special character in a password.
 This would appear as <tt>ocredit = -1</tt>.
 </ocil>
 <rationale>
+Use of a complex password helps to increase the time and resources required
+to compromise the password. Password complexity, or strength, is a measure of
+the effectiveness of a password in resisting attempts at guessing and brute-force
+attacks. 
+
+Password complexity is one factor of several that determines how long it takes
+to crack a password. The more complex the password, the greater the number of 
+possble combinations that need to be tested before the password is compromised.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="27360-7" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="SRG-OS-000266-GPOS-00101" stigid="010120" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
