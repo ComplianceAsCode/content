@@ -157,21 +157,32 @@ Bugzilla #1275532.
 <ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" />
 </Rule>
 
-<Rule id="rpm_verify_hashes">
+<Rule id="rpm_verify_hashes" severity="high">
 <title>Verify File Hashes with RPM</title>
-<description>The RPM package management system can check the hashes of
+<description>Without cryptographic integrity protections, system
+executables and files can be altered by unauthorized users without
+detection.
+
+The RPM package management system can check the hashes of
 installed software packages, including many that are important to system
-security. Run the following command to list which files on the system
+security. 
+
+To verify that the cryptographic hash of system files and commands match vendor
+values, run the following command to list which files on the system
 have hashes that differ from what is expected by the RPM database:
 <pre>$ rpm -Va | grep '^..5'</pre>
+
 A "c" in the second column indicates that a file is a configuration file, which
 may appropriately be expected to change.  If the file was not expected to
 change, investigate the cause of the change using audit logs or other means.
 The package can then be reinstalled to restore the file.
+
 Run the following command to determine which package owns the file:
 <pre>$ rpm -qf <i>FILENAME</i></pre>
+
 The package can be reinstalled from a yum repository using the command:
 <pre>$ sudo yum reinstall <i>PACKAGENAME</i></pre>
+
 Alternatively, the package can be reinstalled from trusted media using the command:
 <pre>$ sudo rpm -Uvh <i>PACKAGENAME</i></pre> 
 </description>
@@ -185,7 +196,7 @@ information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
 <ident cce="27157-7" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" pcidss="Req-11.5" cis="1.2.6" />
+<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" pcidss="Req-11.5" cis="1.2.6" stigid="010020" />
 </Rule>
 
 </Group>
