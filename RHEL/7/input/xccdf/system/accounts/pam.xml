@@ -314,19 +314,27 @@ contain that many digits. When set to a positive number, pam_pwquality will gran
 length credit for each digit. Modify the <tt>dcredit</tt> setting in 
 <tt>/etc/security/pwquality.conf</tt> to require the use of a digit in passwords.
 </description>
-<ocil clause="dcredit is not found or not set to the required value">
+<ocil clause="lcredit is not found or not equal to or less than the required value">
 To check how many digits are required in a password, run the following command:
 <pre>$ grep dcredit /etc/security/pwquality.conf</pre>
 The <tt>dcredit</tt> parameter (as a negative number) will indicate how many digits are required.
 The DoD requires at least one digit in a password. This would appear as <tt>dcredit = -1</tt>.
 </ocil>
 <rationale>
+Use of a complex password helps to increase the time and resources required
+to compromise the password. Password complexity, or strength, is a measure of
+the effectiveness of a password in resisting attempts at guessing and brute-force
+attacks. 
+
+Password complexity is one factor of several that determines how long it takes
+to crack a password. The more complex the password, the greater the number of 
+possble combinations that need to be tested before the password is compromised.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
 <ident cce="27214-6" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
-<ref nist="IA-5(b),IA-5(c),194" disa="194" srg="71" pcidss="Req-8.2.3" cis="6.3.2" />
+<ref nist="IA-5(1)(a),IA-5(b),IA-5(c),194" disa="194" srg="SRG-OS-000071-GPOS-0039" pcidss="Req-8.2.3" cis="6.3.2" stigid="010110" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
