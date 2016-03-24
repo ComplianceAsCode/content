@@ -330,29 +330,33 @@ search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_minlen">
+<Rule id="accounts_password_pam_minlen" severity="medium">
 <title>Set Password Minimum Length</title>
 <description>The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
 minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
 after pam_pwquality to set minimum password length requirements.
 </description>
-<ocil clause="minlen is not found or not set to the required value (or higher)">
+<ocil clause="minlen is not found or not equal to or greater than the required value">
 To check how many characters are required in a password, run the following command:
 <pre>$ grep minlen /etc/security/pwquality.conf</pre>
 Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /></tt>
 </ocil>
 <rationale>
-Password length is one factor of several that helps to determine
-strength and how long it takes to crack a password. Use of more characters in
-a password helps to exponentially increase the time and/or resources
-required to compromise the password.
+The shorter the password, the lower the number of possible combinations
+that need to be tested before the password is compromised.
+
+Password complexity, or strength, is a measure of the effectiveness of a 
+password in resisting attempts at guessing and brute-force attacks. 
+Password length is one factor of several that helps to determine strength
+and how long it takes to crack a password. Use of more characters in a password
+helps to exponentially increase the time and/or resources required to 
+compromose the password.
 </rationale>
 <ident cce="27293-0" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
-<ref nist="IA-5(1)(a)" disa="205" srg="78" pcidss="Req-8.2.3" cis="6.3.2" />
+<ref nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046" pcidss="Req-8.2.3" cis="6.3.2" stigid="010250" />
 <tested by="swells" on="20140928" />
 </Rule>
-
 
 <Rule id="accounts_password_pam_ucredit">
 <title>Set Password Strength Minimum Uppercase Characters</title>
