@@ -1,39 +1,35 @@
-<Profile id="stig-rhel7-server-upstream" extends="common">
+<Profile id="stig-rhel7-server-upstream" extends="ospp-rhel7-server">
 <title override="true">STIG for Red Hat Enterprise Linux 7 Server</title>
 <description override="true">This is a *draft* profile for STIG. This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
 
-<!-- STIG refinement values. Note these are set by DISA FSO,
-     and should not be manipulated -->
+<!-- DISA FSO REFINEMENT VALUES
+     The following refine-values tailor the NIAP OSPP profile
+     to DoD-specific settings, as deemed approriate by DISA FSO (RE71) -->
+<refine-value idref="sshd_idle_timeout_value" selector="15_minutes" />
 <refine-value idref="var_password_pam_unix_remember" selector="5" />
-<refine-value idref="var_accounts_maximum_age_login_defs" selector="60" />
-<refine-value idref="var_password_pam_ocredit" selector="1" />
-<refine-value idref="var_password_pam_ucredit" selector="1" />
-<refine-value idref="var_password_pam_lcredit" selector="1" />
-<refine-value idref="var_password_pam_dcredit" selector="1" />
-<refine-value idref="var_password_pam_minlen" selector="15" />
 <refine-value idref="var_password_pam_difok" selector="15" />
-<refine-value idref="var_accounts_minimum_age_login_defs" selector="1" />
-<refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
-<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
 <refine-value idref="login_banner_text" selector="dod_default" />
+<refine-value idref="var_password_pam_minclass" selector="4" />
+<refine-value idref="var_password_pam_maxrepeat" selector="2" />
+<refine-value idref="var_password_pam_maxclassrepeat" selector="2" />
+<!-- END DISA FSO REFINEMENT VALUES -->
 
-<!-- BEGIN STIG RULE SELECTION -->
+<!-- NIAP/OSPP EXCLUDED RULES
+     The following rules are established within the NIAP Operating System Protection Profile,
+     however specifically excluded by DISA FSO (RE71) for use U.S. Department of Defense baselines -->
 
-<!-- Disk Partitioning -->
-<select idref="encrypt_partitions" selected="true"/>
+<!-- END NIAP/OSPP EXCLUDED RULES -->
+
+<!-- DISA FSO (RE71) RULE ADDITIONS -->
+<!-- The following rules reflect DISA FSO (RE71) extensions to the NIAP Operating System
+     Protection Profile (NIAP OSPP). -->
 
 <!-- Password Requirements -->
-<select idref="accounts_maximum_age_login_defs" selected="true" />
 <select idref="accounts_password_pam_unix_remember" selected="true" />
-<select idref="accounts_password_pam_ocredit" selected="true" />
-<select idref="accounts_password_pam_ucredit" selected="true" />
-<select idref="accounts_password_pam_lcredit" selected="true" />
-<select idref="accounts_password_pam_dcredit" selected="true" />
-<select idref="accounts_password_pam_minlen" selected="true" />
 <select idref="accounts_password_pam_difok" selected="true" />
-<select idref="accounts_minimum_age_login_defs" selected="true" />
-<select idref="accounts_passwords_pam_faillock_interval" selected="true" />
-<select idref="accounts_passwords_pam_faillock_deny" selected="true" />
+<select idref="accounts_password_pam_minclass" selected="true" />
+<select idref="accounts_password_pam_maxrepeat" selected="true" />
+<select idref="accounts_password_pam_maxclassrepeat" selected="true" />
 
 <!-- Account Management Requirements -->
 <select idref="account_temp_expire_date" selected="true" />
@@ -44,18 +40,5 @@
 <select idref="ftp_present_banner" selected="true" />
 <select idref="dconf_gnome_banner_enabled" selected ="true" />
 <select idref="dconf_gnome_login_banner_text" selected="true" />
-
-<!-- Software/Patch Requirements -->
-<select idref="ensure_redhat_gpgkey_installed" selected="true" />
-<select idref="ensure_gpgcheck_globally_activated" selected="true" />
-<select idref="ensure_gpgcheck_never_disabled" selected="true" />
-<select idref="security_patches_up_to_date" selected="true" />
-
-<!-- System Audit Requirements -->
-<select idref="audit_rules_file_deletion_events" selected="true" />
-<select idref="audit_rules_kernel_module_loading" selected="true" />
-
-<!-- System Logging Requirements -->
-<select idref="rsyslog_remote_loghost" selected="true" />
 
 </Profile>

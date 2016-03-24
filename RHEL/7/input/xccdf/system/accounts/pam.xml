@@ -149,6 +149,15 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
+<Value id="var_password_pam_maxclassrepeat" type="number" operator="equals" interactive="0">
+<title>maxclassrepeat</title>
+<description>Maximum Number of Consecutive Repeating Characters in a Password From the Same Character Class</description>
+<value selector="">2</value>
+<value selector="1">1</value>
+<value selector="2">2</value>
+<value selector="3">3</value>
+</Value>
+
 <Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
@@ -290,20 +299,42 @@ is different from account lockout, which is provided by the pam_faillock module.
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
 which contain more than that number of consecutive characters. Modify the <tt>maxrepeat</tt> setting
-in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
+in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent a 
+run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
 <ocil clause="maxrepeat is not found or not set to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3 which would 
-appear as <tt>maxrepeat = 3</tt>.
+Look for the value of the <tt>maxrepeat</tt> parameter. The value should return.
 </ocil>
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27333-4" />
 <oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref nist="IA-5(c)" disa="366"/>
+</Rule>
+
+<Rule id="accounts_password_pam_maxclassrepeat">
+<title>Set Password to Maximum of Consecutive Repeating Characters from Same Character Class</title>
+<description>The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
+consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
+which contain more than that number of consecutive characters from the same character class. Modify the
+<tt>maxclassrepeat</tt> setting in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxclassrepeat" />
+to prevent a run of (<sub idref="var_password_pam_maxclassrepeat" /> + 1) or more identical characters.
+</description>
+<ocil clause="that is not the case">
+To check the value for maximum consecutive repeating characters, run the following command:
+<pre>$ grep maxclassrepeat /etc/security/pwquality.conf</pre>
+The output should show <tt>maxclassrepeat</tt>=600.
+</ocil>
+<rationale>
+Passwords with excessive repeating characters from the same character class may be more vulnerable to 
+password-guessing attacks.
+</rationale>
+<ident cce="27512-3" />
+<oval id="accounts_password_pam_maxclassrepeat" value="var_password_pam_maxclassrepeat" />
+<ref nist="IA-5(c)" disa="366" />
 </Rule>
 
 <Rule id="accounts_password_pam_dcredit">
@@ -468,7 +499,7 @@ categories available:
 * Special characters (for example, punctuation)
 </pre>
 Modify the <tt>minclass</tt> setting in <tt>/etc/security/pwquality.conf</tt> entry to require <sub idref="var_password_pam_minclass" />
-differing categories of characters when changing passwords. The minimum requirement is <tt>3</tt>.
+differing categories of characters when changing passwords.
 </description>
 <ocil clause="minclass is not found or not set to the required value">
 To check how many categories of characters must be used in password during a password change,
