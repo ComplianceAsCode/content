@@ -404,7 +404,7 @@ more difficult by ensuring a larger search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_lcredit">
+<Rule id="accounts_password_pam_lcredit" severity="medium">
 <title>Set Password Strength Minimum Lowercase Characters</title>
 <description>The pam_pwquality module's <tt>lcredit</tt> parameter controls requirements for
 usage of lowercase letters in a password. When set to a negative number, any password will be required to
@@ -412,20 +412,27 @@ contain that many lowercase characters. When set to a positive number, pam_pwqua
 length credit for each lowercase character. Modify the <tt>lcredit</tt> setting in 
 <tt>/etc/security/pwquality.conf</tt> to require the use of a lowercase character in passwords.
 </description>
-<ocil clause="lcredit is not found or not set to the required value">
+<ocil clause="lcredit is not found or not equal to or less than the required value">
 To check how many lowercase characters are required in a password, run the following command:
 <pre>$ grep lcredit /etc/security/pwquality.conf</pre>
 The <tt>lcredit</tt> parameter (as a negative number) will indicate how many special characters are required.
-The DoD and FISMA require at least one lowercase character in a password.
-This would appear as <tt>lcredit = -1</tt>.
+The DoD and FISMA require at least one lowercase character in a password. This would appear as <tt>lcredit = -1</tt>.
 </ocil>
 <rationale>
+Use of a complex password helps to increase the time and resources required
+to compromise the password. Password complexity, or strength, is a measure of
+the effectiveness of a password in resisting attempts at guessing and brute-force
+attacks. 
+
+Password complexity is one factor of several that determines how long it takes
+to crack a password. The more complex the password, the greater the number of 
+possble combinations that need to be tested before the password is compromised.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="27345-8" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="70" pcidss="Req-8.2.3" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="SRG-OS-000070-GPOS-0038" pcidss="Req-8.2.3" stigid="010100" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
