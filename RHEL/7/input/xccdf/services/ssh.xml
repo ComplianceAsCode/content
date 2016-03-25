@@ -316,11 +316,10 @@ not provide easy attribution.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
-<Rule id="sshd_do_not_permit_user_env">
+<Rule id="sshd_do_not_permit_user_env" severity="medium">
 <title>Do Not Allow SSH Environment Options</title>
-<description>To ensure users are not able to present
-environment options to the SSH daemon, add or correct the following line
+<description>To ensure users are not able to override environment 
+options to the SSH daemon, add or correct the following line
 in <tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitUserEnvironment no</pre>
 </description>
@@ -336,7 +335,7 @@ access restriction in some configurations.
 </rationale>
 <ident cce="27363-1" />
 <oval id="sshd_do_not_permit_user_env" />
-<ref disa="" cis="6.2.10" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010441" cis="6.2.10" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
