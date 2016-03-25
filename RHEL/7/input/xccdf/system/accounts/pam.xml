@@ -437,26 +437,38 @@ more difficult by ensuring a larger search space.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_difok">
+<Rule id="accounts_password_pam_difok" severity="medium">
 <title>Set Password Strength Minimum Different Characters</title>
-<description>The pam_pwquality module's <tt>difok</tt> parameter controls requirements for usage of different
-characters during a password change. Modify the <tt>difok</tt> setting in <tt>/etc/security/pwquality.conf</tt>
-to equal <sub idref="var_password_pam_difok" /> to require differing characters when changing passwords. The DoD requirement is <tt>4</tt>.
+<description>The pam_pwquality module's <tt>difok</tt> parameter sets the number of characters
+in a password that must not be present in and old password during a password change. 
+
+Modify the <tt>difok</tt> setting in <tt>/etc/security/pwquality.conf</tt>
+to equal <sub idref="var_password_pam_difok" /> to require differing characters 
+when changing passwords.
 </description>
-<ocil clause="difok is not found or not set to the required value">
+<ocil clause="difok is not found or not equal to or greater than the required value">
 To check how many characters must differ during a password change, run the following command:
 <pre>$ grep difok /etc/security/pwquality.conf</pre>
-The <tt>difok</tt> parameter will indicate how many characters must differ. The DoD requires four characters
-differ during a password change. This would appear as <tt>difok = 4</tt>.
+The <tt>difok</tt> parameter will indicate how many characters must differ. 
 </ocil>
 <rationale>
+Use of a complex password helps to increase the time and resources 
+required to compromise the password. Password complexity, or strength, 
+is a measure of the effectiveness of a password in resisting attempts 
+at guessing and brute–force attacks.
+
+Password complexity is one factor of several that determines how long 
+it takes to crack a password. The more complex the password, the 
+greater the number of possible combinations that need to be tested 
+before the password is compromised.
+
 Requiring a minimum number of different characters during password changes ensures that
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
 <ident cce="26631-2" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="72" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040" stigid="010130" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
