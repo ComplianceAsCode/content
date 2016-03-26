@@ -24,10 +24,12 @@
 # test suite
 #
 # Therefore this script is performing the following:
-# * moving the OCIL check system datastream component from <ds:extended-components>
-#   element to <ds:checks> element (as required by SCAP v1.2 standard [2]),
-# * and renaming the tag name for OCIL component from '<ds:extended-component>' to
-#   '<ds:component>'
+# * moving the refence of found OCIL component from <ds:extended-components>
+#   datastream element to <ds:checks> datastream element (and removing the
+#   original <ds:extended-components> element)
+# * also moving content of the found OCIL component from <ds:extended-component>
+#   datastream element to <ds:component> datastream element (and removing the
+#   original <ds:extended-component> element)
 #
 # This is a temporary workaround for bug [1], fixing the issues [3] and [4].
 #
@@ -36,10 +38,12 @@
 
 import os
 import sys
+import lxml.html
 import lxml.etree as ET
 
 xlink_ns = "http://www.w3.org/1999/xlink"
 datastream_ns = "http://scap.nist.gov/schema/scap/source/1.2"
+ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
 
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
@@ -48,7 +52,9 @@ def parse_xml_file(xmlfile):
     return tree
 
 
-def move_ocil_from_ds_extended_components_to_ds_checks(datastreamtree, ocilcomp):
+def move_ocil_ref_from_ds_extended_components_to_ds_checks(datastreamtree, ocilcomp):
+    # This routine moves reference to present OCIL component from <ds:extended-components>
+    # datastream element to <ds:checks> element (as required by SCAP v1.2 standard)
 
     # Locate <ds:checks> element
     dschecks = datastreamtree.find(".//{%s}checks" % datastream_ns)
@@ -62,7 +68,7 @@ def move_ocil_from_ds_extended_components_to_ds_checks(datastreamtree, ocilcomp)
             # Replace 'ecomp' with 'comp' in <xlink:href> attribute
             # Turns e.g. 'scap_org.open-scap_ecomp_ocil-ssg.xml' into 'scap_org.open-scap_comp_ocil-ssg.xml'
             ocilcomp.attrib[hreftag] = oldocilhref.replace('ecomp', 'comp')
-            # Insert the updated OCIL component past the last child in current <ds:checks> element
+            # Insert the reference to OCIL component past the last child in current <ds:checks> element
             dschecks.insert(len(dschecks)+1, ocilcomp)
             # Locate <ds:extended-components> element in datastream
             extendedcomps = datastreamtree.find(".//{%s}extended-components" % datastream_ns)
@@ -76,25 +82,63 @@ def move_ocil_from_ds_extended_components_to_ds_checks(datastreamtree, ocilcomp)
     return None
 
 
-def replace_ds_extended_component_tag_with_ds_component_tag_for_ocil(datastreamtree, ocilxlinkhref):
+def move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree, ocilxlinkhref):
+    # This routine moves content of OCIL element from <ds:extended-component>
+    # datastream element to <ds:component> element (as required by SCAP v1.2 standard)
 
     # Drop the leading '#' character from <xlink:href> to get OCIL component ID
-    ocilid = ocilxlinkhref[1:]
+    ocilextcompid = ocilxlinkhref[1:]
     # Locate the <ds:extended-component> having @id set to OCIL component ID
-    ocilcomp = datastreamtree.find(".//{%s}extended-component[@id=\"%s\"]" % (datastream_ns, ocilid))
-    # We succeeded trying to locate
-    if ocilcomp is not None:
-        # Sanity check if OCIL component has 'id' attribute
-        if 'id' in ocilcomp.attrib:
-            # Replace 'ecomp' with 'comp' in OCIL component ID
-            # Turns e.g. 'scap_org.open-scap_ecomp_ocil-ssg.xml' into 'scap_org.open-scap_comp_ocil-ssg.xml'
-            ocilcomp.attrib['id'] = ocilid.replace('ecomp', 'comp')
-            # Express <ds:extended-component> tag in namespace + tag form
-            extcomptag = '{%s}extended-component' % datastream_ns
-            # Ensure we operate on '<ds:extended-component>' element
-            if ocilcomp.tag == extcomptag:
-                # Reset OCIL component tag from '<ds:extended-component>' to '<ds:component>'
-                ocilcomp.tag = '{%s}component' % datastream_ns
+    extendedcomp = datastreamtree.find(".//{%s}extended-component[@id=\"%s\"]" % (datastream_ns, ocilextcompid))
+    # Replace 'ecomp' for 'comp' to be used in new <ds:component> ID
+    ocildscompid = ocilextcompid.replace('ecomp', 'comp')
+    # Default value for 'timestamp' attribute
+    timestamp = None
+    # Verify <ds:extended-component> contains 'timestamp' attribute
+    if 'timestamp' in extendedcomp.attrib:
+        # Save the 'timestamp' attribute value
+        timestamp = extendedcomp.get('timestamp')
+    else:
+        print("Unable to obtain 'timestamp' attribute value from <ds:extended-component>. Exiting.")
+        sys.exit(1)
+
+    # Get children elements of <ds:extended-component> containing OCIL content
+    extchildren = extendedcomp.getchildren()
+    # There should be just one OCIL subcomponent in <ds:extended-component>
+    if len(extchildren) == 1:
+        # Decode possible HTML entities present in OCIL component
+        extnohtmlents = ET.tostring(extendedcomp, method='html')
+        # Create new element tree from decoded HTML
+        extcomptree = ET.fromstring(extnohtmlents)
+        # Locate the OCIL subcomponent within that element tree
+        ocilcomp = extcomptree.find(".//{%s}ocil" % ocil_ns)
+
+    # Now we have got everything:
+    # * future OCIL <ds:component> ID        --> ocildscompid
+    # * future OCIL <ds:component> timestamp --> timestamp
+    # * future OCIL <ds:component> content   --> ocilcomp
+    # to be ables to create new <ds:component> for OCIL content
+    ocildscomp = ET.Element('{' + datastream_ns + '}component',
+                            attrib = { 'id' : ocildscompid, 'timestamp' : timestamp },
+                            nsmap = {'ds' : datastream_ns})
+    # Insert the OCIL content into newly created <ds:component>
+    ocildscomp.insert(len(ocildscomp)+1, ocilcomp)
+
+    # Next insert that newly created OCIL <ds:component> into the datastream, thus
+    # Get previous sibling of <ds:extended-component> (IOW last <ds:component> in benchmark)
+    lastexistingdscomp = extendedcomp.getprevious()
+    if lastexistingdscomp is not None:
+        # Append newly created OCIL <ds:component> as following sibling directly after
+        # last existing <ds:component> element
+        lastexistingdscomp.addnext(ocildscomp)
+        # Sanity check if the appending succeeded
+        if ocildscomp.getprevious() != lastexistingdscomp:
+            print("Error trying to append new OCIL <ds:component> directly after last <ds:component> element.")
+            sys.exit(1)
+
+        # Finally remove the original <ds:extended-component> OCIL element (since
+        # OCIL content has now been placed into new <ds:component> element)
+        extendedcomp.getparent().remove(extendedcomp)
 
 
 def main():
@@ -124,13 +168,13 @@ def main():
             sys.exit(1)
         else:
             comp = ocilcomps[0]
-            # Move found OCIL component from <ds:extended-components> to <ds:checks>
-            # Obtain old value of <xlink:href> atrribute value of the OCIL component
-            oldocilhref = move_ocil_from_ds_extended_components_to_ds_checks(datastreamtree, comp)
+            # Move reference of found OCIL component from <ds:extended-components> to <ds:checks> element
+            # Return old value of <xlink:href> atrribute value of the OCIL component
+            oldocilhref = move_ocil_ref_from_ds_extended_components_to_ds_checks(datastreamtree, comp)
             if oldocilhref is not None:
-                # Rename <ds:extended-component> tag to <ds:component> tag for OCIL component
+                # Move OCIL component content from <ds:extended-component> to <ds:component>
                 # Also update the ID replacing 'ecomp' with 'comp'
-                replace_ds_extended_component_tag_with_ds_component_tag_for_ocil(datastreamtree, oldocilhref)
+                move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree, oldocilhref)
             else:
                 print("Error trying to move OCIL component in datastream. Exiting")
                 sys.exit(1)
