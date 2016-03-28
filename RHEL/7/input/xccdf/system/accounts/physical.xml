@@ -410,7 +410,7 @@ A console screen locking mechanism is provided in the
 <tt>screen</tt> package, which is not installed by default.
 </description>
 
-<Rule id="package_screen_installed">
+<Rule id="package_screen_installed" severity="medium">
 <title>Install the screen Package</title>
 <description>
 To enable console screen locking, install the <tt>screen</tt> package:
@@ -424,12 +424,17 @@ The console can now be locked with the following key combination:
 <package-check-macro package="screen" />
 </ocil>
 <rationale>
-Installing <tt>screen</tt> ensures a console locking capability is available
-for users who may need to suspend console logins.
+A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+physical vicinity of the information system but des not logout because of the temporary nature of the absence.
+Rather than relying on the user to manually lock their operation system session prior to vacating the vicinity,
+operating systems need to be able to identify when a user's session has idled and take action to initiate the
+session lock. 
+
+The <tt>screen</tt> package allows for a session lock to be implemented and configured.
 </rationale>
 <ident cce="27351-6" />
-<ref disa="58" />
 <oval id="package_screen_installed" />
+<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010072" />
 <tested by="DS" on="20121026"/>
 </Rule>
 </Group>
