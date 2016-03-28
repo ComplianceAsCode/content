@@ -285,25 +285,33 @@ is different from account lockout, which is provided by the pam_faillock module.
 <tested by="swells" on="20140925"/>
 </Rule>
 
-<Rule id="accounts_password_pam_maxrepeat">
+<Rule id="accounts_password_pam_maxrepeat" severity="medium">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
 which contain more than that number of consecutive characters. Modify the <tt>maxrepeat</tt> setting
 in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent a run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
-<ocil clause="maxrepeat is not found or not set to the required value">
+<ocil clause="maxrepeat is not found or less than the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3 which would 
-appear as <tt>maxrepeat = 3</tt>.
+Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 2 which would 
+appear as <tt>maxrepeat = 2</tt>.
 </ocil>
 <rationale>
+Use of a complex password helps to increase the time and resources required to compromise the password. 
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at 
+guessing and brute-force attacks.
+
+Password complexity is one factor of several that determines how long it takes to crack a password. The more
+complex the password, the greater the number of possible combinations that need to be tested before the
+password is compromised.
+
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
-<ref nist="IA-5(c)" disa="366"/>
+<ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010150" />
 </Rule>
 
 <Rule id="accounts_password_pam_dcredit" severity="medium">
