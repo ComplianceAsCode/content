@@ -121,12 +121,20 @@ the following command:
 <pre>$ sudo yum erase telnet-server</pre></description>
 <ocil><package-check-macro package="telnet-server" /> </ocil>
 <rationale>
-Removing the <tt>telnet-server</tt> package decreases the risk of the
-telnet service's accidental (or intentional) activation.
+It is detrimental for operating systems to provide, or install by default, functionality exceeding
+requirements or mission objectives. These unnecessary capabilities are often overlooked and therefore
+may remain unsecure. They increase the risk to the platform by providing additional attack vectors.
+
+The telnet service provides an unencrypted remote access service which does not provide for the 
+confidentiality and integrity of user passwords or the remote session. If a privileged user were
+to login using this service, the privileged user password could be compromised.
+
+Removing the <tt>telnet-server</tt> package decreases the risk of the telnet service's accidental 
+(or intentional) activation.
 </rationale>
 <ident cce="27165-0" />
 <oval id="package_telnet-server_removed" />
-<ref nist="AC-17(8),CM-7" disa="" cis="2.1.1" />
+<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="021910" cis="2.1.1" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
