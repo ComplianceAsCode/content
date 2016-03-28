@@ -24,6 +24,37 @@ operator="equals" interactive="0">
 <value selector="20">20</value>
 </Value>
 
+<Value id="var_accounts_tmout" type="number" operator="equals" interactive="0">
+<title>Account Inactivity Timeout (minutes)</title>
+<description>In an interactive shell, the value is interpreted as the
+number of seconds to wait for input after issueing the primary prompt.
+Bash terminates after waiting for that number of seconds if input does
+not arrive.</description>
+<value selector="">600</value>
+<value selector="5_min">300</value>
+<value selector="10_min">600</value>
+<value selector="15_min">900</value>
+</Value>
+
+<Rule id="accounts_tmout">
+<title>Set Interactive Session Timeout</title>
+<description>
+Terminating an idle session within a short time period reduces 
+the window of opportunity for unauthorized personnel to take control of a 
+management session enabled on the console or console port that has been 
+left unattended.
+</description>
+<rationale>
+</rationale>
+<ocil clause="value of TMOUT is not greater than or equal to expected setting">
+Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
+on the system:
+<pre>$ sudo grep TMOUT /etc/profile</pre>
+</ocil>
+<ident cce="27333-4" />
+<oval id="accounts_tmout" value="var_accounts_tmout" />
+</Rule>
+
 <Rule id="accounts_max_concurrent_login_sessions">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
