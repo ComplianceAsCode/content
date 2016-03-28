@@ -22,8 +22,11 @@
 <select idref="encrypt_partitions" selected="true"/>
 
 <!-- Password Requirements -->
+<refine-value idref="var_password_pam_minclass" selector="4" />
+
 <select idref="accounts_maximum_age_login_defs" selected="true" />
 <select idref="accounts_password_pam_unix_remember" selected="true" />
+<select idref="accounts_password_pam_minclass" selected="true" />
 <select idref="accounts_password_pam_ocredit" selected="true" />
 <select idref="accounts_password_pam_ucredit" selected="true" />
 <select idref="accounts_password_pam_lcredit" selected="true" />
