@@ -31,10 +31,9 @@ be expressed by the '\n' character and special characters like parentheses and q
 <Rule id="banner_etc_issue" severity="medium">
 <title>Modify the System Login Banner</title>
 <description>
-To configure the system login banner:
-<br /><br />
-Edit <tt>/etc/issue</tt>. Replace the default text with a message
-compliant with the local site policy or a legal disclaimer.
+To configure the system login banner edit <tt>/etc/issue</tt>. Replace 
+the default text with a message compliant with the local site policy 
+or a legal disclaimer.
 
 The DoD required text is either:
 <br /><br />
@@ -67,12 +66,16 @@ run the following command:
 <pre>$ cat /etc/issue</pre>
 </ocil>
 <rationale>
-An appropriate warning message reinforces policy awareness during the logon
-process and facilitates possible legal action against attackers.
+Display of a standardized and approved use notification before granting access to the operating system
+ensures privacy and security notification verbiage used is consistent with applicable federal laws,
+Executive Orders, directives, policies, regulations, standards, and guidance. 
+
+System use notifications are required only for access via login interfaces with human users and
+are not required when such human interfaces do not exist.
 </rationale>
 <ident cce="27303-7" />
 <oval id="banner_etc_issue" value="login_banner_text"/>
-<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48,50,1384,1385,1386,1387,1388" ossrg="23,228" />
+<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48,50,1384,1385,1386,1387,1388" ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007" stigid="010040" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
