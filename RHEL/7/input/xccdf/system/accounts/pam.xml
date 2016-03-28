@@ -491,7 +491,7 @@ Note that passwords which are changed on compromised systems will still be compr
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_minclass">
+<Rule id="accounts_password_pam_minclass" severity="medium">
 <title>Set Password Strength Minimum Different Categories</title>
 <description>The pam_pwquality module's <tt>minclass</tt> parameter controls
 requirements for usage of different character classes, or types, of character
@@ -507,9 +507,9 @@ categories available:
 * Special characters (for example, punctuation)
 </pre>
 Modify the <tt>minclass</tt> setting in <tt>/etc/security/pwquality.conf</tt> entry to require <sub idref="var_password_pam_minclass" />
-differing categories of characters when changing passwords. The minimum requirement is <tt>3</tt>.
+differing categories of characters when changing passwords. 
 </description>
-<ocil clause="minclass is not found or not set to the required value">
+<ocil clause="minclass is not found or not set equal to or greater than the required value">
 To check how many categories of characters must be used in password during a password change,
 run the following command:
 <pre>$ grep minclass /etc/security/pwquality.conf</pre>
@@ -518,11 +518,20 @@ the requirement was for the password to contain characters from three different 
 then this would appear as <tt>minclass = 3</tt>.
 </ocil>
 <rationale>
-Requiring a minimum number of character categories makes password guessing attacks
-more difficult by ensuring a larger search space.
+Use of a complex password helps to increase the time and resources required to compromise the password.
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts 
+at guessing and brute-force attacks.
+
+Password complexity is one factor of several that determines how long it takes to crack a password. The
+more complex the password, the greater the number of possible combinations that need to be tested before
+the password is compromised.
+
+Requiring a minimum number of character categories makes password guessing attacks more difficult 
+by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
 <oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
+<ref nist="IA-5" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010140" />
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
