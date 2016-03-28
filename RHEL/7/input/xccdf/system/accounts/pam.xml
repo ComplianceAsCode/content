@@ -718,10 +718,14 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 <pre>ENCRYPT_METHOD SHA512</pre>
 </ocil>
 <rationale>
+Passwords need to be protected at all times, and encryption is the standard method for protecting passwords.
+If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords
+that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
+
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident cce="27124-7" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="" pcidss="Req-8.2.1" cis="6.3.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010180" pcidss="Req-8.2.1" cis="6.3.1" />
 <tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
