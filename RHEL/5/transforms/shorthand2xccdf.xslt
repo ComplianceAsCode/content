@@ -40,7 +40,7 @@
 
   <!-- insert SSG version -->
   <xsl:template match="Benchmark/version">
-    <xccdf:version><xsl:value-of select="$ssg_version"/></xccdf:version>
+    <xccdf:version update="{$ssg-benchmark-latest-uri}"><xsl:value-of select="$ssg_version"/></xccdf:version>
   </xsl:template>
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
