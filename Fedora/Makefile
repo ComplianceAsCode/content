@@ -44,6 +44,9 @@ content: $(OUT)/xccdf-unlinked-final.xml guide checks
 #	Update "style" attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
 	sed -i 's/style="SCAP_1.1"/style="SCAP_1.2"/' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
+	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
+	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
