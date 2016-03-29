@@ -242,10 +242,9 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="27413-4" />
 <oval id="disable_host_auth" />
-<ref nist="AC-3" disa="" cis="6.2.7" />
+<ref nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010442" cis="6.2.7" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="sshd_disable_root_login" severity="medium">
 <title>Disable SSH Root Login</title>
@@ -269,7 +268,6 @@ and also allows direct attack attempts on root's password.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
 <Rule id="sshd_disable_empty_passwords" severity="high">
 <title>Disable SSH Access via Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
@@ -289,7 +287,7 @@ even in the event of misconfiguration elsewhere.
 </rationale>
 <ident cce="27471-2" />
 <oval id="sshd_disable_empty_passwords" />
-<ref nist="AC-3" disa=""/>
+<ref nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010440" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
