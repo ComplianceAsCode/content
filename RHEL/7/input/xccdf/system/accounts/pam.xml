@@ -294,7 +294,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 <tested by="swells" on="20140925"/>
 </Rule>
 
-<Rule id="accounts_password_pam_maxrepeat">
+<Rule id="accounts_password_pam_maxrepeat" severity="medium">
 <title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
@@ -302,17 +302,26 @@ which contain more than that number of consecutive characters. Modify the <tt>ma
 in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent a 
 run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
-<ocil clause="maxrepeat is not found or not set to the required value">
+<ocil clause="maxrepeat is not found or not greater than the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-Look for the value of the <tt>maxrepeat</tt> parameter. The value should return.
+Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 2, which would appear as
+<tt>maxrepeat = 2</tt>.
 </ocil>
 <rationale>
+Use of a complex password helps to increase the time and resources required to compromise the password. 
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at 
+guessing and brute-force attacks.
+
+Password complexity is one factor of several that determines how long it takes to crack a password. The more
+complex the password, the greater the number of possible combinations that need to be tested before the
+password is compromised.
+
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="27333-4" />
 <oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
-<ref nist="IA-5(c)" disa="366"/>
+<ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010150" />
 </Rule>
 
 <Rule id="accounts_password_pam_maxclassrepeat">
@@ -522,7 +531,7 @@ Note that passwords which are changed on compromised systems will still be compr
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_password_pam_minclass">
+<Rule id="accounts_password_pam_minclass" severity="medium">
 <title>Set Password Strength Minimum Different Categories</title>
 <description>The pam_pwquality module's <tt>minclass</tt> parameter controls
 requirements for usage of different character classes, or types, of character
@@ -537,10 +546,10 @@ categories available:
 * Digits
 * Special characters (for example, punctuation)
 </pre>
-Modify the <tt>minclass</tt> setting in <tt>/etc/security/pwquality.conf</tt> entry to require <sub idref="var_password_pam_minclass" />
-differing categories of characters when changing passwords.
+Modify the <tt>minclass</tt> setting in <tt>/etc/security/pwquality.conf</tt> entry to require <sub idref="var_password_pam_minclass" /> 
+differing categories of characters when changing passwords. 
 </description>
-<ocil clause="minclass is not found or not set to the required value">
+<ocil clause="minclass is not found or not set equal to or greater than the required value">
 To check how many categories of characters must be used in password during a password change,
 run the following command:
 <pre>$ grep minclass /etc/security/pwquality.conf</pre>
@@ -549,11 +558,20 @@ the requirement was for the password to contain characters from three different 
 then this would appear as <tt>minclass = 3</tt>.
 </ocil>
 <rationale>
-Requiring a minimum number of character categories makes password guessing attacks
-more difficult by ensuring a larger search space.
+Use of a complex password helps to increase the time and resources required to compromise the password.
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts 
+at guessing and brute-force attacks.
+
+Password complexity is one factor of several that determines how long it takes to crack a password. The
+more complex the password, the greater the number of possible combinations that need to be tested before
+the password is compromised.
+
+Requiring a minimum number of character categories makes password guessing attacks more difficult 
+by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
 <oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
+<ref nist="IA-5" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010140" />
 <tested by="JL" on="20140626"/>
 </Rule>
 </Group>
@@ -729,10 +747,17 @@ ensure that the <tt>pam_unix.so</tt> module includes the argument
 <pre>$ grep sha512 /etc/pam.d/system-auth</pre>
 </ocil>
 <rationale>
-Using a stronger hashing algorithm makes password cracking attacks more difficult.
+Passwords need to be protected at all times, and encryption is the standard method for protecting
+passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily
+compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they 
+are kepy in plain text.
+
+This setting ensures user and group account administration utilities are configured to store only
+encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> configuration option
+ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
 </rationale>
 <ident cce="27104-9" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="" pcidss="Req-8.2.1" cis="6.3.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010190" pcidss="Req-8.2.1" cis="6.3.1" />
 <tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
@@ -749,10 +774,14 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 <pre>ENCRYPT_METHOD SHA512</pre>
 </ocil>
 <rationale>
+Passwords need to be protected at all times, and encryption is the standard method for protecting passwords.
+If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords
+that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
+
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident cce="27124-7" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="" pcidss="Req-8.2.1" cis="6.3.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010180" pcidss="Req-8.2.1" cis="6.3.1" />
 <tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
