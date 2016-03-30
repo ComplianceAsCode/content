@@ -20,7 +20,7 @@ security measures to ensure that unauthorized personnel do not have
 physical access to the hardware running the JBoss Enterprise
 Application Platform software must be implemented.
 </description>
-<ocil clause="Physical protections are not in place, or they are inadequate">
+<ocil clause="physical protections are not in place, or they are inadequate">
 </ocil>
 <rationale>
 Many software security precautions can easily be bypassed by
@@ -38,7 +38,7 @@ executing an application.
 are assigned to manage JBoss Fuse, its environment and the security
 of the information it contains.
 </description>
-<ocil clause="No JBoss Administrator is assigned">
+<ocil clause="no JBoss Administrator is assigned">
 </ocil>
 <rationale>
 Incompetent, careless, or negligent JBoss administrators can
@@ -56,7 +56,7 @@ numberless problems for JBoss.
 handling. Incidents include any events that are anomalous to the
 environment.
 </description>
-<ocil clause="There are no incident response procedures in place">
+<ocil clause="there are no incident response procedures in place">
 </ocil>
 <rationale>
 Planning for incidents prior to real-life scenarios increases
@@ -77,7 +77,7 @@ higher assurances of security should test incident response
 procedures more often, possibly quarterly or even monthly.
 Incident response procedures should cover all anomalous events.
 </description>
-<ocil clause="Incident response exercises have not been conducted">
+<ocil clause="incident response exercises have not been conducted">
 </ocil>
 <rationale>
 Planning for incidents and practicing procedures to be followed
@@ -97,7 +97,7 @@ the JBoss platform, deployed applications, required source code,
 and supporting applications (such as authentication stores or
 database servers).
 </description>
-<ocil clause="There are no disastor recovery procedures in place">
+<ocil clause="there are no disastor recovery procedures in place">
 </ocil>
 <rationale>
 Planning for disasters and extended outages prior to a real-life
@@ -119,7 +119,7 @@ at least annually. Environments requiring higher assurances
 of disaster recovery ability should test procedures more
 often, possibly quarterly or even monthly.
 </description>
-<ocil clause="Disaster recovery exercises have not been conducted">
+<ocil clause="disaster recovery exercises have not been conducted">
 </ocil>
 <rationale>
 Planning for disasters and extended outages prior to a real-life
@@ -139,7 +139,7 @@ application data flows. This will allow insight into what paths
 sensitive information takes through the application environment
 and what data source connections need to be encrypted.
 </description>
-<ocil clause="No application data flow documentation exists">
+<ocil clause="no application data flow documentation exists">
 </ocil>
 <rationale>
 Failure to document an application's data flows reduces security,
@@ -159,7 +159,7 @@ and carefully reviewed prior to deployment. Developers and
 administrators should strive to balance application permissions and
 application functionality.
 </description>
-<ocil clause="There are no documents for java permissions for
+<ocil clause="there are no documents for java permissions for
 deployed applications">
 </ocil>
 <rationale>
@@ -182,7 +182,7 @@ Security Manager sandbox.
 be backed up at least weekly, possibly more if needed by the
 environment.
 </description>
-<ocil clause="There are no regular backups scheduled">
+<ocil clause="there are no regular backups scheduled">
 </ocil>
 <rationale>
 Failure to regularly backup JBoss configuration files and deployed
@@ -200,7 +200,7 @@ in the event of a disaster or other system outage.
 an audit policy should be written to identify data and trends of
 interest.
 </description>
-<ocil clause="No auditing policy exists">
+<ocil clause="no auditing policy exists">
 </ocil>
 <rationale>
 Without a comprehensive audit policy and review procedures,
@@ -220,7 +220,7 @@ etc.
 regarding account creation, permissions assignments, role assignments,
 etc.
 </description>
-<ocil clause="There are no access control policy and procedures">
+<ocil clause="there are no access control policy and procedures">
 </ocil>
 <rationale>
 A consistent, cohesive access control policy is impossible to attain
@@ -241,7 +241,7 @@ the effectiveness of the security policy.
 policy that defines minimum and maximum password sizes for user accounts
 accessing JBoss and its deployed applications.
 </description>
-<ocil clause="No appropriate minimum and maximum password length
+<ocil clause="no appropriate minimum and maximum password length
 policy exists">
 </ocil>
 <rationale>
@@ -265,7 +265,7 @@ accessing JBoss and its deployed applications. These requirements should
 also restrict passwords from containing dictionary words and reusing
 previous passwords.
 </description>
-<ocil clause="No appropriate minimum password complexity policy
+<ocil clause="no appropriate minimum password complexity policy
 exists">
 </ocil>
 <rationale>
@@ -287,7 +287,7 @@ writing down their passwords.
 that defines a maximum password age for user accounts accessing JBoss and
 its deployed applications.
 </description>
-<ocil clause="No appropriate minimum password expiration policy exists">
+<ocil clause="no appropriate minimum password expiration policy exists">
 </ocil>
 <rationale>
 In combination with password length and complexity, regularly changing
@@ -331,7 +331,7 @@ functional updates, etc.
 Java virtual machine - i.e., one that has not reached end-of-life.
 Migration strategies should be developed when end-of-life is impending.
 </description>
-<ocil clause="The Java Runtime Environment is not vendor supported">
+<ocil clause="the Java Runtime Environment is not vendor supported">
 </ocil>
 <rationale>
 Java installations should be a vendor supported version. If the Java
@@ -349,7 +349,7 @@ or functional updates, etc.
 <description>Software and packages should be downloaded from
 redhat.com, and hash validated.
 </description>
-<ocil clause="All JBoss software that has been downloaded is valid">
+<ocil clause="all JBoss software that has been downloaded is valid">
 </ocil>
 <rationale>
 Without validating downloaded files are authentic, malicious users
@@ -369,7 +369,7 @@ servers. Hot Deployment allows for automatic deployment of Java
 applications by simply placing Java applications into the deploy
 directory.
 </description>
-<ocil clause="Hot deployment has not been disabled">
+<ocil clause="hot deployment has not been disabled">
 </ocil>
 <rationale>
 Hot deployments are not a recommended best practice for production
@@ -387,7 +387,7 @@ purposeful.
 <description>Remove, rename, or comment out the default user
 accounts defined in .properties files.
 </description>
-<ocil clause="The default user accounts still exist">
+<ocil clause="the default user accounts still exist">
 </ocil>
 <rationale>
 Default configurations are commonly leveraged by attackers to
@@ -405,7 +405,7 @@ complex.
 <description>Remove, rename, or comment out the default roles
 defined in .properties files.
 </description>
-<ocil clause="The default user roles still exist">
+<ocil clause="the default user roles still exist">
 </ocil>
 <rationale>
 Default configurations are commonly leveraged by attackers to gain
@@ -423,7 +423,7 @@ default roles makes malicious exploitation more complex.
 security infrastructure. JBoss Fuse should be configured to load a Java
 security policy that has been vetted for use in the environment.
 </description>
-<ocil clause="No policy file exists or has been configured">
+<ocil clause="no policy file exists or has been configured">
 </ocil>
 <rationale>
 A weak, default, or incomplete Java Security Manager policy file can
@@ -445,7 +445,7 @@ permissions are enforced by the Java Security Manager and the policies it
 loads at startup. These permissions can be assigned or restricted in an
 application-specific, granular manner.
 </description>
-<ocil clause="Proper permissions are not set for java.io.FilePermission
+<ocil clause="proper permissions are not set for java.io.FilePermission
 for deployed applications">
 </ocil>
 <rationale>
@@ -466,7 +466,7 @@ These permissions are enforced by the Java Security Manager and the policies
 it loads at startup. These permissions can be assigned or restricted in an
 application-specific, granular manner.
 </description>
-<ocil clause="Proper permissions are not set for java.net.NetPermission 
+<ocil clause="proper permissions are not set for java.net.NetPermission 
 for deployed applications">
 </ocil>
 <rationale>
@@ -485,7 +485,7 @@ These permissions are enforced by the Java Security Manager and the policies
 it loads at startup. These permissions can be assigned or restricted in an
 application-specific, granular manner.
 </description>
-<ocil clause="Proper permissions are not set for java.lang.RuntimePermission
+<ocil clause="proper permissions are not set for java.lang.RuntimePermission
 for deployed applications">
 </ocil>
 <rationale>
@@ -508,7 +508,7 @@ These permissions are enforced by the Java Security Manager and the policies
 it loads at startup. These permissions can be assigned or restricted in an
 application-specific, granular manner.
 </description>
-<ocil clause="Proper permissions are not set for java.net.SocketPermission
+<ocil clause="proper permissions are not set for java.net.SocketPermission
 for deployed applications">
 </ocil>
 <rationale>
@@ -530,7 +530,7 @@ These permissions are enforced by the Java Security Manager and the policies
 it loads at startup. These permissions can be assigned or restricted in an
 application-specific, granular manner.
 </description>
-<ocil clause="Proper permissions are not set for java.security.AllPermission
+<ocil clause="proper permissions are not set for java.security.AllPermission
 for deployed applications">
 </ocil>
 <rationale>
@@ -568,7 +568,7 @@ Access Card in conjunction with issued X.509 certificates. These tokens
 are typically protected with a PIN that unlocks access to the private
 certificate stored on the token.
 </description>
-<ocil clause="Deployed JBoss applications do not have CAC card usage
+<ocil clause="deployed JBoss applications do not have CAC card usage
 enabled">
 </ocil>
 <rationale>
@@ -612,7 +612,7 @@ use of FIPS compliant modules by all federal agencies.
 passwords should be encrypted and all password files should have restricted
 file permissions.
 </description>
-<ocil clause="Clear-text passwords exist or are enabled">
+<ocil clause="clear-text passwords exist or are enabled">
 </ocil>
 <rationale>
 Clear-text passwords are an unnecessary security vulnerability. While risk
@@ -629,7 +629,7 @@ these methods do not completely remediate the risk.
 <description>Operating environment permissions assigned to the JBoss process
 owner should be in compliance with the principle of least privilege.
 </description>
-<ocil clause="The JBoss process owner is not executing with least privilege">
+<ocil clause="the JBoss process owner is not executing with least privilege">
 </ocil>
 <rationale>
 In order to reduce the potential impact of exploitation against the JBoss
@@ -650,7 +650,7 @@ execution of arbitrary code.
 <description>The JBoss process owner should not have interactive console
 login access.
 </description>
-<ocil clause="The JBoss process owner has console access">
+<ocil clause="the JBoss process owner has console access">
 </ocil>
 <rationale>
 In order to limit access in the event of an exploitation of the Jboss or
@@ -704,7 +704,7 @@ restricted to the JBoss process owner account and Jboss administrators.
 administrators only. If this condition is not met, the access must be
 disabled from the deployment.
 </description>
-<ocil clause="Remote access is not secured or disabled">
+<ocil clause="remote access is not secured or disabled">
 </ocil>
 <rationale>
 Failure to secure against unauthorized access can quickly lead to system
@@ -723,7 +723,7 @@ server.
 accessible by trusted administrators only. If this condition is not met,
 the application must be removed (deleted) from deployment.
 </description>
-<ocil clause="The web console is not secure or removed">
+<ocil clause="the web console is not secure or removed">
 </ocil>
 <rationale>
 Failure to secure the default consoles against unauthorized access can
@@ -760,7 +760,7 @@ on the server.
 <description>Password hashing should be enabled in all security realms
 where plain-text passwords are currently in use.
 </description>
-<ocil clause="Encrypted passwords are not enable or in use">
+<ocil clause="encrypted passwords are not enable or in use">
 </ocil>
 <rationale>
 Failure to enable password hashing within a login module can result in
@@ -781,7 +781,7 @@ implementation of access control and flow control policies, reflect special
 dissemination, handling or distribution instructions, or support other
 aspects of the organizational information security policy.
 </description>
-<ocil clause="Non-administrators are allowed to change security related
+<ocil clause="non-administrators are allowed to change security related
 attributes">
 </ocil>
 <rationale>
@@ -801,7 +801,7 @@ in the form of PKI credentials with information. The server utilizes a
 role based authentication model when managing server resources and limits
 access according to user role. 
 </description>
-<ocil clause="Unauthorized users can associate PKI information with security
+<ocil clause="unauthorized users can associate PKI information with security
 attributes">
 </ocil>
 <rationale>
@@ -834,7 +834,7 @@ remote connection could be intercepted and compromised.
 <description>The server must utilize cryptography to protect the
 confidentiality of remote access management sessions.
 </description>
-<ocil clause="Remote access is not secured">
+<ocil clause="remote access is not secured">
 </ocil>
 <rationale>
 If cryptography is not used, then the session data traversing the
@@ -850,7 +850,7 @@ remote connection could be intercepted and compromised.
 <description>The server must configure auditing to reduce the
 likelihood of storage capacity being exceeded.
 </description>
-<ocil clause="Logging capacity has not been reduced">
+<ocil clause="logging capacity has not been reduced">
 </ocil>
 <rationale>
 The server auditing capability is critical for accurate
@@ -892,7 +892,7 @@ Configurations</title>
 <description>The server must enforce logical access restrictions
 associated with changes to application configuration.
 </description>
-<ocil clause="Unathorized users can make system changes">
+<ocil clause="unathorized users can make system changes">
 </ocil>
 <rationale>
 When dealing with access restrictions pertaining to change control,
@@ -934,7 +934,7 @@ to the server mission or can adversely impact server performance.
 <description>The server must prohibit or restrict the use of
 unauthorized functions, ports, protocols, and/or services.
 </description>
-<ocil clause="Unused ports, protocols, and services have not been disabled">
+<ocil clause="unused ports, protocols, and services have not been disabled">
 </ocil>
 <rationale>
 The server provides numerous processes, features and functionalities
@@ -950,7 +950,7 @@ unnecessary or too insecure to run on a production system.
 <title>Ensure Stored Passwords Are Encrypted</title>
 <description>Stored passwords must be encrypted.
 </description>
-<ocil clause="Stored passwords are not encrypted">
+<ocil clause="stored passwords are not encrypted">
 </ocil>
 <rationale>
 Passwords need to be protected at all times and encryption is
@@ -1041,7 +1041,7 @@ longer hold.
 for corrective actions without revealing sensitive or potentially harmful
 information in error logs and administrative messages should be generated.
 </description>
-<ocil clause="Logging is not configured to prevent sensitive information
+<ocil clause="logging is not configured to prevent sensitive information
 from being revealed">
 </ocil>
 <rationale>
@@ -1060,7 +1060,7 @@ development team. 
 <title>Ensure Log Files Are Only Accessed By Authorized Users</title>
 <description>Only authorized personnel may view log files.
 </description>
-<ocil clause="Log files can be accessed or viewed by any user">
+<ocil clause="log files can be accessed or viewed by any user">
 </ocil>
 <rationale>
 If the application provides too much information in error logs and
@@ -1079,7 +1079,7 @@ guided by organizational policy and operational requirements. 
 <title>Enable The Web Console To Use PKI</title>
 <description>PKI should be enabled for the Web Console.
 </description>
-<ocil clause="The web console is not configured to use PKI">
+<ocil clause="the web console is not configured to use PKI">
 </ocil>
 <rationale>
 All applications requiring user authentication to access sensitive data
@@ -1095,7 +1095,7 @@ and are required to credentials approved under the DoD PKI program.
 <title>All PKI Certificates Are Valid DoD Certificates</title>
 <description>All PKI Certificates in use should be valid at the time of use.
 </description>
-<ocil clause="Certificates are not valid DoD certs">
+<ocil clause="certificates are not valid DoD certs">
 </ocil>
 <rationale>
 By using invalid certificates the server may allow unauthorized users
@@ -1112,7 +1112,7 @@ access to the system.
 only an application administrator to modify application resource
 configuration files.
 </description>
-<ocil clause="Non-administrators can modify files">
+<ocil clause="non-administrators can modify files">
 </ocil>
 <rationale>
 An access control flaw exists if users or processes can view or modify
