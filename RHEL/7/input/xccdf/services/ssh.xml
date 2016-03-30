@@ -67,19 +67,20 @@ verified by ensuring that the following
 line appears:
 <pre>Protocol 2</pre>
 </description>
-<ocil clause="it is not">
+<ocil clause="it is commented out or is not set correctly to Protocol 2">
 To check which SSH protocol version is allowed, run the following command:
 <pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
 If configured properly, output should be <pre>Protocol 2</pre>
 </ocil>
 <rationale>
-SSH protocol version 1 suffers from design flaws that
-result in security vulnerabilities and
-should not be used.
+SSH protocol version 1 is an insecure implementation of the SSH protocol and
+has many well-known vulnerability exploits. Exploits of the SSH daemon could provide
+immediate root access to the system.
 </rationale>
 <ident cce="27320-1" />
 <oval id="sshd_allow_only_protocol2" />
-<ref nist="AC-17(7),IA-5(1)(c)" disa="" cis="6.2.1" />
+<ref nist="AC-17(8).1(ii),IA-5(1)(c)" disa="197,366" cis="6.2.1"
+ossrg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" stigid="040590"/>
 <tested by="DS" on="20121024"/>
 </Rule>
 
