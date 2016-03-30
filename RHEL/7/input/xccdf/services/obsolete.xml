@@ -64,7 +64,29 @@ xinetd service's accidental (or intentional) activation.
 <tested by="DS" on="20121026"/>
 </Rule>
 
+<Rule id="package_tcp_wrappers_installed" severity="medium">
+<title>Install tcp_wrappers Package</title>
+<description>
+When network services are using the <tt>xinetd</tt> service, the
+<tt>tcp_wrappers</tt> package should be installed.
+<package-install-macro package="tcp_wrappers"/>
+</description>
+<ocil clause="the package is not installed" >
+<package-check-macro package="tcp_wrappers" />
+</ocil>
+<rationale>
+Access control methods provide the ability to enhance system security posture
+by restricting services and known good IP addresses and address ranges. This
+prevents connections from unknown hosts and protocols.
+</rationale>
+<ident cce="27361-5" />
+<oval id="package_tcp_wrappers_installed" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
+stigid="040811" />
+</Rule>
+
 </Group>
+
 <Group id="telnet">
 <title>Telnet</title>
 <description>The telnet protocol does not provide confidentiality or integrity
