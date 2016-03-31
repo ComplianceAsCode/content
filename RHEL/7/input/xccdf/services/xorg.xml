@@ -15,7 +15,9 @@ SSH or on the text console.</description>
 
 <Rule id="xwindows_runlevel_setting">
 <title>Disable X Windows Startup By Setting Default Target</title>
-<description>Setting the system's default target to multi-user will prevent
+<description>Systems that do not require a graphical user interface should only boot by default into multi-user.targ
+et mode. This prevents accidental booting of the system into a graphical.target mode. This reduces the attack surf
+ace of the system, and prevents nonessential services from starting at boot.Setting the system's default target to multi-user will prevent
 automatic startup of the X server. To do so, run:
 <pre>$ systemctl set-default multi-user.target</pre>
 You should see the following output:
@@ -38,8 +40,9 @@ The output should show the following:
 
 <Rule id="package_xorg-x11-server-common_removed">
 <title>Remove the X Windows Package Group</title>
-<description>Removing all packages which constitute the X Window System
-ensures users or malicious software cannot start X.
+<description>By removing the xorg-x11-server-common package,the system no longer has X Windows installed. If X Windo
+ws is not installed then the system cannot boot into graphical user mode. This prevents the system from being acci
+dentally or maliciously booted into a graphical.target mode.
 To do so, run the following command:
 <pre>$ sudo yum groupremove "X Window System"</pre>
 </description>
@@ -59,3 +62,4 @@ The output should be:
 <!-- to add: guidance in /etc/gdm/custom.conf for xdmcp disable, tcplisten disable -->
 </Group>
 </Group>
+
