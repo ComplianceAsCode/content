@@ -141,6 +141,76 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
                         rule.remove(check)
 
 
+def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):
+        # Verify if <xccdf:Value> 'type' to corresponding OVAL variable 'datatype' export matching constraint:
+        #
+        # http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
+        #
+        # is met. Also correct the 'type' attribute of those <xccdf:Value> elements where necessary in
+        # order the produced content to meet this constraint.
+        #
+        # To correct the constraint we use simpler approach - prefer to fix 'type' attribute of <xccdf:Value>
+        # rather than 'datatype' attribute of the corresponding OVAL variable since there might be additional
+        # OVAL variables, derived from the affected OVAL variable, and in that case we would need to fix the
+        # 'datatype' attribute in each of them.
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1089
+
+
+        # Define the <xccdf:Value> 'type' to OVAL variable 'datatype' export matching constraints mapping
+        # as specified in Table 16 of XCCDF v1.2 standard:
+        # http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
+        #
+        oval_to_xccdf_datatype_constraints = {
+            'int' : 'number',
+            'float' : 'number',
+            'boolean' : 'boolean',
+            'string' : 'string',
+            'evr_string' : 'string',
+            'version' : 'string',
+            'ios_version' : 'string',
+            'fileset_revision' : 'string',
+            'binary' :  'string'
+        }
+
+        # Loop through all <external_variables> in the OVAL document
+        ovalextvars = ovaltree.findall(".//{%s}external_variable" % oval_ns)
+        if ovalextvars is not None:
+            for ovalextvar in ovalextvars:
+                # Verify the found external variable has both 'id' and 'datatype' set
+                if 'id' not in ovalextvar.attrib or 'datatype' not in ovalextvar.attrib:
+                    print("\nError: Invalid OVAL <external_variable> found. Exiting")
+                    sys.exit(1)
+                # Obtain the 'id' and 'datatype attribute values
+                if 'id' in ovalextvar.attrib and 'datatype' in ovalextvar.attrib:
+                    ovalvarid = ovalextvar.get('id')
+                    ovalvartype = ovalextvar.get('datatype')
+
+                # Locate the corresponding <xccdf:Value> with the same ID in the XCCDF
+                xccdfvar = xccdftree.find(".//{%s}Value[@id=\"%s\"]" % (xccdf_ns, ovalvarid))
+                if xccdfvar is not None:
+                    # Verify the found value has 'type' attribute set
+                    if 'type' not in xccdfvar.attrib:
+                        print("\nError: Invalid XCCDF variable found. Exiting")
+                        sys.exit(1)
+                    else:
+                        xccdfvartype = xccdfvar.get('type')
+                        # This is the required XCCDF 'type' for <xccdf:Value> derived
+                        # from OVAL variable 'datatype' and mapping above
+                        reqxccdftype = oval_to_xccdf_datatype_constraints[ovalvartype]
+                        # Compare the actual value of 'type' of <xccdf:Value> with the requirement
+                        if xccdfvartype != reqxccdftype:
+                            # If discrepancy is found, issue a warning
+                            warning = ("\nWarning: XCCDF 'type' of \"%s\" value does not meet the XCCDF "
+                                       "value 'type' to OVAL variable 'datatype'\nexport matching constraint! "
+                                       "Got: \"%s\", Expected: \"%s\". Resetting it! Set 'type' of \"%s\""
+                                       "\n<xccdf:value> to '%s' directly in the XCCDF content to dismiss this warning!" %
+                                       (ovalvarid, xccdfvartype, reqxccdftype, ovalvarid, reqxccdftype)
+                                       )
+                            print warning
+                            # And reset the 'type' attribute of such a <xccdf:Value> to the required type
+                            xccdfvar.attrib['type'] = reqxccdftype
+
+
 def main():
     if len(sys.argv) < 3:
         print "Provide an XCCDF file and an ID name scheme."
@@ -211,6 +281,10 @@ def main():
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
         ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree)
+
+        # Verify the XCCDF to OVAL datatype export matching constraints
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1089
+        check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree)
 
         ovaltree = translator.translate(ovaltree, store_defname=True)
         newovalfile = ovalfile.replace("unlinked", idname)
