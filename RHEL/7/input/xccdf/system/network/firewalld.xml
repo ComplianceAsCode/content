@@ -102,14 +102,14 @@ service reload, enter the following command as root:
 </description>
 <ocil><service-enable-check-macro service="firewalld" /></ocil>
 <rationale>
-The dynamic firewall daemon <tt>firewalld</tt> provides a dynamically managed
-firewall with support for network “zones”, Ethernet bridges, and has a
-separation of runtime and permanent configuration options. It has support for
-both IPv4 and IPv6 firewall settings.
+Access control methods provide the ability to enhance system security posture
+by restricting services and known good IP addresses and address ranges. This
+prevents connections from unknown hosts and protocols.
 </rationale>
 <ident cce="27361-5" />
 <oval id="service_firewalld_enabled" />
-<ref cis="4.7" />
+<ref nist="CM-6(b)" disa="366" cis="4.7" ossrg="SRG-OS-000480-GPOS-00227"
+stigid="040810" />
 </Rule>
 
 </Group><!--<Group id="firewalld_activation">-->
