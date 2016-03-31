@@ -13,7 +13,7 @@ on a dedicated server machine, as it increases the system's attack surface and c
 system resources. Administrators of server systems should instead login via
 SSH or on the text console.</description>
 
-<Rule id="xwindows_runlevel_setting">
+<Rule id="xwindows_runlevel_setting" severity="medium">
 <title>Disable X Windows Startup By Setting Default Target</title>
 <description>Setting the system's default target to multi-user will prevent
 automatic startup of the X server. To do so, run:
@@ -22,37 +22,43 @@ You should see the following output:
 <pre>rm '/etc/systemd/system/default.target'
 ln -s '/usr/lib/systemd/system/multi-user.target' '/etc/systemd/system/default.target'</pre>
 </description>
-<ocil clause="it does not">
+<ocil clause="the X windows display server is running and/or has not been disabled">
 To verify the default target is multi-user, run the following command:
 <pre>$ systemctl get-default</pre>
 The output should show the following:
 <pre>multi-user.target</pre>
 </ocil>
-<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
+<rationale>Services that are not required for system and application processes
+must not be active to decrease the attack surface of the system. X windows has a
+long history of security vulnerabilities and should not be used unless approved
+and documented.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="xwindows_runlevel_setting" />
-<ref nist="AC-3" disa="366" />
+<ref nist="AC-17(8).1(ii)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040560"/>
 <tested by="DS" on="20121025"/>
 </Rule>
 
 
-<Rule id="package_xorg-x11-server-common_removed">
+<Rule id="package_xorg-x11-server-common_removed" severity="medium">
 <title>Remove the X Windows Package Group</title>
 <description>Removing all packages which constitute the X Window System
 ensures users or malicious software cannot start X.
-To do so, run the following command:
-<pre>$ sudo yum groupremove "X Window System"</pre>
+To remove the X Window System, run either of the following command(s):
+<pre>$ sudo yum groupremove "X Window System"</pre> or
+<pre>$ sudo yum remove xorg-x11-server-common</pre>
 </description>
-<ocil clause="it is not">
+<ocil clause="the X Windows package group or xorg-x11-server-common has not be removed">
 To ensure the X Windows package group is removed, run the following command:
 <pre>$ rpm -qi xorg-x11-server-common</pre>
 The output should be:
 <pre>package xorg-x11-server-common is not installed</pre>
 </ocil>
-<rationale>Unnecessary packages should not be installed to decrease the attack surface of the system.</rationale>
+<rationale>Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
+vulnerabilities and should not be installed unless approved and documented.
+</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="package_xorg-x11-server-common_removed" />
-<ref disa="366" cis="3.2" />
+<ref nist="AC-17(8).1(ii)" disa="366" cis="3.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040561"/>
 <tested by="DS" on="20121025"/>
 </Rule>
 
