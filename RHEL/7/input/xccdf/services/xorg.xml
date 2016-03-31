@@ -15,10 +15,10 @@ SSH or on the text console.</description>
 
 <Rule id="xwindows_runlevel_setting">
 <title>Disable X Windows Startup By Setting Default Target</title>
-<description>Systems that do not require a graphical user interface should only boot by default into multi-user.targ
-et mode. This prevents accidental booting of the system into a graphical.target mode. This reduces the attack surf
-ace of the system, and prevents nonessential services from starting at boot.Setting the system's default target to multi-user will prevent
-automatic startup of the X server. To do so, run:
+<description>Systems that do not require a graphical user interface should only boot by
+default into <tt>multi-user.target</tt> mode. This prevents accidental booting of the system
+into a <tt>graphical.target</tt> mode. Setting the system's default target to 
+<tt>multi-user.target</tt> will prevent automatic startup of the X server. To do so, run:
 <pre>$ systemctl set-default multi-user.target</pre>
 You should see the following output:
 <pre>rm '/etc/systemd/system/default.target'
@@ -40,10 +40,10 @@ The output should show the following:
 
 <Rule id="package_xorg-x11-server-common_removed">
 <title>Remove the X Windows Package Group</title>
-<description>By removing the xorg-x11-server-common package,the system no longer has X Windows installed. If X Windo
-ws is not installed then the system cannot boot into graphical user mode. This prevents the system from being acci
-dentally or maliciously booted into a graphical.target mode.
-To do so, run the following command:
+<description>By removing the xorg-x11-server-common package, the system no longer has X Windows
+installed. If X Windows is not installed then the system cannot boot into graphical user mode.
+This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
+mode. To do so, run the following command:
 <pre>$ sudo yum groupremove "X Window System"</pre>
 </description>
 <ocil clause="it is not">
