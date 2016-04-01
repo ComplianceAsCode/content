@@ -34,6 +34,36 @@ remote access.
 <tested by="DS" on="20121024"/>
 </Rule>
 
+<Rule id="file_permissions_sshd_pub_key">
+<title>Verify Permissions on SSH Server Public <tt>*.pub</tt> Key Files</title>
+<description><fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644"/></description>
+</description>
+<ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-r--r--"/></ocil>
+<rationale>
+If a public host key file is modified by an unauthorized user, the SSH service
+may be compromised.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040640"/>
+<oval id="file_permissions_sshd_pub_key" />
+</Rule>
+
+<Rule id="file_permissions_sshd_private_key">
+<title>Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files</title>
+<description><fileperms-desc-macro file="/etc/ssh/*_key" perms="0600"/></description>
+</description>
+<ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-------"/></ocil>
+<rationale>
+If an unauthorized user obtains the private SSH host key file, the host could be
+impersonated.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040650"/>
+<oval id="file_permissions_sshd_private_key" />
+</Rule>
+
 <Rule id="firewalld_sshd_disabled">
 <title>Remove SSH Server <tt>firewalld</tt> Firewall exception (Unusual)</title>
 <description>By default, inbound connections to SSH's port are allowed. If 
