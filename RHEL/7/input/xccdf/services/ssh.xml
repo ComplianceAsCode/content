@@ -366,29 +366,30 @@ implementation. These are also required for compliance.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="sshd_use_approved_macs">
-<title>Use Only Approved MACs</title>
+<Rule id="sshd_use_approved_macs" severity="medium">
+<title>Use Only FIPS Approved MACs</title>
 <description>Limit the MACs to those hash algorithms which are FIPS-approved.
 The following line in <tt>/etc/ssh/sshd_config</tt>
 demonstrates use of FIPS-approved MACs:
-<pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
+<pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
 The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
 </description>
-<ocil clause="that is not the case">
+<ocil clause="MACs option is commented out or not using FIPS-approved hash algorithms">
 Only FIPS-approved MACs should be used.  To verify that only FIPS-approved
 MACs are in use, run the following command:
 <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
 The output should contain only those MACs which are FIPS-approved, namely,
-hmac-sha2-512, hmac-sha2-256, and hmac-sha1 hash functions.
+hmac-sha2-512 and hmac-sha2-256 hash functions.
 <!-- encrypt-then-mac hash functions likely to be added to this list in the future -->
 </ocil>
 <rationale>
-Approved algorithms should impart some level of confidence in their
-implementation. These are also required for compliance.
+DoD Information Systems are required to use FIPS-approved cryptographic hash
+functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 </rationale>
 <ident cce="27455-5" />
 <oval id="sshd_use_approved_macs" />
-<ref nist="AC-17(2),IA-7,SC-13" disa="68,1453,803,2449,2450" ossrg="61,223" />
+<ref nist="AC-17(2),IA-7,SC-13" disa="68,803,1453,2449,2450"
+ossrg="SRG-OS-000250-GPOS-00093" stigid="040620" />
 </Rule>
 
 
