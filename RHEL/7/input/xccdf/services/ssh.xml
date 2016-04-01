@@ -37,7 +37,6 @@ remote access.
 <Rule id="file_permissions_sshd_pub_key" severity="medium">
 <title>Verify Permissions on SSH Server Public <tt>*.pub</tt> Key Files</title>
 <description><fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644"/></description>
-</description>
 <ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-r--r--"/></ocil>
 <rationale>
 If a public host key file is modified by an unauthorized user, the SSH service
@@ -52,7 +51,6 @@ ossrg="SRG-OS-000480-GPOS-00227" stigid="040640"/>
 <Rule id="file_permissions_sshd_private_key" severity="medium">
 <title>Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files</title>
 <description><fileperms-desc-macro file="/etc/ssh/*_key" perms="0600"/></description>
-</description>
 <ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-------"/></ocil>
 <rationale>
 If an unauthorized user obtains the private SSH host key file, the host could be
