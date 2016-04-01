@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="sshd_disable_gssapi_auth" version="1">
+    <metadata>
+      <title>Disable GSSAPI Authentication</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Unless needed, disable the GSSAPI authentication option for
+the SSH Server.</description>
+      <reference source="galford" ref_id="20160401" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+      <criterion comment="Check GSSAPIAuthentication in /etc/ssh/sshd_config"
+      test_ref="test_sshd_disable_gssapi_auth" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of GSSAPIAuthentication setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_disable_gssapi_auth" version="1">
+    <ind:object object_ref="obj_sshd_disable_gssapi_auth" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sshd_disable_gssapi_auth" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)GSSAPIAuthentication(?-i)[\s]+no[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
