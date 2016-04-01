@@ -34,7 +34,7 @@ remote access.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="file_permissions_sshd_pub_key">
+<Rule id="file_permissions_sshd_pub_key" severity="medium">
 <title>Verify Permissions on SSH Server Public <tt>*.pub</tt> Key Files</title>
 <description><fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644"/></description>
 </description>
@@ -49,7 +49,7 @@ ossrg="SRG-OS-000480-GPOS-00227" stigid="040640"/>
 <oval id="file_permissions_sshd_pub_key" />
 </Rule>
 
-<Rule id="file_permissions_sshd_private_key">
+<Rule id="file_permissions_sshd_private_key" severity="medium">
 <title>Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files</title>
 <description><fileperms-desc-macro file="/etc/ssh/*_key" perms="0600"/></description>
 </description>
