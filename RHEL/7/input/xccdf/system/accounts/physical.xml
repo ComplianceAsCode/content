@@ -125,7 +125,7 @@ the grub2 superuser account and password, please refer to
 </rationale>
 <ident cce="27309-4" />
 <oval id="bootloader_password" />
-<ref nist="IA-2(1),IA-5(e),AC-3" disa="" cis="1.5.3" />
+<ref nist="IA-2(1),IA-5(e),AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048" stigid="010460" cis="1.5.3" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -211,7 +211,7 @@ loss of availability of systems due to unintentional reboot.
 </rationale>
 <oval id="disable_ctrlaltdel_reboot" />
 <ident cce="RHEL7-CCE-TBD" />
-<!--ref nist="IA-2(1),AC-3" disa="213" /-->
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020220" />
 </Rule>
 
 <Rule id="disable_interactive_boot" severity="medium">
