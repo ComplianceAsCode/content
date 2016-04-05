@@ -32,19 +32,21 @@
 <!-- Password Requirements -->
 <select idref="accounts_maximum_age_login_defs" selected="true" />
 <select idref="accounts_password_pam_minclass" selected="true" />
+<select idref="accounts_password_pam_unix_remember" selected="true" />
 <select idref="accounts_password_pam_ocredit" selected="true" />
 <select idref="accounts_password_pam_ucredit" selected="true" />
 <select idref="accounts_password_pam_lcredit" selected="true" />
 <select idref="accounts_password_pam_dcredit" selected="true" />
 <select idref="accounts_password_pam_minlen" selected="true" />
-<select idref="accounts_password_pam_unix_remember" selected="true" />
 <select idref="accounts_password_pam_difok" selected="true" />
 <select idref="accounts_password_pam_maxrepeat" selected="true" />
 <select idref="accounts_password_pam_maxclassrepeat" selected="true" />
 <select idref="set_password_hashing_algorithm_logindefs" selected="true" />
+<select idref="account_disable_post_pw_expiration" selected="true" />
 
 <!-- Account Management Requirements -->
 <select idref="account_temp_expire_date" selected="true" />
+<select idref="accounts_no_uid_except_zero" selected="true"/>
 
 <!-- User Management -->
 <select idref="banner_etc_issue" selected="true" />
@@ -63,6 +65,9 @@
 <select idref="audit_rules_file_deletion_events" selected="true" />
 <select idref="audit_rules_kernel_module_loading" selected="true" />
 
+<!-- Kernel/Network Settings -->
+<select idref="sysctl_net_ipv6_conf_all_accept_source_route" selected="true" />
+
 <!-- System Logging Requirements -->
 <select idref="rsyslog_remote_loghost" selected="true" />
 
@@ -73,10 +78,18 @@
 <select idref="sshd_enable_strictmodes" selected="true" />
 <select idref="sshd_use_priv_separation" selected="true" />
 
+<!-- X Window System Settings -->
+<select idref="xwindows_runlevel_setting" selected="true" />
+<select idref="package_xorg-x11-server-common_removed" selected="true" />
+
 <!-- Obsolete Services -->
 <select idref="package_tftp-server_removed" selected="true" />
 
 <!-- Miscellaneous Services -->
+<select idref="service_zebra_disabled" selected="true" />
 <select idref="snmpd_not_default_password" selected="true" />
+
+<!-- Currently uncategorized -->
+<select idref="disable_ctrlaltdel_reboot" selected="true" />
 
 </Profile>
