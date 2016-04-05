@@ -167,13 +167,16 @@ become inaccessible.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
-<Rule id="accounts_no_uid_except_zero" severity="medium">
+<Rule id="accounts_no_uid_except_zero" severity="high">
 <title>Verify Only Root Has UID 0</title>
 <description>
-If any account other than root has a UID of 0,
-this misconfiguration should be investigated and the
-accounts other than root should be removed or have their UID changed.
+If any account other than root has a UID of 0, this misconfiguration should 
+be investigated and the accounts other than root should be removed or 
+have their UID changed.
+
+If the account is associated with system commands or applications the UID should be changed
+to one greater than "0" but less than "1000." Otherwise assign a UID greater than "1000" that
+has not already been assigned.
 </description>
 <ocil clause="any account other than root has a UID of 0">
 To list all password file entries for accounts with UID 0, run the following command:
@@ -189,7 +192,7 @@ access to root privileges in an accountable manner.
 </rationale>
 <ident cce="27175-9" />
 <oval id="accounts_no_uid_except_zero" />
-<ref nist="AC-6,IA-2(1)" disa="" />
+<ref nist="AC-6,IA-2(1),IA-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020310" />
 <tested by="DS" on="20121024"/>
 </Rule>
 

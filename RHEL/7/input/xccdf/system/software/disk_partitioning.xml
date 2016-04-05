@@ -125,7 +125,7 @@ users cannot trivially fill partitions used for log or audit data storage.
 <tested by="MM" on="20120928"/>
 </Rule>
 
-<Rule id="encrypt_partitions" >
+<Rule id="encrypt_partitions" severity="medium">
 <title>Encrypt Partitions</title>
 <description>
 Red Hat Enterprise Linux 7 natively supports partition encryption through the
@@ -159,7 +159,7 @@ laptops, places its data at risk of compromise.  Encrypting this data mitigates
 the risk of its loss if the system is lost.
 </rationale>
 <ident cce="27128-8" />
-<ref nist="SC-13,SC-28" disa="1019,1199,1200" ossrg="185" />
+<ref nist="SC-13,SC-28(1)" disa="1199,2476" ossrg="SRG-OS-000405-GPOS-00184,SRG-OS-000185-GPOS-00079" stigid="020170" />
 </Rule>
 
 </Group>
