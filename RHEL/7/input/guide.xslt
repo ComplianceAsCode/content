@@ -122,6 +122,7 @@
       <xsl:apply-templates select="document('xccdf/services/ftp.xml')" />
       <xsl:apply-templates select="document('xccdf/services/http.xml')" />
       <xsl:apply-templates select="document('xccdf/services/imap.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/quagga.xml')" />
       <xsl:apply-templates select="document('xccdf/services/smb.xml')" />
       <xsl:apply-templates select="document('xccdf/services/squid.xml')" />
       <xsl:apply-templates select="document('xccdf/services/snmp.xml')" />
