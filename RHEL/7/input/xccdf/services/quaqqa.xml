@@ -16,7 +16,7 @@ does not need to act as a router, then it should be disabled
 and removed.
 </description>
 
-<Rule id="service_zebra_disabled">
+<Rule id="service_zebra_disabled" severity="medium">
 <title>Disable Quagga Service</title>
 <description>
 <service-disable-macro service="zebra" />
@@ -35,7 +35,7 @@ the network.
 <ref nist="SC-32" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040730" />
 </Rule>
 
-<Rule id="package_quagga_removed">
+<Rule id="package_quagga_removed" severity="medium">
 <title>Uninstall quagga Package</title>
 <description>
 <package-remove-macro package="quagga" />
