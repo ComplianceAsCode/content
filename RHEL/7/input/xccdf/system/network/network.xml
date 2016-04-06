@@ -31,6 +31,34 @@ communication over the loopback device, then disable this service.
 </description>
 </Group> 
 
+<Rule id="network_disable_ddns_interfaces" severity="medium">
+<title>Disable Client Dynamic DNS Updates</title>
+<description>
+Dynamic DNS allows clients to dynamically update their own DNS records.
+The updates are transmitted by unencrypted means which can reveal information
+to a potential malicious user. If the system does not require Dynamic DNS,
+remove all <tt>DHCP_HOSTNAME</tt> references from the
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt> scripts. If
+<tt>dhclient<tt> is used, remove all <tt>send host-name <i>hostname</i></tt>
+references from the <tt>/etc/dhclient.conf</tt> configuration file and/or any
+reference from the <tt>/etc/dhcp</tt> directory.
+</description>
+<ocil clause="client Dynamic DNS updates are not disabled">
+To verify that clients cannot automatically update DNS records, perform the
+following:
+<pre>$ grep -i dhcp_hostname /etc/sysconfig/network-scripts/ifcfg-*</pre>
+<pre>$ grep -rni "send host-name" /etc/dhclient.conf /etc/dhcp</pre>
+The output should return no results.
+</ocil>
+<rationale>
+Dynamic DNS updates transmit unencrypted information about a system
+including its name and address and should not be used unless needed.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="network_disable_ddns_interfaces" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040840" />
+</Rule>
+
 <Rule id="network_disable_zeroconf">
 <title>Disable Zeroconf Networking</title>
 <description>Zeroconf networking allows the system to assign itself an IP
