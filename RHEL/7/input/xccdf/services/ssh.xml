@@ -34,6 +34,34 @@ remote access.
 <tested by="DS" on="20121024"/>
 </Rule>
 
+<Rule id="file_permissions_sshd_pub_key" severity="medium">
+<title>Verify Permissions on SSH Server Public <tt>*.pub</tt> Key Files</title>
+<description><fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644"/></description>
+<ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-r--r--"/></ocil>
+<rationale>
+If a public host key file is modified by an unauthorized user, the SSH service
+may be compromised.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040640"/>
+<oval id="file_permissions_sshd_pub_key" />
+</Rule>
+
+<Rule id="file_permissions_sshd_private_key" severity="medium">
+<title>Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files</title>
+<description><fileperms-desc-macro file="/etc/ssh/*_key" perms="0600"/></description>
+<ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-------"/></ocil>
+<rationale>
+If an unauthorized user obtains the private SSH host key file, the host could be
+impersonated.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="AC-6" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040650"/>
+<oval id="file_permissions_sshd_private_key" />
+</Rule>
+
 <Rule id="firewalld_sshd_disabled">
 <title>Remove SSH Server <tt>firewalld</tt> Firewall exception (Unusual)</title>
 <description>By default, inbound connections to SSH's port are allowed. If 
@@ -100,6 +128,127 @@ possibility of unauthorized access to the system.
 <ident cce="RHEL7-CCE-TBD" />
 <!-- <oval id="sshd_limit_user_access" /> -->
 <ref nist="AC-3" />
+</Rule>
+
+<Rule id="sshd_disable_gssapi_auth" severity="medium">
+<title>Disable GSSAPI Authentication</title>
+<description>Unless needed, SSH should not permit extraneous or unnecessary 
+authentication mechanisms like GSSAPI. To disable GSSAPI authentication, add or
+correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+<pre>GSSAPIAuthentication no</pre>
+</description>
+<ocil clause="it is commented out or is not disabled">
+To check if GSSAPIAuthentication is disabled or set correctly, run the following
+command:
+<pre>$ sudo grep GSSAPIAuthentication /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>no</pre>
+</ocil>
+<rationale>
+GSSAPI authentication is used to provide additional authentication mechanisms to
+applications. Allowing GSSAPI authentication through SSH exposes the system's
+GSSAPI to remote hosts, increasing the attack surface of the system.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sshd_disable_gssapi_auth" />
+<ref nist="CM-6(c)" disa="368,318,1812,1813,1814"
+ossrg="SRG-OS-000364-GPOS-00151" stigid="040660"/>
+</Rule>
+
+<Rule id="sshd_disable_kerb_auth" severity="medium">
+<title>Disable Kerberos Authentication</title>
+<description>Unless needed, SSH should not permit extraneous or unnecessary
+authentication mechanisms like Kerberos. To disable Kerberos authentication, add
+or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+<pre>KerberosAuthentication no</pre>
+</description>
+<ocil clause="it is commented out or is not disabled">
+To check if KerberosAuthentication is disabled or set correctly, run the
+following command:
+<pre>$ sudo grep KerberosAuthentication /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>no</pre>
+</ocil>
+<rationale>
+Kerberos authentication for SSH is often implemented using GSSAPI. If Kerberos
+is enabled through SSH, the SSH daemon provides a means of access to the
+system's Kerberos implementation. Vulnerabilities in the system's Kerberos
+implementations may be subject to exploitation.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sshd_disable_kerb_auth" />
+<ref nist="CM-6(c)" disa="368,318,1812,1813,1814"
+ossrg="SRG-OS-000364-GPOS-00151" stigid="040670"/>
+</Rule>
+
+<Rule id="sshd_enable_strictmodes" severity="medium">
+<title>Enable Use of StictModes</title>
+<description>SSHs StrictModes option checks file and ownership permissions in
+the user's home directory <tt>.ssh</tt> folder before accepting login. If world-
+writable permissions are found, logon is rejected. To enable StrictModes in SSH,
+add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+<pre>StrictModes yes</pre>
+</description>
+<ocil clause="it is commented out or is not enabled">
+To check if StrictModes is enabled or set correctly, run the
+following command:
+<pre>$ sudo grep StrictModes /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>yes</pre>
+</ocil>
+<rationale>
+If other users have access to modify user-specific SSH configuration files, they
+may be able to log into the system as another user.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sshd_enable_strictmodes" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040680"/>
+</Rule>
+
+<Rule id="sshd_use_priv_separation" severity="medium">
+<title>Enable Use of Privilege Separation</title>
+<description>When enabled, SSH will create an unprivileged child process that
+has the privilege of the authenticated user. To enable privilege separation in
+SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+<pre>UsePrivilegeSeparation yes</pre>
+</description>
+<ocil clause="it is commented out or is not enabled">
+To check if UsePrivilegeSeparation is enabled or set correctly, run the
+following command:
+<pre>$ sudo grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>yes</pre>
+</ocil>
+<rationale>
+SSH daemon privilege separation causes the SSH process to drop root privileges
+when not needed which would decrease the impact of software vulnerabilities in
+the unprivileged section.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sshd_use_priv_separation" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040690"/>
+</Rule>
+
+<Rule id="sshd_disable_compression" severity="medium">
+<title>Disable Compression Or Set Compression to <tt>delayed</tt></title>
+<description>Compression is useful for slow network connections over long
+distances but can cause performance issues on local LANs. If use of compression
+is required, it should be enabled only after a user has authenticated; otherwise
+, it should be disabled. To disable compression or delay compression until after
+a user has successfully authenticated, add or correct the following line in the
+<tt>/etc/ssh/sshd_config</tt> file:
+<pre>Compression no</pre> or <pre>Compression delayed</pre>
+</description>
+<ocil clause="it is commented out or is not set to no or delayed">
+To check if compression is enabled or set correctly, run the
+following command:
+<pre>$ sudo grep Compression /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>no</pre> or <pre>delayed</pre>.
+</ocil>
+<rationale>
+If compression is allowed in an SSH connection prior to authentication,
+vulnerabilities in the compression software could result in compromise of the
+system from an unauthenticated connection, potentially wih root privileges.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sshd_disable_compression" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040700"/>
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
@@ -242,10 +391,9 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="27413-4" />
 <oval id="disable_host_auth" />
-<ref nist="AC-3" disa="" cis="6.2.7" />
+<ref nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010442" cis="6.2.7" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="sshd_disable_root_login" severity="medium">
 <title>Disable SSH Root Login</title>
@@ -269,7 +417,6 @@ and also allows direct attack attempts on root's password.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-
 <Rule id="sshd_disable_empty_passwords" severity="high">
 <title>Disable SSH Access via Empty Passwords</title>
 <description>To explicitly disallow remote login from accounts with
@@ -289,7 +436,7 @@ even in the event of misconfiguration elsewhere.
 </rationale>
 <ident cce="27471-2" />
 <oval id="sshd_disable_empty_passwords" />
-<ref nist="AC-3" disa=""/>
+<ref nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010440" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -366,29 +513,30 @@ implementation. These are also required for compliance.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="sshd_use_approved_macs">
-<title>Use Only Approved MACs</title>
+<Rule id="sshd_use_approved_macs" severity="medium">
+<title>Use Only FIPS Approved MACs</title>
 <description>Limit the MACs to those hash algorithms which are FIPS-approved.
 The following line in <tt>/etc/ssh/sshd_config</tt>
 demonstrates use of FIPS-approved MACs:
-<pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
+<pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
 The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
 </description>
-<ocil clause="that is not the case">
+<ocil clause="MACs option is commented out or not using FIPS-approved hash algorithms">
 Only FIPS-approved MACs should be used.  To verify that only FIPS-approved
 MACs are in use, run the following command:
 <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
 The output should contain only those MACs which are FIPS-approved, namely,
-hmac-sha2-512, hmac-sha2-256, and hmac-sha1 hash functions.
+hmac-sha2-512 and hmac-sha2-256 hash functions.
 <!-- encrypt-then-mac hash functions likely to be added to this list in the future -->
 </ocil>
 <rationale>
-Approved algorithms should impart some level of confidence in their
-implementation. These are also required for compliance.
+DoD Information Systems are required to use FIPS-approved cryptographic hash
+functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 </rationale>
 <ident cce="27455-5" />
 <oval id="sshd_use_approved_macs" />
-<ref nist="AC-17(2),IA-7,SC-13" disa="68,1453,803,2449,2450" ossrg="61,223" />
+<ref nist="AC-17(2),IA-7,SC-13" disa="68,803,1453,2449,2450"
+ossrg="SRG-OS-000250-GPOS-00093" stigid="040620" />
 </Rule>
 
 
