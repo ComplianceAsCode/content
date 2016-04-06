@@ -24,7 +24,7 @@ listed above. The Logical Volume Manager (LVM) makes this possible.
 See the LVM HOWTO at http://tldp.org/HOWTO/LVM-HOWTO/ for more
 detailed information on LVM.</description>
 
-<Rule id="partition_for_tmp">
+<Rule id="partition_for_tmp" severity="low">
 <title>Ensure /tmp Located On Separate Partition</title>
 <description>
 The <tt>/tmp</tt> directory is a world-writable directory used
@@ -39,11 +39,12 @@ restrictive mount options, which can help protect programs which use it.
 </rationale>
 <ident cce="27173-4" />
 <oval id="partition_for_tmp" />
-<ref nist="SC-32" cis="1.1.1" />
+<ref nist="SC-32.1" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
+cis="1.1.1" stigid="021270" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
-<Rule id="partition_for_var">
+<Rule id="partition_for_var" severity="low">
 <title>Ensure /var Located On Separate Partition</title>
 <description>The <tt>/var</tt> directory is used by daemons and other system
 services to store frequently-changing data. Ensure that <tt>/var</tt> has its own partition
@@ -59,7 +60,8 @@ world-writable directories installed by other software packages.
 </rationale>
 <ident cce="26404-4" />
 <oval id="partition_for_var" />
-<ref nist="SC-32" cis="1.1.5" />
+<ref nist="SC-32.1" cis="1.1.5" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
+stigid="021250" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
@@ -82,7 +84,7 @@ and other files in <tt>/var/</tt>.
 <tested by="MM" on="20120928"/>
 </Rule>
 
-<Rule id="partition_for_var_log_audit">
+<Rule id="partition_for_var_log_audit" severity="low">
 <title>Ensure /var/log/audit Located On Separate Partition</title>
 <description>
 Audit logs are stored in the <tt>/var/log/audit</tt> directory.  Ensure that it
@@ -100,11 +102,12 @@ of space.
 </rationale>
 <ident cce="26971-2" />
 <oval id="partition_for_var_log_audit" />
-<ref nist="AU-4,AU-9,SC-32" disa="" cis="1.1.8" />
+<ref nist="AU-4,AU-9,SC-32.1" disa="366" cis="1.1.8"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="021260" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
-<Rule id="partition_for_home">
+<Rule id="partition_for_home" severity="low">
 <title>Ensure /home Located On Separate Partition</title>
 <description>
 If user home directories will be stored locally, create a separate partition
@@ -121,7 +124,8 @@ users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="partition_for_home" />
-<ref nist="SC-32" disa="1208" cis="1.1.9" />
+<ref nist="SC-32.1" disa="366,1208" cis="1.1.9"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="021240" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
