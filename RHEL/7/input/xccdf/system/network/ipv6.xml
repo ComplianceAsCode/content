@@ -103,6 +103,17 @@ forwarding is disabled)</description>
 <value selector="disabled">no</value>
 </Value>
 
+<Value id="sysctl_net_ipv6_conf_all_accept_source_route_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.all.accept_source_route</title>
+<description>Trackers could be using source-routed packets to
+generate traffic that seems to be intra-net, but actually was
+created outside and has been redirected.</description>
+<value selector="">0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
 <Value id="sysctl_net_ipv6_conf_default_accept_ra_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv6.conf.default.accept_ra</title>
@@ -138,6 +149,27 @@ operator="equals" interactive="0">
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
+
+<Rule id="sysctl_net_ipv6_conf_all_accept_source_route" severity="medium">
+<title>Configure Kernel Parameter for Accepting Source-Routed Packets for All Interfaces</title>
+<description>
+<sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_source_route" value="0" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv6.conf.all.accept_source_route" value="0" />
+</ocil>
+<rationale>Source-routed packets allow the source of the packet to suggest routers
+forward the packet along a different path than configured on the router, which can
+be used to bypass network security measures. This requirement applies only to the
+forwarding of source-routerd traffic, such as when IPv6 forwarding is enabled and
+the system is functioning as a router.
+
+Accepting source-routed packets in the IPv6 protocol has few legitimate
+uses. It should be disabled unless it is absolutely required.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sysctl_net_ipv6_conf_all_accept_source_route" value="sysctl_net_ipv6_conf_all_accept_source_route_value" />
+<ref nist="AC-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040860" />
+</Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_ra">
 <title>Configure Accepting IPv6 Router Advertisements</title>
