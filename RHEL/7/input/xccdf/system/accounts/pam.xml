@@ -718,7 +718,7 @@ to the line which refers to the <tt>pam_unix.so</tt> or
 </li>
 </ul>
 The DoD STIG requirement is 5 passwords.</description>
-<ocil clause="it does not">
+<ocil clause="the value of remember is not set equal to or less than the expected setting">
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
 The output should show the following at the end of the line:
