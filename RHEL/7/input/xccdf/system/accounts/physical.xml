@@ -365,13 +365,13 @@ If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/
 If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
 </ocil>
 <rationale>
-Enabling the activation of the screen lock after an idle period
-ensures password entry will be required in order to
-access the system, preventing access by passersby.
+A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
+of the information system but does not want to logout because of the temporary nature of the absense.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
+ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" stigid="010060" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_mode_blank">
