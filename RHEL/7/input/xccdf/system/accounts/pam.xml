@@ -214,13 +214,15 @@ password</description>
 <title>difok</title>
 <description>Minimum number of characters not present in old
 password</description>
-<warning category="general">Keep this high for short
-passwords</warning>
+<warning category="general">Keep this high for short passwords</warning>
 <value selector="">15</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
 <value selector="4">4</value>
 <value selector="5">5</value>
+<value selector="6">5</value>
+<value selector="7">5</value>
+<value selector="8">5</value>
 <value selector="15">15</value>
 </Value>
 
@@ -302,7 +304,7 @@ which contain more than that number of consecutive characters. Modify the <tt>ma
 in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent a 
 run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
-<ocil clause="maxrepeat is not found or not greater than the required value">
+<ocil clause="maxrepeat is not found or not greater than or equal to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
 Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 2, which would appear as
