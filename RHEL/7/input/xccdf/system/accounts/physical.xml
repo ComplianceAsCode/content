@@ -291,10 +291,18 @@ settings, see <b>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/h
 <Rule id="dconf_gnome_screensaver_idle_delay" severity="medium">
 <title>Set GNOME3 Screensaver Inactivity Timeout</title>
 <description>
-To set the idle time-out value for inactivity in the GNOME3 desktop to 5 minutes (in seconds),
-the <tt>idle-delay</tt> setting must be set under an appropriate 
-configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+The idle time-out value for inactivity in the GNOME3 desktop is configured via the <tt>idle-delay</tt>
+setting must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
 and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+<br />
+For example, to configure the system for a 15 minute delay, add the following to a file under
+<tt>/etc/dconf/db/local.d/</tt>:
+<br />
+<pre>
+[org/gnome/desktop/session]
+idle-delay=900
+</pre>
+<br />
 After the settings have been set, run <tt>dconf update</tt>.
 </description>
 <ocil clause="it is not">
@@ -306,13 +314,16 @@ To ensure that users cannot change the screensaver inactivity timeout setting, r
 If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
 </ocil>
 <rationale>
-Setting the idle delay controls when the
-screensaver will start, and can be combined with
-screen locking to prevent access from passersby.
+A session time-out lock is a temporary action taken when a user stops work and moves away from
+the immediate physical vicinity of the information system but does not logout because of the
+temporary nature of the absence. Rather than relying on the user to manually lock their operating
+system session prior to vacating the vicinity, GNOME3 can be configured to identify when
+a user's session has idled and take action to initiate a session lock.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" 
+ossrg="SRG-OS-000029-GPOS-00010" stigid="010070" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium">
