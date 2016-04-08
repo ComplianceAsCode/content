@@ -6,7 +6,7 @@
 <!-- This transform replaces check-content with a check-content-ref, using the enclosing Rule id to create
      an id for the check (by appending "_ocil") -->
 
-  <!-- replace check system attribute with the real OCIL one -->
+  <!-- Replace check system attribute with the real OCIL one -->
   <xsl:template match="xccdf:check[@system='ocil-transitional']">
     <xsl:copy>
 		<xsl:apply-templates select="@*" />
@@ -15,7 +15,14 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- remove check-content nodes and replace them with a check-content-ref node, using the Rule id
+  <!-- Remove OCIL <check-export> nodes since they were used only to append the appropriate question
+       to OCIL <check-content> nodes by previous run of $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt.
+       But at this state of building the content this has been already finished.
+       Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1189
+       Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1190 -->
+  <xsl:template match="xccdf:check-export[@value-id='conditional_clause']"/>
+
+  <!-- Remove check-content nodes and replace them with a check-content-ref node, using the Rule id
        to create a reference name -->
   <xsl:template match="xccdf:check-content">
 	<xsl:element name="check-content-ref" namespace="http://checklists.nist.gov/xccdf/1.1">
@@ -25,7 +32,7 @@
   </xsl:template>
 
 
-  <!-- copy everything else through to final output -->
+  <!-- Copy everything else through to final output -->
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
