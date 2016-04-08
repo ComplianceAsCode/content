@@ -333,6 +333,8 @@ To activate the screensaver in the GNOME3 desktop after a period of inactivity,
 the <tt>idle-activation-enabled</tt> setting must be set under an appropriate 
 configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
 and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+<br />
+Add <tt>idle_activation_enabled=true</tt> to a file under <tt>/etc/dconf/db/local.d/</tt>.
 After the settings have been set, run <tt>dconf update</tt>.
 </description>
 <ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
@@ -343,6 +345,12 @@ To ensure that users cannot disable the screensaver idle inactivity setting, run
 If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/idle-activation-enabled</tt>
 </ocil>
 <rationale>
+A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+physical vicinity of the information system but does not logout because of the temporary nature of the absence.
+Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity,
+GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
+session lock.
+
 Enabling idle activation of the screensaver ensures the screensaver will
 be activated after the idle delay.  Applications requiring continuous,
 real-time screen display (such as network management products) require the
@@ -351,7 +359,7 @@ controlled-access area.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010073" pcidss="Req-8.1.8" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_lock_enabled" severity="medium">
