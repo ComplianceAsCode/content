@@ -227,10 +227,6 @@ The base Red Hat platform already includes a sophisticated auditing system that
 can detect intruder activity, as well as SELinux, which provides host-based
 intrusion prevention capabilities by confining privileged programs and user
 sessions which may become compromised.<br />
-In DoD environments, supplemental intrusion detection tools, such as, the McAfee
-Host-based Security System, are available to integrate with existing infrastructure.
-When these supplemental tools interfere with the proper functioning of SELinux, SELinux
-takes precedence.
 <br/>
 </description>
 <ocil clause="no host-based intrusion detection tools are installed">
@@ -249,8 +245,7 @@ intruder gains access to a system or network.
 <title>Install Virus Scanning Software</title>
 <description>
 Install virus scanning software, which uses signatures to search for the
-presence of viruses on the filesystem. 
-The McAfee VirusScan Enterprise for Linux virus scanning tool is provided for DoD systems.
+presence of viruses on the filesystem.
 Ensure virus definition files are no older than 7 days, or their last release.
 <!-- need info here on where DoD admins can go to get this -->
 Configure the virus scanning software to perform scans dynamically on all
@@ -259,9 +254,9 @@ system to scan all altered files on the system on a daily
 basis. If the system processes inbound SMTP mail, configure the virus scanner
 to scan all received mail.
 <!-- what's the basis for the IAO language? would not failure of a check
-     imply a discussion, for every check in this document, 
-     with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
-     particular neighborhood) should occur? -->
+-     imply a discussion, for every check in this document,
+-     with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
+-     particular neighborhood) should occur? -->
 </description>
 <ocil clause="virus scanning software does not run continuously, or at least daily, or has signatures that are out of date">
 Inspect the system for a cron job or system service which executes
@@ -278,11 +273,103 @@ $ sudo ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
 </ocil>
 <rationale>
 Virus scanning software can be used to detect if a system has been compromised by
-computer viruses, as well as to limit their spread to other systems. 
+computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <oval id="install_antivirus" />
 <ident cce="27140-3" />
 <ref nist="SC-28, SI-3" disa="1239,1668"/>
+</Rule>
+
+</Group>
+
+<Group id="mcafee_security_software">
+<title>McAfee Security Software</title>
+<description>
+In DoD environments, McAfee Host-based Security System (HBSS) and
+VirusScan Enterprise for Linux is required to be installed on all systems.
+</description>
+
+<Rule id="install_mcafee_hbss" severity="medium">
+<title>Install McAfee Host-Based Intrusion Detection Software (HBSS)</title>
+<description>
+Install the McAfee Host-based Security System (HBSS) application.
+</description>
+<ocil clause="McAfee HBSS is not installed">
+To verify that McAfee HBSS is installed, run the following command(s):
+<pre>$ sudo ls /opt/McAfee/accm/bin/accm</pre>
+<pre>$ sudo ls /opt/McAfee/auditengine/bin/auditmanager</pre>
+<pre>$ rpm -q MFEcma &amp;&amp; rpm -q MFErt</pre>
+</ocil>
+<rationale>
+Without a host-based intrusion detection tool, there is no system-level defense
+when an intruder gains access to a system or network. Additionally, a host-based
+intrusion prevention tool can provide methods to immediately lock out detected
+intrusion attempts.
+</rationale>
+<oval id="install_mcafee_hbss" />
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
+ossrg="STG-OS-000480-GPOS-00227" stigig="030790" />
+</Rule>
+
+<Rule id="install_mcafee_antivirus" severity="high">
+<title>Install McAfee Virus Scanning Software</title>
+<description>
+Install McAfee VirusScan Enterprise for Linux antivirus software
+which is provided for DoD systems and uses signatures to search for the
+presence of viruses on the filesystem.
+</description>
+<ocil clause="virus scanning software is not installed or running">
+To verify that McAfee VirusScan Enterprise for Linux is installed
+and running, run the following command(s):
+<pre>$ sudo systemctl status nails</pre>
+<pre>$ rpm -q McAfeeVSEForLinux</pre>
+</ocil>
+<rationale>
+Virus scanning software can be used to detect if a system has been compromised by
+computer viruses, as well as to limit their spread to other systems.
+</rationale>
+<oval id="install_mcafee_antivirus" />
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030810" />
+</Rule>
+
+<Rule id="service_nails_enabled" severity="medium">
+<title>Enable nails Service</title>
+<description>The <tt>nails</tt> service is used to run McAfee VirusScan Enterprise
+for Linux and McAfee Host-based Security System (HBSS) services.
+<service-enable-macro service="nails" />
+</description>
+<ocil><service-enable-check-macro service="nails" /></ocil>
+<rationale>
+Virus scanning software can be used to detect if a system has been compromised by
+computer viruses, as well as to limit their spread to other systems.
+</rationale>
+<oval id="service_nails_enabled" />
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
+</Rule>
+
+<Rule id="mcafee_antivirus_definitions_updated" severity="medium">
+<title>Virus Scanning Software Definitions Are Updated</title>
+<description>
+Ensure virus definition files are no older than 7 days or their last release.
+</description>
+<ocil clause="signatures are out of date">
+To check on the age of McAfee virus definition files, run the following command:
+<pre>$ sudo cd /opt/NAI/LinuxShield/engine/dat
+$ sudo ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
+</ocil>
+<rationale>
+Virus scanning software can be used to detect if a system has been compromised by
+computer viruses, as well as to limit their spread to other systems.
+</rationale>
+<!--oval id="mcafee_antivirus_definitions_updated" /-->
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030820" />
 </Rule>
 
 </Group>
