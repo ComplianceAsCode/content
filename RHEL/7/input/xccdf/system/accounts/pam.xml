@@ -391,7 +391,7 @@ search space.
 minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
 after pam_pwquality to set minimum password length requirements.
 </description>
-<ocil clause="minlen is not found or not equal to or greater than the required value">
+<ocil clause="minlen is not found, or not equal to or greater than the required value">
 To check how many characters are required in a password, run the following command:
 <pre>$ grep minlen /etc/security/pwquality.conf</pre>
 Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /></tt>
@@ -399,7 +399,7 @@ Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /><
 <rationale>
 The shorter the password, the lower the number of possible combinations
 that need to be tested before the password is compromised.
-
+<br />
 Password complexity, or strength, is a measure of the effectiveness of a 
 password in resisting attempts at guessing and brute-force attacks. 
 Password length is one factor of several that helps to determine strength
