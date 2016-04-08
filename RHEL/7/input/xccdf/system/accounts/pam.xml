@@ -326,7 +326,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010150" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxclassrepeat">
+<Rule id="accounts_password_pam_maxclassrepeat" severity="low">
 <title>Set Password to Maximum of Consecutive Repeating Characters from Same Character Class</title>
 <description>The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
 consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
@@ -337,15 +337,20 @@ to prevent a run of (<sub idref="var_password_pam_maxclassrepeat" /> + 1) or mor
 <ocil clause="that is not the case">
 To check the value for maximum consecutive repeating characters, run the following command:
 <pre>$ grep maxclassrepeat /etc/security/pwquality.conf</pre>
-The output should show <tt>maxclassrepeat</tt>=600.
+For DoD systems, the output should show <tt>maxclassrepeat</tt>=2.
 </ocil>
 <rationale>
-Passwords with excessive repeating characters from the same character class may be more vulnerable to 
-password-guessing attacks.
+Use of a complex password helps to increase the time and resources required to comrpomise the password.
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting
+attempts at guessing and brute-force attacks.
+<br />
+Password complexity is one factor of several that determines how long it takes to crack a password. The
+more complex a password, the greater the number of possible combinations that need to be tested before the
+password is compromised.
 </rationale>
 <ident cce="27512-3" />
 <oval id="accounts_password_pam_maxclassrepeat" value="var_password_pam_maxclassrepeat" />
-<ref nist="IA-5(c)" disa="366" />
+<ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010160" />
 </Rule>
 
 <Rule id="accounts_password_pam_dcredit" severity="medium">
@@ -736,19 +741,22 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 locations.</description>
 
 <Rule id="set_password_hashing_algorithm_systemauth" severity="medium">
-<title>Set Password Hashing Algorithm in /etc/pam.d/system-auth</title>
+<title>Set PAM's Password Hashing Algorithm</title>
 <description>
+The PAM system service should be configured to store only encrypted representations of passwords.
+<br />
 In <tt>/etc/pam.d/system-auth</tt>, the <tt>password</tt> section of
 the file controls which PAM modules execute during a password change.
-Set the <tt>pam_unix.so</tt> module in the
-<tt>password</tt> section to include the argument <tt>sha512</tt>, as shown below:
+Set the <tt>pam_unix.so</tt> module in the <tt>password</tt> section to 
+include the argument <tt>sha512</tt>, as shown below:
+<br />
 <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
+<br />
 This will help ensure when local users change their passwords, hashes for the new
-passwords will be generated using the SHA-512 algorithm.
-This is the default.
+passwords will be generated using the SHA-512 algorithm. This is the default.
 </description>
 <ocil clause="it does not">
-Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>  and
+Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt> and
 ensure that the <tt>pam_unix.so</tt> module includes the argument
 <tt>sha512</tt>:
 <pre>$ grep sha512 /etc/pam.d/system-auth</pre>
@@ -764,7 +772,7 @@ encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> c
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
 </rationale>
 <ident cce="27104-9" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010190" pcidss="Req-8.2.1" cis="6.3.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010170" pcidss="Req-8.2.1" cis="6.3.1" />
 <tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
