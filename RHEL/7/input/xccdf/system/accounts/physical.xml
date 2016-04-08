@@ -195,6 +195,9 @@ command line instead of rebooting the system, do either of the following:
 <pre>ln -sf /dev/null /etc/systemd/system/ctrl-alt-del.target</pre>
 or
 <pre>systemctl mask ctrl-alt-del.target</pre>
+<br />
+<note>Do not simply delete the <tt>/usr/lib/systemd/system/ctrl-alt-del.service</tt> file,
+as this file may be resored during future system updates.</note>
 </description>
 <ocil clause="the system is configured to reboot when Ctrl-Alt-Del is pressed">
 To ensure the system is configured to mask the Ctrl-Alt-Del sequence,
