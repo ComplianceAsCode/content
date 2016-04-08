@@ -471,7 +471,7 @@ options to the SSH daemon, add or correct the following line
 in <tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitUserEnvironment no</pre>
 </description>
-<ocil clause="it is not">
+<ocil clause="PermitUserEnvironment is not disabled">
 To ensure users are not able to present environment daemons, run the following command:
 <pre>$ sudo grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
