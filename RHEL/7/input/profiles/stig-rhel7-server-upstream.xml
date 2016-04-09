@@ -7,16 +7,13 @@
      to DoD-specific settings, as deemed approriate by DISA FSO (RE71) -->
 <refine-value idref="sshd_idle_timeout_value" selector="15_minutes" />
 <refine-value idref="var_password_pam_unix_remember" selector="5" />
-<refine-value idref="var_accounts_maximum_age_login_defs" selector="60" />
-<refine-value idref="var_password_pam_ocredit" selector="1" />
-<refine-value idref="var_password_pam_ucredit" selector="1" />
-<refine-value idref="var_password_pam_lcredit" selector="1" />
-<refine-value idref="var_password_pam_dcredit" selector="1" />
-<refine-value idref="var_password_pam_difok" selector="15" />
+<refine-value idref="var_password_pam_difok" selector="8" />
 <refine-value idref="login_banner_text" selector="dod_default" />
 <refine-value idref="var_password_pam_minclass" selector="4" />
 <refine-value idref="var_password_pam_maxrepeat" selector="2" />
 <refine-value idref="var_password_pam_maxclassrepeat" selector="2" />
+<refine-value idref="inactivity_timeout_value" selector="900" />
+<refine-value idref="var_account_disable_post_pw_expiration" selector="0" />
 <!-- END DISA FSO REFINEMENT VALUES -->
 
 <!-- NIAP/OSPP EXCLUDED RULES
@@ -30,18 +27,12 @@
      Protection Profile (NIAP OSPP). -->
 
 <!-- Password Requirements -->
-<select idref="accounts_maximum_age_login_defs" selected="true" />
 <select idref="accounts_password_pam_minclass" selected="true" />
 <select idref="accounts_password_pam_unix_remember" selected="true" />
-<select idref="accounts_password_pam_ocredit" selected="true" />
-<select idref="accounts_password_pam_ucredit" selected="true" />
-<select idref="accounts_password_pam_lcredit" selected="true" />
-<select idref="accounts_password_pam_dcredit" selected="true" />
 <select idref="accounts_password_pam_minlen" selected="true" />
 <select idref="accounts_password_pam_difok" selected="true" />
 <select idref="accounts_password_pam_maxrepeat" selected="true" />
 <select idref="accounts_password_pam_maxclassrepeat" selected="true" />
-<select idref="set_password_hashing_algorithm_logindefs" selected="true" />
 <select idref="account_disable_post_pw_expiration" selected="true" />
 
 <!-- Account Management Requirements -->
@@ -55,10 +46,12 @@
 <select idref="ftp_present_banner" selected="true" />
 <select idref="dconf_gnome_banner_enabled" selected ="true" />
 <select idref="dconf_gnome_login_banner_text" selected="true" />
+<select idref="dconf_gnome_screensaver_lock_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_delay" selected="true"/>
 
 <!-- Software/Patch Requirements -->
 <select idref="ensure_redhat_gpgkey_installed" selected="true" />
-<select idref="ensure_gpgcheck_globally_activated" selected="true" />
 <select idref="ensure_gpgcheck_never_disabled" selected="true" />
 <select idref="security_patches_up_to_date" selected="true" />
 
