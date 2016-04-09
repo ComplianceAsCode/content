@@ -5,6 +5,8 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
        <!-- adding profiles here -->
+                <xsl:apply-templates select="document('profiles/common.xml')" />
+                <xsl:apply-templates select="document('profiles/stig-amq-upstream.xml')" />
 		<xsl:apply-templates select="document('profiles/stig-fuse6-upstream.xml')" />
        <Value id="conditional_clause" type="string" operator="equals">
                  <title>A conditional clause for check statements.</title>
