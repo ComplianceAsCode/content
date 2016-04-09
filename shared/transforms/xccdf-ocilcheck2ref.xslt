@@ -22,6 +22,12 @@
        Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1190 -->
   <xsl:template match="xccdf:check-export[@value-id='conditional_clause']"/>
 
+  <!-- Remove the "conditional_clause" <xccdf:Value> since it was required only to expand OCIL macros
+       to insert proper questions when creating OCIL content. At this stage the OCIL content was built
+       alreaady, thus "conditional_clause" is not needed anymore in the final XCCDF benchmark (and only
+       causing confusion e.g. in SCAP Workbench tool -->
+  <xsl:template match="xccdf:Value[@id='conditional_clause']"/>
+
   <!-- Remove check-content nodes and replace them with a check-content-ref node, using the Rule id
        to create a reference name -->
   <xsl:template match="xccdf:check-content">
