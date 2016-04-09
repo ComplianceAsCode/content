@@ -14,6 +14,7 @@ RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
 RHEVM = 'Red Hat Enterprise Virtualization Manager'
+FUSE = 'JBoss Fuse'
 
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
@@ -36,7 +37,8 @@ def map_product(version):
         product_name = DEBIAN
     if re.findall('rhevm', version):
         product_name = RHEVM
-
+    if re.findall('fuse', version):
+        product_name = FUSE
     return product_name
 
 def fix_is_applicable_for_product(platform, product):
