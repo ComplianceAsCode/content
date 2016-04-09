@@ -195,6 +195,9 @@ command line instead of rebooting the system, do either of the following:
 <pre>ln -sf /dev/null /etc/systemd/system/ctrl-alt-del.target</pre>
 or
 <pre>systemctl mask ctrl-alt-del.target</pre>
+<br />
+Do not simply delete the <tt>/usr/lib/systemd/system/ctrl-alt-del.service</tt> file,
+as this file may be resored during future system updates.
 </description>
 <ocil clause="the system is configured to reboot when Ctrl-Alt-Del is pressed">
 To ensure the system is configured to mask the Ctrl-Alt-Del sequence,
@@ -291,13 +294,21 @@ settings, see <b>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/h
 <Rule id="dconf_gnome_screensaver_idle_delay" severity="medium">
 <title>Set GNOME3 Screensaver Inactivity Timeout</title>
 <description>
-To set the idle time-out value for inactivity in the GNOME3 desktop to 5 minutes (in seconds),
-the <tt>idle-delay</tt> setting must be set under an appropriate 
-configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
+The idle time-out value for inactivity in the GNOME3 desktop is configured via the <tt>idle-delay</tt>
+setting must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
 and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+<br />
+For example, to configure the system for a 15 minute delay, add the following to a file under
+<tt>/etc/dconf/db/local.d/</tt>:
+<br />
+<pre>
+[org/gnome/desktop/session]
+idle-delay=900
+</pre>
+<br />
 After the settings have been set, run <tt>dconf update</tt>.
 </description>
-<ocil clause="it is not">
+<ocil clause="idle-delay is not equal to or less than the expected value">
 To check the current idle time-out value, run the following command:
 <pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
 If properly configured, the output should be <tt><sub idref="inactivity_timeout_value" /></tt>.
@@ -306,13 +317,16 @@ To ensure that users cannot change the screensaver inactivity timeout setting, r
 If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
 </ocil>
 <rationale>
-Setting the idle delay controls when the
-screensaver will start, and can be combined with
-screen locking to prevent access from passersby.
+A session time-out lock is a temporary action taken when a user stops work and moves away from
+the immediate physical vicinity of the information system but does not logout because of the
+temporary nature of the absence. Rather than relying on the user to manually lock their operating
+system session prior to vacating the vicinity, GNOME3 can be configured to identify when
+a user's session has idled and take action to initiate a session lock.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" 
+ossrg="SRG-OS-000029-GPOS-00010" stigid="010070" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium">
@@ -322,6 +336,8 @@ To activate the screensaver in the GNOME3 desktop after a period of inactivity,
 the <tt>idle-activation-enabled</tt> setting must be set under an appropriate 
 configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory 
 and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification. 
+<br />
+Add <tt>idle_activation_enabled=true</tt> to a file under <tt>/etc/dconf/db/local.d/</tt>.
 After the settings have been set, run <tt>dconf update</tt>.
 </description>
 <ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
@@ -332,6 +348,12 @@ To ensure that users cannot disable the screensaver idle inactivity setting, run
 If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/idle-activation-enabled</tt>
 </ocil>
 <rationale>
+A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+physical vicinity of the information system but does not logout because of the temporary nature of the absence.
+Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity,
+GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
+session lock.
+
 Enabling idle activation of the screensaver ensures the screensaver will
 be activated after the idle delay.  Applications requiring continuous,
 real-time screen display (such as network management products) require the
@@ -340,7 +362,7 @@ controlled-access area.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010073" pcidss="Req-8.1.8" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_lock_enabled" severity="medium">
@@ -365,13 +387,13 @@ If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/
 If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
 </ocil>
 <rationale>
-Enabling the activation of the screen lock after an idle period
-ensures password entry will be required in order to
-access the system, preventing access by passersby.
+A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
+of the information system but does not want to logout because of the temporary nature of the absense.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
+ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" stigid="010060" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_mode_blank">
