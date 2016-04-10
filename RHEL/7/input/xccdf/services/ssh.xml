@@ -21,6 +21,47 @@ operator="equals" interactive="0">
 <value selector="120_minutes">7200</value>
 </Value>
 
+<Rule id="package_openssh-server_installed" severity="medium">
+<title>Install the OpenSSH Server Package</title>
+<description>
+The <tt>openssh-server</tt> package should be installed.
+<package-install-macro package="openssh-server"/>
+</description>
+<ocil clause="the package is not installed" >
+<package-check-macro package="openssh-server" />
+</ocil>
+<rationale>
+Without protection of the transmitted information, confidentiality, and
+integrity may be compromised because unprotected communications can be
+intercepted and either read or altered.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="package_openssh-server_installed" />
+<ref nist="SC-8" disa="2418,2420,2421,2422"
+ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-0004230GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
+stigid="040260" />
+</Rule>
+
+<Rule id="service_sshd_enabled" severity="medium">
+<title>Enable the SSH Server</title>
+<description>The SSH server service, sshd, is commonly needed.
+<service-enable-macro service="sshd" />
+</description>
+<ocil>
+<service-enable-check-macro service="sshd" />
+</ocil>
+<rationale>
+Without protection of the transmitted information, confidentiality, and
+integrity may be compromised because unprotected communications can be
+intercepted and either read or altered.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<ref nist="SC-8" disa="2418,2420,2421,2422"
+ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-0004230GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
+stigid="TBD" />
+<oval id="service_sshd_enabled" />
+</Rule>
+
 <Rule id="service_sshd_disabled">
 <title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
@@ -64,14 +105,14 @@ ossrg="SRG-OS-000480-GPOS-00227" stigid="040650"/>
 
 <Rule id="firewalld_sshd_disabled">
 <title>Remove SSH Server <tt>firewalld</tt> Firewall exception (Unusual)</title>
-<description>By default, inbound connections to SSH's port are allowed. If 
+<description>By default, inbound connections to SSH's port are allowed. If
 the SSH server is not being used, this exception should be removed from the
 firewall configuration.
 <br /><br />
 <firewalld-desc-macro allow="false" proto="tcp" service="ssh" />
 </description>
 <rationale>
-If inbound SSH connections are not expected, disallowing access to the SSH port will 
+If inbound SSH connections are not expected, disallowing access to the SSH port will
 avoid possible exploitation of the port by an attacker.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
@@ -116,13 +157,13 @@ ossrg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" stigid="040590"/>
 <title>Limit Users' SSH Access</title>
 <description>By default, the SSH configuration allows any user with an account
 to access the system. In order to specify the users that are allowed to login
-via SSH and deny all other users, add or correct the following line in the 
+via SSH and deny all other users, add or correct the following line in the
 <tt>/etc/ssh/sshd_config</tt> file:
 <pre>DenyUsers USER1 USER2</pre>
 Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
 </description>
 <rationale>
-Specifying which accounts are allowed SSH access into the system reduces the 
+Specifying which accounts are allowed SSH access into the system reduces the
 possibility of unauthorized access to the system.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
@@ -132,7 +173,7 @@ possibility of unauthorized access to the system.
 
 <Rule id="sshd_disable_gssapi_auth" severity="medium">
 <title>Disable GSSAPI Authentication</title>
-<description>Unless needed, SSH should not permit extraneous or unnecessary 
+<description>Unless needed, SSH should not permit extraneous or unnecessary
 authentication mechanisms like GSSAPI. To disable GSSAPI authentication, add or
 correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
 <pre>GSSAPIAuthentication no</pre>
@@ -251,6 +292,28 @@ system from an unauthenticated connection, potentially wih root privileges.
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040700"/>
 </Rule>
 
+<Rule id="sshd_print_last_log" severity="low">
+<title>Print Last Log</title>
+<description>When enabled, SSH will display the date and time of the last
+successful account logon. To enable LastLog in
+SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+<pre>PrintLastLog yes</pre>
+</description>
+<ocil clause="it is commented out or is not enabled">
+To check if PrintLastLog is enabled or set correctly, run the
+following command:
+<pre>$ sudo grep PrintLastLog /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>yes</pre>
+</ocil>
+<rationale>
+Providing users feedback on when account accesses last occurred facilitates user
+recognition and reporting of unauthorized account use.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="sshd_print_last_log" />
+<ref nist="AC-9" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040300"/>
+</Rule>
+
 <!-- FIXME: figure out whether/how to say something discrete here -->
 <!--
 <Group id="sshd_disable_extraneous_authentication">
@@ -299,27 +362,29 @@ To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_co
 follows:
 <pre>ClientAliveInterval <b>interval</b></pre>
 The timeout <b>interval</b> is given in seconds. To have a timeout
-of 15 minutes, set <b>interval</b> to 900.
+of 10 minutes, set <b>interval</b> to 600.
 <br /><br />
 If a shorter timeout has already been set for the login
 shell, that value will preempt any SSH
 setting made here. Keep in mind that some processes may stop SSH
 from correctly detecting that the user is idle.
 </description>
-<ocil clause="it is not">
+<ocil clause="it is commented out or not configured properly">
 Run the following command to see what the timeout interval is:
 <pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
 If properly configured, the output should be:
-<pre>ClientAliveInterval 900</pre>
+<pre>ClientAliveInterval 600</pre>
 </ocil>
 <rationale>
-Causing idle users to be automatically logged out
-guards against compromises one system leading trivially
-to compromises on another.
+Terminating an idle ssh session within a short time period reduces the window of
+opportunity for unauthorized personnel to take control of a management session
+enabled on the console or console port that has been let unattended.
 </rationale>
 <ident cce="27433-2" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
-<ref nist="AC-2(5),SA-8" disa="" pcidss="Req-8.1.8" cis="6.2.12" />
+<ref nist="AC-2(5),SA-8(i),AC-12" disa="1133,2361"
+ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" stigid="040190"
+pcidss="Req-8.1.8" cis="6.2.12" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -331,7 +396,7 @@ edit <tt>/etc/ssh/sshd_config</tt> as
 follows:
 <pre>ClientAliveCountMax 0</pre>
 </description>
-<ocil clause="it is not">
+<ocil clause="it is commented out or not configured properly">
 To ensure the SSH idle timeout will occur when the <tt>ClientAliveCountMax</tt> is set, run the following command:
 <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
 If properly configured, output should be:
@@ -343,10 +408,11 @@ is reached.
 </rationale>
 <ident cce="27082-7" />
 <oval id="sshd_set_keepalive" />
-<ref nist="AC-2(5),SA-8" disa="" cis="6.2.12" />
+<ref nist="AC-2(5),SA-8,AC-12" disa="1133,2361"
+ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" stigid="TBD"
+cis="6.2.12" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="sshd_disable_rhosts" severity="medium">
 <title>Disable SSH Support for .rhosts Files</title>
@@ -395,6 +461,29 @@ can allow an attacker to move trivially to other hosts.
 <tested by="DS" on="20121024"/>
 </Rule>
 
+<Rule id="enable_x11_forwarding" severity="high">
+<title>Enable X11 Fordwarding</title>
+<description>By default, remote X11 connections are not encrypted when initiated
+by users. SSH has the capability to encrypt remote X11 connections when SSH's
+<tt>X11Forwarding</tt> option is enabled.
+<br /><br />
+To enable X11 Forwarding, add or correct the
+following line in <tt>/etc/ssh/sshd_config</tt>:
+<pre>X11Forwarding yes</pre>
+</description>
+<ocil>
+<sshd-check-macro option="X11Forwarding" value="yes" default="no" />
+</ocil>
+<rationale>
+Open X displays allow an attacker to capture keystrokes and to execute commands
+remotely.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="enable_x11_forwarding" />
+<ref nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
+stigid="040540" />
+</Rule>
+
 <Rule id="sshd_disable_root_login" severity="medium">
 <title>Disable SSH Root Login</title>
 <description>The root user should never be allowed to login to a
@@ -407,13 +496,16 @@ in <tt>/etc/ssh/sshd_config</tt>:
 <sshd-check-macro option="PermitRootLogin" value="no" default="no" />
 </ocil>
 <rationale>
-Permitting direct root login reduces auditable information about who ran
-privileged commands on the system
-and also allows direct attack attempts on root's password.
+Even though the communications channel may be encrypted, an additional layer of
+security is gained by extending the policy of not logging directly on as root.
+In addition, logging in with a user-specific account provides individual
+accountability of actions performed on the system and also helps to minimize
+direct attack attempts on root's password.
 </rationale>
 <ident cce="27445-6" />
 <oval id="sshd_disable_root_login" />
-<ref nist="AC-3,AC-6(2),IA-2(1)" disa="" cis="6.2.8" />
+<ref nist="AC-3,AC-6(2),IA-2(1),IA-2(5)" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040310" cis="6.2.8" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -460,13 +552,15 @@ not provide easy attribution.
 </rationale>
 <ident cce="27314-4" />
 <oval id="sshd_enable_warning_banner" />
-<ref nist="AC-8(a),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="1384,1385,1386,1387,1388" ossrg="228" cis="6.2.14" />
+<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48,50,1384,1385,1386,1387,1388"
+ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088"
+cis="6.2.14" stigid="040170" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_do_not_permit_user_env" severity="medium">
 <title>Do Not Allow SSH Environment Options</title>
-<description>To ensure users are not able to override environment 
+<description>To ensure users are not able to override environment
 options to the SSH daemon, add or correct the following line
 in <tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitUserEnvironment no</pre>
@@ -493,15 +587,15 @@ access restriction in some configurations.
 Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
 The following line in <tt>/etc/ssh/sshd_config</tt>
 demonstrates use of FIPS-approved ciphers:
-<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc</pre>
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
 The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 </description>
-<ocil clause="that is not the case">
-Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+<ocil clause="FIPS ciphers are not configured or the enabled ciphers are not FIPS-approved">
+Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved
 ciphers are in use, run the following command:
 <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
-The output should contain only those ciphers which are FIPS-approved, namely, the 
-AES and 3DES ciphers.
+The output should contain only those ciphers which are FIPS-approved, namely,
+aes128-ctr,aes192-ctr,aes256-ctr
 </ocil>
 <rationale>
 Approved algorithms should impart some level of confidence in their
@@ -509,7 +603,8 @@ implementation. These are also required for compliance.
 </rationale>
 <ident cce="27295-5" />
 <oval id="sshd_use_approved_ciphers" />
-<ref nist="AC-3,AC-17(2),AU-10(5),IA-5(1)(c),IA-7" disa="" cis="6.2.11" />
+<ref nist="AC-3,AC-17(2),AU-10(5),CM-6(b),IA-5(1)(c),IA-7" disa="68,366,803"
+ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173" stigid="040110" cis="6.2.11" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
