@@ -13,7 +13,7 @@ checks:
 	mkdir -p $(PROD_OVAL)
 	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
-	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
 	xmlwf $(PROD_OVAL)/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
