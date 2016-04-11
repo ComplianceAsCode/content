@@ -65,8 +65,6 @@ validate-xml:
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate: validate-xml
-	@echo "Exiting make validate to test Jenkins CI"
-	exit 1
 ifeq ($(SHELLCHECK_AVAIL), 0)
 	cd $(IN)/remediations/bash; shellcheck -s bash *.sh
 else

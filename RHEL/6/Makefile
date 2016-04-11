@@ -70,6 +70,7 @@ tables: table-refs table-idents table-stigs
 #tables: table-refs table-idents table-srgmap table-stigs
 
 content: $(OUT)/xccdf-unlinked-final.xml checks
+	grep 'Red Hat' /etc/system-release
 	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
