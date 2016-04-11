@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="use_kerberos_security_all_exports" version="1">
+  <definition class="compliance" id="use_kerberos_security_all_exports" version="2">
     <metadata>
       <title>Use Kerberos Security on All Exports</title>
       <affected family="unix">
@@ -7,10 +7,9 @@
       </affected>
       <description>Using Kerberos Security allows to cryptography authenticate a
       valid user to an NFS share.</description>
-      <reference source="galford" ref_id="20160405" ref_url="test_attestation" />
+      <reference source="JL" ref_id="20160411" ref_url="test_attestation" />
     </metadata>
-    <criteria operator="OR">
-      <extend_definition comment="nfs-utils removed" definition_ref="package_nfs-utils_removed" />
+    <criteria>
       <criterion comment="Check for Kerberos settings in /etc/exports"
       test_ref="test_use_kerberos_security_all_exports" />
     </criteria>
