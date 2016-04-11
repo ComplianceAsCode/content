@@ -170,8 +170,6 @@ eval-common: content
 
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content
-	@echo "Existing make dist to test Jenkins CI"
-	exit 1
 	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
