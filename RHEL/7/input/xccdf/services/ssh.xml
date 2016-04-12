@@ -38,12 +38,12 @@ intercepted and either read or altered.
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="package_openssh-server_installed" />
 <ref nist="SC-8" disa="2418,2420,2421,2422"
-ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-0004230GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
+ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
 stigid="040260" />
 </Rule>
 
 <Rule id="service_sshd_enabled" severity="medium">
-<title>Enable the SSH Server</title>
+<title>Enable the OpenSSH Service</title>
 <description>The SSH server service, sshd, is commonly needed.
 <service-enable-macro service="sshd" />
 </description>
@@ -57,7 +57,7 @@ intercepted and either read or altered.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <ref nist="SC-8" disa="2418,2420,2421,2422"
-ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-0004230GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
+ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
 stigid="TBD" />
 <oval id="service_sshd_enabled" />
 </Rule>
@@ -462,7 +462,7 @@ can allow an attacker to move trivially to other hosts.
 </Rule>
 
 <Rule id="enable_x11_forwarding" severity="high">
-<title>Enable X11 Fordwarding</title>
+<title>Enable Encrypted X11 Fordwarding</title>
 <description>By default, remote X11 connections are not encrypted when initiated
 by users. SSH has the capability to encrypt remote X11 connections when SSH's
 <tt>X11Forwarding</tt> option is enabled.
