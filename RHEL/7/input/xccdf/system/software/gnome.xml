@@ -1,0 +1,271 @@
+<Group id="gnome">
+<title>GNOME Desktop Environment</title>
+<description>
+GNOME is a graphical desktop environment bundled with many Linux distributions that
+allow users to easily interact with the operating system graphically rather than
+textually. The GNOME Graphical Display Manager (GDM) provides login, logout, and user
+switching contexts as well as display server management.
+<br/><br/>
+GNOME is developed by the GNOME Project and is considered the default
+Red Hat Graphical environment.
+<br/><br/>
+For more information on GNOME and the GNOME Project, see <b>https://www.gnome.org</b>
+</description>
+
+<Rule id="dconf_gnome_disable_user_list">
+<title>Disable the GNOME3 Login User List</title>
+<description>In the default graphical environment, users logging
+directly into the system are greeted with a login screen that displays
+all known users. This functionality should be disabled.
+<br /><br />
+The <tt>disable-user-list</tt> setting must be
+set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/gdm.d</tt> directory
+and locked in <tt>/etc/dconf/db/gdm.d/locks</tt> directory to prevent user modification.
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">
+To ensure the user list is disabled, run the following command:
+<pre>$ grep disable-user-list /etc/dconf/db/gdm.d/*</pre>
+The output should be <tt>true</tt>.
+To ensure that users cannot enable displaying the user list, run the following:
+<pre>$ grep disable-user-list /etc/dconf/db/gdm.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/login-screen/disable-user-list</tt>
+</ocil>
+<rationale>Leaving the user list enabled is a security risk since it allows anyone
+with physical access to the system to quickly enumerate known user accounts
+without logging in.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_disable_user_list" />
+<ref nist="AC-23" />
+</Rule>
+
+<Group id="gnome_screen_locking">
+<title>Configure GNOME Screen Locking</title>
+<description>In the default GNOME3 desktop, the screen can be locked
+by selecting the user name in the far right corner of the main panel and
+selecting <b>Lock</b>.
+<br /><br />
+The following sections detail commands to enforce idle activation of the screensaver,
+screen locking, a blank-screen screensaver, and an idle activation time.
+<br /><br />
+Because users should be trained to lock the screen when they
+step away from the computer, the automatic locking feature is only
+meant as a backup.
+<br /><br />
+The root account can be screen-locked; however, the root account should
+<i>never</i> be used to log into an X Windows environment and should only
+be used to for direct login via console in emergency circumstances.
+<br /><br />
+For more information about enforcing preferences in the GNOME3 environment using the DConf
+configuration system, see <b>http://wiki.gnome.org/dconf</b> and
+the man page <tt>dconf(1)</tt>. For Red Hat specific information on configuring DConf
+settings, see <b>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/Desktop_Migration_and_Administration_Guide/part-Configuration_and_Administration.html</b>
+</description>
+
+<Value id="inactivity_timeout_value" type="number" operator="equals">
+<title>Inactivity timeout</title>
+<description>Choose allowed duration of inactive SSH connections, shells, and X sessions</description>
+<value>900</value>
+<value selector="5_minutes">300</value>
+<value selector="10_minutes">600</value>
+<value selector="15_minutes">900</value>
+</Value>
+
+<Rule id="dconf_gnome_screensaver_idle_delay" severity="medium">
+<title>Set GNOME3 Screensaver Inactivity Timeout</title>
+<description>
+The idle time-out value for inactivity in the GNOME3 desktop is configured via the <tt>idle-delay</tt>
+setting must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+<br />
+For example, to configure the system for a 15 minute delay, add the following to a file under
+<tt>/etc/dconf/db/local.d/</tt>:
+<br />
+<pre>
+[org/gnome/desktop/session]
+idle-delay=900
+</pre>
+<br />
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="idle-delay is not equal to or less than the expected value">
+To check the current idle time-out value, run the following command:
+<pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
+If properly configured, the output should be <tt><sub idref="inactivity_timeout_value" /></tt>.
+To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
+<pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
+</ocil>
+<rationale>
+A session time-out lock is a temporary action taken when a user stops work and moves away from
+the immediate physical vicinity of the information system but does not logout because of the
+temporary nature of the absence. Rather than relying on the user to manually lock their operating
+system session prior to vacating the vicinity, GNOME3 can be configured to identify when
+a user's session has idled and take action to initiate a session lock.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8"
+ossrg="SRG-OS-000029-GPOS-00010" stigid="010070" />
+</Rule>
+
+<Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium">
+<title>Enable GNOME3 Screensaver Idle Activation</title>
+<description>
+To activate the screensaver in the GNOME3 desktop after a period of inactivity,
+the <tt>idle-activation-enabled</tt> setting must be set under an appropriate
+configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+<br />
+Add <tt>idle_activation_enabled=true</tt> to a file under <tt>/etc/dconf/db/local.d/</tt>.
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver idle-activation-enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+To ensure that users cannot disable the screensaver idle inactivity setting, run the following:
+<pre>$ grep idle-activation-enabled /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/idle-activation-enabled</tt>
+</ocil>
+<rationale>
+A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+physical vicinity of the information system but does not logout because of the temporary nature of the absence.
+Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity,
+GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
+session lock.
+
+Enabling idle activation of the screensaver ensures the screensaver will
+be activated after the idle delay.  Applications requiring continuous,
+real-time screen display (such as network management products) require the
+login session does not have administrator rights and the display station is located in a
+controlled-access area.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_screensaver_idle_activation_enabled" />
+<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010073" pcidss="Req-8.1.8" />
+</Rule>
+
+<Rule id="dconf_gnome_screensaver_lock_enabled" severity="medium">
+<title>Enable GNOME3 Screensaver Lock After Idle Period</title>
+<description>
+To activate locking of the screensaver in the GNOME3 desktop when it is activated,
+the <tt>lock-enabled</tt> and <tt>lock-delay</tt> setting must be set under an appropriate
+configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">
+To check the status of the idle screen lock activation, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver lock-enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+To check that the screen locks when activated, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
+If properly configured, the output should be <tt>0</tt>.
+To ensure that users cannot change how long until the the screensaver locks, run the following:
+<pre>$ grep 'lock-enabled\|lock-delay' /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>
+If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+</ocil>
+<rationale>
+A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
+of the information system but does not want to logout because of the temporary nature of the absense.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_screensaver_lock_enabled" />
+<ref nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
+ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" stigid="010060" />
+</Rule>
+
+<Rule id="dconf_gnome_screensaver_mode_blank">
+<title>Implement Blank Screensaver</title>
+<description>
+To set the screensaver mode in the GNOME3 desktop to a blank screen,
+the <tt>picture-uri</tt> setting must be set under an appropriate
+configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="it is not">
+To ensure the screensaver is configured to be blank, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver picture-uri</pre>
+If properly configured, the output should be <tt>''</tt>.
+To ensure that users cannot set the screensaver background, run the following:
+<pre>$ grep picture-uri /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/picture-uri</tt>
+</ocil>
+<rationale>
+Setting the screensaver mode to blank-only conceals the
+contents of the display from passersby.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_screensaver_mode_blank" />
+<ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" />
+</Rule>
+
+</Group>
+
+<Rule id="dconf_gnome_disable_automount">
+<title>Disable GNOME3 Automounting</title>
+<description>The system's default desktop environment, GNOME3, will mount
+devices and removable media (such as DVDs, CDs and USB flash drives) whenever
+they are inserted into the system. To disable automount and autorun within GNOME3,
+the <tt>automount</tt>, <tt>automount-open</tt>, and <tt>autorun-never</tt> settings must be set
+under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="GNOME automounting is not disabled">
+These settings can be verified by running the following:
+<pre>$ gsettings get org.gnome.desktop.media-handling automount
+$ gsettings get org.gnome.desktop.media-handling automount-open
+$ gsettings get org.gnome.desktop.media-handling autorun-never</pre>
+If properly configured, the output for <tt>automount</tt> should be <tt>false</tt>.
+If properly configured, the output for <tt>automount-open</tt>should be <tt>false</tt>.
+If properly configured, the output for <tt>autorun-never</tt> should be <tt>true</tt>.
+To ensure that users cannot enable automount and autorun in GNOME3, run the following:
+<pre>$ grep 'automount\|autorun' /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output for <tt>automount</tt> should be <tt>/org/gnome/desktop/media-handling/automount</tt>
+If properly configured, the output for <tt>automount-open</tt> should be <tt>/org/gnome/desktop/media-handling/auto-open</tt>
+If properly configured, the output for <tt>autorun-never</tt> should be <tt>/org/gnome/desktop/media-handling/autorun-never</tt>
+</ocil>
+<rationale>Disabling automatic mounting in GNOME3 can prevent
+the introduction of malware via removable media.
+It will, however, also prevent desktop users from legitimate use
+of removable media.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_disable_automount" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" />
+</Rule>
+
+<Rule id="dconf_gnome_disable_thumbnailers">
+<title>Disable All GNOME3 Thumbnailers</title>
+<description>The system's default desktop environment, GNOME3, uses
+a number of different thumbnailer programs to generate thumbnails
+for any new or modified content in an opened folder. To disable the
+execution of these thumbnail applications, the <tt>disable-all</tt> setting must be set
+under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
+and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+After the settings have been set, run <tt>dconf update</tt>.
+This effectively prevents an attacker from gaining access to a
+system through a flaw in GNOME3's Nautilus thumbnail creators.
+</description>
+<ocil clause="GNOME automounting is not disabled">
+These settings can be verified by running the following:
+<pre>$ gsettings get org.gnome.desktop.thumbnailers disable-all</pre>
+If properly configured, the output should be <tt>true</tt>.
+To ensure that users cannot how long until the the screensaver locks, run the following:
+<pre>$ grep disable-all /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should be <tt>/org/gnome/desktop/thumbnailers/disable-all</tt>
+</ocil>
+<rationale>An attacker with knowledge of a flaw in a GNOME3 thumbnailer application could craft a malicious
+file to exploit this flaw. Assuming the attacker could place the malicious file on the local filesystem
+(via a web upload for example) and assuming a user browses the same location using Nautilus, the
+malicious file would exploit the thumbnailer with the potential for malicious code execution. It
+is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="dconf_gnome_disable_thumbnailers" />
+<ref nist="CM-7" />
+</Rule>
+
+</Group>
