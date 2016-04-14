@@ -30,17 +30,17 @@ settings, see <b>https://access.redhat.com/documentation/en-US/Red_Hat_Enterpris
 <description>The GNOME Display Manager (GDM) can allow users to automatically login without
 user interaction or credentials. User should always be required to authenticate themselves
 to the system that they are authorized to use. To disable user ability to automatically
-login to the system, set the <tt>AutomaticLoginEnable</tt> to <tt>False</tt> in the
+login to the system, set the <tt>AutomaticLoginEnable</tt> to <tt>false</tt> in the
 <tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
 <pre>[daemon]
-AutomaticLoginEnable=False</pre>
+AutomaticLoginEnable=false</pre>
 </description>
 <ocil clause="GDM allows users to automatically login">
 To verify that automatic logins are disabled, run the following command:
 <pre>$ grep -Pzoi "^\[daemon]\\nautomaticlogin.*" /etc/gdm/custom.conf</pre>
 The output should show the following:
 <pre>[daemon]
-AutomaticLoginEnable=False</pre>
+AutomaticLoginEnable=false</pre>
 </ocil>
 <rationale>
 Failure to restrict system access to authenticated users negatively impacts operating
@@ -56,17 +56,17 @@ system security.
 <description>The GNOME Display Manager (GDM) can allow users to login without credentials
 which can be useful for public kiosk scenarios. Allowing users to login without credentials
 or "guest" account access has inherent security risks and should be disabled. To do disable
-timed logins or guest account access, set the <tt>TimedLoginEnable</tt> to <tt>False</tt> in
+timed logins or guest account access, set the <tt>TimedLoginEnable</tt> to <tt>false</tt> in
 the <tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
 <pre>[daemon]
-TimedLoginEnable=False</pre>
+TimedLoginEnable=false</pre>
 </description>
 <ocil clause="GDM allows a guest to login without credentials">
 To verify that timed logins are disabled, run the following command:
 <pre>$ grep -Pzoi "^\[daemon]\\ntimedlogin.*" /etc/gdm/custom.conf</pre>
 The output should show the following:
 <pre>[daemon]
-TimedLoginEnable=False</pre>
+TimedLoginEnable=false</pre>
 </ocil>
 <rationale>
 Failure to restrict system access to authenticated users negatively impacts operating
