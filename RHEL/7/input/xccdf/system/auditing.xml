@@ -1437,7 +1437,7 @@ these events could serve as evidence of potential system compromise.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands">
+<Rule id="audit_rules_privileged_commands" severity="medium">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum the audit system should collect the execution of
 privileged commands for all users and root. To find the relevant setuid /
@@ -1469,14 +1469,21 @@ found with the previous command:
 It should be the case that all relevant setuid / setgid programs have a line
 in the audit rules.
 </ocil>
-<rationale>Privileged programs are subject to escalation-of-privilege attacks,
+<rationale>Misuse of privileged functions, either intentionally or unintentionally by
+authorized users, or by unauthorized external entities that have compromised system accounts,
+is a serious and ongoing concern and can have significant adverse impacts on organizations. 
+Auditing the use of privileged functions is one way to detect such misuse and identify
+the risk from insider and advanced persistent threast.
+<br />
+Privileged programs are subject to escalation-of-privilege attacks,
 which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 <ident cce="27437-3" />
 <oval id="audit_rules_privileged_commands" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),AU-12(a),AU-12(c),IR-5" disa="40" pcidss="Req-10.2.2" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),AU-6(9),AU-12(a),AU-12(c),IR-5" disa="2234" 
+ossrg="SRG-OS-000327-GPOS-00127" stigid="030310" pcidss="Req-10.2.2" cis="5.2.10" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
