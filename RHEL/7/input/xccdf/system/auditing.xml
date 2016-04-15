@@ -1350,7 +1350,7 @@ calls with others as identifying earlier in this guide is more efficient.
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
 
-<Rule id="audit_rules_login_events">
+<Rule id="audit_rules_login_events" severity="medium">
 <title>Record Attempts to Alter Logon and Logout Events</title>
 <description>The audit system already collects login information for all users
 and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1373,7 +1373,9 @@ edits of files involved in storing logon events:
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="27204-7" />
 <oval id="audit_rules_login_events" />
-<ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" cis="5.2.8" />
+<ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218"
+stigid="030490" pcidss="Req-10.2.3" cis="5.2.8" />
 </Rule>
 
 <Rule id="audit_rules_session_events">
