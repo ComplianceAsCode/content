@@ -12,7 +12,72 @@ Red Hat Graphical environment.
 For more information on GNOME and the GNOME Project, see <b>https://www.gnome.org</b>
 </description>
 
-<Rule id="dconf_gnome_disable_user_list">
+<Group id="gnome_login_screen">
+<title>Configure GNOME Login Screen</title>
+<description>In the default GNOME3 desktop, the login is displayed after system boot
+and can display user accounts, allow users to reboot the system, and allow users to
+login automatically and/or with a guest account. The login screen should be configured
+to prevent such behavior.
+<br /><br />
+For more information about enforcing preferences in the GNOME3 environment using the DConf
+configuration system, see <b>http://wiki.gnome.org/dconf</b> and
+the man page <tt>dconf(1)</tt>. For Red Hat specific information on configuring DConf
+settings, see <b>https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Desktop_Migration_and_Administration_Guide/index.html</b>
+</description>
+
+<Rule id="gnome_gdm_disable_automatic_login" severity="high">
+<title>Disable GDM Automatic Login</title>
+<description>The GNOME Display Manager (GDM) can allow users to automatically login without
+user interaction or credentials. User should always be required to authenticate themselves
+to the system that they are authorized to use. To disable user ability to automatically
+login to the system, set the <tt>AutomaticLoginEnable</tt> to <tt>false</tt> in the
+<tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
+<pre>[daemon]
+AutomaticLoginEnable=false</pre>
+</description>
+<ocil clause="GDM allows users to automatically login">
+To verify that automatic logins are disabled, run the following command:
+<pre>$ grep -Pzoi "^\[daemon]\\nautomaticlogin.*" /etc/gdm/custom.conf</pre>
+The output should show the following:
+<pre>[daemon]
+AutomaticLoginEnable=false</pre>
+</ocil>
+<rationale>
+Failure to restrict system access to authenticated users negatively impacts operating
+system security.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="gnome_gdm_disable_automatic_login" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010430"/>
+</Rule>
+
+<Rule id="gnome_gdm_disable_guest_login" severity="high">
+<title>Disable GDM Guest Login</title>
+<description>The GNOME Display Manager (GDM) can allow users to login without credentials
+which can be useful for public kiosk scenarios. Allowing users to login without credentials
+or "guest" account access has inherent security risks and should be disabled. To do disable
+timed logins or guest account access, set the <tt>TimedLoginEnable</tt> to <tt>false</tt> in
+the <tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
+<pre>[daemon]
+TimedLoginEnable=false</pre>
+</description>
+<ocil clause="GDM allows a guest to login without credentials">
+To verify that timed logins are disabled, run the following command:
+<pre>$ grep -Pzoi "^\[daemon]\\ntimedlogin.*" /etc/gdm/custom.conf</pre>
+The output should show the following:
+<pre>[daemon]
+TimedLoginEnable=false</pre>
+</ocil>
+<rationale>
+Failure to restrict system access to authenticated users negatively impacts operating
+system security.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="gnome_gdm_disable_guest_login" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010431"/>
+</Rule>
+
+<Rule id="dconf_gnome_disable_user_list" severity="medium">
 <title>Disable the GNOME3 Login User List</title>
 <description>In the default graphical environment, users logging
 directly into the system are greeted with a login screen that displays
@@ -39,6 +104,8 @@ without logging in.</rationale>
 <ref nist="AC-23" />
 </Rule>
 
+</Group>
+
 <Group id="gnome_screen_locking">
 <title>Configure GNOME Screen Locking</title>
 <description>In the default GNOME3 desktop, the screen can be locked
@@ -59,7 +126,7 @@ be used to for direct login via console in emergency circumstances.
 For more information about enforcing preferences in the GNOME3 environment using the DConf
 configuration system, see <b>http://wiki.gnome.org/dconf</b> and
 the man page <tt>dconf(1)</tt>. For Red Hat specific information on configuring DConf
-settings, see <b>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/Desktop_Migration_and_Administration_Guide/part-Configuration_and_Administration.html</b>
+settings, see <b>https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Desktop_Migration_and_Administration_Guide/part-Configuration_and_Administration.html</b>
 </description>
 
 <Value id="inactivity_timeout_value" type="number" operator="equals">
