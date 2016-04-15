@@ -36,7 +36,7 @@ not arrive.</description>
 <value selector="15_min">900</value>
 </Value>
 
-<Rule id="accounts_tmout">
+<Rule id="accounts_tmout" severity="medium">
 <title>Set Interactive Session Timeout</title>
 <description>
 Terminating an idle session within a short time period reduces 
@@ -46,12 +46,13 @@ left unattended.
 </description>
 <rationale>
 </rationale>
-<ocil clause="value of TMOUT is not greater than or equal to expected setting">
+<ocil clause="value of TMOUT is not less than or equal to expected setting">
 Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
 on the system:
 <pre>$ sudo grep TMOUT /etc/profile</pre>
 </ocil>
 <ident cce="27557-8" />
+<ref nist="AC-12,SC-10" disa="1133,0361" srg="SRG-OS-000163-GPOS-00072" stigid="040160" />
 <oval id="accounts_tmout" value="var_accounts_tmout" />
 </Rule>
 
