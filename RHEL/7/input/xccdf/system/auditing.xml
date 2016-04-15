@@ -1575,7 +1575,7 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading">
+<Rule id="audit_rules_kernel_module_loading" severity="medium">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -1603,7 +1603,8 @@ the kernel and potentially introduce malicious code into kernel space. It is imp
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident cce="27129-6" />
 <oval id="audit_rules_kernel_module_loading" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" ossrg="477" pcidss="Req-10.2.7" cis="5.2.17" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" 
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477,GPOS-00222" stigid="030670" pcidss="Req-10.2.7" cis="5.2.17" />
 </Rule>
 
 <Rule id="audit_rules_immutable">
