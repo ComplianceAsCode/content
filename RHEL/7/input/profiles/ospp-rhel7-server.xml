@@ -64,9 +64,12 @@
 <select idref="accounts_passwords_pam_faillock_interval" selected="true" />
 
 <!-- configure host-based firewall -->
+<refine-value idref="sysctl_net_ipv4_conf_default_accept_source_route_value" selector="disabled" />
+
 <select idref="service_firewalld_enabled" selected="true" />
 <select idref="set_firewalld_default_zone" selected="true" />
 <!-- <select idref="set_iptables_default_rule_forward" selected="true" /> -->
+<select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
 
 <!-- configure name/address of directory server to bind with -->
 <!-- <select idref="configure_openldap_client" selected="true"/> -->
