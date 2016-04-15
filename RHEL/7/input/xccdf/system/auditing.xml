@@ -1491,7 +1491,7 @@ ossrg="SRG-OS-000327-GPOS-00127" stigid="030310" pcidss="Req-10.2.2" cis="5.2.10
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_rules_media_export">
+<Rule id="audit_rules_media_export" severity="medium">
 <title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
 <description>At a minimum the audit system should collect media exportation
 events for all users and root. If the <tt>auditd</tt> daemon is configured to
@@ -1516,7 +1516,8 @@ trail should be created each time a filesystem is mounted to help identify and g
 loss.</rationale>
 <ident cce="27447-2" />
 <oval id="audit_rules_media_export" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.2.7" cis="5.2.13" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-3(1),AU-12(a),AU-12(c),IR-5" disa="135,2884" 
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172" stigid="030530" pcidss="Req-10.2.7" cis="5.2.13" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
