@@ -1,7 +1,7 @@
 <def-group>
-  <definition class="compliance" id="accounts_tmout" version="1">
+  <definition class="compliance" id="accounts_tmout" version="2">
     <metadata>
-      <title>SELinux Enforcing</title>
+      <title>Set Interactive Session Timeout</title>
       <affected family="unix">
         <platform>multi_platform_rhel</platform>
       </affected>
@@ -25,7 +25,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_etc_profile_tmout" version="1">
-    <ind:subexpression datatype="string" operation="greater than or equal" var_check="all" var_ref="var_accounts_tmout" />
+    <ind:subexpression datatype="int" operation="greater than or equal" var_check="all" var_ref="var_accounts_tmout" />
   </ind:textfilecontent54_state>
 
   <external_variable comment="external variable for TMOUT" datatype="int" id="var_accounts_tmout" version="1" />
