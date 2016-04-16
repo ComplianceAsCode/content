@@ -76,7 +76,7 @@ only appropriate for systems acting as routers.</rationale>
 acting as either hosts or routers to improve the system's ability defend
 against certain types of IPv4 protocol attacks.</description>
 
-<Value id="sysctl_net_ipv4_conf_all_accept_source_route_value" type="string"
+<Value id="sysctl_net_ipv4_conf_all_accept_source_route_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.accept_source_route</title>
 <description>Trackers could be using source-routed packets to
@@ -87,7 +87,7 @@ created outside and has been redirected.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="string"
+<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.accept_redirects</title>
 <description>Disable ICMP Redirect Acceptance</description>
@@ -96,7 +96,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="string"
+<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.secure_redirects</title>
 <description>Enable to prevent hijacking of routing path by only
@@ -107,7 +107,7 @@ table.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_default_log_martians_value" type="string"
+<Value id="sysctl_net_ipv4_conf_default_log_martians_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.log_martians</title>
 <description>Disable so you don't Log Spoofed Packets, Source
@@ -117,7 +117,7 @@ Routed Packets, Redirect Packets</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="string"
+<Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.log_martians</title>
 <description>Disable so you don't Log Spoofed Packets, Source
@@ -127,8 +127,7 @@ Routed Packets, Redirect Packets</description>
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="string"
+<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.accept_source_route</title>
 <description>Disable IP source routing?</description>
@@ -137,8 +136,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="string"
+<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.accept_redirects</title>
 <description>Disable ICMP Redirect Acceptance?</description>
@@ -147,8 +145,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="string"
+<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.secure_redirects</title>
 <description>Log packets with impossible addresses to kernel
@@ -158,8 +155,7 @@ log?</description>
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" type="string"
+<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.icmp_echo_ignore_broadcasts</title>
 <description>Ignore all ICMP ECHO and TIMESTAMP requests sent to it
@@ -169,8 +165,7 @@ via broadcast/multicast</description>
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" type="string"
+<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.icmp_ignore_bogus_error_responses</title>
 <description>Enable to prevent unnecessary logging</description>
@@ -179,8 +174,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_tcp_syncookies_value" type="string"
+<Value id="sysctl_net_ipv4_tcp_syncookies_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.tcp_syncookies</title>
 <description>Enable to turn on TCP SYN Cookie
@@ -190,8 +184,7 @@ Protection</description>
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="string"
+<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.rp_filter</title>
 <description>Enable to enforce sanity checking, also called ingress
@@ -204,8 +197,7 @@ it arrived.</description>
 <value selector="disabled">0</value>
 </Value>
 
-
-<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="string"
+<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.rp_filter</title>
 <description>Enables source route verification</description>
