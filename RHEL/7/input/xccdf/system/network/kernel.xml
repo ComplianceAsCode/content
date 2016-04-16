@@ -19,9 +19,12 @@ of network traffic.</description>
 <ocil>
 <sysctl-check-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />
 </ocil>
-<rationale>Sending ICMP redirects permits the system to instruct other systems
-to update their routing information.  The ability to send ICMP redirects is
-only appropriate for systems acting as routers.</rationale>
+<rationale>ICMP redirect messages are used by routers to inform hosts that a more
+direct route exists for a particular destination. These messages contain information
+from the system's route table possibly revealing portions of the network topology.
+<br />
+The ability to send ICMP redirects is only appropriate for systems acting as routers.
+</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
 <ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.1.2" />
@@ -36,9 +39,12 @@ only appropriate for systems acting as routers.</rationale>
 <ocil>
 <sysctl-check-macro sysctl="net.ipv4.conf.all.send_redirects" value="0" />
 </ocil>
-<rationale>Sending ICMP redirects permits the system to instruct other systems
-to update their routing information.  The ability to send ICMP redirects is
-only appropriate for systems acting as routers.</rationale>
+<rationale>ICMP redirect messages are used by routers to inform hosts that a more
+direct route exists for a particular destination. These messages contain information
+from the system's route table possibly revealing portions of the network topology.
+<br />
+The ability to send ICMP redirects is only appropriate for systems acting as routers.
+</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
 <ref nist="CM-7,SC-5(1)" disa="1551" cis="4.1.2" />
@@ -70,7 +76,7 @@ only appropriate for systems acting as routers.</rationale>
 acting as either hosts or routers to improve the system's ability defend
 against certain types of IPv4 protocol attacks.</description>
 
-<Value id="sysctl_net_ipv4_conf_all_accept_source_route_value" type="number"
+<Value id="sysctl_net_ipv4_conf_all_accept_source_route_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.accept_source_route</title>
 <description>Trackers could be using source-routed packets to
@@ -81,7 +87,7 @@ created outside and has been redirected.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="number"
+<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.accept_redirects</title>
 <description>Disable ICMP Redirect Acceptance</description>
@@ -90,7 +96,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="number"
+<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.secure_redirects</title>
 <description>Enable to prevent hijacking of routing path by only
@@ -101,7 +107,7 @@ table.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_default_log_martians_value" type="number"
+<Value id="sysctl_net_ipv4_conf_default_log_martians_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.log_martians</title>
 <description>Disable so you don't Log Spoofed Packets, Source
@@ -111,7 +117,7 @@ Routed Packets, Redirect Packets</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="number"
+<Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.log_martians</title>
 <description>Disable so you don't Log Spoofed Packets, Source
@@ -122,7 +128,7 @@ Routed Packets, Redirect Packets</description>
 </Value>
 
 
-<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="number"
+<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.accept_source_route</title>
 <description>Disable IP source routing?</description>
@@ -132,7 +138,7 @@ operator="equals" interactive="0">
 </Value>
 
 
-<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="number"
+<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.accept_redirects</title>
 <description>Disable ICMP Redirect Acceptance?</description>
@@ -142,7 +148,7 @@ operator="equals" interactive="0">
 </Value>
 
 
-<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="number"
+<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.secure_redirects</title>
 <description>Log packets with impossible addresses to kernel
@@ -153,7 +159,7 @@ log?</description>
 </Value>
 
 
-<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" type="number"
+<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.icmp_echo_ignore_broadcasts</title>
 <description>Ignore all ICMP ECHO and TIMESTAMP requests sent to it
@@ -164,7 +170,7 @@ via broadcast/multicast</description>
 </Value>
 
 
-<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" type="number"
+<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.icmp_ignore_bogus_error_responses</title>
 <description>Enable to prevent unnecessary logging</description>
@@ -174,7 +180,7 @@ operator="equals" interactive="0">
 </Value>
 
 
-<Value id="sysctl_net_ipv4_tcp_syncookies_value" type="number"
+<Value id="sysctl_net_ipv4_tcp_syncookies_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.tcp_syncookies</title>
 <description>Enable to turn on TCP SYN Cookie
@@ -185,7 +191,7 @@ Protection</description>
 </Value>
 
 
-<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="number"
+<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.all.rp_filter</title>
 <description>Enable to enforce sanity checking, also called ingress
@@ -199,7 +205,7 @@ it arrived.</description>
 </Value>
 
 
-<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="number"
+<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="string"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.rp_filter</title>
 <description>Enables source route verification</description>
@@ -238,8 +244,13 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <ocil>
 <sysctl-check-macro sysctl="net.ipv4.conf.all.accept_redirects" value="0" />
 </ocil>
-<rationale>Accepting ICMP redirects has few legitimate
-uses. It should be disabled unless it is absolutely required.</rationale>
+<rationale>ICMP redirect messages are used by routers to inform hosts that a more direct
+route exists for a particular destination. These messages modify the host's route table 
+and are unauthenticated. An illicit ICMP redirect message could result in a man-in-the-middle
+attack.
+<br />
+This feature of the IPv4 protocol has few legitimate uses. It should be disabled unless 
+absolutely required.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv4_conf_all_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
 <ref nist="CM-7,SC-5" disa="1503,1551" cis="4.2.2" />
@@ -322,7 +333,7 @@ a router.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_default_accept_redirects">
+<Rule id="sysctl_net_ipv4_conf_default_accept_redirects" severity="medium">
 <title>Configure Kernel Parameter for Accepting ICMP Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />
@@ -330,8 +341,13 @@ a router.</rationale>
 <ocil>
 <sysctl-check-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />
 </ocil>
-<rationale>This feature of the IPv4 protocol has few legitimate
-uses. It should be disabled unless it is absolutely required.</rationale>
+<rationale>ICMP redirect messages are used by routers to inform hosts that a more direct
+route exists for a particular destination. These messages modify the host's route table
+and are unauthenticated. An illicit ICMP redirect message could result in a man-in-the-middle
+attack.
+<br />
+This feature of the IPv4 protocol has few legitimate uses. It should be disabled unless 
+absolutely required.</rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="sysctl_net_ipv4_conf_default_accept_redirects" value="sysctl_net_ipv4_conf_default_accept_redirects_value" />
 <ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.2" />
@@ -355,7 +371,7 @@ absolutely required.</rationale>
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts">
+<Rule id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" severity="medium">
 <title>Configure Kernel Parameter to Ignore ICMP Broadcast Echo Requests</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />
