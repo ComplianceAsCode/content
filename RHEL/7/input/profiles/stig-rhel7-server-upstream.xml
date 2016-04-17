@@ -26,6 +26,12 @@
 <!-- The following rules reflect DISA FSO (RE71) extensions to the NIAP Operating System
      Protection Profile (NIAP OSPP). -->
 
+<!-- Disk/Partition Requirements -->
+<select idref="partition_for_tmp" selected="true" />
+<select idref="partition_for_var_log_audit" selected="true" />
+<select idref="partition_for_var" selected="true" />
+<select idref="partition_for_home" selected="true" />
+
 <!-- Password Requirements -->
 <select idref="accounts_password_pam_minclass" selected="true" />
 <select idref="accounts_password_pam_unix_remember" selected="true" />
@@ -37,8 +43,6 @@
 
 <!-- Account Management Requirements -->
 <select idref="account_temp_expire_date" selected="true" />
-<select idref="accounts_no_uid_except_zero" selected="true"/>
-<select idref="gid_passwd_group_same" selected="true"/>
 
 <!-- User Management -->
 <select idref="banner_etc_issue" selected="true" />
@@ -59,6 +63,7 @@
 
 <!-- Kernel/Network Settings -->
 <select idref="sysctl_net_ipv6_conf_all_accept_source_route" selected="true" />
+<select idref="libreswan_approved_tunnels" selected="true" />
 
 <!-- System Logging Requirements -->
 <select idref="rsyslog_remote_loghost" selected="true" />
@@ -73,6 +78,7 @@
 <!-- X Window System Settings -->
 <select idref="xwindows_runlevel_setting" selected="true" />
 <select idref="package_xorg-x11-server-common_removed" selected="true" />
+<select idref="enable_x11_forwarding" selected="true" />
 
 <!-- File Server/Client Settings -->
 <select idref="mount_option_krb_sec_remote_filesystems.xml" selected="true" />

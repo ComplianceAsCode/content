@@ -92,7 +92,7 @@ ossrg="SRG-OS-000480-GPOS-00227" stigid="040640"/>
 <Rule id="file_permissions_sshd_private_key" severity="medium">
 <title>Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files</title>
 <description><fileperms-desc-macro file="/etc/ssh/*_key" perms="0600"/></description>
-<ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-------"/></ocil>
+<ocil><fileperms-check-macro file="/etc/ssh/*_key" perms="-rw-------"/></ocil>
 <rationale>
 If an unauthorized user obtains the private SSH host key file, the host could be
 impersonated.
@@ -387,7 +387,6 @@ ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" stigid="040190"
 pcidss="Req-8.1.8" cis="6.2.12" />
 <tested by="DS" on="20121024"/>
 </Rule>
-
 
 <Rule id="sshd_set_keepalive">
 <title>Set SSH Client Alive Count</title>
