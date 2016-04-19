@@ -78,19 +78,24 @@ def fix_is_applicable_for_product(platform, product):
     return False
 
 def substitute_vars(fix):
-    # brittle and troubling code to assign environment vars to XCCDF values
+    # Brittle and troubling code to assign environment vars to XCCDF values
     lib = "(\s*\. \/usr\/share\/scap-security-guide\/remediation_functions\s*\S*)"
     regex = lib + "\n+(\s*declare\s+\S+\n+)?(\s*populate\s+)(\S+)\n(.*)"
     env_var = re.match(regex, fix.text, re.DOTALL)
 
     if not env_var:
-        # no need to alter fix.text
+        # No need to alter fix.text
         return
-    # otherwise, create node to populate environment variable
+    # Otherwise, create node to populate environment variable
     varname = env_var.group(4)
     mainscript = env_var.group(5)
-    fix.text = varname + "=" + '"'
-    # new <sub> element to reference XCCDF variable
+    # Keep the source of the remediation_functions library still included in
+    # the updated remediation script. This ensures the script will work
+    # properly also in the case there's yet another of the remediation
+    # functions called later in the script body
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1075
+    fix.text = "\n" + env_var.group(1) + "\n" + varname + "=" + '"'
+    # New <sub> element to reference XCCDF variable
     xccdf_sub = etree.SubElement(fix, "sub", idref=varname)
     xccdf_sub.tail = '"' + mainscript
     fix.append(xccdf_sub)
