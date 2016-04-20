@@ -89,6 +89,7 @@ dist: guide content
 	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
+	cp $(OUT)/$(ID)-$(PROD)-ocil.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
