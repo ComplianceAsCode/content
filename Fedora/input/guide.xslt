@@ -81,7 +81,9 @@
       <xsl:apply-templates select="document('xccdf/system/network/kernel.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/wireless.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/ipv6.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/network/iptables.xml')" />
+      <!-- iptables have been replaced in Fedora in favour of firewalld. Uncomment the following
+           line in the moment you would truly want to add iptables rules back -->
+      <!-- <xsl:apply-templates select="document('xccdf/system/network/iptables.xml')" /> -->
       <xsl:apply-templates select="document('xccdf/system/network/firewalld.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/ssl.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/uncommon.xml')" />
