@@ -71,11 +71,11 @@ $(OUT)/xccdf-unlinked-resolved.xml: $(OUT)/xccdf-unlinked-empty-groups-unselecte
 # Common build targets - create OCIL questionnaire stub for further processing
 $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt
 	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt $<
-	xmllint --format --output $@ $@
+	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $@
 
 # Common build targets - an XCCDF witch OCIL checks in the form of official OCIL-2.0 syntax
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
-	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
+	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
 # Common build targets - a catalogue of XCCDF remediations
 bash_remediations_deps= $(wildcard $(IN)/remediations/bash/*.sh) $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
