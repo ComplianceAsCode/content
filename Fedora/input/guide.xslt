@@ -39,6 +39,7 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('xccdf/system/software/updating.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/integrity.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/software/gnome.xml')" />
     </xsl:copy>
   </xsl:template>
 
