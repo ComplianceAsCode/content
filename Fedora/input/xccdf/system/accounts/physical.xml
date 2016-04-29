@@ -203,7 +203,6 @@ the case of mixed OS environment, this can create the risk of short-term
 loss of availability of systems due to unintentional reboot.
 </rationale>
 <oval id="disable_ctrlaltdel_reboot" />
-<ident cce="27511-5" />
 <ref nist="AC-6" disa="366" />
 </Rule>
 
@@ -255,7 +254,7 @@ A console screen locking mechanism is provided in the
 <title>Install the screen Package</title>
 <description>
 To enable console screen locking, install the <tt>screen</tt> package:
-<pre>$ sudo yum install screen</pre>
+<pre><package-install-macro package="screen"/></pre>
 Instruct users to begin new terminal sessions with the following command:
 <pre>$ screen</pre>
 The console can now be locked with the following key combination:
@@ -273,7 +272,6 @@ session lock.
 
 The <tt>screen</tt> package allows for a session lock to be implemented and configured.
 </rationale>
-<ident cce="27351-6" />
 <oval id="package_screen_installed" />
 <ref nist="AC-11(a)" disa="57" />
 </Rule>
