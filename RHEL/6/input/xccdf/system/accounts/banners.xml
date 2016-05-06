@@ -162,30 +162,5 @@ process and facilitates possible legal action against attackers.
 
 </Group>
 
-<Rule id="gconf_gdm_disable_user_list">
-<title>Disable the User List</title>
-<description>In the default graphical environment, users logging
-directly into the system are greeted with a login screen that displays
-all known users. This functionality should be disabled.
-<br /><br />
-Run the following command to disable the user list:
-<pre>$ sudo gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type bool \
-  --set /apps/gdm/simple-greeter/disable_user_list true</pre>
-</description>
-<ocil clause="it is not">
-To ensure the user list is disabled, run the following command:
-<pre>$ gconftool-2 -g /apps/gdm/simple-greeter/disable_user_list</pre>
-The output should be <tt>true</tt>.
-</ocil>
-<rationale>Leaving the user list enabled is a security risk since it allows anyone
-with physical access to the system to quickly enumerate known user accounts
-without logging in.</rationale>
-<oval id="gconf_gdm_disable_user_list" />
-<ident cce="27230-2" />
-<ref nist="AC-23" />
-</Rule>
-
 </Group>
 
