@@ -104,40 +104,6 @@ statically control filesystem mounting through <tt>/etc/fstab</tt>.
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
 </Rule>
 
-<Rule id="gconf_gnome_disable_automount">
-<title>Disable GNOME Automounting</title>
-<description>The system's default desktop environment, GNOME, will mount
-devices and removable media (such as DVDs, CDs and USB flash drives) whenever
-they are inserted into the system. Disable automount and autorun within GNOME
-by running the following:
-<pre>$ sudo gconftool-2 --direct \
-	--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-	--type bool \
-	--set /apps/nautilus/preferences/media_automount false
-$ sudo gconftool-2 --direct \
-	--config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-	--type bool \
-	--set /apps/nautilus/preferences/media_autorun_never true</pre>
-</description>
-<ocil clause="GNOME automounting is not disabled">
-These settings can be verified by running the following:
-<pre>$ gconftool-2 --direct \
-	--config-source xml:read:/etc/gconf/gconf.xml.mandatory \
-	--get /apps/nautilus/preferences/media_automount
-$ gconftool-2 --direct \
-	--config-source xml:read:/etc/gconf/gconf.xml.mandatory \
-	--get /apps/nautilus/preferences/media_autorun_never</pre>
-</ocil>
-<rationale>Disabling automatic mounting in GNOME can prevent
-the introduction of malware via removable media.
-It will, however, also prevent desktop users from legitimate use
-of removable media. 
-</rationale>
-<ident cce="27035-5" />
-<oval id="gconf_gnome_disable_automount" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e)" />
-</Rule>
-
 <Rule id="kernel_module_cramfs_disabled">
 <title>Disable Mounting of <tt>cramfs</tt></title>
 <description>
@@ -226,29 +192,6 @@ This effectively prevents usage of this uncommon filesystem.
 local system should be disabled.</rationale>
 <ident cce="26677-5" />
 <oval id="kernel_module_udf_disabled" />
-<ref nist="CM-7" />
-</Rule>
-
-<Rule id="gconf_gnome_disable_thumbnailers">
-<title>Disable All GNOME Thumbnailers</title>
-<description>The system's default desktop environment, GNOME, uses
-a number of different thumbnailer programs to generate thumbnails
-for any new or modified content in an opened folder. The following
-command can disable the execution of these thumbnail applications:
-<pre>$ sudo gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type bool \
-  --set /desktop/gnome/thumbnailers/disable_all true</pre>
-This effectively prevents an attacker from gaining access to a
-system through a flaw in GNOME's Nautilus thumbnail creators.
-</description>
-<rationale>An attacker with knowledge of a flaw in a GNOME thumbnailer application could craft a malicious
-file to exploit this flaw. Assuming the attacker could place the malicious file on the local filesystem
-(via a web upload for example) and assuming a user browses the same location using Nautilus, the
-malicious file would exploit the thumbnailer with the potential for malicious code execution. It
-is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
-<ident cce="27224-5" />
-<oval id="gconf_gnome_disable_thumbnailers" />
 <ref nist="CM-7" />
 </Rule>
 
