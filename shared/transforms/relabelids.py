@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 
+import re
 import sys
 import os
 import idtranslate
@@ -77,6 +78,9 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
     # where "CCE-ID" is the CCE identifier for that particular rule
     # retrieved from the XCCDF file
     # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1230
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1229
+    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1228
 
     ovalrules = ovaltree.findall(".//{%s}definition" % oval_ns)
     for rule in ovalrules:
@@ -87,15 +91,18 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
         if ovalid is not None and \
            ovaldesc is not None and \
            ovalid in idmappingdict:
-            # Append the <reference source="CCE" ref_id="CCE-ID" /> element right
-            # after <description> element of specific OVAL check
             xccdfcceid = idmappingdict[ovalid]
-            ccerefelem = ET.Element('reference', ref_id="%s" % xccdfcceid, source="CCE")
-            ovaldesc.addnext(ccerefelem)
-            # Sanity check if appending succeeded
-            if ccerefelem.getprevious() is not ovaldesc:
-                print ("\n\tError trying to add CCE ID to %s. Exiting" % ovalid)
-                sys.exit(1)
+            # IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
+            # where each X is a digit, and the final X is a check-digit)
+            if re.search(r'CCE-\d{4,5}-\d', xccdfcceid) is not None:
+                # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
+                # after <description> element of specific OVAL check
+                ccerefelem = ET.Element('reference', ref_id="%s" % xccdfcceid, source="CCE")
+                ovaldesc.addnext(ccerefelem)
+                # Sanity check if appending succeeded
+                if ccerefelem.getprevious() is not ovaldesc:
+                    print ("\n\tError trying to add CCE ID to %s. Exiting" % ovalid)
+                    sys.exit(1)
 
 
 def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree):
@@ -270,9 +277,13 @@ def main():
         ovaltree = parse_xml_file(ovalfile)
 
         # Add new <reference source="CCE" ref_id="CCE-ID" /> element to those OVAL
-        # checks having CCE ID already assigned in XCCDF for particular rule
+        # checks having CCE ID already assigned in XCCDF for particular rule.
+        # But add the <reference> only in the case CCE is in valid form!
         # Exit with failure if the assignment wasn't successful
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1230
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1229
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1228
         add_cce_id_refs_to_oval_checks(ovaltree, xccdf_to_cce_id_mapping)
 
         # Verify all by XCCDF referenced (local) OVAL checks are defined in OVAL file
