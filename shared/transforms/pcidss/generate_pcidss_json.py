@@ -1,14 +1,14 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 import subprocess
 import logging
 from xml.etree import cElementTree as ElementTree
 import re
 import json
+import codecs
 
 
-FILENAME = "PCI_DSS_v3.pdf"
-REMOTE_URL = "https://www.pcisecuritystandards.org/documents/PCI_DSS_v3.pdf"
+FILENAME = "PCI_DSS_v3-1.pdf"
 JSON_FILENAME = "PCI_DSS.json"
 
 
@@ -122,7 +122,7 @@ def main():
     xml_string = subprocess.check_output(
         ["pdftohtml", "-xml", "-i", "-stdout", FILENAME],
         shell=False
-    ).decode("utf-8")
+    )
 
     tree = ElementTree.fromstring(xml_string)
     id_map = {}
@@ -153,7 +153,7 @@ def main():
             "id '%s' wasn't handled during PCI tree reconstruction!", id_
         )
 
-    with open(JSON_FILENAME, "w") as f:
+    with codecs.open(JSON_FILENAME, "w", encoding="utf-8") as f:
         json.dump(id_tree, f)
 
 
