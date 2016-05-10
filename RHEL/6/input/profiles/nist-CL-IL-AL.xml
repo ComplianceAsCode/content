@@ -105,7 +105,7 @@ assurance."</description>
 <select idref="audit_rules_usergroup_modification" selected="true" />
      
 <!-- AC-2(7)(b) -->
-<select idref="audit_sysadmin_action" selected="true" />
+<select idref="audit_rules_sysadmin_actions" selected="true" />
 
 <!--  AC-3 -->
 <select idref="sshd_use_approved_ciphers" selected="true" />
@@ -145,7 +145,6 @@ assurance."</description>
 <select idref="file_groupowner_etc_passwd" selected="true" />
 <select idref="file_permissions_etc_passwd" selected="true" />
 <select idref="selinux_confinement_of_daemons" selected="true" />
-<select idref="permissions_within_important_dirs" selected="true" />
 <select idref="file_ownership_library_dirs" selected="true" />
 <select idref="file_permissions_binary_dirs" selected="true" />
 <select idref="file_ownership_binary_dirs" selected="true" />
@@ -216,7 +215,7 @@ assurance."</description>
 <select idref="audit_rules_privileged_commands" selected="true" />
 <select idref="audit_rules_media_export" selected="true" />
 <select idref="audit_rules_file_deletion_events" selected="true" />
-<select idref="audit_rules_sysadmin_actions" selected="true" />
+<!-- audit_rules_sysadmin_actions" is already selected -->
 <select idref="audit_rules_kernel_module_loading" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true" />
 
@@ -225,7 +224,7 @@ assurance."</description>
 <select idref="package_xinetd_removed" selected="true" />
 <select idref="service_telnetd_disabled" selected="true" />
 <select idref="package_telnet-server_removed" selected="true" />
-<select idref="uninstall_rsh" selected="true" />
+<select idref="package_rsh_removed" selected="true" />
 <select idref="service_rexec_disabled" selected="true" />
 <select idref="service_rsh_disabled" selected="true" />
 <select idref="service_rlogin_disabled" selected="true" />
@@ -233,7 +232,7 @@ assurance."</description>
 <select idref="package_ypserv_removed" selected="true" />
 <select idref="service_ypbind_disabled" selected="true" />
 <select idref="service_tftp_disabled" selected="true" />
-<select idref="uninstall_tftp" selected="true" />
+<select idref="package_tftp_removed" selected="true" />
 <select idref="tftpd_uses_secure_mode" selected="true" />
 <select idref="service_abrtd_disabled" selected="true" />
 <select idref="service_kdump_disabled" selected="true" />
@@ -302,7 +301,6 @@ assurance."</description>
 <select idref="network_ipv6_disable_rpc" selected="true" />
 <select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
 <select idref="sysctl_net_ipv6_conf_default_accept_redirects" selected="true" />
-<select idref="network_disable_unused_interfaces" selected="true" />
 <select idref="network_disable_zeroconf" selected="true" />
 <select idref="network_sniffer_disabled" selected="true" />
 <select idref="kernel_module_dccp_disabled" selected="true" />
