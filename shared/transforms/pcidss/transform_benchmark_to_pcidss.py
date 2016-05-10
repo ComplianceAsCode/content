@@ -40,6 +40,9 @@ def construct_xccdf_group(id_, desc, children, rules, rule_usage_map):
     title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
     title.text = id_
     ret.append(title)
+    description = ElementTree.Element("{%s}description" % (XCCDF_NAMESPACE))
+    description.text = desc
+    ret.append(description)
 
     for rule in rules:
         pci_dss_req_related = False
