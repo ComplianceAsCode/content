@@ -24,6 +24,7 @@ from xml.etree import cElementTree as ElementTree
 import json
 import sys
 import copy
+import codecs
 
 
 XCCDF_NAMESPACE = "http://checklists.nist.gov/xccdf/1.1"
@@ -34,6 +35,8 @@ JSON_FILENAME = "PCI_DSS.json"
 
 def construct_xccdf_group(id_, desc, children, rules, rule_usage_map):
     ret = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
+    ret.set("id", "pcidss-req-%s" % (id_))
+    ret.set("selected", "true")
     title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
     title.text = id_
     ret.append(title)
@@ -88,7 +91,8 @@ def main():
             construct_xccdf_group(id_, desc, children, rules, rule_usage_map)
         root_element.append(element)
 
-    ElementTree.dump(benchmark)
+    with codecs.open(sys.argv[2], "w", encoding="utf-8") as f:
+        benchmark.write(f)
 
 if __name__ == "__main__":
     main()
