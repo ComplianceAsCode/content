@@ -50,7 +50,16 @@ def construct_xccdf_group(id_, desc, children, rules, rule_usage_map):
                 break
 
         if pci_dss_req_related:
-            ret.append(copy.deepcopy(rule))
+            suffix = ""
+            if rule.get("id") not in rule_usage_map:
+                rule_usage_map[rule.get("id")] = 1
+            else:
+                rule_usage_map[rule.get("id")] += 1
+                suffix = "_%i" % (rule_usage_map[rule.get("id")])
+
+            copied_rule = copy.deepcopy(rule)
+            copied_rule.set("id", rule.get("id") + suffix)
+            ret.append(copied_rule)
 
     for child_id, child_desc, child_children in children:
         child_element = construct_xccdf_group(
@@ -90,6 +99,30 @@ def main():
         element = \
             construct_xccdf_group(id_, desc, children, rules, rule_usage_map)
         root_element.append(element)
+
+    unused_rules = []
+    for rule in rules:
+        if rule.get("id") not in rule_usage_map:
+            # this rule wasn't added yet, it would be lost unless we added it
+            # to a special non-PCI-DSS group
+            unused_rules.append(rule)
+
+    if len(unused_rules) > 0:
+        print(rule_usage_map)
+        logging.warning(
+            "%i rules don't reference PCI-DSS!" % (len(unused_rules))
+        )
+
+        group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
+        group.set("id", "non-pci-dss")
+        group.set("selected", "true")
+        title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
+        title.text = "Non PCI-DSS"
+        group.append(title)
+
+        for rule in unused_rules:
+            copied_rule = copy.deepcopy(rule)
+            group.append(copied_rule)
 
     with codecs.open(sys.argv[2], "w", encoding="utf-8") as f:
         benchmark.write(f)
