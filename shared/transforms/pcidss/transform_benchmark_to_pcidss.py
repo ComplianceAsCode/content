@@ -24,7 +24,6 @@ from xml.etree import cElementTree as ElementTree
 import json
 import sys
 import copy
-import codecs
 
 
 XCCDF_NAMESPACE = "http://checklists.nist.gov/xccdf/1.1"
@@ -151,8 +150,7 @@ def main():
 
         root_element.append(group)
 
-    with codecs.open(sys.argv[2], "w", encoding="utf-8") as f:
-        benchmark.write(f)
+    benchmark.write(sys.argv[2])
 
 if __name__ == "__main__":
     main()
