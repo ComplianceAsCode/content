@@ -132,11 +132,15 @@ content-stig: table-stigs guide checks
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-pcidss-ds.xml
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos6-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos6-pcidss-ds.xml
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl6-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl6-pcidss-ds.xml
 else
 	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
+	# PCI-DSS centric benchmarks are XCCDF 1.2 and datastream only
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos6-xccdf.xml
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl6-xccdf.xml
 endif
@@ -154,10 +158,13 @@ validate-xml:
 	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
+	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-pcidss-ds.xml
 	oscap xccdf validate-xml $(OUT)/$(ID)-centos6-xccdf.xml
 	oscap ds sds-validate $(OUT)/$(ID)-centos6-ds.xml
+	oscap ds sds-validate $(OUT)/$(ID)-centos6-pcidss-ds.xml
 	oscap xccdf validate-xml $(OUT)/$(ID)-sl6-xccdf.xml
 	oscap ds sds-validate $(OUT)/$(ID)-sl6-ds.xml
+	oscap ds sds-validate $(OUT)/$(ID)-sl6-pcidss-ds.xml
 
 
 validate: validate-xml
