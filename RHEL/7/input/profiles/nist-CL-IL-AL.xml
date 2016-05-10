@@ -1,5 +1,5 @@
 <Profile id="nist-cl-il-al" extends="common">
-<title override="true">CNSSI 1253 Low/Low/Low Control Baseline for Red Hat Enterprise Linux 6</title>
+<title override="true">CNSSI 1253 Low/Low/Low Control Baseline for Red Hat Enterprise Linux 7</title>
 <description override="true">This profile follows the Committee on National Security Systems Instruction
 (CNSSI) No. 1253, "Security Categorization and Control Selection for National Security
 Systems" on security controls to meet low confidentiality, low integrity, and low
@@ -98,7 +98,7 @@ assurance."</description>
      AC-2(1) -->
 
 <!-- AC-2(2), AC-2(3) -->
-<select idref="account_temp_expire_date" selected="true" />
+<select idref="account_temp_expire_date" selected="true" />		<!-- Missing OVAL -->
 <select idref="account_disable_post_pw_expiration" selected="true" />
 
 <!-- AC-2(4) -->
@@ -112,7 +112,6 @@ assurance."</description>
 <select idref="enable_selinux_bootloader" selected="true" />
 <select idref="selinux_state" selected="true" />
 <select idref="selinux_policytype" selected="true" />
-<select idref="service_restorecond_enabled" selected="true" />
 
 <!-- AC-4 -->
 <select idref="service_rdisc_disabled" selected="true" />
@@ -123,8 +122,7 @@ assurance."</description>
 <select idref="sysctl_net_ipv4_conf_default_secure_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
 <select idref="sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
-<select idref="service_ip6tables_enabled" selected="true" />
-<select idref="service_iptables_enabled" selected="true" />
+<select idref="service_firewalld_enabled" selected="true" />
 
 <!-- AC-6 -->
 <select idref="audit_rules_immutable" selected="true" />
@@ -172,16 +170,16 @@ assurance."</description>
 
 <!-- AC-8(a), AC-8(c) -->
 <select idref="banner_etc_issue" selected="true" />
-<select idref="gconf_gdm_enable_warning_gui_banner" selected="true" />
-<select idref="gconf_gdm_set_login_banner_text" selected="true" />
+<select idref="dconf_gnome_banner_enabled" selected="true" />
+<select idref="dconf_gnome_login_banner_text" selected="true" />
 
 <!-- AC-11(a) -->
-<select idref="gconf_gnome_screensaver_idle_delay" selected="true" />
-<select idref="gconf_gnome_screensaver_idle_activation_enabled" selected="true" />
-<select idref="gconf_gnome_screensaver_lock_enabled" selected="true" />
+<select idref="dconf_gnome_screensaver_idle_delay" selected="true" />
+<select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true" />
+<select idref="dconf_gnome_screensaver_lock_enabled" selected="true" />
 
 <!-- AC-11(1) -->
-<select idref="gconf_gnome_screensaver_mode_blank" selected="true" />
+<select idref="dconf_gnome_screensaver_mode_blank" selected="true" />
 
 <!-- AC-17(1) -->
 <select idref="service_auditd_enabled" selected="true" />
@@ -222,7 +220,7 @@ assurance."</description>
 <!-- AC-17(8) -->
 <select idref="service_xinetd_disabled" selected="true" />
 <select idref="package_xinetd_removed" selected="true" />
-<select idref="service_telnetd_disabled" selected="true" />
+<select idref="service_telnet_disabled" selected="true" />
 <select idref="package_telnet-server_removed" selected="true" />
 <select idref="package_rsh_removed" selected="true" />
 <select idref="service_rexec_disabled" selected="true" />
@@ -246,7 +244,7 @@ assurance."</description>
 <select idref="sshd_allow_only_protocol2" selected="true" />
 
 <!-- AC-18(a) -->
-<select idref="wireless_disable_in_bios" selected="true" />
+<select idref="wireless_disable_in_bios" selected="true" />			<!-- Missing OVAL -->
 <select idref="wireless_disable_interfaces" selected="true" />
 <select idref="service_bluetooth_disabled" selected="true" />
 <select idref="kernel_module_bluetooth_disabled" selected="true" />
@@ -257,9 +255,9 @@ assurance."</description>
 <select idref="mount_option_nosuid_removable_partitions" selected="true" />
 <select idref="kernel_module_usb-storage_disabled" selected="true" />
 <select idref="bootloader_nousb_argument" selected="true" />
-<select idref="bios_disable_usb_boot" selected="true" />
+<select idref="bios_disable_usb_boot" selected="true" />			<!-- Missing OVAL -->
 <select idref="service_autofs_disabled" selected="true" />
-<select idref="gconf_gnome_disable_automount" selected="true" />
+<select idref="dconf_gnome_disable_automount" selected="true" />
 
 <!-- AU-1(b) -->
 <select idref="auditd_data_retention_num_logs" selected="true" />
@@ -277,9 +275,9 @@ assurance."</description>
 <select idref="rsyslog_remote_loghost" selected="true" />
 
 <!-- AU-8(1) -->
-<select idref="service_ntpd_enabled" selected="true" />
-<select idref="ntpd_specify_remote_server" selected="true" />
-<select idref="ntpd_specify_multiple_servers" selected="true" />
+<select idref="service_chronyd_or_ntpd_enabled" selected="true" />
+<select idref="chronyd_or_ntpd_specify_remote_server" selected="true" />
+<select idref="chronyd_or_ntpd_specify_multiple_servers" selected="true" />
 
 <!-- AU-12 -->
 <select idref="service_psacct_enabled" selected="true" />
@@ -297,7 +295,7 @@ assurance."</description>
 <select idref="rpm_verify_hashes" selected="true" />
 
 <!-- CM-7 -->
-<select idref="kernel_module_ipv6_option_disabled" selected="true" />
+<select idref="sysctl_kernel_ipv6_disable" selected="true" />
 <select idref="network_ipv6_disable_rpc" selected="true" />
 <select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
 <select idref="sysctl_net_ipv6_conf_default_accept_redirects" selected="true" />
@@ -305,10 +303,7 @@ assurance."</description>
 <select idref="network_sniffer_disabled" selected="true" />
 <select idref="kernel_module_dccp_disabled" selected="true" />
 <select idref="kernel_module_sctp_disabled" selected="true" />
-<select idref="kernel_module_rds_disabled" selected="true" />
-<select idref="kernel_module_tipc_disabled" selected="true" />
-<select idref="set_iptables_default_rule" selected="true" />
-<select idref="set_iptables_default_rule_forward" selected="true" />
+<select idref="set_firewalld_default_zone" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_ip_forward" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
@@ -322,7 +317,7 @@ assurance."</description>
 <select idref="kernel_module_hfsplus_disabled" selected="true" />
 <select idref="kernel_module_squashfs_disabled" selected="true" />
 <select idref="kernel_module_udf_disabled" selected="true" />
-<select idref="gconf_gnome_disable_thumbnailers" selected="true" />
+<select idref="dconf_gnome_disable_thumbnailers" selected="true" />
 <select idref="mount_option_nodev_nonroot_local_partitions" selected="true" />
 <select idref="mount_option_tmp_nodev" selected="true" />
 <select idref="mount_option_tmp_noexec" selected="true" />
@@ -348,8 +343,7 @@ assurance."</description>
 <select idref="service_certmonger_disabled" selected="true" />
 <select idref="service_cgconfig_disabled" selected="true" />
 <select idref="service_cgred_disabled" selected="true" />
-<select idref="service_cpuspeed_disabled" selected="true" />
-<select idref="service_haldaemon_disabled" selected="true" />
+<select idref="service_cpupower_disabled" selected="true" />
 <select idref="service_irqbalance_enabled" selected="true" />
 <select idref="service_mdmonitor_disabled" selected="true" />
 <select idref="service_messagebus_disabled" selected="true" />
@@ -360,7 +354,7 @@ assurance."</description>
 <select idref="service_sysstat_disabled" selected="true" />
 <select idref="service_httpd_disabled" selected="true" />
 <select idref="package_httpd_removed" selected="true" />
-<select idref="disabling_vsftpd" selected="true" />
+<select idref="service_vsftpd_disabled" selected="true" />
 <select idref="package_vsftpd_removed" selected="true" />
 
 
