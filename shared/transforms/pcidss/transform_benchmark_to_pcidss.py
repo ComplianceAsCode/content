@@ -26,15 +26,14 @@ import sys
 import copy
 
 
-XCCDF_NAMESPACE = "http://checklists.nist.gov/xccdf/1.1"
+XCCDF_NAMESPACE = "http://checklists.nist.gov/xccdf/1.2"
 FILENAME = "PCI_DSS_v3.pdf"
 REMOTE_URL = "https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf"
-JSON_FILENAME = "PCI_DSS.json"
 
 
 def construct_xccdf_group(id_, desc, children, rules, rule_usage_map):
     ret = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-    ret.set("id", "pcidss-req-%s" % (id_))
+    ret.set("id", "xccdf_org.ssgproject.content_group_pcidss-req-%s" % (id_))
     ret.set("selected", "true")
     title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
     title.text = id_
@@ -77,11 +76,16 @@ def main():
     logging.basicConfig(format='%(levelname)s:%(message)s',
                         level=logging.DEBUG)
 
+    if len(sys.argv) < 4:
+        sys.stderr.write("transform_benchmark_to_pcidss.py PCI_DSS.json "
+                         "SOURCE_XCCDF DESTINATION_XCCDF\n")
+        sys.exit(1)
+
     id_tree = None
-    with open(JSON_FILENAME, "r") as f:
+    with open(sys.argv[1], "r") as f:
         id_tree = json.load(f)
 
-    benchmark = ElementTree.parse(sys.argv[1])
+    benchmark = ElementTree.parse(sys.argv[2])
 
     rules = []
     for rule in \
@@ -113,7 +117,7 @@ def main():
 
     if len(values) > 0:
         group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-        group.set("id", "values")
+        group.set("id", "xccdf_org.ssgproject.content_group_values")
         group.set("selected", "true")
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Values"
@@ -138,7 +142,7 @@ def main():
         )
 
         group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-        group.set("id", "non-pci-dss")
+        group.set("id", "xccdf_org.ssgproject.content_group_non-pci-dss")
         group.set("selected", "true")
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Non PCI-DSS"
@@ -150,7 +154,7 @@ def main():
 
         root_element.append(group)
 
-    benchmark.write(sys.argv[2])
+    benchmark.write(sys.argv[3])
 
 if __name__ == "__main__":
     main()
