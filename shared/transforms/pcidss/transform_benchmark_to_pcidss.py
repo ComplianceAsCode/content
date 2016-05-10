@@ -80,16 +80,25 @@ def main():
         id_tree = json.load(f)
 
     benchmark = ElementTree.parse(sys.argv[1])
+
     rules = []
     for rule in \
             benchmark.findall(".//{%s}Rule" % (XCCDF_NAMESPACE)):
         rules.append(rule)
     rule_usage_map = {}
 
+    values = []
+    for value in \
+            benchmark.findall(".//{%s}Value" % (XCCDF_NAMESPACE)):
+        values.append(value)
+
     parent_map = dict((c, p) for p in benchmark.getiterator() for c in p)
     for rule in \
             benchmark.findall(".//{%s}Rule" % (XCCDF_NAMESPACE)):
         parent_map[rule].remove(rule)
+    for value in \
+            benchmark.findall(".//{%s}Value" % (XCCDF_NAMESPACE)):
+        parent_map[value].remove(value)
     for group in \
             benchmark.findall(".//{%s}Group" % (XCCDF_NAMESPACE)):
         parent_map[group].remove(group)
@@ -100,6 +109,20 @@ def main():
             construct_xccdf_group(id_, desc, children, rules, rule_usage_map)
         root_element.append(element)
 
+    if len(values) > 0:
+        group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
+        group.set("id", "values")
+        group.set("selected", "true")
+        title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
+        title.text = "Values"
+        group.append(title)
+
+        for value in values:
+            copied_value = copy.deepcopy(value)
+            group.append(copied_value)
+
+        root_element.append(group)
+
     unused_rules = []
     for rule in rules:
         if rule.get("id") not in rule_usage_map:
@@ -108,7 +131,6 @@ def main():
             unused_rules.append(rule)
 
     if len(unused_rules) > 0:
-        print(rule_usage_map)
         logging.warning(
             "%i rules don't reference PCI-DSS!" % (len(unused_rules))
         )
@@ -123,6 +145,8 @@ def main():
         for rule in unused_rules:
             copied_rule = copy.deepcopy(rule)
             group.append(copied_rule)
+
+        root_element.append(group)
 
     with codecs.open(sys.argv[2], "w", encoding="utf-8") as f:
         benchmark.write(f)
