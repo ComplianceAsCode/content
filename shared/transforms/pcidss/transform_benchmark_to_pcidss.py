@@ -154,6 +154,12 @@ def main():
 
         root_element.append(group)
 
+    # change the Benchmark ID to avoid validation issues
+    root_element.set(
+        "id",
+        root_element.get("id").replace("_benchmark_", "_benchmark_PCIDSS-")
+    )
+
     benchmark.write(sys.argv[3])
 
 if __name__ == "__main__":
