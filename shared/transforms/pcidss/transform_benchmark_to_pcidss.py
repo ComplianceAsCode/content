@@ -160,6 +160,12 @@ def main():
         root_element.get("id").replace("_benchmark_", "_benchmark_PCIDSS-")
     )
 
+    # filter out all profiles except PCI-DSS
+    for profile in \
+            benchmark.findall("./{%s}Profile" % (XCCDF_NAMESPACE)):
+        if not profile.get("id").endswith("pci-dss"):
+            root_element.remove(profile)
+
     benchmark.write(sys.argv[3])
 
 if __name__ == "__main__":
