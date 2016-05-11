@@ -18,7 +18,9 @@
 		<xsl:apply-templates select="document('profiles/C2S.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
-		<xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-rhel7-server-gui-upstream.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-rhel7-server-nogui-upstream.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-rhel7-base-upstream.xml')" />
 		<xsl:apply-templates select="document('profiles/ospp-rhel7-server.xml')" />
 
        <Value id="conditional_clause" type="string" operator="equals">
