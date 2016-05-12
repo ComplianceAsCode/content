@@ -13,17 +13,26 @@
     </criteria>
   </definition>
 
+  <ind:environmentvariable58_object id="obj_env_fuse_installed_app_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>FUSE_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_installed_app_is_fuse6" version="1" datatype="string" comment="log location">
+    <concat>
+      <object_component object_ref="obj_env_fuse_installed_app_home" item_field="value" />
+      <literal_component>/etc</literal_component>
+    </concat>
+  </local_variable>
+
   <ind:textfilecontent54_test id="test_installed_app_is_fuse6" version="1"
     check="all" check_existence="all_exist" comment="Check Fuse Version">
     <ind:object object_ref="obj_installed_app_is_fuse6" />
     <ind:state state_ref="state_installed_app_is_fuse6" />
   </ind:textfilecontent54_test>
-  <ind:environmentvariable_object id="env_obj_fuse_home" version="1">
-    <ind:name>FUSE_HOME</ind:name>
-  </ind:environmentvariable_object>
 
   <ind:textfilecontent54_object id="obj_installed_app_is_fuse6" version="1">
-    <ind:path var_ref="local_var_installed_app_is_fuse6"/>
+    <ind:path var_ref="local_var_installed_app_is_fuse6" />
     <ind:filename>config.properties</ind:filename>
     <ind:pattern operation="pattern match">karaf\.framework\.felix=.*org\.apache\.felix\.framework-([0-9a-z\.-]{18})\.jar</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
@@ -32,12 +41,5 @@
   <ind:textfilecontent54_state id="state_installed_app_is_fuse6" version="1">
     <ind:subexpression>4.0.3.redhat-60024</ind:subexpression>
   </ind:textfilecontent54_state>
-
-  <local_variable id="local_var_installed_app_is_fuse6" version="1" datatype="string" comment="log location">
-    <concat>
-      <object_component object_ref="env_obj_fuse_home" item_field="value" />
-      <literal_component>/etc/</literal_component>
-    </concat>
-  </local_variable>
 
 </def-group>
