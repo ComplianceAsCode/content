@@ -165,6 +165,17 @@ def main():
             benchmark.findall("./{%s}Profile" % (XCCDF_NAMESPACE)):
         if not profile.get("id").endswith("pci-dss"):
             root_element.remove(profile)
+            continue
+
+        # filter out old group selectors from the PCI-DSS profile
+        for select in profile.findall("./{%s}select" % (XCCDF_NAMESPACE)):
+            if select.get("idref").startswith(
+                "xccdf_org.ssgproject.content_group_"
+            ):
+                # we will remove all group selectors, all PCI-DSS groups are
+                # selected by default so we don't need any in the final
+                # PCI-DSS Benchmark
+                profile.remove(select)
 
     benchmark.write(sys.argv[3])
 
