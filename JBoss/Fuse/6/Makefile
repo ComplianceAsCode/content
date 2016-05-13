@@ -4,10 +4,26 @@ SHARED = ../../../shared
 include $(SHARED)/product-make.include
 
 PROD = fuse6
+PROD_OVAL = $(BUILD)/$(PROD)_oval
 
 checks:
-	xmlwf $(IN)/oval/*.xml
-	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
+	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
+	mkdir -p $(PROD_OVAL)
+	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
+	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
+	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
+	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
+	# into final list of OVAL checks
+ifeq ($(OVAL_5_11), 0)
+	# Search $(SHARED_OVAL_5_11) and $(IN)/oval/oval_5.11 directories to find all product specific
+	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
+	# directory
+	find $(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
+	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
+	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
+endif
+	xmlwf $(PROD_OVAL)/*.xml
+	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 # example, if needed: for converting XCCDF into shorthand
@@ -65,12 +81,18 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
-#	Update "style" attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
+#	Update @style attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
 	sed -i 's/style="SCAP_1.1"/style="SCAP_1.2"/' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+#	Update @schematron-version attribute in datastream to "1.2". Fixes #1191
+#	(Workaround for https://github.com/OpenSCAP/openscap/issues/383)
+	sed -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' $(OUT)/$(ID)-$(PROD)-ds.xml
 #	Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
+	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
+	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 
 content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
@@ -101,7 +123,19 @@ validate-xml:
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate: validate-xml
-	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
+ifeq ($(OVAL_5_11), 0)
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+else
+	# If we are building against oscap version not supporting OVAL-5.11 language version yet,
+	# don't call verify-references.py with "--rules-with-invalid-checks" argument, since the
+	# OVAL checks using the 5.11 OVAL version will not be included in that case
+	@echo -e "\nWarning:\n"
+	@echo -e "\tJBoss content build using oscap not supporting OVAL-5.11 language version detected!"
+	@echo -e "\tSince the OVAL-5.11 JBoss OVAL checks are missing, will skip test for referenced,"
+	@echo -e "\tbut undefined OVAL definitions during content validation. Consider building JBoss"
+	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
+	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
+endif
 
 eval-test:
 	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
