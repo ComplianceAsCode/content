@@ -393,7 +393,7 @@ found.</description>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80212-4" />
 <oval id="service_tftp_disabled" />
 <ref nist="AC-17(8),CM-7" disa="1436" />
 <tested by="DS" on="20121026"/>
@@ -415,7 +415,7 @@ If TFTP is required for operational support (such as transmission of router conf
 its use must be documented with the Information Systems Securty Manager (ISSM), restricted to 
 only authorized personnel, and have access control rules established.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80213-2" />
 <oval id="package_tftp-server_removed" />
 <ref nist="AC-17(8),CM-6(c),CM-7" disa="318,368,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227" stigid="040500"  cis="2.1.8" />
 <tested by="DS" on="20121026"/>
@@ -462,7 +462,7 @@ flag, matching the example below:
 <pre>$ grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80214-0" />
 <oval id="tftpd_uses_secure_mode" />
 <ref nist="AC-17(8),CM-7" disa="366"/>
 </Rule>

@@ -32,7 +32,7 @@ sharing functionality.
 Running a Samba server provides a network-based avenue of attack, and
 should be disabled if not needed.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80277-7" />
 <oval id="service_smb_disabled" />
 <ref disa="1436" />
 </Rule>
@@ -50,12 +50,10 @@ with the following command:
 If there is no need to make the Samba software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80278-5" />
 <oval id="package_samba_removed" />
 <ref cis="3.13" />
 </Rule>
-
-
 
 </Group> <!--<Group id="disabling_samba">-->
 
@@ -114,7 +112,7 @@ machine accounts and shares. Domain member servers and standalone servers may
 not need administrator access at all. If that is the case, add the invalid
 users parameter to <tt>[global]</tt> instead.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80279-3" />
 </Rule>
 
 <Rule id="require_smb_client_signing">
@@ -139,7 +137,7 @@ Packet signing can prevent
 man-in-the-middle attacks which modify SMB packets in
 transit.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80280-1" />
 <oval id="require_smb_client_signing" />
 </Rule>
 
@@ -164,7 +162,7 @@ The output should show either <tt>krb5i</tt> or <tt>ntlmv2i</tt> in use.
 Packet signing can prevent man-in-the-middle
 attacks which modify SMB packets in transit.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80281-9" />
 <oval id="mount_option_smb_client_signing" />
 </Rule>
 

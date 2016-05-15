@@ -36,7 +36,7 @@ server. If the local machine is not configured to mount NFS filesystems then
 this service should be disabled.
 <service-disable-macro service="nfslock" />
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80228-0" />
 <oval id="service_nfslock_disabled" />
 <ref cis="3.8" />
 </Rule>
@@ -50,7 +50,7 @@ client-side of RPCSEC GSS. If the system does not require secure RPC then this
 service should be disabled.
 <service-disable-macro service="rpcgssd" />
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80229-8" />
 <oval id="service_rpcgssd_disabled" />
 <ref cis="3.8" />
 </Rule>
@@ -66,7 +66,7 @@ with the requested service. If the system does not require RPC (such as for NFS
 servers) then this service should be disabled.
 <service-disable-macro service="rpcbind" />
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80230-6" />
 <oval id="service_rpcbind_disabled" />
 <ref cis="3.8" />
 </Rule>
@@ -78,7 +78,7 @@ and GID numbers on NFSv4 mounts. If NFS is not in use on the local system then
 this service should be disabled.
 <service-disable-macro service="rpcidmapd" />
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80231-4" />
 <oval id="service_rpcidmapd_disabled" />
 <ref cis="3.8" />
 </Rule>
@@ -139,7 +139,7 @@ your network.
 Restrict service to always use a given port, so that firewalling can be done
 effectively.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80232-2" />
 </Rule>
 
 <Rule id="nfs_fixed_lockd_udp_port">
@@ -155,7 +155,7 @@ your network.
 <rationale> Restricting services to always use a given port enables firewalling
 to be done more effectively.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80233-0" />
 </Rule>
 
 <Rule id="nfs_fixed_statd_port">
@@ -169,7 +169,7 @@ Where <tt>statd-port</tt> is a port which is not used by any other service on yo
 <rationale> Restricting services to always use a given port enables firewalling
 to be done more effectively.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80234-8" />
 </Rule>
 
 <Rule id="nfs_fixed_mountd_port">
@@ -183,7 +183,7 @@ Where <tt>mountd-port</tt> is a port which is not used by any other service on y
 <rationale> Restricting services to always use a given port enables firewalling
 to be done more effectively.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80235-5" />
 </Rule>
 
 </Group> <!-- end nfs_configure_fixed_ports -->
@@ -216,7 +216,7 @@ greater than UID_MAX and GID_MAX as defined in /etc/login.defs.
 </ocil>
 <rationale>Specifying the anonymous UID and GID ensures that the remote root user is mapped 
 to a local account which has no permissions on the system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80236-3" />
 </Rule>
 
 <Rule id="service_nfs_disabled">
@@ -241,7 +241,7 @@ If properly configured, the output should look like:
 <pre>nfs            	0:off	1:off	2:off	3:off	4:off	5:off	6:off</pre>
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80237-1" />
 <oval id="service_nfs_disabled" />
 <tested by="DS" on="20121025"/>
 </Rule>
@@ -258,7 +258,7 @@ RPC then this service should be disabled.
 <service-disable-check-macro service="rpcsvcgssd" />
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80238-9" />
 <oval id="service_rpcsvcgssd_disabled" />
 <tested by="DS" on="20121025"/>
 </Rule>
@@ -292,7 +292,7 @@ not implemented.
 </ocil>
 <rationale>Legitimate device files should only exist in the /dev directory. NFS mounts
 should not present device files to users.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80239-7" />
 <oval id="mount_option_nodev_remote_filesystems" />
 <ref nist="CM-7,MP-2" />
 <tested by="DS" on="20121025"/>
@@ -311,7 +311,7 @@ not implemented.
 </ocil>
 <rationale>NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables
 should be installed to their default location on the local filesystem.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80240-5" />
 <oval id="mount_option_nosuid_remote_filesystems" />
 <tested by="DS" on="20121025"/>
 </Rule>
@@ -402,7 +402,7 @@ Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>no_root_squ
 <rationale>If the NFS server allows root access to local file systems from remote hosts, this
 access could be used to compromise the system.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80241-3" />
 </Rule>
 
 <Rule id="restrict_nfs_clients_to_privileged_ports">
@@ -418,7 +418,7 @@ To ensure that the default has not been changed, ensure no line in
 <rationale>Allowing client requests to be made from ports higher than 1024 could allow a unprivileged
 user to initiate an NFS connection. If the unprivileged user account has been compromised, an
 attacker could gain access to data on the NFS server.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80242-1" />
 </Rule>
 
 <Rule id="no_insecure_locks_exports" severity="medium">
@@ -442,7 +442,7 @@ To verify insecure file locking has been disabled, run the following command:
 viewed or edited by an unauthorized user.
 </rationale>
 <oval id="no_insecure_locks_exports" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80243-9" />
 <ref disa="764" />
 </Rule>
 

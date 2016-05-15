@@ -30,7 +30,7 @@ of attack, and should be disabled if not needed.
 Furthermore, the FTP protocol is unencrypted and creates
 a risk of compromising sensitive information.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80244-7" />
 <oval id="service_vsftpd_disabled" />
 <ref nist="CM-7" disa="1436"/>
 </Rule>
@@ -47,7 +47,7 @@ a risk of compromising sensitive information.
 Removing the vsftpd package decreases the risk of its
 accidental activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80245-4" />
 <oval id="package_vsftpd_removed" />
 <ref nist="CM-6(b),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040490" cis="3.10" />
 </Rule>
@@ -66,7 +66,7 @@ set-up vsftpd to provide it.</description>
 </description>
 <rationale>After Red Hat Enterprise Linux 2.1, Red Hat switched from distributing wu-ftpd with Red Hat Enterprise Linux to distributing vsftpd. For security
 and for consistency with future Red Hat releases, the use of vsftpd is recommended.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80246-2" />
 <oval id="package_vsftpd_installed" />
 <ref nist="CM-7" />
 </Rule>
@@ -103,7 +103,7 @@ If the <i>server_args</i> line is missing or does not include the vsftpd configu
 the FTP server are logged using the verbose vsftpd log
 format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
 <warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80247-0" />
 <oval id="ftp_log_transactions" />
 <!--<ref nist="CM-7" /> -->
 </Rule>
@@ -115,7 +115,7 @@ by default. Add or correct the following configuration options:
 <pre>banner_file=/etc/issue</pre>
 </description>
 <rationale>This setting will cause the system greeting banner to be used for FTP connections as well.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80248-8" />
 <ref disa="48" />
 <oval id="ftp_present_banner" />
 <!--<ref nist="CM-7" /> -->
@@ -145,7 +145,7 @@ using a secure protocol like SCP/SFTP? If not, edit the vsftpd configuration fil
 If non-anonymous FTP logins are necessary, follow the guidance in the remainder of this section to secure
 these logins as much as possible.</description>
 <rationale>The use of non-anonymous FTP logins is strongly discouraged. Since SSH clients and servers are widely available, and since SSH provides support for a transfer mode which resembles FTP in user interface, there is no good reason to allow password-based FTP access. </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80249-6" />
 <!--<oval id="ftp_restrict_to_anon" />-->
 <ref nist="CM-7,AC-3" />
 </Rule>
@@ -180,7 +180,7 @@ as much as possible.</description>
 common to have a need to allow unauthenticated users to place files on the FTP server. If this must be done, it
 is necessary to ensure that files cannot be uploaded and downloaded from the same directory.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80250-4" />
 <!--<oval id="ftp_disable_uploads" />-->
 <!--<ref nist="CM-7" /> -->
 </Rule>
@@ -193,7 +193,7 @@ be used to verify that this directory is on its own partition.</description>
 these users from filling a disk used by other services.</rationale>
 <!--<oval id="ftp_home_partition" />-->
 <!--<ref nist="CM-7" /> -->
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80251-2" />
 </Rule>
 
 <Group id="ftp_configure_firewall">

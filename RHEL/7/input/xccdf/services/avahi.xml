@@ -26,7 +26,7 @@ port, it is subject to network attacks. Its functionality
 is convenient but is only appropriate if the local network
 can be trusted.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80338-7" />
 <oval id="service_avahi-daemon_disabled" />
 <ref nist="CM-7" disa="366" cis="3.3" />
 </Rule>
@@ -53,7 +53,7 @@ Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
 <pre>use-ipv4=no</pre>
 </description>
 <ref nist="CM-7" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80339-5" />
 </Rule>
 
 <Rule id="avahi_check_ttl">
@@ -73,7 +73,7 @@ the local network at all, this option provides another check to ensure they
 are not permitted.
 </rationale>
 <ref nist="CM-7" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80340-3" />
 </Rule>
 
 <Rule id="avahi_prevent_port_sharing">
@@ -87,7 +87,7 @@ and ensure the following line appears in the <tt>[server]</tt> section:
 This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80341-1" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -103,7 +103,7 @@ This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
 <ref nist="CM-7" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80342-9" />
 </Rule>
 
 <Rule id="avahi_restrict_published_information">
@@ -132,7 +132,7 @@ disable-publishing. Alternatively, these can be used to restrict
 the types of published information in the event that some information
 must be published.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80343-7" />
 <ref nist="CM-7" />
 </Rule>
 </Group>

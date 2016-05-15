@@ -41,7 +41,7 @@ system-db:distro</pre>
 Failure to have a functional DConf profile prevents GNOME3 configuration settings
 from being enforced for all users and allows various security risks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27446-4" />
 <oval id="enable_dconf_user_profile" />
 </Rule>
 
@@ -77,7 +77,7 @@ AutomaticLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80104-3" />
 <oval id="gnome_gdm_disable_automatic_login" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010430"/>
 </Rule>
@@ -103,7 +103,7 @@ TimedLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80105-0" />
 <oval id="gnome_gdm_disable_guest_login" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010431"/>
 </Rule>
@@ -136,7 +136,7 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/disable
 <rationale>Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80106-8" />
 <oval id="dconf_gnome_disable_user_list" />
 <ref nist="AC-23" />
 </Rule>
@@ -172,7 +172,7 @@ A user who is at the console can reboot the system at the login screen. If resta
 are pressed at the login screen, this can create the risk of short-term loss of availability of systems
 due to reboot.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80107-6" />
 <oval id="dconf_gnome_disable_restart_shutdown" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
 </Rule>
@@ -206,7 +206,7 @@ Smart card login provides two-factor authentication stronger than
 that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80108-4" />
 <oval id="dconf_gnome_enable_smartcard_auth" />
 <ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
 </Rule>
@@ -243,7 +243,7 @@ Setting the password retry prompts that are permitted on a per-session basis to 
 requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80109-2" />
 <oval id="dconf_gnome_login_retries" />
 </Rule>
 
@@ -314,7 +314,7 @@ temporary nature of the absence. Rather than relying on the user to manually loc
 system session prior to vacating the vicinity, GNOME3 can be configured to identify when
 a user's session has idled and take action to initiate a session lock.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80110-0" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8"
 ossrg="SRG-OS-000029-GPOS-00010" stigid="010070" />
@@ -355,7 +355,7 @@ real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80111-8" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
 <ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010073" pcidss="Req-8.1.8" />
 </Rule>
@@ -393,7 +393,7 @@ If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gn
 A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
 of the information system but does not want to logout because of the temporary nature of the absense.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80112-6" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
 <ref nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
 ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" stigid="010060" />
@@ -426,7 +426,7 @@ If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/
 Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80113-4" />
 <oval id="dconf_gnome_screensaver_mode_blank" />
 <ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" />
 </Rule>
@@ -460,7 +460,7 @@ If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/
 Setting the splash screen to not reveal the logged in user's name
 conceals who has access to the system from passersby.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80114-2" />
 <oval id="dconf_gnome_screensaver_user_info" />
 </Rule>
 
@@ -513,7 +513,7 @@ the case of mixed OS environment, this can create the risk of short-term
 loss of availability of systems due to unintentional reboot.
 </rationale>
 <oval id="dconf_gnome_disable_ctrlaltdel_reboot" />
-<ident cce="RHEL:7-CCE-TBD" />
+<ident cce="80124-1" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
 </Rule>
 
@@ -552,7 +552,7 @@ unintended configuration changes as well as a nefarious user the capability to m
 changes such as adding new accounts, etc.
 </rationale>
 <oval id="dconf_gnome_disable_user_admin" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80115-9" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_power_settings" severity="medium">
@@ -587,7 +587,7 @@ Enabling power settings on non-mobile devices could have unintended processing
 consequences on standard systems.
 </rationale>
 <oval id="dconf_gnome_disable_power_settings" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80116-7" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_geolocation" severity="medium">
@@ -630,7 +630,7 @@ Enabling power settings on non-mobile devices could have unintended processing
 consequences on standard systems.
 </rationale>
 <oval id="dconf_gnome_disable_geolocation" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80117-5" />
 </Rule>
 
 </Group>
@@ -671,7 +671,7 @@ Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
 <oval id="dconf_gnome_disable_wifi_create" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80118-3" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_wifi_notification" severity="medium">
@@ -706,7 +706,7 @@ Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
 <oval id="dconf_gnome_disable_wifi_notification" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80119-1" />
 </Rule>
 
 </Group>
@@ -747,7 +747,7 @@ Username and password prompting is required for remote access. Otherwise, non-au
 and nefarious users can access the system freely.
 </rationale>
 <oval id="dconf_gnome_remote_access_credential_prompt" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80120-9" />
 </Rule>
 
 <Rule id="dconf_gnome_remote_access_encryption" severity="medium">
@@ -780,7 +780,7 @@ Open X displays allow an attacker to capture keystrokes and to execute commands
 remotely.
 </rationale>
 <oval id="dconf_gnome_remote_access_encryption" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80121-7" />
 <ref nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="TBD" />
 </Rule>
@@ -832,7 +832,7 @@ the introduction of malware via removable media.
 It will, however, also prevent desktop users from legitimate use
 of removable media.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80122-5" />
 <oval id="dconf_gnome_disable_automount" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" />
 </Rule>
@@ -868,7 +868,7 @@ file to exploit this flaw. Assuming the attacker could place the malicious file 
 (via a web upload for example) and assuming a user browses the same location using Nautilus, the
 malicious file would exploit the thumbnailer with the potential for malicious code execution. It
 is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80123-3" />
 <oval id="dconf_gnome_disable_thumbnailers" />
 <ref nist="CM-7" />
 </Rule>
