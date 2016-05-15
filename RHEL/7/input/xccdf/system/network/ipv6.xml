@@ -44,7 +44,7 @@ lines in all files in <tt>/etc/sysctl.d</tt>:
 Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80175-3" />
 <oval id="sysctl_kernel_ipv6_disable" />
 <ref nist="CM-7" disa="1551" cis="4.4.2" />
 <tested by="DS" on="20121024"/>
@@ -56,7 +56,7 @@ the vulnerability to exploitation.
 <pre>NETWORKING_IPV6=no
 IPV6INIT=no</pre>
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80176-1" />
 </Rule>
 
 <Rule id="network_ipv6_disable_rpc">
@@ -69,7 +69,7 @@ following two lines in <tt>/etc/netconfig</tt>:
 <pre>udp6       tpi_clts      v     inet6    udp     -       -
 tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80177-9" />
 <oval id="network_ipv6_disable_rpc" />
 <ref nist="CM-7" />
 </Rule>
@@ -166,7 +166,7 @@ the system is functioning as a router.
 
 Accepting source-routed packets in the IPv6 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80179-5" />
 <oval id="sysctl_net_ipv6_conf_all_accept_source_route" value="sysctl_net_ipv6_conf_all_accept_source_route_value" />
 <ref nist="AC-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040860" />
 </Rule>
@@ -182,11 +182,10 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <rationale>
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80180-3" />
 <oval id="sysctl_net_ipv6_conf_all_accept_ra" value="sysctl_net_ipv6_conf_all_accept_ra_value" />
 <ref nist="CM-7" cis="4.4.1.1" />
 </Rule>
-
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_ra">
 <title>Configure Accepting IPv6 Router Advertisements</title>
@@ -199,7 +198,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <rationale>
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80181-1" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
 <ref nist="CM-7" cis="4.4.1.1" />
 </Rule>
@@ -215,7 +214,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80182-9" />
 <oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
 <ref nist="CM-7" disa="1551" cis="4.4.1.2" />
 </Rule>
@@ -231,7 +230,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80183-7" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-7" disa="1551" cis="4.4.1.2" />
 </Rule>
@@ -248,7 +247,7 @@ Manually assigning an IP address is preferable to accepting one from routers or
 from the network otherwise. The example address here is an IPv6 address
 reserved for documentation purposes, as defined by RFC3849.
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80184-5" />
 <oval id="network_ipv6_static_address" />
 <ref disa="366" />
 </Rule>
@@ -265,7 +264,7 @@ hardware over its lifetime using its traffic. If it is important for a system's
 IP address to not trivially reveal its hardware address, this setting should be
 applied.
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80185-2" />
 <oval id="network_ipv6_privacy_extensions" />
 <ref disa="366" />
 </Rule>
@@ -279,7 +278,7 @@ the following line (substituting your gateway IP as appropriate):
 Router addresses should be manually set and not accepted via any
 auto-configuration or router advertisement.
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80186-0" />
 <oval id="network_ipv6_default_gateway" />
 <ref disa="366" />
 </Rule>

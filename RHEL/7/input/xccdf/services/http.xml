@@ -34,7 +34,7 @@ and removed from the system.
 Running web server software provides a network-based avenue
 of attack, and should be disabled if not needed.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80300-7" />
 <oval id="service_httpd_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -51,7 +51,7 @@ of attack, and should be disabled if not needed.
 If there is no need to make the web server software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80301-5" />
 <oval id="package_httpd_removed" />
 <ref nist="CM-7" cis="3.11" />
 </Rule>
@@ -117,7 +117,7 @@ Information disclosed to clients about the configuration of the web server and s
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
 <ref nist="CM-7" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80302-3" />
 </Rule>
 
 <Rule id="httpd_serversignature_off">
@@ -133,7 +133,7 @@ Add or correct the following directive in <tt>/etc/httpd/conf/httpd.conf</tt>:
 Information disclosed to clients about the configuration of the web server and system could be used
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80303-1" />
 <ref nist="CM-7" />
 </Rule>
 
@@ -218,7 +218,7 @@ If this functionality is unnecessary, comment out the related module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80304-9" />
 </Rule>
 
 <Rule id="httpd_mod_rewrite">
@@ -234,7 +234,7 @@ unnecessary, comment out the related module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80305-6" />
 </Rule>
 
 <Rule id="httpd_ldap_support">
@@ -250,7 +250,7 @@ If LDAP is to be used, SSL encryption should be used as well.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80306-4" />
 </Rule>
 
 <Rule id="httpd_server_side_includes">
@@ -269,7 +269,7 @@ supplied data should be encoded to prevent cross-site scripting vulnerabilities.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80307-2" />
 </Rule>
 
 <Rule id="httpd_mime_magic">
@@ -283,7 +283,7 @@ is likely extraneous. If its functionality is unnecessary, comment out the relat
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80308-0" />
 </Rule>
 
 <Rule id="httpd_webdav">
@@ -302,7 +302,7 @@ server that is DAV enabled should be protected by access controls.
 Minimizing the number of loadable modules available to the web server, reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80309-8" />
 </Rule>
 
 <Rule id="httpd_server_activity_status">
@@ -320,7 +320,7 @@ configuration.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80310-6" />
 </Rule>
 
 <Rule id="httpd_server_configuration_display">
@@ -337,7 +337,7 @@ an access control list to restrict access to the information.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80311-4" />
 </Rule>
 
 <Rule id="httpd_url_correction">
@@ -352,7 +352,7 @@ This functionality weakens server security by making site enumeration easier.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80312-2" />
 </Rule>
 
 <Rule id="httpd_proxy_support">
@@ -375,7 +375,7 @@ are a security risk. <tt>mod_proxy_balancer</tt> enables load balancing, but req
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80313-0" />
 </Rule>
 
 <Rule id="httpd_cache_support">
@@ -394,7 +394,7 @@ If caching is required, it should not be enabled for any limited-access content.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80314-8" />
 </Rule>
 
 <Rule id="httpd_cgi_support">
@@ -418,7 +418,7 @@ CGI scripts to run as a specified user/group instead of as the server's user/gro
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80315-5" />
 </Rule>
 
 <Group id="httpd_optional_components">
@@ -495,7 +495,7 @@ The <tt>httpd</tt> root directory should always have the most restrictive config
 The Web Server's root directory content should be protected from unauthorized access
 by web clients.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80316-3" />
 </Rule>
 
 <Rule id="httpd_restrict_web_directory">
@@ -519,7 +519,7 @@ Ensure that this policy is adhered to by altering the related section of the con
 Access to the web server's directory hierarchy could allow access to unauthorized files
 by web clients. Following symbolic links could also allow such access.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80317-1" />
 </Rule>
 
 <Rule id="httpd_restrict_critical_directories">
@@ -534,7 +534,7 @@ should be used to deny access by default, allowing access only where necessary.
 Directories accessible from a web client should be configured with the least amount of
 access possible in order to avoid unauthorized access to restricted content or server information.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80318-9" />
 </Rule>
 
 <Rule id="httpd_limit_available_methods">
@@ -559,7 +559,7 @@ are limited to the WebDAV protocol.
 Minimizing the number of available methods to the web client reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80319-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_directory_restrictions"> -->
@@ -597,7 +597,7 @@ Install the <tt>mod_ssl</tt> module:
 content is transmitted in plain text which could be passively monitored and accessed by
 unauthorized parties.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80320-5" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_deploy_mod_ssl"> -->
@@ -626,7 +626,7 @@ Install the <tt>security</tt> module:
 enabling the administrator to implement content access policies and filters at the
 application layer.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80321-3" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_deploy_mod_security"> -->
@@ -717,7 +717,7 @@ This is its default setting.
 Access to the web server's log files may allow an unauthorized user or attacker
 to access information about the web server or alter the server's log files.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80322-1" />
 <oval id="dir_perms_var_log_httpd" />
 <ref nist="CM-7" />
 </Rule>
@@ -733,7 +733,7 @@ Access to the web server's configuration files may allow an unauthorized user or
 to access information about the web server or alter the server's configuration files.
 </rationale>
 <oval id="dir_perms_etc_httpd_conf" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80323-9" />
 </Rule>
 
 <Rule id="file_permissions_httpd_server_conf_files">
@@ -748,7 +748,7 @@ to access information about the web server or to alter the server's configuratio
 </rationale>
 <oval id="file_permissions_httpd_server_conf_files" />
 <ref nist="CM-7" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80324-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_restrict_file_dir_access"> -->

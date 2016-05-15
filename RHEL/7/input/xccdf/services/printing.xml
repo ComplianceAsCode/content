@@ -16,11 +16,10 @@ homepage and more detailed documentation are available at http://www.cups.org.
 <ocil><service-disable-check-macro service="cups" /></ocil>
 <rationale>Turn off unneeded services to reduce attack surface.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80282-7" />
 <oval id="service_cups_disabled" />
 <ref nist="CM-7" cis="3.4" />
 </Rule>
-
 
 <Group id="configure_printing">
 <title>Configure the CUPS Service if Necessary</title>
@@ -46,7 +45,7 @@ the CUPS print service, can be configured to listen to these broadcasts and add
 and configure these printers for immediate use. By disabling this browsing
 capability, the machine will no longer generate or receive such broadcasts.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80283-5" />
 <oval id="cups_disable_browsing" />
 <ref nist="CM-7" />
 </Rule>
@@ -70,7 +69,7 @@ broadcasts, or remote users will still be able to see the locally configured
 printers, even if they cannot actually print to them. To limit print serving to
 a particular set of users, use the Policy directive.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80284-3" />
 <oval id="cups_disable_printserver" />
 <ref nist="CM-7" />
 </Rule>

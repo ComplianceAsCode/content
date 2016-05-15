@@ -28,7 +28,7 @@ interpreted as character or block devices. The only legitimate location
 for device files is the <tt>/dev</tt> directory located on the root partition.
 The only exception to this is chroot jails, for which it is not advised
 to set <tt>nodev</tt> on these filesystems.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80145-6" />
 <oval id="mount_option_nodev_nonroot_local_partitions" />
 <ref nist="CM-7" cis="1.1.11" />
 </Rule>
@@ -46,7 +46,7 @@ jails built for system services.
 located on the root partition. An exception to this is chroot jails, and it is
 not advised to set <tt>nodev</tt> on partitions which contain their root
 filesystems.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80146-4" />
 <oval id="mount_option_nodev_removable_partitions" value="var_removable_partition" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
 </Rule>
@@ -68,7 +68,7 @@ To verify that binaries cannot be directly executed from removable media, run th
 The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
 in the output are not removable media.
 </ocil>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80147-2" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" cis="1.1.12" />
 </Rule>
@@ -86,7 +86,7 @@ files into the system via partitions mounted from removeable media.
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Allowing
 users to introduce SUID or SGID binaries from partitions mounted off of
 removable media would allow them to introduce their own highly-privileged programs.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80148-0" />
 <oval id="mount_option_nosuid_removable_partitions" value="var_removable_partition" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" cis="1.1.13" />
 </Rule>
@@ -102,7 +102,7 @@ within temporary directories like <tt>/tmp</tt>.
 </description>
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80149-8" />
 <oval id="mount_option_tmp_nodev" />
 <ref nist="CM-7, MP-2" cis="1.1.2" />
 </Rule>
@@ -116,7 +116,7 @@ from being executed out of <tt>/tmp</tt>.
 <rationale>Allowing users to execute binaries from world-writable directories
 such as <tt>/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80150-6" />
 <oval id="mount_option_tmp_noexec" />
 <ref nist="CM-7, MP-2" cis="1.1.4" />
 </Rule>
@@ -130,7 +130,7 @@ should not be required in these world-writable directories.
 </description>
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80151-4" />
 <oval id="mount_option_tmp_nosuid" />
 <ref nist="CM-7, MP-2" cis="1.1.3" />
 </Rule>
@@ -145,7 +145,7 @@ within temporary directories like <tt>/dev/shm</tt>.
 </description>
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80152-2" />
 <oval id="mount_option_dev_shm_nodev" />
 <ref nist="CM-7, MP-2" cis="1.1.14" />
 </Rule>
@@ -160,7 +160,7 @@ from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
 </description>
 <rationale>Allowing users to execute binaries from world-writable directories
 such as <tt>/dev/shm</tt> can expose the system to potential compromise.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80153-0" />
 <oval id="mount_option_dev_shm_noexec" />
 <ref nist="CM-7, MP-2" cis="1.1.16" />
 </Rule>
@@ -174,7 +174,7 @@ be required in these world-writable directories.
 </description>
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80154-8" />
 <oval id="mount_option_dev_shm_nosuid" />
 <ref nist="CM-7, MP-2" cis="1.1.14" />
 </Rule>
@@ -191,7 +191,7 @@ See the <tt>mount(8)</tt> man page for further explanation of bind mounting.
 <rationale>Having multiple locations for temporary storage is not required. Unless absolutely
 necessary to meet requirements, the storage location <tt>/var/tmp</tt> should be bind mounted to
 <tt>/tmp</tt> and thus share the same protections.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80155-5" />
 <oval id="mount_option_var_tmp_bind" />
 <ref nist="CM-7" cis="1.1.6" />
 </Rule>
