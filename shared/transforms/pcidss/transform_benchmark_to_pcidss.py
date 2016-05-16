@@ -136,6 +136,16 @@ def main():
             # to a special non-PCI-DSS group
             unused_rules.append(rule)
 
+            for ref in rule.findall("./{%s}reference" % (XCCDF_NAMESPACE)):
+                if ref.get("href") == REMOTE_URL:
+                    logging.error(
+                        "Rule '%s' references PCI-DSS '%s' but doesn't match "
+                        "any Group ID in our requirement tree. Perhaps it's "
+                        "referencing something we don't consider applicable on "
+                        "the Operating System level?",
+                        rule.get("id"), ref.text
+                    )
+
     if len(unused_rules) > 0:
         logging.warning(
             "%i rules don't reference PCI-DSS!" % (len(unused_rules))
