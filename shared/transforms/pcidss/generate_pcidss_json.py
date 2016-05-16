@@ -38,6 +38,19 @@ def autocorrect_pci_id(id_):
     return id_
 
 
+def is_applicable_to_os(id_):
+    if id_.startswith("1."):
+        return False
+    elif id_.startswith("9."):
+        return False
+    #elif id_.startswith("11."):
+    #    return False
+    elif id_.startswith("12."):
+        return False
+
+    return True
+
+
 def harvest_ids_descriptions(page, id_map):
     logging.debug("Harvesting page %s", page.get("number", "unknown"))
 
@@ -77,6 +90,12 @@ def harvest_ids_descriptions(page, id_map):
 
         # now we are reasonably sure the text element describes a req ID
         logging.debug("This text describes req of ID '%s'.", id_candidate)
+
+        if not is_applicable_to_os(id_candidate):
+            logging.debug(
+                "Req ID '%s' is not applicable on OS level.", id_candidate
+            )
+            continue
 
         # TODO: Would be great to get the entire description but that's very
         # complex to achieve
