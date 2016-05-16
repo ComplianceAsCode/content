@@ -137,6 +137,9 @@ def main():
                         # replace instance of bash function "populate" with XCCDF
                         # variable substitution
                         substitute_vars(fix)
+                else:
+                    print("\nNotification: Removed the '%s' remediation script from merging as " \
+                          "the platform identifier in the script is missing!" % filename)
 
     sys.stderr.write("\nNotification: Merged %d remediation scripts into XML document.\n" % included_fixes_count)
     tree = etree.ElementTree(fixcontent)
