@@ -25,7 +25,7 @@ from the system's route table possibly revealing portions of the network topolog
 <br />
 The ability to send ICMP redirects is only appropriate for systems acting as routers.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
 <ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.1.2" />
 <tested by="DS" on="20121024"/>
@@ -45,7 +45,7 @@ from the system's route table possibly revealing portions of the network topolog
 <br />
 The ability to send ICMP redirects is only appropriate for systems acting as routers.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
 <ref nist="CM-7,SC-5(1)" disa="1551" cis="4.1.2" />
 <tested by="DS" on="20121024"/>
@@ -63,7 +63,7 @@ The ability to forward packets is only appropriate for routers.
 <rationale>IP forwarding permits the kernel to forward packets from one network
 interface to another. The ability to forward packets between two networks is
 only appropriate for systems acting as routers.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80157-1" />
 <oval id="sysctl_net_ipv4_ip_forward" />
 <ref nist="CM-7, SC-5" disa="366" cis="4.1.1" />
 <tested by="DS" on="20121024"/>
@@ -243,7 +243,7 @@ attack.
 <br />
 This feature of the IPv4 protocol has few legitimate uses. It should be disabled unless 
 absolutely required.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80158-9" />
 <oval id="sysctl_net_ipv4_conf_all_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
 <ref nist="CM-7,SC-5" disa="1503,1551" cis="4.2.2" />
 <tested by="DS" on="20121024"/>
@@ -261,7 +261,7 @@ absolutely required.</rationale>
 <rationale>Accepting "secure" ICMP redirects (from those gateways listed as
 default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80159-7" />
 <oval id="sysctl_net_ipv4_conf_all_secure_redirects" value="sysctl_net_ipv4_conf_all_secure_redirects_value" />
 <ref nist="AC-4,CM-7,SC-5" disa="1503,1551" cis="4.2.3" />
 <tested by="DS" on="20121024"/>
@@ -279,7 +279,7 @@ absolutely required.</rationale>
 as well as spoofed packets, source-routed packets, and redirects could be a
 sign of nefarious network activity. Logging these packets enables this activity
 to be detected.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80160-5" />
 <oval id="sysctl_net_ipv4_conf_all_log_martians" value="sysctl_net_ipv4_conf_all_log_martians_value" />
 <ref nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="4.2.4" />
 <tested by="DS" on="20121024"/>
@@ -297,7 +297,7 @@ to be detected.</rationale>
 as well as spoofed packets, source-routed packets, and redirects could be a
 sign of nefarious network activity. Logging these packets enables this activity
 to be detected.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80161-3" />
 <oval id="sysctl_net_ipv4_conf_default_log_martians" value="sysctl_net_ipv4_conf_default_log_martians_value" />
 <ref nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="4.2.4" />
 </Rule>
@@ -319,7 +319,7 @@ Accepting source-routed packets in the IPv4 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required, such as when
 IPv4 forwarding is enabled and the system is legitimately functioning as
 a router.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80162-1" />
 <oval id="sysctl_net_ipv4_conf_default_accept_source_route" value="sysctl_net_ipv4_conf_default_accept_source_route_value" />
 <ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" ossrg="SRG-OS-000480-GPOS-00227" stigid="040350" cis="4.2.1" />
 <tested by="DS" on="20121024"/>
@@ -340,7 +340,7 @@ attack.
 <br />
 This feature of the IPv4 protocol has few legitimate uses. It should be disabled unless 
 absolutely required.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80163-9" />
 <oval id="sysctl_net_ipv4_conf_default_accept_redirects" value="sysctl_net_ipv4_conf_default_accept_redirects_value" />
 <ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.2" />
 <tested by="DS" on="20121024"/>
@@ -357,7 +357,7 @@ absolutely required.</rationale>
 <rationale>Accepting "secure" ICMP redirects (from those gateways listed as
 default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80164-7" />
 <oval id="sysctl_net_ipv4_conf_default_secure_redirects" value="sysctl_net_ipv4_conf_default_secure_redirects_value" />
 <ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.3" />
 <tested by="DS" on="20121024"/>
@@ -377,7 +377,7 @@ and provides a vector for amplification attacks.
 Ignoring ICMP echo requests (pings) sent to broadcast or multicast
 addresses makes the system slightly more difficult to enumerate on the network.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80165-4" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
 <ref nist="AC-4,CM-7,SC-5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040380" cis="4.2.5" />
 <tested by="DS" on="20121024"/>
@@ -393,7 +393,7 @@ addresses makes the system slightly more difficult to enumerate on the network.
 </ocil>
 <rationale>Ignoring bogus ICMP error responses reduces
 log size, although some activity would not be logged.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80166-2" />
 <oval id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" value="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" />
 <ref nist="CM-7,SC-5" cis="4.2.6" />
 <tested by="DS" on="20121024"/>
@@ -433,7 +433,7 @@ that should not have been able to be received on the interface they were
 received on. It should not be used on systems which are routers for
 complicated networks, but is helpful for end hosts and routers serving small
 networks.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80167-0" />
 <oval id="sysctl_net_ipv4_conf_all_rp_filter" value="sysctl_net_ipv4_conf_all_rp_filter_value" />
 <ref nist="AC-4,SC-5,SC-7" disa="1551" cis="4.2.7" />
 <tested by="DS" on="20121024"/>
@@ -452,7 +452,7 @@ that should not have been able to be received on the interface they were
 received on. It should not be used on systems which are routers for
 complicated networks, but is helpful for end hosts and routers serving small
 networks.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80168-8" />
 <oval id="sysctl_net_ipv4_conf_default_rp_filter" value="sysctl_net_ipv4_conf_default_rp_filter_value" />
 <ref nist="AC-4,SC-5,SC-7" cis="4.2.7" />
 <tested by="DS" on="20121024"/>

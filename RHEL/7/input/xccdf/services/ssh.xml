@@ -35,7 +35,7 @@ Without protection of the transmitted information, confidentiality, and
 integrity may be compromised because unprotected communications can be
 intercepted and either read or altered.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80215-7" />
 <oval id="package_openssh-server_installed" />
 <ref nist="SC-8" disa="2418,2420,2421,2422"
 ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
@@ -55,7 +55,7 @@ Without protection of the transmitted information, confidentiality, and
 integrity may be compromised because unprotected communications can be
 intercepted and either read or altered.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80216-5" />
 <ref nist="SC-8" disa="2418,2420,2421,2422"
 ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
 stigid="TBD" />
@@ -70,7 +70,7 @@ However, if it can be disabled, do so.
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80217-3" />
 <oval id="service_sshd_disabled" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -115,7 +115,7 @@ firewall configuration.
 If inbound SSH connections are not expected, disallowing access to the SSH port will
 avoid possible exploitation of the port by an attacker.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80218-1" />
 <oval id="firewalld_sshd_disabled" />
 </Rule>
 
@@ -166,7 +166,7 @@ Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
 Specifying which accounts are allowed SSH access into the system reduces the
 possibility of unauthorized access to the system.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80219-9" />
 <!-- <oval id="sshd_limit_user_access" /> -->
 <ref nist="AC-3" />
 </Rule>
@@ -189,7 +189,7 @@ GSSAPI authentication is used to provide additional authentication mechanisms to
 applications. Allowing GSSAPI authentication through SSH exposes the system's
 GSSAPI to remote hosts, increasing the attack surface of the system.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80220-7" />
 <oval id="sshd_disable_gssapi_auth" />
 <ref nist="CM-6(c)" disa="368,318,1812,1813,1814"
 ossrg="SRG-OS-000364-GPOS-00151" stigid="040660"/>
@@ -214,7 +214,7 @@ is enabled through SSH, the SSH daemon provides a means of access to the
 system's Kerberos implementation. Vulnerabilities in the system's Kerberos
 implementations may be subject to exploitation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80221-5" />
 <oval id="sshd_disable_kerb_auth" />
 <ref nist="CM-6(c)" disa="368,318,1812,1813,1814"
 ossrg="SRG-OS-000364-GPOS-00151" stigid="040670"/>
@@ -238,7 +238,7 @@ If configured properly, output should be <pre>yes</pre>
 If other users have access to modify user-specific SSH configuration files, they
 may be able to log into the system as another user.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80222-3" />
 <oval id="sshd_enable_strictmodes" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040680"/>
 </Rule>
@@ -261,7 +261,7 @@ SSH daemon privilege separation causes the SSH process to drop root privileges
 when not needed which would decrease the impact of software vulnerabilities in
 the unprivileged section.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80223-1" />
 <oval id="sshd_use_priv_separation" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040690"/>
 </Rule>
@@ -287,7 +287,7 @@ If compression is allowed in an SSH connection prior to authentication,
 vulnerabilities in the compression software could result in compromise of the
 system from an unauthenticated connection, potentially wih root privileges.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80224-9" />
 <oval id="sshd_disable_compression" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040700"/>
 </Rule>
@@ -309,7 +309,7 @@ If configured properly, output should be <pre>yes</pre>
 Providing users feedback on when account accesses last occurred facilitates user
 recognition and reporting of unauthorized account use.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80225-6" />
 <oval id="sshd_print_last_log" />
 <ref nist="AC-9" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040300"/>
 </Rule>
@@ -476,7 +476,7 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 Open X displays allow an attacker to capture keystrokes and to execute commands
 remotely.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80226-4" />
 <oval id="enable_x11_forwarding" />
 <ref nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="040540" />
@@ -657,7 +657,7 @@ Run the following command:
 <rationale>
 Restricting SSH access to only trusted network segments reduces exposure of the SSH
 server to attacks from unauthorized networks.</rationale>
-<!-- <ident cce="RHEL7-CCE-TBD" /> -->
+<!-- <ident cce="80227-2" /> -->
 <!-- <oval id="sshd_strengthen_firewall" /> -->
 </Group>
 

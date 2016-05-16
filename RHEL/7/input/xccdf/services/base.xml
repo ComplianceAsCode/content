@@ -38,7 +38,7 @@ programs.
 such as laptops or desktops. For other systems, such as servers, it may permit
 accidental or trivially achievable denial of service situations and disabling
 it is appropriate.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80252-0" />
 <oval id="service_acpid_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -55,7 +55,7 @@ solution to aid in the management of certificates.
 <rationale>The services provided by certmonger may be essential for systems
 fulfilling some roles a PKI infrastructure, but its functionality is not necessary
 for many other use cases.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80253-8" />
 <oval id="service_certmonger_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -71,7 +71,7 @@ a system. The <tt>cgconfig</tt> daemon starts at boot and establishes the predef
 <rationale>Unless control groups are used to manage system resources, running the cgconfig
 service is not necessary.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80254-6" />
 <oval id="service_cgconfig_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -86,7 +86,7 @@ parameters set in the <tt>/etc/cgrules.conf</tt> configuration file.
 <rationale>Unless control groups are used to manage system resources, running the cgred service
 service is not necessary.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80255-3" />
 <oval id="service_cgred_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -103,7 +103,7 @@ provides benefit. Traditionally this has included laptops (to enhance battery li
 but may also apply to server or desktop environments where conserving power is
 highly desirable or necessary.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80256-1" />
 <oval id="service_cpupower_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -118,7 +118,7 @@ multiple processors.
 <ocil><service-disable-check-macro service="irqbalance" /></ocil>
 <rationale>In an environment with multiple processors (now common), the irqbalance service
 provides potential speedups for handling interrupt requests.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80257-9" />
 <oval id="service_irqbalance_enabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -137,7 +137,7 @@ Kernel core dumps consume a considerable amount of disk space and may result in 
 service by exhausting the available space on the target file system partition.
 Unless the system is used for kernel development or testing, there
 is little need to run the kdump service.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80258-7" />
 <oval id="service_kdump_disabled" />
 <ref nist="AC-17(8),CM-7,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021230" />
 </Rule>
@@ -151,7 +151,7 @@ RAID setups do not use this service.
 <ocil><service-disable-check-macro service="mdmonitor" /></ocil>
 <rationale>If software RAID monitoring is not required,
 there is no need to run this service.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80259-5" />
 <oval id="service_mdmonitor_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -171,7 +171,7 @@ it could be a target for attack. However, disabling D-Bus is likely to be
 impractical for any system which needs to provide
 a graphical login session.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80260-3" />
 <oval id="service_messagebus_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -188,7 +188,7 @@ serial consoles are impractical.
 <rationale>The <tt>netconsole</tt> service is not necessary unless there is a need to debug
 kernel panics, which is not common.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80261-1" />
 <oval id="service_netconsole_disabled" />
 <ref nist="AC-17(8),CM-7" disa="381" />
 </Rule>
@@ -207,7 +207,7 @@ system time.
 are rebooted frequently enough that clock drift does not cause problems between
 reboots. In any event, the functionality of the ntpdate service is now
 available in the ntpd program and should be considered deprecated.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80262-9" />
 <oval id="service_ntpdate_disabled" />
 <ref nist="AC-17(8),CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
@@ -226,7 +226,7 @@ applications. Communication with <tt>oddjobd</tt> through the system message bus
 some environments, and can be disabled if it is not needed. Execution of
 tasks by privileged programs, on behalf of unprivileged ones, has traditionally
 been a source of privilege escalation security issues.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80263-7" />
 <oval id="service_oddjobd_disabled" />
 <ref nist="CM-7" disa="381" />
 <tested by="DS" on="20121024"/>
@@ -243,7 +243,7 @@ required for other services.
 <rationale>The <tt>portreserve</tt> service provides helpful functionality by
 preventing conflicting usage of ports in the reserved port range, but it can be
 disabled if not needed.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80264-5" />
 <oval id="service_portreserve_disabled" />
 <ref nist="AC-17(8),CM-7" />
 <tested by="DS" on="20121024"/>
@@ -261,7 +261,7 @@ user activity, such as commands issued by users of the system.
 view into some user activities. However, it should be noted that the auditing
 system and its audit records provide more authoritative and comprehensive
 records.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80265-2" />
 <oval id="service_psacct_enabled" />
 <ref nist="AU-12,CM-7" />
 <tested by="DS" on="20121024"/>
@@ -281,7 +281,7 @@ package selection is selected during installation.  The qpidd service listens
 for network connections, which increases the attack surface of the system.  If 
 the system is not intended to receive AMQP traffic, then the <tt>qpidd</tt> 
 service is not needed and should be disabled or removed.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80266-0" />
 <oval id="service_qpidd_disabled" />
 <ref nist="AC-17(8),CM-7" disa="382" />
 </Rule>
@@ -301,7 +301,7 @@ last accessed.
 remain enabled. However, if disk quotas are not used or user notification of
 disk quota violation is not desired then there is no need to run this
 service.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80267-8" />
 <oval id="service_quota_nld_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -320,7 +320,7 @@ updated with a corresponding default route. By default this daemon is disabled.
 information configured statically by a system administrator. Workstations or
 some special-purpose systems often use DHCP (instead of IRDP) to retrieve
 dynamic network configuration information.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80268-6" />
 <oval id="service_rdisc_disabled" />
 <ref nist="AC-17(8),AC-4,CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
@@ -339,7 +339,7 @@ RHN server or satellite and managed as such.
 system security, management by a system outside the enterprise enclave is not
 desirable for some environments.  However, if the system is being managed by RHN or
  RHN Satellite Server the <tt>rhnsd</tt> daemon can remain on. </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80269-4" />
 <oval id="service_rhnsd_disabled" />
 <ref nist="AC-17(8),CM-7" disa="382" cis="1.2.4" />
 <tested by="DS" on="20121024"/>
@@ -358,7 +358,7 @@ additional control over which of their systems are entitled to particular
 subscriptions. However, for systems that are managed locally or which are not
 expected to require remote changes to their subscription status, it is
 unnecessary and can be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80270-2" />
 <oval id="service_rhsmcertd_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -378,7 +378,7 @@ based authentication.
 performing authentication in some directory environments, such as those which
 use Kerberos and LDAP. For others, however, in which only local files may be
 consulted, it is not necessary and should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80271-0" />
 <oval id="service_saslauthd_disabled" />
 <ref nist="AC-17(8),CM-7" />
 <tested by="DS" on="20121024"/>
@@ -396,7 +396,7 @@ relay an appropriate warning.
 service due to failing hardware. Nevertheless, if it is not needed or the
 system's drives are not SMART-capable (such as solid state drives), it can be
 disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80272-8" />
 <oval id="service_smartd_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -415,7 +415,7 @@ at boot time.
 boot to reset the statistics, which can be retrieved using programs such as
 <tt>sar</tt> and <tt>sadc</tt>. These may provide useful insight into system
 operation, but unless used this service can be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80273-6" />
 <oval id="service_sysstat_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>

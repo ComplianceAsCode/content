@@ -26,7 +26,7 @@ nameservers.
 All network services involve some risk of compromise due to
 implementation flaws and should be disabled if possible.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80325-4" />
 <oval id="service_named_disabled" />
 <ref nist="CM-7" disa="366"/>
 </Rule>
@@ -42,7 +42,7 @@ implementation flaws and should be disabled if possible.
 If there is no need to make DNS server software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80326-2" />
 <oval id="package_bind_removed" />
 <ref nist="CM-7" disa="366" cis="3.9" />
 </Rule>
@@ -218,7 +218,7 @@ or if you have only one nameserver, it may be possible to use an external
 configuration management mechanism to distribute zone updates. In that case, it
 is not necessary to allow zone transfers within BIND itself, so they should be
 disabled to avoid the potential for abuse.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80327-0" />
 </Rule>
 
 <Rule id="dns_server_authenticate_zone_transfers">
@@ -274,7 +274,7 @@ obtained and inserted into named.conf on the primary and secondary servers, the
 key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 .private are no longer needed, and may safely be deleted.</warning>
 <ref nist="CM-7" />
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80328-8" />
 </Rule>
 
 <Rule id="dns_server_disable_dynamic_updates">
@@ -294,7 +294,7 @@ updates must be allowed, IP-based ACLs are insufficient protection, since they
 are easily spoofed. Instead, use TSIG keys (see the previous section for an
 example), and consider using the update-policy directive to restrict changes to
 only the precise type of change needed.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80329-6" />
 </Rule>
 
 </Group> <!--<Group id="dns_server_protection">-->
