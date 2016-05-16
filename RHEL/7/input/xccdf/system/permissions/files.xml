@@ -368,7 +368,7 @@ or those designed to be temporary file repositories.  The setting is normally re
 used by the system, by users for temporary file storage (such as <tt>/tmp</tt>), and for directories 
 requiring global read/write access.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80130-8" />
 <oval id="dir_perms_world_writable_sticky_bits" />
 <ref nist="AC-6" cis="1.1.17" />
 <tested by="swells" on="20120929"/>
@@ -392,7 +392,7 @@ user on the system. In almost all circumstances, files can be
 configured using a combination of user and group permissions to
 support whatever legitimate access is needed without the risk
 caused by world-writable files.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80131-6" />
 <ref nist="AC-6"/>
 <oval id="file_permissions_unauthorized_world_writable" />
 </Rule>
@@ -413,7 +413,7 @@ To find world-writable files, run the following command:
 the owner of the file. SGID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80132-4" />
 <oval id="file_permissions_unauthorized_sgid" />
 <ref nist="AC-6(1)"/>
 </Rule>
@@ -434,7 +434,7 @@ To find world-writable files, run the following command:
 the owner of the file. SUID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80133-2" />
 <oval id="file_permissions_unauthorized_suid" />
 <ref nist="AC-6(1)"/>
 </Rule>
@@ -461,7 +461,7 @@ to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80134-0" />
 <oval id="no_files_unowned_by_user" />
 <ref nist="AC-6,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020360"/>
 </Rule>
@@ -492,7 +492,7 @@ to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80135-7" />
 <oval id="file_permissions_ungroupowned" />
 <ref nist="AC-6,IA-2" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020370" />
 </Rule>
@@ -518,7 +518,7 @@ undesirable because it allows the owner of that directory to remove
 or replace any files that may be placed in the directory by other
 users.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80136-5" />
 <oval id="dir_perms_world_writable_system_owned" />
 <ref nist="AC-6"/>
 <tested by="swells" on="20120929"/>

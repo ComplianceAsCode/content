@@ -33,7 +33,7 @@ Unmanaged or unintentionally activated DHCP servers may provide faulty informati
 to clients, interfering with the operation of a legitimate site
 DHCP server if there is one.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80330-4" />
 <oval id="service_dhcpd_disabled" />
 <ref nist="CM-7" disa="366"/>
 <tested by="DS" on="20121024"/>
@@ -50,7 +50,7 @@ the dhcp package can be uninstalled.
 Removing the DHCP server ensures that it cannot be easily or
 accidentally reactivated and disrupt network operation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80331-2" />
 <oval id="package_dhcp_removed" />
 <ref nist="CM-7" disa="366" cis="3.5" />
 <tested by="DS" on="20121024"/>
@@ -88,7 +88,7 @@ the DHCP server will attempt to act as a Dynamic DNS client. As long as the DNS
 server itself is correctly configured to reject DDNS attempts, an incorrect
 ddns-update-style setting on the client is harmless (but should be fixed as a
 best practice).</warning>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80332-0" />
 <!--<oval id="dhcp_server_disable_ddns" /> -->
 <ref nist="CM-7" />
 </Rule>
@@ -103,7 +103,7 @@ that it does not consider the lease offered by the server to be valid. By
 issuing many DHCPDECLINE messages, a malicious client can exhaust the DHCP
 server's pool of IP addresses, causing the DHCP server to forget old address
 allocations.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80333-8" />
 <!--<oval id="dhcp_server_deny_decline" /> -->
 <ref nist="CM-7" />
 </Rule>
@@ -118,7 +118,7 @@ support for the bootp protocol by adding or correcting the global option:
 for this simpler protocol is not needed, it should be disabled to remove attack
 vectors against the DHCP server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80334-6" />
 <!--<oval id="dhcp_server_deny_bootp" /> -->
 <ref nist="CM-7" />
 </Rule>
@@ -147,13 +147,7 @@ to request much of the above information from the DHCP server. In particular,
 domain-name, domain-name-servers, and routers are configured via DHCP.  These
 settings are typically necessary for proper network functionality, but are also
 usually static across machines at a given site.</warning>
-<!--<ident cce="RHEL7-CCE-TBD" />
-<ident cce="RHEL7-CCE-TBD" />
-<ident cce="RHEL7-CCE-TBD" />
-<ident cce="RHEL7-CCE-TBD" />
-<ident cce="RHEL7-CCE-TBD" />
-<ident cce="RHEL7-CCE-TBD" />
-<ident cce="RHEL7-CCE-TBD" /> -->
+<!-- <ident cce="80335-3" /> -->
 <!--<oval id="dhcp_server_minimize_served_info" /> -->
 <ref nist="CM-7" />
 </Group>
@@ -168,7 +162,7 @@ reported by the dhcpd process.</description>
 <rationale>By default, dhcpd logs notices to the daemon facility. Sending all
 daemon messages to a dedicated log file is part of the syslog configuration
 outlined in the Logging and Auditing section</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80336-1" />
 <!--<oval id="dhcp_server_configure_logging" /> -->
 <ref nist="AU-12" />
 </Rule>
@@ -217,7 +211,7 @@ DHCP relies on trusting the local network. If the local network is not trusted,
 then it should not be used.  However, the automatic configuration provided by
 DHCP is commonly used and the alternative, manual configuration, presents an
 unacceptable burden in many circumstances.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80337-9" />
 <oval id="sysconfig_networking_bootproto_ifcfg" />
 <ref nist="CM-7" disa="366"/>
 <tested by="DS" on="20121024"/>
@@ -275,7 +269,6 @@ protocol is not in use. It is necessary to supersede settings for unused
 services so that they cannot be set by a hostile DHCP server. If an option is
 set to an empty string, dhclient will typically not attempt to configure the
 service.</warning>
-<!--<ident cce="RHEL7-CCE-TBD" /> -->
 <!--<oval id="dhcp_client_restrict_options" /> -->
 <!--<ref nist="CM-7" /> -->
 </Group>
