@@ -17,6 +17,7 @@
 <xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf</xsl:variable>
 <xsl:variable name="anssiuri">http://www.ssi.gouv.fr/administration/bonnes-pratiques/</xsl:variable>
 <xsl:variable name="ssg-contributors-uri">https://github.com/OpenSCAP/scap-security-guide/wiki/Contributors</xsl:variable>
+<xsl:variable name="ssg-project-name">SCAP Security Guide Project</xsl:variable>
 <xsl:variable name="ssg-benchmark-latest-uri">https://github.com/OpenSCAP/scap-security-guide/releases/latest</xsl:variable>
 
 <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
