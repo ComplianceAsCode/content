@@ -36,6 +36,23 @@
     </xsl:attribute>
   </xsl:template>
 
+  <!-- Expand <metadata> element with required information about benchmark's
+       publisher, creator, contributor(s), and source -->
+  <xsl:template match="Benchmark/metadata">
+    <xccdf:metadata>
+      <!-- Insert benchmark publisher -->
+      <dc:publisher><xsl:value-of select="$ssg-project-name"/></dc:publisher>
+      <!-- Insert benchmark creator -->
+      <dc:creator><xsl:value-of select="$ssg-project-name"/></dc:creator>
+      <!-- Insert list of individual contributors for benchmark -->
+      <xsl:for-each select="document('../output/contributors.xml')/text/contributor">
+        <dc:contributor><xsl:value-of select="current()" /></dc:contributor>
+      </xsl:for-each>
+      <!-- Insert benchmark source -->
+      <dc:source><xsl:value-of select="$ssg-benchmark-latest-uri"/></dc:source>
+    </xccdf:metadata>
+  </xsl:template>
+
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
   <xsl:template match="Rule">
     <Rule selected="false">

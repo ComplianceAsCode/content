@@ -52,8 +52,17 @@ $(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
 	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
 	xmllint --format --output $@ $@
 
+# Benchmark metadata prerequisite - derive $(OUT)/contributors.xml from the content of Contributors.md
+$(OUT)/contributors.xml:
+	# Create $(OUT)/contributors.xml file:
+	# * holding <text> like root element and
+	# * names of the individual SSG contributor(s) within <contributor> element(s)
+	echo "<text>" > $@
+	sed -n -e 's/\* \(.*\)/<contributor>\1<\/contributor>/p' $(SHARED)/../Contributors.md >> $@
+	echo "</text>" >> $@
+
 # Common build targets - convert shorthand format to an XCCDF stub
-$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
+$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(OUT)/contributors.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $@ $(TRANS)/shorthand2xccdf.xslt $<
 
 # Common build targets - improve the XCCDF stub - first resolve
