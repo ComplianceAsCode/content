@@ -413,6 +413,32 @@
   will be returned.
   </xsl:template>
 
+  <xsl:template match="sebool-macro">
+    <xsl:choose>
+      <xsl:when test="@enable = 'false'">
+        To disable the '<xsl:value-of select="@sebool"/>' SELinux boolean, run the following command:
+        <xhtml:code>$ sudo setsebool -P <xsl:value-of select="@sebool"/> off</xhtml:code>
+      </xsl:when>
+      <xsl:otherwise>
+        To enable the '<xsl:value-of select="@sebool"/>' SELinux boolean, run the following command:
+        <xhtml:code>$ sudo setsebool -P <xsl:value-of select="@sebool"/> on</xhtml:code>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="sebool-check-macro">
+    <xsl:choose>
+      <xsl:when test="@enable = 'false'">
+        Run the following command to determine if the '<xsl:value-of select="@sebool"/>' SELinux boolean is disabled:
+        <xhtml:code>$ getsebool <xsl:value-of select="@sebool"/></xhtml:code>
+      </xsl:when>
+      <xsl:otherwise>
+        Run the following command to determine if the '<xsl:value-of select="@sebool"/>' SELinux boolean is enabled:
+        <xhtml:code>$ getsebool <xsl:value-of select="@sebool"/></xhtml:code>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="service-disable-macro">
     The <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service can be disabled with the following command:
     <xhtml:pre>$ sudo systemctl disable <xsl:value-of select="@service"/>.service</xhtml:pre>
