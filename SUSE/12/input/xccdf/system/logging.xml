@@ -8,7 +8,7 @@ due to its long history, syslog is a de facto standard which is supported by
 almost all Unix applications.
 <br/>
 <br/>
-In Red Hat Enterprise Linux 7, rsyslog has replaced ksyslogd as the
+In SUSE Enterprise 12, rsyslog has replaced ksyslogd as the
 syslog daemon of choice, and it includes some additional security features
 such as reliable, connection-oriented (i.e. TCP) transmission of logs, the
 option to log to database formats, and the encryption of log data en route to
@@ -38,7 +38,7 @@ system logging services.
 
 <Rule id="service_rsyslog_enabled" severity="medium">
 <title>Enable rsyslog Service</title>
-<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on Red Hat Enterprise Linux 7.
+<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on SUSE Enterprise 12.
 <service-enable-macro service="rsyslog" />
 </description>
 <ocil>
@@ -62,7 +62,7 @@ These are controlled by lines called <i>rules</i>, which consist of a
 These rules are often customized depending on the role of the system, the
 requirements of the environment, and whatever may enable
 the administrator to most effectively make use of log data.
-The default rules in Red Hat Enterprise Linux 7 are:
+The default rules in SUSE Enterprise 12 are:
 <pre>*.info;mail.none;authpriv.none;cron.none                /var/log/messages
 authpriv.*                                              /var/log/secure
 mail.*                                                  -/var/log/maillog

@@ -2,7 +2,7 @@
 <title>LDAP</title>
 <description>LDAP is a popular directory service, that is, a
 standardized way of looking up information from a central database.
-Red Hat Enterprise Linux 7 includes software that enables a system to act as both
+SUSE Enterprise 12 includes software that enables a system to act as both
 an LDAP client and server.
 </description>
 
@@ -10,13 +10,13 @@ an LDAP client and server.
 <title>Configure OpenLDAP Clients</title>
 <description>This section provides information on which security settings are
 important to configure in OpenLDAP clients by manually editing the appropriate
-configuration files.  Red Hat Enterprise Linux 7 provides an automated configuration tool called
+configuration files.  SUSE Enterprise 12 provides an automated configuration tool called
 authconfig and a graphical wrapper for authconfig called
 <tt>system-config-authentication</tt>. However, these tools do not provide as
 much control over configuration as manual editing of configuration files. The
 authconfig tools do not allow you to specify locations of SSL certificate
 files, which is useful when trying to use SSL cleanly across several protocols.
-Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 7 is available at
+Installation and configuration of OpenLDAP on SUSE Enterprise 12 is available at
 https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Directory_Servers.html.
 </description>
 <warning category="general">Before configuring any system to be an
@@ -73,7 +73,7 @@ site CA.</rationale>
 <Group id="openldap_server">
 <title>Configure OpenLDAP Server</title>
 <description>This section details some security-relevant settings
-for an OpenLDAP server.  Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 7 is available at:
+for an OpenLDAP server.  Installation and configuration of OpenLDAP on SUSE Enterprise 12 is available at:
 https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Directory_Servers.html.
 </description>
 
@@ -82,7 +82,7 @@ https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Admini
 <description>The <tt>openldap-servers</tt> package should be removed if not in use.
 Is this machine the OpenLDAP server? If not, remove the package.
 <pre>$ sudo yum erase openldap-servers</pre>
-The openldap-servers RPM is not installed by default on Red Hat Enterprise Linux 7
+The openldap-servers RPM is not installed by default on SUSE Enterprise 12
 machines. It is needed only by the OpenLDAP server, not by the
 clients which use LDAP for authentication. If the system is not
 intended for use as an LDAP Server it should be removed.

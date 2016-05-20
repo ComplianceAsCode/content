@@ -13,7 +13,7 @@
     <metadata>
       <title>Service firewalld Enabled</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_suse</platform>
       </affected>
       <description>The firewalld service should be enabled if possible.</description>
       <reference source="JL" ref_id="RHEL7_20150605" ref_url="test_attestation" />
@@ -36,7 +36,7 @@
   </linux:systemdunitdependency_object>
 
   <linux:systemdunitdependency_state id="state_systemd_firewalld_on" comment="firewalld listed at least once in the dependencies" version="1">
-    <linux:dependency entity_check="at least one">firewalld.service</linux:dependency>
+    <linux:dependency entity_check="at least one">SuSEfirewall2.service</linux:dependency>
   </linux:systemdunitdependency_state>
 
 </def-group>

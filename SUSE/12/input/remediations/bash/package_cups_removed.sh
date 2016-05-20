@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 # CAUTION: This remediation script will remove cups
 #	   from the system, and may remove any packages
 #	   that depend on cups. Execute this

@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 
 # Correct the form of default kernel command line in /etc/default/grub
 grep -q ^GRUB_CMDLINE_LINUX=\".*audit=0.*\" /etc/default/grub && \

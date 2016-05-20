@@ -3,7 +3,7 @@ all: tables guide content dist
 SHARED = ../../shared
 include $(SHARED)/product-make.include
 
-PROD = rhel7
+PROD = suse12
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
@@ -32,8 +32,8 @@ endif
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
-#	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
-#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
+#	xsltproc -o $(XCCDF_OUTPUT_DIR)/sles12-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-sles12desktop-xccdf.xml
+#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/sles12-shorthand.xml
 
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
@@ -59,11 +59,11 @@ table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
-	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
-	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
-#	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
+	xsltproc -o $(OUT)/table-sles12-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
+	xsltproc -o $(OUT)/table-sles12-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+#	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-sles12-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
-#		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+#		$(REFS)/disa-stig-sles12-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
 	xsltproc -stringparam profile "stig-$(PROD)-server" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt $<
@@ -103,12 +103,6 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
 	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-#	Make CentOS variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-centos7-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-centos7-ds.xml
-#	Make Scientific Linux variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl7-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl7-ds.xml
 
 content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
@@ -119,13 +113,9 @@ content-stig: table-stigs guide checks
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos7-ds.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl7-ds.xml
 else
 	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos7-xccdf.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl7-xccdf.xml
 endif
 
 submission-stig-check: table-stigs
@@ -141,10 +131,6 @@ validate-xml:
 	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
-	oscap xccdf validate-xml $(OUT)/$(ID)-centos7-xccdf.xml
-	oscap ds sds-validate $(OUT)/$(ID)-centos7-ds.xml
-	oscap xccdf validate-xml $(OUT)/$(ID)-sl7-xccdf.xml
-	oscap ds sds-validate $(OUT)/$(ID)-sl7-ds.xml
 
 validate: validate-xml
 ifeq ($(OVAL_5_11), 0)
@@ -182,10 +168,6 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
-	cp $(OUT)/$(ID)-centos7-xccdf.xml $(DIST)/content
-	cp $(OUT)/$(ID)-centos7-ds.xml $(DIST)/content
-	cp $(OUT)/$(ID)-sl7-xccdf.xml $(DIST)/content
-	cp $(OUT)/$(ID)-sl7-ds.xml $(DIST)/content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv

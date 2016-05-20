@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 . /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_max_concurrent_login_sessions
 

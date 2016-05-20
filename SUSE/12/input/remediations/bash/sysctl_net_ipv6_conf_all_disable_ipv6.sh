@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 #
 # Set runtime for net.ipv6.conf.all.disable_ipv6
 #

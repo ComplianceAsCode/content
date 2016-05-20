@@ -22,6 +22,7 @@ JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 FUSE = 'JBoss Fuse'
+SUSE = 'SUSE'
 
 
 def _header(schema_version):
@@ -92,6 +93,8 @@ def map_product(version):
         product_name = DEBIAN
     if re.findall('fuse', version):
         product_name = FUSE
+    if re.findall('suse', version):
+        product_name = SUSE
     return product_name
 
 def check_is_applicable_for_product(oval_check_def, product):
@@ -102,8 +105,8 @@ def check_is_applicable_for_product(oval_check_def, product):
     product_version = None
     match = re.search(r'\d+$', product)
     if match is not None:
-        product_version = product[-1:]
-        product = product[:-1]
+        product_version = product[match.start():]
+        product = product[:match.start()]
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',
@@ -111,9 +114,13 @@ def check_is_applicable_for_product(oval_check_def, product):
 
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
+    is_multi_platform_all = False
     for mp in multi_platforms:
-        if mp in oval_check_def and product in ['rhel', 'fedora', 'rhel-osp', 'debian']:
-            return True
+        if mp in oval_check_def and product in ['rhel', 'fedora', 'rhel-osp', 'debian', 'suse']:
+            is_multi_platform_all = True
+            break
+    if is_multi_platform_all:
+        return True
 
     # Current SSG checks aren't unified which element of '<platform>'
     # and '<product>' to use as OVAL AffectedType metadata element,

@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 grep -qi disable /etc/xinetd.d/rsh && \
   sed -i "s/disable.*/disable         = yes/gI" /etc/xinetd.d/rsh
 

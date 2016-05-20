@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 # CAUTION: This remediation script will remove portreserve
 #	   from the system, and may remove any packages
 #	   that depend on portreserve. Execute this

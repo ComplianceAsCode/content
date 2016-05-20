@@ -121,13 +121,13 @@ on 32-bit systems and controlled through <tt>sysctl</tt> variables
 
 <Rule id="sysctl_kernel_exec_shield" severity="medium">
 <title>Enable ExecShield</title>
-<description>By default on Red Hat Enterprise Linux 7 64-bit systems, ExecShield
+<description>By default on SUSE Enterprise 12 64-bit systems, ExecShield
 is enabled and can only be disabled if the hardware does not support ExecShield
-or is disabled in <tt>/etc/default/grub</tt>. For Red Hat Enterprise Linux 7 
+or is disabled in <tt>/etc/default/grub</tt>. For SUSE Enterprise 12 
 32-bit systems, <tt>sysctl</tt> can be used to enable ExecShield.</description>
 <ocil clause="ExecShield is not supported by the hardware, is not enabled, or
 has been disabled by the kernel configuration.">
-To verify ExecShield is enabled on 64-bit Red Hat Enterprise Linux 7 systems,
+To verify ExecShield is enabled on 64-bit SUSE Enterprise 12 systems,
 run the following command:
 <pre>$ dmesg | grep '[NX|DX]*protection'</pre>
 The output should not contain <tt>'disabled by kernel command line option'</tt>.
@@ -135,7 +135,7 @@ To verify that ExecShield has not been disabled in the kernel configuration,
 run the following command:
 <pre>$ sudo grep noexec /boot/grub2/grub.cfg</pre>
 The output should not return <tt>noexec=off</tt>.
-For 32-bit Red Hat Enterprise Linux 7 systems, run the following command:
+For 32-bit SUSE Enterprise 12 systems, run the following command:
 <pre>$ sysctl kernel.exec-shield</pre>
 The output should be:
 <pre><sysctl-desc-macro sysctl="kernel.exec-shield" value="1" /></pre>

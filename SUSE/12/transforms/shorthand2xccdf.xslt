@@ -16,7 +16,7 @@
 
 <xsl:param name="ssg_version">unknown</xsl:param>
 
-<xsl:variable name="ovalfile">unlinked-rhel7-oval.xml</xsl:variable>
+<xsl:variable name="ovalfile">unlinked-suse12-oval.xml</xsl:variable>
 <xsl:variable name="defaultseverity" select="'low'" />
 
 <!-- put elements created in this stylesheet into the xccdf namespace,

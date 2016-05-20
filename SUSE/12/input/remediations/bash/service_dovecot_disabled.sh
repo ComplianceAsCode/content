@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 #
 # Disable dovecot.service for all systemd targets
 #

@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 
 # Define constants to be reused below
 ORG_GNOME_DESKTOP_SCREENSAVER="org/gnome/desktop/screensaver"

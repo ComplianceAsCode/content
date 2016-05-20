@@ -12,7 +12,7 @@
 
   <xsl:template match="xccdf:Benchmark">
     <xsl:copy>
-    <title>Pre-release Final STIG for Red Hat Enterprise Linux 7</title>
+    <title>Pre-release Final STIG for SUSE Enterprise 12</title>
 
   	<xsl:variable name="rules" select="//xccdf:Rule"/>
 

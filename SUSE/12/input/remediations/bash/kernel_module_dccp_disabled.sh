@@ -1,2 +1,2 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 echo "install dccp /bin/true" > /etc/modprobe.d/dccp.conf

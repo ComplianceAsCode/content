@@ -18,10 +18,10 @@
 		<xsl:apply-templates select="document('profiles/C2S.xml')" />
 		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
 		<xsl:apply-templates select="document('profiles/common.xml')" />
-		<xsl:apply-templates select="document('profiles/stig-rhel7-workstation-upstream.xml')" />
-		<xsl:apply-templates select="document('profiles/stig-rhel7-server-gui-upstream.xml')" />
-		<xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
-		<xsl:apply-templates select="document('profiles/ospp-rhel7-server.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-suse-workstation-upstream.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-suse-server-gui-upstream.xml')" />
+		<xsl:apply-templates select="document('profiles/stig-suse-server-upstream.xml')" />
+		<xsl:apply-templates select="document('profiles/ospp-suse-server.xml')" />
 		<xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
 
        <Value id="conditional_clause" type="string" operator="equals">

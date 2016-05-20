@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 #
 # Disable nfs-secure.service (rpcgssd) for all systemd targets
 #

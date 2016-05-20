@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 #
 # Disable nfs-idmap.service (rpcidmapd) for all systemd targets
 #

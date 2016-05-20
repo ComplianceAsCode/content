@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = SUSE Enterprise 12
 . /usr/share/scap-security-guide/remediation_functions
 populate sysctl_net_ipv4_conf_all_accept_source_route_value
 
