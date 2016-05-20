@@ -20,11 +20,17 @@ EXTERN_VAR = '''</linux:selinuxboolean_state>
 
 def bool_state(sebool_state):
     sebool = ""
+    sebool_state = re.sub(' ', '', sebool_state)
 
     if sebool_state == "on" or sebool_state == "enable":
         sebool_state = "enabled"
-    if sebool_state == "off" or sebool_state == "disable":
+    elif sebool_state == "off" or sebool_state == "disable":
         sebool_state = "disabled"
+    elif sebool_state == "use_var" or sebool_state == "":
+        pass
+    else:
+        print("Error: Invalid SELinux state value: %s" % sebool_state)
+        sys.exit()
 
     if sebool_state == "enabled":
         sebool = "true"
@@ -41,9 +47,9 @@ def output_checkfile(serviceinfo):
     sebool_id = re.sub('[-\.]', '_', sebool_name)
 
     # open the template files and perform the conversions
-    sebool_state, sebool_bool = bool_state(sebool_state)
+    (sebool_state, sebool_bool) = bool_state(sebool_state)
     (dirname, script) = os.path.split(__file__)
-    
+
     if not sebool_state:
         pass
     else:
