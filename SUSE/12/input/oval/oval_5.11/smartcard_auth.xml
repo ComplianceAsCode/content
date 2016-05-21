@@ -1,0 +1,113 @@
+<def-group>
+  <definition class="compliance" id="smartcard_auth" version="2">
+    <metadata>
+      <title>Enable Smart Card Login</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Enable Smart Card logins</description>
+      <reference source="JL" ref_id="RHEL7_20151130" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="smart card authentication is configured" operator="AND">
+      <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
+      <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
+      <extend_definition comment="pcscd service is enabled" definition_ref="pcscd_activation_socket_enabled" />
+      <criterion comment="cert_policy directive contains oscp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
+      <criteria comment="smart card authentication is enabled or required in system-auth" operator="OR">
+          <!-- Smartcard authentication enabled, but login is allowed also by other means -->
+          <criterion comment="smart card authentication is enabled in /etc/pam.d/system-auth" test_ref="test_smart_card_enabled_system_auth" />
+          <!-- Smartcard authentication required (login is allowed only via smartcard) -->
+          <criterion comment="smart card is required in /etc/pam.d/system-auth" test_ref="test_smart_card_required_system_auth" />
+      </criteria>
+      <criterion comment="smart card is required in /etc/pam.d/smartcard-auth" test_ref="test_smart_card_required_smartcard_auth" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_pam_pkcs11_cert_policy_ocsp_on" check="at least one" check_existence="at_least_one_exists"
+  comment="Test ocsp_on in /etc/pam_pkcs11/pkcs11.conf" version="1">
+    <ind:object object_ref="object_pam_pkcs11_cert_policy_ocsp_on" />
+    <ind:state state_ref="state_pam_pkcs11_cert_policy_ocsp_on" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_pam_pkcs11_cert_policy_ocsp_on" version="1">
+    <ind:filepath>/etc/pam_pkcs11/pam_pkcs11.conf</ind:filepath>
+    <!-- PKCS #11 module can be either CoolKey or OpenSC. Check cert_policy for all of them. -->
+    <ind:pattern operation="pattern match">^[\s]*cert_policy[ ]=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_pam_pkcs11_cert_policy_ocsp_on" version="1">
+    <ind:subexpression operation="pattern match">^.*ocsp_on.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <!-- Test the smart card authentication enabled case (login is allowed also by other means) -->
+  <ind:textfilecontent54_test id="test_smart_card_enabled_system_auth" check="all" check_existence="all_exist"
+  comment="Test smartcard authentication is enabled in /etc/pam.d/system-auth file" version="1">
+    <ind:object object_ref="object_smart_card_enabled_system_auth" />
+  </ind:textfilecontent54_test>
+
+  <local_variable id="variable_smart_card_enabled_system_auth" datatype="string"
+  comment="Regular expression to check if smartcard authentication is enabled in /etc/pam.d/system-auth" version="1">
+    <concat>
+      <literal_component>\nauth[\s]+required[\s]+pam_env.so</literal_component>
+      <literal_component>\nauth[\s]+\[success=1[\s]default=ignore\][\s]pam_succeed_if.so[\s]service[\s]notin[\s]</literal_component>
+      <literal_component>login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver[\s]quiet[\s]use_uid</literal_component>
+      <literal_component>\nauth[\s]+\[success=done[\s]authinfo_unavail=ignore[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
+      <literal_component>pam_pkcs11.so[\s]nodebug\n</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_object id="object_smart_card_enabled_system_auth" version="1">
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_smart_card_enabled_system_auth" var_check="at least one"></ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Test the smart card authentication required case (login is allowed only by smartcard) -->
+  <ind:textfilecontent54_test id="test_smart_card_required_system_auth" check="all" check_existence="all_exist"
+  comment="Test smartcard authentication is required in /etc/pam.d/system-auth file" version="1">
+    <ind:object object_ref="object_smart_card_required_system_auth" />
+  </ind:textfilecontent54_test>
+
+  <local_variable id="variable_smart_card_required_system_auth" datatype="string"
+  comment="Regular expressiion to check if smartcard authentication is required in /etc/pam.d/system-auth" version="1">
+    <concat>
+      <literal_component>\nauth[\s]+required[\s]+pam_env.so</literal_component>
+      <literal_component>\nauth[\s]+\[success=1[\s]default=ignore\][\s]pam_succeed_if.so[\s]service[\s]notin[\s]</literal_component>
+      <literal_component>login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver[\s]quiet[\s]use_uid</literal_component>
+      <literal_component>\nauth[\s]+\[success=done[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
+      <literal_component>pam_pkcs11.so[\s]nodebug[\s]wait_for_card\n</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_object id="object_smart_card_required_system_auth" version="1">
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_smart_card_required_system_auth" var_check="at least one"></ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_smart_card_required_smartcard_auth" check="all" check_existence="all_exist"
+  comment="Test smartcard authentication is required in /etc/pam.d/smartcard-auth file" version="1">
+    <ind:object object_ref="object_smart_card_required_smartcard_auth" />
+  </ind:textfilecontent54_test>
+
+  <local_variable id="variable_smart_card_required_smartcard_auth" datatype="string"
+  comment="Regular expression to check if smartcard authentication is required in /etc/pam.d/smartcard-auth" version="1">
+    <concat>
+      <literal_component>\nauth[\s]+required[\s]+pam_env.so</literal_component>
+      <literal_component>\nauth[\s]+\[success=done[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
+      <literal_component>pam_pkcs11.so[\s]nodebug[\s]wait_for_card\n.*</literal_component>
+      <literal_component>\npassword[\s]+required[\s]+pam_pkcs11.so\n</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_object id="object_smart_card_required_smartcard_auth" version="1">
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/pam.d/smartcard-auth</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_smart_card_required_smartcard_auth" var_check="at least one"></ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

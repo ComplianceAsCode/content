@@ -1,0 +1,111 @@
+<Profile id="pci-dss" xmlns="http://checklists.nist.gov/xccdf/1.1">
+<title>PCI-DSS v3 Control Baseline for Red Hat Enterprise Linux 7</title>
+<description>This is a *draft* profile for PCI-DSS v3</description>
+
+<refine-value idref="var_password_pam_unix_remember" selector="4" />
+<refine-value idref="var_account_disable_post_pw_expiration" selector="90" />
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="6" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="1800" />
+<refine-value idref="sshd_idle_timeout_value" selector="15_minutes" />
+<refine-value idref="var_password_pam_minlen" selector="7" />
+<refine-value idref="var_password_pam_minclass" selector="2" />
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="90" />
+<refine-value idref="var_auditd_num_logs" selector="5"/>
+
+<select idref="service_auditd_enabled" selected="true"/>
+<select idref="bootloader_audit_argument" selected="true"/>
+<select idref="auditd_data_retention_num_logs" selected="true"/>
+<select idref="auditd_data_retention_max_log_file" selected="true"/>
+<select idref="auditd_data_retention_max_log_file_action" selected="true"/>
+<select idref="auditd_data_retention_space_left_action" selected="true"/>
+<select idref="auditd_data_retention_admin_space_left_action" selected="true"/>
+<select idref="auditd_data_retention_action_mail_acct" selected="true"/>
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true"/>
+<select idref="audit_rules_time_adjtimex" selected="true"/>
+<select idref="audit_rules_time_settimeofday" selected="true"/>
+<select idref="audit_rules_time_stime" selected="true"/>
+<select idref="audit_rules_time_clock_settime" selected="true"/>
+<select idref="audit_rules_time_watch_localtime" selected="true"/>
+<select idref="audit_rules_usergroup_modification" selected="true"/>
+<select idref="audit_rules_networkconfig_modification" selected="true"/>
+<select idref="file_permissions_var_log_audit" selected="true"/>
+<select idref="file_ownership_var_log_audit" selected="true"/>
+<select idref="audit_rules_mac_modification" selected="true"/>
+<select idref="audit_rules_dac_modification_chmod" selected="true"/>
+<select idref="audit_rules_dac_modification_chown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmod" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmodat" selected="true"/>
+<select idref="audit_rules_dac_modification_fchown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchownat" selected="true"/>
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lchown" selected="true"/>
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_removexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_setxattr" selected="true"/>
+<select idref="audit_rules_login_events" selected="true"/>
+<select idref="audit_rules_session_events" selected="true"/>
+<select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
+<select idref="audit_rules_privileged_commands" selected="true"/>
+<select idref="audit_rules_media_export" selected="true"/>
+<select idref="audit_rules_file_deletion_events" selected="true"/>
+<select idref="audit_rules_sysadmin_actions" selected="true"/>
+<select idref="audit_rules_kernel_module_loading" selected="true"/>
+<select idref="audit_rules_immutable" selected="true"/>
+<refine-value idref="var_multiple_time_servers" selector="rhel" />
+<select idref="service_chronyd_or_ntpd_enabled" selected="true"/>
+<select idref="chronyd_or_ntpd_specify_remote_server" selected="true"/>
+<select idref="chronyd_or_ntpd_specify_multiple_servers" selected="true"/>
+<select idref="rpm_verify_permissions" selected="true"/>
+<select idref="rpm_verify_hashes" selected="true"/>
+<select idref="install_hids" selected="true"/>
+<select idref="rsyslog_files_permissions" selected="true"/>
+<select idref="rsyslog_files_ownership" selected="true"/>
+<select idref="rsyslog_files_groupownership" selected="true"/>
+<select idref="ensure_logrotate_activated" selected="true"/>
+<select idref="package_aide_installed" selected="true"/>
+<select idref="disable_prelink" selected="true"/>
+<select idref="aide_build_database" selected="true"/>
+<select idref="aide_periodic_cron_checking" selected="true"/>
+<select idref="account_unique_name" selected="true"/>
+<select idref="gid_passwd_group_same" selected="true"/>
+<select idref="accounts_password_all_shadowed" selected="true"/>
+<select idref="no_empty_passwords" selected="true"/>
+<select idref="display_login_attempts" selected="true"/>
+<select idref="account_disable_post_pw_expiration" selected="true"/>
+<select idref="accounts_passwords_pam_faillock_deny" selected="true"/>
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_delay" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_lock_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_mode_blank" selected="true"/>
+<select idref="sshd_set_idle_timeout" selected="true"/>
+<select idref="accounts_password_pam_minlen" selected="true"/>
+<select idref="accounts_password_pam_dcredit" selected="true"/>
+<select idref="accounts_password_pam_ucredit" selected="true"/>
+<select idref="accounts_password_pam_lcredit" selected="true"/>
+<select idref="accounts_password_pam_unix_remember" selected="true"/>
+<select idref="accounts_maximum_age_login_defs" selected="true"/>
+<select idref="ensure_redhat_gpgkey_installed" selected="true"/>
+<select idref="ensure_gpgcheck_globally_activated" selected="true"/>
+<select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+<select idref="security_patches_up_to_date" selected="true"/>
+<select idref="smartcard_auth" selected="true"/>
+<select idref="set_password_hashing_algorithm_systemauth" selected="true"/>
+<select idref="set_password_hashing_algorithm_logindefs" selected="true"/>
+<select idref="set_password_hashing_algorithm_libuserconf" selected="true"/>
+<select idref="userowner_shadow_file" selected="true"/>
+<select idref="groupowner_shadow_file" selected="true"/>
+<select idref="file_permissions_etc_shadow" selected="true"/>
+<select idref="file_owner_etc_group" selected="true"/>
+<select idref="file_groupowner_etc_group" selected="true"/>
+<select idref="file_permissions_etc_group" selected="true"/>
+<select idref="file_owner_etc_passwd" selected="true"/>
+<select idref="file_groupowner_etc_passwd" selected="true"/>
+<select idref="file_permissions_etc_passwd" selected="true"/>
+<select idref="file_user_owner_grub2_cfg" selected="true"/>
+<select idref="file_group_owner_grub2_cfg" selected="true"/>
+<select idref="package_libreswan_installed" selected="true"/>
+
+</Profile>

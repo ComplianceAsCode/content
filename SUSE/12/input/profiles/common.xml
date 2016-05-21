@@ -1,0 +1,50 @@
+<Profile id="common">
+<title>Common Profile for General-Purpose Systems</title>
+<description>This profile contains items common to general-purpose desktop and server installations.</description>
+<select idref="partition_for_var_log" selected="true"/>
+<select idref="partition_for_var_log_audit" selected="true"/>
+
+<select idref="package_rsyslog_installed" selected="true"/>
+<select idref="service_rsyslog_enabled" selected="true"/>
+
+<select idref="audit_rules_time_adjtimex" selected="true"/>
+<select idref="audit_rules_time_settimeofday" selected="true"/>
+<select idref="audit_rules_time_stime" selected="true"/>
+<select idref="audit_rules_time_clock_settime" selected="true"/>
+<select idref="audit_rules_time_watch_localtime" selected="true"/>
+
+<select idref="audit_rules_usergroup_modification" selected="true"/>
+<select idref="audit_rules_networkconfig_modification" selected="true"/>
+<select idref="audit_rules_mac_modification" selected="true"/>
+
+<!-- Audit DAC modifications -->
+<select idref="audit_rules_dac_modification_chmod" selected="true"/>
+<select idref="audit_rules_dac_modification_chown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmod" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmodat" selected="true"/>
+<select idref="audit_rules_dac_modification_fchown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchownat" selected="true"/>
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lchown" selected="true"/>
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_removexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_setxattr" selected="true"/>
+
+<select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
+<select idref="audit_rules_privileged_commands" selected="true"/>
+<select idref="audit_rules_media_export" selected="true"/>
+<select idref="audit_rules_file_deletion_events" selected="true"/>
+<select idref="audit_rules_sysadmin_actions" selected="true"/>
+<select idref="audit_rules_kernel_module_loading" selected="true"/>
+
+<select idref="service_abrtd_disabled" selected="true"/>
+<select idref="service_atd_disabled" selected="true"/>
+<select idref="service_autofs_disabled" selected="true"/>
+<select idref="service_ntpdate_disabled" selected="true"/>
+<select idref="service_oddjobd_disabled" selected="true"/>
+<select idref="service_qpidd_disabled" selected="true"/>
+<select idref="service_rdisc_disabled" selected="true"/>
+
+</Profile>

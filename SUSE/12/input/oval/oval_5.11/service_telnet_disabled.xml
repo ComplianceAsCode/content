@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="compliance" id="service_telnet_disabled" version="1">
+    <metadata>
+      <title>Service telnet Disabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The telnet service should be disabled if possible.</description>
+      <reference source="galford" ref_id="20150924" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="package telnet-server removed or socket telnet is not configured to start" operator="OR">
+      <extend_definition comment="telnet-server removed" definition_ref="package_telnet-server_removed" />
+      <criteria operator="AND" comment="socket telnet is not configured to start">
+        <criterion comment="telnet not wanted by multi-user.target" test_ref="test_telnet_not_wanted_by_multi_user_target" />
+        <criterion comment="Disable telnet xinetd" test_ref="test_xinetd_telnetd_disabled" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="none_exist" comment="Disable Telnet Service"
+  id="test_xinetd_telnetd_disabled" version="1">
+    <ind:object object_ref="obj_xinetd_telnetd_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="Disable Telnet Service"
+  id="obj_xinetd_telnetd_disabled" version="1">
+    <ind:filepath>/etc/xinetd.d/telnet</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*disable\s+=\s+no\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_telnet_not_wanted_by_multi_user_target" version="1">
+    <linux:object object_ref="object_multi_user_target_for_telnet" />
+    <linux:state state_ref="state_systemd_telnet_off"/>
+  </linux:systemdunitdependency_test>
+
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_telnet" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+
+  <linux:systemdunitdependency_state id="state_systemd_telnet_off" comment="telnet is not listed in the dependencies" version="1">
+    <linux:dependency entity_check="none satisfy">telnet.socket</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+</def-group>

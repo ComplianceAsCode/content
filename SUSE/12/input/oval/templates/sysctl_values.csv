@@ -1,0 +1,20 @@
+# Add <sysctl_parameter_name, desired_value> to generate hard-coded OVAL and remediation content.
+# Add <sysctl_parameter_name,> to generate OVAL and remediation content that use the XCCDF value.
+net.ipv4.conf.all.accept_redirects,
+net.ipv4.conf.all.accept_source_route,
+net.ipv4.conf.all.log_martians,
+net.ipv4.conf.all.rp_filter,
+net.ipv4.conf.default.rp_filter,
+net.ipv4.conf.all.secure_redirects,
+net.ipv4.conf.all.send_redirects,0
+net.ipv4.conf.default.accept_redirects,
+net.ipv4.conf.default.secure_redirects,
+net.ipv4.conf.default.send_redirects,0
+net.ipv4.icmp_echo_ignore_broadcasts,
+net.ipv4.icmp_ignore_bogus_error_responses,
+net.ipv4.tcp_syncookies,
+net.ipv4.ip_forward,0
+net.ipv4.conf.default.log_martians,
+net.ipv4.conf.default.accept_source_route,
+fs.suid_dumpable,0
+kernel.randomize_va_space,2

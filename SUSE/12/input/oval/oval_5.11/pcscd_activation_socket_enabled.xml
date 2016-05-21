@@ -1,0 +1,39 @@
+<def-group>
+
+  <!-- This OVAL was created by create_services_enabled.py script applied to RHEL-7 service
+       template from RHEL/7/input/oval/oval_5.11/templates/template_service_enabled.
+
+       After that it has been manually edited to properly apply for the 'pcscd.socket'
+       activation socket systemd unit -->
+
+  <definition class="compliance" id="pcscd_activation_socket_enabled" version="2">
+    <metadata>
+      <title>pcscd.socket Activation Socket Enabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The pcscd.socket activation socket should be enabled if possible.</description>
+      <reference source="JL" ref_id="RHEL7_20151130" ref_url="test_attestation" />
+    </metadata>
+    <criteria comment="package pcsc-lite installed and pcscd.socket activation socket is configured to start" operator="AND">
+    <extend_definition comment="pcsc-lite installed" definition_ref="package_pcsc-lite_installed" />
+    <criteria operator="OR" comment="pcscd.socket activation socket is configured to start">
+      <criterion comment="multi-user.target wants pcscd.socket" test_ref="test_multi_user_wants_pcscd.socket" />
+    </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_pcscd.socket" version="1">
+    <linux:object object_ref="object_multi_user_target_for_pcscd.socket" />
+    <linux:state state_ref="state_systemd_pcscd.socket_on"/>
+  </linux:systemdunitdependency_test>
+
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_pcscd.socket" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+
+  <linux:systemdunitdependency_state id="state_systemd_pcscd.socket_on" comment="pcscd.socket listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">pcscd.socket</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+</def-group>
