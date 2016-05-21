@@ -104,11 +104,11 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
 	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 #	Make CentOS variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-centos7-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-centos7-ds.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d centos -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-centos7-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d centos -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-centos7-ds.xml
 #	Make Scientific Linux variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl7-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl7-ds.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl7-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl7-ds.xml
 
 content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml

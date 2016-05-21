@@ -103,6 +103,10 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
 	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d opensuse -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-opensuse-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d opensuse -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-opensuse-ds.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d sled -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sled-xccdf.xml
+	$(SHARED)/$(UTILS)/enable-derivatives.py -d sled -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sled-ds.xml
 
 content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
@@ -113,9 +117,12 @@ content-stig: table-stigs guide checks
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-opensuse-ds.xml
 else
 	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-opensuse-xccdf.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sled-xccdf.xml
 endif
 
 submission-stig-check: table-stigs
@@ -131,6 +138,10 @@ validate-xml:
 	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
+	oscap xccdf validate-xml $(OUT)/$(ID)-opensuse-xccdf.xml
+	oscap ds sds-validate $(OUT)/$(ID)-opensuse-ds.xml
+	oscap xccdf validate-xml $(OUT)/$(ID)-sled-xccdf.xml
+	oscap ds sds-validate $(OUT)/$(ID)-sled-ds.xml
 
 validate: validate-xml
 ifeq ($(OVAL_5_11), 0)
@@ -168,6 +179,10 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
+	cp $(OUT)/$(ID)-opensuse-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-opensuse-ds.xml $(DIST)/content
+	cp $(OUT)/$(ID)-sled-xccdf.xml $(DIST)/content
+	cp $(OUT)/$(ID)-sled-ds.xml $(DIST)/content
 
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
