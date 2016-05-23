@@ -753,16 +753,16 @@ to access information about the web server or to alter the server's configuratio
 
 </Group> <!-- <Group id="httpd_restrict_file_dir_access"> -->
 
-<Group id="httpd_configure_firewalld">
-<title>Configure <tt>firewalld</tt> to Allow Access to the Web Server</title>
+<Group id="httpd_configure_susefirewall2">
+<title>Configure <tt>susefirewall2</tt> to Allow Access to the Web Server</title>
 <description>
-By default, <tt>firewalld</tt>
+By default, <tt>susefirewall2</tt>
 blocks access to the ports used by the web server.
 <firewalld-desc-macro allow="true" proto="tcp" service="http" />
 <firewalld-desc-macro allow="true" proto="tcp" service="https" />
 </description>
 
-</Group> <!-- <Group id="httpd_configure_firewalld"> -->
+</Group> <!-- <Group id="httpd_configure_susefirewall2"> -->
 
 <Group id="httpd_chroot">
 <title>Run <tt>httpd</tt> in a <tt>chroot</tt> Jail if Practical</title>

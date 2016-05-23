@@ -100,7 +100,7 @@
       <xsl:apply-templates select="document('xccdf/system/network/kernel.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/wireless.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/ipv6.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/network/firewalld.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/network/susefirewall2.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/ssl.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/uncommon.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/ipsec.xml')" />

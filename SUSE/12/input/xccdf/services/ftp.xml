@@ -198,15 +198,15 @@ these users from filling a disk used by other services.</rationale>
 
 <Group id="ftp_configure_firewall">
 <title>Configure Firewalls to Protect the FTP Server</title>
-<description>By default, <tt>firewalld</tt>
+<description>By default, <tt>susefirewall2</tt>
 blocks access to the ports used by the web server.
 <firewalld-desc-macro allow="true" proto="tcp" service="ftp" />
 </description>
-<rationale>These settings configure firewalld to allow connections to an FTP server. The first line allows initial connections
+<rationale>These settings configure susefirewall2 to allow connections to an FTP server. The first line allows initial connections
 to the FTP server port.
 FTP is an older protocol which is not very compatible with firewalls. During the initial FTP dialogue, the client
 and server negotiate an arbitrary port to be used for data transfer. The <tt>ip_conntrack_ftp</tt>  module is used by
-firewalld to listen to that dialogue and allow connections to the data ports which FTP negotiates. This allows an
+susefirewall2 to listen to that dialogue and allow connections to the data ports which FTP negotiates. This allows an
 FTP server to operate on a machine which is running a firewall.</rationale>
 <!--<oval id="ftp_configure_firewall" />-->
 <!--<ref nist="CM-7" /> -->

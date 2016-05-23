@@ -103,8 +103,8 @@ ossrg="SRG-OS-000480-GPOS-00227" stigid="040650"/>
 <oval id="file_permissions_sshd_private_key" />
 </Rule>
 
-<Rule id="firewalld_sshd_disabled">
-<title>Remove SSH Server <tt>firewalld</tt> Firewall exception (Unusual)</title>
+<Rule id="susefirewall2_sshd_disabled">
+<title>Remove SSH Server <tt>susefirewall2</tt> Firewall exception (Unusual)</title>
 <description>By default, inbound connections to SSH's port are allowed. If
 the SSH server is not being used, this exception should be removed from the
 firewall configuration.
@@ -116,7 +116,7 @@ If inbound SSH connections are not expected, disallowing access to the SSH port 
 avoid possible exploitation of the port by an attacker.
 </rationale>
 <ident cce="80218-1" />
-<oval id="firewalld_sshd_disabled" />
+<oval id="susefirewall2_sshd_disabled" />
 </Rule>
 
 <Group id="ssh_server">

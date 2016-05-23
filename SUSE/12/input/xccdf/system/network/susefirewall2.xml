@@ -1,6 +1,6 @@
-<Group id="network-firewalld">
-<title>firewalld</title>
-<description>The dynamic firewall daemon <tt>firewalld</tt> provides a
+<Group id="network-susefirewall2">
+<title>susefirewall2</title>
+<description>The dynamic firewall daemon <tt>susefirewall2</tt> provides a
 dynamically managed firewall with support for network “zones” to assign
 a level of trust to a network and its associated connections and interfaces.
 It has support for IPv4 and IPv6 firewall settings. It supports Ethernet
@@ -9,27 +9,27 @@ It also has an interface for services or applications to add firewall rules
 directly.
 <br/>
 A graphical configuration tool, <tt>firewall-config</tt>, is used to configure
-<tt>firewalld</tt>, which in turn uses <tt>iptables</tt> tool to communicate
+<tt>susefirewall2</tt>, which in turn uses <tt>iptables</tt> tool to communicate
 with <tt>Netfilter</tt> in the kernel which implements packet filtering.
 <br/>
-The firewall service provided by <tt>firewalld</tt> is dynamic rather than
+The firewall service provided by <tt>susefirewall2</tt> is dynamic rather than
 static because changes to the configuration can be made at anytime and are
 immediately implemented. There is no need to save or apply the changes. No
 unintended disruption of existing network connections occurs as no part of
 the firewall has to be reloaded.
 </description>
 
-<Group id="firewalld_activation">
-<title>Inspect and Activate Default firewalld Rules</title>
+<Group id="susefirewall2_activation">
+<title>Inspect and Activate Default susefirewall2 Rules</title>
 <description>Firewalls can be used to separate networks into different zones
 based on the level of trust the user has decided to place on the devices and
-traffic within that network. <tt>NetworkManager</tt> informs firewalld to which
+traffic within that network. <tt>NetworkManager</tt> informs susefirewall2 to which
 zone an interface belongs. An interface's assigned zone can be changed by
 <tt>NetworkManager</tt> or via the <tt>firewall-config</tt> tool.
 <br/>
-The zone settings in <tt>/etc/firewalld/</tt> are a range of preset settings
+The zone settings in <tt>/etc/susefirewall2/</tt> are a range of preset settings
 which can be quickly applied to a network interface. These are the zones
-provided by firewalld sorted according to the default trust level of the
+provided by susefirewall2 sorted according to the default trust level of the
 zones from untrusted to trusted:
 <ul>
 <li><tt>drop</tt><br /><p>Any incoming network packets are dropped, there is no
@@ -61,7 +61,7 @@ incoming connections are accepted.</p></li>
 <br/>
 It is possible to designate one of these zones to be the default zone. When
 interface connections are added to <tt>NetworkManager</tt>, they are assigned
-to the default zone. On installation, the default zone in firewalld is set to
+to the default zone. On installation, the default zone in susefirewall2 is set to
 be the public zone.
 <br/>
 To find out all the settings of a zone, for example the <tt>public zone,</tt>
@@ -90,77 +90,77 @@ pmcd pmproxy pmwebapi pmwebapis pop3s postgresql proxy-dhcp radius rpc-bind
 samba samba-client smtp ssh telnet tftp tftp-client transmission-client
 vnc-server wbem-https
 </pre>
-Finally to view the network zones that will be active after the next firewalld
+Finally to view the network zones that will be active after the next susefirewall2
 service reload, enter the following command as root:
 <pre># firewall-cmd --get-service --permanent</pre>
 </description>
 
-<Rule id="service_firewalld_enabled" severity="medium">
-<title>Verify firewalld Enabled</title>
+<Rule id="service_susefirewall2_enabled" severity="medium">
+<title>Verify susefirewall2 Enabled</title>
 <description>
-<service-enable-macro service="firewalld" />
+<service-enable-macro service="susefirewall2" />
 </description>
-<ocil><service-enable-check-macro service="firewalld" /></ocil>
+<ocil><service-enable-check-macro service="susefirewall2" /></ocil>
 <rationale>
 Access control methods provide the ability to enhance system security posture
 by restricting services and known good IP addresses and address ranges. This
 prevents connections from unknown hosts and protocols.
 </rationale>
 <ident cce="27361-5" />
-<oval id="service_firewalld_enabled" />
+<oval id="service_susefirewall2_enabled" />
 <ref nist="CM-6(b)" disa="366" cis="4.7" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="040810" />
 </Rule>
 
-</Group><!--<Group id="firewalld_activation">-->
+</Group><!--<Group id="susefirewall2_activation">-->
 
 <Group id="ruleset_modifications">
 <title>Strengthen the Default Ruleset</title>
 <description>The default rules can be strengthened. The system
 scripts that activate the firewall rules expect them to be defined
-in configuration files under the <tt>/etc/firewalld/services</tt>
-and <tt>/etc/firewalld/zones</tt> directories.
+in configuration files under the <tt>/etc/susefirewall2/services</tt>
+and <tt>/etc/susefirewall2/zones</tt> directories.
 <br /><br />
 The following recommendations describe how to strengthen the
 default ruleset configuration file. An alternative to editing this
 configuration file is to create a shell script that makes calls to
-the <tt>firewall-cmd</tt> program to load in rules under the <tt>/etc/firewalld/services</tt>
-and <tt>/etc/firewalld/zones</tt> directories.
+the <tt>firewall-cmd</tt> program to load in rules under the <tt>/etc/susefirewall2/services</tt>
+and <tt>/etc/susefirewall2/zones</tt> directories.
 <br /><br />
 Instructions apply to both unless otherwise noted. Language and address
-conventions for regular firewalld rules are used throughout this section.
+conventions for regular susefirewall2 rules are used throughout this section.
 </description>
 <warning category="general">The program <tt>firewall-config</tt>
 allows additional services to penetrate the default firewall rules
-and automatically adjusts the <tt>firewalld</tt> ruleset(s).</warning>
+and automatically adjusts the <tt>susefirewall2</tt> ruleset(s).</warning>
 
-<Rule id="set_firewalld_default_zone" severity="medium">
-<title>Set Default firewalld Zone for Incoming Packets</title>
+<Rule id="set_susefirewall2_default_zone" severity="medium">
+<title>Set Default susefirewall2 Zone for Incoming Packets</title>
 <description>To set the default zone to <tt>drop</tt> for
 the built-in default zone which processes incoming IPv4 and IPv6 packets,
 modify the following line in
-<tt>/etc/firewalld/firewalld.conf</tt> to be:
+<tt>/etc/susefirewall2/susefirewall2.conf</tt> to be:
 <pre>DefaultZone=drop</pre>
 </description>
 <ocil clause="the default zone is not set to DROP">
-Inspect the file <tt>/etc/firewalld/firewalld.conf</tt> to determine
-the default zone for the <tt>firewalld</tt>. It should be set to <tt>DefaultZone=drop</tt>:
-<pre>$ sudo grep DefaultZone /etc/firewalld/firewalld.conf</pre>
+Inspect the file <tt>/etc/susefirewall2/susefirewall2.conf</tt> to determine
+the default zone for the <tt>susefirewall2</tt>. It should be set to <tt>DefaultZone=drop</tt>:
+<pre>$ sudo grep DefaultZone /etc/susefirewall2/susefirewall2.conf</pre>
 </ocil>
-<rationale>In <tt>firewalld</tt> the default zone is applied only after all
+<rationale>In <tt>susefirewall2</tt> the default zone is applied only after all
 the applicable rules in the table are examined for a match. Setting the
 default zone to <tt>drop</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
 <ident cce="27349-0" />
-<oval id="set_firewalld_default_zone" />
+<oval id="set_susefirewall2_default_zone" />
 <ref nist="CM-7" disa="66,1109,1154,1414" />
 </Rule>
 
 
 <!--
-<Rule id="set_firewalld_default_rule_forward" severity="medium">
-<title>Set Default firewalld Policy for Forwarded Packets</title>
+<Rule id="set_susefirewall2_default_rule_forward" severity="medium">
+<title>Set Default susefirewall2 Policy for Forwarded Packets</title>
 <description>To set the default policy to DROP (instead of ACCEPT) for
 the built-in FORWARD chain which processes packets that will be forwarded from
 one interface to another,
@@ -168,7 +168,7 @@ add or correct the following line in
 <tt>/etc/sysconfig/iptables</tt>:
 <pre>:FORWARD DROP [0:0]</pre>
 </description>
-<rationale>In <tt>firewalld</tt>, the default policy is applied only after all
+<rationale>In <tt>susefirewall2</tt>, the default policy is applied only after all
 the applicable rules in the table are examined for a match. Setting the
 default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
@@ -183,7 +183,7 @@ The output should be similar to the following:
 <ref nist="CM-7" disa="1109" />
 </Rule>
 
-<Group id="firewalld_icmp_disabled">
+<Group id="susefirewall2_icmp_disabled">
 <title>Restrict ICMP Message Types</title>
 <description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages
 types can be restricted. To accept only ICMP echo reply, destination
@@ -215,7 +215,7 @@ general-purpose use cases and can also make troubleshooting more difficult.
 </rationale>
 </Group>
 
-<Group id="firewalld_log_and_drop_suspicious">
+<Group id="susefirewall2_log_and_drop_suspicious">
 <title>Log and Drop Packets with Suspicious Source Addresses</title>
 <description>Packets with non-routable source addresses should be rejected, as they may indicate spoofing. Because the
 modified policy will reject non-matching packets, you only need to add these rules if you are interested in also
