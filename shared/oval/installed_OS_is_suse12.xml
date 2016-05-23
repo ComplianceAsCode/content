@@ -2,20 +2,20 @@
   <definition class="inventory"
   id="installed_OS_is_suse12" version="1">
     <metadata>
-      <title>SuSE Enterprise 12</title>
+      <title>Novell SUSE Enterprise Linux 12</title>
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <reference ref_id="cpe:/o:suse:sles:12" source="CPE" />
-      <reference ref_id="cpe:/o:suse:sled:12" source="CPE" />
+      <reference ref_id="cpe:/o:novell:suse_linux_enterprise_server:12" source="CPE" />
+      <reference ref_id="cpe:/o:novell:suse_linux_enterprise_desktop:12" source="CPE" />
       <description>The operating system installed on the system is
-      SuSE Enterprise 12</description>
+      Novell SUSE Enterprise 12</description>
       <reference source="JL" ref_id="FEDORA20_20150522" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion comment="Installed operating system is part of the unix family"
       test_ref="test_suse_unix_family" />
-      <criterion comment="SUSE is installed" test_ref="test_suse_release" />
+      <criterion comment="Novel SUSE 12 is installed" test_ref="test_suse_release" />
     </criteria>
   </definition>
 
