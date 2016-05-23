@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_suse12" version="1">
+    <metadata>
+      <title>SuSE Enterprise 12</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:suse:sles:12" source="CPE" />
+      <reference ref_id="cpe:/o:suse:sled:12" source="CPE" />
+      <description>The operating system installed on the system is
+      SuSE Enterprise 12</description>
+      <reference source="JL" ref_id="FEDORA20_20150522" ref_url="test_attestation" />
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_suse_unix_family" />
+      <criterion comment="SUSE is installed" test_ref="test_suse_release" />
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_suse_unix_family" version="1">
+    <ind:object object_ref="obj_suse_unix_family" />
+    <ind:state state_ref="state_suse_unix_family" />
+  </ind:family_test>
+  <ind:family_state id="state_suse_unix_family" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_suse_unix_family" version="1" />
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="suse release is installed" id="test_suse_release" version="1">
+    <linux:object object_ref="obj_suse_release" />
+    <linux:state state_ref="state_suse_release" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_suse_release" version="1">
+    <linux:version operation="pattern match">^12.[0-9]+$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_suse_release" version="1">
+    <linux:name>suse-release</linux:name>
+  </linux:rpminfo_object>
+</def-group>
