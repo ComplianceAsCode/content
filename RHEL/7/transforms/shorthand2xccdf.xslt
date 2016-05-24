@@ -416,12 +416,12 @@
   <xsl:template match="sebool-macro">
     <xsl:choose>
       <xsl:when test="@enable = 'false'">
-        To disable the '<xsl:value-of select="@sebool"/>' SELinux boolean, run the following command:
-        <xhtml:code>$ sudo setsebool -P <xsl:value-of select="@sebool"/> off</xhtml:code>
+        To disable the <xhtml:code><xsl:value-of select="@sebool"/></xhtml:code> SELinux boolean, run the following command:
+        <xhtml:pre>$ sudo setsebool -P <xsl:value-of select="@sebool"/> off</xhtml:pre>
       </xsl:when>
       <xsl:otherwise>
-        To enable the '<xsl:value-of select="@sebool"/>' SELinux boolean, run the following command:
-        <xhtml:code>$ sudo setsebool -P <xsl:value-of select="@sebool"/> on</xhtml:code>
+        To enable the <xhtml:code><xsl:value-of select="@sebool"/></xhtml:code> SELinux boolean, run the following command:
+        <xhtml:pre>$ sudo setsebool -P <xsl:value-of select="@sebool"/> on</xhtml:pre>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -429,12 +429,16 @@
   <xsl:template match="sebool-check-macro">
     <xsl:choose>
       <xsl:when test="@enable = 'false'">
-        Run the following command to determine if the '<xsl:value-of select="@sebool"/>' SELinux boolean is disabled:
-        <xhtml:code>$ getsebool <xsl:value-of select="@sebool"/></xhtml:code>
+        Run the following command to determine if the <xhtml:code><xsl:value-of select="@sebool"/></xhtml:code> SELinux boolean is disabled:
+        <xhtml:pre>$ getsebool <xsl:value-of select="@sebool"/></xhtml:pre>
+        If properly configured, the output should show the following:
+        <xhtml:code><xsl:value-of select="@sebool"/> --> off</xhtml:code>
       </xsl:when>
       <xsl:otherwise>
-        Run the following command to determine if the '<xsl:value-of select="@sebool"/>' SELinux boolean is enabled:
-        <xhtml:code>$ getsebool <xsl:value-of select="@sebool"/></xhtml:code>
+        Run the following command to determine if the <xhtml:code><xsl:value-of select="@sebool"/></xhtml:code> SELinux boolean is enabled:
+        <xhtml:pre>$ getsebool <xsl:value-of select="@sebool"/></xhtml:pre>
+        If properly configured, the output should show the following:
+        <xhtml:code><xsl:value-of select="@sebool"/> --> on</xhtml:code>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
