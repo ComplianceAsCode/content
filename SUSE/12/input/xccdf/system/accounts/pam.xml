@@ -257,17 +257,6 @@ password</description>
 <value selector="604800">604800</value> <!-- 7 days -->
 </Value>
 
-<Value id="var_accounts_passwords_pam_tally2_fail_interval" type="number" operator="equals" interactive="0">
-<title>fail_interval</title>
-<description>Interval for counting failed login attempts before account lockout</description>
-<value selector="">900</value>
-<value selector="900">900</value> <!-- 15 minutes -->
-<value selector="1800">1800</value> <!-- 30 minutes -->
-<value selector="3600">3600</value> <!-- 1 hour -->
-<value selector="86400">86400</value> <!-- 1 day -->
-<value selector="100000000">100000000</value> <!-- 3.16 years -->
-</Value>
-
 <Rule id="accounts_password_pam_retry">
 <title>Set Password Retry Prompts Permitted Per-Session</title>
 <description>To configure the number of retry prompts that are permitted per-session:
@@ -668,37 +657,6 @@ situations.
 <ident cce="26884-7" />
 <oval id="accounts_passwords_pam_tally2_unlock_time" value="var_accounts_passwords_pam_tally2_unlock_time"/>
 <ref nist="AC-7(b)" disa="002238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010371" pcidss="Req-8.1.7" cis="6.3.3" />
-</Rule>
-
-<Rule id="accounts_passwords_pam_tally2_interval" severity="medium">
-<title>Set Interval For Counting Failed Password Attempts</title>
-<description>
-Utilizing <tt>pam_tally2.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
-attempts. Modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
-<br /><br />
-<ul>
-<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<pre>auth required pam_tally2.so preauth silent deny=<sub idref="var_accounts_passwords_pam_tally2_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_tally2_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_tally2_fail_interval" /></pre></li>
-<li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-<pre>auth [default=die] pam_tally2.so authfail deny=<sub idref="var_accounts_passwords_pam_tally2_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_tally2_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_tally2_fail_interval" /></pre></li>
-<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
-<pre>account required pam_tally2.so</pre></li>
-</ul>
-</description>
-<ocil clause="that is not the case">
-To ensure the failed password attempt policy is configured correctly, run the following command:
-<pre>$ grep pam_tally2 /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
-For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 
-<tt><sub idref="var_accounts_passwords_pam_tally2_fail_interval" /></tt>  or greater. 
-If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
-</ocil>
-<rationale>
-Locking out user accounts after a number of incorrect attempts within a
-specific period of time prevents direct password guessing attacks.
-</rationale>
-<ident cce="27297-1" />
-<oval id="accounts_passwords_pam_tally2_interval" value="var_accounts_passwords_pam_tally2_fail_interval"/>
-<ref nist="AC-7(a)" disa="44" srg="21" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
