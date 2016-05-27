@@ -5,6 +5,7 @@
       <title>Verify /etc/passwd Permissions</title>
       <affected family="unix">
         <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_suse</platform>
       </affected>
       <description>This test makes sure that /etc/passwd is owned by 0, group owned by 0, and has mode 0644 (or stronger). If
       the target file or directory has an extended ACL then it will fail the mode check.</description>

@@ -5,6 +5,7 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_suse</platform>
       </affected>
       <description>Configure the system to notify users of last login/access using pam_lastlog.</description>
       <reference source="JL" ref_id="RHEL7_20150611" ref_url="test_attestation" />
@@ -23,7 +24,7 @@
     <!-- Read whole /etc/pam.d/postlogin as single line so we can verify form
          of both pam_lastlog.so rows and their order -->
     <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/pam.d/postlogin</ind:filepath>
+    <ind:filepath operation="pattern match">/etc/pam.d/(postlogin|login)</ind:filepath>
     <ind:pattern operation="pattern match">[\n][\s]*session[\s]+\[default=1\][\s]+pam_lastlog.so[\s\w\d\=]+showfailed[\s\w\d\=]*\n[\s]*session[\s]+optional[\s]+pam_lastlog.so[\s\w\d\=]+showfailed[\s\w\d\=]*[\n]</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>

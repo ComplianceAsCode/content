@@ -5,6 +5,7 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_suse</platform>
       </affected>
       <description>The changing of file permissions and attributes should be audited.</description>
       <reference source="JL" ref_id="RHEL7_20150410" ref_url="test_attestation" />
@@ -46,7 +47,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_ardm_fchownat_augenrules" version="1">
     <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-(\/usr)?\/sbin\/augenrules.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 

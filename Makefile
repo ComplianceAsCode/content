@@ -61,6 +61,11 @@ rhel7:
 rhel7-dist:
 	cd RHEL/7/ && $(MAKE) dist
 
+suse12:
+	cd SUSE/12 && $(MAKE)
+suse12-dist:
+	cd SUSE/12 && $(MAKE) dist
+
 debian8:
 	cd Debian/8/ && $(MAKE)
 

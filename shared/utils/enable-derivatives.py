@@ -36,6 +36,15 @@ RHEL_SL_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
 }
 
+SUSE_OPENSUSE_CPE_MAPPING = {
+    "cpe:/o:suse:sles:12": "cpe:/o:opensuse:opensuse:42.1",
+}
+
+SUSE_SLED_CPE_MAPPING = {
+    "cpe:/o:suse:sles:12": "cpe:/o:suse:sled:12",
+}
+
+
 CENTOS_NOTICE = \
     "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
     "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
@@ -111,11 +120,42 @@ SL_NOTICE = \
     ".</p>" \
     "</div>"
 
+SUSE_NOTICE = \
+    "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
+    "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
+    "benchmark developed for <i>Red Hat Enterprise Linux</i>. It has been " \
+    "modified through an automated process to remove specific dependencies " \
+    "on <i>Red Hat Enterprise Linux</i> and to function with <i>SUSE</i> products. " \
+    "The result is a generally useful <i>SCAP Security Guide</i> benchmark " \
+    "with the following caveats:</p>\n" \
+    "<ul>\n" \
+    "<li><i>SUSE</i> is not an 100% the same as " \
+    "<i>Red Hat Enterprise Linux</i>. There may be configuration differences " \
+    "that produce false positives and/or false negatives. If this occurs " \
+    "please file a bug report.</li>\n" \
+    "\n" \
+    "</ul>\n" \
+    "\n" \
+    "<p>Members of the <i>SUSE</i> community are invited to participate in " \
+    "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
+    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "SCAP Security Guide</a> development. Bug reports and patches " \
+    "can be sent to GitHub: " \
+    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "https://github.com/OpenSCAP/scap-security-guide</a>. " \
+    "The mailing list is at " \
+    "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
+    "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
+    ".</p>" \
+    "</div>"
+
 CENTOS_NOTICE_ELEMENT = ElementTree.fromstring(CENTOS_NOTICE)
 SL_NOTICE_ELEMENT = ElementTree.fromstring(SL_NOTICE)
+SUSE_NOTICE_ELEMENT = ElementTree.fromstring(SUSE_NOTICE)
 
 CENTOS_WARNING = 'centos_warning'
 SL_WARNING = 'sl_warning'
+SUSE_WARNING = 'sl_warning'
 
 
 def add_derivative_cpes(elem, namespace, mapping):
@@ -186,34 +226,37 @@ def add_derivative_notice(benchmark, namespace, notice, warning):
 def main():
     usage = "usage: %prog [options]"
     parser = OptionParser(usage=usage)
-    parser.add_option("--enable-centos", dest="centos", default=False,
-                      action="store_true", help="Enable CentOS")
-    parser.add_option("--enable-sl", dest="sl", default=False,
-                      action="store_true", help="Enable Scientific Linux")
+    parser.add_option("--derivative", '-d', dest="derivative", default=None, help="derivative")
     parser.add_option("-i", "--input", dest="input_content", default=False,
                       action="store", help="INPUT can be XCCDF or Source DataStream")
     parser.add_option("-o", "--output", dest="output", default=False,
                       action="store", help="XML Tree content")
     (options, args) = parser.parse_args()
 
-    if options.centos and options.sl:
-        print "Cannot enable two derivative OS(s) at the same time"
-        parser.print_help()
-        sys.exit(1)
 
     if not options.output and not options.input_content:
         parser.print_help()
         sys.exit(1)
 
-    if options.centos:
+    if options.derivative == 'centos':
         mapping = RHEL_CENTOS_CPE_MAPPING
         notice = CENTOS_NOTICE_ELEMENT
         warning = CENTOS_WARNING
 
-    if options.sl:
+    if options.derivative == 'sl':
         mapping = RHEL_SL_CPE_MAPPING
         notice = SL_NOTICE_ELEMENT
         warning = SL_WARNING
+
+    if options.derivative == 'opensuse':
+        mapping = SUSE_OPENSUSE_CPE_MAPPING
+        notice = SUSE_NOTICE_ELEMENT
+        warning = SUSE_WARNING
+
+    if options.derivative == 'sled':
+        mapping = SUSE_SLED_CPE_MAPPING
+        notice = SUSE_NOTICE_ELEMENT
+        warning = SUSE_WARNING
 
     tree = ElementTree.ElementTree()
     tree.parse(options.input_content)
