@@ -223,34 +223,6 @@ the non-graphical <tt>multi-user.target</tt> mode.
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020220" />
 </Rule>
 
-<Rule id="disable_interactive_boot" severity="medium">
-<title>Disable Interactive Boot</title>
-<description>
-To disable the ability for users to perform interactive startups,
-edit the file <tt>/etc/sysconfig/init</tt>.
-Add or correct the line:
-<pre>PROMPT=no</pre>
-The <tt>PROMPT</tt> option allows the console user to perform an
-interactive system startup, in which it is possible to select the
-set of services which are started on boot.
-</description>
-<ocil clause="it does not">
-To check whether interactive boot is disabled, run the following command:
-<pre>$ grep PROMPT /etc/sysconfig/init</pre>
-If interactive boot is disabled, the output will show:
-<pre>PROMPT=no</pre>
-</ocil>
-<rationale>
-Using interactive boot,
-the console user could disable auditing, firewalls, or other
-services, weakening system security.
-</rationale>
-<ident cce="27335-9" />
-<oval id="disable_interactive_boot" />
-<ref nist="SC-2,AC-3" disa="213"/>
-<tested by="DS" on="20121024"/>
-</Rule>
-
 <Group id="screen_locking">
 <title>Configure Screen Locking</title>
 <description>When a user must temporarily leave an account
