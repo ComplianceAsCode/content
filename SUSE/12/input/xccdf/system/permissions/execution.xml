@@ -7,50 +7,6 @@ These protections are applied at the system initialization or
 kernel level, and defend against certain types of badly-configured
 or compromised programs.</description>
 
-<Group id="daemon_umask">
-<title>Daemon Umask</title>
-<description>The umask is a per-process setting which limits
-the default permissions for creation of new files and directories.
-The system includes initialization scripts which set the default umask
-for system daemons.
-</description>
-
-<Value id="var_umask_for_daemons" type="string" operator="equals" interactive="0">
-<title>daemon umask</title>
-<description>Enter umask for daemons</description>
-<value selector="">022</value>
-<value selector="022">022</value>
-<value selector="027">027</value>
-</Value>
-
-<Rule id="umask_for_daemons">
-<title>Set Daemon Umask</title>
-<description>The file <tt>/etc/init.d/functions</tt> includes initialization
-parameters for most or all daemons started at boot time.  The default umask of
-022 prevents creation of group- or world-writable files.  To set the default
-umask for daemons, edit the following line, inserting 022 or 027 for
-<i>UMASK</i> appropriately:
-<pre>umask <i><sub idref="var_umask_for_daemons" /></i></pre>
-Setting the umask to too restrictive a setting can cause serious errors at
-runtime.  Many daemons on the system already individually restrict themselves to
-a umask of 077 in their own init scripts.
-</description>
-<ocil clause="it does not">
-To check the value of the <tt>umask</tt>, run the following command:
-<pre>$ grep umask /etc/init.d/functions</pre>
-The output should show either <tt>022</tt> or <tt>027</tt>.
-</ocil>
-<rationale>The umask influences the permissions assigned to files created by a
-process at run time.  An unnecessarily permissive umask could result in files
-being created with insecure permissions.</rationale>
-<ident cce="27068-6" />
-<oval id="umask_for_daemons" value="var_umask_for_daemons"/>
-<ref nist="AC-6" cis="3.1" />
-<tested by="JL" on="20140912"/>
-</Rule>
-
-</Group>
-
 <Group id="coredumps">
 <title>Disable Core Dumps</title>
 <description>A core dump file is the memory image of an executable

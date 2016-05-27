@@ -200,10 +200,6 @@ baseline.
 <!-- 2.1.18 Disable tcpmux-server (Scored) -->
 <!-- Requirement met through 2.1.11, mapped to auxiliary/c2s_support.xml:cis_xinetd -->
 
-<!-- 3.1 Set Daemon umask (Scored) -->
-<refine-value idref="var_umask_for_daemons" selector="027" />
-<select idref="umask_for_daemons" selected="true" />
-
 <!-- 3.2 Remove the X Window System (Scored) -->
 <select idref="package_xorg-x11-server-common_removed" selected="true" />
 
