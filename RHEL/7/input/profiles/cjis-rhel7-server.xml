@@ -1,0 +1,144 @@
+<Profile id="cjis-rhel7-server">
+<title>Criminal Justice Information Services (CJIS) Security Policy</title>
+<description override="true">This is a *draft* profile for CJIS v5.4. The scope of this profile is to configure Red Hat Enteprise Linux 7 against the U. S. Department of Justice, FBI CJIS Security Policy.
+</description>
+
+<!-- CJIS v5.4 is available here:
+     https://www.fbi.gov/about-us/cjis/
+     The following rules are derived from CJISD-ITS-DOC-08140-5.4 -->
+
+<!-- 5.4.1.1 Events -->
+<select idref="service_auditd_enabled" selected="true"/>
+<select idref="bootloader_audit_argument" selected="true"/>
+<select idref="auditd_data_retention_num_logs" selected="true"/>
+<select idref="auditd_data_retention_max_log_file" selected="true"/>
+<select idref="auditd_data_retention_max_log_file_action" selected="true"/>
+<select idref="auditd_data_retention_space_left_action" selected="true"/>
+<select idref="auditd_data_retention_admin_space_left_action" selected="true"/>
+<select idref="auditd_data_retention_action_mail_acct" selected="true"/>
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true"/>
+<select idref="audit_rules_time_adjtimex" selected="true"/>
+<select idref="audit_rules_time_settimeofday" selected="true"/>
+<select idref="audit_rules_time_stime" selected="true"/>
+<select idref="audit_rules_time_clock_settime" selected="true"/>
+<select idref="audit_rules_time_watch_localtime" selected="true"/>
+<select idref="audit_rules_usergroup_modification" selected="true"/>
+<select idref="audit_rules_networkconfig_modification" selected="true"/>
+<select idref="file_permissions_var_log_audit" selected="true"/>
+<select idref="file_ownership_var_log_audit" selected="true"/>
+<select idref="audit_rules_mac_modification" selected="true"/>
+<select idref="audit_rules_dac_modification_chmod" selected="true"/>
+<select idref="audit_rules_dac_modification_chown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmod" selected="true"/>
+<select idref="audit_rules_dac_modification_fchmodat" selected="true"/>
+<select idref="audit_rules_dac_modification_fchown" selected="true"/>
+<select idref="audit_rules_dac_modification_fchownat" selected="true"/>
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lchown" selected="true"/>
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true"/>
+<select idref="audit_rules_dac_modification_removexattr" selected="true"/>
+<select idref="audit_rules_dac_modification_setxattr" selected="true"/>
+<select idref="audit_rules_login_events" selected="true"/>
+<select idref="audit_rules_session_events" selected="true"/>
+<select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
+<select idref="audit_rules_privileged_commands" selected="true"/>
+<select idref="audit_rules_media_export" selected="true"/>
+<select idref="audit_rules_file_deletion_events" selected="true"/>
+<select idref="audit_rules_sysadmin_actions" selected="true"/>
+<select idref="audit_rules_kernel_module_loading" selected="true"/>
+<select idref="audit_rules_immutable" selected="true"/>
+
+<!-- 5.5.2 Access Enforcement -->
+<select idref="account_unique_name" selected="true"/>
+<select idref="gid_passwd_group_same" selected="true"/>
+<select idref="accounts_password_all_shadowed" selected="true"/>
+<select idref="no_empty_passwords" selected="true"/>
+<select idref="display_login_attempts" selected="true"/>
+
+<!-- 5.6.2.1 Standard Authenticators -->
+<refine-value idref="var_accounts_password_minlen_login_defs" selector="8" />
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="90" />
+<refine-value idref="var_password_pam_unix_remember" selector="10" />
+
+<!-- 5.5.2.2 System Access Control -->
+<select idref="set_password_hashing_algorithm_systemauth" selected="true"/>
+<select idref="set_password_hashing_algorithm_logindefs" selected="true"/>
+<select idref="set_password_hashing_algorithm_libuserconf" selected="true"/>
+<select idref="userowner_shadow_file" selected="true"/>
+<select idref="groupowner_shadow_file" selected="true"/>
+<select idref="file_permissions_etc_shadow" selected="true"/>
+<select idref="file_owner_etc_group" selected="true"/>
+<select idref="file_groupowner_etc_group" selected="true"/>
+<select idref="file_permissions_etc_group" selected="true"/>
+<select idref="file_owner_etc_passwd" selected="true"/>
+<select idref="file_groupowner_etc_passwd" selected="true"/>
+<select idref="file_permissions_etc_passwd" selected="true"/>
+<select idref="file_user_owner_grub2_cfg" selected="true"/>
+<select idref="file_group_owner_grub2_cfg" selected="true"/>
+
+<!-- 5.5.3 Unsuccessful Login Attempts -->
+<refine-value idref="var_password_pam_retry" selector="5" />
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="5" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="600" />
+
+<!-- 5.5.5 Session Lock -->
+<select idref="dconf_gnome_screensaver_idle_delay" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_lock_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_mode_blank" selected="true"/>
+
+<!-- 5.5.6 Remote Access -->
+<select idref="sshd_allow_only_protocol2" selected="true"/>
+<select idref="sshd_set_idle_timeout" selected="true"/>
+<select idref="sshd_set_keepalive" selected="true"/>
+<select idref="sshd_disable_rhosts" selected="true"/>
+<select idref="disable_host_auth" selected="true"/>
+<select idref="sshd_disable_root_login" selected="true"/>
+<select idref="sshd_disable_empty_passwords" selected="true"/>
+<select idref="sshd_enable_warning_banner" selected="true"/>
+<select idref="sshd_do_not_permit_user_env" selected="true"/>
+<select idref="sshd_use_approved_ciphers" selected="true"/>
+
+<!-- 5.10.1 Information Flow Enforcement -->
+<select idref="kernel_module_dccp_disabled" selected="true"/>
+<select idref="kernel_module_sctp_disabled" selected="true"/>
+<select idref="service_firewalld_enabled" selected="true"/>
+<select idref="set_firewalld_default_zone" selected="true"/>
+<refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
+
+<!-- 5.10.1.1 Boundary Protection -->
+<select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv4_tcp_syncookies" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
+
+<!-- 5.10.1.2 Encryption -->
+<!-- How can I make RHEL 6 or RHEL 7 FIPS 140-2 compliant? https://access.redhat.com/solutions/137833 -->
+<refine-value idref="var_password_pam_ocredit" selector="1" />
+<refine-value idref="var_password_pam_dcredit" selector="1" />
+<refine-value idref="var_password_pam_ucredit" selector="1" />
+<refine-value idref="var_password_pam_lcredit" selector="1" />
+
+<!-- 5.10.1.3 Intrusion Detection Tools and Techniques -->
+<select idref="package_aide_installed" selected="true"/>
+<select idref="disable_prelink" selected="true"/>
+<select idref="aide_build_database" selected="true"/>
+<select idref="aide_periodic_cron_checking" selected="true"/>
+
+<!-- 5.10.4.1 Patch Management -->
+<select idref="rpm_verify_permissions" selected="true"/>
+<select idref="rpm_verify_hashes" selected="true"/>
+<select idref="ensure_redhat_gpgkey_installed" selected="true"/>
+<select idref="ensure_gpgcheck_globally_activated" selected="true"/>
+<select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+<select idref="security_patches_up_to_date" selected="true"/>
+
+<!-- 5.13.1.3 Bluetooth -->
+<select idref="kernel_module_bluetooth_disabled" selected="true"/>
+
+</Profile>
