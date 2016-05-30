@@ -152,10 +152,11 @@ reason.</warning>
 <Value id="var_password_pam_maxclassrepeat" type="number" operator="equals" interactive="0">
 <title>maxclassrepeat</title>
 <description>Maximum Number of Consecutive Repeating Characters in a Password From the Same Character Class</description>
-<value selector="">2</value>
+<value selector="">4</value>
 <value selector="1">1</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
+<value selector="4">4</value>
 </Value>
 
 <Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
@@ -337,7 +338,7 @@ to prevent a run of (<sub idref="var_password_pam_maxclassrepeat" /> + 1) or mor
 <ocil clause="that is not the case">
 To check the value for maximum consecutive repeating characters, run the following command:
 <pre>$ grep maxclassrepeat /etc/security/pwquality.conf</pre>
-For DoD systems, the output should show <tt>maxclassrepeat</tt>=2.
+For DoD systems, the output should show <tt>maxclassrepeat</tt>=4.
 </ocil>
 <rationale>
 Use of a complex password helps to increase the time and resources required to comrpomise the password.
@@ -668,6 +669,35 @@ situations.
 <ident cce="26884-7" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
 <ref nist="AC-7(b)" disa="002238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010371" pcidss="Req-8.1.7" cis="6.3.3" />
+</Rule>
+
+<Rule id="accounts_passwords_pam_faillock_deny_root" severity="medium">
+<title>Configure the <tt>root</tt> Account for Failed Password Attempts</title>
+<description>
+To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
+attempts using <tt>pam_faillock.so</tt>, modify the content of both
+<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
+<br /><br />
+<ul> 
+<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+</ul>
+</description>
+<ocil clause="that is not the case">
+To ensure that even the <tt>root</tt> account is locked after a defined number of failed password
+attempts, run the following command:
+<pre>$ grep even_deny_root /etc/pam.d/system-auth</pre>
+The output should show <tt>even_deny_root</tt>.
+</ocil>
+<rationale>
+By limiting the number of failed logon attempts, the risk of unauthorized system access via user password
+guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="accounts_passwords_pam_faillock_deny_root" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010372" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
