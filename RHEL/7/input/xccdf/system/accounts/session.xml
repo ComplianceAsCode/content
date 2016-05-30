@@ -24,6 +24,14 @@ operator="equals" interactive="0">
 <value selector="20">20</value>
 </Value>
 
+<Value id="var_accounts_fail_delay" type="number"
+operator="equals" interactive="0">
+<title>Maximum login attempts delay</title>
+<description>Maximum time between fail login attempts before re-prompting.</description>
+<value selector="">4</value>
+<value selector="4">4</value>
+</Value>
+
 <Value id="var_accounts_tmout" type="number" operator="equals" interactive="0">
 <title>Account Inactivity Timeout (minutes)</title>
 <description>In an interactive shell, the value is interpreted as the
@@ -79,6 +87,30 @@ You should receive output similar to the following:
 <ident cce="27081-9" />
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
 <ref nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" stigid="040010" />
+</Rule>
+
+<Rule id="accounts_logon_fail_delay">
+<title>Ensure the Logon Failure Delay is Set Correctly in login.defs</title>
+<description>
+To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
+add or correct the <tt>FAIL_DELAY</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
+<pre>FAIL_DELAY <sub idref="var_accounts_fail_delay" /></pre>
+</description>
+<ocil clause="the above command returns no output, or if the umask is configured incorrectly">
+Verify the <tt>FAIL_DELAY</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
+running the following command:
+<pre># grep -i "FAIL_DELAY" /etc/login.defs</pre>
+All output must show the value of <tt>umask</tt> set as shown in the below:
+<pre># grep -i "FAIL_DELAY" /etc/login.defs
+fail_delay <sub idref="var_accounts_fail_delay" /></pre>
+</ocil>
+<rationale>
+Increasing the time between a failed authentication attempt and re-prompting to
+enter credentials helps to slow a single-threaded brute force attack.
+</rationale>
+<ident cce="RHEL7_CCE_TBD" />
+<oval id="accounts_logon_fail_delay" value="var_accounts_fail_delay" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00226" stigid="010420" />
 </Rule>
 
 <Group id="root_paths">
