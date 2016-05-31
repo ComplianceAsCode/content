@@ -38,7 +38,9 @@ DOCDIR=$(DATADIR)/doc
 
 all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist
-jenkins: clean all validate dist
+jenkins:
+
+	true
 
 fedora:
 	cd Fedora/ && $(MAKE)
