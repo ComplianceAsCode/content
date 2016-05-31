@@ -1,6 +1,9 @@
 all: tables guide content dist
 
-SHARED = ../../../shared
+# Do not remove exporting of SHARED variable!!! (since
+# shared/transforms/combineremediations.py helper
+# requires its value to be available)
+export SHARED = ../../../shared
 include $(SHARED)/product-make.include
 
 PROD = fuse6
