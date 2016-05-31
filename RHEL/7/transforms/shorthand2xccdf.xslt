@@ -43,6 +43,23 @@
     <xccdf:version update="{$ssg-benchmark-latest-uri}"><xsl:value-of select="$ssg_version"/></xccdf:version>
   </xsl:template>
 
+  <!-- Expand <metadata> element with required information about benchmark's
+       publisher, creator, contributor(s), and source -->
+  <xsl:template match="Benchmark/metadata">
+    <xccdf:metadata>
+      <!-- Insert benchmark publisher -->
+      <dc:publisher><xsl:value-of select="$ssg-project-name"/></dc:publisher>
+      <!-- Insert benchmark creator -->
+      <dc:creator><xsl:value-of select="$ssg-project-name"/></dc:creator>
+      <!-- Insert list of individual contributors for benchmark -->
+      <xsl:for-each select="document('../output/contributors.xml')/text/contributor">
+        <dc:contributor><xsl:value-of select="current()" /></dc:contributor>
+      </xsl:for-each>
+      <!-- Insert benchmark source -->
+      <dc:source><xsl:value-of select="$ssg-benchmark-latest-uri"/></dc:source>
+    </xccdf:metadata>
+  </xsl:template>
+
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
   <xsl:template match="Rule">
     <Rule selected="false">
@@ -394,6 +411,32 @@
   <xhtml:pre>$ mount | grep "on <xsl:value-of select="@part"/>"</xhtml:pre>
   If <xhtml:code><xsl:value-of select="@part"/></xhtml:code> has its own partition or volume group, a line
   will be returned.
+  </xsl:template>
+
+  <xsl:template match="sebool-macro">
+    <xsl:choose>
+      <xsl:when test="@enable = 'false'">
+        To disable the '<xsl:value-of select="@sebool"/>' SELinux boolean, run the following command:
+        <xhtml:code>$ sudo setsebool -P <xsl:value-of select="@sebool"/> off</xhtml:code>
+      </xsl:when>
+      <xsl:otherwise>
+        To enable the '<xsl:value-of select="@sebool"/>' SELinux boolean, run the following command:
+        <xhtml:code>$ sudo setsebool -P <xsl:value-of select="@sebool"/> on</xhtml:code>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="sebool-check-macro">
+    <xsl:choose>
+      <xsl:when test="@enable = 'false'">
+        Run the following command to determine if the '<xsl:value-of select="@sebool"/>' SELinux boolean is disabled:
+        <xhtml:code>$ getsebool <xsl:value-of select="@sebool"/></xhtml:code>
+      </xsl:when>
+      <xsl:otherwise>
+        Run the following command to determine if the '<xsl:value-of select="@sebool"/>' SELinux boolean is enabled:
+        <xhtml:code>$ getsebool <xsl:value-of select="@sebool"/></xhtml:code>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="service-disable-macro">
