@@ -19,33 +19,33 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
 
-        <!-- Adding profiles here -->
-	<xsl:if test=" number($withtest) = number(0) ">
-          <xsl:apply-templates select="document('profiles/test.xml')" />
-	</xsl:if>
-        <xsl:apply-templates select="document('profiles/standard.xml')" />
-        <xsl:apply-templates select="document('profiles/pci-dss.xml')" />
-        <xsl:apply-templates select="document('profiles/C2S.xml')" />
-        <xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
-        <xsl:apply-templates select="document('profiles/common.xml')" />
-        <xsl:apply-templates select="document('profiles/stig-rhel7-workstation-upstream.xml')" />
-        <xsl:apply-templates select="document('profiles/stig-rhel7-server-gui-upstream.xml')" />
-        <xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
-        <xsl:apply-templates select="document('profiles/ospp-rhel7-server.xml')" />
-        <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
+      <!-- Adding profiles here -->
+      <xsl:if test=" number($withtest) = number(0) ">
+        <xsl:apply-templates select="document('profiles/test.xml')" />
+      </xsl:if>
+      <xsl:apply-templates select="document('profiles/standard.xml')" />
+      <xsl:apply-templates select="document('profiles/pci-dss.xml')" />
+      <xsl:apply-templates select="document('profiles/C2S.xml')" />
+      <xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
+      <xsl:apply-templates select="document('profiles/common.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-rhel7-workstation-upstream.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-rhel7-server-gui-upstream.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
+      <xsl:apply-templates select="document('profiles/ospp-rhel7-server.xml')" />
+      <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
 
-        <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
-        <Value id="conditional_clause" type="string" operator="equals">
-          <title>A conditional clause for check statements.</title>
-          <description>A conditional clause for check statements.</description>
-          <value>This is a placeholder.</value>
-        </Value>
+      <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
+      <Value id="conditional_clause" type="string" operator="equals">
+        <title>A conditional clause for check statements.</title>
+        <description>A conditional clause for check statements.</description>
+        <value>This is a placeholder.</value>
+      </Value>
 
-        <!-- Adding remediation functions from concat($SHARED_RP, '/xccdf/remediation_functions.xml')
-             location here -->
-        <xsl:if test=" string($SHARED_RP) != 'undef' ">
-          <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
-        </xsl:if>
+      <!-- Adding remediation functions from concat($SHARED_RP, '/xccdf/remediation_functions.xml')
+           location here -->
+      <xsl:if test=" string($SHARED_RP) != 'undef' ">
+        <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
+      </xsl:if>
 
       <xsl:apply-templates select="document('intro/intro.xml')" />
       <xsl:apply-templates select="document('xccdf/system/system.xml')" />
