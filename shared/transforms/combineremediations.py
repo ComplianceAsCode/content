@@ -128,6 +128,11 @@ def expand_xccdf_subs(fix, remediation_functions):
             function_name "arg1" "arg2" ... "argN"
     """
 
+    # Workaround for python < 2.7 (RHEL-6 and below) not supporting 'flags'
+    # parameter in re.split() routine yet:
+    # https://docs.python.org/2/library/re.html#re.split
+    DA = '[.\n]'
+
     # This remediation script doesn't utilize internal remediation functions
     # Skip it without any further processing
     if 'remediation_functions' not in fix.text:
@@ -137,22 +142,32 @@ def expand_xccdf_subs(fix, remediation_functions):
     # elements
     else:
         pattern = '\n(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]+)\n'
-        fixparts = re.split(pattern, fix.text, re.DOTALL)
+        fixparts = re.split(pattern, fix.text)
         if fixparts[0] is not None:
             # Split the portion of fix.text from fix start to first call of
             # remediation function into two parts:
             # * head        to hold inclusion of the remediation functions
             # * tail        to hold part of the fix.text after inclusion,
             #               but before first call of remediation function
-            _, head, tail, _ = re.split('(.*remediation_functions)(.*)', fixparts[0], 2, re.DOTALL)
-            # If the 'tail' is not empty, make it new fix.text. Otherwise use ''
+            try:
+                _, head, tail, _ = re.split('(' + DA +
+                                            '*remediation_functions)(' + DA +
+                                            '*)', fixparts[0], maxsplit=2)
+            except ValueError:
+                print("Processing fix.text for: %s rule" % fix.get('rule'))
+                print("Unable to extract part of the fix.text after " +
+                      "inclusion of remediation functions. Aborting..")
+                sys.exit(1)
+            # If the 'tail' is not empty, make it new fix.text.
+            # Otherwise use ''
             fix.text = tail if tail is not None else ''
             # Drop the first element of 'fixparts' since it has been processed
             fixparts.pop(0)
             # Perform sanity check on new 'fixparts' list content (to continue
             # successfully 'fixparts' has to contain even count of elements)
             if len(fixparts) % 2 != 0:
-                print("Error performing XCCDF expansion on remediation script: %s" % fix.get('rule'))
+                print("Error performing XCCDF expansion on remediation " +
+                      "script: %s" % fix.get('rule'))
                 print("Invalid count of elements. Exiting")
                 sys.exit(1)
             # Process remaining 'fixparts' elements in pairs
@@ -169,13 +184,15 @@ def expand_xccdf_subs(fix, remediation_functions):
                     # This chunk contains call of 'populate' function
                     if 'populate' in fixparts[idx]:
                         # Extract variable name
-                        varname = re.search('\npopulate (\S+)\n', fixparts[idx], re.DOTALL).group(1)
+                        varname = re.search('\npopulate (\S+)\n',
+                                            fixparts[idx], re.DOTALL).group(1)
                         # Define fix text part to contribute to main fix text
                         fixtextcontribution = '\n%s="' % varname
                         # Append the contribution
                         fix.text += fixtextcontribution
                         # Define new XCCDF <sub> element for the variable
-                        xccdfvarsub = etree.SubElement(fix, "sub", idref=varname)
+                        xccdfvarsub = etree.SubElement(fix, "sub",
+                                                       idref=varname)
                         # If second pair element is not empty, append it as
                         # tail for the subelement (prefixed with closing '"')
                         if fixparts[idx + 1] is not None:
@@ -188,10 +205,14 @@ def expand_xccdf_subs(fix, remediation_functions):
                     # This chunk contains call of other remediation function
                     else:
                         # Extract remediation function name
-                        funcname = re.search('\n\s*(\S+) .*\n', fixparts[idx], re.DOTALL).group(1)
+                        funcname = re.search('\n\s*(\S+) .*\n', fixparts[idx],
+                                             re.DOTALL).group(1)
                         # Define new XCCDF <sub> element for the function
-                        xccdffuncsub = etree.SubElement(fix, "sub", idref='function_%s' % funcname)
-                        # Append original function call into tail of the subelement
+                        xccdffuncsub = etree.SubElement(fix, "sub",
+                                                        idref='function_%s' % \
+                                                        funcname)
+                        # Append original function call into tail of the
+                        # subelement
                         xccdffuncsub.tail = fixparts[idx]
                         # If the second element of the pair is not empty,
                         # append it to the tail of the subelement too
@@ -199,17 +220,19 @@ def expand_xccdf_subs(fix, remediation_functions):
                             xccdffuncsub.tail += fixparts[idx + 1]
                         # Append the new subelement to the fix element
                         fix.append(xccdffuncsub)
-                        # Ensure the newly added <xccdf:sub> element for the function
-                        # will be always inserted at newline
-                        # If xccdffuncsub is the first <xccdf:sub> element being
-                        # added as child of <fix> and fix.text doesn't end up with
-                        # newline character, append the newline to the fix.text
+                        # Ensure the newly added <xccdf:sub> element for the
+                        # function will be always inserted at newline
+                        # If xccdffuncsub is the first <xccdf:sub> element
+                        # being added as child of <fix> and fix.text doesn't
+                        # end up with newline character, append the newline
+                        # to the fix.text
                         if fix.index(xccdffuncsub) == 0:
                             if re.search('.*\n$', fix.text) is None:
                                 fix.text += '\n'
-                        # If xccdffuncsub isn't the first child (first <xccdf:sub>
-                        # being added), and tail of previous child doesn't end up with
-                        # newline, append the newline to the tail of previous child
+                        # If xccdffuncsub isn't the first child (first
+                        # <xccdf:sub> being added), and tail of previous
+                        # child doesn't end up with newline, append the newline
+                        # to the tail of previous child
                         else:
                             previouselem = xccdffuncsub.getprevious()
                             if re.search('.*\n$', previouselem.tail) is None:
