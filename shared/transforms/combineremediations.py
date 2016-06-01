@@ -77,28 +77,162 @@ def fix_is_applicable_for_product(platform, product):
     # for this product => return False to indicate that
     return False
 
-def substitute_vars(fix):
-    # Brittle and troubling code to assign environment vars to XCCDF values
-    lib = "(\s*\. \/usr\/share\/scap-security-guide\/remediation_functions\s*\S*)"
-    regex = lib + "\n+(\s*declare\s+\S+\n+)?(\s*populate\s+)(\S+)\n(.*)"
-    env_var = re.match(regex, fix.text, re.DOTALL)
 
-    if not env_var:
-        # No need to alter fix.text
+def get_available_remediation_functions():
+    """Parse the content of "$(SHARED)/xccdf/remediation_functions.xml" XML
+    file to obtain the list of currently known SCAP Security Guide internal
+    remediation functions"""
+
+    remediation_functions = []
+    # Determine the relative path to the "/shared" directory
+    shared_dir = os.getenv("SHARED")
+    # Default location of XML file with definitions of remediation functions
+    xmlfilepath = ''
+    # If location of /shared directory is known
+    if shared_dir is not None:
+        # Construct the final path of XML file with remediation functions
+        xmlfilepath = shared_dir + '/xccdf/remediation_functions.xml'
+    if xmlfilepath == '':
+        print("Error determinining location of XML file with definitions of remediation functions")
+        sys.exit(1)
+
+    with open(xmlfilepath) as xmlfile:
+        filestring = xmlfile.read()
+        remediation_functions = re.findall('(?:^|\n)<Value id=\"function_(\S+)\"', filestring, re.DOTALL)
+
+    return remediation_functions
+
+
+def expand_xccdf_subs(fix, remediation_functions):
+    """For those remediation scripts utilizing some of the internal SCAP
+    Security Guide remediation functions expand the selected shell variables
+    and remediation functions calls with <xccdf:sub> element
+
+    This routine translates any instance of the 'populate' function call in
+    the form of:
+
+            populate variable_name
+
+    into
+
+            variable_name="<sub idref="variable_name"/>"
+
+    Also transforms any instance of some other known remediation function (e.g.
+    'replace_or_append' etc.) from the form of:
+
+            function_name "arg1" "arg2" ... "argN"
+
+    into:
+
+            <sub idref="function_function_name"/>
+            function_name "arg1" "arg2" ... "argN"
+    """
+
+    # This remediation script doesn't utilize internal remediation functions
+    # Skip it without any further processing
+    if 'remediation_functions' not in fix.text:
         return
-    # Otherwise, create node to populate environment variable
-    varname = env_var.group(4)
-    mainscript = env_var.group(5)
-    # Keep the source of the remediation_functions library still included in
-    # the updated remediation script. This ensures the script will work
-    # properly also in the case there's yet another of the remediation
-    # functions called later in the script body
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1075
-    fix.text = "\n" + env_var.group(1) + "\n" + varname + "=" + '"'
-    # New <sub> element to reference XCCDF variable
-    xccdf_sub = etree.SubElement(fix, "sub", idref=varname)
-    xccdf_sub.tail = '"' + mainscript
-    fix.append(xccdf_sub)
+    # This remediation script utilizes some of internal remediation functions
+    # Expand shell variables and remediation functions calls with <xccdf:sub>
+    # elements
+    else:
+        pattern = '\n(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]+)\n'
+        patcomp = re.compile(pattern, re.DOTALL)
+        fixparts = re.split(patcomp, fix.text)
+        if fixparts[0] is not None:
+            # Split the portion of fix.text from fix start to first call of
+            # remediation function into two parts:
+            # * head        to hold inclusion of the remediation functions
+            # * tail        to hold part of the fix.text after inclusion,
+            #               but before first call of remediation function
+            try:
+                rfpattern = '(.*remediation_functions)(.*)'
+                rfpatcomp = re.compile(rfpattern, re.DOTALL)
+                _, head, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
+            except ValueError:
+                print("Processing fix.text for: %s rule" % fix.get('rule'))
+                print("Unable to extract part of the fix.text after " +
+                      "inclusion of remediation functions. Aborting..")
+                sys.exit(1)
+            # If the 'tail' is not empty, make it new fix.text.
+            # Otherwise use ''
+            fix.text = tail if tail is not None else ''
+            # Drop the first element of 'fixparts' since it has been processed
+            fixparts.pop(0)
+            # Perform sanity check on new 'fixparts' list content (to continue
+            # successfully 'fixparts' has to contain even count of elements)
+            if len(fixparts) % 2 != 0:
+                print("Error performing XCCDF expansion on remediation " +
+                      "script: %s" % fix.get('rule'))
+                print("Invalid count of elements. Exiting")
+                sys.exit(1)
+            # Process remaining 'fixparts' elements in pairs
+            # First pair element is remediation function to be XCCDF expanded
+            # Second pair element (if not empty) is the portion of the original
+            # fix text to be used in newly added sublement's tail
+            for idx in range(0, len(fixparts), 2):
+                # We previously removed enclosing newlines when creating
+                # fixparts list. Add them back and reuse the above 'pattern'
+                fixparts[idx] = "\n%s\n" % fixparts[idx]
+                # Sanity check (verify the first field truly contains call of
+                # some of the remediation functions)
+                if re.match(pattern, fixparts[idx], re.DOTALL) is not None:
+                    # This chunk contains call of 'populate' function
+                    if 'populate' in fixparts[idx]:
+                        # Extract variable name
+                        varname = re.search('\npopulate (\S+)\n',
+                                            fixparts[idx], re.DOTALL).group(1)
+                        # Define fix text part to contribute to main fix text
+                        fixtextcontribution = '\n%s="' % varname
+                        # Append the contribution
+                        fix.text += fixtextcontribution
+                        # Define new XCCDF <sub> element for the variable
+                        xccdfvarsub = etree.SubElement(fix, "sub",
+                                                       idref=varname)
+                        # If second pair element is not empty, append it as
+                        # tail for the subelement (prefixed with closing '"')
+                        if fixparts[idx + 1] is not None:
+                            xccdfvarsub.tail = '"' + '\n' + fixparts[idx + 1]
+                        # Otherwise append just enclosing '"'
+                        else:
+                           xccdfvarsub.tail = '"' + '\n'
+                        # Append the new subelement to the fix element
+                        fix.append(xccdfvarsub)
+                    # This chunk contains call of other remediation function
+                    else:
+                        # Extract remediation function name
+                        funcname = re.search('\n\s*(\S+) .*\n', fixparts[idx],
+                                             re.DOTALL).group(1)
+                        # Define new XCCDF <sub> element for the function
+                        xccdffuncsub = etree.SubElement(fix, "sub",
+                                                        idref='function_%s' % \
+                                                        funcname)
+                        # Append original function call into tail of the
+                        # subelement
+                        xccdffuncsub.tail = fixparts[idx]
+                        # If the second element of the pair is not empty,
+                        # append it to the tail of the subelement too
+                        if fixparts[idx + 1] is not None:
+                            xccdffuncsub.tail += fixparts[idx + 1]
+                        # Append the new subelement to the fix element
+                        fix.append(xccdffuncsub)
+                        # Ensure the newly added <xccdf:sub> element for the
+                        # function will be always inserted at newline
+                        # If xccdffuncsub is the first <xccdf:sub> element
+                        # being added as child of <fix> and fix.text doesn't
+                        # end up with newline character, append the newline
+                        # to the fix.text
+                        if fix.index(xccdffuncsub) == 0:
+                            if re.search('.*\n$', fix.text) is None:
+                                fix.text += '\n'
+                        # If xccdffuncsub isn't the first child (first
+                        # <xccdf:sub> being added), and tail of previous
+                        # child doesn't end up with newline, append the newline
+                        # to the tail of previous child
+                        else:
+                            previouselem = xccdffuncsub.getprevious()
+                            if re.search('.*\n$', previouselem.tail) is None:
+                                previouselem.tail += '\n'
 
 
 def main():
@@ -116,15 +250,17 @@ def main():
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
+    remediation_functions = get_available_remediation_functions()
+
     platform = {}
     included_fixes_count = 0
     for filename in os.listdir(fixdir):
         if filename.endswith(".sh"):
-            # create and populate new fix element based on shell file
+            # Create and populate new fix element based on shell file
             fixname = os.path.splitext(filename)[0]
 
             with open(fixdir + "/" + filename, 'r') as fix_file:
-                # assignment automatically escapes shell characters for XML
+                # Assignment automatically escapes shell characters for XML
                 script_platform = fix_file.readline().strip('#').strip().split('=')
                 if len(script_platform) > 1:
                     platform[script_platform[0].strip()] = script_platform[1].strip()
@@ -134,9 +270,9 @@ def main():
                         fix.text = fix_file.read()
                         included_fixes_count += 1
 
-                        # replace instance of bash function "populate" with XCCDF
-                        # variable substitution
-                        substitute_vars(fix)
+                        # Expand shell variables and remediation functions into
+                        # corresponding XCCDF <sub> elements
+                        expand_xccdf_subs(fix, remediation_functions)
                 else:
                     print("\nNotification: Removed the '%s' remediation script from merging as " \
                           "the platform identifier in the script is missing!" % filename)
