@@ -196,9 +196,9 @@
           <xsl:when test="name() = 'stigid'">
             <xsl:value-of select="normalize-space(concat('RHEL-07-', .))" />
           </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="normalize-space($refitem)" />
-        </xsl:otherwise>
+          <xsl:otherwise>
+            <xsl:value-of select="normalize-space($refitem)" />
+          </xsl:otherwise>
         </xsl:choose>
       </reference>
   </xsl:template>
