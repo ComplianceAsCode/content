@@ -128,11 +128,6 @@ def expand_xccdf_subs(fix, remediation_functions):
             function_name "arg1" "arg2" ... "argN"
     """
 
-    # Workaround for python < 2.7 (RHEL-6 and below) not supporting 'flags'
-    # parameter in re.split() routine yet:
-    # https://docs.python.org/2/library/re.html#re.split
-    DA = '[.\n]'
-
     # This remediation script doesn't utilize internal remediation functions
     # Skip it without any further processing
     if 'remediation_functions' not in fix.text:
@@ -142,7 +137,8 @@ def expand_xccdf_subs(fix, remediation_functions):
     # elements
     else:
         pattern = '\n(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]+)\n'
-        fixparts = re.split(pattern, fix.text)
+        patcomp = re.compile(pattern, re.DOTALL)
+        fixparts = re.split(patcomp, fix.text)
         if fixparts[0] is not None:
             # Split the portion of fix.text from fix start to first call of
             # remediation function into two parts:
@@ -150,9 +146,9 @@ def expand_xccdf_subs(fix, remediation_functions):
             # * tail        to hold part of the fix.text after inclusion,
             #               but before first call of remediation function
             try:
-                _, head, tail, _ = re.split('(' + DA +
-                                            '*remediation_functions)(' + DA +
-                                            '*)', fixparts[0], maxsplit=2)
+                rfpattern = '(.*remediation_functions)(.*)'
+                rfpatcomp = re.compile(rfpattern, re.DOTALL)
+                _, head, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
             except ValueError:
                 print("Processing fix.text for: %s rule" % fix.get('rule'))
                 print("Unable to extract part of the fix.text after " +
