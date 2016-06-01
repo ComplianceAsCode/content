@@ -188,8 +188,18 @@
           <xsl:if test="$refsource = 'cis'">
             <xsl:value-of select="$cisuri" />
           </xsl:if>
+          <xsl:if test="$refsource = 'stigid'">
+            <xsl:value-of select="$disa-stigs-os-unix-linux-uri" />
+          </xsl:if>
         </xsl:attribute>
-        <xsl:value-of select="normalize-space($refitem)" />
+        <xsl:choose>
+          <xsl:when test="name() = 'stigid'">
+            <xsl:value-of select="normalize-space(concat('RHEL-07-', .))" />
+          </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="normalize-space($refitem)" />
+        </xsl:otherwise>
+        </xsl:choose>
       </reference>
   </xsl:template>
 
