@@ -24,7 +24,7 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_accounts_logon_fail_delay" version="1">
-    <ind:subexpression operation="equals" var_ref="var_accounts_fail_delay" datatype="int" />
+    <ind:subexpression operation="greater than or equal" var_ref="var_accounts_fail_delay" datatype="int" />
   </ind:textfilecontent54_state>
 
   <external_variable id="var_accounts_fail_delay" datatype="int" version="1" comment="Expected fail_delay" />
