@@ -92,11 +92,11 @@ You should receive output similar to the following:
 <Rule id="accounts_logon_fail_delay">
 <title>Ensure the Logon Failure Delay is Set Correctly in login.defs</title>
 <description>
-To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
+To ensure the logon failure delay controlled by <tt>/etc/login.defs</tt> is set properly,
 add or correct the <tt>FAIL_DELAY</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
 <pre>FAIL_DELAY <sub idref="var_accounts_fail_delay" /></pre>
 </description>
-<ocil clause="the above command returns no output, or if the umask is configured incorrectly">
+<ocil clause="the above command returns no output, or FAIL_DELAY is configured incorrectly">
 Verify the <tt>FAIL_DELAY</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
 running the following command:
 <pre># grep -i "FAIL_DELAY" /etc/login.defs</pre>
