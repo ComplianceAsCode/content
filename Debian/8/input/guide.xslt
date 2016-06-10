@@ -27,6 +27,10 @@
           </xsl:if>
         -->
       <xsl:apply-templates select="document('profiles/common.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_np_nt28_minimal.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_np_nt28_average.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_np_nt28_restrictive.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_np_nt28_high.xml')" />
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">
