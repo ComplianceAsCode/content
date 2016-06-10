@@ -1,6 +1,6 @@
-<Profile id="common">
-<title>Common Profile for General-Purpose Debian Systems</title>
-<description>This profile contains items common to general-purpose Debian 8 installations.</description>
+<Profile id="anssi_np_nt28_average">
+<title>Common Profile for ANSSI DAT-NT28 level average (fr: intermediaire) for Debian Systems</title>
+<description>This profile contains items for Debian 8 installations already protected by multiple higher level security stacks.</description>
 
 <!-- partitioning -->
 <select idref="partition_for_tmp" selected="true"/>
@@ -10,8 +10,6 @@
 <select idref="partition_for_home" selected="true"/>
 
 <!-- services -->
-<select idref="package_auditd_installed" selected="true"/>
-<select idref="package_cron_installed" selected="true"/>
 <select idref="package_ntp_installed" selected="true"/>
 <select idref="package_rsyslog_installed" selected="true"/>
 
@@ -21,9 +19,7 @@
 <select idref="package_nis_removed" selected="true"/>
 <select idref="package_ntpdate_removed" selected="true"/>
 
-<select idref="service_auditd_enabled" selected="true"/>
 <select idref="service_cron_enabled" selected="true"/>
-<select idref="service_ntpd_enabled" selected="true"/>
 <select idref="service_rsyslog_enabled" selected="true"/>
 
 <refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
