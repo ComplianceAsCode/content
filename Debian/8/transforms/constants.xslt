@@ -4,5 +4,6 @@
 
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_Debian_Benchmark_v1.0.pdf</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
+<xsl:variable name="os-stigid-concat" />
 
 </xsl:stylesheet>
