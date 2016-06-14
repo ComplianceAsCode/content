@@ -224,27 +224,38 @@ the non-graphical <tt>multi-user.target</tt> mode.
 </Rule>
 
 <Rule id="disable_interactive_boot" severity="medium">
-<title>Disable Interactive Boot</title>
+<title>Verify that Interactive Boot is Disabled</title>
 <description>
-To disable the ability for users to perform interactive startups,
-edit the file <tt>/etc/sysconfig/init</tt>.
-Add or correct the line:
-<pre>PROMPT=no</pre>
-The <tt>PROMPT</tt> option allows the console user to perform an
-interactive system startup, in which it is possible to select the
-set of services which are started on boot.
+Red Hat Enterprise Linux systems support an "interactive boot" option that can
+be used to prevent services from being started. On a Red Hat Enterprise Linux 7
+system, interactive boot can be enabled by providing a <tt>1</tt>,
+<tt>yes</tt>, <tt>true</tt>, or <tt>on</tt> value to the
+<tt>systemd.confirm_spawn</tt> kernel argument in <tt>/etc/default/grub</tt>.
+Remove any instance of <pre>systemd.confirm_spawn=(1|yes|true|on)</pre> from
+the kernel arguments in that file to disable interactive boot.
 </description>
-<ocil clause="it does not">
-To check whether interactive boot is disabled, run the following command:
-<pre>$ grep PROMPT /etc/sysconfig/init</pre>
-If interactive boot is disabled, the output will show:
-<pre>PROMPT=no</pre>
+<ocil clause="Interactive boot is enabled at boot time">
+Inspect <tt>/etc/default/grub</tt> for any instances of
+<tt>systemd.confirm_spawn=(1|yes|true|on)</tt> in the kernel boot arguments.
+Presence of a <tt>systemd.confirm_spawn=(1|yes|true|on)</tt> indicates
+that interactive boot is enabled at boot time.
 </ocil>
 <rationale>
-Using interactive boot,
-the console user could disable auditing, firewalls, or other
-services, weakening system security.
+Using interactive boot, the console user could disable auditing, firewalls,
+or other services, weakening system security.
 </rationale>
+<warning category="general">The GRUB 2 configuration file, <tt>grub.cfg</tt>,
+is automatically updated each time a new kernel is installed. Note that any
+changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
+file. To update the GRUB 2 configuration file manually, use the
+<pre>grub2-mkconfig -o</pre> command as follows:
+<ul>
+<li>On BIOS-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+<li>On UEFI-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+</ul>
+</warning>
 <ident cce="27335-9" />
 <oval id="disable_interactive_boot" />
 <ref nist="SC-2,AC-3" disa="213"/>
