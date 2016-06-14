@@ -3,5 +3,7 @@
 <xsl:include href="../../../shared/transforms/shared_constants.xslt"/>
 
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_Red_Hat_Enterprise_Linux_7_Benchmark_v1.1.0.pdf</xsl:variable>
+<xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
+<xsl:variable name="os-stigid-concat">RHEL-07-</xsl:variable>
 
 </xsl:stylesheet>
