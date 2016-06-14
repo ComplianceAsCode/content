@@ -2,4 +2,7 @@
 
 <xsl:include href="../../shared/transforms/shared_constants.xslt"/>
 
+<xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-appserver-uri"/>
+<xsl:variable name="os-stigid-concat" />
+
 </xsl:stylesheet>
