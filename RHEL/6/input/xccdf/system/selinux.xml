@@ -130,7 +130,7 @@ for the creation of new files listed in the
 <tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
 created, <tt>restorecond</tt> ensures the file receives the proper SELinux
 security context.
-<service-enable-macro service="restorecond" />
+<chkconfig-service-macro enable="true" service="restorecond" />
 </description>
 <rationale>The <tt>restorecond</tt> service helps ensure that the default SELinux
 file context is applied to files. This allows automatic correction
@@ -145,7 +145,7 @@ of file contexts created by some programs.</rationale>
 <description>The SETroubleshoot service notifies desktop users of SELinux
 denials. The service provides information around configuration errors,
 unauthorized intrusions, and other potential errors.
-<package-remove-macro package="setroubleshoot" />
+<yum-macro install="false" package="setroubleshoot" />
 </description>
 <rationale>The SETroubleshoot service is an unnecessary daemon to
 have running on a server</rationale>
@@ -158,7 +158,7 @@ have running on a server</rationale>
 <description>The <tt>mcstransd</tt> daemon provides category label information
 to client processes requesting information. The label translations are defined
 in <tt>/etc/selinux/targeted/setrans.conf</tt>.
-<package-remove-macro package="mcstrans" />
+<yum-macro install="false" package="mcstrans" />
 </description>
 <rationale>Since this service is not used very often, disable it to reduce the
 amount of potentially vulnerable code running on the system.

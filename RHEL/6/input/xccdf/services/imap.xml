@@ -15,10 +15,10 @@ POP3 server, the dovecot software should be disabled and removed.
 <Rule id="service_dovecot_disabled">
 <title>Disable Dovecot Service</title>
 <description>
-<service-disable-macro service="dovecot" />
+<chkconfig-service-macro enable="false" service="dovecot" />
 </description>
 <ocil>
-<service-disable-check-macro service="dovecot" />
+<service-check-macro enable="false" service="dovecot" />
 </ocil>
 <rationale>
 Running an IMAP or POP3 server provides a network-based

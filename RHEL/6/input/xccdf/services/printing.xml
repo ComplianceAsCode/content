@@ -11,9 +11,9 @@ homepage and more detailed documentation are available at http://www.cups.org.
 <Rule id="service_cups_disabled">
 <title>Disable the CUPS Service</title>
 <description>
-<service-disable-macro service="cups" />
+<chkconfig-service-macro enable="false" service="cups" />
 </description>
-<ocil><service-disable-check-macro service="cups" /></ocil>
+<ocil><service-check-macro enable="false" service="cups" /></ocil>
 <rationale>Turn off unneeded services to reduce attack surface.
 </rationale>
 <ident cce="26899-5" />
