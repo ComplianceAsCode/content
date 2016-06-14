@@ -72,7 +72,7 @@ protocols which were not designed with security in mind.
 <Rule id="service_bluetooth_disabled" severity="medium">
 <title>Disable Bluetooth Service</title>
 <description>
-<service-disable-macro service="bluetooth" />
+<chkconfig-service-macro enable="false" service="bluetooth" />
 <pre>$ sudo service bluetooth stop</pre>
 </description>
 <ocil clause="the service is configured to run">
