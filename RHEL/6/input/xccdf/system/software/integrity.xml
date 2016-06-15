@@ -287,8 +287,8 @@ See <b>http://csrc.nist.gov/publications/PubsFIPS.html</b> for more information.
 <title>Install the dracut-fips Package</title>
 <description>
 To enable FIPS, the system requires that the <tt>dracut-fips</tt>
-package be installed. To install the <tt>dracut-fips</tt> package:
-<pre>$ sudo yum install dracut-fips</pre>
+package be installed.
+<yum-macro install="true" package="dracut-fips" />
 </description>
 <ocil clause="the package is not installed">
 <package-check-macro package="dracut-fips" />
@@ -307,7 +307,7 @@ and validated.
 <Rule id="grub_enable_fips_mode" severity="medium">
 <title>Enable FIPS Mode in GRUB</title>
 <description>
-To ensure all FIPS mode is enabled, rebuild <tt>initramfs</tt> by run the following command:
+To ensure FIPS mode is enabled, rebuild <tt>initramfs</tt> by running the following command:
 <pre>dracut -f</pre>
 After the <tt>dracut</tt> command has been run, add the argument <tt>fips=1</tt> to the default
 GRUB kernel line for the Linux operating system in
@@ -326,6 +326,7 @@ standards approved by the federal government since this provides assurance they 
 and validated.
 </rationale>
 <warning category="general">Running <pre>dracut -f</pre> will overwrite the existing initramfs file.</warning>
+<warning category="general">The system needs to be rebooted for these changes to take effect.</warning>
 <warning category="general">The ability to enable FIPS does not denote FIPS compliancy or certification.
 Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and compliant. Community
 projects such as CentOS, Scientific Linux, etc. do not necessarily meet FIPS certification and compliancy.
