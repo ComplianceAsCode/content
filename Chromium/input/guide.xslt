@@ -36,7 +36,7 @@
       </xsl:if>
 
       <xsl:apply-templates select="document('intro/intro.xml')" /> 
-      <xsl:apply-templates select="document('application/chromium.xml')" />
+      <xsl:apply-templates select="document('xccdf/application/chromium.xml')" />
     </xsl:copy>
   </xsl:template>
   
