@@ -25,7 +25,7 @@ operator="equals" interactive="0">
 <title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
 However, if it can be disabled, do so.
-<service-disable-macro service="sshd" />
+<chkconfig-service-macro enable="false" service="sshd" />
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>
