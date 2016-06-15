@@ -25,9 +25,9 @@ and removed.
 <title>Disable DHCP Service</title>
 <description>The <tt>dhcpd</tt> service should be disabled on
 any system that does not need to act as a DHCP server.
-<service-disable-macro service="dhcpd" />
+<chkconfig-service-macro enable="false" service="dhcpd" />
 </description>
-<ocil><service-disable-check-macro service="dhcpd" /></ocil>
+<ocil><service-check-macro enable="false" service="dhcpd" /></ocil>
 <rationale>
 Unmanaged or unintentionally activated DHCP servers may provide faulty information
 to clients, interfering with the operation of a legitimate site
@@ -43,7 +43,7 @@ DHCP server if there is one.
 <title>Uninstall DHCP Server Package</title>
 <description>If the system does not need to act as a DHCP server,
 the dhcp package can be uninstalled.
-<package-remove-macro package="dhcp" />
+<yum-macro install="false" package="dhcp" />
 </description>
 <ocil><package-check-macro package="dhcp" /></ocil>
 <rationale>
