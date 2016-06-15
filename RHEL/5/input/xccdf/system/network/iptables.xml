@@ -50,9 +50,9 @@ The <tt>ip6tables</tt> default rules are essentially the same.</description>
 <Rule id="service_iptables_enabled" severity="medium">
 <title>Verify iptables Enabled</title>
 <description>
-<service-enable-macro service="iptables" />
+<chkconfig-service-macro enable="true" service="iptables" />
 </description>
-<ocil><service-enable-check-macro service="iptables" /></ocil>
+<ocil><service-check-macro enable="true" service="iptables" /></ocil>
 <rationale>
 The <tt>iptables</tt> service provides the system's host-based firewalling
 capability for IPv4 and ICMP.

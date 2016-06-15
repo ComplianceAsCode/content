@@ -15,7 +15,7 @@ For more information, see
 <title>Install the SSSD Package</title>
 <description>
 The <tt>sssd</tt> package should be installed.
-<package-install-macro package="sssd"/>
+<yum-macro install="true" package="sssd"/>
 </description>
 <ocil clause="the package is not installed" >
 <package-check-macro package="sssd" />
@@ -32,10 +32,10 @@ stigid="TBD" />
 <Rule id="service_sssd_enabled" severity="medium">
 <title>Enable the SSSD Service</title>
 <description>The SSSD service should be enabled.
-<service-enable-macro service="sssd" />
+<systemd-service-macro enable="true" service="sssd" />
 </description>
 <ocil clause="">
-<service-enable-check-macro service="sssd" />
+<systemd-check-macro enable="true" service="sssd" />
 </ocil>
 <rationale>
 </rationale>
