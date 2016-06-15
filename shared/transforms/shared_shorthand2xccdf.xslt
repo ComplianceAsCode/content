@@ -659,6 +659,14 @@ system call, run the following command:
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
+<xsl:template match="auditctl-syscall-check-macro">
+To determine if the system is configured to audit calls to
+the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
+system call, run the following command:
+<xhtml:pre xml:space="preserve">$ sudo auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
+If the system is configured to audit this activity, it will return a line.
+  </xsl:template>
+
   <!--Example usage: <iptables-desc-macro allow="true" net="false" proto="tcp"
        port="80" />  -->
     <!-- allow (boolean): optional attribute which defaults to true, or to
