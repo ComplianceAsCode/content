@@ -27,12 +27,12 @@ is not even available as part of Red Hat Enterprise Linux 6.</description>
 <Rule id="service_xinetd_disabled" severity="medium">
 <title>Disable xinetd Service</title>
 <description>
-<service-disable-macro service="xinetd" />
+<chkconfig-service-macro enable="false" service="xinetd" />
 </description>
 <ocil>
 If network services are using the xinetd service, this is not applicable.
 <br /><br />
-<service-disable-check-macro service="xinetd" /></ocil>
+<service-check-macro enable="false" service="xinetd" /></ocil>
 <rationale>
 The xinetd service provides a dedicated listener service for some programs,
 which is no longer necessary for commonly-used network services. Disabling
@@ -55,9 +55,9 @@ actively working to migrate to a more secure protocol.</description>
 <Rule id="service_telnetd_disabled" severity="high">
 <title>Disable telnet Service</title>
 <description>
-<service-disable-macro service="telnet" />
+<chkconfig-service-macro enable="false" service="telnet" />
 </description>
-<ocil><service-disable-check-macro service="telnet" /></ocil>
+<ocil><service-check-macro enable="false" service="telnet" /></ocil>
 <rationale>
 The telnet protocol uses unencrypted network communication, which
 means that data from the login session, including passwords and
@@ -99,9 +99,9 @@ activation.
 <description>The <tt>rexec</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
 should be disabled.
-<service-disable-macro service="rexec" />
+<chkconfig-service-macro enable="false" service="rexec" />
 </description> 
-<ocil><service-disable-check-macro service="rexec" /></ocil>
+<ocil><service-check-macro enable="false" service="rexec" /></ocil>
 <rationale>The rexec service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -117,9 +117,9 @@ stolen by eavesdroppers on the network.
 <description>The <tt>rsh</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
 should be disabled.
-<service-disable-macro service="rsh" />
+<chkconfig-service-macro enable="false" service="rsh" />
 </description> 
-<ocil><service-disable-check-macro service="rsh" /></ocil>
+<ocil><service-check-macro enable="false" service="rsh" /></ocil>
 <rationale>The rsh service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -135,9 +135,9 @@ stolen by eavesdroppers on the network.
 <description>The <tt>rlogin</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd,
 should be disabled.
-<service-disable-macro service="rlogin" />
+<chkconfig-service-macro enable="false" service="rlogin" />
 </description> 
-<ocil><service-disable-check-macro service="rlogin" /></ocil>
+<ocil><service-check-macro enable="false" service="rlogin" /></ocil>
 <rationale>The rlogin service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -203,9 +203,9 @@ important authentication information.</description>
 <title>Disable ypbind Service</title>
 <description>The <tt>ypbind</tt> service, which allows the system to act as a client in
 a NIS or NIS+ domain, should be disabled.
-<service-disable-macro service="ypbind" />
+<chkconfig-service-macro enable="false" service="ypbind" />
 </description>
-<ocil><service-disable-check-macro service="ypbind" /></ocil>
+<ocil><service-check-macro enable="false" service="ypbind" /></ocil>
 <rationale>
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
@@ -230,9 +230,9 @@ found.</description>
 <Rule id="service_tftp_disabled" severity="high">
 <title>Disable tftp Service</title>
 <description>The <tt>tftp</tt> service should be disabled.
-<service-disable-macro service="tftp" />
+<chkconfig-service-macro enable="false" service="tftp" />
 </description>
-<ocil><service-disable-check-macro service="tftp" /></ocil>
+<ocil><service-check-macro enable="false" service="tftp" /></ocil>
 <rationale>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
