@@ -7,9 +7,9 @@ The Linux Audit system provides a way to track security-relevant information on 
 <Rule id="service_auditd_enabled" severity="medium">
 <title>Enable the Audit Daemon</title>
 <description>
-<service-enable-macro service="audit" />
+<systemd-service-macro enable="true" service="audit" />
 </description>
-<ocil><service-enable-check-macro service="audit" /></ocil>
+<ocil><systemd-check-macro enable="true" service="audit" /></ocil>
 <rationale>Enabling the <tt>auditd</tt> service ensures that The Linux Audit system is capable
 to watch the system and generate log entries.
 </rationale>
