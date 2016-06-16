@@ -27,7 +27,7 @@ needs to use the loopback interface, remove all files of the form
 <pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 If the system is a standalone machine with no need for network access or even
 communication over the loopback device, then disable this service.
-<service-disable-macro service="network" />
+<systemd-service-macro enable="false" service="network" />
 </description>
 </Group> 
 

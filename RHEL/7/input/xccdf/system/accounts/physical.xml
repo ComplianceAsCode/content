@@ -169,10 +169,10 @@ will be available on <tt>tty9</tt> which is access by pressing
 for SystemD related issues and should otherwise be disabled.
 <br /><br />
 By default, the <tt>debug-shell</tt> SystemD service is disabled.
-<service-disable-macro service="debug-shell" />
+<systemd-service-macro enable="false" service="debug-shell" />
 </description>
 <ocil>
-<service-disable-check-macro service="debug-shell" />
+<systemd-check-macro enable="false" service="debug-shell" />
 </ocil>
 <rationale>
 This prevents attackers with physical access from trivially bypassing security

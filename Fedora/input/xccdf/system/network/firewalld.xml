@@ -101,9 +101,9 @@ service reload, enter the following command as root:
 <Rule id="service_firewalld_enabled" severity="medium">
 <title>Verify firewalld Enabled</title>
 <description>
-<service-enable-macro service="firewalld" />
+<systemd-service-macro enable="true" service="firewalld" />
 </description>
-<ocil><service-enable-check-macro service="firewalld" /></ocil>
+<ocil><systemd-check-macro enable="true" service="firewalld" /></ocil>
 <rationale>
 The dynamic firewall daemon <tt>firewalld</tt> provides a dynamically managed
 firewall with support for network “zones”, Ethernet bridges, and has a
