@@ -193,7 +193,11 @@
             <xsl:value-of select="$anssiuri" />
           </xsl:if>
           <xsl:if test="$refsource = 'cis'">
-            <xsl:value-of select="$cisuri" />
+            <!-- Precaution for repeated occurrence of issue:
+                 https://github.com/OpenSCAP/scap-security-guide/issues/1288 -->
+            <xsl:if test="$cisuri != 'empty'">
+              <xsl:value-of select="$cisuri" />
+            </xsl:if>
           </xsl:if>
           <xsl:if test="$refsource = 'stigid'">
             <xsl:value-of select="$disa-stigs-uri" />
