@@ -136,7 +136,7 @@ def expand_xccdf_subs(fix, remediation_functions):
     # Expand shell variables and remediation functions calls with <xccdf:sub>
     # elements
     else:
-        pattern = '\n(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]+)\n'
+        pattern = '\n+(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]*)\n'
         patcomp = re.compile(pattern, re.DOTALL)
         fixparts = re.split(patcomp, fix.text)
         if fixparts[0] is not None:
@@ -201,7 +201,8 @@ def expand_xccdf_subs(fix, remediation_functions):
                     # This chunk contains call of other remediation function
                     else:
                         # Extract remediation function name
-                        funcname = re.search('\n\s*(\S+) .*\n', fixparts[idx],
+                        funcname = re.search('\n\s*(\S+)(| .*)\n',
+                                             fixparts[idx],
                                              re.DOTALL).group(1)
                         # Define new XCCDF <sub> element for the function
                         xccdffuncsub = etree.SubElement(fix, "sub",
