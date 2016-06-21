@@ -4,7 +4,7 @@
 remediation scripts from the SCAP Security Guide Project</description>
 
 
-<Value id="function_fix_audit_syscall_rule" type="string" operator="equals" interactive="0">
+<Value id="function_fix_audit_syscall_rule" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to fix syscall audit rule for given system call</title>
 <description>Function to fix syscall audit rule for given system call. It is
 based on example audit syscall rule definitions as outlined in
@@ -215,7 +215,7 @@ done
 </Value>
 
 
-<Value id="function_fix_audit_watch_rule" type="string" operator="equals" interactive="0">
+<Value id="function_fix_audit_watch_rule" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to fix audit file system object watch rule for given path</title>
 <description>Function to fix audit file system object watch rule for given path:
   * if rule exists, also verifies the -w bits match the requirements
@@ -351,7 +351,7 @@ done
 </Value>
 
 
-<Value id="function_package_command" type="string" operator="equals" interactive="0">
+<Value id="function_package_command" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to to install or uninstall packages on RHEL and Fedora systems</title>
 <description>Function to install or uninstall packages on RHEL and Fedora systems.
 
@@ -399,7 +399,7 @@ fi
 </Value>
 
 
-<Value id="function_service_command" type="string" operator="equals" interactive="0">
+<Value id="function_service_command" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to enable/disable and start/stop services on RHEL
 and Fedora systems</title>
 <description>Function to enable/disable and start/stop services on RHEL and
@@ -478,7 +478,7 @@ fi
 </Value>
 
 
-<Value id="function_perform_audit_rules_privileged_commands_remediation" type="string" operator="equals" interactive="0">
+<Value id="function_perform_audit_rules_privileged_commands_remediation" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to perform remediation for 'audit_rules_privileged_commands' rule</title>
 <description>Function to perform remediation for 'audit_rules_privileged_commands' rule
 
@@ -651,7 +651,7 @@ done
 </Value>
 
 
-<Value id="function_populate" type="string" operator="equals" interactive="0">
+<Value id="function_populate" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to populate environment variables needed for unit testing</title>
 <description>The populate function isn't directly used by SSG at the moment but it can
 ba used for testing purposes (to verify proper work of the remediation script directly
@@ -668,7 +668,7 @@ fi
 </Value>
 
 
-<Value id="function_rhel6_perform_audit_adjtimex_settimeofday_stime_remediation" type="string" operator="equals" interactive="0">
+<Value id="function_rhel6_perform_audit_adjtimex_settimeofday_stime_remediation" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function for the 'adjtimex', 'settimeofday', and 'stime'
 audit system calls on Red Hat Enterprise Linux 6</title>
 <description>Perform the remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
@@ -708,7 +708,7 @@ done
 </Value>
 
 
-<Value id="function_rhel7_fedora_perform_audit_adjtimex_settimeofday_stime_remediation" type="string" operator="equals" interactive="0">
+<Value id="function_rhel7_fedora_perform_audit_adjtimex_settimeofday_stime_remediation" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function for the 'adjtimex', 'settimeofday', and 'stime'
 audit system calls on Red Hat Enterprise Linux 7 or Fedora</title>
 <description>Perform the remediation for the 'adjtimex', 'settimeofday', and
@@ -750,7 +750,7 @@ done
 </Value>
 
 
-<Value id="function_replace_or_append" type="string" operator="equals" interactive="0">
+<Value id="function_replace_or_append" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to replace configuration setting in config file or
 add the configuration setting if it does not exist yet</title>
 <description>Function to replace configuration setting in config file or add
@@ -838,7 +838,7 @@ function replace_or_append {
 </Value>
 
 
-<Value id="function_firefox_js_setting" type="string" operator="equals" interactive="0">
+<Value id="function_firefox_js_setting" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to replace configuration setting(s) in the Firefox
 preferences JavaScript file or add the preference if it does not exist yet</title>
 <description>Function to replace configuration setting(s) in the Firefox
@@ -914,7 +914,7 @@ function firefox_js_setting {
 </Value>
 
 
-<Value id="function_firefox_cfg_setting" type="string" operator="equals" interactive="0">
+<Value id="function_firefox_cfg_setting" type="string" operator="equals" interactive="0" hidden="true" prohibitChanges="true">
 <title>Remediation function to replace configuration setting(s) in the Firefox
 preferences configuration (.cfg) file or add the preference if it does not exist yet</title>
 <description>Function to replace configuration setting(s) in the Firefox
