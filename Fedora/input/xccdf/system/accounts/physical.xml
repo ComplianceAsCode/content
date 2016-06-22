@@ -79,19 +79,20 @@ parameters.
 protection enabled to protect boot-time settings.
 <br /><br />
 To do so, select a superuser account and password and add them into the
-appropriate grub2 configuration file(s) under <tt>/etc/grub.d</tt>.
+<tt>/etc/grub.d/01_users</tt> configuration file.
+<br /><br />
 Since plaintext passwords are a security risk, generate a hash for the pasword
 by running the following command:
 <pre>$ grub2-mkpasswd-pbkdf2</pre>
 When prompted, enter the password that was selected and insert the returned 
-password hash into the appropriate grub2 configuration file(s) under
-<tt>/etc/grub.d</tt> immediately after the superuser account.
+password hash into the <tt>/etc/grub.d/01_users</tt> configuration file
+immediately after the superuser account.
 (Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of 
 <b>password-hash</b>):
 <pre>password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
 NOTE: It is recommended not to use common administrator account names like root,
 admin, or administrator for the grub2 superuser account. 
-<br />
+<br /><br />
 To meet FISMA Moderate, the bootloader superuser account and password MUST 
 differ from the root account and password.
 Once the superuser account and password have been added, update the 
@@ -128,19 +129,20 @@ the grub2 superuser account and password, please refer to
 protection enabled to protect boot-time settings.
 <br /><br />
 To do so, select a superuser account and password and add them into the
-appropriate grub2 configuration file(s) under <tt>/etc/grub.d</tt>.
+<tt>/etc/grub.d/01_users</tt> configuration file.
+<br /><br />
 Since plaintext passwords are a security risk, generate a hash for the pasword
 by running the following command:
 <pre>$ grub2-mkpasswd-pbkdf2</pre>
 When prompted, enter the password that was selected and insert the returned
-password hash into the appropriate grub2 configuration file(s) under
-<tt>/etc/grub.d</tt> immediately after the superuser account.
+password hash into the <tt>/etc/grub.d/01_users</tt> configuration file immediately
+after the superuser account.
 (Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of
 <b>password-hash</b>):
 <pre>password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
 NOTE: It is recommended not to use common administrator account names like root,
 admin, or administrator for the grub2 superuser account.
-<br />
+<br /><br />
 To meet FISMA Moderate, the bootloader superuser account and password MUST
 differ from the root account and password.
 Once the superuser account and password have been added, update the
