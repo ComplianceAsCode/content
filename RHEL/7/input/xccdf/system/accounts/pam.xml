@@ -138,6 +138,8 @@ reason.</warning>
 <value selector="1">1</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
+<value selector="4">4</value>
+<value selector="5">5</value>
 </Value>
 
 <Value id="var_password_pam_maxrepeat" type="number" operator="equals" interactive="0">
@@ -152,10 +154,11 @@ reason.</warning>
 <Value id="var_password_pam_maxclassrepeat" type="number" operator="equals" interactive="0">
 <title>maxclassrepeat</title>
 <description>Maximum Number of Consecutive Repeating Characters in a Password From the Same Character Class</description>
-<value selector="">2</value>
+<value selector="">4</value>
 <value selector="1">1</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
+<value selector="4">4</value>
 </Value>
 
 <Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
@@ -214,13 +217,15 @@ password</description>
 <title>difok</title>
 <description>Minimum number of characters not present in old
 password</description>
-<warning category="general">Keep this high for short
-passwords</warning>
+<warning category="general">Keep this high for short passwords</warning>
 <value selector="">15</value>
 <value selector="2">2</value>
 <value selector="3">3</value>
 <value selector="4">4</value>
 <value selector="5">5</value>
+<value selector="6">5</value>
+<value selector="7">5</value>
+<value selector="8">5</value>
 <value selector="15">15</value>
 </Value>
 
@@ -248,6 +253,7 @@ passwords</warning>
 <title>fail_unlock_time</title>
 <description>Seconds before automatic unlocking after excessive failed logins</description>
 <value selector="">604800</value>
+<value selector="600">600</value> <!-- 10 minutes -->
 <value selector="900">900</value> <!-- 15 minutes -->
 <value selector="1800">1800</value> <!-- 30 minutes -->
 <value selector="3600">3600</value> <!-- 1 hour -->
@@ -290,7 +296,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident cce="27160-1" />
 <oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
-<ref nist="IA-5(c)" disa="" cis="6.3.2" />
+<ref nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" ossrg="SRG-OS-000480-GPOS-00225" stigid="010410" />
 <tested by="swells" on="20140925"/>
 </Rule>
 
@@ -302,7 +308,7 @@ which contain more than that number of consecutive characters. Modify the <tt>ma
 in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxrepeat" /> to prevent a 
 run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical characters.
 </description>
-<ocil clause="maxrepeat is not found or not greater than the required value">
+<ocil clause="maxrepeat is not found or not greater than or equal to the required value">
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
 Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 2, which would appear as
@@ -324,7 +330,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010150" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxclassrepeat">
+<Rule id="accounts_password_pam_maxclassrepeat" severity="low">
 <title>Set Password to Maximum of Consecutive Repeating Characters from Same Character Class</title>
 <description>The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
 consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
@@ -335,18 +341,23 @@ to prevent a run of (<sub idref="var_password_pam_maxclassrepeat" /> + 1) or mor
 <ocil clause="that is not the case">
 To check the value for maximum consecutive repeating characters, run the following command:
 <pre>$ grep maxclassrepeat /etc/security/pwquality.conf</pre>
-The output should show <tt>maxclassrepeat</tt>=600.
+For DoD systems, the output should show <tt>maxclassrepeat</tt>=4.
 </ocil>
 <rationale>
-Passwords with excessive repeating characters from the same character class may be more vulnerable to 
-password-guessing attacks.
+Use of a complex password helps to increase the time and resources required to comrpomise the password.
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting
+attempts at guessing and brute-force attacks.
+<br />
+Password complexity is one factor of several that determines how long it takes to crack a password. The
+more complex a password, the greater the number of possible combinations that need to be tested before the
+password is compromised.
 </rationale>
 <ident cce="27512-3" />
 <oval id="accounts_password_pam_maxclassrepeat" value="var_password_pam_maxclassrepeat" />
-<ref nist="IA-5(c)" disa="366" />
+<ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010160" />
 </Rule>
 
-<Rule id="accounts_password_pam_dcredit">
+<Rule id="accounts_password_pam_dcredit" severity="medium">
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
@@ -384,7 +395,7 @@ search space.
 minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
 after pam_pwquality to set minimum password length requirements.
 </description>
-<ocil clause="minlen is not found or not equal to or greater than the required value">
+<ocil clause="minlen is not found, or not equal to or greater than the required value">
 To check how many characters are required in a password, run the following command:
 <pre>$ grep minlen /etc/security/pwquality.conf</pre>
 Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /></tt>
@@ -392,7 +403,7 @@ Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /><
 <rationale>
 The shorter the password, the lower the number of possible combinations
 that need to be tested before the password is compromised.
-
+<br />
 Password complexity, or strength, is a measure of the effectiveness of a 
 password in resisting attempts at guessing and brute-force attacks. 
 Password length is one factor of several that helps to determine strength
@@ -422,8 +433,13 @@ The DoD and FISMA require at least one uppercase character in a password.
 This would appear as <tt>ucredit = -1</tt>.
 </ocil>
 <rationale>
-Requiring a minimum number of uppercase characters makes password guessing attacks
-more difficult by ensuring a larger search space.
+Use of a complex password helps to increase the time and resources reuiqred to compromise the password.
+Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts
+at guessing and brute-force attacks.
+<br />
+Password complexity is one factor of several that determines how long it takes to crack a password. The more
+complex the password, the greater the number of possible combinations that need to be tested before
+the password is compromised.
 </rationale>
 <ident cce="27200-5" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
@@ -658,6 +674,35 @@ situations.
 <ref nist="AC-7(b)" disa="002238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010371" pcidss="Req-8.1.7" cis="6.3.3" />
 </Rule>
 
+<Rule id="accounts_passwords_pam_faillock_deny_root" severity="medium">
+<title>Configure the <tt>root</tt> Account for Failed Password Attempts</title>
+<description>
+To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
+attempts using <tt>pam_faillock.so</tt>, modify the content of both
+<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
+<br /><br />
+<ul> 
+<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+</ul>
+</description>
+<ocil clause="that is not the case">
+To ensure that even the <tt>root</tt> account is locked after a defined number of failed password
+attempts, run the following command:
+<pre>$ grep even_deny_root /etc/pam.d/system-auth</pre>
+The output should show <tt>even_deny_root</tt>.
+</ocil>
+<rationale>
+By limiting the number of failed logon attempts, the risk of unauthorized system access via user password
+guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="accounts_passwords_pam_faillock_deny_root" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010372" />
+</Rule>
+
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
@@ -706,7 +751,7 @@ to the line which refers to the <tt>pam_unix.so</tt> or
 </li>
 </ul>
 The DoD STIG requirement is 5 passwords.</description>
-<ocil clause="it does not">
+<ocil clause="the value of remember is not set equal to or less than the expected setting">
 To verify the password reuse setting is compliant, run the following command:
 <pre>$ grep remember /etc/pam.d/system-auth</pre>
 The output should show the following at the end of the line:
@@ -729,19 +774,20 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 locations.</description>
 
 <Rule id="set_password_hashing_algorithm_systemauth" severity="medium">
-<title>Set Password Hashing Algorithm in /etc/pam.d/system-auth</title>
+<title>Set PAM's Password Hashing Algorithm</title>
 <description>
-In <tt>/etc/pam.d/system-auth</tt>, the <tt>password</tt> section of
-the file controls which PAM modules execute during a password change.
-Set the <tt>pam_unix.so</tt> module in the
-<tt>password</tt> section to include the argument <tt>sha512</tt>, as shown below:
+The PAM system service can be configured to only store encrypted representations of passwords.
+In <tt>/etc/pam.d/system-auth</tt>, the <tt>password</tt> section of the file controls 
+which PAM modules execute during a password change. Set the <tt>pam_unix.so</tt> 
+module in the <tt>password</tt> section to include the argument <tt>sha512</tt>, as shown below:
+<br />
 <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
+<br />
 This will help ensure when local users change their passwords, hashes for the new
-passwords will be generated using the SHA-512 algorithm.
-This is the default.
+passwords will be generated using the SHA-512 algorithm. This is the default.
 </description>
 <ocil clause="it does not">
-Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>  and
+Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt> and
 ensure that the <tt>pam_unix.so</tt> module includes the argument
 <tt>sha512</tt>:
 <pre>$ grep sha512 /etc/pam.d/system-auth</pre>
@@ -757,7 +803,7 @@ encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> c
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
 </rationale>
 <ident cce="27104-9" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010190" pcidss="Req-8.2.1" cis="6.3.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010170" pcidss="Req-8.2.1" cis="6.3.1" />
 <tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>

@@ -17,10 +17,10 @@ activated but is not needed, the software should be disabled and removed.
 <Rule id="service_snmpd_disabled">
 <title>Disable <tt>snmpd</tt> Service</title>
 <description>
-<service-disable-macro service="snmpd" />
+<chkconfig-service-macro enable="false" service="snmpd" />
 </description>
 <ocil>
-<service-disable-check-macro service="snmpd" />
+<service-check-macro enable="false" service="snmpd" />
 </ocil>
 <rationale>
 Running SNMP software provides a network-based avenue of attack, and
@@ -33,7 +33,7 @@ should be disabled if not needed.
 <Rule id="package_net-snmp_removed">
 <title>Uninstall <tt>net-snmp</tt> Package</title>
 <description>The <tt>net-snmp</tt> package provides the snmpd service.
-<package-remove-macro package="net-snmp" />
+<yum-macro install="false" package="net-snmp" />
 </description>
 <ocil>
 <package-check-macro package="net-snmp" />

@@ -160,7 +160,7 @@ def main():
     extendedcomps = datastreamtree.find(".//{%s}extended-components" % datastream_ns)
     if extendedcomps is not None:
         # Locate OCIL component within <ds:extended-components>
-        ocilcomps = extendedcomps.xpath(".//ds:component-ref[contains(@id,'_ocil')]",
+        ocilcomps = extendedcomps.xpath(".//ds:component-ref[contains(@id,'-ocil')]",
                                         namespaces={"ds" : datastream_ns})
         # SSG produces datastream with exactly one OCIL component
         if len(ocilcomps) != 1:

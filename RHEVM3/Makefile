@@ -1,6 +1,9 @@
 all: tables guide checks content dist
 
-SHARED = ../shared
+# Do not remove exporting of SHARED variable!!! (since
+# shared/transforms/combineremediations.py helper
+# requires its value to be available)
+export SHARED = ../shared
 include $(SHARED)/product-make.include
 
 # todo: remove this local override of REFS variable
@@ -115,6 +118,7 @@ dist: tables guide content
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
+	cp $(OUT)/$(ID)-$(PROD)-ocil.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/table-$(PROD)-* $(DIST)/policytables

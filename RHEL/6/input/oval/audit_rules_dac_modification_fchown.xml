@@ -15,7 +15,7 @@
       <!-- system is not x64 or x64 system calls are monitored  -->
       <criteria operator="OR">
         <extend_definition comment="x64?" 
-        definition_ref="system_info_architecture_x86_64" negate="true" />
+        definition_ref="system_info_architecture_64bit" negate="true" />
         <criterion comment="dac modification fchown x64" 
         test_ref="test_audit_rules_dac_modification_fchown_x64" />
       </criteria>

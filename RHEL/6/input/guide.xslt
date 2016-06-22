@@ -1,37 +1,57 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
-<!-- This transform assembles all fragments into one "shorthand" XCCDF document -->
-<!-- An optional parameter "withtest 0" specifies whether the 'test' profile should
-     be included into the benchmark. -->
+<!-- This transform assembles all fragments into one "shorthand" XCCDF document
+     Accepts the following parameters:
+
+     * SHARED_RP	(required)	Holds the resolved ABSOLUTE path
+					to the SSG's "shared/" directory.
+
+     * withtest		(optional)	If having value set to "0" specifies
+					the 'test' profile should be included
+					into the benchmark.
+-->
+
+<!-- Define the default value of the required "SHARED_RP" parameter -->
+<xsl:param name="SHARED_RP" select='undef' />
 
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
 
-       <!-- adding profiles here -->
-		<xsl:if test=" number($withtest) = number(0) ">
-			<xsl:apply-templates select="document('profiles/test.xml')" />
-		</xsl:if>
-		<xsl:apply-templates select="document('profiles/standard.xml')" />
-		<xsl:apply-templates select="document('profiles/CS2.xml')" />
-		<xsl:apply-templates select="document('profiles/common.xml')" />
-		<!-- <xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
-		<xsl:apply-templates select="document('profiles/server.xml')" />
-		<!-- <xsl:apply-templates select="document('profiles/ftp.xml')" /> -->
-		<xsl:apply-templates select="document('profiles/stig-rhel6-server-upstream.xml')" />
-		<xsl:apply-templates select="document('profiles/usgcb-rhel6-server.xml')" />
-		<xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
-		<xsl:apply-templates select="document('profiles/CSCF-RHEL6-MLS.xml')" />
-		<xsl:apply-templates select="document('profiles/C2S.xml')" />
-		<xsl:apply-templates select="document('profiles/pci-dss.xml')" />
-		<xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
+       <!-- Adding profiles here -->
+       <xsl:if test=" number($withtest) = number(0) ">
+         <xsl:apply-templates select="document('profiles/test.xml')" />
+       </xsl:if>
+       <xsl:apply-templates select="document('profiles/standard.xml')" />
+       <xsl:apply-templates select="document('profiles/CS2.xml')" />
+       <xsl:apply-templates select="document('profiles/common.xml')" />
+       <!-- <xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
+       <xsl:apply-templates select="document('profiles/server.xml')" />
+       <!-- <xsl:apply-templates select="document('profiles/ftp.xml')" /> -->
+       <xsl:apply-templates select="document('profiles/stig-rhel6-workstation-upstream.xml')" />
+       <xsl:apply-templates select="document('profiles/stig-rhel6-server-gui-upstream.xml')" />
+       <xsl:apply-templates select="document('profiles/stig-rhel6-server-upstream.xml')" />
+       <xsl:apply-templates select="document('profiles/usgcb-rhel6-server.xml')" />
+       <xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
+       <xsl:apply-templates select="document('profiles/CSCF-RHEL6-MLS.xml')" />
+       <xsl:apply-templates select="document('profiles/C2S.xml')" />
+       <xsl:apply-templates select="document('profiles/pci-dss.xml')" />
+       <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
 
+       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
        <Value id="conditional_clause" type="string" operator="equals">
-                 <title>A conditional clause for check statements.</title>
-                 <description>A conditional clause for check statements.</description>
-                 <value>This is a placeholder.</value>
+         <title>A conditional clause for check statements.</title>
+         <description>A conditional clause for check statements.</description>
+         <value>This is a placeholder.</value>
        </Value>
+
+      <!-- Adding remediation functions from concat($SHARED_RP, '/xccdf/remediation_functions.xml')
+           location here -->
+      <xsl:if test=" string($SHARED_RP) != 'undef' ">
+        <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
+      </xsl:if>
+
       <xsl:apply-templates select="document('intro/intro.xml')" />
       <xsl:apply-templates select="document('xccdf/system/system.xml')" />
       <xsl:apply-templates select="document('xccdf/services/services.xml')" />
@@ -60,6 +80,7 @@
       <xsl:apply-templates select="document('xccdf/system/software/disk_partitioning.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/updating.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/integrity.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/software/gnome.xml')" />
     </xsl:copy>
   </xsl:template>
 

@@ -19,10 +19,10 @@ and removed.
 <Rule id="service_zebra_disabled" severity="medium">
 <title>Disable Quagga Service</title>
 <description>
-<service-disable-macro service="zebra" />
+<systemd-service-macro enable="false" service="zebra" />
 </description>
 <ocil>
-<service-disable-check-macro service="zebra" />
+<systemd-check-macro enable="false" service="zebra" />
 </ocil>
 <rationale>
 Routing protocol daemons are typically used on routers to exchange network
@@ -30,7 +30,7 @@ topology information with other routers. If routing daemons are used when not
 required, system network information may be unnecessarily transmitted across
 the network.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27191-6" />
 <oval id="service_zebra_disabled" />
 <ref nist="SC-32" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040730" />
 </Rule>
@@ -38,7 +38,7 @@ the network.
 <Rule id="package_quagga_removed" severity="medium">
 <title>Uninstall quagga Package</title>
 <description>
-<package-remove-macro package="quagga" />
+<yum-macro install="false" package="quagga" />
 </description>
 <ocil>
 <package-check-macro package="quagga" />
@@ -51,7 +51,7 @@ information may be unnecessarily transmitted across the network.
 If there is no need to make the router software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="27594-1" />
 <oval id="package_quagga_removed" />
 <ref nist="SC-32" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
 </Rule>

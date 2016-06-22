@@ -1,0 +1,35 @@
+<Profile id="stig-rhel7-server-gui-upstream" extends="stig-rhel7-server-upstream">
+<title override="true">STIG for Red Hat Enterprise Linux 7 Server Running GUIs</title>
+<description override="true">This is a *draft* profile for STIG. This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
+
+<!-- DISA FSO REFINEMENT VALUES
+     The following refine-values tailor the NIAP OSPP profile
+     to DoD-specific settings, as deemed approriate by DISA FSO (RE71) -->
+<refine-value idref="login_banner_text" selector="dod_default" />
+<!-- END DISA FSO REFINEMENT VALUES -->
+
+<!-- NIAP/OSPP EXCLUDED RULES
+          The following rules are established within the NIAP Operating System Protection Profile,
+     however specifically excluded by DISA FSO (RE71) for use U.S. Department of Defense baselines -->
+
+<!-- END NIAP/OSPP EXCLUDED RULES -->
+
+<!-- DISA FSO (RE71) RULE ADDITIONS -->
+<!-- The following rules reflect DISA FSO (RE71) extensions to the NIAP Operating System
+          Protection Profile (NIAP OSPP). -->
+
+<!-- GDM Settings -->
+<select idref="dconf_gnome_banner_enabled" selected ="true" />
+<select idref="dconf_gnome_login_banner_text" selected="true" />
+<select idref="dconf_gnome_screensaver_lock_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true"/>
+<select idref="dconf_gnome_screensaver_idle_delay" selected="true"/>
+<select idref="dconf_gnome_disable_ctrlaltdel_reboot" selected="true"/>
+
+<!-- X Window System Settings -->
+<select idref="xwindows_runlevel_setting" selected="false" />
+<select idref="package_xorg-x11-server-common_removed" selected="false" />
+
+<!-- Currently uncategorized -->
+
+</Profile>

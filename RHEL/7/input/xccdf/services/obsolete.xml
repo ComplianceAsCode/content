@@ -27,12 +27,12 @@ is not even available as part of Red Hat Enterprise Linux 7.</description>
 <Rule id="service_xinetd_disabled" severity="medium">
 <title>Disable xinetd Service</title>
 <description>
-<service-disable-macro service="xinetd" />
+<systemd-service-macro enable="false" service="xinetd" />
 </description>
 <ocil>
 If network services are using the xinetd service, this is not applicable.
 <br /><br />
-<service-disable-check-macro service="xinetd" /></ocil>
+<systemd-check-macro enable="false" service="xinetd" /></ocil>
 <rationale>
 The xinetd service provides a dedicated listener service for some programs,
 which is no longer necessary for commonly-used network services. Disabling
@@ -69,7 +69,7 @@ xinetd service's accidental (or intentional) activation.
 <description>
 When network services are using the <tt>xinetd</tt> service, the
 <tt>tcp_wrappers</tt> package should be installed.
-<package-install-macro package="tcp_wrappers"/>
+<yum-macro install="true" package="tcp_wrappers"/>
 </description>
 <ocil clause="the package is not installed" >
 <package-check-macro package="tcp_wrappers" />
@@ -119,10 +119,10 @@ service telnet
 If the <tt>/etc/xinetd.d/telnet</tt> file does not exist, make sure that
 the activation of the <tt>telnet</tt> service on system boot is disabled
 via the following command:
-<socket-disable-macro socket="rexec" />
+<systemd-socket-macro enable="false" socket="rexec" />
 </description>
-<ocil><systemd-socket-disable-check-macro socket="telnet" />
-<xinetd-service-disable-check-macro service="telnet" /></ocil>
+<ocil><systemd-socket-check-macro enable="false" socket="telnet" />
+<xinetd-systemd-check-macro enable="false" service="telnet" /></ocil>
 <rationale>
 The telnet protocol uses unencrypted network communication, which
 means that data from the login session, including passwords and
@@ -146,11 +146,11 @@ the following command:
 It is detrimental for operating systems to provide, or install by default, functionality exceeding
 requirements or mission objectives. These unnecessary capabilities are often overlooked and therefore
 may remain unsecure. They increase the risk to the platform by providing additional attack vectors.
-
+<br />
 The telnet service provides an unencrypted remote access service which does not provide for the 
 confidentiality and integrity of user passwords or the remote session. If a privileged user were
 to login using this service, the privileged user password could be compromised.
-
+<br />
 Removing the <tt>telnet-server</tt> package decreases the risk of the telnet service's accidental 
 (or intentional) activation.
 </rationale>
@@ -164,7 +164,7 @@ Removing the <tt>telnet-server</tt> package decreases the risk of the telnet ser
 <title>Remove telnet Clients</title>
 <description>The telnet client allows users to start connections to other 
 systems via the telnet protocol.</description>
-<ocil><package-remove-macro package="telnet" /></ocil>
+<ocil><yum-macro install="false" package="telnet" /></ocil>
 <rationale>The <tt>telnet</tt> protocol is insecure and unencrypted. The use
 of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
@@ -209,10 +209,10 @@ activation.
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
 as a systemd socket, should be disabled.
 If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rexec</tt>. 
-If using systemd, <socket-disable-macro socket="rexec" />
+If using systemd, <systemd-socket-macro enable="false" socket="rexec" />
 </description> 
-<ocil><systemd-socket-disable-check-macro socket="rexec" />
-<xinetd-service-disable-check-macro service="rexec" /></ocil>
+<ocil><systemd-socket-check-macro enable="false" socket="rexec" />
+<xinetd-systemd-check-macro enable="false" service="rexec" /></ocil>
 <rationale>The rexec service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -230,10 +230,10 @@ stolen by eavesdroppers on the network.
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
 as a systemd socket, should be disabled.
 If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rsh</tt>.
-If using systemd, <socket-disable-macro socket="rsh" />
+If using systemd, <systemd-socket-macro enable="false" socket="rsh" />
 </description> 
-<ocil><systemd-socket-disable-check-macro socket="rsh" />
-<xinetd-service-disable-check-macro service="rsh" /></ocil>
+<ocil><systemd-socket-check-macro enable="false" socket="rsh" />
+<xinetd-systemd-check-macro enable="false" service="rsh" /></ocil>
 <rationale>The rsh service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -249,7 +249,7 @@ stolen by eavesdroppers on the network.
 <title>Uninstall rsh Package</title>
 <description>The <tt>rsh</tt> package contains the client commands
 for the rsh services</description>
-<ocil><package-remove-macro package="rsh"/></ocil>
+<ocil><yum-macro install="false" package="rsh"/></ocil>
 <rationale>These legacy clients contain numerous security exposures and have
 been replaced with the more secure SSH package. Even if the server is removed,
 it is best to ensure the clients are also removed to prevent users from
@@ -269,10 +269,10 @@ the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
 as a systemd socket, should be disabled.
 If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rlogin</tt>.
-If using systemd, <socket-disable-macro socket="rlogin" />
+If using systemd, <systemd-socket-macro enable="false" socket="rlogin" />
 </description> 
-<ocil><systemd-socket-disable-check-macro socket="rlogin" />
-<xinetd-service-disable-check-macro service="rlogin" /></ocil>
+<ocil><systemd-socket-check-macro enable="false" socket="rlogin" />
+<xinetd-systemd-check-macro enable="false" service="rlogin" /></ocil>
 <rationale>The rlogin service uses unencrypted network communications, which
 means that data from the login session, including passwords and
 all other information transmitted during the session, can be
@@ -341,9 +341,9 @@ activation of NIS or NIS+ services.
 <title>Disable ypbind Service</title>
 <description>The <tt>ypbind</tt> service, which allows the system to act as a client in
 a NIS or NIS+ domain, should be disabled.
-<service-disable-macro service="ypbind" />
+<systemd-service-macro enable="false" service="ypbind" />
 </description>
-<ocil><service-disable-check-macro service="ypbind" /></ocil>
+<ocil><systemd-check-macro enable="false" service="ypbind" /></ocil>
 <rationale>
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
@@ -360,7 +360,7 @@ as a client in a NIS or NIS+ domain.
 is a client-server directory service protocol used to distribute system configuration
 files. The NIS client (<tt>ypbind</tt>) was used to bind a machine to an NIS server
 and receive the distributed configuration files.</description>
-<ocil><package-remove-macro package="ypbind"/></ocil>
+<ocil><yum-macro install="false" package="ypbind"/></ocil>
 <rationale>The NIS service is inherently an insecure system that has been vulnerable
 to DOS attacks, buffer overflows and has poor authentication for querying NIS maps.
 NIS generally has been replaced by such protocols as Lightweight Directory Access 
@@ -386,14 +386,14 @@ found.</description>
 <Rule id="service_tftp_disabled" severity="medium">
 <title>Disable tftp Service</title>
 <description>The <tt>tftp</tt> service should be disabled.
-<service-disable-macro service="tftp" />
+<systemd-service-macro enable="false" service="tftp" />
 </description>
-<ocil><service-disable-check-macro service="tftp" /></ocil>
+<ocil><systemd-check-macro enable="false" service="tftp" /></ocil>
 <rationale>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80212-4" />
 <oval id="service_tftp_disabled" />
 <ref nist="AC-17(8),CM-7" disa="1436" />
 <tested by="DS" on="20121026"/>
@@ -402,7 +402,7 @@ as a TFTP server, which does not provide encryption or authentication.
 <Rule id="package_tftp-server_removed" severity="high">
 <title>Uninstall tftp-server Package</title>
 <description>
-<package-remove-macro package="tftp-server" />
+<yum-macro install="false" package="tftp-server" />
 </description>
 <ocil>
 <package-check-macro package="tftp-server" />
@@ -415,21 +415,21 @@ If TFTP is required for operational support (such as transmission of router conf
 its use must be documented with the Information Systems Securty Manager (ISSM), restricted to 
 only authorized personnel, and have access control rules established.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80213-2" />
 <oval id="package_tftp-server_removed" />
 <ref nist="AC-17(8),CM-6(c),CM-7" disa="318,368,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227" stigid="040500"  cis="2.1.8" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_tftp_removed">
-<title>Remove tftp</title>
+<Rule id="package_tftp_removed" severity="high">
+<title>Remove tftp Daemon</title>
 <description>Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol,
 typically used to automatically transfer configuration or boot files between machines.
 TFTP does not support authentication and can be easily hacked. The package
 <tt>tftp</tt> is a client program that allows for connections to a <tt>tftp</tt> server.
 </description>
-<ocil><package-remove-macro package="tftp"/></ocil>
-<rationale>It is recommended that TFTP be remvoed, unless there is a specific need
+<ocil><yum-macro install="false" package="tftp"/></ocil>
+<rationale>It is recommended that TFTP be removed, unless there is a specific need
 for TFTP (such as a boot server). In that case, use extreme caution when configuring
 the services.</rationale>
 <ident cce="" />
@@ -462,7 +462,7 @@ flag, matching the example below:
 <pre>$ grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80214-0" />
 <oval id="tftpd_uses_secure_mode" />
 <ref nist="AC-17(8),CM-7" disa="366"/>
 </Rule>
@@ -479,7 +479,7 @@ across systems through a terminal session.
 <Rule id="package_talk-server_removed" severity="medium">
 <title>Uninstall talk-server Package</title>
 <description>
-<package-remove-macro package="talk-server" />
+<yum-macro install="false" package="talk-server" />
 </description>
 <ocil>
 <package-check-macro package="talk-server" />
@@ -501,7 +501,7 @@ risk of the accidental (or intentional) activation of talk services.
 Internet talk protocol, which allows the user to chat with other users on
 different systems. Talk is a communication program which copies lines from one
 terminal to the terminal of another user.
-<package-remove-macro package="talk" />
+<yum-macro install="false" package="talk" />
 </description>
 <ocil><package-check-macro package="talk"/></ocil>
 <rationale>
