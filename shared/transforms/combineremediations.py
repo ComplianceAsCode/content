@@ -136,7 +136,7 @@ def expand_xccdf_subs(fix, remediation_functions):
     # Expand shell variables and remediation functions calls with <xccdf:sub>
     # elements
     else:
-        pattern = '\n(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]+)\n'
+        pattern = '\n+(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]*)\n'
         patcomp = re.compile(pattern, re.DOTALL)
         fixparts = re.split(patcomp, fix.text)
         if fixparts[0] is not None:
@@ -201,7 +201,8 @@ def expand_xccdf_subs(fix, remediation_functions):
                     # This chunk contains call of other remediation function
                     else:
                         # Extract remediation function name
-                        funcname = re.search('\n\s*(\S+) .*\n', fixparts[idx],
+                        funcname = re.search('\n\s*(\S+)(| .*)\n',
+                                             fixparts[idx],
                                              re.DOTALL).group(1)
                         # Define new XCCDF <sub> element for the function
                         xccdffuncsub = etree.SubElement(fix, "sub",
@@ -233,6 +234,27 @@ def expand_xccdf_subs(fix, remediation_functions):
                             previouselem = xccdffuncsub.getprevious()
                             if re.search('.*\n$', previouselem.tail) is None:
                                 previouselem.tail += '\n'
+
+    # Perform a sanity check if all known remediation function calls have been
+    # properly XCCDF substituted. Exit with failure if some wasn't
+
+    # First concat output form of modified fix text (including text appended
+    # to all children of the fix)
+    modfixtext = fix.text
+    for child in fix.getchildren():
+        if child is not None and child.text is not None:
+            modfixtext += child.text
+    for f in remediation_functions:
+        # Then efine expected XCCDF sub element form for this function
+        funcxccdfsub = "<sub idref=\"function_%s\"" % f
+        # Finally perform the sanity check -- if function was properly XCCDF
+        # substituted both the original function call and XCCDF <sub> element
+        # for that function need to be present in the modified text of the fix
+        # Otherwise something went wrong, thus exit with failure
+        if f in modfixtext and funcxccdfsub not in modfixtext:
+            print("Error performing XCCDF <sub> substitution for function")
+            print("%s in %s fix.\nExiting..." % (f, fix.get("rule")))
+            sys.exit(1)
 
 
 def main():
