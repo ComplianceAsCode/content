@@ -2,4 +2,8 @@
 
 <xsl:include href="../../../shared/transforms/shared_constants.xslt"/>
 
+<xsl:variable name="cisuri">empty</xsl:variable>
+<xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
+<xsl:variable name="os-stigid-concat" />
+
 </xsl:stylesheet>

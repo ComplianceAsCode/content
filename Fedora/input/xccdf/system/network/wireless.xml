@@ -1,0 +1,105 @@
+<Group id="network-wireless">
+<title>Wireless Networking</title>
+<description>Wireless networking, such as 802.11
+(WiFi) and Bluetooth, can present a security risk to sensitive or
+classified systems and networks. Wireless networking hardware is
+much more likely to be included in laptop or portable systems than
+in desktops or servers. 
+<br /><br />
+Removal of hardware provides the greatest assurance that the wireless
+capability remains disabled. Acquisition policies often include provisions to
+prevent the purchase of equipment that will be used in sensitive spaces and
+includes wireless capabilities. If it is impractical to remove the wireless
+hardware, and policy permits the device to enter sensitive spaces as long
+as wireless is disabled, efforts should instead focus on disabling wireless capability
+via software.</description>
+
+<Group id="wireless_software">
+<title>Disable Wireless Through Software Configuration</title>
+<description>If it is impossible to remove the wireless hardware
+from the device in question, disable as much of it as possible
+through software. The following methods can disable software
+support for wireless networking, but note that these methods do not
+prevent malicious software or careless users from re-activating the
+devices.</description>
+
+<Rule id="wireless_disable_in_bios">
+<title>Disable WiFi or Bluetooth in BIOS</title>
+<description>Some systems that include built-in wireless support offer the
+ability to disable the device through the BIOS. This is system-specific;
+consult your hardware manual or explore the BIOS setup during
+boot.</description>
+<rationale>Disabling wireless support in the BIOS prevents easy
+activation of the wireless interface, generally requiring administrators
+to reboot the system first.
+</rationale>
+<!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
+<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
+</Rule>
+
+<Rule id="wireless_disable_interfaces">
+<title>Deactivate Wireless Network Interfaces</title>
+<description>Deactivating wireless network interfaces should prevent
+normal usage of the wireless capability.
+<br /><br />
+First, identify the interfaces available with the command:
+<pre>$ ifconfig -a</pre>
+Additionally, the following command may be used to
+determine whether wireless support is included for a
+particular interface, though this may not always be a clear
+indicator:
+<pre>$ iwconfig</pre>
+After identifying any wireless interfaces (which may have
+names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
+<tt>eth0</tt>), deactivate the interface with the command:
+<pre>$ sudo ifdown <i>interface</i></pre>
+These changes will only last until the next reboot. To
+disable the interface for future boots, remove the appropriate
+interface file from <tt>/etc/sysconfig/network-scripts</tt>:
+<pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+</description>
+<rationale>Wireless networking allows attackers within physical proximity to
+launch network-based attacks against systems, including those against local LAN
+protocols which were not designed with security in mind.
+</rationale>
+<oval id="wireless_disable_interfaces" />
+<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" cis="4.3.1" />
+</Rule>
+
+<Rule id="service_bluetooth_disabled" severity="medium">
+<title>Disable Bluetooth Service</title>
+<description>
+<systemd-service-macro enable="false" service="bluetooth" />
+<pre>$ sudo service bluetooth stop</pre>
+</description>
+<ocil>
+<systemd-check-macro enable="false" service="bluetooth" />
+</ocil>
+<rationale>Disabling the <tt>bluetooth</tt> service prevents the system from attempting
+connections to Bluetooth devices, which entails some security risk.
+Nevertheless, variation in this risk decision may be expected due to the
+utility of Bluetooth connectivity and its limited range.</rationale>
+<oval id="service_bluetooth_disabled" />
+<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
+</Rule>
+
+<Rule id="kernel_module_bluetooth_disabled" severity="medium">
+<title>Disable Bluetooth Kernel Modules</title>
+<description>The kernel's module loading system can be configured to prevent
+loading of the Bluetooth module. Add the following to
+the appropriate <tt>/etc/modprobe.d</tt> configuration file
+to prevent the loading of the Bluetooth module:
+<pre>install bluetooth /bin/true</pre>
+</description>
+<ocil>
+<module-disable-check-macro module="bluetooth" />
+</ocil>
+<rationale>If Bluetooth functionality must be disabled, preventing the kernel
+from loading the kernel module provides an additional safeguard against its
+activation.</rationale>
+<oval id="kernel_module_bluetooth_disabled" />
+<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
+</Rule>
+
+</Group><!--<Group id="wireless_software">-->
+</Group><!--<Group id="network-wireless">-->

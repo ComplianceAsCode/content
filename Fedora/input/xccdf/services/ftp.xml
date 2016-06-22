@@ -17,10 +17,10 @@ data available to the public.</description>
 <Rule id="disable_vsftpd">
 <title>Disable vsftpd Service</title>
 <description>
-<service-disable-macro service="vsftpd" />
+<systemd-service-macro enable="false" service="vsftpd" />
 </description>
 <ocil>
-<service-disable-check-macro service="vsftpd" />
+<systemd-check-macro enable="false" service="vsftpd" />
 </ocil>
 <rationale>
 Running FTP server software provides a network-based avenue
@@ -35,7 +35,7 @@ a risk of compromising sensitive information.
 <Rule id="uninstall_vsftpd">
 <title>Uninstall vsftpd Package</title>
 <description>
-<package-remove-macro package="vsftpd" />
+<dnf-macro install="false" package="vsftpd" />
 </description>
 <ocil>
 <package-check-macro package="vsftpd" />

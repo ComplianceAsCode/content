@@ -171,6 +171,12 @@ Linux 6 system, custom changes to <tt>/etc/init/control-alt-delete.conf</tt>
 may be overwritten. Refer to <b>https://access.redhat.com/site/solutions/70464</b>
 for additional information.
 </rationale>
+<warning category="general">Disabling the <tt>Ctrl-Alt-Del</tt> key sequence
+in <tt>/etc/init/control-alt-delete.conf</tt> DOES NOT disable the <tt>Ctrl-Alt-Del</tt>
+key sequence if running in <tt>runlevel 6</tt> (e.g. in GNOME, KDE, etc.)! The
+<tt>Ctrl-Alt-Del</tt> key sequence will only be disabled if running in
+the non-graphical <tt>runlevel 3</tt>.
+</warning>
 <oval id="disable_ctrlaltdel_reboot" />
 <ident cce="27567-7" stig="RHEL-06-000286" />
 </Rule>
@@ -221,149 +227,6 @@ can be implemented to reinforce this.
 <br /><br />
 Automatic screen locking is only meant as a safeguard for
 those cases where a user forgot to lock the screen.</description>
-
-<Group id="gui_screen_locking">
-<title>Configure GUI Screen Locking</title>
-<description>In the default GNOME desktop, the screen can be locked
-by choosing <b>Lock Screen</b> from the <b>System</b> menu.
-<br /><br />
-The <tt>gconftool-2</tt> program can be used to enforce mandatory
-screen locking settings for the default GNOME environment.
-The
-following sections detail commands to enforce idle activation of the screensaver,
-screen locking, a blank-screen screensaver, and an idle
-activation time.
-
-<br /><br />
-Because users should be trained to lock the screen when they
-step away from the computer, the automatic locking feature is only
-meant as a backup. The <b>Lock Screen</b> icon from the <b>System</b> menu can
-also be dragged to the taskbar in order to facilitate even more
-convenient screen-locking.
-<br /><br />
-The root account cannot be screen-locked, but this should
-<!-- TODO: is this still true? -->have no practical effect as the root account should <i>never</i> be used
-to log into an X Windows environment, and should only be used to
-for direct login via console in emergency circumstances.
-<br /><br />
-For more information about configuring GNOME screensaver, see
-<b>http://live.gnome.org/GnomeScreensaver</b>. For more information about
-enforcing preferences in the GNOME environment using the GConf
-configuration system, see <b>http://projects.gnome.org/gconf</b> and
-the man page <tt>gconftool-2(1)</tt>.</description>
-
-<Value id="inactivity_timeout_value" type="number" operator="equals">
-<title>Inactivity timeout</title>
-<description>Choose allowed duration of inactive SSH connections, shells, and X sessions</description>
-<value>15</value>
-<value selector="5_minutes">5</value>
-<value selector="10_minutes">10</value>
-<value selector="15_minutes">15</value>
-</Value>
-
-<Rule id="gconf_gnome_screensaver_idle_delay" severity="medium">
-<title>Set GNOME Login Inactivity Timeout</title>
-<description>
-Run the following command to set the idle time-out value for
-inactivity in the GNOME desktop to <sub idref="inactivity_timeout_value" /> minutes:
-<pre>$ sudo gconftool-2 \
-  --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type int \
-  --set /desktop/gnome/session/idle_delay <sub idref="inactivity_timeout_value" /></pre>
-</description>
-<ocil clause="it is not">
-To check the current idle time-out value, run the following command:
-<pre>$ gconftool-2 -g /desktop/gnome/session/idle_delay</pre>
-If properly configured, the output should be <tt><sub idref="inactivity_timeout_value" /></tt>. 
-</ocil>
-<rationale>
-Setting the idle delay controls when the
-screensaver will start, and can be combined with
-screen locking to prevent access from passersby.
-</rationale>
-<ident cce="26828-4"  stig="RHEL-06-000257" />
-<oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-11(a)" disa="57"/>
-</Rule>
-
-<Rule id="gconf_gnome_screensaver_idle_activation_enabled" severity="medium">
-<title>GNOME Desktop Screensaver Mandatory Use</title>
-<description>
-Run the following command to activate the screensaver
-in the GNOME desktop after a period of inactivity:
-<pre>$ sudo gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type bool \
-  --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
-</description>
-<ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
-<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_activation_enabled</pre>
-If properly configured, the output should be <tt>true</tt>.
-</ocil>
-<rationale>
-Enabling idle activation of the screensaver ensures the screensaver will
-be activated after the idle delay.  Applications requiring continuous,
-real-time screen display (such as network management products) require the
-login session does not have administrator rights and the display station is located in a
-controlled-access area.
-</rationale>
-<ident cce="26600-7"  stig="RHEL-06-000258" />
-<oval id="gconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="AC-11(a)" disa="57" />
-</Rule>
-
-<Rule id="gconf_gnome_screensaver_lock_enabled" severity="medium">
-<title>Enable Screen Lock Activation After Idle Period</title>
-<description>
-Run the following command to activate locking of the screensaver
-in the GNOME desktop when it is activated:
-<pre>$ sudo gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type bool \
-  --set /apps/gnome-screensaver/lock_enabled true</pre>
-</description>
-<ocil clause="it is not">
-To check the status of the idle screen lock activation, run the following command:
-<pre>$ gconftool-2 -g /apps/gnome-screensaver/lock_enabled</pre>
-If properly configured, the output should be <tt>true</tt>.
-</ocil>
-<rationale>
-Enabling the activation of the screen lock after an idle period
-ensures password entry will be required in order to
-access the system, preventing access by passersby.
-</rationale>
-<ident cce="26235-2"  stig="RHEL-06-000259" />
-<oval id="gconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-11(a)" disa="57" />
-</Rule>
-
-<Rule id="gconf_gnome_screensaver_mode_blank">
-<title>Implement Blank Screensaver</title>
-<description>
-Run the following command to set the screensaver mode
-in the GNOME desktop to a blank screen:
-<pre>$ sudo gconftool-2 --direct \
-  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
-  --type string \
-  --set /apps/gnome-screensaver/mode blank-only</pre>
-</description>
-<ocil clause="it is not">
-To ensure the screensaver is configured to be blank, run the following command:
-<pre>$ gconftool-2 -g /apps/gnome-screensaver/mode</pre>
-If properly configured, the output should be <tt>blank-only</tt> 
-</ocil>
-<rationale>
-Setting the screensaver mode to blank-only conceals the
-contents of the display from passersby.
-</rationale>
-<ident cce="26638-7"  stig="RHEL-06-000260" />
-<oval id="gconf_gnome_screensaver_mode_blank" />
-<ref nist="AC-11(b)" disa="60" />
-</Rule>
-
-</Group>
-
 
 <Group id="console_screen_locking">
 <title>Configure Console Screen Locking</title>

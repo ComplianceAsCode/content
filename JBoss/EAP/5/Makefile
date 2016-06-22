@@ -1,6 +1,9 @@
 all: tables guide content dist
 
-SHARED = ../../../shared
+# Do not remove exporting of SHARED variable!!! (since
+# shared/transforms/combineremediations.py helper
+# requires its value to be available)
+export SHARED = ../../../shared
 include $(SHARED)/product-make.include
 
 PROD = eap5
@@ -115,6 +118,7 @@ dist: tables guide content
 	mkdir -p $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
+	cp $(OUT)/$(ID)-$(PROD)-ocil.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content

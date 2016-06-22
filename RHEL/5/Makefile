@@ -1,6 +1,9 @@
 all: tables guide content dist
 
-SHARED = ../../shared
+# Do not remove exporting of SHARED variable!!! (since
+# shared/transforms/combineremediations.py helper
+# requires its value to be available)
+export SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = rhel5
@@ -13,7 +16,7 @@ checks:
 	mkdir -p $(PROD_OVAL)
 	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
-	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
+	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
 	xmlwf $(PROD_OVAL)/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
@@ -73,9 +76,12 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
-#	Update "style" attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
+#	Update @style attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
 	sed -i 's/style="SCAP_1.1"/style="SCAP_1.2"/' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+#	Update @schematron-version attribute in datastream to "1.2". Fixes #1191
+#	(Workaround for https://github.com/OpenSCAP/openscap/issues/383)
+	sed -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' $(OUT)/$(ID)-$(PROD)-ds.xml
 #	Add in CPE and OVAL content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
@@ -140,6 +146,7 @@ dist: tables guide content
 	mkdir -p $(DIST)/content $(DIST)/guide
 	cp $(OUT)/$(ID)-$(PROD)-xccdf.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-oval.xml $(DIST)/content
+	cp $(OUT)/$(ID)-$(PROD)-ocil.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content

@@ -27,7 +27,7 @@ needs to use the loopback interface, remove all files of the form
 <pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 If the system is a standalone machine with no need for network access or even
 communication over the loopback device, then disable this service.
-<service-disable-macro service="network" />
+<systemd-service-macro enable="false" service="network" />
 </description>
 </Group> 
 
@@ -73,7 +73,7 @@ scripts add entries to the system's routing table for these addresses. Zeroconf
 address assignment commonly occurs when the system is configured to use DHCP
 but fails to receive an address assignment from the DHCP server.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80173-8" />
 <oval id="network_disable_zeroconf" />
 <ref nist="CM-7" />
 </Rule>
@@ -89,7 +89,7 @@ to determine if any interface is running in promiscuous mode:
 or Wireshark) is likely to be using the interface and this should be
 investigated.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80174-6" />
 <oval id="network_sniffer_disabled" />
 <ref nist="CM-7,MA-3" />
 </Rule>

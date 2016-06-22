@@ -98,9 +98,9 @@ service reload, enter the following command as root:
 <Rule id="service_firewalld_enabled" severity="medium">
 <title>Verify firewalld Enabled</title>
 <description>
-<service-enable-macro service="firewalld" />
+<systemd-service-macro enable="true" service="firewalld" />
 </description>
-<ocil><service-enable-check-macro service="firewalld" /></ocil>
+<ocil><systemd-check-macro enable="true" service="firewalld" /></ocil>
 <rationale>
 Access control methods provide the ability to enhance system security posture
 by restricting services and known good IP addresses and address ranges. This
@@ -179,7 +179,7 @@ Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>D
 The output should be similar to the following:
 <pre>$ sudo grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80172-0" />
 <ref nist="CM-7" disa="1109" />
 </Rule>
 

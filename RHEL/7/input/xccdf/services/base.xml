@@ -14,9 +14,9 @@ and reports crash data when an application crash is detected. Using a variety
 of plugins, abrtd can email crash reports to system administrators, log crash
 reports to files, or forward crash reports to a centralized issue tracking
 system such as RHTSupport.
-<service-disable-macro service="abrtd" />
+<systemd-service-macro enable="false" service="abrtd" />
 </description>
-<ocil><service-disable-check-macro service="abrtd" /></ocil>
+<ocil><systemd-check-macro enable="false" service="abrtd" /></ocil>
 <rationale> Mishandling crash data could expose sensitive information about
 vulnerabilities in software executing on the local machine, as well as sensitive
 information from within a process's address space or registers.</rationale>
@@ -31,14 +31,14 @@ information from within a process's address space or registers.</rationale>
 <description>The Advanced Configuration and Power Interface Daemon (<tt>acpid</tt>)
 dispatches ACPI events (such as power/reset button depressed) to userspace
 programs.
-<service-disable-macro service="acpid" />
+<systemd-service-macro enable="false" service="acpid" />
 </description>
-<ocil><service-disable-check-macro service="acpid" /></ocil>
+<ocil><systemd-check-macro enable="false" service="acpid" /></ocil>
 <rationale>ACPI support is highly desirable for systems in some network roles,
 such as laptops or desktops. For other systems, such as servers, it may permit
 accidental or trivially achievable denial of service situations and disabling
 it is appropriate.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80252-0" />
 <oval id="service_acpid_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -49,13 +49,13 @@ it is appropriate.</rationale>
 with certifying authorities on networks which use public-key infrastructure. It is often
 combined with Red Hat's IPA (Identity Policy Audit) security information management
 solution to aid in the management of certificates.
-<service-disable-macro service="certmonger" />
+<systemd-service-macro enable="false" service="certmonger" />
 </description>
-<ocil><service-disable-check-macro service="certmonger" /></ocil>
+<ocil><systemd-check-macro enable="false" service="certmonger" /></ocil>
 <rationale>The services provided by certmonger may be essential for systems
 fulfilling some roles a PKI infrastructure, but its functionality is not necessary
 for many other use cases.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80253-8" />
 <oval id="service_certmonger_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -65,13 +65,13 @@ for many other use cases.</rationale>
 <description>Control groups allow an administrator to allocate system resources (such as CPU,
 memory, network bandwidth, etc) among a defined group (or groups) of processes executing on
 a system. The <tt>cgconfig</tt> daemon starts at boot and establishes the predefined control groups.
-<service-disable-macro service="cgconfig" />
+<systemd-service-macro enable="false" service="cgconfig" />
 </description>
-<ocil><service-disable-check-macro service="cgconfig" /></ocil>
+<ocil><systemd-check-macro enable="false" service="cgconfig" /></ocil>
 <rationale>Unless control groups are used to manage system resources, running the cgconfig
 service is not necessary.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80254-6" />
 <oval id="service_cgconfig_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -80,13 +80,13 @@ service is not necessary.
 <title>Disable Control Group Rules Engine (cgred)</title>
 <description>The <tt>cgred</tt> service moves tasks into control groups according to
 parameters set in the <tt>/etc/cgrules.conf</tt> configuration file.
-<service-disable-macro service="cgred" />
+<systemd-service-macro enable="false" service="cgred" />
 </description>
-<ocil><service-disable-check-macro service="cgred" /></ocil>
+<ocil><systemd-check-macro enable="false" service="cgred" /></ocil>
 <rationale>Unless control groups are used to manage system resources, running the cgred service
 service is not necessary.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80255-3" />
 <oval id="service_cgred_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -95,15 +95,15 @@ service is not necessary.
 <title>Disable CPU Speed (cpupower)</title>
 <description>The <tt>cpupower</tt> service can adjust the clock speed of supported CPUs based upon
 the current processing load thereby conserving power and reducing heat.
-<service-disable-macro service="cpupower" />
+<systemd-service-macro enable="false" service="cpupower" />
 </description>
-<ocil><service-disable-check-macro service="cpupower" /></ocil>
+<ocil><systemd-check-macro enable="false" service="cpupower" /></ocil>
 <rationale>The <tt>cpupower</tt> service is only necessary if adjusting the CPU clock speed
 provides benefit. Traditionally this has included laptops (to enhance battery life),
 but may also apply to server or desktop environments where conserving power is
 highly desirable or necessary.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80256-1" />
 <oval id="service_cpupower_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -113,42 +113,45 @@ highly desirable or necessary.
 <description>The <tt>irqbalance</tt> service optimizes the balance between
 power savings and performance through distribution of hardware interrupts across
 multiple processors.
-<service-enable-macro service="irqbalance" />
+<systemd-service-macro enable="true" service="irqbalance" />
 </description>
-<ocil><service-disable-check-macro service="irqbalance" /></ocil>
+<ocil><systemd-check-macro enable="false" service="irqbalance" /></ocil>
 <rationale>In an environment with multiple processors (now common), the irqbalance service
 provides potential speedups for handling interrupt requests.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80257-9" />
 <oval id="service_irqbalance_enabled" />
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="service_kdump_disabled">
+<Rule id="service_kdump_disabled" severity="medium">
 <title>Disable KDump Kernel Crash Analyzer (kdump)</title>
 <description>The <tt>kdump</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
 system call to boot a secondary kernel ("capture" kernel) following a system
 crash, which can load information from the crashed kernel for analysis.
-<service-disable-macro service="kdump" />
+<systemd-service-macro enable="false" service="kdump" />
 </description>
-<ocil><service-disable-check-macro service="kdump" /></ocil>
-<rationale>Unless the system is used for kernel development or testing, there
+<ocil><systemd-check-macro enable="false" service="kdump" /></ocil>
+<rationale>
+Kernel core dumps may contain the full contents of system memory at the time of the crash.
+Kernel core dumps consume a considerable amount of disk space and may result in denial of 
+service by exhausting the available space on the target file system partition.
+Unless the system is used for kernel development or testing, there
 is little need to run the kdump service.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80258-7" />
 <oval id="service_kdump_disabled" />
-<ref nist="AC-17(8),CM-7" />
+<ref nist="AC-17(8),CM-7,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021230" />
 </Rule>
-
 
 <Rule id="service_mdmonitor_disabled">
 <title>Disable Software RAID Monitor (mdmonitor)</title>
 <description>The <tt>mdmonitor</tt> service is used for monitoring a software RAID array; hardware
 RAID setups do not use this service.
-<service-disable-macro service="mdmonitor" />
+<systemd-service-macro enable="false" service="mdmonitor" />
 </description>
-<ocil><service-disable-check-macro service="mdmonitor" /></ocil>
+<ocil><systemd-check-macro enable="false" service="mdmonitor" /></ocil>
 <rationale>If software RAID monitoring is not required,
 there is no need to run this service.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80259-5" />
 <oval id="service_mdmonitor_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -159,16 +162,16 @@ there is no need to run this service.</rationale>
 a growing list of programs, such as those used for Gnome, Bluetooth, and Avahi.
 Due to these dependencies, disabling D-Bus may not be practical for
 many systems.
-<service-disable-macro service="messagebus" />
+<systemd-service-macro enable="false" service="messagebus" />
 </description>
-<ocil><service-disable-check-macro service="messagebus" /></ocil>
+<ocil><systemd-check-macro enable="false" service="messagebus" /></ocil>
 <rationale>If no services which require D-Bus are needed, then it
 can be disabled. As a broker for IPC between processes of different privilege levels,
 it could be a target for attack. However, disabling D-Bus is likely to be
 impractical for any system which needs to provide
 a graphical login session.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80260-3" />
 <oval id="service_messagebus_disabled" />
 <ref nist="CM-7" />
 </Rule>
@@ -179,13 +182,13 @@ a graphical login session.
 netconsole kernel module, which logs kernel printk messages over UDP to a
 syslog server. This allows debugging of problems where disk logging fails and
 serial consoles are impractical.
-<service-disable-macro service="netconsole" />
+<systemd-service-macro enable="false" service="netconsole" />
 </description>
-<ocil><service-disable-check-macro service="netconsole" /></ocil>
+<ocil><systemd-check-macro enable="false" service="netconsole" /></ocil>
 <rationale>The <tt>netconsole</tt> service is not necessary unless there is a need to debug
 kernel panics, which is not common.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80261-1" />
 <oval id="service_netconsole_disabled" />
 <ref nist="AC-17(8),CM-7" disa="381" />
 </Rule>
@@ -197,14 +200,14 @@ when the system boots. It synchronizes to the NTP servers listed in
 <tt>/etc/ntp/step-tickers</tt> or <tt>/etc/ntp.conf</tt>
 and then sets the local hardware clock to the newly synchronized
 system time.
-<service-disable-macro service="ntpdate" />
+<systemd-service-macro enable="false" service="ntpdate" />
 </description>
-<ocil><service-disable-check-macro service="ntpdate" /></ocil>
+<ocil><systemd-check-macro enable="false" service="ntpdate" /></ocil>
 <rationale>The <tt>ntpdate</tt> service may only be suitable for systems which
 are rebooted frequently enough that clock drift does not cause problems between
 reboots. In any event, the functionality of the ntpdate service is now
 available in the ntpd program and should be considered deprecated.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80262-9" />
 <oval id="service_ntpdate_disabled" />
 <ref nist="AC-17(8),CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
@@ -216,14 +219,14 @@ available in the ntpd program and should be considered deprecated.</rationale>
 access control mechanism through which
 specified privileged tasks can run tasks for unprivileged client
 applications. Communication with <tt>oddjobd</tt> through the system message bus.
-<service-disable-macro service="oddjobd" />
+<systemd-service-macro enable="false" service="oddjobd" />
 </description>
-<ocil><service-disable-check-macro service="oddjobd" /></ocil>
+<ocil><systemd-check-macro enable="false" service="oddjobd" /></ocil>
 <rationale>The <tt>oddjobd</tt> service may provide necessary functionality in
 some environments, and can be disabled if it is not needed. Execution of
 tasks by privileged programs, on behalf of unprivileged ones, has traditionally
 been a source of privilege escalation security issues.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80263-7" />
 <oval id="service_oddjobd_disabled" />
 <ref nist="CM-7" disa="381" />
 <tested by="DS" on="20121024"/>
@@ -234,13 +237,13 @@ been a source of privilege escalation security issues.</rationale>
 <description>The <tt>portreserve</tt> service is a TCP port reservation utility that can
 be used to prevent portmap from binding to well known TCP ports that are
 required for other services.
-<service-disable-macro service="portreserve" />
+<systemd-service-macro enable="false" service="portreserve" />
 </description>
-<ocil><service-disable-check-macro service="portreserve" /></ocil>
+<ocil><systemd-check-macro enable="false" service="portreserve" /></ocil>
 <rationale>The <tt>portreserve</tt> service provides helpful functionality by
 preventing conflicting usage of ports in the reserved port range, but it can be
 disabled if not needed.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80264-5" />
 <oval id="service_portreserve_disabled" />
 <ref nist="AC-17(8),CM-7" />
 <tested by="DS" on="20121024"/>
@@ -251,14 +254,14 @@ disabled if not needed.</rationale>
 <description>The process accounting service, <tt>psacct</tt>, works with programs
 including <tt>acct</tt> and <tt>ac</tt> to allow system administrators to view
 user activity, such as commands issued by users of the system.
-<service-enable-macro service="psacct" />
+<systemd-service-macro enable="true" service="psacct" />
 </description>
-<ocil><service-disable-check-macro service="psacct" /></ocil>
+<ocil><systemd-check-macro enable="false" service="psacct" /></ocil>
 <rationale>The <tt>psacct</tt> service can provide administrators a convenient
 view into some user activities. However, it should be noted that the auditing
 system and its audit records provide more authoritative and comprehensive
 records.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80265-2" />
 <oval id="service_psacct_enabled" />
 <ref nist="AU-12,CM-7" />
 <tested by="DS" on="20121024"/>
@@ -270,15 +273,15 @@ records.</rationale>
 guaranteed delivery services.  It is an implementation of the Advanced Message
 Queuing Protocol.  By default the qpidd service will bind to port 5672 and
 listen for connection attempts.
-<service-disable-macro service="qpidd" />
+<systemd-service-macro enable="false" service="qpidd" />
 </description>
-<ocil><service-disable-check-macro service="qpidd" /></ocil>
+<ocil><systemd-check-macro enable="false" service="qpidd" /></ocil>
 <rationale>The qpidd service is automatically installed when the "base" 
 package selection is selected during installation.  The qpidd service listens 
 for network connections, which increases the attack surface of the system.  If 
 the system is not intended to receive AMQP traffic, then the <tt>qpidd</tt> 
 service is not needed and should be disabled or removed.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80266-0" />
 <oval id="service_qpidd_disabled" />
 <ref nist="AC-17(8),CM-7" disa="382" />
 </Rule>
@@ -290,15 +293,15 @@ users of disk space quota violations. It listens to the kernel via a netlink
 socket for disk quota violations and notifies the appropriate user of the
 violation using D-Bus or by sending a message to the terminal that the user has
 last accessed.
-<service-disable-macro service="quota_nld" />
+<systemd-service-macro enable="false" service="quota_nld" />
 </description>
-<ocil><service-disable-check-macro service="quota_nld" /></ocil>
+<ocil><systemd-check-macro enable="false" service="quota_nld" /></ocil>
 <rationale>If disk quotas are enforced on the local system, then the
 <tt>quota_nld</tt> service likely provides useful functionality and should
 remain enabled. However, if disk quotas are not used or user notification of
 disk quota violation is not desired then there is no need to run this
 service.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80267-8" />
 <oval id="service_quota_nld_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -310,14 +313,14 @@ service.</rationale>
 Internet Router Discovery Protocol (IRDP), which allows discovery of routers on
 the local subnet. If a router is discovered then the local routing table is
 updated with a corresponding default route. By default this daemon is disabled.
-<service-disable-macro service="rdisc" />
+<systemd-service-macro enable="false" service="rdisc" />
 </description>
-<ocil><service-disable-check-macro service="rdisc" /></ocil>
+<ocil><systemd-check-macro enable="false" service="rdisc" /></ocil>
 <rationale>General-purpose systems typically have their network and routing
 information configured statically by a system administrator. Workstations or
 some special-purpose systems often use DHCP (instead of IRDP) to retrieve
 dynamic network configuration information.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80268-6" />
 <oval id="service_rdisc_disabled" />
 <ref nist="AC-17(8),AC-4,CM-7" disa="382" />
 <tested by="DS" on="20121024"/>
@@ -329,14 +332,14 @@ dynamic network configuration information.</rationale>
 servers to determine whether there are any actions that should be executed,
 such as package updates. This only occurs if the system was registered to an
 RHN server or satellite and managed as such.
-<service-disable-macro service="rhnsd" />
+<systemd-service-macro enable="false" service="rhnsd" />
 </description>
-<ocil><service-disable-check-macro service="rhnsd" /></ocil>
+<ocil><systemd-check-macro enable="false" service="rhnsd" /></ocil>
 <rationale>Although systems management and patching is extremely important to
 system security, management by a system outside the enterprise enclave is not
 desirable for some environments.  However, if the system is being managed by RHN or
  RHN Satellite Server the <tt>rhnsd</tt> daemon can remain on. </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80269-4" />
 <oval id="service_rhnsd_disabled" />
 <ref nist="AC-17(8),CM-7" disa="382" cis="1.2.4" />
 <tested by="DS" on="20121024"/>
@@ -347,15 +350,15 @@ desirable for some environments.  However, if the system is being managed by RHN
 <description>The Red Hat Subscription Manager (rhsmcertd) periodically checks for
 changes in the entitlement certificates for a registered system and updates it
 accordingly.
-<service-disable-macro service="rhsmcertd" />
+<systemd-service-macro enable="false" service="rhsmcertd" />
 </description>
-<ocil><service-disable-check-macro service="rhsmcertd" /></ocil>
+<ocil><systemd-check-macro enable="false" service="rhsmcertd" /></ocil>
 <rationale>The <tt>rhsmcertd</tt> service can provide administrators with some
 additional control over which of their systems are entitled to particular
 subscriptions. However, for systems that are managed locally or which are not
 expected to require remote changes to their subscription status, it is
 unnecessary and can be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80270-2" />
 <oval id="service_rhsmcertd_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -368,14 +371,14 @@ behalf of the SASL library. The service isolates all code requiring superuser
 privileges for SASL authentication into a single process, and can also be used
 to provide proxy authentication services to clients that do not understand SASL
 based authentication.
-<service-disable-macro service="saslauthd" />
+<systemd-service-macro enable="false" service="saslauthd" />
 </description>
-<ocil><service-disable-check-macro service="saslauthd" /></ocil>
+<ocil><systemd-check-macro enable="false" service="saslauthd" /></ocil>
 <rationale>The <tt>saslauthd</tt> service provides essential functionality for
 performing authentication in some directory environments, such as those which
 use Kerberos and LDAP. For others, however, in which only local files may be
 consulted, it is not necessary and should be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80271-0" />
 <oval id="service_saslauthd_disabled" />
 <ref nist="AC-17(8),CM-7" />
 <tested by="DS" on="20121024"/>
@@ -386,14 +389,14 @@ consulted, it is not necessary and should be disabled.</rationale>
 <description>SMART (Self-Monitoring, Analysis, and Reporting Technology) is a
 feature of hard drives that allows them to detect symptoms of disk failure and
 relay an appropriate warning.
-<service-disable-macro service="smartd" />
+<systemd-service-macro enable="false" service="smartd" />
 </description>
-<ocil><service-disable-check-macro service="smartd" /></ocil>
+<ocil><systemd-check-macro enable="false" service="smartd" /></ocil>
 <rationale>SMART can help protect against denial of
 service due to failing hardware. Nevertheless, if it is not needed or the
 system's drives are not SMART-capable (such as solid state drives), it can be
 disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80272-8" />
 <oval id="service_smartd_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>
@@ -405,14 +408,14 @@ disabled.</rationale>
 <description>The <tt>sysstat</tt> service resets various I/O and CPU
 performance statistics to zero in order to begin counting from a fresh state
 at boot time.
-<service-disable-macro service="sysstat" />
+<systemd-service-macro enable="false" service="sysstat" />
 </description>
-<ocil><service-disable-check-macro service="sysstat" /></ocil>
+<ocil><systemd-check-macro enable="false" service="sysstat" /></ocil>
 <rationale>By default the <tt>sysstat</tt> service merely runs a program at
 boot to reset the statistics, which can be retrieved using programs such as
 <tt>sar</tt> and <tt>sadc</tt>. These may provide useful insight into system
 operation, but unless used this service can be disabled.</rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80273-6" />
 <oval id="service_sysstat_disabled" />
 <ref nist="CM-7" />
 <tested by="DS" on="20121024"/>

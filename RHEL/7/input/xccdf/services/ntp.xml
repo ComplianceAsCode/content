@@ -65,10 +65,10 @@ information on the capabilities and configuration of each of the NTP daemons.
 <Rule id="service_chronyd_or_ntpd_enabled" severity="medium">
 <title>Enable the NTP Daemon</title>
 <description>
-<service-enable-macro service="chronyd" />
+<systemd-service-macro enable="true" service="chronyd" />
 Note: The <tt>chronyd</tt> daemon is enabled by default.
 <br /><br />
-<service-enable-macro service="ntpd" />
+<systemd-service-macro enable="true" service="ntpd" />
 Note: The <tt>ntpd</tt> daemon is not enabled by default. Though as mentioned
 in the previous sections in certain environments the <tt>ntpd</tt> daemon might
 be preferred to be used rather than the <tt>chronyd</tt> one. Refer to:
@@ -76,8 +76,8 @@ be preferred to be used rather than the <tt>chronyd</tt> one. Refer to:
 for guidance which NTP daemon to choose depending on the environment used.
 </description>
 <ocil>
-  <service-enable-check-macro service="chronyd" />
-  <service-enable-check-macro service="ntpd" />
+  <systemd-check-macro enable="true" service="chronyd" />
+  <systemd-check-macro enable="true" service="ntpd" />
 </ocil>
 <rationale>Enabling some of <tt>chronyd</tt> or <tt>ntpd</tt> services ensures
 that the NTP daemon will be running and that the system will synchronize its

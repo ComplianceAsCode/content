@@ -1,6 +1,6 @@
 # platform = Red Hat Enterprise Linux 7
-grep -qi ^PermitUserEnvironment /etc/ssh/sshd_config && \
-  sed -i "s/PermitUserEnvironment.*/PermitUserEnvironment no/gI" /etc/ssh/sshd_config
-if ! [ $? -eq 0 ]; then
-    echo "PermitUserEnvironment no" >> /etc/ssh/sshd_config
-fi
+
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
+
+replace_or_append '/etc/ssh/sshd_config' '^PermitUserEnvironment' 'no' 'CCENUM' '%s %s'

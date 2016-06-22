@@ -49,11 +49,25 @@ endif
 # Common build targets - compose single shorthand XCCDF guide from all the sources
 guide_xslt_deps= $(wildcard $(IN)/auxiliary/*.xml) $(wildcard $(IN)/profiles/*.xml) $(wildcard $(IN)/xccdf/**/*.xml)
 $(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" --stringparam SHARED_RP "$(realpath $(SHARED))" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
 	xmllint --format --output $@ $@
 
+# Create temporary $(SHARED)/$(OUT) folder to hold information like list of contributors or list of
+# available remediation functions used by all SSG benchmarks
+$(SHARED)/$(OUT):
+	mkdir $@
+
+# Benchmark metadata prerequisite - derive $(SHARED)/$(OUT)/contributors.xml from the content of Contributors.md
+$(SHARED)/$(OUT)/contributors.xml: $(SHARED)/$(OUT)
+	# Create $(SHARED)/$(OUT)/contributors.xml file:
+	# * holding <text> like root element and
+	# * names of the individual SSG contributor(s) within <contributor> element(s)
+	echo "<text>" > $@
+	sed -n -e 's/\* \(.*\)/<contributor>\1<\/contributor>/p' $(SHARED)/../Contributors.md >> $@
+	echo "</text>" >> $@
+
 # Common build targets - convert shorthand format to an XCCDF stub
-$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
+$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(SHARED)/$(OUT)/contributors.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $@ $(TRANS)/shorthand2xccdf.xslt $<
 
 # Common build targets - improve the XCCDF stub - first resolve
@@ -71,11 +85,11 @@ $(OUT)/xccdf-unlinked-resolved.xml: $(OUT)/xccdf-unlinked-empty-groups-unselecte
 # Common build targets - create OCIL questionnaire stub for further processing
 $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt
 	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt $<
-	xmllint --format --output $@ $@
+	xmllint --format --output $(OUT)/unlinked-$(PROD)-ocil.xml $@
 
 # Common build targets - an XCCDF witch OCIL checks in the form of official OCIL-2.0 syntax
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
-	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
+	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
 # Common build targets - a catalogue of XCCDF remediations
 bash_remediations_deps= $(wildcard $(IN)/remediations/bash/*.sh) $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
@@ -84,7 +98,7 @@ $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_r
 	mkdir -p $(BUILD_REMEDIATIONS)
 	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
 	# which are regular files (not symlinks). Merge the final list into $(BUILD_REMEDIATIONS) directory
-	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name *.sh -exec cp {} $(BUILD_REMEDIATIONS) ';'
+	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name '*.sh' -exec cp {} $(BUILD_REMEDIATIONS) ';'
 	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(BUILD_REMEDIATIONS) $(OUT)/bash-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet

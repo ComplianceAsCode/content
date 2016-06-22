@@ -29,7 +29,7 @@ oval_header = '''<?xml version="1.0" encoding="UTF-8"?>
         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
         http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
        <generator>
-        <oval:product_name>testcheck.py</oval:product_name>
+        <oval:product_name>testoval.py</oval:product_name>
         <oval:product_version>0.0.1</oval:product_version>
         <oval:schema_version>5.10</oval:schema_version>
         <oval:timestamp>%s</oval:timestamp>

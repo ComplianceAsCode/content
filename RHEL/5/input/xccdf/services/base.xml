@@ -12,9 +12,9 @@ should be disabled if not required.</description>
 <description>The <tt>kdump</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
 system call to boot a secondary kernel ("capture" kernel) following a system
 crash, which can load information from the crashed kernel for analysis.
-<service-disable-macro service="kdump" />
+<chkconfig-service-macro enable="false" service="kdump" />
 </description>
-<ocil><service-disable-check-macro service="kdump" /></ocil>
+<ocil><service-check-macro enable="false" service="kdump" /></ocil>
 <rationale>Unless the system is used for kernel development or testing, there
 is little need to run the kdump service.</rationale>
 <ident stig="GEN003510" />
@@ -25,9 +25,9 @@ is little need to run the kdump service.</rationale>
 <Rule id="service_yum-updatesd_disabled">
 <title>Disable Automatic Updates</title>
 <description>
-<service-disable-macro service="yum-updatesd" />
+<chkconfig-service-macro enable="false" service="yum-updatesd" />
 </description>
-<ocil><service-disable-check-macro service="yum-updatesd" /></ocil>
+<ocil><service-check-macro enable="false" service="yum-updatesd" /></ocil>
 <rationale>System package management tools can obtain a list 
 of updates and patches from a package repository and make this 
 information available to the SA for review and action. Using a 

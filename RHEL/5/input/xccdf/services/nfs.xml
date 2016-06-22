@@ -53,7 +53,7 @@ security posture.</description>
 <description>The rpcbind service increase the attack surface of 
 the system and should only be used when needed.  The rpcbind service 
 are used by a variety of services using Remote Procedure Calls (RPCs).
-<service-disable-macro service="rpcbind" />
+<chkconfig-service-macro enable="false" service="rpcbind" />
 </description>
 <ident stig="GEN003810" />
 <oval id="service_rpc_disabled" />

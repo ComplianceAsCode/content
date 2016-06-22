@@ -1,0 +1,580 @@
+<Group id="gnome">
+<title>GNOME Desktop Environment</title>
+<description>
+GNOME is a graphical desktop environment bundled with many Linux distributions that
+allow users to easily interact with the operating system graphically rather than
+textually. The GNOME Graphical Display Manager (GDM) provides login, logout, and user
+switching contexts as well as display server management.
+<br/><br/>
+GNOME is developed by the GNOME Project and is considered the default
+Red Hat Graphical environment.
+<br/><br/>
+For more information on GNOME and the GNOME Project, see <b>https://www.gnome.org</b>
+</description>
+
+<Group id="gnome_login_screen">
+<title>Configure GNOME Login Screen</title>
+<description>In the default GNOME desktop, the login is displayed after system boot
+and can display user accounts, allow users to reboot the system, and allow users to
+login automatically and/or with a guest account. The login screen should be configured
+to prevent such behavior.
+<br /><br />
+For more information about enforcing preferences in the GNOME environment using the GConf
+configuration system, see <b>http://projects.gnome.org/gconf</b> and
+the man page <tt>gconftool-2(1)</tt>.
+</description>
+
+<Rule id="gnome_gdm_disable_automatic_login" severity="high">
+<title>Disable GDM Automatic Login</title>
+<description>The GNOME Display Manager (GDM) can allow users to automatically login without
+user interaction or credentials. User should always be required to authenticate themselves
+to the system that they are authorized to use. To disable user ability to automatically
+login to the system, set the <tt>AutomaticLoginEnable</tt> to <tt>false</tt> in the
+<tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
+<pre>[daemon]
+AutomaticLoginEnable=false</pre>
+</description>
+<ocil clause="GDM allows users to automatically login">
+To verify that automatic logins are disabled, run the following command:
+<pre>$ grep -Pzoi "^\[daemon]\\nautomaticlogin.*" /etc/gdm/custom.conf</pre>
+The output should show the following:
+<pre>[daemon]
+AutomaticLoginEnable=false</pre>
+</ocil>
+<rationale>
+Failure to restrict system access to authenticated users negatively impacts operating
+system security.
+</rationale>
+<!--ident cce="RHEL6-CCE-TBD" /-->
+<oval id="gnome_gdm_disable_automatic_login" />
+<ref nist="CM-6(b)" disa="366" stig="TBD"/>
+</Rule>
+
+<Rule id="gnome_gdm_disable_guest_login" severity="high">
+<title>Disable GDM Guest Login</title>
+<description>The GNOME Display Manager (GDM) can allow users to login without credentials
+which can be useful for public kiosk scenarios. Allowing users to login without credentials
+or "guest" account access has inherent security risks and should be disabled. To do disable
+timed logins or guest account access, set the <tt>TimedLoginEnable</tt> to <tt>false</tt> in
+the <tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
+<pre>[daemon]
+TimedLoginEnable=false</pre>
+</description>
+<ocil clause="GDM allows a guest to login without credentials">
+To verify that timed logins are disabled, run the following command:
+<pre>$ grep -Pzoi "^\[daemon]\\ntimedlogin.*" /etc/gdm/custom.conf</pre>
+The output should show the following:
+<pre>[daemon]
+TimedLoginEnable=false</pre>
+</ocil>
+<rationale>
+Failure to restrict system access to authenticated users negatively impacts operating
+system security.
+</rationale>
+<!--ident cce="RHEL6-CCE-TBD" /-->
+<oval id="gnome_gdm_disable_guest_login" />
+<ref nist="CM-6(b)" disa="366" stig="TBD"/>
+</Rule>
+
+<Rule id="gconf_gdm_disable_user_list" severity="medium">
+<title>Disable the User List</title>
+<description>In the default graphical environment, users logging
+directly into the system are greeted with a login screen that displays
+all known users. This functionality should be disabled.
+<br /><br />
+Run the following command to disable the user list:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gdm/simple-greeter/disable_user_list true</pre>
+</description>
+<ocil clause="it is not">
+To ensure the user list is disabled, run the following command:
+<pre>$ gconftool-2 -g /apps/gdm/simple-greeter/disable_user_list</pre>
+The output should be <tt>true</tt>.
+</ocil>
+<rationale>Leaving the user list enabled is a security risk since it allows anyone
+with physical access to the system to quickly enumerate known user accounts
+without logging in.</rationale>
+<oval id="gconf_gdm_disable_user_list" />
+<ident cce="27230-2" />
+<ref nist="AC-23" />
+</Rule>
+
+<Rule id="gconf_gnome_disable_restart_shutdown" severity="high">
+<title>Disable the GNOME Login Restart and Shutdown Buttons</title>
+<description>In the default graphical environment, users logging
+directly into the system are greeted with a login screen that allows
+any user, known or unknown, the ability shutdown or restart
+the system. This functionality should be disabled by running the following:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gdm/simple-greeter/disable_restart_buttons true</pre>
+</description>
+<ocil clause="disable-restart-buttons has not been configured or is not disabled">
+To ensure disable and restart on the login screen are disabled, run the following command:
+<pre>$ gconftool-2 -g /apps/gdm/simple-greeter/disable_restart_buttons</pre>
+The output should be <tt>true</tt>.
+</ocil>
+<rationale>
+A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons
+are pressed at the login screen, this can create the risk of short-term loss of availability of systems
+due to reboot.
+</rationale>
+<!--ident cce="RHEL6-CCE-TBD" /-->
+<oval id="gconf_gnome_disable_restart_shutdown" />
+<ref nist="AC-6" disa="366" stig="TBD" />
+</Rule>
+
+</Group>
+
+<Group id="gnome_screen_locking">
+<title>Configure GNOME Screen Locking</title>
+<description>In the default GNOME desktop, the screen can be locked
+by choosing <b>Lock Screen</b> from the <b>System</b> menu.
+<br /><br />
+The <tt>gconftool-2</tt> program can be used to enforce mandatory
+screen locking settings for the default GNOME environment.
+The
+following sections detail commands to enforce idle activation of the screensaver,
+screen locking, a blank-screen screensaver, and an idle
+activation time.
+
+<br /><br />
+Because users should be trained to lock the screen when they
+step away from the computer, the automatic locking feature is only
+meant as a backup. The <b>Lock Screen</b> icon from the <b>System</b> menu can
+also be dragged to the taskbar in order to facilitate even more
+convenient screen-locking.
+<br /><br />
+The root account cannot be screen-locked, but this should
+have no practical effect as the root account should <i>never</i> be used
+to log into an X Windows environment, and should only be used to
+for direct login via console in emergency circumstances.
+<br /><br />
+For more information about configuring GNOME screensaver, see
+<b>http://live.gnome.org/GnomeScreensaver</b>. For more information about
+enforcing preferences in the GNOME environment using the GConf
+configuration system, see <b>http://projects.gnome.org/gconf</b> and
+the man page <tt>gconftool-2(1)</tt>.</description>
+
+<Value id="inactivity_timeout_value" type="number" operator="equals">
+<title>Inactivity timeout</title>
+<description>Choose allowed duration of inactive SSH connections, shells, and X sessions</description>
+<value>900</value>
+<value selector="5_minutes">300</value>
+<value selector="10_minutes">600</value>
+<value selector="15_minutes">900</value>
+<value selector="30_minutes">1800</value>
+</Value>
+
+<Rule id="gconf_gnome_screensaver_idle_delay" severity="medium">
+<title>Set GNOME Login Inactivity Timeout</title>
+<description>
+Run the following command to set the idle time-out value for
+inactivity in the GNOME desktop to <sub idref="inactivity_timeout_value" /> minutes:
+<pre>$ sudo gconftool-2 \
+  --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type int \
+  --set /desktop/gnome/session/idle_delay <sub idref="inactivity_timeout_value" /></pre>
+</description>
+<ocil clause="it is not">
+To check the current idle time-out value, run the following command:
+<pre>$ gconftool-2 -g /desktop/gnome/session/idle_delay</pre>
+If properly configured, the output should be <tt><sub idref="inactivity_timeout_value" /></tt>.
+</ocil>
+<rationale>
+Setting the idle delay controls when the
+screensaver will start, and can be combined with
+screen locking to prevent access from passersby.
+</rationale>
+<ident cce="26828-4"  stig="RHEL-06-000257" />
+<oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
+<ref nist="AC-11(a)" disa="57"/>
+</Rule>
+
+<Rule id="gconf_gnome_screensaver_idle_activation_enabled" severity="medium">
+<title>GNOME Desktop Screensaver Mandatory Use</title>
+<description>
+Run the following command to activate the screensaver
+in the GNOME desktop after a period of inactivity:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
+</description>
+<ocil clause="it is not">To check the screensaver mandatory use status, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_activation_enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+</ocil>
+<rationale>
+Enabling idle activation of the screensaver ensures the screensaver will
+be activated after the idle delay.  Applications requiring continuous,
+real-time screen display (such as network management products) require the
+login session does not have administrator rights and the display station is located in a
+controlled-access area.
+</rationale>
+<ident cce="26600-7"  stig="RHEL-06-000258" />
+<oval id="gconf_gnome_screensaver_idle_activation_enabled" />
+<ref nist="AC-11(a)" disa="57" />
+</Rule>
+
+<Rule id="gconf_gnome_screensaver_lock_enabled" severity="medium">
+<title>Enable Screen Lock Activation After Idle Period</title>
+<description>
+Run the following command to activate locking of the screensaver
+in the GNOME desktop when it is activated:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/gnome-screensaver/lock_enabled true</pre>
+</description>
+<ocil clause="it is not">
+To check the status of the idle screen lock activation, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/lock_enabled</pre>
+If properly configured, the output should be <tt>true</tt>.
+</ocil>
+<rationale>
+Enabling the activation of the screen lock after an idle period
+ensures password entry will be required in order to
+access the system, preventing access by passersby.
+</rationale>
+<ident cce="26235-2"  stig="RHEL-06-000259" />
+<oval id="gconf_gnome_screensaver_lock_enabled" />
+<ref nist="AC-11(a)" disa="57" />
+</Rule>
+
+<Rule id="gconf_gnome_screensaver_mode_blank" >
+<title>Implement Blank Screensaver</title>
+<description>
+Run the following command to set the screensaver mode
+in the GNOME desktop to a blank screen:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type string \
+  --set /apps/gnome-screensaver/mode blank-only</pre>
+</description>
+<ocil clause="it is not">
+To ensure the screensaver is configured to be blank, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome-screensaver/mode</pre>
+If properly configured, the output should be <tt>blank-only</tt>
+</ocil>
+<rationale>
+Setting the screensaver mode to blank-only conceals the
+contents of the display from passersby.
+</rationale>
+<ident cce="26638-7"  stig="RHEL-06-000260" />
+<oval id="gconf_gnome_screensaver_mode_blank" />
+<ref nist="AC-11(b)" disa="60" />
+</Rule>
+
+<Rule id="gconf_gnome_screensaver_max_idle_time" severity="medium">
+<title>Set GNOME Login Maximum Allowed Inactivity</title>
+<description>
+Run the following command to set the maximum allowed period of inactivity for an
+inactive user in the GNOME desktop to <sub idref="inactivity_timeout_value" /> minutes:
+<pre>$ sudo gconftool-2 \
+  --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type int \
+  --set /desktop/gnome/session/max_idle_time <sub idref="inactivity_timeout_value" /></pre>
+</description>
+<ocil clause="it is not">
+To check the current idle time-out value, run the following command:
+<pre>$ gconftool-2 -g /desktop/gnome/session/max_idle_time</pre>
+If properly configured, the output should be <tt><sub idref="idle_timeout_value" /></tt>.
+</ocil>
+<rationale>
+Terminating an idle session within a short time period reduces the window of
+opportunity for unauthorized personnel to take control of a management session
+and will also free up resources utilized by an idle session.
+</rationale>
+<!--ident cce="26828-4"  stig="RHEL-06-000257" /-->
+<oval id="gconf_gnome_screensaver_max_idle_time" value="inactivity_timeout_value" />
+<!--ref nist="AC-11(a)" disa="57"/-->
+</Rule>
+
+<Rule id="gconf_gnome_screensaver_max_idle_action" severity="medium">
+<title>Set GNOME Login Maximum Allowed Inactivity Action</title>
+<description>
+Run the following command to set force logout an inactive user when the
+maximum allowed inactivity period has expired:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type string \
+  --set /desktop/gnome/session/max_idle_action "forced-logout"</pre>
+</description>
+<ocil clause="it is not">
+To check the current idle time-out value, run the following command:
+<pre>$ gconftool-2 -g /desktop/gnome/session/max_idle_action</pre>
+If properly configured, the output should be <tt>forced-logout</tt>.
+</ocil>
+<rationale>
+Terminating an idle session within a short time period reduces the window of
+opportunity for unauthorized personnel to take control of a management session
+and will also free up resources utilized by an idle session.
+</rationale>
+<!--ident cce="26828-4"  stig="RHEL-06-000257" /-->
+<oval id="gconf_gnome_screensaver_max_idle_action" value="inactivity_timeout_value" />
+<!--ref nist="AC-11(a)" disa="57"/-->
+</Rule>
+
+</Group>
+
+<Group id="gnome_system_settings">
+<title>GNOME System Settings</title>
+<description>
+GNOME provides configuration and functionality to a graphical desktop environment
+that changes grahical configurations or allow a user to perform
+actions that users normally would not be able to do in non-graphical mode such as
+remote access configuration, power policies, Geo-location, etc.
+Configuring such settings in GNOME will prevent accidential graphical configuration
+changes by users from taking place.
+</description>
+
+<Rule id="gconf_gnome_disable_ctrlaltdel_reboot" severity="high">
+<title>Disable Ctrl-Alt-Del Reboot Key Sequence in GNOME</title>
+<description>
+By default, <tt>GNOME</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
+key sequence is pressed.
+<br/>
+To configure the system to ignore the <tt>Ctrl-Alt-Del</tt> key sequence from the
+Graphical User Interface (GUI) instead of rebooting the system, run the following:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type string \
+  --set /apps/gnome_settings_daemon/keybindings/power ""</pre>
+</description>
+<ocil clause="GNOME3 is configured to reboot when Ctrl-Alt-Del is pressed">
+To ensure the system is configured to ignore the Ctrl-Alt-Del sequence,
+run the following command:
+<pre>$ gconftool-2 -g /apps/gnome_settings_daemon/keybindings/power</pre>
+The output should return nothing.
+</ocil>
+<rationale>
+A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
+can reboot the system. If accidentally pressed, as could happen in
+the case of mixed OS environment, this can create the risk of short-term
+loss of availability of systems due to unintentional reboot.
+</rationale>
+<oval id="gconf_gnome_disable_ctrlaltdel_reboot" />
+<!--ident cce="RHEL6-CCE-TBD" /-->
+<ref nist="AC-6" disa="366" stig="TBD" />
+</Rule>
+
+<Rule id="gconf_gnome_disable_clock_temperature" severity="medium">
+<title>Disable the GNOME Clock Temperature Feature</title>
+<description>
+Run the following command to activate locking of the screensaver
+in the GNOME desktop when it is activated:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/panel/applets/clock/prefs/show_temperature false</pre>
+</description>
+<ocil clause="it is not">
+To check the status of the idle screen lock activation, run the following command:
+<pre>$ gconftool-2 -g /apps/panel/applets/clock/prefs/show_temperature</pre>
+If properly configured, the output should be <tt>false</tt>.
+</ocil>
+<rationale>
+Disabling the temperature feature in the GNOME clock prevents the
+system from connecting to the internet and diclosing the system
+location when set by a user.
+</rationale>
+<!--ident cce="26235-2"  stig="RHEL-06-000259" /-->
+<oval id="gconf_gnome_disable_clock_temperature" />
+<!--ref nist="AC-11(a)" disa="57" /-->
+</Rule>
+
+<Rule id="gconf_gnome_disable_clock_weather" severity="medium">
+<title>Disable the GNOME Clock Weather Feature</title>
+<description>
+Run the following command to activate locking of the screensaver
+in the GNOME desktop when it is activated:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/panel/applets/clock/prefs/show_weather false</pre>
+</description>
+<ocil clause="it is not">
+To check the status of the idle screen lock activation, run the following command:
+<pre>$ gconftool-2 -g /apps/panel/applets/clock/prefs/show_weather</pre>
+If properly configured, the output should be <tt>false</tt>.
+</ocil>
+<rationale>
+Disabling the weather feature in the GNOME clock prevents the
+system from connecting to the internet and diclosing the system
+location when set by a user.
+</rationale>
+<!--ident cce="26235-2"  stig="RHEL-06-000259" /-->
+<oval id="gconf_gnome_disable_clock_weather" />
+<!--ref nist="AC-11(a)" disa="57" /-->
+</Rule>
+
+
+</Group>
+
+<Group id="gnome_network_settings">
+<title>GNOME Network Settings</title>
+<description>
+GNOME network settings that apply to the graphical interface.
+</description>
+
+<Rule id="gconf_gnome_disable_wifi_create" severity="medium">
+<title>Disable WIFI Network Connection Creation in GNOME</title>
+<description>
+<tt>GNOME</tt> allows users to create ad-hoc wireless connections through the
+<tt>NetworkManager</tt> applet. Wireless connections should be disabled by
+running the following:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/nm-applet/disable-wifi-create true</pre>
+</description>
+<ocil clause="WIFI connections can be created through GNOME">
+To ensure that WIFI connections cannot be created, run the following command:
+<pre>$ gconftool-2 -g /apps/nm-applet/disable-wifi-create</pre>
+The output should return <tt>true</tt>.
+</ocil>
+<rationale>
+Wireless network connections should not be allowed to be configured by general
+users on a given system as it could open the system to backdoor attacks.
+</rationale>
+<oval id="gconf_gnome_disable_wifi_create" />
+<!--ident cce="RHEL6-CCE-TBD" /-->
+</Rule>
+
+<Rule id="gconf_gnome_disable_wifi_disconnect" severity="medium">
+<title>Disable WIFI Network Disconnect Notification in GNOME</title>
+<description>
+By default, <tt>GNOME</tt> disables WIFI notification when disconnecting from a
+wireless network. This should be permanently set so that users do not connect to
+a wireless network when the system finds one. While useful for mobile devices,
+this setting should be disabled for all other systems. To configure the system
+to disable the WIFI notication, run the following:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/nm-applet/disable-disconnected-notifications true</pre>
+</description>
+<ocil clause="wireless disconnecting network notification is enabled and not disabled">
+To ensure that wireless network notification is disabled, run the following command:
+<pre>$ gconftool-2 -g /apps/nm-applet/disable-disconnected-notifications</pre>
+The output should return <tt>true</tt>.
+</ocil>
+<rationale>
+Wireless network connections should not be allowed to be configured by general
+users on a given system as it could open the system to backdoor attacks.
+</rationale>
+<oval id="gconf_gnome_disable_wifi_disconnect" />
+<!--ident cce="RHEL6-CCE-TBD" /-->
+</Rule>
+
+<Rule id="gconf_gnome_disable_wifi_notification" severity="medium">
+<title>Disable WIFI Network Connection Notification in GNOME</title>
+<description>
+By default, <tt>GNOME</tt> disables WIFI notification when connecting to a wireless
+network. This should be permanently set so that users do not connect to a wireless
+network when the system finds one. While useful for mobile devices, this setting
+should be disabled for all other systems. To configure the system to disable the
+WIFI notication, run the following:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/nm-applet/disable-connected-notifications true</pre>
+</description>
+<ocil clause="wireless connecting network notification is enabled and not disabled">
+To ensure that wireless network notification is disabled, run the following command:
+<pre>$ gconftool-2 -g /apps/nm-applet/disable-connected-notifications</pre>
+The output should return <tt>true</tt>.
+</ocil>
+<rationale>
+Wireless network connections should not be allowed to be configured by general
+users on a given system as it could open the system to backdoor attacks.
+</rationale>
+<oval id="gconf_gnome_disable_wifi_notification" />
+<!--ident cce="RHEL6-CCE-TBD" /-->
+</Rule>
+
+</Group>
+
+<Group id="gnome_remote_access_settings">
+<title>GNOME Remote Access Settings</title>
+<description>
+GNOME remote access settings that apply to the graphical interface.
+</description>
+
+</Group>
+
+<Group id="gnome_media_settings">
+<title>GNOME Media Settings</title>
+<description>
+GNOME media settings that apply to the graphical interface.
+</description>
+
+<Rule id="gconf_gnome_disable_automount">
+<title>Disable GNOME Automounting</title>
+<description>The system's default desktop environment, GNOME, will mount
+devices and removable media (such as DVDs, CDs and USB flash drives) whenever
+they are inserted into the system. Disable automount and autorun within GNOME
+by running the following:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/nautilus/preferences/media_automount false
+$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /apps/nautilus/preferences/media_autorun_never true</pre>
+</description>
+<ocil clause="GNOME automounting is not disabled">
+These settings can be verified by running the following:
+<pre>$ gconftool-2 -g /apps/nautilus/preferences/media_automount</pre>
+The output should return <tt>false</tt>.
+<pre>$ gconftool-2 -g /apps/nautilus/preferences/media_autorun_never</pre>
+The output should return <tt>true</tt>.
+</ocil>
+<rationale>Disabling automatic mounting in GNOME can prevent
+the introduction of malware via removable media.
+It will, however, also prevent desktop users from legitimate use
+of removable media.
+</rationale>
+<ident cce="27035-5" />
+<oval id="gconf_gnome_disable_automount" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" />
+</Rule>
+
+<Rule id="gconf_gnome_disable_thumbnailers">
+<title>Disable All GNOME Thumbnailers</title>
+<description>The system's default desktop environment, GNOME, uses
+a number of different thumbnailer programs to generate thumbnails
+for any new or modified content in an opened folder. The following
+command can disable the execution of these thumbnail applications:
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type bool \
+  --set /desktop/gnome/thumbnailers/disable_all true</pre>
+This effectively prevents an attacker from gaining access to a
+system through a flaw in GNOME's Nautilus thumbnail creators.
+</description>
+<ocil clause="GNOME thumbnailers are not disabled">
+These settings can be verified by running the following:
+<pre>$ gconftool-2 -g /desktop/gnome/thumbnailers/disable_all</pre>
+The output should return <tt>true</tt>.
+</ocil>
+<rationale>An attacker with knowledge of a flaw in a GNOME3 thumbnailer application could craft a malicious
+file to exploit this flaw. Assuming the attacker could place the malicious file on the local filesystem
+(via a web upload for example) and assuming a user browses the same location using Nautilus, the
+malicious file would exploit the thumbnailer with the potential for malicious code execution. It
+is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
+<ident cce="27224-5" />
+<oval id="gconf_gnome_disable_thumbnailers" />
+<ref nist="CM-7" />
+</Rule>
+
+</Group>
+
+</Group>

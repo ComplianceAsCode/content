@@ -3,10 +3,15 @@
 
 <xsl:include href="shared_constants.xslt"/>
 
-<!-- This transform replaces check-content with a check-content-ref, using the enclosing Rule id to create
-     an id for the check (by appending "_ocil") -->
+<!-- This transform expects a stringparam "product" specifying a SSG product
+     for which it will produce the resulting "ssg-$(PROD)-ocil.xml" OCIL file.
+     It replaces check-content with a check-content-ref, using the enclosing
+     Rule id to create an id for the check (by appending "_ocil") -->
 
-  <!-- replace check system attribute with the real OCIL one -->
+<xsl:param name="product">undef</xsl:param>
+
+
+  <!-- Replace check system attribute with the real OCIL one -->
   <xsl:template match="xccdf:check[@system='ocil-transitional']">
     <xsl:copy>
 		<xsl:apply-templates select="@*" />
@@ -15,17 +20,32 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- remove check-content nodes and replace them with a check-content-ref node, using the Rule id
+  <!-- Remove OCIL <check-export> nodes since they were used only to append the appropriate question
+       to OCIL <check-content> nodes by previous run of $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt.
+       But at this state of building the content this has been already finished.
+       Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1189
+       Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1190 -->
+  <xsl:template match="xccdf:check-export[@value-id='conditional_clause']"/>
+
+  <!-- Remove the "conditional_clause" <xccdf:Value> since it was required only to expand OCIL macros
+       to insert proper questions when creating OCIL content. At this stage the OCIL content was built
+       alreaady, thus "conditional_clause" is not needed anymore in the final XCCDF benchmark (and only
+       causing confusion e.g. in SCAP Workbench tool -->
+  <xsl:template match="xccdf:Value[@id='conditional_clause']"/>
+
+  <!-- Remove check-content nodes and replace them with a check-content-ref node, using the Rule id
        to create a reference name -->
   <xsl:template match="xccdf:check-content">
 	<xsl:element name="check-content-ref" namespace="http://checklists.nist.gov/xccdf/1.1">
-		<xsl:attribute name="href">ocil-unlinked.xml</xsl:attribute>
+		<xsl:if test="$product != 'undef'" >
+			<xsl:attribute name="href">unlinked-<xsl:value-of select="$product"/>-ocil.xml</xsl:attribute>
+		</xsl:if>
 		<xsl:attribute name="name"><xsl:value-of select="../../@id"/>_ocil</xsl:attribute>
 	</xsl:element>
   </xsl:template>
 
 
-  <!-- copy everything else through to final output -->
+  <!-- Copy everything else through to final output -->
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
