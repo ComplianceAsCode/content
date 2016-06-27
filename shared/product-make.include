@@ -55,7 +55,7 @@ $(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
 # Create temporary $(SHARED)/$(OUT) folder to hold information like list of contributors or list of
 # available remediation functions used by all SSG benchmarks
 $(SHARED)/$(OUT):
-	mkdir $@
+	mkdir -p $@
 
 # Benchmark metadata prerequisite - derive $(SHARED)/$(OUT)/contributors.xml from the content of Contributors.md
 $(SHARED)/$(OUT)/contributors.xml: $(SHARED)/$(OUT)
