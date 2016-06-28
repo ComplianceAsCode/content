@@ -82,30 +82,40 @@ rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-cpe-dictionary.xml
 # We do this after the filtering on Fedora because we don't ship JBossEAP5 datastreams
 cp -a JBossEAP5/eap5-* %{buildroot}%{_datadir}/xml/scap/ssg/content/
 
-# Docs
-mkdir -p %{buildroot}/%{_docdir}/%{name}/guides
-cp -a RHEL/6/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
-cp -a RHEL/7/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
-cp -a Firefox/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
-cp -a JRE/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
+# Add in HTML tables for selected products
+mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}/tables
+cp -a RHEL/6/dist/tables/* %{buildroot}/%{_docdir}/%{name}-%{version}/tables
+cp -a RHEL/7/dist/tables/* %{buildroot}/%{_docdir}/%{name}-%{version}/tables
+
+# Add in LICENSE and README.md
+cp -a LICENSE README.md %{buildroot}/%{_docdir}/%{name}-%{version}
+
+# scap-security-guide-doc subpackage contains just HTML guides for supported products
+mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}/guides
+cp -a RHEL/6/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
+cp -a RHEL/7/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
+cp -a Firefox/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
+cp -a JRE/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
 # outside of the normal build system, different guide
-cp -a JBossEAP5/docs/JBossEAP5_Guide.html %{buildroot}/%{_docdir}/%{name}/guides
+cp -a JBossEAP5/docs/JBossEAP5_Guide.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
 
 %if 0%{?fedora}
-cp -a Fedora/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
-cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
-#cp -a Webmin/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}/guides
+cp -a Fedora/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
+cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
+#cp -a Webmin/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}-%{version}/guides
 %endif
 
 %files
 %{_datadir}/xml/scap
 %{_datadir}/%{name}
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
-%doc LICENSE
-%doc README.md
+%doc %{_docdir}/%{name}-%{version}/tables/*.html
+%doc %{_docdir}/%{name}-%{version}/tables/*.xhtml
+%doc %{_docdir}/%{name}-%{version}/LICENSE
+%doc %{_docdir}/%{name}-%{version}/README.md
 
 %files doc
-%doc %{_docdir}/%{name}/guides/*.html
+%doc %{_docdir}/%{name}-%{version}/guides/*.html
 
 %changelog
 * __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__
