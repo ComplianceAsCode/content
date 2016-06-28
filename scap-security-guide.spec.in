@@ -90,6 +90,11 @@ cp -a RHEL/7/dist/tables/* %{buildroot}/%{_docdir}/%{name}-%{version}/tables
 # Add in LICENSE and README.md
 cp -a LICENSE README.md %{buildroot}/%{_docdir}/%{name}-%{version}
 
+# Add in kickstart files for selected products
+mkdir -p %{buildroot}%{_datadir}/%{name}/kickstart
+cp -a RHEL/6/kickstart/*-ks.cfg %{buildroot}%{_datadir}/%{name}/kickstart
+cp -a RHEL/7/kickstart/*-ks.cfg %{buildroot}%{_datadir}/%{name}/kickstart
+
 # scap-security-guide-doc subpackage contains just HTML guides for supported products
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}/guides
 cp -a RHEL/6/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
@@ -107,7 +112,7 @@ cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/
 
 %files
 %{_datadir}/xml/scap
-%{_datadir}/%{name}
+%{_datadir}/%{name}/kickstart
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
 %doc %{_docdir}/%{name}-%{version}/tables/*.html
 %doc %{_docdir}/%{name}-%{version}/tables/*.xhtml
