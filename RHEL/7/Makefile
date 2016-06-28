@@ -183,6 +183,8 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
+	mkdir -p $(DIST)/tables
+	cp $(OUT)/table-*.{x,}html $(DIST)/tables
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
 	cp $(OUT)/$(ID)-centos7-xccdf.xml $(DIST)/content

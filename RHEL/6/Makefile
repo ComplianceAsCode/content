@@ -69,8 +69,7 @@ table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 		$(TRANS)/xccdf-apply-overlay-stig.xslt $<
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
-tables: table-refs table-idents table-stigs
-#tables: table-refs table-idents table-srgmap table-stigs
+tables: table-refs table-idents table-srgmap table-stigs
 
 content: $(OUT)/xccdf-unlinked-final.xml checks
 	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
@@ -180,6 +179,8 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
+	mkdir -p $(DIST)/tables
+	cp $(OUT)/table-*.{x,}html $(DIST)/tables
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
 	cp $(OUT)/$(ID)-centos6-xccdf.xml $(DIST)/content
