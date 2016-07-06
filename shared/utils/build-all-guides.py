@@ -19,6 +19,7 @@ import subprocess
 
 import threading
 import Queue
+import re
 
 OSCAP_PATH = "oscap"
 
@@ -28,7 +29,7 @@ XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 # if a profile ID ends with a string listed here we skip it
 PROFILE_ID_BLACKLIST = ["test", "index", "default"]
 # filler XCCDF 1.2 prefix which we will strip to avoid very long filenames
-PROFILE_ID_PREFIX = "xccdf_org.ssgproject.content_profile_"
+PROFILE_ID_PREFIX = ("^xccdf_org.*content_profile_")
 
 
 def get_benchmark_ids_titles_for_input(input_tree):
@@ -113,8 +114,8 @@ def get_profile_short_id(long_id):
     """If given profile ID is the XCCDF 1.2 long ID this function shortens it
     """
 
-    if long_id.startswith(PROFILE_ID_PREFIX):
-        return long_id[len(PROFILE_ID_PREFIX):]
+    if re.search(PROFILE_ID_PREFIX, long_id):
+        return long_id[re.search(PROFILE_ID_PREFIX, long_id).end():]
 
     return long_id
 
