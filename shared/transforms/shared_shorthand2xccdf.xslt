@@ -199,6 +199,11 @@
               <xsl:value-of select="$cisuri" />
             </xsl:if>
           </xsl:if>
+          <xsl:if test="$refsource = 'ossrg'">
+            <xsl:if test="$disa-srguri != 'empty'">
+              <xsl:value-of select="$disa-srguri" />
+            </xsl:if>
+          </xsl:if>
           <xsl:if test="$refsource = 'stigid'">
             <xsl:value-of select="$disa-stigs-uri" />
           </xsl:if>
