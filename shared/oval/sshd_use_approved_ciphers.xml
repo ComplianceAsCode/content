@@ -9,12 +9,15 @@
       use ciphers in counter (CTR) mode.</description>
       <reference source="JL" ref_id="20140414" ref_url="test_attestation" />
     </metadata>
-    <criteria comment="SSH is not being used or conditions are met"
-    operator="OR">
-      <extend_definition comment="sshd service is disabled"
-      definition_ref="service_sshd_disabled" />
-      <criterion comment="Check ClientAliveInterval in /etc/ssh/sshd_config"
-      test_ref="test_sshd_use_approved_ciphers" />
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is certified" definition_ref="installed_OS_is_certified" />
+      <criteria comment="SSH is not being used or conditions are met"
+      operator="OR">
+        <extend_definition comment="sshd service is disabled"
+        definition_ref="service_sshd_disabled" />
+        <criterion comment="Check the Cipers list in /etc/ssh/sshd_config"
+        test_ref="test_sshd_use_approved_ciphers" />
+      </criteria>
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
