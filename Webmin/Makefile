@@ -7,6 +7,7 @@ export SHARED = ../shared
 include $(SHARED)/product-make.include
 
 PROD = webmin
+VENDOR = ssgproject
 
 # will uncomment after PR 452 gets merged
 # also put stats into the all: target
@@ -70,7 +71,7 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 #	Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
 		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
-	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
+	xsltproc --stringparam reverse_DNS org.$(VENDOR).content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 #	Update @style attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059

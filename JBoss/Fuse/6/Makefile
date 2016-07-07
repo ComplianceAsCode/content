@@ -8,6 +8,7 @@ include $(SHARED)/product-make.include
 
 PROD = fuse6
 PROD_OVAL = $(BUILD)/$(PROD)_oval
+VENDOR = ssgproject
 
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
@@ -81,7 +82,7 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 #	Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
 		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
-	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
+	xsltproc --stringparam reverse_DNS org.$(VENDOR).content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 #	Update @style attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
