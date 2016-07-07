@@ -10,6 +10,7 @@ include $(SHARED)/product-make.include
 REFS = references
 
 PROD = rhevm3
+VENDOR = ssgproject
 
 checks:
 	xmlwf $(IN)/oval/*.xml
