@@ -121,6 +121,12 @@
             </xsl:attribute>
             <xsl:value-of select="concat($os-stigid-concat, .)" />
           </xsl:when>
+          <xsl:when test="name() = 'custom-cce'">
+            <xsl:attribute name="system">
+              <xsl:value-of select="$custom-cce-uri" />
+            </xsl:attribute>
+            <xsl:value-of select="." />
+          </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="." />
           </xsl:otherwise>
@@ -206,6 +212,9 @@
           </xsl:if>
           <xsl:if test="$refsource = 'stigid'">
             <xsl:value-of select="$disa-stigs-uri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'custom-ref'">
+            <xsl:value-of select="$custom-ref-uri" />
           </xsl:if>
         </xsl:attribute>
         <xsl:choose>
