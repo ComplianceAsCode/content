@@ -9,8 +9,9 @@
       minimum requirements.</description>
       <reference source="MED" ref_id="20130807" ref_url="test_attestation" />
     </metadata>
-    <criteria comment="the value maxlogins should be set appropriately in /etc/security/limits.conf">
-      <criterion test_ref="test_maxlogins" />
+    <criteria operator="OR">
+      <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins" />
+      <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.conf" test_ref="test_maxlogins" />
     </criteria>
   </definition>
 
@@ -19,8 +20,20 @@
     <ind:state state_ref="state_maxlogins" />
   </ind:textfilecontent54_test>
 
+  <ind:textfilecontent54_test check="all" comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" id="test_limitsd_maxlogins" version="1">
+    <ind:object object_ref="object_etc_security_limitsd_conf_maxlogins" />
+    <ind:state state_ref="state_maxlogins" />
+  </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="object_etc_security_limits_conf_maxlogins" version="1">
     <ind:filepath>/etc/security/limits.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*\*[\s]+(?:(?:hard)|(?:-))[\s]+maxlogins[\s]+(\d+)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_etc_security_limitsd_conf_maxlogins" version="1">
+    <ind:path>/etc/security/limits.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*\*[\s]+(?:(?:hard)|(?:-))[\s]+maxlogins[\s]+(\d+)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
