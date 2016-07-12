@@ -65,7 +65,7 @@ def get_benchmark_ids_titles_for_input(input_tree):
     return ret
 
 
-def get_profile_choices_for_input(input_tree, tailoring_tree):
+def get_profile_choices_for_input(input_tree, benchmark_id, tailoring_tree):
     """Returns a dictionary that maps profile_ids to their respective titles.
     """
 
@@ -76,7 +76,10 @@ def get_profile_choices_for_input(input_tree, tailoring_tree):
     ret = {}
 
     def scrape_profiles(root_element, namespace, dest):
-        for elem in root_element.findall(".//{%s}Profile" % (namespace)):
+        for elem in root_element.findall(
+            ".//{%s}Benchmark[@id='%s']//{%s}Profile" %
+            (namespace, benchmark_id, namespace)
+        ):
             id_ = elem.get("id")
             if id_ is None:
                 continue
@@ -146,13 +149,15 @@ if hasattr(subprocess, "check_output"):
     subprocess_check_output = subprocess.check_output
 
 
-def generate_guide_for_input_content(input_content, profile_id):
+def generate_guide_for_input_content(input_content, benchmark_id, profile_id):
     """Returns HTML guide for given input_content and profile_id
     combination. This function assumes only one Benchmark exists
     in given input_content!
     """
 
     args = [OSCAP_PATH, "xccdf", "generate", "guide"]
+    if benchmark_id != "":
+        args.extend(["--benchmark-id", benchmark_id])
     if profile_id != "":
         args.extend(["--profile", profile_id])
     args.append(input_content)
@@ -193,20 +198,29 @@ def main():
 
     input_tree = ElementTree.parse(options.input_content)
     benchmarks = get_benchmark_ids_titles_for_input(input_tree)
-    if len(benchmarks) != 1:
+    if len(benchmarks) == 0:
         raise RuntimeError(
-            "Expected input file '%s' to contain exactly 1 xccdf:Benchmark. "
-            "Instead we found %i benchmarks" %
-            (options.input_content, len(benchmarks))
+            "Expected input file '%s' to contain at least 1 xccdf:Benchmark. "
+            "No Benchmarks were found!" %
+            (options.input_content)
         )
-    profiles = get_profile_choices_for_input(input_tree, None)
-    # add the default profile
-    profiles[""] = "(default)"
 
-    if not profiles:
-        raise RuntimeError(
-            "No profiles were found in '%s'." % (options.input_content)
-        )
+    benchmark_profile_pairs = []
+    for benchmark_id in benchmarks.keys():
+        profiles = get_profile_choices_for_input(input_tree, benchmark_id, None)
+        # add the default profile
+        profiles[""] = "(default)"
+
+        if not profiles:
+            raise RuntimeError(
+                "No profiles were found in '%s' in xccdf:Benchmark of id='%s'."
+                % (options.input_content, benchmark_id)
+            )
+
+        for profile_id in profiles.keys():
+            benchmark_profile_pairs.append(
+                (benchmark_id, profile_id, profiles[profile_id])
+            )
 
     queue = Queue.Queue()
 
@@ -216,17 +230,21 @@ def main():
     index_options = []
     index_initial_src = None
 
-    def profile_sort_key(profiles, profile_id):
+    def benchmark_profile_pair_sort_key(
+        benchmark_id, profile_id, profile_title
+    ):
         if profile_id == "":
             # make sure (default) is last
-            return "zzz(default)"
+            return (benchmark_id, "zzz(default)")
 
         # otherwise sort by profile title
-        return profiles[profile_id]
+        return (benchmark_id, profile_title)
 
-    for profile_id in sorted(profiles.iterkeys(),
-                             key=lambda x: profile_sort_key(profiles, x)):
-        profile_title = profiles[profile_id]
+    for benchmark_id, profile_id, profile_title in \
+            sorted(benchmark_profile_pairs,
+                   key=lambda x: benchmark_profile_pair_sort_key(
+                       x[0], x[1], x[2]
+                   )):
         skip = False
         for blacklisted_id in PROFILE_ID_BLACKLIST:
             if profile_id.endswith(blacklisted_id):
@@ -237,32 +255,44 @@ def main():
             continue
 
         profile_id_for_path = "default" if not profile_id else profile_id
+        benchmark_id_for_path = benchmark_id
+        if benchmark_id_for_path.startswith(
+            "xccdf_org.ssgproject.content_benchmark_"
+        ):
+            benchmark_id_for_path = \
+                benchmark_id_for_path[
+                    len("xccdf_org.ssgproject.content_benchmark_"):
+                ]
 
         guide_filename = \
-            "%s-guide-%s.html" % \
-            (path_base, get_profile_short_id(profile_id_for_path))
+            "%s-%s-guide-%s.html" % \
+            (path_base, benchmark_id_for_path,
+             get_profile_short_id(profile_id_for_path))
         guide_path = os.path.join(parent_dir, guide_filename)
 
         index_links.append(
             "<a target=\"guide\" href=\"%s\">%s</a>" %
-            (guide_filename, profile_title)
+            (guide_filename, "%s in %s" % (profile_title, benchmark_id))
         )
         index_options.append(
             "<option value=\"%s\" data-profile-id=\"%s\">%s</option>" %
-            (guide_filename, profile_id, profile_title)
+            (guide_filename,
+             "%s-%s" % (benchmark_id, profile_id),
+             "%s in %s" % (profile_title, benchmark_id))
         )
         if index_initial_src is None:
             index_initial_src = guide_filename
 
-        queue.put((profile_id, profile_title, guide_path))
+        queue.put((benchmark_id, profile_id, profile_title, guide_path))
 
     def builder():
         while True:
             try:
-                profile_id, profile_title, guide_path = queue.get(False)
+                benchmark_id, profile_id, profile_title, guide_path = \
+                    queue.get(False)
 
                 guide_html = generate_guide_for_input_content(
-                    options.input_content, profile_id
+                    options.input_content, benchmark_id, profile_id
                 )
                 with open(guide_path, "w") as f:
                     f.write(guide_html.encode("utf-8"))
@@ -270,8 +300,8 @@ def main():
                 queue.task_done()
 
                 print(
-                    "Generated '%s' for profile ID '%s'." %
-                    (guide_path, profile_id)
+                    "Generated '%s' for profile ID '%s' in benchmark '%s'." %
+                    (guide_path, profile_id, benchmark_id)
                 )
 
             except Queue.Empty:
