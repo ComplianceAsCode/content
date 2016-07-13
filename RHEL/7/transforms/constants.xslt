@@ -2,6 +2,7 @@
 
 <xsl:include href="../../../shared/transforms/shared_constants.xslt"/>
 
+<xsl:variable name="product_long_name">Red Hat Enterprise Linux 7</xsl:variable>
 <xsl:variable name="product_short_name">RHEL 7</xsl:variable>
 
 <!-- Define URI of official CIS Red Hat Enterprise Linux 7 Benchmark -->
