@@ -17,6 +17,7 @@ except ImportError:
     import cElementTree as ElementTree
 
 import sys
+import re
 from optparse import OptionParser
 
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
@@ -183,6 +184,12 @@ def add_derivative_notice(benchmark, namespace, notice, warning):
     return True
 
 
+def remove_rh_idents(tree_root, namespace):
+    for elem in tree_root.findall(".//{%s}ident" % (namespace)):
+        if re.search('CCE-*', elem.text) or re.search('.*RHEL-[0-9]+-*', elem.text):
+            elem.text = ''
+
+
 def main():
     usage = "usage: %prog [options]"
     parser = OptionParser(usage=usage)
@@ -232,6 +239,11 @@ def main():
 
     scrape_benchmarks(root, XCCDF11_NS, benchmarks)
     scrape_benchmarks(root, XCCDF12_NS, benchmarks)
+
+    # Remove CCEs and DISA STIG IDs from derivatives as these are specific to
+    # the vendor/OS.
+    remove_rh_idents(root, XCCDF11_NS)
+    remove_rh_idents(root, XCCDF12_NS)
 
     if len(benchmarks) == 0:
         raise RuntimeError("No Benchmark found!")

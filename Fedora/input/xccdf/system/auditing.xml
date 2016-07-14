@@ -545,7 +545,7 @@ not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
-<audit-syscall-check-macro syscall="adjtimex" />
+<auditctl-syscall-check-macro syscall="adjtimex" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate
 nefarious activities in log files, as well as to confuse network services that
@@ -577,7 +577,7 @@ not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
-<audit-syscall-check-macro syscall="settimeofday" />
+<auditctl-syscall-check-macro syscall="settimeofday" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate
 nefarious activities in log files, as well as to confuse network services that
@@ -617,7 +617,7 @@ required. See an example of multiple combined system calls:
 <ocil clause="the system is not configured to audit time changes">
 If the system is not configured to audit time changes, this is a finding.
 If the system is 64-bit only, this is not applicable<br />
-<audit-syscall-check-macro syscall="stime" />
+<auditctl-syscall-check-macro syscall="stime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate
 nefarious activities in log files, as well as to confuse network services that
@@ -649,7 +649,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
-<audit-syscall-check-macro syscall="clock_settime" />
+<auditctl-syscall-check-macro syscall="clock_settime" />
 </ocil>
 <rationale>Arbitrary changes to the system time can be used to obfuscate
 nefarious activities in log files, as well as to confuse network services that
@@ -864,7 +864,7 @@ gain access to information that would otherwise be disallowed. Auditing DAC modi
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
 <ocil clause="the system is not configured to audit permission changes">
-<audit-syscall-check-macro syscall="chmod" />
+<auditctl-syscall-check-macro syscall="chmod" />
 </ocil>
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect.  Here the system calls
@@ -892,7 +892,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="chown" />
+<auditctl-syscall-check-macro syscall="chown" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -924,7 +924,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmod" />
+<auditctl-syscall-check-macro syscall="fchmod" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -956,7 +956,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchmodat" />
+<auditctl-syscall-check-macro syscall="fchmodat" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -988,7 +988,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchown" />
+<auditctl-syscall-check-macro syscall="fchown" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1020,7 +1020,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fchownat" />
+<auditctl-syscall-check-macro syscall="fchownat" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1052,7 +1052,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fremovexattr" />
+<auditctl-syscall-check-macro syscall="fremovexattr" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1084,7 +1084,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="fsetxattr" />
+<auditctl-syscall-check-macro syscall="fsetxattr" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1116,7 +1116,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="lchown" />
+<auditctl-syscall-check-macro syscall="lchown" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1148,7 +1148,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="lremovexattr" />
+<auditctl-syscall-check-macro syscall="lremovexattr" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1180,7 +1180,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="lsetxattr" />
+<auditctl-syscall-check-macro syscall="lsetxattr" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1212,7 +1212,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="removexattr" />
+<auditctl-syscall-check-macro syscall="removexattr" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1244,7 +1244,7 @@ If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="setxattr" />
+<auditctl-syscall-check-macro syscall="setxattr" />
 </ocil>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -1428,10 +1428,10 @@ setting ARCH to either b32 or b64 as appropriate for your system:
 <pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="unlink" />
-<audit-syscall-check-macro syscall="unlinkat" />
-<audit-syscall-check-macro syscall="rename" />
-<audit-syscall-check-macro syscall="renameat" />
+<auditctl-syscall-check-macro syscall="unlink" />
+<auditctl-syscall-check-macro syscall="unlinkat" />
+<auditctl-syscall-check-macro syscall="rename" />
+<auditctl-syscall-check-macro syscall="renameat" />
 </ocil>
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
@@ -1483,8 +1483,8 @@ your system:
 -a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="init_module" />
-<audit-syscall-check-macro syscall="delete_module" />
+<auditctl-syscall-check-macro syscall="init_module" />
+<auditctl-syscall-check-macro syscall="delete_module" />
 </ocil>
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important

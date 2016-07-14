@@ -1,10 +1,14 @@
 all: tables guide content dist
 
-SHARED = ../../shared
+# Do not remove exporting of SHARED variable!!! (since
+# shared/transforms/combineremediations.py helper
+# requires its value to be available)
+export SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = rhel6
 PROD_OVAL = $(BUILD)/$(PROD)_oval
+VENDOR = ssgproject
 
 # Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
 # Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
@@ -66,8 +70,7 @@ table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
 		$(TRANS)/xccdf-apply-overlay-stig.xslt $<
 	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
 
-tables: table-refs table-idents table-stigs
-#tables: table-refs table-idents table-srgmap table-stigs
+tables: table-refs table-idents table-srgmap table-stigs
 
 content: $(OUT)/xccdf-unlinked-final.xml checks
 	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
@@ -84,7 +87,7 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 #	Once things are relabelled, create a datastream
 	xsltproc /usr/share/openscap/xsl/xccdf_1.1_remove_dangling_sub.xsl $(OUT)/$(ID)-$(PROD)-xccdf.xml \
 		> $(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml
-	xsltproc --stringparam reverse_DNS org.ssgproject.content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
+	xsltproc --stringparam reverse_DNS org.$(VENDOR).content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf-nodangles.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	sed -i '/idref="dangling reference to /d' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 #	Update @style attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
@@ -177,6 +180,8 @@ dist: tables guide content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
+	mkdir -p $(DIST)/tables
+	cp $(OUT)/table-*.{x,}html $(DIST)/tables
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
 	cp $(OUT)/$(ID)-centos6-xccdf.xml $(DIST)/content

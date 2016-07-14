@@ -25,10 +25,10 @@ and removed from the system.
 <Rule id="service_httpd_disabled">
 <title>Disable httpd Service</title>
 <description>
-<service-disable-macro service="httpd" />
+<systemd-service-macro enable="false" service="httpd" />
 </description>
 <ocil>
-<service-disable-check-macro service="httpd" />
+<systemd-check-macro enable="false" service="httpd" />
 </ocil>
 <rationale>
 Running web server software provides a network-based avenue
@@ -42,7 +42,7 @@ of attack, and should be disabled if not needed.
 <Rule id="package_httpd_removed">
 <title>Uninstall httpd Package</title>
 <description>
-<package-remove-macro package="httpd" />
+<yum-macro install="false" package="httpd" />
 </description>
 <ocil>
 <package-check-macro package="httpd" />

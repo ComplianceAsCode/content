@@ -25,7 +25,7 @@ operator="equals" interactive="0">
 <title>Install the OpenSSH Server Package</title>
 <description>
 The <tt>openssh-server</tt> package should be installed.
-<package-install-macro package="openssh-server"/>
+<yum-macro install="true" package="openssh-server"/>
 </description>
 <ocil clause="the package is not installed" >
 <package-check-macro package="openssh-server" />
@@ -45,10 +45,10 @@ stigid="040260" />
 <Rule id="service_sshd_enabled" severity="medium">
 <title>Enable the OpenSSH Service</title>
 <description>The SSH server service, sshd, is commonly needed.
-<service-enable-macro service="sshd" />
+<systemd-service-macro enable="true" service="sshd" />
 </description>
 <ocil>
-<service-enable-check-macro service="sshd" />
+<systemd-check-macro enable="true" service="sshd" />
 </ocil>
 <rationale>
 Without protection of the transmitted information, confidentiality, and
@@ -66,7 +66,7 @@ stigid="TBD" />
 <title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
 However, if it can be disabled, do so.
-<service-disable-macro service="sshd" />
+<systemd-service-macro enable="false" service="sshd" />
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>

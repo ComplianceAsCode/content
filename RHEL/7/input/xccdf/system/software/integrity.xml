@@ -18,6 +18,25 @@ approaches such as AIDE may induce considerable overhead
 in the presence of frequent software updates.
 </description>
 
+<Rule id="disable_prelink">
+<title>Disable Prelinking</title>
+<description>
+The prelinking feature changes binaries in an attempt to decrease their startup
+time. In order to disable it, change or add the following line inside the file
+<tt>/etc/sysconfig/prelink</tt>:
+<pre>PRELINKING=no</pre>
+Next, run the following command to return binaries to a normal, non-prelinked state:
+<pre>$ sudo /usr/sbin/prelink -ua</pre>
+</description>
+<rationale>
+Because the prelinking feature changes binaries, it can interfere with the
+operation of certain software and/or modes such as AIDE, FIPS, etc.
+</rationale>
+<ident cce="27078-5" />
+<oval id="disable_prelink" />
+<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" />
+</Rule>
+
 <Group id="aide">
 <title>Verify Integrity with AIDE</title>
 <description>AIDE conducts integrity checks by comparing information about
@@ -43,25 +62,6 @@ The AIDE package must be installed if it is to be available for integrity checki
 <oval id="package_aide_installed" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="" pcidss="Req-11.5" cis="1.3.1" />
 <tested by="DS" on="20121024"/>
-</Rule>
-
-<Rule id="disable_prelink">
-<title>Disable Prelinking</title>
-<description>
-The prelinking feature changes binaries in an attempt to decrease their startup
-time.  In order to disable it, change or add the following line inside the file
-<tt>/etc/sysconfig/prelink</tt>:
-<pre>PRELINKING=no</pre>
-Next, run the following command to return binaries to a normal, non-prelinked state:
-<pre>$ sudo /usr/sbin/prelink -ua</pre>
-</description>
-<rationale>
-The prelinking feature can interfere with the operation
-of AIDE, because it changes binaries.
-</rationale>
-<ident cce="27078-5" />
-<oval id="disable_prelink" />
-<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" />
 </Rule>
 
 <Rule id="aide_build_database" severity="medium">
@@ -342,9 +342,9 @@ ossrg="SRG-OS-000480-GPOS-00227" stigid="030810" />
 <title>Enable nails Service</title>
 <description>The <tt>nails</tt> service is used to run McAfee VirusScan Enterprise
 for Linux and McAfee Host-based Security System (HBSS) services.
-<service-enable-macro service="nails" />
+<systemd-service-macro enable="true" service="nails" />
 </description>
-<ocil><service-enable-check-macro service="nails" /></ocil>
+<ocil><systemd-check-macro enable="true" service="nails" /></ocil>
 <rationale>
 Virus scanning software can be used to detect if a system has been compromised by
 computer viruses, as well as to limit their spread to other systems.
@@ -375,6 +375,119 @@ computer viruses, as well as to limit their spread to other systems.
 ossrg="SRG-OS-000480-GPOS-00227" stigid="030820" />
 </Rule>
 
+</Group>
+
+<Group id="fips">
+<title>Federal Information Processing Standard (FIPS)</title>
+<description>
+The Federal Information Processing Standard (FIPS) is a computer security standard which
+is developed by the U.S. Government and industry working groups to validate the quality
+of cryptographic modules. The FIPS standard provides four security levels to ensure
+adequate coverage of different industries, implementation of cryptographic modules, and
+organizational sizes and requirements.
+<br /><br />
+FIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules
+utilize authentication that meets industry and government requirements. For government systems, this allows
+Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
+<br /><br />
+See <b>http://csrc.nist.gov/publications/PubsFIPS.html</b> for more information.
+</description>
+
+<Rule id="package_dracut-fips_installed" severity="medium">
+<title>Install the dracut-fips Package</title>
+<description>
+To enable FIPS, the system requires that the <tt>dracut-fips</tt>
+package be installed.
+<yum-macro install="true" package="dracut-fips" />
+</description>
+<ocil clause="the package is not installed">
+<package-check-macro package="dracut-fips" />
+</ocil>
+<rationale>
+Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+protect data. The operating system must implement cryptographic modules adhering to the higher
+standards approved by the federal government since this provides assurance they have been tested
+and validated.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="package_dracut-fips_installed" />
+<ref nist="AC-17(2)" disa="68,2450" stigid="TBD"
+ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
+</Rule>
+
+<Rule id="grub2_enable_fips_mode" severity="medium">
+<title>Enable FIPS Mode in GRUB2</title>
+<description>
+To ensure FIPS mode is enabled, rebuild <tt>initramfs</tt> by running the following command:
+<pre>dracut -f</pre>
+After the <tt>dracut</tt> command has been run, add the argument <tt>fips=1</tt> to the default
+GRUB 2 command line for the Linux operating system in
+<tt>/etc/default/grub</tt>, in the manner below:
+<pre>GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=VolGroup/LogVol06 rd.lvm.lv=VolGroup/lv_swap rhgb quiet rd.shell=0 fips=1"</pre>
+Finally, rebuild the <tt>grub.cfg</tt> file by using the
+<pre>grub2-mkconfig -o</pre> command as follows:
+<ul>
+<li>On BIOS-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+<li>On UEFI-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+</ul>
+</description>
+<ocil clause="FIPS is not configured or enabled in grub">
+To verify that FIPS is enabled properly in grub, run the following command:
+<pre>$ grep fips /etc/default/grub</pre>
+The output should contain fips=1
+</ocil>
+<rationale>
+Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+protect data. The operating system must implement cryptographic modules adhering to the higher
+standards approved by the federal government since this provides assurance they have been tested
+and validated.
+</rationale>
+<warning category="general">Running <pre>dracut -f</pre> will overwrite the existing initramfs file.</warning>
+<warning category="general">The system needs to be rebooted for these changes to take effect.</warning>
+<warning category="general">The ability to enable FIPS does not denote FIPS compliancy or certification.
+Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and compliant. Community
+projects such as CentOS, Scientific Linux, etc. do not necessarily meet FIPS certification and compliancy.
+Therefore, non-certified vendors and/or projects do not meet this requirement even if technically feasible.
+<br /><br />
+See <b>http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm</b> for a list of FIPS certified
+vendors.</warning>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="grub2_enable_fips_mode" />
+<ref nist="AC-17(2)" disa="68,2450" stigid="021280"
+ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
+</Rule>
+
+</Group>
+
+<Group id="certified-vendor">
+
+<Rule id="installed_OS_is_certified" severity="high">
+<title>The Installed Operating System Is Vendor Supported and Certified</title>
+<description>
+The installed operating system must be maintained and certified by a vendor.
+Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
+Linux vendor, Red Hat, Inc. is responsible for providing security patches as well
+as meeting and maintaining goverment certifications and standards.
+</description>
+<ocil clause="the installed operating system is not supported or certified">
+To verify that the installed operating system is supported or certified, run
+the following command:
+<pre>$ grep -i "red hat" /etc/redhat-release</pre>
+The output should contain something similar to:
+<pre>Red Hat Enterprise Linux Server 7.3 (Maipo)</pre>
+</ocil>
+<rationale>
+An operating system is considered "supported" if the vendor continues to provide
+security patches for the product as well as maintain government certification requirements.
+With an unsupported release, it will not be possible to resolve security issue discovered in
+the system software as well as meet government certifications.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="installed_OS_is_certified" />
+<ref nist="SI-2(c)" disa="366" stigid="020240" ossrg="SRG-OS-000480-GPOS-00227" />
+</Rule>
 </Group>
 
 </Group>

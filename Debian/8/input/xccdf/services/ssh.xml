@@ -24,7 +24,7 @@ operator="equals" interactive="0">
 <Rule id="service_sshd_disabled">
 <title>Disable SSH Server if possible (unusual cases)</title>
 <description>Most of the time, the SSH server is needed. However, it can be disabled, do so.
-<service-disable-macro service="ssh" />
+<chkconfig-service-macro enable="false" service="ssh" />
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>

@@ -29,10 +29,10 @@ More information is available on its website, http://www.postfix.org.
 within the system. The default configuration only listens for connections to
 the default SMTP port (port 25) on the loopback interface (127.0.0.1).  It is
 recommended to leave this service enabled for local mail delivery.
-<service-enable-macro service="postfix" />
+<chkconfig-service-macro enable="true" service="postfix" />
 </description>
 <ocil clause="the system is not a cross domain solution and the service is not enabled">
-<service-enable-check-macro service="postfix" />
+<service-check-macro enable="true" service="postfix" />
 </ocil>
 <rationale>Local mail delivery is essential to some system maintenance and
 notification tasks.
@@ -46,7 +46,7 @@ notification tasks.
 <title>Uninstall Sendmail Package</title>
 <description>Sendmail is not the default mail transfer agent and is
 not installed by default.
-<package-remove-macro package="sendmail" />
+<yum-macro install="false" package="sendmail" />
 </description>
 <ocil>
 <package-check-macro package="sendmail" />

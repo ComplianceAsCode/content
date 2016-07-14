@@ -49,11 +49,25 @@ endif
 # Common build targets - compose single shorthand XCCDF guide from all the sources
 guide_xslt_deps= $(wildcard $(IN)/auxiliary/*.xml) $(wildcard $(IN)/profiles/*.xml) $(wildcard $(IN)/xccdf/**/*.xml)
 $(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
+	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" --stringparam SHARED_RP "$(realpath $(SHARED))" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
 	xmllint --format --output $@ $@
 
+# Create temporary $(SHARED)/$(OUT) folder to hold information like list of contributors or list of
+# available remediation functions used by all SSG benchmarks
+$(SHARED)/$(OUT):
+	mkdir -p $@
+
+# Benchmark metadata prerequisite - derive $(SHARED)/$(OUT)/contributors.xml from the content of Contributors.md
+$(SHARED)/$(OUT)/contributors.xml: $(SHARED)/$(OUT)
+	# Create $(SHARED)/$(OUT)/contributors.xml file:
+	# * holding <text> like root element and
+	# * names of the individual SSG contributor(s) within <contributor> element(s)
+	echo "<text>" > $@
+	sed -n -e 's/\* \(.*\)/<contributor>\1<\/contributor>/p' $(SHARED)/../Contributors.md >> $@
+	echo "</text>" >> $@
+
 # Common build targets - convert shorthand format to an XCCDF stub
-$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
+$(OUT)/xccdf-unlinked-unresolved.xml: $(OUT)/shorthand.xml $(SHARED)/$(OUT)/contributors.xml $(TRANS)/shorthand2xccdf.xslt $(TRANS)/constants.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc --stringparam ssg_version "$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)" -o $@ $(TRANS)/shorthand2xccdf.xslt $<
 
 # Common build targets - improve the XCCDF stub - first resolve

@@ -22,7 +22,7 @@
         <criterion comment="kernel /etc/sysctl.conf parameter kernel.exec-shield set to 1" test_ref="test_static_sysctl_kernel_exec_shield" />
       </criteria>
       <criteria operator="AND">
-        <extend_definition comment="64-bit system" definition_ref="system_info_architecture_x86_64" />
+        <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
         <criterion comment="NX is supported and is not disabled" test_ref="test_nx_disabled_grub" />
       </criteria>
     </criteria>

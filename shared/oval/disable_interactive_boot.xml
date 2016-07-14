@@ -1,34 +1,74 @@
 <def-group>
-  <definition class="compliance" id="disable_interactive_boot" version="2">
+  <definition class="compliance" id="disable_interactive_boot" version="3">
     <metadata>
-      <title>Disable Interactive Boot</title>
+      <title>Verify that Interactive Boot is Disabled</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>The ability for users to perform interactive startups should
       be disabled.</description>
-      <reference source="JL" ref_id="20140407" ref_url="test_attestation" />
+      <reference source="JL" ref_id="RHEL7_20160613" ref_url="test_attestation" />
+      <reference source="JL" ref_id="FEDORA23_20160613" ref_url="test_attestation" />
     </metadata>
-    <criteria>
-      <criterion test_ref="test_disable_interactive_boot" />
-      <!-- This needs to be enhanced yet to properly cover case of 'systemd.confirm_spawn=1'
-           use case on RHEL-7 and Fedora per:
-             https://rhsummit.files.wordpress.com/2014/04/summit_demystifying_systemd1.pdf Page #20
-           SSG Upstream ticket to come yet -->
+    <criteria operator="AND">
+      <criterion test_ref="test_disable_interactive_boot_grub_cmdline_linux"
+      comment="Check systemd.confirm_spawn=(1|yes|true|on) not in GRUB_CMDLINE_LINUX" />
+      <criteria operator="AND">
+        <criterion test_ref="test_disable_interactive_boot_grub_cmdline_linux_default"
+        comment="Check systemd.confirm_spawn=(1|yes|true|on) not in GRUB_CMDLINE_LINUX_DEFAULT" />
+        <criterion test_ref="test_bootloader_recovery_disabled"
+        comment="Check GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
+      </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="Tests that PROMPT=no in /etc/sysconfig/init"
-  id="test_disable_interactive_boot" version="1">
-    <ind:object object_ref="object_disable_interactive_boot" />
+  <!-- Verify systemd.confirm_spawn=(1|yes|true|on) not present in GRUB_CMDLINE_LINUX
+       of /etc/default/grub -->
+  <ind:textfilecontent54_test id="test_disable_interactive_boot_grub_cmdline_linux"
+  comment="Check systemd.confirm_spawn=(1|true|yes|on) not in GRUB_CMDLINE_LINUX"
+  check="all" check_existence="none_exist" version="1">
+    <ind:object object_ref="object_disable_interactive_boot_grub_cmdline_linux" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_disable_interactive_boot"
-  version="2">
-    <ind:filepath>/etc/sysconfig/init</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*PROMPT=no[\s]+</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+  <ind:textfilecontent54_object id="object_disable_interactive_boot_grub_cmdline_linux"
+  version="1">
+    <ind:filepath>/etc/default/grub</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX=".*systemd.confirm_spawn=(?:1|yes|true|on).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <!-- Or verify systemd.confirm_spawn=(1|yes|true|on) not present in GRUB_CMDLINE_LINUX_DEFAULT
+       of /etc/default/grub and GRUB_DISABLE_RECOVERY set to "true" -->
+  <ind:textfilecontent54_test id="test_disable_interactive_boot_grub_cmdline_linux_default"
+  comment="Check systemd.confirm_spawn=(1|true|yes|on) not in GRUB_CMDLINE_LINUX_DEFAULT"
+  check="all" check_existence="none_exist" version="1">
+    <ind:object object_ref="object_disable_interactive_boot_grub_cmdline_linux_default" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_disable_interactive_boot_grub_cmdline_linux_default"
+  version="1">
+    <ind:filepath>/etc/default/grub</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT=".*systemd.confirm_spawn=(?:1|yes|true|on).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Verify GRUB_DISABLE_RECOVERY set to "true" in /etc/default/grub -->
+  <ind:textfilecontent54_test id="test_bootloader_recovery_disabled"
+  comment="Check for GRUB_DISABLE_RECOVERY=true in /etc/default/grub"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_bootloader_disable_recovery_argument" />
+    <ind:state state_ref="state_bootloader_disable_recovery_argument" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_bootloader_disable_recovery_argument" version="1">
+    <ind:filepath>/etc/default/grub</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*GRUB_DISABLE_RECOVERY=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_bootloader_disable_recovery_argument" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^true|"true"$</ind:subexpression>
+  </ind:textfilecontent54_state>
 
 </def-group>

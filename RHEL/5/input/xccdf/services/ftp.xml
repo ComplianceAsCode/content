@@ -14,10 +14,10 @@ data available to the public.</description>
 <Rule id="service_unencrypted_ftp_disabled">
 <title>Disable Unencrypted FTP Services</title>
 <description>
-<service-disable-macro service="vsftpd" />
+<chkconfig-service-macro enable="false" service="vsftpd" />
 </description>
 <ocil>
-<service-disable-check-macro service="vsftpd" />
+<service-check-macro enable="false" service="vsftpd" />
 </ocil>
 <rationale>
 Running unencrypted FTP server software provides a network-based avenue

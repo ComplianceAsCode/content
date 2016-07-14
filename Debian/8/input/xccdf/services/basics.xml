@@ -28,7 +28,7 @@ The auditd service should be enabled.
 The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparision with potential local access control policy such as SELinux policy.
 </rationale>
 <ocil>
-  <service-enable-check-macro service="auditd" />
+  <service-check-macro enable="true" service="auditd" />
 </ocil>
 <ident cce="" />
 <oval id="service_auditd_enabled" />
@@ -85,7 +85,7 @@ The ntpd service should be enabled.
 Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). Ntpd is regulary maintained and updated, supporting security features such as RFC 5906.
 </rationale>
 <ocil>
-  <service-enable-check-macro service="ntpd" />
+  <service-check-macro enable="true" service="ntpd" />
 </ocil>
 <ident cce="" />
 <oval id="service_ntpd_enabled" />

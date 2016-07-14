@@ -23,10 +23,10 @@ sharing functionality.
 <Rule id="service_smb_disabled">
 <title>Disable Samba</title>
 <description>
-<service-disable-macro service="smb" />
+<systemd-service-macro enable="false" service="smb" />
 </description>
 <ocil>
-<service-disable-check-macro service="smb" />
+<systemd-check-macro enable="false" service="smb" />
 </ocil>
 <rationale>
 Running a Samba server provides a network-based avenue of attack, and

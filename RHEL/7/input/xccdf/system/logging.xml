@@ -21,7 +21,7 @@ monitor logs.</description>
 <title>Ensure rsyslog is Installed</title>
 <description>
 Rsyslog is installed by default. 
-<package-install-macro package="rsyslog" />
+<yum-macro install="true" package="rsyslog" />
 </description>
 <ocil clause="the package is not installed">
 <package-check-macro package="rsyslog" />
@@ -39,10 +39,10 @@ system logging services.
 <Rule id="service_rsyslog_enabled" severity="medium">
 <title>Enable rsyslog Service</title>
 <description>The <tt>rsyslog</tt> service provides syslog-style logging by default on Red Hat Enterprise Linux 7.
-<service-enable-macro service="rsyslog" />
+<systemd-service-macro enable="true" service="rsyslog" />
 </description>
 <ocil>
-<service-enable-check-macro service="rsyslog" />
+<systemd-check-macro enable="true" service="rsyslog" />
 </ocil>
 <rationale>The <tt>rsyslog</tt> service must be running in order to provide
 logging services, which are essential to system administration.
