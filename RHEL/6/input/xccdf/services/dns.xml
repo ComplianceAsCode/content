@@ -19,9 +19,9 @@ nameservers.
 <Rule id="service_named_disabled">
 <title>Disable DNS Server</title>
 <description>
-<service-disable-macro service="named" />
+<chkconfig-service-macro enable="false" service="named" />
 </description>
-<ocil><service-disable-check-macro service="named" /></ocil>
+<ocil><service-check-macro enable="false" service="named" /></ocil>
 <rationale>
 All network services involve some risk of compromise due to
 implementation flaws and should be disabled if possible.

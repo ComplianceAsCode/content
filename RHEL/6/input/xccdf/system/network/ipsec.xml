@@ -10,8 +10,8 @@ and libreswan packages respectively.
 <description>The openswan and libreswan packages provide an implementation of
 IPsec and IKE, which permits the creation of secure tunnels over untrusted
 networks.
-<package-install-macro package="openswan"/>
-<package-install-macro package="libreswan"/>
+<yum-macro install="true" package="openswan"/>
+<yum-macro install="true" package="libreswan"/>
 </description>
 <ocil clause="the package is not installed" >
 <package-check-macro package="openswan" />

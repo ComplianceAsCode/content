@@ -23,10 +23,10 @@ sharing functionality.
 <Rule id="service_smb_disabled">
 <title>Disable Samba</title>
 <description>
-<service-disable-macro service="smb" />
+<chkconfig-service-macro enable="false" service="smb" />
 </description>
 <ocil>
-<service-disable-check-macro service="smb" />
+<service-check-macro enable="false" service="smb" />
 </ocil>
 <rationale>
 Running a Samba server provides a network-based avenue of attack, and
@@ -40,7 +40,7 @@ should be disabled if not needed.
 <Rule id="package_samba_removed">
 <title>Uninstall samba Package</title>
 <description>
-<package-remove-macro package="samba" />
+<yum-macro install="false" package="samba" />
 </description>
 <ocil>
 <package-check-macro package="samba" />

@@ -72,11 +72,11 @@ protocols which were not designed with security in mind.
 <Rule id="service_bluetooth_disabled" severity="medium">
 <title>Disable Bluetooth Service</title>
 <description>
-<service-disable-macro service="bluetooth" />
+<systemd-service-macro enable="false" service="bluetooth" />
 <pre>$ sudo service bluetooth stop</pre>
 </description>
 <ocil>
-<service-disable-check-macro service="bluetooth" />
+<systemd-check-macro enable="false" service="bluetooth" />
 </ocil>
 <rationale>Disabling the <tt>bluetooth</tt> service prevents the system from attempting
 connections to Bluetooth devices, which entails some security risk.

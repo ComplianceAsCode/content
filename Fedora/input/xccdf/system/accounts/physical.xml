@@ -79,19 +79,20 @@ parameters.
 protection enabled to protect boot-time settings.
 <br /><br />
 To do so, select a superuser account and password and add them into the
-appropriate grub2 configuration file(s) under <tt>/etc/grub.d</tt>.
+<tt>/etc/grub.d/01_users</tt> configuration file.
+<br /><br />
 Since plaintext passwords are a security risk, generate a hash for the pasword
 by running the following command:
 <pre>$ grub2-mkpasswd-pbkdf2</pre>
 When prompted, enter the password that was selected and insert the returned 
-password hash into the appropriate grub2 configuration file(s) under
-<tt>/etc/grub.d</tt> immediately after the superuser account.
+password hash into the <tt>/etc/grub.d/01_users</tt> configuration file
+immediately after the superuser account.
 (Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of 
 <b>password-hash</b>):
 <pre>password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
 NOTE: It is recommended not to use common administrator account names like root,
 admin, or administrator for the grub2 superuser account. 
-<br />
+<br /><br />
 To meet FISMA Moderate, the bootloader superuser account and password MUST 
 differ from the root account and password.
 Once the superuser account and password have been added, update the 
@@ -120,6 +121,52 @@ the grub2 superuser account and password, please refer to
 </rationale>
 <oval id="bootloader_password" />
 <ref nist="IA-2(1),IA-5(e),AC-3" disa="213" cis="1.5.3" />
+</Rule>
+
+<Rule id="bootloader_uefi_password" severity="medium">
+<title>Set the UEFI Boot Loader Password</title>
+<description>The UEFI grub2 boot loader should have a superuser account and password
+protection enabled to protect boot-time settings.
+<br /><br />
+To do so, select a superuser account and password and add them into the
+<tt>/etc/grub.d/01_users</tt> configuration file.
+<br /><br />
+Since plaintext passwords are a security risk, generate a hash for the pasword
+by running the following command:
+<pre>$ grub2-mkpasswd-pbkdf2</pre>
+When prompted, enter the password that was selected and insert the returned
+password hash into the <tt>/etc/grub.d/01_users</tt> configuration file immediately
+after the superuser account.
+(Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of
+<b>password-hash</b>):
+<pre>password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
+NOTE: It is recommended not to use common administrator account names like root,
+admin, or administrator for the grub2 superuser account.
+<br /><br />
+To meet FISMA Moderate, the bootloader superuser account and password MUST
+differ from the root account and password.
+Once the superuser account and password have been added, update the
+<tt>grub.cfg</tt> file by running:
+<pre>grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre>
+NOTE: Do NOT manually add the superuser account and password to the
+<tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
+</description>
+<ocil clause="it does not">
+To verify the boot loader superuser account and superuser account password have
+been set, and the password encrypted, run the following command:
+<pre>sudo grep -A1 "superusers\|password" /etc/grub2-efi.cfg</pre>
+The output should show the following:
+<pre>set superusers="<b>superusers-account</b>"
+password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
+</ocil>
+<rationale>
+Password protection on the boot loader configuration ensures
+users with physical access cannot trivially alter
+important bootloader settings. These include which kernel to use,
+and whether to enter single-user mode.
+</rationale>
+<oval id="bootloader_uefi_password" />
+<ref nist="AC-3" disa="213" />
 </Rule>
 
 </Group>
@@ -160,10 +207,10 @@ will be available on <tt>tty9</tt> which is access by pressing
 for SystemD related issues and should otherwise be disabled.
 <br /><br />
 By default, the <tt>debug-shell</tt> SystemD service is disabled.
-<service-disable-macro service="debug-shell" />
+<systemd-service-macro enable="false" service="debug-shell" />
 </description>
 <ocil>
-<service-disable-check-macro service="debug-shell" />
+<systemd-check-macro enable="false" service="debug-shell" />
 </ocil>
 <rationale>
 This prevents attackers with physical access from trivially bypassing security
@@ -207,27 +254,38 @@ loss of availability of systems due to unintentional reboot.
 </Rule>
 
 <Rule id="disable_interactive_boot" severity="medium">
-<title>Disable Interactive Boot</title>
+<title>Verify that Interactive Boot is Disabled</title>
 <description>
-To disable the ability for users to perform interactive startups,
-edit the file <tt>/etc/sysconfig/init</tt>.
-Add or correct the line:
-<pre>PROMPT=no</pre>
-The <tt>PROMPT</tt> option allows the console user to perform an
-interactive system startup, in which it is possible to select the
-set of services which are started on boot.
+Fedora systems support an "interactive boot" option that can be used to prevent
+services from being started. On a Fedora system, interactive boot can be
+enabled by providing a <tt>1</tt>, <tt>yes</tt>, <tt>true</tt>, or
+<tt>on</tt> value to the <tt>systemd.confirm_spawn</tt> kernel argument in
+<tt>/etc/default/grub</tt>. Remove any instance of
+<pre>systemd.confirm_spawn=(1|yes|true|on)</pre> from the kernel arguments in
+that file to disable interactive boot.
 </description>
-<ocil clause="it does not">
-To check whether interactive boot is disabled, run the following command:
-<pre>$ grep PROMPT /etc/sysconfig/init</pre>
-If interactive boot is disabled, the output will show:
-<pre>PROMPT=no</pre>
+<ocil clause="Interactive boot is enabled at boot time">
+Inspect <tt>/etc/default/grub</tt> for any instances of
+<tt>systemd.confirm_spawn=(1|yes|true|on)</tt> in the kernel boot arguments.
+Presence of a <tt>systemd.confirm_spawn=(1|yes|true|on)</tt> indicates
+that interactive boot is enabled at boot time.
 </ocil>
 <rationale>
-Using interactive boot,
-the console user could disable auditing, firewalls, or other
-services, weakening system security.
+Using interactive boot, the console user could disable auditing, firewalls,
+or other services, weakening system security.
 </rationale>
+<warning category="general">The GRUB 2 configuration file, <tt>grub.cfg</tt>,
+is automatically updated each time a new kernel is installed. Note that any
+changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
+file. To update the GRUB 2 configuration file manually, use the
+<pre>grub2-mkconfig -o</pre> command as follows:
+<ul>
+<li>On BIOS-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+<li>On UEFI-based machines, issue the following command as <tt>root</tt>:
+<pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+</ul>
+</warning>
 <oval id="disable_interactive_boot" />
 <ref nist="SC-2,AC-3" disa="213"/>
 </Rule>
@@ -254,7 +312,7 @@ A console screen locking mechanism is provided in the
 <title>Install the screen Package</title>
 <description>
 To enable console screen locking, install the <tt>screen</tt> package:
-<pre><package-install-macro package="screen"/></pre>
+<pre><dnf-macro install="true" package="screen"/></pre>
 Instruct users to begin new terminal sessions with the following command:
 <pre>$ screen</pre>
 The console can now be locked with the following key combination:

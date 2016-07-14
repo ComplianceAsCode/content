@@ -1,6 +1,7 @@
 templates: packages kernel_modules permissions umasks sysctls
 
 SHARED_DIR=../../../../../shared/oval/templates
+SHARED_TMP=../../../../../shared/templates
 
 OUTPUT:=$(shell mkdir -p output)
 
@@ -20,6 +21,9 @@ umasks:
 sysctls:
 	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
 	${SHARED_DIR}/create_sysctl_ipv6_checks.py sysctl_ipv6_values.csv
+
+sebools:
+	${SHARED_TMP}/create_sebool_oval.py ${SHARED_TMP}/selinux_booleans.csv
 
 compare:
 	diff output/ ../ | grep -v "Only in ../"

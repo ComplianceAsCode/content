@@ -32,9 +32,9 @@ time data, is available at http://www.ntp.org.
 <Rule id="service_chronyd_enabled" severity="medium">
 <title>Enable the Chrony Daemon</title>
 <description>
-<service-enable-macro service="ntpd" />
+<systemd-service-macro enable="true" service="ntpd" />
 </description>
-<ocil><service-enable-check-macro service="ntpd" /></ocil>
+<ocil><systemd-check-macro enable="true" service="ntpd" /></ocil>
 <rationale>Enabling the <tt>chronyd</tt> service ensures that the <tt>chronyd</tt>
 service will be running and that the system will synchronize its time to
 any servers specified. This is important whether the system is configured to be

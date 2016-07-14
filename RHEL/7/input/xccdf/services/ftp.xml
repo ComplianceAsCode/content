@@ -19,10 +19,10 @@ possible.</description>
 <Rule id="service_vsftpd_disabled">
 <title>Disable vsftpd Service</title>
 <description>
-<service-disable-macro service="vsftpd" />
+<systemd-service-macro enable="false" service="vsftpd" />
 </description>
 <ocil>
-<service-disable-check-macro service="vsftpd" />
+<systemd-check-macro enable="false" service="vsftpd" />
 </ocil>
 <rationale>
 Running FTP server software provides a network-based avenue
@@ -38,7 +38,7 @@ a risk of compromising sensitive information.
 <Rule id="package_vsftpd_removed" severity="high">
 <title>Uninstall vsftpd Package</title>
 <description>
-<package-remove-macro package="vsftpd" />
+<yum-macro install="false" package="vsftpd" />
 </description>
 <ocil>
 <package-check-macro package="vsftpd" />

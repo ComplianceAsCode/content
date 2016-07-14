@@ -51,12 +51,12 @@ The <tt>ip6tables</tt> default rules are essentially the same.</description>
 <Rule id="service_ip6tables_enabled" severity="medium">
 <title>Verify ip6tables Enabled if Using IPv6</title>
 <description>
-<service-enable-macro service="ip6tables" />
+<chkconfig-service-macro enable="true" service="ip6tables" />
 </description>
 <ocil>
 If IPv6 is disabled, this is not applicable.
 <br /><br />
-<service-enable-check-macro service="ip6tables" /></ocil>
+<service-check-macro enable="true" service="ip6tables" /></ocil>
 <rationale>The <tt>ip6tables</tt> service provides the system's host-based firewalling
 capability for IPv6 and ICMPv6.
 </rationale>
@@ -96,9 +96,9 @@ accepted.</rationale>
 <Rule id="service_iptables_enabled" severity="medium">
 <title>Verify iptables Enabled</title>
 <description>
-<service-enable-macro service="iptables" />
+<chkconfig-service-macro enable="true" service="iptables" />
 </description>
-<ocil><service-enable-check-macro service="iptables" /></ocil>
+<ocil><service-check-macro enable="true" service="iptables" /></ocil>
 <rationale>
 The <tt>iptables</tt> service provides the system's host-based firewalling
 capability for IPv4 and ICMP.

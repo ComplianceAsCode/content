@@ -131,35 +131,34 @@ administration should be documented in site-defined policy.
 <Rule id="no_shelllogin_for_systemaccounts" severity="medium">
 <title>Ensure that System Accounts Do Not Run a Shell Upon Login</title>
 <description>
-Some accounts are not associated with a human
-user of the system, and exist to perform some administrative
-function. Should an attacker be able to log into these accounts,
-they should not be granted access to a shell.
+Some accounts are not associated with a human user of the system, and exist to
+perform some administrative function. Should an attacker be able to log into
+these accounts, they should not be granted access to a shell.
 <br /><br />
 The login shell for each local account is stored in the last field of each line
-in <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID less than
-500. The user ID is stored in the third field.
-If any system account <i>SYSACCT</i> (other than root) has a login shell,
-disable it with the command:
-<pre>$ sudo usermod -s /sbin/nologin <i>SYSACCT</i></pre>
+in <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID
+less than UID_MIN, where value of the UID_MIN directive is set in
+/etc/login.defs configuration file. In the default configuration UID_MIN is set
+to 500, thus system accounts are those user accounts with a user ID less than
+500. The user ID is stored in the third field. If any system account
+<i>SYSACCT</i> (other than root) has a login shell, disable it with the
+command: <pre>$ sudo usermod -s /sbin/nologin <i>SYSACCT</i></pre>
 </description>
 <ocil clause="any system account (other than root) has a login shell">
-To obtain a listing of all users,
-their UIDs, and their shells, run the command:
-<pre>$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd</pre>
-Identify the system accounts from this listing. These will
-primarily be the accounts with UID numbers less than 500, other
-than root.
+To obtain a listing of all users, their UIDs, and their shells, run the
+command: <pre>$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd</pre> Identify
+the system accounts from this listing. These will primarily be the accounts
+with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
+directive is set in /etc/login.defs configuration file. In the default
+configuration UID_MIN is set to 500.
 </ocil>
 <rationale>
-Ensuring shells are not given to system accounts upon login
-makes it more difficult for attackers to make use of
-system accounts.
+Ensuring shells are not given to system accounts upon login makes it more
+difficult for attackers to make use of system accounts.
 </rationale>
 <warning category="functionality">
-Do not perform the steps in this
-section on the root account. Doing so might cause the system to
-become inaccessible.
+Do not perform the steps in this section on the root account. Doing so might
+cause the system to become inaccessible.
 </warning>
 <ident cce="26966-2" />
 <oval id="no_shelllogin_for_systemaccounts" />
