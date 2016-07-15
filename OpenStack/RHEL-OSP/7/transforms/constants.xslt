@@ -2,6 +2,10 @@
 
 <xsl:include href="../../../../shared/transforms/shared_constants.xslt"/>
 
+<xsl:variable name="product_long_name">Red Hat OpenStack Platform 7</xsl:variable>
+<xsl:variable name="product_short_name">RHEL OSP 7</xsl:variable>
+<xsl:variable name="product_stig_id_name">RHEL_OSP_7_STIG</xsl:variable>
+
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="os-stigid-concat" />

@@ -2,6 +2,10 @@
 
 <xsl:include href="../../shared/transforms/shared_constants.xslt"/>
 
+<xsl:variable name="product_long_name">Red Hat Enterprise Virtualization Manager</xsl:variable>
+<xsl:variable name="product_short_name">RHEVM</xsl:variable>
+<xsl:variable name="product_stig_id_name">RHEVM_STIG</xsl:variable>
+
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-appserver-uri"/>
 <xsl:variable name="os-stigid-concat" />
