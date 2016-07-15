@@ -12,7 +12,7 @@
 
   <xsl:template match="cdf:Benchmark">
 	<Benchmark xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cpe="http://cpe.mitre.org/language/2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"
-xmlns="http://checklists.nist.gov/xccdf/1.1" id="RHEL_6_STIG" xml:lang="en"
+xmlns="http://checklists.nist.gov/xccdf/1.1" id="{$product_stig_id_name}" xml:lang="en"
 xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 http://nvd.nist.gov/schema/xccdf-1.1.4.xsd http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
 	<status date="2012-10-01">draft</status>
 	<title>Pre-Draft <xsl:value-of select="$product_long_name" /> Security Technical Implementation Guide</title>
