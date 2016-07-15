@@ -2,6 +2,10 @@
 
 <xsl:include href="../../shared/transforms/shared_constants.xslt"/>
 
+<xsl:variable name="product_long_name">Firefox</xsl:variable>
+<xsl:variable name="product_short_name">Firefox</xsl:variable>
+<xsl:variable name="product_stig_id_name">FIREFOX_STIG</xsl:variable>
+
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-browers-uri"/>
 <xsl:variable name="os-stigid-concat" />
