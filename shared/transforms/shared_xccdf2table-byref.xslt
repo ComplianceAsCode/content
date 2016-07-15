@@ -121,6 +121,14 @@
 				</xsl:for-each>
 			</xsl:if>
 
+			<xsl:if test="$ref='anssi'">
+				<xsl:for-each select="//cdf:reference[@href=$anssiuri]" >
+					<xsl:call-template name="rule-output">
+						<xsl:with-param name="refinfo" select="." />
+					</xsl:call-template>
+				</xsl:for-each>
+			</xsl:if>
+
 		</table>
 	</xsl:template>
 
