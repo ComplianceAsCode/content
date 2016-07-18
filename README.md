@@ -16,7 +16,7 @@ of settings through a "refine-value."
 The goal of this project to enable the creation of multiple security
 baselines from a single set of high-quality SCAP content.
 
-The SSG homepage is https://fedorahosted.org/scap-security-guide/
+The SSG homepage is https://www.open-scap.org/security-policies/scap-security-guide/
 
 ## Installation
 The preferred method of installation is via the package manager of your
