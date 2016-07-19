@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="mount_option_noexec_removable_partitions" version="3">
+  <definition class="compliance" id="mount_option_noexec_removable_partitions" version="4">
     <metadata>
       <title>Add noexec Option to Removable Media Partitions</title>
       <affected family="unix">
@@ -21,32 +21,23 @@
       <!-- Removable device exists. Check if it's CD/DVD drive. If so, verify that at least one from all of the possible its alternative
            names in /etc/fstab & runtime configuration are configured with 'noexec' option -->
       <criteria operator="AND">
-        <criterion test_ref="test_var_removable_partition_is_cd_dvd_drive" comment="Check if removable partition value represents CD/DVD drive" />
-        <criterion test_ref="test_noexec_etc_fstab_cd_dvd_drive" comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in /etc/fstab" />
-        <criterion test_ref="test_noexec_runtime_cd_dvd_drive" comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in runtime configuration" />
+        <extend_definition comment="Check if removable partition value represents CD/DVD drive"
+        definition_ref="var_removable_partition_is_cd_dvd_drive" />
+        <criterion test_ref="test_noexec_etc_fstab_cd_dvd_drive"
+        comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in /etc/fstab" />
+        <criterion test_ref="test_noexec_runtime_cd_dvd_drive"
+        comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in runtime configuration" />
       </criteria>
       <!-- Removable device exists & isn't CD/DVD drive. Check the particular devices is configured with 'noexec' mount option in both
            /etc/fstab & runtime configuration -->
       <criteria operator="AND">
-        <criterion test_ref="test_noexec_etc_fstab_not_cd_dvd_drive" comment="Check if removable partition is using 'noexec' mount option in /etc/fstab" />
-        <criterion test_ref="test_noexec_runtime_not_cd_dvd_drive" comment="Check if removable partition is using 'noexec' mount option in runtime configuration" />
+        <criterion test_ref="test_noexec_etc_fstab_not_cd_dvd_drive"
+        comment="Check if removable partition is using 'noexec' mount option in /etc/fstab" />
+        <criterion test_ref="test_noexec_runtime_not_cd_dvd_drive"
+        comment="Check if removable partition is using 'noexec' mount option in runtime configuration" />
       </criteria>
     </criteria>
   </definition>
-
-  <!-- Specified removable partition exists on the system. Check if it represents a CD / DVD drive -->
-  <ind:variable_test id="test_var_removable_partition_is_cd_dvd_drive" check="all" comment="Check if removable partition variable value represents CD/DVD drive" version="1">
-    <ind:object object_ref="object_var_removable_partition_is_cd_dvd_drive" />
-    <ind:state state_ref="state_var_removable_partition_is_cd_dvd_drive" />
-  </ind:variable_test>
-
-  <ind:variable_object id="object_var_removable_partition_is_cd_dvd_drive" version="1">
-    <ind:var_ref>var_removable_partition</ind:var_ref>
-  </ind:variable_object>
-
-  <ind:variable_state id="state_var_removable_partition_is_cd_dvd_drive" version="1">
-    <ind:value operation="equals">/dev/cdrom</ind:value>
-  </ind:variable_state>
 
   <!-- If specified removable partition represents CD / DVD drive, create a variable
        holding also alternative names for CD / DVD block special device as used by udev -->
