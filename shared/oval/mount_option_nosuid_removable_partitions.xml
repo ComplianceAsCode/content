@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="mount_option_nosuid_removable_partitions" version="2">
+  <definition class="compliance" id="mount_option_nosuid_removable_partitions" version="3">
     <metadata>
       <title>Add nosuid Option to Removable Media Partitions</title>
       <affected family="unix">
@@ -16,7 +16,8 @@
     <criteria operator="OR">
       <!-- First check if specified removable partition truly exists on the system. If not, don't check /etc/fstab & runtime configuration
            since there's no device to check against -->
-      <criterion test_ref="test_removable_partition_doesnt_exist" comment="Check if removable partition really exists on the system" />
+      <extend_definition comment="Check if removable partition really exists on the system"
+      definition_ref="removable_partition_doesnt_exist" />
       <!-- Removable device exists. Check if it's CD/DVD drive. If so, verify that at least one from all of the possible its alternative
            names in /etc/fstab & runtime configuration are configured with 'nosuid' option -->
       <criteria operator="AND">
@@ -32,16 +33,6 @@
       </criteria>
     </criteria>
   </definition>
-
-  <!-- First check if specified removable partition really exists on the system.
-       If not return PASS since there's nothing to check /etc/fstab & runtime settings against. -->
-  <unix:file_test id="test_removable_partition_doesnt_exist" check="all" check_existence="none_exist" comment="Check if expected removable partitions truly exist on the system" version="1">
-    <unix:object object_ref="object_removable_partition_doesnt_exist" />
-  </unix:file_test>
-
-  <unix:file_object id="object_removable_partition_doesnt_exist" version="1">
-    <unix:filepath var_ref="var_removable_partition" var_check="at least one" />
-  </unix:file_object>
 
   <!-- Specified removable partition exists on the system. Check if it represents a CD / DVD drive -->
   <ind:variable_test id="test_var_removable_partition_is_cd_dvd_drive" check="all" comment="Check if removable partition variable value represents CD/DVD drive" version="1">
