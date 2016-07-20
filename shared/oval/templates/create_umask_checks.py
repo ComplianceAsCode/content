@@ -66,7 +66,7 @@ def output_check(path_info):
         # we can now write the check
         with open("./output/" + oval_check_id + ".xml", 'w+') as outputfile:
             outputfile.write(filestring)
-            outputfile.close()
+            print("Written ./output/%s.xml file." % oval_check_id)
 
 
 def main():
@@ -77,7 +77,8 @@ def main():
                "variable name for comparison")
         sys.exit(1)
 
-        # open and read the csv file
+    else:
+        # Open and read the csv file
         with open(sys.argv[1], 'r') as csv_file:
             file_lines = csv.reader(csv_file)
             for line in file_lines:
@@ -88,7 +89,7 @@ def main():
 
                 output_check(line)
 
-        # done
+        # Done
         sys.exit(0)
 
 if __name__ == "__main__":
