@@ -19,7 +19,7 @@ import re
 
 
 def output_check(path_info):
-    # the csv file contains lines that match the following layout
+    # The csv file contains lines that match the following layout
     # (see file_umask_checks.csv for more details):
     #
     #   directory path, file name, external OVAL umask variable name, title,
@@ -27,7 +27,7 @@ def output_check(path_info):
     #
     dir_path, file_name, ext_oval_var, title, description, oval_check_id = path_info
 
-    # build a string out of the path that is suitable for use in id tags
+    # Build a string out of the path that is suitable for use in id tags
     # example:      /etc/resolv.conf --> _etc_resolv_conf
     # path_id maps to FILEID in the template
     if file_name == '[NULL]':
@@ -36,14 +36,14 @@ def output_check(path_info):
         path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]',
                          '_', file_name)
 
-    # build a string that contains the full path to the file
+    # Build a string that contains the full path to the file
     # full_path maps to FILEPATH in the template
     if file_name == '[NULL]':
         full_path = dir_path
     else:
         full_path = dir_path + '/' + file_name
 
-    # custom oval check id wasn't requested => build one as concatenation of:
+    # Custom oval check id wasn't requested => build one as concatenation of:
     #
     #   'accounts_umask' + value of path_id variable
     #
@@ -51,10 +51,10 @@ def output_check(path_info):
     if oval_check_id == '[NULL]':
         oval_check_id = 'accounts_umask' + path_id
 
-    # we are ready to create the check
-    # open the template and perform the conversions
+    # We are ready to create the check
+    # Open the main template and perform the conversions
     with open("./template_umask", 'r') as templatefile:
-        # replace the placeholders within the template with the actual values
+        # Replace the placeholders within the template with the actual values
         filestring = templatefile.read()
         filestring = filestring.replace("OVALCHECKID", oval_check_id)
         filestring = filestring.replace("TITLE", title)
@@ -63,10 +63,22 @@ def output_check(path_info):
         filestring = filestring.replace("FILEPATH", full_path)
         filestring = filestring.replace("USERUMASKVARIABLE", ext_oval_var)
 
-        # we can now write the check
+        # We can now write the main check
         with open("./output/" + oval_check_id + ".xml", 'w+') as outputfile:
             outputfile.write(filestring)
             print("Written ./output/%s.xml file." % oval_check_id)
+
+    # We need to create the extended definition yet
+    # Open the child template and perform the conversions
+    with open("./template_var_accounts_user_umask_as_number", 'r') as templatefile:
+        # Replace the placeholders within the template with the actual values
+        filestring = templatefile.read()
+        filestring = filestring.replace("USERUMASKVARIABLE", ext_oval_var)
+
+        # We can now write the extended check
+        with open("./output/" + ext_oval_var + "_as_number.xml", 'w+') as outputfile:
+            outputfile.write(filestring)
+            print("Written ./output/%s.xml file." % (ext_oval_var + "_as_number"))
 
 
 def main():
@@ -88,6 +100,10 @@ def main():
                     continue
 
                 output_check(line)
+
+            # Display a note about need to copy produced files to appropriate
+            # location
+            print("Now copy all the unique files to the appropriate directory.")
 
         # Done
         sys.exit(0)
