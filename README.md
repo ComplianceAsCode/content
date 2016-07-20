@@ -82,5 +82,16 @@ If you encounter issues with OpenSCAP or SCAP Workbench, use [https://www.redhat
 
 You can also join the `#openscap` IRC channel on `chat.freenode.net`.
 
+## COPR Repo
+
+We have created a new COPR repository that provides unofficial builds of latest versions of openscap, scap-security-guide, scap-workbench and openscap-daemon packages. The packages are suitable for use on Red Hat Enterprise Linux 5, 6 and 7 and CentOS 5, 6 and 7.
+
+The COPR repository is located on:
+https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/
+
+The repo enables you to test the latest greatest OpenSCAP bits on RHEL and CentOS.
+
+The former repository isimluk/OpenSCAP will not be maintained anymore. Sorry for inconvenience.
+
 #### Health Checks
 * Python Code via landscape.io: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
