@@ -162,11 +162,7 @@ def main():
         # Locate OCIL component within <ds:extended-components>
         ocilcomps = extendedcomps.xpath(".//ds:component-ref[contains(@id,'-ocil')]",
                                         namespaces={"ds" : datastream_ns})
-        # SSG produces datastream with exactly one OCIL component
-        if len(ocilcomps) != 1:
-            print("Expecting exactly one OCIL component in datastream.")
-            sys.exit(1)
-        else:
+        for comp in ocilcomps:
             comp = ocilcomps[0]
             # Move reference of found OCIL component from <ds:extended-components> to <ds:checks> element
             # Return old value of <xlink:href> atrribute value of the OCIL component
