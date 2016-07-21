@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="compliance" id="bootloader_disable_recovery_set_to_true" version="1">
+    <metadata>
+      <title>Verify GRUB_DISABLE_RECOVERY Set to true</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>GRUB_DISABLE_RECOVERY set to 'true' in
+      /etc/default/grub</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_bootloader_disable_recovery_set_to_true"
+      comment="Check GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
+    </criteria>
+  </definition>
+
+  <!-- Verify GRUB_DISABLE_RECOVERY set to "true" in /etc/default/grub -->
+  <ind:textfilecontent54_test id="test_bootloader_disable_recovery_set_to_true"
+  comment="Check for GRUB_DISABLE_RECOVERY=true in /etc/default/grub"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_bootloader_disable_recovery_argument" />
+    <ind:state state_ref="state_bootloader_disable_recovery_argument" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_bootloader_disable_recovery_argument"
+  version="1">
+    <ind:filepath>/etc/default/grub</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*GRUB_DISABLE_RECOVERY=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_bootloader_disable_recovery_argument"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^true|"true"$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>
