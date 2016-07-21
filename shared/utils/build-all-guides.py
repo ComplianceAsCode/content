@@ -264,10 +264,18 @@ def main():
                     len("xccdf_org.ssgproject.content_benchmark_"):
                 ]
 
-        guide_filename = \
-            "%s-%s-guide-%s.html" % \
-            (path_base, benchmark_id_for_path,
-             get_profile_short_id(profile_id_for_path))
+        if len(benchmark_id_for_path) == len("RHEL-X"):
+            # treat the base RHEL benchmark as a special case to preserve
+            # old guide paths and old URLs that people may be relying on
+            guide_filename = \
+                "%s-guide-%s.html" % \
+                (path_base,
+                 get_profile_short_id(profile_id_for_path))
+        else:
+            guide_filename = \
+                "%s-%s-guide-%s.html" % \
+                (path_base, benchmark_id_for_path,
+                 get_profile_short_id(profile_id_for_path))
         guide_path = os.path.join(parent_dir, guide_filename)
 
         index_links.append(
