@@ -264,7 +264,8 @@ def main():
                     len("xccdf_org.ssgproject.content_benchmark_"):
                 ]
 
-        if len(benchmark_id_for_path) == len("RHEL-X"):
+        if len(benchmarks) == 1 or \
+                len(benchmark_id_for_path) == len("RHEL-X"):
             # treat the base RHEL benchmark as a special case to preserve
             # old guide paths and old URLs that people may be relying on
             guide_filename = \
