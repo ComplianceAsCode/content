@@ -20,6 +20,7 @@ import subprocess
 import threading
 import Queue
 import re
+import sys
 
 OSCAP_PATH = "oscap"
 
@@ -323,6 +324,7 @@ def main():
             target=builder
         )
         workers.append(worker)
+        worker.daemon = True
         worker.start()
 
     queue.join()
