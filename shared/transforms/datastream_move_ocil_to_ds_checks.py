@@ -36,14 +36,13 @@
 # Example run:
 #   $ ./datastream_move_ocil_to_ds_checks.py ssg-rhel6-ds.xml new-ds.xml
 
-import os
 import sys
-import lxml.html
 import lxml.etree as ET
 
 xlink_ns = "http://www.w3.org/1999/xlink"
 datastream_ns = "http://scap.nist.gov/schema/scap/source/1.2"
 ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
+
 
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
@@ -142,7 +141,6 @@ def move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree,
 
 
 def main():
-
     if len(sys.argv) < 3:
         print("Provide input and output SCAP Security Guide source datastream files.")
         print("This script moves <ocil:ocil> datastream component from " +
