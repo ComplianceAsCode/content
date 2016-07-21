@@ -317,6 +317,13 @@ def main():
             except Queue.Empty:
                 break
 
+            except Exception as e:
+                sys.stderr.write(
+                    "Fatal error encountered when generating guide '%s'. "
+                    "Error details:\n%s\n\n" % (guide_path, e)
+                )
+                queue.task_done()
+
     workers = []
     for worker_id in range(options.parallel_jobs):
         worker = threading.Thread(
