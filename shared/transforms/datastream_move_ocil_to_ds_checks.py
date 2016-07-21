@@ -74,8 +74,8 @@ def move_ocil_ref_from_ds_extended_components_to_ds_checks(datastreamtree, ocilc
             # Remove the <ds:extended-components> element from the datastream if it's empty
             if extendedcomps is not None and len(extendedcomps) == 0:
                 extendedcomps.getparent().remove(extendedcomps)
-                # Return '<xlink:href>' value for later reuse
-                return oldocilhref
+            # Return '<xlink:href>' value for later reuse
+            return oldocilhref
 
     # Default return value
     return None
