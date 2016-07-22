@@ -219,8 +219,7 @@ def append(element, newchild):
         # report and error and exit with failure
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1275
         else:
-            if existing.tag != newchild.tag and \
-              not oval_entity_is_extvar(existing) and \
+            if not oval_entity_is_extvar(existing) and \
               not oval_entity_is_extvar(newchild):
                 # This is an error scenario - since by skipping second
                 # implementation and using the first one for both references,
