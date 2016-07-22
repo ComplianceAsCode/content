@@ -36,7 +36,7 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8
+all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 docker
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist
 jenkins: clean all validate dist
 
@@ -97,6 +97,9 @@ chromium:
 chromium-dist:
 	cd Chromium/ && $(MAKE) dist
 
+docker:
+	cd Docker/ && $(MAKE) dist
+
 validate-buildsystem:
 	for makefile in `find -name Makefile`; do \
 		if grep '[[:space:]]\+$$' $$makefile; then \
@@ -105,7 +108,7 @@ validate-buildsystem:
 		fi \
 	done
 
-validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
+validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre docker
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	cd RHEL/7/ && $(MAKE) validate
@@ -117,6 +120,7 @@ validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
 	# Enable below when content validates correctly
 	#cd RHEL/5/ && $(MAKE) validate
 	#cd RHEVM3 && $(MAKE) validate
+	#cd Docker/ && $(MAKE) validate
 
 rpmroot:
 	mkdir -p $(RPMBUILD)/BUILD
@@ -144,6 +148,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Webmin/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Chromium $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents Docker/ $(RPMBUILD)/$(PKG)
 	cp -r JBossEAP5 $(RPMBUILD)/$(PKG)
 
 	# Don't trust the developers, clean out the build
@@ -157,6 +162,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/JRE/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Firefox/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Webmin/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/Docker/ && $(MAKE) clean)
 
 	# Create the source tar, copy it to TARBALL
 	# (e.g. somewhere in the SOURCES directory)
@@ -237,6 +243,7 @@ clean:
 	cd Firefox && $(MAKE) clean
 	cd Webmin && $(MAKE) clean
 	cd Chromium && $(MAKE) clean
+	cd Docker && $(MAKE) clean
 	rm -f scap-security-guide.spec
 
 install: dist
@@ -268,5 +275,5 @@ install: dist
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
 
-.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 jre firefox webmin tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 jre firefox webmin docker tarball srpm rpm clean all
 	rm -f scap-security-guide.spec

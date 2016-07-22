@@ -22,6 +22,7 @@ JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 FUSE = 'JBoss Fuse'
+DOCKER = 'Docker'
 
 
 def _header(schema_version):
@@ -92,6 +93,8 @@ def map_product(version):
         product_name = DEBIAN
     if re.findall('fuse', version):
         product_name = FUSE
+    if re.findall('docker', version):
+        product_name = DOCKER
     return product_name
 
 def check_is_applicable_for_product(oval_check_def, product):

@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="kernel_up_to_date"
+  version="1">
+    <metadata>
+      <title>SUse the updated Linux Kernel</title>
+      <affected family="unix">
+        <product>Docker</product>
+      </affected>
+      <description>The Linux Kernel must be an up-to-date version.</description>
+    </metadata>
+	<criteria operator="AND">
+		<criterion comment="Installed version of kernel is greater than 3.10" test_ref="test_kernel_up_to_date" />
+	</criteria>
+  </definition>
+
+	<linux:rpminfo_test check="all" check_existence="all_exist" comment="Installed version of kernel is greater than 3.10" id="test_kernel_up_to_date" version="1">
+		<linux:object object_ref="obj_kernel_up_to_date" />
+		<linux:state state_ref="state_kernel_up_to_date" />
+	</linux:rpminfo_test>
+	<linux:rpminfo_object id="obj_kernel_up_to_date" version="1">
+		<linux:name>kernel</linux:name>
+	</linux:rpminfo_object>
+	<linux:rpminfo_state id="state_kernel_up_to_date" version="1">
+		<linux:evr operation="greater than or equal" datatype="evr_string">0:3.10</linux:evr> 
+	</linux:rpminfo_state>
+
+</def-group>
