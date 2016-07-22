@@ -1,0 +1,16 @@
+<Profile id="common" xmlns="http://checklists.nist.gov/xccdf/1.1" >
+<title>Common Profile for Docker Container Engine</title>
+<description>
+This profile contains items common to general-purpose Docker installations.
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide package, please note
+that commercial support of this SCAP content is NOT available. This profile is provided as example
+SCAP content with no endorsement for suitability or production readiness. Support for this
+profile is provided by the upstream SCAP Security Guide community on a best-effort basis. The
+upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide/.
+</description>
+
+<!-- Docker CHECKS -->
+<select idref="kernel_up_to_date" selected="true"/>
+
+</Profile>
