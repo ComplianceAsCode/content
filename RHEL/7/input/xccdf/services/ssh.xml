@@ -58,7 +58,7 @@ intercepted and either read or altered.
 <ident cce="80216-5" />
 <ref nist="SC-8" disa="2418,2420,2421,2422"
 ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
-stigid="TBD" />
+stigid="040261" />
 <oval id="service_sshd_enabled" />
 </Rule>
 
@@ -311,7 +311,7 @@ recognition and reporting of unauthorized account use.
 </rationale>
 <ident cce="80225-6" />
 <oval id="sshd_print_last_log" />
-<ref nist="AC-9" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040300"/>
+<ref nist="AC-9" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040301"/>
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
@@ -408,9 +408,8 @@ is reached.
 <ident cce="27082-7" />
 <oval id="sshd_set_keepalive" />
 <ref nist="AC-2(5),SA-8,AC-12" disa="1133,2361"
-ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" stigid="TBD"
+ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" stigid="040191"
 cis="6.2.12" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_disable_rhosts" severity="medium">
@@ -432,7 +431,8 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="27377-1" />
 <oval id="sshd_disable_rhosts" />
-<ref nist="AC-3" disa="" cis="6.2.6" />
+<ref nist="AC-3cm-6(a)" disa="366" cis="6.2.6" stigid="040334"
+ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="disable_host_auth" severity="medium">

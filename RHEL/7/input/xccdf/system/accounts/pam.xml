@@ -80,7 +80,8 @@ and gives them an opportunity to notify administrators.
 </rationale>
 <ident cce="27275-7" />
 <oval id="display_login_attempts" />
-<ref disa="53" pcidss="Req-10.2.4" />
+<ref nist="AC-9" disa="53,366" pcidss="Req-10.2.4" ossrg="SRG-OS-000480-GPOS-00227"
+stigid="040300" />
 </Rule>
 
 <Group id="password_quality">
@@ -639,7 +640,7 @@ prevents direct password guessing attacks.
 </rationale>
 <ident cce="27350-8" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
-<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010370" pcidss="Req-8.1.6" cis="6.3.3" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010371" pcidss="Req-8.1.6" cis="6.3.3" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium">
@@ -671,7 +672,7 @@ situations.
 </rationale>
 <ident cce="26884-7" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
-<ref nist="AC-7(b)" disa="002238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010371" pcidss="Req-8.1.7" cis="6.3.3" />
+<ref nist="AC-7(b)" disa="002238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010372" pcidss="Req-8.1.7" cis="6.3.3" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_deny_root" severity="medium">
@@ -700,7 +701,7 @@ guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by lo
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
 <oval id="accounts_passwords_pam_faillock_deny_root" />
-<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010372" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010373" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
@@ -731,7 +732,7 @@ specific period of time prevents direct password guessing attacks.
 </rationale>
 <ident cce="27297-1" />
 <oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
-<ref nist="AC-7(a)" disa="44" srg="21" />
+<ref nist="AC-7(a)" disa="44" ossrg="21" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
