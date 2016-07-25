@@ -1,11 +1,14 @@
 #!/usr/bin/python2
 
-import sys
-import os
-import re
 import datetime
-import platform
 import lxml.etree as ET
+import os
+import platform
+import re
+import sys
+
+from copy import deepcopy
+
 from ConfigParser import SafeConfigParser
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
@@ -168,13 +171,34 @@ def oval_entities_are_identical(firstelem, secondelem):
        Return: True if identical, False otherwise
        Based on: http://stackoverflow.com/a/24349916"""
 
-    if firstelem.tag != secondelem.tag: return False
-    if firstelem.text != secondelem.text: return False
-    if firstelem.tail != secondelem.tail: return False
-    if firstelem.attrib != secondelem.attrib: return False
-    if len(firstelem) != len(secondelem): return False
+    # Per https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234541909
+    # and https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234545296
+    # ignore the differences in 'comment', 'version', 'state_operator', and
+    # 'deprecated' attributes. Also ignore different nsmap, since all these
+    # don't affect the semantics of the OVAL entities
+
+    # Operate on copies of the elements (since we will modify
+    # some attributes). Deepcopy will also reset the namespace map
+    # on copied elements for us
+    firstcopy = deepcopy(firstelem)
+    secondcopy = deepcopy(secondelem)
+
+    # Ignore 'comment', 'version', 'state_operator', and 'deprecated'
+    # attributes since they don't change the semantics of an element
+    for copy in [firstcopy, secondcopy]:
+        for key in copy.keys():
+            if key in ["comment", "version", "state_operator", \
+                       "deprecated"]:
+                del copy.attrib[key]
+
+    # Compare the equality of the copies
+    if firstcopy.tag != secondcopy.tag: return False
+    if firstcopy.text != secondcopy.text: return False
+    if firstcopy.tail != secondcopy.tail: return False
+    if firstcopy.attrib != secondcopy.attrib: return False
+    if len(firstcopy) != len(secondcopy): return False
     return all(oval_entities_are_identical( \
-        fchild, schild) for fchild,schild in zip(firstelem,secondelem))
+        fchild, schild) for fchild,schild in zip(firstcopy,secondcopy))
 
 
 def oval_entity_is_extvar(elem):
