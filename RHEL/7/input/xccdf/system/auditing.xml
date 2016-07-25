@@ -408,8 +408,8 @@ Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt
 allow them to take corrective action prior to any disruption.</rationale>
 <ident cce="27375-5" />
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
-<ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,143" pcidss="Req-10.7" cis="5.2.1.2" />
-<tested by="DS" on="20121024"/>
+<ref nist="AU-1(b),AU-4,AU-5(1),AU-5(b),IR-5" disa="140,143i,1855" pcidss="Req-10.7" cis="5.2.1.2"
+ossrg="SRG-OS-000343-GPOS-00134" stigid="030351" />
 </Rule>
 
 <Rule id="auditd_data_retention_admin_space_left_action" severity="medium">
@@ -461,7 +461,8 @@ account when it needs to notify an administrator:
 administrators of the system, who can take appropriate action.</rationale>
 <ident cce="27394-6" />
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
-<ref nist="AU-1(b),AU-4,AU-5(a),IR-5" disa="139,144" pcidss="Req-10.7.a" cis="5.2.1.2" />
+<ref nist="AU-1(b),AU-4,AU-5(1),AU-5(a),IR-5" disa="139,144,1855" pcidss="Req-10.7.a" cis="5.2.1.2"
+ossrg="SRG-OS-000343-GPOS-00134" stigid="030352" />
 </Rule>
 
 <Rule id="auditd_data_retention_flush">
@@ -941,7 +942,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27339-1" />
 <oval id="audit_rules_dac_modification_chmod" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030390"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_chown">
@@ -975,7 +977,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27364-9" />
 <oval id="audit_rules_dac_modification_chown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030380"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmod">
@@ -1009,7 +1012,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27393-8" />
 <oval id="audit_rules_dac_modification_fchmod" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030391"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmodat">
@@ -1043,7 +1047,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27388-8" />
 <oval id="audit_rules_dac_modification_fchmodat" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030392"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchown">
@@ -1077,7 +1082,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27356-5" />
 <oval id="audit_rules_dac_modification_fchown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030381" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchownat">
@@ -1111,7 +1117,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27387-0" />
 <oval id="audit_rules_dac_modification_fchownat" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030383" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fremovexattr">
@@ -1145,7 +1152,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27353-2" />
 <oval id="audit_rules_dac_modification_fremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030404"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fsetxattr">
@@ -1179,7 +1187,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27389-6" />
 <oval id="audit_rules_dac_modification_fsetxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030401"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lchown">
@@ -1213,7 +1222,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27083-5" />
 <oval id="audit_rules_dac_modification_lchown" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030382" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lremovexattr">
@@ -1247,7 +1257,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27410-0" />
 <oval id="audit_rules_dac_modification_lremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030405"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lsetxattr">
@@ -1281,7 +1292,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27280-7" />
 <oval id="audit_rules_dac_modification_lsetxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030402"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_removexattr">
@@ -1315,7 +1327,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27367-2" />
 <oval id="audit_rules_dac_modification_removexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10"  />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030403"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_setxattr">
@@ -1349,7 +1362,8 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27213-8" />
 <oval id="audit_rules_dac_modification_setxattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126" pcidss="Req-10.5.5" cis="5.2.10" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030400"/>
 </Rule>
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
