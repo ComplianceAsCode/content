@@ -9,9 +9,6 @@ include $(SHARED)/product-make.include
 PROD = firefox
 VENDOR = ssgproject
 
-#stats:
-#	$(SHARED)/$(TRANS)/stats.sh
-
 checks:
 	xmlwf $(IN)/oval/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml

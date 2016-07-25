@@ -9,11 +9,6 @@ include $(SHARED)/product-make.include
 PROD = webmin
 VENDOR = ssgproject
 
-# will uncomment after PR 452 gets merged
-# also put stats into the all: target
-# stats:
-#	$(SHARED)/$(TRANS)/stats.sh
-
 checks:
 	xmlwf $(IN)/oval/*.xml
 	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
