@@ -251,7 +251,8 @@ place to view the status of multiple hosts within the enterprise.
 </rationale>
 <ident cce="27343-3" />
 <oval id="rsyslog_remote_loghost" />
-<ref nist="AU-3(2),AU-4(1),AU-9" disa="1348,136,1851" cis="5.1.5" />
+<ref nist="AU-3(2),AU-4(1),AU-9" disa="366,1348,136,1851" cis="5.1.5"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030770" />
 </Rule>
 </Group>
 
@@ -287,7 +288,8 @@ rsyslog by configuring it not to listen on the network.
 </rationale>
 <ident cce="80192-8" />
 <oval id="rsyslog_nolisten" />
-<ref nist="AU-9(2),AC-4" />
+<ref nist="AU-9(2),AC-4,CM-6(c)" disa="318,368,1812,1813,1814"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030780"/>
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_tcp">
