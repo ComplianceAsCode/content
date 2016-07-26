@@ -13,9 +13,10 @@
 # description, custom oval check id
 #
 
-import sys
 import csv
+import os
 import re
+import sys
 
 
 def output_check(path_info):
@@ -51,9 +52,11 @@ def output_check(path_info):
     if oval_check_id == '[NULL]':
         oval_check_id = 'accounts_umask' + path_id
 
+    script_directory, script_filename = os.path.split(__file__)
+
     # We are ready to create the check
     # Open the main template and perform the conversions
-    with open("./template_umask", 'r') as templatefile:
+    with open(script_directory + '/template_umask', 'r') as templatefile:
         # Replace the placeholders within the template with the actual values
         filestring = templatefile.read()
         filestring = filestring.replace("OVALCHECKID", oval_check_id)
@@ -70,7 +73,8 @@ def output_check(path_info):
 
     # We need to create the extended definition yet
     # Open the child template and perform the conversions
-    with open("./template_var_accounts_user_umask_as_number", 'r') as templatefile:
+    with open(script_directory + '/template_var_accounts_user_umask_as_number', 'r') \
+    as templatefile:
         # Replace the placeholders within the template with the actual values
         filestring = templatefile.read()
         filestring = filestring.replace("USERUMASKVARIABLE", ext_oval_var)
