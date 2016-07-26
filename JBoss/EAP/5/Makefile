@@ -141,14 +141,6 @@ else
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 endif
 
-eval-test:
-	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-common: content
-	# Based on oscap(8) OVAL results are always stored into CWD. Therefore
-	# not to pollute CWD -- first change CWD to $(OUT), only then evaluate "common" profile
-	cd $(OUT); oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(ID)-$(PROD)-xccdf.xml
-
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/content

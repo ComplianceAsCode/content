@@ -10,7 +10,7 @@ PROD = rhel6
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 VENDOR = ssgproject
 
-# Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
+# Don't include the 'test' profile into benchmark by default. Only upon request
 # Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
 INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
 
@@ -160,16 +160,6 @@ else
 	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 endif
-
-eval-test:
-	# Rebuild the content indicating the 'test' profile should be included
-	make content INCLUDE_TEST_PROFILE=$(shell true; echo $$?)
-	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-common: content
-	# Based on oscap(8) OVAL results are always stored into CWD. Therefore
-	# not to pollute CWD -- first change CWD to $(OUT), only then evaluate "common" profile
-	cd $(OUT); oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(ID)-$(PROD)-xccdf.xml
 
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content
