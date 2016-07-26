@@ -293,9 +293,9 @@ def main():
             (guide_filename, "%s in %s" % (profile_title, benchmark_id))
         )
         index_options.append(
-            "<option value=\"%s\" data-profile-id=\"%s\">%s</option>" %
+            "<option value=\"%s\" data-benchmark-id=\"%s\" data-profile-id=\"%s\">%s</option>" %
             (guide_filename,
-             "%s-%s" % (benchmark_id, profile_id),
+             "" if len(benchmarks) == 1 else benchmark_id, profile_id,
              "%s in %s" % (profile_title, benchmark_id))
         )
         if index_initial_src is None:
@@ -353,13 +353,24 @@ def main():
     index_source += "\t\t<script>\n"
     index_source += "\t\t\tfunction change_profile(option_element)\n"
     index_source += "\t\t\t{\n"
+    index_source += "\t\t\t\tvar benchmark_id=option_element.getAttribute('data-benchmark-id');\n"
     index_source += "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n"
     index_source += "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n"
     index_source += "\t\t\t\tvar input_path='/usr/share/xml/scap/ssg/content/%s';\n" % (input_basename)
     index_source += "\t\t\t\tif (profile_id == '')\n"
-    index_source += "\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n"
+    index_source += "\t\t\t\t{\n"
+    index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
+    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n"
+    index_source += "\t\t\t\t\telse\n"
+    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' ' + input_path;\n"
+    index_source += "\t\t\t\t}\n"
     index_source += "\t\t\t\telse\n"
-    index_source += "\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n"
+    index_source += "\t\t\t\t{\n"
+    index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
+    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n"
+    index_source += "\t\t\t\t\telse\n"
+    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' --profile ' + profile_id + ' ' + input_path;\n"
+    index_source += "\t\t\t\t}\n"
     index_source += "\t\t\t\twindow.open(option_element.value, 'guide');\n"
     index_source += "\t\t\t}\n"
     index_source += "\t\t</script>\n"
