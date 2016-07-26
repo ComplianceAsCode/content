@@ -10,10 +10,6 @@ PROD = rhel6
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 VENDOR = ssgproject
 
-# Don't include the 'test' profile into benchmark by default. Only upon request
-# Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
-INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
-
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
 	mkdir -p $(PROD_OVAL)

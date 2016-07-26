@@ -6,10 +6,6 @@
 
      * SHARED_RP	(required)	Holds the resolved ABSOLUTE path
 					to the SSG's "shared/" directory.
-
-     * withtest		(optional)	If having value set to "0" specifies
-					the 'test' profile should be included
-					into the benchmark.
 -->
 
 <!-- Define the default value of the required "SHARED_RP" parameter -->
@@ -21,11 +17,6 @@
       <xsl:copy-of select="@*|node()" />
 
       <!-- Adding profiles here -->
-        <!---
-          <xsl:if test=" number($withtest) = number(0) ">
-	       <xsl:apply-templates select="document('profiles/test.xml')" />
-          </xsl:if>
-        -->
       <xsl:apply-templates select="document('profiles/common.xml')" />
       <xsl:apply-templates select="document('profiles/anssi_np_nt28_minimal.xml')" />
       <xsl:apply-templates select="document('profiles/anssi_np_nt28_average.xml')" />

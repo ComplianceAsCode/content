@@ -6,10 +6,6 @@
 
      * SHARED_RP	(required)	Holds the resolved ABSOLUTE path
 					to the SSG's "shared/" directory.
-
-     * withtest		(optional)	If having value set to "0" specifies
-					the 'test' profile should be included
-					into the benchmark.
 -->
 
 <!-- Define the default value of the required "SHARED_RP" parameter -->
