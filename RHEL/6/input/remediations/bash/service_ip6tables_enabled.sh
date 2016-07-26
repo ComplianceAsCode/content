@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable ip6tables for all run levels
-#
-/sbin/chkconfig --level 0123456 ip6tables on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start ip6tables if not currently running
-#
-/sbin/service ip6tables start
+service_command enable ip6tables

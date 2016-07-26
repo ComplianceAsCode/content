@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable bluetooth for all run levels
-#
-/sbin/chkconfig --level 0123456 bluetooth off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop bluetooth if currently running
-#
-/sbin/service bluetooth stop
+service_command disable bluetooth

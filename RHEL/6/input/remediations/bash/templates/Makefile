@@ -24,3 +24,7 @@ copy:
 clean:
 	rm -f output/*.sh
 	rm -rf output/
+
+clean_copied:
+	rm -f ../sysctl_* ../service_*
+	rm -f $$(ls -1 ../kernel_module_* --ignore 'kernel_module_ipv6_option_disabled.sh' 2>/dev/null)

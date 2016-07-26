@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable irqbalance for all run levels
-#
-/sbin/chkconfig --level 0123456 irqbalance on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start irqbalance if not currently running
-#
-/sbin/service irqbalance start
+service_command enable irqbalance

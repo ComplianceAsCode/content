@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable autofs for all run levels
-#
-/sbin/chkconfig --level 0123456 autofs off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop autofs if currently running
-#
-/sbin/service autofs stop
+service_command disable autofs

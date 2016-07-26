@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable certmonger for all run levels
-#
-/sbin/chkconfig --level 0123456 certmonger off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop certmonger if currently running
-#
-/sbin/service certmonger stop
+service_command disable certmonger

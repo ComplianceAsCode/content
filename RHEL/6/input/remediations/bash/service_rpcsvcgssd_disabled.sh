@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable rpcsvcgssd for all run levels
-#
-/sbin/chkconfig --level 0123456 rpcsvcgssd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop rpcsvcgssd if currently running
-#
-/sbin/service rpcsvcgssd stop
+service_command disable rpcsvcgssd

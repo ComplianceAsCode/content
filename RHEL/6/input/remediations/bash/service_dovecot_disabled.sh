@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable dovecot for all run levels
-#
-/sbin/chkconfig --level 0123456 dovecot off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop dovecot if currently running
-#
-/sbin/service dovecot stop
+service_command disable dovecot

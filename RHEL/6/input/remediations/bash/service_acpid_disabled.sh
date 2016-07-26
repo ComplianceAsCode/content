@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable acpid for all run levels
-#
-/sbin/chkconfig --level 0123456 acpid off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop acpid if currently running
-#
-/sbin/service acpid stop
+service_command disable acpid

@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable smartd for all run levels
-#
-/sbin/chkconfig --level 0123456 smartd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop smartd if currently running
-#
-/sbin/service smartd stop
+service_command disable smartd

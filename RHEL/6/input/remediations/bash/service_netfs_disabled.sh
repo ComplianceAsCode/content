@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable netfs for all run levels
-#
-/sbin/chkconfig --level 0123456 netfs off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop netfs if currently running
-#
-/sbin/service netfs stop
+service_command disable netfs

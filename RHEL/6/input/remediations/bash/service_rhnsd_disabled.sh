@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable rhnsd for all run levels
-#
-/sbin/chkconfig --level 0123456 rhnsd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop rhnsd if currently running
-#
-/sbin/service rhnsd stop
+service_command disable rhnsd

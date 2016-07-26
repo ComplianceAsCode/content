@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable restorecond for all run levels
-#
-/sbin/chkconfig --level 0123456 restorecond on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start restorecond if not currently running
-#
-/sbin/service restorecond start
+service_command enable restorecond

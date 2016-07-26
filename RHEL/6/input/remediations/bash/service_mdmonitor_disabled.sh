@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable mdmonitor for all run levels
-#
-/sbin/chkconfig --level 0123456 mdmonitor off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop mdmonitor if currently running
-#
-/sbin/service mdmonitor stop
+service_command disable mdmonitor

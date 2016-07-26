@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable atd for all run levels
-#
-/sbin/chkconfig --level 0123456 atd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop atd if currently running
-#
-/sbin/service atd stop
+service_command disable atd

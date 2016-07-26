@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable cgconfig for all run levels
-#
-/sbin/chkconfig --level 0123456 cgconfig off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop cgconfig if currently running
-#
-/sbin/service cgconfig stop
+service_command disable cgconfig

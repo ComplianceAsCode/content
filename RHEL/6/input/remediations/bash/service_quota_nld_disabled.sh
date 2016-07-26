@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable quota_nld for all run levels
-#
-/sbin/chkconfig --level 0123456 quota_nld off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop quota_nld if currently running
-#
-/sbin/service quota_nld stop
+service_command disable quota_nld

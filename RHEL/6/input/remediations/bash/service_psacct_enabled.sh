@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable psacct for all run levels
-#
-/sbin/chkconfig --level 0123456 psacct on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start psacct if not currently running
-#
-/sbin/service psacct start
+service_command enable psacct
