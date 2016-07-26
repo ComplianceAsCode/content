@@ -6,10 +6,6 @@
 
      * SHARED_RP	(required)	Holds the resolved ABSOLUTE path
 					to the SSG's "shared/" directory.
-
-     * withtest		(optional)	If having value set to "0" specifies
-					the 'test' profile should be included
-					into the benchmark.
 -->
 
 <!-- Define the default value of the required "SHARED_RP" parameter -->
@@ -21,10 +17,6 @@
       <xsl:copy-of select="@*|node()" />
 
        <!-- Adding profiles here -->
-		<!-- old testing code 
-		<xsl:if test=" number($withtest) = number(0) ">
-			<xsl:apply-templates select="document('profiles/test.xml')" />
-		</xsl:if> -->
        <xsl:apply-templates select="document('profiles/stig-openstack.xml')" />
 
        <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->

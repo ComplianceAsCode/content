@@ -147,16 +147,6 @@ validate-xml:
 validate: validate-xml
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
 
-eval-test:
-	# Rebuild the content indicating the 'test' profile should be included
-	make content INCLUDE_TEST_PROFILE=$(shell true; echo $$?)
-	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-common: content
-	# Based on oscap(8) OVAL results are always stored into CWD. Therefore
-	# not to pollute CWD -- first change CWD to $(OUT), only then evaluate "common" profile
-	cd $(OUT); oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(ID)-$(PROD)-xccdf.xml
-
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content
 	mkdir -p $(DIST)/content
