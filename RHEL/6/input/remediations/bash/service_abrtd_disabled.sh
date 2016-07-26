@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable abrtd for all run levels
-#
-/sbin/chkconfig --level 0123456 abrtd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop abrtd if currently running
-#
-/sbin/service abrtd stop
+service_command disable abrtd

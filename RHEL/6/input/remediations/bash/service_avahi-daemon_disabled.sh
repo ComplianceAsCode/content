@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable avahi-daemon for all run levels
-#
-/sbin/chkconfig --level 0123456 avahi-daemon off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop avahi-daemon if currently running
-#
-/sbin/service avahi-daemon stop
+service_command disable avahi-daemon

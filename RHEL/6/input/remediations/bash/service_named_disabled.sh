@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable named for all run levels
-#
-/sbin/chkconfig --level 0123456 named off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop named if currently running
-#
-/sbin/service named stop
+service_command disable named

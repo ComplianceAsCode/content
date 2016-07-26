@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable squid for all run levels
-#
-/sbin/chkconfig --level 0123456 squid off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop squid if currently running
-#
-/sbin/service squid stop
+service_command disable squid

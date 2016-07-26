@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable dhcpd for all run levels
-#
-/sbin/chkconfig --level 0123456 dhcpd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop dhcpd if currently running
-#
-/sbin/service dhcpd stop
+service_command disable dhcpd

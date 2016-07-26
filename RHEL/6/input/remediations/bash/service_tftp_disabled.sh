@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable tftp for all run levels
-#
-/sbin/chkconfig --level 0123456 tftp off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop tftp if currently running
-#
-/sbin/service tftp stop
+service_command disable tftp

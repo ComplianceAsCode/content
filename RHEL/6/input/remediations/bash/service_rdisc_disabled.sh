@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable rdisc for all run levels
-#
-/sbin/chkconfig --level 0123456 rdisc off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop rdisc if currently running
-#
-/sbin/service rdisc stop
+service_command disable rdisc

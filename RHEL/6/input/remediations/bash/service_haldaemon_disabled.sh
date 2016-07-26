@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable haldaemon for all run levels
-#
-/sbin/chkconfig --level 0123456 haldaemon off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop haldaemon if currently running
-#
-/sbin/service haldaemon stop
+service_command disable haldaemon

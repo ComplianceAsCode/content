@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable netconsole for all run levels
-#
-/sbin/chkconfig --level 0123456 netconsole off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop netconsole if currently running
-#
-/sbin/service netconsole stop
+service_command disable netconsole

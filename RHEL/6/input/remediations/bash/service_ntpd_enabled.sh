@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable ntpd for all run levels
-#
-/sbin/chkconfig --level 0123456 ntpd on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start ntpd if not currently running
-#
-/sbin/service ntpd start
+service_command enable ntpd

@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable postfix for all run levels
-#
-/sbin/chkconfig --level 0123456 postfix on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start postfix if not currently running
-#
-/sbin/service postfix start
+service_command enable postfix

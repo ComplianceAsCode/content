@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable iptables for all run levels
-#
-/sbin/chkconfig --level 0123456 iptables on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start iptables if not currently running
-#
-/sbin/service iptables start
+service_command enable iptables

@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable portreserve for all run levels
-#
-/sbin/chkconfig --level 0123456 portreserve off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop portreserve if currently running
-#
-/sbin/service portreserve stop
+service_command disable portreserve

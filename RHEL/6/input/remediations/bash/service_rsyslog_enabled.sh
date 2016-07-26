@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Enable rsyslog for all run levels
-#
-/sbin/chkconfig --level 0123456 rsyslog on
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Start rsyslog if not currently running
-#
-/sbin/service rsyslog start
+service_command enable rsyslog

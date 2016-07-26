@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable rhsmcertd for all run levels
-#
-/sbin/chkconfig --level 0123456 rhsmcertd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop rhsmcertd if currently running
-#
-/sbin/service rhsmcertd stop
+service_command disable rhsmcertd

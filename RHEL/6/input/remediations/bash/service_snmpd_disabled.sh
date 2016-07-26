@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable snmpd for all run levels
-#
-/sbin/chkconfig --level 0123456 snmpd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop snmpd if currently running
-#
-/sbin/service snmpd stop
+service_command disable snmpd

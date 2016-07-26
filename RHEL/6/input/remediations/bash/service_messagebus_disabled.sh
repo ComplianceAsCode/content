@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable messagebus for all run levels
-#
-/sbin/chkconfig --level 0123456 messagebus off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop messagebus if currently running
-#
-/sbin/service messagebus stop
+service_command disable messagebus

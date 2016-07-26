@@ -1,10 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-#
-# Disable oddjobd for all run levels
-#
-/sbin/chkconfig --level 0123456 oddjobd off
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
-#
-# Stop oddjobd if currently running
-#
-/sbin/service oddjobd stop
+service_command disable oddjobd
