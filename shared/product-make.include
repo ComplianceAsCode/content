@@ -27,7 +27,6 @@ DIST = dist
 
 # Defaults for the global variables - others
 ID = ssg
-INCLUDE_TEST_PROFILE = 0
 
 # Query environment - ask openscap if it can do OVAL 5.11
 OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
@@ -36,7 +35,7 @@ OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
 OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
 
 # Query environment - ask openscap if it has SVG support in guides
-OPENSCAP_SVG := $(shell $(SHARED)/$(TRANS)/oscapsupportssvg.py; echo $$?)
+OPENSCAP_SVG := $(shell $(SHARED)/$(UTILS)/oscap-svg-support.py; echo $$?)
 
 # Common build targets - include the SSG logo into the XCCDF header
 $(OUT)/guide.xml: $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
@@ -49,7 +48,7 @@ endif
 # Common build targets - compose single shorthand XCCDF guide from all the sources
 guide_xslt_deps= $(wildcard $(IN)/auxiliary/*.xml) $(wildcard $(IN)/profiles/*.xml) $(wildcard $(IN)/xccdf/**/*.xml)
 $(OUT)/shorthand.xml: $(OUT)/guide.xml $(IN)/guide.xslt $(guide_xslt_deps)
-	xsltproc --param withtest "$(INCLUDE_TEST_PROFILE)" --stringparam SHARED_RP "$(realpath $(SHARED))" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
+	xsltproc --stringparam SHARED_RP "$(realpath $(SHARED))" -o $@ $(IN)/guide.xslt $(OUT)/guide.xml
 	xmllint --format --output $@ $@
 
 # Create temporary $(SHARED)/$(OUT) folder to hold information like list of contributors or list of

@@ -142,9 +142,6 @@ dist: guide content
 	cp $(OUT)/$(ID)-$(PROD)-cpe-oval.xml $(DIST)/content
 	cp $(OUT)/$(ID)-$(PROD)-ds.xml $(DIST)/content
 
-eval-common: content
-	oscap xccdf eval --profile common $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content $(DIST)/guide

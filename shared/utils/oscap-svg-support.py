@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 from subprocess import Popen, PIPE
 from tempfile import mkstemp
@@ -41,6 +41,7 @@ xccdf.close()
 command = "oscap xccdf generate guide --profile allrules %s" % filename
 child = Popen(command.split(), stdout=PIPE, stderr=PIPE)
 out, err = child.communicate()
+out = out.decode("utf-8")
 
 # Child run sanity check
 if child.returncode != 0:
@@ -50,15 +51,16 @@ if child.returncode != 0:
 # Delete the temporary file
 try:
     os.remove(filename)
-except OSError, e:
-    print "Error removing file: %s - %s" % (e.filename, e.strerror)
+except OSError as e:
+    sys.stderr.write(
+        "Error removing file: %s - %s\n" % (e.filename, e.strerror)
+    )
 
 # Check if generated guide contains desired SVG element
-try:
-    index = out.index('circle')
+if "circle" in out:
     # If so, set exit value to success
     EXIT_CODE = 0
-except ValueError:
+else:
     # Otherwise to failure
     EXIT_CODE = 1
 
