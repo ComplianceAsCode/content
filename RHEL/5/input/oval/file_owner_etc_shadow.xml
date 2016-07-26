@@ -1,13 +1,13 @@
 <def-group>
   <definition class="compliance"
-  id="file_owner_etc_shadow" version="1">
+  id="file_owner_etc_shadow" version="2">
     <metadata>
       <title>Verify user who owns 'shadow' file</title>
       <affected family="unix">
         <platform>CentOS 4</platform>
-		<platform>CentOS 5</platform>
-		<platform>Red Hat Enterprise Linux 4</platform>
-		<platform>Red Hat Enterprise Linux 5</platform>
+        <platform>CentOS 5</platform>
+        <platform>Red Hat Enterprise Linux 4</platform>
+        <platform>Red Hat Enterprise Linux 5</platform>
       </affected>
       <description>The /etc/shadow file should be owned by the
       appropriate user.</description>
@@ -29,7 +29,6 @@
   </unix:file_state>
   <unix:file_object comment="/etc/shadow"
   id="object_file_etc_shadow" version="1">
-    <unix:path>/etc</unix:path>
-    <unix:filename>shadow</unix:filename>
+    <unix:filepath>/etc/shadow</unix:filepath>
   </unix:file_object>
 </def-group>

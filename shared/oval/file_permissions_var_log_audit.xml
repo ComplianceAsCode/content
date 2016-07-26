@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="file_permissions_var_log_audit" version="1">
+  <definition class="compliance" id="file_permissions_var_log_audit" version="2">
     <metadata>
       <title>Verify /var/log/audit Permissions</title>
       <affected family="unix">
@@ -10,20 +10,12 @@
     <criteria operator="OR">
       <criterion test_ref="test_file_permissions_var_log_audit" negate="true" />
       <criteria operator="AND" comment="log_group in auditd.conf is not root">
-        <criterion test_ref="test_auditd_conf_log_group_root" />
+        <extend_definition comment="log_group in auditd.conf is not root"
+        definition_ref="auditd_conf_log_group_not_root" />
         <criterion test_ref="test_file_permissions_var_log_audit-non_root" negate="true" /> 
       </criteria>
     </criteria>
   </definition>
-
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="log_group = root" id="test_auditd_conf_log_group_root" version="1">
-    <ind:object object_ref="object_auditd_conf_log_group_root" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="log_group = root" id="object_auditd_conf_log_group_root" version="1">
-    <ind:filepath operation="equals">/etc/audit/auditd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[ ]*log_group[ ]+=[ ]+root[ ]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   <unix:file_test check="all" check_existence="at_least_one_exists" comment="/var/log/audit files mode 0640" id="test_file_permissions_var_log_audit-non_root" version="1">
     <unix:object object_ref="object_var_log_audit_files-non_root" />
@@ -73,4 +65,5 @@
     <unix:owrite datatype="boolean">true</unix:owrite>
     <unix:oexec datatype="boolean">true</unix:oexec>
   </unix:file_state>
+
 </def-group>
