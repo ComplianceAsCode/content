@@ -132,15 +132,8 @@ validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-sl5-xccdf.xml
 	oscap ds sds-validate $(OUT)/$(ID)-sl5-ds.xml
 
-
 validate: validate-xml
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
-
-eval-test:
-	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-common:
-	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content
