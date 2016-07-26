@@ -43,6 +43,9 @@ def is_applicable_to_os(id_):
         return False
     elif id_.startswith("9."):
         return False
+    # Category "11." is supposedly not applicable on OS level but we do have
+    # rules referencing it, therefore let's keep it in our Benchmarks for the
+    # time being
     #elif id_.startswith("11."):
     #    return False
     elif id_.startswith("12."):
