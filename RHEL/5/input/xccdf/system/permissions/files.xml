@@ -31,14 +31,14 @@ which could weaken the system security posture.</rationale>
 <ref nist="ECLP-1" disa="225" />
 </Rule>
 
-<Rule id="file_groupowner_etc_shadow" severity="medium">
+<Rule id="groupowner_shadow_file" severity="medium">
 <title>Verify Group Who Owns <tt>shadow</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
 <ident stig="GEN001410" />
-<oval id="file_groupowner_etc_shadow" />
+<oval id="groupowner_shadow_file" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
 

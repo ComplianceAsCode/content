@@ -1,6 +1,7 @@
 templates: services packages kernel_modules permissions umasks sysctls
 
 SHARED_DIR=../../../../shared/oval/templates
+SHARED_TEMPLATES=../../../../shared/templates
 
 OUTPUT:=$(shell mkdir -p output)
 
@@ -19,7 +20,7 @@ permissions:
 	${SHARED_DIR}/create_permission_checks.py file_dir_permissions.csv
 
 umasks:
-	${SHARED_DIR}/create_umask_checks.py file_umask_checks.csv
+	${SHARED_TEMPLATES}/create_umask_checks.py ${SHARED_TEMPLATES}/file_umask_checks.csv
 
 sysctls:
 	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
