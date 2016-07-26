@@ -1,4 +1,4 @@
-templates: services packages kernel_modules permissions umasks sysctls
+templates: services packages kernel_modules permissions sysctls
 
 SHARED_DIR=../../../../../shared/oval/templates
 
@@ -13,9 +13,6 @@ kernel_modules:
 
 permissions:
 	${SHARED_DIR}/create_permission_checks.py file_dir_permissions.csv
-
-umasks:
-	${SHARED_DIR}/create_umask_checks.py file_umask_checks.csv
 
 sysctls:
 	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
