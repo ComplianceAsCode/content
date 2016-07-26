@@ -237,11 +237,16 @@ def main():
     def benchmark_profile_pair_sort_key(
         benchmark_id, profile_id, profile_title
     ):
-        if profile_id == "":
-            # make sure (default) is last
-            return (benchmark_id, "zzz(default)")
+        # The "base" benchmarks come first
+        if benchmark_id.endswith("_RHEL-7") or \
+                benchmark_id.endswith("_RHEL-6") or \
+                benchmark_id.endswith("_RHEL-5"):
+            benchmark_id = "AAA" + benchmark_id
 
-        # otherwise sort by profile title
+        # The default profile comes last
+        if profile_id == "":
+            profile_title = "zzz(default)"
+
         return (benchmark_id, profile_title)
 
     for benchmark_id, profile_id, profile_title in \
