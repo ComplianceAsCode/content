@@ -1,0 +1,1 @@
+../../../../../shared/fixes/bash//world_writeable_files.sh
