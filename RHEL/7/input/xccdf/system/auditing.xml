@@ -1121,20 +1121,25 @@ calls with others as identifying earlier in this guide is more efficient.
 ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030383" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_fremovexattr">
+<Rule id="audit_rules_dac_modification_fremovexattr" severity="medium">
 <title>Record Events that Modify the System's Discretionary Access Controls - fremovexattr</title>
 <description>At a minimum the audit system should collect file permission
-changes for all users and root. If the <tt>auditd</tt> daemon is configured
+changes for all users and root. 
+<br /><br />
+If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
@@ -1152,7 +1157,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27353-2" />
 <oval id="audit_rules_dac_modification_fremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" pcidss="Req-10.5.5" cis="5.2.10"
 ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030404"/>
 </Rule>
 
@@ -1226,20 +1231,25 @@ calls with others as identifying earlier in this guide is more efficient.
 ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030382" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_lremovexattr">
+<Rule id="audit_rules_dac_modification_lremovexattr" severity="medium">
 <title>Record Events that Modify the System's Discretionary Access Controls - lremovexattr</title>
 <description>At a minimum the audit system should collect file permission
-changes for all users and root. If the <tt>auditd</tt> daemon is configured
+changes for all users and root. 
+<br /><br />
+If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
@@ -1257,7 +1267,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27410-0" />
 <oval id="audit_rules_dac_modification_lremovexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" pcidss="Req-10.5.5" cis="5.2.10"
 ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030405"/>
 </Rule>
 
@@ -1296,20 +1306,24 @@ calls with others as identifying earlier in this guide is more efficient.
 ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030402"/>
 </Rule>
 
-<Rule id="audit_rules_dac_modification_removexattr">
+<Rule id="audit_rules_dac_modification_removexattr" severity="medium">
 <title>Record Events that Modify the System's Discretionary Access Controls - removexattr</title>
 <description>At a minimum the audit system should collect file permission
-changes for all users and root. If the <tt>auditd</tt> daemon is configured
-to use the <tt>augenrules</tt> program to read audit rules during daemon
-startup (the default), add the following line to a file with suffix
-<tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+changes for all users and root.
+<br /><br />
+If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> 
+program to read audit rules during daemon startup (the default), add the 
+following line to a file with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 <pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
 <pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<br /><br />
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
 </description>
@@ -1327,7 +1341,7 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27367-2" />
 <oval id="audit_rules_dac_modification_removexattr" />
-<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" pcidss="Req-10.5.5" cis="5.2.10"
 ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030403"/>
 </Rule>
 
