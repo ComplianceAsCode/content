@@ -430,7 +430,7 @@ can allow an attacker to move trivially to other hosts.
 </rationale>
 <ident cce="27377-1" />
 <oval id="sshd_disable_rhosts" />
-<ref nist="AC-3cm-6(a)" disa="366" cis="6.2.6" stigid="040334"
+<ref nist="AC-3,CM-6(a)" disa="366" cis="6.2.6" stigid="040334"
 ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
@@ -526,7 +526,7 @@ misconfiguration elsewhere.
 </rationale>
 <ident cce="27471-2" />
 <oval id="sshd_disable_empty_passwords" />
-<ref nist="AC-3,AC-6,CM-6(b)" disa="766" ossrg="SRG-OS-000480-GPOS-00229" stigid="010270" />
+<ref nist="AC-3,AC-6,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010270" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -616,10 +616,9 @@ ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-0006
 <Rule id="sshd_use_approved_macs" severity="medium">
 <title>Use Only FIPS Approved MACs</title>
 <description>Limit the MACs to those hash algorithms which are FIPS-approved.
-The following line in <tt>/etc/ssh/sshd_config</tt>
-demonstrates use of FIPS-approved MACs:
+The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use 
+of FIPS-approved MACs:
 <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
-The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
 </description>
 <ocil clause="MACs option is commented out or not using FIPS-approved hash algorithms">
 Only FIPS-approved MACs should be used.  To verify that only FIPS-approved
@@ -635,7 +634,7 @@ functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 </rationale>
 <ident cce="27455-5" />
 <oval id="sshd_use_approved_macs" />
-<ref nist="AC-17(2),IA-7,SC-13" disa="68,803,1453,2449,2450"
+<ref nist="AC-17(2),IA-7,SC-13" disa="1453"
 ossrg="SRG-OS-000250-GPOS-00093" stigid="040620" />
 </Rule>
 
