@@ -39,6 +39,7 @@ ocil_cs = "http://scap.nist.gov/schema/ocil/2"
 # we use these strings to look for references within the XCCDF rules
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"
 disa_ref_href = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"
+cce_ref_href = "https://nvd.nist.gov/cce/index.cfm"
 
 # default exit value - success
 exit_value = 0
@@ -60,6 +61,9 @@ def parse_options():
     parser.add_option("--rules-without-severity", default=False,
                       action="store_true", dest="rules_without_severity",
                       help="print XCCDF Rules that do not include a severity")
+    parser.add_option("--rules-without-cce", default=False,
+		      action="store_true", dest="rules_without_cce",
+		      help="print XCCDF Rules that do not include a CCE")
     parser.add_option("--rules-without-nistrefs", default=False,
                       action="store_true", dest="rules_without_nistrefs",
                       help="print XCCDF Rules which do not include any NIST 800-53 references")
@@ -205,6 +209,22 @@ def main():
                 print "No severity assigned to XCCDF Rule: " + rule.get("id")
                 exit_value = 1
 
+    if options.rules_without_cce or options.all_checks:
+        for rule in rules:
+		# find all CCEs in current rule
+		cces = rule.findall(".//{%s}ident" % xccdf_ns)
+		if cces is None:
+			print "No CCE assigned to XCCDF Rule: " + rule.get("id")
+			exit_value = 1
+		else:
+			# loop through the Rule's idents and put their CCEs
+			# in a list
+			ref_cce_list = [cce.get("system") for cce in cces]
+			# print warning if rule does not have CCE reference
+			if (not cce_ref_href in ref_cce_list) and options.rules_without_cce:
+				print ("No CCE assigned to XCCDF Rule: " + rule.get("id"))
+				exit_value =1
+		
     if options.rules_without_nistrefs or options.rules_without_disarefs or options.all_checks:
         for rule in rules:
             # find all references in the current rule
