@@ -48,9 +48,9 @@ period of inactivity for users in the particular environment. Setting
 the timeout too low incurs support costs and also has the potential to impact
 availability of the system to legitimate users.
 </description>
-<ocil clause="it does not">
+<ocil clause="the value of INACTIVE is greater than the expected value">
 To verify the <tt>INACTIVE</tt> setting, run the following command:
-<pre>grep "INACTIVE" /etc/default/useradd</pre>
+<pre>$ grep "INACTIVE" /etc/default/useradd</pre>
 The output should indicate the <tt>INACTIVE</tt> configuration option is set
 to an appropriate integer as shown in the example below:
 <pre>$ sudo grep "INACTIVE" /etc/default/useradd
