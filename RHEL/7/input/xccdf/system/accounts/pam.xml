@@ -331,7 +331,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010150" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxclassrepeat" severity="low">
+<Rule id="accounts_password_pam_maxclassrepeat" severity="medium">
 <title>Set Password to Maximum of Consecutive Repeating Characters from Same Character Class</title>
 <description>The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
 consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
@@ -707,19 +707,21 @@ guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by lo
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
-Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
-attempts. Modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
+Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive 
+configures the system to lock out an accounts after a number of incorrect login
+attempts within a specified time period.. Modify the content of both 
+<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
 <ul>
-<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<li>Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
 <pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
-<li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<li>Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
 <pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
-<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<li>Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
 <pre>account required pam_faillock.so</pre></li>
 </ul>
 </description>
-<ocil clause="that is not the case">
+<ocil clause="fail_interval is less than the required value">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
 For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 
@@ -727,12 +729,13 @@ For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&
 If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
-Locking out user accounts after a number of incorrect attempts within a
-specific period of time prevents direct password guessing attacks.
+By limiting the number of failed logon attempts the risk of unauthorized system
+access via user password guessing, otherwise known as brute-forcing, is reduced.
+Limits are imposed by locking the account.
 </rationale>
 <ident cce="27297-1" />
 <oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
-<ref nist="AC-7(a)" disa="44" ossrg="21" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010371" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
@@ -798,7 +801,7 @@ Passwords need to be protected at all times, and encryption is the standard meth
 passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily
 compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they 
 are kepy in plain text.
-
+<br /><br />
 This setting ensures user and group account administration utilities are configured to store only
 encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> configuration option
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
@@ -824,7 +827,7 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 Passwords need to be protected at all times, and encryption is the standard method for protecting passwords.
 If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords
 that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
-
+<br /><br />
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident cce="27124-7" />
@@ -851,7 +854,7 @@ Passwords need to be protected at all times, and encryption is the standard meth
 passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily
 compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they 
 are kepy in plain text.
-
+<br /><br />
 This setting ensures user and group account administration utilities are configured to store only
 encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> configuration option
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
