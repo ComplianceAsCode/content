@@ -25,7 +25,17 @@ baseline.
 <!-- 1.1.1.4 Ensure mounting of hfs filesystems is diabled (Scored) -->
 <select idref="kernel_module_hfs_disabled" selected="true" />
 
+<!-- 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled (Scored) -->
+<select idref="kernel_module_hfsplus_disabled" selected="true" />
 
+<!-- 1.1.1.6 Ensure mounting of squashfs filesystems is disabled (Scored) -->
+<select idref="kernel_module_squashfs_disabled" selected="true" />
+
+<!-- 1.1.1.7 Ensure mounting of udf filesystems is disabled (Scored) -->
+<select idref="kernel_module_udf_disabled" selected="true" />
+
+<!-- 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Scored) -->
+<select idref="kernel_module_vfat_disabled" selected="true" />
 
 
 <!-- 1.1.1 Create Separate Partition for /tmp (Scored) -->
@@ -78,15 +88,6 @@ baseline.
 
 <!-- 1.1.17 Set Sticky Bit on All World-Writable Directories (Scored) -->
 <select idref="dir_perms_world_writable_sticky_bits" selected="true" />
-
-<!-- 1.1.22 Disable Mounting of hfsplus Filesystems (Not Scored) -->
-<select idref="kernel_module_hfsplus_disabled" selected="true" />
-
-<!-- 1.1.23 Disable Mounting of squashfs Filesystems (Not Scored) -->
-<select idref="kernel_module_squashfs_disabled" selected="true" />
-
-<!-- 1.1.24 Disable Mounting of udf Filesystems (Not Scored) -->
-<select idref="kernel_module_udf_disabled" selected="true" />
 
 <!-- 1.2.1 Configure Connection to the RHN RPM Repositories (Not Scored) -->
 <!-- TO DO: NEED NEW RULE -->
