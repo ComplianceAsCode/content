@@ -68,7 +68,7 @@ the chances that it will remain off during system operation.
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="selinux_state" severity="medium">
+<Rule id="selinux_state" severity="high">
 <title>Ensure SELinux State is Enforcing</title>
 <description>The SELinux state should be set to <tt><sub idref="var_selinux_state" /></tt> at
 system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
@@ -91,7 +91,7 @@ privileges.
 ossrg="SRG-OS-000445-GPOS-00199" stigid="020210" />
 </Rule>
 
-<Rule id="selinux_policytype">
+<Rule id="selinux_policytype" severity="high">
 <title>Configure SELinux Policy</title>
 <description>The SELinux <tt>targeted</tt> policy is appropriate for
 general-purpose desktops and servers, as well as systems in many other roles.
@@ -110,7 +110,7 @@ Check the file <tt>/etc/selinux/config</tt> and ensure the following line appear
 Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
 ensures the system will confine processes that are likely to be
 targeted for exploitation, such as network or system services.
-
+<br /><br />
 Note: During the development or debugging of SELinux modules, it is common to
 temporarily place non-production systems in <tt>permissive</tt> mode. In such
 temporary cases, SELinux policies should be developed, and once work
@@ -119,7 +119,7 @@ is completed, the system should be reconfigured to
 </rationale>
 <ident cce="27279-9" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
-<ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2165,2696" cis="1.4.3"
+<ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2696" cis="1.4.3"
 ossrg="SRG-OS-000445-GPOS-00199" stigid="020211" />
 </Rule>
 
@@ -175,14 +175,16 @@ or allow privileges that the daemon does not require.
 <ident cce="27288-0" />
 </Rule>
 
-<Rule id="selinux_all_devicefiles_labeled">
+<Rule id="selinux_all_devicefiles_labeled" severity="medium">
 <title>Ensure No Device Files are Unlabeled by SELinux</title>
 <description>Device files, which are used for communication with important
 system resources, should be labeled with proper SELinux types. If any device
-files carry the SELinux type <tt>device_t</tt>, report the bug so that policy can be corrected. Supply information about what the device is and what programs use it.
+files do not carry the SELinux type <tt>device_t</tt>, report the bug so 
+that policy can be corrected. Supply information about what the device is
+and what programs use it.
 </description>
 <ocil clause="there is output">To check for unlabeled device files, run the following command:
-<pre>$sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
+<pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
 It should produce no output in a well-configured system.</ocil>
 <rationale>
 If a device file carries the SELinux type <tt>device_t</tt>, then SELinux

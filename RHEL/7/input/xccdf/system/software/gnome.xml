@@ -364,11 +364,11 @@ controlled-access area.
 <title>Enable GNOME3 Screensaver Lock After Idle Period</title>
 <description>
 To activate locking of the screensaver in the GNOME3 desktop when it is activated,
-add or set <tt>lock-enabled</tt> to <tt>true</tt> and <tt>lock-delay</tt> to <tt>0</tt> in
+add or set <tt>lock-enabled</tt> to <tt>true</tt> and <tt>lock-delay</tt> to <tt>uint32 0</tt> in
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
 <pre>[org/gnome/desktop/screensaver]
 lock-enabled=true
-lock-delay=0
+lock-delay=uint32 0
 </pre>
 Once the settings have been added, add a lock to
 <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
@@ -381,9 +381,11 @@ After the settings have been set, run <tt>dconf update</tt>.
 To check the status of the idle screen lock activation, run the following command:
 <pre>$ gsettings get org.gnome.desktop.screensaver lock-enabled</pre>
 If properly configured, the output should be <tt>true</tt>.
+<br />
 To check that the screen locks immediately when activated, run the following command:
 <pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
 If properly configured, the output should be <tt>'uint32 0'</tt>.
+<br />
 To ensure that users cannot change how long until the the screensaver locks, run the following:
 <pre>$ grep 'lock-enabled\|lock-delay' /etc/dconf/db/local.d/locks/*</pre>
 If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>

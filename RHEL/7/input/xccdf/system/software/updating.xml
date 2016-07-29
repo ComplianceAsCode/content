@@ -209,8 +209,13 @@ be signed with a certificate recognized and approved by the organization.
 <Rule id="ensure_gpgcheck_repo_metadata" severity="high">
 <title>Ensure gpgcheck Enabled for Repository Metadata</title>
 <description>
-<tt>Yum</tt> should be configured to verify repository metadata. This should be configured
-by setting <tt>repo_gpgcheck</tt> to <tt>1</tt> in <tt>/etc/yum.conf</tt>.
+Verify the operating system prevents the installation of patches, service packs, device
+drivers, or operating system components of local packages without verification of the 
+repository metadata.
+<br /><br />
+Check that <tt>yum</tt> verifies the repository metadata prior to install with the
+following command. This should be configured by setting <tt>repo_gpgcheck</tt> to <tt>1</tt>
+in <tt>/etc/yum.conf</tt>.
 </description>
 <ocil clause="gpgcheck is not enabled or configured correctly to verify repository metadata">
 To verify that <tt>repo_gpgcheck</tt> is configured properly, run the following
@@ -226,6 +231,16 @@ has been provided by a trusted vendor.
 <br/><br/>
 Accordingly, patches, service packs, device drivers, or operating system components must
 be signed with a certificate recognized and approved by the organization.
+<br /><br />
+Verifying the authenticity of the software prior to installation validates the integrity
+of the patch or upgrade received from a vendor. This ensures the software has not been
+tampered with and that it has been provided by a trusted vendor. Self-signed certificates
+are disallowed by this requirement. The operating system should not have to verify the software
+again.
+<br /><br />
+NOTE: For U.S. Military systems, this requirement does not mandate DoD certificates for
+this purpose; however, the certificate used to verify the software must be from an 
+approved Certificate Authority.
 </rationale>
 <ident cce="CCE-80348-6" />
 <oval id="ensure_gpgcheck_repo_metadata" />
