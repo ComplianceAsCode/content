@@ -142,10 +142,11 @@ membership with the following command:
 
 Output indicates files that do not match vendor defaults. After locating a file with incorrect permissions, run the following command to determine which package owns it:
 <pre>$ rpm -qf <i>FILENAME</i></pre>
-
+<br />
 Next, run the following command to reset its permissions to 
 the correct values:
 <pre>$ sudo rpm --setperms <i>PACKAGENAME</i></pre>
+<br />
 </description>
 <ocil clause="there is output">
 The following command will list which files on the system have permissions different from what
@@ -165,7 +166,7 @@ Bugzilla #1275532.
 </warning>
 <ident cce="27209-6" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,CM-6(d),CM-6(3)" disa="1493,1494,1495" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" stigid="010010" />
+<ref nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" disa="1494,1496" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" stigid="010010" ossrg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" />
 </Rule>
 
 <Rule id="rpm_verify_hashes" severity="high">
@@ -207,7 +208,7 @@ information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
 <ident cce="27157-7" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),CM-6(3),SI-7" disa="1496" pcidss="Req-11.5" cis="1.2.6" stigid="010020" />
+<ref nist="CM-6(d),CM-6(3),SI-7(1)" disa="663" pcidss="Req-11.5" cis="1.2.6" stigid="010020" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -463,6 +464,15 @@ ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-0022
 </Group>
 
 <Group id="certified-vendor">
+<title>Operating System Vendor Support and Certification</title>
+<description>
+The assurance of a vendor to provide operating system support and maintenance
+for their product is an important criterion to ensure product stability and
+security over the life of the product. A certified product that follows the
+necessary standards and government certification requirements guarantees that
+known software vulnerabilities will be remediated, and proper guidance for
+protecting and securing the operating system will be given.
+</description>
 
 <Rule id="installed_OS_is_certified" severity="high">
 <title>The Installed Operating System Is Vendor Supported and Certified</title>
@@ -485,7 +495,7 @@ security patches for the product as well as maintain government certification re
 With an unsupported release, it will not be possible to resolve security issue discovered in
 the system software as well as meet government certifications.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80349-4" />
 <oval id="installed_OS_is_certified" />
 <ref nist="SI-2(c)" disa="366" stigid="020240" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>

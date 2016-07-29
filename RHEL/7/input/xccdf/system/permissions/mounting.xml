@@ -99,6 +99,9 @@ rather than relying on the automounter.
 </ocil>
 <rationale>Disabling the automounter permits the administrator to 
 statically control filesystem mounting through <tt>/etc/fstab</tt>. 
+<br /><br />
+Additionally, automatically mounting filesystems permits easy introduction of
+unknown devices, thereby facilitating malicious activity.
 </rationale>
 <ident cce="27498-5" />
 <oval id="service_autofs_disabled" />

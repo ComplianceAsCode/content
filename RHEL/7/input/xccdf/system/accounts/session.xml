@@ -47,12 +47,14 @@ not arrive.</description>
 <Rule id="accounts_tmout" severity="medium">
 <title>Set Interactive Session Timeout</title>
 <description>
-Terminating an idle session within a short time period reduces 
-the window of opportunity for unauthorized personnel to take control of a 
-management session enabled on the console or console port that has been 
-left unattended.
+Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
+RHEL7 will terminate all user sessions based on inactivity.
 </description>
 <rationale>
+Terminating an idle session within a short time period reduces
+the window of opportunity for unauthorized personnel to take control of a
+management session enabled on the console or console port that has been
+left unattended.
 </rationale>
 <ocil clause="value of TMOUT is not less than or equal to expected setting">
 Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
@@ -64,7 +66,7 @@ on the system:
 <oval id="accounts_tmout" value="var_accounts_tmout" />
 </Rule>
 
-<Rule id="accounts_max_concurrent_login_sessions">
+<Rule id="accounts_max_concurrent_login_sessions" severity="low">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
 Limiting the number of allowed users and sessions per user can limit risks related to Denial of

@@ -27,7 +27,7 @@ The ability to send ICMP redirects is only appropriate for systems acting as rou
 </rationale>
 <ident cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
-<ref nist="AC-4,CM-7,SC-5,SC-7" disa="366,1551" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040420" />
+<ref nist="AC-4,CM-7,SC-5,SC-7" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040420" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_send_redirects" severity="medium">
@@ -46,7 +46,7 @@ The ability to send ICMP redirects is only appropriate for systems acting as rou
 </rationale>
 <ident cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
-<ref nist="AC-4,CM-7,SC-5(1)" disa="366,1551" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040421" />
+<ref nist="AC-4,CM-7,SC-5(1)" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040421" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_ip_forward" severity="medium">
@@ -58,12 +58,14 @@ The ability to send ICMP redirects is only appropriate for systems acting as rou
 <sysctl-check-macro sysctl="net.ipv4.ip_forward" value="0" />
 The ability to forward packets is only appropriate for routers.
 </ocil>
-<rationale>IP forwarding permits the kernel to forward packets from one network
-interface to another. The ability to forward packets between two networks is
-only appropriate for systems acting as routers.</rationale>
+<rationale>Routing protocol daemons are typically used on routers to exchange
+network topology information with other routers. If this capability is used when
+not required, system network information may be unnecessarily transmitted across
+the network.
+</rationale>
 <ident cce="80157-1" />
 <oval id="sysctl_net_ipv4_ip_forward" />
-<ref nist="CM-7, SC-5" disa="366" cis="4.1.1" />
+<ref nist="CM-7,SC-5,SC-32" disa="366" cis="4.1.1" ossrg="SRG-OS-000480-GPOS-00227" stigid="040730" />
 <tested by="DS" on="20121024"/>
 </Rule>
 </Group>
@@ -217,7 +219,7 @@ forward the packet along a different path than configured on the router, which c
 be used to bypass network security measures. This requirement applies only to the
 forwarding of source-routerd traffic, such as when IPv4 forwarding is enabled and 
 the system is functioning as a router.
-
+<br /><br />
 Accepting source-routed packets in the IPv4 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <ident cce="27434-0" />
