@@ -4,13 +4,20 @@
 U.S. Government Commercial Cloud Services (C2S) baseline.
 
 This baseline was inspired by the Center for Internet Security
-(CIS) Red Hat Enterprise Linux 7 Benchmark, v1.1.0 - 04-02-2015.
+(CIS) Red Hat Enterprise Linux 7 Benchmark, v2.1.0 - 06-02-2016.
 For the SCAP Security Guide project to remain in compliance with
 CIS' terms and conditions, specifically Restrictions(8), note
 there is no representation or claim that the C2S profile will
 ensure a system is in compliance or consistency with the CIS
 baseline.
 </description>
+
+<!-- 1.1 Filesystem Configuration -->
+<!-- 1.1.1.1 Ensure mounting of cramfs filesystems disabled (Scored) -->
+<select idref="kernel_module_cramfs_disabled" selected="true" />
+
+
+
 
 <!-- 1.1.1 Create Separate Partition for /tmp (Scored) -->
 <select idref="partition_for_tmp" selected="true" />
@@ -62,9 +69,6 @@ baseline.
 
 <!-- 1.1.17 Set Sticky Bit on All World-Writable Directories (Scored) -->
 <select idref="dir_perms_world_writable_sticky_bits" selected="true" />
-
-<!-- 1.1.18 Disable Mounting of cramfs Filesystems (Not Scored) -->
-<select idref="kernel_module_cramfs_disabled" selected="true" />
 
 <!-- 1.1.19 Disable Mounting of freevxfs Filesystems (Not Scored) -->
 <select idref="kernel_module_freevxfs_disabled" selected="true" />
