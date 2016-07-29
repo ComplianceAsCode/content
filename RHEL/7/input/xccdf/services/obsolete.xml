@@ -410,7 +410,7 @@ as a TFTP server, which does not provide encryption or authentication.
 <rationale>
 Removing the <tt>tftp-server</tt> package decreases the risk of the
 accidental (or intentional) activation of tftp services.
-
+<br /><br />
 If TFTP is required for operational support (such as transmission of router configurations),
 its use must be documented with the Information Systems Securty Manager (ISSM), restricted to 
 only authorized personnel, and have access control rules established.
@@ -437,7 +437,7 @@ the services.</rationale>
 <ref cis="2.1.7" />
 </Rule>
 
-<Rule id="tftpd_uses_secure_mode" severity="high">
+<Rule id="tftpd_uses_secure_mode" severity="medium">
 <title>Ensure <tt>tftp</tt> Daemon Uses Secure Mode</title>
 <description>If running the <tt>tftp</tt> service is necessary, it should be configured
 to change its root directory at startup. To do so, ensure
