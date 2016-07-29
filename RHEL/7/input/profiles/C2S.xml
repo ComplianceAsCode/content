@@ -22,6 +22,9 @@ baseline.
 <!-- 1.1.1.3 Ensure mounting of jffs filesystems is disabled (Scored) -->
 <select idref="kernel_module_jffs2_disabled" selected="true" />
 
+<!-- 1.1.1.4 Ensure mounting of hfs filesystems is diabled (Scored) -->
+<select idref="kernel_module_hfs_disabled" selected="true" />
+
 
 
 
@@ -75,9 +78,6 @@ baseline.
 
 <!-- 1.1.17 Set Sticky Bit on All World-Writable Directories (Scored) -->
 <select idref="dir_perms_world_writable_sticky_bits" selected="true" />
-
-<!-- 1.1.21 Disable Mounting of hfs Filesystems (Not Scored) -->
-<select idref="kernel_module_hfs_disabled" selected="true" />
 
 <!-- 1.1.22 Disable Mounting of hfsplus Filesystems (Not Scored) -->
 <select idref="kernel_module_hfsplus_disabled" selected="true" />
