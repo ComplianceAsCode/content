@@ -567,20 +567,20 @@ time should be audited.</description>
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
 default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S adjtimex -F key=audit_time_rules</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S adjtimex -F key=audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S adjtimex -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S adjtimex -F key=audit_time_rules</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S adjtimex -k audit_time_rules</pre>
-The -k option allows for the specification of a key in string form that can be
+<pre>-a always,exit -F arch=b64 -S adjtimex -F key=audit_time_rules</pre>
+The -F key=option allows for the specification of a key in string form that can be
 used for better reporting capability through ausearch and aureport. Multiple
 system calls can be defined on the same line to save space if desired, but is
 not required. See an example of multiple combined syscalls:
-<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -F key=audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="adjtimex" />
@@ -602,20 +602,20 @@ to the system time should be audited.</rationale>
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
 default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S settimeofday -F key=audit_time_rules</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S settimeofday -F key=audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S settimeofday -F key=audit_time_rules</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S settimeofday -k audit_time_rules</pre>
-The -k option allows for the specification of a key in string form that can be
+<pre>-a always,exit -F arch=b64 -S settimeofday -F key=audit_time_rules</pre>
+The -F key=option allows for the specification of a key in string form that can be
 used for better reporting capability through ausearch and aureport. Multiple
 system calls can be defined on the same line to save space if desired, but is
 not required. See an example of multiple combined syscalls:
-<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -F key=audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="settimeofday" />
@@ -637,7 +637,7 @@ to the system time should be audited.</rationale>
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
 default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt> for both 32 bit and 64 bit systems:
-<pre>-a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S stime -F key=audit_time_rules</pre>
 Since the 64 bit version of the "stime" system call is not defined in the audit
 lookup table, the corresponding "-F arch=b64" form of this rule is not expected
 to be defined on 64 bit systems (the aforementioned "-F arch=b32" stime rule
@@ -645,16 +645,16 @@ form itself is sufficient for both 32 bit and 64 bit systems). If the
 <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to
 read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file for both 32 bit and 64 bit systems:
-<pre>-a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b32 -S stime -F key=audit_time_rules</pre>
 Since the 64 bit version of the "stime" system call is not defined in the audit
 lookup table, the corresponding "-F arch=b64" form of this rule is not expected
 to be defined on 64 bit systems (the aforementioned "-F arch=b32" stime rule
-form itself is sufficient for both 32 bit and 64 bit systems). The -k option
+form itself is sufficient for both 32 bit and 64 bit systems). The -F key=option
 allows for the specification of a key in string form that can be used for
 better reporting capability through ausearch and aureport. Multiple system
 calls can be defined on the same line to save space if desired, but is not
 required. See an example of multiple combined system calls:
-<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -F key=audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 If the system is not configured to audit time changes, this is a finding.
@@ -687,11 +687,11 @@ utility to read audit rules during daemon startup, add the following line to
 <pre>-a always,exit -F arch=b32 -S clock_settime -F a0=0x0 -F key=time-change</pre>
 If the system is 64 bit then also add the following line:
 <pre>-a always,exit -F arch=b64 -S clock_settime -F a0=0x0 -F key=time-change</pre>
-The -k option allows for the specification of a key in string form that can
+The -F key=option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport.
 Multiple system calls can be defined on the same line to save space if
 desired, but is not required. See an example of multiple combined syscalls:
-<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
+<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -F key=audit_time_rules</pre>
 </description>
 <ocil clause="the system is not configured to audit time changes">
 <audit-syscall-check-macro syscall="clock_settime" />
@@ -713,12 +713,12 @@ to the system time should be audited.</rationale>
 <tt>augenrules</tt> program to read audit rules during daemon startup (the default),
 add the following line to a file with suffix <tt>.rules</tt> in the directory
 <tt>/etc/audit/rules.d</tt>:
-<pre>-w /etc/localtime -p wa -k audit_time_rules</pre>
+<pre>-w /etc/localtime -p wa -F key=audit_time_rules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-w /etc/localtime -p wa -k audit_time_rules</pre>
-The -k option allows for the specification of a key in string form that can
+<pre>-w /etc/localtime -p wa -F key=audit_time_rules</pre>
+The -F key=option allows for the specification of a key in string form that can
 be used for better reporting capability through ausearch and aureport and
 should always be used.
 </description>
@@ -748,21 +748,21 @@ to the system time should be audited.</rationale>
 default), add the following lines to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>, in order to capture events that modify
 account changes:
-<pre>-w /etc/group -p wa -k audit_rules_usergroup_modification
--w /etc/passwd -p wa -k audit_rules_usergroup_modification
--w /etc/gshadow -p wa -k audit_rules_usergroup_modification
--w /etc/shadow -p wa -k audit_rules_usergroup_modification
--w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification</pre>
+<pre>-w /etc/group -p wa -F key=audit_rules_usergroup_modification
+-w /etc/passwd -p wa -F key=audit_rules_usergroup_modification
+-w /etc/gshadow -p wa -F key=audit_rules_usergroup_modification
+-w /etc/shadow -p wa -F key=audit_rules_usergroup_modification
+-w /etc/security/opasswd -p wa -F key=audit_rules_usergroup_modification</pre>
 <br />
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file, in order to capture events that modify
 account changes:
-<pre>-w /etc/group -p wa -k audit_rules_usergroup_modification
--w /etc/passwd -p wa -k audit_rules_usergroup_modification
--w /etc/gshadow -p wa -k audit_rules_usergroup_modification
--w /etc/shadow -p wa -k audit_rules_usergroup_modification
--w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification</pre>
+<pre>-w /etc/group -p wa -F key=audit_rules_usergroup_modification
+-w /etc/passwd -p wa -F key=audit_rules_usergroup_modification
+-w /etc/gshadow -p wa -F key=audit_rules_usergroup_modification
+-w /etc/shadow -p wa -F key=audit_rules_usergroup_modification
+-w /etc/security/opasswd -p wa -F key=audit_rules_usergroup_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit account changes">
 To determine if the system is configured to audit account changes,
@@ -789,20 +789,20 @@ ossrg="SRG–OS–000004–GPOS–00004,SRG–OS–000239–GPOS–00089,SRG–O
 default), add the following lines to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
--w /etc/issue -p wa -k audit_rules_networkconfig_modification
--w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
--w /etc/hosts -p wa -k audit_rules_networkconfig_modification
--w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
+<pre>-a always,exit -F arch=ARCH -S sethostname -S setdomainname -F key=audit_rules_networkconfig_modification
+-w /etc/issue -p wa -F key=audit_rules_networkconfig_modification
+-w /etc/issue.net -p wa -F key=audit_rules_networkconfig_modification
+-w /etc/hosts -p wa -F key=audit_rules_networkconfig_modification
+-w /etc/sysconfig/network -p wa -F key=audit_rules_networkconfig_modification</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification
--w /etc/issue -p wa -k audit_rules_networkconfig_modification
--w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
--w /etc/hosts -p wa -k audit_rules_networkconfig_modification
--w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
+<pre>-a always,exit -F arch=ARCH -S sethostname -S setdomainname -F key=audit_rules_networkconfig_modification
+-w /etc/issue -p wa -F key=audit_rules_networkconfig_modification
+-w /etc/issue.net -p wa -F key=audit_rules_networkconfig_modification
+-w /etc/hosts -p wa -F key=audit_rules_networkconfig_modification
+-w /etc/sysconfig/network -p wa -F key=audit_rules_networkconfig_modification</pre>
 </description>
 <ocil clause="the system is not configured to audit changes of the network configuration">
 To determine if the system is configured to audit changes to its network configuration,
@@ -865,11 +865,11 @@ attackers, thus compromising its confidentiality.</rationale>
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
 default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>:
-<pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+<pre>-w /etc/selinux/ -p wa -F key=MAC-policy</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+<pre>-w /etc/selinux/ -p wa -F key=MAC-policy</pre>
 </description>
 <ocil clause="the system is not configured to audit attempts to change the MAC policy">
 To determine if the system is configured to audit changes to its SELinux
@@ -897,14 +897,14 @@ calls.  Additionally, these rules can be configured in a number of ways while
 still achieving the desired effect.  An example of this is that the "-S" calls
 could be split up and placed on separate lines, however, this is less efficient.
 Add the following to <tt>/etc/audit/audit.rules</tt>:
-<pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod
+    -a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod
+    -a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If your system is 64 bit then these lines should be duplicated and the
 arch=b32 replaced with arch=b64 as follows:
-<pre>-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod
-    -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod
+    -a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod
+    -a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <rationale>The changing of file permissions could indicate that a user is
 attempting to gain access to information that would otherwise be disallowed.
@@ -918,15 +918,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured to
 use the <tt>augenrules</tt> program to read audit rules during daemon startup
 (the default), add the following line to a file with suffix <tt>.rules</tt> in
 the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chmod -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chmod  -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <rationale>The changing of file permissions could indicate that a user is attempting to
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
@@ -953,15 +953,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured to
 use the <tt>augenrules</tt> program to read audit rules during daemon startup
 (the default), add the following line to a file with suffix <tt>.rules</tt> in
 the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S chown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S chown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="chown" />
@@ -988,15 +988,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured to
 use the <tt>augenrules</tt> program to read audit rules during daemon startup
 (the default), add the following line to a file with suffix <tt>.rules</tt> in
 the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmod -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchmod" />
@@ -1023,15 +1023,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured to
 use the <tt>augenrules</tt> program to read audit rules during daemon startup
 (the default), add the following line to a file with suffix <tt>.rules</tt> in
 the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchmodat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchmodat" />
@@ -1058,15 +1058,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchown" />
@@ -1093,15 +1093,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fchownat -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fchownat" />
@@ -1128,15 +1128,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fremovexattr" />
@@ -1163,15 +1163,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="fsetxattr" />
@@ -1198,15 +1198,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lchown -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lchown" />
@@ -1233,15 +1233,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lremovexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lremovexattr" />
@@ -1268,15 +1268,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S lsetxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="lsetxattr" />
@@ -1303,15 +1303,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S removexattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="removexattr" />
@@ -1338,15 +1338,15 @@ changes for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following line to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 If the system is 64 bit then also add the following line:
-<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod</pre>
+<pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;=1000 -F auid!=4294967295 -F key=perm_mod</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="setxattr" />
@@ -1368,32 +1368,76 @@ ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-0020
 
 </Group> <!-- <Group id="audit_dac_actions"> -->
 
-<Rule id="audit_rules_login_events" severity="medium">
-<title>Record Attempts to Alter Logon and Logout Events</title>
+<Rule id="audit_rules_login_events_tallylog" severity="medium">
+<title>Record Attempts to Alter Logon and Logout Events - tallylog</title>
 <description>The audit system already collects login information for all users
 and root. If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
-default), add the following lines to a file with suffix <tt>.rules</tt> in the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
 edits of files involved in storing logon events:
-<pre>-w /var/log/tallylog -p wa -k logins
--w /var/run/faillock/ -p wa -k logins
--w /var/log/lastlog -p wa -k logins</pre>
+<pre>-w /var/log/tallylog -p wa -F key=logins</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-utility to read audit rules during daemon startup, add the following lines to
+utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
 edits of files involved in storing logon events:
-<pre>-w /var/log/tallylog -p wa -k logins
--w /var/run/faillock/ -p wa -k logins
--w /var/log/lastlog -p wa -k logins</pre>
+<pre>-w /var/log/tallylog -p wa -F key=logins</pre>
 </description>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ident cce="27204-7" />
-<oval id="audit_rules_login_events" />
+<oval id="audit_rules_login_events_tallylog" />
 <ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218"
 stigid="030490" pcidss="Req-10.2.3" cis="5.2.8" />
+</Rule>
+
+<Rule id="audit_rules_login_events_faillock" severity="medium">
+<title>Record Attempts to Alter Logon and Logout Events - faillock</title>
+<description>The audit system already collects login information for all users
+and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
+edits of files involved in storing logon events:
+<pre>-w /var/run/faillock/ -p wa -F key=logins</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
+edits of files involved in storing logon events:
+<pre>-w /var/run/faillock/ -p wa -F key=logins</pre>
+</description>
+<rationale>Manual editing of these files may indicate nefarious activity, such
+as an attacker attempting to remove evidence of an intrusion.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_login_events_faillock" />
+<ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218"
+stigid="030491" pcidss="Req-10.2.3" cis="5.2.8" />
+</Rule>
+
+<Rule id="audit_rules_login_events_lastlog" severity="medium">
+<title>Record Attempts to Alter Logon and Logout Events - lastlog</title>
+<description>The audit system already collects login information for all users
+and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
+edits of files involved in storing logon events:
+<pre>-w /var/log/lastlog -p wa -F key=logins</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
+edits of files involved in storing logon events:
+<pre>-w /var/log/lastlog -p wa -F key=logins</pre>
+</description>
+<rationale>Manual editing of these files may indicate nefarious activity, such
+as an attacker attempting to remove evidence of an intrusion.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_login_events_lastlog" />
+<ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218"
+stigid="030492" pcidss="Req-10.2.3" cis="5.2.8" />
 </Rule>
 
 <Rule id="audit_rules_session_events">
@@ -1404,16 +1448,16 @@ users and root. If the <tt>auditd</tt> daemon is configured to use the
 default), add the following lines to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
 edits of files involved in storing such process information:
-<pre>-w /var/run/utmp -p wa -k session
--w /var/log/btmp -p wa -k session
--w /var/log/wtmp -p wa -k session</pre>
+<pre>-w /var/run/utmp -p wa -F key=session
+-w /var/log/btmp -p wa -F key=session
+-w /var/log/wtmp -p wa -F key=session</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file in order to watch for attempted manual
 edits of files involved in storing such process information:
-<pre>-w /var/run/utmp -p wa -k session
--w /var/log/btmp -p wa -k session
--w /var/log/wtmp -p wa -k session</pre>
+<pre>-w /var/run/utmp -p wa -F key=session
+-w /var/log/btmp -p wa -F key=session
+-w /var/log/wtmp -p wa -F key=session</pre>
 </description>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
@@ -1422,41 +1466,223 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" cis="5.2.9" />
 </Rule>
 
-<Rule id="audit_rules_unsuccessful_file_modification" severity="medium">
-<title>Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
-<description>At a minimum the audit system should collect unauthorized file
-accesses for all users and root. If the <tt>auditd</tt> daemon is configured
+<Rule id="audit_rules_file_modification_creat" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Access Attempts to Files - creat</title>
+<description>At a minimum the audit system should collect file access attempts
+for all users and root. If the <tt>auditd</tt> daemon is configured
 to use the <tt>augenrules</tt> program to read audit rules during daemon
 startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
--a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access</pre>
+<pre>-a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
 If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
--a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access</pre>
+<pre>-a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
--a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access</pre>
+<pre>-a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
 If the system is 64 bit then also add the following lines:
-<pre>
--a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
--a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access</pre>
+<pre>-a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
 </description>
-<ocil clause="32-bit and 64-bit system calls to creat, open, openat, open_by_handle_at, truncate, and ftruncate are not audited during EACCES and EPERM">
-To verify that the audit system collects unauthorized file accesses, run the following commands:
+<ocil clause="32-bit and 64-bit system calls to creat are not audited during EACCES and EPERM">
+To verify that the audit system collects file accesses, run the following commands:
 <pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
 <pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
 </ocil>
-<rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
-these events could serve as evidence of potential system compromise.</rationale>
+<rationale>
+Attempts to access files could be an indicator of malicious activity on a system. Auditing
+these events could serve as evidence of potential system compromise.
+</rationale>
 <ident cce="27347-4" />
-<oval id="audit_rules_unsuccessful_file_modification" />
+<oval id="audit_rules_file_modification_creat" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" 
 ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172"
 stigid="030420" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" />
+</Rule>
+
+<Rule id="audit_rules_file_modification_open" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Access Attempts to Files - open</title>
+<description>At a minimum the audit system should collect file access
+attempts for all users and root. If the <tt>auditd</tt> daemon is configured
+to use the <tt>augenrules</tt> program to read audit rules during daemon
+startup (the default), add the following lines to a file with suffix
+<tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>
+-a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following lines to
+<tt>/etc/audit/audit.rules</tt> file:
+<pre>-a always,exit -F arch=b32 -S creat -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S creat -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>-a always,exit -F arch=b64 -S creat -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S creat -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+</description>
+<ocil clause="32-bit and 64-bit system calls to open are not audited during EACCES and EPERM">
+To verify that the audit system collects file accesses, run the following commands:
+<pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
+</ocil>
+<rationale>Attempts to access files could be an indicator of malicious activity on a system. Auditing
+these events could serve as evidence of potential system compromise.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_file_modification_open" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172"
+stigid="030421" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" />
+</Rule>
+
+<Rule id="audit_rules_unsuccessful_file_modification_openat" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Access Attempts to Files - openat</title>
+<description>At a minimum the audit system should collect file access
+attempts for all users and root. If the <tt>auditd</tt> daemon is configured
+to use the <tt>augenrules</tt> program to read audit rules during daemon
+startup (the default), add the following lines to a file with suffix
+<tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>-a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following lines to
+<tt>/etc/audit/audit.rules</tt> file:
+<pre>-a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>-a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+</description>
+<ocil clause="32-bit and 64-bit system calls to openat are not audited during EACCES and EPERM">
+To verify that the audit system collects file accesses, run the following commands:
+<pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
+</ocil>
+<rationale>Attempts to access files could be an indicator of malicious activity on a system. Auditing
+these events could serve as evidence of potential system compromise.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_unsuccessful_file_modification_openat" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172"
+stigid="030422" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" />
+</Rule>
+
+<Rule id="audit_rules_unsuccessful_file_modification_open_by_handle_at" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Access Attempts to Files - open_by_handle_at</title>
+<description>At a minimum the audit system should collect file access
+attempts for all users and root. If the <tt>auditd</tt> daemon is configured
+to use the <tt>augenrules</tt> program to read audit rules during daemon
+startup (the default), add the following lines to a file with suffix
+<tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>
+-a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S open -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following lines to
+<tt>/etc/audit/audit.rules</tt> file:
+<pre>-a always,exit -F arch=b32 -S open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>
+-a always,exit -F arch=b64 -S open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+</description>
+<ocil clause="32-bit and 64-bit system calls to open_by_handle_at are not audited during EACCES and EPERM">
+To verify that the audit system collects file accesses, run the following commands:
+<pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
+</ocil>
+<rationale>Attempts to access files could be an indicator of malicious activity on a system. Auditing
+these events could serve as evidence of potential system compromise.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172"
+stigid="030423" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" />
+</Rule>
+
+<Rule id="audit_rules_unsuccessful_file_modification_truncate" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Access Attempts to Files - truncate</title>
+<description>At a minimum the audit system should collect file access
+attempts for all users and root. If the <tt>auditd</tt> daemon is configured
+to use the <tt>augenrules</tt> program to read audit rules during daemon
+startup (the default), add the following lines to a file with suffix
+<tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S truncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S truncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>
+-a always,exit -F arch=b64 -S truncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S truncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following lines to
+<tt>/etc/audit/audit.rules</tt> file:
+<pre>-a always,exit -F arch=b32 -S truncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S truncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>
+-a always,exit -F arch=b64 -S truncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S truncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+</description>
+<ocil clause="32-bit and 64-bit system calls to truncate are not audited during EACCES and EPERM">
+To verify that the audit system collects file accesses, run the following commands:
+<pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
+</ocil>
+<rationale>Attempts to access files could be an indicator of malicious activity on a system. Auditing
+these events could serve as evidence of potential system compromise.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_unsuccessful_file_modification_truncate" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172"
+stigid="030424" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" />
+</Rule>
+
+<Rule id="audit_rules_unsuccessful_file_modification_ftruncate" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Access Attempts to Files - ftruncate</title>
+<description>At a minimum the audit system should collect file access
+attempts for all users and root. If the <tt>auditd</tt> daemon is configured
+to use the <tt>augenrules</tt> program to read audit rules during daemon
+startup (the default), add the following lines to a file with suffix
+<tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+<pre>-a always,exit -F arch=b32 -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>
+-a always,exit -F arch=b64 -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following lines to
+<tt>/etc/audit/audit.rules</tt> file:
+<pre>-a always,exit -F arch=b32 -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b32 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+If the system is 64 bit then also add the following lines:
+<pre>
+-a always,exit -F arch=b64 -S ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -F key=access
+-a always,exit -F arch=b64 -S ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -F key=access</pre>
+</description>
+<ocil clause="32-bit and 64-bit system calls to ftruncate are not audited during EACCES and EPERM">
+To verify that the audit system collects file accesses, run the following commands:
+<pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+<pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
+</ocil>
+<rationale>Attempts to access files could be an indicator of malicious activity on a system. Auditing
+these events could serve as evidence of potential system compromise.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_unsuccessful_file_modification_ftruncate" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172"
+stigid="030425" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands" severity="medium">
@@ -1472,13 +1698,13 @@ the following form to a file with suffix <tt>.rules</tt> in the directory
 <tt>/etc/audit/rules.d</tt> for each setuid / setgid program on the system,
 replacing the <i>SETUID_PROG_PATH</i> part with the full path of that setuid /
 setgid program in the list:
-<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged</pre>
+<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add a line of the following
 form to <tt>/etc/audit/audit.rules</tt> for each setuid / setgid program on the
 system, replacing the <i>SETUID_PROG_PATH</i> part with the full path of that
 setuid / setgid program in the list:
-<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged</pre>
+<pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged</pre>
 </description>
 <ocil clause="it is not the case">
 To verify that auditing of privileged command use is configured, run the
@@ -1509,20 +1735,20 @@ ossrg="SRG-OS-000327-GPOS-00127" stigid="030310" pcidss="Req-10.2.2" cis="5.2.10
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_rules_media_export" severity="medium">
-<title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
+<Rule id="audit_rules_media_export_mount" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media - mount</title>
 <description>At a minimum the audit system should collect media exportation
 events for all users and root. If the <tt>auditd</tt> daemon is configured to
 use the <tt>augenrules</tt> program to read audit rules during daemon startup
 (the default), add the following line to a file with suffix <tt>.rules</tt> in
 the directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
+<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -F key=export</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -k export</pre>
+<pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;=1000 -F auid!=4294967295 -F key=export</pre>
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for all media exportation events, run the following command:
@@ -1533,13 +1759,12 @@ where classified information, Privacy Act information, and intellectual property
 trail should be created each time a filesystem is mounted to help identify and guard against information
 loss.</rationale>
 <ident cce="27447-2" />
-<oval id="audit_rules_media_export" />
+<oval id="audit_rules_media_export_mount" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-3(1),AU-12(a),AU-12(c),IR-5" disa="135,2884" 
 ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172" stigid="030530" pcidss="Req-10.2.7" cis="5.2.13" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_rules_file_deletion_events" severity="medium">
+<Rule id="audit_rules_file_deletion_events_rename" severity="medium">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User</title>
 <description>At a minimum the audit system should collect file deletion events
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1547,27 +1772,131 @@ for all users and root. If the <tt>auditd</tt> daemon is configured to use the
 default), add the following line to a file with suffix <tt>.rules</tt> in the
 directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete</pre>
+<pre>-a always,exit -F arch=ARCH -S rename -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
 appropriate for your system:
-<pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete</pre>
+<pre>-a always,exit -F arch=ARCH -S rename -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
 </description>
 <ocil>
-<audit-syscall-check-macro syscall="rmdir" />
-<audit-syscall-check-macro syscall="unlink" />
-<audit-syscall-check-macro syscall="unlinkat" />
 <audit-syscall-check-macro syscall="rename" />
-<audit-syscall-check-macro syscall="renameat" />
 </ocil>
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
 <ident cce="27206-2" />
-<oval id="audit_rules_file_deletion_events" />
+<oval id="audit_rules_file_deletion_events_rename" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="366" 
 ossrg="SRG-OS-000480-GPOS-00227" stigid="030750" pcidss="Req-10.2.7" cis="5.2.14" />
+</Rule>
+
+<Rule id="audit_rules_file_deletion_events_renameat" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - renameat</title>
+<description>At a minimum the audit system should collect file deletion events
+for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S renameat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S renameat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="renameat" />
+</ocil>
+<rationale>Auditing file deletions will create an audit trail for files that are removed
+from the system. The audit trail could aid in system troubleshooting, as well as, detecting
+malicious processes that attempt to delete log files to conceal their presence.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_file_deletion_events_renameat" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030751" pcidss="Req-10.2.7" cis="5.2.14" />
+</Rule>
+
+<Rule id="audit_rules_file_deletion_events_rmdir" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - rmdir</title>
+<description>At a minimum the audit system should collect file deletion events
+for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S rmdir -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S rmdir -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="rmdir" />
+</ocil>
+<rationale>Auditing file deletions will create an audit trail for files that are removed
+from the system. The audit trail could aid in system troubleshooting, as well as, detecting
+malicious processes that attempt to delete log files to conceal their presence.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_file_deletion_events_rmdir" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030752" pcidss="Req-10.2.7" cis="5.2.14" />
+</Rule>
+
+<Rule id="audit_rules_file_deletion_events_unlink" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - unlink</title>
+<description>At a minimum the audit system should collect file deletion events
+for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S unlink -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S unlink -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="unlink" />
+</ocil>
+<rationale>Auditing file deletions will create an audit trail for files that are removed
+from the system. The audit trail could aid in system troubleshooting, as well as, detecting
+malicious processes that attempt to delete log files to conceal their presence.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_file_deletion_events_unlink" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030753" pcidss="Req-10.2.7" cis="5.2.14" />
+</Rule>
+
+<Rule id="audit_rules_file_deletion_events_unlinkat" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - unlinkat</title>
+<description>At a minimum the audit system should collect file deletion events
+for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+<tt>augenrules</tt> program to read audit rules during daemon startup (the
+default), add the following line to a file with suffix <tt>.rules</tt> in the
+directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+utility to read audit rules during daemon startup, add the following line to
+<tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
+appropriate for your system:
+<pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="unlinkat" />
+</ocil>
+<rationale>Auditing file deletions will create an audit trail for files that are removed
+from the system. The audit trail could aid in system troubleshooting, as well as, detecting
+malicious processes that attempt to delete log files to conceal their presence.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_file_deletion_events_unlinkat" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="366"
+ossrg="SRG-OS-000480-GPOS-00227" stigid="030754" pcidss="Req-10.2.7" cis="5.2.14" />
 </Rule>
 
 <Rule id="audit_rules_sysadmin_actions">
@@ -1577,11 +1906,11 @@ for all users and root. If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the default),
 add the following line to a file with suffix <tt>.rules</tt> in the directory
 <tt>/etc/audit/rules.d</tt>:
-<pre>-w /etc/sudoers -p wa -k actions</pre>
+<pre>-w /etc/sudoers -p wa -F key=actions</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following line to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-w /etc/sudoers -p wa -k actions</pre>
+<pre>-w /etc/sudoers -p wa -F key=actions</pre>
 </description>
 <ocil clause="there is not output">
 To verify that auditing is configured for system administrator actions, run the following command:
@@ -1595,36 +1924,126 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading" severity="medium">
-<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
+<Rule id="audit_rules_kernel_module_loading_init" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - init_module</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
-to read audit rules during daemon startup (the default), add the following lines to a file
+to read audit rules during daemon startup (the default), add the following line to a file
 with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
 loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
-<pre>-w /usr/sbin/insmod -p x -k modules
--w /usr/sbin/rmmod -p x -k modules
--w /usr/sbin/modprobe -p x -k modules
--a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
+<pre>-a always,exit -F arch=<i>ARCH</i> -S init_module -F key=modules</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
-rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
+rules during daemon startup, add the following line to <tt>/etc/audit/audit.rules</tt> file
 in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
 b64 as appropriate for your system:
-<pre>-w /usr/sbin/insmod -p x -k modules
--w /usr/sbin/rmmod -p x -k modules
--w /usr/sbin/modprobe -p x -k modules
--a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
+<pre>-a always,exit -F arch=<i>ARCH</i> -S init_module -F key=modules</pre>
 </description>
 <ocil>
 <audit-syscall-check-macro syscall="init_module" />
-<audit-syscall-check-macro syscall="delete_module" />
 </ocil>
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident cce="27129-6" />
-<oval id="audit_rules_kernel_module_loading" />
+<oval id="audit_rules_kernel_module_loading_init" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" 
 ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477,GPOS-00222" stigid="030670" pcidss="Req-10.2.7" cis="5.2.17" />
+</Rule>
+
+<Rule id="audit_rules_kernel_module_loading_delete" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - delete_module</title>
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following line to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+<pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F key=modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following line to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
+b64 as appropriate for your system:
+<pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F key=modules</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="delete_module" />
+</ocil>
+<rationale>The addition/removal of kernel modules can be used to alter the behavior of
+the kernel and potentially introduce malicious code into kernel space. It is important
+to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_kernel_module_loading_delete" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477,GPOS-00222" stigid="030671" pcidss="Req-10.2.7" cis="5.2.17" />
+</Rule>
+
+<Rule id="audit_rules_kernel_module_loading_insmod" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - insmod</title>
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following line to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events:
+<pre>-w /usr/sbin/insmod -p x -F key=modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following line to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events:
+<pre>-w /usr/sbin/insmod -p x -F key=modules</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="delete_module" />
+</ocil>
+<rationale>The addition/removal of kernel modules can be used to alter the behavior of
+the kernel and potentially introduce malicious code into kernel space. It is important
+to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_kernel_module_loading_insmod" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477,GPOS-00222" stigid="030672" pcidss="Req-10.2.7" cis="5.2.17" />
+</Rule>
+
+<Rule id="audit_rules_kernel_module_loading_rmmod" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - rmmod</title>
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following line to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events:
+<pre>-w /usr/sbin/rmmod -p x -F key=modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following line to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events:
+<pre>-w /usr/sbin/rmmod -p x -F key=modules</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="delete_module" />
+</ocil>
+<rationale>The addition/removal of kernel modules can be used to alter the behavior of
+the kernel and potentially introduce malicious code into kernel space. It is important
+to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_kernel_module_loading_rmmod" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477,GPOS-00222" stigid="030673" pcidss="Req-10.2.7" cis="5.2.17" />
+</Rule>
+
+<Rule id="audit_rules_kernel_module_loading_modprobe" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - modprobe</title>
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following line to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events:
+<pre>-w /usr/sbin/modprobe -p x -F key=modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following line to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events:
+<pre>-w /usr/sbin/modprobe -p x -F key=modules</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="delete_module" />
+</ocil>
+<rationale>The addition/removal of kernel modules can be used to alter the behavior of
+the kernel and potentially introduce malicious code into kernel space. It is important
+to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="audit_rules_kernel_module_loading_modprobe" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477,GPOS-00222" stigid="030674" pcidss="Req-10.2.7" cis="5.2.17" />
 </Rule>
 
 <Rule id="audit_rules_immutable">
