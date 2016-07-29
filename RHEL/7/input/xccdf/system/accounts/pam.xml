@@ -418,7 +418,7 @@ compromose the password.
 <tested by="swells" on="20140928" />
 </Rule>
 
-<Rule id="accounts_password_pam_ucredit">
+<Rule id="accounts_password_pam_ucredit" severity="medium">
 <title>Set Password Strength Minimum Uppercase Characters</title>
 <description>The pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
@@ -426,7 +426,7 @@ contain that many uppercase characters. When set to a positive number, pam_pwqua
 length credit for each uppercase character. Modify the <tt>ucredit</tt> setting in
 <tt>/etc/security/pwquality.conf</tt> to require the use of an uppercase character in passwords.
 </description>
-<ocil clause="ucredit is not found or not set to the required value">
+<ocil clause="ucredit is not found or not set less than or equal to the required value">
 To check how many uppercase characters are required in a password, run the following command:
 <pre>$ grep ucredit /etc/security/pwquality.conf</pre>
 The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
@@ -437,7 +437,7 @@ This would appear as <tt>ucredit = -1</tt>.
 Use of a complex password helps to increase the time and resources reuiqred to compromise the password.
 Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts
 at guessing and brute-force attacks.
-<br />
+<br /><br />
 Password complexity is one factor of several that determines how long it takes to crack a password. The more
 complex the password, the greater the number of possible combinations that need to be tested before
 the password is compromised.
@@ -468,7 +468,7 @@ Use of a complex password helps to increase the time and resources required
 to compromise the password. Password complexity, or strength, is a measure of
 the effectiveness of a password in resisting attempts at guessing and brute-force
 attacks. 
-
+<br /><br />
 Password complexity is one factor of several that determines how long it takes
 to crack a password. The more complex the password, the greater the number of 
 possble combinations that need to be tested before the password is compromised.
@@ -489,7 +489,7 @@ contain that many lowercase characters. When set to a positive number, pam_pwqua
 length credit for each lowercase character. Modify the <tt>lcredit</tt> setting in 
 <tt>/etc/security/pwquality.conf</tt> to require the use of a lowercase character in passwords.
 </description>
-<ocil clause="lcredit is not found or not equal to or less than the required value">
+<ocil clause="lcredit is not found or not less than or equal to the required value">
 To check how many lowercase characters are required in a password, run the following command:
 <pre>$ grep lcredit /etc/security/pwquality.conf</pre>
 The <tt>lcredit</tt> parameter (as a negative number) will indicate how many special characters are required.
@@ -500,7 +500,7 @@ Use of a complex password helps to increase the time and resources required
 to compromise the password. Password complexity, or strength, is a measure of
 the effectiveness of a password in resisting attempts at guessing and brute-force
 attacks. 
-
+<br /><br />
 Password complexity is one factor of several that determines how long it takes
 to crack a password. The more complex the password, the greater the number of 
 possble combinations that need to be tested before the password is compromised.
@@ -532,12 +532,12 @@ Use of a complex password helps to increase the time and resources
 required to compromise the password. Password complexity, or strength, 
 is a measure of the effectiveness of a password in resisting attempts 
 at guessing and brute–force attacks.
-
+<br /><br />
 Password complexity is one factor of several that determines how long 
 it takes to crack a password. The more complex the password, the 
 greater the number of possible combinations that need to be tested 
 before the password is compromised.
-
+<br /><br />
 Requiring a minimum number of different characters during password changes ensures that
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
@@ -578,11 +578,11 @@ then this would appear as <tt>minclass = 3</tt>.
 Use of a complex password helps to increase the time and resources required to compromise the password.
 Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts 
 at guessing and brute-force attacks.
-
+<br /><br />
 Password complexity is one factor of several that determines how long it takes to crack a password. The
 more complex the password, the greater the number of possible combinations that need to be tested before
 the password is compromised.
-
+<br /><br />
 Requiring a minimum number of character categories makes password guessing attacks more difficult 
 by ensuring a larger search space.
 </rationale>
@@ -683,9 +683,9 @@ attempts using <tt>pam_faillock.so</tt>, modify the content of both
 <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
 <ul> 
-<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<li>Modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
 <pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
-<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<li>Modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
 <pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 </ul>
 </description>
@@ -699,7 +699,7 @@ The output should show <tt>even_deny_root</tt>.
 By limiting the number of failed logon attempts, the risk of unauthorized system access via user password
 guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80353-6" />
 <oval id="accounts_passwords_pam_faillock_deny_root" />
 <ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010373" />
 </Rule>

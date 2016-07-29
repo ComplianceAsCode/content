@@ -27,9 +27,13 @@ operator="equals" interactive="0">
 <Value id="var_accounts_fail_delay" type="number"
 operator="equals" interactive="0">
 <title>Maximum login attempts delay</title>
-<description>Maximum time between fail login attempts before re-prompting.</description>
+<description>Maximum time in seconds between fail login attempts before re-prompting.</description>
 <value selector="">4</value>
+<value selector="1">1</value>
+<value selector="2">2</value>
+<value selector="3">3</value>
 <value selector="4">4</value>
+<value selector="5">5</value>
 </Value>
 
 <Value id="var_accounts_tmout" type="number" operator="equals" interactive="0">
@@ -98,19 +102,19 @@ To ensure the logon failure delay controlled by <tt>/etc/login.defs</tt> is set 
 add or correct the <tt>FAIL_DELAY</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
 <pre>FAIL_DELAY <sub idref="var_accounts_fail_delay" /></pre>
 </description>
-<ocil clause="the above command returns no output, or FAIL_DELAY is configured incorrectly">
+<ocil clause="the above command returns no output, or FAIL_DELAY is configured less than the expected value">
 Verify the <tt>FAIL_DELAY</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
 running the following command:
-<pre># grep -i "FAIL_DELAY" /etc/login.defs</pre>
+<pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs</pre>
 All output must show the value of <tt>FAIL_DELAY</tt> set as shown in the below:
-<pre># grep -i "FAIL_DELAY" /etc/login.defs
+<pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs
 fail_delay <sub idref="var_accounts_fail_delay" /></pre>
 </ocil>
 <rationale>
 Increasing the time between a failed authentication attempt and re-prompting to
 enter credentials helps to slow a single-threaded brute force attack.
 </rationale>
-<ident cce="RHEL7_CCE_TBD" />
+<ident cce="80352-8" />
 <oval id="accounts_logon_fail_delay" value="var_accounts_fail_delay" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00226" stigid="010420" />
 </Rule>
