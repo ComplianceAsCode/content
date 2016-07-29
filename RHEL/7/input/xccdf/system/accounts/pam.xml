@@ -56,7 +56,7 @@ frequently.</description>
 <value selector="24">24</value>
 </Value>
 
-<Rule id="display_login_attempts">
+<Rule id="display_login_attempts" severity="low">
 <title>Set Last Logon/Access Notification</title>
 <description>To configure the system to notify users of last logon/access
 using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt> settings in
@@ -80,7 +80,7 @@ and gives them an opportunity to notify administrators.
 </rationale>
 <ident cce="27275-7" />
 <oval id="display_login_attempts" />
-<ref nist="AC-9" disa="53,366" pcidss="Req-10.2.4" ossrg="SRG-OS-000480-GPOS-00227"
+<ref nist="AC-9" disa="366" pcidss="Req-10.2.4" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="040300" />
 </Rule>
 
@@ -302,7 +302,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 </Rule>
 
 <Rule id="accounts_password_pam_maxrepeat" severity="medium">
-<title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
+<title>Set Password Maximum Consecutive Repeating Characters</title>
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
 which contain more than that number of consecutive characters. Modify the <tt>maxrepeat</tt> setting
