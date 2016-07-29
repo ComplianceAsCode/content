@@ -659,7 +659,7 @@ modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/pa
 <pre>account required pam_faillock.so</pre></li>
 </ul>
 </description>
-<ocil clause="that is not the case">
+<ocil clause="unlock_time is less than the expected value">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
 The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
