@@ -70,18 +70,33 @@ baseline.
 <!-- 1.1.14 Ensure nodev option set on /home partition (Scored) -->
 <select idref="mount_option_nodev_nonroot_local_partitions" selected="true" />
 
-
 <!-- 1.1.15 Ensure nodev option set on /dev/shm partition (Scored) -->
+<select idref="mount_option_dev_shm_nodev" selected="true" />
+
 <!-- 1.1.16 Ensure nosuid option set on /dev/shm partition (Scored) -->
+<select idref="mount_option_dev_shm_nosuid" selected="true" />
+
 <!-- 1.1.17 Ensure noexec option set on /dev/shm partition (Scored) -->
+<select idref="mount_option_dev_shm_noexec" selected="true" />
+
 <!-- 1.1.18 Ensure nodev option set on removable media partitions (Not Scored) -->
+<select idref="mount_option_nodev_removable_partitions" selected="true" />
+
 <!-- 1.1.19 Ensure nosuid option set on removable media partitions (Not Scored) -->
+<select idref="mount_option_nosuid_removable_partitions" selected="true" />
+
 <!-- 1.1.20 Ensure noexec option set on removable media partitions (Not Scored) -->
+<select idref="mount_option_noexec_removable_partitions" selected="true" />
+
 <!-- 1.1.21 Ensure sticky bit set on all world-writable directories (Not Scored) -->
+<select idref="dir_perms_world_writable_sticky_bits" selected="true" />
+
 <!-- 1.1.22 Disable Automounting (Scored) -->
+<select idref="service_autofs_disabled" selected="true" />
 
 <!-- 1.2 Configure Software Updates -->
 <!-- 1.2.1 Ensure package manager repositories are configured (Not Scored) -->
+
 <!-- 1.2.2 Ensure gpgcheck is globally activated (Scored) -->
 <!-- 1.2.3 Ensure GPG keys are configured (Not Scored) -->
 <!-- 1.2.4 Ensure Red Hat Network or Subscription Manager connection is configured (Not Scored) -->
@@ -142,7 +157,11 @@ baseline.
 
 <!-- 2.2.2 Ensure X Window System is not installed (Scored) -->
 <!-- 2.2.3 Ensure Avahi Server is not enabled (Scored) -->
+<select idref="service_avahi-daemon_disabled" selected="true" />
+
 <!-- 2.2.4 Ensure CUPS is not enabled (Scored) -->
+<select idref="service_cups_disabled" selected="true" />
+
 <!-- 2.2.5 Ensure DHCP Server is not enabled (Scored) -->
 <!-- 2.2.6 Ensure LDAP server is not enabled (Scored) -->
 <!-- 2.2.7 Ensure NFS and RPC are not enabled (Scored) -->
@@ -265,18 +284,39 @@ baseline.
 
 <!-- 5.2 SSH Server Configuration -->
 <!-- 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored) -->
+
 <!-- 5.2.2 Ensure SSH Protocol is set to 2 (Scored) -->
+<select idref="sshd_allow_only_protocol2" selected="true" />
+
 <!-- 5.2.3 Ensure SSH LogLevel is set to INFO (Scored) -->
 <!-- 5.2.4 Ensure SSH X11 forwarding is disabled (Scored) -->
 <!-- 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored) -->
 <!-- 5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored) -->
+<select idref="sshd_disable_rhosts" selected="true" />
+
 <!-- 5.2.7 Ensure SSH HostbasedAuthentication is disabled (Scored) -->
+<select idref="disable_host_auth" selected="true" />
+
 <!-- 5.2.8 Ensure SSH root login is disabled (Scored) -->
+<select idref="sshd_disable_root_login" selected="true" />
+
 <!-- 5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Scored) -->
+<select idref="sshd_disable_empty_passwords" selected="true" />
+
 <!-- 5.2.10 Ensure SSH PermitUserEnvironment is disabled (Scored) -->
+<select idref="sshd_do_not_permit_user_env" selected="true" />
+
 <!-- 5.2.11 Ensure only approved ciphers are used (Scored) -->
+<select idref="sshd_use_approved_ciphers" selected="true" />
+
 <!-- 5.2.12 Ensure only approved MAC algorithms are used (Scored) -->
+<select idref="sshd_use_approved_macs" selected="true" />
+
 <!-- 5.2.13 Ensure SSH Idle Timout Interval is configured (Scored) -->
+<refine-value idref="sshd_idle_timeout_value" selector="300" />
+<select idref="sshd_set_idle_timeout" selected="true" />
+<!-- TO DO: ClientAliveMaxCount -->
+
 <!-- 5.2.14 Ensure SSH LoginGraceTime is set to one minute or less (Scored) -->
 <!-- 5.2.15 Ensure SSH access is limited (Scored) -->
 <!-- 5.2.16 Ensure SSH warning banner is configured (Scored) -->

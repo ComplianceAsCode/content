@@ -48,7 +48,7 @@ not advised to set <tt>nodev</tt> on partitions which contain their root
 filesystems.</rationale>
 <ident cce="80146-4" />
 <oval id="mount_option_nodev_removable_partitions" value="var_removable_partition" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2"/>
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" cis="1.1.18" />
 </Rule>
 
 <Rule id="mount_option_noexec_removable_partitions">
@@ -70,7 +70,7 @@ in the output are not removable media.
 </ocil>
 <ident cce="80147-2" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" cis="1.1.12" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" cis="1.1.20" />
 </Rule>
 
 <!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
@@ -88,7 +88,7 @@ users to introduce SUID or SGID binaries from partitions mounted off of
 removable media would allow them to introduce their own highly-privileged programs.</rationale>
 <ident cce="80148-0" />
 <oval id="mount_option_nosuid_removable_partitions" value="var_removable_partition" />
-<ref nist="AC-6,AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" cis="1.1.13" disa="366"
+<ref nist="AC-6,AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" cis="1.1.19" disa="366"
 ossrg="SRG-OS-000480-GPOS-00227" stigid="021011" />
 </Rule>
 
@@ -148,7 +148,7 @@ within temporary directories like <tt>/dev/shm</tt>.
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <ident cce="80152-2" />
 <oval id="mount_option_dev_shm_nodev" />
-<ref nist="CM-7, MP-2" cis="1.1.14" />
+<ref nist="CM-7, MP-2" cis="1.1.15" />
 </Rule>
 
 <Rule id="mount_option_dev_shm_noexec">
@@ -163,7 +163,7 @@ from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
 such as <tt>/dev/shm</tt> can expose the system to potential compromise.</rationale>
 <ident cce="80153-0" />
 <oval id="mount_option_dev_shm_noexec" />
-<ref nist="CM-7, MP-2" cis="1.1.16" />
+<ref nist="CM-7, MP-2" cis="1.1.17" />
 </Rule>
 
 <Rule id="mount_option_dev_shm_nosuid">
@@ -177,7 +177,7 @@ be required in these world-writable directories.
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <ident cce="80154-8" />
 <oval id="mount_option_dev_shm_nosuid" />
-<ref nist="CM-7, MP-2" cis="1.1.14" />
+<ref nist="CM-7, MP-2" cis="1.1.16" />
 </Rule>
 
 <Rule id="mount_option_var_tmp_bind">
