@@ -2,6 +2,4 @@
 . /usr/share/scap-security-guide/remediation_functions
 populate var_password_pam_maxclassrepeat
 
-if grep -q "maxclassrepeat=" /etc/security/pwquality.conf ; then   
-	echo "maxclassrepeat = $var_password_pam_maxclassrepeat" >> /etc/security/pwquality.conf
-fi
+replace_or_append '/etc/security/pwquality.conf' '^maxclassrepeat' $var_password_pam_maxclassrepeat '27512-3' '%s = %s'
