@@ -1,0 +1,119 @@
+<Profile id="common">
+<title>Common Profile for General-Purpose OpenSUSE Systems</title>
+<description>This profile contains items common to general-purpose OpenSUSE installations.</description>
+
+  <select idref="disable_prelink" selected="true"/>
+  <select idref="aide_build_database" selected="true"/>
+
+<!-- Installing and Maintaining Software section rules -->
+  <!-- Updating Software section rules -->
+  <select idref="ensure_gpgcheck_globally_activated" selected="true"/>
+  <select idref="ensure_gpgcheck_never_disabled" selected="true"/>
+  <select idref="rpm_verify_permissions" selected="true"/>
+  <select idref="rpm_verify_hashes" selected="true"/>
+
+<!-- File Permissions And Masks -->
+  <!-- Verify File Permissions Within Some Important Directories -->
+  <select idref="file_permissions_library_dirs" selected="true"/>
+  <select idref="file_ownership_library_dirs" selected="true"/>
+  <select idref="file_permissions_binary_dirs" selected="true"/>
+  <select idref="file_ownership_binary_dirs" selected="true"/>
+
+<!-- Account and Access Control section rules -->
+  <!-- Protect Accounts by Restricting Password-Based Login section rules -->
+    <!-- Restrict Root Logins section rules -->
+    <select idref="no_direct_root_logins" selected="true"/>
+    <select idref="securetty_root_login_console_only" selected="true"/>
+    <select idref="restrict_serial_port_logins" selected="true"/>
+    <!-- <select idref="no_root_webbrowsing" selected="true"/> -->
+    <!-- <select idref="no_shelllogin_for_systemaccounts" selected="true"/> -->
+    <select idref="accounts_no_uid_except_zero" selected="true"/>
+    <!-- <select idref="root_path_default" selected="true"/> -->
+    <!-- Verify Proper Storage and Existence of Password Hashes section rules -->
+    <select idref="no_empty_passwords" selected="true"/>
+    <select idref="display_login_attempts" selected="true"/>
+    <select idref="accounts_password_all_shadowed" selected="true"/>
+    <select idref="gid_passwd_group_same" selected="true"/>
+    <select idref="no_netrc_files" selected="true"/>
+    <!-- Set Password Expiration Parameters section rules -->
+    <refine-value idref="var_accounts_password_minlen_login_defs" selector="12"/>
+    <select idref="accounts_password_minlen_login_defs" selected="true"/>
+    <refine-value idref="var_accounts_minimum_age_login_defs" selector="7"/>
+    <select idref="accounts_minimum_age_login_defs" selected="true"/>
+    <refine-value idref="var_accounts_maximum_age_login_defs" selector="90"/>
+    <select idref="accounts_maximum_age_login_defs" selected="true"/>
+    <refine-value idref="var_accounts_password_warn_age_login_defs" selector="7"/>
+    <select idref="accounts_password_warn_age_login_defs" selected="true"/>
+    <!-- Set Account Expiration Parameters section rules -->
+    <select idref="account_unique_name" selected="true"/>
+  <!-- Secure Session Configuration Files for Login Accounts -->
+    <!-- Ensure that No Dangerous Directories Exist in Root's Path -->
+      <select idref="accounts_root_path_dirs_no_write" selected="true"/>
+
+<!-- Network Configuration and Firewalls section rules -->
+  <select idref="service_firewalld_enabled" selected="true"/>
+  <select idref="set_firewalld_default_zone" selected="true"/>
+
+<!-- System Accounting with Auditd section rules -->
+
+  <select idref="bootloader_audit_argument" selected="true"/>
+  <refine-value idref="var_auditd_num_logs" selector="5"/>
+  <select idref="auditd_data_retention_num_logs" selected="true"/>
+  <select idref="auditd_data_retention_max_log_file" selected="true"/>
+  <select idref="auditd_data_retention_max_log_file_action" selected="true"/>
+  <select idref="auditd_data_retention_space_left_action" selected="true"/>
+  <select idref="auditd_data_retention_admin_space_left_action" selected="true"/>
+  <select idref="auditd_data_retention_action_mail_acct" selected="true"/>
+  <select idref="auditd_audispd_syslog_plugin_activated" selected="true"/>
+  <select idref="file_ownership_var_log_audit" selected="true"/>
+
+  <select idref="audit_rules_time_adjtimex" selected="true"/>
+  <select idref="audit_rules_time_settimeofday" selected="true"/>
+  <select idref="audit_rules_time_stime" selected="true"/>
+  <select idref="audit_rules_time_clock_settime" selected="true"/>
+  <select idref="audit_rules_time_watch_localtime" selected="true"/>
+
+  <select idref="audit_rules_usergroup_modification" selected="true"/>
+  <select idref="audit_rules_networkconfig_modification" selected="true"/>
+  <select idref="audit_rules_mac_modification" selected="true"/>
+
+  <!-- Audit DAC modifications -->
+  <select idref="audit_rules_dac_modification_chmod" selected="true"/>
+  <select idref="audit_rules_dac_modification_chown" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchmod" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchmodat" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchown" selected="true"/>
+  <select idref="audit_rules_dac_modification_fchownat" selected="true"/>
+  <select idref="audit_rules_dac_modification_fremovexattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_fsetxattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_lchown" selected="true"/>
+  <select idref="audit_rules_dac_modification_lremovexattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_lsetxattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_removexattr" selected="true"/>
+  <select idref="audit_rules_dac_modification_setxattr" selected="true"/>
+  <select idref="audit_rules_login_events" selected="true"/>
+  <select idref="audit_rules_session_events" selected="true"/>
+  <select idref="audit_rules_unsuccessful_file_modification" selected="true"/>
+  <select idref="audit_rules_privileged_commands" selected="true"/>
+  <select idref="audit_rules_media_export" selected="true"/>
+  <select idref="audit_rules_file_deletion_events" selected="true"/>
+  <select idref="audit_rules_sysadmin_actions" selected="true"/>
+  <select idref="audit_rules_kernel_module_loading" selected="true"/>
+  <select idref="audit_rules_immutable" selected="true" />
+
+  <!-- Configure USB interfaces -->
+  <select idref="bootloader_nousb_argument" selected="true" />
+
+<!-- Services -->
+  <!-- Network Time Protocol -->
+  <select idref="service_chronyd_enabled" selected="true"/>
+  <select idref="chronyd_specify_remote_server" selected="true"/>
+  <select idref="service_auditd_enabled" selected="true"/>
+  <!-- SSH Server -->
+  <select idref="sshd_disable_root_login" selected="true"/>
+  <select idref="sshd_disable_empty_passwords" selected="true"/>
+  <refine-value idref="sshd_idle_timeout_value" selector="5_minutes"/>
+  <select idref="sshd_set_idle_timeout" selected="true"/>
+  <select idref="sshd_set_keepalive" selected="true"/>
+
+</Profile>
