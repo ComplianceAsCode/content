@@ -129,7 +129,7 @@ ossrg="SRG-OS-000480-GPOS-00227" stigid="021240" />
 <tested by="MM" on="20120928"/>
 </Rule>
 
-<Rule id="encrypt_partitions" severity="medium">
+<Rule id="encrypt_partitions" severity="high">
 <title>Encrypt Partitions</title>
 <description>
 Red Hat Enterprise Linux 7 natively supports partition encryption through the
@@ -154,8 +154,17 @@ Detailed information on encrypting partitions using LUKS can be found on
 the Red Hat Documentation web site:<br />
 https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html
 </description>
-<ocil clause="encryption must be used and is not employed">
-Determine if encryption must be used to protect data on the system. 
+<ocil clause="partitions do not have a type of crypto_LUKS">
+Check the system partitions to determine if they are encrypted with the following command:
+<pre>blkid</pre>
+<br /><br />
+Output will be similar to:
+<pre>/dev/sda1: UUID=" ab12c3de-4f56-789a-8f33-3850cc8ce3a2
+" TYPE="crypto_LUKS"
+/dev/sda2: UUID=" bc98d7ef-6g54-321h-1d24-9870de2ge1a2
+" TYPE="crypto_LUKS"</pre>
+<br /><br />
+Pseudo-file systems, such as /proc, /sys, and tmpfs, are not required to use disk encryption and are not a finding. 
 </ocil>
 <rationale>
 The risk of a system's physical compromise, particularly mobile systems such as

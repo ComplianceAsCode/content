@@ -56,7 +56,7 @@ frequently.</description>
 <value selector="24">24</value>
 </Value>
 
-<Rule id="display_login_attempts">
+<Rule id="display_login_attempts" severity="low">
 <title>Set Last Logon/Access Notification</title>
 <description>To configure the system to notify users of last logon/access
 using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt> settings in
@@ -80,7 +80,7 @@ and gives them an opportunity to notify administrators.
 </rationale>
 <ident cce="27275-7" />
 <oval id="display_login_attempts" />
-<ref nist="AC-9" disa="53,366" pcidss="Req-10.2.4" ossrg="SRG-OS-000480-GPOS-00227"
+<ref nist="AC-9" disa="366" pcidss="Req-10.2.4" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="040300" />
 </Rule>
 
@@ -302,7 +302,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 </Rule>
 
 <Rule id="accounts_password_pam_maxrepeat" severity="medium">
-<title>Set Password to Maximum of Three Consecutive Repeating Characters</title>
+<title>Set Password Maximum Consecutive Repeating Characters</title>
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
 which contain more than that number of consecutive characters. Modify the <tt>maxrepeat</tt> setting
@@ -313,17 +313,17 @@ run of (<sub idref="var_password_pam_maxrepeat" /> + 1) or more identical charac
 To check the maximum value for consecutive repeating characters, run the following command:
 <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
 Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 2, which would appear as
-<tt>maxrepeat = 2</tt>.
+<tt>maxrepeat=2</tt>.
 </ocil>
 <rationale>
 Use of a complex password helps to increase the time and resources required to compromise the password. 
 Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at 
 guessing and brute-force attacks.
-
+<br /><br />
 Password complexity is one factor of several that determines how long it takes to crack a password. The more
 complex the password, the greater the number of possible combinations that need to be tested before the
 password is compromised.
-
+<br /><br />
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
 <ident cce="27333-4" />
@@ -331,7 +331,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010150" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxclassrepeat" severity="low">
+<Rule id="accounts_password_pam_maxclassrepeat" severity="medium">
 <title>Set Password to Maximum of Consecutive Repeating Characters from Same Character Class</title>
 <description>The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
 consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
@@ -418,7 +418,7 @@ compromose the password.
 <tested by="swells" on="20140928" />
 </Rule>
 
-<Rule id="accounts_password_pam_ucredit">
+<Rule id="accounts_password_pam_ucredit" severity="medium">
 <title>Set Password Strength Minimum Uppercase Characters</title>
 <description>The pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
@@ -426,7 +426,7 @@ contain that many uppercase characters. When set to a positive number, pam_pwqua
 length credit for each uppercase character. Modify the <tt>ucredit</tt> setting in
 <tt>/etc/security/pwquality.conf</tt> to require the use of an uppercase character in passwords.
 </description>
-<ocil clause="ucredit is not found or not set to the required value">
+<ocil clause="ucredit is not found or not set less than or equal to the required value">
 To check how many uppercase characters are required in a password, run the following command:
 <pre>$ grep ucredit /etc/security/pwquality.conf</pre>
 The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
@@ -437,7 +437,7 @@ This would appear as <tt>ucredit = -1</tt>.
 Use of a complex password helps to increase the time and resources reuiqred to compromise the password.
 Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts
 at guessing and brute-force attacks.
-<br />
+<br /><br />
 Password complexity is one factor of several that determines how long it takes to crack a password. The more
 complex the password, the greater the number of possible combinations that need to be tested before
 the password is compromised.
@@ -468,7 +468,7 @@ Use of a complex password helps to increase the time and resources required
 to compromise the password. Password complexity, or strength, is a measure of
 the effectiveness of a password in resisting attempts at guessing and brute-force
 attacks. 
-
+<br /><br />
 Password complexity is one factor of several that determines how long it takes
 to crack a password. The more complex the password, the greater the number of 
 possble combinations that need to be tested before the password is compromised.
@@ -489,7 +489,7 @@ contain that many lowercase characters. When set to a positive number, pam_pwqua
 length credit for each lowercase character. Modify the <tt>lcredit</tt> setting in 
 <tt>/etc/security/pwquality.conf</tt> to require the use of a lowercase character in passwords.
 </description>
-<ocil clause="lcredit is not found or not equal to or less than the required value">
+<ocil clause="lcredit is not found or not less than or equal to the required value">
 To check how many lowercase characters are required in a password, run the following command:
 <pre>$ grep lcredit /etc/security/pwquality.conf</pre>
 The <tt>lcredit</tt> parameter (as a negative number) will indicate how many special characters are required.
@@ -500,7 +500,7 @@ Use of a complex password helps to increase the time and resources required
 to compromise the password. Password complexity, or strength, is a measure of
 the effectiveness of a password in resisting attempts at guessing and brute-force
 attacks. 
-
+<br /><br />
 Password complexity is one factor of several that determines how long it takes
 to crack a password. The more complex the password, the greater the number of 
 possble combinations that need to be tested before the password is compromised.
@@ -532,12 +532,12 @@ Use of a complex password helps to increase the time and resources
 required to compromise the password. Password complexity, or strength, 
 is a measure of the effectiveness of a password in resisting attempts 
 at guessing and brute–force attacks.
-
+<br /><br />
 Password complexity is one factor of several that determines how long 
 it takes to crack a password. The more complex the password, the 
 greater the number of possible combinations that need to be tested 
 before the password is compromised.
-
+<br /><br />
 Requiring a minimum number of different characters during password changes ensures that
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
@@ -578,11 +578,11 @@ then this would appear as <tt>minclass = 3</tt>.
 Use of a complex password helps to increase the time and resources required to compromise the password.
 Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts 
 at guessing and brute-force attacks.
-
+<br /><br />
 Password complexity is one factor of several that determines how long it takes to crack a password. The
 more complex the password, the greater the number of possible combinations that need to be tested before
 the password is compromised.
-
+<br /><br />
 Requiring a minimum number of character categories makes password guessing attacks more difficult 
 by ensuring a larger search space.
 </rationale>
@@ -659,7 +659,7 @@ modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/pa
 <pre>account required pam_faillock.so</pre></li>
 </ul>
 </description>
-<ocil clause="that is not the case">
+<ocil clause="unlock_time is less than the expected value">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
 The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
@@ -683,9 +683,9 @@ attempts using <tt>pam_faillock.so</tt>, modify the content of both
 <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
 <ul> 
-<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<li>Modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
 <pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
-<li> modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
+<li>Modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:
 <pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
 </ul>
 </description>
@@ -699,7 +699,7 @@ The output should show <tt>even_deny_root</tt>.
 By limiting the number of failed logon attempts, the risk of unauthorized system access via user password
 guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80353-6" />
 <oval id="accounts_passwords_pam_faillock_deny_root" />
 <ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010373" />
 </Rule>
@@ -707,19 +707,21 @@ guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by lo
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
-Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system to lock out accounts after a number of incorrect login
-attempts. Modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
+Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive 
+configures the system to lock out an accounts after a number of incorrect login
+attempts within a specified time period.. Modify the content of both 
+<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
 <br /><br />
 <ul>
-<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<li>Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
 <pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
-<li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
+<li>Add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
 <pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
-<li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
+<li>Add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
 <pre>account required pam_faillock.so</pre></li>
 </ul>
 </description>
-<ocil clause="that is not the case">
+<ocil clause="fail_interval is less than the required value">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
 For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is 
@@ -727,12 +729,13 @@ For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&
 If the <tt>fail_interval</tt> parameter is not set, the default setting of 900 seconds is acceptable.
 </ocil>
 <rationale>
-Locking out user accounts after a number of incorrect attempts within a
-specific period of time prevents direct password guessing attacks.
+By limiting the number of failed logon attempts the risk of unauthorized system
+access via user password guessing, otherwise known as brute-forcing, is reduced.
+Limits are imposed by locking the account.
 </rationale>
 <ident cce="27297-1" />
 <oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
-<ref nist="AC-7(a)" disa="44" ossrg="21" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010371" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
@@ -798,7 +801,7 @@ Passwords need to be protected at all times, and encryption is the standard meth
 passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily
 compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they 
 are kepy in plain text.
-
+<br /><br />
 This setting ensures user and group account administration utilities are configured to store only
 encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> configuration option
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
@@ -824,7 +827,7 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 Passwords need to be protected at all times, and encryption is the standard method for protecting passwords.
 If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords
 that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
-
+<br /><br />
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident cce="27124-7" />
@@ -851,7 +854,7 @@ Passwords need to be protected at all times, and encryption is the standard meth
 passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily
 compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they 
 are kepy in plain text.
-
+<br /><br />
 This setting ensures user and group account administration utilities are configured to store only
 encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> configuration option
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
