@@ -1,0 +1,19 @@
+# platform = Red Hat Enterprise Linux 7
+. /usr/share/scap-security-guide/remediation_functions
+populate sysctl_SYSCTLID_value
+
+#
+# Set runtime for SYSCTLVAR
+#
+/sbin/sysctl -q -n -w SYSCTLVAR=$sysctl_SYSCTLID_value
+
+#
+# If SYSCTLVAR present in /etc/sysctl.conf, change value to appropriate value
+#	else, add "SYSCTLVAR = value" to /etc/sysctl.conf
+#
+if grep --silent ^SYSCTLVAR /etc/sysctl.conf ; then
+	sed -i "s/^SYSCTLVAR.*/SYSCTLVAR = $sysctl_SYSCTLID_value/g" /etc/sysctl.conf
+else
+	echo -e "\n# Set SYSCTLVAR to $sysctl_SYSCTLID_value per security requirements" >> /etc/sysctl.conf
+	echo "SYSCTLVAR = $sysctl_SYSCTLID_value" >> /etc/sysctl.conf
+fi
