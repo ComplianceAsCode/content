@@ -11,12 +11,12 @@ For more information on <tt>Sudo</tt> and addition <tt>Sudo</tt> configuration o
 </description>
 
 <Rule id="sudo_remove_nopasswd" severity="medium">
-<title>Ensure NOPASSWD Is Not Used in Sudo</title>
+<title>Ensure Users Re-Authenticate for Privilege Escalation - sudo NOPASSWD</title>
 <description>
 The sudo <tt>NOPASSWD</tt> tag, when specified, allows a user to execute commands using
 sudo without having to authenticate. This should be disabled by making sure that the
 <tt>NOPASSWD</tt> tag does not exist in <tt>/etc/sudoers</tt> configuration file or 
-any sudo configuration snippets in <tt>/etc/sudoers.d</tt>.
+any sudo configuration snippets in <tt>/etc/sudoers.d/</tt>.
 </description>
 <ocil clause="nopasswd is enabled in sudo">
 To determine if <tt>NOPASSWD</tt> has been configured for sudo, run the following command:
@@ -30,19 +30,19 @@ do not have authorization.
 When operating systems provide the capability to escalate a functional capability, it
 is critical that the user re-authenticate.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80351-0" />
 <oval id="sudo_remove_nopasswd" />
 <ref nist="IA-11" disa="2038" stigid="010380"
 ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
 </Rule>
 
 <Rule id="sudo_remove_no_authenticate" severity="medium">
-<title>Ensure !authenticate Is Not Used in Sudo</title>
+<title>Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate</title>
 <description>
 The sudo <tt>!authenticate</tt> option, when specified, allows a user to execute commands using
 sudo without having to authenticate. This should be disabled by making sure that the
 <tt>!authenticate</tt> option does not exist in <tt>/etc/sudoers</tt> configuration file or
-any sudo configuration snippets in <tt>/etc/sudoers.d</tt>.
+any sudo configuration snippets in <tt>/etc/sudoers.d/</tt>.
 </description>
 <ocil clause="!authenticate is enabled in sudo">
 To determine if <tt>!authenticate</tt> has not been configured for sudo, run the following command:
@@ -56,7 +56,7 @@ do not have authorization.
 When operating systems provide the capability to escalate a functional capability, it
 is critical that the user re-authenticate.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
+<ident cce="80350-2" />
 <oval id="sudo_remove_no_authenticate" />
 <ref nist="IA-11" disa="2038" stigid="010381"
 ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
