@@ -36,8 +36,8 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8
-dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist
+all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 wrlinux
+dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist wrlinux-dist
 jenkins: clean all validate dist
 
 fedora:
@@ -66,6 +66,12 @@ debian8:
 
 debian8-dist:
 	cd Debian/8/ && $(MAKE) dist
+
+wrlinux:
+	cd WRLinux/ && SHARED=$(SHARED) $(MAKE)
+
+wrlinux-dist:
+	cd WRLinux/ && $(MAKE) dist
 
 rhel-osp7:
 	cd OpenStack/RHEL-OSP/7 && $(MAKE)
@@ -105,11 +111,12 @@ validate-buildsystem:
 		fi \
 	done
 
-validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
+validate: fedora rhel5 rhel6 rhel7 debian8 wrlinux rhel-osp7 rhevm3 chromium firefox jre
 	cd Fedora/ && $(MAKE) validate
 	cd RHEL/6/ && $(MAKE) validate
 	cd RHEL/7/ && $(MAKE) validate
 	#cd Debian/8/ && $(MAKE) validate
+	cd WRLinux/ && $(MAKE) validate
 	cd Chromium/ && $(MAKE) validate
 	cd Firefox/ && $(MAKE) validate
 	cd JRE/ && $(MAKE) validate
@@ -139,6 +146,7 @@ tarball: rpmroot
 	cp -r --preserve=links --parents RHEL/6/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents RHEL/7/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Debian/8/ $(RPMBUILD)/$(PKG)
+	cp -r --preserve=links --parents WRLinux/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Fedora/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents JRE/ $(RPMBUILD)/$(PKG)
 	cp -r --preserve=links --parents Firefox/ $(RPMBUILD)/$(PKG)
@@ -152,6 +160,7 @@ tarball: rpmroot
 	(cd $(RPMBUILD)/$(PKG)/RHEL/6/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/RHEL/7/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Debian/8/ && $(MAKE) clean)
+	(cd $(RPMBUILD)/$(PKG)/WRLinux/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Fedora/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/Chromium/ && $(MAKE) clean)
 	(cd $(RPMBUILD)/$(PKG)/JRE/ && $(MAKE) clean)
@@ -230,6 +239,7 @@ clean:
 	cd RHEL/6 && $(MAKE) clean
 	cd RHEL/7 && $(MAKE) clean
 	cd Debian/8 && $(MAKE) clean
+	cd WRLinux && $(MAKE) clean
 	cd OpenStack/RHEL-OSP/7 && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
@@ -264,9 +274,11 @@ install: dist
 	install -m 0644 JRE/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 Debian/8/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 Debian/8/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 WRLinux/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 WRLinux/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
 
-.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 jre firefox webmin tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
