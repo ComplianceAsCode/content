@@ -17,7 +17,7 @@ checks:
 	$(MAKE) -C $(IN)/oval/templates copy
 	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
 	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
-	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
+	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL)/ ';'
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# add local Debian8 specific templated ovals
 	# into final list of OVAL checks
@@ -27,7 +27,7 @@ ifeq ($(OVAL_5_11), 0)
 	# Search $(SHARED_OVAL_5_11) and $(IN)/oval/oval_5.11 directories to find all product specific
 	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
 	# directory
-	find $(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
+	find $(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL)/ ';'
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
 endif
