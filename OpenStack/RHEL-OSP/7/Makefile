@@ -17,7 +17,7 @@ checks:
 	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
 	# Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
 	# find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
-	find $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
+	find $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL)/ ';'
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# into final list of OVAL checks
 ifeq ($(OVAL_5_11), 0)
@@ -25,8 +25,8 @@ ifeq ($(OVAL_5_11), 0)
 	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
 	# directory
 	# Don't traverse $(SHARED_OVAL_5_11) for the case of RHEL-OSP7 product for now
-	# find $(SHARED_OVAL_5_11) -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL) ';'
-	find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
+	# find $(SHARED_OVAL_5_11) -maxdepth 1 -type f -name *.xml -exec cp {} $(PROD_OVAL)/ ';'
+	find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL)/ ';'
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
 endif
