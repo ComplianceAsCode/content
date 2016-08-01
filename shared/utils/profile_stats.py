@@ -1,40 +1,46 @@
 #!/usr/bin/python2
 
 script_usage = """
-./profile_stats.py XCCDF_file [--profile XCCDF_file] [--full-stats]
+%prog -b XCCDF_file [-p XCCDF_profile] [--full-stats]
 
 Obtains and displays XCCDF profile statistics like:
 * Count of rules present in the <xccdf:Profile>
 * Count of rules having OVAL implemented [% of completion]
 * Count of rules having remediation implemented [% of completion]
 
-Unless --profile option was provided, it will display statistics
-for all profiles found in the benchmark. Use --profile XCCDF_profile
+for the XCCDF benchmark provided as -b or --benchmark argument.
+
+Unless -p or --profile option was provided, it will display statistics
+for all profiles found in the benchmark. Use -p or --profile XCCDF_profile
 to obtain statistics solely for particular profile.
 
 If --full-stats option was provided it will also display the IDs
-of unimplemented OVAL checks and remediation scripts.
+of unimplemented OVAL checks, remediation scripts, and IDs of rules
+not having CCE identifier assigned yet.
 
 NOTE: Does NOT work on DataStream benchmark format (yet)!
 """
 
 import lxml.etree as ET
+import optparse
 import re
 import sys
 
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 rem_system = "urn:xccdf:fix:script:sh"
+cce_system = "https://nvd.nist.gov/cce/index.cfm"
 console_width = 80
 
-class rule_stats:
-    def __init__(self, rid = None, roval = None, rfix = None):
+class rule_stats(object):
+    def __init__(self, rid = None, roval = None, rfix = None, rcce = None):
         self.dict = { 'id' : rid,
                       'oval' : roval,
-                      'fix' : rfix }
+                      'fix' : rfix,
+                      'cce' : rcce }
 
 
-class xccdf_benchmark:
+class xccdf_benchmark(object):
     def __init__(self, filepath):
         self.tree = None
         self.stats = []
@@ -69,10 +75,12 @@ class xccdf_benchmark:
                                         (xccdf_ns, rule_id))
             if xccdf_rule is not None:
                 oval = xccdf_rule.find("./{%s}check[@system=\"%s\"]" % \
-                                        (xccdf_ns, oval_ns))
+                                       (xccdf_ns, oval_ns))
                 fix = xccdf_rule.find("./{%s}fix[@system=\"%s\"]" % \
-                                       (xccdf_ns, rem_system))
-                self.stats.append(rule_stats(rule_id, oval, fix))
+                                      (xccdf_ns, rem_system))
+                cce = xccdf_rule.find("./{%s}ident[@system=\"%s\"]" % \
+                                      (xccdf_ns, cce_system))
+                self.stats.append(rule_stats(rule_id, oval, fix, cce))
 
 
     def show_profile_stats(self, profile = None, full_stats = False):
@@ -95,12 +103,27 @@ class xccdf_benchmark:
             if missing_ovals:
                 print("** Rules of '%s' profile missing OVAL:" % profile)
                 self.console_print(missing_ovals, console_width)
+            else:
+                print("** All rules of '%s' " % profile + "profile have " + \
+                      "OVAL implemented.")
             missing_fixes = [x.dict['id'] for x in self.stats \
                              if x.dict['fix'] is None]
             if missing_fixes:
                 print("** Rules of '%s' profile missing remediation:" % \
                       profile)
                 self.console_print(missing_fixes, console_width)
+            else:
+                print("** All rules of '%s' " % profile + "profile have " + \
+                      "remediation implemented.")
+            missing_cces = [x.dict['id'] for x in self.stats \
+                            if x.dict['cce'] is None]
+            if missing_cces:
+                print("** Rules of '%s' profile missing CCE identifier:" % \
+                      profile)
+                self.console_print(missing_cces, console_width)
+            else:
+                print("** All rules of '%s' " % profile + "profile have " + \
+                      "CCE identifier assigned.")
         print("\n")
         self.stats = []
 
@@ -120,39 +143,42 @@ class xccdf_benchmark:
             print("%s" % msg)
 
 
-def usage():
-    print("%s" % script_usage)
-    sys.exit(1)
+def parse_options():
+
+    parser = optparse.OptionParser(usage=script_usage, version="%prog 1.0")
+    parser.add_option("-p", "--profile", default=False,
+                      action="store", dest="profile",
+                      help="Show statistics for this XCCDF Profile only")
+    parser.add_option("-b", "--benchmark", default=False,
+                     action="store", dest="benchmark_file",
+                      help="Specify XCCDF benchmark to act on")
+    parser.add_option("--full-stats", default=False,
+                      action="store_true", dest="full_stats",
+                      help="Show advanced statistics (missing OVALs, \
+                      remediations, and CCE identifiers)")
+
+    (options, args) = parser.parse_args()
+    if not options.benchmark_file:
+        print("Missing XCCDF location via -b or --benchmark arguments!\n")
+        parser.print_help()
+        sys.exit(1)
+
+    return (options, args)
+
 
 def main():
 
-    if len(sys.argv) < 2:
-        usage()
-
-    benchmark = None
-    matches = [x for x in sys.argv if re.search(r'.*\.xml', x) is not None]
-    if matches:
-        file_name = matches.pop()
-        benchmark = xccdf_benchmark(file_name)
-
-    full_stats = False
-    if '--full-stats' in sys.argv:
-        full_stats = True
-
-    profile = None
-    if '--profile' in sys.argv:
-        profile = sys.argv[int(sys.argv.index('--profile')) + 1]
-
-    if benchmark is not None:
-        if profile is not None:
-            benchmark.show_profile_stats(profile, full_stats)
-        else:
-            all_profile_elems = benchmark.tree.findall("./{%s}Profile" % \
-                                                       (xccdf_ns))
-            for elem in all_profile_elems:
-                profile = elem.get('id')
-                if profile is not None:
-                    benchmark.show_profile_stats(profile, full_stats)
+    (options, args) = parse_options()
+    benchmark = xccdf_benchmark(options.benchmark_file)
+    if options.profile:
+        benchmark.show_profile_stats(options.profile, options.full_stats)
+    else:
+        all_profile_elems = benchmark.tree.findall("./{%s}Profile" % \
+                                                   (xccdf_ns))
+        for elem in all_profile_elems:
+            profile = elem.get('id')
+            if profile is not None:
+                benchmark.show_profile_stats(profile, options.full_stats)
 
 if __name__ == '__main__':
     main()
