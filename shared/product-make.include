@@ -47,6 +47,7 @@ $(OUT)/guide.xml: $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
 ifeq ($(OPENSCAP_SVG), 0)
 	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
 else
+	mkdir -p $(OUT)/
 	cp $(IN)/guide.xml $(OUT)/
 endif
 
