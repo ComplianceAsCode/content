@@ -7,6 +7,7 @@ import lxml.etree as etree
 
 # SSG Makefile to official product name mapping
 CHROMIUM = 'Google Chromium Browser'
+WRLINUX = 'WRLinux'
 FEDORA = 'Fedora'
 FIREFOX = 'Mozilla Firefox'
 JRE = 'Java Runtime Environment'
@@ -23,6 +24,8 @@ def map_product(version):
 
     if re.findall('chromium', version):
         product_name = CHROMIUM
+    if re.findall('wrlinux', version):
+        product_name = WRLINUX
     if re.findall('fedora', version):
         product_name = FEDORA
     if re.findall('firefox', version):
@@ -59,7 +62,7 @@ def fix_is_applicable_for_product(platform, product):
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for mp in multi_platforms:
-        if mp in platform and product in ['rhel', 'fedora']:
+        if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
             return True
 
     # Get official name for product 

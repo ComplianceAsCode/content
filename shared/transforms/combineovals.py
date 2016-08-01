@@ -22,6 +22,7 @@ JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 FUSE = 'JBoss Fuse'
+WRLINUX = 'Wind River Linux'
 
 
 def _header(schema_version):
@@ -92,6 +93,8 @@ def map_product(version):
         product_name = DEBIAN
     if re.findall('fuse', version):
         product_name = FUSE
+    if re.findall('wrlinux', version):
+        product_name = WRLINUX
     return product_name
 
 def check_is_applicable_for_product(oval_check_def, product):
@@ -112,7 +115,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for mp in multi_platforms:
-        if mp in oval_check_def and product in ['rhel', 'fedora', 'rhel-osp', 'debian']:
+        if mp in oval_check_def and product in ['rhel', 'fedora', 'rhel-osp', 'debian', 'wrlinux']:
             return True
 
     # Current SSG checks aren't unified which element of '<platform>'
