@@ -1,0 +1,234 @@
+<Group id="network-ipv6">
+<title>IPv6</title>
+<description>The system includes support for Internet Protocol
+version 6. A major and often-mentioned improvement over IPv4 is its
+enormous increase in the number of available addresses. Another
+important feature is its support for automatic configuration of
+many network settings.</description>
+
+<Group id="disabling_ipv6">
+<title>Disable Support for IPv6 Unless Needed</title>
+<description>
+Despite configuration that suggests support for IPv6 has
+been disabled, link-local IPv6 address auto-configuration occurs
+even when only an IPv4 address is assigned. The only way to
+effectively prevent execution of the IPv6 networking stack is to
+instruct the system not to activate the IPv6 kernel module.
+</description>
+
+<Rule id="sysctl_kernel_ipv6_disable" severity="medium">
+<title>Disable IPv6 Networking Support Automatic Loading</title>
+<description>To disable support for (<tt>ipv6</tt>) add the following line to
+<tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in
+<tt>/etc/sysctl.d</tt>):
+<pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
+This disables IPv6 on all network interfaces as other services and system
+functionality require the IPv6 stack loaded to work.
+</description>
+<ocil clause="the ipv6 support is disabled on network interfaces">
+If the system uses IPv6, this is not applicable.
+<br /><br />
+If the system is configured to prevent the usage of the
+<tt>ipv6</tt> on network interfaces, it will contain a line
+of the form:
+<pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
+Such lines may be inside any file in the <tt>/etc/sysctl.d</tt> directory. 
+This permits insertion of the IPv6 kernel module (which other parts of 
+the system expect to be present), but otherwise keeps all network interfaces
+from using IPv6.
+Run the following command to search for such
+lines in all files in <tt>/etc/sysctl.d</tt>:
+<pre xml:space="preserve">$ grep -r ipv6 /etc/sysctl.d</pre>
+</ocil>
+<rationale>
+Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
+the vulnerability to exploitation.
+</rationale>
+<oval id="sysctl_kernel_ipv6_disable" />
+<ref nist="CM-7" disa="1551"/>
+</Rule>
+
+<Rule id="network_ipv6_disable_interfaces">
+<title>Disable Interface Usage of IPv6</title>
+<description>To disable interface usage of IPv6, add or correct the following lines in <tt>/etc/sysconfig/network</tt>:
+<pre>NETWORKING_IPV6=no
+IPV6INIT=no</pre>
+</description>
+</Rule>
+
+<Rule id="network_ipv6_disable_rpc">
+<title>Disable Support for RPC IPv6</title>
+<description>RPC services for NFSv4 try to load transport modules for
+<tt>udp6</tt> and <tt>tcp6</tt> by default, even if IPv6 has been disabled in
+<tt>/etc/modprobe.d</tt>. To prevent RPC services such as <tt>rpc.mountd</tt>
+from attempting to start IPv6 network listeners, remove or comment out the
+following two lines in <tt>/etc/netconfig</tt>:
+<pre>udp6       tpi_clts      v     inet6    udp     -       -
+tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
+</description>
+<!--oval id="network_ipv6_disable_rpc" /-->
+<ref nist="CM-7" />
+</Rule>
+</Group><!--<Group id="disabling_ipv6">-->
+
+<Group id="configuring_ipv6">
+<title>Configure IPv6 Settings if Necessary</title>
+<description>A major feature of IPv6 is the extent to which systems
+implementing it can automatically configure their networking
+devices using information from the network. From a security
+perspective, manually configuring important configuration
+information is preferable to accepting it from the network
+in an unauthenticated fashion.</description>
+
+<Group id="disabling_ipv6_autoconfig">
+<title>Disable Automatic Configuration</title>
+<description>Disable the system's acceptance of router
+advertisements and redirects by adding or correcting the following
+line in <tt>/etc/sysconfig/network</tt> (note that this does not disable
+sending router solicitations):
+<pre>IPV6_AUTOCONF=no</pre>
+</description>
+
+<Value id="sysconfig_network_IPV6_AUTOCONF_value" type="string"
+operator="equals" interactive="0">
+<title>IPV6_AUTOCONF</title>
+<description>Toggle global IPv6 auto-configuration (only, if global
+forwarding is disabled)</description>
+<value>no</value>
+<value selector="enabled">yes</value>
+<value selector="disabled">no</value>
+</Value>
+
+<Value id="sysctl_net_ipv6_conf_default_accept_ra_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.default.accept_ra</title>
+<description>Accept default router advertisements?</description>
+<value>0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+<Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" type="string"
+operator="equals" interactive="0">
+<title>net.ipv6.conf.default.accept_redirects</title>
+<description>Toggle ICMP Redirect Acceptance</description>
+<value>0</value>
+<value selector="enabled">1</value>
+<value selector="disabled">0</value>
+</Value>
+
+<Rule id="sysctl_net_ipv6_conf_default_accept_ra">
+<title>Disable Accepting IPv6 Router Advertisements</title>
+<description>
+<sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_ra" value="0" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv6.conf.default.accept_ra" value="0" />
+</ocil>
+<rationale>
+An illicit router advertisement message could result in a man-in-the-middle attack.
+</rationale>
+<!--oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" /-->
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="sysctl_net_ipv6_conf_default_accept_redirects" severity="medium">
+<title>Disable Accepting IPv6 Redirects</title>
+<description>
+<sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
+</description>
+<ocil>
+<sysctl-check-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
+</ocil>
+<rationale>
+An illicit ICMP redirect message could result in a man-in-the-middle attack.
+</rationale>
+<!--oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" /-->
+<ref nist="CM-7" disa="1551"/>
+</Rule>
+
+</Group><!--<Group id="disabling_ipv6_autoconfig">-->
+
+<Rule id="network_ipv6_static_address">
+<title>Manually Assign Global IPv6 Address</title>
+<description>To manually assign an IP address for an interface, edit the
+file <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>. Add or correct the
+following line (substituting the correct IPv6 address):
+<pre>IPV6ADDR=2001:0DB8::ABCD/64</pre>
+Manually assigning an IP address is preferable to accepting one from routers or
+from the network otherwise. The example address here is an IPv6 address
+reserved for documentation purposes, as defined by RFC3849.
+</description>
+<!--oval id="network_ipv6_static_address" /-->
+<ref disa="366" />
+</Rule>
+
+<Rule id="network_ipv6_privacy_extensions">
+<title>Use Privacy Extensions for Address</title>
+<description>To introduce randomness into the automatic generation of IPv6
+addresses, add or correct the following line in
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>:
+<pre>IPV6_PRIVACY=rfc3041</pre>
+Automatically-generated IPv6 addresses are based on the underlying hardware
+(e.g. Ethernet) address, and so it becomes possible to track a piece of
+hardware over its lifetime using its traffic. If it is important for a system's
+IP address to not trivially reveal its hardware address, this setting should be
+applied.
+</description>
+<!--oval id="network_ipv6_privacy_extensions" /-->
+<ref disa="366" />
+</Rule>
+
+<Rule id="network_ipv6_default_gateway">
+<title>Manually Assign IPv6 Router Address</title>
+<description>Edit the file
+<tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>, and add or correct
+the following line (substituting your gateway IP as appropriate):
+<pre>IPV6_DEFAULTGW=2001:0DB8::0001</pre>
+Router addresses should be manually set and not accepted via any
+auto-configuration or router advertisement.
+</description>
+<!--oval id="network_ipv6_default_gateway" /-->
+<ref disa="366" />
+</Rule>
+
+<Group id="network_ipv6_limit_requests">
+<title>Limit Network-Transmitted Configuration if Using Static IPv6 Addresses</title>
+<description>To limit the configuration information requested from other
+systems and accepted from the network on a system that uses
+statically-configured IPv6 addresses, add the following lines to
+<tt>/etc/sysctl.conf</tt>:
+<pre>net.ipv6.conf.default.router_solicitations = 0
+net.ipv6.conf.default.accept_ra_rtr_pref = 0
+net.ipv6.conf.default.accept_ra_pinfo = 0
+net.ipv6.conf.default.accept_ra_defrtr = 0
+net.ipv6.conf.default.autoconf = 0
+net.ipv6.conf.default.dad_transmits = 0
+net.ipv6.conf.default.max_addresses = 1</pre>
+The <tt>router_solicitations</tt> setting determines how many router
+solicitations are sent when bringing up the interface. If addresses are
+statically assigned, there is no need to send any solicitations.
+<br /><br />
+The <tt>accept_ra_pinfo</tt> setting controls whether the system will accept
+prefix info from the router.
+<br /><br />
+The <tt>accept_ra_defrtr</tt> setting controls whether the system will accept
+Hop Limit settings from a router advertisement. Setting it to 0 prevents a
+router from changing your default IPv6 Hop Limit for outgoing packets.
+<br /><br />
+The <tt>autoconf</tt> setting controls whether router advertisements can cause
+the system to assign a global unicast address to an interface.
+<br /><br />
+The <tt>dad_transmits</tt> setting determines how many neighbor solicitations
+to send out per address (global and link-local) when bringing up an interface
+to ensure the desired address is unique on the network.
+<br /><br />
+The <tt>max_addresses</tt> setting determines how many global unicast IPv6
+addresses can be assigned to each interface.  The default is 16, but it should
+be set to exactly the number of statically configured global addresses
+required.
+</description>
+</Group>
+
+</Group><!--<Group id="configuring_ipv6">-->
+</Group><!--<Group id="network-ipv6">-->

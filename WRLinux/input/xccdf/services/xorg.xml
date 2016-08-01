@@ -1,0 +1,57 @@
+<Group id="xwindows">
+<title>X Window System</title>
+<description>The X Window System implementation included with the
+system is called X.org.</description>
+
+<Group id="disabling_xwindows">
+<title>Disable X Windows</title>
+<description>Unless there is a mission-critical reason for the
+system to run a graphical user interface, ensure X is not set to start
+automatically at boot and remove the X Windows software packages.
+There is usually no reason to run X Windows
+on a dedicated server machine, as it increases the system's attack surface and consumes
+system resources. Administrators of server systems should instead login via
+SSH or on the text console.</description>
+
+<Rule id="xwindows_runlevel_setting">
+<title>Disable X Windows Startup By Setting Default Target</title>
+<description>Setting the system's default target to multi-user will prevent
+automatic startup of the X server. To do so, run:
+<pre>$ systemctl set-default multi-user.target</pre>
+You should see the following output:
+<pre>rm '/etc/systemd/system/default.target'
+ln -s '/usr/lib/systemd/system/multi-user.target' '/etc/systemd/system/default.target'</pre>
+</description>
+<ocil clause="it does not">
+To verify the default target is multi-user, run the following command:
+<pre>$ systemctl get-default</pre>
+The output should show the following:
+<pre>multi-user.target</pre>
+</ocil>
+<rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
+<oval id="xwindows_runlevel_setting" />
+<ref nist="AC-3" disa="366" />
+</Rule>
+
+
+<Rule id="package_xorg-x11-server-common_removed">
+<title>Remove the X Windows Package Group</title>
+<description>Removing all packages which constitute the X Window System
+ensures users or malicious software cannot start X.
+To do so, run the following command:
+<pre>$ sudo dnf groupremove "X Window System"</pre>
+</description>
+<ocil clause="it is not">
+To ensure the X Windows package group is removed, run the following command:
+<pre>$ rpm -qi xorg-x11-server-common</pre>
+The output should be:
+<pre>package xorg-x11-server-common is not installed</pre>
+</ocil>
+<rationale>Unnecessary packages should not be installed to decrease the attack surface of the system.</rationale>
+<oval id="package_xorg-x11-server-common_removed" />
+<ref disa="366" cis="3.2" />
+</Rule>
+
+<!-- to add: guidance in /etc/gdm/custom.conf for xdmcp disable, tcplisten disable -->
+</Group>
+</Group>
