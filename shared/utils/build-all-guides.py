@@ -21,6 +21,7 @@ import threading
 import Queue
 import re
 import sys
+import multiprocessing
 
 OSCAP_PATH = "oscap"
 
@@ -172,8 +173,6 @@ def generate_guide_for_input_content(input_content, benchmark_id, profile_id):
 
 
 def get_cpu_count():
-    import multiprocessing
-
     try:
         return max(1, multiprocessing.cpu_count())
 
