@@ -21,6 +21,7 @@ import threading
 import Queue
 import re
 import sys
+import multiprocessing
 
 OSCAP_PATH = "oscap"
 
@@ -83,7 +84,7 @@ def get_profile_choices_for_input(input_tree, benchmark_id, tailoring_tree):
             if benchmark.get("id") != benchmark_id:
                 continue
 
-            for elem in benchmark.findall(".//{%s}Profile" %(namespace)):
+            for elem in benchmark.findall(".//{%s}Profile" % (namespace)):
                 id_ = elem.get("id")
                 if id_ is None:
                     continue
@@ -171,6 +172,15 @@ def generate_guide_for_input_content(input_content, benchmark_id, profile_id):
     return ret
 
 
+def get_cpu_count():
+    try:
+        return max(1, multiprocessing.cpu_count())
+
+    except NotImplementedError:
+        # 2 CPUs is the most probable
+        return 2
+
+
 def main():
     usage = "usage: %prog [options]"
     parser = OptionParser(usage=usage)
@@ -183,7 +193,8 @@ def main():
     parser.add_option(
         "-j", "--jobs", dest="parallel_jobs", type="int",
         action="store", help="How many workers should generate guides in "
-        "parallel. Defaults to 4.", default=4
+        "parallel. Defaults to the number of available CPUs.",
+        default=get_cpu_count()
     )
     (options, args) = parser.parse_args()
 
