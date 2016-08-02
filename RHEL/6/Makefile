@@ -10,10 +10,6 @@ PROD = rhel6
 PROD_OVAL = $(BUILD)/$(PROD)_oval
 VENDOR = ssgproject
 
-# Don't include the 'test' profile into benchmark by default. Only upon request (e.g. in 'eval-test' target)
-# Value '0' means 'test' will be included. Any other value means 'test' will NOT be included.
-INCLUDE_TEST_PROFILE := $(shell false; echo $$?)
-
 checks:
 	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
 	mkdir -p $(PROD_OVAL)
@@ -38,8 +34,8 @@ endif
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
-#	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
-#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
+#	xsltproc -o $(XCCDF_OUTPUT_DIR)/$(PROD)-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-$(PROD)desktop-xccdf.xml
+#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/$(PROD)-shorthand.xml
 
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
@@ -58,9 +54,9 @@ table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
-	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
-	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
-#	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
+	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
+	xsltproc -o $(OUT)/table-$(PROD)-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+#	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-$(PROD)-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
 #		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
@@ -93,12 +89,14 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 #	Update @style attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
 	sed -i 's/style="SCAP_1.1"/style="SCAP_1.2"/' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+#	Make a PCI-DSS-centric Benchmark
+	$(SHARED)/$(TRANS)/pcidss/transform_benchmark_to_pcidss.py $(SHARED)/$(TRANS)/pcidss/PCI_DSS.json $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-pcidss-xccdf-1.2.xml
+	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-pcidss-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 #	Update @schematron-version attribute in datastream to "1.2". Fixes #1191
 #	(Workaround for https://github.com/OpenSCAP/openscap/issues/383)
 	sed -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' $(OUT)/$(ID)-$(PROD)-ds.xml
-#	Add in CPE and OVAL content to datastream
+#	Add in CPE content to datastream
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
 	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
@@ -160,16 +158,6 @@ else
 	@echo -e "\tcontent with version OpenSCAP-1.2.2, or newer in order to perform full content validation!\n"
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 endif
-
-eval-test:
-	# Rebuild the content indicating the 'test' profile should be included
-	make content INCLUDE_TEST_PROFILE=$(shell true; echo $$?)
-	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-common: content
-	# Based on oscap(8) OVAL results are always stored into CWD. Therefore
-	# not to pollute CWD -- first change CWD to $(OUT), only then evaluate "common" profile
-	cd $(OUT); oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(ID)-$(PROD)-xccdf.xml
 
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content

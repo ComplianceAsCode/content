@@ -19,8 +19,8 @@ checks:
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
-#	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
-#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
+#	xsltproc -o $(XCCDF_OUTPUT_DIR)/$(PROD)-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-$(PROD)desktop-xccdf.xml
+#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/$(PROD)-shorthand.xml
 
 table-profilenistrefs: $(OUT)/xccdf-unlinked-final.xml
 	xsltproc -stringparam profile "desktop" -o $(OUT)/table-$(PROD)-nistrefs-desktop.html \
@@ -41,7 +41,7 @@ table-refs: $(OUT)/xccdf-unlinked-final.xml
 
 table-idents: $(OUT)/xccdf-unlinked-final.xml
 	xsltproc -o $(OUT)/table-$(PROD)-cces.html $(TRANS)/xccdf2table-cce.xslt $<
-	xsltproc -stringparam ref "../$(REFS)/cce-rhel5.xml" -o $(OUT)/table-$(PROD)-cces-rhel5.html $(TRANS)/xccdf2table-cce.xslt $<
+	xsltproc -stringparam ref "../$(REFS)/cce-$(PROD).xml" -o $(OUT)/table-$(PROD)-cces-$(PROD).html $(TRANS)/xccdf2table-cce.xslt $<
 
 table-srgmap: $(OUT)/xccdf-unlinked-final.xml
 # the map-to-items filename must be provided relative to the root of the main document being processed
@@ -103,15 +103,6 @@ validate-xml:
 
 validate: validate-xml
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
-
-eval-test:
-	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-ftp:
-	oscap xccdf eval --profile ftp $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-common:
-	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content

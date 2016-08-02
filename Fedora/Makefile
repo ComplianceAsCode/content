@@ -98,9 +98,6 @@ dist: guide content
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
 
-eval-common: content
-	oscap xccdf eval --profile common $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -f $(IN)/remediations/bash/templates/output/*.sh
