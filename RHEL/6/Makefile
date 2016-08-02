@@ -48,17 +48,17 @@ table-idents: $(OUT)/xccdf-unlinked-empty-groups.xml
 table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r4.xml
 	xsltproc -stringparam flat "y" -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r4.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
-	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
-	xsltproc -o $(OUT)/table-$(PROD)-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-$(PROD)-v1r12-xccdf.xml
+	xsltproc -o $(OUT)/table-$(PROD)-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-$(PROD)-v1r12-xccdf-manual.xml
 #	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-$(PROD)-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
-#		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+#		$(REFS)/disa-stig-$(PROD)-v1r12-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
 	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt $<

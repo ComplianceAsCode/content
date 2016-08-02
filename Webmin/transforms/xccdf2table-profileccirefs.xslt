@@ -4,7 +4,7 @@
 <xsl:import href="../../shared/transforms/shared_xccdf2table-profileccirefs.xslt"/>
 
 <xsl:variable name="cci_list" select="document('../../shared/references/disa-cci-list.xml')/cci:cci_list" />
-<xsl:variable name="os_srg" select="document('../../shared/references/disa-os-srg-v1r1.xml')/cdf:Benchmark" />
+<xsl:variable name="os_srg" select="document('../../shared/references/disa-os-srg-v1r4.xml')/cdf:Benchmark" />
 <xsl:variable name="ovaldefs" select="document('../output/unlinked-webmin-oval.xml')/ovalns:oval_definitions" />
 
 <xsl:include href="constants.xslt"/>

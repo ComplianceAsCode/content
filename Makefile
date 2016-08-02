@@ -97,6 +97,24 @@ chromium:
 chromium-dist:
 	cd Chromium/ && $(MAKE) dist
 
+opensuse:
+	cd OpenSUSE/ && $(MAKE)
+
+opensuse-dist:
+	cd OpenSUSE && $(MAKE) dist
+
+suse11:
+	cd SUSE/11 && $(MAKE)
+
+suse11-dist:
+	cd SUSE/11 && $(MAKE) dist
+
+suse12:
+	cd SUSE/12 && $(MAKE)
+
+suse12-dist:
+	cd SUSE/12 && $(MAKE) dist
+
 validate-buildsystem:
 	for makefile in `find -name Makefile`; do \
 		if grep '[[:space:]]\+$$' $$makefile; then \
@@ -117,6 +135,9 @@ validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
 	# Enable below when content validates correctly
 	#cd RHEL/5/ && $(MAKE) validate
 	#cd RHEVM3 && $(MAKE) validate
+	#cd OpenSUSE && $(MAKE) validate
+	#cd SUSE/11 && $(MAKE) validate
+	#cd SUSE/12 && $(MAKE) validate
 
 rpmroot:
 	mkdir -p $(RPMBUILD)/BUILD
