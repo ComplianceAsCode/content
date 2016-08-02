@@ -34,6 +34,7 @@
       <xsl:apply-templates select="document('profiles/ospp-rhel7-server.xml')" />
       <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
       <xsl:apply-templates select="document('profiles/cjis-rhel7-server.xml')" />
+      <xsl:apply-templates select="document('profiles/rhel7-docker.xml')" />
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">
