@@ -24,8 +24,8 @@ checks:
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
-#	xsltproc -o $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-rhel5desktop-xccdf.xml
-#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/rhel5-shorthand.xml
+#	xsltproc -o $(XCCDF_OUTPUT_DIR)/$(PROD)-shorthand.xml $(TRANS)/xccdf2shorthand.xslt $(REFS)/usgcb-desktop-xccdf.xml
+#	tidy -m -xml -utf8 --indent-spaces=0 $(XCCDF_OUTPUT_DIR)/$(PROD)-shorthand.xml
 
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
@@ -44,11 +44,11 @@ table-srgmap: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
-	xsltproc -o $(OUT)/table-rhel5-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf.xml
-	xsltproc -o $(OUT)/table-rhel5-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
-#	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-rhel5-stig-manual-withnotes.html \
+	xsltproc -o $(OUT)/table-$(PROD)-stig.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-$(PROD)-v1r0.6-xccdf.xml
+	xsltproc -o $(OUT)/table-$(PROD)-stig-manual.html $(TRANS)/xccdf2table-stig.xslt $(REFS)/disa-stig-$(PROD)-v1r0.6-xccdf-manual.xml
+#	xsltproc -stringparam notes "../$(IN)/auxiliary/transition_notes.xml" -o $(OUT)/table-$(PROD)-stig-manual-withnotes.html \
 #		$(TRANS)/xccdf2table-stig.xslt \
-#		$(REFS)/disa-stig-rhel5-v1r0.6-xccdf-manual.xml
+#		$(REFS)/disa-stig-$(PROD)-v1r0.6-xccdf-manual.xml
 #	temporarily retain an output file showing the short titles as well
 	xsltproc -stringparam profile "stig-$(PROD)-server-upstream" -stringparam testinfo "y" -o $(OUT)/table-stig-$(PROD)-testinfo.html \
 		$(TRANS)/xccdf2table-profileccirefs.xslt $<
@@ -132,15 +132,8 @@ validate-xml:
 	oscap xccdf validate-xml $(OUT)/$(ID)-sl5-xccdf.xml
 	oscap ds sds-validate $(OUT)/$(ID)-sl5-ds.xml
 
-
 validate: validate-xml
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
-
-eval-test:
-	oscap xccdf eval --profile test $(OUT)/$(ID)-$(PROD)-xccdf.xml
-
-eval-common:
-	oscap xccdf eval --profile common --oval-results --results /tmp/results-test.xml $(OUT)/$(ID)-$(PROD)-xccdf.xml
 
 # Items in dist are expected for distribution in an rpm
 dist: tables guide content

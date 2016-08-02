@@ -60,6 +60,7 @@
 <refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800" />
 <refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
 
+<select idref="accounts_passwords_pam_faillock_deny_root" selected="true" />
 <select idref="accounts_password_pam_retry" selected="true" />
 <select idref="accounts_passwords_pam_faillock_deny" selected="true" />
 <select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
@@ -76,12 +77,16 @@
 <select idref="set_firewalld_default_zone" selected="true" />
 <!-- <select idref="set_iptables_default_rule_forward" selected="true" /> -->
 <select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
 <select idref="sysctl_net_ipv4_tcp_syncookies" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
 <select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
+<select idref="sysctl_net_ipv4_ip_forward" selected="true" />
+
+<select idref="sysctl_net_ipv6_conf_all_accept_source_route" selected="true" />
 
 <!-- configure name/address of directory server to bind with -->
 <!-- <select idref="configure_openldap_client" selected="true"/> -->
@@ -263,6 +268,13 @@
 <select idref="ensure_redhat_gpgkey_installed" selected="true" />
 <select idref="ensure_gpgcheck_globally_activated" selected="true" />
 <select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="ensure_gpgcheck_repo_metadata" selected="true" />
+<select idref="ensure_gpgcheck_local_packages" selected="true" />
+
 <!--	END ASSIGNMENTS: DAR PROTECTION -->
+
+<!--	ASSIGNMENTS: NETWORK PROTECTION -->
+<select idref="network_sniffer_disabled" selected="true" />
+<!--	END ASSIGNMENTS: NETWORK PROTECTION -->
 
 </Profile>

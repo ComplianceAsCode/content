@@ -1,15 +1,18 @@
 #!/usr/bin/python2
 
-import sys
-import os
-import re
 import datetime
-import platform
 import lxml.etree as ET
+import os
+import platform
+import re
+import sys
+
+from copy import deepcopy
+
 from ConfigParser import SafeConfigParser
 
+oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
-
 conf_file = 'oval.config'
 footer = '</oval_definitions>'
 
@@ -22,7 +25,8 @@ JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 FUSE = 'JBoss Fuse'
-
+OPENSUSE = 'OpenSUSE'
+SUSE = 'SUSE Linux Enterprise'
 
 def _header(schema_version):
     header = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -92,6 +96,11 @@ def map_product(version):
         product_name = DEBIAN
     if re.findall('fuse', version):
         product_name = FUSE
+    if re.findall('opensuse', version):
+        product_name = OPENSUSE
+    if re.findall('suse', version):
+        product_name = SUSE
+
     return product_name
 
 def check_is_applicable_for_product(oval_check_def, product):
@@ -163,20 +172,108 @@ def add_platforms(xml_tree, multi_platform):
     return xml_tree
 
 
-# append new child ONLY if it's not a duplicate
+def oval_entities_are_identical(firstelem, secondelem):
+    """Check if OVAL entities represented by XML elements are identical
+       Return: True if identical, False otherwise
+       Based on: http://stackoverflow.com/a/24349916"""
+
+    # Per https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234541909
+    # and https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234545296
+    # ignore the differences in 'comment', 'version', 'state_operator', and
+    # 'deprecated' attributes. Also ignore different nsmap, since all these
+    # don't affect the semantics of the OVAL entities
+
+    # Operate on copies of the elements (since we will modify
+    # some attributes). Deepcopy will also reset the namespace map
+    # on copied elements for us
+    firstcopy = deepcopy(firstelem)
+    secondcopy = deepcopy(secondelem)
+
+    # Ignore 'comment', 'version', 'state_operator', and 'deprecated'
+    # attributes since they don't change the semantics of an element
+    for copy in [firstcopy, secondcopy]:
+        for key in copy.keys():
+            if key in ["comment", "version", "state_operator", \
+                       "deprecated"]:
+                del copy.attrib[key]
+
+    # Compare the equality of the copies
+    if firstcopy.tag != secondcopy.tag: return False
+    if firstcopy.text != secondcopy.text: return False
+    if firstcopy.tail != secondcopy.tail: return False
+    if firstcopy.attrib != secondcopy.attrib: return False
+    if len(firstcopy) != len(secondcopy): return False
+    return all(oval_entities_are_identical( \
+        fchild, schild) for fchild,schild in zip(firstcopy,secondcopy))
+
+
+def oval_entity_is_extvar(elem):
+    """Check if OVAL entity represented by XML element is OVAL
+       <external_variable> element
+       Return: True if <external_variable>, False otherwise"""
+
+    if elem.tag == '{%s}external_variable' % oval_ns: return True
+    return False
+
+
 def append(element, newchild):
+    """Append new child ONLY if it's not a duplicate"""
+
     newid = newchild.get("id")
     existing = element.find(".//*[@id='" + newid + "']")
     if existing is not None:
-        sys.stderr.write("Notification: this ID is used more than once " +
-                         "and should represent equivalent elements: " +
-                         newid + "\n")
+        # ID is identical and OVAL entities are identical
+        if oval_entities_are_identical(existing, newchild):
+            # Moreover the entity is OVAL <external_variable>
+            if oval_entity_is_extvar(newchild):
+                # If OVAL entity is identical to some already included
+                # in the benchmark and represents an OVAL <external_variable>
+                # it's safe to ignore this ID (since external variables are
+                # in multiple checks just to notify 'testoval.py' helper to
+                # substitute the ID with <local_variable> entity when testing
+                # the OVAL for the rule)
+                pass
+            # Some other OVAL entity
+            else:
+                # If OVAL entity is identical, but not external_variable, the
+                # implementation should be rewritten each entity to be present
+                # just once
+                sys.stderr.write("\nNotification: this ID is used more than " +
+                                 "once and should represent equivalent " +
+                                 "elements: %s \n" % newid)
+                sys.stderr.write("Rewrite the corresponding OVAL checks by " +
+                                 "placing the identical IDs into its own " +
+                                 "definition, and extend this definition " +
+                                 "on necessary places.\n")
+        # ID is identical, but OVAL entities are semantically difference =>
+        # report and error and exit with failure
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1275
+        else:
+            if not oval_entity_is_extvar(existing) and \
+              not oval_entity_is_extvar(newchild):
+                # This is an error scenario - since by skipping second
+                # implementation and using the first one for both references,
+                # we might evaluate wrong requirement for the second entity
+                # => report an error and exit with failure in that case
+                # See
+                #   https://github.com/OpenSCAP/scap-security-guide/issues/1275
+                # for a reproducer and what could happen in this case
+                sys.stderr.write("\nError: it's not possible to use the " +
+                                 "same ID: %s " % newid + "for two " +
+                                 "semantically different OVAL entities:\n")
+                sys.stderr.write("First entity  %s\n" % ET.tostring(existing))
+                sys.stderr.write("Second entity %s\n" % ET.tostring(newchild))
+                sys.stderr.write("Use different ID for the second entity!!!\n")
+                sys.exit(1)
     else:
         element.append(newchild)
 
+
 def checks(product):
-    # concatenate all XML files in the oval directory, to create the
-    # document body
+    """Concatenate all XML files in the oval directory, to create the document
+       body
+       Return: The document body"""
+
     body = ""
     included_checks_count = 0
     for filename in os.listdir(sys.argv[3]):
@@ -202,6 +299,7 @@ def checks(product):
     sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL document.\n" % included_checks_count)
 
     return body
+
 
 def main():
     if len(sys.argv) < 4:

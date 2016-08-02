@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="auditd_conf_log_group_not_root" version="1">
+    <metadata>
+      <title>'log_group' Not Set To 'root' In /etc/audit/auditd.conf</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Verify 'log_group' is not set to 'root' in
+      /etc/audit/auditd.conf.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_auditd_conf_log_group_not_root"
+      comment="Verify 'log_group' not set to 'root' in /etc/audit/auditd.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_auditd_conf_log_group_not_root" check="all"
+  check_existence="none_exist" comment="log_group = root" version="1">
+    <ind:object object_ref="object_auditd_conf_log_group_root" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_auditd_conf_log_group_root"
+  comment="log_group = root" version="1">
+    <ind:filepath operation="equals">/etc/audit/auditd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[ ]*log_group[ ]+=[ ]+root[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

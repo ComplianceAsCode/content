@@ -15,6 +15,8 @@ WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
 RHEVM = 'Red Hat Enterprise Virtualization Manager'
 FUSE = 'JBoss Fuse'
+OPENSUSE = 'OpenSUSE'
+SUSE = 'SUSE Linux Enterprise'
 
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
@@ -39,6 +41,11 @@ def map_product(version):
         product_name = RHEVM
     if re.findall('fuse', version):
         product_name = FUSE
+    if re.findall('opensuse', version):
+        product_name = OPENSUSE
+    if re.findall('suse', version):
+        product_name = SUSE
+
     return product_name
 
 def fix_is_applicable_for_product(platform, product):
