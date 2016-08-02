@@ -1,4 +1,5 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel, multi_platform_fedora
+# THIS FILE IS GENERATED. DO NOT EDIT!
 # CAUTION: This remediation script will remove telnet
 #	   from the system, and may remove any packages
 #	   that depend on telnet. Execute this
