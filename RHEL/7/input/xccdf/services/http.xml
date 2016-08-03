@@ -149,7 +149,7 @@ disabled in the configuration file by removing the corresponding LoadModule dire
 Note: A DSO only provides additional functionality if associated directives are included
 in the <tt>httpd</tt> configuration file. It should also be noted that removing a DSO will produce
 errors on <tt>httpd</tt> startup if the configuration file contains directives that apply to that
-module. Refer to <tt>http://httpd.apache.org/docs/</tt> for details on which directives
+module. Refer to <tt><weblink-macro link="http://httpd.apache.org/docs/"/></tt> for details on which directives
 are associated with each DSO.
 <br /><br />
 Following each DSO removal, the configuration can be tested with the following command
@@ -540,7 +540,7 @@ access possible in order to avoid unauthorized access to restricted content or s
 <Rule id="httpd_limit_available_methods">
 <title>Limit Available Methods</title>
 <description>
-Web server methods are defined in section 9 of RFC 2616 (http://www.ietf.org/rfc/rfc2616.txt).
+Web server methods are defined in section 9 of RFC 2616 (<weblink-macro link="http://www.ietf.org/rfc/rfc2616.txt"/>).
 If a web server does not require the implementation of all available methods,
 they should be disabled.
 <br /><br />
@@ -607,7 +607,7 @@ unauthorized parties.
 <description>
 The <tt>security</tt> module provides an application level firewall for <tt>httpd</tt>.
 Following its installation with the base ruleset, specific configuration advice can be found at
-http://www.modsecurity.org/ to design a policy that best matches the security needs of
+<weblink-macro link="http://www.modsecurity.org/"/> to design a policy that best matches the security needs of
 the web applications. Usage of <tt>mod_security</tt> is highly recommended for some environments,
 but it should be noted this module does not ship with Red Hat Enterprise Linux itself,
 and instead is provided via Extra Packages for Enterprise Linux (EPEL).
