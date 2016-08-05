@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 2.8)
+project(scap-security-guide NONE)
+
+set(SSG_MAJOR_VERSION 0)
+set(SSG_MINOR_VERSION 1)
+set(SSG_PATCH_VERSION 31)
+set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
