@@ -20,9 +20,23 @@ macro(ssg_build_guide_xml PRODUCT)
         )
     else()
         add_custom_command(
-            OUTPUT ${OUTPUT}
-            COMMAND ${CMAKE_COMMAND} -E copy ${INPUT} ${OUTPUT}
-            MAIN_DEPENDENCY ${INPUT}
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
+            MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
         )
     endif()
+endmacro()
+
+macro(ssg_build_shorthand_xml PRODUCT)
+    file(GLOB AUXILIARY_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/auxiliary/*.xml")
+    file(GLOB PROFILE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/profiles/*.xml")
+    file(GLOB XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/xccdf/**/*.xml")
+
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam SHARED_RP ${SSG_SHARED} --output ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
+        COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt ${AUXILIARY_DEPS} ${PROFILE_DEPS} ${XCCDF_RULE_DEPS}
+    )
 endmacro()
