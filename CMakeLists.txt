@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 2.8)
 project(scap-security-guide NONE)
 
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+include(SSGCommon)
+
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 31)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
+
+option(SSG_FEDORA_CONTENT_ENABLED "If enabled, the Fedora SCAP content will be built" TRUE)
 
 message("SCAP Security Guide ${SSG_VERSION}")
 message("")
@@ -35,3 +40,7 @@ message("xsltproc: ${XSLTPROC_EXECUTABLE}")
 message("xmllint: ${XMLLINT_EXECUTABLE}")
 message("xmlwf: ${XMLWF_EXECUTABLE}")
 message(" ")
+
+if (SSG_FEDORA_CONTENT_ENABLED)
+    add_subdirectory("Fedora")
+endif()
