@@ -47,6 +47,17 @@ message("xmllint: ${XMLLINT_EXECUTABLE}")
 message("xmlwf: ${XMLWF_EXECUTABLE}")
 message(" ")
 
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/contributors.xml
+    COMMAND echo "<text>" > ${CMAKE_BINARY_DIR}/contributors.xml
+    COMMAND sed -n -e "s/\\* \\(.*\\)/<contributor>\\1<\\/contributor>/p" ${CMAKE_SOURCE_DIR}/Contributors.md >> ${CMAKE_BINARY_DIR}/contributors.xml
+    COMMAND echo "</text>" >> ${CMAKE_BINARY_DIR}/contributors.xml
+    VERBATIM
+    MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/Contributors.md
+)
+# todo: remove fake target
+add_custom_target(Contributors DEPENDS ${CMAKE_BINARY_DIR}/contributors.xml)
+
 if (SSG_FEDORA_CONTENT_ENABLED)
     add_subdirectory("Fedora")
 endif()
