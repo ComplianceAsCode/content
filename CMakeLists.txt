@@ -14,10 +14,16 @@ option(SSG_FEDORA_CONTENT_ENABLED "If enabled, the Fedora SCAP content will be b
 message("SCAP Security Guide ${SSG_VERSION}")
 message("")
 
+# TODO: refactor oscap detection into a find module
 find_program(OSCAP_EXECUTABLE NAMES oscap)
 if (NOT OSCAP_EXECUTABLE)
     message(FATAL_ERROR "The oscap tool is required!")
 endif()
+# OSCAP_SVG_SUPPORT == 0 means SVG is supported
+execute_process(
+    COMMAND ${SSG_SHARED_UTILS}/oscap-svg-support.py
+    RESULT_VARIABLE OSCAP_SVG_SUPPORT
+)
 
 find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
 if (NOT XSLTPROC_EXECUTABLE)
