@@ -53,3 +53,22 @@ macro(ssg_build_unlinked_xccdf PRODUCT)
         #DEPENDS ${CMAKE_BINARY_DIR}/contributors.xml
     )
 endmacro()
+
+macro(ssg_build_unlinked_ocil PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
+        COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt
+    )
+endmacro()
+
+macro(ssg_build_xccdf_ocilrefs PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam product ${PRODUCT} --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt
+    )
+endmacro()
