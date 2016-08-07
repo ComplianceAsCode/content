@@ -13,9 +13,9 @@
 #
 
 import sys
-import csv
 import re
 
+from template_common import *
 
 def output_checkfile(serviceinfo):
     try:
@@ -26,41 +26,42 @@ def output_checkfile(serviceinfo):
         print "\tError unpacking servicename, packagename, and daemonname: ", str(e)
         sys.exit(1)
 
-    with open("./template_service_disabled", 'r') as templatefile:
-        filestring = templatefile.read()
-        filestring = filestring.replace("SERVICENAME", servicename)
-        if packagename:
-            filestring = filestring.replace("PACKAGENAME", packagename)
-        else:
-            filestring = re.sub("\n\s*<criteria.*>\n\s*<extend_definition.*/>",
-                                "", filestring)
-            filestring = re.sub("\s*</criteria>\n\s*</criteria>",
-                                "\n    </criteria>", filestring)
-        if not daemonname:
-            daemonname = servicename
-        filestring = filestring.replace("DAEMONNAME", daemonname)
-
-        with open("./output/service_" + servicename +
-                  "_disabled.xml", 'w+') as outputfile:
-            outputfile.write(filestring)
-            outputfile.close()
-
+    if not daemonname:
+        daemonname = servicename
+    
+    if packagename:
+        file_from_template(
+            "./template_service_disabled",
+            {
+                "SERVICENAME": servicename,
+                "DAEMONNAME":  daemonname,
+                "PACKAGENAME": packagename
+            },
+            "./output/service_{}_disabled.xml", servicename
+        )
+    else:
+        file_from_template(
+            "./template_service_disabled",
+            {
+                "SERVICENAME": servicename,
+                "DAEMONNAME":  daemonname
+            },
+            regex_replace = {
+                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
+                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
+            },
+            filename_format = "./output/service_{}_disabled.xml",
+            filename_value = servicename
+        )
 
 def main():
     if len(sys.argv) < 2:
         print ("Provide a CSV file containing lines of the format: " +
                "servicename,packagename")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as csv_file:
-        # put the CSV line's items into a list
-        servicelines = csv.reader(csv_file)
-        for line in servicelines:
 
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_checkfile(line)
+    filename = sys.argv[1]
+    csv_map(filename, output_checkfile, skip_comments = True)
 
     sys.exit(0)
 
