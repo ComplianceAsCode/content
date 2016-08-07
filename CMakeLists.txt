@@ -55,8 +55,6 @@ add_custom_command(
     VERBATIM
     MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/Contributors.md
 )
-# todo: remove fake target
-add_custom_target(Contributors DEPENDS ${CMAKE_BINARY_DIR}/contributors.xml)
 
 if (SSG_FEDORA_CONTENT_ENABLED)
     add_subdirectory("Fedora")
