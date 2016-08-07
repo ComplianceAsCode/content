@@ -11,9 +11,9 @@
 #   directory path,file name,owner uid (numeric),group owner gid (numeric),mode
 
 import sys
-import csv
 import re
 
+from template_common import *
 
 def output_check(path_info):
     # the csv file contains lines that match the following layout:
@@ -49,31 +49,27 @@ def output_check(path_info):
             mode_str = "	<unix:" + field + " datatype=\"boolean\">false</unix:" + field + ">\n" + mode_str
         mode_int = mode_int >> 1
 
+    if file_name == '[NULL]':
+        unix_filename = "<unix:filename xsi:nil=\"true\" />"
+    else:
+        unix_filename = "<unix:filename>" + file_name + "</unix:filename>"
+
     # we are ready to create the check
     # open the template and perform the conversions
-    with open("./template_permissions", 'r') as templatefile:
-        # replace the placeholders within the template with the actual values
-        filestring = templatefile.read()
-        filestring = filestring.replace("FILEID", path_id)
-        filestring = filestring.replace("FILEPATH", full_path)
-        filestring = filestring.replace("FILEDIR", dir_path)
-        filestring = filestring.replace("FILEUID", uid)
-        filestring = filestring.replace("FILEGID", gid)
-        filestring = filestring.replace("FILEMODE", mode)
-        if file_name == '[NULL]':
-            filestring = filestring.replace("UNIX_FILENAME",
-                                            "<unix:filename xsi:nil=\"true\" />")
-        else:
-            filestring = filestring.replace("UNIX_FILENAME", "<unix:filename>"
-                                            + file_name + "</unix:filename>")
-        filestring = filestring.replace("STATEMODE", mode_str)
-
-        # we can now write the check
-        with open("./output/file_permissions" + path_id +
-                  ".xml", 'w+') as outputfile:
-            outputfile.write(filestring)
-            outputfile.close()
-
+    file_from_template(
+        "./template_permissions",
+        {
+            "FILEID":        path_id,
+            "FILEPATH":      full_path,
+            "FILEDIR":       dir_path,
+            "FILEUID":       uid,
+            "FILEGID":       gid,
+            "FILEMODE":      mode,
+            "STATEMODE":     mode_str,
+            "UNIX_FILENAME": unix_filename
+        },
+        "./output/file_permissions{}.xml", path_id
+    )
 
 def main():
     if len(sys.argv) < 2:
@@ -83,16 +79,8 @@ def main():
                "owner gid (numeric),mode")
         sys.exit(1)
 
-    # open and read the csv file
-    with open(sys.argv[1], 'r') as csv_file:
-        file_lines = csv.reader(csv_file)
-        for line in file_lines:
-
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_check(line)
+    filename = sys.argv[1]
+    csv_map(filename, output_check, skip_comments = True)
 
     # done
     sys.exit(0)
