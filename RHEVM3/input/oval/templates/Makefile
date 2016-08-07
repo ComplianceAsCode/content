@@ -1,7 +1,7 @@
 templates: services packages kernel_modules permissions umasks sysctls
 
 SHARED_DIR=../../../../shared/oval/templates
-
+export PYTHONPATH=../../../../shared
 OUTPUT:=$(shell mkdir -p output)
 
 services:
