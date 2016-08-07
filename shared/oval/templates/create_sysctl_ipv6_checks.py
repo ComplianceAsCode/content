@@ -1,8 +1,9 @@
 #!/usr/bin/python2
 
 import sys
-import csv
 import re
+
+from template_common import *
 
 # Define input template filename to resulting output filename mapping
 files = { 'template_sysctl_static' : 'sysctl_static_',
@@ -22,47 +23,36 @@ def output_checkfile(serviceinfo):
     # if the sysctl value is not present, use the variable template
     if not sysctl_val.strip():
         # open the template files and perform the conversions
-        for sysctlfile in files_var.keys():
-            with open(sysctlfile, 'r') as templatefile:
-                filestring = templatefile.read()
-                filestring = filestring.replace("SYSCTLID", sysctl_var_id)
-                filestring = filestring.replace("SYSCTLVAR", sysctl_var)
-                # write the check
-                with open("./output/" + files_var[sysctlfile] + sysctl_var_id +
-                          ".xml", 'w+') as outputfile:
-                    outputfile.write(filestring)
-                    outputfile.close()
+        file_from_template(
+            sysctlfile,
+            {
+                "SYSCTLID":  sysctl_var_id,
+                "SYSCTLVAR": sysctl_var
+            },
+            "./output/{}.xml", files_var[sysctlfile] + sysctl_var_id
+        )
 
     else:
         # open the template files and perform the conversions
         for sysctlfile in files.keys():
-            with open(sysctlfile, 'r') as templatefile:
-                filestring = templatefile.read()
-                filestring = filestring.replace("SYSCTLID", sysctl_var_id)
-                filestring = filestring.replace("SYSCTLVAR", sysctl_var)
-                filestring = filestring.replace("SYSCTLVAL", sysctl_val)
-                # write the check
-                with open("./output/" + files[sysctlfile] + sysctl_var_id +
-                          ".xml", 'w+') as outputfile:
-                    outputfile.write(filestring)
-                    outputfile.close()
-
+            file_from_template(
+                sysctlfile,
+                {
+                    "SYSCTLID":  sysctl_var_id,
+                    "SYSCTLVAR": sysctl_var,
+                    "SYSCTLVAL": sysctl_val
+                },
+                "./output/{}.xml", files[sysctlfile] + sysctl_var_id
+            )
 
 def main():
     if len(sys.argv) < 2:
         print ("Provide a CSV file containing lines of the format: " +
                "sysctlvariable,sysctlvalue")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as csv_file:
-        # put the CSV line's items into a list
-        sysctl_lines = csv.reader(csv_file)
-        for line in sysctl_lines:
 
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_checkfile(line)
+    filename = argv[1]
+    csv_map(filename, output_checkfile, skip_comments = True)
 
     sys.exit(0)
 
