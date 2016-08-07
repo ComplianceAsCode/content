@@ -1,6 +1,7 @@
 templates: sysctls services kernel_modules
 
 SHARED_DIR=../../../../../shared/remediations/bash/templates
+export PYTHONPATH=../../../../../shared
 
 OUTPUT:=$(shell mkdir -p output)
 
