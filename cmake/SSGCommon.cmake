@@ -1,6 +1,7 @@
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
+set(SSG_SHARED_REMEDIATIONS "${SSG_SHARED}/remediations")
 
 macro(ssg_xsltproc INPUT XSLT OUTPUT)
     add_custom_command(
@@ -70,5 +71,27 @@ macro(ssg_build_xccdf_ocilrefs PRODUCT)
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam product ${PRODUCT} --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt
+    )
+endmacro()
+
+macro(ssg_build_bash_remediations PRODUCT)
+    file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/remediations/bash/*.sh")
+    file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED_REMEDIATIONS}/bash/*.sh")
+
+    # TODO: The environment variable is not very portable
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ${SSG_SHARED_REMEDIATIONS}/bash ${CMAKE_CURRENT_SOURCE_DIR}/input/remediations/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
+    )
+endmacro()
+
+macro(ssg_build_xccdf_with_remediations PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
     )
 endmacro()
