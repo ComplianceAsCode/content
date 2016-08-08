@@ -94,9 +94,9 @@ $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/oc
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
 # Common build targets - a catalogue of XCCDF remediations
-bash_remediations_deps= $(wildcard $(IN)/remediations/bash/*.sh) $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
+bash_remediations_deps= $(wildcard $(IN)/templates/static/bash/*.sh) $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
 $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps)
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) $(IN)/remediations/bash $(OUT)/bash-remediations.xml
+	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 # Prefer "$(OUT)/xccdf-unlinked-ocilrefs.xml" document below since it contains OCIL expanded to official OCIL-2.0 syntax
