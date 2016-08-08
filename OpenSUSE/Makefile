@@ -68,12 +68,7 @@ validate-xml:
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
-validate: validate-xml
-ifeq ($(SHELLCHECK_AVAIL), 0)
-	cd $(IN)/remediations/bash; shellcheck -s bash *.sh
-else
-	@echo "Skipping ShellCheck analysis, ensure shellcheck executable is present in the PATH!"
-endif
+validate: validate-xml validate-bash
 ifeq ($(OVAL_5_11), 0)
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused $(ID)-$(PROD)-xccdf.xml
 else
