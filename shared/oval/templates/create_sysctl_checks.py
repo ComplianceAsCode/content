@@ -31,7 +31,7 @@ def output_checkfile(serviceinfo):
                     "SYSCTLID":  sysctl_var_id,
                     "SYSCTLVAR": sysctl_var,
                 },
-                "./output/{}.xml", files_var[sysctlfile] + sysctl_var_id
+                "./output/{0}.xml", files_var[sysctlfile] + sysctl_var_id
             )
     else:
 
@@ -44,7 +44,7 @@ def output_checkfile(serviceinfo):
                      "SYSCTLVAR": sysctl_var,
                      "SYSCTLVAL": sysctl_val
                 },
-                "./output/{}.xml", files[sysctlfile] + sysctl_var_id
+                "./output/{0}.xml", files[sysctlfile] + sysctl_var_id
             )
 
 def main():

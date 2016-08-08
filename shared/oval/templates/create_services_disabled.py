@@ -37,7 +37,7 @@ def output_checkfile(serviceinfo):
                 "DAEMONNAME":  daemonname,
                 "PACKAGENAME": packagename
             },
-            "./output/service_{}_disabled.xml", servicename
+            "./output/service_{0}_disabled.xml", servicename
         )
     else:
         file_from_template(
@@ -50,7 +50,7 @@ def output_checkfile(serviceinfo):
                 "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
                 "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
             },
-            filename_format = "./output/service_{}_disabled.xml",
+            filename_format = "./output/service_{0}_disabled.xml",
             filename_value = servicename
         )
 
