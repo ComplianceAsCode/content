@@ -13,31 +13,26 @@
 #
 
 import sys
-import csv
-
+from template_common import *
 
 def output_checkfile(serviceinfo):
     # get the items out of the list
     servicename, packagename = serviceinfo
-    with open("./template_service_enabled", 'r') as templatefile:
-        filestring = templatefile.read()
-        filestring = filestring.replace("SERVICENAME", servicename)
-        with open("./output/service_" + servicename +
-                  "_enabled.sh", 'w+') as outputfile:
-            outputfile.write(filestring)
-            outputfile.close()
 
+    file_from_template(
+        "./template_service_enabled",
+        { "SERVICENAME": servicename },
+        "./output/service_{0}_enabled.sh", servicename
+    )
 
 def main():
     if len(sys.argv) < 2:
         print ("Provide a CSV file containing lines of the format: " +
                "servicename,packagename")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as csv_file:
-        # put the CSV line's items into a list
-        servicelines = csv.reader(csv_file)
-        for line in servicelines:
-            output_checkfile(line)
+
+    filename = sys.argv[1]
+    csv_map(filename, output_checkfile)
 
     sys.exit(0)
 
