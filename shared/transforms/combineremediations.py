@@ -69,7 +69,7 @@ def fix_is_applicable_for_product(platform, product):
         if mp in platform and product in ['rhel', 'fedora']:
             return True
 
-    # Get official name for product 
+    # Get official name for product
     if product_version is not None:
         product_name = map_product(product) + ' ' + product_version
     else:
@@ -288,7 +288,7 @@ def main():
             # Create and populate new fix element based on shell file
             fixname = os.path.splitext(filename)[0]
 
-            with open(fixdir + "/" + filename, 'r') as fix_file:
+            with open(os.path.join(fixdir, filename), 'r') as fix_file:
                 # Assignment automatically escapes shell characters for XML
                 script_platform = fix_file.readline().strip('#').strip().split('=')
                 if len(script_platform) > 1:
