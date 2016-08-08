@@ -22,7 +22,7 @@ def output_checkfile(serviceinfo):
     file_from_template(
         "./template_service_enabled",
         { "SERVICENAME": servicename },
-        "./output/service_{}_enabled.sh", servicename
+        "./output/service_{0}_enabled.sh", servicename
     )
 
 def main():

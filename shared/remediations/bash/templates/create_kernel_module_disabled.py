@@ -24,7 +24,7 @@ def output_checkfile(kerninfo):
         {
            "KERNMODULE": kernmod
         },
-        "./output/kernel_module_{}_disabled.sh", kernmod
+        "./output/kernel_module_{0}_disabled.sh", kernmod
     )
 
 def main():

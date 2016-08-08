@@ -68,7 +68,7 @@ def output_check(path_info):
             "STATEMODE":     mode_str,
             "UNIX_FILENAME": unix_filename
         },
-        "./output/file_permissions{}.xml", path_id
+        "./output/file_permissions{0}.xml", path_id
     )
 
 def main():
