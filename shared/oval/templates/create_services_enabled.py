@@ -13,44 +13,44 @@
 #
 
 import sys
-import csv
 import re
 
+from template_common import *
 
 def output_checkfile(serviceinfo):
     # get the items out of the list
     servicename, packagename = serviceinfo
-    with open("./template_service_enabled", 'r') as templatefile:
-        filestring = templatefile.read()
-        filestring = filestring.replace("SERVICENAME", servicename)
-        if packagename:
-            filestring = filestring.replace("PACKAGENAME", packagename)
-        else:
-            filestring = re.sub("\n\s*<criteria.*>\n\s*<extend_definition.*/>",
-                                "", filestring)
-            filestring = re.sub("\s*</criteria>\n\s*</criteria>",
-                                "\n    </criteria>", filestring)
-        with open("./output/service_" + servicename +
-                  "_enabled.xml", 'w+') as outputfile:
-            outputfile.write(filestring)
-            outputfile.close()
 
+    
+    if packagename:
+        file_from_template(
+            "./template_service_enabled",
+            {
+                "SERVICENAME": servicename,
+                "PACKAGENAME": packagename
+            },
+            "./output/service_{0}_enabled.xml", servicename
+        )
+    else:
+        file_from_template(
+            "./template_service_enabled",
+            { "SERVICENAME": servicename },
+            regex_replace = {
+                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
+                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>" 
+            },
+            filename_format = "./output/service_{0}_enabled.xml",
+            filename_value = servicename
+        )
 
 def main():
     if len(sys.argv) < 2:
         print ("Provide a CSV file containing lines of the format: " +
                "servicename,packagename")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as csv_file:
-        # put the CSV line's items into a list
-        servicelines = csv.reader(csv_file)
-        for line in servicelines:
 
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_checkfile(line)
+    filename = sys.argv[1]
+    csv_map(filename, output_checkfile, skip_comments = True)
 
     sys.exit(0)
 

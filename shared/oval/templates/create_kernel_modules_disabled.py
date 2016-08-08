@@ -12,35 +12,26 @@
 #
 
 import sys
-import csv
 
+from template_common import *
 
 def output_checkfile(kerninfo):
     # get the items out of the list
     kernmod = kerninfo[0]
-    with open("./template_kernel_module_disabled", 'r') as templatefile:
-        filestring = templatefile.read()
-        filestring = filestring.replace("KERNMODULE", kernmod)
-        with open("./output/kernel_module_" + kernmod +
-                  "_disabled.xml", 'w+') as outputfile:
-            outputfile.write(filestring)
-            outputfile.close()
 
+    file_from_template(
+            "./template_kernel_module_disabled",
+            { "KERNMODULE": kernmod },
+            "./output/kernel_module_{0}_disabled.xml", kernmod
+    )
 
 def main():
     if len(sys.argv) < 2:
         print "Provide a CSV file containing lines of the format: kernmod"
         sys.exit(1)
-    with open(sys.argv[1], 'r') as csv_file:
-        # put the CSV line's items into a list
-        lines = csv.reader(csv_file)
-        for line in lines:
 
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_checkfile(line)
+    filename = sys.argv[1]
+    csv_map(filename, output_checkfile, skip_comments = True)
 
     sys.exit(0)
 

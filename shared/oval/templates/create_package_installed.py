@@ -12,28 +12,25 @@
 #
 
 import sys
-import csv
 
+from template_common import *
 
 def output_check(package_info):
     pkgname = package_info[0]
     if pkgname:
-        with open("./template_OVAL_package_installed",
-                  'r') as oval_template_file:
-            filestring = oval_template_file.read()
-            filestring = filestring.replace("PKGNAME", pkgname)
-            with open("./output/package_" + pkgname +
-                      "_installed.xml", 'w+') as oval_output_file:
-                oval_output_file.write(filestring)
-                oval_output_file.close()
-            with open("./template_BASH_package_installed",
-                      'r') as bash_template_file:
-                filestring = bash_template_file.read()
-                filestring = filestring.replace("PKGNAME", pkgname)
-        with open("./output/package_" + pkgname +
-                  "_installed.sh", 'w+') as bash_output_file:
-            bash_output_file.write(filestring)
-            bash_output_file.close()
+
+        file_from_template(
+            "./template_OVAL_package_installed",
+            { "PKGNAME" : pkgname },
+            "./output/package_{0}_installed.xml", pkgname
+        )
+
+        file_from_template(
+            "./template_BASH_package_installed",
+            { "PKGNAME" : pkgname },
+            "./output/package_{0}_installed.sh", pkgname
+        )
+
     else:
         print "ERROR: input violation: the package name must be defined"
 
@@ -44,15 +41,9 @@ def main():
         print("   the csv file should contain lines of the format:")
         print("   PACKAGE_NAME")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as csv_file:
-        csv_lines = csv.reader(csv_file)
-        for line in csv_lines:
 
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_check(line)
+    filename = sys.argv[1]
+    csv_map(filename, output_check, skip_comments = True)
 
     sys.exit(0)
 

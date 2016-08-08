@@ -12,25 +12,25 @@
 #
 
 import sys
-import csv
 
+from template_common import *
 
 def output_check(package_info):
 	pkgname = package_info[0]
 	if pkgname:
-		with open("./template_package_removed", 'r') as templatefile:
-			filestring = templatefile.read()
-			filestring = filestring.replace("PKGNAME", pkgname)
-		with open("./output/package_" + pkgname + "_removed.xml", 'w+') as outputfile:
-			outputfile.write(filestring)
-			outputfile.close()
 
-		with open("./template_BASH_package_removed", 'r') as bash_template_file:
-			filestring = bash_template_file.read()
-			filestring = filestring.replace("PKGNAME", pkgname)
-		with open("./output/package_" + pkgname + "_removed.sh", 'w+') as bash_output_file:
-			bash_output_file.write(filestring)
-			bash_output_file.close()
+		file_from_template(
+			"./template_package_removed",
+			{ "PKGNAME" : pkgname},
+			"./output/package_{0}_removed.xml", pkgname
+		)
+
+		file_from_template(
+			"./template_BASH_package_removed",
+			{ "PKGNAME" : pkgname },
+			"./output/package_{0}_removed.sh", pkgname
+		)
+
 	else:
 		print "ERROR: input violation: the package name must be defined"
 
@@ -42,15 +42,8 @@ def main():
         print "   PACKAGE_NAME"
         sys.exit(1)
 
-    with open(sys.argv[1], 'r') as csv_file:
-        csv_lines = csv.reader(csv_file)
-        for line in csv_lines:
-
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_check(line)
+    filename = sys.argv[1]
+    csv_map(filename, output_check, skip_comments = True)
 
     sys.exit(0)
 

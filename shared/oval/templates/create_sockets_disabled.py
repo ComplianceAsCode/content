@@ -13,44 +13,51 @@
 #
 
 import sys
-import csv
 import re
 
+from template_common import *
 
 def output_checkfile(socketinfo):
     # get the items out of the list
     socketname, packagename = socketinfo
-    with open("./template_socket_disabled", 'r') as templatefile:
-        filestring = templatefile.read()
-        filestring = filestring.replace("SOCKETNAME", socketname)
-        if packagename:
-            filestring = filestring.replace("PACKAGENAME", packagename)
-        else:
-            filestring = re.sub("\n\s*<criteria.*>\n\s*<extend_definition.*/>",
-                                "", filestring)
-            filestring = re.sub("\s*</criteria>\n\s*</criteria>",
-                                "\n    </criteria>", filestring)
-        with open("./output/socket_" + socketname +
-                  "_disabled.xml", 'w+') as outputfile:
-            outputfile.write(filestring)
-            outputfile.close()
 
+    file_content = load_modified(
+        "./template_socket_disabled",
+        { "SOCKETNAME":  socketname }
+    )
+
+    if packagename:
+        file_from_template(
+            "./template_socket_disabled",
+            {
+                "SOCKETNAME":  socketname,
+                "PACKAGENAME": packagename
+            },
+            "./output/socket_{0}_disabled.xml", socketname
+        )
+
+    else:
+        file_from_template(
+            "./template_socket_disabled",
+            {
+                "SOCKETNAME":  socketname,
+            },
+            regex_dict = {
+                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
+                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
+            }
+            filename_format = "./output/socket_{0}_disabled.xml",
+            filename_value = socketname
+        )
 
 def main():
     if len(sys.argv) < 2:
         print ("Provide a CSV file containing lines of the format: " +
                "socketname,packagename")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as csv_file:
-        # put the CSV line's items into a list
-        socketlines = csv.reader(csv_file)
-        for line in socketlines:
 
-            # Skip lines of input file starting with comment '#' character
-            if line[0].startswith('#'):
-                continue
-
-            output_checkfile(line)
+    filename = sys.argv[1]
+    csv_map(filename, output_checkfile, skip_comments = True)
 
     sys.exit(0)
 
