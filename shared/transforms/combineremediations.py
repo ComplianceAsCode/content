@@ -277,6 +277,7 @@ def main():
     fixgroup = etree.SubElement(fixcontent, "fix-group", id="bash",
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixes = dict()
 
     remediation_functions = get_available_remediation_functions()
 
@@ -295,9 +296,15 @@ def main():
                         platform[script_platform[0].strip()] = script_platform[1].strip()
                     if script_platform[0].strip() == 'platform':
                         if fix_is_applicable_for_product(platform['platform'], product):
-                            fix = etree.SubElement(fixgroup, "fix", rule=fixname)
+                            if fixname in fixes:
+                                fix = fixes[fixname]
+                            else:
+                                fix = etree.SubElement(fixgroup, "fix")
+                                fix.set("rule", fixname)
+                                fixes[fixname] = fix
+                                included_fixes_count += 1
+
                             fix.text = fix_file.read()
-                            included_fixes_count += 1
 
                             # Expand shell variables and remediation functions into
                             # corresponding XCCDF <sub> elements
