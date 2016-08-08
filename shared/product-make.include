@@ -141,6 +141,6 @@ $(OUT)/xccdf-unlinked-final.xml: $(OUT)/xccdf-unlinked-withremediations.xml $(OU
 			exit 1; \
 		fi \
 	fi \
-	# Rename "$(OUT)/xccdf-unlinked-withremediations.xml" to "$(OUT)/xccdf-unlinked-final.xml" \
+	# Copy "$(OUT)/xccdf-unlinked-withremediations.xml" to "$(OUT)/xccdf-unlinked-final.xml" \
 	# (so subsequent targets can find the "$(OUT)/xccdf-unlinked-final.xml" prerequisite) \
-	mv "$(OUT)/xccdf-unlinked-withremediations.xml" "$(OUT)/xccdf-unlinked-final.xml"
+	cp "$(OUT)/xccdf-unlinked-withremediations.xml" "$(OUT)/xccdf-unlinked-final.xml"
