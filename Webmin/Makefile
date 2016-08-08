@@ -30,9 +30,9 @@ table-idents: $(OUT)/xccdf-unlinked-final.xml
 table-srgmap: $(OUT)/xccdf-unlinked-final.xml
 # the map-to-items filename must be provided relative to the root of the main document being processed
 	xsltproc -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r4.xml
 	xsltproc -stringparam flat "y" -stringparam map-to-items "../$<" -o $(OUT)/table-$(PROD)-srgmap-flat.html \
-		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r1.xml
+		$(TRANS)/table-srgmap.xslt $(REFS)/disa-os-srg-v1r4.xml
 	xmllint --xmlout --html --output $(OUT)/table-$(PROD)-srgmap-flat.xhtml $(OUT)/table-$(PROD)-srgmap-flat.html
 
 table-stigs: $(OUT)/xccdf-unlinked-final.xml table-srgmap checks
