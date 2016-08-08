@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 http://oval.mitre.org/language/download/schema/version5.8/ovaldefinition/complete/oval-common-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 http://oval.mitre.org/language/download/schema/version5.8/ovaldefinition/complete/oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent http://oval.mitre.org/language/download/schema/version5.8/ovaldefinition/complete/independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux http://oval.mitre.org/language/download/schema/version5.8/ovaldefinition/complete/linux-definitions-schema.xsd">
+  <generator>
+    <oval:product_name>repotool</oval:product_name>
+    <oval:schema_version>5.8</oval:schema_version>
+    <oval:timestamp>2016-06-17T14:47:23</oval:timestamp>
+  </generator>
+  <definitions>
+    <definition class="inventory" id="oval:mil.disa.fso.rhel11:def:498" version="1">
+      <metadata>
+        <title>Red Hat Enterprise Linux 5</title>
+        <affected family="unix">
+          <platform>Red Hat Enterprise Linux 5</platform>
+        </affected>
+        <reference ref_id="cpe:/o:redhat:enterprise_linux:5" source="CPE" />
+        <description>The operating system installed on the system is Red Hat Enterprise Linux 5</description>
+      </metadata>
+      <criteria>
+        <criterion comment="Installed operating system is part of the unix family" test_ref="oval:mil.disa.fso.rhel11:tst:49800" />
+        <criterion comment="Red Hat Enterprise Linux 5 is installed" test_ref="oval:mil.disa.fso.rhel11:tst:49801" />
+      </criteria>
+    </definition>
+  </definitions>
+  <tests>
+    <family_test xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" check_existence="at_least_one_exists" id="oval:mil.disa.fso.rhel11:tst:49800" version="1" check="only one" comment="installed operating system is part of the Unix family">
+      <object object_ref="oval:mil.disa.fso.rhel11:obj:49800" />
+      <state state_ref="oval:mil.disa.fso.rhel11:ste:49800" />
+    </family_test>
+    <rpminfo_test xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" check_existence="at_least_one_exists" id="oval:mil.disa.fso.rhel11:tst:49801" version="1" check="at least one" comment="redhat-release is version 5">
+      <object object_ref="oval:mil.disa.fso.rhel11:obj:49801" />
+      <state state_ref="oval:mil.disa.fso.rhel11:ste:49801" />
+    </rpminfo_test>
+  </tests>
+  <objects>
+    <family_object xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" id="oval:mil.disa.fso.rhel11:obj:49800" version="1" />
+    <rpminfo_object xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" id="oval:mil.disa.fso.rhel11:obj:49801" version="1">
+      <name datatype="string">redhat-release</name>
+    </rpminfo_object>
+  </objects>
+  <states>
+    <family_state xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" id="oval:mil.disa.fso.rhel11:ste:49800" version="1">
+      <family>unix</family>
+    </family_state>
+    <rpminfo_state xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" id="oval:mil.disa.fso.rhel11:ste:49801" version="1">
+      <version operation="pattern match">^5</version>
+    </rpminfo_state>
+  </states>
+</oval_definitions>
+

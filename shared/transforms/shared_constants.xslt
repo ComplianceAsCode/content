@@ -14,6 +14,7 @@
 <xsl:variable name="disa-srguri">http://iase.disa.mil/stigs/srgs/Pages/index.aspx</xsl:variable>
 <!-- Fix for issue https://github.com/OpenSCAP/scap-security-guide/issues/1035 -->
 <xsl:variable name="disa-stigs-os-unix-linux-uri">http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx</xsl:variable>
+<xsl:variable name="disa-stigs-os-mainframe-uri">http://iase.disa.mil/stigs/os/mainframe/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-stigs-apps-browers-uri">http://iase.disa.mil/stigs/app-security/browser-guidance/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-stigs-apps-appserver-uri">http://iase.disa.mil/stigs/app-security/app-servers/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-stigs-apps-appsecurity-dev-uri">http://iase.disa.mil/stigs/app-security/app-security/Pages/index.aspx</xsl:variable>
