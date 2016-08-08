@@ -286,33 +286,35 @@ def main():
     included_fixes_count = 0
     for fixdir in sys.argv[2:-1]:
         for filename in os.listdir(fixdir):
-            if filename.endswith(".sh"):
-                # Create and populate new fix element based on shell file
-                fixname = os.path.splitext(filename)[0]
+            if not filename.endswith(".sh"):
+                continue
 
-                with open(os.path.join(fixdir, filename), 'r') as fix_file:
-                    # Assignment automatically escapes shell characters for XML
-                    script_platform = fix_file.readline().strip('#').strip().split('=')
-                    if len(script_platform) > 1:
-                        platform[script_platform[0].strip()] = script_platform[1].strip()
-                    if script_platform[0].strip() == 'platform':
-                        if fix_is_applicable_for_product(platform['platform'], product):
-                            if fixname in fixes:
-                                fix = fixes[fixname]
-                            else:
-                                fix = etree.SubElement(fixgroup, "fix")
-                                fix.set("rule", fixname)
-                                fixes[fixname] = fix
-                                included_fixes_count += 1
+            # Create and populate new fix element based on shell file
+            fixname = os.path.splitext(filename)[0]
 
-                            fix.text = fix_file.read()
+            with open(os.path.join(fixdir, filename), 'r') as fix_file:
+                # Assignment automatically escapes shell characters for XML
+                script_platform = fix_file.readline().strip('#').strip().split('=')
+                if len(script_platform) > 1:
+                    platform[script_platform[0].strip()] = script_platform[1].strip()
+                if script_platform[0].strip() == 'platform':
+                    if fix_is_applicable_for_product(platform['platform'], product):
+                        if fixname in fixes:
+                            fix = fixes[fixname]
+                        else:
+                            fix = etree.SubElement(fixgroup, "fix")
+                            fix.set("rule", fixname)
+                            fixes[fixname] = fix
+                            included_fixes_count += 1
 
-                            # Expand shell variables and remediation functions into
-                            # corresponding XCCDF <sub> elements
-                            expand_xccdf_subs(fix, remediation_functions)
-                    else:
-                        print("\nNotification: Removed the '%s' remediation script from merging as " \
-                            "the platform identifier in the script is missing!" % filename)
+                        fix.text = fix_file.read()
+
+                        # Expand shell variables and remediation functions into
+                        # corresponding XCCDF <sub> elements
+                        expand_xccdf_subs(fix, remediation_functions)
+                else:
+                    print("\nNotification: Removed the '%s' remediation script from merging as " \
+                        "the platform identifier in the script is missing!" % filename)
 
     sys.stderr.write("\nNotification: Merged %d remediation scripts into XML document.\n" % included_fixes_count)
     tree = etree.ElementTree(fixcontent)
