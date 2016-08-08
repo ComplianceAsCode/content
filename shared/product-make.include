@@ -93,12 +93,7 @@ $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/oc
 # Common build targets - a catalogue of XCCDF remediations
 bash_remediations_deps= $(wildcard $(IN)/remediations/bash/*.sh) $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
 $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps)
-	# Make intermediate $(BUILD_REMEDIATIONS) directory to hold final list of remediation scripts for $(PROD)
-	mkdir -p $(BUILD_REMEDIATIONS)
-	# Search $(SHARED_REMEDIATIONS) and $(IN)/remediations directories to find all product specific remediation scripts,
-	# which are regular files (not symlinks). Merge the final list into $(BUILD_REMEDIATIONS) directory
-	find $(SHARED_REMEDIATIONS) $(IN)/remediations/bash -maxdepth 1 -type f -name '*.sh' -exec cp {} $(BUILD_REMEDIATIONS) ';'
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(BUILD_REMEDIATIONS) $(OUT)/bash-remediations.xml
+	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) $(IN)/remediations/bash $(OUT)/bash-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 # Prefer "$(OUT)/xccdf-unlinked-ocilrefs.xml" document below since it contains OCIL expanded to official OCIL-2.0 syntax
