@@ -2,6 +2,7 @@
 
 import sys
 import os
+import os.path
 import re
 import lxml.etree as etree
 
@@ -69,7 +70,7 @@ def fix_is_applicable_for_product(platform, product):
         if mp in platform and product in ['rhel', 'fedora']:
             return True
 
-    # Get official name for product 
+    # Get official name for product
     if product_version is not None:
         product_name = map_product(product) + ' ' + product_version
     else:
@@ -270,41 +271,50 @@ def main():
         sys.exit(1)
 
     product = sys.argv[1]
-    fixdir = sys.argv[2]
-    output = sys.argv[3]
+    output = sys.argv[-1]
 
     fixcontent = etree.Element("fix-content", system="urn:xccdf:fix:script:sh",
                                xmlns="http://checklists.nist.gov/xccdf/1.1")
     fixgroup = etree.SubElement(fixcontent, "fix-group", id="bash",
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixes = dict()
 
     remediation_functions = get_available_remediation_functions()
 
     platform = {}
     included_fixes_count = 0
-    for filename in os.listdir(fixdir):
-        if filename.endswith(".sh"):
+    for fixdir in sys.argv[2:-1]:
+        for filename in os.listdir(fixdir):
+            if not filename.endswith(".sh"):
+                continue
+
             # Create and populate new fix element based on shell file
             fixname = os.path.splitext(filename)[0]
 
-            with open(fixdir + "/" + filename, 'r') as fix_file:
+            with open(os.path.join(fixdir, filename), 'r') as fix_file:
                 # Assignment automatically escapes shell characters for XML
                 script_platform = fix_file.readline().strip('#').strip().split('=')
                 if len(script_platform) > 1:
                     platform[script_platform[0].strip()] = script_platform[1].strip()
                 if script_platform[0].strip() == 'platform':
                     if fix_is_applicable_for_product(platform['platform'], product):
-                        fix = etree.SubElement(fixgroup, "fix", rule=fixname)
+                        if fixname in fixes:
+                            fix = fixes[fixname]
+                        else:
+                            fix = etree.SubElement(fixgroup, "fix")
+                            fix.set("rule", fixname)
+                            fixes[fixname] = fix
+                            included_fixes_count += 1
+
                         fix.text = fix_file.read()
-                        included_fixes_count += 1
 
                         # Expand shell variables and remediation functions into
                         # corresponding XCCDF <sub> elements
                         expand_xccdf_subs(fix, remediation_functions)
                 else:
                     print("\nNotification: Removed the '%s' remediation script from merging as " \
-                          "the platform identifier in the script is missing!" % filename)
+                        "the platform identifier in the script is missing!" % filename)
 
     sys.stderr.write("\nNotification: Merged %d remediation scripts into XML document.\n" % included_fixes_count)
     tree = etree.ElementTree(fixcontent)
