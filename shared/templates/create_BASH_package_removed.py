@@ -20,9 +20,9 @@ def output_check(package_info):
 	if pkgname:
 
 		file_from_template(
-			"./template_package_removed",
-			{ "PKGNAME" : pkgname},
-			"./output/package_{0}_removed.xml", pkgname
+			"./template_BASH_package_removed",
+			{ "PKGNAME" : pkgname },
+			"./output/package_{0}_removed.sh", pkgname
 		)
 
 	else:

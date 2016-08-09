@@ -2,18 +2,17 @@
 
 #
 # create_services_enabled.py
-#   automatically generate checks for enabled services
+#   automatically generate remediations for enabled services
 #
-# NOTE: The file 'template_service_enabled' should be located in the same
+# NOTE: The file 'template_BASH_service_enabled' should be located in the same
 # working directory as this script. The template contains the following tags
-# that *must* be replaced successfully in order for the checks to work.
+# that *must* be replaced successfully in order for the remediations to work.
 #
 # SERVICENAME - the name of the service that should be enabled
 # PACKAGENAME - the name of the package that installs the service
 #
 
 import sys
-import re
 
 from template_common import *
 
@@ -34,7 +33,7 @@ def main():
         sys.exit(1)
 
     filename = sys.argv[1]
-    csv_map(filename, output_checkfile, skip_comments = True)
+    csv_map(filename, output_checkfile)
 
     sys.exit(0)
 
