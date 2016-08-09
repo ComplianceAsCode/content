@@ -1,6 +1,6 @@
 templates: packages kernel_modules permissions umasks sysctls
 
-SHARED_DIR=../../../../../shared/oval/templates
+SHARED_DIR=../../../../../shared/templates
 export PYTHONPATH=../../../../../shared
 
 SHARED_TEMPLATES=../../../../../shared/templates
