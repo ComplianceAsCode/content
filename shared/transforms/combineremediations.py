@@ -301,6 +301,8 @@ def main():
                     if fix_is_applicable_for_product(platform['platform'], product):
                         if fixname in fixes:
                             fix = fixes[fixname]
+                            for child in list(fix):
+                                fix.remove(child)
                         else:
                             fix = etree.SubElement(fixgroup, "fix")
                             fix.set("rule", fixname)
