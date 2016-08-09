@@ -26,33 +26,12 @@ def output_checkfile(serviceinfo):
         print "\tError unpacking servicename, packagename, and daemonname: ", str(e)
         sys.exit(1)
 
-    if not daemonname:
-        daemonname = servicename
-    
-    if packagename:
-        file_from_template(
-            "./template_service_disabled",
-            {
-                "SERVICENAME": servicename,
-                "DAEMONNAME":  daemonname,
-                "PACKAGENAME": packagename
-            },
-            "./output/service_{0}_disabled.xml", servicename
-        )
-    else:
-        file_from_template(
-            "./template_service_disabled",
-            {
-                "SERVICENAME": servicename,
-                "DAEMONNAME":  daemonname
-            },
-            regex_replace = {
-                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
-                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
-            },
-            filename_format = "./output/service_{0}_disabled.xml",
-            filename_value = servicename
-        )
+    file_from_template(
+        "./template_BASH_service_disabled",
+        { "SERVICENAME": servicename },
+        "./output/service_{0}_disabled.sh", servicename
+    )
+
 
 def main():
     if len(sys.argv) < 2:
