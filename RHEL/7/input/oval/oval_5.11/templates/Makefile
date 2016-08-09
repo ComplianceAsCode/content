@@ -1,6 +1,6 @@
 templates: services
 
-SHARED_DIR=../../../../../../shared/oval/templates
+SHARED_DIR=../../../../../../shared/templates
 export PYTHONPATH=../../../../../../shared
 
 OUTPUT:=$(shell mkdir -p output)
