@@ -94,7 +94,9 @@ $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/oc
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
 # Common build targets - a catalogue of XCCDF remediations
-bash_remediations_deps= $(wildcard $(IN)/templates/static/bash/*.sh) $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
+product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
+shared_bash_remediations_deps= $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
+bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
 $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps)
 	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
@@ -108,7 +110,7 @@ $(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $
 
 validate-bash:
 ifeq ($(SHELLCHECK_AVAIL), 0)
-	cd $(IN)/remediations/bash; shellcheck -s bash *.sh
+	shellcheck -s bash $(product_bash_remediations_deps)
 else
 	@echo "Skipping ShellCheck analysis, ensure shellcheck executable is present in the PATH!"
 endif
