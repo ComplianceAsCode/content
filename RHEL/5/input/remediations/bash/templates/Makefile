@@ -6,7 +6,7 @@ export PYTHONPATH=../../../../../../shared
 OUTPUT:=$(shell mkdir -p output)
 
 sysctls:
-	$(SHARED_DIR)/create_sysctl_bash.py ../../../checks/templates/sysctl_values.csv
+	$(SHARED_DIR)/create_BASH_sysctl.py ../../../checks/templates/sysctl_values.csv
 
 services:
 	$(SHARED_DIR)/create_services_disabled.py ../../../checks/templates/services_disabled.csv
