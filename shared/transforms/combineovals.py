@@ -3,6 +3,7 @@
 import datetime
 import lxml.etree as ET
 import os
+import os.path
 import platform
 import re
 import sys
@@ -27,6 +28,7 @@ WEBMIN = 'Webmin'
 FUSE = 'JBoss Fuse'
 OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
+
 
 def _header(schema_version):
     header = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -278,7 +280,7 @@ def checks(product):
     included_checks_count = 0
     for filename in os.listdir(sys.argv[3]):
         if filename.endswith(".xml"):
-            with open(sys.argv[3] + "/" + filename, 'r') as xml_file:
+            with open(os.path.join(sys.argv[3], filename), 'r') as xml_file:
                 xml_content = xml_file.read()
                 if check_is_applicable_for_product(xml_content, product):
                     body = body + xml_content
@@ -287,7 +289,7 @@ def checks(product):
     if len(sys.argv) == 6:
         for filename in os.listdir(sys.argv[4]):
             if filename.endswith(".xml"):
-                with open(sys.argv[4] + "/" + filename, 'r') as xml_file:
+                with open(os.path.join(sys.argv[4], filename), 'r') as xml_file:
                     filecontent = xml_file.read()
                     if '<platform>multi_platform_all</platform>' in filecontent:
                         body = body + filecontent
@@ -307,7 +309,7 @@ def main():
         sys.exit(1)
 
     # Get header with schema version
-    oval_config = sys.argv[1] + "/" + conf_file
+    oval_config = os.path.join(sys.argv[1], conf_file)
     product = sys.argv[2]
 
     oval_schema_version = None
