@@ -21,27 +21,11 @@ def output_checkfile(serviceinfo):
     # get the items out of the list
     servicename, packagename = serviceinfo
 
-    
-    if packagename:
-        file_from_template(
-            "./template_service_enabled",
-            {
-                "SERVICENAME": servicename,
-                "PACKAGENAME": packagename
-            },
-            "./output/service_{0}_enabled.xml", servicename
-        )
-    else:
-        file_from_template(
-            "./template_service_enabled",
-            { "SERVICENAME": servicename },
-            regex_replace = {
-                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
-                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>" 
-            },
-            filename_format = "./output/service_{0}_enabled.xml",
-            filename_value = servicename
-        )
+    file_from_template(
+        "./template_BASH_service_enabled",
+        { "SERVICENAME": servicename },
+        "./output/service_{0}_enabled.sh", servicename
+    )
 
 def main():
     if len(sys.argv) < 2:
