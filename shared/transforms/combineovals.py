@@ -278,9 +278,10 @@ def checks(product):
 
     body = ""
     included_checks_count = 0
-    for filename in os.listdir(sys.argv[3]):
+    oval_dir = sys.argv[3]
+    for filename in os.listdir(oval_dir):
         if filename.endswith(".xml"):
-            with open(os.path.join(sys.argv[3], filename), 'r') as xml_file:
+            with open(os.path.join(oval_dir, filename), 'r') as xml_file:
                 xml_content = xml_file.read()
                 if check_is_applicable_for_product(xml_content, product):
                     body = body + xml_content
