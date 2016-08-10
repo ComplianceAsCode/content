@@ -7,11 +7,11 @@ export SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = debian8
-OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval $(IN)/oval/templates/output
+OVAL_DIRS = $(SHARED_OVAL) templates/output templates/static/oval
 VENDOR = ssgproject
 
 checks:
-	$(MAKE) -C $(IN)/oval/templates all
+	$(MAKE) -C templates templates
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# add local Debian8 specific templated ovals
 	# into final list of OVAL checks
@@ -19,7 +19,7 @@ ifeq ($(OVAL_5_11), 0)
 	$(MAKE) -C $(IN)/oval/oval_5.11/templates all
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
-	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 $(IN)/oval/oval_5.11/templates/output)
+	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) templates/output templates/static/oval_5.11)
 endif
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
 	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
