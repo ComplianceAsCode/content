@@ -27,6 +27,7 @@
       <xsl:apply-templates select="document('profiles/ospp-rhel7-server.xml')" />
       <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
       <xsl:apply-templates select="document('profiles/cjis-rhel7-server.xml')" />
+      <xsl:apply-templates select="document('profiles/rhel7-docker.xml')" />
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">
@@ -126,6 +127,7 @@
       <xsl:apply-templates select="document('xccdf/services/obsolete.xml')" />
       <xsl:apply-templates select="document('xccdf/services/base.xml')" />
       <xsl:apply-templates select="document('xccdf/services/cron.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/docker.xml')" />
       <xsl:apply-templates select="document('xccdf/services/ssh.xml')" />
       <xsl:apply-templates select="document('xccdf/services/sssd.xml')" />
       <xsl:apply-templates select="document('xccdf/services/xorg.xml')" />
