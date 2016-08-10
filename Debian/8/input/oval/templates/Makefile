@@ -10,7 +10,6 @@ all:
 	${SHARED_DIR}/create_sysctl_checks.py sysctl_values.csv
 
 copy:
-	cp output/*.sh ../../remediations/bash/
 	cp output/*.xml ..
 
 clean:
