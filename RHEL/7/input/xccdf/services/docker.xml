@@ -1,0 +1,29 @@
+<Group id="docker">
+<title>Docker Service</title>
+<description>
+  The docker service is necessary to create containers, which are
+  self-sufficient and self-contained applications using the resource
+  isolation features of the kernel.
+</description>
+
+<Rule id="service_docker_enabled" severity="medium">
+<title>Enable the Docker service</title>
+<description>The docker service is commonly needed to
+  create containers.
+<systemd-service-macro enable="true" service="docker" />
+</description>
+<ocil>
+<systemd-check-macro enable="true" service="docker" />
+</ocil>
+<rationale>
+To be able to find any problems with misconfiguration of
+the docker daemon and running containers, the docker service
+has to be enabled.
+</rationale>
+<ident cce="" />
+<ref nist="" disa=""
+ossrg=""
+stigid="" />
+<oval id="service_docker_enabled" />
+</Rule>
+</Group>
