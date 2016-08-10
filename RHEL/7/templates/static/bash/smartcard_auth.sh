@@ -8,11 +8,64 @@ package_command install pam_pkcs11
 # Enable pcscd.socket systemd activation socket
 service_command enable pcscd.socket
 
-# Enable smartcard authentication (but allow also other ways
-# to login not to possibly cut off the system in question)
-/usr/sbin/authconfig --enablesmartcard --updateall
+# Configure the expected /etc/pam.d/system-auth{,-ac} settings directly
+#
+# The code below will configure system authentication in the way smart card
+# logins will be enabled, but also user login(s) via other method to be allowed
+#
+# NOTE: It is not possible to use the 'authconfig' command to perform the
+#       remediation for us, because call of 'authconfig' would discard changes
+#       for other remediations (see RH BZ#1357019 for details)
+#
+#	Therefore we need to configure the necessary settings directly.
+#
 
-# Define constants to be reused below
+# Define system-auth config location
+SYSTEM_AUTH_CONF="/etc/pam.d/system-auth"
+# Define expected 'pam_env.so' row in $SYSTEM_AUTH_CONF
+PAM_ENV_SO="auth.*required.*pam_env.so"
+
+# Define 'pam_succeed_if.so' row to be appended past $PAM_ENV_SO row into $SYSTEM_AUTH_CONF
+SYSTEM_AUTH_PAM_SUCCEED="\
+auth        \[success=1 default=ignore\] pam_succeed_if.so service notin \
+login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver quiet use_uid"
+# Define 'pam_pkcs11.so' row to be appended past $SYSTEM_AUTH_PAM_SUCCEED
+# row into SYSTEM_AUTH_CONF file
+SYSTEM_AUTH_PAM_PKCS11="\
+auth        \[success=done authinfo_unavail=ignore ignore=ignore default=die\] \
+pam_pkcs11.so nodebug"
+
+# Define smartcard-auth config location
+SMARTCARD_AUTH_CONF="/etc/pam.d/smartcard-auth"
+# Define 'pam_pkcs11.so' auth section to be appended past $PAM_ENV_SO into $SMARTCARD_AUTH_CONF
+SMARTCARD_AUTH_SECTION="\
+auth        [success=done ignore=ignore default=die] pam_pkcs11.so wait_for_card card_only"
+# Define expected 'pam_permit.so' row in $SMARTCARD_AUTH_CONF
+PAM_PERMIT_SO="account.*required.*pam_permit.so"
+# Define 'pam_pkcs11.so' password section
+SMARTCARD_PASSWORD_SECTION="\
+password    required      pam_pkcs11.so"
+
+# First Correct the SYSTEM_AUTH_CONF configuration
+if ! grep -q 'pam_pkcs11.so' "$SYSTEM_AUTH_CONF"
+then
+	# Append (expected) pam_succeed_if.so row past the pam_env.so into SYSTEM_AUTH_CONF file
+	sed -i --follow-symlinks -e '/^'"$PAM_ENV_SO"'/a '"$SYSTEM_AUTH_PAM_SUCCEED" "$SYSTEM_AUTH_CONF"
+	# Append (expected) pam_pkcs11.so row past the pam_succeed_if.so into SYSTEM_AUTH_CONF file
+	sed -i --follow-symlinks -e '/^'"$SYSTEM_AUTH_PAM_SUCCEED"'/a '"$SYSTEM_AUTH_PAM_PKCS11" "$SYSTEM_AUTH_CONF"
+fi
+
+# Then also correct the SMARTCARD_AUTH_CONF
+if ! grep -q 'pam_pkcs11.so' "$SMARTCARD_AUTH_CONF"
+then
+	# Append (expected) SMARTCARD_AUTH_SECTION row past the pam_env.so into SMARTCARD_AUTH_CONF file
+	sed -i --follow-symlinks -e '/^'"$PAM_ENV_SO"'/a '"$SMARTCARD_AUTH_SECTION" "$SMARTCARD_AUTH_CONF"
+	# Append (expected) SMARTCARD_PASSWORD_SECTION row past the pam_permit.so into SMARTCARD_AUTH_CONF file
+	sed -i --follow-symlinks -e '/^'"$PAM_PERMIT_SO"'/a '"$SMARTCARD_PASSWORD_SECTION" "$SMARTCARD_AUTH_CONF"
+fi
+
+# Perform /etc/pam_pkcs11/pam_pkcs11.conf settings below
+# Define selected constants for later reuse
 SP="[:space:]"
 PAM_PKCS11_CONF="/etc/pam_pkcs11/pam_pkcs11.conf"
 
