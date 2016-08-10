@@ -127,6 +127,7 @@
       <xsl:apply-templates select="document('xccdf/services/obsolete.xml')" />
       <xsl:apply-templates select="document('xccdf/services/base.xml')" />
       <xsl:apply-templates select="document('xccdf/services/cron.xml')" />
+      <xsl:apply-templates select="document('xccdf/services/docker.xml')" />
       <xsl:apply-templates select="document('xccdf/services/ssh.xml')" />
       <xsl:apply-templates select="document('xccdf/services/sssd.xml')" />
       <xsl:apply-templates select="document('xccdf/services/xorg.xml')" />
