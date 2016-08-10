@@ -7,19 +7,14 @@ export SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = rhel5
-PROD_OVAL = $(BUILD)/$(PROD)_oval
+OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 VENDOR = ssgproject
 
 all: tables guide content dist
 
 checks:
-	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
-	mkdir -p $(PROD_OVAL)
-	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
-	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL)/ ';'
-	xmlwf $(PROD_OVAL)/*.xml
-	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
+	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
+	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 # example, if needed: for converting XCCDF into shorthand
