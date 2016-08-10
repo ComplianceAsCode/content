@@ -123,21 +123,52 @@ validate-buildsystem:
 		fi \
 	done
 
-validate: fedora rhel5 rhel6 rhel7 debian8 rhel-osp7 rhevm3 chromium firefox jre
+validate-fedora: fedora
 	cd Fedora/ && $(MAKE) validate
-	cd RHEL/6/ && $(MAKE) validate
-	cd RHEL/7/ && $(MAKE) validate
-	#cd Debian/8/ && $(MAKE) validate
-	cd Chromium/ && $(MAKE) validate
-	cd Firefox/ && $(MAKE) validate
-	cd JRE/ && $(MAKE) validate
-	cd OpenStack/RHEL-OSP/7/ && $(MAKE) validate
+
+validate-rhel5: rhel5
 	# Enable below when content validates correctly
 	#cd RHEL/5/ && $(MAKE) validate
+
+validate-rhel6: rhel6
+	cd RHEL/6/ && $(MAKE) validate
+
+validate-rhel7: rhel7
+	cd RHEL/7/ && $(MAKE) validate
+
+validate-debian8: debian8
+	# Enable below when content validates correctly
+	#cd Debian/8/ && $(MAKE) validate
+
+validate-rhel-osp7: rhel-osp7
+	cd OpenStack/RHEL-OSP/7/ && $(MAKE) validate
+
+validate-rhevm3: rhevm3
+	# Enable below when content validates correctly
 	#cd RHEVM3 && $(MAKE) validate
-	#cd OpenSUSE && $(MAKE) validate
+
+validate-chromium: chromium
+	cd Chromium/ && $(MAKE) validate
+
+validate-firefox: firefox
+	cd Firefox/ && $(MAKE) validate
+
+validate-jre: jre
+	cd JRE/ && $(MAKE) validate
+
+validate-opensuse: opensuse
+	# Enable below when content validates correctly
+	#cd OpenSUSE/ && $(MAKE) validate
+
+validate-suse11: suse11
+	# Enable below when content validates correctly
 	#cd SUSE/11 && $(MAKE) validate
+
+validate-suse12: suse12
+	# Enable below when content validates correctly
 	#cd SUSE/12 && $(MAKE) validate
+
+validate: validate-fedora validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
 
 rpmroot:
 	mkdir -p $(RPMBUILD)/BUILD
