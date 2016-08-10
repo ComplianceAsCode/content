@@ -286,18 +286,6 @@ def checks(product):
                     body = body + xml_content
                     included_checks_count += 1
 
-    if len(sys.argv) == 6:
-        for filename in os.listdir(sys.argv[4]):
-            if filename.endswith(".xml"):
-                with open(os.path.join(sys.argv[4], filename), 'r') as xml_file:
-                    filecontent = xml_file.read()
-                    if '<platform>multi_platform_all</platform>' in filecontent:
-                        body = body + filecontent
-                    elif '<platform>' + sys.argv[5] + '</platform>' in filecontent:
-                        body = body + filecontent
-                    elif '<platform>' + sys.argv[6] + '</platform>' in filecontent:
-                        body = body + filecontent
-
     sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL document.\n" % included_checks_count)
 
     return body
