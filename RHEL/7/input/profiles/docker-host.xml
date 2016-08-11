@@ -6,4 +6,12 @@
 </description>
 
 <select idref="service_docker_enabled" selected="true" />
+
+<!-- Use SELinux to protect the host and containers from each other -->
+<refine-value idref="var_selinux_policy_name" selector="targeted" />
+<refine-value idref="var_selinux_state" selector="enforcing" />
+<select idref="enable_selinux_bootloader" selected="true" />
+<select idref="selinux_state" selected="true" />
+<select idref="selinux_policytype" selected="true" />
+
 </Profile>
