@@ -2,7 +2,6 @@
 
 import lxml.etree as ET
 import optparse
-import re
 import sys
 
 script_usage = """
