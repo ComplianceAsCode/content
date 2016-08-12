@@ -97,7 +97,7 @@ class XCCDFBenchmark(object):
             print("* Available profiles:")
             profiles_avail = self.tree.findall("./{%s}Profile" % (xccdf_ns))
             for profile in profiles_avail:
-                print("** %s" % profile.get('profile_id'))
+                print("** %s" % profile.get('id'))
             sys.exit(1)
 
         rules = xccdf_profile.findall("./{%s}select[@selected=\"true\"]" %
