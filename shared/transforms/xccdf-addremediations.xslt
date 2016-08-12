@@ -31,7 +31,7 @@
   </xsl:template>
 
   <xsl:template match="xccdf:Benchmark">
-    <xsl:if test="not($remediations_doc)">
+    <xsl:if test="$remediations='' or not($remediations_doc)">
       <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$remediations"/>".</xsl:message>
     </xsl:if>
 
