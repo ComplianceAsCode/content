@@ -87,3 +87,33 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
         DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
     )
 endmacro()
+
+macro(ssg_build_unlinked_oval PRODUCT)
+    file(GLOB OVAL_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/oval/*.xml")
+    file(GLOB SHARED_OVAL_DEPS "${SSG_SHARED}/oval/*.xml")
+
+    if(OSCAP_OVAL_511_SUPPORT EQUAL 0)
+        file(GLOB OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/oval/oval_5.11/*.xml")
+        file(GLOB SHARED_OVAL_511_DEPS "${SSG_SHARED}/oval/oval_5.11/*.xml")
+
+        add_custom_command(
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            # TODO: config
+            COMMAND ${SSG_SHARED_TRANSFORMS/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS} ${OVAL_511_DEPS} ${SHARED_OVAL_DEPS} ${SHARED_OVAL_511_DEPS} ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            DEPENDS ${OVAL_DEPS}
+            DEPENDS ${OVAL_511_DEPS}
+            DEPENDS ${SHARED_OVAL_DEPS}
+            DEPENDS ${SHARED_OVAL_511_DEPS}
+        )
+    else()
+        add_custom_command(
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            # TODO: config
+            COMMAND ${SSG_SHARED_TRANSFORMS/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS} ${SHARED_OVAL_DEPS} ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            DEPENDS ${OVAL_DEPS}
+            DEPENDS ${SHARED_OVAL_DEPS}
+        )
+    endif()
+endmacro()

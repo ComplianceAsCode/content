@@ -25,6 +25,8 @@ execute_process(
     COMMAND ${SSG_SHARED_UTILS}/oscap-svg-support.py
     RESULT_VARIABLE OSCAP_SVG_SUPPORT
 )
+# TODO, 0 means OVAL 5.11 is supported
+set(OSCAP_OVAL_511_SUPPORT 0)
 
 find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
 if (NOT XSLTPROC_EXECUTABLE)
