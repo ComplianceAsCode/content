@@ -3,21 +3,13 @@ set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
 set(SSG_SHARED_REMEDIATIONS "${SSG_SHARED}/templates/static/bash")
 
-macro(ssg_xsltproc INPUT XSLT OUTPUT)
-    add_custom_command(
-        OUTPUT ${OUTPUT}
-        COMMAND ${XSLTPROC_EXECUTABLE} --output ${OUTPUT} ${XSLT} ${INPUT}
-        MAIN_DEPENDENCY ${INPUT}
-        DEPENDS ${XSLT}
-    )
-endmacro()
-
 macro(ssg_build_guide_xml PRODUCT)
     if(OSCAP_SVG_SUPPORT EQUAL 0)
-        ssg_xsltproc(
-            ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
-            ${SSG_SHARED_TRANSFORMS}/includelogo.xslt
-            ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
+        add_custom_command(
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
+            COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/guide.xml ${SSG_SHARED_TRANSFORMS}/includelogo.xslt ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
+            MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
+            DEPENDS ${SSG_SHARED_TRANSFORMS}/includelogo.xslt
         )
     else()
         add_custom_command(
