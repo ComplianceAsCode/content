@@ -1,7 +1,7 @@
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
-set(SSG_SHARED_REMEDIATIONS "${SSG_SHARED}/remediations")
+set(SSG_SHARED_REMEDIATIONS "${SSG_SHARED}/templates/static/bash")
 
 macro(ssg_xsltproc INPUT XSLT OUTPUT)
     add_custom_command(
@@ -75,13 +75,13 @@ macro(ssg_build_xccdf_ocilrefs PRODUCT)
 endmacro()
 
 macro(ssg_build_bash_remediations PRODUCT)
-    file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/remediations/bash/*.sh")
-    file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED_REMEDIATIONS}/bash/*.sh")
+    file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash/*.sh")
+    file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED_REMEDIATIONS}/*.sh")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ${SSG_SHARED_REMEDIATIONS}/bash ${CMAKE_CURRENT_SOURCE_DIR}/input/remediations/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ${SSG_SHARED_REMEDIATIONS} ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
     )
 endmacro()
