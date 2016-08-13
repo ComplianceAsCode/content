@@ -10,6 +10,7 @@ set(SSG_PATCH_VERSION 31)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 option(SSG_FEDORA_CONTENT_ENABLED "If enabled, the Fedora SCAP content will be built" TRUE)
+option(SSG_RHEL7_CONTENT_ENABLED "If enabled, the RHEL7 SCAP content will be built" TRUE)
 
 message("SCAP Security Guide ${SSG_VERSION}")
 message("")
@@ -58,4 +59,7 @@ add_custom_command(
 
 if (SSG_FEDORA_CONTENT_ENABLED)
     add_subdirectory("Fedora")
+endif()
+if (SSG_RHEL7_CONTENT_ENABLED)
+    add_subdirectory("RHEL/7")
 endif()
