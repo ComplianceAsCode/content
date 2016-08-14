@@ -240,8 +240,7 @@ class XCCDFBenchmark(object):
                 del profile_stats['assigned_cces']
                 del profile_stats['assigned_cces_pct']
 
-            # Then json dump the rest
-            print json.dumps(profile_stats, indent = 4)
+            return profile_stats
 
     def console_print(self, content, width):
         """Prints the 'content' array left aligned, each time 45 characters
@@ -337,14 +336,20 @@ def main():
     benchmark = XCCDFBenchmark(options.benchmark_file)
     if options.profile:
         profile = options.profile
-        benchmark.show_profile_stats(profile, options)
+        ret = benchmark.show_profile_stats(profile, options)
+        if options.json:
+            print(json.dumps(ret, indent=4))
     else:
         all_profile_elems = benchmark.tree.findall("./{%s}Profile" %
                                                    (xccdf_ns))
+        ret = []
         for elem in all_profile_elems:
             profile = elem.get('id')
             if profile is not None:
-                benchmark.show_profile_stats(profile, options)
+                ret.append(benchmark.show_profile_stats(profile, options))
+
+        if options.json:
+            print(json.dumps(ret, indent=4))
 
 if __name__ == '__main__':
     main()
