@@ -26,6 +26,8 @@ oval_5.11:
 	${SHARED_DIR}/create_services_enabled.py  $(OVAL_5.11_CSV_DIR)/services_enabled.csv
 	${SHARED_DIR}/create_services_disabled.py $(OVAL_5.11_CSV_DIR)/services_disabled.csv
 
+bash:
+	mkdir -p $(OUTPUT_BASH)
 
 .PHONY = templates_oval
 
