@@ -5,9 +5,10 @@
      containing a list of remediations.  It inserts these into the Rules
      specified inside the remediations file. -->
 
-<xsl:variable name="fixgroup" select="document($remediations)/xccdf:fix-content/xccdf:fix-group" />
+<xsl:variable name="remediations_doc" select="document($remediations)" />
+<xsl:variable name="fixgroup" select="$remediations_doc/xccdf:fix-content/xccdf:fix-group" />
 <xsl:variable name="fixsystem" select="$fixgroup/@system"/>
-<xsl:variable name="fixcommongroup" select="document($remediations)/xccdf:fix-content/xccdf:fix-common-group" />
+<xsl:variable name="fixcommongroup" select="$remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
 
   <xsl:template match="xccdf:Rule">
     <xsl:copy>
@@ -30,6 +31,10 @@
   </xsl:template>
 
   <xsl:template match="xccdf:Benchmark">
+    <xsl:if test="$remediations='' or not($remediations_doc)">
+      <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$remediations"/>".</xsl:message>
+    </xsl:if>
+
     <xsl:copy>
 
       <!-- plain-text elements must appear in sequence -->
