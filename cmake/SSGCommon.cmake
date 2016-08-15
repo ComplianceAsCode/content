@@ -93,7 +93,7 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
-        COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt
