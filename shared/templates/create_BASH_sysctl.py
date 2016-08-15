@@ -14,7 +14,7 @@ def output_checkfile(serviceinfo):
     if not sysctl_val.strip():
         # open the template and perform the conversions 
         file_from_template(
-            "template_sysctl_var",
+            "template_BASH_sysctl_var",
             {
                 "SYSCTLID":  sysctl_var_id,
                 "SYSCTLVAR": sysctl_var
@@ -23,7 +23,7 @@ def output_checkfile(serviceinfo):
         )
     else:
         file_from_template(
-            "./template_sysctl",
+            "./template_BASH_sysctl",
             {
                 "SYSCTLID":  sysctl_var_id,
                 "SYSCTLVAR": sysctl_var,
