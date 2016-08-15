@@ -45,7 +45,9 @@ macro(ssg_build_xccdf_unlinked PRODUCT)
         COMMAND ${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py --input ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         COMMAND ${OSCAP_EXECUTABLE} xccdf resolve -o ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt ${CMAKE_CURRENT_SOURCE_DIR}/transforms/constants.xslt ${SSG_SHARED_TRANSFORMS}/shared_constants.xslt
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/constants.xslt
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/shared_constants.xslt
         #DEPENDS ${CMAKE_BINARY_DIR}/contributors.xml
         COMMENT "[${PRODUCT}] generating xccdf-unlinked-resolved.xml"
     )
@@ -67,7 +69,8 @@ macro(ssg_build_xccdf_ocilrefs PRODUCT)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam product ${PRODUCT} --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt
         COMMENT "[${PRODUCT}] generating xccdf-unlinked-ocilrefs.xml"
     )
 endmacro()
@@ -81,6 +84,7 @@ macro(ssg_build_bash_remediations PRODUCT)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ${SSG_SHARED_REMEDIATIONS} ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/combineremediations.py
         COMMENT "[${PRODUCT}] generating bash-remediations.xml"
     )
 endmacro()
@@ -91,7 +95,8 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
-        DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt
         COMMENT "[${PRODUCT}] generating xccdf-unlinked.xml"
     )
 endmacro()
@@ -117,6 +122,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             DEPENDS ${OVAL_511_DEPS}
             DEPENDS ${SHARED_OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_511_DEPS}
+            DEPENDS ${SSG_SHARED_TRANSFORMS}/combineovals.py
             VERBATIM
             COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks enabled)"
         )
@@ -128,6 +134,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_DEPS}
+            DEPENDS ${SSG_SHARED_TRANSFORMS}/combineovals.py
             VERBATIM
             COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
         )
@@ -141,6 +148,7 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/relabelids.py
         COMMENT "[${PRODUCT}] linking IDs in XCCDF, OVAL and OCIL files"
     )
 endmacro()
@@ -162,6 +170,7 @@ macro(ssg_build_oval_final PRODUCT)
         # Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
         COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/oval-fix-test-attestation-urls.xslt ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/oval-fix-test-attestation-urls.xslt
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-oval.xml"
     )
 endmacro()
