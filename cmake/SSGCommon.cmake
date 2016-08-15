@@ -87,12 +87,12 @@ endmacro()
 
 macro(ssg_build_xccdf_with_remediations PRODUCT)
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml
-        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
-        COMMENT "[${PRODUCT}] generating xccdf-unlinked-withremediations.xml"
+        COMMENT "[${PRODUCT}] generating xccdf-unlinked.xml"
     )
 endmacro()
 
@@ -136,9 +136,9 @@ endmacro()
 
 macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked-withremediations.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml
-        COMMAND ${SSG_SHARED_TRANSFORMS}/relabelids.py ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml ssg
-        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml
+        COMMAND ${SSG_SHARED_TRANSFORMS}/relabelids.py ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ssg
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
         COMMENT "[${PRODUCT}] linking IDs in XCCDF, OVAL and OCIL files"
