@@ -7,32 +7,22 @@ export SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = debian8
-PROD_OVAL = $(BUILD)/$(PROD)_oval
+OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval $(IN)/oval/templates/output
 VENDOR = ssgproject
 
 checks:
-	# Make intermediate $(PROD_OVAL) directory to hold final list of OVAL checks for $(PROD)
-	mkdir -p $(PROD_OVAL)
 	$(MAKE) -C $(IN)/oval/templates all
-	$(MAKE) -C $(IN)/oval/templates copy
-	# Search $(SHARED_OVAL) and $(IN)/oval directories to find all product specific OVAL checks,
-	# which are regular files (not symlinks). Merge the final list into $(PROD_OVAL) directory
-	find $(SHARED_OVAL) $(IN)/oval -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL)/ ';'
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# add local Debian8 specific templated ovals
 	# into final list of OVAL checks
 ifeq ($(OVAL_5_11), 0)
 	$(MAKE) -C $(IN)/oval/oval_5.11/templates all
-	$(MAKE) -C $(IN)/oval/oval_5.11/templates copy
-	# Search $(SHARED_OVAL_5_11) and $(IN)/oval/oval_5.11 directories to find all product specific
-	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
-	# directory
-	find $(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL)/ ';'
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
+	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 $(IN)/oval/oval_5.11/templates/output)
 endif
-	xmlwf $(PROD_OVAL)/*.xml
-	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(PROD_OVAL) > $(OUT)/unlinked-$(PROD)-oval.xml
+	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
+	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml

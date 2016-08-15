@@ -20,6 +20,7 @@ TRANS = transforms
 SHARED_OVAL = $(SHARED)/oval
 SHARED_OVAL_5_11 = $(SHARED_OVAL)/oval_5.11
 SHARED_REMEDIATIONS = $(SHARED)/templates/static/bash
+STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
 UTILS = utils
@@ -107,6 +108,19 @@ $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_r
 $(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/bash-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
 	xsltproc -stringparam remediations "$(realpath $(OUT)/bash-remediations.xml)" -o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $(OUT)/xccdf-unlinked-ocilrefs.xml
 	xmllint --format --output $@ $@
+
+# Common build targets - OVAL files
+standard-oval-build:
+	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
+	# into final list of OVAL checks
+ifeq ($(OVAL_5_11), 0)
+	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
+	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
+	$(eval STANDARD_OVAL_DIRS+=$(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11)
+endif
+	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
+	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(STANDARD_OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 validate-bash:
 ifeq ($(SHELLCHECK_AVAIL), 0)
