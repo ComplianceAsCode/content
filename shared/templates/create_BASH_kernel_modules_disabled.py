@@ -33,7 +33,7 @@ def main():
         sys.exit(1)
 
     filename = sys.argv[1]
-    csv_map(filename, output_checkfile)
+    csv_map(filename, output_checkfile, skip_comments = True)
 
     sys.exit(0)
 
