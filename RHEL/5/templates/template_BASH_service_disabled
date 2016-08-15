@@ -1,0 +1,9 @@
+#
+# Disable SERVICENAME for all run levels
+#
+/sbin/chkconfig --level 0123456 SERVICENAME off
+
+#
+# Stop SERVICENAME if currently running
+#
+/sbin/service SERVICENAME stop 1>/dev/null

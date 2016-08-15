@@ -64,7 +64,7 @@ def output_checkfile(serviceinfo):
                     filestring = filestring.replace(PENDING, ' var_ref="var_%s" /' % sebool_id)
                     filestring = filestring.replace("</linux:selinuxboolean_state>", EXTERN_VAR % (sebool_id, sebool_id))
                 # write the check
-                with open("./output/" + files[seboolfile] + sebool_id +
+                with open("./output/oval/" + files[seboolfile] + sebool_id +
                           ".xml", 'w+') as outputfile:
                     outputfile.write(filestring)
                     outputfile.close()

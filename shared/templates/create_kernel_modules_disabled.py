@@ -22,7 +22,7 @@ def output_checkfile(kerninfo):
     file_from_template(
             "./template_kernel_module_disabled",
             { "KERNMODULE": kernmod },
-            "./output/kernel_module_{0}_disabled.xml", kernmod
+            "./output/oval/kernel_module_{0}_disabled.xml", kernmod
     )
 
 def main():

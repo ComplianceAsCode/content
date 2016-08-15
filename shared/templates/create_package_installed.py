@@ -22,7 +22,7 @@ def output_check(package_info):
         file_from_template(
             "./template_OVAL_package_installed",
             { "PKGNAME" : pkgname },
-            "./output/package_{0}_installed.xml", pkgname
+            "./output/oval/package_{0}_installed.xml", pkgname
         )
 
     else:
