@@ -20,7 +20,7 @@ def output_checkfile(kerninfo):
     kernmod = kerninfo[0]
 
     file_from_template(
-        "./template_kernel_module_disabled",
+        "./template_BASH_kernel_module_disabled",
         {
            "KERNMODULE": kernmod
         },
