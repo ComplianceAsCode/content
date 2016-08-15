@@ -101,7 +101,7 @@ $(PRODUCT_REMEDIATIONS):
 	then	\
 		make -C templates bash;	\
 	else	\
-		mkdir templates/output/bash;	\
+		mkdir -p templates/output/bash;	\
 	fi
 
 # Common build targets - a catalogue of XCCDF remediations
