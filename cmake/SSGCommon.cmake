@@ -37,7 +37,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
     )
 endmacro()
 
-macro(ssg_build_unlinked_xccdf PRODUCT)
+macro(ssg_build_xccdf_unlinked PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam ssg_version ${SSG_VERSION} --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
@@ -51,7 +51,7 @@ macro(ssg_build_unlinked_xccdf PRODUCT)
     )
 endmacro()
 
-macro(ssg_build_unlinked_ocil PRODUCT)
+macro(ssg_build_ocil_unlinked PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
         COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
@@ -96,7 +96,7 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     )
 endmacro()
 
-macro(ssg_build_unlinked_oval PRODUCT)
+macro(ssg_build_oval_unlinked PRODUCT)
     set(OVAL_DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/input/oval")
     file(GLOB OVAL_DEPS "${OVAL_DEPS_DIR}/*.xml")
     set(SHARED_OVAL_DEPS_DIR "${SSG_SHARED}/oval")
@@ -137,10 +137,10 @@ endmacro()
 macro(ssg_build_product PRODUCT)
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
-    ssg_build_unlinked_xccdf(${PRODUCT})
-    ssg_build_unlinked_ocil(${PRODUCT})
+    ssg_build_xccdf_unlinked(${PRODUCT})
+    ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_xccdf_ocilrefs(${PRODUCT})
     ssg_build_bash_remediations(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
-    ssg_build_unlinked_oval(${PRODUCT})
+    ssg_build_oval_unlinked(${PRODUCT})
 endmacro()
