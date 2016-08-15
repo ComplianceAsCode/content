@@ -409,7 +409,7 @@
 
           <check-content-ref>
             <xsl:attribute name="href">
-              <xsl:value-of select="$ovalfile" />
+              <xsl:value-of select="'oval-unlinked.xml'" />
             </xsl:attribute>
             <xsl:attribute name="name">
               <xsl:value-of select="@id" />
