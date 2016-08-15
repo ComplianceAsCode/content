@@ -134,6 +134,17 @@ macro(ssg_build_oval_unlinked PRODUCT)
     endif()
 endmacro()
 
+macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked-withremediations.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml
+        COMMAND ${SSG_SHARED_TRANSFORMS}/relabelids.py ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml ssg
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-withremediations.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
+        COMMENT "[${PRODUCT}] linking IDs in XCCDF, OVAL and OCIL files"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
@@ -143,4 +154,5 @@ macro(ssg_build_product PRODUCT)
     ssg_build_bash_remediations(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
+    ssg_build_link_xccdf_oval_ocil(${PRODUCT})
 endmacro()

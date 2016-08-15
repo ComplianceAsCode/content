@@ -3,14 +3,6 @@
 
 <xsl:include href="shared_constants.xslt"/>
 
-<!-- This transform expects a stringparam "product" specifying a SSG product
-     for which it will produce the resulting "ssg-$(PROD)-ocil.xml" OCIL file.
-     It replaces check-content with a check-content-ref, using the enclosing
-     Rule id to create an id for the check (by appending "_ocil") -->
-
-<xsl:param name="product">undef</xsl:param>
-
-
   <!-- Replace check system attribute with the real OCIL one -->
   <xsl:template match="xccdf:check[@system='ocil-transitional']">
     <xsl:copy>
@@ -36,14 +28,11 @@
   <!-- Remove check-content nodes and replace them with a check-content-ref node, using the Rule id
        to create a reference name -->
   <xsl:template match="xccdf:check-content">
-	<xsl:element name="check-content-ref" namespace="http://checklists.nist.gov/xccdf/1.1">
-		<xsl:if test="$product != 'undef'" >
-			<xsl:attribute name="href">unlinked-<xsl:value-of select="$product"/>-ocil.xml</xsl:attribute>
-		</xsl:if>
-		<xsl:attribute name="name"><xsl:value-of select="../../@id"/>_ocil</xsl:attribute>
-	</xsl:element>
+    <xsl:element name="check-content-ref" namespace="http://checklists.nist.gov/xccdf/1.1">
+      <xsl:attribute name="href">ocil-unlinked.xml</xsl:attribute>
+      <xsl:attribute name="name"><xsl:value-of select="../../@id"/>_ocil</xsl:attribute>
+    </xsl:element>
   </xsl:template>
-
 
   <!-- Copy everything else through to final output -->
   <xsl:template match="@*|node()">
