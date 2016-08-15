@@ -4,7 +4,7 @@
 # create_services_enabled.py
 #   automatically generate remediations for enabled services
 #
-# NOTE: The file 'template_service_enabled' should be located in the same
+# NOTE: The file 'template_BASH_service_enabled' should be located in the same
 # working directory as this script. The template contains the following tags
 # that *must* be replaced successfully in order for the remediations to work.
 #
@@ -13,6 +13,7 @@
 #
 
 import sys
+
 from template_common import *
 
 def output_checkfile(serviceinfo):
@@ -20,7 +21,7 @@ def output_checkfile(serviceinfo):
     servicename, packagename = serviceinfo
 
     file_from_template(
-        "./template_service_enabled",
+        "./template_BASH_service_enabled",
         { "SERVICENAME": servicename },
         "./output/service_{0}_enabled.sh", servicename
     )

@@ -9,7 +9,14 @@ import re
 
 def get_template_file(filename):
     try:
-        return open(filename, 'r')
+
+        if 'TEMPLATE_DIR' in os.environ:
+            template_filename = os.path.join(os.environ['TEMPLATE_DIR'], filename)
+        else:
+            template_filename = filename
+
+        return open(template_filename, 'r')
+
     except IOError:
         # guess shared template
         if 'SHARED_DIR' in os.environ:

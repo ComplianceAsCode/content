@@ -25,12 +25,6 @@ def output_check(package_info):
             "./output/package_{0}_installed.xml", pkgname
         )
 
-        file_from_template(
-            "./template_BASH_package_installed",
-            { "PKGNAME" : pkgname },
-            "./output/package_{0}_installed.sh", pkgname
-        )
-
     else:
         print "ERROR: input violation: the package name must be defined"
 
