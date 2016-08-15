@@ -7,7 +7,7 @@ export SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = debian8
-OVAL_DIRS = $(SHARED_OVAL) templates/output templates/static/oval
+OVAL_DIRS = $(SHARED_OVAL) templates/output/oval templates/static/oval
 VENDOR = ssgproject
 
 checks:
@@ -19,7 +19,7 @@ ifeq ($(OVAL_5_11), 0)
 	$(MAKE) -C templates oval_5.11
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
-	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) templates/output templates/static/oval_5.11)
+	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) templates/output/oval templates/static/oval_5.11)
 endif
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
 	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
