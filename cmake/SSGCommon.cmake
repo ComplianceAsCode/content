@@ -10,12 +10,14 @@ macro(ssg_build_guide_xml PRODUCT)
             COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/guide.xml ${SSG_SHARED_TRANSFORMS}/includelogo.xslt ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
             MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
             DEPENDS ${SSG_SHARED_TRANSFORMS}/includelogo.xslt
+            COMMENT "[${PRODUCT}] generating guide.xml"
         )
     else()
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
             COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
             MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
+            COMMENT "[${PRODUCT}] generating guide.xml"
         )
     endif()
 endmacro()
@@ -31,6 +33,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt ${AUXILIARY_DEPS} ${PROFILE_DEPS} ${XCCDF_RULE_DEPS}
+        COMMENT "[${PRODUCT}] generating shorthand.xml"
     )
 endmacro()
 
@@ -44,6 +47,7 @@ macro(ssg_build_unlinked_xccdf PRODUCT)
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt ${CMAKE_CURRENT_SOURCE_DIR}/transforms/constants.xslt ${SSG_SHARED_TRANSFORMS}/shared_constants.xslt
         #DEPENDS ${CMAKE_BINARY_DIR}/contributors.xml
+        COMMENT "[${PRODUCT}] generating xccdf-unlinked-resolved.xml"
     )
 endmacro()
 
@@ -54,6 +58,7 @@ macro(ssg_build_unlinked_ocil PRODUCT)
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt
+        COMMENT "[${PRODUCT}] generating ocil-unlinked.xml"
     )
 endmacro()
 
@@ -63,6 +68,7 @@ macro(ssg_build_xccdf_ocilrefs PRODUCT)
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam product ${PRODUCT} --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt
+        COMMENT "[${PRODUCT}] generating xccdf-unlinked-ocilrefs.xml"
     )
 endmacro()
 
@@ -75,6 +81,7 @@ macro(ssg_build_bash_remediations PRODUCT)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ${SSG_SHARED_REMEDIATIONS} ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
+        COMMENT "[${PRODUCT}] generating bash-remediations.xml"
     )
 endmacro()
 
@@ -85,6 +92,7 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        COMMENT "[${PRODUCT}] generating xccdf-unlinked-withremediations.xml"
     )
 endmacro()
 
@@ -110,6 +118,7 @@ macro(ssg_build_unlinked_oval PRODUCT)
             DEPENDS ${SHARED_OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_511_DEPS}
             VERBATIM
+            COMMENT "[${PRODUCT}] generating unlinked-oval.xml (OVAL 5.11 checks enabled)"
         )
     else()
         add_custom_command(
@@ -120,6 +129,7 @@ macro(ssg_build_unlinked_oval PRODUCT)
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_DEPS}
             VERBATIM
+            COMMENT "[${PRODUCT}] generating unlinked-oval.xml (OVAL 5.11 checks disabled)"
         )
     endif()
 endmacro()
