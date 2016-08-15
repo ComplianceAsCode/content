@@ -22,7 +22,7 @@ def output_check(package_info):
         file_from_template(
             "./template_BASH_package_installed",
             { "PKGNAME" : pkgname },
-            "./output/package_{0}_installed.sh", pkgname
+            "./output/bash/package_{0}_installed.sh", pkgname
         )
 
     else:

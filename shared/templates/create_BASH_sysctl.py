@@ -19,7 +19,7 @@ def output_checkfile(serviceinfo):
                 "SYSCTLID":  sysctl_var_id,
                 "SYSCTLVAR": sysctl_var
             },
-            "./output/sysctl_{0}.sh", sysctl_var_id
+            "./output/bash/sysctl_{0}.sh", sysctl_var_id
         )
     else:
         file_from_template(
@@ -29,7 +29,7 @@ def output_checkfile(serviceinfo):
                 "SYSCTLVAR": sysctl_var,
                 "SYSCTLVAL": sysctl_val
             },
-            "./output/sysctl_{0}.sh", sysctl_var_id
+            "./output/bash/sysctl_{0}.sh", sysctl_var_id
         )
 
 def main():

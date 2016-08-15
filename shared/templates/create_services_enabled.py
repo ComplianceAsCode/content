@@ -29,7 +29,7 @@ def output_checkfile(serviceinfo):
                 "SERVICENAME": servicename,
                 "PACKAGENAME": packagename
             },
-            "./output/service_{0}_enabled.xml", servicename
+            "./output/oval/service_{0}_enabled.xml", servicename
         )
     else:
         file_from_template(
@@ -39,7 +39,7 @@ def output_checkfile(serviceinfo):
                 "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
                 "\s*</criteria>\n\s*</criteria>": "\n    </criteria>" 
             },
-            filename_format = "./output/service_{0}_enabled.xml",
+            filename_format = "./output/oval/service_{0}_enabled.xml",
             filename_value = servicename
         )
 

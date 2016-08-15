@@ -1,10 +1,15 @@
 SHARED_DIR:=../../../shared/templates
 export PYTHONPATH=../../../shared
-OUTPUT:=$(shell mkdir -p output)
+OUTPUT:=output
+OUTPUT_BASH:=output/bash
+OUTPUT_OVAL:=output/oval
 CSV_DIR:=csv
 OVAL_5.11_CSV_DIR=csv/oval_5.11
 
-templates:
+templates: templates_oval
+
+templates_oval: csv/*csv
+	mkdir -p $(OUTPUT_OVAL)
 	${SHARED_DIR}/create_package_removed.py        $(CSV_DIR)/packages_removed.csv
 	${SHARED_DIR}/create_package_installed.py      $(CSV_DIR)/packages_installed.csv
 	${SHARED_DIR}/create_permission_checks.py      $(CSV_DIR)/file_dir_permissions.csv
@@ -13,6 +18,7 @@ templates:
 
 oval_5.11: export TEMPLATE_DIR=oval_5.11_templates
 oval_5.11:
+	mkdir -p $(OUTPUT_OVAL)
 	# First create 'package_pkgname_installed' OVAL-5.11 checks
 	${SHARED_DIR}/create_package_installed.py $(OVAL_5.11_CSV_DIR)/packages_installed.csv
 	# Then create 'service_daemon_enabled' OVAL-5.11 checks using the
@@ -21,6 +27,8 @@ oval_5.11:
 	${SHARED_DIR}/create_services_disabled.py $(OVAL_5.11_CSV_DIR)/services_disabled.csv
 
 
+.PHONY = templates_oval
 
 clean:
-	rm -rf output
+	rm -rf $(OUTPUT)
+
