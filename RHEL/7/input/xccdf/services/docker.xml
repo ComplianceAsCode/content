@@ -26,4 +26,23 @@ ossrg=""
 stigid="" />
 <oval id="service_docker_enabled" />
 </Rule>
+
+<Rule id="docker_storage_configured" severity="low">
+<title>Use direct-lvm with the Device Mapper Storage Driver</title>
+<description>
+To use Docker in production with the device mapper storage driver, the Docker
+daemon should be configured to use direct-lvm instead of loopback device as
+a storage. For setting up the LVM and configuring Docker, see the
+<a xmlns="http://www.w3.org/1999/xhtml" href="https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/">
+Docker Device Mapper Storage Documentation.</a>
+</description>
+<rationale>
+For using Docker in production, the device mapper storage driver with loopback
+devices is discouraged. The suggested way of configuring device mapper storage
+driver is direct-lvm. Choosing the right storage driver and backing filesystem
+is crucial to stability and performance.
+</rationale>
+<oval id="docker_storage_configured" />
+</Rule>
+
 </Group>
