@@ -1,9 +1,9 @@
 #
 # Enable SERVICENAME for all run levels
 #
-chkconfig --level 0123456 SERVICENAME on
+/sbin/chkconfig --level 0123456 SERVICENAME on
 
 #
 # Start SERVICENAME if not currently running
 #
-service SERVICENAME start
+/sbin/service SERVICENAME start 1>/dev/null
