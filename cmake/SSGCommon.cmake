@@ -99,7 +99,7 @@ macro(ssg_build_unlinked_oval PRODUCT)
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
             # TODO: config
-            COMMAND ${SSG_SHARED_TRANSFORMS/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS} ${OVAL_511_DEPS} ${SHARED_OVAL_DEPS} ${SHARED_OVAL_511_DEPS} ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            COMMAND ${SSG_SHARED_TRANSFORMS}/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS} ${OVAL_511_DEPS} ${SHARED_OVAL_DEPS} ${SHARED_OVAL_511_DEPS} ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${OVAL_511_DEPS}
@@ -110,7 +110,7 @@ macro(ssg_build_unlinked_oval PRODUCT)
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
             # TODO: config
-            COMMAND ${SSG_SHARED_TRANSFORMS/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS} ${SHARED_OVAL_DEPS} ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
+            COMMAND ${SSG_SHARED_TRANSFORMS}/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS} ${SHARED_OVAL_DEPS} ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml ${CMAKE_CURRENT_BINARY_DIR}/unlinked-oval.xml
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_DEPS}
