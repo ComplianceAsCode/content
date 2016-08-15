@@ -145,6 +145,17 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_xccdf_final PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        # Remove auxiliary Groups which are only for use in tables, and not guide output.
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-removeaux.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-removeaux.xslt
+        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf.xml"
+    )
+endmacro()
+
 macro(ssg_build_oval_final PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
@@ -165,5 +176,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
+    ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
 endmacro()
