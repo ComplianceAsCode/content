@@ -10,14 +10,14 @@ macro(ssg_build_guide_xml PRODUCT)
             COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/guide.xml ${SSG_SHARED_TRANSFORMS}/includelogo.xslt ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
             MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
             DEPENDS ${SSG_SHARED_TRANSFORMS}/includelogo.xslt
-            COMMENT "[${PRODUCT}] generating guide.xml"
+            COMMENT "[${PRODUCT}] generating guide.xml (SVG logo enabled)"
         )
     else()
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
             COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml ${CMAKE_CURRENT_BINARY_DIR}/guide.xml
             MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xml
-            COMMENT "[${PRODUCT}] generating guide.xml"
+            COMMENT "[${PRODUCT}] generating guide.xml (SVG logo disabled)"
         )
     endif()
 endmacro()
