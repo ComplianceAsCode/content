@@ -345,6 +345,17 @@
 
 
   <!-- The next set of templates expand convenience macros for XCCDF prose -->
+  <xsl:template match="weblink-macro">
+    <xsl:choose>
+      <xsl:when test="@text">
+        <a xmlns="http://www.w3.org/1999/xhtml"><xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute><xsl:value-of select="@text"/></a>
+      </xsl:when>
+      <xsl:otherwise>
+        <a xmlns="http://www.w3.org/1999/xhtml"><xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute><xsl:value-of select="@link"/></a>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="sysctl-desc-macro">
     To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
     run the following command:
