@@ -158,6 +158,8 @@ macro(ssg_build_xccdf_final PRODUCT)
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         # Remove auxiliary Groups which are only for use in tables, and not guide output.
         COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-removeaux.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml
+        COMMAND ${SED_EXECUTABLE} -i 's/oval-linked.xml/ssg-${PRODUCT}-oval.xml/g' ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMAND ${SED_EXECUTABLE} -i 's/ocil-linked.xml/ssg-${PRODUCT}-ocil.xml/g' ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-removeaux.xslt
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf.xml"

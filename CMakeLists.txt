@@ -43,17 +43,23 @@ if (NOT XMLWF_EXECUTABLE)
     message(FATAL_ERROR "xmlwf is required!")
 endif()
 
+find_program(SED_EXECUTABLE NAMES sed)
+if (NOT SED_EXECUTABLE)
+    message(FATAL_ERROR "sed is required!")
+endif()
+
 message("Tools:")
 message("oscap: ${OSCAP_EXECUTABLE}")
 message("xsltproc: ${XSLTPROC_EXECUTABLE}")
 message("xmllint: ${XMLLINT_EXECUTABLE}")
 message("xmlwf: ${XMLWF_EXECUTABLE}")
+message("sed: ${SED_EXECUTABLE}")
 message(" ")
 
 add_custom_command(
     OUTPUT ${CMAKE_BINARY_DIR}/contributors.xml
     COMMAND echo "<text>" > ${CMAKE_BINARY_DIR}/contributors.xml
-    COMMAND sed -n -e "s/\\* \\(.*\\)/<contributor>\\1<\\/contributor>/p" ${CMAKE_SOURCE_DIR}/Contributors.md >> ${CMAKE_BINARY_DIR}/contributors.xml
+    COMMAND ${SED_EXECUTABLE} -n -e "s/\\* \\(.*\\)/<contributor>\\1<\\/contributor>/p" ${CMAKE_SOURCE_DIR}/Contributors.md >> ${CMAKE_BINARY_DIR}/contributors.xml
     COMMAND echo "</text>" >> ${CMAKE_BINARY_DIR}/contributors.xml
     VERBATIM
     MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/Contributors.md
