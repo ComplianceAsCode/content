@@ -20,11 +20,11 @@ def output_checkfile(kerninfo):
     kernmod = kerninfo[0]
 
     file_from_template(
-        "./template_kernel_module_disabled",
+        "./template_BASH_kernel_module_disabled",
         {
            "KERNMODULE": kernmod
         },
-        "./output/kernel_module_{0}_disabled.sh", kernmod
+        "./output/bash/kernel_module_{0}_disabled.sh", kernmod
     )
 
 def main():
@@ -33,7 +33,7 @@ def main():
         sys.exit(1)
 
     filename = sys.argv[1]
-    csv_map(filename, output_checkfile)
+    csv_map(filename, output_checkfile, skip_comments = True)
 
     sys.exit(0)
 

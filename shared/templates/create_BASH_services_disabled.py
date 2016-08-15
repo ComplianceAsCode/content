@@ -29,7 +29,7 @@ def output_checkfile(serviceinfo):
     file_from_template(
         "./template_BASH_service_disabled",
         { "SERVICENAME": servicename },
-        "./output/service_{0}_disabled.sh", servicename
+        "./output/bash/service_{0}_disabled.sh", servicename
     )
 
 def main():

@@ -20,6 +20,7 @@ TRANS = transforms
 SHARED_OVAL = $(SHARED)/oval
 SHARED_OVAL_5_11 = $(SHARED_OVAL)/oval_5.11
 SHARED_REMEDIATIONS = $(SHARED)/templates/static/bash
+PRODUCT_REMEDIATIONS = templates/output/bash
 STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
@@ -94,12 +95,21 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
+
+$(PRODUCT_REMEDIATIONS):
+	if [ -f templates/Makefile ];	\
+	then	\
+		make -C templates bash;	\
+	else	\
+		mkdir -p templates/output/bash;	\
+	fi
+
 # Common build targets - a catalogue of XCCDF remediations
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
 shared_bash_remediations_deps= $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
 bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
-$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps)
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
+$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS)
+	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) $(PRODUCT_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 # Prefer "$(OUT)/xccdf-unlinked-ocilrefs.xml" document below since it contains OCIL expanded to official OCIL-2.0 syntax
