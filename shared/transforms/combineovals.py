@@ -7,6 +7,7 @@ import os.path
 import platform
 import re
 import sys
+from sets import Set
 
 from copy import deepcopy
 
@@ -271,34 +272,49 @@ def append(element, newchild):
         element.append(newchild)
 
 
-def checks(product):
+def checks(product, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
        body
+       oval_dirs: list of directory with oval files (later has higher priority)
        Return: The document body"""
 
-    body = ""
+    body = []
     included_checks_count = 0
-    for filename in os.listdir(sys.argv[3]):
-        if filename.endswith(".xml"):
-            with open(os.path.join(sys.argv[3], filename), 'r') as xml_file:
-                xml_content = xml_file.read()
-                if check_is_applicable_for_product(xml_content, product):
-                    body = body + xml_content
-                    included_checks_count += 1
+    reversed_dirs = oval_dirs[::-1] # earlier directory has higher priority
+    already_loaded = Set()
+
+    for oval_dir in reversed_dirs:
+        for filename in os.listdir(oval_dir):
+            if filename.endswith(".xml"):
+
+                # skip file if we already have one with better priority
+                if filename in already_loaded:
+                    continue
+
+                with open(os.path.join(oval_dir, filename), 'r') as xml_file:
+                    xml_content = xml_file.read()
+                    if check_is_applicable_for_product(xml_content, product):
+                        body.append(xml_content)
+                        included_checks_count += 1
+                        already_loaded.add(filename)
+
+    body.sort() # make output deterministic ~ not based on inode position
 
     sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL document.\n" % included_checks_count)
 
-    return body
+    return "".join(body)
 
 
 def main():
     if len(sys.argv) < 4:
-        print "Provide a directory name, which contains the checks."
+        print "Provide a directory names, which contains the checks."
+        print "Later directory has higher priority"
         sys.exit(1)
 
     # Get header with schema version
     oval_config = os.path.join(sys.argv[1], conf_file)
     product = sys.argv[2]
+    oval_dirs = sys.argv[3:] # later directory has higher priority
 
     oval_schema_version = None
     runtime_oval_schema_version = os.getenv('RUNTIME_OVAL_VERSION', None)
@@ -315,7 +331,7 @@ def main():
         print 'The directory specified does not contain the %s file!' % conf_file
         sys.exit(1)
 
-    body = checks(product)
+    body = checks(product, oval_dirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
