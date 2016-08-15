@@ -20,7 +20,7 @@ The <tt>alternatives</tt> program in Red Hat Enterprise Linux permits selection 
 (such as Sendmail), but Postfix is the default and is preferred.
 Postfix was coded with security in mind and can also be more effectively contained by
 SELinux as its modular design has resulted in separate processes performing specific actions.
-More information is available on its website, http://www.postfix.org.
+More information is available on its website, <weblink-macro link="http://www.postfix.org"/>.
 </description>
 
 <Rule id="service_postfix_enabled">
@@ -244,7 +244,7 @@ and users of all other machines be required to use SMTP AUTH to send mail.
 <description>
 To configure Postfix to restrict addresses to which it
 will send mail, see:
-http://www.postfix.org/SMTPD_ACCESS_README.html#danger
+<weblink-macro link="http://www.postfix.org/SMTPD_ACCESS_README.html#danger"/>
 <br/>
 The full contents of <tt>smtpd_recipient_restrictions</tt> will
 vary by site, since this is a common place to put spam restrictions and other
@@ -262,7 +262,7 @@ another immediately unless SMTP AUTH is used.
 <description>
 To configure Postfix to restrict addresses to which it
 will send mail, see:
-http://www.postfix.org/SMTPD_ACCESS_README.html#danger
+<weblink-macro link="http://www.postfix.org/SMTPD_ACCESS_README.html#danger"/>
 <br/>
 The full contents of <tt>smtpd_recipient_restrictions</tt> will
 vary by site, since this is a common place to put spam restrictions and other
@@ -281,7 +281,7 @@ another immediately unless SMTP AUTH is used.
 requiring them to authenticate before submitting mail. Postfix's SMTP AUTH uses
 an authentication library called SASL, which is not part of Postfix itself.  To
 enable the use of SASL authentication, see
-http://www.postfix.org/SASL_README.html
+<weblink-macro link="http://www.postfix.org/SASL_README.html"/>
 </description>
 </Group>
 
@@ -292,7 +292,7 @@ Postfix provides options to use TLS for certificate-based
 authentication and encrypted sessions. An encrypted session protects the
 information that is transmitted with SMTP mail or with SASL authentication.
 To configure Postfix to protect all SMTP AUTH transactions
-using TLS, see http://www.postfix.org/TLS_README.html.
+using TLS, see <weblink-macro link="http://www.postfix.org/TLS_README.html"/>.
 </description>
 </Group>
 
