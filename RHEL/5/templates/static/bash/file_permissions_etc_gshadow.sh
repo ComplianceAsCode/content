@@ -1,1 +1,0 @@
-chmod 0400 /etc/gshadow
