@@ -19,7 +19,7 @@ BUILD_REMEDIATIONS=$(BUILD)/remediations
 TRANS = transforms
 SHARED_OVAL = $(SHARED)/oval
 SHARED_OVAL_5_11 = $(SHARED_OVAL)/oval_5.11
-SHARED_REMEDIATIONS = $(BUILD)/shared/bash $(SHARED)/templates/static/bash # Currently we cannot build shared remediations only once
+SHARED_REMEDIATIONS = $(BUILD)/shared/output/bash $(SHARED)/templates/static/bash # Currently we cannot build shared remediations only once
 PRODUCT_REMEDIATIONS = templates/output/bash
 STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 REFS = $(SHARED)/references
@@ -104,14 +104,14 @@ $(PRODUCT_REMEDIATIONS):
 		mkdir -p templates/output/bash;	\
 	fi
 
-$(BUILD)/shared/bash:
-	make -C $(SHARED)/templates/ OUTPUT=$(abspath $(BUILD)/shared)
+$(BUILD)/shared/output/bash:
+	make -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared)
 
 # Common build targets - a catalogue of XCCDF remediations
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
 shared_bash_remediations_deps= $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
 bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
-$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS) $(BUILD)/shared/bash
+$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS) $(BUILD)/shared/output/bash
 	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) $(PRODUCT_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
