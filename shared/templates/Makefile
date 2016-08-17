@@ -1,7 +1,9 @@
 export SHARED_DIR := ./
 export PYTHONPATH := ./
 
-OUTPUT =           ./output
+PREFIX_DIR =       .
+
+OUTPUT =           $(PREFIX_DIR)/output
 OUTPUT_BASH =      $(OUTPUT)/bash
 OUTPUT_OVAL =      $(OUTPUT)/oval
 OUTPUT_OVAL_5_11 = $(OUTPUT)/oval_5.11

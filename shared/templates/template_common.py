@@ -53,8 +53,8 @@ def save_modified(filename_format, filename_value, string):
     Save string to file
     """
     filename = filename_format.format(filename_value)
-    dir = os.environ.get('TARGET_DIR', '')
-    filename = dir + filename
+    dir = os.environ.get('PREFIX_DIR', '')
+    filename = os.path.join(dir, filename)
     with open(filename, 'w+') as outputfile:
         outputfile.write(string)
 
