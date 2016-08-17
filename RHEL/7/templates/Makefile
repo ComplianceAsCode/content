@@ -14,6 +14,7 @@ bash:
 	$(SHARED_DIR)/create_BASH_package_installed.py       $(CSV_DIR)/packages_installed.csv
 	$(SHARED_DIR)/create_BASH_package_removed.py         $(CSV_DIR)/packages_removed.csv
 	$(SHARED_DIR)/create_BASH_kernel_modules_disabled.py $(CSV_DIR)/kernel_modules_disabled.csv
+	$(SHARED_DIR)/create_BASH_permission.py              $(CSV_DIR)/file_dir_permissions.csv
 
 clean:
 	rm -rf $(OUTPUT)
