@@ -5,11 +5,12 @@ PREFIX_DIR =       .
 
 OUTPUT =           $(PREFIX_DIR)/output
 OUTPUT_BASH =      $(OUTPUT)/bash
+OUTPUT_ANSIBLE =   $(OUTPUT)/ansible
 OUTPUT_OVAL =      $(OUTPUT)/oval
 OUTPUT_OVAL_5_11 = $(OUTPUT)/oval_5.11
 CSV_DIR =          $(SHARED_DIR)/csv
 
-templates: bash
+templates: bash ansible
 
 bash:
 	mkdir -p $(OUTPUT_BASH)
@@ -20,6 +21,10 @@ bash:
 	$(SHARED_DIR)/create_BASH_kernel_modules_disabled.py ${CSV_DIR}/kernel_modules_disabled.csv
 	$(SHARED_DIR)/create_BASH_package_installed.py       ${CSV_DIR}/package_installed.csv
 	$(SHARED_DIR)/create_BASH_package_removed.py         ${CSV_DIR}/package_removed.csv
+
+ansible:
+	mkdir -p $(OUTPUT_ANSIBLE)
+	$(SHARED_DIR)/create_ANSIBLE_package_installed.py       ${CSV_DIR}/package_installed.csv
 
 clean:
 	rm -rf $(TARGET_DIR)/output
