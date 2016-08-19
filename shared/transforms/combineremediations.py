@@ -111,7 +111,69 @@ def get_available_remediation_functions():
     return remediation_functions
 
 
-def expand_xccdf_subs(fix, remediation_functions):
+def remediation_populate(remediation_type):
+
+    if remediation_type == "bash":
+        return "populate"
+
+    if remediation_type == "ansible":
+        return "ansible-populate"
+
+    print("Unknown remediation type '%s'" % remediation_type)
+    sys.exit(1)
+
+
+def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
+
+    if remediation_type == 'ansible':
+        return etree.SubElement(fixcontent, "fix-group", id="ansible",
+                                system="urn:xccdf:fix:script:ansible",
+                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+
+    if remediation_type == 'bash':
+        return etree.SubElement(fixcontent, "fix-group", id="bash",
+                                system="urn:xccdf:fix:script:sh",
+                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+
+    print("Unknown remediation type '%s'" % remediation_type)
+    sys.exit(1)
+
+
+def is_supported_filename(remediation_type, filename):
+
+    if remediation_type == 'ansible':
+        return filename.endswith('.yml')
+
+    if remediation_type == 'bash':
+        return filename.endswith('.sh')
+
+    print("Unknown remediation type '%s'" % remediation_type)
+    sys.exit(1)
+
+
+def get_populate_replacement(remediation_type, text):
+    """
+    Return varname, fixtextcontribution
+    """
+
+    if remediation_type == 'bash':
+        # Extract variable name
+        varname = re.search('\npopulate (\S+)\n',
+            text, re.DOTALL).group(1)
+        # Define fix text part to contribute to main fix text
+        fixtextcontribution = '\n%s="' % varname
+        return (varname, fixtextcontribution)
+
+    if remediation_type == 'ansible':
+        # Extract variable name
+        varname = re.search('\(ansible-populate (\S+)\)\n',
+            text, re.DOTALL).group(1)
+        # Define fix text part to contribute to main fix text
+        fixtextcontribution = varname
+        return (varname, fixtextcontribution)
+
+
+def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """For those remediation scripts utilizing some of the internal SCAP
     Security Guide remediation functions expand the selected shell variables
     and remediation functions calls with <xccdf:sub> element
@@ -186,12 +248,8 @@ def expand_xccdf_subs(fix, remediation_functions):
                 # some of the remediation functions)
                 if re.match(pattern, fixparts[idx], re.DOTALL) is not None:
                     # This chunk contains call of 'populate' function
-                    if 'populate' in fixparts[idx]:
-                        # Extract variable name
-                        varname = re.search('\npopulate (\S+)\n',
-                                            fixparts[idx], re.DOTALL).group(1)
-                        # Define fix text part to contribute to main fix text
-                        fixtextcontribution = '\n%s="' % varname
+                    if remediation_populate(remediation_type) in fixparts[idx]:
+                        varname, fixtextcontribution = get_populate_replacement(remediation_type, fixparts[idx])
                         # Append the contribution
                         fix.text += fixtextcontribution
                         # Define new XCCDF <sub> element for the variable
@@ -264,7 +322,6 @@ def expand_xccdf_subs(fix, remediation_functions):
             print("%s in %s fix.\nExiting..." % (f, fix.get("rule")))
             sys.exit(1)
 
-
 def main():
     if len(sys.argv) < 2:
         print "Provide a directory name, which contains the fixes."
@@ -272,21 +329,20 @@ def main():
 
     product = sys.argv[1]
     output = sys.argv[-1]
+    remediation_type = sys.argv[2]
 
     fixcontent = etree.Element("fix-content", system="urn:xccdf:fix:script:sh",
                                xmlns="http://checklists.nist.gov/xccdf/1.1")
-    fixgroup = etree.SubElement(fixcontent, "fix-group", id="bash",
-                                system="urn:xccdf:fix:script:sh",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixgroup = get_fixgroup_for_remediation_type(fixcontent, remediation_type)
     fixes = dict()
 
     remediation_functions = get_available_remediation_functions()
 
     platform = {}
     included_fixes_count = 0
-    for fixdir in sys.argv[2:-1]:
+    for fixdir in sys.argv[3:-1]:
         for filename in os.listdir(fixdir):
-            if not filename.endswith(".sh"):
+            if not is_supported_filename(remediation_type, filename):
                 continue
 
             # Create and populate new fix element based on shell file
@@ -313,7 +369,7 @@ def main():
 
                         # Expand shell variables and remediation functions into
                         # corresponding XCCDF <sub> elements
-                        expand_xccdf_subs(fix, remediation_functions)
+                        expand_xccdf_subs(fix, remediation_type, remediation_functions)
                 else:
                     print("\nNotification: Removed the '%s' remediation script from merging as " \
                         "the platform identifier in the script is missing!" % filename)
