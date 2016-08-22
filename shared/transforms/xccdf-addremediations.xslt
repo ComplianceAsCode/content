@@ -1,16 +1,20 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
-<!-- This transform expects a stringparam "remediations" specifying a filename
+<!-- This transform expects stringparams "bash_remediations" & "ansible_remediations" specifying a filenames
      containing a list of remediations.  It inserts these into the Rules
      specified inside the remediations file. -->
 
-<xsl:variable name="bash_remediations_doc" select="document($remediations)" />
+<xsl:variable name="bash_remediations_doc" select="document($bash_remediations)" />
 <xsl:variable name="bash_fixgroup" select="$bash_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
 <xsl:variable name="bash_fixcommongroup" select="$bash_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
 
-<xsl:variable name="fixgroups" select="$bash_fixgroup" />
-<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup" />
+<xsl:variable name="ansible_remediations_doc" select="document($ansible_remediations)" />
+<xsl:variable name="ansible_fixgroup" select="$ansible_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
+<xsl:variable name="ansible_fixcommongroup" select="$ansible_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
+
+<xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup" />
+<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup" />
 
   <xsl:template match="xccdf:Rule">
     <xsl:copy>
@@ -31,8 +35,13 @@
   </xsl:template>
 
   <xsl:template match="xccdf:Benchmark">
-    <xsl:if test="$remediations='' or not($bash_remediations_doc)">
-      <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$remediations"/>".</xsl:message>
+
+    <xsl:if test="$bash_remediations='' or not($bash_remediations_doc)">
+      <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$bash_remediations"/>".</xsl:message>
+    </xsl:if>
+
+    <xsl:if test="$ansible_remediations='' or not($ansible_remediations_doc)">
+      <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$ansible_remediations"/>".</xsl:message>
     </xsl:if>
 
     <xsl:copy>
