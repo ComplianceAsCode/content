@@ -1,0 +1,39 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_disable_hot_deployment">
+    <metadata>
+      <title>Disable Hot Deployment</title>
+      <description>Hot deployment should be disabled on production servers.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_disable_hot_deployment"/>
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_disable_hot_deployment" version="1" check="all" check_existence="none_exist" comment="DisableHotDeploy">
+    <unix:object object_ref="obj_disable_hot_deployment"/>
+  </unix:file_test>
+  <unix:file_object id="obj_disable_hot_deployment"
+version="1">
+    <unix:path var_ref="local_var_hot_deployment_conf"/>
+    <unix:filename>hdscanner-jboss-beans.xml</unix:filename>
+  </unix:file_object>
+
+  <local_variable id="local_var_hot_deployment_conf" version="1" datatype="string" comment="deployment location">
+    <concat>
+      <object_component object_ref="env_disable_hot_deployment_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_disable_hot_deployment_profile"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_disable_hot_deployment_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_disable_hot_deployment_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

@@ -1,0 +1,80 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_unprivileged_access_JMXInvokerServlet">
+    <metadata>
+      <title>Prevent Unprivileged Access To The JMXInvokerServlet</title>
+      <description>This interface must be made unavailable to unprivileged users.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_unprivileged_access_invoker"/>
+      <criterion test_ref="test_unprivileged_access_login_users"/>
+      <criterion test_ref="test_unprivileged_access_login_roles"/>
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" id="test_unprivileged_access_invoker" version="1" comment="JMXServlet must be secured.">
+    <ind:object object_ref="obj_unprivileged_access_invoker" />
+    <ind:state state_ref="state_unprivileged_access_invoker" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_unprivileged_access_invoker" version="1">
+    <ind:path var_ref="local_var_unprivileged_access_deploy" />
+    <ind:filename>jmx-invoker-service.xml</ind:filename>
+    <ind:xpath>boolean(/server/mbean/xmbean/operation[contains(name,'invoke')]/descriptors/interceptors/interceptor[@code='org.jboss.jmx.connector.invoker.AuthorizationInterceptor' and @authorizingClass='org.jboss.jmx.connector.invoker.RolesAuthorization'])</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_unprivileged_access_invoker" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <ind:xmlfilecontent_test check="all" id="test_unprivileged_access_login_users" version="1" comment="JMXServlet must be secured.">
+    <ind:object object_ref="obj_unprivileged_access_login_users" />
+    <ind:state state_ref="state_unprivileged_access_login_users" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_unprivileged_access_login_users" version="1">
+    <ind:path var_ref="local_var_unprivileged_access_conf" />
+    <ind:filename>login-config.xml</ind:filename>
+    <ind:xpath>/policy/application-policy[@name='jmx-console']/authentication/login-module[@code='org.jboss.security.auth.spi.UsersRolesLoginModule' and @flag='required']/module-option[@name='usersProperties']/text()</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_unprivileged_access_login_users" version="1">
+    <ind:value_of datatype="string">props/jmx-console-users.properties</ind:value_of>
+  </ind:xmlfilecontent_state>
+  
+  <ind:xmlfilecontent_test check="all" id="test_unprivileged_access_login_roles" version="1" comment="JMXServlet must be secured.">
+    <ind:object object_ref="obj_unprivileged_access_login_roles" />
+    <ind:state state_ref="state_unprivileged_access_login_roles" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_unprivileged_access_login_roles" version="1">
+    <ind:path var_ref="local_var_unprivileged_access_conf" />
+    <ind:filename>login-config.xml</ind:filename>
+    <ind:xpath>/policy/application-policy[@name='jmx-console']/authentication/login-module[@code='org.jboss.security.auth.spi.UsersRolesLoginModule' and @flag='required']/module-option[@name='rolesProperties']/text()</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_unprivileged_access_login_roles" version="1">
+    <ind:value_of datatype="string">props/jmx-console-roles.properties</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_unprivileged_access_conf" version="1" datatype="string" comment="conf location">
+    <concat>
+      <object_component object_ref="env_unprivileged_access_jboss_home" item_field="value" />
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_unprivileged_access_profile"/>
+      <literal_component>/conf</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_unprivileged_access_deploy" version="1" datatype="string" comment="deploy location">
+    <concat>
+      <object_component object_ref="env_unprivileged_access_jboss_home" item_field="value" />
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_unprivileged_access_profile"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_unprivileged_access_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_unprivileged_access_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

@@ -1,0 +1,50 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_set_strict_mode">
+    <metadata>
+      <title>Set allRolesMode To Strict Mode</title>
+      <description>The allRolesMode within JBOSS_HOME/server/production/deploy/jbossweb.sar/server.xml must be set to strict.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_set_strict_mode"/>
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" id="test_set_strict_mode" version="1" comment="allRolesMode is strict">
+    <ind:object object_ref="obj_set_strict_mode"/>
+    <ind:state state_ref="state_set_strict_mode"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_set_strict_mode" version="1">
+    <ind:path var_ref="local_var_jbossweb_location"/>
+    <ind:filename>server.xml</ind:filename>
+    <ind:xpath>/Server/Service/Engine[@name="jboss.web"]/Realm/@allRolesMode</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_set_strict_mode" version="1">
+    <ind:value_of datatype="string">strict</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_jbossweb_location" version="1" datatype="string" comment="jbossweb.sar location">
+    <concat>
+      <variable_component var_ref="local_var_jbossweb_conf"/>
+      <literal_component>/jbossweb.sar</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_jbossweb_conf" version="1" datatype="string" comment="deployment location">
+    <concat>
+      <object_component object_ref="env_jbossweb_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_jbossweb_profile"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_jbossweb_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="local_var_jbossweb_conf" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

@@ -1,0 +1,43 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_audit_appender_information">
+    <metadata>
+      <title>Ensure Security Audit Appender Is Enabled</title>
+      <description>The Security Audit Appender must be enabled.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_jboss_audit_appender_enabled"/>
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" id="test_jboss_audit_appender_enabled" version="1" comment="Audit Logging Logs all information">
+    <ind:object object_ref="obj_jboss_audit_appender_enabled"/>
+    <ind:state state_ref="state_jboss_audit_appender_enabled"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_jboss_audit_appender_enabled" version="1">
+    <ind:path var_ref="local_var_audit_appender_conf"/>
+    <ind:filename>jboss-log4j.xml</ind:filename>
+    <ind:xpath>/log4j:configuration/appender[@name="AUDIT"]/layout[@class="org.apache.log4j.PatternLayout"]/param[@name="ConversionPattern"]/@value</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_jboss_audit_appender_enabled" version="1">
+    <ind:value_of datatype="string">%d%-5p[%c](%t:%x)%m%n</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_audit_appender_conf" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="env_audit_appender_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_audit_appender_profile"/>
+      <literal_component>/conf</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_audit_appender_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_audit_appender_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

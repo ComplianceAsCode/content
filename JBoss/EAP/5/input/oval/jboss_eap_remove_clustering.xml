@@ -1,0 +1,45 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_remove_clustering">
+    <metadata>
+      <title>Remove JBoss Clustering</title>
+      <description>JBoss Clustering should be removed.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_remove_clustering"/>
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_remove_clustering" version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/deploy/cluster/hajndi-jboss-beans.xml must be deleted">
+    <unix:object object_ref="obj_remove_clustering"/>
+  </unix:file_test>
+  <unix:file_object id="obj_remove_clustering" version="1">
+    <unix:path var_ref="local_var_clustering_location"/>
+    <unix:filename>hajndi-jboss-beans.xml</unix:filename>
+  </unix:file_object>
+
+  <local_variable id="local_var_clustering_location" version="1" datatype="string" comment="clustering location">
+    <concat>
+      <variable_component var_ref="local_var_clustering_conf"/>
+      <literal_component>/cluster</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_clustering_conf" version="1" datatype="string" comment="deploymnet location">
+    <concat>
+      <object_component object_ref="env_clustering_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_clustering_profile"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_clustering_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_clustering_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

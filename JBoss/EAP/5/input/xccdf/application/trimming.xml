@@ -1,408 +1,513 @@
 <Group id="trimming">
 <title>Trimming</title>
-<description>The rules in this group concern trimming JBoss EAP.</description>
-			
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1106">
-			<title>Unused features should be disabled or deleted: Java Universal Description, Discovery, Integration (JUDDI)</title>
-			<description>Features and services not in use should be removed. JUDDI is an open source Java implementation of the Universal Description, Discovery, and Integration (UDDI v3) specification for (Web) Services.</description>
-			<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-			<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-			<reference>JUDDI; An Apache Project. (February 6, 2012). </reference>
-			<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
+<description>
+The rules in this group concern trimming JBoss EAP.
+</description>
 
-			
-			<fixtext>In order to completely disable the this component, take the following actions:
-<xhtml:p>Delete this directory:</xhtml:p>
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/juddi-service.sar</xhtml:li></xhtml:ul> </fixtext>
+<Rule id="jboss_eap_remove_juddi_service" severity="low">
+<title>Remove the Java Universal Description, Discovery, Integration (JUDDI) Service</title>
+<description>
+Features and services not in use should be removed. JUDDI is an open source Java
+implementation of the Universal Description, Discovery, and Integration (UDDI v3)
+specification for (Web) Services.
+</description>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_juddi" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
 
-			<check system="http://scap.nist.gov/schema/ocil/2">
-				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:110601"/>
-			</check>
-		</Rule>
+<fixtext>In order to completely disable the this component, take the following actions:
+Delete this directory:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/juddi-service.sar</li></ul> </fixtext>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1107"><!--Unused features should be disabled or deleted: Enterprise Java Beans (EJB) Services-->
-		<title>Unused features should be disabled or deleted: Enterprise Java Beans (EJB) Services</title>
-		<description>Features and services not in use should be removed.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
+</Rule>
 
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
+<Rule id="jboss_eap_remove_ejb_services" severity="low">
+<title>Remove the Enterprise Java Beans (EJB) Services</title>
+<description>
+Features and services not in use should be removed.
+</description>
 
-		
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-connectors-jboss-beans.xml</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-container-jboss-beans.xml</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-interceptors-aop.xml</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-timerservice-jboss-beans.xml</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/profile-service-secured.jar</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb2-container-jboss-beans.xml</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/jboss-ejb3-endpoint-deployer.jar</xhtml:li>
-			<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/ejb3-deployers-jboss-beans.xml </xhtml:li></xhtml:ul>
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete the following files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-connectors-jboss-beans.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-container-jboss-beans.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-interceptors-aop.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-timerservice-jboss-beans.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/profile-service-secured.jar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb2-container-jboss-beans.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/jboss-ejb3-endpoint-deployer.jar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/ejb3-deployers-jboss-beans.xml </xhtml:li></xhtml:ul> </fixtext>
+<fixtext>In order to completely disable the this component, Delete the following files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-connectors-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-container-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-interceptors-aop.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/ejb3-timerservice-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/profile-service-secured.jar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/ejb2-container-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/ejb2-timer-service.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/jboss-ejb3-endpoint-deployer.jar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/ejb3-deployers-jboss-beans.xml </li></ul> </fixtext>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that
+reduces the potential attack surface of an information system. Removing unused
+features or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_ejb_services" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:110701"/>
-		</check>
-	</Rule>
+<Rule id="jboss_eap_remove_uuid_generator" severity="low">
+<title>Remove the Universal Unique Identifier (UUID) Generator</title>
+<description>
+Features and services not in use should be removed. UUID Generator allows for
+the generation of unique identifiers for hosted Java applications.
+</description>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy
+that reduces the potential attack surface of an information system. Removing
+unused features or services also reduces resource usage.
+</rationale>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1108"><!--Unused features should be disabled or deleted: Universal Unique Identifier (UUID) Generator-->
-		<title>Unused features should be disabled or deleted: Universal Unique Identifier (UUID) Generator</title>
-		<description>Features and services not in use should be removed. UUID Generator allows for the generation of unique identifiers for hosted Java applications.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
 
-		
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete this directory:</xhtml:p>
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/uuid-key-generator.sar</xhtml:li></xhtml:ul> </fixtext>
+<fixtext>In order to completely disable the this component, Delete this directory:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/uuid-key-generator.sar</li></ul> </fixtext>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_uuid_generator" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:110801"/>
-		</check>
-	</Rule>
+<Rule id="jboss_eap_remove_jms" severity="low">
+<title>Remove the Java Message Service (JMS)</title>
+<description>
+Features and services not in use should be removed. Java Message Service
+is a component of Java Enterprise Edition that enables application to send and
+receive messages. It is a cornerstone service that many distributed applications
+are built on.
+</description>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1109"><!--Unused features should be disabled or deleted: Java Message Service (JMS)-->
-		<title>Unused features should be disabled or deleted: Java Message Service (JMS)</title>
-		<description>Features and services not in use should be removed. Java Message Service is a component of Java Enterprise Edition that enables application to send and receive messages. It is a cornerstone service that many distributed applications are built on.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
+<ul><li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-roles.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-users.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/messaging</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jms-ra.rar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/quartz-ra.rar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/messaging-definitions-jboss-beans.xml</li></ul>
+Validate changes to the following files:
+<ul><li>Ensure all elements with references to JMS have been removed from: JBOSS_HOME/server/[PROFILE]/conf/standardjboss.xml</li>
+<li>Ensure the following &lt;property&gt; element has been removed from JBOSS_HOME/server/[PROFILE]/conf/jbossts-properties.xml
+<pre><code>&lt;property name="com.arjuna.ats.jta.recovery.XAResourceRecovery.JBMESSAGING1" value="org.jboss.jms.server.recovery.MessagingXAResourceRecovery;java:/DefaultJMSProvider"/&gt;</code></pre></li></ul>
+<fixtext>
+In order to completely disable this component, take the following actions:
 
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-roles.properties</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-users.properties</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/messaging</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jms-ra.rar</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/quartz-ra.rar</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/messaging-definitions-jboss-beans.xml</xhtml:li></xhtml:ul>
-<xhtml:p>Validate changes to the following files:</xhtml:p>
-<xhtml:ul><xhtml:li>Ensure all elements with references to JMS have been removed from: JBOSS_HOME/server/[PROFILE]/conf/standardjboss.xml</xhtml:li>
-<xhtml:li>Ensure the following &lt;property&gt; element has been removed from JBOSS_HOME/server/[PROFILE]/conf/jbossts-properties.xml
-<xhtml:pre><xhtml:code>&lt;property name="com.arjuna.ats.jta.recovery.XAResourceRecovery.JBMESSAGING1" value="org.jboss.jms.server.recovery.MessagingXAResourceRecovery;java:/DefaultJMSProvider"/&gt;</xhtml:code></xhtml:pre></xhtml:li></xhtml:ul>
-		<fixtext>
-			<xhtml:p>In order to completely disable this component, take the following actions:</xhtml:p>
-			
-			<xhtml:p>Delete these files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-roles.properties</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-users.properties</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/messaging</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jms-ra.rar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/quartz-ra.rar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/messaging-definitions-jboss-beans.xml</xhtml:li></xhtml:ul>
-			
-			<xhtml:p>Make the identified changes to the following files:</xhtml:p>
-			<xhtml:ul><xhtml:li>Remove all elements with references to JMS from: JBOSS_HOME/server/[PROFILE]/conf/standardjboss.xml</xhtml:li>
-			<xhtml:li>Remove the following &lt;property&gt; element from JBOSS_HOME/server/[PROFILE]/conf/jbossts-properties.xml
-				
-<xhtml:pre><xhtml:code>&lt;property name="com.arjuna.ats.jta.recovery.XAResourceRecovery.JBMESSAGING1" value="org.jboss.jms.server.recovery.MessagingXAResourceRecovery;java:/DefaultJMSProvider"/&gt;</xhtml:code></xhtml:pre></xhtml:li></xhtml:ul>
-					
-		</fixtext>
+Delete these files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-roles.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/conf/props/messaging-users.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/messaging</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jms-ra.rar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/quartz-ra.rar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/messaging-definitions-jboss-beans.xml</li></ul>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:110901"/>
-		</check>
-	</Rule>
+Make the identified changes to the following files:
+<ul>
+<li>Remove all elements with references to JMS from: JBOSS_HOME/server/[PROFILE]/conf/standardjboss.xml</li>
+<li>Remove the following &lt;property&gt; element from JBOSS_HOME/server/[PROFILE]/conf/jbossts-properties.xml:
+<pre>&lt;property name="com.arjuna.ats.jta.recovery.XAResourceRecovery.JBMESSAGING1" value="org.jboss.jms.server.recovery.MessagingXAResourceRecovery;java:/DefaultJMSProvider"/&gt;</pre></li>
+</ul>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1110"><!--Unused features should be disabled or deleted: JBoss Mail-->
-		<title>Unused features should be disabled or deleted: JBoss Mail</title>
-		<description>Features and services not in use should be removed. JBoss Mail is a deployed package for Java Mail - a set of Java API's implementing an email server supporting the SMTP, POP3, and IMAP protocols.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/mail-ra.rar</xhtml:li>
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete the following files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/mail-ra.rar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/mail-service.xml</xhtml:li></xhtml:ul> </fixtext>
-
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111001"/>
-		</check>
-	</Rule>
-
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1111"><!--Unused features should be disabled or deleted: JBoss Scheduling-->
-		<title>Unused features should be disabled or deleted: JBoss Scheduling</title>
-		<description>Features and services not in use should be removed. JBoss Scheduling implements a JBoss service that supports scheduling and running jobs for deployed Java applications.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/schedule-manager-service.xml</xhtml:li>
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete the following files:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/schedule-manager-service.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/scheduler-service.xml </xhtml:li></xhtml:ul> </fixtext>
-
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111101"/>
-		</check>
-	</Rule>
-
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1112"><!--Unused features should be disabled or deleted: Hypersonic SQL Database (HSQLDB)-->
-		<title>Unused features should be disabled or deleted: Hypersonic SQL Database (HSQLDB)</title>
-		<description>Features and services not in use should be removed. HSQLDB is the default datasource configured to run with JBoss Enterprise Application Platform out of the box. It is not recommended for production usage.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/hsqldb-ds.xml</xhtml:li>
-<xhtml:li>JBOSS_HOME/common/lib/hsqldb.jar</xhtml:li>
-<xhtml:li>JBOSS_HOME/common/lib/hsqldb-plugin.jar</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/messaging/hsqldb-persistence-service.xml</xhtml:li>
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete the following files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/hsqldb-ds.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/common/lib/hsqldb.jar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/common/lib/hsqldb-plugin.jar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/messaging/hsqldb-persistence-service.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/data/hypersonic/</xhtml:li></xhtml:ul> </fixtext>
-
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111201"/>
-		</check>
-	</Rule>
-
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1113"><!--Unused features should be disabled or deleted: BeanShell (BSH) Deployer-->
-		<title>Unused features should be disabled or deleted: BeanShell (BSH) Deployer</title>
-		<description>Features and services not in use should be removed. The BSH Deployer allows for the hot deployment of one use execution scripts or services.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete the following files and directories:</xhtml:p>
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/bsh.deployer</xhtml:li></xhtml:ul> </fixtext>
-
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111301"/>
-		</check>
-	</Rule>
-
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1114"><!--Unused features should be disabled or deleted: JBossWS-->
-		<title>Unused features should be disabled or deleted: JBossWS</title>
-		<description>Features and services not in use should be removed. JBossWS is a web service framework for use with the JBoss Enterprise Application Platform.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/jax-ws-catalog.xml</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-roles.properties</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-users.properties</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws.sar</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws-console.war</xhtml:li>
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete the following files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/jax-ws-catalog.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-roles.properties</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-users.properties</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws.sar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws-console.war</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/jbossws.deployer</xhtml:li></xhtml:ul> </fixtext>
-
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111401"/>
-		</check>
-	</Rule>
-
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1115"><!--Unused features should be disabled or deleted: Seam-->
-		<title>Unused features should be disabled or deleted: Seam</title>
-		<description>Features and services not in use should be removed. Seam is an application framework for Java designed to reduce application complexity.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/seam.deployer</xhtml:li>
-		<fixtext><xhtml:p>In order to completely disable the this component, Delete the following files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/seam.deployer</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/webbeans.deployer</xhtml:li></xhtml:ul> </fixtext>
-
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111501"/>
-		</check>
-	</Rule>
-
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1116"><!--Unused features should be disabled or deleted: JBoss Internet Inter-ORB Protocol (IIOP)-->
-		<title>Unused features should be disabled or deleted: JBoss Internet Inter-ORB Protocol (IIOP)</title>
-		<description>Features and services not in use should be removed. JBoss IIOP implements a standards compliant CORBA server for JBoss.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/jacorb.properties</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/iiop-service.xml</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/ejb3.deployer/META-INF/ejb3-iiop-deployers-jboss-beans.xml</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/lib/jacorb.jar</xhtml:li></xhtml:ul>
-
-<xhtml:p>Validate changes to the following files:</xhtml:p>
-<xhtml:p>In JBOSS_HOME/server/[PROFILE]/conf/jndi.properties, Replace:</xhtml:p>
-<xhtml:pre><xhtml:code>java.naming.factory.initial=org.jboss.iiop.naming.ORBInitialContextFactory</xhtml:code></xhtml:pre>
-<xhtml:p>with</xhtml:p>
-
-		<fixtext><xhtml:p>In order to completely disable this component, Delete these files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/conf/jacorb.properties</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/iiop-service.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deployers/ejb3.deployer/META-INF/ejb3-iiop-deployers-jboss-beans.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/lib/jacorb.jar</xhtml:li></xhtml:ul>
-
-			
-<xhtml:p>Make the identified changes to the following files:</xhtml:p>
-<xhtml:p>In JBOSS_HOME/server/[PROFILE]/conf/jndi.properties, Replace:</xhtml:p>
-<xhtml:pre><xhtml:code>java.naming.factory.initial=org.jboss.iiop.naming.ORBInitialContextFactory</xhtml:code></xhtml:pre>
-<xhtml:p>with</xhtml:p>
-<xhtml:pre><xhtml:code>java.naming.factory.initial=org.jnp.interfaces.NamingContextFactory</xhtml:code></xhtml:pre>
-<xhtml:p>In JBOSS_HOME/server/[PROFILE]/conf/standardjboss.xml, Delete text:</xhtml:p> <xhtml:pre><xhtml:code>invoker-proxy-binding iiop</xhtml:code></xhtml:pre> </fixtext>
-
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111601"/>
-		</check>
-	</Rule>
-
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1117"><!--Unused features should be disabled or deleted: Miscellaneous-->
-		<title>Unused features should be disabled or deleted: Miscellaneous</title>
-		<description>Miscellaneous features and services not in use should be removed.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
-
-		
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]deployers/xnio.deployer</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]deployers/hibernate-deployer-jboss-beans.xml</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jboss-xa-jdbc.rar</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/profileservice-jboss-beans.xml</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/sqlexception-service.xml</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/xnio-provider.jar </xhtml:li>
-		<fixtext><xhtml:p>In order to completely disable these components, Delete these files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]deployers/xnio.deployer</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]deployers/hibernate-deployer-jboss-beans.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jboss-xa-jdbc.rar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/profileservice-jboss-beans.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/sqlexception-service.xml</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/xnio-provider.jar </xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/management/</xhtml:li></xhtml:ul>
 </fixtext>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111701"/>
-		</check>
-	</Rule>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_jms" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1118"><!--Unused features should be disabled or deleted: HTTP Invokers-->
-		<title>Unused features should be disabled or deleted: HTTP Invokers</title>
-		<description>Features and services not in use should be removed. HTTP invocation allows the JBoss server to receive and act on remote instructions. This can be useful for administrators - especially in large or distributed environments.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
+<Rule id="jboss_eap_remove_jboss_mail" severity="low">
+<title>Remove JBoss Mail</title>
+<description>
+Features and services not in use should be removed. JBoss Mail is a deployed
+package for Java Mail - a set of Java API's implementing an email server
+supporting the SMTP, POP3, and IMAP protocols.
+</description>
 
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
 
-		
-<xhtml:p>For HTTP Invoker for JNDI, EJB and JMX:</xhtml:p>
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/http-invoker.sar</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/httpha-invoker.sar</xhtml:li></xhtml:ul>
-<xhtml:p>For JMS HTTP Invoker:</xhtml:p>
-		<fixtext><xhtml:p>In order to completely disable HTTP Invoker for JNDI, EJB and JMX, Delete these files and directories:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/http-invoker.sar</xhtml:li>
-				<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/httpha-invoker.sar</xhtml:li></xhtml:ul>
-<xhtml:p>In order to completely disable HTTP Invoker for JMS, Delete this directory:</xhtml:p>
-			<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jms/jbossmq-httpil.sar</xhtml:li></xhtml:ul> </fixtext>
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/mail-ra.rar</li>
+<fixtext>In order to completely disable the this component, Delete the following files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/mail-ra.rar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/mail-service.xml</li></ul> </fixtext>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_jboss_mail" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111801"/>
-		</check>
-	</Rule>
+<Rule id="jboss_eap_remove_jboss_scheduling" severity="low">
+<title>Unused features should be disabled or deleted: JBoss Scheduling</title>
+<description>
+Features and services not in use should be removed. JBoss Scheduling implements
+a JBoss service that supports scheduling and running jobs for deployed Java
+applications.
+</description>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1119"><!--Unused features should be disabled or deleted: Java Management Extensions (JMX) Invoker-->
-		<title>Unused features should be disabled or deleted: Java Management Extensions (JMX) Invoker</title>
-		<description>Features and services not in use should be removed. The JMX Invoker exposes the JMX MBeanServer interface via Remote Method Invocation compatible interface. This can be useful for administrators - especially in large or distributed environments.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/schedule-manager-service.xml</li>
+<fixtext>In order to completely disable the this component, Delete the following files:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/schedule-manager-service.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/scheduler-service.xml </li></ul> </fixtext>
 
-		
-		<fixtext><xhtml:p>In order to completely disable this component, Delete these files and directories:</xhtml:p>
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-invoker-service.xml</xhtml:li></xhtml:ul> </fixtext>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+ or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_jboss_scheduling" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:111901"/>
-		</check>
-	</Rule>
+<Rule id="jboss_eap_remove_hsqldb" severity="low">
+<title>Remove the Hypersonic SQL Database (HSQLDB)</title>
+<description>
+Features and services not in use should be removed. HSQLDB is the default
+datasource configured to run with JBoss Enterprise Application Platform out of
+the box. It is not recommended for production usage.
+</description>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1120"><!--Unused features should be disabled or deleted: Pooled Invoker-->
-		<title>Unused features should be disabled or deleted: Pooled Invoker</title>
-		<description>Features and services not in use should be removed. The org.jboss.invocation.pooled.server.PooledInvoker provides RMI over a custom socket implementation of the Invoker interface.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/hsqldb-ds.xml</li>
+<li>JBOSS_HOME/common/lib/hsqldb.jar</li>
+<li>JBOSS_HOME/common/lib/hsqldb-plugin.jar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/messaging/hsqldb-persistence-service.xml</li>
+<fixtext>In order to completely disable the this component, Delete the following files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/hsqldb-ds.xml</li>
+<li>JBOSS_HOME/common/lib/hsqldb.jar</li>
+<li>JBOSS_HOME/common/lib/hsqldb-plugin.jar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/messaging/hsqldb-persistence-service.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/data/hypersonic/</li></ul> </fixtext>
 
-		
-		<fixtext><xhtml:p>In order to completely disable this component, take the following actions:</xhtml:p>
-<xhtml:p>In JBOSS_HOME/server/[PROFILE]/deploy/legacy-invokers-service.xml, Delete the &lt;mbean&gt; with name attribute of "jboss:service=invoker,type=pooled" </xhtml:p></fixtext>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_hsqldb" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:112001"/>
-		</check>
-	</Rule>
+<Rule id="jboss_eap_remove_beanshell_deployer" severity="low">
+<title>Remove the BeanShell (BSH) Deployer</title>
+<description>
+Features and services not in use should be removed. The BSH Deployer allows for
+the hot deployment of one use execution scripts or services.
+</description>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1121"><!--Unused features should be disabled or deleted: Java Remote Method Protocol (JRMP) Invoker-->
-		<title>Unused features should be disabled or deleted: Java Remote Method Protocol (JRMP) Invoker</title>
-		<description>Features and services not in use should be removed. The org.jboss.invocation.jrmp.server.JRMPInvoker provides the RMI/JRMP implementation of the Invoker interface.</description>
-		<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-		<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-		<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
+<fixtext>In order to completely disable the this component, Delete the following files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deployers/bsh.deployer</li></ul> </fixtext>
 
-		
-		<fixtext><xhtml:p>In order to completely disable this component, take the following actions:</xhtml:p>
-<xhtml:p>In JBOSS_HOME/server/[PROFILE]/deploy/legacy-invokers-service.xml, Delete the &lt;mbean&gt; with name attribute of "jboss:service=invoker,type=jmrp" </xhtml:p></fixtext>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_beanshell_deployer" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-		<check system="http://scap.nist.gov/schema/ocil/2">
-			<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:112101"/>
-		</check>
-	</Rule>
+<Rule id="jboss_eap_remove_jbossws_service" severity="low">
+<title>Remove the JBossWS Service</title>
+<description>
+Features and services not in use should be removed. JBossWS is a web service
+framework for use with the JBoss Enterprise Application Platform.
+</description>
 
-		<Rule id="xccdf_com.redhat.eap5.scap_rule_1123"><!--Unused features should be disabled or deleted: Clustering-->
-			<title>Unused features should be disabled or deleted: Clustering</title>
-			<description>Features and services not in use should be removed. Clustering allows deployed applications to run distributed across multiple JBoss Enterprise Application Platform servers.</description>
-			<reference>Jboss 6.x Tuning/Slimming. (October 21, 2011). In JBossAS. Retrieved May 1, 2012, from https://community.jboss.org/wiki/JBoss6xTuningSlimming</reference>
-			<reference>DeCoste, W. (2011). Slim, Trim, Prune JBoss Enterprise Application Platform. Retrieved from https://access.redhat.com/sites/default/files/slimtrimpruneeap.pdf</reference>
-			<rationale><xhtml:p>Removing unused features or services is a common security strategy that reduces the potential attack surface of an information system. Removing unused features or services also reduces resource usage.</xhtml:p> </rationale>
+<ul><li>JBOSS_HOME/server/[PROFILE]/conf/jax-ws-catalog.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-roles.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-users.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws.sar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws-console.war</li>
+<fixtext>In order to completely disable the this component, Delete the following files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/conf/jax-ws-catalog.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-roles.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/conf/props/jbossws-users.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws.sar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jbossws-console.war</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/jbossws.deployer</li></ul> </fixtext>
 
-			
-<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy-hasingleton/</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/farm/</xhtml:li>
-<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/cluster/</xhtml:li></xhtml:ul>
-<xhtml:p>Validate this change to the following file:</xhtml:p>
-<xhtml:p>In JBOSS_HOME/server/[PROFILE]/conf/bootstrap/profile.xml, Delete the following from "BootstrapProfileFactory":</xhtml:p>
-<xhtml:pre><xhtml:code>&lt;property name="farmURIs"&gt;
-	&lt;list elementClass="java.net.URI"&gt;
-		&lt;value&gt;${jboss.server.home.url}farm&lt;/value&gt;
-	&lt;/list&gt;
-			<fixtext><xhtml:p>In order to completely disable this component, take the following actions:</xhtml:p>
-<xhtml:p>Delete these files and directories:</xhtml:p>
-				<xhtml:ul><xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy-hasingleton/</xhtml:li>
-					<xhtml:li>JBOSS_HOME/server/[PROFILE]/farm/</xhtml:li>
-					<xhtml:li>JBOSS_HOME/server/[PROFILE]/deploy/cluster/</xhtml:li></xhtml:ul>
-<xhtml:p>In JBOSS_HOME/server/[PROFILE]/conf/bootstrap/profile.xml, Delete the following from "BootstrapProfileFactory":</xhtml:p>
-<xhtml:pre><xhtml:code>&lt;property name="farmURIs"&gt;
-	&lt;list elementClass="java.net.URI"&gt;
-		&lt;value&gt;${jboss.server.home.url}farm&lt;/value&gt;
-	&lt;/list&gt;
-&lt;/property&gt;</xhtml:code></xhtml:pre> </fixtext>
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_jbossws_service" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
 
-			<check system="http://scap.nist.gov/schema/ocil/2">
-				<check-content-ref href="eap5-ocil.xml" name="ocil:com.redhat.eap5.scap:questionnaire:112301"/>
-			</check>
-		</Rule>
+<Rule id="jboss_eap_remove_seam_framework" severity="low">
+<title>Remove the Seam Application Framework</title>
+<description>
+Features and services not in use should be removed. Seam is an application
+framework for Java designed to reduce application complexity.
+</description>
+
+<ul><li>JBOSS_HOME/server/[PROFILE]/deployers/seam.deployer</li>
+<fixtext>In order to completely disable the this component, Delete the following files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deployers/seam.deployer</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/webbeans.deployer</li></ul> </fixtext>
+
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_seam_framework" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
+<Rule id="jboss_eap_remove_iiop" severity="low">
+<title>Remove the JBoss Internet Inter-ORB Protocol (IIOP)</title>
+<description>
+Features and services not in use should be removed. JBoss IIOP implements a
+standards compliant CORBA server for JBoss.
+</description>
+
+<ul><li>JBOSS_HOME/server/[PROFILE]/conf/jacorb.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/iiop-service.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/ejb3.deployer/META-INF/ejb3-iiop-deployers-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/lib/jacorb.jar</li></ul>
+
+Validate changes to the following files:
+In JBOSS_HOME/server/[PROFILE]/conf/jndi.properties, Replace:
+<pre><code>java.naming.factory.initial=org.jboss.iiop.naming.ORBInitialContextFactory</code></pre>
+with
+
+<fixtext>In order to completely disable this component, Delete these files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/conf/jacorb.properties</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/iiop-service.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deployers/ejb3.deployer/META-INF/ejb3-iiop-deployers-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/lib/jacorb.jar</li></ul>
+
+
+Make the identified changes to the following files:
+In JBOSS_HOME/server/[PROFILE]/conf/jndi.properties, Replace:
+<pre><code>java.naming.factory.initial=org.jboss.iiop.naming.ORBInitialContextFactory</code></pre>
+with
+<pre><code>java.naming.factory.initial=org.jnp.interfaces.NamingContextFactory</code></pre>
+In JBOSS_HOME/server/[PROFILE]/conf/standardjboss.xml, Delete text: <pre><code>invoker-proxy-binding iiop</code></pre> </fixtext>
+
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_iiop" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
+<Rule id="jboss_eap_remove_miscellaneous_services" severity="low">
+<title>Remove Miscellaneous Features And Services</title>
+<description>
+Miscellaneous features and services not in use should be removed.
+</description>
+
+<ul><li>JBOSS_HOME/server/[PROFILE]deployers/xnio.deployer</li>
+<li>JBOSS_HOME/server/[PROFILE]deployers/hibernate-deployer-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jboss-xa-jdbc.rar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/profileservice-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/sqlexception-service.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/xnio-provider.jar </li>
+<fixtext>In order to completely disable these components, Delete these files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]deployers/xnio.deployer</li>
+<li>JBOSS_HOME/server/[PROFILE]deployers/hibernate-deployer-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jboss-xa-jdbc.rar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-console.war</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/profileservice-jboss-beans.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/sqlexception-service.xml</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/xnio-provider.jar </li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/management/</li></ul>
+</fixtext>
+
+
+<ocil clause="they are not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_miscellaneous_services" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
+<Rule id="jboss_eap_remove_http_invokers" severity="low">
+<title>Remove HTTP Invokers</title>
+<description>
+Features and services not in use should be removed. HTTP invocation allows the
+JBoss server to receive and act on remote instructions. This can be useful for
+administrators - especially in large or distributed environments.
+</description>
+
+For HTTP Invoker for JNDI, EJB and JMX:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/http-invoker.sar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/httpha-invoker.sar</li></ul>
+For JMS HTTP Invoker:
+<fixtext>In order to completely disable HTTP Invoker for JNDI, EJB and JMX, Delete these files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/http-invoker.sar</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/httpha-invoker.sar</li></ul>
+In order to completely disable HTTP Invoker for JMS, Delete this directory:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/jms/jbossmq-httpil.sar</li></ul> </fixtext>
+
+
+<ocil clause="they are not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_http_invokers" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
+<Rule id="jboss_eap_remove_jmx_invoker" severity="low">
+<title>Remove the Java Management Extensions (JMX) Invoker</title>
+<description>
+Features and services not in use should be removed. The JMX Invoker exposes the
+JMX MBeanServer interface via Remote Method Invocation compatible interface.
+This can be useful for administrators - especially in large or distributed
+environments.
+</description>
+
+<fixtext>In order to completely disable this component, Delete these files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy/jmx-invoker-service.xml</li></ul> </fixtext>
+
+
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_jmx_invoker" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
+<Rule id="jboss_eap_remove_pooled_invoker" severity="low">
+<title>Removed the Pooled Invoker</title>
+<description>
+Features and services not in use should be removed. The
+org.jboss.invocation.pooled.server.PooledInvoker provides RMI over a custom
+socket implementation of the Invoker interface.
+</description>
+
+<fixtext>In order to completely disable this component, take the following actions:
+In JBOSS_HOME/server/[PROFILE]/deploy/legacy-invokers-service.xml, Delete the &lt;mbean&gt; with name attribute of "jboss:service=invoker,type=pooled" </fixtext>
+
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_pooled_invoker" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
+<Rule id="jboss_eap_remove_jrmp_invoker" severity="low">
+<title>Remove the Java Remote Method Protocol (JRMP) Invoker</title>
+<description>
+Features and services not in use should be removed. The
+org.jboss.invocation.jrmp.server.JRMPInvoker provides the RMI/JRMP
+implementation of the Invoker interface.
+</description>
+
+<fixtext>In order to completely disable this component, take the following actions:
+In JBOSS_HOME/server/[PROFILE]/deploy/legacy-invokers-service.xml, Delete the &lt;mbean&gt; with name attribute of "jboss:service=invoker,type=jmrp" </fixtext>
+
+<ocil clause="it is not removed">
+</ocil>
+<rationale>
+Removing unused features or services is a common security strategy that reduces
+the potential attack surface of an information system. Removing unused features
+or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<!--oval id="jboss_eap_remove_jrmp_invoker" /-->
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
+<Rule id="jboss_eap_remove_clustering" severity="low">
+<title>Remove JBoss Clustering</title>
+<description>
+Features and services not in use should be removed. Clustering allows deployed
+applications to run distributed across multiple JBoss Enterprise Application
+Platform servers.
+</description>
+
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy-hasingleton/</li>
+<li>JBOSS_HOME/server/[PROFILE]/farm/</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/cluster/</li></ul>
+Validate this change to the following file:
+In JBOSS_HOME/server/[PROFILE]/conf/bootstrap/profile.xml, Delete the following from "BootstrapProfileFactory":
+<pre><code>&lt;property name="farmURIs"&gt;
+&lt;list elementClass="java.net.URI"&gt;
+&lt;value&gt;${jboss.server.home.url}farm&lt;/value&gt;
+&lt;/list&gt;
+<fixtext>In order to completely disable this component, take the following actions:
+Delete these files and directories:
+<ul><li>JBOSS_HOME/server/[PROFILE]/deploy-hasingleton/</li>
+<li>JBOSS_HOME/server/[PROFILE]/farm/</li>
+<li>JBOSS_HOME/server/[PROFILE]/deploy/cluster/</li></ul>
+In JBOSS_HOME/server/[PROFILE]/conf/bootstrap/profile.xml, Delete the following from "BootstrapProfileFactory":
+<pre><code>&lt;property name="farmURIs"&gt;
+&lt;list elementClass="java.net.URI"&gt;
+&lt;value&gt;${jboss.server.home.url}farm&lt;/value&gt;
+&lt;/list&gt;
+&lt;/property&gt;</code></pre> </fixtext>
+
+<ocil clause="clustering is not removed">
+</ocil>
+<rationale>Removing unused features or services is a common security strategy
+that reduces the potential attack surface of an information system. Removing
+unused features or services also reduces resource usage.
+</rationale>
+<ident cce="" />
+<oval id="jboss_eap_remove_clustering" />
+<ref nist="CM-7" disa="DCPP-1" cis="" />
+</Rule>
+
 </Group>
