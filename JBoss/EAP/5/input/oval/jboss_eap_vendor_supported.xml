@@ -1,0 +1,11 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_vendor_supported">
+    <metadata>
+      <title>JBoss Enterprise Application Platform Supported Version</title>
+      <description>Installed version of JBoss is a vendor supported version.</description>
+    </metadata>
+    <criteria operator="OR">
+      <extend_definition comment="EAP supported version" definition_ref="installed_app_is_eap5" />
+    </criteria>
+  </definition>
+</def-group>

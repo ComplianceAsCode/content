@@ -1,0 +1,47 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_disable_console_logging">
+    <metadata>
+      <title>Disable Console Output To The JBoss console</title>
+      <description>Console logging in a production environment is a needless
+      drain on system resources.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_disable_console_logging"/>
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" id="test_disable_console_logging" version="1" comment="Disable Console Logging">
+    <ind:object object_ref="obj_disable_console_logging"/>
+    <ind:state state_ref="state_disable_console_logging"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_disable_console_logging"
+version="1">
+    <ind:path var_ref="local_var_console_logging_conf"/>
+    <ind:filename>jboss-log4j.xml</ind:filename>
+    <ind:xpath>boolean(/log4j:configuration/root/appender-ref[@ref='CONSOLE']/@ref)</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_disable_console_logging"
+version="1">
+    <ind:value_of datatype="string">false</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_console_logging_conf" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="env_console_logging_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_console_logging_profile"/>
+      <literal_component>/conf</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_console_logging_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_console_logging_jboss_home"
+  version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

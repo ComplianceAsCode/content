@@ -1,0 +1,64 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_secure_JMXInvokerServlet">
+    <metadata>
+      <title>Secure the JMXInvokerServlet Servlet</title>
+      <description>The JMXInvokerServlet servlet must be secured against web attacks.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_secure_jmx_invoker_get"/>
+      <criterion test_ref="test_secure_jmx_invoker_post"/>
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" id="test_secure_jmx_invoker_get" version="1" comment="JMXInvokerServlet servlet must be secured">
+    <ind:object object_ref="obj_secure_jmx_invoker_get"/>
+    <ind:state state_ref="state_secure_jmx_invoker_get"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_secure_jmx_invoker_get" version="1">
+    <ind:path var_ref="local_var_jmx_invoker_location"/>
+    <ind:filename>web.xml</ind:filename>
+    <ind:xpath>boolean(/web-app/security-constraint/web-resource-collection[contains(http-method,'GET')])</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_secure_jmx_invoker_get" version="1">
+    <ind:value_of datatype="string">false</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <ind:xmlfilecontent_test check="all" id="test_secure_jmx_invoker_post" version="1" comment="JMXInvokerServlet servlet must be secured">
+    <ind:object object_ref="obj_secure_jmx_invoker_post"/>
+    <ind:state state_ref="state_secure_jmx_invoker_post"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_secure_jmx_invoker_post" version="1">
+    <ind:path var_ref="local_var_jmx_invoker_location"/>
+    <ind:filename>web.xml</ind:filename>
+    <ind:xpath>boolean(/web-app/security-constraint/web-resource-collection[contains(http-method,'POST')])</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_secure_jmx_invoker_post" version="1">
+    <ind:value_of datatype="string">false</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_jmx_invoker_location" version="1" datatype="string" comment="httpha-invoker.sar/invoker.war/WEB-INF location">
+    <concat>
+      <variable_component var_ref="local_var_jmx_invoker_conf"/>
+      <literal_component>/httpha-invoker.sar/invoker.war/WEB-INF/</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_jmx_invoker_conf" version="1" datatype="string" comment="deployment location">
+    <concat>
+      <object_component object_ref="env_jmx_invoker_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_jmx_invoker_profile"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_jmx_invoker_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_jmx_invoker_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

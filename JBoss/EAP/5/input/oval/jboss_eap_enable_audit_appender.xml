@@ -1,0 +1,45 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_enable_audit_appender">
+    <metadata>
+      <title>Ensure Security Audit Appender Is Enabled</title>
+      <description>The Security Audit Appender must be enabled.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_enable_audit_appender"/>
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" id="test_enable_audit_appender" version="1" comment="AUDITappendermustnotbecommented">
+    <ind:object object_ref="obj_enable_audit_appender"/>
+    <ind:state state_ref="state_enable_audit_appender"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_enable_audit_appender" version="1">
+    <ind:path var_ref="local_var_audit_appender_conf"/>
+    <ind:filename>jboss-log4j.xml</ind:filename>
+    <ind:xpath>boolean(/log4j:configuration/appender[@name="AUDIT"]/@name)</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_enable_audit_appender"
+version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_audit_appender_conf" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="env_audit_appender_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_appender_jboss_profile"/>
+      <literal_component>/conf</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_appender_jboss_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_audit_appender_jboss_home"
+version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>
