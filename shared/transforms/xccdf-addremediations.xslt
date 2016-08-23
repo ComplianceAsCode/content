@@ -5,10 +5,12 @@
      containing a list of remediations.  It inserts these into the Rules
      specified inside the remediations file. -->
 
-<xsl:variable name="remediations_doc" select="document($remediations)" />
-<xsl:variable name="fixgroup" select="$remediations_doc/xccdf:fix-content/xccdf:fix-group" />
-<xsl:variable name="fixsystem" select="$fixgroup/@system"/>
-<xsl:variable name="fixcommongroup" select="$remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
+<xsl:variable name="bash_remediations_doc" select="document($remediations)" />
+<xsl:variable name="bash_fixgroup" select="$bash_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
+<xsl:variable name="bash_fixcommongroup" select="$bash_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
+
+<xsl:variable name="fixgroups" select="$bash_fixgroup" />
+<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup" />
 
   <xsl:template match="xccdf:Rule">
     <xsl:copy>
@@ -16,9 +18,9 @@
       <xsl:apply-templates select="@*|node()[not(self::xccdf:check)]"/>
 
       <xsl:variable name="rule_id" select="@id"/>
-        <xsl:for-each select="$fixgroup/xccdf:fix[@rule=$rule_id]">
+        <xsl:for-each select="$fixgroups/xccdf:fix[@rule=$rule_id]">
           <xsl:element name="fix" namespace="http://checklists.nist.gov/xccdf/1.1">
-            <xsl:attribute name="system"><xsl:value-of select="$fixsystem"/></xsl:attribute>
+            <xsl:attribute name="system"><xsl:value-of select="../@system"/></xsl:attribute>
             <xsl:attribute name="id"><xsl:value-of select="$rule_id"/></xsl:attribute>
             <xsl:apply-templates select="node()"/>
           </xsl:element>
@@ -29,7 +31,7 @@
   </xsl:template>
 
   <xsl:template match="xccdf:Benchmark">
-    <xsl:if test="$remediations='' or not($remediations_doc)">
+    <xsl:if test="$remediations='' or not($bash_remediations_doc)">
       <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$remediations"/>".</xsl:message>
     </xsl:if>
 
@@ -46,7 +48,7 @@
       <xsl:apply-templates select="xccdf:rear-matter"/>
       <xsl:apply-templates select="xccdf:reference"/>
 
-      <xsl:for-each select="$fixcommongroup/xccdf:fix-common">
+      <xsl:for-each select="$fixcommongroups/xccdf:fix-common">
         <xsl:variable name="fix_common_id" select="@id"/>
         <xsl:element name="plain-text" namespace="http://checklists.nist.gov/xccdf/1.1">
         <xsl:attribute name="id"><xsl:value-of select="$fix_common_id"/></xsl:attribute>
