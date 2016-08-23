@@ -291,12 +291,14 @@ clean:
 	cd Chromium && $(MAKE) clean
 	rm -f scap-security-guide.spec
 
-install: dist
+install-prelim:
 	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -d $(PREFIX)/$(MANDIR)/en/man8/
 	install -d $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+
+install-apps:
 	install -m 0644 Fedora/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 Fedora/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 RHEL/6/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
@@ -316,6 +318,8 @@ install: dist
 	install -m 0644 JRE/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 Debian/8/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
 	install -m 0644 Debian/8/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+
+install: install-prelim dist install-apps
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
