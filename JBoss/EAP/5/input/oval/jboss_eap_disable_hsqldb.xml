@@ -1,0 +1,84 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_disable_hsqldb">
+    <metadata>
+      <title>Ensure HSQLDB Is Disabled</title>
+      <description>The default development HSQL database included with JBoss
+      should be removed.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_remove_hsqldb_ds_xml"/>
+      <criterion test_ref="test_remove_hsqldb_jar"/>
+      <criterion test_ref="test_remove_hsqldb_plugin_jar"/>
+      <criterion test_ref="test_remove_hsqldb_persistence_service"/>
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_remove_hsqldb_ds_xml" version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/deploy/hsqldb-ds.xml must be deleted">
+    <unix:object object_ref="obj_remove_hsqldb_ds_xml"/>
+  </unix:file_test>
+  <unix:file_object id="obj_remove_hsqldb_ds_xml"
+version="1">
+    <unix:path var_ref="local_var_hsqldb_conf_location"/>
+    <unix:filename>hsqldb-ds.xml</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test id="test_remove_hsqldb_jar" version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/common/lib/hsqldb.jar must be deleted">
+    <unix:object object_ref="obj_remove_hsqldb_jar"/>
+  </unix:file_test>
+  <unix:file_object id="obj_remove_hsqldb_jar"
+version="1">
+    <unix:path var_ref="local_var_common_lib_location"/>
+    <unix:filename>hsqldb.jar</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test id="test_remove_hsqldb_plugin_jar" version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/common/lib/hsqldb-plugin.jar must be deleted">
+    <unix:object object_ref="obj_remove_hsqldb_plugin_jar"/>
+  </unix:file_test>
+  <unix:file_object id="obj_remove_hsqldb_plugin_jar"
+version="1">
+    <unix:path var_ref="local_var_messaging_location"/>
+    <unix:filename>hsqldb-plugin.jar</unix:filename>
+  </unix:file_object>
+
+  <unix:file_test id="test_remove_hsqldb_persistence_service" version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/deploy/messaging/hsqldb-persistence-service.xml must be deleted">
+  <unix:object object_ref="obj_remove_hsqldb_persistence_service"/>
+</unix:file_test>
+  <unix:file_object id="obj_remove_hsqldb_persistence_service"
+version="1">
+    <unix:path var_ref="local_var_common_lib_location"/>
+    <unix:filename>hsqldb-persistence-service.xml</unix:filename>
+  </unix:file_object>
+
+  <local_variable id="local_var_messaging_location" version="1" datatype="string" comment="messaging location">
+    <concat>
+      <variable_component var_ref="local_var_hsqldb_conf_location"/>
+      <literal_component>/messaging</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_common_lib_location" version="1" datatype="string" comment="common/lib location">
+    <concat>
+      <object_component object_ref="env_disable_hsqldb_jboss_home" item_field="value"/>
+      <literal_component>/common/lib</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_hsqldb_conf_location" version="1" datatype="string" comment="deployment location">
+    <concat>
+      <object_component object_ref="env_disable_hsqldb_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_disable_hsqldb_profile"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_disable_hsqldb_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_disable_hsqldb_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

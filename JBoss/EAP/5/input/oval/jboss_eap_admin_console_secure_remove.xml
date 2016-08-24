@@ -1,0 +1,69 @@
+<def-group>
+  <definition class="compliance" id="jboss_eap_admin_console_secure_remove" version="1">
+    <metadata>
+      <title>Ensure Admin Console Is Secured Or Removed</title>
+      <description>The Administration Console application must be secured or
+      removed from deployment.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion test_ref="test_admin_console_location_removed"/>
+      <criterion test_ref="test_admin_console_secured"/>
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_admin_console_location_removed" check="all" check_existence="none_exist" comment="Admin Console is Removed" version="1">
+    <unix:object object_ref="obj_admin_console_location_removed"/>
+  </unix:file_test>
+  <unix:file_object id="obj_admin_console_location_removed" version="1">
+    <unix:path var_ref="local_var_admin_console_location"/>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <ind:xmlfilecontent_test check="all" id="test_admin_console_secured"
+  version="1" comment="Admin Console is secured">
+    <ind:object object_ref="obj_admin_console_secured"/>
+    <ind:state state_ref="state_admin_console_secured"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_admin_console_secured" version="1">
+    <ind:path var_ref="local_var_installed_admin_console"/>
+    <ind:filename>jboss-web.xml</ind:filename>
+    <ind:xpath>boolean(/jboss-web/security-domain/text())</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_admin_console_secured" version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_admin_console_location" version="1" datatype="string"
+  comment="Admin Console location">
+    <concat>
+      <variable_component var_ref="local_var_admin_location_deployed"/>
+      <literal_component>/management</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_installed_admin_console" version="1" datatype="string" comment="Web Console installed location">
+    <concat>
+      <variable_component var_ref="local_var_admin_console_location"/>
+      <literal_component>/console-mgr.sar/web-console.war/WEB-INF</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:environmentvariable58_object id="env_admin_location_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_admin_location_deployed" version="1" datatype="string" comment="deployed location">
+    <concat>
+      <object_component object_ref="env_admin_location_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_admin_location_production"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_admin_location_production">
+    <value>production</value>
+  </constant_variable>
+
+</def-group>

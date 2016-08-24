@@ -1,0 +1,62 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_configure_security_logging">
+    <metadata>
+      <title>Ensure the SecurityInterceptor Logging Level Is Set Correctly</title>
+      <description>SecurityInterceptor logging level should be set to TRACE and Reference the AUDIT Appender.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_security_logging_trace"/>
+      <criterion test_ref="test_security_logging_audit_reference"/>
+    </criteria>
+  </definition>
+
+  <ind:xmlfilecontent_test check="all" id="test_security_logging_trace" version="1" comment="SecurityInterceptor logging level is set correctly">
+    <ind:object object_ref="obj_security_logging_trace"/>
+    <ind:state state_ref="state_security_logging_trace"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_security_logging_trace"
+version="1">
+    <ind:path var_ref="local_var_security_logging_conf"/>
+    <ind:filename>jboss-log4j.xml</ind:filename>
+    <ind:xpath>boolean(/log4j:configuration/category[@name="org.jboss.ejb.plugins.SecurityInterceptor"]/priority[@value="TRACE"]/@value)</ind:xpath>
+  </ind:xmlfilecontent_object>
+<ind:xmlfilecontent_state id="state_security_logging_trace"
+version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <ind:xmlfilecontent_test check="all" id="test_security_logging_audit_reference" version="1" comment="SecurityInterceptor references correct appender">
+    <ind:object object_ref="obj_security_logging_audit_reference"/>
+    <ind:state state_ref="state_security_logging_audit_reference"/>
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_security_logging_audit_reference"
+version="1">
+  <ind:path var_ref="local_var_security_logging_conf"/>
+    <ind:filename>jboss-log4j.xml</ind:filename>
+    <ind:xpath>boolean(/log4j:configuration/category[@name="org.jboss.ejb.plugins.SecurityInterceptor"]/appender-ref[@ref="AUDIT"]/@ref)</ind:xpath>
+  </ind:xmlfilecontent_object>
+  <ind:xmlfilecontent_state id="state_security_logging_audit_reference"
+version="1">
+    <ind:value_of datatype="string">true</ind:value_of>
+  </ind:xmlfilecontent_state>
+
+  <local_variable id="local_var_security_logging_conf" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="env_security_logging_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_security_logging_profile"/>
+      <literal_component>/conf</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_security_logging_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_security_logging_jboss_home"
+  version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

@@ -1,0 +1,42 @@
+<def-group>
+  <definitionversion="1" class="compliance" id="jboss_eap_java_security_manager_policy">
+    <metadata>
+      <title>Configure the Java Security Manager's Environment Policy</title>
+      <description>JBoss Enterprise Application Platform should be configured
+      to load a Java security policy that has been vetted for use in the
+      environment.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_java_security_manager_policy"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_java_security_manager_policy" version="1" check="all" comment="JavaSecurityManagertousesecurity_ccpolicy">
+    <ind:object object_ref="obj_java_security_manager_policy"/>
+    <ind:state state_ref="state_java_security_manager_policy"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_java_security_manager_policy" version="1">
+    <ind:path var_ref="oval:com"/>
+    <ind:filename>run.conf</ind:filename>
+<!--<ind:patternoperation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS-Djava\.security\.manager-Djava\.security\.policy==\$JBOSS_HOME/bin/security_cc\.policy")</ind:pattern>-->
+    <ind:pattern operation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS-Djava\.security\.manager-Djava\.security\.policy==.*")</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_java_security_manager_policy" version="1">
+<!--<ind:subexpressionoperation="pattern match">JAVA_OPTS="$JAVA_OPTS-Djava.security.manager-Djava.security.policy==.*"</ind:subexpression>-->
+    <ind:subexpression operation="pattern match">((?:#*)JAVA_OPTS="\$JAVA_OPTS-Djava\.security\.manager-Djava\.security\.policy==.*")</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <local_variable id="local_var_java_security_manager_conf" version="1" datatype="string" comment="loglocation">
+    <concat>
+      <object_component object_ref="env_java_security_manager_jboss_home" item_field="value"/>
+      <literal_component>/bin</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:environmentvariable58_object id="local_var_java_security_manager_conf"
+version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+</def-group>
