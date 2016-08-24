@@ -46,8 +46,6 @@ def output_check(path_info):
         },
         "./output/bash/file_permissions{0}.sh", path_id
     )
-    
-    print("./output/bash/file_permissions" +path_id+".sh")
 
 def main():
     if len(sys.argv) < 2:
