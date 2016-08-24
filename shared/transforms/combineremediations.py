@@ -18,6 +18,7 @@ RHEVM = 'Red Hat Enterprise Virtualization Manager'
 FUSE = 'JBoss Fuse'
 OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
+WRLINUX = 'Wind River Linux'
 
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
@@ -46,6 +47,8 @@ def map_product(version):
         product_name = OPENSUSE
     if re.findall('suse', version):
         product_name = SUSE
+    if re.findall('wrlinux', version):
+	product_name = WRLINUX
 
     return product_name
 
@@ -67,7 +70,7 @@ def fix_is_applicable_for_product(platform, product):
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for mp in multi_platforms:
-        if mp in platform and product in ['rhel', 'fedora']:
+        if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
             return True
 
     # Get official name for product

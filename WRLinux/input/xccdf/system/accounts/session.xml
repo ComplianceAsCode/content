@@ -1,0 +1,117 @@
+<Group id="accounts-session">
+<title>Secure Session Configuration Files for Login Accounts</title>
+<description>
+When a user logs into a Unix account, the system configures the user's session by reading a number of files.
+Many of these files are located in the user's home directory, and may have weak permissions as a result of user error or misconfiguration.
+If an attacker can modify or even read certain types of account configuration information, they can often gain full access to the affected user's account.
+Therefore, it is important to test and correct configuration file permissions for interactive accounts, particularly those of privileged users such as root or system administrators.
+</description>
+
+<Group id="root_paths">
+<title>Ensure that No Dangerous Directories Exist in Root's Path</title>
+<description>
+The active path of the root account can be obtained by starting a new root shell and running:
+<pre>$ sudo echo $PATH</pre>
+This will produce a colon-separated list of directories in the path.
+<br/><br/>
+Certain path elements could be considered dangerous, as they could lead to root executing unknown or untrusted programs, which could contain malicious code.
+Since root may sometimes work inside untrusted directories, the <tt>.</tt> character, which represents the current directory, should never be in the root path, nor should any directory which can be written to by an unprivileged or semi-privileged (system) user.
+<br/><br/>
+It is a good practice for administrators to always execute privileged commands by typing the full path to the command.
+</description>
+
+<Rule id="accounts_root_path_dirs_no_write">
+<title>Ensure that Root's Path Does Not Include World or Group-Writable Directories</title>
+<description>
+For each element in root's path, run:
+<pre>$ sudo ls -ld <i>DIR</i></pre>
+and ensure that write permissions are disabled for group and other.
+</description>
+<ocil clause="group or other write permissions exist">
+To ensure write permissions are disabled for group and other for each element in root's path, run the following command:
+<pre>$ sudo ls -ld <i>DIR</i></pre>
+</ocil>
+<rationale>
+Such entries increase the risk that root could execute code provided by unprivileged users, and potentially malicious code.
+</rationale>
+<oval id="accounts_root_path_dirs_no_write" />
+<ref nist="CM-6(b)" disa="366"/>
+</Rule>
+</Group>
+
+<Rule id="file_permissions_home_dirs">
+<title>Ensure that User Home Directories are not Group-Writable or World-Readable</title>
+<description>
+For each human user of the system, view the permissions of the user's home directory:
+<pre>$ sudo ls -ld /home/<i>USER</i></pre>
+Ensure that the directory is not group-writable and that it is not world-readable.
+If necessary, repair the permissions:
+<pre>$ sudo chmod g-w /home/<i>USER</i>
+$ sudo chmod o-rwx /home/<i>USER</i></pre>
+</description>
+<ocil clause="the user home directory is group-writable or world-readable">
+To ensure the user home directory is not group-writable or world-readable, run the following:
+<pre>$ sudo ls -ld /home/<i>USER</i></pre>
+</ocil>
+<warning category="general">
+This action may involve modifying user home directories.
+Notify your user community, and solicit input if appropriate, before making this type of change.
+</warning>
+<rationale>
+User home directories contain many configuration files which affect the behavior of a user's account.
+No user should ever have write permission to another user's home directory.
+Group shared directories can be configured in sub-directories or elsewhere in the filesystem if they are needed.
+Typically, user home directories should not be world-readable, as it would disclose file names to other users.
+If a subset of users need read access to one another's home directories, this can be provided using groups or ACLs.
+</rationale>
+<oval id="file_permissions_home_dirs" />
+<ref nist="AC-6(7)" disa="225"/>
+</Rule>
+
+<Group id="user_umask">
+<title>Ensure that Users Have Sensible Umask Values</title>
+<description>
+The umask setting controls the default permissions for the creation of new files.
+With a default <tt>umask</tt> setting of 077, files and directories created by users will not be readable by any other user on the system.
+Users who wish to make specific files group- or world-readable can accomplish this by using the chmod command.
+Additionally, users can make all their files readable to their group by default by setting a <tt>umask</tt> of 027 in their shell configuration files.
+If default per-user groups exist (that is, if every user has a default group whose name is the same as that user's username and whose only member is the user), then it may even be safe for users to select a <tt>umask</tt> of 007, making it very easy to intentionally share files with groups of which the user is a member.
+<br/><br/>
+<!--In addition, it may be necessary to change root's <tt>umask</tt>
+temporarily in order to install software or files which must be
+readable by other users, or to change the default umasks of certain
+service accounts such as the FTP user. However, setting a
+restrictive default protects the files of users who have not taken
+steps to make their files more available, and preventing files from
+being inadvertently shared.-->
+</description>
+
+<!-- Define a new catch-all Rule?
+<li>View the additional configuration files <tt>/etc/csh.login</tt> and
+<tt>/etc/profile.d/*</tt>, and ensure that none of these files redefine the
+umask to a more permissive value unless there is a good reason for
+it.
+</li>
+<li>-->
+
+<!-- Define a new Rule to check root's umask?
+It seems unlikely to ever be misconfigured.
+Edit the root shell configuration files <tt>/root/.bashrc</tt>,
+<tt>/root/.bash profile</tt>, <tt>/root/.cshrc</tt>, and <tt>/root/.tcshrc</tt>. Add or
+correct the line:
+<pre>umask 077</pre>
+</li>
+-->
+<Value id="var_accounts_user_umask" type="string"
+operator="equals" interactive="0">
+<title>Sensible umask</title>
+<description>Enter default user umask</description>
+<value selector="">027</value>
+<value selector="007">007</value>
+<value selector="022">022</value>
+<value selector="027">027</value>
+<value selector="077">077</value>
+</Value>
+
+</Group>
+</Group>
