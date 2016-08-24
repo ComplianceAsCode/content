@@ -14,6 +14,9 @@ BuildRequires:	libxslt, expat, python, openscap-utils >= 1.0.3, python-lxml
 BuildRequires:	openscap-utils >= 1.2.2
 BuildRequires:	ShellCheck
 %endif
+%if 0%{?wrlinux}
+BuildRequires:	openscap-utils >= 1.2
+%endif
 Requires:	xml-common, openscap-utils >= 1.0.8
 Provides:	openscap-content
 
@@ -55,6 +58,10 @@ present in %{name} package.
 #(cd Webmin && make dist)
 %endif
 
+%if 0%{?wrlinux}
+(cd WRLinux && make dist)
+%endif
+
 %install
 mkdir -p %{buildroot}%{_mandir}/en/man8/
 cp -a docs/scap-security-guide.8 %{buildroot}%{_mandir}/en/man8/
@@ -74,6 +81,15 @@ cp -a Chromium/dist/content/ssg-chromium-ds.xml %{buildroot}%{_datadir}/xml/scap
 #cp -a Webmin/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
 
 # We only want datastreams on Fedora, lets get rid of plain XCCDF, OVAL and CPE dict files
+rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-xccdf.xml
+rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-oval.xml
+rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-cpe-dictionary.xml
+%endif
+
+%if 0%{?wrlinux}
+cp -a WRLinux/dist/content/* %{buildroot}%{_datadir}/xml/scap/ssg/content
+
+# We only want datastreams on WRLinux, lets get rid of plain XCCDF, OVAL and CPE dict files
 rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-xccdf.xml
 rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-oval.xml
 rm %{buildroot}%{_datadir}/xml/scap/ssg/content/*-cpe-dictionary.xml
@@ -108,6 +124,10 @@ cp -a JBossEAP5/docs/JBossEAP5_Guide.html %{buildroot}/%{_docdir}/%{name}-%{vers
 cp -a Fedora/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
 cp -a Chromium/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}-%{version}/guides
 #cp -a Webmin/output/*-guide-*.html %{buildroot}/%{_defaultdocdir}/%{name}-%{version}/guides
+%endif
+
+%if 0%{?wrlinux}
+cp -a WRLinux/output/*-guide-*.html %{buildroot}/%{_docdir}/%{name}/guides
 %endif
 
 %files
