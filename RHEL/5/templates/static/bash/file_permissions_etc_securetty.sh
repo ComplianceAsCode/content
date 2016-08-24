@@ -1,1 +1,0 @@
-chmod 0600 /etc/securetty
