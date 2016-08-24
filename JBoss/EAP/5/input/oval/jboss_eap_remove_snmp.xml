@@ -1,0 +1,46 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_remove_snmp.xml">
+    <metadata>
+      <title>Remove the JBoss SNMP SAR file</title>
+      <description>The file JBOSS_HOME/server/[PROFILE]/deploy/snmp-adaptor.sar
+      should not exist.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_remove_snmp_sar_file"/>
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_remove_snmp_sar_file" version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/server/production/deploy/snmp-adaptor.sar should be deleted">
+    <unix:object object_ref="obj_remove_snmp_sar_file"/>
+  </unix:file_test>
+  <unix:file_object id="obj_remove_snmp_sar_file" version="1">
+    <unix:path var_ref="local_var_snmp_sar_location"/>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <local_variable id="local_var_snmp_sar_location" version="1" datatype="string" comment="snmp-adaptor.sar location">
+    <concat>
+      <variable_component var_ref="local_var_snmp_conf_location"/>
+      <literal_component>/snmp-adaptor.sar</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_snmp_conf_location" version="1" datatype="string" comment="deployment location">
+    <concat>
+      <object_component object_ref="env_snmp_jboss_home" item_field="value"/>
+      <literal_component>/server/</literal_component>
+      <variable_component var_ref="const_var_snmp_profile"/>
+      <literal_component>/deploy</literal_component>
+    </concat>
+  </local_variable>
+
+  <constant_variable comment="JBoss production profile" datatype="string" version="1" id="const_var_snmp_profile">
+    <value>production</value>
+  </constant_variable>
+
+  <ind:environmentvariable58_object id="env_snmp_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>

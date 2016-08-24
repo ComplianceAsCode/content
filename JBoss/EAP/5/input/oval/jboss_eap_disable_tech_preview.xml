@@ -1,0 +1,33 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_disable_tech_preview">
+    <metadata>
+      <title>Ensure Technology Preview Is Disabled</title>
+      <description>Remove the PicketLink technology preview folder.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_disable_tech_preview"/>
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_disable_tech_preview" version="1" check="all" check_existence="none_exist" comment="JBOSS_HOME/../picketlink must be deleted">
+    <unix:object object_ref="obj_disable_tech_preview"/>
+  </unix:file_test>
+
+  <unix:file_object id="obj_disable_tech_preview" version="1">
+    <unix:path var_ref="local_var_picketlink_location"/>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <local_variable id="local_var_picketlink_location" version="1" datatype="string" comment="picketlink location">
+    <concat>
+      <object_component object_ref="env_tech_preview_jboss_home" item_field="value"/>
+      <literal_component>/../picketlink</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:environmentvariable58_object id="env_tech_preview_jboss_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+</def-group>
