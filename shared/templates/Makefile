@@ -19,7 +19,7 @@ bash:
 	#$(SHARED_DIR)/create_BASH_services_enabled.py        ${CSV_DIR}/services_enabled.csv
 	#$(SHARED_DIR)/create_BASH_kernel_modules_disabled.py ${CSV_DIR}/kernel_modules_disabled.csv
 	#$(SHARED_DIR)/create_BASH_package_installed.py       ${CSV_DIR}/package_installed.csv
-	#$(SHARED_DIR)/create_BASH_package_removed.py         ${CSV_DIR}/package_removed.csv
+	$(SHARED_DIR)/create_BASH_package_removed.py         ${CSV_DIR}/package_removed.csv
 
 clean:
 	rm -rf $(TARGET_DIR)/output
