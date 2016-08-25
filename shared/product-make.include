@@ -102,7 +102,7 @@ $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/oc
 $(PRODUCT_BASH_REMEDIATIONS):
 	if [ -f templates/Makefile ];	\
 	then	\
-		make -C templates bash;	\
+		$(MAKE) -C templates bash;	\
 	else	\
 		mkdir -p templates/output/bash;	\
 	fi
@@ -111,7 +111,7 @@ $(PRODUCT_ANSIBLE_REMEDIATIONS):
 	# todo: Create ansible target everywhere
 	if grep -q '^ansible:' templates/Makefile 2> /dev/null ;	\
 	then	\
-		make -C templates ansible;	\
+		$(MAKE) -C templates ansible;	\
 	else	\
 		mkdir -p templates/output/ansible;	\
 		mkdir -p templates/static/ansible;	\
@@ -119,10 +119,10 @@ $(PRODUCT_ANSIBLE_REMEDIATIONS):
 
 
 $(BUILD)/shared/output/bash:
-	make -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) bash
+	$(MAKE) -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) bash
 
 $(BUILD)/shared/output/ansible:
-	make -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) ansible
+	$(MAKE) -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) ansible
 
 # Common build targets - a catalogue of XCCDF remediations
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
