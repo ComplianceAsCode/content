@@ -6,19 +6,88 @@ import glob
 import re
 
 
-class BashDuplicitiesFinder:
-    def __init__(self, root_dir):
+class DuplicitiesFinder(object):
+    def __init__(self, root_dir, specific_dirs_mask, shared_dir, extension):
         self._root_dir = root_dir
-        self._shared_static = path.join(root_dir, "shared", "templates", "static", "bash")
+        self._specific_dirs_mask = path.join(root_dir, specific_dirs_mask)
+        self._shared_dir = path.join(root_dir, shared_dir)
+        self._clear_normalized()
+        self._extension = extension
+
+    def _clear_normalized(self):
         self._normalized = {}
 
-    def _static_dirs(self):
-        mask = path.join(self._root_dir, "**", "static", "bash")
-        for static_path in glob.glob(mask, recursive=True):
-            if not static_path.startswith(self._shared_static):
+    def _get_normalized(self, file_path):
+        """
+        Return cached normalized content of file
+        :param file_path:
+        :return:
+        """
+        if file_path in self._normalized:
+            return self._normalized[file_path]
+
+        with open(file_path, 'r') as content_file:
+            content = content_file.read()
+            normalized = self._normalize_content(content)
+            self._normalized[file_path] = normalized
+            return normalized
+
+    def _compare_files(self, shared_filename, specific_filename):
+        if not path.isfile(specific_filename):
+            return False
+
+        shared_normalized = self._get_normalized(shared_filename)
+        specific_normalized = self._get_normalized(specific_filename)
+
+        return shared_normalized == specific_normalized
+
+    def _print_match(self, first_filename, second_filename):
+        print("Duplicity found! {}\t=>\t{}".format(first_filename, second_filename))
+
+    def search(self):
+        """
+
+        :return: True if duplicity found
+        """
+        found = False
+        self._clear_normalized()
+
+        specific_dirs = list(self._specific_dirs())
+
+        # Walk all shared files
+        shared_files_mask = path.join(self._shared_dir, "*" + self._extension)
+        for shared_filename in glob.glob(shared_files_mask):
+
+            basename = path.basename(shared_filename)
+
+            # Walk all specific dirs
+            for specific_dir in specific_dirs:
+
+                # Get file to compare
+                specific_filename = path.join(specific_dir, basename)
+
+                # Compare
+                if self._compare_files(shared_filename, specific_filename):
+                    found = True
+                    self._print_match(shared_filename, specific_filename)
+
+        return found
+
+    def _specific_dirs(self):
+        for static_path in glob.glob(self._specific_dirs_mask, recursive=True):
+            if not static_path.startswith(self._shared_dir):
                 yield static_path
 
-    def _normalize_script(self, content):
+    def _normalize_content(self, content):
+        return content
+
+
+
+class BashDuplicitiesFinder(DuplicitiesFinder):
+    def __init__(self, root_dir, specific_dirs_mask, shared_dir):
+        DuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, ".sh")
+
+    def _normalize_content(self, content):
         # remove comments
         # naive implementation (todo)
         content = re.sub(r"^\s*#.*", "", content)
@@ -29,49 +98,38 @@ class BashDuplicitiesFinder:
 
         return content
 
-    def _get_normalized(self, file_path):
-        if file_path in self._normalized:
-            return self._normalized[file_path]
-
-        with open(file_path, 'r') as content_file:
-            content = content_file.read()
-            normalized = self._normalize_script(content)
-            self._normalized[file_path] = normalized
-            return normalized
+class BashTemplatesDuplicitiesFinder(BashDuplicitiesFinder):
+    def __init__(self, root_dir, specific_dirs_mask, shared_dir):
+        BashDuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir)
 
     def search(self):
-        self.search_static()
+        """
 
-    def search_static(self):
-        self._normalized = {}
+        :return: True if duplicity found
+        """
+        found = False
+        self._clear_normalized()
 
-        static_dirs = list(self._static_dirs())
+        specific_dirs = list(self._specific_dirs())
 
-        # Walk all static scripts
-        static_scripts = path.join(self._shared_static, "*.sh")
-        for shared_static_filename in glob.glob(static_scripts):
+        # Walk all shared files
+        shared_files_mask = path.join(self._shared_dir, "template_BASH_*" )
+        for shared_filename in glob.glob(shared_files_mask):
 
-            basename = path.basename(shared_static_filename)
+            basename = path.basename(shared_filename)
 
             # Walk all specific dirs
-            for specific_static_dir in static_dirs:
+            for specific_dir in specific_dirs:
 
                 # Get file to compare
-                specific_filename = path.join(specific_static_dir, basename)
+                specific_filename = path.join(specific_dir, basename)
 
                 # Compare
-                if self._compare_files(shared_static_filename, specific_filename):
-                    print("Duplicity found! {}\t=>\t{}".format(shared_static_filename, specific_filename))
+                if self._compare_files(shared_filename, specific_filename):
+                    found = True
+                    self._print_match(shared_filename, specific_filename)
 
-
-    def _compare_files(self, shared_filename, specific_filename):
-        if not path.isfile(specific_filename):
-            return False
-
-        shared_normalized = self._get_normalized(shared_filename)
-        specific_normalized = self._get_normalized(specific_filename)
-
-        return shared_normalized == specific_normalized
+        return found
 
 
 def main():
@@ -83,12 +141,23 @@ def main():
         sys.exit(1)
 
     root_dir = sys.argv[1]
-    finder = BashDuplicitiesFinder(root_dir)
 
-    print()
-    finder.search()
+    # Static bash scripts
+    static_bash_finder = BashDuplicitiesFinder(
+        root_dir,
+        path.join("**", "static", "bash"),
+        path.join("shared", "templates", "static", "bash")
+    )
+    static_bash_finder.search()
 
 
+    # Static bash scripts
+    template_bash_finder = BashTemplatesDuplicitiesFinder(
+        root_dir,
+        path.join("**", "templates"),
+        path.join("shared", "templates")
+    )
+    template_bash_finder.search()
 
 if __name__ == "__main__":
     main()
