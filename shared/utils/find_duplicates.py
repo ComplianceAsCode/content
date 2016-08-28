@@ -7,12 +7,12 @@ import re
 
 
 class DuplicitiesFinder(object):
-    def __init__(self, root_dir, specific_dirs_mask, shared_dir, extension):
+    def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask):
         self._root_dir = root_dir
         self._specific_dirs_mask = path.join(root_dir, specific_dirs_mask)
         self._shared_dir = path.join(root_dir, shared_dir)
         self._clear_normalized()
-        self._extension = extension
+        self._shared_files_mask = shared_files_mask
 
     def _clear_normalized(self):
         self._normalized = {}
@@ -33,6 +33,11 @@ class DuplicitiesFinder(object):
             return normalized
 
     def _compare_files(self, shared_filename, specific_filename):
+        """
+        :param shared_filename:
+        :param specific_filename:
+        :return:
+        """
         if not path.isfile(specific_filename):
             return False
 
@@ -55,7 +60,7 @@ class DuplicitiesFinder(object):
         specific_dirs = list(self._specific_dirs())
 
         # Walk all shared files
-        shared_files_mask = path.join(self._shared_dir, "*" + self._extension)
+        shared_files_mask = path.join(self._shared_dir, self._shared_files_mask)
         for shared_filename in glob.glob(shared_files_mask):
 
             basename = path.basename(shared_filename)
@@ -82,10 +87,9 @@ class DuplicitiesFinder(object):
         return content
 
 
-
 class BashDuplicitiesFinder(DuplicitiesFinder):
-    def __init__(self, root_dir, specific_dirs_mask, shared_dir):
-        DuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, ".sh")
+    def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask="*.sh"):
+        DuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
 
     def _normalize_content(self, content):
         # remove comments
@@ -98,39 +102,6 @@ class BashDuplicitiesFinder(DuplicitiesFinder):
 
         return content
 
-class BashTemplatesDuplicitiesFinder(BashDuplicitiesFinder):
-    def __init__(self, root_dir, specific_dirs_mask, shared_dir):
-        BashDuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir)
-
-    def search(self):
-        """
-
-        :return: True if duplicity found
-        """
-        found = False
-        self._clear_normalized()
-
-        specific_dirs = list(self._specific_dirs())
-
-        # Walk all shared files
-        shared_files_mask = path.join(self._shared_dir, "template_BASH_*" )
-        for shared_filename in glob.glob(shared_files_mask):
-
-            basename = path.basename(shared_filename)
-
-            # Walk all specific dirs
-            for specific_dir in specific_dirs:
-
-                # Get file to compare
-                specific_filename = path.join(specific_dir, basename)
-
-                # Compare
-                if self._compare_files(shared_filename, specific_filename):
-                    found = True
-                    self._print_match(shared_filename, specific_filename)
-
-        return found
-
 
 def main():
     '''
@@ -141,23 +112,40 @@ def main():
         sys.exit(1)
 
     root_dir = sys.argv[1]
+    without_duplicities = True
+
 
     # Static bash scripts
+    print("Static bash files:")
     static_bash_finder = BashDuplicitiesFinder(
         root_dir,
         path.join("**", "static", "bash"),
         path.join("shared", "templates", "static", "bash")
     )
-    static_bash_finder.search()
+    if static_bash_finder.search():
+        without_duplicities = False
 
 
-    # Static bash scripts
-    template_bash_finder = BashTemplatesDuplicitiesFinder(
+    # Templates bash scripts
+    print("Bash templates:")
+    template_bash_finder = BashDuplicitiesFinder(
         root_dir,
         path.join("**", "templates"),
-        path.join("shared", "templates")
+        path.join("shared", "templates"),
+        "template_BASH_*"
     )
-    template_bash_finder.search()
+    if template_bash_finder.search():
+        without_duplicities = False
+
+
+    # Scan result
+    if without_duplicities:
+        print("No duplicities found")
+        sys.exit(0)
+    else:
+        print("Duplicities found!")
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
