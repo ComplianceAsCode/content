@@ -1,12 +1,15 @@
 #!/usr/bin/python3
-
+"""
+    This script should find duplicates e.g. specific template is same as shared one
+"""
 import sys
 from os import path
 import glob
 import re
 
 
-class DuplicitiesFinder(object):
+class DuplicatesFinder(object):
+
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask):
         self._root_dir = root_dir
         self._specific_dirs_mask = path.join(root_dir, specific_dirs_mask)
@@ -14,8 +17,10 @@ class DuplicitiesFinder(object):
         self._clear_normalized()
         self._shared_files_mask = shared_files_mask
 
+
     def _clear_normalized(self):
         self._normalized = {}
+
 
     def _get_normalized(self, file_path):
         """
@@ -32,12 +37,8 @@ class DuplicitiesFinder(object):
             self._normalized[file_path] = normalized
             return normalized
 
+
     def _compare_files(self, shared_filename, specific_filename):
-        """
-        :param shared_filename:
-        :param specific_filename:
-        :return:
-        """
         if not path.isfile(specific_filename):
             return False
 
@@ -46,13 +47,14 @@ class DuplicitiesFinder(object):
 
         return shared_normalized == specific_normalized
 
+
     def _print_match(self, first_filename, second_filename):
-        print("Duplicity found! {}\t=>\t{}".format(first_filename, second_filename))
+        print("Duplicate found! {}\t=>\t{}".format(first_filename, second_filename))
+
 
     def search(self):
         """
-
-        :return: True if duplicity found
+        :return: True if any duplicate found
         """
         found = False
         self._clear_normalized()
@@ -78,18 +80,24 @@ class DuplicitiesFinder(object):
 
         return found
 
+
     def _specific_dirs(self):
         for static_path in glob.glob(self._specific_dirs_mask, recursive=True):
             if not static_path.startswith(self._shared_dir):
                 yield static_path
 
+
     def _normalize_content(self, content):
         return content
 
 
-class BashDuplicitiesFinder(DuplicitiesFinder):
+
+
+class BashDuplicatesFinder(DuplicatesFinder):
+
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask="*.sh"):
-        DuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
+        DuplicatesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
+
 
     def _normalize_content(self, content):
         # remove comments
@@ -97,25 +105,25 @@ class BashDuplicitiesFinder(DuplicitiesFinder):
         content = re.sub(r"^\s*#.*", "", content)
 
         # remove empty lines
-        content = "\n" + content + "\n"
         content = "\n".join([s for s in content.split("\n") if s])
 
         return content
 
 
-class OvalDuplicitiesFinder(DuplicitiesFinder):
+
+class OvalDuplicatesFinder(DuplicatesFinder):
+
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask="*.xml"):
-        DuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
+        DuplicatesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
+
 
     def _normalize_content(self, content):
         # remove comments
         # naive implementation (todo)
-        content = re.sub(r"^\s*#.*", "", content)
-
-        content = re.sub('<!--.*?-->', "", content, flags=re.DOTALL)
+        content = re.sub(r"^\s*#.*", "", content) # bash style comments - due to #platform
+        content = re.sub('<!--.*?-->', "", content, flags=re.DOTALL) # xml comments
 
         # remove empty lines
-        content = "\n" + content + "\n"
         content = "\n".join([s for s in content.split("\n") if s])
 
         return content
@@ -126,46 +134,46 @@ def main():
     main function
     '''
     if len(sys.argv) < 2:
-        print("Usage : ./find_duplicities root_ssg_directory")
+        print("Usage : ./find_duplicates root_ssg_directory")
         sys.exit(1)
 
     root_dir = sys.argv[1]
-    without_duplicities = True
+    without_duplicates = True
 
     # Static bash scripts
     print("Static bash files:")
-    static_bash_finder = BashDuplicitiesFinder(
+    static_bash_finder = BashDuplicatesFinder(
         root_dir,
         path.join("**", "static", "bash"),
         path.join("shared", "templates", "static", "bash")
     )
     if static_bash_finder.search():
-        without_duplicities = False
+        without_duplicates = False
 
     # Templates bash scripts
     print("Bash templates:")
-    template_bash_finder = BashDuplicitiesFinder(
+    template_bash_finder = BashDuplicatesFinder(
         root_dir,
         path.join("**", "templates"),
         path.join("shared", "templates"),
         "template_BASH_*"
     )
     if template_bash_finder.search():
-        without_duplicities = False
+        without_duplicates = False
 
     # Static oval files
     print("Static oval files:")
-    static_oval_finder = OvalDuplicitiesFinder(
+    static_oval_finder = OvalDuplicatesFinder(
         root_dir,
         path.join("**", "static", "oval"),
         path.join("shared", "templates", "static", "oval")
     )
     if static_oval_finder.search():
-        without_duplicities = False
+        without_duplicates = False
 
     # Templates oval files
     print("Templates oval files:")
-    templates_oval_finder = OvalDuplicitiesFinder(
+    templates_oval_finder = OvalDuplicatesFinder(
         root_dir,
         path.join("**", "templates"),
         path.join("shared", "templates"),
@@ -173,14 +181,14 @@ def main():
     )
 
     if templates_oval_finder.search():
-        without_duplicities = False
+        without_duplicates = False
 
-    # Scan result
-    if without_duplicities:
-        print("No duplicities found")
+    # Scan results
+    if without_duplicates:
+        print("No duplicates found")
         sys.exit(0)
     else:
-        print("Duplicities found!")
+        print("Duplicates found!")
         sys.exit(1)
 
 
