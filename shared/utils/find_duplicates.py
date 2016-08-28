@@ -103,6 +103,24 @@ class BashDuplicitiesFinder(DuplicitiesFinder):
         return content
 
 
+class OvalDuplicitiesFinder(DuplicitiesFinder):
+    def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask="*.xml"):
+        DuplicitiesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
+
+    def _normalize_content(self, content):
+        # remove comments
+        # naive implementation (todo)
+        content = re.sub(r"^\s*#.*", "", content)
+
+        content = re.sub('<!--.*?-->', "", content, flags=re.DOTALL)
+
+        # remove empty lines
+        content = "\n" + content + "\n"
+        content = "\n".join([s for s in content.split("\n") if s])
+
+        return content
+
+
 def main():
     '''
     main function
@@ -114,7 +132,6 @@ def main():
     root_dir = sys.argv[1]
     without_duplicities = True
 
-
     # Static bash scripts
     print("Static bash files:")
     static_bash_finder = BashDuplicitiesFinder(
@@ -124,7 +141,6 @@ def main():
     )
     if static_bash_finder.search():
         without_duplicities = False
-
 
     # Templates bash scripts
     print("Bash templates:")
@@ -137,6 +153,27 @@ def main():
     if template_bash_finder.search():
         without_duplicities = False
 
+    # Static oval files
+    print("Static oval files:")
+    static_oval_finder = OvalDuplicitiesFinder(
+        root_dir,
+        path.join("**", "static", "oval"),
+        path.join("shared", "templates", "static", "oval")
+    )
+    if static_oval_finder.search():
+        without_duplicities = False
+
+    # Templates oval files
+    print("Templates oval files:")
+    templates_oval_finder = OvalDuplicitiesFinder(
+        root_dir,
+        path.join("**", "templates"),
+        path.join("shared", "templates"),
+        "template_OVAL_*"
+    )
+
+    if templates_oval_finder.search():
+        without_duplicities = False
 
     # Scan result
     if without_duplicities:
