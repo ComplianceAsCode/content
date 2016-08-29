@@ -135,7 +135,7 @@ product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
 shared_bash_remediations_deps= $(wildcard $(SHARED_BASH_REMEDIATIONS)/*.sh)
 bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
 $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_BASH_REMEDIATIONS) $(BUILD)/shared/output/bash templates/static/bash
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
+	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_BASH_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
 
 # Common build targets - a catalogue of XCCDF remediations
@@ -143,7 +143,7 @@ product_ansible_remediations_deps=$(wildcard templates/static/ansible/*.sh)
 shared_ansible_remediations_deps= $(wildcard $(SHARED_ANSIBLE_REMEDIATIONS)/*.sh)
 ansible_remediations_deps= $(product_ansible_remediations_deps) $(shared_ansible_remediations_deps)
 $(OUT)/ansible-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(ansible_remediations_deps) $(PRODUCT_ANSIBLE_REMEDIATIONS) $(BUILD)/shared/output/ansible templates/static/ansible
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) ansible $(SHARED_ANSIBLE_REMEDIATIONS) $(PRODUCT_REMEDIATIONS) templates/static/ansible $(OUT)/ansible-remediations.xml
+	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) ansible $(SHARED_ANSIBLE_REMEDIATIONS) $(PRODUCT_ANSIBLE_REMEDIATIONS) templates/static/ansible $(OUT)/ansible-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 # Prefer "$(OUT)/xccdf-unlinked-ocilrefs.xml" document below since it contains OCIL expanded to official OCIL-2.0 syntax
