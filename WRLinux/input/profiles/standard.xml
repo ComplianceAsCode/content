@@ -1,0 +1,17 @@
+<Profile id="standard">
+<title>Standard System Security Profile</title>
+<description>
+This profile contains rules to ensure standard security baseline of a Wind River Linux system.
+Regardless of your system's workload all of these checks should pass.
+</description>
+
+<select idref="accounts_no_uid_except_zero" selected="true"/>
+<select idref="accounts_password_all_shadowed" selected="true"/>
+<select idref="accounts_password_warn_age_login_defs" selected="true"/>
+<select idref="accounts_root_path_dirs_no_write" selected="true"/>
+<select idref="file_permissions_home_dirs" selected="true"/>
+<select idref="no_direct_root_logins" selected="true"/>
+<select idref="no_empty_passwords" selected="true"/>
+<select idref="no_netrc_files" selected="true"/>
+
+</Profile>
