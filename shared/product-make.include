@@ -43,12 +43,13 @@ OPENSCAP_SVG := $(shell $(SHARED)/$(UTILS)/oscap-svg-support.py; echo $$?)
 SHELLCHECK_AVAIL := $(shell which shellcheck >& /dev/null; echo $$?)
 
 # Common build targets - include the SSG logo into the XCCDF header
-$(OUT)/guide.xml: $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
+$(OUT)/guide.xml: $(SHARED)/$(TRANS)/includelogo.xslt $(SHARED)/xccdf/shared_guide.xml
+
 ifeq ($(OPENSCAP_SVG), 0)
-	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(IN)/guide.xml
+	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(SHARED)/xccdf/shared_guide.xml
 else
 	mkdir -p $(OUT)/
-	cp $(IN)/guide.xml $(OUT)/
+	cp $(SHARED)/xccdf/shared_guide.xml $(OUT)/
 endif
 
 # Common build targets - compose single shorthand XCCDF guide from all the sources

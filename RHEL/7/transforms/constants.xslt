@@ -5,6 +5,9 @@
 <xsl:variable name="product_long_name">Red Hat Enterprise Linux 7</xsl:variable>
 <xsl:variable name="product_short_name">RHEL 7</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHEL_7_STIG</xsl:variable>
+<xsl:variable name="product_guide_id_name">RHEL-7</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/o:redhat:enterprise_linux:7,cpe:/o:redhat:enterprise_linux:7::client,cpe:/o:redhat:enterprise_linux:7::computenode</xsl:variable>
+
 
 <!-- Define URI of official CIS Red Hat Enterprise Linux 7 Benchmark -->
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_Red_Hat_Enterprise_Linux_7_Benchmark_v1.1.0.pdf</xsl:variable>

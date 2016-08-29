@@ -7,8 +7,10 @@
 <xsl:variable name="product_stig_id_name">CHROMIUM_STIG</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
+<xsl:variable name="product_guide_id_name">CHROMIUM</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/a:google:chromium-browser</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-browers-uri"/>
-<xsl:variable name="os-stigid-concat" />
+<xsl:variable name="os-stigid-concat">DISA FSO </xsl:variable>
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
 <!--xsl:variable name="custom-cce-uri">https://www.example.org</xsl:variable-->
