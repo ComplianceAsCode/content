@@ -16,31 +16,31 @@ meld="$3"
 # Get list of remediations in pretty & sorted xml
 function extractRemediations() {
 	xsltproc $(dirname "$0")/getRemediations.xsl "$1"  | tee /tmp/res.xml | \
-	    xmllint --c14n11 /dev/stdin | \
-    	xmllint -format /dev/stdin | \
-    	sed 's;^\s*#.*$;;g' | \
-    	sed '/^\s*$/d'
-	# remove comments
-	# empty lines
+		xmllint --c14n11 /dev/stdin | \
+		xmllint -format /dev/stdin | \
+		sed 's;^\s*#.*$;;g' | \
+		sed '/^\s*$/d'
+		# remove bash comments from output
+		# remove empty lines
 }
 
 function compareFile() {
 	local originalFile="$1"
-	toCompare=$(echo "$originalFile" | sed -E "s;^$originalRepo;$updatedRepo;")
+	toCompare=$(sed "s;^$originalRepo;$updatedRepo;" <<< "$originalFile")
 	echo "-----------------------------------------------------------------"
 	echo "$originalFile <=> $toCompare" 
 	echo "-----------------------------------------------------------------"
-	
+
 	extractRemediations "$originalFile" > /tmp/original
-	extractRemediations "$toCompare"	> /tmp/new
-	
+	extractRemediations "$toCompare"    > /tmp/new
+
 	if [ "$meld" == "meld" ];
 	then
-	    diff /tmp/original /tmp/new -q || {
-		    meld /tmp/original /tmp/new
-    	}
+		diff /tmp/original /tmp/new -q || {
+			meld /tmp/original /tmp/new
+		}
 	else
-	    diff /tmp/original /tmp/new
+		diff /tmp/original /tmp/new
 	fi
 }
 
