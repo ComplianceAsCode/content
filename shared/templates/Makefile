@@ -25,6 +25,7 @@ bash:
 ansible:
 	mkdir -p $(OUTPUT_ANSIBLE)
 	$(SHARED_DIR)/create_ANSIBLE_package_installed.py       ${CSV_DIR}/package_installed.csv
+	$(SHARED_DIR)/create_ANSIBLE_package_removed.py         ${CSV_DIR}/package_removed.csv
 
 clean:
 	rm -rf $(TARGET_DIR)/output
