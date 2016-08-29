@@ -84,3 +84,20 @@ def csv_map(filename, method, skip_comments = False):
                 continue
             method(line)
 
+
+def main(argv, help_callback, process_line_callback):
+
+    argv_len = len(argv)
+
+    if argv_len < 3:
+        help_callback()
+        sys.exit(1)
+
+    filename = sys.argv[2]
+
+    def process_line(*args):
+        target = sys.argv[1] # todo: add to csv_map
+        process_line_callback(target, *args)
+
+    csv_map(filename, process_line, skip_comments=True)
+    sys.exit(0)
