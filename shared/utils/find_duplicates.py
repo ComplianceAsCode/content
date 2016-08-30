@@ -1,19 +1,48 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 """
     This script should find duplicates e.g. specific template is same as shared one
 """
 import sys
-from os import path
-import glob
+import os
 import re
+import glob
+
+
+
+
+def recursive_globi(mask):
+    """
+    Simple replacement of glob.globi(mask, recursive=true)
+    Reason: Older Python versions support
+    """
+
+    parts = mask.split("**/")
+
+    if not len(parts) == 2:
+        raise NotImplementedError
+
+    search_root = parts[0]
+
+    # instead of '*' use regex '.*'
+    path_mask = parts[1].replace("*", ".*")
+    re_path_mask = re.compile(path_mask + "$")
+
+    for root, dirnames, filenames in os.walk(search_root):
+        paths = filenames + dirnames
+        for path in paths:
+            full_path = os.path.join(root, path)
+            if re_path_mask.search(full_path):
+                yield full_path
+
+
 
 
 class DuplicatesFinder(object):
 
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask):
         self._root_dir = root_dir
-        self._specific_dirs_mask = path.join(root_dir, specific_dirs_mask)
-        self._shared_dir = path.join(root_dir, shared_dir)
+        self._specific_dirs_mask = os.path.join(root_dir, specific_dirs_mask)
+        self._shared_dir = os.path.join(root_dir, shared_dir)
         self._clear_normalized()
         self._shared_files_mask = shared_files_mask
 
@@ -39,7 +68,7 @@ class DuplicatesFinder(object):
 
 
     def _compare_files(self, shared_filename, specific_filename):
-        if not path.isfile(specific_filename):
+        if not os.path.isfile(specific_filename):
             return False
 
         shared_normalized = self._get_normalized(shared_filename)
@@ -62,16 +91,16 @@ class DuplicatesFinder(object):
         specific_dirs = list(self._specific_dirs())
 
         # Walk all shared files
-        shared_files_mask = path.join(self._shared_dir, self._shared_files_mask)
+        shared_files_mask = os.path.join(self._shared_dir, self._shared_files_mask)
         for shared_filename in glob.glob(shared_files_mask):
 
-            basename = path.basename(shared_filename)
+            basename = os.path.basename(shared_filename)
 
             # Walk all specific dirs
             for specific_dir in specific_dirs:
 
                 # Get file to compare
-                specific_filename = path.join(specific_dir, basename)
+                specific_filename = os.path.join(specific_dir, basename)
 
                 # Compare
                 if self._compare_files(shared_filename, specific_filename):
@@ -82,7 +111,7 @@ class DuplicatesFinder(object):
 
 
     def _specific_dirs(self):
-        for static_path in glob.glob(self._specific_dirs_mask, recursive=True):
+        for static_path in recursive_globi(self._specific_dirs_mask):
             if not static_path.startswith(self._shared_dir):
                 yield static_path
 
@@ -144,8 +173,8 @@ def main():
     print("Static bash files:")
     static_bash_finder = BashDuplicatesFinder(
         root_dir,
-        path.join("**", "static", "bash"),
-        path.join("shared", "templates", "static", "bash")
+        os.path.join("**", "static", "bash"),
+        os.path.join("shared", "templates", "static", "bash")
     )
     if static_bash_finder.search():
         without_duplicates = False
@@ -154,8 +183,8 @@ def main():
     print("Bash templates:")
     template_bash_finder = BashDuplicatesFinder(
         root_dir,
-        path.join("**", "templates"),
-        path.join("shared", "templates"),
+        os.path.join("**", "templates"),
+        os.path.join("shared", "templates"),
         "template_BASH_*"
     )
     if template_bash_finder.search():
@@ -165,8 +194,8 @@ def main():
     print("Static oval files:")
     static_oval_finder = OvalDuplicatesFinder(
         root_dir,
-        path.join("**", "static", "oval"),
-        path.join("shared", "templates", "static", "oval")
+        os.path.join("**", "static", "oval"),
+        os.path.join("shared", "templates", "static", "oval")
     )
     if static_oval_finder.search():
         without_duplicates = False
@@ -175,8 +204,8 @@ def main():
     print("Templates oval files:")
     templates_oval_finder = OvalDuplicatesFinder(
         root_dir,
-        path.join("**", "templates"),
-        path.join("shared", "templates"),
+        os.path.join("**", "templates"),
+        os.path.join("shared", "templates"),
         "template_OVAL_*"
     )
 
