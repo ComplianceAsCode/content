@@ -22,7 +22,7 @@ meld="$3"
 
 # Get list of remediations in pretty & sorted xml
 function extractRemediations() {
-	xsltproc $(dirname "$0")/getRemediations.xsl "$1"  | tee /tmp/res.xml | \
+	xsltproc $(dirname "$0")/../transforms/xccdf-get-only-remediations-sorted.xslt "$1"  | tee /tmp/res.xml | \
 		xmllint --c14n11 /dev/stdin | \
 		xmllint -format /dev/stdin | \
 		sed 's;^\s*#.*$;;g' | \
