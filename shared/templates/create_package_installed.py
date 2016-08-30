@@ -15,31 +15,41 @@ import sys
 
 from template_common import *
 
-def output_check(package_info):
+def output_checkfile(target, package_info):
     pkgname = package_info[0]
     if pkgname:
+        if target == "oval":
+            file_from_template(
+                "./template_OVAL_package_installed",
+                { "PKGNAME" : pkgname },
+                "./output/oval/package_{0}_installed.xml", pkgname
+            )
 
-        file_from_template(
-            "./template_OVAL_package_installed",
-            { "PKGNAME" : pkgname },
-            "./output/oval/package_{0}_installed.xml", pkgname
-        )
+        elif target == "bash":
+            file_from_template(
+                "./template_BASH_package_installed",
+                { "PKGNAME" : pkgname },
+                "./output/bash/package_{0}_installed.sh", pkgname
+            )
+
+        elif target == "ansible":
+            file_from_template(
+                "./template_ANSIBLE_package_installed",
+                { "PKGNAME" : pkgname },
+                "./output/ansible/package_{0}_installed.yml", pkgname
+            )
+
+        else:
+            raise ValueError("Unknown target " + target)
+
 
     else:
         print "ERROR: input violation: the package name must be defined"
 
-
-def main():
-    if len(sys.argv) < 2:
-        print("usage: %s <CSV_FILE_PATH>" % sys.argv[0])
-        print("   the csv file should contain lines of the format:")
-        print("   PACKAGE_NAME")
-        sys.exit(1)
-
-    filename = sys.argv[1]
-    csv_map(filename, output_check, skip_comments = True)
-
-    sys.exit(0)
+def help():
+    print("Usage:\n\t" + __file__ + " <bash/oval/ansible> <csv file>")
+    print("CSV should contains lines of the format: " +
+               "PACKAGE_NAME")
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv, help, output_checkfile)
