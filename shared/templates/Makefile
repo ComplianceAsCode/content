@@ -16,7 +16,7 @@ bash:
 	mkdir -p $(OUTPUT_BASH)
 	#$(SHARED_DIR)/create_BASH_sysctl.py                  ${CSV_DIR}/sysctl_values.csv
 	#$(SHARED_DIR)/create_BASH_sysctl.py                  ${CSV_DIR}/sysctl_ipv6_values.csv
-	#$(SHARED_DIR)/create_BASH_services_disabled.py       ${CSV_DIR}/services_disabled.csv
+	#$(SHARED_DIR)/create_services_disabled.py       bash ${CSV_DIR}/services_disabled.csv
 	#$(SHARED_DIR)/create_BASH_services_enabled.py        ${CSV_DIR}/services_enabled.csv
 	$(SHARED_DIR)/create_kernel_modules_disabled.py bash ${CSV_DIR}/kernel_modules_disabled.csv
 	$(SHARED_DIR)/create_package_installed.py       bash ${CSV_DIR}/package_installed.csv
