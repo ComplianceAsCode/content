@@ -5,6 +5,8 @@
 <xsl:variable name="product_long_name">Red Hat Enterprise Linux 5</xsl:variable>
 <xsl:variable name="product_short_name">RHEL 5</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHEL_5_STIG</xsl:variable>
+<xsl:variable name="product_guide_id_name">RHEL-5</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/o:redhat:enterprise_linux:4,cpe:/o:redhat:enterprise_linux:5</xsl:variable>
 
 <!-- Define URI of official CIS Red Hat Enterprise Linux 5 Benchmark -->
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_Redhat_Linux_5_Benchmark_v2.0.0.pdf</xsl:variable>
