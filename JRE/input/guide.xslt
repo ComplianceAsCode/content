@@ -29,10 +29,9 @@
            location here -->
       <xsl:if test=" string($SHARED_RP) != 'undef' ">
         <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
+        <xsl:apply-templates select="document('intro/intro.xml')" />
+        <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/application/java.xml'))" />
       </xsl:if>
-
-      <xsl:apply-templates select="document('intro/intro.xml')" />
-      <xsl:apply-templates select="document('application/java.xml')" />
     </xsl:copy>
   </xsl:template>
 
