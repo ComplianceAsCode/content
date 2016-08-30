@@ -7,6 +7,8 @@
 <xsl:variable name="product_stig_id_name">FUSE_6_STIG</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
+<xsl:variable name="product_guide_id_name">Jboss-EAP-5</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/a:redhat:jboss_enterprise_application_platform:5.0.0,cpe:/a:redhat:jboss_enterprise_application_platform:5.0.1,cpe:/a:redhat:jboss_enterprise_application_platform:5.1.0,cpe:/a:redhat:jboss_enterprise_application_platform:5.1.1,cpe:/a:redhat:jboss_enterprise_application_platform:5.1.2</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-appserver-uri"/>
 <xsl:variable name="os-stigid-concat" />
 

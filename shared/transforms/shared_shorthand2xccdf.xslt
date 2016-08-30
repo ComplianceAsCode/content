@@ -342,9 +342,67 @@
     </xsl:copy>
   </xsl:template>
 
-
+  <xsl:template name="get_platform_cpe">
+    <xsl:param name="list"/>
+    <xsl:variable name="delim" select="','"/>
+    <xsl:choose>
+      <xsl:when test="contains($list, $delim)">
+        <platform>
+          <xsl:attribute name="idref"><xsl:value-of select="substring-before($list, $delim)" /></xsl:attribute>
+        </platform>
+        <xsl:call-template name="get_platform_cpe">
+          <xsl:with-param name="list" select="substring-after($list, $delim)"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="$list = ''">
+          </xsl:when>
+          <xsl:otherwise>
+            <platform>
+              <xsl:attribute name="idref"><xsl:value-of select="$list" /></xsl:attribute>
+            </platform>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- The next set of templates expand convenience macros for XCCDF prose -->
+  <xsl:template match="product-name-macro">
+    <xsl:value-of select="$product_long_name"/>
+  </xsl:template>
+
+  <xsl:template match="product-short-name-macro">
+    <xsl:value-of select="$product_short_name"/>
+  </xsl:template>
+
+  <xsl:template match="product-stig-id-macro">
+    <xsl:value-of select="$product_stig_id_name"/>
+  </xsl:template>
+
+  <xsl:template match="Benchmark/@id">
+    <xsl:attribute name="id">
+      <xsl:value-of select="$product_guide_id_name"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="platform-cpes-macro">
+    <xsl:variable name="delim" select="','"/>
+    <xsl:choose>
+      <xsl:when test="$delim and contains($platform_cpes, $delim)">
+        <xsl:call-template name="get_platform_cpe">
+          <xsl:with-param name="list" select="$platform_cpes"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <platform>
+          <xsl:attribute name="idref"><xsl:value-of select="$platform_cpes" /></xsl:attribute>
+        </platform>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="weblink-macro">
     <xsl:choose>
       <xsl:when test="@text">
