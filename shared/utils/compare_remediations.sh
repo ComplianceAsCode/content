@@ -6,12 +6,19 @@ then
 	echo ""
 	echo -e "\tBoth repositories have to be already compiled! (make)"
 	echo -e "\tCompare <fix> elements from original DS with fixes in updated DSs"
+	echo -e "\t[meld]\tUse meld tool to show differences"
 	exit 1
 fi
 
 originalRepo="$1/"
 updatedRepo="$2/"
 meld="$3"
+
+[ "$meld" == "meld" ] && {
+	rpm --quiet -q meld || {
+		echo "Please install \"meld\" package" >&2
+	}
+}
 
 # Get list of remediations in pretty & sorted xml
 function extractRemediations() {
