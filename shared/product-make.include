@@ -19,8 +19,10 @@ BUILD_REMEDIATIONS=$(BUILD)/remediations
 TRANS = transforms
 SHARED_OVAL = $(SHARED)/oval
 SHARED_OVAL_5_11 = $(SHARED_OVAL)/oval_5.11
-SHARED_REMEDIATIONS = $(BUILD)/shared/output/bash $(SHARED)/templates/static/bash # Currently we cannot build shared remediations only once
-PRODUCT_REMEDIATIONS = templates/output/bash
+SHARED_BASH_REMEDIATIONS =    $(BUILD)/shared/output/bash       $(SHARED)/templates/static/bash # Currently we cannot build shared remediations only once
+SHARED_ANSIBLE_REMEDIATIONS = $(BUILD)/shared/output/ansible    $(SHARED)/templates/static/ansible # Currently we cannot build shared remediations only once
+PRODUCT_BASH_REMEDIATIONS = templates/output/bash
+PRODUCT_ANSIBLE_REMEDIATIONS = templates/output/ansible
 STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
@@ -98,30 +100,61 @@ $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/oc
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
 
-$(PRODUCT_REMEDIATIONS):
+$(PRODUCT_BASH_REMEDIATIONS):
 	if [ -f templates/Makefile ];	\
 	then	\
-		make -C templates bash;	\
+		$(MAKE) -C templates bash;	\
 	else	\
 		mkdir -p templates/output/bash;	\
 	fi
 
+$(PRODUCT_ANSIBLE_REMEDIATIONS):
+	# todo: Create ansible target everywhere
+	if grep -q '^ansible:' templates/Makefile 2> /dev/null ;	\
+	then	\
+		$(MAKE) -C templates ansible;	\
+	else	\
+		mkdir -p templates/output/ansible;	\
+		mkdir -p templates/static/ansible;	\
+	fi
+
+
 $(BUILD)/shared/output/bash:
-	make -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared)
+	$(MAKE) -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) bash
+
+$(BUILD)/shared/output/ansible:
+	$(MAKE) -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) ansible
+
+templates/static/bash:
+	mkdir -p $@
+
+templates/static/ansible:
+	mkdir -p $@
 
 # Common build targets - a catalogue of XCCDF remediations
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
-shared_bash_remediations_deps= $(wildcard $(SHARED_REMEDIATIONS)/*.sh)
+shared_bash_remediations_deps= $(wildcard $(SHARED_BASH_REMEDIATIONS)/*.sh)
 bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
-$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS) $(BUILD)/shared/output/bash
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) $(SHARED_REMEDIATIONS) $(PRODUCT_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
+$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_BASH_REMEDIATIONS) $(BUILD)/shared/output/bash templates/static/bash
+	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_BASH_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
+
+
+# Common build targets - a catalogue of XCCDF remediations
+product_ansible_remediations_deps=$(wildcard templates/static/ansible/*.sh)
+shared_ansible_remediations_deps= $(wildcard $(SHARED_ANSIBLE_REMEDIATIONS)/*.sh)
+ansible_remediations_deps= $(product_ansible_remediations_deps) $(shared_ansible_remediations_deps)
+$(OUT)/ansible-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(ansible_remediations_deps) $(PRODUCT_ANSIBLE_REMEDIATIONS) $(BUILD)/shared/output/ansible templates/static/ansible
+	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) ansible $(SHARED_ANSIBLE_REMEDIATIONS) $(PRODUCT_ANSIBLE_REMEDIATIONS) templates/static/ansible $(OUT)/ansible-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 # Prefer "$(OUT)/xccdf-unlinked-ocilrefs.xml" document below since it contains OCIL expanded to official OCIL-2.0 syntax
 # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1037
 # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1038
-$(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/bash-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
-	xsltproc -stringparam remediations "$(realpath $(OUT)/bash-remediations.xml)" -o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $(OUT)/xccdf-unlinked-ocilrefs.xml
+$(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/bash-remediations.xml $(OUT)/ansible-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
+	xsltproc \
+		-stringparam bash_remediations "$(realpath $(OUT)/bash-remediations.xml)" \
+		-stringparam ansible_remediations "$(realpath $(OUT)/ansible-remediations.xml)" \
+		-o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $(OUT)/xccdf-unlinked-ocilrefs.xml
 	xmllint --format --output $@ $@
 
 # Common build targets - OVAL files
