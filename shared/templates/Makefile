@@ -26,6 +26,7 @@ ansible:
 	mkdir -p $(OUTPUT_ANSIBLE)
 	$(SHARED_DIR)/create_package_installed.py               ansible ${CSV_DIR}/package_installed.csv
 	$(SHARED_DIR)/create_package_removed.py                 ansible ${CSV_DIR}/package_removed.csv
+	$(SHARED_DIR)/create_services_disabled.py               ansible ${CSV_DIR}/services_disabled.csv
 
 clean:
 	rm -rf $(TARGET_DIR)/output

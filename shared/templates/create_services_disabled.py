@@ -38,6 +38,15 @@ def output_checkfile(target, serviceinfo):
             "./output/bash/service_{0}_disabled.sh", servicename
         )
 
+    elif target == "ansible":
+        file_from_template(
+            "./template_ANSIBLE_service_disabled",
+            {
+                "SERVICENAME": servicename
+            },
+            "./output/ansible/service_{0}_disabled.yml", servicename
+        )
+
     elif target == "oval":
         if packagename:
             file_from_template(
