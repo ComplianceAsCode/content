@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
 	Used by compare_remediations.sh
 	Output is sorted document with fixes only - easier to compare
 -->
