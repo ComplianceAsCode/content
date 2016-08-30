@@ -20,12 +20,12 @@ bash:
 	#$(SHARED_DIR)/create_BASH_services_enabled.py        ${CSV_DIR}/services_enabled.csv
 	$(SHARED_DIR)/create_kernel_modules_disabled.py bash ${CSV_DIR}/kernel_modules_disabled.csv
 	$(SHARED_DIR)/create_BASH_package_installed.py       ${CSV_DIR}/package_installed.csv
-	$(SHARED_DIR)/create_BASH_package_removed.py         ${CSV_DIR}/package_removed.csv
+	$(SHARED_DIR)/create_package_removed.py         bash ${CSV_DIR}/package_removed.csv
 
 ansible:
 	mkdir -p $(OUTPUT_ANSIBLE)
-	$(SHARED_DIR)/create_ANSIBLE_package_installed.py       ${CSV_DIR}/package_installed.csv
-	$(SHARED_DIR)/create_ANSIBLE_package_removed.py         ${CSV_DIR}/package_removed.csv
+	$(SHARED_DIR)/create_ANSIBLE_package_installed.py               ${CSV_DIR}/package_installed.csv
+	$(SHARED_DIR)/create_package_removed.py                 ansible ${CSV_DIR}/package_removed.csv
 
 clean:
 	rm -rf $(TARGET_DIR)/output
