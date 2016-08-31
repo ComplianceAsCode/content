@@ -17,7 +17,7 @@ import re
 
 from template_common import *
 
-def output_checkfile(serviceinfo):
+def output_checkfile(target, serviceinfo):
     try:
         # get the items out of the list
         servicename, packagename, daemonname = serviceinfo
@@ -28,43 +28,58 @@ def output_checkfile(serviceinfo):
 
     if not daemonname:
         daemonname = servicename
-    
-    if packagename:
+
+    if target == "bash":
         file_from_template(
-            "./template_service_disabled",
+            "./template_BASH_service_disabled",
             {
-                "SERVICENAME": servicename,
-                "DAEMONNAME":  daemonname,
-                "PACKAGENAME": packagename
+                "SERVICENAME": servicename
             },
-            "./output/oval/service_{0}_disabled.xml", servicename
+            "./output/bash/service_{0}_disabled.sh", servicename
         )
+
+    elif target == "ansible":
+        file_from_template(
+            "./template_ANSIBLE_service_disabled",
+            {
+                "SERVICENAME": servicename
+            },
+            "./output/ansible/service_{0}_disabled.yml", servicename
+        )
+
+    elif target == "oval":
+        if packagename:
+            file_from_template(
+                "./template_service_disabled",
+                {
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME":  daemonname,
+                    "PACKAGENAME": packagename
+                },
+                "./output/oval/service_{0}_disabled.xml", servicename
+            )
+        else:
+            file_from_template(
+                "./template_service_disabled",
+                {
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME":  daemonname
+                },
+                regex_replace = {
+                    "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
+                    "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
+                },
+                filename_format = "./output/oval/service_{0}_disabled.xml",
+                filename_value = servicename
+            )
+
     else:
-        file_from_template(
-            "./template_service_disabled",
-            {
-                "SERVICENAME": servicename,
-                "DAEMONNAME":  daemonname
-            },
-            regex_replace = {
-                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
-                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
-            },
-            filename_format = "./output/oval/service_{0}_disabled.xml",
-            filename_value = servicename
-        )
+        raise ValueError("Unknown target " + target)
 
-def main():
-    if len(sys.argv) < 2:
-        print ("Provide a CSV file containing lines of the format: " +
+def help():
+    print("Usage:\n\t" + __file__ + " <bash/oval> <csv file>")
+    print("CSV should contains lines of the format: " +
                "servicename,packagename")
-        sys.exit(1)
-
-    filename = sys.argv[1]
-    csv_map(filename, output_checkfile, skip_comments = True)
-
-    sys.exit(0)
-
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv, help, output_checkfile)
