@@ -30,4 +30,4 @@ ansible:
 	$(SHARED_DIR)/create_services_disabled.py               ansible ${CSV_DIR}/services_disabled.csv
 
 clean:
-	rm -rf $(TARGET_DIR)/output
+	rm -rf $(PREFIX_DIR)/output

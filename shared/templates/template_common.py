@@ -70,19 +70,57 @@ def file_from_template(template_filename, constants,
     save_modified(filename_format, filename_value, filled_template)
 
 
-def csv_map(filename, method, skip_comments = False):
+def process_line(line, target):
+    """
+    Remove comments
+    Remove line if target is unsupported
+    """
+
+    if target is not None:
+        regex = re.compile(r"#\s*only-for:([\s\w,]*)")
+
+        match = regex.search(line)
+
+        if match:
+            # if line contains restriction to target, check it
+            supported_targets = [ x.strip() for x in match.group(1).split(",") ]
+            if target not in supported_targets:
+                return None
+
+    # get part before comment
+    return (line.split("#")[0]).strip()
+
+
+def filter_out_csv_lines(csv_file, target):
+    """
+    Filter out not applicable lines
+    """
+
+    for line in csv_file:
+        processed_line = process_line(line, target)
+
+        if not processed_line:
+             continue
+
+        yield processed_line
+
+
+def csv_map(filename, method, skip_comments = True, target = None):
     """
     Call specified function on every line of file
+    CSV lines can look like:
+        col1, col2 # comment
+        col3, col4 # only-for: bash, oval
+
+    todo: remove skip_comments parameter - should be always True
     """
+
     with open(filename, 'r') as csv_file:
-        # put the CSV line's items into a list
-        lines = csv.reader(csv_file)
-        for line in lines:
-            if not line:
-                continue
-            if skip_comments and line[0].startswith('#'):
-                continue
-            method(line)
+        filtered_file = filter_out_csv_lines(csv_file, target)
+
+        csv_lines_content = csv.reader(filtered_file)
+
+        map(method, csv_lines_content)
 
 
 def main(argv, help_callback, process_line_callback):
@@ -93,11 +131,12 @@ def main(argv, help_callback, process_line_callback):
         help_callback()
         sys.exit(1)
 
+    target = sys.argv[1]
     filename = sys.argv[2]
 
     def process_line(*args):
-        target = sys.argv[1] # todo: add to csv_map
+        # todo: pass target only to csv_map()
         process_line_callback(target, *args)
 
-    csv_map(filename, process_line, skip_comments=True)
+    csv_map(filename, process_line, target=target)
     sys.exit(0)
