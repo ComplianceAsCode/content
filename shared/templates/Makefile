@@ -28,4 +28,4 @@ ansible:
 	$(SHARED_DIR)/create_package_removed.py                 ansible ${CSV_DIR}/package_removed.csv
 
 clean:
-	rm -rf $(TARGET_DIR)/output
+	rm -rf $(PREFIX_DIR)/output
