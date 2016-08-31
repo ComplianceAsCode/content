@@ -29,12 +29,21 @@ def output_checkfile(target, kerninfo):
             "./output/oval/kernel_module_{0}_disabled.xml", kernmod
         )
 
+    elif target == "ansible":
+        file_from_template(
+            "./template_ANSIBLE_kernel_module_disabled",
+            {
+               "KERNMODULE": kernmod
+            },
+            "./output/ansible/kernel_module_{0}_disabled.sh", kernmod
+        )
+
     else:
         print("Unknown target: " + target)
         sys.exit(1)
 
 def help():
-    print("Usage:\n\t" + __file__ + " <bash/oval> <csv file>")
+    print("Usage:\n\t" + __file__ + " <bash/ansible/oval> <csv file>")
     print (
         "CSV file should contains lines of the format: kernmod"
     )
