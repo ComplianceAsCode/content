@@ -1,10 +1,11 @@
 # platform = Red Hat Enterprise Linux 7
 #
-# Disable netconsole for all run levels
+# Disable netconsole for all systemd targets
 #
-chkconfig --level 0123456 netconsole off
+systemctl disable netconsole
 
 #
 # Stop netconsole if currently running
 #
-service netconsole stop
+systemctl stop netconsole
+
