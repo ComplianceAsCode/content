@@ -233,4 +233,13 @@ macro(ssg_build_product PRODUCT)
     ssg_build_oval_final(${PRODUCT})
     ssg_build_ocil_final(${PRODUCT})
     ssg_build_sds(${PRODUCT})
+
+    add_custom_target(
+        ${PRODUCT} ALL
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+    )
+
 endmacro()
