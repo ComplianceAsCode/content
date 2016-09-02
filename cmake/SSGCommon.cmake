@@ -180,7 +180,7 @@ macro(ssg_build_xccdf_final PRODUCT)
     )
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
-        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam reverse_DNS org.ssgproject.content --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf-1.2.xml"
     )
