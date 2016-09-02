@@ -88,13 +88,28 @@ macro(ssg_build_bash_remediations PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_ansible_remediations PRODUCT)
+    file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible/*")
+    file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/ansible/*")
+
+    # TODO: The environment variable is not very portable
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ansible ${SSG_SHARED}/templates/output/ansible ${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
+        DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
+        DEPENDS ${SSG_SHARED_TRANSFORMS}/combineremediations.py
+        COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
+    )
+endmacro()
+
 macro(ssg_build_xccdf_with_remediations PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
-        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam bash_remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --stringparam ansible_remediations ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
         DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt
         COMMENT "[${PRODUCT}] generating xccdf-unlinked.xml"
     )
@@ -183,6 +198,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_xccdf_ocilrefs(${PRODUCT})
     ssg_build_bash_remediations(${PRODUCT})
+    ssg_build_ansible_remediations(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
