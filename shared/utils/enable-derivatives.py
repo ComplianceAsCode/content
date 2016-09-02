@@ -191,6 +191,9 @@ def remove_rh_idents(tree_root, namespace):
         if ident is not None:
             if re.search('CCE-*', ident.text) or re.search('.*RHEL-[0-9]+-*', ident.text):
                 rule.remove(ident)
+        ident = rule.find(".//{%s}ident[@system=\"%s\"]" % (namespace, DISA_OS_STIG_REF))
+        if ident is not None:
+            rule.remove(ident)
         ref =  rule.find(".//{%s}reference[@href=\"%s\"]" % (namespace, DISA_OS_STIG_REF))
         if ref is not None:
             rule.remove(ref)
