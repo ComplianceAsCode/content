@@ -188,7 +188,8 @@ def remove_rh_idents(tree_root, namespace):
     for rule in tree_root.findall(".//{%s}Rule" % (namespace)):
         for ident in rule.findall(".//{%s}ident" % (namespace)):
             if ident is not None:
-                rule.remove(ident)
+                if re.search('CCE-*', ident.text) or re.search('.*RHEL-*', ident.text):
+                    rule.remove(ident)
 
         for ref in rule.findall(".//{%s}reference" % (namespace)):
             if ref.text is not None:
