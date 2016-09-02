@@ -185,9 +185,16 @@ def add_derivative_notice(benchmark, namespace, notice, warning):
 
 
 def remove_rh_idents(tree_root, namespace):
-    for elem in tree_root.findall(".//{%s}ident" % (namespace)):
-        if re.search('CCE-*', elem.text) or re.search('.*RHEL-[0-9]+-*', elem.text):
-            elem.text = ''
+    for rule in tree_root.findall(".//{%s}Rule" % (namespace)):
+        for ident in rule.findall(".//{%s}ident" % (namespace)):
+            if ident is not None:
+                if re.search('CCE-*', ident.text) or re.search('.*RHEL-*', ident.text):
+                    rule.remove(ident)
+
+        for ref in rule.findall(".//{%s}reference" % (namespace)):
+            if ref.text is not None:
+                if re.search('RHEL-*', ref.text):
+                    rule.remove(ref)
 
 
 def main():
