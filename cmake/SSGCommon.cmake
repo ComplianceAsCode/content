@@ -197,6 +197,26 @@ macro(ssg_build_oval_final PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_ocil_final PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml
+        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ocil.xml"
+    )
+endmacro()
+
+macro(ssg_build_sds PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMAND ${OSCAP_EXECUTABLE} ds sds-compose ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
@@ -210,4 +230,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
+    ssg_build_ocil_final(${PRODUCT})
+    ssg_build_sds(${PRODUCT})
 endmacro()
