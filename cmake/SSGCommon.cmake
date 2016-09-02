@@ -41,8 +41,6 @@ macro(ssg_build_xccdf_unlinked PRODUCT)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam ssg_version ${SSG_VERSION} --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
         COMMAND ${OSCAP_EXECUTABLE} xccdf resolve -o ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
-        COMMAND ${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py --input ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
-        COMMAND ${OSCAP_EXECUTABLE} xccdf resolve -o ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/constants.xslt
@@ -174,8 +172,11 @@ macro(ssg_build_xccdf_final PRODUCT)
         COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-removeaux.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml
         COMMAND ${SED_EXECUTABLE} -i 's/oval-linked.xml/ssg-${PRODUCT}-oval.xml/g' ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMAND ${SED_EXECUTABLE} -i 's/ocil-linked.xml/ssg-${PRODUCT}-ocil.xml/g' ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMAND ${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py --input ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMAND ${OSCAP_EXECUTABLE} xccdf resolve -o ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-removeaux.xslt
+        DEPENDS ${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf.xml"
     )
     add_custom_command(
