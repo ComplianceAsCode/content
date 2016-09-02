@@ -22,7 +22,6 @@ from optparse import OptionParser
 
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
-DISA_OS_STIG_REF = "http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx"
 
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:4": "cpe:/o:centos:centos:4",
@@ -187,16 +186,14 @@ def add_derivative_notice(benchmark, namespace, notice, warning):
 
 def remove_rh_idents(tree_root, namespace):
     for rule in tree_root.findall(".//{%s}Rule" % (namespace)):
-        ident = rule.find(".//{%s}ident" % (namespace))
-        if ident is not None:
-            if re.search('CCE-*', ident.text) or re.search('.*RHEL-[0-9]+-*', ident.text):
+        for ident in rule.findall(".//{%s}ident" % (namespace)):
+            if ident is not None:
                 rule.remove(ident)
-        ident = rule.find(".//{%s}ident[@system=\"%s\"]" % (namespace, DISA_OS_STIG_REF))
-        if ident is not None:
-            rule.remove(ident)
-        ref =  rule.find(".//{%s}reference[@href=\"%s\"]" % (namespace, DISA_OS_STIG_REF))
-        if ref is not None:
-            rule.remove(ref)
+
+        for ref in rule.findall(".//{%s}reference" % (namespace)):
+            if ref.text is not None:
+                if re.search('RHEL-*', ref.text):
+                    rule.remove(ref)
 
 
 def main():
