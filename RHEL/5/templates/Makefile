@@ -13,7 +13,7 @@ bash:
 	$(SHARED_DIR)/create_BASH_services_enabled.py        $(CSV_DIR)/services_enabled.csv
 	$(SHARED_DIR)/create_package_removed.py         bash $(CSV_DIR)/packages_removed.csv
 	$(SHARED_DIR)/create_kernel_modules_disabled.py bash $(CSV_DIR)/kernel_modules_disabled.csv
-	$(SHARED_DIR)/create_BASH_permission.py              $(CSV_DIR)/file_dir_permissions.csv
+	$(SHARED_DIR)/create_permission.py              bash $(CSV_DIR)/file_dir_permissions.csv
 
 clean:
 	rm -rf $(OUTPUT)
