@@ -23,7 +23,7 @@ oval_5.11:
 	${SHARED_DIR}/create_package_installed.py oval $(OVAL_5.11_CSV_DIR)/packages_installed.csv
 	# Then create 'service_daemon_enabled' OVAL-5.11 checks using the
 	# former ones
-	${SHARED_DIR}/create_services_enabled.py  $(OVAL_5.11_CSV_DIR)/services_enabled.csv
+	${SHARED_DIR}/create_services_enabled.py  oval $(OVAL_5.11_CSV_DIR)/services_enabled.csv
 	${SHARED_DIR}/create_services_disabled.py oval $(OVAL_5.11_CSV_DIR)/services_disabled.csv
 
 bash:

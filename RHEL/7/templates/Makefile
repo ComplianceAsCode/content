@@ -11,7 +11,7 @@ bash:
 	mkdir -p $(OUTPUT_BASH)
 	$(SHARED_DIR)/create_BASH_sysctl.py                  $(CSV_DIR)/sysctl_values.csv
 	$(SHARED_DIR)/create_services_disabled.py       bash $(CSV_DIR)/services_disabled.csv
-	$(SHARED_DIR)/create_BASH_services_enabled.py        $(CSV_DIR)/services_enabled.csv
+	$(SHARED_DIR)/create_services_enabled.py        bash $(CSV_DIR)/services_enabled.csv
 	$(SHARED_DIR)/create_package_installed.py       bash $(CSV_DIR)/packages_installed.csv
 	$(SHARED_DIR)/create_package_removed.py         bash $(CSV_DIR)/packages_removed.csv
 	$(SHARED_DIR)/create_kernel_modules_disabled.py bash $(CSV_DIR)/kernel_modules_disabled.csv
@@ -24,5 +24,7 @@ ansible:
 	$(SHARED_DIR)/create_package_removed.py           ansible $(CSV_DIR)/packages_removed.csv
 	$(SHARED_DIR)/create_services_disabled.py         ansible $(CSV_DIR)/services_disabled.csv
 	$(SHARED_DIR)/create_permission.py                ansible $(CSV_DIR)/file_dir_permissions.csv
+	$(SHARED_DIR)/create_services_enabled.py          ansible $(CSV_DIR)/services_enabled.csv
+
 clean:
 	rm -rf $(OUTPUT)
