@@ -8,18 +8,26 @@ pushd ..
 
 pushd Fedora/templates
 make
+mkdir -p output/ansible
+mkdir -p ../input/oval/oval_5.11
 popd
 
 pushd RHEL/5/templates
 make
+mkdir -p output/ansible
+mkdir -p ../input/oval/oval_5.11
 popd
 
 pushd RHEL/6/templates
 make
+mkdir -p output/ansible
+mkdir -p ../input/oval/oval_5.11
 popd
 
 pushd RHEL/7/templates
 make
+mkdir -p output/ansible
+mkdir -p ../input/oval/oval_5.11
 popd
 
 popd
