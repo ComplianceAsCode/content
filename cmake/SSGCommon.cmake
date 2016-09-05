@@ -161,7 +161,7 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
         DEPENDS ${SSG_SHARED_TRANSFORMS}/relabelids.py
-        COMMENT "[${PRODUCT}] linking IDs in XCCDF, OVAL and OCIL files"
+        COMMENT "[${PRODUCT}] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
     )
 endmacro()
 
@@ -241,5 +241,4 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
     )
-
 endmacro()
