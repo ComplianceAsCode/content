@@ -17,7 +17,7 @@ bash:
 	#$(SHARED_DIR)/create_BASH_sysctl.py                  ${CSV_DIR}/sysctl_values.csv
 	#$(SHARED_DIR)/create_BASH_sysctl.py                  ${CSV_DIR}/sysctl_ipv6_values.csv
 	#$(SHARED_DIR)/create_services_disabled.py       bash ${CSV_DIR}/services_disabled.csv
-	#$(SHARED_DIR)/create_BASH_services_enabled.py        ${CSV_DIR}/services_enabled.csv
+	#$(SHARED_DIR)/create_services_enabled.py        bash ${CSV_DIR}/services_enabled.csv
 	$(SHARED_DIR)/create_kernel_modules_disabled.py bash ${CSV_DIR}/kernel_modules_disabled.csv
 	$(SHARED_DIR)/create_package_installed.py       bash ${CSV_DIR}/package_installed.csv
 	$(SHARED_DIR)/create_package_removed.py         bash ${CSV_DIR}/package_removed.csv
@@ -28,6 +28,7 @@ ansible:
 	$(SHARED_DIR)/create_package_installed.py               ansible ${CSV_DIR}/package_installed.csv
 	$(SHARED_DIR)/create_package_removed.py                 ansible ${CSV_DIR}/package_removed.csv
 	$(SHARED_DIR)/create_services_disabled.py               ansible ${CSV_DIR}/services_disabled.csv
+	$(SHARED_DIR)/create_services_enabled.py                ansible ${CSV_DIR}/services_enabled.csv
 
 clean:
 	rm -rf $(PREFIX_DIR)/output
