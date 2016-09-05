@@ -218,6 +218,15 @@ macro(ssg_build_sds PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_html_guides PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html
+        COMMAND ${SSG_SHARED_UTILS}/build-all-guides.py --input ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
@@ -233,6 +242,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_oval_final(${PRODUCT})
     ssg_build_ocil_final(${PRODUCT})
     ssg_build_sds(${PRODUCT})
+    ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
         ${PRODUCT} ALL
@@ -240,5 +250,6 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html
     )
 endmacro()
