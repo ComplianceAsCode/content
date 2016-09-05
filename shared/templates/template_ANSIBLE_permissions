@@ -1,0 +1,7 @@
+# platform = multi_platform_rhel, multi_platform_fedora, Debian 8
+- name: Ensure permission FILEMODE on FILEPATH
+  file:
+    path="{{item}}"
+    mode=FILEMODE
+  with_items:
+    - FILEPATH
