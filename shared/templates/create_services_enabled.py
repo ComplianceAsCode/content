@@ -17,42 +17,59 @@ import re
 
 from template_common import *
 
-def output_checkfile(serviceinfo):
+def output_checkfile(target, serviceinfo):
     # get the items out of the list
     servicename, packagename = serviceinfo
 
-    
-    if packagename:
+    if target == "oval":
+        if packagename:
+            file_from_template(
+                "./template_service_enabled",
+                {
+                    "SERVICENAME": servicename,
+                    "PACKAGENAME": packagename
+                },
+                "./output/oval/service_{0}_enabled.xml", servicename
+            )
+        else:
+            file_from_template(
+                "./template_service_enabled",
+                { "SERVICENAME": servicename },
+                regex_replace = {
+                    "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
+                    "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
+                },
+                filename_format = "./output/oval/service_{0}_enabled.xml",
+                filename_value = servicename
+            )
+
+    elif target == "bash":
+
         file_from_template(
-            "./template_service_enabled",
-            {
-                "SERVICENAME": servicename,
-                "PACKAGENAME": packagename
-            },
-            "./output/oval/service_{0}_enabled.xml", servicename
-        )
-    else:
-        file_from_template(
-            "./template_service_enabled",
+            "./template_BASH_service_enabled",
             { "SERVICENAME": servicename },
-            regex_replace = {
-                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
-                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>" 
-            },
-            filename_format = "./output/oval/service_{0}_enabled.xml",
-            filename_value = servicename
+            "./output/bash/service_{0}_enabled.sh", servicename
         )
 
-def main():
-    if len(sys.argv) < 2:
-        print ("Provide a CSV file containing lines of the format: " +
+    elif target == "ansible":
+
+        file_from_template(
+            "./template_ANSIBLE_service_enabled",
+            {
+                "SERVICENAME": servicename
+            },
+            "./output/ansible/service_{0}_enabled.yml", servicename
+        )
+
+    else:
+
+        raise ValueError("Unknown target " + target)
+
+
+def help():
+    print("Usage:\n\t" + __file__ + " <bash/oval> <csv file>")
+    print("CSV should contains lines of the format: " +
                "servicename,packagename")
-        sys.exit(1)
-
-    filename = sys.argv[1]
-    csv_map(filename, output_checkfile, skip_comments = True)
-
-    sys.exit(0)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv, help, output_checkfile)

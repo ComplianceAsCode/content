@@ -1,0 +1,9 @@
+# platform = multi_platform_rhel, multi_platform_fedora, Debian 8
+- name: Enable service SERVICENAME
+  service:
+    name="{{item}}"
+    enabled="yes"
+    state="started"
+  with_items:
+    - SERVICENAME
+
