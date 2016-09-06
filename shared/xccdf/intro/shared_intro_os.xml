@@ -1,22 +1,21 @@
-<Group id="intro">
+<Group id="intro" ostype="all">
 <title>Introduction</title>
 <description>
 <!-- purpose and scope of guidance -->
 The purpose of this guidance is to provide security configuration
-recommendations and baselines for the OpenSUSE operating system.
-Recommended settings for the basic operating system are provided,
-as well as for many network services that the system can provide
-to other systems.
+recommendations and baselines for the <product-name-macro/> operating
+system. Recommended settings for the basic operating system are provided,
+as well as for many network services that the system can provide to other systems.
 <!-- audience -->The guide is intended for system administrators. Readers are assumed to
 possess basic system administration skills for Unix-like systems, as well
-as some familiarity with OpenSUSE's documentation and administration
+as some familiarity with the product's documentation and administration
 conventions. Some instructions within this guide are complex.
 All directions should be followed completely and with understanding of
 their effects in order to avoid serious adverse effects on the system
 and its security.
 </description>
 
-<Group id="general-principles">
+<Group id="general-principles" ostype="all">
 <title>General Principles</title>
 <description>
 The following general principles motivate much of the advice in this
@@ -24,7 +23,7 @@ guide and should also influence any configuration decisions that are
 not explicitly covered.
 </description>
 
-<Group id="principle-encrypt-transmitted-data">
+<Group id="principle-encrypt-transmitted-data" ostype="all">
 <title>Encrypt Transmitted Data Whenever Possible</title>
 <description>
 Data transmitted over a network, whether wired or wireless, is susceptible
@@ -32,19 +31,23 @@ to passive monitoring. Whenever practical solutions for encrypting
 such data exist, they should be applied. Even if data is expected to
 be transmitted only over a local network, it should still be encrypted.
 Encrypting authentication data, such as passwords, is particularly
-important. Networks of OpenSUSE machines can and should be configured
+important. Networks of <product-name-macro/> machines can and should be configured
 so that no unencrypted authentication data is ever transmitted between
 machines.
 </description>
 </Group>
 
 
-<Group id="principle-minimize-software">
+<Group id="principle-minimize-software" ostype="all">
 <title>Minimize Software to Minimize Vulnerability</title>
 <description>
 The simplest way to avoid vulnerabilities in software is to avoid
-installing that software. On OpenSUSE, the RPM Package Manager (originally
-Red Hat Package Manager, abbreviated RPM) allows for careful management of
+installing that software. On <product-name-macro/>,
+<os-type-macro type="rhel7,rhel6,rhel5,fedora,opensuse,suse11,suse12,osp7,eap5,fuse6,wrlinux">the RPM Package Manager (originally Red Hat
+Package Manager, abbreviated RPM)</os-type-macro><os-type-macro type="debian">
+the Package Manager (originally
+<weblink-macro link="https://www.debian.org/doc/manuals/debian-faq/ch-pkgtools.en.html" text="apt" />)</os-type-macro>
+allows for careful management of
 the set of software packages installed on a system. Installed software
 contributes to system vulnerability in several ways. Packages that
 include setuid programs may provide local attackers a potential path to
@@ -58,7 +61,7 @@ only the software for which there is an environmental or operational need.
 </description>
 </Group>
 
-<Group id="principle-separate-servers">
+<Group id="principle-separate-servers" ostype="all">
 <title>Run Different Network Services on Separate Systems</title>
 <description>
 Whenever possible, a server should be dedicated to serving exactly one
@@ -68,20 +71,20 @@ exploit a software flaw in one network service.
 </description>
 </Group>
 
-<Group id="principle-use-security-tools">
+<Group id="principle-use-security-tools" ostype="all">
 <title>Configure Security Tools to Improve System Robustness</title>
 <description>
 Several tools exist which can be effectively used to improve a system's
 resistance to and detection of unknown attacks. These tools can improve
 robustness against attack at the cost of relatively little configuration
 effort. In particular, this guide recommends and discusses the use of
-Iptables for host-based firewalling, SELinux for protection against
+host-based firewalling, SELinux for protection against
 vulnerable services, and a logging and auditing infrastructure for
 detection of problems.
 </description>
 </Group>
 
-<Group id="principle-least-privilege">
+<Group id="principle-least-privilege" ostype="all">
 <title>Least Privilege</title>
 <description>
 Grant the least privilege necessary for user accounts and software to perform tasks.
@@ -98,15 +101,14 @@ actions permissible by the traditional Unix permissions model.
 </Group>
 
 
-
-<Group id="how-to-use">
+<Group id="how-to-use" ostype="all">
 <title>How to Use This Guide</title>
 <description>
 Readers should heed the following points when using the guide.
 </description>
 
 
-<Group id="intro-read-sections-completely">
+<Group id="intro-read-sections-completely" ostype="all">
 <title>Read Sections Completely and in Order</title>
 <description>
 Each section may build on information and recommendations discussed in
@@ -117,7 +119,7 @@ occur after instructions for an action.
 </Group>
 
 
-<Group id="intro-test-non-production">
+<Group id="intro-test-non-production" ostype="all">
 <title>Test in Non-Production Environment</title>
 <description>
 This guidance should always be tested in a non-production environment
@@ -126,8 +128,7 @@ which the system will be deployed as closely as possible.
 </description>
 </Group>
 
-
-<Group id="intro-root-shell-assumed">
+<Group id="intro-root-shell-assumed" ostype="all">
 <title>Root Shell Environment Assumed</title>
 <description>
 Most of the actions listed in this document are written with the
@@ -141,7 +142,7 @@ by a dollar sign ($) prompt.
 </description>
 </Group>
 
-<Group id="intro-formatting-conventions">
+<Group id="intro-formatting-conventions" ostype="all">
 <title>Formatting Conventions</title>
 <description>
 Commands intended for shell execution, as well as configuration file text,
@@ -151,7 +152,7 @@ the appropriate information into a command or configuration file.
 </description>
 </Group>
 
-<Group id="intro-reboot-required">
+<Group id="intro-reboot-required" ostype="all">
 <title>Reboot Required</title>
 <description>
 A system reboot is implicitly required after some actions in order to

@@ -32,7 +32,7 @@
         <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
       </xsl:if>
 
-      <xsl:apply-templates select="document('intro/intro.xml')" />
+      <xsl:apply-templates select="document(document(concat($SHARED_RP, '/xccdf/intro/shared_intro_os.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/system.xml')" />
       <xsl:apply-templates select="document('xccdf/services/services.xml')" />
     </xsl:copy>

@@ -5,6 +5,7 @@
 <xsl:variable name="product_long_name">Red Hat OpenStack Platform 7</xsl:variable>
 <xsl:variable name="product_short_name">RHEL OSP 7</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHEL_OSP_7_STIG</xsl:variable>
+<xsl:variable name="os_type">osp7</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">RHEL-7-OSP</xsl:variable>
