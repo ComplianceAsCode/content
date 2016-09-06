@@ -842,6 +842,38 @@ If the system is configured to audit this activity, it will return a line.
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="firewalld-check-macro">
+    <xsl:choose>
+      <xsl:when test="@allow = 'false'">
+      <!-- allow: optional attribute which defaults to true, or to allow this traffic through -->
+        To determine if <xhtml:code>firewalld</xhtml:code> is configured to prevent access to <xhtml:code><xsl:value-of select="@service"/></xhtml:code>
+        on port <xhtml:code><xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code>, run the following command(s):
+        <xsl:if test="@port">
+          <xhtml:code>firewall-cmd --list-ports</xhtml:code>
+        </xsl:if>
+        <xsl:if test="@service">
+          <xhtml:code><xsl:if test="@service = 'true'">firewall-cmd --list-services</xsl:if></xhtml:code>
+        </xsl:if>
+        If <xhtml:code>firewalld</xhtml:code> is configured to prevent access, no output will be returned.
+      </xsl:when>
+      <xsl:otherwise>
+        To determine if <xhtml:code>firewalld</xhtml:code> is configured to allow access to <xhtml:code><xsl:value-of select="@service"/></xhtml:code>
+        on port <xhtml:code><xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code>, run the following command(s):
+        <xsl:if test="@port">
+          <xhtml:code>firewall-cmd --list-ports</xhtml:code>
+        </xsl:if>
+        <xsl:if test="@service">
+          <xhtml:code><xsl:if test="@service = 'true'">firewall-cmd --list-services</xsl:if></xhtml:code>
+        </xsl:if>
+        If <xhtml:code>firewalld</xhtml:code> is configured to allow access through the firewall, something similar to the following output
+        if is a service:
+        <xhtml:code>><xsl:value-of select="@service"/></xhtml:code>
+        Something similar to the following output if is a port:
+        <xhtml:code><xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="sshd-check-macro">
   <!-- could also do this with sshd -T to test live configuration -->
     To determine how the SSH daemon's
