@@ -81,6 +81,23 @@
 
 
   <xsl:template match="Group">
+    <xsl:choose>
+      <xsl:when test="@ostype = $os_type or @ostype = 'all'">
+        <Group>
+          <xsl:apply-templates select="@*" />
+          <xsl:apply-templates select="title"/>
+          <xsl:apply-templates select="description"/>
+          <xsl:apply-templates select="warning"/>
+          <xsl:apply-templates select="ref"/>
+          <xsl:apply-templates select="rationale"/>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ostype)]"/>
+        </Group>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Remove this when ostype is implemented in all Group elements -->
+  <xsl:template match="Group[not(@ostype)]">
     <Group>
       <xsl:apply-templates select="@*" />
       <xsl:apply-templates select="title"/>
@@ -400,6 +417,14 @@
           <xsl:attribute name="idref"><xsl:value-of select="$platform_cpes" /></xsl:attribute>
         </platform>
       </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="os-type-macro">
+    <xsl:choose>
+      <xsl:when test="contains(@type, $os_type) = 'true'">
+        <xsl:apply-templates select="node()|text()"/>
+      </xsl:when>
     </xsl:choose>
   </xsl:template>
 
@@ -831,5 +856,8 @@ If the system is configured to audit this activity, it will return a line.
       If a line indicating <xsl:value-of select="@value"/> is returned, then the required value is set.
     </xsl:if>
   </xsl:template>
+
+  <!-- Removes ostype from Elements as it is not a part of the XCCDF specification -->
+  <xsl:template match="@ostype"/>
 
 </xsl:stylesheet>

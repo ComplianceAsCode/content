@@ -5,6 +5,7 @@
 <xsl:variable name="product_long_name">Webmin</xsl:variable>
 <xsl:variable name="product_short_name">Webmin</xsl:variable>
 <xsl:variable name="product_stig_id_name">WEBMIN_STIG</xsl:variable>
+<xsl:variable name="os_type">webmin</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">WEBMIN</xsl:variable>

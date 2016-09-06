@@ -5,6 +5,7 @@
 <xsl:variable name="product_long_name">WRLinux</xsl:variable>
 <xsl:variable name="product_short_name">WRLinux</xsl:variable>
 <xsl:variable name="product_stig_id_name">empty</xsl:variable>
+<xsl:variable name="os_type">wrlinux</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">WRLINUX</xsl:variable>

@@ -5,6 +5,7 @@
 <xsl:variable name="product_long_name">Red Hat Enterprise Virtualization Manager</xsl:variable>
 <xsl:variable name="product_short_name">RHEVM</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHEVM_3_STIG</xsl:variable>
+<xsl:variable name="os_type">rhevm</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">RHEVM-3</xsl:variable>
