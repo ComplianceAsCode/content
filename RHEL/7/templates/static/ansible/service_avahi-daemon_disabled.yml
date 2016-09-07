@@ -1,0 +1,16 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+- name: Disable service avahi
+  service:
+    name="{{item}}"
+    enabled="no"
+    state="stopped"
+  with_items:
+    - avahi-daemon
+
+- name: Disable avahi socket
+  service:
+    name="{{item}}"
+    enabled="no"
+    state="stopped"
+  with_items:
+    - avahi-socket

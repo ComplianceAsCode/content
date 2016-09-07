@@ -1,0 +1,7 @@
+# platform = Red Hat Enterprise Linux 7
+- name: "SSHD: Set client alive interval"
+  lineinfile:
+    create=yes
+    dest="/etc/ssh/sshd_config"
+    regexp="^ClientAliveInterval"
+    line="ClientAliveInterval (ansible-populate sshd_idle_timeout_value)"
