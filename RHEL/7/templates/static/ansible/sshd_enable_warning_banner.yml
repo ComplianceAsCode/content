@@ -1,0 +1,7 @@
+# platform = Red Hat Enterprise Linux 7
+- name: "SSHD: Enable warning banner"
+  lineinfile:
+    create=yes
+    dest="/etc/ssh/sshd_config"
+    regexp="^Banner"
+    line="Banner /etc/issue"
