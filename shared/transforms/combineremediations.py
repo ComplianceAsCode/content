@@ -114,18 +114,6 @@ def get_available_remediation_functions():
     return remediation_functions
 
 
-def remediation_populate(remediation_type):
-
-    if remediation_type == "bash":
-        return "populate"
-
-    if remediation_type == "ansible":
-        return "ansible-populate"
-
-    print("Unknown remediation type '%s'" % remediation_type)
-    sys.exit(1)
-
-
 def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
 
     if remediation_type == 'ansible':
@@ -167,14 +155,7 @@ def get_populate_replacement(remediation_type, text):
         fixtextcontribution = '\n%s="' % varname
         return (varname, fixtextcontribution)
 
-    if remediation_type == 'ansible':
-        # Extract variable name
-        varname = re.search('\(ansible-populate (\S+)\)\n',
-            text, re.DOTALL).group(1)
-        # Define fix text part to contribute to main fix text
-        fixtextcontribution = varname
-        return (varname, fixtextcontribution)
-
+    print("Unknown remediation type '%s'" % remediation_type)
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """For those remediation scripts utilizing some of the internal SCAP
@@ -190,6 +171,13 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
             variable_name="<sub idref="variable_name"/>"
 
+    Also transforms any instance of the 'ansible-populate' function call in the
+    form of:
+            (ansible-populate variable_name)
+    into
+
+            <sub idref="variable_name"/>
+
     Also transforms any instance of some other known remediation function (e.g.
     'replace_or_append' etc.) from the form of:
 
@@ -201,9 +189,11 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             function_name "arg1" "arg2" ... "argN"
     """
 
+    if remediation_type == "ansible":
+        pass
     # This remediation script doesn't utilize internal remediation functions
     # Skip it without any further processing
-    if 'remediation_functions' not in fix.text:
+    elif 'remediation_functions' not in fix.text:
         return
     # This remediation script utilizes some of internal remediation functions
     # Expand shell variables and remediation functions calls with <xccdf:sub>
@@ -251,7 +241,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 # some of the remediation functions)
                 if re.match(pattern, fixparts[idx], re.DOTALL) is not None:
                     # This chunk contains call of 'populate' function
-                    if remediation_populate(remediation_type) in fixparts[idx]:
+                    if "populate" in fixparts[idx]:
                         varname, fixtextcontribution = get_populate_replacement(remediation_type, fixparts[idx])
                         # Append the contribution
                         fix.text += fixtextcontribution
