@@ -190,7 +190,24 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """
 
     if remediation_type == "ansible":
-        pass
+
+        pattern = r'\(ansible-populate\s*(\S+)\)'
+
+        # we will get list what looks like
+        # [text, varname, text, varname, ..., text]
+        parts = re.split(pattern, fix.text)
+
+        fix.text = parts[0] # add first "text"
+        for index in range(1, len(parts), 2):
+            varname = parts[index]
+            text_between_vars = parts[index + 1]
+
+            # we cannot combine elements and text easily
+            # so text is in ".tail" of element
+            xccdfvarsub = etree.SubElement(fix, "sub", idref=varname)
+            xccdfvarsub.tail = text_between_vars
+        return
+
     # This remediation script doesn't utilize internal remediation functions
     # Skip it without any further processing
     elif 'remediation_functions' not in fix.text:
