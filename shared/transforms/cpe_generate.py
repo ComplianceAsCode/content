@@ -160,6 +160,17 @@ def main():
                 if refovalfilefound:
                     break                     # break from the outer for loop
 
+            shared_dir = os.getenv("SHARED")
+            if shared_dir is not None:
+                for dirpath, dirnames, filenames in os.walk(shared_dir, topdown=True):
+                    # Case when referenced OVAL file exists
+                    for location in fnmatch.filter(filenames, refovalfilename + '.xml'):
+                        refovalfilefound = True
+                        break                     # break from the inner for loop
+
+                    if refovalfilefound:
+                        break                     # break from the outer for loop
+
             # Referenced OVAL doesn't exist in the subdirtree below CWD:
             # * there's either typo in the refenced OVAL filename, or
             # * is has been forgotten to be placed into input/oval, or
