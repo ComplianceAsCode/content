@@ -15,6 +15,7 @@
 <refine-value idref="inactivity_timeout_value" selector="15_minutes" />
 <refine-value idref="var_account_disable_post_pw_expiration" selector="0" />
 <refine-value idref="var_accounts_fail_delay" selector="4" />
+<refine-value idref="sshd_listening_port" selector="default" />
 <!-- END DISA FSO REFINEMENT VALUES -->
 
 <!-- NIAP/OSPP EXCLUDED RULES
@@ -69,6 +70,7 @@
 
 <!-- Remote Access Requirements -->
 <select idref="package_openssh-server_installed" selected="true" />
+<select idref="firewalld_ssh_port_enabled" selected="true" />
 <select idref="service_sshd_enabled" selected="true" />
 <select idref="sshd_disable_compression" selected="true" />
 <select idref="sshd_disable_gssapi_auth" selected="true" />

@@ -22,6 +22,14 @@ operator="equals" interactive="0">
 <value selector="120_minutes">7200</value>
 </Value>
 
+<Value id="sshd_listening_port" type="number"
+operator="equals" interactive="0">
+<title>SSH Server Listening Port</title>
+<description>Specify port the SSH server is listening.</description>
+<value selector="">22</value>
+<value selector="default">22</value>
+</Value>
+
 <Rule id="package_openssh-server_installed" severity="medium">
 <title>Install the OpenSSH Server Package</title>
 <description>
@@ -133,6 +141,25 @@ certain changes should be made to the OpenSSH daemon configuration
 file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
 applied to this file. See the <tt>sshd_config(5)</tt> man page for more
 detailed information.</description>
+
+<Rule id="firewalld_sshd_port_enabled">
+<title>Enable SSH Server <tt>firewalld</tt> Firewall exception</title>
+<description>By default, inbound connections to SSH's port are allowed. If
+the SSH server is being used but denied by the firewall, this exception should
+be added to the firewall configuration.
+<br /><br />
+<firewalld-desc-macro allow="true" proto="tcp" service="ssh" />
+</description>
+<ocil description="the SSH port is blocked, and the exception is missing">
+<firewalld-check-macro allow="true" proto="tcp" service="ssh" port="22"/>
+</ocil>
+<rationale>
+If inbound SSH connections are expected, adding a firewall rule exception
+will allow remote access through the SSH port.
+</rationale>
+<ident cce="RHEL7-CCE-TBD" />
+<oval id="firewalld_sshd_port_enabled" value="sshd_listening_port" />
+</Rule>
 
 <Rule id="sshd_allow_only_protocol2" severity="high">
 <title>Allow Only SSH Protocol 2</title>
