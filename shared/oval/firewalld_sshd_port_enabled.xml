@@ -17,7 +17,7 @@
     </criteria>
   </definition>
 
-  <ind:xmlfilecontent_test check="all" check_existence="any_exist" comment="ssh service is enabled in services"
+  <ind:xmlfilecontent_test check="all" check_existence="all_exist" comment="ssh service is enabled in services"
   id="test_firewalld_service_sshd_enabled" version="1">
     <ind:object object_ref="object_firewalld_service_sshd_enabled" />
   </ind:xmlfilecontent_test>
@@ -27,17 +27,19 @@
     <ind:xpath>/service/service[@name='ssh']</ind:xpath>
   </ind:xmlfilecontent_object>
 
-  <ind:xmlfilecontent_test check="all" check_existence="any_exist" comment="ssh port is enabled in services"
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="ssh port is enabled in services"
   id="test_firewalld_service_sshd_port_enabled" version="1">
     <ind:object object_ref="object_firewalld_service_sshd_port_enabled" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="object_firewalld_service_sshd_port_enabled" version="1">
+    <ind:state state_ref="state_sshd_listening_port" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firewalld_service_sshd_port_enabled" version="1">
     <ind:path>/etc/firewalld/services</ind:path>
     <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
-    <ind:xpath>/service/port[@port='22']</ind:xpath>
-  </ind:xmlfilecontent_object>
+    <ind:pattern operation="pattern match">&lt;port.*port="(\d+)"</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
 
-  <ind:xmlfilecontent_test check="all" check_existence="any_exist" comment="ssh service is enabled in zones"
+  <ind:xmlfilecontent_test check="all" check_existence="all_exist" comment="ssh service is enabled in zones"
   id="test_firewalld_zone_sshd_enabled" version="1">
     <ind:object object_ref="object_firewalld_zone_sshd_enabled" />
   </ind:xmlfilecontent_test>
@@ -47,14 +49,22 @@
     <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
   </ind:xmlfilecontent_object>
 
-  <ind:xmlfilecontent_test check="all" check_existence="any_exist" comment="ssh port is enabled in zones"
+  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="ssh port is enabled in zones"
   id="test_firewalld_zone_sshd_port_enabled" version="1">
     <ind:object object_ref="object_firewalld_zone_sshd_port_enabled" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="object_firewalld_zone_sshd_port_enabled" version="1">
+    <ind:state state_ref="state_sshd_listening_port" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_firewalld_zone_sshd_port_enabled" version="1">
     <ind:path>/etc/firewalld/zones</ind:path>
     <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
-    <ind:xpath>/zone/port[@port='22']</ind:xpath>
-  </ind:xmlfilecontent_object>
+    <ind:pattern operation="pattern match">&lt;port.*port="(\d+)"</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state comment="port ssh is listening" id="state_sshd_listening_port" version="1">
+    <ind:subexpression datatype="int" operation="equals" var_ref="sshd_listening_port" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="port ssh is listening" datatype="string" id="sshd_listening_port" version="1" />
 
 </def-group>

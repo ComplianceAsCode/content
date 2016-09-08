@@ -22,6 +22,14 @@ operator="equals" interactive="0">
 <value selector="120_minutes">7200</value>
 </Value>
 
+<Value id="sshd_listening_port" type="number"
+operator="equals" interactive="0">
+<title>SSH Server Listening Port</title>
+<description>Specify port the SSH server is listening.</description>
+<value selector="">22</value>
+<value selector="default">22</value>
+</Value>
+
 <Rule id="package_openssh-server_installed" severity="medium">
 <title>Install the OpenSSH Server Package</title>
 <description>
@@ -150,7 +158,7 @@ If inbound SSH connections are expected, adding a firewall rule exception
 will allow remote access through the SSH port.
 </rationale>
 <ident cce="RHEL7-CCE-TBD" />
-<oval id="firewalld_sshd_port_enabled" />
+<oval id="firewalld_sshd_port_enabled" value="sshd_listening_port" />
 </Rule>
 
 <Rule id="sshd_allow_only_protocol2" severity="high">
