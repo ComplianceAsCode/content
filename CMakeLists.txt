@@ -66,6 +66,7 @@ add_custom_command(
     VERBATIM
     MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/Contributors.md
 )
+add_custom_target(validate)
 
 if (SSG_FEDORA_CONTENT_ENABLED)
     add_subdirectory("Fedora")

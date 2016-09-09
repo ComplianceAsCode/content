@@ -293,4 +293,5 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${PRODUCT}-validate-sds
         COMMENT "[${PRODUCT}] validating outputs"
     )
+    add_dependencies(validate ${PRODUCT}-validate)
 endmacro()
