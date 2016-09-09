@@ -184,7 +184,7 @@ macro(ssg_build_xccdf_final PRODUCT)
         COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
-        COMMENT "[${PRODUCT}] validating the XCCDF 1.1 file"
+        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-xccdf.xml"
     )
 
     add_custom_command(
@@ -198,7 +198,7 @@ macro(ssg_build_xccdf_final PRODUCT)
     #    COMMAND ${OSCAP_EXECUTABLE} xccdf-1.2 validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
     #    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml
     #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
-    #    COMMENT "[${PRODUCT}] validating the XCCDF 1.2 file"
+    #    COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-xccdf-1.2.xml"
     #)
 endmacro()
 
@@ -216,7 +216,7 @@ macro(ssg_build_oval_final PRODUCT)
         COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
-        COMMENT "[${PRODUCT}] validating the OVAL file"
+        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-oval.xml"
     )
 endmacro()
 
@@ -232,7 +232,7 @@ macro(ssg_build_ocil_final PRODUCT)
     #    COMMAND ${OSCAP_EXECUTABLE} ocil validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
     #    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
     #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
-    #    COMMENT "[${PRODUCT}] validating the OCIL file"
+    #    COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-ocil.xml"
     #)
 endmacro()
 
@@ -250,7 +250,7 @@ macro(ssg_build_sds PRODUCT)
         COMMAND ${OSCAP_EXECUTABLE} ds sds-validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
-        COMMENT "[${PRODUCT}] validating Source DataStream"
+        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-ds.xml"
     )
 endmacro()
 
