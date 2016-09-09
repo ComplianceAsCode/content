@@ -253,4 +253,17 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html
     )
+
+    add_custom_target(
+        ${PRODUCT}-validate
+        COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        # TODO: one day
+        #COMMAND ${OSCAP_EXECUTABLE} xccdf validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
+        COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
+        # TODO: one day...
+        #COMMAND ${OSCAP_EXECUTABLE} ocil validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+        COMMAND ${OSCAP_EXECUTABLE} ds sds-validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        DEPENDS ${PRODUCT}
+        COMMENT "[${PRODUCT}] validating XCCDF 1.1, OVAL and Source DataStream outputs"
+    )
 endmacro()
