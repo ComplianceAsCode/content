@@ -179,12 +179,25 @@ macro(ssg_build_xccdf_final PRODUCT)
         DEPENDS ${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf.xml"
     )
+    add_custom_target(
+        ${PRODUCT}-validate-xccdf
+        COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMENT "[${PRODUCT}] validating the XCCDF 1.1 file"
+    )
+
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam reverse_DNS org.ssgproject.content --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf-1.2.xml"
     )
+    #add_custom_target(
+    #    ${PRODUCT}-validate-xccdf-1.2
+    #    COMMAND ${OSCAP_EXECUTABLE} xccdf validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
+    #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
+    #    COMMENT "[${PRODUCT}] validating the XCCDF 1.2 file"
+    #)
 endmacro()
 
 macro(ssg_build_oval_final PRODUCT)
@@ -196,6 +209,12 @@ macro(ssg_build_oval_final PRODUCT)
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/oval-fix-test-attestation-urls.xslt
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-oval.xml"
     )
+    add_custom_target(
+        ${PRODUCT}-validate-oval
+        COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
+        COMMENT "[${PRODUCT}] validating the OVAL file"
+    )
 endmacro()
 
 macro(ssg_build_ocil_final PRODUCT)
@@ -205,6 +224,12 @@ macro(ssg_build_ocil_final PRODUCT)
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ocil.xml"
     )
+    #add_custom_target(
+    #    ${PRODUCT}-validate-ocil
+    #    COMMAND ${OSCAP_EXECUTABLE} ocil validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+    #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+    #    COMMENT "[${PRODUCT}] validating the OCIL file"
+    #)
 endmacro()
 
 macro(ssg_build_sds PRODUCT)
@@ -215,6 +240,12 @@ macro(ssg_build_sds PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
+    )
+    add_custom_target(
+        ${PRODUCT}-validate-sds
+        COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}] validating Source DataStream"
     )
 endmacro()
 
@@ -253,17 +284,13 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html
     )
-
     add_custom_target(
         ${PRODUCT}-validate
-        COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
-        # TODO: one day
-        #COMMAND ${OSCAP_EXECUTABLE} xccdf validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
-        COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
-        # TODO: one day...
-        #COMMAND ${OSCAP_EXECUTABLE} ocil validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
-        COMMAND ${OSCAP_EXECUTABLE} ds sds-validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
-        DEPENDS ${PRODUCT}
-        COMMENT "[${PRODUCT}] validating XCCDF 1.1, OVAL and Source DataStream outputs"
+        DEPENDS ${PRODUCT}-validate-xccdf
+        #DEPENDS ${PRODUCT}-validate-xccdf-1.2
+        DEPENDS ${PRODUCT}-validate-oval
+        #DEPENDS ${PRODUCT}-validate-ocil
+        DEPENDS ${PRODUCT}-validate-sds
+        COMMENT "[${PRODUCT}] validating outputs"
     )
 endmacro()
