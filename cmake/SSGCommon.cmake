@@ -182,6 +182,7 @@ macro(ssg_build_xccdf_final PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
         COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMAND ${SSG_SHARED_UTILS}/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-xccdf.xml"
