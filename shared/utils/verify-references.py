@@ -3,6 +3,8 @@
 import sys
 import optparse
 import lxml.etree as ET
+import os.path
+
 """
 This script can verify consistency of references (linkage) between XCCDF and
 OVAL, and also search based on other criteria such as existence of policy
@@ -148,7 +150,7 @@ def main():
                  "supported by this script.")
 
     # find important elements within the XCCDF and the OVAL
-    ovalfile = ovalfiles.pop()
+    ovalfile = os.path.join(os.path.dirname(xccdffilename), ovalfiles.pop())
     ovaltree = ET.parse(ovalfile)
     # collect all compliance checks (not inventory checks, which are
     # needed by CPE)
