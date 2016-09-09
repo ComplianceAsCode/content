@@ -137,8 +137,7 @@ validate-fedora: fedora
 	cd Fedora/ && $(MAKE) validate
 
 validate-rhel5: rhel5
-	# Enable below when content validates correctly
-	#cd RHEL/5/ && $(MAKE) validate
+	cd RHEL/5/ && $(MAKE) validate
 
 validate-rhel6: rhel6
 	cd RHEL/6/ && $(MAKE) validate
