@@ -26,6 +26,21 @@
           <xsl:element name="fix" namespace="http://checklists.nist.gov/xccdf/1.1">
             <xsl:attribute name="system"><xsl:value-of select="../@system"/></xsl:attribute>
             <xsl:attribute name="id"><xsl:value-of select="$rule_id"/></xsl:attribute>
+            <xsl:if test="@complexity != ''">
+              <xsl:attribute name="complexity"><xsl:value-of select="@complexity"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@disruption != ''">
+              <xsl:attribute name="disruption"><xsl:value-of select="@disruption"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@platform != ''">
+              <xsl:attribute name="platform"><xsl:value-of select="@platform"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@reboot != ''">
+              <xsl:attribute name="reboot"><xsl:value-of select="@reboot"/></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@strategy != ''">
+              <xsl:attribute name="strategy"><xsl:value-of select="@strategy"/></xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates select="node()"/>
           </xsl:element>
         </xsl:for-each>

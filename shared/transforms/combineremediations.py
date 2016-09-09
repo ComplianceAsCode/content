@@ -58,6 +58,7 @@ def fix_is_applicable_for_product(platform, product):
     otherwise"""
     product_name = ''
     product_version = None
+    result = None
     match = re.search(r'\d+$', product)
     if match is not None:
         product_version = product[-1:]
@@ -71,7 +72,7 @@ def fix_is_applicable_for_product(platform, product):
     # 'multi_platform_' + product
     for mp in multi_platforms:
         if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
-            return True
+            result = True
 
     # Get official name for product
     if product_version is not None:
@@ -82,11 +83,11 @@ def fix_is_applicable_for_product(platform, product):
     # Test if this is for the concrete product version
     for pf in platform.split(','):
         if product_name == pf.strip():
-            return True
+            result = True
 
     # Remediation script isn't neither a multi platform one, nor isn't applicable
     # for this product => return False to indicate that
-    return False
+    return product_name, result
 
 
 def get_available_remediation_functions():
@@ -330,6 +331,12 @@ def main():
         print "Provide a directory name, which contains the fixes."
         sys.exit(1)
 
+    complexity = None
+    disruption = None
+    reboot = None
+    script_platform = None
+    strategy = None
+
     product = sys.argv[1]
     output = sys.argv[-1]
     remediation_type = sys.argv[2]
@@ -342,6 +349,8 @@ def main():
     remediation_functions = get_available_remediation_functions()
 
     platform = {}
+    config = {}
+    mod_file = ""
     included_fixes_count = 0
     for fixdir in sys.argv[3:-1]:
         for filename in os.listdir(fixdir):
@@ -353,11 +362,34 @@ def main():
 
             with open(os.path.join(fixdir, filename), 'r') as fix_file:
                 # Assignment automatically escapes shell characters for XML
-                script_platform = fix_file.readline().strip('#').strip().split('=')
-                if len(script_platform) > 1:
-                    platform[script_platform[0].strip()] = script_platform[1].strip()
-                if script_platform[0].strip() == 'platform':
-                    if fix_is_applicable_for_product(platform['platform'], product):
+                for line in fix_file.readlines():
+                    if line.startswith('#'):
+                        try:
+                            (key, value) = line.strip('#').split('=')
+                            if key.strip() in ['complexity', 'disruption', \
+                                             'platform', 'reboot', 'strategy']:
+                                config[key.strip()] = value.strip()
+                            else:
+                                mod_file += line
+                        except ValueError:
+                            mod_file += line
+                    else:
+                        mod_file += line
+
+                if 'complexity' in config:
+                    complexity = config['complexity']
+                if 'disruption' in config:
+                    disruption = config['disruption']
+                if 'platform' in config:
+                    script_platform = config['platform']
+                if 'complexity' in config:
+                   reboot = config['reboot']
+                if 'complexity' in config:
+                   strategy = config['strategy']
+
+                if script_platform:
+                    product_name, result = fix_is_applicable_for_product(script_platform, product)
+                    if result:
                         if fixname in fixes:
                             fix = fixes[fixname]
                             for child in list(fix):
@@ -365,10 +397,21 @@ def main():
                         else:
                             fix = etree.SubElement(fixgroup, "fix")
                             fix.set("rule", fixname)
+                            if complexity is not None:
+                                fix.set("complexity", complexity)
+                            if disruption is not None:
+                                fix.set("disruption", disruption)
+                            if platform is not None:
+                                fix.set("platform", product_name)
+                            if reboot is not None:
+                                fix.set("reboot", reboot)
+                            if strategy is not None:
+                                fix.set("strategy", strategy)
                             fixes[fixname] = fix
                             included_fixes_count += 1
 
-                        fix.text = fix_file.read()
+                        fix.text = mod_file
+                        mod_file = ""
 
                         # Expand shell variables and remediation functions into
                         # corresponding XCCDF <sub> elements
