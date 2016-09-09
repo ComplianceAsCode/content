@@ -269,7 +269,8 @@ def main():
             # as they're not unused
             if oval_id not in ovaldef_ids_extended:
                 print "OVAL Check is not referenced by XCCDF: %s" % oval_id
-                exit_value = 1
+                # Do not treat this as error but only as a warning
+                #exit_value = 1
 
     sys.exit(exit_value)
 
