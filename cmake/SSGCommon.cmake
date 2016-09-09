@@ -186,10 +186,6 @@ macro(ssg_build_xccdf_final PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMENT "[${PRODUCT}] validating the XCCDF 1.1 file"
     )
-    add_custom_target(
-        ${PRODUCT}-validate-xccdf
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
-    )
 
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
@@ -197,9 +193,10 @@ macro(ssg_build_xccdf_final PRODUCT)
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf-1.2.xml"
     )
-    #add_custom_target(
-    #    ${PRODUCT}-validate-xccdf-1.2
-    #    COMMAND ${OSCAP_EXECUTABLE} xccdf validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
+    #add_custom_command(
+    #    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml
+    #    COMMAND ${OSCAP_EXECUTABLE} xccdf-1.2 validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
+    #    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml
     #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
     #    COMMENT "[${PRODUCT}] validating the XCCDF 1.2 file"
     #)
@@ -221,10 +218,6 @@ macro(ssg_build_oval_final PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         COMMENT "[${PRODUCT}] validating the OVAL file"
     )
-    add_custom_target(
-        ${PRODUCT}-validate-oval
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
-    )
 endmacro()
 
 macro(ssg_build_ocil_final PRODUCT)
@@ -234,9 +227,10 @@ macro(ssg_build_ocil_final PRODUCT)
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ocil.xml"
     )
-    #add_custom_target(
-    #    ${PRODUCT}-validate-ocil
-    #    COMMAND ${OSCAP_EXECUTABLE} ocil validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+    #add_custom_command(
+    #    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
+    #    COMMAND ${OSCAP_EXECUTABLE} ocil validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+    #    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
     #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
     #    COMMENT "[${PRODUCT}] validating the OCIL file"
     #)
@@ -257,10 +251,6 @@ macro(ssg_build_sds PRODUCT)
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] validating Source DataStream"
-    )
-    add_custom_target(
-        ${PRODUCT}-validate-sds
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
     )
 endmacro()
 
@@ -301,11 +291,11 @@ macro(ssg_build_product PRODUCT)
     )
     add_custom_target(
         ${PRODUCT}-validate
-        DEPENDS ${PRODUCT}-validate-xccdf
-        #DEPENDS ${PRODUCT}-validate-xccdf-1.2
-        DEPENDS ${PRODUCT}-validate-oval
-        #DEPENDS ${PRODUCT}-validate-ocil
-        DEPENDS ${PRODUCT}-validate-sds
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
+        #DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
+        #DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] validating outputs"
     )
     add_dependencies(validate ${PRODUCT}-validate)
