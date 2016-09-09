@@ -179,11 +179,16 @@ macro(ssg_build_xccdf_final PRODUCT)
         DEPENDS ${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf.xml"
     )
-    add_custom_target(
-        ${PRODUCT}-validate-xccdf
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
         COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMENT "[${PRODUCT}] validating the XCCDF 1.1 file"
+    )
+    add_custom_target(
+        ${PRODUCT}-validate-xccdf
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
     )
 
     add_custom_command(
@@ -209,11 +214,16 @@ macro(ssg_build_oval_final PRODUCT)
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/oval-fix-test-attestation-urls.xslt
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-oval.xml"
     )
-    add_custom_target(
-        ${PRODUCT}-validate-oval
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
         COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
+        COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         COMMENT "[${PRODUCT}] validating the OVAL file"
+    )
+    add_custom_target(
+        ${PRODUCT}-validate-oval
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
     )
 endmacro()
 
@@ -241,11 +251,16 @@ macro(ssg_build_sds PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
     )
-    add_custom_target(
-        ${PRODUCT}-validate-sds
-        COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
+        COMMAND ${OSCAP_EXECUTABLE} ds sds-validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] validating Source DataStream"
+    )
+    add_custom_target(
+        ${PRODUCT}-validate-sds
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
     )
 endmacro()
 
