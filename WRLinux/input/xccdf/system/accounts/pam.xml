@@ -1,0 +1,26 @@
+<Group id="pam">
+<title>pam Settings</title>
+
+<Value id="var_accounts_passwords_pam_faillock_deny" type="number" operator="equals" interactive="0">
+<title>fail_deny</title>
+<description>Number of failed login attempts before account lockout</description>
+<value selector="">3</value>
+<value selector="3">3</value>
+<value selector="5">5</value>
+<value selector="6">6</value>
+<value selector="10">10</value>
+</Value>
+
+<Value id="var_accounts_passwords_pam_faillock_unlock_time" type="number" operator="equals" interactive="0">
+<title>fail_unlock_time</title>
+<description>Seconds before automatic unlocking after excessive failed logins</description>
+<value selector="">604800</value>
+<value selector="600">600</value> <!-- 10 minutes -->
+<value selector="900">900</value> <!-- 15 minutes -->
+<value selector="1800">1800</value> <!-- 30 minutes -->
+<value selector="3600">3600</value> <!-- 1 hour -->
+<value selector="86400">86400</value> <!-- 1 day -->
+<value selector="604800">604800</value> <!-- 7 days -->
+</Value>
+
+</Group>
