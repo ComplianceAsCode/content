@@ -13,8 +13,11 @@
     <criteria operator="OR">
       <extend_definition comment="package samba-common is not installed"
       definition_ref="package_samba-common_removed" />
-      <criterion comment="check for client signing = mandatory in /etc/samba/smb.conf"
-      test_ref="test_require_smb_client_signing" />
+      <criteria operator="AND">
+        <extend_definition comment="samba-common installed" definition_ref="package_samba-common_installed" />
+        <criterion comment="check for client signing = mandatory in /etc/samba/smb.conf"
+        test_ref="test_require_smb_client_signing" />
+      </criteria>
     </criteria>
   </definition>
 

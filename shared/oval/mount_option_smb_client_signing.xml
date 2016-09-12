@@ -15,6 +15,7 @@
     </metadata>
     <criteria operator="OR">
       <criteria operator="AND">
+        <extend_definition comment="samba-common installed" definition_ref="package_samba-common_installed" />
         <criteria operator="OR">
           <criterion comment="check for no cifs in /etc/fstab"
           test_ref="test_20340111" />

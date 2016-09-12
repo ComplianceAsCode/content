@@ -66,8 +66,21 @@ and allow client machines to access local home directories and
 printers. It is recommended that these settings be changed or that
 additional limitations be set in place.</description>
 
-
-
+<Rule id="package_samba-common_installed" severity="medium">
+<title>Install the Samba Common Package</title>
+<description>
+The <tt>samba-common</tt> package should be installed.
+<yum-macro install="true" package="samba-common"/>
+</description>
+<ocil clause="the package is not installed" >
+<package-check-macro install="true" package="samba-common" />
+</ocil>
+<rationale>
+If the samba-common package is not installed, samba cannot be configured.
+</rationale>
+<ident cce="RHEL6-CCE-TBD" />
+<oval id="package_samba-common_installed" />
+</Rule>
 
 <Group id="smb_restrict_file_sharing">
 <title>Restrict SMB File Sharing to Configured Networks</title>
