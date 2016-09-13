@@ -122,7 +122,7 @@ is completed, the system should be reconfigured to
 <description>The SETroubleshoot service notifies desktop users of SELinux
 denials. The service provides information around configuration errors,
 unauthorized intrusions, and other potential errors.
-<package-remove-macro package="setroubleshoot" />
+<dnf-macro install="false" package="setroubleshoot" />
 </description>
 <rationale>The SETroubleshoot service is an unnecessary daemon to
 have running on a server</rationale>
@@ -135,7 +135,7 @@ have running on a server</rationale>
 <description>The <tt>mcstransd</tt> daemon provides category label information
 to client processes requesting information. The label translations are defined
 in <tt>/etc/selinux/targeted/setrans.conf</tt>.
-<package-remove-macro package="mcstrans" />
+<dnf-macro install="false" package="mcstrans" />
 </description>
 <rationale>Since this service is not used very often, disable it to reduce the
 amount of potentially vulnerable code running on the system.
