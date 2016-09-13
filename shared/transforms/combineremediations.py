@@ -20,6 +20,8 @@ OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 
+FILE_GENERATED = '# THIS FILE IS GENERATED'
+
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
 
@@ -370,10 +372,10 @@ def main():
                                              'platform', 'reboot', 'strategy']:
                                 config[key.strip()] = value.strip()
                             else:
-                                if not '# THIS FILE IS GENERATED' in line:
+                                if not line.startswith(FILE_GENERATED):
                                     mod_file += line
                         except ValueError:
-                            if not '# THIS FILE IS GENERATED' in line:
+                            if not line.startswith(FILE_GENERATED):
                                 mod_file += line
                     else:
                         mod_file += line
