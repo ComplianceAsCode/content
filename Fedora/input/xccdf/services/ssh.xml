@@ -17,6 +17,14 @@ provided by the RPM package <tt>openssh-server</tt>.</description>
 <value selector="15_minutes">900</value>
 </Value>
 
+<Value id="sshd_listening_port" type="number"
+operator="equals" interactive="0">
+<title>SSH Server Listening Port</title>
+<description>Specify port the SSH server is listening.</description>
+<value selector="">22</value>
+<value selector="default">22</value>
+</Value>
+
 <Group id="ssh_server">
 <title>Configure OpenSSH Server if Necessary</title>
 <description>If the system needs to act as an SSH server, then certain changes
