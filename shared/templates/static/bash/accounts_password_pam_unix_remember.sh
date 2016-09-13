@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7
 . /usr/share/scap-security-guide/remediation_functions
 populate var_password_pam_unix_remember
 
