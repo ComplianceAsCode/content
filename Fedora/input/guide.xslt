@@ -47,6 +47,7 @@
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
       <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
     </xsl:copy>
   </xsl:template>
 
