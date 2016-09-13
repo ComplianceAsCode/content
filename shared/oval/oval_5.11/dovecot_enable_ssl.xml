@@ -6,7 +6,7 @@
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>SSL capabilities should be enabled for the mail server.</description>
-      <reference source="JL" ref_id="RHEL7_20160208" ref_url="test_attestation" />
+      <reference source="galford" ref_id="20160912" ref_url="test_attestation" />
     </metadata>
     <criteria comment="Enable SSL in Dovecot" operator="OR">
       <extend_definition comment="dovecot service is disabled" definition_ref="service_dovecot_disabled" />
@@ -20,7 +20,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_dovecot_enable_ssl" version="1">
     <ind:filepath>/etc/dovecot/conf.d/10-ssl.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*ssl[\s]*=[\s]*yes[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*ssl[\s]*=[\s]*(yes|required)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
