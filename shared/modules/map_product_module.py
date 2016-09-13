@@ -9,6 +9,7 @@ RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
 RHEVM = 'Red Hat Enterprise Virtualization Manager'
+EAP = 'JBoss EAP'
 FUSE = 'JBoss Fuse'
 OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
@@ -36,6 +37,8 @@ def map_product(version):
         product_name = DEBIAN
     if re.findall('rhevm', version):
         product_name = RHEVM
+    if re.findall('eap', version):
+        product_name = EAP
     if re.findall('fuse', version):
         product_name = FUSE
     if re.findall('opensuse', version):
