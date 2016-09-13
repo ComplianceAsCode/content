@@ -356,7 +356,6 @@ def main():
 
     platform = {}
     config = {}
-    mod_file = ""
     included_fixes_count = 0
     for fixdir in sys.argv[3:-1]:
         for filename in os.listdir(fixdir):
@@ -366,6 +365,7 @@ def main():
             # Create and populate new fix element based on shell file
             fixname = os.path.splitext(filename)[0]
 
+            mod_file = ""
             with open(os.path.join(fixdir, filename), 'r') as fix_file:
                 # Assignment automatically escapes shell characters for XML
                 for line in fix_file.readlines():
@@ -419,7 +419,6 @@ def main():
                             included_fixes_count += 1
 
                         fix.text = mod_file
-                        mod_file = ""
 
                         # Expand shell variables and remediation functions into
                         # corresponding XCCDF <sub> elements
