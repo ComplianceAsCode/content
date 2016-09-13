@@ -370,10 +370,10 @@ def main():
                                              'platform', 'reboot', 'strategy']:
                                 config[key.strip()] = value.strip()
                             else:
-                                if not '# THIS FILE' in line:
+                                if not '# THIS FILE IS GENERATED' in line:
                                     mod_file += line
                         except ValueError:
-                            if not '# THIS FILE' in line:
+                            if not '# THIS FILE IS GENERATED' in line:
                                 mod_file += line
                     else:
                         mod_file += line
