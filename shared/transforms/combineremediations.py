@@ -48,7 +48,11 @@ def map_product(version):
     if re.findall('suse', version):
         product_name = SUSE
     if re.findall('wrlinux', version):
-	product_name = WRLINUX
+        product_name = WRLINUX
+
+    if product_name is None:
+        raise RuntimeError("Can't map version '%s' to any known product!"
+                           % (version))
 
     return product_name
 
