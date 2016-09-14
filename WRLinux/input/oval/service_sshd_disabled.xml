@@ -8,7 +8,6 @@
       <description>The sshd service should be disabled.</description>
     </metadata>
     <criteria comment="package openssh-server removed or service sshd is not configured to start" operator="OR">
-      <!-- <extend_definition comment="openssh-server removed" definition_ref="package_openssh-server_removed" /> -->
       <criterion comment="sshd disabled in multi-user.target" test_ref="test_sshd_disabled_multi_user_target" />
     </criteria>
   </definition>

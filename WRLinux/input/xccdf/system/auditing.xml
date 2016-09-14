@@ -1,0 +1,58 @@
+<Group id="auditing">
+<title>Auditing Settings</title>
+
+<Value id="var_auditd_action_mail_acct" type="string" >
+<title>Account for auditd to send email when actions occurs</title>
+<description>The setting for action_mail_acct in /etc/audit/auditd.conf</description>
+<value selector="">root</value>
+<value selector="root">root</value>
+<value selector="admin">admin</value>
+</Value>
+
+<Value id="var_auditd_flush" type="string" >
+<title>Auditd priority for flushing data to disk</title>
+<description>The setting for flush in /etc/audit/auditd.conf</description>
+<value selector="">data</value>
+<value selector="none">none</value>
+<value selector="incremental">incremental</value>
+<value selector="data">data</value>
+<value selector="sync">sync</value>
+</Value>
+
+<Value id="var_auditd_max_log_file_action" type="string" >
+<title>Action for auditd to take when log files reach their maximum size</title>
+<description>The setting for max_log_file_action in /etc/audit/auditd.conf</description>
+<value selector="">rotate</value>
+<value selector="ignore">ignore</value>
+<value selector="syslog">syslog</value>
+<value selector="suspend">suspend</value>
+<value selector="rotate">rotate</value>
+<value selector="keep_logs">keep_logs</value>
+</Value>
+
+<Value id="var_auditd_num_logs" type="number" >
+<title>Number of log files for auditd to retain</title>
+<description>The setting for num_logs in /etc/audit/auditd.conf</description>
+<value selector="">5</value>
+<value selector="5">5</value>
+<value selector="4">4</value>
+<value selector="3">3</value>
+<value selector="2">2</value>
+<value selector="1">1</value>
+<value selector="0">0</value>
+</Value>
+
+<Value id="var_auditd_space_left_action" type="string" >
+<title>Action for auditd to take when disk space just starts to run low</title>
+<description>The setting for space_left_action in /etc/audit/auditd.conf</description>
+<value selector="">email</value>
+<value selector="ignore">ignore</value>
+<value selector="syslog">syslog</value>
+<value selector="email">email</value>
+<value selector="exec">exec</value>
+<value selector="suspend">suspend</value>
+<value selector="single">single</value>
+<value selector="halt">halt</value>
+</Value>
+
+</Group>

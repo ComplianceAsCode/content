@@ -1,0 +1,50 @@
+<Profile id="basic-embedded">
+<title>Basic Profile for Embedded Systems</title>
+<description>
+This profile contains items common to many embedded Linux installations.
+Regardless of your system's deployment objective, all of these checks should pass.
+</description>
+
+<refine-value idref="sshd_idle_timeout_value" selector="10_minutes" />
+<refine-value idref="var_accounts_fail_delay" selector="4" />
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800" />
+<refine-value idref="var_accounts_user_umask" selector="077"/>
+<refine-value idref="var_auditd_action_mail_acct" selector="root" />
+<refine-value idref="var_auditd_max_log_file_action" selector="rotate" />
+<refine-value idref="var_auditd_num_logs" selector="5" />
+<refine-value idref="var_auditd_space_left_action" selector="email" />
+<refine-value idref="var_selinux_policy_name" selector="targeted" />
+
+<select idref="accounts_logon_fail_delay" selected="true" />
+<select idref="accounts_max_concurrent_login_sessions" selected="true" />
+<select idref="accounts_no_uid_except_zero" selected="true" />
+<select idref="accounts_password_all_shadowed" selected="true" />
+<select idref="accounts_root_path_dirs_no_write" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
+<select idref="accounts_umask_etc_profile" selected="true" />
+<select idref="file_permissions_home_dirs" selected="true" />
+<select idref="no_empty_passwords" selected="true" />
+<select idref="no_netrc_files" selected="true" />
+<select idref="root_path_no_dot" selected="true" />
+
+<!--
+The following are targeted for a possible future basic-embedded addition.
+For now, they don't work.
+-->
+<!-- <select idref="dir_perms_world_writable_sticky_bits" selected="true" /> -->
+<!-- <select idref="file_permissions_unauthorized_sgid" selected="true" /> -->
+<!-- <select idref="file_permissions_unauthorized_suid" selected="true" /> -->
+<!-- <select idref="file_permissions_unauthorized_world_writable" selected="true" /> -->
+<!-- <select idref="mount_option_dev_shm_nodev" selected="true" /> -->
+<!-- <select idref="mount_option_dev_shm_noexec" selected="true" /> -->
+<!-- <select idref="mount_option_dev_shm_nosuid" selected="true" /> -->
+<!-- <select idref="service_abrtd_disabled" selected="true" /> -->
+<!-- <select idref="service_atd_disabled" selected="true" /> -->
+<!-- <select idref="service_autofs_disabled" selected="true" /> -->
+<!-- <select idref="service_ntpdate_disabled" selected="true" /> -->
+<!-- <select idref="service_oddjobd_disabled" selected="true" /> -->
+<!-- <select idref="service_qpidd_disabled" selected="true" /> -->
+<!-- <select idref="service_rdisc_disabled" selected="true" /> -->
+
+</Profile>

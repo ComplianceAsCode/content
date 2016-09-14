@@ -1,0 +1,17 @@
+<Group id="selinux">
+<title>SE Linux Settings</title>
+
+<Value id="var_selinux_policy_name" type="string" operator="equals" interactive="0">
+<title>SELinux policy</title>
+<description>
+Type of policy in use. Possible values are:
+<br/>targeted - Only targeted network daemons are protected.
+<br/>strict - Full SELinux protection.
+<br/>mls - Multiple levels of security
+</description>
+<value selector="">targeted</value>
+<value selector="targeted">targeted</value>
+<value selector="mls">mls</value>
+</Value>
+
+</Group>

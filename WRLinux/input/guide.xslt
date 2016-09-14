@@ -16,8 +16,7 @@
       <xsl:copy-of select="@*|node()" />
 
       <!-- Adding profiles here -->
-      <xsl:apply-templates select="document('profiles/standard.xml')" />
-      <xsl:apply-templates select="document('profiles/common.xml')" />
+      <xsl:apply-templates select="document('profiles/basic-embedded.xml')" />
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">
@@ -47,6 +46,7 @@
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
       <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
     </xsl:copy>
   </xsl:template>
 

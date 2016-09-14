@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_unauthorized_sgid" version="2">
+    <metadata>
+      <title>Find setgid files system packages</title>
+      <affected family="unix">
+        <platform>Wind River Linux 8</platform>
+      </affected>
+      <description>All files with setgid should be owned by a base system package</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check all setgid files" test_ref="check_setgid_files" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="setgid files outside system RPMs" id="check_setgid_files" version="1">
+    <unix:object object_ref="object_file_permissions_unauthorized_sgid" />
+  </unix:file_test>
+
+  <unix:file_object comment="files with sgid set" id="object_file_permissions_unauthorized_sgid" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_file_permissions_unauthorized_sgid</filter>
+    <filter action="exclude">state_sgid_whitelist</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_unauthorized_sgid" version="1">
+    <unix:sgid datatype="boolean">true</unix:sgid>
+  </unix:file_state>
+
+  <!-- list of all setgid files included with base WRL8 system -->
+  <unix:file_state id="state_sgid_whitelist" version="1">
+    <unix:filepath var_ref="var_sgid_whitelist" var_check="at least one" />
+  </unix:file_state>
+
+  <constant_variable id="var_sgid_whitelist" version="1" datatype="string" comment="sgid whitelist">
+    <value>/usr/bin/crontab</value>
+    <value>/usr/sbin/postdrop</value>
+    <value>/usr/sbin/postqueue</value>
+  </constant_variable>
+
+</def-group>
