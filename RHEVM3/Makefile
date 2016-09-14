@@ -83,15 +83,17 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 		$(OUT)/$(ID)-$(PROD)-xccdf.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
 #	Update @style attribute of <xccdf:Benchmark> to "SCAP_1.2". Fixes #1059
 	sed -i 's/style="SCAP_1.1"/style="SCAP_1.2"/' $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
-	oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	# TODO: enable once RHEVM3 has OVAL checks!
+	#oscap ds sds-compose $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 #	Update @schematron-version attribute in datastream to "1.2". Fixes #1191
 #	(Workaround for https://github.com/OpenSCAP/openscap/issues/383)
-	sed -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' $(OUT)/$(ID)-$(PROD)-ds.xml
+	#sed -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' $(OUT)/$(ID)-$(PROD)-ds.xml
 #	Add in CPE content to datastream
-	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	# TODO: enable once RHEVM3 has OVAL checks!
+	#oscap ds sds-add $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
-	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	#$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 
 # not ready until oscap resolve behavior resolved
 content-stig: table-stigs guide checks
@@ -101,12 +103,13 @@ content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml $(OUT)/disa-predraft-stig-$(PROD)-xccdf.xml
 
 guide: content
-ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
-else
-	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
+	# TODO: enable datastream builds once RHEVM3 can successfuly build a datastream
+#ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
+#	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+#else
+#	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
-endif
+#endif
 
 submission-stig-check: table-stigs
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py -p stig-$(PROD)-server \
@@ -118,7 +121,8 @@ validate-xml:
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-oval.xml
 	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
-	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
+	# TODO: uncomment when the datastream validates
+	#oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
 
 validate: validate-xml
 	cd $(OUT); ../$(SHARED)/$(UTILS)/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ssg-$(PROD)-xccdf.xml
