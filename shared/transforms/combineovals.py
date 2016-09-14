@@ -13,23 +13,16 @@ from copy import deepcopy
 
 from ConfigParser import SafeConfigParser
 
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+from map_product_module import map_product
+
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 conf_file = 'oval.config'
 footer = '</oval_definitions>'
-
-# SSG Makefile to official product name mapping
-CHROMIUM = 'Google Chromium Browser'
-DEBIAN = 'Debian'
-FEDORA = 'Fedora'
-FIREFOX = 'Mozilla Firefox'
-JRE = 'Java Runtime Environment'
-RHEL = 'Red Hat Enterprise Linux'
-WEBMIN = 'Webmin'
-FUSE = 'JBoss Fuse'
-OPENSUSE = 'OpenSUSE'
-SUSE = 'SUSE Linux Enterprise'
-WRLINUX = 'Wind River Linux'
 
 
 def _header(schema_version):
@@ -78,36 +71,6 @@ def parse_conf_file(conf_file, product):
 
     return oval_version, multi_platform
 
-
-def map_product(version):
-    """Maps SSG Makefile internal product name to official product name"""
-
-    product_name = None
-
-    if re.findall('chromium', version):
-        product_name = CHROMIUM
-    if re.findall('fedora', version):
-        product_name = FEDORA
-    if re.findall('firefox', version):
-        product_name = FIREFOX
-    if re.findall('jre', version):
-        product_name = JRE
-    if re.findall('rhel', version):
-        product_name = RHEL
-    if re.findall('webmin', version):
-        product_name = WEBMIN
-    if re.findall('debian', version):
-        product_name = DEBIAN
-    if re.findall('fuse', version):
-        product_name = FUSE
-    if re.findall('opensuse', version):
-        product_name = OPENSUSE
-    if re.findall('suse', version):
-        product_name = SUSE
-    if re.findall('wrlinux', version):
-	product_name = WRLINUX
-
-    return product_name
 
 def check_is_applicable_for_product(oval_check_def, product):
     """Based on the <platform> specifier of the OVAL check determine if this

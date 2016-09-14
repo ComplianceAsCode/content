@@ -6,57 +6,14 @@ import os.path
 import re
 import lxml.etree as etree
 
-# SSG Makefile to official product name mapping
-CHROMIUM = 'Google Chromium Browser'
-FEDORA = 'Fedora'
-FIREFOX = 'Mozilla Firefox'
-JRE = 'Java Runtime Environment'
-RHEL = 'Red Hat Enterprise Linux'
-WEBMIN = 'Webmin'
-DEBIAN = 'Debian'
-RHEVM = 'Red Hat Enterprise Virtualization Manager'
-FUSE = 'JBoss Fuse'
-OPENSUSE = 'OpenSUSE'
-SUSE = 'SUSE Linux Enterprise'
-WRLINUX = 'Wind River Linux'
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+from map_product_module import map_product
+
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
-
-def map_product(version):
-    """Maps SSG Makefile internal product name to official product name"""
-
-    product_name = None
-
-    if re.findall('chromium', version):
-        product_name = CHROMIUM
-    if re.findall('fedora', version):
-        product_name = FEDORA
-    if re.findall('firefox', version):
-        product_name = FIREFOX
-    if re.findall('jre', version):
-        product_name = JRE
-    if re.findall('rhel', version):
-        product_name = RHEL
-    if re.findall('webmin', version):
-        product_name = WEBMIN
-    if re.findall('debian', version):
-        product_name = DEBIAN
-    if re.findall('rhevm', version):
-        product_name = RHEVM
-    if re.findall('fuse', version):
-        product_name = FUSE
-    if re.findall('opensuse', version):
-        product_name = OPENSUSE
-    if re.findall('suse', version):
-        product_name = SUSE
-    if re.findall('wrlinux', version):
-        product_name = WRLINUX
-
-    if product_name is None:
-        raise RuntimeError("Can't map version '%s' to any known product!"
-                           % (version))
-
-    return product_name
 
 def fix_is_applicable_for_product(platform, product):
     """Based on the platform dict specifier of the remediation script to determine if this
