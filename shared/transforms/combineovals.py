@@ -66,7 +66,8 @@ def parse_conf_file(conf_file, product):
                 multi_platform[name] = [item for item in setting.split(",")]
 
     if oval_version is None:
-        print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
+        sys.stderr.write("ERROR! The setting returned a value of \'%s\'!\n"
+                         % oval_version)
         sys.exit(1)
 
     return oval_version, multi_platform
@@ -202,7 +203,7 @@ def append(element, newchild):
                 # If OVAL entity is identical, but not external_variable, the
                 # implementation should be rewritten each entity to be present
                 # just once
-                sys.stderr.write("\nNotification: this ID is used more than " +
+                sys.stderr.write("Notification: this ID is used more than " +
                                  "once and should represent equivalent " +
                                  "elements: %s \n" % newid)
                 sys.stderr.write("Rewrite the corresponding OVAL checks by " +
@@ -222,7 +223,7 @@ def append(element, newchild):
                 # See
                 #   https://github.com/OpenSCAP/scap-security-guide/issues/1275
                 # for a reproducer and what could happen in this case
-                sys.stderr.write("\nError: it's not possible to use the " +
+                sys.stderr.write("Error: it's not possible to use the " +
                                  "same ID: %s " % newid + "for two " +
                                  "semantically different OVAL entities:\n")
                 sys.stderr.write("First entity  %s\n" % ET.tostring(existing))
@@ -260,7 +261,7 @@ def checks(product, oval_dirs):
                         included_checks_count += 1
                         already_loaded.add(filename)
 
-    sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL "
+    sys.stderr.write("Notification: Merged %d OVAL checks into OVAL "
                      "document.\n" % included_checks_count)
 
     return body
@@ -268,8 +269,9 @@ def checks(product, oval_dirs):
 
 def main():
     if len(sys.argv) < 4:
-        print "Provide a directory names, which contains the checks."
-        print "Later directory has higher priority"
+        sys.stderr.write("Provide a directory names, which contains the "
+                         "checks.\n")
+        sys.stderr.write("Later directory has higher priority\n")
         sys.exit(1)
 
     # Get header with schema version
@@ -289,7 +291,8 @@ def main():
             oval_schema_version = config_oval_schema_version
         header = _header(oval_schema_version)
     else:
-        print 'The directory specified does not contain the %s file!' % conf_file
+        sys.stderr.write("The directory specified does not contain the %s "
+                         "file!\n" % (conf_file))
         sys.exit(1)
 
     body = checks(product, oval_dirs)
