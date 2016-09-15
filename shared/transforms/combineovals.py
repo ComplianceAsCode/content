@@ -211,13 +211,12 @@ def append(element, newchild):
                 # If OVAL entity is identical, but not external_variable, the
                 # implementation should be rewritten each entity to be present
                 # just once
-                sys.stderr.write("Notification: this ID is used more than " +
-                                 "once and should represent equivalent " +
-                                 "elements: %s \n" % newid)
-                sys.stderr.write("Rewrite the corresponding OVAL checks by " +
-                                 "placing the identical IDs into its own " +
-                                 "definition, and extend this definition " +
-                                 "on necessary places.\n")
+                sys.stderr.write("OVAL ID '%s' is used multiple times and "
+                                 "should represent the same elements.\n"
+                                 % (newid))
+                sys.stderr.write("Rewrite the OVAL checks. Place the identical "
+                                 "IDs into their own definition and extend "
+                                 "this definition by it.\n")
         # ID is identical, but OVAL entities are semantically difference =>
         # report and error and exit with failure
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1275
@@ -269,8 +268,7 @@ def checks(product, oval_dirs):
                         included_checks_count += 1
                         already_loaded.add(filename)
 
-    sys.stderr.write("Notification: Merged %d OVAL checks into OVAL "
-                     "document.\n" % included_checks_count)
+    sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
     return body
 

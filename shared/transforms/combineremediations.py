@@ -405,13 +405,12 @@ def main():
                         # corresponding XCCDF <sub> elements
                         expand_xccdf_subs(fix, remediation_type, remediation_functions)
                 else:
-                    sys.stderr.write("Notification: Removed '%s' remediation "
-                                     "script from merging. The platform "
-                                     "identifier in the script is missing!\n"
-                                     % (filename))
+                    sys.stderr.write("Skipping '%s' remediation script. "
+                                     "The platform identifier in the script is "
+                                     "missing!\n" % (filename))
 
-    sys.stderr.write("Notification: Merged %d remediation scripts.\n"
-                     % included_fixes_count)
+    sys.stderr.write("Merged %d remediation scripts.\n"
+                     % (included_fixes_count))
     tree = etree.ElementTree(fixcontent)
     tree.write(output, pretty_print=True)
 
