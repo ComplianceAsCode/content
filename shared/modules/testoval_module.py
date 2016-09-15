@@ -8,7 +8,12 @@ import lxml.etree as ET
 from ConfigParser import SafeConfigParser
 
 # always use /shared/transforms' version of idtranslate.py
-from transforms import idtranslate
+
+# Put shared/transforms python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "transforms"))
+import idtranslate
 
 SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/oval/'
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
