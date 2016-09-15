@@ -17,7 +17,7 @@ from ConfigParser import SafeConfigParser
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
-from map_product_module import map_product
+from map_product_module import map_product, parse_product_name
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
@@ -77,11 +77,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     OVAL check is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
 
-    product_version = None
-    match = re.search(r'\d+$', product)
-    if match is not None:
-        product_version = product[-1:]
-        product = product[:-1]
+    product, product_version = parse_product_name(product)
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',

@@ -10,7 +10,7 @@ import lxml.etree as etree
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
-from map_product_module import map_product
+from map_product_module import map_product, parse_product_name
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -20,12 +20,7 @@ def fix_is_applicable_for_product(platform, product):
     remediation script is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
     product_name = ''
-    product_version = None
-    result = None
-    match = re.search(r'\d+$', product)
-    if match is not None:
-        product_version = product[-1:]
-        product = product[:-1]
+    product, product_version = parse_product_name(product)
 
     # Define general platforms
     multi_platforms = ['multi_platform_all',
@@ -33,6 +28,7 @@ def fix_is_applicable_for_product(platform, product):
 
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
+    result = None
     for mp in multi_platforms:
         if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
             result = True

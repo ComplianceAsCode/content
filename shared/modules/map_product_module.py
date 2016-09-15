@@ -16,6 +16,16 @@ SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 
 
+def parse_product_name(product):
+    product_version = None
+    match = re.search(r'\d+$', product)
+    if match is not None:
+        product_version = product[-1:]
+        product = product[:-1]
+
+    return product, product_version
+
+
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
 
