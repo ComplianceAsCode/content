@@ -56,7 +56,8 @@ def get_available_remediation_functions():
 
     remediation_functions = []
     # Determine the relative path to the "/shared" directory
-    shared_dir = os.getenv("SHARED")
+    shared_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
     # Default location of XML file with definitions of remediation functions
     xmlfilepath = ''
     # If location of /shared directory is known
