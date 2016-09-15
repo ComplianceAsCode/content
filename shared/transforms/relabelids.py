@@ -102,7 +102,8 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
                 ovaldesc.addnext(ccerefelem)
                 # Sanity check if appending succeeded
                 if ccerefelem.getprevious() is not ovaldesc:
-                    print ("\n\tError trying to add CCE ID to %s. Exiting" % ovalid)
+                    sys.stderr.write("ERROR: Failed to add CCE ID to %s. "
+                                     "Exiting" % (ovalid))
                     sys.exit(1)
 
 
@@ -142,7 +143,8 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
             checkcontentref_hrefattr = checkcontentref.get('href')
         except KeyError:
             # @href attribute of <check-content-ref> is required by XCCDF standard
-            print("\nError: Invalid OVAL <check-content-ref> detected! Exiting..")
+            sys.stderr.write("ERROR: Invalid OVAL <check-content-ref> detected!"
+                             " Exiting..\n")
             sys.exit(1)
 
         # Skip remote OVAL (should cover both 'http://' and 'https://' cases)
@@ -153,7 +155,9 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
         # in the case:
         # * OVAL definition is referenced from XCCDF file,
         # * But not defined in OVAL file
-        print("Removing <check-content> OVAL element for %s." % xccdfid)
+        sys.stderr.write("WARNING: OVAL check '%s' was not found, removing "
+                         "<check-content> element from the XCCDF rule.\n"
+                         % xccdfid)
         rule.remove(check)
 
 
@@ -194,7 +198,8 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
             for ovalextvar in ovalextvars:
                 # Verify the found external variable has both 'id' and 'datatype' set
                 if 'id' not in ovalextvar.attrib or 'datatype' not in ovalextvar.attrib:
-                    print("\nError: Invalid OVAL <external_variable> found. Exiting")
+                    sys.stderr.write("ERROR: Invalid OVAL <external_variable> "
+                                     "found. Exiting\n")
                     sys.exit(1)
                 # Obtain the 'id' and 'datatype attribute values
                 if 'id' in ovalextvar.attrib and 'datatype' in ovalextvar.attrib:
@@ -206,7 +211,8 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
                 if xccdfvar is not None:
                     # Verify the found value has 'type' attribute set
                     if 'type' not in xccdfvar.attrib:
-                        print("\nError: Invalid XCCDF variable found. Exiting")
+                        sys.stderr.write("ERROR: Invalid XCCDF variable found. "
+                                         "Exiting\n")
                         sys.exit(1)
                     else:
                         xccdfvartype = xccdfvar.get('type')
@@ -216,13 +222,17 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
                         # Compare the actual value of 'type' of <xccdf:Value> with the requirement
                         if xccdfvartype != reqxccdftype:
                             # If discrepancy is found, issue a warning
-                            warning = ("\nWarning: XCCDF 'type' of \"%s\" value does not meet the XCCDF "
-                                       "value 'type' to OVAL variable 'datatype'\nexport matching constraint! "
-                                       "Got: \"%s\", Expected: \"%s\". Resetting it! Set 'type' of \"%s\""
-                                       "\n<xccdf:value> to '%s' directly in the XCCDF content to dismiss this warning!" %
-                                       (ovalvarid, xccdfvartype, reqxccdftype, ovalvarid, reqxccdftype)
-                                       )
-                            print warning
+                            sys.stderr.write(
+                                "Warning: XCCDF 'type' of \"%s\" value does "
+                                "not meet the XCCDF value 'type' to OVAL "
+                                "variable 'datatype' export matching "
+                                "constraint! Got: \"%s\", Expected: \"%s\". "
+                                "Resetting it! Set 'type' of \"%s\" "
+                                "<xccdf:value> to '%s' directly in the XCCDF "
+                                "content to dismiss this warning!" %
+                                (ovalvarid, xccdfvartype, reqxccdftype,
+                                 ovalvarid, reqxccdftype)
+                            )
                             # And reset the 'type' attribute of such a <xccdf:Value> to the required type
                             xccdfvar.attrib['type'] = reqxccdftype
 
@@ -257,9 +267,10 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
 
 def main():
     if len(sys.argv) < 3:
-        print "Provide an XCCDF file and an ID name scheme."
-        print ("This script finds check-content files (currently, OVAL " +
-               "and OCIL) referenced from XCCDF and synchronizes all IDs.")
+        sys.stderr.write("Provide an XCCDF file and an ID name scheme.\n")
+        sys.stderr.write("This script finds check-content files (currently, "
+                         "OVAL and OCIL) referenced from XCCDF and "
+                         "synchronizes all IDs.\n")
         sys.exit(1)
 
     xccdffile = sys.argv[1]
@@ -288,13 +299,18 @@ def main():
                         if (not xccdf_rule == check_name and check_name is not None \
                             and not xccdf_rule + '_ocil' == check_name \
                             and not xccdf_rule == 'sample_rule'):
-                            print("The OVAL / OCIL ID does not match the XCCDF Rule ID!\n")
+                            sys.stderr.write("The OVAL / OCIL ID does not "
+                                             "match the XCCDF Rule ID!\n")
                             if '_ocil' in check_name:
-                                print("\n  OCIL ID:       \'%s\'" % check_name)
+                                sys.stderr.write("  OCIL ID:       \'%s\'\n"
+                                                 % (check_name))
                             else:
-                                print("\n  OVAL ID:       \'%s\'" % check_name)
-                            print("\n  XCCDF Rule ID: \'%s\'"
-                                  "\n\nBoth OVAL and XCCDF Rule IDs must match!" % xccdf_rule)
+                                sys.stderr.write("  OVAL ID:       \'%s\'\n"
+                                                 % (check_name))
+                            sys.stderr.write("  XCCDF Rule ID: \'%s\'\n"
+                                             % (xccdf_rule))
+                            sys.stderr.write("Both OVAL/OCIL and XCCDF Rule "
+                                             "IDs must match!" % (xccdf_rule))
                             sys.exit(1)
 
     checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
