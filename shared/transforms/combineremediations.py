@@ -310,12 +310,6 @@ def main():
         print "Provide a directory name, which contains the fixes."
         sys.exit(1)
 
-    complexity = None
-    disruption = None
-    reboot = None
-    script_platform = None
-    strategy = None
-
     product = sys.argv[1]
     output = sys.argv[-1]
     remediation_type = sys.argv[2]
@@ -356,6 +350,12 @@ def main():
                                 mod_file += line
                     else:
                         mod_file += line
+
+                complexity = None
+                disruption = None
+                reboot = None
+                script_platform = None
+                strategy = None
 
                 if 'complexity' in config:
                     complexity = config['complexity']
