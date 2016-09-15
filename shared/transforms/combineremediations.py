@@ -59,8 +59,8 @@ def get_available_remediation_functions():
 
     # If location of /shared directory is known
     if shared_dir is None or not os.path.isdir(shared_dir):
-        print("Error determinining SSG shared directory location. Tried '%s'."
-              % (shared_dir))
+        sys.stderr.write("Error determinining SSG shared directory location. "
+                         "Tried '%s'.\n" % (shared_dir))
         sys.exit(1)
 
     # Construct the final path of XML file with remediation functions
@@ -68,8 +68,8 @@ def get_available_remediation_functions():
         os.path.join(shared_dir, "xccdf", "remediation_functions.xml")
 
     if not os.path.isfile(xmlfilepath):
-        print("Expected '%s' to contain the remediation functions. The file "
-              "was not found!" % (xmlfilepath))
+        sys.stderr.write("Expected '%s' to contain the remediation functions. "
+                         "The file was not found!\n" % (xmlfilepath))
         sys.exit(1)
 
     remediation_functions = []
@@ -94,7 +94,8 @@ def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
-    print("Unknown remediation type '%s'" % remediation_type)
+    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
+                     % (remediation_type))
     sys.exit(1)
 
 
@@ -106,7 +107,8 @@ def is_supported_filename(remediation_type, filename):
     if remediation_type == 'bash':
         return filename.endswith('.sh')
 
-    print("Unknown remediation type '%s'" % remediation_type)
+    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
+                     % (remediation_type))
     sys.exit(1)
 
 
@@ -118,12 +120,14 @@ def get_populate_replacement(remediation_type, text):
     if remediation_type == 'bash':
         # Extract variable name
         varname = re.search('\npopulate (\S+)\n',
-            text, re.DOTALL).group(1)
+                            text, re.DOTALL).group(1)
         # Define fix text part to contribute to main fix text
         fixtextcontribution = '\n%s="' % varname
         return (varname, fixtextcontribution)
 
-    print("Unknown remediation type '%s'" % remediation_type)
+    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
+                     % (remediation_type))
+    sys.exit(1)
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """For those remediation scripts utilizing some of the internal SCAP
@@ -199,9 +203,11 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                     rfpatcomp = re.compile(rfpattern, re.DOTALL)
                     _, head, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
                 except ValueError:
-                    print("Processing fix.text for: %s rule" % fix.get('rule'))
-                    print("Unable to extract part of the fix.text after " +
-                          "inclusion of remediation functions. Aborting..")
+                    sys.stderr.write("Processing fix.text for: %s rule\n"
+                                     % fix.get('rule'))
+                    sys.stderr.write("Unable to extract part of the fix.text "
+                                     "after inclusion of remediation functions."
+                                     " Aborting..\n")
                     sys.exit(1)
                 # If the 'tail' is not empty, make it new fix.text.
                 # Otherwise use ''
@@ -211,9 +217,10 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 # Perform sanity check on new 'fixparts' list content (to continue
                 # successfully 'fixparts' has to contain even count of elements)
                 if len(fixparts) % 2 != 0:
-                    print("Error performing XCCDF expansion on remediation " +
-                          "script: %s" % fix.get('rule'))
-                    print("Invalid count of elements. Exiting")
+                    sys.stderr.write("Error performing XCCDF expansion on "
+                                     "remediation script: %s\n"
+                                     % fix.get("rule"))
+                    sys.stderr.write("Invalid count of elements. Exiting!\n")
                     sys.exit(1)
                 # Process remaining 'fixparts' elements in pairs
                 # First pair element is remediation function to be XCCDF expanded
@@ -297,17 +304,18 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             # for that function need to be present in the modified text of the fix
             # Otherwise something went wrong, thus exit with failure
             if f in modfixtext and funcxccdfsub not in modfixtext:
-                print("Error performing XCCDF <sub> substitution for function")
-                print("%s in %s fix.\nExiting..." % (f, fix.get("rule")))
+                sys.stderr.write("Error performing XCCDF <sub> substitution "
+                                 "for function %s in %s fix. Exiting...\n"
+                                 % (f, fix.get("rule")))
                 sys.exit(1)
     else:
-        print("Unknown remediation type '%s'" % remediation_type)
+        sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)
 
 
 def main():
     if len(sys.argv) < 2:
-        print "Provide a directory name, which contains the fixes."
+        sys.stderr.write("Provide a directory name which contains the fixes.\n")
         sys.exit(1)
 
     product = sys.argv[1]
@@ -397,10 +405,13 @@ def main():
                         # corresponding XCCDF <sub> elements
                         expand_xccdf_subs(fix, remediation_type, remediation_functions)
                 else:
-                    print("\nNotification: Removed the '%s' remediation script from merging as " \
-                        "the platform identifier in the script is missing!" % filename)
+                    sys.stderr.write("Notification: Removed '%s' remediation "
+                                     "script from merging. The platform "
+                                     "identifier in the script is missing!\n"
+                                     % (filename))
 
-    sys.stderr.write("\nNotification: Merged %d remediation scripts into XML document.\n" % included_fixes_count)
+    sys.stderr.write("Notification: Merged %d remediation scripts.\n"
+                     % included_fixes_count)
     tree = etree.ElementTree(fixcontent)
     tree.write(output, pretty_print=True)
 
