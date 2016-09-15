@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 import datetime
 import lxml.etree as ET
@@ -7,11 +7,19 @@ import os.path
 import platform
 import re
 import sys
-from sets import Set
-
 from copy import deepcopy
 
-from ConfigParser import SafeConfigParser
+try:
+    set
+except NameError:
+    # for python2
+    from sets import Set as set
+
+try:
+    from configparser import SafeConfigParser
+except ImportError:
+    # for python2
+    from ConfigParser import SafeConfigParser
 
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
@@ -243,7 +251,7 @@ def checks(product, oval_dirs):
     body = ""
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1] # earlier directory has higher priority
-    already_loaded = Set()
+    already_loaded = set()
 
     for oval_dir in reversed_dirs:
         # sort the files to make output deterministic
@@ -299,7 +307,7 @@ def main():
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
-    corrected_tree = ET.fromstring(header + body + footer)
+    corrected_tree = ET.fromstring((header + body + footer).encode("utf-8"))
     tree = add_platforms(corrected_tree, multi_platform)
     definitions = ET.Element("definitions")
     tests = ET.Element("tests")
@@ -321,7 +329,7 @@ def main():
         if childnode.tag.endswith("_variable"):
             append(variables, childnode)
 
-    tree = ET.fromstring(header + footer)
+    tree = ET.fromstring((header + footer).encode("utf-8"))
     tree.append(definitions)
     tree.append(tests)
     tree.append(objects)
