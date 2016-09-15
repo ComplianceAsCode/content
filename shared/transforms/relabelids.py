@@ -116,37 +116,45 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
     # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
     # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
 
-
-    xccdfrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
-    for rule in xccdfrules:
+    for rule in xccdftree.findall(".//{%s}Rule" % xccdf_ns):
         xccdfid = rule.get("id")
-        if xccdfid is not None:
-            # Search OVAL ID in OVAL document
-            ovalid = ovaltree.find(".//{%s}definition[@id=\"%s\"]" % (oval_ns, xccdfid))
-            if ovalid is None:
-                # Search same ID in XCCDF document
-                check = rule.find(".//{%s}check[@system=\"%s\"]" % (xccdf_ns, oval_ns))
-                # Skip XCCDF rules not referencing OVAL checks
-                if check is not None:
-                    checkcontentref = check.find(".//{%s}check-content-ref" % xccdf_ns)
-                    if checkcontentref is not None:
-                        try:
-                            checkcontentref_hrefattr = checkcontentref.get('href')
-                        except KeyError:
-                            # @href attribute of <check-content-ref> is required by XCCDF standard
-                            print("\nError: Invalid OVAL <check-content-ref> detected! Exiting..")
-                            sys.exit(1)
+        if xccdfid is None:
+            # TODO: We probably should issue a warning here or even error..
+            continue
 
-                        # Skip remote OVAL (should cover both 'http://' and 'https://' cases)
-                        if checkcontentref_hrefattr.startswith('http'):
-                            continue
+        # Search OVAL ID in OVAL document
+        ovalid = ovaltree.find(".//{%s}definition[@id=\"%s\"]" % (oval_ns, xccdfid))
+        if ovalid is not None:
+            # The OVAL check was found, we can continue
+            continue
 
-                        # For local OVAL drop the reference to OVAL definition from XCCDF document
-                        # in the case:
-                        # * OVAL definition is referenced from XCCDF file,
-                        # * But not defined in OVAL file
-                        print("Removing <check-content> OVAL element for %s." % xccdfid)
-                        rule.remove(check)
+        # Search same ID in XCCDF document
+        check = rule.find(".//{%s}check[@system=\"%s\"]" % (xccdf_ns, oval_ns))
+        if check is None:
+            # Skip XCCDF rules not referencing OVAL checks
+            continue
+
+        checkcontentref = check.find(".//{%s}check-content-ref" % xccdf_ns)
+        if checkcontentref is None:
+            continue
+
+        try:
+            checkcontentref_hrefattr = checkcontentref.get('href')
+        except KeyError:
+            # @href attribute of <check-content-ref> is required by XCCDF standard
+            print("\nError: Invalid OVAL <check-content-ref> detected! Exiting..")
+            sys.exit(1)
+
+        # Skip remote OVAL (should cover both 'http://' and 'https://' cases)
+        if checkcontentref_hrefattr.startswith('http'):
+            continue
+
+        # For local OVAL drop the reference to OVAL definition from XCCDF document
+        # in the case:
+        # * OVAL definition is referenced from XCCDF file,
+        # * But not defined in OVAL file
+        print("Removing <check-content> OVAL element for %s." % xccdfid)
+        rule.remove(check)
 
 
 def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):
