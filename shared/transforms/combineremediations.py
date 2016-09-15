@@ -27,7 +27,7 @@ def fix_is_applicable_for_product(platform, product):
 
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
-    result = None
+    result = False
     for mp in multi_platforms:
         if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
             result = True
