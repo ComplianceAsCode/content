@@ -19,12 +19,11 @@ def fix_is_applicable_for_product(platform, product):
     """Based on the platform dict specifier of the remediation script to determine if this
     remediation script is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
-    product_name = ''
     product, product_version = parse_product_name(product)
 
     # Define general platforms
     multi_platforms = ['multi_platform_all',
-                       'multi_platform_' + product ]
+                       'multi_platform_' + product]
 
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
@@ -33,6 +32,7 @@ def fix_is_applicable_for_product(platform, product):
         if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
             result = True
 
+    product_name = ""
     # Get official name for product
     if product_version is not None:
         product_name = map_product(product) + ' ' + product_version
