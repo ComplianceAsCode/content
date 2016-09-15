@@ -3,7 +3,6 @@
 import re
 import sys
 import os
-import idtranslate
 import lxml.etree as ET
 
 try:
@@ -11,6 +10,12 @@ try:
 except ImportError:
     # for python2
     from ConfigParser import SafeConfigParser
+
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import idtranslate_module as idtranslate
 
 # This script requires two arguments: an "unlinked" XCCDF file and an ID name
 # scheme. This script is designed to convert and synchronize check IDs
