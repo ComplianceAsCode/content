@@ -1,10 +1,16 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 import re
 import sys
 import os
 import idtranslate
 import lxml.etree as ET
+
+try:
+    from configparser import SafeConfigParser
+except ImportError:
+    # for python2
+    from ConfigParser import SafeConfigParser
 
 # This script requires two arguments: an "unlinked" XCCDF file and an ID name
 # scheme. This script is designed to convert and synchronize check IDs
