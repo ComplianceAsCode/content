@@ -240,13 +240,14 @@ def checks(product, oval_dirs):
        oval_dirs: list of directory with oval files (later has higher priority)
        Return: The document body"""
 
-    body = []
+    body = ""
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1] # earlier directory has higher priority
     already_loaded = Set()
 
     for oval_dir in reversed_dirs:
-        for filename in os.listdir(oval_dir):
+        # sort the files to make output deterministic
+        for filename in sorted(os.listdir(oval_dir)):
             if filename.endswith(".xml"):
 
                 # skip file if we already have one with better priority
@@ -256,15 +257,14 @@ def checks(product, oval_dirs):
                 with open(os.path.join(oval_dir, filename), 'r') as xml_file:
                     xml_content = xml_file.read()
                     if check_is_applicable_for_product(xml_content, product):
-                        body.append(xml_content)
+                        body += xml_content
                         included_checks_count += 1
                         already_loaded.add(filename)
 
-    body.sort() # make output deterministic ~ not based on inode position
+    sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL "
+                     "document.\n" % included_checks_count)
 
-    sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL document.\n" % included_checks_count)
-
-    return "".join(body)
+    return body
 
 
 def main():
