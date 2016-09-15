@@ -54,23 +54,30 @@ def get_available_remediation_functions():
     file to obtain the list of currently known SCAP Security Guide internal
     remediation functions"""
 
-    remediation_functions = []
     # Determine the relative path to the "/shared" directory
     shared_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-    # Default location of XML file with definitions of remediation functions
-    xmlfilepath = ''
     # If location of /shared directory is known
-    if shared_dir is not None:
-        # Construct the final path of XML file with remediation functions
-        xmlfilepath = shared_dir + '/xccdf/remediation_functions.xml'
-    if xmlfilepath == '':
-        print("Error determinining location of XML file with definitions of remediation functions")
+    if shared_dir is None or not os.path.isdir(shared_dir):
+        print("Error determinining SSG shared directory location. Tried '%s'."
+              % (shared_dir))
         sys.exit(1)
 
+    # Construct the final path of XML file with remediation functions
+    xmlfilepath = \
+        os.path.join(shared_dir, "xccdf", "remediation_functions.xml")
+
+    if not os.path.isfile(xmlfilepath):
+        print("Expected '%s' to contain the remediation functions. The file "
+              "was not found!" % (xmlfilepath))
+        sys.exit(1)
+
+    remediation_functions = []
     with open(xmlfilepath) as xmlfile:
         filestring = xmlfile.read()
-        remediation_functions = re.findall('(?:^|\n)<Value id=\"function_(\S+)\"', filestring, re.DOTALL)
+        remediation_functions = re.findall(
+            '(?:^|\n)<Value id=\"function_(\S+)\"', filestring, re.DOTALL
+        )
 
     return remediation_functions
 
