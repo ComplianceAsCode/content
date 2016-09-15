@@ -165,7 +165,8 @@ def main():
                 if refovalfilefound:
                     break                     # break from the outer for loop
 
-            shared_dir = os.getenv("SHARED")
+            shared_dir = \
+                os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
             if shared_dir is not None:
                 for dirpath, dirnames, filenames in os.walk(shared_dir, topdown=True):
                     # Case when referenced OVAL file exists
