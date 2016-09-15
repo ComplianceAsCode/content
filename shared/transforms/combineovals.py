@@ -177,8 +177,7 @@ def oval_entity_is_extvar(elem):
        <external_variable> element
        Return: True if <external_variable>, False otherwise"""
 
-    if elem.tag == '{%s}external_variable' % oval_ns: return True
-    return False
+    return elem.tag == '{%s}external_variable' % oval_ns
 
 
 def append(element, newchild):
