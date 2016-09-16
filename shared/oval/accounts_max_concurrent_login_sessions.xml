@@ -12,7 +12,10 @@
     </metadata>
     <criteria operator="OR">
       <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins" />
-      <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.conf" test_ref="test_maxlogins" />
+      <criteria operator="AND">
+	  <criterion comment="the value maxlogins should not be set at all in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins_exists" negate="true" />
+	  <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.conf" test_ref="test_maxlogins" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -24,6 +27,10 @@
   <ind:textfilecontent54_test check="all" comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" id="test_limitsd_maxlogins" version="1">
     <ind:object object_ref="object_etc_security_limitsd_conf_maxlogins" />
     <ind:state state_ref="state_maxlogins" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" id="test_limitsd_maxlogins_exists" version="1">
+    <ind:object object_ref="object_etc_security_limitsd_conf_maxlogins_exists" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_etc_security_limits_conf_maxlogins" version="1">
@@ -42,6 +49,13 @@
   <ind:textfilecontent54_state id="state_maxlogins" version="1">
     <ind:subexpression operation="less than or equal" var_ref="var_accounts_max_concurrent_login_sessions" datatype="int" />
   </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_object id="object_etc_security_limitsd_conf_maxlogins_exists" version="1">
+    <ind:path>/etc/security/limits.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*\*[\s]+(?:(?:hard)|(?:-))[\s]+maxlogins</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
   <external_variable comment="maximum number of concurrent logins per user" datatype="int" id="var_accounts_max_concurrent_login_sessions" version="1" />
 
