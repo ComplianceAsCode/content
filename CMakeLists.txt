@@ -9,6 +9,7 @@ set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 31)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
+option(SSG_CHROMIUM_CONTENT_ENABLED "If enabled, the Chromium SCAP content will be built" TRUE)
 option(SSG_FEDORA_CONTENT_ENABLED "If enabled, the Fedora SCAP content will be built" TRUE)
 option(SSG_RHEL5_CONTENT_ENABLED "If enabled, the RHEL6 SCAP content will be built" TRUE)
 option(SSG_RHEL6_CONTENT_ENABLED "If enabled, the RHEL6 SCAP content will be built" TRUE)
@@ -68,6 +69,9 @@ add_custom_command(
 )
 add_custom_target(validate)
 
+if (SSG_CHROMIUM_CONTENT_ENABLED)
+    add_subdirectory("Chromium")
+endif()
 if (SSG_FEDORA_CONTENT_ENABLED)
     add_subdirectory("Fedora")
 endif()
