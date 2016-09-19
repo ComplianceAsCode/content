@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 import sys
 import os
@@ -10,7 +10,7 @@ import lxml.etree as etree
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
-from map_product_module import map_product
+from map_product_module import map_product, parse_product_name
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -19,24 +19,20 @@ def fix_is_applicable_for_product(platform, product):
     """Based on the platform dict specifier of the remediation script to determine if this
     remediation script is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
-    product_name = ''
-    product_version = None
-    result = None
-    match = re.search(r'\d+$', product)
-    if match is not None:
-        product_version = product[-1:]
-        product = product[:-1]
+    product, product_version = parse_product_name(product)
 
     # Define general platforms
     multi_platforms = ['multi_platform_all',
-                       'multi_platform_' + product ]
+                       'multi_platform_' + product]
 
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
+    result = False
     for mp in multi_platforms:
         if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
             result = True
 
+    product_name = ""
     # Get official name for product
     if product_version is not None:
         product_name = map_product(product) + ' ' + product_version
@@ -58,22 +54,30 @@ def get_available_remediation_functions():
     file to obtain the list of currently known SCAP Security Guide internal
     remediation functions"""
 
-    remediation_functions = []
     # Determine the relative path to the "/shared" directory
-    shared_dir = os.getenv("SHARED")
-    # Default location of XML file with definitions of remediation functions
-    xmlfilepath = ''
+    shared_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
     # If location of /shared directory is known
-    if shared_dir is not None:
-        # Construct the final path of XML file with remediation functions
-        xmlfilepath = shared_dir + '/xccdf/remediation_functions.xml'
-    if xmlfilepath == '':
-        print("Error determinining location of XML file with definitions of remediation functions")
+    if shared_dir is None or not os.path.isdir(shared_dir):
+        sys.stderr.write("Error determinining SSG shared directory location. "
+                         "Tried '%s'.\n" % (shared_dir))
         sys.exit(1)
 
+    # Construct the final path of XML file with remediation functions
+    xmlfilepath = \
+        os.path.join(shared_dir, "xccdf", "remediation_functions.xml")
+
+    if not os.path.isfile(xmlfilepath):
+        sys.stderr.write("Expected '%s' to contain the remediation functions. "
+                         "The file was not found!\n" % (xmlfilepath))
+        sys.exit(1)
+
+    remediation_functions = []
     with open(xmlfilepath) as xmlfile:
         filestring = xmlfile.read()
-        remediation_functions = re.findall('(?:^|\n)<Value id=\"function_(\S+)\"', filestring, re.DOTALL)
+        remediation_functions = re.findall(
+            '(?:^|\n)<Value id=\"function_(\S+)\"', filestring, re.DOTALL
+        )
 
     return remediation_functions
 
@@ -90,7 +94,8 @@ def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
-    print("Unknown remediation type '%s'" % remediation_type)
+    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
+                     % (remediation_type))
     sys.exit(1)
 
 
@@ -102,7 +107,8 @@ def is_supported_filename(remediation_type, filename):
     if remediation_type == 'bash':
         return filename.endswith('.sh')
 
-    print("Unknown remediation type '%s'" % remediation_type)
+    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
+                     % (remediation_type))
     sys.exit(1)
 
 
@@ -114,12 +120,14 @@ def get_populate_replacement(remediation_type, text):
     if remediation_type == 'bash':
         # Extract variable name
         varname = re.search('\npopulate (\S+)\n',
-            text, re.DOTALL).group(1)
+                            text, re.DOTALL).group(1)
         # Define fix text part to contribute to main fix text
         fixtextcontribution = '\n%s="' % varname
         return (varname, fixtextcontribution)
 
-    print("Unknown remediation type '%s'" % remediation_type)
+    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
+                     % (remediation_type))
+    sys.exit(1)
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """For those remediation scripts utilizing some of the internal SCAP
@@ -195,9 +203,11 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                     rfpatcomp = re.compile(rfpattern, re.DOTALL)
                     _, head, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
                 except ValueError:
-                    print("Processing fix.text for: %s rule" % fix.get('rule'))
-                    print("Unable to extract part of the fix.text after " +
-                          "inclusion of remediation functions. Aborting..")
+                    sys.stderr.write("Processing fix.text for: %s rule\n"
+                                     % fix.get('rule'))
+                    sys.stderr.write("Unable to extract part of the fix.text "
+                                     "after inclusion of remediation functions."
+                                     " Aborting..\n")
                     sys.exit(1)
                 # If the 'tail' is not empty, make it new fix.text.
                 # Otherwise use ''
@@ -207,9 +217,10 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 # Perform sanity check on new 'fixparts' list content (to continue
                 # successfully 'fixparts' has to contain even count of elements)
                 if len(fixparts) % 2 != 0:
-                    print("Error performing XCCDF expansion on remediation " +
-                          "script: %s" % fix.get('rule'))
-                    print("Invalid count of elements. Exiting")
+                    sys.stderr.write("Error performing XCCDF expansion on "
+                                     "remediation script: %s\n"
+                                     % fix.get("rule"))
+                    sys.stderr.write("Invalid count of elements. Exiting!\n")
                     sys.exit(1)
                 # Process remaining 'fixparts' elements in pairs
                 # First pair element is remediation function to be XCCDF expanded
@@ -293,24 +304,19 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             # for that function need to be present in the modified text of the fix
             # Otherwise something went wrong, thus exit with failure
             if f in modfixtext and funcxccdfsub not in modfixtext:
-                print("Error performing XCCDF <sub> substitution for function")
-                print("%s in %s fix.\nExiting..." % (f, fix.get("rule")))
+                sys.stderr.write("Error performing XCCDF <sub> substitution "
+                                 "for function %s in %s fix. Exiting...\n"
+                                 % (f, fix.get("rule")))
                 sys.exit(1)
     else:
-        print("Unknown remediation type '%s'" % remediation_type)
+        sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)
 
 
 def main():
     if len(sys.argv) < 2:
-        print "Provide a directory name, which contains the fixes."
+        sys.stderr.write("Provide a directory name which contains the fixes.\n")
         sys.exit(1)
-
-    complexity = None
-    disruption = None
-    reboot = None
-    script_platform = None
-    strategy = None
 
     product = sys.argv[1]
     output = sys.argv[-1]
@@ -353,6 +359,12 @@ def main():
                     else:
                         mod_file += line
 
+                complexity = None
+                disruption = None
+                reboot = None
+                script_platform = None
+                strategy = None
+
                 if 'complexity' in config:
                     complexity = config['complexity']
                 if 'disruption' in config:
@@ -393,10 +405,12 @@ def main():
                         # corresponding XCCDF <sub> elements
                         expand_xccdf_subs(fix, remediation_type, remediation_functions)
                 else:
-                    print("\nNotification: Removed the '%s' remediation script from merging as " \
-                        "the platform identifier in the script is missing!" % filename)
+                    sys.stderr.write("Skipping '%s' remediation script. "
+                                     "The platform identifier in the script is "
+                                     "missing!\n" % (filename))
 
-    sys.stderr.write("\nNotification: Merged %d remediation scripts into XML document.\n" % included_fixes_count)
+    sys.stderr.write("Merged %d remediation scripts.\n"
+                     % (included_fixes_count))
     tree = etree.ElementTree(fixcontent)
     tree.write(output, pretty_print=True)
 

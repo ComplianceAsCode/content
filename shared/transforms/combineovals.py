@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 import datetime
 import lxml.etree as ET
@@ -7,17 +7,25 @@ import os.path
 import platform
 import re
 import sys
-from sets import Set
-
 from copy import deepcopy
 
-from ConfigParser import SafeConfigParser
+try:
+    set
+except NameError:
+    # for python2
+    from sets import Set as set
+
+try:
+    from configparser import SafeConfigParser
+except ImportError:
+    # for python2
+    from ConfigParser import SafeConfigParser
 
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
-from map_product_module import map_product
+from map_product_module import map_product, parse_product_name
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
@@ -66,7 +74,8 @@ def parse_conf_file(conf_file, product):
                 multi_platform[name] = [item for item in setting.split(",")]
 
     if oval_version is None:
-        print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
+        sys.stderr.write("ERROR! The setting returned a value of \'%s\'!\n"
+                         % oval_version)
         sys.exit(1)
 
     return oval_version, multi_platform
@@ -77,11 +86,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     OVAL check is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
 
-    product_version = None
-    match = re.search(r'\d+$', product)
-    if match is not None:
-        product_version = product[-1:]
-        product = product[:-1]
+    product, product_version = parse_product_name(product)
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',
@@ -181,8 +186,7 @@ def oval_entity_is_extvar(elem):
        <external_variable> element
        Return: True if <external_variable>, False otherwise"""
 
-    if elem.tag == '{%s}external_variable' % oval_ns: return True
-    return False
+    return elem.tag == '{%s}external_variable' % oval_ns
 
 
 def append(element, newchild):
@@ -207,13 +211,12 @@ def append(element, newchild):
                 # If OVAL entity is identical, but not external_variable, the
                 # implementation should be rewritten each entity to be present
                 # just once
-                sys.stderr.write("\nNotification: this ID is used more than " +
-                                 "once and should represent equivalent " +
-                                 "elements: %s \n" % newid)
-                sys.stderr.write("Rewrite the corresponding OVAL checks by " +
-                                 "placing the identical IDs into its own " +
-                                 "definition, and extend this definition " +
-                                 "on necessary places.\n")
+                sys.stderr.write("WARNING: OVAL ID '%s' is used multiple times "
+                                 "and should represent the same elements.\n"
+                                 % (newid))
+                sys.stderr.write("Rewrite the OVAL checks. Place the identical "
+                                 "IDs into their own definition and extend "
+                                 "this definition by it.\n")
         # ID is identical, but OVAL entities are semantically difference =>
         # report and error and exit with failure
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1275
@@ -227,7 +230,7 @@ def append(element, newchild):
                 # See
                 #   https://github.com/OpenSCAP/scap-security-guide/issues/1275
                 # for a reproducer and what could happen in this case
-                sys.stderr.write("\nError: it's not possible to use the " +
+                sys.stderr.write("ERROR: it's not possible to use the " +
                                  "same ID: %s " % newid + "for two " +
                                  "semantically different OVAL entities:\n")
                 sys.stderr.write("First entity  %s\n" % ET.tostring(existing))
@@ -244,13 +247,14 @@ def checks(product, oval_dirs):
        oval_dirs: list of directory with oval files (later has higher priority)
        Return: The document body"""
 
-    body = []
+    body = ""
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1] # earlier directory has higher priority
-    already_loaded = Set()
+    already_loaded = set()
 
     for oval_dir in reversed_dirs:
-        for filename in os.listdir(oval_dir):
+        # sort the files to make output deterministic
+        for filename in sorted(os.listdir(oval_dir)):
             if filename.endswith(".xml"):
 
                 # skip file if we already have one with better priority
@@ -260,21 +264,20 @@ def checks(product, oval_dirs):
                 with open(os.path.join(oval_dir, filename), 'r') as xml_file:
                     xml_content = xml_file.read()
                     if check_is_applicable_for_product(xml_content, product):
-                        body.append(xml_content)
+                        body += xml_content
                         included_checks_count += 1
                         already_loaded.add(filename)
 
-    body.sort() # make output deterministic ~ not based on inode position
+    sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
-    sys.stderr.write("\nNotification: Merged %d OVAL checks into OVAL document.\n" % included_checks_count)
-
-    return "".join(body)
+    return body
 
 
 def main():
     if len(sys.argv) < 4:
-        print "Provide a directory names, which contains the checks."
-        print "Later directory has higher priority"
+        sys.stderr.write("Provide a directory names, which contains the "
+                         "checks.\n")
+        sys.stderr.write("Later directory has higher priority\n")
         sys.exit(1)
 
     # Get header with schema version
@@ -294,14 +297,15 @@ def main():
             oval_schema_version = config_oval_schema_version
         header = _header(oval_schema_version)
     else:
-        print 'The directory specified does not contain the %s file!' % conf_file
+        sys.stderr.write("The directory specified does not contain the %s "
+                         "file!\n" % (conf_file))
         sys.exit(1)
 
     body = checks(product, oval_dirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
-    corrected_tree = ET.fromstring(header + body + footer)
+    corrected_tree = ET.fromstring((header + body + footer).encode("utf-8"))
     tree = add_platforms(corrected_tree, multi_platform)
     definitions = ET.Element("definitions")
     tests = ET.Element("tests")
@@ -323,7 +327,7 @@ def main():
         if childnode.tag.endswith("_variable"):
             append(variables, childnode)
 
-    tree = ET.fromstring(header + footer)
+    tree = ET.fromstring((header + footer).encode("utf-8"))
     tree.append(definitions)
     tree.append(tests)
     tree.append(objects)

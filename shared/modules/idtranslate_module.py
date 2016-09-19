@@ -2,7 +2,6 @@
 names to IDs in the formats required by the SCAP checking systems, such as
 OVAL and OCIL."""
 
-import ConfigParser
 import sys
 import lxml.etree as ET
 

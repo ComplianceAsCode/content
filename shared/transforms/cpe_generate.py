@@ -3,8 +3,13 @@
 import fnmatch
 import sys
 import os
-import idtranslate
 import lxml.etree as ET
+
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import idtranslate_module as idtranslate
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
 # It is designed to extract any inventory definitions and the tests, states,
@@ -160,7 +165,8 @@ def main():
                 if refovalfilefound:
                     break                     # break from the outer for loop
 
-            shared_dir = os.getenv("SHARED")
+            shared_dir = \
+                os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
             if shared_dir is not None:
                 for dirpath, dirnames, filenames in os.walk(shared_dir, topdown=True):
                     # Case when referenced OVAL file exists
