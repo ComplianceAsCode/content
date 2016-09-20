@@ -1,4 +1,8 @@
 # platform = multi_platform_rhel, multi_platform_fedora
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
 - name: Ensure kernel module 'KERNMODULE' is disabled
   lineinfile:
     create=yes
