@@ -301,3 +301,53 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(validate ${PRODUCT}-validate)
 endmacro()
+
+macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
+        COMMAND ${SSG_SHARED_UTILS}/enable-derivatives.py --enable-${SHORTNAME} -i ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml -o ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml
+        DEPENDS ${SSG_SHARED_UTILS}/enable-derivatives.py
+        COMMENT "[${DERIVATIVE}] generating ssg-${DERIVATIVE}-xccdf.xml"
+    )
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml
+        COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
+        COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
+        COMMENT "[${DERIVATIVE}] validating ssg-${DERIVATIVE}-xccdf.xml"
+    )
+
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
+        COMMAND ${SSG_SHARED_UTILS}/enable-derivatives.py --enable-${SHORTNAME} -i ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml -o ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml
+        DEPENDS ${SSG_SHARED_UTILS}/enable-derivatives.py
+        COMMENT "[${DERIVATIVE}] generating ssg-${DERIVATIVE}-ds.xml"
+    )
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml
+        COMMAND ${OSCAP_EXECUTABLE} ds sds-validate ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
+        COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
+        COMMENT "[${DERIVATIVE}] validating ssg-${DERIVATIVE}-ds.xml"
+    )
+
+    ssg_build_html_guides(${DERIVATIVE})
+
+    add_custom_target(
+        ${DERIVATIVE} ALL
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
+        # We use the original product's OVAL
+        #DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-oval.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-guide-index.html
+    )
+    add_custom_target(
+        ${DERIVATIVE}-validate
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml
+        COMMENT "[${DERIVATIVE}] validating outputs"
+    )
+    add_dependencies(validate ${DERIVATIVE}-validate)
+endmacro()

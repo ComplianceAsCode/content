@@ -16,6 +16,9 @@ option(SSG_RHEL6_CONTENT_ENABLED "If enabled, the RHEL6 SCAP content will be bui
 option(SSG_RHEL7_CONTENT_ENABLED "If enabled, the RHEL7 SCAP content will be built" TRUE)
 option(SSG_WRLINUX_CONTENT_ENABLED "If enabled, the WRLinux SCAP content will be built" TRUE)
 
+option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
+option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
+
 message("SCAP Security Guide ${SSG_VERSION}")
 message("")
 
