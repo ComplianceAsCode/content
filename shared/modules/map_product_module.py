@@ -54,8 +54,6 @@ def map_product(version):
         product_name = FUSE
     if re.findall('opensuse', version):
         product_name = OPENSUSE
-    if re.findall('suse', version):
-        product_name = SUSE
     if re.findall('sle', version):
         product_name = SUSE
     if re.findall('wrlinux', version):
