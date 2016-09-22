@@ -155,6 +155,7 @@ $(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $
 		-stringparam bash_remediations "$(realpath $(OUT)/bash-remediations.xml)" \
 		-stringparam ansible_remediations "$(realpath $(OUT)/ansible-remediations.xml)" \
 		-o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $(OUT)/xccdf-unlinked-ocilrefs.xml
+	xsltproc -o $@ $(SHARED)/$(TRANS)/xccdf-addcce-remediations.xslt $@
 	xmllint --format --output $@ $@
 
 # Common build targets - OVAL files
