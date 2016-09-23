@@ -18,11 +18,14 @@ WRLINUX = 'Wind River Linux'
 
 def parse_product_name(product):
     product_version = None
-    r = re.compile("([a-zA-Z]+)([0-9]+)")
+    r = re.compile("([a-zA-Z\-]+)([0-9]+)")
     match = r.match(product)
+
     if match is not None:
-        product_version = match.group(2)
-        product = match.group(1)
+         if isinstance(match.group(1), str) or isinstance(match.group(1), unicode):
+             product = match.group(1)
+         if match.group(2).isdigit():
+             product_version = match.group(2)
 
     return product, product_version
 
