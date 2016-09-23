@@ -4574,7 +4574,7 @@ If any accounts other than root have a UID of “0”, this is a finding.</check
 
 Check the owner of all files and directories with the following command:
 
-# find / -fstype local -xdev -nouser
+# find / -xdev -fstype local -nouser
 
 If any files on the system do not have an assigned owner, this is a finding.</check-content>
       </check>
@@ -4598,7 +4598,7 @@ If any files on the system do not have an assigned owner, this is a finding.</ch
 
 Check the owner of all files and directories with the following command:
 
-# find / -fstype local -xdev -nogroup
+# find / -xdev -fstype local -nogroup
 
 If any files on the system do not have an assigned group, this is a finding.</check-content>
       </check>
