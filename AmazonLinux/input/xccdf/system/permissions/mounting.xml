@@ -1,0 +1,35 @@
+<Group id="mounting">
+<title>Restrict Dynamic Mounting and Unmounting of
+Filesystems</title>
+<description>
+Linux includes a number of facilities for the automated addition and removal of filesystems on a running system.
+These facilities may be necessary in many environments, but this capability also carries some risk -- whether direct risk from allowing users to introduce arbitrary filesystems, or risk that software flaws in the automated mount facility itself could allow an attacker to compromise the system.
+<br/><br/>
+This command can be used to list the types of filesystems that are available to the currently executing kernel:
+<pre>$ find /lib/modules/`uname -r`/kernel/fs -type f -name '*.ko'</pre>
+If these filesystems are not required then they can be explicitly disabled in a configuratio file in  <tt>/etc/modprobe.d</tt>.
+</description>
+
+<Rule id="service_autofs_disabled" severity="medium">
+<title>Disable the Automounter</title>
+<description>
+The <tt>autofs</tt> daemon mounts and unmounts filesystems, such as user home directories shared via NFS, on demand.
+In addition, autofs can be used to handle removable media, and the default configuration provides the cdrom device as <tt>/misc/cd</tt>.
+However, this method of providing access to removable media is not common, so autofs can almost always be disabled if NFS is not in use.
+Even if NFS is required, it may be possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt> rather than relying on the automounter.
+<br/><br/>
+<systemd-service-macro enable="false" service="autofs" />
+</description>
+<ocil>
+<systemd-check-macro enable="false" service="autofs" />
+</ocil>
+<rationale>Disabling the automounter permits the administrator to
+statically control filesystem mounting through <tt>/etc/fstab</tt>.
+<br/><br/>
+Additionally, automatically mounting filesystems permits easy introduction of
+unknown devices, thereby facilitating malicious activity.
+</rationale>
+<oval id="service_autofs_disabled" />
+</Rule>
+
+</Group>

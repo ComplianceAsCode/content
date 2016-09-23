@@ -14,6 +14,7 @@ FUSE = 'JBoss Fuse'
 OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
+AMZNLINUX = 'Amazon Linux'
 
 
 def parse_product_name(product):

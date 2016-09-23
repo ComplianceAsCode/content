@@ -1,0 +1,37 @@
+<Profile id="basic-embedded">
+<title>Basic Profile for DoD Systems</title>
+<description>
+This profile contains items common to many embedded Linux installations.
+Regardless of your system's deployment objective, all of these checks should pass.
+</description>
+
+<refine-value idref="sshd_idle_timeout_value" selector="10_minutes" />
+<refine-value idref="var_accounts_fail_delay" selector="4" />
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="604800" />
+<refine-value idref="var_accounts_user_umask" selector="077"/>
+<refine-value idref="var_auditd_action_mail_acct" selector="root" />
+<refine-value idref="var_auditd_max_log_file_action" selector="rotate" />
+<refine-value idref="var_auditd_num_logs" selector="5" />
+<refine-value idref="var_auditd_space_left_action" selector="email" />
+<refine-value idref="var_selinux_state" selector="enforcing" />
+<refine-value idref="var_selinux_policy_name" selector="targeted" />
+
+<!-- Sample Account Rules -->
+<select idref="accounts_logon_fail_delay" selected="true" />
+<select idref="accounts_max_concurrent_login_sessions" selected="true" />
+<select idref="accounts_no_uid_except_zero" selected="true" />
+<select idref="accounts_password_all_shadowed" selected="true" />
+<select idref="accounts_root_path_dirs_no_write" selected="true" />
+
+<!-- Sample File Perm Rules -->
+<select idref="userowner_shadow_file" selected="true" />
+<select idref="groupowner_shadow_file" selected="true" />
+<select idref="file_permissions_etc_shadow" selected="true" />
+
+<!-- Sample SELinux Rules -->
+<select idref="enable_selinux_bootloader" selected="true" />
+<select idref="selinux_state" selected="true" />
+<select idref="selinux_policytype" selected="true" />
+
+</Profile>
