@@ -29,7 +29,7 @@ def fix_is_applicable_for_product(platform, product):
     # 'multi_platform_' + product
     result = False
     for mp in multi_platforms:
-        if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
+        if mp in platform and product in ['rhel', 'fedora', 'wrlinux', 'amznlinux']:
             result = True
 
     product_name = ""

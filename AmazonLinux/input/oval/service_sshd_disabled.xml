@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="service_sshd_disabled" version="1">
+    <metadata>
+      <title>Service sshd Disabled</title>
+      <affected family="unix">
+        <platform>multi_platform_wrlinux</platform>
+      </affected>
+      <description>The sshd service should be disabled.</description>
+    </metadata>
+    <criteria comment="package openssh-server removed or service sshd is not configured to start" operator="OR">
+      <criterion comment="sshd disabled in multi-user.target" test_ref="test_sshd_disabled_multi_user_target" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist"
+   comment="look for sshd.service in /etc/systemd/system/multi-user.target.wants"
+   id="test_sshd_disabled_multi_user_target" version="1">
+
+    <unix:object object_ref="object_sshd_disabled_multi_user_target" />
+  </unix:file_test>
+
+  <unix:file_object comment="look for sshd.service in /etc/systemd/system/multi-user.target.wants"
+   id="object_sshd_disabled_multi_user_target" version="1">
+
+    <unix:filepath>/etc/systemd/system/multi-user.target.wants/sshd.service</unix:filepath>
+    <filter action="include">state_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+</def-group>
