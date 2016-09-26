@@ -2,7 +2,7 @@
 
 ## From source
 
-1. On Red Hat Enterprise Linux and Fedora make sure the packages `openscap-utils`, `openscap-python`, and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`. 
+1. On Red Hat Enterprise Linux and Fedora make sure the packages `openscap-utils`, `openscap-python`, and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
 
  `# yum -y install git openscap-utils openscap-python python-lxml`
 
@@ -14,45 +14,46 @@
 
  `# dnf -y install ShellCheck`
 
-2. Download the source code 
+2. Download the source code
 
  `$ git clone https://github.com/OpenSCAP/scap-security-guide.git`
 
-3. Build the source code  
-  * To build all the content:  
-  
-    `$ cd scap-security-guide/`  
-    `$ make`  
-
-  * To build an RPM for development/testing or non-official release use:  
-  
-    `$ cd scap-security-guide/`  
-    `$ make rpm` 
-
-  * To build an RPM for official release use:
+3. Build the source code
+  * To build all the content:
 
     `$ cd scap-security-guide/`
-    `$ make SSG_VERSION_IS_GIT_SNAPSHOT=no rpm` 
+    `$ cd build/`
+    `$ cmake ../`
+    `$ make -j 4`
 
-  * To build content only for a specific distribution:  
-  
-    `$ cd scap-security-guide/`  
-    `$ make rhel6`  
+  * To build content only for a specific distribution:
 
-      Or alternatively, content can be made within the sub-group (e.g. RHEL7, RHEL6):  
-  
-    `$ cd scap-security-guide/RHEL/6/`  
-    `$ make`  
+    `$ cd scap-security-guide/`
+    `$ cd build/`
+    `$ cmake ../`
+    `$ make -j4 rhel6`
 
-      
-  When the content has completed the build process, the built content exists in the distribution's `output` directory. For example:  
-  
-    `$ cd scap-security-guide/RHEL/6/output`  
-  
-4. Discover the following:  
- * A pretty prose guide **in rhel6-guide.html** containing practical, actionable information for administrators 
+  * Configure options before building
+
+    `$ cd scap-security-guide/`
+    `$ cd build/`
+    `$ cmake-gui ../`
+    `$ make -j4 rhel6`
+
+  When the build has completed, the output will be in the build folder.
+  That can be any folder you choose but if you followed the examples above
+  it will be the `scap-security-guide/build` folder.
+
+  The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
+  `ssg-rhel7-ds.xml` is the Red Hat Enterprise Linux 7 source datastream.
+
+  The human readable HTML guide index files will be called
+  `ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
+
+4. Discover the following:
+ * A pretty prose guide **in rhel6-guide.html** containing practical, actionable information for administrators
  * A concise spreadsheet representation (potentially useful as the basis for an SRTM document) in **rhel6-table-nistrefs-server.html**
- * Files that can be ingested by SCAP-compatible scanning tools, to enable automated checking:  
+ * Files that can be ingested by SCAP-compatible scanning tools, to enable automated checking:
     * **ssg-rhel6-xccdf.xml**
     * **ssg-rhel6-oval.xml**
     * **ssg-rhel6-ds.xml**
