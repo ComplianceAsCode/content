@@ -33,8 +33,8 @@
       </xsl:if>
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_os.xml'))" />
-      <xsl:apply-templates select="document('xccdf/system/system.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/services.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/system.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/services.xml'))" />
       <!-- the auxiliary Groups here will be removed prior to some outputs -->
       <xsl:apply-templates select="document('auxiliary/srg_support.xml')" />
       <xsl:apply-templates select="document('auxiliary/c2s_support.xml')" />
@@ -44,10 +44,10 @@
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/software/software.xml')" /> 
-      <xsl:apply-templates select="document('xccdf/system/permissions/permissions.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/software.xml'))" /> 
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/permissions.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/accounts.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/accounts.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
       <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />
@@ -69,7 +69,7 @@
   <xsl:template match="Group[@id='accounts']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions/restrictions.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/restrictions/restrictions.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/accounts/pam.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/session.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/physical.xml')" />

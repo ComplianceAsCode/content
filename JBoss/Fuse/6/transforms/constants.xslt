@@ -5,7 +5,7 @@
 <xsl:variable name="product_long_name">JBoss Fuse 6</xsl:variable>
 <xsl:variable name="product_short_name">Fuse 6</xsl:variable>
 <xsl:variable name="product_stig_id_name">FUSE_6_STIG</xsl:variable>
-<xsl:variable name="os_type">fuse6</xsl:variable>
+<xsl:variable name="prod_type">fuse6</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">Jboss-Fuse-6</xsl:variable>

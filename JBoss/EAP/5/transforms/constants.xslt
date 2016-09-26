@@ -5,7 +5,7 @@
 <xsl:variable name="product_long_name">JBoss EAP 5</xsl:variable>
 <xsl:variable name="product_short_name">EAP 5</xsl:variable>
 <xsl:variable name="product_stig_id_name">EAP_5_STIG</xsl:variable>
-<xsl:variable name="os_type">eap5</xsl:variable>
+<xsl:variable name="prod_type">eap5</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">Jboss-EAP-5</xsl:variable>
