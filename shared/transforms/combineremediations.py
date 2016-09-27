@@ -10,7 +10,7 @@ import lxml.etree as etree
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
-from map_product_module import map_product, parse_product_name
+from map_product_module import map_product, parse_product_name, multi_product_list
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -29,7 +29,7 @@ def fix_is_applicable_for_product(platform, product):
     # 'multi_platform_' + product
     result = False
     for mp in multi_platforms:
-        if mp in platform and product in ['rhel', 'fedora', 'wrlinux']:
+        if mp in platform and product in multi_product_list:
             result = True
 
     product_name = ""
