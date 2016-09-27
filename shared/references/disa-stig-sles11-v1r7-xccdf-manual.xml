@@ -6367,7 +6367,7 @@ Procedure:
 
 Check local initialization files for the configured umask value.
 Procedure: 
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep umask {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep umask {} \;
 
 If the system and user default umask is not 077, this a finding. 
 
@@ -12452,7 +12452,7 @@ Procedure:
 
 NOTE: This must be done in the BASH shell.
 
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep -l PATH {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep -l PATH {} \;
 This variable is formatted as a colon-separated list of directories. If there is an empty entry, such as a leading or trailing colon, or two consecutive colons, this is a finding. If an entry begins with a character other than a slash (/) this is a relative path, ask the SA or IAO if the relative path is required for the operation of a specific application. If it is not, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -15329,7 +15329,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Verify local initialization files have library search path containing only absolute paths.
 Procedure:
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep -H LD_LIBRARY_PATH {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep -H LD_LIBRARY_PATH {} \;
 This variable is formatted as a colon-separated list of directories. If there is an empty entry, such as a leading or trailing colon, or two consecutive colons, this is a finding. If an entry begins with a character other than a slash (/) this is a relative path, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -15356,7 +15356,7 @@ This variable is formatted as a colon-separated list of directories. If there is
 				<check-content>Verify local initialization files have library preload list containing only absolute paths.
 
 Procedure:
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep -H LD_PRELOAD {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep -H LD_PRELOAD {} \;
 This variable is formatted as a colon-separated list of paths. If there is an empty entry, such as a leading or trailing colon, or two consecutive colons, this is a finding. If an entry begins with a character other than a slash (/) this is a relative path, this is a finding.</check-content>
 			</check>
 		</Rule>

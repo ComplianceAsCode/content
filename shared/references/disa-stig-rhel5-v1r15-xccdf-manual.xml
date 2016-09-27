@@ -457,7 +457,7 @@ Procedure:
 
 Check local initialization files for the configured umask value.
 Procedure: 
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep umask {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep umask {} \;
 
 If the system and user default umask is not 077, this a finding. 
 
@@ -2624,7 +2624,7 @@ Procedure:
 
 NOTE: This must be done in the BASH shell.
 
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep -l PATH {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep -l PATH {} \;
 This variable is formatted as a colon-separated list of directories. 
 
 If there is an empty entry, such as a leading or trailing colon, or two consecutive colons, this is a finding. 
@@ -3476,7 +3476,7 @@ Procedure:
 
 NOTE: This must be done in the BASH shell.
 
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep -H LD_LIBRARY_PATH {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep -H LD_LIBRARY_PATH {} \;
 
 This variable is formatted as a colon-separated list of directories.
  
@@ -3487,7 +3487,7 @@ If an entry begins with a character other than a slash (/) or other than "$PATH"
 NOTE: The following must be done in the BASH shell.
 
 Procedure:
-# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep -H LD_PRELOAD {} \;
+# cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -maxdepth 1 -name ".*" -type f -exec grep -H LD_PRELOAD {} \;
 
 This variable is formatted as a colon-separated list of paths.
  
