@@ -18,10 +18,14 @@ WRLINUX = 'Wind River Linux'
 
 def parse_product_name(product):
     product_version = None
-    match = re.search(r'\d+$', product)
+    r = re.compile("([a-zA-Z\-]+)([0-9]+)")
+    match = r.match(product)
+
     if match is not None:
-        product_version = product[-1:]
-        product = product[:-1]
+         if isinstance(match.group(1), str) or isinstance(match.group(1), unicode):
+             product = match.group(1)
+         if match.group(2).isdigit():
+             product_version = match.group(2)
 
     return product, product_version
 
@@ -53,7 +57,7 @@ def map_product(version):
         product_name = FUSE
     if re.findall('opensuse', version):
         product_name = OPENSUSE
-    if re.findall('suse', version):
+    if re.findall('sle', version):
         product_name = SUSE
     if re.findall('wrlinux', version):
         product_name = WRLINUX
