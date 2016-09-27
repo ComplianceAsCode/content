@@ -25,7 +25,7 @@ except ImportError:
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
-from map_product_module import map_product, parse_product_name
+from map_product_module import map_product, parse_product_name, multi_product_list
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
@@ -95,7 +95,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for mp in multi_platforms:
-        if mp in oval_check_def and product in ['rhel', 'fedora', 'rhel-osp', 'debian', 'wrlinux']:
+        if mp in oval_check_def and product in multi_product_list:
             return True
 
     # Current SSG checks aren't unified which element of '<platform>'
