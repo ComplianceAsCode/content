@@ -96,7 +96,7 @@ def main():
                      mode="w", encoding="utf-8") as f:
         f.write(contributors_xml)
 
-    print("Don't forget to commit Contributors.md!")
+    print("Don't forget to commit Contributors.md and Contributors.xml!")
 
 if __name__ == "__main__":
     main()
