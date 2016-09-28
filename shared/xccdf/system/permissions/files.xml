@@ -449,7 +449,7 @@ appropriate user.
 <ocil clause="files exist that are not owned by a valid user">
 The following command will discover and print any
 files on local partitions which do not belong to a valid user.
-<pre>$ sudo find / -fstype local -xdev -nouser</pre>
+<pre>$ sudo find / -xdev -fstype local -nouser</pre>
 <br /><br />
 Either remove all files and directories from the system that do not have a
 valid user, or assign a valid user to all unowned files and directories on
@@ -480,7 +480,7 @@ appropriate group.
 <ocil clause="there is output">
 The following command will discover and print any
 files on local partitions which do not belong to a valid group.
-<pre>$ sudo find / -fstype local -xdev -nogroup</pre>
+<pre>$ sudo find / -xdev -fstype local -nogroup</pre>
 <br />
 Either remove all files and directories from the system that do not have a valid group,
 or assign a valid group with the chgrp command:
