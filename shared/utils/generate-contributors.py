@@ -3,6 +3,7 @@
 import subprocess
 import re
 import os.path
+import codecs
 
 email_mappings = {
     # Dave / David Smith
@@ -88,9 +89,11 @@ def main():
     contributors_xml += "</text>\n"
 
     root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    with open(os.path.join(root_dir, "Contributors.md"), "w") as f:
+    with codecs.open(os.path.join(root_dir, "Contributors.md"),
+                     mode="w", encoding="utf-8") as f:
         f.write(contributors_md)
-    with open(os.path.join(root_dir, "Contributors.xml"), "w") as f:
+    with codecs.open(os.path.join(root_dir, "Contributors.xml"),
+                     mode="w", encoding="utf-8") as f:
         f.write(contributors_xml)
 
     print("Don't forget to commit Contributors.md!")
