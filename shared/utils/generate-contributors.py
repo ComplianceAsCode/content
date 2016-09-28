@@ -78,13 +78,20 @@ def main():
         "The following people have contributed to the SCAP Security Guide project\n"
     contributors_md += "(listed in alphabetical order):\n\n"
 
+    contributors_xml = "<text>\n"
+
     for name in sorted(contributors.keys(), key=lambda x: x.split(" ")[-1].upper()):
         email = contributors[name]
         contributors_md += "* %s <%s>\n" % (name, email)
+        contributors_xml += "<contributor>%s &lt;%s&gt;</contributor>\n" % (name, email)
+
+    contributors_xml += "</text>\n"
 
     root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     with open(os.path.join(root_dir, "Contributors.md"), "w") as f:
         f.write(contributors_md)
+    with open(os.path.join(root_dir, "Contributors.xml"), "w") as f:
+        f.write(contributors_xml)
 
     print("Don't forget to commit Contributors.md!")
 
