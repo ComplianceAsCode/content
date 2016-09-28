@@ -22,12 +22,13 @@
  </xsl:template>
 
  <xsl:template match="xccdf:fix/text()">
+   <xsl:variable name="ident_cce" select="../../xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
    <xsl:choose>
    <xsl:when test="contains(., '$CCENUM')">
      <xsl:call-template name="find-and-replace">
        <xsl:with-param name="text" select="."/>
        <xsl:with-param name="replace" select="'$CCENUM'"/>
-       <xsl:with-param name="with" select="../../xccdf:ident/text()"/>
+       <xsl:with-param name="with" select="$ident_cce"/>
      </xsl:call-template>
    </xsl:when>
    <xsl:otherwise>
