@@ -1,0 +1,81 @@
+#!/usr/bin/python
+
+import subprocess
+import re
+
+email_mappings = {
+    # Dave / David Smith
+    "dsmith@secure-innovations.net": "dsmith@eclipse.ncsc.mil",
+    "dsmith@fornax.eclipse.ncsc.mil": "dsmith@eclipse.ncsc.mil",
+    "fcaviggia@users.noreply.github.com": "dsmith@eclipse.ncsc.mil",
+    # Greg Elin
+    "greg@fotonotes.net": "gregelin@gitmachines.com",
+    # Jean-Baptiste Donnette
+    "donnet_j@epita.fr": "jean-baptiste.donnette@epita.fr",
+    # Martin Preisler
+    "martin@preisler.me": "mpreisle@redhat.com",
+    # Philippe Thierry
+    "phil@reseau-libre.net": "phil@internal.reseau-libre.net",
+    "philippe.thierry@reseau-libre.net": "phil@internal.reseau-libre.net",
+    "philippe.thierry@thalesgroup.com": "phil@internal.reseau-libre.net",
+    # Robin Price II
+    "rprice@users.noreply.github.com": "robin@redhat.com",
+    "rprice@redhat.com": "robin@redhat.com",
+    # Zbynek Moravec
+    "ybznek@users.noreply.github.com": "zmoravec@redhat.com",
+    # Jeff Blank
+    "jeff@t440.local": "blank@eclipse.ncsc.mil",
+    # Shawn Wells
+    "shawn@localhost.localdomain": "shawn@redhat.com",
+    "shawnw@localhost.localdomain": "shawn@redhat.com",
+    # Simon Lukasik
+    "isimluk@fedoraproject.org": "slukasik@redhat.com",
+
+    # No idea / ignore
+    "lyd@chippy.(none)": "",
+    "nick@null.net": "",
+    "root@localhost.localdomain": "",
+    "root@rhel6.(none)": "",
+}
+
+name_mappings = {
+    "Gabe": "Gabe Alford"
+}
+
+
+def main():
+    emails = {}
+    output = subprocess.check_output(["git", "shortlog", "-se"])
+    for line in output.split("\n"):
+        match = re.match(r"[\s]*([0-9]+)[\s+](.+)[\s]+\<(.+)\>", line)
+        if match is None:
+            continue
+
+        commits, name, email = match.groups()
+
+        if email in email_mappings:
+            email = email_mappings[email]
+
+        if email == "":
+            continue  # ignored
+
+        if email not in emails:
+            emails[email] = []
+
+        emails[email].append((int(commits), name))
+
+    contributors = {}
+    # We will use the most used full name
+    for email in emails:
+        _, name = sorted(emails[email], reverse=True)[0]
+        if name in name_mappings:
+            name = name_mappings[name]
+
+        contributors[name] = email
+
+    for name in sorted(contributors.keys(), key=lambda x: x.split(" ")[-1].upper()):
+        email = contributors[name]
+        print("%s <%s>" % (name, email))
+
+if __name__ == "__main__":
+    main()
