@@ -4,4 +4,4 @@
 . /usr/share/scap-security-guide/remediation_functions
 populate var_selinux_state
 
-replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' $var_selinux_state 'CCENUM' '%s=%s'
+replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' $var_selinux_state '$CCENUM' '%s=%s'

@@ -23,11 +23,11 @@
 
  <xsl:template match="xccdf:fix/text()">
    <xsl:choose>
-   <xsl:when test="contains(., 'CCENUM')">
+   <xsl:when test="contains(., '$CCENUM')">
      <xsl:call-template name="find-and-replace">
        <xsl:with-param name="text" select="."/>
-       <xsl:with-param name="replace" select="'CCENUM'"/>
-       <xsl:with-param name="with" select="../../xccdf:ident"/>
+       <xsl:with-param name="replace" select="'$CCENUM'"/>
+       <xsl:with-param name="with" select="../../xccdf:ident/text()"/>
      </xsl:call-template>
    </xsl:when>
    <xsl:otherwise>
