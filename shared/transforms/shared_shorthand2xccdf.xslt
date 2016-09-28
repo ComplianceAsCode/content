@@ -47,7 +47,7 @@
       <!-- Insert benchmark creator -->
       <dc:creator><xsl:value-of select="$ssg-project-name"/></dc:creator>
       <!-- Insert list of individual contributors for benchmark -->
-      <xsl:for-each select="document('../output/contributors.xml')/text/contributor">
+      <xsl:for-each select="document('../../Contributors.xml')/text/contributor">
         <dc:contributor><xsl:value-of select="current()" /></dc:contributor>
       </xsl:for-each>
       <!-- Insert benchmark source -->
