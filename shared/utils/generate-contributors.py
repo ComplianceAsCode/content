@@ -2,6 +2,7 @@
 
 import subprocess
 import re
+import os.path
 
 email_mappings = {
     # Dave / David Smith
@@ -45,7 +46,7 @@ name_mappings = {
 
 def main():
     emails = {}
-    output = subprocess.check_output(["git", "shortlog", "-se"])
+    output = subprocess.check_output(["git", "shortlog", "-se"]).decode("utf-8")
     for line in output.split("\n"):
         match = re.match(r"[\s]*([0-9]+)[\s+](.+)[\s]+\<(.+)\>", line)
         if match is None:
@@ -73,9 +74,19 @@ def main():
 
         contributors[name] = email
 
+    contributors_md = \
+        "The following people have contributed to the SCAP Security Guide project\n"
+    contributors_md += "(listed in alphabetical order):\n\n"
+
     for name in sorted(contributors.keys(), key=lambda x: x.split(" ")[-1].upper()):
         email = contributors[name]
-        print("%s <%s>" % (name, email))
+        contributors_md += "* %s <%s>\n" % (name, email)
+
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    with open(os.path.join(root_dir, "Contributors.md"), "w") as f:
+        f.write(contributors_md)
+
+    print("Don't forget to commit Contributors.md!")
 
 if __name__ == "__main__":
     main()
