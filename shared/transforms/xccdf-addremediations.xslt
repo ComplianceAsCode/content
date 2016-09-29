@@ -4,6 +4,8 @@
 <!-- This transform expects stringparams "bash_remediations" & "ansible_remediations" specifying a filenames
      containing a list of remediations.  It inserts these into the Rules
      specified inside the remediations file. -->
+<xsl:param name="bash_remediations"/>
+<xsl:param name="ansible_remediations"/>
 
 <xsl:variable name="bash_remediations_doc" select="document($bash_remediations)" />
 <xsl:variable name="bash_fixgroup" select="$bash_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
