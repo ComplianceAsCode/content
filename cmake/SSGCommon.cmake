@@ -45,7 +45,6 @@ macro(ssg_build_xccdf_unlinked PRODUCT)
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/constants.xslt
         DEPENDS ${SSG_SHARED_TRANSFORMS}/shared_constants.xslt
-        #DEPENDS ${CMAKE_BINARY_DIR}/contributors.xml
         COMMENT "[${PRODUCT}] generating xccdf-unlinked-resolved.xml"
     )
 endmacro()

@@ -63,14 +63,6 @@ message("xmlwf: ${XMLWF_EXECUTABLE}")
 message("sed: ${SED_EXECUTABLE}")
 message(" ")
 
-add_custom_command(
-    OUTPUT ${CMAKE_BINARY_DIR}/contributors.xml
-    COMMAND echo "<text>" > ${CMAKE_BINARY_DIR}/contributors.xml
-    COMMAND ${SED_EXECUTABLE} -n -e "s/\\* \\(.*\\)/<contributor>\\1<\\/contributor>/p" ${CMAKE_SOURCE_DIR}/Contributors.md >> ${CMAKE_BINARY_DIR}/contributors.xml
-    COMMAND echo "</text>" >> ${CMAKE_BINARY_DIR}/contributors.xml
-    VERBATIM
-    MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/Contributors.md
-)
 add_custom_target(validate)
 
 if (SSG_CHROMIUM_CONTENT_ENABLED)
