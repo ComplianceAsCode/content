@@ -18,12 +18,60 @@
 <xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup" />
 <xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup" />
 
+<xsl:template name="find-and-replace">
+  <xsl:param name="text"/>
+  <xsl:param name="replace"/>
+  <xsl:param name="with"/>
+  <xsl:choose>
+    <xsl:when test="contains($text,$replace)">
+      <xsl:value-of select="substring-before($text,$replace)"/>
+      <xsl:value-of select="$with"/>
+      <xsl:call-template name="find-and-replace">
+        <xsl:with-param name="text" select="substring-after($text,$replace)"/>
+        <xsl:with-param name="replace" select="$replace"/>
+        <xsl:with-param name="with" select="$with"/>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$text" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="text()" mode="fix_contents">
+  <xsl:param name="rule"/>
+  <xsl:choose>
+    <xsl:when test="contains(., '$CCENUM')">
+      <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
+      <xsl:call-template name="find-and-replace">
+        <xsl:with-param name="text" select="."/>
+        <xsl:with-param name="replace" select="'$CCENUM'"/>
+        <xsl:with-param name="with" select="$ident_cce"/>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="."/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="@* | node()" mode="fix_contents">
+  <xsl:param name="rule"/>
+  <xsl:copy>
+    <xsl:apply-templates select="@* | node()" mode="fix_contents">
+      <xsl:with-param name="rule" select="$rule"/>
+    </xsl:apply-templates>
+  </xsl:copy>
+</xsl:template>
+
 <xsl:template match="xccdf:Rule">
   <xsl:copy>
     <!-- deal with the fact that oscap demands fixes stand only before checks -->
     <xsl:apply-templates select="@*|node()[not(self::xccdf:check)]"/>
 
-    <xsl:variable name="rule_id" select="@id"/>
+    <xsl:variable name="rule" select="."/>
+    <xsl:variable name="rule_id" select="$rule/@id"/>
+
     <xsl:for-each select="$fixgroups/xccdf:fix[@rule=$rule_id]">
       <xsl:element name="fix" namespace="http://checklists.nist.gov/xccdf/1.1">
         <xsl:attribute name="system"><xsl:value-of select="../@system"/></xsl:attribute>
@@ -43,7 +91,9 @@
         <xsl:if test="@strategy != ''">
           <xsl:attribute name="strategy"><xsl:value-of select="@strategy"/></xsl:attribute>
         </xsl:if>
-        <xsl:apply-templates select="node()"/>
+        <xsl:apply-templates select="node()" mode="fix_contents">
+          <xsl:with-param name="rule" select="$rule"/>
+        </xsl:apply-templates>
       </xsl:element>
     </xsl:for-each>
 
