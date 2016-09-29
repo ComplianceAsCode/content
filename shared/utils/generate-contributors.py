@@ -33,6 +33,8 @@ email_mappings = {
     "shawnw@localhost.localdomain": "shawn@redhat.com",
     # Simon Lukasik
     "isimluk@fedoraproject.org": "slukasik@redhat.com",
+    # Andrew Gilmore
+    "agilmore@ecahdb2.bor.doi.net": "agilmore2@gmail.com",
 
     # No idea / ignore
     "lyd@chippy.(none)": "",

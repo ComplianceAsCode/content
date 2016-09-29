@@ -19,7 +19,6 @@ The following people have contributed to the SCAP Security Guide project
 * drax <applezip@gmail.com>
 * Greg Elin <gregelin@gitmachines.com>
 * Andrew Gilmore <agilmore2@gmail.com>
-* Andrew F. Gilmore <agilmore@ecahdb2.bor.doi.net>
 * Joshua Glemza <jglemza@nasa.gov>
 * Steve Grubb <sgrubb@redhat.com>
 * Trey Henefield <thenefield@gmail.com>
