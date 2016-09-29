@@ -5,7 +5,7 @@
 <xsl:variable name="product_long_name">Java Runtime Environment</xsl:variable>
 <xsl:variable name="product_short_name">JRE</xsl:variable>
 <xsl:variable name="product_stig_id_name">JRE_STIG</xsl:variable>
-<xsl:variable name="os_type">jre</xsl:variable>
+<xsl:variable name="prod_type">jre</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">JRE</xsl:variable>

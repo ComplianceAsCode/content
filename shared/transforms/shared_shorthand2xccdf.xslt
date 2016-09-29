@@ -57,6 +57,90 @@
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
   <xsl:template match="Rule">
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all'">
+        <Rule selected="false">
+          <!-- set selected attribute to false, to enable profile-driven evaluation -->
+          <xsl:apply-templates select="@*" />
+          <!-- also: add severity of "low" to each Rule if otherwise unspecified -->
+          <xsl:if test="not(@severity)">
+            <xsl:attribute name="severity">
+              <xsl:value-of select="$defaultseverity" />
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="contains(title/@prodtype, $prod_type) or title/@prodtype = 'all'">
+              <xsl:apply-templates select="title"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="title[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(description/@prodtype, $prod_type) or description/@prodtype = 'all'">
+              <xsl:apply-templates select="description"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="description[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(warning/@prodtype, $prod_type) or warning/@prodtype = 'all'">
+              <xsl:apply-templates select="warning"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="warning[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(ref/@prodtype, $prod_type) or ref/@prodtype = 'all'">
+              <xsl:apply-templates select="ref"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="ref[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(tested/@prodtype, $prod_type) or tested/@prodtype = 'all'">
+              <xsl:apply-templates select="tested"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="tested[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(rationale/@prodtype, $prod_type) or rationale/@prodtype = 'all'">
+              <xsl:apply-templates select="rationale"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="rationale[not(rationale/@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(ident/@prodtype, $prod_type) or ident/@prodtype = 'all'">
+              <xsl:apply-templates select="ident"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="ident[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
+          <xsl:choose>
+            <xsl:when test="contains(oval/@prodtype, $prod_type) or oval/@prodtype = 'all'">
+              <xsl:apply-templates select="oval"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="oval[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::tested|self::rationale|self::ident|self::oval|self::prodtype)]"/>
+        </Rule>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Remove this template when prodtype is implemented in all Rule elements -->
+  <xsl:template match="Rule[not(@prodtype)]">
     <Rule selected="false">
     <!-- set selected attribute to false, to enable profile-driven evaluation -->
       <xsl:apply-templates select="@*" />
@@ -82,22 +166,57 @@
 
   <xsl:template match="Group">
     <xsl:choose>
-      <xsl:when test="@ostype = $os_type or @ostype = 'all'">
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all'">
         <Group>
           <xsl:apply-templates select="@*" />
-          <xsl:apply-templates select="title"/>
-          <xsl:apply-templates select="description"/>
-          <xsl:apply-templates select="warning"/>
-          <xsl:apply-templates select="ref"/>
-          <xsl:apply-templates select="rationale"/>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ostype)]"/>
+          <xsl:choose>
+            <xsl:when test="contains(title/@prodtype, $prod_type) or title/@prodtype = 'all'">
+              <xsl:apply-templates select="title"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="title[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+           <xsl:choose>
+            <xsl:when test="contains(description/@prodtype, $prod_type) or description/@prodtype = 'all'">
+              <xsl:apply-templates select="description"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="description[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+           <xsl:choose>
+            <xsl:when test="contains(warning/@prodtype, $prod_type) or warning/@prodtype = 'all'">
+              <xsl:apply-templates select="warning"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="warning[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+           <xsl:choose>
+            <xsl:when test="contains(ref/@prodtype, $prod_type) or ref/@prodtype = 'all'">
+              <xsl:apply-templates select="ref"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="ref[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+           <xsl:choose>
+            <xsl:when test="contains(rationale/@prodtype, $prod_type) or rationale/@prodtype = 'all'">
+              <xsl:apply-templates select="rationale"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="rationale[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::prodtype)]"/>
         </Group>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
 
-  <!-- Remove this when ostype is implemented in all Group elements -->
-  <xsl:template match="Group[not(@ostype)]">
+  <!-- Remove this template when prodtype is implemented in all Group elements -->
+  <xsl:template match="Group[not(@prodtype)]">
     <Group>
       <xsl:apply-templates select="@*" />
       <xsl:apply-templates select="title"/>
@@ -116,50 +235,58 @@
 
   <!-- expand reference to ident types -->
   <xsl:template match="Rule/ident">
-    <xsl:for-each select="@*">
-      <ident>
-        <xsl:choose>
-          <xsl:when test="name() = 'cce'">
-            <xsl:attribute name="system">
-              <xsl:value-of select="$cceuri" />
-            </xsl:attribute>
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or not(@prodtype)">
+        <xsl:for-each select="@*[name()!='prodtype']">
+          <ident>
             <xsl:choose>
-              <xsl:when test="starts-with(translate(., 'ce', 'CE'), 'CCE')">
+              <xsl:when test="name() = 'cce'">
+                <xsl:attribute name="system">
+                  <xsl:value-of select="$cceuri" />
+                </xsl:attribute>
+                <xsl:choose>
+                  <xsl:when test="starts-with(translate(., 'ce', 'CE'), 'CCE')">
+                    <xsl:value-of select="." />
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="concat('CCE-', .)" />
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:when test="name() = 'stig'">
+                <xsl:attribute name="system">
+                  <xsl:value-of select="$disa-stigs-uri" />
+                </xsl:attribute>
+                <xsl:value-of select="concat($os-stigid-concat, .)" />
+              </xsl:when>
+              <xsl:when test="name() = 'custom-cce'">
+                <xsl:attribute name="system">
+                  <xsl:value-of select="$custom-cce-uri" />
+                </xsl:attribute>
                 <xsl:value-of select="." />
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="concat('CCE-', .)" />
+                <xsl:value-of select="." />
               </xsl:otherwise>
             </xsl:choose>
-          </xsl:when>
-          <xsl:when test="name() = 'stig'">
-            <xsl:attribute name="system">
-              <xsl:value-of select="$disa-stigs-uri" />
-            </xsl:attribute>
-            <xsl:value-of select="concat($os-stigid-concat, .)" />
-          </xsl:when>
-          <xsl:when test="name() = 'custom-cce'">
-            <xsl:attribute name="system">
-              <xsl:value-of select="$custom-cce-uri" />
-            </xsl:attribute>
-            <xsl:value-of select="." />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="." />
-          </xsl:otherwise>
-        </xsl:choose>
-      </ident>
-    </xsl:for-each>
+          </ident>
+        </xsl:for-each>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <!-- expand ref attributes to reference tags, one item per reference -->
   <xsl:template match="ref">
-    <xsl:for-each select="@*">
-       <xsl:call-template name="ref-info" >
-          <xsl:with-param name="refsource" select="name()" />
-          <xsl:with-param name="refitems" select="." />
-       </xsl:call-template>
-    </xsl:for-each>
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or not(@prodtype)">
+        <xsl:for-each select="@*[name()!='prodtype']">
+          <xsl:call-template name="ref-info" >
+            <xsl:with-param name="refsource" select="name()" />
+            <xsl:with-param name="refitems" select="." />
+          </xsl:call-template>
+        </xsl:for-each>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <!-- expands individual reference source -->
@@ -247,76 +374,88 @@
 
   <!-- expand reference to OVAL ID -->
   <xsl:template match="Rule/oval">
-    <check>
-      <xsl:attribute name="system">
-        <xsl:value-of select="$ovaluri" />
-      </xsl:attribute>
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
+        <check>
+          <xsl:attribute name="system">
+            <xsl:value-of select="$ovaluri" />
+          </xsl:attribute>
 
-      <xsl:if test="@value">
-      <check-export>
-      <xsl:attribute name="export-name">
-        <xsl:value-of select="@value" />
-      </xsl:attribute>
-      <xsl:attribute name="value-id">
-        <xsl:value-of select="@value" />
-      </xsl:attribute>
-      </check-export>
-      </xsl:if>
+          <xsl:if test="@value">
+            <check-export>
+              <xsl:attribute name="export-name">
+                <xsl:value-of select="@value" />
+              </xsl:attribute>
+              <xsl:attribute name="value-id">
+                <xsl:value-of select="@value" />
+              </xsl:attribute>
+            </check-export>
+          </xsl:if>
 
-      <check-content-ref>
-        <xsl:attribute name="href">
-          <xsl:value-of select="$ovalfile" />
-        </xsl:attribute>
-        <xsl:attribute name="name">
-          <xsl:value-of select="@id" />
-        </xsl:attribute>
-      </check-content-ref>
-    </check>
+          <check-content-ref>
+            <xsl:attribute name="href">
+              <xsl:value-of select="$ovalfile" />
+            </xsl:attribute>
+            <xsl:attribute name="name">
+              <xsl:value-of select="@id" />
+            </xsl:attribute>
+          </check-content-ref>
+        </check>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
 
   <!-- expand reference to would-be OCIL (inline) -->
   <xsl:template match="Rule/ocil">
-      <check>
-        <xsl:attribute name="system">ocil-transitional</xsl:attribute>
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
+        <check>
+          <xsl:attribute name="system">ocil-transitional</xsl:attribute>
           <check-export>
 
-          <xsl:attribute name="export-name">
-          <!-- add clauses if specific macros are found within -->
-            <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
-            <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
-            <xsl:if test="partition-check-macro">no line is returned</xsl:if>
-            <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
-            <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
-            <xsl:if test="xinetd-service-disable-check-macro">the service is running</xsl:if>
-            <xsl:if test="systemd-socket-disable-check-macro">the socket is running</xsl:if>
-            <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
-            <xsl:if test="package-check-macro">the package is installed</xsl:if>
-            <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
-            <xsl:if test="audit-syscall-check-macro">no line is returned</xsl:if>
-            <xsl:if test="sshd-check-macro">the required value is not set</xsl:if>
-          </xsl:attribute>
+            <xsl:attribute name="export-name">
+              <!-- add clauses if specific macros are found within -->
+              <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
+              <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
+              <xsl:if test="partition-check-macro">no line is returned</xsl:if>
+              <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
+              <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
+              <xsl:if test="xinetd-service-disable-check-macro">the service is running</xsl:if>
+              <xsl:if test="systemd-socket-disable-check-macro">the socket is running</xsl:if>
+              <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
+              <xsl:if test="package-check-macro">the package is installed</xsl:if>
+              <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
+              <xsl:if test="audit-syscall-check-macro">no line is returned</xsl:if>
+              <xsl:if test="sshd-check-macro">the required value is not set</xsl:if>
+            </xsl:attribute>
 
-          <!-- add clause if explicitly specified (and also override any above) -->
-          <xsl:if test="@clause">
-            <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
-          </xsl:if>
+            <!-- add clause if explicitly specified (and also override any above) -->
+            <xsl:if test="@clause">
+              <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
+            </xsl:if>
 
-          <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
+            <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
           </check-export>
-        <!-- add the actual manual checking text -->
-        <check-content>
-        <xsl:apply-templates select="node()"/>
-        </check-content>
-      </check>
-   </xsl:template>
+          <!-- add the actual manual checking text -->
+          <check-content>
+            <xsl:apply-templates select="node()"/>
+          </check-content>
+        </check>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
-   <xsl:template match="tested">
-      <reference>
-        <xsl:attribute name="href"><xsl:value-of select="$ssg-contributors-uri" /></xsl:attribute>
-        <xsl:value-of select="concat('Test attestation on ', @on, ' by ', @by)" />
-      </reference>
-   </xsl:template>
+  <xsl:template match="tested">
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
+        <reference>
+          <xsl:attribute name="href"><xsl:value-of select="$ssg-contributors-uri" /></xsl:attribute>
+          <xsl:value-of select="concat('Test attestation on ', @on, ' by ', @by)" />
+        </reference>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- The next set of templates places elements into the correct namespaces,
        so that content authors never have to bother with them.
@@ -422,7 +561,7 @@
 
   <xsl:template match="os-type-macro">
     <xsl:choose>
-      <xsl:when test="contains(@type, $os_type) = 'true'">
+      <xsl:when test="contains(@type, $prod_type) = 'true'">
         <xsl:apply-templates select="node()|text()"/>
       </xsl:when>
     </xsl:choose>
@@ -889,7 +1028,7 @@ If the system is configured to audit this activity, it will return a line.
     </xsl:if>
   </xsl:template>
 
-  <!-- Removes ostype from Elements as it is not a part of the XCCDF specification -->
-  <xsl:template match="@ostype"/>
+  <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
+  <xsl:template match="@prodtype"/>
 
 </xsl:stylesheet>
