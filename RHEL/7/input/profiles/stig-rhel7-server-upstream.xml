@@ -16,6 +16,7 @@
 <refine-value idref="var_account_disable_post_pw_expiration" selector="0" />
 <refine-value idref="var_accounts_fail_delay" selector="4" />
 <refine-value idref="sshd_listening_port" selector="default" />
+<refine-value idref="var_accounts_user_umask" selector="077"/>
 <!-- END DISA FSO REFINEMENT VALUES -->
 
 <!-- NIAP/OSPP EXCLUDED RULES
@@ -33,11 +34,12 @@
 <select idref="partition_for_var_log_audit" selected="true" />
 <select idref="partition_for_var" selected="true" />
 <select idref="partition_for_home" selected="true" />
+<select idref="mount_option_nosuid_remote_filesystems" selected="true" />
+<select idref="mount_option_nosuid_removable_partitions" selected="true" />
 
 <!-- Password Requirements -->
 <select idref="accounts_password_pam_minclass" selected="true" />
 <select idref="accounts_password_pam_unix_remember" selected="true" />
-<select idref="accounts_password_pam_minlen" selected="true" />
 <select idref="accounts_password_pam_difok" selected="true" />
 <select idref="accounts_password_pam_maxrepeat" selected="true" />
 <select idref="accounts_password_pam_maxclassrepeat" selected="true" />
@@ -50,23 +52,30 @@
 <select idref="sudo_remove_nopasswd" selected="true" />
 
 <!-- User Management -->
+<select idref="smartcard_auth" selected="true" />
 <select idref="banner_etc_issue" selected="true" />
 <select idref="sshd_enable_warning_banner" selected="true" />
 <select idref="ftp_present_banner" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
 
 <!-- Software/Patch Requirements -->
 <select idref="ensure_redhat_gpgkey_installed" selected="true" />
 <select idref="ensure_gpgcheck_never_disabled" selected="true" />
 <select idref="security_patches_up_to_date" selected="true" />
+<select idref="clean_components_post_updating" selected="true" />
 
 <!-- System Audit Requirements -->
 
 <!-- Kernel/Network Settings -->
 <select idref="network_disable_ddns_interfaces" selected="true" />
 <select idref="libreswan_approved_tunnels" selected="true" />
+<select idref="package_libreswan_installed" selected="true" />
+<select idref="package_dracut-fips_installed" selected="true" />
+<select idref="grub2_enable_fips_mode" selected="true" />
 
 <!-- System Logging Requirements -->
 <select idref="rsyslog_remote_loghost" selected="true" />
+<select idref="rsyslog_nolisten" selected="true" />
 
 <!-- Remote Access Requirements -->
 <select idref="package_openssh-server_installed" selected="true" />
@@ -77,6 +86,17 @@
 <select idref="sshd_disable_kerb_auth" selected="true" />
 <select idref="sshd_enable_strictmodes" selected="true" />
 <select idref="sshd_use_priv_separation" selected="true" />
+<select idref="sshd_limit_user_access" selected="true" />
+<select idref="sshd_print_last_log" selected="true" />
+<select idref="sssd_memcache_timeout" selected="true" />
+<select idref="sssd_offline_cred_expiration" selected="true" />
+<select idref="sssd_ssh_known_hosts_timeout" selected="true" />
+
+<!-- System Integrity -->
+<select idref="install_mcafee_hbss" selected="true" />
+<select idref="install_mcafee_antivirus" selected="true" />
+<select idref="service_nails_enabled" selected="true" />
+<select idref="mcafee_antivirus_definitions_updated" selected="true" />
 
 <!-- X Window System Settings -->
 <select idref="xwindows_runlevel_setting" selected="true" />
@@ -95,11 +115,13 @@
 <select idref="service_zebra_disabled" selected="true" />
 <select idref="snmpd_not_default_password" selected="true" />
 <select idref="service_kdump_disabled" selected="true" />
+<select idref="package_vsftpd_removed" selected="true" />
 
 <!-- LDAP -->
 <select idref="ldap_client_start_tls" selected="true" />
 
 <!-- Currently uncategorized -->
 <select idref="disable_ctrlaltdel_reboot" selected="true" />
+<select idref="dir_perms_world_writable_system_owned" selected="true" />
 
 </Profile>
