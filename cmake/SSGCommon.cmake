@@ -305,7 +305,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
         COMMAND ${SSG_SHARED_UTILS}/enable-derivatives.py --enable-${SHORTNAME} -i ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml -o ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
-        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml
+        DEPENDS ${ORIGINAL}
         DEPENDS ${SSG_SHARED_UTILS}/enable-derivatives.py
         COMMENT "[${DERIVATIVE}] generating ssg-${DERIVATIVE}-xccdf.xml"
     )
@@ -320,7 +320,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
         COMMAND ${SSG_SHARED_UTILS}/enable-derivatives.py --enable-${SHORTNAME} -i ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml -o ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
-        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml
+        DEPENDS ${ORIGINAL}
         DEPENDS ${SSG_SHARED_UTILS}/enable-derivatives.py
         COMMENT "[${DERIVATIVE}] generating ssg-${DERIVATIVE}-ds.xml"
     )
