@@ -9,7 +9,8 @@ email_mappings = {
     # Dave / David Smith
     "dsmith@secure-innovations.net": "dsmith@eclipse.ncsc.mil",
     "dsmith@fornax.eclipse.ncsc.mil": "dsmith@eclipse.ncsc.mil",
-    "fcaviggia@users.noreply.github.com": "dsmith@eclipse.ncsc.mil",
+    # Frank Caviggia
+    "fcaviggia@users.noreply.github.com": "fcaviggi@ra.iad.redhat.com",
     # Greg Elin
     "greg@fotonotes.net": "gregelin@gitmachines.com",
     # Jean-Baptiste Donnette
