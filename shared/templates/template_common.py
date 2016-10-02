@@ -53,7 +53,7 @@ def save_modified(filename_format, filename_value, string):
     Save string to file
     """
     filename = filename_format.format(filename_value)
-    dir = os.environ.get('PREFIX_DIR', '')
+    dir = os.environ.get('BUILD_DIR', '')
     filename = os.path.join(dir, filename)
     with open(filename, 'w+') as outputfile:
         outputfile.write(string)

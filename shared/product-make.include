@@ -111,10 +111,10 @@ $(PRODUCT_ANSIBLE_REMEDIATIONS):
 
 
 $(BUILD)/shared/output/bash:
-	$(MAKE) -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) bash
+	$(MAKE) -C $(SHARED)/templates/ BUILD_DIR=$(abspath $(BUILD)/shared) bash
 
 $(BUILD)/shared/output/ansible:
-	$(MAKE) -C $(SHARED)/templates/ PREFIX_DIR=$(abspath $(BUILD)/shared) ansible
+	$(MAKE) -C $(SHARED)/templates/ BUILD_DIR=$(abspath $(BUILD)/shared) ansible
 
 templates/static/bash:
 	mkdir -p $@
