@@ -43,7 +43,7 @@
     <ind:path>/etc/security/limits.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*\*[\s]+(?:(?:hard)|(?:-))[\s]+maxlogins[\s]+(\d+)\s*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_maxlogins" version="1">
@@ -54,7 +54,7 @@
     <ind:path>/etc/security/limits.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*\*[\s]+(?:(?:hard)|(?:-))[\s]+maxlogins</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <external_variable comment="maximum number of concurrent logins per user" datatype="int" id="var_accounts_max_concurrent_login_sessions" version="1" />
