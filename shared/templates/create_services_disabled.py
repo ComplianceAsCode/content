@@ -74,7 +74,7 @@ def output_checkfile(target, serviceinfo):
             )
 
     else:
-        raise ValueError("Unknown target " + target)
+        raise UnknownTargetError(target)
 
 def help():
     print("Usage:\n\t" + __file__ + " <bash/oval> <csv file>")

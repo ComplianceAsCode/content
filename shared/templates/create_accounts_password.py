@@ -23,7 +23,7 @@ def output_checkfile(target, pam_info):
         )
 
     else:
-        raise ValueError("Unknown target " + target)
+        raise UnknownTargetError(target)
 
 
 def help():

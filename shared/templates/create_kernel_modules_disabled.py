@@ -39,8 +39,7 @@ def output_checkfile(target, kerninfo):
         )
 
     else:
-        print("Unknown target: " + target)
-        sys.exit(1)
+        raise UnknownTargetError(target)
 
 def help():
     print("Usage:\n\t" + __file__ + " <bash/ansible/oval> <csv file>")
