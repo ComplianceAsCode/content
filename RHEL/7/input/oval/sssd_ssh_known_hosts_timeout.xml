@@ -8,7 +8,9 @@
       <description>SSSD should be configured to expire keys from known SSH hosts after 1 day.</description>
       <reference source="galford" ref_id="20160527" ref_url="test_attestation" />
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
+      definition_ref="sssd_conf_exists" negate="true"/>
       <criterion comment="Check ssh_known_hosts_timeout in /etc/sssd/sssd.conf"
       test_ref="test_sssd_ssh_known_hosts_timeout" />
     </criteria>
@@ -20,7 +22,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_ssh_known_hosts_timeout" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\[nss]([^\n]*\n+)+?ssh_known_hosts_timeout[\s]+=[\s]+86400$</ind:pattern>
+    <ind:pattern operation="pattern match">^\[ssh]([^\n]*\n+)+?ssh_known_hosts_timeout[\s]+=[\s]+86400$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

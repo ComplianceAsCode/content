@@ -84,9 +84,9 @@ stigid="010400" />
 <description prodtype="rhel6,rhel7">
 SSSD should be configured to expire offline credentials after 1 day.
 To configure SSSD to expire offline credentials, set
-<tt>offline_credentials_expiration</tt> to <tt>1</tt> under the <tt>[nss]</tt>
+<tt>offline_credentials_expiration</tt> to <tt>1</tt> under the <tt>[pam]</tt>
 section in <tt>/etc/sssd/sssd.conf</tt>. For example:
-<pre>[nss]
+<pre>[pam]
 offline_credentials_expiration = 1
 </pre>
 </description>
@@ -113,9 +113,9 @@ stigid="010401" />
 <description prodtype="rhel6,rhel7">
 SSSD should be configured to expire keys from known SSH hosts after 1 day.
 To configure SSSD to known SSH hosts, set <tt>ssh_known_hosts_timeout</tt>
-to <tt>86400</tt> under the <tt>[nss]</tt> section in
+to <tt>86400</tt> under the <tt>[ssh]</tt> section in
 <tt>/etc/sssd/sssd.conf</tt>. For example:
-<pre>[nss]
+<pre>[ssh]
 ssh_known_hosts_timeout = 86400
 </pre>
 </description>
