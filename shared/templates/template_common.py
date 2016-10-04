@@ -24,11 +24,11 @@ def get_template_filename(filename):
     if os.path.isfile(template_filename):
         return template_filename
 
-    # guess shared template
-    if 'SHARED_DIR' in os.environ:
-        shared_template = os.path.join(os.environ['SHARED_DIR'], filename)
-        if os.path.isfile(shared_template):
-            return shared_template
+    shared_dir = os.path.dirname(os.path.realpath(__file__))
+
+    shared_template = os.path.join(shared_dir, filename)
+    if os.path.isfile(shared_template):
+        return shared_template
 
     sys.stderr.write(
         "No specialized or shared template found for {}\n".format(filename)
