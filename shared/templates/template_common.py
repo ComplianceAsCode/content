@@ -7,6 +7,9 @@ import sys
 import os
 import re
 
+EXIT_NO_TEMPLATE    = 2
+EXIT_UNKNOWN_TARGET = 3
+
 def get_template_file(filename):
     try:
 
@@ -26,7 +29,7 @@ def get_template_file(filename):
             sys.stderr.write(
                 "No specialized or shared template found for {}\n".format(filename)
             )
-            
+            sys.exit(EXIT_NO_TEMPLATE)
 
 def load_modified(filename, constants_dict, regex_dict = None):
     """
