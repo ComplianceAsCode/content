@@ -10,6 +10,10 @@ import re
 EXIT_NO_TEMPLATE    = 2
 EXIT_UNKNOWN_TARGET = 3
 
+class UnknownTargetError(ValueError):
+    def __init__(self, msg):
+        ValueError.__init__(self, "Unknown target: \"{0}\"".format(msg))
+
 def get_template_file(filename):
     try:
 
@@ -123,7 +127,11 @@ def csv_map(filename, method, skip_comments = True, target = None):
 
         csv_lines_content = csv.reader(filtered_file)
 
-        map(method, csv_lines_content)
+        try:
+            map(method, csv_lines_content)
+        except UnknownTargetError as e:
+            sys.stderr.write(str(e) + "\n")
+            sys.exit(EXIT_UNKNOWN_TARGET)
 
 
 def main(argv, help_callback, process_line_callback):
