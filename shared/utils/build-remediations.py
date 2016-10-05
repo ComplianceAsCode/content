@@ -152,6 +152,7 @@ class Builder(object):
             sys.stderr.write("Cannot find associated build script for {0}\n".format(csv_filename))
             sys.exit(1)
 
+
     def _parent_output_dir(self):
         return os.path.join(self.output_dir, "output")
 

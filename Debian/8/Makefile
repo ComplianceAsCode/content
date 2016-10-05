@@ -7,13 +7,11 @@ PROD = debian8
 OVAL_DIRS = $(SHARED_OVAL) templates/output/oval templates/static/oval
 VENDOR = ssgproject
 
-checks:
-	$(MAKE) -C templates templates
+checks: templates/output
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# add local Debian8 specific templated ovals
 	# into final list of OVAL checks
 ifeq ($(OVAL_5_11), 0)
-	$(MAKE) -C templates oval_5.11
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
 	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) templates/output/oval templates/static/oval_5.11)
@@ -129,5 +127,5 @@ dist: guide content
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content $(DIST)/guide
-	$(MAKE) -C templates clean
+	$(SHARED)/utils/build-remediations.py --output ./templates clean
 	rm -rf $(BUILD)

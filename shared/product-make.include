@@ -21,13 +21,16 @@ SHARED_OVAL = $(SHARED)/oval
 SHARED_OVAL_5_11 = $(SHARED_OVAL)/oval_5.11
 SHARED_BASH_REMEDIATIONS =    $(BUILD)/shared/output/bash       $(SHARED)/templates/static/bash # Currently we cannot build shared remediations only once
 SHARED_ANSIBLE_REMEDIATIONS = $(BUILD)/shared/output/ansible    $(SHARED)/templates/static/ansible # Currently we cannot build shared remediations only once
-PRODUCT_BASH_REMEDIATIONS = templates/output/bash
-PRODUCT_ANSIBLE_REMEDIATIONS = templates/output/ansible
+PRODUCT_REMEDIATIONS_OUTPUT = templates/output
+PRODUCT_BASH_REMEDIATIONS = $(PRODUCT_REMEDIATIONS_OUTPUT)/bash
+PRODUCT_ANSIBLE_REMEDIATIONS = $(PRODUCT_REMEDIATIONS_OUTPUT)/ansible
 STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
 UTILS = utils
 DIST = dist
+
+OVAL_VERSION=$(if $(filter $(OVAL_5_11),0),oval_5.11,oval_5.10)
 
 # Defaults for the global variables - others
 ID = ssg
@@ -90,31 +93,11 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
+$(PRODUCT_REMEDIATIONS_OUTPUT):
+	$(SHARED)/utils/build-remediations.py --oval_version $(OVAL_VERSION) --input ./templates --output ./templates build
 
-$(PRODUCT_BASH_REMEDIATIONS):
-	if [ -f templates/Makefile ];	\
-	then	\
-		$(MAKE) -C templates bash;	\
-	else	\
-		mkdir -p templates/output/bash;	\
-	fi
-
-$(PRODUCT_ANSIBLE_REMEDIATIONS):
-	# todo: Create ansible target everywhere
-	if grep -q '^ansible:' templates/Makefile 2> /dev/null ;	\
-	then	\
-		$(MAKE) -C templates ansible;	\
-	else	\
-		mkdir -p templates/output/ansible;	\
-		mkdir -p templates/static/ansible;	\
-	fi
-
-
-$(BUILD)/shared/output/bash:
-	$(MAKE) -C $(SHARED)/templates/ BUILD_DIR=$(abspath $(BUILD)/shared) bash
-
-$(BUILD)/shared/output/ansible:
-	$(MAKE) -C $(SHARED)/templates/ BUILD_DIR=$(abspath $(BUILD)/shared) ansible
+$(BUILD)/shared/output:
+	$(SHARED)/utils/build-remediations.py --oval_version $(OVAL_VERSION) --input $(SHARED)/templates --output $(BUILD)/shared build
 
 templates/static/bash:
 	mkdir -p $@
@@ -126,7 +109,7 @@ templates/static/ansible:
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
 shared_bash_remediations_deps= $(wildcard $(SHARED_BASH_REMEDIATIONS)/*.sh)
 bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
-$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_BASH_REMEDIATIONS) $(BUILD)/shared/output/bash templates/static/bash
+$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/bash
 	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_BASH_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
 
@@ -134,7 +117,7 @@ $(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_r
 product_ansible_remediations_deps=$(wildcard templates/static/ansible/*.sh)
 shared_ansible_remediations_deps= $(wildcard $(SHARED_ANSIBLE_REMEDIATIONS)/*.sh)
 ansible_remediations_deps= $(product_ansible_remediations_deps) $(shared_ansible_remediations_deps)
-$(OUT)/ansible-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(ansible_remediations_deps) $(PRODUCT_ANSIBLE_REMEDIATIONS) $(BUILD)/shared/output/ansible templates/static/ansible
+$(OUT)/ansible-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(ansible_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/ansible
 	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) ansible $(SHARED_ANSIBLE_REMEDIATIONS) $(PRODUCT_ANSIBLE_REMEDIATIONS) templates/static/ansible $(OUT)/ansible-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
