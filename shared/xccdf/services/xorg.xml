@@ -13,7 +13,7 @@ on a dedicated server machine, as it increases the system's attack surface and c
 system resources. Administrators of server systems should instead login via
 SSH or on the text console.</description>
 
-<Rule id="xwindows_runlevel_setting" severity="medium">
+<Rule id="xwindows_runlevel_setting" severity="medium" prodtype="rhel7">
 <title>Disable X Windows Startup By Setting Default Target</title>
 <description>Systems that do not require a graphical user interface should only boot by
 default into <tt>multi-user.target</tt> mode. This prevents accidental booting of the system
@@ -34,13 +34,13 @@ The output should show the following:
 must not be active to decrease the attack surface of the system. X windows has a
 long history of security vulnerabilities and should not be used unless approved
 and documented.</rationale>
-<ident cce="CCE-27285-6" />
+<ident prodtype="rhel7" cce="CCE-27285-6" />
 <oval id="xwindows_runlevel_setting" />
-<ref nist="AC-17(8).1(ii)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040561"/>
+<ref prodtype="rhel7" nist="AC-17(8).1(ii)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040561"/>
 <tested by="DS" on="20121025"/>
 </Rule>
 
-<Rule id="package_xorg-x11-server-common_removed" severity="medium">
+<Rule id="package_xorg-x11-server-common_removed" severity="medium" prodtype="rhel7">
 <title>Remove the X Windows Package Group</title>
 <description>By removing the xorg-x11-server-common package, the system no longer has X Windows
 installed. If X Windows is not installed then the system cannot boot into graphical user mode.
@@ -58,9 +58,9 @@ The output should be:
 <rationale>Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
 vulnerabilities and should not be installed unless approved and documented.
 </rationale>
-<ident cce="CCE-27218-7" />
+<ident prodtype="rhel7" cce="CCE-27218-7" />
 <oval id="package_xorg-x11-server-common_removed" />
-<ref nist="AC-17(8).1(ii)" disa="366" cis="3.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040560"/>
+<ref prodtype="rhel7" nist="AC-17(8).1(ii)" disa="366" cis="3.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040560"/>
 <tested by="DS" on="20121025"/>
 </Rule>
 

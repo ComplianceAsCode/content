@@ -62,7 +62,7 @@ information on the capabilities and configuration of each of the NTP daemons.
 </Value>
 
 
-<Rule id="service_chronyd_or_ntpd_enabled" severity="medium">
+<Rule id="service_chronyd_or_ntpd_enabled" severity="medium" prodtype="rhel7">
 <title>Enable the NTP Daemon</title>
 <description>
 <systemd-service-macro enable="true" service="chronyd" />
@@ -91,13 +91,13 @@ The <tt>chronyd</tt> and <tt>ntpd</tt> NTP daemons offer all of the
 functionality of <tt>ntpdate</tt>, which is now deprecated. Additional
 information on this is available at
 <weblink-macro link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate"/></rationale>
-<ident cce="27444-9" />
+<ident prodtype="rhel7" cce="27444-9" />
 <oval id="service_chronyd_or_ntpd_enabled" />
-<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" cis="3.6" />
+<ref prodtype="rhel7" nist="AU-8(1)" disa="160" pcidss="Req-10.4" cis="3.6" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="chronyd_or_ntpd_specify_remote_server" severity="medium">
+<Rule id="chronyd_or_ntpd_specify_remote_server" severity="medium" prodtype="rhel7">
 <title>Specify a Remote NTP Server</title>
 <description>Depending on specific functional requirements of a concrete
 production environment, the Red Hat Enterprise Linux 7 Server system can be
@@ -135,13 +135,13 @@ In the file, there should be a section similar to the following:
 <rationale>Synchronizing with an NTP server makes it possible to collate system
 logs from multiple sources or correlate computer events with real time events.
 </rationale>
-<ident cce="27278-1" />
+<ident prodtype="rhel7" cce="27278-1" />
 <oval id="chronyd_or_ntpd_specify_remote_server" />
-<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4.1,Req-10.4.3" cis="3.6" />
+<ref prodtype="rhel7" nist="AU-8(1)" disa="160" pcidss="Req-10.4.1,Req-10.4.3" cis="3.6" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="chronyd_or_ntpd_specify_multiple_servers">
+<Rule id="chronyd_or_ntpd_specify_multiple_servers" prodtype="rhel7">
 <title>Specify Additional Remote NTP Servers</title>
 <description>Depending on specific functional requirements of a concrete
 production environment, the Red Hat Enterprise Linux 7 Server system can be
@@ -168,9 +168,9 @@ accurate time data, in the event that one of the specified servers becomes
 unavailable. This is typical for a system acting as an NTP server for
 other systems.
 </rationale>
-<ident cce="27012-4" />
+<ident prodtype="rhel7" cce="27012-4" />
 <oval id="chronyd_or_ntpd_specify_multiple_servers"/>
-<ref nist="AU-8(1)" pcidss="Req-10.4.3" />
+<ref prodtype="rhel7" nist="AU-8(1)" pcidss="Req-10.4.3" />
 </Rule>
 
 <!-- future Rules (for later profiles/enhancements):

@@ -28,7 +28,7 @@ be expressed by the '\n' character and special characters like parentheses and q
 <value selector="dss_odaa_default">[\s\n]+Use[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+constitutes[\s\n]+consent[\s\n]+to[\s\n]+monitoring[\s\n]+at[\s\n]+all[\s\n]+times.[\s\n]+This[\s\n]+is[\s\n]+a[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system.[\s\n]+All[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+and[\s\n]+related[\s\n]+equipment[\s\n]+are[\s\n]+intended[\s\n]+for[\s\n]+the[\s\n]+communication,[\s\n]+transmission,[\s\n]+processing,[\s\n]+and[\s\n]+storage[\s\n]+of[\s\n]+official[\s\n]+U.S.[\s\n]+Government[\s\n]+or[\s\n]+other[\s\n]+authorized[\s\n]+information[\s\n]+only.[\s\n]+All[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+monitoring[\s\n]+at[\s\n]+all[\s\n]+times[\s\n]+to[\s\n]+ensure[\s\n]+proper[\s\n]+functioning[\s\n]+of[\s\n]+equipment[\s\n]+and[\s\n]+systems[\s\n]+including[\s\n]+security[\s\n]+devices[\s\n]+and[\s\n]+systems,[\s\n]+to[\s\n]+prevent[\s\n]+unauthorized[\s\n]+use[\s\n]+and[\s\n]+violations[\s\n]+of[\s\n]+statutes[\s\n]+and[\s\n]+security[\s\n]+regulations,[\s\n]+to[\s\n]+deter[\s\n]+criminal[\s\n]+activity,[\s\n]+and[\s\n]+for[\s\n]+other[\s\n]+similar[\s\n]+purposes.[\s\n]+Any[\s\n]+user[\s\n]+of[\s\n]+a[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+should[\s\n]+be[\s\n]+aware[\s\n]+that[\s\n]+any[\s\n]+information[\s\n]+placed[\s\n]+in[\s\n]+the[\s\n]+system[\s\n]+is[\s\n]+subject[\s\n]+to[\s\n]+monitoring[\s\n]+and[\s\n]+is[\s\n]+not[\s\n]+subject[\s\n]+to[\s\n]+any[\s\n]+expectation[\s\n]+of[\s\n]+privacy.[\s\n]+If[\s\n]+monitoring[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+reveals[\s\n]+possible[\s\n]+evidence[\s\n]+of[\s\n]+violation[\s\n]+of[\s\n]+criminal[\s\n]+statutes,[\s\n]+this[\s\n]+evidence[\s\n]+and[\s\n]+any[\s\n]+other[\s\n]+related[\s\n]+information,[\s\n]+including[\s\n]+identification[\s\n]+information[\s\n]+about[\s\n]+the[\s\n]+user,[\s\n]+may[\s\n]+be[\s\n]+provided[\s\n]+to[\s\n]+law[\s\n]+enforcement[\s\n]+officials.[\s\n]+If[\s\n]+monitoring[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+reveals[\s\n]+violations[\s\n]+of[\s\n]+security[\s\n]+regulations[\s\n]+or[\s\n]+unauthorized[\s\n]+use,[\s\n]+employees[\s\n]+who[\s\n]+violate[\s\n]+security[\s\n]+regulations[\s\n]+or[\s\n]+make[\s\n]+unauthorized[\s\n]+use[\s\n]+of[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+appropriate[\s\n]+disciplinary[\s\n]+action.[\s\n]+Use[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+constitutes[\s\n]+consent[\s\n]+to[\s\n]+monitoring[\s\n]+at[\s\n]+all[\s\n]+times.</value>
 </Value>
 
-<Rule id="banner_etc_issue" severity="medium">
+<Rule id="banner_etc_issue" severity="medium" prodtype="rhel7">
 <title>Modify the System Login Banner</title>
 <description>
 To configure the system login banner edit <tt>/etc/issue</tt>. Replace 
@@ -73,9 +73,9 @@ Executive Orders, directives, policies, regulations, standards, and guidance.
 System use notifications are required only for access via login interfaces with human users and
 are not required when such human interfaces do not exist.
 </rationale>
-<ident cce="27303-7" />
+<ident prodtype="rhel7" cce="27303-7" />
 <oval id="banner_etc_issue" value="login_banner_text"/>
-<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48" ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007" stigid="010040" />
+<ref prodtype="rhel7" nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48" ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007" stigid="010040" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
@@ -89,7 +89,7 @@ The following sections describe how to configure the GDM login
 banner.
 </description>
 
-<Rule id="dconf_gnome_banner_enabled" severity="medium">
+<Rule id="dconf_gnome_banner_enabled" severity="medium" prodtype="rhel7">
 <title>Enable GNOME3 Login Warning Banner</title>
 <description>
 To enable displaying a login warning banner in the GNOME
@@ -116,14 +116,14 @@ Executive Orders, directives, policies, regulations, standards, and guidance.
 For U.S. Government systems, system use notifications are required only for access via login interfaces
 with human users and are not required when such human interfaces do not exist.
 </rationale>
-<ident cce="26970-4" />
+<ident prodtype="rhel7" cce="26970-4" />
 <oval id="dconf_gnome_banner_enabled" />
-<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48" 
+<ref prodtype="rhel7" nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48" 
 ossrg="OS-SRG-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088"
 stigid="010030" />
 </Rule>
 
-<Rule id="dconf_gnome_login_banner_text" severity="medium">
+<Rule id="dconf_gnome_login_banner_text" severity="medium" prodtype="rhel7">
 <title>Set the GNOME3 Login Warning Banner Text</title>
 <description>
 To set the text shown by the GNOME3 Display Manager
@@ -146,9 +146,9 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/banner-
 An appropriate warning message reinforces policy awareness during the logon
 process and facilitates possible legal action against attackers.
 </rationale>
-<ident cce="26892-0" />
+<ident prodtype="rhel7" cce="26892-0" />
 <oval id="dconf_gnome_login_banner_text" value="login_banner_text"/>
-<ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48" ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" stigid="010031" />
+<ref prodtype="rhel7" nist="AC-8(a),AC-8(b),AC-8(c)" disa="48" ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" stigid="010031" />
 </Rule>
 
 </Group>

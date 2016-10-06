@@ -22,7 +22,7 @@ does not need to act as a web server, then it should be disabled
 and removed from the system.
 </description>
 
-<Rule id="service_httpd_disabled">
+<Rule id="service_httpd_disabled" prodtype="rhel7">
 <title>Disable httpd Service</title>
 <description>
 <systemd-service-macro enable="false" service="httpd" />
@@ -34,12 +34,12 @@ and removed from the system.
 Running web server software provides a network-based avenue
 of attack, and should be disabled if not needed.
 </rationale>
-<ident cce="80300-7" />
+<ident prodtype="rhel7" cce="80300-7" />
 <oval id="service_httpd_disabled" />
-<ref nist="CM-7" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 
-<Rule id="package_httpd_removed">
+<Rule id="package_httpd_removed" prodtype="rhel7">
 <title>Uninstall httpd Package</title>
 <description>
 <yum-macro install="false" package="httpd" />
@@ -51,9 +51,9 @@ of attack, and should be disabled if not needed.
 If there is no need to make the web server software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="80301-5" />
+<ident prodtype="rhel7" cce="80301-5" />
 <oval id="package_httpd_removed" />
-<ref nist="CM-7" cis="3.11" />
+<ref prodtype="rhel7" nist="CM-7" cis="3.11" />
 </Rule>
 
 </Group> <!--<Group id="disabling_httpd"> -->
@@ -104,7 +104,7 @@ The <tt>ServerTokens</tt> and <tt>ServerSignature</tt> directives determine how
 much information the web server discloses about the configuration of the
 system.</description>
 
-<Rule id="httpd_servertokens_prod">
+<Rule id="httpd_servertokens_prod" prodtype="rhel7">
 <title>Set httpd <tt>ServerTokens</tt> Directive to <tt>Prod</tt></title>
 <description>
 <tt>ServerTokens Prod</tt> restricts information in page headers, returning only the word "Apache."
@@ -116,11 +116,11 @@ Add or correct the following directive in <tt>/etc/httpd/conf/httpd.conf</tt>:
 Information disclosed to clients about the configuration of the web server and system could be used
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
-<ref nist="CM-7" />
-<ident cce="80302-3" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80302-3" />
 </Rule>
 
-<Rule id="httpd_serversignature_off">
+<Rule id="httpd_serversignature_off" prodtype="rhel7">
 <title>Set httpd <tt>ServerSignature</tt> Directive to <tt>Off</tt></title>
 <description>
 <tt>ServerSignature Off</tt> restricts <tt>httpd</tt> from displaying server version number
@@ -133,8 +133,8 @@ Add or correct the following directive in <tt>/etc/httpd/conf/httpd.conf</tt>:
 Information disclosed to clients about the configuration of the web server and system could be used
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
-<ident cce="80303-1" />
-<ref nist="CM-7" />
+<ident prodtype="rhel7" cce="80303-1" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_restrict_info_leakage"> -->
@@ -207,7 +207,7 @@ If the above functionality is unnecessary, comment out the related module:
 </description>
 </Group>
 
-<Rule id="httpd_digest_authentication">
+<Rule id="httpd_digest_authentication" prodtype="rhel7">
 <title>Disable HTTP Digest Authentication</title>
 <description>
 The <tt>auth_digest</tt> module provides encrypted authentication sessions.
@@ -218,10 +218,10 @@ If this functionality is unnecessary, comment out the related module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80304-9" />
+<ident prodtype="rhel7" cce="80304-9" />
 </Rule>
 
-<Rule id="httpd_mod_rewrite">
+<Rule id="httpd_mod_rewrite" prodtype="rhel7">
 <title>Disable HTTP mod_rewrite</title>
 <description>
 The <tt>mod_rewrite</tt> module is very powerful and can protect against
@@ -234,10 +234,10 @@ unnecessary, comment out the related module:
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80305-6" />
+<ident prodtype="rhel7" cce="80305-6" />
 </Rule>
 
-<Rule id="httpd_ldap_support">
+<Rule id="httpd_ldap_support" prodtype="rhel7">
 <title>Disable LDAP Support</title>
 <description>
 The <tt>ldap</tt> module provides HTTP authentication via an LDAP directory.
@@ -250,10 +250,10 @@ If LDAP is to be used, SSL encryption should be used as well.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80306-4" />
+<ident prodtype="rhel7" cce="80306-4" />
 </Rule>
 
-<Rule id="httpd_server_side_includes">
+<Rule id="httpd_server_side_includes" prodtype="rhel7">
 <title>Disable Server Side Includes</title>
 <description>
 Server Side Includes provide a method of dynamically generating web pages through the
@@ -269,10 +269,10 @@ supplied data should be encoded to prevent cross-site scripting vulnerabilities.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80307-2" />
+<ident prodtype="rhel7" cce="80307-2" />
 </Rule>
 
-<Rule id="httpd_mime_magic">
+<Rule id="httpd_mime_magic" prodtype="rhel7">
 <title>Disable MIME Magic</title>
 <description>
 The <tt>mime_magic</tt> module provides a second layer of MIME support that in most configurations
@@ -283,10 +283,10 @@ is likely extraneous. If its functionality is unnecessary, comment out the relat
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80308-0" />
+<ident prodtype="rhel7" cce="80308-0" />
 </Rule>
 
-<Rule id="httpd_webdav">
+<Rule id="httpd_webdav" prodtype="rhel7">
 <title>Disable WebDAV (Distributed Authoring and Versioning)</title>
 <description>
 WebDAV is an extension of the HTTP protocol that provides distributed and
@@ -302,10 +302,10 @@ server that is DAV enabled should be protected by access controls.
 Minimizing the number of loadable modules available to the web server, reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80309-8" />
+<ident prodtype="rhel7" cce="80309-8" />
 </Rule>
 
-<Rule id="httpd_server_activity_status">
+<Rule id="httpd_server_activity_status" prodtype="rhel7">
 <title>Disable Server Activity Status</title>
 <description>
 The <tt>status</tt> module provides real-time access to statistics on the internal operation of
@@ -320,10 +320,10 @@ configuration.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80310-6" />
+<ident prodtype="rhel7" cce="80310-6" />
 </Rule>
 
-<Rule id="httpd_server_configuration_display">
+<Rule id="httpd_server_configuration_display" prodtype="rhel7">
 <title>Disable Web Server Configuration Display</title>
 <description>
 The <tt>info</tt> module creates a web page illustrating the configuration of the web server. This
@@ -337,10 +337,10 @@ an access control list to restrict access to the information.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80311-4" />
+<ident prodtype="rhel7" cce="80311-4" />
 </Rule>
 
-<Rule id="httpd_url_correction">
+<Rule id="httpd_url_correction" prodtype="rhel7">
 <title>Disable URL Correction on Misspelled Entries</title>
 <description>
 The <tt>speling</tt> module attempts to find a document match by allowing one misspelling in an
@@ -352,10 +352,10 @@ This functionality weakens server security by making site enumeration easier.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80312-2" />
+<ident prodtype="rhel7" cce="80312-2" />
 </Rule>
 
-<Rule id="httpd_proxy_support">
+<Rule id="httpd_proxy_support" prodtype="rhel7">
 <title>Disable Proxy Support</title>
 <description>
 The <tt>proxy</tt> module provides proxying support, allowing <tt>httpd</tt> to forward requests and
@@ -375,10 +375,10 @@ are a security risk. <tt>mod_proxy_balancer</tt> enables load balancing, but req
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80313-0" />
+<ident prodtype="rhel7" cce="80313-0" />
 </Rule>
 
-<Rule id="httpd_cache_support">
+<Rule id="httpd_cache_support" prodtype="rhel7">
 <title>Disable Cache Support</title>
 <description>
 The <tt>cache</tt> module allows <tt>httpd</tt> to cache data, optimizing access to
@@ -394,10 +394,10 @@ If caching is required, it should not be enabled for any limited-access content.
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80314-8" />
+<ident prodtype="rhel7" cce="80314-8" />
 </Rule>
 
-<Rule id="httpd_cgi_support">
+<Rule id="httpd_cgi_support" prodtype="rhel7">
 <title>Disable CGI Support</title>
 <description>
 The <tt>cgi</tt> module allows HTML to interact with the CGI web programming language.
@@ -418,7 +418,7 @@ CGI scripts to run as a specified user/group instead of as the server's user/gro
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80315-5" />
+<ident prodtype="rhel7" cce="80315-5" />
 </Rule>
 
 <Group id="httpd_optional_components">
@@ -481,7 +481,7 @@ control for a specified directory. All web directories should be configured on a
 case-by-case basis, allowing access only where needed.
 </description>
 
-<Rule id="httpd_restrict_root_directory">
+<Rule id="httpd_restrict_root_directory" prodtype="rhel7">
 <title>Restrict Root Directory</title>
 <description>
 The <tt>httpd</tt> root directory should always have the most restrictive configuration enabled.
@@ -495,10 +495,10 @@ The <tt>httpd</tt> root directory should always have the most restrictive config
 The Web Server's root directory content should be protected from unauthorized access
 by web clients.
 </rationale>
-<ident cce="80316-3" />
+<ident prodtype="rhel7" cce="80316-3" />
 </Rule>
 
-<Rule id="httpd_restrict_web_directory">
+<Rule id="httpd_restrict_web_directory" prodtype="rhel7">
 <title>Restrict Web Directory</title>
 <description>
 The default configuration for the web (<tt>/var/www/html</tt>) Directory allows directory
@@ -519,10 +519,10 @@ Ensure that this policy is adhered to by altering the related section of the con
 Access to the web server's directory hierarchy could allow access to unauthorized files
 by web clients. Following symbolic links could also allow such access.
 </rationale>
-<ident cce="80317-1" />
+<ident prodtype="rhel7" cce="80317-1" />
 </Rule>
 
-<Rule id="httpd_restrict_critical_directories">
+<Rule id="httpd_restrict_critical_directories" prodtype="rhel7">
 <title>Restrict Other Critical Directories</title>
 <description>
 All accessible web directories should be configured with similarly restrictive settings.
@@ -534,10 +534,10 @@ should be used to deny access by default, allowing access only where necessary.
 Directories accessible from a web client should be configured with the least amount of
 access possible in order to avoid unauthorized access to restricted content or server information.
 </rationale>
-<ident cce="80318-9" />
+<ident prodtype="rhel7" cce="80318-9" />
 </Rule>
 
-<Rule id="httpd_limit_available_methods">
+<Rule id="httpd_limit_available_methods" prodtype="rhel7">
 <title>Limit Available Methods</title>
 <description>
 Web server methods are defined in section 9 of RFC 2616 (<weblink-macro link="http://www.ietf.org/rfc/rfc2616.txt"/>).
@@ -559,7 +559,7 @@ are limited to the WebDAV protocol.
 Minimizing the number of available methods to the web client reduces risk
 by limiting the capabilities allowed by the web server.
 </rationale>
-<ident cce="80319-7" />
+<ident prodtype="rhel7" cce="80319-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_directory_restrictions"> -->
@@ -586,7 +586,7 @@ be used. If it provides some feature or its greater compatibility is required,
 then <tt>mod_ssl</tt> should be used.
 </description>
 
-<Rule id="httpd_install_mod_ssl">
+<Rule id="httpd_install_mod_ssl" prodtype="rhel7">
 <title>Install <tt>mod_ssl</tt></title>
 <description>
 Install the <tt>mod_ssl</tt> module:
@@ -597,7 +597,7 @@ Install the <tt>mod_ssl</tt> module:
 content is transmitted in plain text which could be passively monitored and accessed by
 unauthorized parties.
 </rationale>
-<ident cce="80320-5" />
+<ident prodtype="rhel7" cce="80320-5" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_deploy_mod_ssl"> -->
@@ -614,7 +614,7 @@ and instead is provided via Extra Packages for Enterprise Linux (EPEL).
 For more information on EPEL please refer to http://fedoraproject.org/wiki/EPEL.
 </description>
 
-<Rule id="httpd_install_mod_security">
+<Rule id="httpd_install_mod_security" prodtype="rhel7">
 <title>Install <tt>mod_security</tt></title>
 <description>
 Install the <tt>security</tt> module:
@@ -626,7 +626,7 @@ Install the <tt>security</tt> module:
 enabling the administrator to implement content access policies and filters at the
 application layer.
 </rationale>
-<ident cce="80321-3" />
+<ident prodtype="rhel7" cce="80321-3" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_deploy_mod_security"> -->
@@ -706,7 +706,7 @@ web server, in order to provide as safe an environment as possible for the web s
 Minimize access to critical <tt>httpd</tt> files and directories.
 </description>
 
-<Rule id="dir_perms_var_log_httpd">
+<Rule id="dir_perms_var_log_httpd" prodtype="rhel7">
 <title>Set Permissions on the <tt>/var/log/httpd/</tt> Directory</title>
 <description>
 Ensure that the permissions on the web server log directory is set to 700:
@@ -717,12 +717,12 @@ This is its default setting.
 Access to the web server's log files may allow an unauthorized user or attacker
 to access information about the web server or alter the server's log files.
 </rationale>
-<ident cce="80322-1" />
+<ident prodtype="rhel7" cce="80322-1" />
 <oval id="dir_perms_var_log_httpd" />
-<ref nist="CM-7" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 
-<Rule id="dir_perms_etc_httpd_conf">
+<Rule id="dir_perms_etc_httpd_conf" prodtype="rhel7">
 <title>Set Permissions on the <tt>/etc/httpd/conf/</tt> Directory</title>
 <description>
 Set permissions on the web server configuration directory to 750:
@@ -733,10 +733,10 @@ Access to the web server's configuration files may allow an unauthorized user or
 to access information about the web server or alter the server's configuration files.
 </rationale>
 <oval id="dir_perms_etc_httpd_conf" />
-<ident cce="80323-9" />
+<ident prodtype="rhel7" cce="80323-9" />
 </Rule>
 
-<Rule id="file_permissions_httpd_server_conf_files">
+<Rule id="file_permissions_httpd_server_conf_files" prodtype="rhel7">
 <title>Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf/</tt></title>
 <description>
 Set permissions on the web server configuration files to 640:
@@ -747,8 +747,8 @@ Access to the web server's configuration files may allow an unauthorized user or
 to access information about the web server or to alter the server's configuration files.
 </rationale>
 <oval id="file_permissions_httpd_server_conf_files" />
-<ref nist="CM-7" />
-<ident cce="80324-7" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80324-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_restrict_file_dir_access"> -->

@@ -16,7 +16,7 @@ does not need to act as a router, then it should be disabled
 and removed.
 </description>
 
-<Rule id="service_zebra_disabled" severity="medium">
+<Rule id="service_zebra_disabled" severity="medium" prodtype="rhel7">
 <title>Disable Quagga Service</title>
 <description>
 <systemd-service-macro enable="false" service="zebra" />
@@ -30,12 +30,12 @@ topology information with other routers. If routing daemons are used when not
 required, system network information may be unnecessarily transmitted across
 the network.
 </rationale>
-<ident cce="27191-6" />
+<ident prodtype="rhel7" cce="27191-6" />
 <oval id="service_zebra_disabled" />
-<ref nist="SC-32" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040730" />
+<ref prodtype="rhel7" nist="SC-32" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040730" />
 </Rule>
 
-<Rule id="package_quagga_removed" severity="medium">
+<Rule id="package_quagga_removed" severity="medium" prodtype="rhel7">
 <title>Uninstall quagga Package</title>
 <description>
 <yum-macro install="false" package="quagga" />
@@ -51,9 +51,9 @@ information may be unnecessarily transmitted across the network.
 If there is no need to make the router software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="27594-1" />
+<ident prodtype="rhel7" cce="27594-1" />
 <oval id="package_quagga_removed" />
-<ref nist="SC-32" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
+<ref prodtype="rhel7" nist="SC-32" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
 </Rule>
 
 </Group>

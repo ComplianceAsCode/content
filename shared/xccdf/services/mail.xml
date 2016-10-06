@@ -23,7 +23,7 @@ SELinux as its modular design has resulted in separate processes performing spec
 More information is available on its website, <weblink-macro link="http://www.postfix.org"/>.
 </description>
 
-<Rule id="service_postfix_enabled">
+<Rule id="service_postfix_enabled" prodtype="rhel7">
 <title>Enable Postfix Service</title>
 <description>The Postfix mail transfer agent is used for local mail delivery
 within the system. The default configuration only listens for connections to
@@ -37,12 +37,12 @@ recommended to leave this service enabled for local mail delivery.
 <rationale>Local mail delivery is essential to some system maintenance and
 notification tasks.
 </rationale>
-<ident cce="80287-6" />
+<ident prodtype="rhel7" cce="80287-6" />
 <oval id="service_postfix_enabled" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="package_sendmail_removed" severity="medium">
+<Rule id="package_sendmail_removed" severity="medium" prodtype="rhel7">
 <title>Uninstall Sendmail Package</title>
 <description>Sendmail is not the default mail transfer agent and is
 not installed by default.
@@ -55,8 +55,8 @@ not installed by default.
 its design prevents it from being effectively contained by SELinux.  Postfix
 should be used instead.  
 </rationale>
-<ident cce="80288-4" />
-<ref nist="CM-7" />
+<ident prodtype="rhel7" cce="80288-4" />
+<ref prodtype="rhel7" nist="CM-7" />
 <oval id="package_sendmail_removed" />
 <tested by="DS" on="20121024"/>
 </Rule>
@@ -66,7 +66,7 @@ should be used instead.
 <description>This section discusses settings for Postfix in a submission-only
 e-mail configuration.</description>
 
-<Rule id="postfix_network_listening_disabled" severity="medium">
+<Rule id="postfix_network_listening_disabled" severity="medium" prodtype="rhel7">
 <title>Disable Postfix Network Listening</title>
 <description>
 Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following
@@ -83,9 +83,9 @@ This ensures <tt>postfix</tt> accepts mail messages
 (such as cron job reports) from the local system only,
 and not from the network, which protects it from network attack.
 </rationale>
-<ident cce="80289-2" />
+<ident prodtype="rhel7" cce="80289-2" />
 <oval id="postfix_network_listening_disabled" />
-<ref nist="CM-7" disa="382" cis="3.16" />
+<ref prodtype="rhel7" nist="CM-7" disa="382" cis="3.16" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -142,7 +142,7 @@ $ sudo chmod 644 /etc/pki/tls/CA/cacert.pem</pre>
 <tt>/etc/postfix/main.cf</tt>.
 </description>
 
-<Rule id="postfix_server_banner" severity="medium">
+<Rule id="postfix_server_banner" severity="medium" prodtype="rhel7">
 <title>Configure SMTP Greeting Banner</title>
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and add or correct the
 following line, substituting some other wording for the banner information if
@@ -160,8 +160,8 @@ be useful) and the word ESMTP, to indicate that the modern SMTP protocol
 variant is supported.
 </rationale>
 <oval id="postfix_server_banner" />
-<ref nist="AC-22, AU-13" />
-<ident cce="80290-0" />
+<ref prodtype="rhel7" nist="AC-22, AU-13" />
+<ident prodtype="rhel7" cce="80290-0" />
 </Rule>
 
 <Group id="postfix_server_denial_of_service">

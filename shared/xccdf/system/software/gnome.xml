@@ -12,7 +12,7 @@ Red Hat Graphical environment.
 For more information on GNOME and the GNOME Project, see <b><weblink-macro link="https://www.gnome.org"/></b>
 </description>
 
-<Rule id="enable_dconf_user_profile" severity="high">
+<Rule id="enable_dconf_user_profile" severity="high" prodtype="rhel7">
 <title>Configure GNOME3 DConf User Profile</title>
 <description>
 By default, DConf provides a standard user profile. This profile contains a list
@@ -41,7 +41,7 @@ system-db:distro</pre>
 Failure to have a functional DConf profile prevents GNOME3 configuration settings
 from being enforced for all users and allows various security risks.
 </rationale>
-<ident cce="27446-4" />
+<ident prodtype="rhel7" cce="27446-4" />
 <oval id="enable_dconf_user_profile" />
 </Rule>
 
@@ -56,7 +56,7 @@ For more information about enforcing preferences in the GNOME3 environment using
 configuration system, see <b><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Desktop_Migration_and_Administration_Guide/index.html"/></b> and the man page <tt>dconf(1)</tt>.
 </description>
 
-<Rule id="gnome_gdm_disable_automatic_login" severity="high">
+<Rule id="gnome_gdm_disable_automatic_login" severity="high" prodtype="rhel7">
 <title>Disable GDM Automatic Login</title>
 <description>The GNOME Display Manager (GDM) can allow users to automatically login without
 user interaction or credentials. User should always be required to authenticate themselves
@@ -77,12 +77,12 @@ AutomaticLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
-<ident cce="80104-3" />
+<ident prodtype="rhel7" cce="80104-3" />
 <oval id="gnome_gdm_disable_automatic_login" />
-<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010430"/>
+<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010430"/>
 </Rule>
 
-<Rule id="gnome_gdm_disable_guest_login" severity="high">
+<Rule id="gnome_gdm_disable_guest_login" severity="high" prodtype="rhel7">
 <title>Disable GDM Guest Login</title>
 <description>The GNOME Display Manager (GDM) can allow users to login without credentials
 which can be useful for public kiosk scenarios. Allowing users to login without credentials
@@ -103,12 +103,12 @@ TimedLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
-<ident cce="80105-0" />
+<ident prodtype="rhel7" cce="80105-0" />
 <oval id="gnome_gdm_disable_guest_login" />
-<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010431"/>
+<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010431"/>
 </Rule>
 
-<Rule id="dconf_gnome_disable_user_list" severity="medium">
+<Rule id="dconf_gnome_disable_user_list" severity="medium" prodtype="rhel7">
 <title>Disable the GNOME3 Login User List</title>
 <description>In the default graphical environment, users logging
 directly into the system are greeted with a login screen that displays
@@ -136,12 +136,12 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/disable
 <rationale>Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.</rationale>
-<ident cce="80106-8" />
+<ident prodtype="rhel7" cce="80106-8" />
 <oval id="dconf_gnome_disable_user_list" />
-<ref nist="AC-23" />
+<ref prodtype="rhel7" nist="AC-23" />
 </Rule>
 
-<Rule id="dconf_gnome_disable_restart_shutdown" severity="high">
+<Rule id="dconf_gnome_disable_restart_shutdown" severity="high" prodtype="rhel7">
 <title>Disable the GNOME3 Login Restart and Shutdown Buttons</title>
 <description>In the default graphical environment, users logging
 directly into the system are greeted with a login screen that allows
@@ -172,12 +172,12 @@ A user who is at the console can reboot the system at the login screen. If resta
 are pressed at the login screen, this can create the risk of short-term loss of availability of systems
 due to reboot.
 </rationale>
-<ident cce="80107-6" />
+<ident prodtype="rhel7" cce="80107-6" />
 <oval id="dconf_gnome_disable_restart_shutdown" />
-<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
+<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
 </Rule>
 
-<Rule id="dconf_gnome_enable_smartcard_auth" severity="medium">
+<Rule id="dconf_gnome_enable_smartcard_auth" severity="medium" prodtype="rhel7">
 <title>Enable the GNOME3 Login Smartcard Authentication</title>
 <description>In the default graphical environment, smart card authentication
 can be enabled on the login screen by setting <tt>enable-smartcard-authentication</tt>
@@ -206,12 +206,12 @@ Smart card login provides two-factor authentication stronger than
 that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
-<ident cce="80108-4" />
+<ident prodtype="rhel7" cce="80108-4" />
 <oval id="dconf_gnome_enable_smartcard_auth" />
-<ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
+<ref prodtype="rhel7" disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
 </Rule>
 
-<Rule id="dconf_gnome_login_retries" severity="medium">
+<Rule id="dconf_gnome_login_retries" severity="medium" prodtype="rhel7">
 <title>Set the GNOME3 Login Number of Failures</title>
 <description>In the default graphical environment, the GNOME3 login 
 screen and be configured to restart the authentication process after 
@@ -243,7 +243,7 @@ Setting the password retry prompts that are permitted on a per-session basis to 
 requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks.
 </rationale>
-<ident cce="80109-2" />
+<ident prodtype="rhel7" cce="80109-2" />
 <oval id="dconf_gnome_login_retries" />
 </Rule>
 
@@ -282,7 +282,7 @@ settings, see <b><weblink-macro link="https://access.redhat.com/documentation/en
 <value selector="15_minutes">900</value>
 </Value>
 
-<Rule id="dconf_gnome_screensaver_idle_delay" severity="medium">
+<Rule id="dconf_gnome_screensaver_idle_delay" severity="medium" prodtype="rhel7">
 <title>Set GNOME3 Screensaver Inactivity Timeout</title>
 <description>
 The idle time-out value for inactivity in the GNOME3 desktop is configured via the <tt>idle-delay</tt>
@@ -314,13 +314,13 @@ temporary nature of the absence. Rather than relying on the user to manually loc
 system session prior to vacating the vicinity, GNOME3 can be configured to identify when
 a user's session has idled and take action to initiate a session lock.
 </rationale>
-<ident cce="80110-0" />
+<ident prodtype="rhel7" cce="80110-0" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8"
+<ref prodtype="rhel7" nist="AC-11(a)" disa="57" pcidss="Req-8.1.8"
 ossrg="SRG-OS-000029-GPOS-00010" stigid="010070" />
 </Rule>
 
-<Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium">
+<Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium" prodtype="rhel7">
 <title>Enable GNOME3 Screensaver Idle Activation</title>
 <description>
 To activate the screensaver in the GNOME3 desktop after a period of inactivity,
@@ -355,12 +355,12 @@ real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
-<ident cce="80111-8" />
+<ident prodtype="rhel7" cce="80111-8" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010073" pcidss="Req-8.1.8" />
+<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010073" pcidss="Req-8.1.8" />
 </Rule>
 
-<Rule id="dconf_gnome_screensaver_lock_enabled" severity="medium">
+<Rule id="dconf_gnome_screensaver_lock_enabled" severity="medium" prodtype="rhel7">
 <title>Enable GNOME3 Screensaver Lock After Idle Period</title>
 <description>
 To activate locking of the screensaver in the GNOME3 desktop when it is activated,
@@ -395,13 +395,13 @@ If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gn
 A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
 of the information system but does not want to logout because of the temporary nature of the absense.
 </rationale>
-<ident cce="80112-6" />
+<ident prodtype="rhel7" cce="80112-6" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
+<ref prodtype="rhel7" nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
 ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" stigid="010060" />
 </Rule>
 
-<Rule id="dconf_gnome_screensaver_mode_blank">
+<Rule id="dconf_gnome_screensaver_mode_blank" prodtype="rhel7">
 <title>Implement Blank Screensaver</title>
 <description>
 To set the screensaver mode in the GNOME3 desktop to a blank screen,
@@ -428,12 +428,12 @@ If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/
 Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
-<ident cce="80113-4" />
+<ident prodtype="rhel7" cce="80113-4" />
 <oval id="dconf_gnome_screensaver_mode_blank" />
-<ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" />
+<ref prodtype="rhel7" nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" />
 </Rule>
 
-<Rule id="dconf_gnome_screensaver_user_info">
+<Rule id="dconf_gnome_screensaver_user_info" prodtype="rhel7">
 <title>Disable Full User Name on Splash Shield</title>
 <description>
 By default when the screen is locked, the splash shield will show the user's
@@ -462,7 +462,7 @@ If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/
 Setting the splash screen to not reveal the logged in user's name
 conceals who has access to the system from passersby.
 </rationale>
-<ident cce="80114-2" />
+<ident prodtype="rhel7" cce="80114-2" />
 <oval id="dconf_gnome_screensaver_user_info" />
 </Rule>
 
@@ -479,7 +479,7 @@ Configuring such settings in GNOME will prevent accidential graphical configurat
 changes by users from taking place.
 </description>
 
-<Rule id="dconf_gnome_disable_ctrlaltdel_reboot" severity="high">
+<Rule id="dconf_gnome_disable_ctrlaltdel_reboot" severity="high" prodtype="rhel7">
 <title>Disable Ctrl-Alt-Del Reboot Key Sequence in GNOME3</title>
 <description>
 By default, <tt>GNOME</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
@@ -515,11 +515,11 @@ the case of mixed OS environment, this can create the risk of short-term
 loss of availability of systems due to unintentional reboot.
 </rationale>
 <oval id="dconf_gnome_disable_ctrlaltdel_reboot" />
-<ident cce="80124-1" />
-<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
+<ident prodtype="rhel7" cce="80124-1" />
+<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
 </Rule>
 
-<Rule id="dconf_gnome_disable_user_admin" severity="high">
+<Rule id="dconf_gnome_disable_user_admin" severity="high" prodtype="rhel7">
 <title>Disable User Administration in GNOME3</title>
 <description>
 By default, <tt>GNOME</tt> will allow all users to have some administratrion
@@ -554,10 +554,10 @@ unintended configuration changes as well as a nefarious user the capability to m
 changes such as adding new accounts, etc.
 </rationale>
 <oval id="dconf_gnome_disable_user_admin" />
-<ident cce="80115-9" />
+<ident prodtype="rhel7" cce="80115-9" />
 </Rule>
 
-<Rule id="dconf_gnome_disable_power_settings" severity="medium">
+<Rule id="dconf_gnome_disable_power_settings" severity="medium" prodtype="rhel7">
 <title>Disable Power Settings in GNOME3</title>
 <description>
 By default, <tt>GNOME</tt> enables a power profile designed for mobile devices
@@ -589,10 +589,10 @@ Enabling power settings on non-mobile devices could have unintended processing
 consequences on standard systems.
 </rationale>
 <oval id="dconf_gnome_disable_power_settings" />
-<ident cce="80116-7" />
+<ident prodtype="rhel7" cce="80116-7" />
 </Rule>
 
-<Rule id="dconf_gnome_disable_geolocation" severity="medium">
+<Rule id="dconf_gnome_disable_geolocation" severity="medium" prodtype="rhel7">
 <title>Disable Geolocation in GNOME3</title>
 <description>
 <tt>GNOME</tt> allows the clock and applications to track and access location 
@@ -632,7 +632,7 @@ Enabling power settings on non-mobile devices could have unintended processing
 consequences on standard systems.
 </rationale>
 <oval id="dconf_gnome_disable_geolocation" />
-<ident cce="80117-5" />
+<ident prodtype="rhel7" cce="80117-5" />
 </Rule>
 
 </Group>
@@ -643,7 +643,7 @@ consequences on standard systems.
 GNOME network settings that apply to the graphical interface.
 </description>
 
-<Rule id="dconf_gnome_disable_wifi_create" severity="medium">
+<Rule id="dconf_gnome_disable_wifi_create" severity="medium" prodtype="rhel7">
 <title>Disable WIFI Network Connection Creation in GNOME3</title>
 <description>
 <tt>GNOME</tt> allows users to create ad-hoc wireless connections through the
@@ -673,10 +673,10 @@ Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
 <oval id="dconf_gnome_disable_wifi_create" />
-<ident cce="80118-3" />
+<ident prodtype="rhel7" cce="80118-3" />
 </Rule>
 
-<Rule id="dconf_gnome_disable_wifi_notification" severity="medium">
+<Rule id="dconf_gnome_disable_wifi_notification" severity="medium" prodtype="rhel7">
 <title>Disable WIFI Network Notification in GNOME3</title>
 <description>
 By default, <tt>GNOME</tt> disables WIFI notification. This should be permanently set
@@ -708,7 +708,7 @@ Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
 <oval id="dconf_gnome_disable_wifi_notification" />
-<ident cce="80119-1" />
+<ident prodtype="rhel7" cce="80119-1" />
 </Rule>
 
 </Group>
@@ -719,7 +719,7 @@ users on a given system as it could open the system to backdoor attacks.
 GNOME remote access settings that apply to the graphical interface.
 </description>
 
-<Rule id="dconf_gnome_remote_access_credential_prompt" severity="medium">
+<Rule id="dconf_gnome_remote_access_credential_prompt" severity="medium" prodtype="rhel7">
 <title>Require Credential Prompting for Remote Access in GNOME3</title>
 <description>
 By default, <tt>GNOME</tt> does not require credentials when using <tt>Vino</tt> for
@@ -749,10 +749,10 @@ Username and password prompting is required for remote access. Otherwise, non-au
 and nefarious users can access the system freely.
 </rationale>
 <oval id="dconf_gnome_remote_access_credential_prompt" />
-<ident cce="80120-9" />
+<ident prodtype="rhel7" cce="80120-9" />
 </Rule>
 
-<Rule id="dconf_gnome_remote_access_encryption" severity="medium">
+<Rule id="dconf_gnome_remote_access_encryption" severity="medium" prodtype="rhel7">
 <title>Require Encryption for Remote Access in GNOME3</title>
 <description>
 By default, <tt>GNOME</tt> requires encryption when using <tt>Vino</tt> for remote access.
@@ -782,8 +782,8 @@ Open X displays allow an attacker to capture keystrokes and to execute commands
 remotely.
 </rationale>
 <oval id="dconf_gnome_remote_access_encryption" />
-<ident cce="80121-7" />
-<ref nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
+<ident prodtype="rhel7" cce="80121-7" />
+<ref prodtype="rhel7" nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="TBD" />
 </Rule>
 
@@ -795,7 +795,7 @@ stigid="TBD" />
 GNOME media settings that apply to the graphical interface.
 </description>
 
-<Rule id="dconf_gnome_disable_automount">
+<Rule id="dconf_gnome_disable_automount" prodtype="rhel7">
 <title>Disable GNOME3 Automounting</title>
 <description>The system's default desktop environment, GNOME3, will mount
 devices and removable media (such as DVDs, CDs and USB flash drives) whenever
@@ -834,12 +834,12 @@ the introduction of malware via removable media.
 It will, however, also prevent desktop users from legitimate use
 of removable media.
 </rationale>
-<ident cce="80122-5" />
+<ident prodtype="rhel7" cce="80122-5" />
 <oval id="dconf_gnome_disable_automount" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e)" />
+<ref prodtype="rhel7" nist="AC-19(a),AC-19(d),AC-19(e)" />
 </Rule>
 
-<Rule id="dconf_gnome_disable_thumbnailers">
+<Rule id="dconf_gnome_disable_thumbnailers" prodtype="rhel7">
 <title>Disable All GNOME3 Thumbnailers</title>
 <description>The system's default desktop environment, GNOME3, uses
 a number of different thumbnailer programs to generate thumbnails
@@ -870,9 +870,9 @@ file to exploit this flaw. Assuming the attacker could place the malicious file 
 (via a web upload for example) and assuming a user browses the same location using Nautilus, the
 malicious file would exploit the thumbnailer with the potential for malicious code execution. It
 is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
-<ident cce="80123-3" />
+<ident prodtype="rhel7" cce="80123-3" />
 <oval id="dconf_gnome_disable_thumbnailers" />
-<ref nist="CM-7" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 
 </Group>
