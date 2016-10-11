@@ -8,7 +8,12 @@
       <description>SSSD should be configured to expire offline credentials after 1 day.</description>
       <reference source="galford" ref_id="20160527" ref_url="test_attestation" />
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <criteria operator="OR">
+        <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />
+        <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
+        definition_ref="sssd_conf_exists" negate="true"/>
+      </criteria>
       <criterion comment="Check offline_credentials_expiration in /etc/sssd/sssd.conf"
       test_ref="test_sssd_offline_cred_expiration" />
     </criteria>
@@ -20,7 +25,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_offline_cred_expiration" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\[nss]([^\n]*\n+)+?offline_credentials_expiration[\s]+=[\s]+1$</ind:pattern>
+    <ind:pattern operation="pattern match">^\[pam]([^\n]*\n+)+?offline_credentials_expiration[\s]+=[\s]+1$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

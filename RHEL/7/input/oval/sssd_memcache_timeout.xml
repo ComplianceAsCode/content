@@ -8,11 +8,17 @@
       <description>SSSD's memory cache should be configured to set to expire records after 1 day.</description>
       <reference source="galford" ref_id="20160527" ref_url="test_attestation" />
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <criteria operator="OR">
+        <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />
+        <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
+        definition_ref="sssd_conf_exists" negate="true"/>
+      </criteria>
       <criterion comment="Check memcache_timeout in /etc/sssd/sssd.conf"
       test_ref="test_sssd_memcache_timeout" />
     </criteria>
   </definition>
+
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the value of memcache_timeoutsetting in the /etc/sssd/sssd.conf file"
   id="test_sssd_memcache_timeout" version="1">

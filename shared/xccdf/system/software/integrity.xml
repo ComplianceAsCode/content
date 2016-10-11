@@ -243,10 +243,11 @@ Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.  
 </rationale>
 <ident prodtype="rhel7" cce="26818-5" />
+<oval id="install_hids" />
 <ref prodtype="rhel7" nist="SC-7" disa="1263" pcidss="Req-11.4" />
 </Rule>
 
-<Rule id="install_antivirus" prodtype="rhel7">
+<Rule id="install_antivirus" severity="high" prodtype="rhel7">
 <title>Install Virus Scanning Software</title>
 <description>
 Install virus scanning software, which uses signatures to search for the
