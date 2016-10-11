@@ -12,7 +12,7 @@ in your network environment by ensuring they are not needed
 prior to disabling them.
 </warning>
 
-<Rule id="kernel_module_dccp_disabled" severity="medium">
+<Rule id="kernel_module_dccp_disabled" severity="medium" prodtype="rhel7">
 <title>Disable DCCP Support</title>
 <description>
 The Datagram Congestion Control Protocol (DCCP) is a
@@ -27,13 +27,13 @@ streaming media and telephony.
 Disabling DCCP protects
 the system against exploitation of any flaws in its implementation.
 </rationale>
-<ident cce="26828-4" />
+<ident prodtype="rhel7" cce="26828-4" />
 <oval id="kernel_module_dccp_disabled" />
-<ref nist="CM-7" disa="" cis="4.6.1" />
+<ref prodtype="rhel7" nist="CM-7" disa="" cis="4.6.1" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="kernel_module_sctp_disabled" severity="medium">
+<Rule id="kernel_module_sctp_disabled" severity="medium" prodtype="rhel7">
 <title>Disable SCTP Support</title>
 <description>
 The Stream Control Transmission Protocol (SCTP) is a
@@ -49,9 +49,9 @@ within one connection.
 Disabling SCTP protects
 the system against exploitation of any flaws in its implementation.
 </rationale>
-<ident cce="27106-4" />
+<ident prodtype="rhel7" cce="27106-4" />
 <oval id="kernel_module_sctp_disabled" />
-<ref nist="CM-7" disa="" cis="4.6.2" />
+<ref prodtype="rhel7" nist="CM-7" disa="" cis="4.6.2" />
 <tested by="DS" on="20121024"/>
 </Rule>
 

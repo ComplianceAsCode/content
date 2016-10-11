@@ -6,7 +6,7 @@
   isolation features of the kernel.
 </description>
 
-<Rule id="service_docker_enabled" severity="medium">
+<Rule id="service_docker_enabled" severity="medium" prodtype="rhel7">
 <title>Enable the Docker service</title>
 <description>The docker service is commonly needed to
   create containers.
@@ -20,14 +20,14 @@ To be able to find any problems with misconfiguration of
 the docker daemon and running containers, the docker service
 has to be enabled.
 </rationale>
-<ident cce="" />
-<ref nist="" disa=""
+<ident prodtype="rhel7" cce="" />
+<ref prodtype="rhel7" nist="" disa=""
 ossrg=""
 stigid="" />
 <oval id="service_docker_enabled" />
 </Rule>
 
-<Rule id="docker_storage_configured" severity="low">
+<Rule id="docker_storage_configured" severity="low" prodtype="rhel7">
 <title>Use direct-lvm with the Device Mapper Storage Driver</title>
 <description>
 To use Docker in production with the device mapper storage driver, the Docker

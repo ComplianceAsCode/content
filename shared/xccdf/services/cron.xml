@@ -6,7 +6,7 @@ all systems to perform necessary maintenance tasks, while at may or
 may not be required on a given system. Both daemons should be
 configured defensively.</description>
 
-<Rule id="service_crond_enabled" severity="medium">
+<Rule id="service_crond_enabled" severity="medium" prodtype="rhel7">
 <title>Enable cron Service</title>
 <description>The <tt>crond</tt> service is used to execute commands at
 preconfigured times. It is required by almost all systems to perform necessary
@@ -17,13 +17,13 @@ maintenance tasks, such as notifying root of system activity.
 <rationale>Due to its usage for maintenance and security-supporting tasks,
 enabling the cron daemon is essential.
 </rationale>
-<ident cce="27323-5" />
+<ident prodtype="rhel7" cce="27323-5" />
 <oval id="service_crond_enabled" />
-<ref nist="CM-7" cis="6.1.2" />
+<ref prodtype="rhel7" nist="CM-7" cis="6.1.2" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="disable_anacron">
+<Rule id="disable_anacron" prodtype="rhel7">
 <title>Disable anacron Service</title>
 <description>The <tt>cronie-anacron</tt> package, which provides <tt>anacron</tt>
 functionality, is installed by default. 
@@ -37,11 +37,11 @@ that <tt>cron</tt> jobs are scheduled to run. On systems which do not require th
 additional functionality, <tt>anacron</tt> could needlessly increase the possible
 attack surface for an intruder.
 </rationale>
-<ref nist="CM-7" />
-<ident cce="80344-5" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80344-5" />
 </Rule>
 
-<Rule id="service_atd_disabled">
+<Rule id="service_atd_disabled" prodtype="rhel7">
 <title>Disable At Service (atd)</title>
 <description>The <tt>at</tt> and <tt>batch</tt> commands can be used to
 schedule tasks that are meant to be executed only once. This allows delayed
@@ -57,9 +57,9 @@ out activities outside of a normal login session, which could complicate
 accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
 <tt>batch</tt> is not common.
 </rationale>
-<ident cce="80345-2" />
+<ident prodtype="rhel7" cce="80345-2" />
 <oval id="service_atd_disabled" />
-<ref nist="CM-7" disa="381" />
+<ref prodtype="rhel7" nist="CM-7" disa="381" />
 </Rule>
 
 <Group id="restrict_at_cron_users">

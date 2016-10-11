@@ -22,7 +22,7 @@ via network protocols. Other sections of this document
 include guidance describing how to prevent root from logging in via SSH.
 </description>
 
-<Rule id="no_direct_root_logins" severity="medium">
+<Rule id="no_direct_root_logins" severity="medium" prodtype="rhel7">
 <title>Direct root Logins Not Allowed</title>
 <description>To further limit access to the <tt>root</tt> account, administrators
 can disable root logins at the console by editing the <tt>/etc/securetty</tt> file.
@@ -52,12 +52,12 @@ to privileged (root) access via su / sudo. This is required for FISMA Low
 and FISMA Moderate systems.
 </rationale>
 <oval id="no_direct_root_logins" />
-<ident cce="27294-8" />
-<ref nist="IA-2(1)" cis="6.4" />
+<ident prodtype="rhel7" cce="27294-8" />
+<ref prodtype="rhel7" nist="IA-2(1)" cis="6.4" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="securetty_root_login_console_only" severity="medium">
+<Rule id="securetty_root_login_console_only" severity="medium" prodtype="rhel7">
 <title>Restrict Virtual Console Root Logins</title>
 <description>
 To restrict root logins through the (deprecated) virtual console devices,
@@ -78,13 +78,13 @@ Preventing direct root login to virtual console devices
 helps ensure accountability for actions taken on the system
 using the root account.
 </rationale>
-<ident cce="27318-5" />
+<ident prodtype="rhel7" cce="27318-5" />
 <oval id="securetty_root_login_console_only" />
-<ref nist="AC-6(2)" disa="770" />
+<ref prodtype="rhel7" nist="AC-6(2)" disa="770" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="restrict_serial_port_logins">
+<Rule id="restrict_serial_port_logins" prodtype="rhel7">
 <title>Restrict Serial Port Root Logins</title>
 <description>To restrict root logins on serial ports,
 ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
@@ -103,14 +103,14 @@ Preventing direct root login to serial port interfaces
 helps ensure accountability for actions taken on the systems
 using the root account.
 </rationale>
-<ident cce="27268-2" />
+<ident prodtype="rhel7" cce="27268-2" />
 <oval id="restrict_serial_port_logins" />
-<ref nist="AC-6(2)" disa="770" />
+<ref prodtype="rhel7" nist="AC-6(2)" disa="770" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
 
-<Rule id="no_root_webbrowsing">
+<Rule id="no_root_webbrowsing" prodtype="rhel7">
 <title>Restrict Web Browser Use for Administrative Accounts</title>
 <description>
 Enforce policy requiring administrative accounts use web browsers only for
@@ -125,10 +125,10 @@ If a browser vulnerability is exploited while running with administrative privil
 the entire system could be compromised. Specific exceptions for local service
 administration should be documented in site-defined policy.
 </rationale>
-<ident cce="80209-0" />
+<ident prodtype="rhel7" cce="80209-0" />
 </Rule>
 
-<Rule id="no_shelllogin_for_systemaccounts" severity="medium">
+<Rule id="no_shelllogin_for_systemaccounts" severity="medium" prodtype="rhel7">
 <title>Ensure that System Accounts Do Not Run a Shell Upon Login</title>
 <description>
 Some accounts are not associated with a human user of the system, and exist to
@@ -160,13 +160,13 @@ difficult for attackers to make use of system accounts.
 Do not perform the steps in this section on the root account. Doing so might
 cause the system to become inaccessible.
 </warning>
-<ident cce="26448-1" />
+<ident prodtype="rhel7" cce="26448-1" />
 <oval id="no_shelllogin_for_systemaccounts" />
-<ref nist="AC-2" disa="" />
+<ref prodtype="rhel7" nist="AC-2" disa="" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="accounts_no_uid_except_zero" severity="high">
+<Rule id="accounts_no_uid_except_zero" severity="high" prodtype="rhel7">
 <title>Verify Only Root Has UID 0</title>
 <description>
 If any account other than root has a UID of 0, this misconfiguration should 
@@ -194,13 +194,13 @@ guess a password for a privileged account. Proper configuration of
 sudo is recommended to afford multiple system administrators
 access to root privileges in an accountable manner.
 </rationale>
-<ident cce="27175-9" />
+<ident prodtype="rhel7" cce="27175-9" />
 <oval id="accounts_no_uid_except_zero" />
-<ref nist="AC-6,IA-2(1),IA-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020310" />
+<ref prodtype="rhel7" nist="AC-6,IA-2(1),IA-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020310" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
-<Rule id="root_path_default">
+<Rule id="root_path_default" prodtype="rhel7">
 <title>Root Path Must Be Vendor Default</title>
 <description>
 Assuming root shell is bash, edit the following files:
@@ -220,8 +220,8 @@ other than a slash (/).
 The root account's executable search path must be the vendor default, and must
 contain only absolute paths.
 </rationale>
-<ref nist="SA-8" />
-<ident cce="80210-8" />
+<ref prodtype="rhel7" nist="SA-8" />
+<ident prodtype="rhel7" cce="80210-8" />
 <tested by="DS" on="20121024"/>
 </Rule>
 
@@ -229,7 +229,7 @@ contain only absolute paths.
      This is redundant to the previous rule, which insists that the
      root path is the vendor default.
 
-<Rule id="root_path_no_wwdir">
+<Rule id="root_path_no_wwdir" prodtype="rhel7">
 <title>Root Path Must Not Contain World-Writable Directories</title>
 <description>
 If a world-writable directory is found in the <tt>PATH</tt>, remove the 
@@ -246,7 +246,7 @@ with the following command:
 If the root search path contains a world-writable directory, malicious software 
 could be placed in the path.
 </rationale>
-<ref disa="366" />
+<ref prodtype="rhel7" disa="366" />
 </Rule> -->
 </Group>
 

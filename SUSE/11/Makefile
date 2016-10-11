@@ -89,12 +89,7 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
 	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
-#	Make CentOS variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-centos6-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-centos -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-centos6-ds.xml
-#	Make Scientific Linux variants of XCCDF and Source DataStream
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-xccdf.xml -o $(OUT)/$(ID)-sl6-xccdf.xml
-	$(SHARED)/$(UTILS)/enable-derivatives.py --enable-sl -i $(OUT)/$(ID)-$(PROD)-ds.xml -o $(OUT)/$(ID)-sl6-ds.xml
+
 
 content-stig: table-stigs guide checks
 	xmllint --format --output $(OUT)/unlinked-stig-$(PROD)-xccdf.xml $(OUT)/unlinked-stig-$(PROD)-xccdf.xml
@@ -105,13 +100,9 @@ content-stig: table-stigs guide checks
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos6-ds.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl6-ds.xml
 else
 	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
 	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-centos6-xccdf.xml
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-sl6-xccdf.xml
 endif
 
 submission-stig-check: table-stigs
@@ -127,10 +118,6 @@ validate-xml:
 	oscap cpe validate-xml $(OUT)/$(ID)-$(PROD)-cpe-dictionary.xml
 	oscap oval validate-xml --schematron $(OUT)/$(ID)-$(PROD)-cpe-oval.xml
 	oscap ds sds-validate $(OUT)/$(ID)-$(PROD)-ds.xml
-	oscap xccdf validate-xml $(OUT)/$(ID)-centos6-xccdf.xml
-	oscap ds sds-validate $(OUT)/$(ID)-centos6-ds.xml
-	oscap xccdf validate-xml $(OUT)/$(ID)-sl6-xccdf.xml
-	oscap ds sds-validate $(OUT)/$(ID)-sl6-ds.xml
 
 
 validate: validate-xml
@@ -161,10 +148,6 @@ dist: tables guide content
 	cp $(OUT)/table-*.{x,}html $(DIST)/tables
 	mkdir -p $(DIST)/guide
 	cp $(OUT)/*-guide-*.html $(DIST)/guide
-	cp $(OUT)/$(ID)-centos6-xccdf.xml $(DIST)/content
-	cp $(OUT)/$(ID)-centos6-ds.xml $(DIST)/content
-	cp $(OUT)/$(ID)-sl6-xccdf.xml $(DIST)/content
-	cp $(OUT)/$(ID)-sl6-ds.xml $(DIST)/content
 
 
 clean:

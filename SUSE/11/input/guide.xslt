@@ -35,8 +35,8 @@
       </xsl:if>
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_os.xml'))" />
-      <xsl:apply-templates select="document('xccdf/system/system.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/services.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/system.xml'))" />
+      <!--<xsl:apply-templates select="document('xccdf/services/services.xml')" />-->
       <!-- the auxiliary Groups here will be removed prior to some outputs -->
       <xsl:apply-templates select="document('auxiliary/srg_support.xml')" />
     </xsl:copy>
@@ -45,14 +45,14 @@
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/entropy.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/software/software.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/permissions.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
+      <!--<xsl:apply-templates select="document('xccdf/system/entropy.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/software/software.xml')" />-->
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/permissions.xml'))" />
+      <!--<xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/accounts.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />-->
     </xsl:copy>
   </xsl:template>
 
@@ -90,10 +90,10 @@
   <xsl:template match="Group[@id='permissions']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/partitions.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/mounting.xml')" />
+      <!--<xsl:apply-templates select="document('xccdf/system/permissions/partitions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/permissions/mounting.xml')" />-->
       <xsl:apply-templates select="document('xccdf/system/permissions/files.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/execution.xml')" />
+      <!--<xsl:apply-templates select="document('xccdf/system/permissions/execution.xml')" />-->
     </xsl:copy>
   </xsl:template>
 

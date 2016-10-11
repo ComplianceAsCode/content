@@ -10,7 +10,7 @@ For more information on <tt>Sudo</tt> and addition <tt>Sudo</tt> configuration o
 <b><weblink-macro link="https://www.sudo.ws"/></b>
 </description>
 
-<Rule id="sudo_remove_nopasswd" severity="medium">
+<Rule id="sudo_remove_nopasswd" severity="medium" prodtype="rhel7">
 <title>Ensure Users Re-Authenticate for Privilege Escalation - sudo NOPASSWD</title>
 <description>
 The sudo <tt>NOPASSWD</tt> tag, when specified, allows a user to execute commands using
@@ -30,13 +30,13 @@ do not have authorization.
 When operating systems provide the capability to escalate a functional capability, it
 is critical that the user re-authenticate.
 </rationale>
-<ident cce="80351-0" />
+<ident prodtype="rhel7" cce="80351-0" />
 <oval id="sudo_remove_nopasswd" />
-<ref nist="IA-11" disa="2038" stigid="010380"
+<ref prodtype="rhel7" nist="IA-11" disa="2038" stigid="010380"
 ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
 </Rule>
 
-<Rule id="sudo_remove_no_authenticate" severity="medium">
+<Rule id="sudo_remove_no_authenticate" severity="medium" prodtype="rhel7">
 <title>Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate</title>
 <description>
 The sudo <tt>!authenticate</tt> option, when specified, allows a user to execute commands using
@@ -56,9 +56,9 @@ do not have authorization.
 When operating systems provide the capability to escalate a functional capability, it
 is critical that the user re-authenticate.
 </rationale>
-<ident cce="80350-2" />
+<ident prodtype="rhel7" cce="80350-2" />
 <oval id="sudo_remove_no_authenticate" />
-<ref nist="IA-11" disa="2038" stigid="010381"
+<ref prodtype="rhel7" nist="IA-11" disa="2038" stigid="010381"
 ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
 </Rule>
 

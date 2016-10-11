@@ -9,7 +9,7 @@ homepage and more detailed documentation are available at
 <weblink-macro link="http://www.cups.org"/>.
 <br /><br /> </description>
 
-<Rule id="service_cups_disabled">
+<Rule id="service_cups_disabled" prodtype="rhel7">
 <title>Disable the CUPS Service</title>
 <description>
 <systemd-service-macro enable="false" service="cups" />
@@ -17,9 +17,9 @@ homepage and more detailed documentation are available at
 <ocil><systemd-check-macro enable="false" service="cups" /></ocil>
 <rationale>Turn off unneeded services to reduce attack surface.
 </rationale>
-<ident cce="80282-7" />
+<ident prodtype="rhel7" cce="80282-7" />
 <oval id="service_cups_disabled" />
-<ref nist="CM-7" cis="3.4" />
+<ref prodtype="rhel7" nist="CM-7" cis="3.4" />
 </Rule>
 
 <Group id="configure_printing">
@@ -32,7 +32,7 @@ sharing and print server capabilities of CUPS should be limited or disabled.
 The following recommendations should demonstrate how to do just that.
 </description>
 
-<Rule id="cups_disable_browsing">
+<Rule id="cups_disable_browsing" prodtype="rhel7">
 <title>Disable Printer Browsing Entirely if Possible</title>
 <description>By default, CUPS listens on the network for printer list
 broadcasts on UDP port 631. This functionality is called printer browsing.
@@ -46,12 +46,12 @@ the CUPS print service, can be configured to listen to these broadcasts and add
 and configure these printers for immediate use. By disabling this browsing
 capability, the machine will no longer generate or receive such broadcasts.
 </rationale>
-<ident cce="80283-5" />
+<ident prodtype="rhel7" cce="80283-5" />
 <oval id="cups_disable_browsing" />
-<ref nist="CM-7" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 
-<Rule id="cups_disable_printserver">
+<Rule id="cups_disable_printserver" prodtype="rhel7">
 <title>Disable Print Server Capabilities</title>
 <description>To prevent remote users from potentially connecting to and using
 locally configured printers, disable the CUPS print server sharing
@@ -70,9 +70,9 @@ broadcasts, or remote users will still be able to see the locally configured
 printers, even if they cannot actually print to them. To limit print serving to
 a particular set of users, use the Policy directive.
 </rationale>
-<ident cce="80284-3" />
+<ident prodtype="rhel7" cce="80284-3" />
 <oval id="cups_disable_printserver" />
-<ref nist="CM-7" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 </Group>
 

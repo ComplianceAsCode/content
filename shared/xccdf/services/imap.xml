@@ -11,7 +11,7 @@ configuration.</description>
 POP3 server, the dovecot software should be disabled and removed.
 </description>
 
-<Rule id="service_dovecot_disabled">
+<Rule id="service_dovecot_disabled" prodtype="rhel7">
 <title>Disable Dovecot Service</title>
 <description>
 <systemd-service-macro enable="false" service="dovecot" />
@@ -23,11 +23,11 @@ POP3 server, the dovecot software should be disabled and removed.
 Running an IMAP or POP3 server provides a network-based
 avenue of attack, and should be disabled if not needed.
 </rationale>
-<ident cce="80294-2" />
+<ident prodtype="rhel7" cce="80294-2" />
 <oval id="service_dovecot_disabled" />
 </Rule>
 
-<Rule id="package_dovecot_removed">
+<Rule id="package_dovecot_removed" prodtype="rhel7">
 <title>Uninstall dovecot Package</title>
 <description>The <tt>dovecot</tt> package can be uninstalled
 with the following command:
@@ -40,9 +40,9 @@ with the following command:
 If there is no need to make the Dovecot software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="80295-9" />
+<ident prodtype="rhel7" cce="80295-9" />
 <oval id="package_dovecot_removed" />
-<ref cis="3.12" />
+<ref prodtype="rhel7" cis="3.12" />
 </Rule>
 
 </Group> <!-- <Group id="disabling_dovecot"> -->
@@ -87,7 +87,7 @@ to authenticate the server, preventing another system from impersonating
 the server.
 </description>
 
-<Rule id="dovecot_enable_ssl">
+<Rule id="dovecot_enable_ssl" prodtype="rhel7">
 <title>Enable the SSL flag in <tt>/etc/dovecot.conf</tt></title>
 <description>To allow clients to make encrypted connections the <tt>ssl</tt>
 flag in Dovecot's configuration file needs to be set to <tt>yes</tt>.
@@ -101,11 +101,11 @@ protecting user credentials, mail as it is downloaded, and clients may use
 SSL certificates to authenticate the server, preventing another system from 
 impersonating the server.
 </rationale>
-<ident cce="80296-7" />
+<ident prodtype="rhel7" cce="80296-7" />
 <oval id="dovecot_enable_ssl" />
 </Rule>
 
-<Rule id="dovecot_configure_ssl_cert">
+<Rule id="dovecot_configure_ssl_cert" prodtype="rhel7">
 <title>Configure Dovecot to Use the SSL Certificate file</title>
 <description>This option tells Dovecot where to find the the mail 
 server's SSL Certificate.
@@ -122,11 +122,11 @@ Not using SSL to encrypt mail server traffic could allow unauthorized
 access to credentials and mail messages since they are sent in plain 
 text over the network.
 </rationale>
-<ident cce="80297-5" />
+<ident prodtype="rhel7" cce="80297-5" />
 <!-- <oval id="dovecot_configure_ssl_cert" /> -->
 </Rule>
 
-<Rule id="dovecot_configure_ssl_key">
+<Rule id="dovecot_configure_ssl_key" prodtype="rhel7">
 <title>Configure Dovecot to Use the SSL Key file</title>
 <description>This option tells Dovecot where to find the the mail 
 server's SSL Key.
@@ -143,11 +143,11 @@ Not using SSL to encrypt mail server traffic could allow unauthorized
 access to credentials and mail messages since they are sent in plain 
 text over the network.
 </rationale>
-<ident cce="80298-3" />
+<ident prodtype="rhel7" cce="80298-3" />
 <!-- <oval id="dovecot_configure_ssl_key" /> -->
 </Rule>
 
-<Rule id="dovecot_disable_plaintext_auth">
+<Rule id="dovecot_disable_plaintext_auth" prodtype="rhel7">
 <title>Disable Plaintext Authentication</title>
 <description>To prevent Dovecot from attempting plaintext 
 authentication of clients, edit <tt>/etc/dovecot/conf.d/10-auth.conf</tt> and add
@@ -158,7 +158,7 @@ or correct the following line:
 Using plain text authentication to the mail server could allow an 
 attacker access to credentials by monitoring network traffic.
 </rationale>
-<ident cce="80299-1" />
+<ident prodtype="rhel7" cce="80299-1" />
 <oval id="dovecot_disable_plaintext_auth" />
 </Rule>
 
