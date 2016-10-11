@@ -9,8 +9,11 @@
       <reference source="galford" ref_id="20160527" ref_url="test_attestation" />
     </metadata>
     <criteria operator="OR">
-      <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
-      definition_ref="sssd_conf_exists" negate="true"/>
+      <criteria operator="OR">
+        <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />
+        <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
+        definition_ref="sssd_conf_exists" negate="true"/>
+      </criteria>
       <criterion comment="Check memcache_timeout in /etc/sssd/sssd.conf"
       test_ref="test_sssd_memcache_timeout" />
     </criteria>
