@@ -14,7 +14,7 @@ port, it is subject to network attacks.
 Disabling it can reduce the system's vulnerability to such attacks.
 </description>
 
-<Rule id="service_avahi-daemon_disabled">
+<Rule id="service_avahi-daemon_disabled" prodtype="rhel7">
 <title>Disable Avahi Server Software</title>
 <description>
 <systemd-service-macro enable="false" service="avahi-daemon" />
@@ -26,9 +26,9 @@ port, it is subject to network attacks. Its functionality
 is convenient but is only appropriate if the local network
 can be trusted.
 </rationale>
-<ident cce="80338-7" />
+<ident prodtype="rhel7" cce="80338-7" />
 <oval id="service_avahi-daemon_disabled" />
-<ref nist="CM-7" disa="366" cis="3.3" />
+<ref prodtype="rhel7" nist="CM-7" disa="366" cis="3.3" />
 </Rule>
 </Group>
 
@@ -44,7 +44,7 @@ See the <tt>avahi-daemon.conf(5)</tt> man page, or documentation at
 about the configuration options.
 </description>
 
-<Rule id="avahi_ip_only">
+<Rule id="avahi_ip_only" prodtype="rhel7">
 <title>Serve Avahi Only via Required Protocol</title>
 <description>
 If you are using only IPv4, edit <tt>/etc/avahi/avahi-daemon.conf</tt> and ensure
@@ -53,11 +53,11 @@ the following line exists in the <tt>[server]</tt> section:
 Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
 <pre>use-ipv4=no</pre>
 </description>
-<ref nist="CM-7" />
-<ident cce="80339-5" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80339-5" />
 </Rule>
 
-<Rule id="avahi_check_ttl">
+<Rule id="avahi_check_ttl" prodtype="rhel7">
 <title>Check Avahi Responses' TTL Field</title>
 <description>
 To make Avahi ignore packets unless the TTL field is 255, edit
@@ -73,11 +73,11 @@ properly-configured router or firewall should not allow mDNS packets into
 the local network at all, this option provides another check to ensure they
 are not permitted.
 </rationale>
-<ref nist="CM-7" />
-<ident cce="80340-3" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80340-3" />
 </Rule>
 
-<Rule id="avahi_prevent_port_sharing">
+<Rule id="avahi_prevent_port_sharing" prodtype="rhel7">
 <title>Prevent Other Programs from Using Avahi's Port</title>
 <description>
 To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
@@ -88,11 +88,11 @@ and ensure the following line appears in the <tt>[server]</tt> section:
 This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
-<ident cce="80341-1" />
-<ref nist="CM-7" />
+<ident prodtype="rhel7" cce="80341-1" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 
-<Rule id="avahi_disable_publishing">
+<Rule id="avahi_disable_publishing" prodtype="rhel7">
 <title>Disable Avahi Publishing</title>
 <description>
 To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
@@ -103,11 +103,11 @@ and ensure the following line appears in the <tt>[server]</tt> section:
 This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
-<ref nist="CM-7" />
-<ident cce="80342-9" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80342-9" />
 </Rule>
 
-<Rule id="avahi_restrict_published_information">
+<Rule id="avahi_restrict_published_information" prodtype="rhel7">
 <title>Restrict Information Published by Avahi</title>
 <description>
 If it is necessary to publish some information to the network, it should not be joined
@@ -133,8 +133,8 @@ disable-publishing. Alternatively, these can be used to restrict
 the types of published information in the event that some information
 must be published.
 </rationale>
-<ident cce="80343-7" />
-<ref nist="CM-7" />
+<ident prodtype="rhel7" cce="80343-7" />
+<ref prodtype="rhel7" nist="CM-7" />
 </Rule>
 </Group>
 </Group>

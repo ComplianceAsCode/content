@@ -23,7 +23,7 @@ support for wireless networking, but note that these methods do not
 prevent malicious software or careless users from re-activating the
 devices.</description>
 
-<Rule id="wireless_disable_in_bios">
+<Rule id="wireless_disable_in_bios" prodtype="rhel7">
 <title>Disable WiFi or Bluetooth in BIOS</title>
 <description>Some systems that include built-in wireless support offer the
 ability to disable the device through the BIOS. This is system-specific;
@@ -33,12 +33,12 @@ boot.</description>
 activation of the wireless interface, generally requiring administrators
 to reboot the system first.
 </rationale>
-<ident cce="27397-9" />
+<ident prodtype="rhel7" cce="27397-9" />
 <!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
+<ref prodtype="rhel7" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
 </Rule>
 
-<Rule id="wireless_disable_interfaces">
+<Rule id="wireless_disable_interfaces" prodtype="rhel7">
 <title>Deactivate Wireless Network Interfaces</title>
 <description>Deactivating wireless network interfaces should prevent
 normal usage of the wireless capability.
@@ -63,13 +63,13 @@ interface file from <tt>/etc/sysconfig/network-scripts</tt>:
 launch network-based attacks against systems, including those against local LAN
 protocols which were not designed with security in mind.
 </rationale>
-<ident cce="27358-1" />
+<ident prodtype="rhel7" cce="27358-1" />
 <oval id="wireless_disable_interfaces" />
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" cis="4.3.1" />
+<ref prodtype="rhel7" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" cis="4.3.1" />
 <tested by="DS" on="20121025"/>
 </Rule>
 
-<Rule id="service_bluetooth_disabled" severity="medium">
+<Rule id="service_bluetooth_disabled" severity="medium" prodtype="rhel7">
 <title>Disable Bluetooth Service</title>
 <description>
 <systemd-service-macro enable="false" service="bluetooth" />
@@ -82,13 +82,13 @@ protocols which were not designed with security in mind.
 connections to Bluetooth devices, which entails some security risk.
 Nevertheless, variation in this risk decision may be expected due to the
 utility of Bluetooth connectivity and its limited range.</rationale>
-<ident cce="27328-4" />
+<ident prodtype="rhel7" cce="27328-4" />
 <oval id="service_bluetooth_disabled" />
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
+<ref prodtype="rhel7" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
 <tested by="DS" on="20121025"/>
 </Rule>
 
-<Rule id="kernel_module_bluetooth_disabled" severity="medium">
+<Rule id="kernel_module_bluetooth_disabled" severity="medium" prodtype="rhel7">
 <title>Disable Bluetooth Kernel Modules</title>
 <description>The kernel's module loading system can be configured to prevent
 loading of the Bluetooth module. Add the following to
@@ -102,9 +102,9 @@ to prevent the loading of the Bluetooth module:
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
 activation.</rationale>
-<ident cce="27327-6" />
+<ident prodtype="rhel7" cce="27327-6" />
 <oval id="kernel_module_bluetooth_disabled" />
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
+<ref prodtype="rhel7" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" />
 <tested by="JL" on="20141031"/>
 </Rule>
 

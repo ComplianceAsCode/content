@@ -4,7 +4,7 @@
 is provided in Red Hat Enterprise Linux 7 with Libreswan.
 </description>
 
-<Rule id="package_libreswan_installed" severity="medium">
+<Rule id="package_libreswan_installed" severity="medium" prodtype="rhel7">
 <title>Install libreswan Package</title>
 <description>The Libreswan package provides an implementation of IPsec
 and IKE, which permits the creation of secure tunnels over
@@ -17,12 +17,12 @@ untrusted networks. <yum-macro install="true" package="libreswan"/>
 to initiate a secure VPN connection protects information when it is
 transmitted over a wide area network.
 </rationale>
-<ident cce="80170-4" />
+<ident prodtype="rhel7" cce="80170-4" />
 <oval id="package_libreswan_installed" />
-<ref nist="AC-17, MA-4, SC-9" disa="1130,1131" pcidss="Req-4.1" />
+<ref prodtype="rhel7" nist="AC-17, MA-4, SC-9" disa="1130,1131" pcidss="Req-4.1" />
 </Rule>
 
-<Rule id="libreswan_approved_tunnels" severity="medium">
+<Rule id="libreswan_approved_tunnels" severity="medium" prodtype="rhel7">
 <title>Verify Any Configured IPSec Tunnel Connections</title>
 <description>Libreswan provides an implementation of IPsec
 and IKE, which permits the creation of secure tunnels over
@@ -39,9 +39,9 @@ Verify any returned results for organizational approval.
 <rationale>
 IP tunneling mechanisms can be used to bypass network filtering.
 </rationale>
-<ident cce="80171-2" />
+<ident prodtype="rhel7" cce="80171-2" />
 <!--oval id="libreswan_approved_tunnels" /-->
-<ref nist="AC-4" disa="336" ossrg="SRG-OS-000480-GPOS-00227" stigid="040830" />
+<ref prodtype="rhel7" nist="AC-4" disa="336" ossrg="SRG-OS-000480-GPOS-00227" stigid="040830" />
 </Rule>
 
 </Group>

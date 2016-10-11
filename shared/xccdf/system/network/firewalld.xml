@@ -95,7 +95,7 @@ service reload, enter the following command as root:
 <pre># firewall-cmd --get-service --permanent</pre>
 </description>
 
-<Rule id="service_firewalld_enabled" severity="medium">
+<Rule id="service_firewalld_enabled" severity="medium" prodtype="rhel7">
 <title>Verify firewalld Enabled</title>
 <description>
 <systemd-service-macro enable="true" service="firewalld" />
@@ -106,9 +106,9 @@ Access control methods provide the ability to enhance system security posture
 by restricting services and known good IP addresses and address ranges. This
 prevents connections from unknown hosts and protocols.
 </rationale>
-<ident cce="27361-5" />
+<ident prodtype="rhel7" cce="27361-5" />
 <oval id="service_firewalld_enabled" />
-<ref nist="CM-6(b)" disa="366" cis="4.7" ossrg="SRG-OS-000480-GPOS-00227"
+<ref prodtype="rhel7" nist="CM-6(b)" disa="366" cis="4.7" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="040810" />
 </Rule>
 
@@ -134,7 +134,7 @@ conventions for regular firewalld rules are used throughout this section.
 allows additional services to penetrate the default firewall rules
 and automatically adjusts the <tt>firewalld</tt> ruleset(s).</warning>
 
-<Rule id="set_firewalld_default_zone" severity="medium">
+<Rule id="set_firewalld_default_zone" severity="medium" prodtype="rhel7">
 <title>Set Default firewalld Zone for Incoming Packets</title>
 <description>To set the default zone to <tt>drop</tt> for
 the built-in default zone which processes incoming IPv4 and IPv6 packets,
@@ -152,13 +152,13 @@ the applicable rules in the table are examined for a match. Setting the
 default zone to <tt>drop</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
-<ident cce="27349-0" />
+<ident prodtype="rhel7" cce="27349-0" />
 <oval id="set_firewalld_default_zone" />
-<ref nist="CM-6(b),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040820" />
+<ref prodtype="rhel7" nist="CM-6(b),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040820" />
 </Rule>
 
 <!--
-<Rule id="set_firewalld_default_rule_forward" severity="medium">
+<Rule id="set_firewalld_default_rule_forward" severity="medium" prodtype="rhel7">
 <title>Set Default firewalld Policy for Forwarded Packets</title>
 <description>To set the default policy to DROP (instead of ACCEPT) for
 the built-in FORWARD chain which processes packets that will be forwarded from
@@ -178,8 +178,8 @@ Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>D
 The output should be similar to the following:
 <pre>$ sudo grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
-<ident cce="80172-0" />
-<ref nist="CM-7" disa="1109" />
+<ident prodtype="rhel7" cce="80172-0" />
+<ref prodtype="rhel7" nist="CM-7" disa="1109" />
 </Rule>
 
 <Group id="firewalld_icmp_disabled">

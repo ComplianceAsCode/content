@@ -24,7 +24,7 @@ controls and perform some logging. It has been largely obsoleted by other
 features, and it is not installed by default. The older Inetd service
 is not even available as part of Red Hat Enterprise Linux 7.</description>
 
-<Rule id="service_xinetd_disabled" severity="medium">
+<Rule id="service_xinetd_disabled" severity="medium" prodtype="rhel7">
 <title>Disable xinetd Service</title>
 <description>
 <systemd-service-macro enable="false" service="xinetd" />
@@ -39,13 +39,13 @@ which is no longer necessary for commonly-used network services. Disabling
 it ensures that these uncommon services are not running, and also prevents
 attacks against xinetd itself.
 </rationale>
-<ident cce="27443-1" />
+<ident prodtype="rhel7" cce="27443-1" />
 <oval id="service_xinetd_disabled" />
-<ref nist="AC-17(8),CM-7" disa="305"/>
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_xinetd_removed">
+<Rule id="package_xinetd_removed" prodtype="rhel7">
 <title>Uninstall xinetd Package</title>
 <description>The <tt>xinetd</tt> package can be uninstalled with the following command:
 <pre>$ sudo yum erase xinetd</pre>
@@ -58,13 +58,13 @@ If network services are using the xinetd service, this is not applicable.
 Removing the <tt>xinetd</tt> package decreases the risk of the
 xinetd service's accidental (or intentional) activation.
 </rationale>
-<ident cce="27354-0" />
+<ident prodtype="rhel7" cce="27354-0" />
 <oval id="package_xinetd_removed" />
-<ref nist="AC-17(8),CM-7" disa="305" cis="2.1.11" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="305" cis="2.1.11" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_tcp_wrappers_installed" severity="medium">
+<Rule id="package_tcp_wrappers_installed" severity="medium" prodtype="rhel7">
 <title>Install tcp_wrappers Package</title>
 <description>
 When network services are using the <tt>xinetd</tt> service, the
@@ -79,9 +79,9 @@ Access control methods provide the ability to enhance system security posture
 by restricting services and known good IP addresses and address ranges. This
 prevents connections from unknown hosts and protocols.
 </rationale>
-<ident cce="27361-5" />
+<ident prodtype="rhel7" cce="27361-5" />
 <oval id="package_tcp_wrappers_installed" />
-<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
+<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="TBD" />
 </Rule>
 
@@ -94,7 +94,7 @@ for information transmitted on the network. This includes authentication
 information such as passwords. Organizations which use telnet should be
 actively working to migrate to a more secure protocol.</description>
 
-<Rule id="service_telnet_disabled" severity="high">
+<Rule id="service_telnet_disabled" severity="high" prodtype="rhel7">
 <title>Disable telnet Service</title>
 <description>
 The <tt>telnet</tt> service configuration file <tt>/etc/xinetd.d/telnet</tt>
@@ -130,13 +130,13 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="27401-9" />
+<ident prodtype="rhel7" cce="27401-9" />
 <oval id="service_telnet_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" />
 <tested by="JL" on="20140922"/>
 </Rule>
 
-<Rule id="package_telnet-server_removed" severity="high">
+<Rule id="package_telnet-server_removed" severity="high" prodtype="rhel7">
 <title>Uninstall telnet-server Package</title>
 <description>The <tt>telnet-server</tt> package can be uninstalled with
 the following command:
@@ -154,13 +154,13 @@ to login using this service, the privileged user password could be compromised.
 Removing the <tt>telnet-server</tt> package decreases the risk of the telnet service's accidental 
 (or intentional) activation.
 </rationale>
-<ident cce="27165-0" />
+<ident prodtype="rhel7" cce="27165-0" />
 <oval id="package_telnet-server_removed" />
-<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="021910" cis="2.1.1" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="021910" cis="2.1.1" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_telnet_removed" severity="low">
+<Rule id="package_telnet_removed" severity="low" prodtype="rhel7">
 <title>Remove telnet Clients</title>
 <description>The telnet client allows users to start connections to other 
 systems via the telnet protocol.</description>
@@ -170,9 +170,9 @@ of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
 encrypted session and stronger security and is included in Red Hat
 Enterprise Linux.</rationale>
-<ident cce="27305-2" />
+<ident prodtype="rhel7" cce="27305-2" />
 <oval id="package_telnet_removed" />
-<ref cis="2.1.2" />
+<ref prodtype="rhel7" cis="2.1.2" />
 </Rule>
 
 </Group>
@@ -183,7 +183,7 @@ Enterprise Linux.</rationale>
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="package_rsh-server_removed" severity="high">
+<Rule id="package_rsh-server_removed" severity="high" prodtype="rhel7">
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
 the following command:
@@ -197,13 +197,13 @@ could be compromised. The <tt>rsh-server</tt> package provides several obsolete 
 network services. Removing it decreases the risk of those services' accidental (or intentional)
 activation.
 </rationale>
-<ident cce="27342-5" />
+<ident prodtype="rhel7" cce="27342-5" />
 <oval id="package_rsh-server_removed" />
-<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="020000" cis="2.1.3" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="020000" cis="2.1.3" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="service_rexec_disabled" severity="high">
+<Rule id="service_rexec_disabled" severity="high" prodtype="rhel7">
 <title>Disable rexec Service</title>
 <description>The <tt>rexec</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
@@ -218,13 +218,13 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27408-4" />
+<ident prodtype="rhel7" cce="27408-4" />
 <oval id="service_rexec_disabled" />
-<ref nist="AC-17(8),CM-7" disa="68,1436"/>
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="68,1436"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="service_rsh_disabled" severity="high">
+<Rule id="service_rsh_disabled" severity="high" prodtype="rhel7">
 <title>Disable rsh Service</title>
 <description>The <tt>rsh</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
@@ -239,13 +239,13 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27337-5" />
+<ident prodtype="rhel7" cce="27337-5" />
 <oval id="service_rsh_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_rsh_removed">
+<Rule id="package_rsh_removed" prodtype="rhel7">
 <title>Uninstall rsh Package</title>
 <description>The <tt>rsh</tt> package contains the client commands
 for the rsh services</description>
@@ -257,13 +257,13 @@ inadvertently attempting to use these commands and therefore exposing
 their credentials. Note that removing the <tt>rsh</tt> package removes
 the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 </rationale>
-<ident cce="27274-0" />
+<ident prodtype="rhel7" cce="27274-0" />
 <oval id="package_rsh_removed" />
 <tested by="JL" on="20140530"/>
-<ref cis="2.1.4" />
+<ref prodtype="rhel7" cis="2.1.4" />
 </Rule>
 
-<Rule id="service_rlogin_disabled" severity="high">
+<Rule id="service_rlogin_disabled" severity="high" prodtype="rhel7">
 <title>Disable rlogin Service</title>
 <description>The <tt>rlogin</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
@@ -278,13 +278,13 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27336-7" />
+<ident prodtype="rhel7" cce="27336-7" />
 <oval id="service_rlogin_disabled" />
-<ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="no_rsh_trust_files" severity="high">
+<Rule id="no_rsh_trust_files" severity="high" prodtype="rhel7">
 <title>Remove Rsh Trust Files</title>
 <description>The files <tt>/etc/hosts.equiv</tt> and <tt>~/.rhosts</tt> (in
 each user's home directory) list remote hosts and users that are trusted by the
@@ -302,8 +302,8 @@ of an Rsh trust relationship.
 <rationale>Trust files are convenient, but when
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
-<ident cce="27406-8" />
-<ref nist="AC-17(8),CM-7" disa="1436" />
+<ident prodtype="rhel7" cce="27406-8" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="1436" />
 <oval id="no_rsh_trust_files" />
 <tested by="DS" on="20121026"/>
 </Rule>
@@ -318,7 +318,7 @@ services. NIS should not be used because it suffers from security
 problems inherent in its design, such as inadequate protection of
 important authentication information.</description>
 
-<Rule id="package_ypserv_removed" severity="high">
+<Rule id="package_ypserv_removed" severity="high" prodtype="rhel7">
 <title>Uninstall ypserv Package</title>
 <description>The <tt>ypserv</tt> package can be uninstalled with
 the following command:
@@ -331,13 +331,13 @@ provide for the confidentiality and integrity of user passwords or the remote se
 Removing the <tt>ypserv</tt> package decreases the risk of the accidental (or intentional) 
 activation of NIS or NIS+ services.
 </rationale>
-<ident cce="27399-5" />
+<ident prodtype="rhel7" cce="27399-5" />
 <oval id="package_ypserv_removed" />
-<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="020010" cis="2.1.6" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="020010" cis="2.1.6" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="service_ypbind_disabled" severity="medium">
+<Rule id="service_ypbind_disabled" severity="medium" prodtype="rhel7">
 <title>Disable ypbind Service</title>
 <description>The <tt>ypbind</tt> service, which allows the system to act as a client in
 a NIS or NIS+ domain, should be disabled.
@@ -348,13 +348,13 @@ a NIS or NIS+ domain, should be disabled.
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
 </rationale>
-<ident cce="27385-4" />
+<ident prodtype="rhel7" cce="27385-4" />
 <oval id="service_ypbind_disabled" />
-<ref nist="AC-17(8),CM-7" disa="305"/>
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="305"/>
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_ypbind_removed">
+<Rule id="package_ypbind_removed" prodtype="rhel7">
 <title>Remove NIS Client</title>
 <description>The Network Information Service (NIS), formerly known as Yellow Pages,
 is a client-server directory service protocol used to distribute system configuration
@@ -365,9 +365,9 @@ and receive the distributed configuration files.</description>
 to DOS attacks, buffer overflows and has poor authentication for querying NIS maps.
 NIS generally has been replaced by such protocols as Lightweight Directory Access 
 Protocol (LDAP). It is recommended that the service be removed.</rationale>
-<ident cce="27396-1" />
+<ident prodtype="rhel7" cce="27396-1" />
 <oval id="package_ypbind_removed" />
-<ref cis="2.1.5" />
+<ref prodtype="rhel7" cis="2.1.5" />
 </Rule>
 
 </Group>
@@ -383,7 +383,7 @@ more secure protocols. A TFTP server should be run only if no more
 secure method of supporting existing equipment can be
 found.</description>
 
-<Rule id="service_tftp_disabled" severity="medium">
+<Rule id="service_tftp_disabled" severity="medium" prodtype="rhel7">
 <title>Disable tftp Service</title>
 <description>The <tt>tftp</tt> service should be disabled.
 <systemd-service-macro enable="false" service="tftp" />
@@ -393,13 +393,13 @@ found.</description>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
 </rationale>
-<ident cce="80212-4" />
+<ident prodtype="rhel7" cce="80212-4" />
 <oval id="service_tftp_disabled" />
-<ref nist="AC-17(8),CM-7" disa="1436" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="1436" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_tftp-server_removed" severity="high">
+<Rule id="package_tftp-server_removed" severity="high" prodtype="rhel7">
 <title>Uninstall tftp-server Package</title>
 <description>
 <yum-macro install="false" package="tftp-server" />
@@ -415,13 +415,13 @@ If TFTP is required for operational support (such as transmission of router conf
 its use must be documented with the Information Systems Securty Manager (ISSM), restricted to 
 only authorized personnel, and have access control rules established.
 </rationale>
-<ident cce="80213-2" />
+<ident prodtype="rhel7" cce="80213-2" />
 <oval id="package_tftp-server_removed" />
-<ref nist="AC-17(8),CM-6(c),CM-7" disa="318,368,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227" stigid="040500"  cis="2.1.8" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-6(c),CM-7" disa="318,368,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227" stigid="040500"  cis="2.1.8" />
 <tested by="DS" on="20121026"/>
 </Rule>
 
-<Rule id="package_tftp_removed" severity="high">
+<Rule id="package_tftp_removed" severity="high" prodtype="rhel7">
 <title>Remove tftp Daemon</title>
 <description>Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol,
 typically used to automatically transfer configuration or boot files between machines.
@@ -432,12 +432,12 @@ TFTP does not support authentication and can be easily hacked. The package
 <rationale>It is recommended that TFTP be removed, unless there is a specific need
 for TFTP (such as a boot server). In that case, use extreme caution when configuring
 the services.</rationale>
-<ident cce="" />
+<ident prodtype="rhel7" cce="" />
 <oval id="package_tftp_removed" />
-<ref cis="2.1.7" />
+<ref prodtype="rhel7" cis="2.1.7" />
 </Rule>
 
-<Rule id="tftpd_uses_secure_mode" severity="medium">
+<Rule id="tftpd_uses_secure_mode" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>tftp</tt> Daemon Uses Secure Mode</title>
 <description>If running the <tt>tftp</tt> service is necessary, it should be configured
 to change its root directory at startup. To do so, ensure
@@ -462,9 +462,9 @@ flag, matching the example below:
 <pre>$ grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
-<ident cce="80214-0" />
+<ident prodtype="rhel7" cce="80214-0" />
 <oval id="tftpd_uses_secure_mode" />
-<ref nist="AC-6,AC-17(8),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040520" />
+<ref prodtype="rhel7" nist="AC-6,AC-17(8),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040520" />
 </Rule>
 
 </Group>
@@ -476,7 +476,7 @@ The talk software makes it possible for users to send and receive messages
 across systems through a terminal session.
 </description>
 
-<Rule id="package_talk-server_removed" severity="medium">
+<Rule id="package_talk-server_removed" severity="medium" prodtype="rhel7">
 <title>Uninstall talk-server Package</title>
 <description>
 <yum-macro install="false" package="talk-server" />
@@ -489,13 +489,13 @@ The talk software presents a security risk as it uses unencrypted protocols
 for communications. Removing the <tt>talk-server</tt> package decreases the
 risk of the accidental (or intentional) activation of talk services.
 </rationale>
-<ident cce="27210-4" />
+<ident prodtype="rhel7" cce="27210-4" />
 <oval id="package_talk-server_removed" />
 <tested by="JL" on="20140625"/>
-<ref cis="2.1.10" />
+<ref prodtype="rhel7" cis="2.1.10" />
 </Rule>
 
-<Rule id="package_talk_removed">
+<Rule id="package_talk_removed" prodtype="rhel7">
 <title>Uninstall talk Package</title>
 <description>The <tt>talk</tt> package contains the client program for the
 Internet talk protocol, which allows the user to chat with other users on
@@ -509,9 +509,9 @@ The talk software presents a security risk as it uses unencrypted protocols
 for communications. Removing the <tt>talk</tt> package decreases the
 risk of the accidental (or intentional) activation of talk client program.
 </rationale>
-<ident cce="27432-4" />
+<ident prodtype="rhel7" cce="27432-4" />
 <oval id="package_talk_removed" />
-<ref cis="2.1.9" />
+<ref prodtype="rhel7" cis="2.1.9" />
 <tested by="JL" on="20140625"/>
 </Rule>
 

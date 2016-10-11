@@ -16,7 +16,7 @@ discusses secure configuration of machines which must be
 nameservers.
 </description>
 
-<Rule id="service_named_disabled">
+<Rule id="service_named_disabled" prodtype="rhel7">
 <title>Disable DNS Server</title>
 <description>
 <systemd-service-macro enable="false" service="named" />
@@ -26,12 +26,12 @@ nameservers.
 All network services involve some risk of compromise due to
 implementation flaws and should be disabled if possible.
 </rationale>
-<ident cce="80325-4" />
+<ident prodtype="rhel7" cce="80325-4" />
 <oval id="service_named_disabled" />
-<ref nist="CM-7" disa="366"/>
+<ref prodtype="rhel7" nist="CM-7" disa="366"/>
 </Rule>
 
-<Rule id="package_bind_removed">
+<Rule id="package_bind_removed" prodtype="rhel7">
 <title>Uninstall bind Package</title>
 <description>To remove the <tt>bind</tt> package, which contains the
 <tt>named</tt> service, run the following command:
@@ -42,9 +42,9 @@ implementation flaws and should be disabled if possible.
 If there is no need to make DNS server software available,
 removing it provides a safeguard against its activation.
 </rationale>
-<ident cce="80326-2" />
+<ident prodtype="rhel7" cce="80326-2" />
 <oval id="package_bind_removed" />
-<ref nist="CM-7" disa="366" cis="3.9" />
+<ref prodtype="rhel7" nist="CM-7" disa="366" cis="3.9" />
 </Rule>
 
 </Group> <!--<Group id="disabling_dns_server">-->
@@ -201,7 +201,7 @@ circumstances, this includes only the internal clients which are allowed to use
 this server as a general-purpose nameserver.</warning>
 </Group>
 
-<Rule id="dns_server_disable_zone_transfers">
+<Rule id="dns_server_disable_zone_transfers" prodtype="rhel7">
 <title>Disable Zone Transfers from the Nameserver</title>
 <description>Is it necessary for a secondary nameserver to receive zone data
 via zone transfer from the primary server?  If not, follow the instructions in
@@ -218,10 +218,10 @@ or if you have only one nameserver, it may be possible to use an external
 configuration management mechanism to distribute zone updates. In that case, it
 is not necessary to allow zone transfers within BIND itself, so they should be
 disabled to avoid the potential for abuse.</rationale>
-<ident cce="80327-0" />
+<ident prodtype="rhel7" cce="80327-0" />
 </Rule>
 
-<Rule id="dns_server_authenticate_zone_transfers">
+<Rule id="dns_server_authenticate_zone_transfers" prodtype="rhel7">
 <title>Authenticate Zone Transfers</title>
 <description>If it is necessary for a secondary nameserver to receive zone data
 via zone transfer from the primary server, follow the instructions here.  Use
@@ -273,11 +273,11 @@ create the shared secret string base64-key-string. Once this secret has been
 obtained and inserted into named.conf on the primary and secondary servers, the
 key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 .private are no longer needed, and may safely be deleted.</warning>
-<ref nist="CM-7" />
-<ident cce="80328-8" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80328-8" />
 </Rule>
 
-<Rule id="dns_server_disable_dynamic_updates">
+<Rule id="dns_server_disable_dynamic_updates" prodtype="rhel7">
 <title>Disable Dynamic Updates</title>
 <description>Is there a mission-critical reason to enable the risky dynamic
 update functionality? If not, edit <tt>/etc/named.conf</tt>. For each zone
@@ -294,7 +294,7 @@ updates must be allowed, IP-based ACLs are insufficient protection, since they
 are easily spoofed. Instead, use TSIG keys (see the previous section for an
 example), and consider using the update-policy directive to restrict changes to
 only the precise type of change needed.</rationale>
-<ident cce="80329-6" />
+<ident prodtype="rhel7" cce="80329-6" />
 </Rule>
 
 </Group> <!--<Group id="dns_server_protection">-->
