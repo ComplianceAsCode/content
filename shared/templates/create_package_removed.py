@@ -34,7 +34,7 @@ def output_checkfile(target, package_info):
             )
 
         else:
-            raise ValueError("Unknown target " + target)
+            raise UnknownTargetError(target)
     else:
         print "ERROR: input violation: the package name must be defined"
 

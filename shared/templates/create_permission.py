@@ -92,7 +92,7 @@ def output_checkfile(target, path_info):
         )
 
     else:
-        raise ValueError("Unknown target " + target)
+        raise UnknownTargetError(target)
 
 
 def help():

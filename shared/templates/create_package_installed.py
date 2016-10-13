@@ -40,7 +40,7 @@ def output_checkfile(target, package_info):
             )
 
         else:
-            raise ValueError("Unknown target " + target)
+            raise UnknownTargetError(target)
 
 
     else:

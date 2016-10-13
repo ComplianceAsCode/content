@@ -7,26 +7,34 @@ import sys
 import os
 import re
 
-def get_template_file(filename):
-    try:
+EXIT_NO_TEMPLATE    = 2
+EXIT_UNKNOWN_TARGET = 3
 
-        if 'TEMPLATE_DIR' in os.environ:
-            template_filename = os.path.join(os.environ['TEMPLATE_DIR'], filename)
-        else:
-            template_filename = filename
+class UnknownTargetError(ValueError):
+    def __init__(self, msg):
+        ValueError.__init__(self, "Unknown target: \"{0}\"".format(msg))
 
-        return open(template_filename, 'r')
+def get_template_filename(filename):
 
-    except IOError:
-        # guess shared template
-        if 'SHARED_DIR' in os.environ:
-            shared_template = os.environ['SHARED_DIR'] + filename
-            return open(shared_template, "r")
-        else:
-            sys.stderr.write(
-                "No specialized or shared template found for {}\n".format(filename)
-            )
-            
+    if 'TEMPLATE_DIR' in os.environ:
+        template_filename = os.path.join(os.environ['TEMPLATE_DIR'], filename)
+    else:
+        template_filename = filename
+
+    if os.path.isfile(template_filename):
+        return template_filename
+
+    shared_dir = os.path.dirname(os.path.realpath(__file__))
+
+    shared_template = os.path.join(shared_dir, filename)
+    if os.path.isfile(shared_template):
+        return shared_template
+
+    sys.stderr.write(
+        "No specialized or shared template found for {}\n".format(filename)
+    )
+    sys.exit(EXIT_NO_TEMPLATE)
+
 
 def load_modified(filename, constants_dict, regex_dict = None):
     """
@@ -36,7 +44,16 @@ def load_modified(filename, constants_dict, regex_dict = None):
     regex_dict: dict of regex substitutions - sub ( key -> value)
     """
 
-    with get_template_file(filename) as template_file:
+    template_filename = get_template_filename(filename)
+
+    if os.environ.get('GENERATE_OUTPUT_LIST', '') == "true":
+        return ""
+
+    if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
+        print(template_filename)
+        return ""
+
+    with open(template_filename, "r") as template_file:
         filestring = template_file.read()
 
     for key, value in constants_dict.iteritems():
@@ -53,11 +70,18 @@ def save_modified(filename_format, filename_value, string):
     Save string to file
     """
     filename = filename_format.format(filename_value)
-    dir = os.environ.get('PREFIX_DIR', '')
+    dir = os.environ.get('BUILD_DIR', '')
     filename = os.path.join(dir, filename)
+
+    if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
+        return
+
+    if os.environ.get('GENERATE_OUTPUT_LIST', '') == "true":
+        print(filename)
+        return
+
     with open(filename, 'w+') as outputfile:
         outputfile.write(string)
-
 
 def file_from_template(template_filename, constants,
                        filename_format, filename_value, regex_replace = None):
@@ -120,8 +144,11 @@ def csv_map(filename, method, skip_comments = True, target = None):
 
         csv_lines_content = csv.reader(filtered_file)
 
-        map(method, csv_lines_content)
-
+        try:
+            map(method, csv_lines_content)
+        except UnknownTargetError as e:
+            sys.stderr.write(str(e) + "\n")
+            sys.exit(EXIT_UNKNOWN_TARGET)
 
 def main(argv, help_callback, process_line_callback):
 
