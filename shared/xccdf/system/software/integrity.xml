@@ -1,21 +1,13 @@
 <Group id="integrity">
-<title>Software Integrity Checking</title>
+<title>System and Software Integrity</title>
 <description>
-Both the AIDE (Advanced Intrusion Detection Environment)
-software and the RPM package management system provide
-mechanisms for verifying the integrity of installed software.
-AIDE uses snapshots of file metadata (such as hashes) and compares these
-to current system files in order to detect changes.
-The RPM package management system can conduct integrity
-checks by comparing information in its metadata database with
-files installed on the system.
-<br /><br />
-Integrity checking cannot <i>prevent</i> intrusions,
-but can detect that they have occurred. Requirements
-for software integrity checking may be highly dependent on
-the environment in which the system will be used. Snapshot-based
-approaches such as AIDE may induce considerable overhead
-in the presence of frequent software updates.
+System and software integrity can be gained by installing antivirus, increasing
+system encryption strength with FIPS, verifying installed software, enabling SELinux,
+installing an Intrusion Prevention System, etc. However, installing or enabling integrity
+checking tools cannot <i>prevent</i> intrusions, but they can detect that an intrusion
+may have occurred. Requirements for integrity checking may be highly dependent on
+the environment in which the system will be used. Snapshot-based approaches such
+as AIDE may induce considerable overhead in the presence of frequent software updates.
 </description>
 
 <Rule id="disable_prelink" prodtype="rhel7">
@@ -36,6 +28,20 @@ operation of certain software and/or modes such as AIDE, FIPS, etc.
 <oval id="disable_prelink" />
 <ref prodtype="rhel7" nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" />
 </Rule>
+
+<Group id="software-integrity">
+<title>Software Integrity Checking</title>
+<description>
+Both the AIDE (Advanced Intrusion Detection Environment)
+software and the RPM package management system provide
+mechanisms for verifying the integrity of installed software.
+AIDE uses snapshots of file metadata (such as hashes) and compares these
+to current system files in order to detect changes.
+<br/><br/>
+The RPM package management system can conduct integrity
+checks by comparing information in its metadata database with
+files installed on the system.
+</description>
 
 <Group id="aide">
 <title>Verify Integrity with AIDE</title>
@@ -131,9 +137,9 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 Discretionary access control is weakened if a user or group has access
 permissions to system files and directories greater than the default.
 
-The RPM package management system can check file access permissions 
-of installed software packages, including many that are important 
-to system security. 
+The RPM package management system can check file access permissions
+of installed software packages, including many that are important
+to system security.
 
 Verify that the file permissions, ownership, and gruop membership of system files
 and commands match vendor values. Check the file permissions, ownership, and group
@@ -143,7 +149,7 @@ membership with the following command:
 Output indicates files that do not match vendor defaults. After locating a file with incorrect permissions, run the following command to determine which package owns it:
 <pre>$ rpm -qf <i>FILENAME</i></pre>
 <br />
-Next, run the following command to reset its permissions to 
+Next, run the following command to reset its permissions to
 the correct values:
 <pre>$ sudo rpm --setperms <i>PACKAGENAME</i></pre>
 <br />
@@ -177,7 +183,7 @@ detection.
 
 The RPM package management system can check the hashes of
 installed software packages, including many that are important to system
-security. 
+security.
 
 To verify that the cryptographic hash of system files and commands match vendor
 values, run the following command to list which files on the system
@@ -196,11 +202,11 @@ The package can be reinstalled from a yum repository using the command:
 <pre>$ sudo yum reinstall <i>PACKAGENAME</i></pre>
 
 Alternatively, the package can be reinstalled from trusted media using the command:
-<pre>$ sudo rpm -Uvh <i>PACKAGENAME</i></pre> 
+<pre>$ sudo rpm -Uvh <i>PACKAGENAME</i></pre>
 </description>
-<ocil clause="there is output"> The following command will list which files on the system 
-have file hashes different from what is expected by the RPM database. 
-<pre>$ rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre> 
+<ocil clause="there is output"> The following command will list which files on the system
+have file hashes different from what is expected by the RPM database.
+<pre>$ rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre>
 </ocil>
 <rationale>
 The hashes of important files like system executables should match the
@@ -213,10 +219,12 @@ be a sign of nefarious activity on the system.</rationale>
 
 </Group>
 
-<Group id="additional_security_software">
-<title>Additional Security Software</title>
+</Group>
+
+<Group id="endpoint_security_software">
+<title>Endpoint Protection Software</title>
 <description>
-Additional security software that is not provided or supported
+Endpoint protection security software that is not provided or supported
 by Red Hat can be installed to provide complementary or duplicative
 security capabilities to those provided by the base platform.  Add-on
 software may not be appropriate for some specialized systems.
@@ -235,12 +243,12 @@ detection tools, such as the McAfee Host-based Security System, are available
 to integrate with existing infrastructure. When these supplemental tools
 interfere with proper functioning of SELinux, SELinux takes precedence.</warning>
 <ocil clause="no host-based intrusion detection tools are installed">
-Inspect the system to determine if intrusion detection software has been installed. 
+Inspect the system to determine if intrusion detection software has been installed.
 Verify this intrusion detection software is active.
 </ocil>
 <rationale>
 Host-based intrusion detection tools provide a system-level defense when an
-intruder gains access to a system or network.  
+intruder gains access to a system or network.
 </rationale>
 <ident prodtype="rhel7" cce="26818-5" />
 <oval id="install_hids" />
@@ -286,25 +294,49 @@ computer viruses, as well as to limit their spread to other systems.
 <ref prodtype="rhel7" nist="SC-28, SI-3" disa="1239,1668"/>
 </Rule>
 
-</Group>
-
 <Group id="mcafee_security_software">
-<title>McAfee Security Software</title>
+<title>McAfee Endpoint Security Software</title>
 <description>
 In DoD environments, McAfee Host-based Security System (HBSS) and
-VirusScan Enterprise for Linux is required to be installed on all systems.
+VirusScan Enterprise for Linux (VSEL) is required to be installed on all systems.
 </description>
 
-<Rule id="install_mcafee_hbss" severity="medium" prodtype="rhel7">
-<title>Install McAfee Host-Based Intrusion Detection Software (HBSS)</title>
+<Rule id="install_mcafee_cma_rt" severity="medium" prodtype="rhel7">
+<title>Install the McAfee Runtime Libraries and Linux Agent</title>
 <description>
-Install the McAfee Host-based Security System (HBSS) application.
+Install the McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma).
 </description>
-<ocil clause="McAfee HBSS is not installed">
-To verify that McAfee HBSS is installed, run the following command(s):
-<pre>$ sudo ls /opt/McAfee/accm/bin/accm</pre>
-<pre>$ sudo ls /opt/McAfee/auditengine/bin/auditmanager</pre>
-<pre>$ rpm -q MFEcma &amp;&amp; rpm -q MFErt</pre>
+<ocil clause="the HBSS HIPS module is not installed">
+To verify that McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma)
+are installed, run the following command(s):
+<pre>$ rpm -q MFEcma</pre>
+<pre>$ rpm -q MFErt</pre>
+</ocil>
+<rationale>
+The McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma) are dependencies
+for VirusScan Enterprise for Linux (VSEL) and Host-based Security System (HBSS)
+to run.
+</rationale>
+<ident prodtype="rhel7" cce="80367-6" />
+<oval id="install_mcafee_cma_rt" />
+</Rule>
+
+<Group id="mcafee_hbss_software">
+<title>McAfee Host-Based Intrusion Detection Software (HBSS)</title>
+<description>
+McAfee Host-based Security System (HBSS) is a suite of software applications
+used to monitor, detect, and defend computer networks and systems.
+</description>
+
+<Rule id="install_mcafee_hbss_hips" severity="medium" prodtype="rhel7">
+<title>Install the Host Intrusion Prevention System (HIPS) Module</title>
+<description>
+Install the McAfee Host Intrusion Prevention System (HIPS) Module if it is absolutely
+necessary. If SELinux is enabled, do not install or enable this module.
+</description>
+<ocil clause="the HBSS HIPS module is not installed">
+To verify that McAfee HIPS is installed, run the following command(s):
+<pre>$ rpm -q MFEhiplsm</pre>
 </ocil>
 <rationale>
 Without a host-based intrusion detection tool, there is no system-level defense
@@ -312,11 +344,57 @@ when an intruder gains access to a system or network. Additionally, a host-based
 intrusion prevention tool can provide methods to immediately lock out detected
 intrusion attempts.
 </rationale>
-<oval id="install_mcafee_hbss" />
+<warning category="general">Installing and enabling this module conflicts with SELinux.
+SELinux takes precedence over this module.</warning>
+<oval id="install_mcafee_hbss_hips" />
+<ident prodtype="rhel7" cce="80368-4" />
+<ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
+ossrg="STG-OS-000480-GPOS-00227" stigid="TBD"/>
+</Rule>
+
+<Rule id="install_mcafee_hbss_accm" severity="medium" prodtype="rhel7">
+<title>Install the Asset Configuration Compliance Module (ACCM)</title>
+<description>
+Install the Asset Configuration Compliance Module (ACCM).
+</description>
+<ocil clause="the HBSS ACCM module is not installed">
+To verify that HBSS ACCM is installed, run the following command(s):
+<pre>$ sudo ls /opt/McAfee/accm/bin/accm</pre>
+</ocil>
+<rationale>
+Without a host-based intrusion detection tool, there is no system-level defense
+when an intruder gains access to a system or network. Additionally, a host-based
+intrusion prevention tool can provide methods to immediately lock out detected
+intrusion attempts.
+</rationale>
+<oval id="install_mcafee_hbss_accm" />
 <ident prodtype="rhel7" cce="80126-6" />
 <ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
-ossrg="STG-OS-000480-GPOS-00227" stigig="030790" />
+ossrg="STG-OS-000480-GPOS-00227" stigid="030790" />
 </Rule>
+
+<Rule id="install_mcafee_hbss_pa" severity="medium" prodtype="rhel7">
+<title>Install the Policy Auditor (PA) Module</title>
+<description>
+Install the Policy Auditor (PA) Module.
+</description>
+<ocil clause="the HBSS PA module is not installed">
+To verify that HBSS PA is installed, run the following command(s):
+<pre>$ sudo ls /opt/McAfee/auditengine/bin/auditmanager</pre>
+</ocil>
+<rationale>
+Without a host-based intrusion detection tool, there is no system-level defense
+when an intruder gains access to a system or network. Additionally, a host-based
+intrusion prevention tool can provide methods to immediately lock out detected
+intrusion attempts.
+</rationale>
+<oval id="install_mcafee_hbss_pa" />
+<ident prodtype="rhel7" cce="80369-2" />
+<ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
+ossrg="STG-OS-000480-GPOS-00227" stigid="TBD" />
+</Rule>
+
+</Group>
 
 <Rule id="install_mcafee_antivirus" severity="high" prodtype="rhel7">
 <title>Install McAfee Virus Scanning Software</title>
@@ -377,6 +455,8 @@ computer viruses, as well as to limit their spread to other systems.
 <ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
 ossrg="SRG-OS-000480-GPOS-00227" stigid="030820" />
 </Rule>
+
+</Group>
 
 </Group>
 
