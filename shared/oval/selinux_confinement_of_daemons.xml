@@ -5,6 +5,7 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
         <platform>Red Hat Enterprise Linux 7</platform>
+	<platform>Wind River Linux 8</platform>
       </affected>
       <description>All pids in /proc should be assigned an SELinux security context other than 'initrc_t'.</description>
     </metadata>
@@ -16,7 +17,7 @@
     <linux:object object_ref="object_selinux_confinement_of_daemons" />
     <linux:state state_ref="state_selinux_confinement_of_daemons" />
   </linux:selinuxsecuritycontext_test>
-  <linux:selinuxsecuritycontext_object comment="device_t in /dev" id="object_selinux_confinement_of_daemons" version="1">
+  <linux:selinuxsecuritycontext_object comment="none satisfy initrc_t in /proc" id="object_selinux_confinement_of_daemons" version="1">
     <linux:behaviors max_depth="1" recurse_direction="down" />
     <linux:path>/proc</linux:path>
     <linux:filename operation="pattern match">^.*$</linux:filename>
