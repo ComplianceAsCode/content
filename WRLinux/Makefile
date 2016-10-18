@@ -68,6 +68,6 @@ dist: guide content
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -f $(IN)/remediations/bash/templates/output/*.sh
-	$(SHARED)/utils/build-remediations.py --output ./templates clean
+	$(SHARED)/utils/generate-from-templates.py --output ./templates clean
 	rm -rf $(DIST)/content $(DIST)/guide
 	rm -rf $(BUILD)
