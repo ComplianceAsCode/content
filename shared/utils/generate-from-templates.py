@@ -62,12 +62,6 @@ class Builder(object):
         for file in self.get_output_list():
             print(file)
 
-    def clean(self):
-        dir = self._parent_output_dir()
-        if os.path.exists(dir):
-            sys.stderr.write("Remove: {0}\n".format(dir))
-            shutil.rmtree(dir)
-
     def get_input_list(self):
         list = []
 
@@ -239,16 +233,13 @@ if __name__ == "__main__":
     make_sp = sp.add_parser('build', help="Build remediations")
     make_sp.set_defaults(cmd="build")
 
-    clean_sp = sp.add_parser('clean', help="Clean remediations")
-    clean_sp.set_defaults(cmd="clean")
-
     input_sp = sp.add_parser('input', help="Generate input list")
     input_sp.set_defaults(cmd="input")
 
     output_sp = sp.add_parser('output', help="Generate output list")
     output_sp.set_defaults(cmd="output")
 
-    p.add_argument('--input',        action="store",                      help="input directory")
+    p.add_argument('--input',        action="store", required=True,       help="input directory")
     p.add_argument('--output',       action="store", required=True,       help="output directory")
     p.add_argument('--oval_version', action="store", default="oval_5.10", help="oval version")
 
@@ -256,14 +247,6 @@ if __name__ == "__main__":
     if unknown:
         sys.stderr.write("Unknown positional arguments " + ",".join(unknown) + ".\n")
         sys.exit(1)
-
-    # require "input" for all targets except "clean"
-    if args.cmd != "clean" and not args.input:
-        p.error("\"{0}\" action requires --input parameter".format(args.cmd))
-        sys.exit(1)
-
-    if args.input == None:
-        args.input = ""
 
     builder.set_input_dir(args.input)
     builder.set_output_dir(args.output)
