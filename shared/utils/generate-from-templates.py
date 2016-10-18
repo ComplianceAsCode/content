@@ -58,15 +58,15 @@ class Builder(object):
                 self._run_script(script, csv_filepath)
 
     def input(self):
-        for file in self.get_input_list():
-            print(file)
+        for file_ in self.get_input_list():
+            print(file_)
 
     def output(self):
-        for file in self.get_output_list():
-            print(file)
+        for file_ in self.get_output_list():
+            print(file_)
 
     def get_input_list(self):
-        list = []
+        list_ = []
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
@@ -83,12 +83,12 @@ class Builder(object):
                     files_list = self._read_io_files_list(
                         script_filepath, csv_filepath, lang, True
                     )
-                    list.extend(files_list)
+                    list_.extend(files_list)
 
-        return self._deduplicate(list)
+        return self._deduplicate(list_)
 
     def get_output_list(self):
-        list = []
+        list_ = []
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
@@ -102,9 +102,9 @@ class Builder(object):
                     files_list = self._read_io_files_list(
                         script_filepath, csv_filepath, lang, False
                     )
-                    list.extend(files_list)
+                    list_.extend(files_list)
 
-        return self._deduplicate(list)
+        return self._deduplicate(list_)
 
     def set_output_dir(self, output_dir):
         self.output_dir = output_dir
@@ -119,26 +119,27 @@ class Builder(object):
         return self.csv_dirs[self.current_oval]
 
     def _get_csv_list(self):
-        dir = self._get_csv_dir()
+        dir_ = self._get_csv_dir()
 
         csvs = []
 
         try:
-            files = os.listdir(dir)
+            files = os.listdir(dir_)
         except OSError:
             return []
 
-        for file in files:
+        for file_ in files:
             # skip non csv files
-            if not file.endswith(".csv"):
+            if not file_.endswith(".csv"):
                 continue
 
             # skip empty files
-            filepath = os.path.join(dir, file)
+            filepath = os.path.join(dir_, file_)
             if os.stat(filepath).st_size == 0:
                 continue
 
-            csvs.append(file)
+            csvs.append(file_)
+
         return csvs
 
     def _get_script_for_csv(self, csv_filename):
@@ -174,7 +175,6 @@ class Builder(object):
 
     @_set_environment
     def _run_script(self, script, csv_filepath):
-
         for lang in self.langs:
             sp = subprocess.Popen(
                 ["python", script, lang, csv_filepath],
@@ -184,7 +184,6 @@ class Builder(object):
             self._subprocess_check(sp)
 
     def _mkdir_recursive(self, path):
-
         if not os.path.exists(path):
             self._mkdir_recursive(os.path.realpath(os.path.dirname(path)))
 
@@ -193,7 +192,6 @@ class Builder(object):
 
     @_set_environment
     def _read_io_files_list(self, script, csv, lang, gen_input):
-
         try:
             if gen_input:
                 os.environ["GENERATE_INPUT_LIST"] = "true"
@@ -229,7 +227,7 @@ class Builder(object):
         return [os.path.abspath(line) for line in text.split("\n") if line]
 
     def _deduplicate(self, files):
-        return set(os.path.realpath(file) for file in files)
+        return set(os.path.realpath(file_) for file_ in files)
 
 
 if __name__ == "__main__":
