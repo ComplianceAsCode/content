@@ -364,32 +364,24 @@ controlled-access area.
 <title>Enable GNOME3 Screensaver Lock After Idle Period</title>
 <description>
 To activate locking of the screensaver in the GNOME3 desktop when it is activated,
-add or set <tt>lock-enabled</tt> to <tt>true</tt> and <tt>lock-delay</tt> to <tt>uint32 0</tt> in
+add or set <tt>lock-enabled</tt> to <tt>true</tt> in
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
 <pre>[org/gnome/desktop/screensaver]
 lock-enabled=true
-lock-delay=uint32 0
 </pre>
 Once the settings have been added, add a lock to
 <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
-<pre>/org/gnome/desktop/screensaver/lock-enabled
-/org/gnome/desktop/screensaver/lock-delay</pre>
+<pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
 After the settings have been set, run <tt>dconf update</tt>.
 </description>
-<ocil clause="screensaver locking is not enabled and/or the screensaver lock delay has not been set or configured correctly">
+<ocil clause="screensaver locking is not enabled and/or has not been set or configured correctly">
 To check the status of the idle screen lock activation, run the following command:
 <pre>$ gsettings get org.gnome.desktop.screensaver lock-enabled</pre>
 If properly configured, the output should be <tt>true</tt>.
-<br />
-To check that the screen locks immediately when activated, run the following command:
-<pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
-If properly configured, the output should be <tt>'uint32 0'</tt>.
-<br />
 To ensure that users cannot change how long until the the screensaver locks, run the following:
-<pre>$ grep 'lock-enabled\|lock-delay' /etc/dconf/db/local.d/locks/*</pre>
+<pre>$ grep lock-enabled /etc/dconf/db/local.d/locks/*</pre>
 If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>
-If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
 </ocil>
 <rationale>
 A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
@@ -399,6 +391,40 @@ of the information system but does not want to logout because of the temporary n
 <oval id="dconf_gnome_screensaver_lock_enabled" />
 <ref prodtype="rhel7" nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
 ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" stigid="010060" />
+</Rule>
+
+<Rule id="dconf_gnome_screensaver_lock_delay" severity="medium" prodtype="rhel7">
+<title>Set GNOME3 Screensaver Lock Delay After Activation Period</title>
+<description>
+To activate the locking delay of the screensaver in the GNOME3 desktop when 
+the screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 0</tt> in
+<tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+<pre>[org/gnome/desktop/screensaver]
+lock-delay=uint32 0
+</pre>
+Once the setting has been added, add a lock to
+<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+For example:
+<pre>/org/gnome/desktop/screensaver/lock-delay</pre>
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="the screensaver lock delay has not been set or configured correctly">
+To check that the screen locks immediately when activated, run the following command:
+<pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
+If properly configured, the output should be <tt>'uint32 0'</tt>.
+<br />
+To ensure that users cannot change how long until the the screensaver locks, run the following:
+<pre>$ grep lock-delay /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+</ocil>
+<rationale>
+A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
+of the information system but does not want to logout because of the temporary nature of the absense.
+</rationale>
+<ident prodtype="rhel7" cce="80370-0" />
+<oval id="dconf_gnome_screensaver_lock_delay" />
+<ref prodtype="rhel7" nist="AC-11(a)" disa="56" pcidss="Req-8.1.8"
+ossrg="OS-SRG-000029-GPOS-00010" stigid="010074" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_mode_blank" prodtype="rhel7">
@@ -464,6 +490,35 @@ conceals who has access to the system from passersby.
 </rationale>
 <ident prodtype="rhel7" cce="80114-2" />
 <oval id="dconf_gnome_screensaver_user_info" />
+</Rule>
+
+<Rule id="dconf_gnome_session_user_locks" prodtype="rhel7">
+<title>Ensure Users Cannot Change GNOME3 Session Settings</title>
+<description>
+If not already configured, ensure that users cannot change GNOME3 session idle and lock settings
+by adding <tt>/org/gnome/desktop/screensaver/lock-delay</tt> and <tt>/org/gnome/desktop/session/idle-delay</tt> to <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+For example:
+<pre>/org/gnome/desktop/screensaver/lock-delay
+/org/gnome/desktop/session/idle-delay</pre>
+After the settings have been set, run <tt>dconf update</tt>.
+</description>
+<ocil clause="GNOME3 session settings are not locked or configured properly">
+To ensure that users cannot change session idle and lock settings, run the following:
+<pre>$ grep 'lock-delay\|idle-delay' /etc/dconf/db/local.d/locks/*</pre>
+If properly configured, the output should return <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+abd <tt>/org/gnome/desktop/session/idle-delay</tt>.
+</ocil>
+<rationale>
+A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+physical vicinity of the information system but does not logout because of the temporary nature of the absence.
+Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity,
+GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
+session lock. As such, users should not be allowed to change session settings.
+</rationale>
+<ident prodtype="rhel7" cce="80371-8" />
+<oval id="dconf_gnome_session_user_locks" />
+<ref prodtype="rhel7" nist="AC-11(a)" disa="57"
+ossrg="SRG-OS-00029-GPOS-0010" stigid="010071" />
 </Rule>
 
 </Group>
