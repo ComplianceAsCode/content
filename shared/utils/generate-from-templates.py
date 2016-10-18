@@ -165,11 +165,13 @@ class Builder(object):
         def wrapper(self, *args):
             os.environ["TEMPLATE_DIR"] = self._get_template_dir()
             os.environ["BUILD_DIR"] = self.output_dir
+
             try:
                 return func(self, *args)
+
             finally:
-                os.environ["TEMPLATE_DIR"] = ""
-                os.environ["BUILD_DIR"] = ""
+                del os.environ["TEMPLATE_DIR"]
+                del os.environ["BUILD_DIR"]
 
         return wrapper
 
@@ -206,16 +208,12 @@ class Builder(object):
             return self._get_list_from_subprocess(sp)
 
         finally:
-            os.environ["GENERATE_INPUT_LIST"] = ""
-            os.environ["GENERATE_OUTPUT_LIST"] = ""
+            del os.environ["GENERATE_INPUT_LIST"]
+            del os.environ["GENERATE_OUTPUT_LIST"]
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
-        if subprocess.returncode == 0:
-            pass
-        elif subprocess.returncode == 2:
-            pass
-        elif subprocess.returncode == 3:
+        if subprocess.returncode in [0, 2, 3]:
             pass
         else:
             raise RuntimeError("Process returned: %s"
