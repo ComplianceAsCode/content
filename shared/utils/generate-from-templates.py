@@ -1,15 +1,15 @@
 #!/usr/bin/python
+
 import subprocess
 import os
-import shutil
 import sys
 import argparse
 
-class Builder(object):
 
+class Builder(object):
     def __init__(self):
-        self.input_dir   = None
-        self.output_dir  = None
+        self.input_dir = None
+        self.output_dir = None
         self.script_dict = {
             "sysctl_values.csv":            "create_sysctl.py",
             "services_disabled.csv":        "create_services_disabled.py",
@@ -20,11 +20,12 @@ class Builder(object):
             "file_dir_permissions.csv":     "create_permission.py",
             "accounts_password.csv":        "create_accounts_password.py",
         }
-        self.supported_ovals      = ["oval_5.10"]
-        self.langs                = ["bash", "ansible", "oval"]
-        utils_dir                 = os.path.dirname(os.path.realpath(__file__))
-        root_dir                  = os.path.join(utils_dir, "..", "..")
-        self.shared_templates_dir = os.path.join(root_dir, "shared", "templates")
+        self.supported_ovals = ["oval_5.10"]
+        self.langs = ["bash", "ansible", "oval"]
+        utils_dir = os.path.dirname(os.path.realpath(__file__))
+        root_dir = os.path.join(utils_dir, "..", "..")
+        self.shared_templates_dir = \
+            os.path.join(root_dir, "shared", "templates")
 
         self.current_oval = "oval_5.10"
 
@@ -51,7 +52,9 @@ class Builder(object):
                 script = self._get_script_for_csv(csv_filename)
 
                 csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-                sys.stderr.write("{0}\t{1}\n".format(os.path.realpath(script), csv_filepath))
+                sys.stderr.write(
+                    "{0}\t{1}\n".format(os.path.realpath(script), csv_filepath)
+                )
                 self._run_script(script, csv_filepath)
 
     def input(self):
@@ -71,13 +74,15 @@ class Builder(object):
             csv_dir = self._get_csv_dir()
             for csv in self._get_csv_list():
                 csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath =  self._get_script_for_csv(csv)
+                script_filepath = self._get_script_for_csv(csv)
 
                 list.append(csv_filepath)
                 list.append(script_filepath)
 
                 for lang in self.langs:
-                    files_list = self._read_io_files_list(script_filepath, csv_filepath, lang, True)
+                    files_list = self._read_io_files_list(
+                        script_filepath, csv_filepath, lang, True
+                    )
                     list.extend(files_list)
 
         return self._deduplicate(list)
@@ -91,10 +96,12 @@ class Builder(object):
             csv_dir = self._get_csv_dir()
             for csv in self._get_csv_list():
                 csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath =  self._get_script_for_csv(csv)
+                script_filepath = self._get_script_for_csv(csv)
 
                 for lang in self.langs:
-                    files_list = self._read_io_files_list(script_filepath, csv_filepath, lang, False)
+                    files_list = self._read_io_files_list(
+                        script_filepath, csv_filepath, lang, False
+                    )
                     list.extend(files_list)
 
         return self._deduplicate(list)
@@ -139,10 +146,13 @@ class Builder(object):
             script_name = self.script_dict[csv_filename]
             full_path = os.path.join(self.shared_templates_dir, script_name)
             return full_path
-        except KeyError:
-            sys.stderr.write("Cannot find associated build script for {0}\n".format(csv_filename))
-            sys.exit(1)
 
+        except KeyError:
+            sys.stderr.write(
+                "Cannot find associated build script for {0}\n"
+                .format(csv_filename)
+            )
+            sys.exit(1)
 
     def _parent_output_dir(self):
         return os.path.join(self.output_dir, "output")
@@ -152,7 +162,6 @@ class Builder(object):
 
     def _set_environment(func):
         def wrapper(self, *args):
-
             os.environ["TEMPLATE_DIR"] = self._get_template_dir()
             os.environ["BUILD_DIR"] = self.output_dir
             try:
@@ -160,6 +169,7 @@ class Builder(object):
             finally:
                 os.environ["TEMPLATE_DIR"] = ""
                 os.environ["BUILD_DIR"] = ""
+
         return wrapper
 
     @_set_environment
@@ -210,21 +220,19 @@ class Builder(object):
         elif subprocess.returncode == 3:
             pass
         else:
-            raise RuntimeError("Process returned:" + subprocess.communicate()[1].decode("utf-8"))
+            raise RuntimeError("Process returned: %s"
+                               % (subprocess.communicate()[1].decode("utf-8")))
 
     def _get_list_from_subprocess(self, subprocess):
-
         self._subprocess_check(subprocess)
         text = subprocess.communicate()[0].decode("utf-8")
         return [os.path.abspath(line) for line in text.split("\n") if line]
-
 
     def _deduplicate(self, files):
         return set(os.path.realpath(file) for file in files)
 
 
 if __name__ == "__main__":
-
     builder = Builder()
     p = argparse.ArgumentParser()
 
@@ -239,13 +247,18 @@ if __name__ == "__main__":
     output_sp = sp.add_parser('output', help="Generate output list")
     output_sp.set_defaults(cmd="output")
 
-    p.add_argument('--input',        action="store", required=True,       help="input directory")
-    p.add_argument('--output',       action="store", required=True,       help="output directory")
-    p.add_argument('--oval_version', action="store", default="oval_5.10", help="oval version")
+    p.add_argument('--input', action="store", required=True,
+                   help="input directory")
+    p.add_argument('--output', action="store", required=True,
+                   help="output directory")
+    p.add_argument('--oval_version', action="store", default="oval_5.10",
+                   help="oval version")
 
     args, unknown = p.parse_known_args()
     if unknown:
-        sys.stderr.write("Unknown positional arguments " + ",".join(unknown) + ".\n")
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
         sys.exit(1)
 
     builder.set_input_dir(args.input)
