@@ -71,7 +71,7 @@ macro(ssg_build_xccdf_ocilrefs PRODUCT)
     )
 endmacro()
 
-macro(ssg_build_bash_remediations PRODUCT)
+macro(ssg_build_remediations PRODUCT)
     file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/bash/*")
     file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/bash/*")
 
@@ -83,17 +83,15 @@ macro(ssg_build_bash_remediations PRODUCT)
         DEPENDS ${SSG_SHARED_TRANSFORMS}/combineremediations.py
         COMMENT "[${PRODUCT}] generating bash-remediations.xml"
     )
-endmacro()
 
-macro(ssg_build_ansible_remediations PRODUCT)
-    file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible/*")
-    file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/ansible/*")
+    file(GLOB ANSIBLE_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible/*")
+    file(GLOB SHARED_ANSIBLE_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/ansible/*")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
         COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ansible ${SSG_SHARED}/templates/output/ansible ${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
-        DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
+        DEPENDS ${ANSIBLE_REMEDIATION_DEPS} ${SHARED_ANSIBLE_REMEDIATION_DEPS}
         DEPENDS ${SSG_SHARED_TRANSFORMS}/combineremediations.py
         COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
     )
@@ -269,8 +267,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_xccdf_ocilrefs(${PRODUCT})
-    ssg_build_bash_remediations(${PRODUCT})
-    ssg_build_ansible_remediations(${PRODUCT})
+    ssg_build_remediations(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
