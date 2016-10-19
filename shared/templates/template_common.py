@@ -31,7 +31,7 @@ def get_template_filename(filename):
         return shared_template
 
     sys.stderr.write(
-        "No specialized or shared template found for {}\n".format(filename)
+        "No specialized or shared template found for {0}\n".format(filename)
     )
     sys.exit(EXIT_NO_TEMPLATE)
 
