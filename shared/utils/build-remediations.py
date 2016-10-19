@@ -117,9 +117,6 @@ class Builder(object):
     def _get_csv_dir(self):
         return self.csv_dirs[self.current_oval]
 
-    def _get_template_dir(self):
-        return self.input_dir
-
     def _get_csv_list(self):
         dir = self._get_csv_dir()
 
