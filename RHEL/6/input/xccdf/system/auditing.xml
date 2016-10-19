@@ -94,7 +94,6 @@ actions will be taken if other obstacles exist.
 <ident cce="27058-7" stig="RHEL-06-000145" />
 <oval id="service_auditd_enabled" />
 <ref nist="AC-17(1),AU-1(b),AU-10,AU-12(a),AU-12(c),IR-5" disa="347,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="bootloader_audit_argument" severity="low">
@@ -258,7 +257,6 @@ file size and the number of logs retained.</rationale>
 <ident cce="27522-2" stig="RHEL-06-000159" />
 <oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" /> 
 <ref nist="AU-1(b),AU-11,IR-5" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="auditd_data_retention_max_log_file" severity="medium">
@@ -283,7 +281,6 @@ log file size and the number of logs retained.</rationale>
 <ident cce="27550-3" stig="RHEL-06-000160" />
 <oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" /> 
 <ref nist="AU-1(b),AU-11,IR-5" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="auditd_data_retention_max_log_file_action" severity="medium">
@@ -319,7 +316,6 @@ log data, or which use external processes to transfer it and reclaim space,
 <ident cce="27237-7" stig="RHEL-06-000161" />
 <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
 <ref nist="AU-1(b),AU-4,AU-11,IR-5" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <!--
@@ -372,7 +368,6 @@ allow them to take corrective action prior to any disruption.</rationale>
 <ident cce="27238-5" stig="RHEL-06-000005" />
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
 <ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,143" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="auditd_data_retention_admin_space_left_action" severity="medium">
@@ -403,7 +398,6 @@ is used, running low on space for audit records should never occur.
 <ident cce="27239-3" />
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
 <ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,1343" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="auditd_data_retention_action_mail_acct" severity="medium">
@@ -734,7 +728,6 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <ident cce="27243-5" stig="RHEL-06-000383" />
 <oval id="file_permissions_var_log_audit" />
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="166" />
-<tested by="DS" on="20121024"/>
 </Rule> 
 
 <Rule id="file_ownership_var_log_audit">
@@ -750,7 +743,6 @@ owner, and unauthorized users, potential access to sensitive information.</ratio
 <ident cce="27244-3" stig="RHEL-06-000384" />
 <oval id="file_ownership_var_log_audit" />
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="166" />
-<tested by="DS" on="20121024"/>
 </Rule> 
 
 <Rule id="audit_rules_mac_modification">
@@ -1227,7 +1219,6 @@ unusual activity.
 <ident cce="26457-2" stig="RHEL-06-000198" />
 <oval id="audit_rules_privileged_commands" />
 <ref nist="AC-3(10)),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AC-6(9),AU-12(a),AU-12(c),IR-5" disa="40" />
-<tested by="JL" on="20140703"/>
 </Rule>
 
 <Rule id="audit_rules_media_export">
@@ -1249,7 +1240,6 @@ loss.</rationale>
 <ident cce="26573-6" stig="RHEL-06-000199" />
 <oval id="audit_rules_media_export" />
 <ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events">
@@ -1290,7 +1280,6 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 <ident cce="26662-7" stig="RHEL-06-000201" />
 <oval id="audit_rules_sysadmin_actions" />
 <ref nist="AC-2(7)(b),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading">

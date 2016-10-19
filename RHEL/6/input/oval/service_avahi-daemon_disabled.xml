@@ -8,7 +8,6 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The avahi-daemon service should be disabled if possible.</description>
-      <reference source="DS" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND" comment="service avahi-daemon is not configured to start">
       <criterion comment="avahi-daemon runlevel 0" test_ref="test_runlevel0_avahi-daemon" />

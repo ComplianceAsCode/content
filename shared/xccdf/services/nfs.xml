@@ -232,7 +232,6 @@ is not designated as a NFS server then this service should be disabled.
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident prodtype="rhel7" cce="80237-1" />
 <oval id="service_nfs_disabled" />
-<tested by="DS" on="20121025"/>
 </Rule>
 
 <Rule id="service_rpcsvcgssd_disabled" prodtype="rhel7">
@@ -249,7 +248,6 @@ RPC then this service should be disabled.
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident prodtype="rhel7" cce="80238-9" />
 <oval id="service_rpcsvcgssd_disabled" />
-<tested by="DS" on="20121025"/>
 </Rule>
 </Group>
 
@@ -284,7 +282,6 @@ should not present device files to users.</rationale>
 <ident prodtype="rhel7" cce="80239-7" />
 <oval id="mount_option_nodev_remote_filesystems" />
 <ref prodtype="rhel7" nist="CM-7,MP-2" />
-<tested by="DS" on="20121025"/>
 </Rule>
 
 <Rule id="mount_option_nosuid_remote_filesystems" severity="medium" prodtype="rhel7">

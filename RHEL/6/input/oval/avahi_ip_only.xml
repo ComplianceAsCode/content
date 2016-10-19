@@ -6,7 +6,6 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>Require Avahi to run on IPv4 or IPv6.</description>
-      <reference source="galford" ref_id="20150316" ref_url="test_attestation" />
     </metadata>
     <criteria comment="Check Avahi IPv4 and IPv6 settings" operator="OR">
       <extend_definition comment="avahi package is not installed" definition_ref="package_avahi_installed" negate="true" />

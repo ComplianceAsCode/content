@@ -8,7 +8,6 @@
       <description>
         Check if selinux=0 OR enforcing=0 within the GRUB2 configuration files, fail if found.
       </description>
-      <reference source="galford" ref_id="20151030" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="check value selinux|enforcing=0 in /etc/default/grub, fail if found" test_ref="test_selinux_default_grub" />

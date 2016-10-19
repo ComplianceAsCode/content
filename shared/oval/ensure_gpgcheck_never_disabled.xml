@@ -8,8 +8,6 @@
         <platform>multi_platform_rhel</platform>
       </affected>
       <description>Ensure all yum or dnf repositories utilize signature checking.</description>
-      <reference source="MED" ref_id="20130807" ref_url="test_attestation" />
-      <!-- rhel7 <reference source="SDW" ref_id="20131223" ref_url="test_attestation" /> -->
     </metadata>
     <criteria comment="ensure all yum or dnf repositories utilize signiature checking" operator="AND">
       <criterion comment="verify no gpgpcheck=0 present in /etc/yum.repos.d files"

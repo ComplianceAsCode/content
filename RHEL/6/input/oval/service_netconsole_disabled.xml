@@ -8,7 +8,6 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The netconsole service should be disabled if possible.</description>
-      <reference source="DS" ref_id="20131002" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND" comment="service netconsole is not configured to start">
       <criterion comment="netconsole runlevel 0" test_ref="test_runlevel0_netconsole" />

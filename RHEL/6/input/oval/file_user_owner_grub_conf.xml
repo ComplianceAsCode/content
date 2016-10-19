@@ -6,7 +6,6 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The grub.conf file should be owned by the root user. By default, this file is located at /boot/grub/grub.conf or, for EFI systems, at /boot/efi/EFI/redhat/grub.conf</description>
-      <reference source="MED" ref_id="20130830" ref_url="test_attestation" />
     </metadata>
     <criteria operator="OR">
       <criterion test_ref="test_file_user_owner_grub_conf" />

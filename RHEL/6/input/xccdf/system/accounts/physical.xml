@@ -36,7 +36,6 @@ Only root should be able to modify important boot parameters.
 <ident cce="26995-1" stig="RHEL-06-000065" />
 <oval id="file_user_owner_grub_conf" />
 <ref nist="AC-6(7)" disa="225"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_group_owner_grub_conf" severity="medium">
@@ -54,7 +53,6 @@ file should not have any access privileges anyway.
 <ident cce="27022-3" stig="RHEL-06-000066" />
 <oval id="file_group_owner_grub_conf" />
 <ref nist="AC-6(7)" disa="225"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_permissions_grub_conf" severity="medium">
@@ -76,7 +74,6 @@ parameters.
 <ident cce="26949-8" stig="RHEL-06-000067" />
 <oval id="file_permissions_grub_conf" />
 <ref nist="AC-6(7)" disa="225"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="bootloader_password" severity="medium">
@@ -106,7 +103,6 @@ and whether to enter single-user mode.
 <ident cce="26911-8" stig="RHEL-06-000068" />
 <oval id="bootloader_password" />
 <ref nist="IA-2(1),IA-5(e) AC-3" disa="213" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 </Group>
@@ -137,7 +133,6 @@ by configuring the bootloader password.
 <ident cce="27040-5" stig="RHEL-06-000069" />
 <oval id="require_singleuser_auth" />
 <ref nist="IA-2(1),AC-3" disa="213" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="disable_ctrlaltdel_reboot" severity="high">
@@ -214,7 +209,6 @@ other services, weakening system security.
 <ident cce="27043-9" stig="RHEL-06-000070" />
 <oval id="disable_interactive_boot" />
 <ref nist="SC-2,AC-3" disa="213"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Group id="screen_locking">
@@ -255,7 +249,6 @@ for users who may need to suspend console logins.
 <ident cce="26940-7" stig="RHEL-06-000071" />
 <ref disa="58" />
 <oval id="package_screen_installed" />
-<tested by="DS" on="20121026"/>
 </Rule>
 </Group>
 

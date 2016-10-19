@@ -7,7 +7,6 @@
         <platform>multi_platform_fedora</platform>
       </affected>
       <description>Checks /etc/systemd/system/default.target to ensure that the default runlevel target is set to multi-user.target.</description>
-      <reference source="galford" ref_id="20160111" ref_url="test_attestation" />
     </metadata>
     <criteria>
       <criterion comment="default.target systemd softlink exists" test_ref="test_disable_xwindows_runlevel" />

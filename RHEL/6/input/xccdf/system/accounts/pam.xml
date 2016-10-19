@@ -261,7 +261,6 @@ is different from account lockout, which is provided by the pam_faillock module.
 <ident cce="27123-9" />
 <oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
 <ref nist="IA-5(c)" disa="1092" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_maxrepeat">
@@ -307,7 +306,6 @@ search space.
 <ident cce="26374-9" stig="RHEL-06-000056" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
 <ref nist="IA-5(b),IA-5(c)" disa="194"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_minlen">
@@ -355,7 +353,6 @@ more difficult by ensuring a larger search space.
 <ident cce="26601-5" stig="RHEL-06-000057" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_ocredit">
@@ -380,7 +377,6 @@ more difficult by ensuring a larger search space.
 <ident cce="26409-3" stig="RHEL-06-000058" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_lcredit">
@@ -405,7 +401,6 @@ more difficult by ensuring a larger search space.
 <ident cce="26631-2" stig="RHEL-06-000059" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_difok">
@@ -430,7 +425,6 @@ Note that passwords which are changed on compromised systems will still be compr
 <ident cce="26615-5" stig="RHEL-06-000060" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_minclass">
@@ -466,7 +460,6 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="CCE-27115-5" />
 <oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
-<tested by="JL" on="20140626"/>
 </Rule>
 </Group>
 </Group>
@@ -610,7 +603,6 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 <ident cce="26741-9" stig="RHEL-06-000274" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
 <ref nist="IA-5(f),IA-5(1)(e)" disa="200" />
-<tested by="DS" on="20121024"/>
 </Rule>
 </Group>
 
@@ -643,7 +635,6 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 </rationale>
 <ident cce="26303-8" stig="RHEL-06-000062" />
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
-<tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
 
@@ -663,7 +654,6 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 </rationale>
 <ident cce="27228-6" stig="RHEL-06-000063" />
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
-<tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
 
@@ -685,7 +675,6 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 </rationale>
 <ident cce="27229-4" stig="RHEL-06-000064" />
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
-<tested by="DS" on="20121026"/>
 <oval id="set_password_hashing_algorithm_libuserconf" />
 </Rule>
 </Group>
