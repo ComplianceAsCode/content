@@ -299,7 +299,6 @@ is different from account lockout, which is provided by the pam_faillock module.
 <ident prodtype="rhel7" cce="27160-1" />
 <oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
 <ref prodtype="rhel7" nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" ossrg="SRG-OS-000480-GPOS-00225" stigid="010410" />
-<tested by="swells" on="20140925"/>
 </Rule>
 
 <Rule id="accounts_password_pam_maxrepeat" severity="medium" prodtype="rhel7">
@@ -388,7 +387,6 @@ search space.
 <ident prodtype="rhel7" cce="27214-6" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
 <ref prodtype="rhel7" nist="IA-5(1)(a),IA-5(b),IA-5(c),194" disa="194" srg="SRG-OS-000071-GPOS-00039" pcidss="Req-8.2.3" cis="6.3.2" stigid="010110" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_minlen" severity="medium" prodtype="rhel7">
@@ -416,7 +414,6 @@ compromose the password.
 <ident prodtype="rhel7" cce="27293-0" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
 <ref prodtype="rhel7" nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046" pcidss="Req-8.2.3" cis="6.3.2" stigid="010250" />
-<tested by="swells" on="20140928" />
 </Rule>
 
 <Rule id="accounts_password_pam_ucredit" severity="medium" prodtype="rhel7">
@@ -446,7 +443,6 @@ the password is compromised.
 <ident prodtype="rhel7" cce="27200-5" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
 <ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" ossrg="SRG-OS-000069-GPOS-00037" stigid="010090" pcidss="Req-8.2.3" cis="6.3.2" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_ocredit" severity="medium" prodtype="rhel7">
@@ -479,7 +475,6 @@ more difficult by ensuring a larger search space.
 <ident prodtype="rhel7" cce="27360-7" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
 <ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="SRG-OS-000266-GPOS-00101" stigid="010120" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_lcredit" severity="medium" prodtype="rhel7">
@@ -511,7 +506,6 @@ more difficult by ensuring a larger search space.
 <ident prodtype="rhel7" cce="27345-8" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
 <ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="SRG-OS-000070-GPOS-00038" pcidss="Req-8.2.3" stigid="010100" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_difok" severity="medium" prodtype="rhel7">
@@ -546,7 +540,6 @@ Note that passwords which are changed on compromised systems will still be compr
 <ident prodtype="rhel7" cce="26631-2" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
 <ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040" stigid="010130" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="accounts_password_pam_minclass" severity="medium" prodtype="rhel7">
@@ -590,7 +583,6 @@ by ensuring a larger search space.
 <ident prodtype="rhel7" cce="CCE-27115-5" />
 <oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
 <ref prodtype="rhel7" nist="IA-5" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010140" />
-<tested by="JL" on="20140626"/>
 </Rule>
 </Group>
 </Group>
@@ -768,7 +760,6 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 <ident prodtype="rhel7" cce="26923-3" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
 <ref prodtype="rhel7" nist="IA-5(f),IA-5(1)(e)" disa="200" ossrg="SRG-OS-000077-GPOS-00045" stigid="010240" pcidss="Req-8.2.5" cis="6.3.4" />
-<tested by="DS" on="20121024"/>
 </Rule>
 </Group>
 
@@ -809,7 +800,6 @@ ensures the use of a strong hashing algorithm that makes password cracking attac
 </rationale>
 <ident prodtype="rhel7" cce="27104-9" />
 <ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010170" pcidss="Req-8.2.1" cis="6.3.1" />
-<tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
 
@@ -833,7 +823,6 @@ Using a stronger hashing algorithm makes password cracking attacks more difficul
 </rationale>
 <ident prodtype="rhel7" cce="27124-7" />
 <ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010180" pcidss="Req-8.2.1" cis="6.3.1" />
-<tested by="DS" on="20121024"/>
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
 
@@ -862,7 +851,6 @@ ensures the use of a strong hashing algorithm that makes password cracking attac
 </rationale>
 <ident prodtype="rhel7" cce="27053-8" />
 <ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010190" pcidss="Req-8.2.1" />
-<tested by="DS" on="20121026"/>
 <oval id="set_password_hashing_algorithm_libuserconf" />
 </Rule>
 </Group>

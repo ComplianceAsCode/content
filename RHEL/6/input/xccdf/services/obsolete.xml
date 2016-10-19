@@ -42,7 +42,6 @@ attacks against xinetd itself.
 <ident cce="27046-2" stig="RHEL-06-000203" />
 <oval id="service_xinetd_disabled" />
 <ref nist="CM-7" disa="305"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_xinetd_removed">
@@ -61,7 +60,6 @@ xinetd service's accidental (or intentional) activation.
 <ident cce="27005-8" stig="RHEL-06-000204" />
 <oval id="package_xinetd_removed" />
 <ref nist="CM-7" disa="305"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 </Group>
@@ -88,7 +86,6 @@ subject to man-in-the-middle attacks.
 <ident cce="26836-7" stig="RHEL-06-000211" />
 <oval id="service_telnetd_disabled" />
 <ref nist="CM-7,IA-5(1)(c)" disa="68,1436,197,877,888" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_telnet-server_removed" severity="high">
@@ -104,7 +101,6 @@ telnet service's accidental (or intentional) activation.
 <ident cce="27073-6" stig="RHEL-06-000206" />
 <oval id="package_telnet-server_removed" />
 <ref nist="CM-7" disa="305,381"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_telnet_removed" severity="low">
@@ -144,7 +140,6 @@ activation.
 <ident cce="27062-9" stig="RHEL-06-000213" />
 <oval id="package_rsh-server_removed" />
 <ref nist="CM-7" disa="305,381"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="service_rexec_disabled" severity="high">
@@ -163,7 +158,6 @@ stolen by eavesdroppers on the network.
 <ident cce="27208-8" stig="RHEL-06-000216" />
 <oval id="service_rexec_disabled" />
 <ref nist="CM-7" disa="68,1436"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="service_rsh_disabled" severity="high">
@@ -182,7 +176,6 @@ stolen by eavesdroppers on the network.
 <ident cce="26994-4" stig="RHEL-06-000214" />
 <oval id="service_rsh_disabled" />
 <ref nist="CM-7,IA-5(1)(c)" disa="68,1436" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_rsh_removed">
@@ -199,7 +192,6 @@ the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 </rationale>
 <ident cce="27359-9" />
 <oval id="package_rsh_removed" />
-<tested by="JL" on="20140530"/>
 </Rule>
 
 <Rule id="service_rlogin_disabled" severity="high">
@@ -218,7 +210,6 @@ stolen by eavesdroppers on the network.
 <ident cce="26865-6" stig="RHEL-06-000218" />
 <oval id="service_rlogin_disabled" />
 <ref nist="CM-7,IA-5(1)(c)" disa="1436" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="no_rsh_trust_files" severity="high">
@@ -242,7 +233,6 @@ unauthenticated access to a system.</rationale>
 <ident cce="27270-8" stig="RHEL-06-000019" />
 <ref nist="CM-7" disa="1436" />
 <oval id="no_rsh_trust_files" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 </Group>
@@ -268,7 +258,6 @@ accidental (or intentional) activation of NIS or NIS+ services.
 <ident cce="27079-3" stig="RHEL-06-000220" />
 <oval id="package_ypserv_removed" />
 <ref nist="CM-7" disa="305,381"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="service_ypbind_disabled" severity="medium">
@@ -285,7 +274,6 @@ as a client in a NIS or NIS+ domain.
 <ident cce="26894-6" stig="RHEL-06-000221" />
 <oval id="service_ypbind_disabled" />
 <ref nist="CM-7" disa="305"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_ypbind_removed">
@@ -329,7 +317,6 @@ as a TFTP server, which does not provide encryption or authentication.
 <ident cce="27055-3" stig="RHEL-06-000223" />
 <oval id="service_tftp_disabled" />
 <ref nist="CM-7" disa="1436" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_tftp-server_removed" severity="medium">
@@ -347,7 +334,6 @@ accidental (or intentional) activation of tftp services.
 <ident cce="26946-4" stig="RHEL-06-000222" />
 <oval id="package_tftp-server_removed" />
 <ref nist="CM-7" disa="305"/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="package_tftp_removed">
@@ -419,7 +405,6 @@ risk of the accidental (or intentional) activation of talk services.
 </rationale>
 <ident cce="27427-4" />
 <oval id="package_talk-server_removed" />
-<tested by="JL" on="20140625"/>
 </Rule>
 
 <Rule id="package_talk_removed">
@@ -437,7 +422,6 @@ risk of the accidental (or intentional) activation of talk client program.
 </rationale>
 <ident cce="27373-0" />
 <oval id="package_talk_removed" />
-<tested by="JL" on="20140625"/>
 </Rule>
 
 </Group>

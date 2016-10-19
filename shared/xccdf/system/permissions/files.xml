@@ -29,7 +29,6 @@ which could weaken the system security posture.</rationale>
 <ident prodtype="rhel7" cce="26795-5" />
 <oval id="userowner_shadow_file" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="groupowner_shadow_file" severity="medium" prodtype="rhel7">
@@ -41,7 +40,6 @@ critical for system security.</rationale>
 <ident prodtype="rhel7" cce="27125-4" />
 <oval id="groupowner_shadow_file" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_permissions_etc_shadow" severity="medium" prodtype="rhel7">
@@ -56,7 +54,6 @@ which could weaken the system security posture.</rationale>
 <ident prodtype="rhel7" cce="27100-7" />
 <oval id="file_permissions_etc_shadow" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_owner_etc_group" severity="medium" prodtype="rhel7">
@@ -68,7 +65,6 @@ on the system. Protection of this file is important for system security.</ration
 <ident prodtype="rhel7" cce="26933-2" />
 <oval id="file_owner_etc_group" />
 <ref prodtype="rhel7" nist="AC-6" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_groupowner_etc_group" severity="medium" prodtype="rhel7">
@@ -80,7 +76,6 @@ on the system. Protection of this file is important for system security.</ration
 <ident prodtype="rhel7" cce="27037-1" />
 <oval id="file_groupowner_etc_group" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_permissions_etc_group" severity="medium" prodtype="rhel7">
@@ -92,7 +87,6 @@ on the system. Protection of this file is important for system security.</ration
 <ident prodtype="rhel7" cce="26949-8" />
 <oval id="file_permissions_etc_group" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_owner_etc_gshadow" severity="medium" prodtype="rhel7">
@@ -104,7 +98,6 @@ is critical for system security.</rationale>
 <ident prodtype="rhel7" cce="27161-9" />
 <oval id="file_owner_etc_gshadow" />
 <ref prodtype="rhel7" nist="AC-6" disa=""/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_groupowner_etc_gshadow" severity="medium" prodtype="rhel7">
@@ -116,7 +109,6 @@ is critical for system security.</rationale>
 <ident prodtype="rhel7" cce="26840-9" />
 <oval id="file_groupowner_etc_gshadow" />
 <ref prodtype="rhel7" nist="AC-6" disa=""/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_permissions_etc_gshadow" severity="medium" prodtype="rhel7">
@@ -128,7 +120,6 @@ is critical for system security.</rationale>
 <ident prodtype="rhel7" cce="27162-7" />
 <oval id="file_permissions_etc_gshadow" />
 <ref prodtype="rhel7" nist="AC-6" disa=""/>
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_owner_etc_passwd" severity="medium" prodtype="rhel7">
@@ -140,7 +131,6 @@ the system. Protection of this file is critical for system security.</rationale>
 <ident prodtype="rhel7" cce="27138-7" />
 <oval id="file_owner_etc_passwd" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_groupowner_etc_passwd" severity="medium" prodtype="rhel7">
@@ -152,7 +142,6 @@ the system. Protection of this file is critical for system security.</rationale>
 <ident prodtype="rhel7" cce="26639-5" />
 <oval id="file_groupowner_etc_passwd" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_permissions_etc_passwd" severity="medium" prodtype="rhel7">
@@ -166,7 +155,6 @@ is critical for system security.</rationale>
 <ident prodtype="rhel7" cce="26887-0" />
 <oval id="file_permissions_etc_passwd" />
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" />
-<tested by="DS" on="20121026"/>
 </Rule>
 </Group>
 
@@ -216,7 +204,6 @@ runtime. Restrictive permissions are necessary to protect the integrity of the s
 </rationale>
 <ident prodtype="rhel7" cce="26966-2" />
 <ref prodtype="rhel7" nist="AC-6" disa=""/>
-<tested by="DS" on="20121026"/>
 <oval id="file_permissions_library_dirs" />
 </Rule>
 
@@ -255,7 +242,6 @@ runtime. Proper ownership is necessary to protect the integrity of the system.
 <ident prodtype="rhel7" cce="26648-6" />
 <ref prodtype="rhel7" nist="AC-6" disa=""/>
 <oval id="file_ownership_library_dirs" />
-<tested by="swells" on="20130914"/>
 </Rule>
 
 
@@ -371,7 +357,6 @@ requiring global read/write access.
 <ident prodtype="rhel7" cce="80130-8" />
 <oval id="dir_perms_world_writable_sticky_bits" />
 <ref prodtype="rhel7" nist="AC-6" cis="1.1.17" />
-<tested by="swells" on="20120929"/>
 </Rule>
 
 <Rule id="file_permissions_unauthorized_world_writable" severity="medium" prodtype="rhel7">

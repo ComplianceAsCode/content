@@ -31,7 +31,6 @@ remote access.
 </description>
 <ident cce="27054-6" />
 <oval id="service_sshd_disabled" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="iptables_sshd_disabled">
@@ -84,7 +83,6 @@ should not be used.
 <ident cce="27072-8" stig="RHEL-06-000227" />
 <oval id="sshd_allow_only_protocol2" />
 <ref nist="AC-3(10),IA-5(1)(c)" disa="776,774,1436" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_limit_user_access">
@@ -174,7 +172,6 @@ to compromises on another.
 <ident cce="26919-1" stig="RHEL-06-000230" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
 <ref nist="AC-2(5),SA-8" disa="879,1133"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -198,7 +195,6 @@ is reached.
 <ident cce="26282-4" stig="RHEL-06-000231" />
 <oval id="sshd_set_keepalive" />
 <ref nist="AC-2(5),SA-8" disa="879,1133"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -246,7 +242,6 @@ can allow an attacker to move trivially to other hosts.
 <ident cce="27091-8" stig="RHEL-06-000236" />
 <oval id="disable_host_auth" />
 <ref nist="AC-3" disa="765,766"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -269,7 +264,6 @@ and also allows direct attack attempts on root's password.
 <ident cce="27100-7" stig="RHEL-06-000237" />
 <oval id="sshd_disable_root_login" />
 <ref nist="AC-3,AC-6(2),IA-2(1)" disa="770" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -293,7 +287,6 @@ even in the event of misconfiguration elsewhere.
 <ident cce="26887-0" stig="RHEL-06-000239" />
 <oval id="sshd_disable_empty_passwords" />
 <ref nist="AC-3" disa="765,766"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_enable_warning_banner" severity="medium">
@@ -317,7 +310,6 @@ not provide easy attribution.
 <ident cce="27112-2" stig="RHEL-06-000240" />
 <oval id="sshd_enable_warning_banner" />
 <ref nist="AC-8(a)" disa="48" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 
@@ -341,7 +333,6 @@ access restriction in some configurations.
 <ident cce="27201-3" stig="RHEL-06-000241" />
 <oval id="sshd_do_not_permit_user_env" />
 <ref disa="1414" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_use_approved_ciphers" severity="medium">
@@ -367,7 +358,6 @@ implementation. These are also required for compliance.
 <ident cce="26555-3" stig="RHEL-06-000243" />
 <oval id="sshd_use_approved_ciphers" />
 <ref nist="AC-3,AC-17(2),SI-7,IA-5(1)(c),IA-7" disa="803,1144,1145,1146" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 

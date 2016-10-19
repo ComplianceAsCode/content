@@ -78,7 +78,6 @@ remote access.
 </description>
 <ident cce="80217-3" />
 <oval id="service_sshd_disabled" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="file_permissions_sshd_pub_key" severity="medium">
@@ -156,7 +155,6 @@ immediate root access to the system.
 <oval id="sshd_allow_only_protocol2" />
 <ref nist="AC-17(8).1(ii),IA-5(1)(c)" disa="197,366" cis="6.2.1"
 ossrg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" stigid="040590"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_limit_user_access">
@@ -390,7 +388,6 @@ enabled on the console or console port that has been let unattended.
 <ref nist="AC-2(5),SA-8(i),AC-12" disa="1133,2361"
 ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" stigid="040190"
 pcidss="Req-8.1.8" cis="6.2.12" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_set_keepalive" severity="medium">
@@ -461,7 +458,6 @@ can allow an attacker to move trivially to other hosts.
 <ident cce="27413-4" />
 <oval id="disable_host_auth" />
 <ref nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010442" cis="6.2.7" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="enable_x11_forwarding" severity="high">
@@ -509,7 +505,6 @@ direct attack attempts on root's password.
 <oval id="sshd_disable_root_login" />
 <ref nist="AC-3,AC-6(2),IA-2(1),IA-2(5)" disa="366"
 ossrg="SRG-OS-000480-GPOS-00227" stigid="040310" cis="6.2.8" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_disable_empty_passwords" severity="high">
@@ -533,7 +528,6 @@ misconfiguration elsewhere.
 <ident cce="27471-2" />
 <oval id="sshd_disable_empty_passwords" />
 <ref nist="AC-3,AC-6,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010270" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_enable_warning_banner" severity="medium">
@@ -559,7 +553,6 @@ not provide easy attribution.
 <ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48,50,1384,1385,1386,1387,1388"
 ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088"
 cis="6.2.14" stigid="040170" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_do_not_permit_user_env" severity="medium">
@@ -582,7 +575,6 @@ access restriction in some configurations.
 <ident cce="27363-1" />
 <oval id="sshd_do_not_permit_user_env" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010441" cis="6.2.10" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_use_approved_ciphers" severity="medium">
@@ -616,7 +608,6 @@ Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
 <oval id="sshd_use_approved_ciphers" />
 <ref nist="AC-3,AC-17(2),AU-10(5),CM-6(b),IA-5(1)(c),IA-7" disa="68,366,803"
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173" stigid="040110" cis="6.2.11" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="sshd_use_approved_macs" severity="medium">

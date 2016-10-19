@@ -36,7 +36,6 @@ Only root should be able to modify important boot parameters.
 <ident prodtype="rhel7" cce="26860-7" />
 <oval id="file_user_owner_grub2_cfg" />
 <ref prodtype="rhel7" nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.5.1" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_group_owner_grub2_cfg" severity="medium" prodtype="rhel7">
@@ -54,7 +53,6 @@ file should not have any access privileges anyway.
 <ident prodtype="rhel7" cce="26812-8" />
 <oval id="file_group_owner_grub2_cfg" />
 <ref prodtype="rhel7" nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.5.1" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="file_permissions_grub2_cfg" severity="medium" prodtype="rhel7">
@@ -75,7 +73,6 @@ parameters.
 <ident prodtype="rhel7" cce="27054-6" />
 <oval id="file_permissions_grub2_cfg" />
 <ref prodtype="rhel7" nist="AC-6(7)" disa="225" cis="1.5.2" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="bootloader_password" severity="high" prodtype="rhel7">
@@ -127,7 +124,6 @@ the grub2 superuser account and password, please refer to
 <ident prodtype="rhel7" cce="27309-4" />
 <oval id="bootloader_password" />
 <ref prodtype="rhel7" nist="IA-2(1),IA-5(e),AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048" stigid="010460" cis="1.5.3" />
-<tested by="DS" on="20121026"/>
 </Rule>
 
 <Rule id="bootloader_uefi_password" severity="medium" prodtype="rhel7">
@@ -208,7 +204,6 @@ by configuring the bootloader password.
 <ident prodtype="rhel7" cce="27287-2" />
 <oval id="require_singleuser_auth" />
 <ref prodtype="rhel7" nist="IA-2(1),AC-3" disa="213" />
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Rule id="service_debug-shell_disabled" severity="medium" prodtype="rhel7">
@@ -311,7 +306,6 @@ file. To update the GRUB 2 configuration file manually, use the
 <ident prodtype="rhel7" cce="27335-9" />
 <oval id="disable_interactive_boot" />
 <ref prodtype="rhel7" nist="SC-2,AC-3" disa="213"/>
-<tested by="DS" on="20121024"/>
 </Rule>
 
 <Group id="screen_locking">
@@ -357,7 +351,6 @@ The <tt>screen</tt> package allows for a session lock to be implemented and conf
 <ident prodtype="rhel7" cce="27351-6" />
 <oval id="package_screen_installed" />
 <ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010072" />
-<tested by="DS" on="20121026"/>
 </Rule>
 </Group>
 
