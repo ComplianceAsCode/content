@@ -101,14 +101,6 @@
             </xsl:otherwise>
           </xsl:choose>
           <xsl:choose>
-            <xsl:when test="contains(tested/@prodtype, $prod_type) or tested/@prodtype = 'all'">
-              <xsl:apply-templates select="tested"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="tested[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
             <xsl:when test="contains(rationale/@prodtype, $prod_type) or rationale/@prodtype = 'all'">
               <xsl:apply-templates select="rationale"/>
             </xsl:when>
@@ -133,7 +125,7 @@
               <xsl:apply-templates select="oval[not(@prodtype)]"/>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::tested|self::rationale|self::ident|self::oval|self::prodtype)]"/>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ident|self::oval|self::prodtype)]"/>
         </Rule>
       </xsl:when>
     </xsl:choose>
@@ -154,12 +146,11 @@
       <xsl:apply-templates select="description"/>
       <xsl:apply-templates select="warning"/>
       <xsl:apply-templates select="ref"/>
-      <xsl:apply-templates select="tested"/>
       <xsl:apply-templates select="rationale"/>
       <xsl:apply-templates select="ident"/>
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::tested|self::rationale|self::ident|self::oval)]"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ident|self::oval)]"/>
     </Rule>
   </xsl:template>
 
@@ -442,17 +433,6 @@
             <xsl:apply-templates select="node()"/>
           </check-content>
         </check>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="tested">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
-        <reference>
-          <xsl:attribute name="href"><xsl:value-of select="$ssg-contributors-uri" /></xsl:attribute>
-          <xsl:value-of select="concat('Test attestation on ', @on, ' by ', @by)" />
-        </reference>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
