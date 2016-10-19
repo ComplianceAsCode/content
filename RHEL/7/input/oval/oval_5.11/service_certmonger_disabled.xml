@@ -16,7 +16,6 @@
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>The certmonger service should be disabled if possible.</description>
-      <reference source="JL" ref_id="RHEL7_20150605" ref_url="test_attestation" />
     </metadata>
     <criteria comment="package certmonger removed or service certmonger is not configured to start" operator="OR">
       <extend_definition comment="certmonger removed" definition_ref="package_certmonger_removed" />

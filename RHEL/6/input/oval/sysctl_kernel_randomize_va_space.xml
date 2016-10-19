@@ -7,7 +7,6 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The "kernel.randomize_va_space" kernel parameter should be set to the appropriate value in both system configuration and system runtime.</description>
-      <reference source="JL" ref_id="RHEL6_20150216" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <extend_definition comment="kernel.randomize_va_space configuration setting check" definition_ref="sysctl_static_kernel_randomize_va_space" />

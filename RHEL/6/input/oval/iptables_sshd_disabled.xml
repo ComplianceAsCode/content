@@ -8,7 +8,6 @@
       </affected>
       <description>If inbound SSH access is not needed, the firewall should disallow or reject access to
       the SSH port (22).</description>
-      <reference source="JL" ref_id="RHEL6_20140827" ref_url="test_attestation"/>
     </metadata>
     <criteria operator="AND">
       <criterion comment="Test ipv4 port 22 Deny" test_ref="test_iptables_sshd_disabled_ipv4" />

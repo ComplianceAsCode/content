@@ -9,7 +9,6 @@
       <description>
       The frequency of automatic log files rotation performed by the logrotate utility should be configured to run daily
       </description>
-      <reference source="JL" ref_id="20140606" ref_url="test_attestation" />
     </metadata>
     <criteria comment="/etc/logrotate.conf contains daily setting or /etc/cron.daily/logrotate file exists" operator="OR">
       <criterion comment="Check if daily is set in /etc/logrotate.conf"

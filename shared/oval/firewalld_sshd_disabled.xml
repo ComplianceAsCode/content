@@ -7,7 +7,6 @@
       </affected>
       <description>If inbound SSH access is not needed, the firewall should disallow or reject access to
       the SSH port (22).</description>
-      <reference source="galford" ref_id="20160215" ref_url="test_attestation" />
     </metadata>
     <criteria operator="AND">
       <criterion comment="ssh service is not enabled in services" test_ref="test_firewalld_service_sshd" />

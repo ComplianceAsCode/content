@@ -8,7 +8,6 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The rhnsd service should be disabled if possible.</description>
-      <reference source="DS" ref_id="20131002" ref_url="test_attestation" />
     </metadata>
    <criteria comment="package rhnsd removed or service rhnsd is not configured to start" operator="OR">
     <extend_definition comment="rhnsd removed" definition_ref="package_rhnsd_removed" />

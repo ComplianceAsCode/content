@@ -8,7 +8,6 @@
         <platform>Red Hat Enterprise Linux 6</platform>
       </affected>
       <description>The oddjobd service should be disabled if possible.</description>
-      <reference source="DS" ref_id="20130918" ref_url="test_attestation" />
     </metadata>
    <criteria comment="package oddjob removed or service oddjobd is not configured to start" operator="OR">
     <extend_definition comment="oddjob removed" definition_ref="package_oddjob_removed" />
