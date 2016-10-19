@@ -85,21 +85,6 @@
 
 			<!-- print the manual check text -->
 			<xsl:apply-templates select="cdf:check" /> 
-
-			<!-- print the test attestation info -->
-			<xsl:if test="$testinfo">
-				<!-- in the XCCDF -->
-				<xsl:for-each select="cdf:reference[@href=$ssg-contributors-uri]">
-					<!-- 	Process the text() of test_attestation reference to drop
-						'Test attestation on' prefix and keep only date and contributor -->
-					<br/><i>Manual check tested on <xsl:value-of select="substring-after(text(), 'Test attestation on ')"/>.</i>
-				</xsl:for-each>
-				<!-- in the associated OVAL -->
-				<xsl:for-each select="$ovalcheck/ovalns:metadata/ovalns:reference[@ref_url='test_attestation']">
-						<xsl:variable name="curr" select="current()"/>
-						<br/><i>OVAL check tested on <xsl:value-of select="$curr/@ref_id"/> by <xsl:value-of select="$curr/@source"/>.</i>
-				</xsl:for-each>
-			</xsl:if>
 			</td>
 
 			<td> 
