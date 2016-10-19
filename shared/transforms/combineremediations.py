@@ -390,8 +390,6 @@ def main():
                                 fix.set("complexity", complexity)
                             if disruption is not None:
                                 fix.set("disruption", disruption)
-                            if platform is not None:
-                                fix.set("platform", product_name)
                             if reboot is not None:
                                 fix.set("reboot", reboot)
                             if strategy is not None:
