@@ -203,10 +203,8 @@ endmacro()
 macro(ssg_build_oval_final PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
-        # Expand 'test_attestation' URLs in OVAL document to valid SSG Contributors wiki link (fixes RHBZ#1155809 for OVAL)
-        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/oval-fix-test-attestation-urls.xslt ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/oval-fix-test-attestation-urls.xslt
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-oval.xml"
     )
     add_custom_command(
