@@ -14,6 +14,12 @@ class UnknownTargetError(ValueError):
     def __init__(self, msg):
         ValueError.__init__(self, "Unknown target: \"{0}\"".format(msg))
 
+
+class BuildDirMissingError(ValueError):
+    def __init__(self):
+        ValueError.__init__(self, "BUILD_DIR environment variable is missing.")
+
+
 def get_template_filename(filename):
 
     if 'TEMPLATE_DIR' in os.environ:
@@ -70,7 +76,10 @@ def save_modified(filename_format, filename_value, string):
     Save string to file
     """
     filename = filename_format.format(filename_value)
-    dir_ = os.environ.get('BUILD_DIR', '')
+    dir_ = os.environ.get('BUILD_DIR')
+    if dir_ is None:
+        raise BuildDirMissingError()
+
     filename = os.path.join(dir_, filename)
 
     if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
