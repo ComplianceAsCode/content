@@ -43,7 +43,7 @@ class Builder(object):
 
     def build(self):
         for lang in self.langs:
-            self._mkdir_recursive(self._output_dir_for_lang(lang))
+            os.makedirs(self._output_dir_for_lang(lang))
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
@@ -181,13 +181,6 @@ class Builder(object):
                 stderr=subprocess.PIPE
             )
             self._subprocess_check(sp)
-
-    def _mkdir_recursive(self, path):
-        if not os.path.exists(path):
-            self._mkdir_recursive(os.path.realpath(os.path.dirname(path)))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
 
     @_set_environment
     def _read_io_files_list(self, script, csv, lang, gen_input):
