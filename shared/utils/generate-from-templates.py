@@ -155,11 +155,8 @@ class Builder(object):
             )
             sys.exit(1)
 
-    def _parent_output_dir(self):
-        return os.path.join(self.output_dir, "output")
-
     def _output_dir_for_lang(self, lang):
-        return os.path.join(self._parent_output_dir(), lang)
+        return os.path.join(self.output_dir, lang)
 
     def _set_environment(func):
         def wrapper(self, *args):
