@@ -17,7 +17,7 @@ def output_checkfile(target, kerninfo):
             {
                "KERNMODULE": kernmod
             },
-            "./output/bash/kernel_module_{0}_disabled.sh", kernmod
+            "./bash/kernel_module_{0}_disabled.sh", kernmod
         )
 
     elif target == "oval":
@@ -26,7 +26,7 @@ def output_checkfile(target, kerninfo):
             {
                 "KERNMODULE": kernmod
             },
-            "./output/oval/kernel_module_{0}_disabled.xml", kernmod
+            "./oval/kernel_module_{0}_disabled.xml", kernmod
         )
 
     elif target == "ansible":
@@ -35,7 +35,7 @@ def output_checkfile(target, kerninfo):
             {
                "KERNMODULE": kernmod
             },
-            "./output/ansible/kernel_module_{0}_disabled.sh", kernmod
+            "./ansible/kernel_module_{0}_disabled.sh", kernmod
         )
 
     else:

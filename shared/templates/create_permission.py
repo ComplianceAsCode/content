@@ -40,7 +40,7 @@ def output_checkfile(target, path_info):
                 "FILEPATH":      full_path,
                 "FILEMODE":      mode,
             },
-            "./output/bash/file_permissions{0}.sh", path_id
+            "./bash/file_permissions{0}.sh", path_id
         )
 
     elif target == "ansible":
@@ -51,7 +51,7 @@ def output_checkfile(target, path_info):
                 "FILEPATH":      full_path,
                 "FILEMODE":      mode,
             },
-            "./output/ansible/file_permissions{0}.sh", path_id
+            "./ansible/file_permissions{0}.sh", path_id
         )
 
     elif target == "oval":
@@ -88,7 +88,7 @@ def output_checkfile(target, path_info):
                 "STATEMODE":     mode_str,
                 "UNIX_FILENAME": unix_filename
             },
-            "./output/oval/file_permissions{0}.xml", path_id
+            "./oval/file_permissions{0}.xml", path_id
         )
 
     else:

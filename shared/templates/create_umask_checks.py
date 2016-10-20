@@ -67,9 +67,9 @@ def output_check(path_info):
         filestring = filestring.replace("USERUMASKVARIABLE", ext_oval_var)
 
         # We can now write the main check
-        with open("./output/" + oval_check_id + ".xml", 'w+') as outputfile:
+        with open("./" + oval_check_id + ".xml", 'w+') as outputfile:
             outputfile.write(filestring)
-            print("Written ./output/%s.xml file." % oval_check_id)
+            print("Written ./%s.xml file." % oval_check_id)
 
     # We need to create the extended definition yet
     # Open the child template and perform the conversions
@@ -80,9 +80,9 @@ def output_check(path_info):
         filestring = filestring.replace("USERUMASKVARIABLE", ext_oval_var)
 
         # We can now write the extended check
-        with open("./output/" + ext_oval_var + "_as_number.xml", 'w+') as outputfile:
+        with open("./" + ext_oval_var + "_as_number.xml", 'w+') as outputfile:
             outputfile.write(filestring)
-            print("Written ./output/%s.xml file." % (ext_oval_var + "_as_number"))
+            print("Written ./%s.xml file." % (ext_oval_var + "_as_number"))
 
 
 def main():
