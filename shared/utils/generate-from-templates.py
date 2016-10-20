@@ -76,8 +76,8 @@ class Builder(object):
                 csv_filepath = os.path.join(csv_dir, csv)
                 script_filepath = self._get_script_for_csv(csv)
 
-                list.append(csv_filepath)
-                list.append(script_filepath)
+                list_.append(csv_filepath)
+                list_.append(script_filepath)
 
                 for lang in self.langs:
                     files_list = self._read_io_files_list(
