@@ -65,7 +65,7 @@ class Builder(object):
     def clean(self):
         dir = self._parent_output_dir()
         if os.path.exists(dir):
-            sys.stderr.write("Remove: {}\n".format(dir))
+            sys.stderr.write("Remove: {0}\n".format(dir))
             shutil.rmtree(dir)
 
     def get_input_list(self):
