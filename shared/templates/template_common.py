@@ -70,8 +70,8 @@ def save_modified(filename_format, filename_value, string):
     Save string to file
     """
     filename = filename_format.format(filename_value)
-    dir = os.environ.get('BUILD_DIR', '')
-    filename = os.path.join(dir, filename)
+    dir_ = os.environ.get('BUILD_DIR', '')
+    filename = os.path.join(dir_, filename)
 
     if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
         return
