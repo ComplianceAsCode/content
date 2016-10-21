@@ -83,3 +83,18 @@ endif()
 if (SSG_WRLINUX_CONTENT_ENABLED)
     add_subdirectory("WRLinux")
 endif()
+
+
+# only CPack should follow
+set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
+set(CPACK_SOURCE_GENERATOR "TBZ2")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}" CACHE INTERNAL "tarball basename")
+set(CPACK_SOURCE_IGNORE_FILES
+"\\\\.git.*"
+
+"build/"
+"~$"
+
+"\\\\CMakeLists.txt.user"
+)
+include(CPack)
