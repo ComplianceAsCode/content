@@ -296,13 +296,23 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(validate ${PRODUCT}-validate)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DESTINATION "${SSG_INSTALL_DIR}")
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        DESTINATION "${SSG_INSTALL_DIR}")
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        DESTINATION "${SSG_INSTALL_DIR}")
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        DESTINATION "${SSG_INSTALL_DIR}")
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+
+    # This is a common cmake trick, we need the globbing to happen at build time
+    # and not configure time.
+    install(
+       CODE "
+           file(GLOB GUIDE_FILES ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-*.html) \n
+           file(INSTALL DESTINATION ${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}
+           TYPE FILE FILES \${GUIDE_FILES}
+       )"
+    )
 endmacro()
 
 macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
