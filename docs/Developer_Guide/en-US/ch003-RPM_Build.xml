@@ -35,29 +35,6 @@
 		</para>
 	</section>
 	
-	<section id="sect-Developer_Guide-RPM_Build-upstream">
-		<title>Build Upstream</title>
-		<orderedlist>
-			<listitem>
-				<para>Update main scap-security-guide.spec file
-					(scap-security-guide/scap-security-guide.spec) with new version (value of
-					"redhatssgversion" variable). Ensure that "Release:" field contains 1%{?dist} (1
-					as release version). Add particular changelog entry (possibly verify for &amp;
-					fix whitespace noise).</para>
-			</listitem>
-			<listitem>
-				<para>Build and test the content (i.e. run 'make', 'make srpm', 'make rpm') to
-					verify it builds successfully. Also try to scan some systems with selected
-					profiles to see if the content works.</para>
-			</listitem>
-			<listitem>
-				<para>If it works, 'make clean' in the git repository to start with clean table.
-					Make the source tarball via "make tarball". Upload the tarball to
-					repos.ssgproject.org.</para>
-			</listitem>
-		</orderedlist>
-	</section>
-	
 	<section id="sect-Developer_Guide-RPM_Build-epel">
 		<title>Build EPEL Release</title>
 		<para>
