@@ -3,6 +3,11 @@ project(scap-security-guide NONE)
 
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 include(SSGCommon)
+# This is set to silence GNUInstallDirs warning about no language being used with cmake
+set(CMAKE_INSTALL_LIBDIR "/nowhere")
+include(GNUInstallDirs)
+# FIXME: This is different than the old location /usr/share/xml/scap/ssg/content
+set(SSG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap/ssg")
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
