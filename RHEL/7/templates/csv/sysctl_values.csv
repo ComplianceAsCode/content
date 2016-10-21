@@ -1,5 +1,5 @@
 fs.suid_dumpable,0
-kernel.dmesg_restrict,1
+kernel.dmesg_restrict,1#only-for:bash,ansible
 #kernel.exec-shield,1
 kernel.randomize_va_space,2
 net.ipv4.conf.all.accept_redirects,
@@ -22,4 +22,7 @@ net.ipv6.conf.default.accept_ra,
 net.ipv6.conf.default.accept_redirects,
 net.ipv6.conf.all.accept_ra,
 net.ipv6.conf.all.accept_redirects,
-net.ipv6.conf.all.disable_ipv6,1
+#net.ipv6.conf.all.disable_ipv6,1
+net.ipv6.conf.default.accept_source_route,
+net.ipv6.conf.all.accept_source_route,
+net.ipv6.conf.all.forwarding,
