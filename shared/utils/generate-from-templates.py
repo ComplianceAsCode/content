@@ -29,6 +29,9 @@ class Builder(object):
 
         self.current_oval = "oval_5.10"
 
+    def set_langs(self, langs):
+        self.langs = langs
+
     def set_input_dir(self, input_dir):
         self.input_dir = input_dir
         self.templates_dirs = {
@@ -233,6 +236,9 @@ if __name__ == "__main__":
     output_sp = sp.add_parser('output', help="Generate output list")
     output_sp.set_defaults(cmd="output")
 
+    p.add_argument('--language', metavar="LANG", default=None,
+                   help="Scripts of which language should we generate? "
+                   "Default: all.")
     p.add_argument('--input', action="store", required=True,
                    help="input directory")
     p.add_argument('--output', action="store", required=True,
@@ -246,6 +252,9 @@ if __name__ == "__main__":
             "Unknown positional arguments " + ",".join(unknown) + ".\n"
         )
         sys.exit(1)
+
+    if args.language is not None:
+        builder.set_langs([args.language])
 
     builder.set_input_dir(args.input)
     builder.set_output_dir(args.output)
