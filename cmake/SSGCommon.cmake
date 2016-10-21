@@ -294,6 +294,15 @@ macro(ssg_build_product PRODUCT)
         COMMENT "[${PRODUCT}] validating outputs"
     )
     add_dependencies(validate ${PRODUCT}-validate)
+
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DESTINATION "${SSG_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        DESTINATION "${SSG_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+        DESTINATION "${SSG_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        DESTINATION "${SSG_INSTALL_DIR}")
 endmacro()
 
 macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
