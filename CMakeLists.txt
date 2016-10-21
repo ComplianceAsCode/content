@@ -97,6 +97,9 @@ install(FILES "${CMAKE_SOURCE_DIR}/README.md"
 install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
+install(FILES "docs/scap-security-guide.8"
+    DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
+
 # only CPack should follow
 set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
