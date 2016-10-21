@@ -363,4 +363,19 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         COMMENT "[${DERIVATIVE}] validating outputs"
     )
     add_dependencies(validate ${DERIVATIVE}-validate)
+
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+
+    # This is a common cmake trick, we need the globbing to happen at build time
+    # and not configure time.
+    install(
+       CODE "
+       file(GLOB GUIDE_FILES ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-guide-*.html) \n
+           file(INSTALL DESTINATION ${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}
+           TYPE FILE FILES \${GUIDE_FILES}
+       )"
+    )
 endmacro()
