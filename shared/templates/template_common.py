@@ -15,17 +15,23 @@ class UnknownTargetError(ValueError):
         ValueError.__init__(self, "Unknown target: \"{0}\"".format(msg))
 
 
+class TemplateDirMissingError(ValueError):
+    def __init__(self):
+        ValueError.__init__(self,
+                            "TEMPLATE_DIR environment variable is missing.")
+
+
 class BuildDirMissingError(ValueError):
     def __init__(self):
         ValueError.__init__(self, "BUILD_DIR environment variable is missing.")
 
 
 def get_template_filename(filename):
+    dir_ = os.environ.get('TEMPLATE_DIR')
+    if dir_ is None:
+        raise TemplateDirMissingError()
 
-    if 'TEMPLATE_DIR' in os.environ:
-        template_filename = os.path.join(os.environ['TEMPLATE_DIR'], filename)
-    else:
-        template_filename = filename
+    template_filename = os.path.join(dir_, filename)
 
     if os.path.isfile(template_filename):
         return template_filename
