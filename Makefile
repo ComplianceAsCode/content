@@ -1,11 +1,5 @@
 include VERSION
 
-ROOT_DIR ?= $(CURDIR)
-PKGNAME := $(SSG_PROJECT_NAME)
-OS_DIST := $(shell rpm --eval '%{dist}')
-
-ARCH := noarch
-
 DATESTR:=$(shell date -u +'%Y%m%d%H%M')
 
 ifeq ($(SSG_VERSION_IS_GIT_SNAPSHOT),"yes")
