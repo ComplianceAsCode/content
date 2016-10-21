@@ -46,7 +46,9 @@ class Builder(object):
 
     def build(self):
         for lang in self.langs:
-            os.makedirs(self._output_dir_for_lang(lang))
+            dir_ = self._output_dir_for_lang(lang)
+            if not os.path.exists(dir_):
+                os.makedirs(dir_)
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
