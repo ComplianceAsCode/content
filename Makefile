@@ -257,15 +257,6 @@ version-update:
 	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
 		$(RPM_SPEC)
 
-srpm: tarball version-update
-	cat $(RPM_SPEC) > $(RPMBUILD)/SPECS/$(notdir $(RPM_SPEC))
-	@echo -e "\nBuilding $(PKGNAME) SRPM..."
-	cd $(RPMBUILD) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(RPM_SPEC)) --nodeps
-
-rpm: srpm
-	@echo -e "\nBuilding $(PKGNAME) RPM..."
-	cd $(RPMBUILD)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPMBUILD)/BUILDROOT -bb $(PKG)-$(SSG_RELEASE_VERSION)$(OS_DIST).src.rpm
-
 git-tag:
 	@echo -e "\nUpdating $(RPM_SPEC) changelog to reflect new release"
 	sed -i '/\%changelog/{n;s/__DATE__/$(RPM_DATESTR)/}' $(RPM_SPEC).in
@@ -334,5 +325,5 @@ install: dist
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
 
-.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball clean all
 	rm -f scap-security-guide.spec
