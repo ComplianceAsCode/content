@@ -90,6 +90,12 @@ if (SSG_WRLINUX_CONTENT_ENABLED)
     add_subdirectory("WRLinux")
 endif()
 
+install(FILES "${CMAKE_SOURCE_DIR}/LICENSE"
+    DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(FILES "${CMAKE_SOURCE_DIR}/README.md"
+    DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
+    DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
 # only CPack should follow
 set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
