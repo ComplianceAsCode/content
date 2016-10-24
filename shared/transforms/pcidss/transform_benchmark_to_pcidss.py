@@ -122,6 +122,9 @@ def main():
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Values"
         group.append(title)
+        description = ElementTree.Element("{%s}description" % (XCCDF_NAMESPACE))
+        description.text = "Group of values used in PCI-DSS profile"
+        group.append(description)
 
         for value in values:
             copied_value = copy.deepcopy(value)
@@ -157,6 +160,9 @@ def main():
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Non PCI-DSS"
         group.append(title)
+        description = ElementTree.Element("{%s}description" % (XCCDF_NAMESPACE))
+        description.text = "Rules that are not part of PCI-DSS"
+        group.append(description)
 
         for rule in unused_rules:
             copied_rule = copy.deepcopy(rule)
