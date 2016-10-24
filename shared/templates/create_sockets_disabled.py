@@ -33,7 +33,7 @@ def output_checkfile(socketinfo):
                 "SOCKETNAME":  socketname,
                 "PACKAGENAME": packagename
             },
-            "./output/oval/socket_{0}_disabled.xml", socketname
+            "./oval/socket_{0}_disabled.xml", socketname
         )
 
     else:
@@ -46,7 +46,7 @@ def output_checkfile(socketinfo):
                 "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
                 "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
             }
-            filename_format = "./output/oval/socket_{0}_disabled.xml",
+            filename_format = "./oval/socket_{0}_disabled.xml",
             filename_value = socketname
         )
 

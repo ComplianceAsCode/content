@@ -10,6 +10,7 @@ import re
 
 from template_common import *
 
+
 def output_checkfile(target, path_info):
     # the csv file contains lines that match the following layout:
     #    directory,file_name,uid,gid,mode
@@ -31,35 +32,31 @@ def output_checkfile(target, path_info):
     else:
         full_path = dir_path + '/' + file_name
 
-
     if target == "bash":
-
         file_from_template(
             "./template_BASH_permissions",
             {
                 "FILEPATH":      full_path,
                 "FILEMODE":      mode,
             },
-            "./output/bash/file_permissions{0}.sh", path_id
+            "./bash/file_permissions{0}.sh", path_id
         )
 
     elif target == "ansible":
-
         file_from_template(
             "./template_ANSIBLE_permissions",
             {
                 "FILEPATH":      full_path,
                 "FILEMODE":      mode,
             },
-            "./output/ansible/file_permissions{0}.sh", path_id
+            "./ansible/file_permissions{0}.yml", path_id
         )
 
     elif target == "oval":
-
         # build the state that describes our mode
         # mode_str maps to STATEMODE in the template
-        fields = ['oexec', 'owrite', 'oread', 'gexec', 'gwrite', 'gread', 'uexec',
-                  'uwrite', 'uread', 'sticky', 'sgid', 'suid']
+        fields = ['oexec', 'owrite', 'oread', 'gexec', 'gwrite', 'gread',
+                  'uexec', 'uwrite', 'uread', 'sticky', 'sgid', 'suid']
         mode_int = int(mode, 8)
         mode_str = "  </unix:file_state>"
         for field in fields:
@@ -88,7 +85,7 @@ def output_checkfile(target, path_info):
                 "STATEMODE":     mode_str,
                 "UNIX_FILENAME": unix_filename
             },
-            "./output/oval/file_permissions{0}.xml", path_id
+            "./oval/file_permissions{0}.xml", path_id
         )
 
     else:
@@ -97,9 +94,9 @@ def output_checkfile(target, path_info):
 
 def help():
     print("Usage:\n\t" + __file__ + " <bash/oval/ansible> <csv file>")
-    print("CSV should contains lines of the format: " +
-               "directory path,file name,owner uid (numeric),group " +
-               "owner gid (numeric),mode")
+    print("CSV should contains lines of the format: "
+          "directory path,file name,owner uid (numeric),group "
+          "owner gid (numeric),mode")
 
 if __name__ == "__main__":
     main(sys.argv, help, output_checkfile)

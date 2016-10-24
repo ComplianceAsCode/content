@@ -22,21 +22,21 @@ def output_checkfile(target, package_info):
             file_from_template(
                 "./template_OVAL_package_installed",
                 { "PKGNAME" : pkgname },
-                "./output/oval/package_{0}_installed.xml", pkgname
+                "./oval/package_{0}_installed.xml", pkgname
             )
 
         elif target == "bash":
             file_from_template(
                 "./template_BASH_package_installed",
                 { "PKGNAME" : pkgname },
-                "./output/bash/package_{0}_installed.sh", pkgname
+                "./bash/package_{0}_installed.sh", pkgname
             )
 
         elif target == "ansible":
             file_from_template(
                 "./template_ANSIBLE_package_installed",
                 { "PKGNAME" : pkgname },
-                "./output/ansible/package_{0}_installed.yml", pkgname
+                "./ansible/package_{0}_installed.yml", pkgname
             )
 
         else:

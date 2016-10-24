@@ -29,7 +29,7 @@ def output_checkfile(target, serviceinfo):
                     "SERVICENAME": servicename,
                     "PACKAGENAME": packagename
                 },
-                "./output/oval/service_{0}_enabled.xml", servicename
+                "./oval/service_{0}_enabled.xml", servicename
             )
         else:
             file_from_template(
@@ -39,7 +39,7 @@ def output_checkfile(target, serviceinfo):
                     "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
                     "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
                 },
-                filename_format = "./output/oval/service_{0}_enabled.xml",
+                filename_format = "./oval/service_{0}_enabled.xml",
                 filename_value = servicename
             )
 
@@ -48,7 +48,7 @@ def output_checkfile(target, serviceinfo):
         file_from_template(
             "./template_BASH_service_enabled",
             { "SERVICENAME": servicename },
-            "./output/bash/service_{0}_enabled.sh", servicename
+            "./bash/service_{0}_enabled.sh", servicename
         )
 
     elif target == "ansible":
@@ -58,7 +58,7 @@ def output_checkfile(target, serviceinfo):
             {
                 "SERVICENAME": servicename
             },
-            "./output/ansible/service_{0}_enabled.yml", servicename
+            "./ansible/service_{0}_enabled.yml", servicename
         )
 
     else:

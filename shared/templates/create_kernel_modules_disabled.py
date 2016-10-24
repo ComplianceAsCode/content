@@ -7,6 +7,7 @@
 import sys
 from template_common import *
 
+
 def output_checkfile(target, kerninfo):
     # get the items out of the list
     kernmod = kerninfo[0]
@@ -17,7 +18,7 @@ def output_checkfile(target, kerninfo):
             {
                "KERNMODULE": kernmod
             },
-            "./output/bash/kernel_module_{0}_disabled.sh", kernmod
+            "./bash/kernel_module_{0}_disabled.sh", kernmod
         )
 
     elif target == "oval":
@@ -26,7 +27,7 @@ def output_checkfile(target, kerninfo):
             {
                 "KERNMODULE": kernmod
             },
-            "./output/oval/kernel_module_{0}_disabled.xml", kernmod
+            "./oval/kernel_module_{0}_disabled.xml", kernmod
         )
 
     elif target == "ansible":
@@ -35,11 +36,12 @@ def output_checkfile(target, kerninfo):
             {
                "KERNMODULE": kernmod
             },
-            "./output/ansible/kernel_module_{0}_disabled.sh", kernmod
+            "./ansible/kernel_module_{0}_disabled.yml", kernmod
         )
 
     else:
         raise UnknownTargetError(target)
+
 
 def help():
     print("Usage:\n\t" + __file__ + " <bash/ansible/oval> <csv file>")

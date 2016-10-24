@@ -94,10 +94,10 @@ $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/oc
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
 $(PRODUCT_REMEDIATIONS_OUTPUT):
-	$(SHARED)/utils/build-remediations.py --oval_version $(OVAL_VERSION) --input ./templates --output ./templates build
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output ./templates/output build
 
 $(BUILD)/shared/output:
-	$(SHARED)/utils/build-remediations.py --oval_version $(OVAL_VERSION) --input $(SHARED)/templates --output $(BUILD)/shared build
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input $(SHARED)/templates --output $(BUILD)/shared/output build
 
 templates/static/bash:
 	mkdir -p $@

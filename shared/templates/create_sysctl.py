@@ -30,7 +30,7 @@ def output_checkfile(target, serviceinfo):
                     "SYSCTLID":  sysctl_var_id,
                     "SYSCTLVAR": sysctl_var
                 },
-                "./output/bash/sysctl_{0}.sh", sysctl_var_id
+                "./bash/sysctl_{0}.sh", sysctl_var_id
             )
         else:
             file_from_template(
@@ -40,7 +40,7 @@ def output_checkfile(target, serviceinfo):
                     "SYSCTLVAR": sysctl_var,
                     "SYSCTLVAL": sysctl_val
                 },
-                "./output/bash/sysctl_{0}.sh", sysctl_var_id
+                "./bash/sysctl_{0}.sh", sysctl_var_id
         )
 
     elif target == "oval":
@@ -55,7 +55,7 @@ def output_checkfile(target, serviceinfo):
                         "SYSCTLID":  sysctl_var_id,
                         "SYSCTLVAR": sysctl_var,
                     },
-                    "./output/oval/{0}.xml", files_var[sysctlfile] + sysctl_var_id
+                    "./oval/{0}.xml", files_var[sysctlfile] + sysctl_var_id
                 )
         else:
 
@@ -68,7 +68,7 @@ def output_checkfile(target, serviceinfo):
                         "SYSCTLVAR": sysctl_var,
                         "SYSCTLVAL": sysctl_val
                     },
-                    "./output/oval/{0}.xml", files[sysctlfile] + sysctl_var_id
+                    "./oval/{0}.xml", files[sysctlfile] + sysctl_var_id
                 )
     else:
 

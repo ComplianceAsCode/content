@@ -19,7 +19,7 @@ def output_checkfile(target, pam_info):
             {
                 "VARIABLE":   VARIABLE
             },
-            "./output/bash/accounts_password_pam_{0}.sh", VARIABLE
+            "./bash/accounts_password_pam_{0}.sh", VARIABLE
         )
 
     else:

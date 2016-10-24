@@ -1,15 +1,15 @@
 #!/usr/bin/python
+
 import subprocess
 import os
-import shutil
 import sys
 import argparse
 
-class Builder(object):
 
+class Builder(object):
     def __init__(self):
-        self.input_dir   = None
-        self.output_dir  = None
+        self.input_dir = None
+        self.output_dir = None
         self.script_dict = {
             "sysctl_values.csv":            "create_sysctl.py",
             "services_disabled.csv":        "create_services_disabled.py",
@@ -20,13 +20,17 @@ class Builder(object):
             "file_dir_permissions.csv":     "create_permission.py",
             "accounts_password.csv":        "create_accounts_password.py",
         }
-        self.supported_ovals      = ["oval_5.10"]
-        self.langs                = ["bash", "ansible", "oval"]
-        utils_dir                 = os.path.dirname(os.path.realpath(__file__))
-        root_dir                  = os.path.join(utils_dir, "..", "..")
-        self.shared_templates_dir = os.path.join(root_dir, "shared", "templates")
+        self.supported_ovals = ["oval_5.10"]
+        self.langs = ["bash", "ansible", "oval"]
+        utils_dir = os.path.dirname(os.path.realpath(__file__))
+        root_dir = os.path.join(utils_dir, "..", "..")
+        self.shared_templates_dir = \
+            os.path.join(root_dir, "shared", "templates")
 
         self.current_oval = "oval_5.10"
+
+    def set_langs(self, langs):
+        self.langs = langs
 
     def set_input_dir(self, input_dir):
         self.input_dir = input_dir
@@ -42,7 +46,9 @@ class Builder(object):
 
     def build(self):
         for lang in self.langs:
-            self._mkdir_recursive(self._output_dir_for_lang(lang))
+            dir_ = self._output_dir_for_lang(lang)
+            if not os.path.exists(dir_):
+                os.makedirs(dir_)
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
@@ -51,25 +57,21 @@ class Builder(object):
                 script = self._get_script_for_csv(csv_filename)
 
                 csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-                sys.stderr.write("{0}\t{1}\n".format(os.path.realpath(script), csv_filepath))
+                sys.stderr.write(
+                    "{0}\t{1}\n".format(os.path.realpath(script), csv_filepath)
+                )
                 self._run_script(script, csv_filepath)
 
     def input(self):
-        for file in self.get_input_list():
-            print(file)
+        for file_ in self.get_input_list():
+            print(file_)
 
     def output(self):
-        for file in self.get_output_list():
-            print(file)
-
-    def clean(self):
-        dir = self._parent_output_dir()
-        if os.path.exists(dir):
-            sys.stderr.write("Remove: {0}\n".format(dir))
-            shutil.rmtree(dir)
+        for file_ in self.get_output_list():
+            print(file_)
 
     def get_input_list(self):
-        list = []
+        list_ = []
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
@@ -77,19 +79,21 @@ class Builder(object):
             csv_dir = self._get_csv_dir()
             for csv in self._get_csv_list():
                 csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath =  self._get_script_for_csv(csv)
+                script_filepath = self._get_script_for_csv(csv)
 
-                list.append(csv_filepath)
-                list.append(script_filepath)
+                list_.append(csv_filepath)
+                list_.append(script_filepath)
 
                 for lang in self.langs:
-                    files_list = self._read_io_files_list(script_filepath, csv_filepath, lang, True)
-                    list.extend(files_list)
+                    files_list = self._read_io_files_list(
+                        script_filepath, csv_filepath, lang, True
+                    )
+                    list_.extend(files_list)
 
-        return self._deduplicate(list)
+        return self._deduplicate(list_)
 
     def get_output_list(self):
-        list = []
+        list_ = []
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
@@ -97,13 +101,15 @@ class Builder(object):
             csv_dir = self._get_csv_dir()
             for csv in self._get_csv_list():
                 csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath =  self._get_script_for_csv(csv)
+                script_filepath = self._get_script_for_csv(csv)
 
                 for lang in self.langs:
-                    files_list = self._read_io_files_list(script_filepath, csv_filepath, lang, False)
-                    list.extend(files_list)
+                    files_list = self._read_io_files_list(
+                        script_filepath, csv_filepath, lang, False
+                    )
+                    list_.extend(files_list)
 
-        return self._deduplicate(list)
+        return self._deduplicate(list_)
 
     def set_output_dir(self, output_dir):
         self.output_dir = output_dir
@@ -118,26 +124,27 @@ class Builder(object):
         return self.csv_dirs[self.current_oval]
 
     def _get_csv_list(self):
-        dir = self._get_csv_dir()
+        dir_ = self._get_csv_dir()
 
         csvs = []
 
         try:
-            files = os.listdir(dir)
+            files = os.listdir(dir_)
         except OSError:
             return []
 
-        for file in files:
+        for file_ in files:
             # skip non csv files
-            if not file.endswith(".csv"):
+            if not file_.endswith(".csv"):
                 continue
 
             # skip empty files
-            filepath = os.path.join(dir, file)
+            filepath = os.path.join(dir_, file_)
             if os.stat(filepath).st_size == 0:
                 continue
 
-            csvs.append(file)
+            csvs.append(file_)
+
         return csvs
 
     def _get_script_for_csv(self, csv_filename):
@@ -145,32 +152,33 @@ class Builder(object):
             script_name = self.script_dict[csv_filename]
             full_path = os.path.join(self.shared_templates_dir, script_name)
             return full_path
+
         except KeyError:
-            sys.stderr.write("Cannot find associated build script for {0}\n".format(csv_filename))
+            sys.stderr.write(
+                "Cannot find associated build script for {0}\n"
+                .format(csv_filename)
+            )
             sys.exit(1)
 
-
-    def _parent_output_dir(self):
-        return os.path.join(self.output_dir, "output")
-
     def _output_dir_for_lang(self, lang):
-        return os.path.join(self._parent_output_dir(), lang)
+        return os.path.join(self.output_dir, lang)
 
     def _set_environment(func):
         def wrapper(self, *args):
-
             os.environ["TEMPLATE_DIR"] = self._get_template_dir()
             os.environ["BUILD_DIR"] = self.output_dir
+
             try:
                 return func(self, *args)
+
             finally:
-                os.environ["TEMPLATE_DIR"] = ""
-                os.environ["BUILD_DIR"] = ""
+                del os.environ["TEMPLATE_DIR"]
+                del os.environ["BUILD_DIR"]
+
         return wrapper
 
     @_set_environment
     def _run_script(self, script, csv_filepath):
-
         for lang in self.langs:
             sp = subprocess.Popen(
                 ["python", script, lang, csv_filepath],
@@ -179,17 +187,8 @@ class Builder(object):
             )
             self._subprocess_check(sp)
 
-    def _mkdir_recursive(self, path):
-
-        if not os.path.exists(path):
-            self._mkdir_recursive(os.path.realpath(os.path.dirname(path)))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
-
     @_set_environment
     def _read_io_files_list(self, script, csv, lang, gen_input):
-
         try:
             if gen_input:
                 os.environ["GENERATE_INPUT_LIST"] = "true"
@@ -204,33 +203,27 @@ class Builder(object):
             return self._get_list_from_subprocess(sp)
 
         finally:
-            os.environ["GENERATE_INPUT_LIST"] = ""
-            os.environ["GENERATE_OUTPUT_LIST"] = ""
+            del os.environ["GENERATE_INPUT_LIST"]
+            del os.environ["GENERATE_OUTPUT_LIST"]
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
-        if subprocess.returncode == 0:
-            pass
-        elif subprocess.returncode == 2:
-            pass
-        elif subprocess.returncode == 3:
+        if subprocess.returncode in [0, 2, 3]:
             pass
         else:
-            raise RuntimeError("Process returned:" + subprocess.communicate()[1].decode("utf-8"))
+            raise RuntimeError("Process returned: %s"
+                               % (subprocess.communicate()[1].decode("utf-8")))
 
     def _get_list_from_subprocess(self, subprocess):
-
         self._subprocess_check(subprocess)
         text = subprocess.communicate()[0].decode("utf-8")
         return [os.path.abspath(line) for line in text.split("\n") if line]
 
-
     def _deduplicate(self, files):
-        return set(os.path.realpath(file) for file in files)
+        return set(os.path.realpath(file_) for file_ in files)
 
 
 if __name__ == "__main__":
-
     builder = Builder()
     p = argparse.ArgumentParser()
 
@@ -239,31 +232,31 @@ if __name__ == "__main__":
     make_sp = sp.add_parser('build', help="Build remediations")
     make_sp.set_defaults(cmd="build")
 
-    clean_sp = sp.add_parser('clean', help="Clean remediations")
-    clean_sp.set_defaults(cmd="clean")
-
     input_sp = sp.add_parser('input', help="Generate input list")
     input_sp.set_defaults(cmd="input")
 
     output_sp = sp.add_parser('output', help="Generate output list")
     output_sp.set_defaults(cmd="output")
 
-    p.add_argument('--input',        action="store",                      help="input directory")
-    p.add_argument('--output',       action="store", required=True,       help="output directory")
-    p.add_argument('--oval_version', action="store", default="oval_5.10", help="oval version")
+    p.add_argument('--language', metavar="LANG", default=None,
+                   help="Scripts of which language should we generate? "
+                   "Default: all.")
+    p.add_argument('--input', action="store", required=True,
+                   help="input directory")
+    p.add_argument('--output', action="store", required=True,
+                   help="output directory")
+    p.add_argument('--oval_version', action="store", default="oval_5.10",
+                   help="oval version")
 
     args, unknown = p.parse_known_args()
     if unknown:
-        sys.stderr.write("Unknown positional arguments " + ",".join(unknown) + ".\n")
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
         sys.exit(1)
 
-    # require "input" for all targets except "clean"
-    if args.cmd != "clean" and not args.input:
-        p.error("\"{0}\" action requires --input parameter".format(args.cmd))
-        sys.exit(1)
-
-    if args.input == None:
-        args.input = ""
+    if args.language is not None:
+        builder.set_langs([args.language])
 
     builder.set_input_dir(args.input)
     builder.set_output_dir(args.output)

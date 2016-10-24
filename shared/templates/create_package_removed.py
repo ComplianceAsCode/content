@@ -16,21 +16,21 @@ def output_checkfile(target, package_info):
             file_from_template(
                 "./template_package_removed",
                 { "PKGNAME" : pkgname},
-                "./output/oval/package_{0}_removed.xml", pkgname
+                "./oval/package_{0}_removed.xml", pkgname
             )
 
         elif target == "bash":
             file_from_template(
                 "./template_BASH_package_removed",
                 { "PKGNAME" : pkgname },
-                "./output/bash/package_{0}_removed.sh", pkgname
+                "./bash/package_{0}_removed.sh", pkgname
             )
 
         elif target == "ansible":
             file_from_template(
                 "./template_ANSIBLE_package_removed",
                 { "PKGNAME" : pkgname },
-                "./output/ansible/package_{0}_removed.yml", pkgname
+                "./ansible/package_{0}_removed.yml", pkgname
             )
 
         else:
