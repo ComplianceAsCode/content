@@ -7,6 +7,7 @@
 import sys
 from template_common import *
 
+
 def output_checkfile(target, kerninfo):
     # get the items out of the list
     kernmod = kerninfo[0]
@@ -35,11 +36,12 @@ def output_checkfile(target, kerninfo):
             {
                "KERNMODULE": kernmod
             },
-            "./ansible/kernel_module_{0}_disabled.sh", kernmod
+            "./ansible/kernel_module_{0}_disabled.yml", kernmod
         )
 
     else:
         raise UnknownTargetError(target)
+
 
 def help():
     print("Usage:\n\t" + __file__ + " <bash/ansible/oval> <csv file>")
