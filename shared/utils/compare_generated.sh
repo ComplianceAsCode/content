@@ -2,7 +2,7 @@
 if [ "$#" -lt 2 ];
 then
 	echo "Usage:"
-	echo -e "\t$0 <original repo> <updated repo> [meld]"
+	echo -e "\t$0 <original repo> <updated repo> <remediations/oval> [meld]"
 	echo ""
 	echo -e "\tBoth repositories have to be already compiled! (make)"
 	echo -e "\tCompare <fix> elements from original DS with fixes in updated DSs"
@@ -12,7 +12,14 @@ fi
 
 originalRepo="$1/"
 updatedRepo="$2/"
-meld="$3"
+target="$3"
+meld="$4"
+
+# Params check
+[ "$target" != "oval" ] && [ "$target" != "remediations" ] && {
+	echo "Unknown target '$target'" >&1
+	exit 1
+}
 
 [ "$meld" == "meld" ] && {
 	rpm --quiet -q meld || {
@@ -20,9 +27,16 @@ meld="$3"
 	}
 }
 
-# Get list of remediations in pretty & sorted xml
-function extractRemediations() {
-	xsltproc $(dirname "$0")/../transforms/xccdf-get-only-remediations-sorted.xslt "$1"  | tee /tmp/res.xml | \
+# Get list of entities in pretty & sorted xml
+function extractContent() {
+	local filename="$1"
+
+	if [ "$target" == "oval" ];
+	then
+		xsltproc $(dirname "$0")/../transforms/xccdf-get-only-ovals-sorted.xslt "$filename"
+	else
+		xsltproc $(dirname "$0")/../transforms/xccdf-get-only-remediations-sorted.xslt "$filename"
+	fi | \
 		xmllint --c14n11 /dev/stdin | \
 		xmllint -format /dev/stdin | \
 		sed 's;^\s*#.*$;;g' | \
@@ -38,8 +52,8 @@ function compareFile() {
 	echo "$originalFile <=> $toCompare" 
 	echo "-----------------------------------------------------------------"
 
-	extractRemediations "$originalFile" > /tmp/original
-	extractRemediations "$toCompare"    > /tmp/new
+	extractContent "$originalFile" > /tmp/original
+	extractContent "$toCompare"    > /tmp/new
 
 	if [ "$meld" == "meld" ];
 	then
