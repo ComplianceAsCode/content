@@ -25,7 +25,6 @@ def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
         tree = ET.fromstring(filestring)
-        # print filestring
     return tree
 
 
@@ -83,8 +82,8 @@ def main():
     # parse oval file
     ovaltree = parse_xml_file(ovalfile)
 
-# extract inventory definitions
-# making (dubious) assumption that all inventory defs are CPE
+    # extract inventory definitions
+    # making (dubious) assumption that all inventory defs are CPE
     defs = ovaltree.find("./{%s}definitions" % oval_ns)
     inventory_defs = defs.findall(".//{%s}definition[@class='inventory']"
                                   % oval_ns)
