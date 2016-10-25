@@ -13,7 +13,7 @@ ifndef SSG_VERSION
 SSG_VERSION=$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)
 endif
 
-PKG := $(PKGNAME)-$(SSG_VERSION)
+PKG := scap-security-guide-$(SSG_VERSION)
 
 PREFIX=$(DESTDIR)/usr
 DATADIR=share
