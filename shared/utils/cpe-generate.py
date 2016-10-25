@@ -25,7 +25,6 @@ def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
         tree = ET.fromstring(filestring)
-        # print filestring
     return tree
 
 
@@ -83,8 +82,8 @@ def main():
     # parse oval file
     ovaltree = parse_xml_file(ovalfile)
 
-# extract inventory definitions
-# making (dubious) assumption that all inventory defs are CPE
+    # extract inventory definitions
+    # making (dubious) assumption that all inventory defs are CPE
     defs = ovaltree.find("./{%s}definitions" % oval_ns)
     inventory_defs = defs.findall(".//{%s}definition[@class='inventory']"
                                   % oval_ns)
@@ -94,8 +93,8 @@ def main():
     defs.clear()
     [defs.append(inventory_def) for inventory_def in inventory_defs]
     # Fill in that list
-    [inventory_defs_id_attrs.append(inventory_def.get("id")) for \
-    inventory_def in inventory_defs]
+    inventory_defs_id_attrs = \
+        [inventory_def.get("id") for inventory_def in inventory_defs]
 
     tests = ovaltree.find("./{%s}tests" % oval_ns)
     cpe_tests = extract_referred_nodes(defs, tests, "test_ref")
@@ -152,7 +151,7 @@ def main():
             # somewhere in the (sub)directory tree below CWD. In correct
             # scenario is should be located:
             # * either in input/oval/*.xml
-            # * or copied by former run of "combineovals.py" script from
+            # * or copied by former run of "combine-ovals.py" script from
             #   shared/ directory into build/ subdirectory
             refovalfilename = check.text
             refovalfilefound = False

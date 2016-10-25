@@ -34,7 +34,7 @@
 # This is a temporary workaround for bug [1], fixing the issues [3] and [4].
 #
 # Example run:
-#   $ ./datastream_move_ocil_to_ds_checks.py ssg-rhel6-ds.xml new-ds.xml
+#   $ ./sds-move-ocil-to-checks.py ssg-rhel6-ds.xml new-ds.xml
 
 import sys
 import lxml.etree as ET

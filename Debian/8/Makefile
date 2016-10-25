@@ -17,7 +17,7 @@ ifeq ($(OVAL_5_11), 0)
 	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) templates/output/oval templates/static/oval_5.11)
 endif
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
@@ -57,12 +57,12 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	cp $< $(OUT)/unlinked-$(PROD)-xccdf.xml
 #	Remove auxiliary Groups which are only for use in tables, and not guide output.
 	xsltproc -o $(OUT)/unlinked-$(PROD)-xccdf-guide.xml $(TRANS)/xccdf-removeaux.xslt $(OUT)/unlinked-$(PROD)-xccdf.xml
-#	The relabelids.py script chdirs to ./output, so refer to files from there.
+#	The relabel-ids.py script chdirs to ./output, so refer to files from there.
 #	Its second argument controls the IDs, as well as the output filenames.
 #	Thus, with ID set to ssg, this creates ssg-$(PROD)-xccdf.xml and ssg-$(PROD)-oval.xml.
-	$(SHARED)/$(TRANS)/cpe_generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
-	$(SHARED)/$(TRANS)/relabelids.py unlinked-$(PROD)-xccdf.xml $(ID)
-	$(SHARED)/$(TRANS)/relabelids.py xccdf-unlinked-ocilrefs.xml $(ID)
+	$(SHARED)/$(UTILS)/cpe-generate.py $(OUT)/unlinked-$(PROD)-oval.xml $(IN)/oval/platform/$(PROD)-cpe-dictionary.xml $(ID)
+	$(SHARED)/$(UTILS)/relabel-ids.py unlinked-$(PROD)-xccdf.xml $(ID)
+	$(SHARED)/$(UTILS)/relabel-ids.py xccdf-unlinked-ocilrefs.xml $(ID)
 #	Once things are relabelled, create a datastream
 	xsltproc --stringparam reverse_DNS org.$(VENDOR).content /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl \
 		$(OUT)/$(ID)-$(PROD)-xccdf.xml > $(OUT)/$(ID)-$(PROD)-xccdf-1.2.xml
@@ -77,7 +77,7 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 	oscap ds sds-add $(OUT)/$(ID)-$(PROD)-oval.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1100
 	# Fixes https://github.com/OpenSCAP/scap-security-guide/issues/1101
-	$(SHARED)/$(TRANS)/datastream_move_ocil_to_ds_checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
+	$(SHARED)/$(UTILS)/sds-move-ocil-to-checks.py $(OUT)/$(ID)-$(PROD)-ds.xml $(OUT)/$(ID)-$(PROD)-ds.xml
 
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)

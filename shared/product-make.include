@@ -109,16 +109,16 @@ templates/static/ansible:
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
 shared_bash_remediations_deps= $(wildcard $(SHARED_BASH_REMEDIATIONS)/*.sh)
 bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
-$(OUT)/bash-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/bash
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_BASH_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
+$(OUT)/bash-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/bash
+	$(SHARED)/$(UTILS)/combine-remediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_BASH_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
 
 # Common build targets - a catalogue of XCCDF remediations
 product_ansible_remediations_deps=$(wildcard templates/static/ansible/*.sh)
 shared_ansible_remediations_deps= $(wildcard $(SHARED_ANSIBLE_REMEDIATIONS)/*.sh)
 ansible_remediations_deps= $(product_ansible_remediations_deps) $(shared_ansible_remediations_deps)
-$(OUT)/ansible-remediations.xml: $(SHARED)/$(TRANS)/combineremediations.py $(ansible_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/ansible
-	$(SHARED)/$(TRANS)/combineremediations.py $(PROD) ansible $(SHARED_ANSIBLE_REMEDIATIONS) $(PRODUCT_ANSIBLE_REMEDIATIONS) templates/static/ansible $(OUT)/ansible-remediations.xml
+$(OUT)/ansible-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(ansible_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/ansible
+	$(SHARED)/$(UTILS)/combine-remediations.py $(PROD) ansible $(SHARED_ANSIBLE_REMEDIATIONS) $(PRODUCT_ANSIBLE_REMEDIATIONS) templates/static/ansible $(OUT)/ansible-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
 # Prefer "$(OUT)/xccdf-unlinked-ocilrefs.xml" document below since it contains OCIL expanded to official OCIL-2.0 syntax
@@ -141,7 +141,7 @@ ifeq ($(OVAL_5_11), 0)
 	$(eval STANDARD_OVAL_DIRS+=$(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11)
 endif
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(STANDARD_OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(STANDARD_OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 validate-bash:
