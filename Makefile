@@ -13,7 +13,7 @@ ifndef SSG_VERSION
 SSG_VERSION=$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)
 endif
 
-PKG := $(PKGNAME)-$(SSG_VERSION)
+PKG := scap-security-guide-$(SSG_VERSION)
 
 PREFIX=$(DESTDIR)/usr
 DATADIR=share
@@ -165,8 +165,8 @@ validate-suse12: suse12
 validate: validate-fedora validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-wrlinux validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
 
 tarball:
-	# Copy in the source trees for both RHEL
-	# and JBossEAP5 content
+	@# Copy in the source trees for both RHEL
+	@# and JBossEAP5 content
 	mkdir -p tarball/$(PKG)
 	cp BUILD.md Contributors.md LICENSE VERSION README.md  tarball/$(PKG)/
 	cp -r config/ tarball/$(PKG)
@@ -184,8 +184,8 @@ tarball:
 	cp -r --preserve=links --parents Chromium tarball/$(PKG)
 	cp -r JBossEAP5 tarball/$(PKG)
 
-	# Don't trust the developers, clean out the build
-	# environment before packaging
+	@# Don't trust the developers, clean out the build
+	@# environment before packaging
 	(cd tarball/$(PKG)/RHEL/5/ && $(MAKE) clean)
 	(cd tarball/$(PKG)/RHEL/6/ && $(MAKE) clean)
 	(cd tarball/$(PKG)/RHEL/7/ && $(MAKE) clean)
@@ -201,20 +201,20 @@ tarball:
 	@echo "Tarball is ready at tarball/$(PKG).tar.gz"
 
 zipfile: dist
-	# ZIP only contains source datastreams and kickstarts, people who
-	# want sources to build from should get the tarball instead.
-	rm -rf $(PKG)
-	mkdir $(PKG)
-	cp README.md $(PKG)/
-	cp Contributors.md $(PKG)/
-	cp LICENSE $(PKG)/
-	cp */dist/content/*-ds.xml $(PKG)/
-	cp */*/dist/content/*-ds.xml $(PKG)/
-	cp */*/*/dist/content/*-ds.xml $(PKG)/
-	mkdir $(PKG)/kickstart
-	cp RHEL/{6,7}/kickstart/*-ks.cfg $(PKG)/kickstart/
-	zip -r $(PKG).zip $(PKG)/
-	rm -r $(PKG)/
+	@# ZIP only contains source datastreams and kickstarts, people who
+	@# want sources to build from should get the tarball instead.
+	rm -rf zipfile/$(PKG)
+	mkdir -p zipfile/$(PKG)
+	cp README.md zipfile/$(PKG)/
+	cp Contributors.md zipfile/$(PKG)/
+	cp LICENSE zipfile/$(PKG)/
+	cp */dist/content/*-ds.xml zipfile/$(PKG)/
+	cp */*/dist/content/*-ds.xml zipfile/$(PKG)/
+	cp */*/*/dist/content/*-ds.xml zipfile/$(PKG)/
+	mkdir zipfile/$(PKG)/kickstart
+	cp RHEL/{6,7}/kickstart/*-ks.cfg zipfile/$(PKG)/kickstart/
+	(cd zipfile && zip -r $(PKG).zip $(PKG)/)
+	@echo "ZIP file is ready at zipfile/$(PKG).zip"
 
 clean:
 	rm -rf tarball/
