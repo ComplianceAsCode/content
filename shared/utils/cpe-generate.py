@@ -93,8 +93,8 @@ def main():
     defs.clear()
     [defs.append(inventory_def) for inventory_def in inventory_defs]
     # Fill in that list
-    [inventory_defs_id_attrs.append(inventory_def.get("id")) for \
-    inventory_def in inventory_defs]
+    inventory_defs_id_attrs = \
+        [inventory_def.get("id") for inventory_def in inventory_defs]
 
     tests = ovaltree.find("./{%s}tests" % oval_ns)
     cpe_tests = extract_referred_nodes(defs, tests, "test_ref")
