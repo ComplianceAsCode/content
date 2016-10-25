@@ -20,7 +20,7 @@ ifeq ($(OVAL_5_11), 0)
 endif
 
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 # example, if needed: for converting XCCDF into shorthand

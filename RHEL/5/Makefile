@@ -11,7 +11,7 @@ all: tables guide content dist
 
 checks:
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 # example, if needed: for converting XCCDF into shorthand

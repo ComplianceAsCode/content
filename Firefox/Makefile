@@ -8,7 +8,7 @@ VENDOR = ssgproject
 
 checks:
 	xmlwf $(IN)/oval/*.xml
-	$(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 # example, if needed: for converting XCCDF into shorthand

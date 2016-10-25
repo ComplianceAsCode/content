@@ -17,7 +17,7 @@ ifeq ($(OVAL_5_11), 0)
 	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) templates/output/oval templates/static/oval_5.11)
 endif
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(MOD_ENV) $(SHARED)/$(TRANS)/combineovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
+	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
