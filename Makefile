@@ -203,18 +203,18 @@ tarball:
 zipfile: dist
 	# ZIP only contains source datastreams and kickstarts, people who
 	# want sources to build from should get the tarball instead.
-	rm -rf $(PKG)
-	mkdir $(PKG)
-	cp README.md $(PKG)/
-	cp Contributors.md $(PKG)/
-	cp LICENSE $(PKG)/
-	cp */dist/content/*-ds.xml $(PKG)/
-	cp */*/dist/content/*-ds.xml $(PKG)/
-	cp */*/*/dist/content/*-ds.xml $(PKG)/
-	mkdir $(PKG)/kickstart
-	cp RHEL/{6,7}/kickstart/*-ks.cfg $(PKG)/kickstart/
-	zip -r $(PKG).zip $(PKG)/
-	rm -r $(PKG)/
+	rm -rf zipfile/$(PKG)
+	mkdir -p zipfile/$(PKG)
+	cp README.md zipfile/$(PKG)/
+	cp Contributors.md zipfile/$(PKG)/
+	cp LICENSE zipfile/$(PKG)/
+	cp */dist/content/*-ds.xml zipfile/$(PKG)/
+	cp */*/dist/content/*-ds.xml zipfile/$(PKG)/
+	cp */*/*/dist/content/*-ds.xml zipfile/$(PKG)/
+	mkdir zipfile/$(PKG)/kickstart
+	cp RHEL/{6,7}/kickstart/*-ks.cfg zipfile/$(PKG)/kickstart/
+	(cd zipfile && zip -r $(PKG).zip $(PKG)/)
+	@echo "ZIP file is ready at zipfile/$(PKG).zip"
 
 clean:
 	rm -rf tarball/
