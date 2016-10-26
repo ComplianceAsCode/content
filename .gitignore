@@ -9,10 +9,6 @@
 **/dist
 !**/dist/README
 
-# Ignore .sh files in the following directories:
-#     */templates/output
-**/templates/output/*.sh
-
 # Ignore .ini files in the following directories
 #     */input/oval
 #     */transforms
@@ -22,9 +18,7 @@
 **/output/*.ini
 
 # Ignore .xml files in the following directories:
-#     */templates/output
 #     */output
-**/templates/output/*
 **/output/*.xml
 
 # Ignore .html files in the following directories:
@@ -63,6 +57,9 @@
 # Ignore the following directories in */output
 **/output/scap-security-guide-*/
 **/output/RPMS/
+**/output/ansible
+**/output/bash
+**/output/oval
 
 # Ignore docs tmp directories
 docs/Developer_Guide/tmp

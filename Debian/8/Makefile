@@ -4,19 +4,20 @@ SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = debian8
-OVAL_DIRS = $(SHARED_OVAL) templates/output/oval templates/static/oval
+OVAL_DIRS = $(SHARED_OVAL) $(OUT)/oval templates/static/oval
 VENDOR = ssgproject
 
-checks: templates/output
+checks:
 	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
 	# add local Debian8 specific templated ovals
 	# into final list of OVAL checks
 ifeq ($(OVAL_5_11), 0)
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
-	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) templates/output/oval templates/static/oval_5.11)
+	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11) $(OUT)/oval templates/static/oval_5.11)
 endif
 	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language oval build
 	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 
@@ -125,5 +126,5 @@ dist: guide content
 clean:
 	rm -f $(OUT)/*.xml $(OUT)/*.html $(OUT)/*.xhtml $(OUT)/*.pdf  $(OUT)/*.spec $(OUT)/*.tar $(OUT)/*.gz $(OUT)/*.ini $(OUT)/*.csv
 	rm -rf $(DIST)/content $(DIST)/guide
-	rm -rf ./templates/output
+	rm -rf $(OUT)/bash $(OUT)/ansible $(OUT)/oval
 	rm -rf $(BUILD)
