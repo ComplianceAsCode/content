@@ -15,15 +15,13 @@ include $(SHARED)/../VERSION
 IN = input
 OUT = output
 BUILD = build
-BUILD_REMEDIATIONS=$(BUILD)/remediations
 TRANS = transforms
 SHARED_OVAL = $(SHARED)/oval
 SHARED_OVAL_5_11 = $(SHARED_OVAL)/oval_5.11
 SHARED_BASH_REMEDIATIONS =    $(BUILD)/shared/output/bash       $(SHARED)/templates/static/bash # Currently we cannot build shared remediations only once
 SHARED_ANSIBLE_REMEDIATIONS = $(BUILD)/shared/output/ansible    $(SHARED)/templates/static/ansible # Currently we cannot build shared remediations only once
-PRODUCT_REMEDIATIONS_OUTPUT = templates/output
-PRODUCT_BASH_REMEDIATIONS = $(PRODUCT_REMEDIATIONS_OUTPUT)/bash
-PRODUCT_ANSIBLE_REMEDIATIONS = $(PRODUCT_REMEDIATIONS_OUTPUT)/ansible
+PRODUCT_BASH_REMEDIATIONS = $(OUT)/bash
+PRODUCT_ANSIBLE_REMEDIATIONS = $(OUT)/ansible
 STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
@@ -93,8 +91,11 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
-$(PRODUCT_REMEDIATIONS_OUTPUT):
-	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output ./templates/output build
+$(PRODUCT_ANSIBLE_REMEDIATIONS):
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language ansible build
+
+$(PRODUCT_BASH_REMEDIATIONS):
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language bash build
 
 $(BUILD)/shared/output:
 	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input $(SHARED)/templates --output $(BUILD)/shared/output build
@@ -109,7 +110,7 @@ templates/static/ansible:
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
 shared_bash_remediations_deps= $(wildcard $(SHARED_BASH_REMEDIATIONS)/*.sh)
 bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediations_deps)
-$(OUT)/bash-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(bash_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/bash
+$(OUT)/bash-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(bash_remediations_deps) $(PRODUCT_BASH_REMEDIATIONS) $(BUILD)/shared/output templates/static/bash
 	$(SHARED)/$(UTILS)/combine-remediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_BASH_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
 
@@ -117,7 +118,7 @@ $(OUT)/bash-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(bash_
 product_ansible_remediations_deps=$(wildcard templates/static/ansible/*.sh)
 shared_ansible_remediations_deps= $(wildcard $(SHARED_ANSIBLE_REMEDIATIONS)/*.sh)
 ansible_remediations_deps= $(product_ansible_remediations_deps) $(shared_ansible_remediations_deps)
-$(OUT)/ansible-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(ansible_remediations_deps) $(PRODUCT_REMEDIATIONS_OUTPUT) $(BUILD)/shared/output templates/static/ansible
+$(OUT)/ansible-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(ansible_remediations_deps) $(PRODUCT_ANSIBLE_REMEDIATIONS) $(BUILD)/shared/output templates/static/ansible
 	$(SHARED)/$(UTILS)/combine-remediations.py $(PROD) ansible $(SHARED_ANSIBLE_REMEDIATIONS) $(PRODUCT_ANSIBLE_REMEDIATIONS) templates/static/ansible $(OUT)/ansible-remediations.xml
 
 # Common build targets - an XCCDF with remediations but not linked to OVAL yet
