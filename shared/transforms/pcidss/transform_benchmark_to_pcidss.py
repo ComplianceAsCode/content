@@ -179,7 +179,13 @@ def main():
     # filter out all profiles except PCI-DSS
     for profile in \
             benchmark.findall("./{%s}Profile" % (XCCDF_NAMESPACE)):
-        if not profile.get("id").endswith("pci-dss"):
+        if profile.get("id").endswith("pci-dss"):
+            # change the profile ID to avoid validation issues
+            profile.set(
+                "id",
+                profile.get("id").replace("pci-dss", "pci-dss_centric")
+            )
+        else:
             root_element.remove(profile)
             continue
 
