@@ -233,33 +233,36 @@ clean:
 	cd Chromium && $(MAKE) clean
 
 install: dist
-	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -d $(PREFIX)/$(DATADIR)/scap/ssg
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -d $(PREFIX)/$(MANDIR)/en/man8/
 	install -d $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 Fedora/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 Fedora/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 Fedora/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 RHEL/6/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 RHEL/6/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 RHEL/6/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -m 0644 RHEL/7/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -m 0644 RHEL/6/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 OpenStack/RHEL-OSP/7/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 OpenStack/RHEL-OSP/7/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 OpenStack/RHEL-OSP/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 Chromium/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 Chromium/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 Chromium/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 Firefox/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 Firefox/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 Firefox/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 JRE/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 JRE/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 JRE/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 Debian/8/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 Debian/8/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 Debian/8/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	install -m 0644 WRLinux/dist/content/* $(PREFIX)/$(DATADIR)/xml/scap/ssg/content/
+	install -m 0644 WRLinux/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 WRLinux/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 docs/scap-security-guide.8 $(PREFIX)/$(MANDIR)/en/man8/
 	install -m 0644 LICENSE $(PREFIX)/$(DOCDIR)/scap-security-guide
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
+	@# install a symlink in the old content location for compatibility
+	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg
+	ln -s $(PREFIX)/$(DATADIR)/scap/ssg $(PREFIX)/$(DATADIR)/xml/scap/ssg/content
 
 .PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball zipfile clean all
