@@ -172,8 +172,8 @@ class Builder(object):
                 return func(self, *args)
 
             finally:
-                del os.environ["TEMPLATE_DIR"]
-                del os.environ["BUILD_DIR"]
+                os.environ.pop("TEMPLATE_DIR", None)
+                os.environ.pop("BUILD_DIR", None)
 
         return wrapper
 
@@ -203,10 +203,8 @@ class Builder(object):
             return self._get_list_from_subprocess(sp)
 
         finally:
-            if gen_input:
-                del os.environ["GENERATE_INPUT_LIST"]
-            else:
-                del os.environ["GENERATE_OUTPUT_LIST"]
+            os.environ.pop("GENERATE_INPUT_LIST", None)
+            os.environ.pop("GENERATE_OUTPUT_LIST", None)
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
