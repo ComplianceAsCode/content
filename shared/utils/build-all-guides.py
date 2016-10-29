@@ -367,7 +367,7 @@ def main():
     index_source += "\t\t\t\tvar benchmark_id=option_element.getAttribute('data-benchmark-id');\n"
     index_source += "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n"
     index_source += "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n"
-    index_source += "\t\t\t\tvar input_path='/usr/share/xml/scap/ssg/content/%s';\n" % (input_basename)
+    index_source += "\t\t\t\tvar input_path='/usr/share/scap/ssg/%s';\n" % (input_basename)
     index_source += "\t\t\t\tif (profile_id == '')\n"
     index_source += "\t\t\t\t{\n"
     index_source += "\t\t\t\t\tif (benchmark_id == '')\n"

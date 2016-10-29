@@ -123,15 +123,15 @@ stig-rhel6-server-upstream profile:
 oscap  xccdf eval --profile stig-rhel6-server-upstream \
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
---cpe /usr/share/xml/scap/ssg/content/ssg-rhel6-cpe-dictionary.xml \
-/usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
+--cpe /usr/share/scap/ssg/ssg-rhel6-cpe-dictionary.xml \
+/usr/share/scap/ssg/ssg-rhel6-xccdf.xml
 .PP
 Additional details can be found on the projects wiki page:
 https://www.github.com/OpenSCAP/scap-security-guide/wiki
 
 
 .SH FILES
-.I /usr/share/xml/scap/ssg/content/
+.I /usr/share/scap/ssg/
 .RS
 Houses SCAP content utilizing the following naming conventions:
 
@@ -148,15 +148,9 @@ ssg-{profile}-oval.xml
 ssg-{profile}-xccdf.xml
 .RE
 
-.I /usr/share/xml/scap/ssg/guides/
+.I /usr/share/doc/scap-security-guide/guides/
 .RS
 HTML versions of SSG profiles.
-.RE
-
-.I /usr/share/xml/scap/ssg/policytables/
-.RS
-HTML tables reflecting which institutionalized policy a particular SSG rule
-conforms to.
 .RE
 
 .SH STATEMENT OF SUPPORT
