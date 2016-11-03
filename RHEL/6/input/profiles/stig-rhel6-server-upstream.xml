@@ -119,4 +119,8 @@ upstream project homepage is https://www.open-scap.org/security-policies/scap-se
 <refine-value idref="var_password_pam_lcredit" selector="1"/>
 <refine-value idref="sshd_idle_timeout_value" selector="15_minutes"/>
 
+<!-- dropped from DISA content in V1R13 -->
+<select idref="ldap_client_start_tls" selected="false" />
+<select idref="ldap_client_tls_cacertpath" selected="false" />
+
 </Profile>
