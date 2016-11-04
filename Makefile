@@ -1,6 +1,17 @@
 include VERSION
 
+# Define RHEL6 / JBossEAP5 specific variables below
+ROOT_DIR ?= $(CURDIR)
+RPMBUILD ?= $(ROOT_DIR)/rpmbuild
+RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
+PKGNAME := $(SSG_PROJECT_NAME)
+OS_DIST := $(shell rpm --eval '%{dist}')
+
+ARCH := noarch
+RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)'  --define '_tmppath $(RPMBUILD)'
+
 DATESTR:=$(shell date -u +'%Y%m%d%H%M')
+RPM_DATESTR := $(shell date -u +'%a %b %d %Y')
 
 ifeq ($(SSG_VERSION_IS_GIT_SNAPSHOT),"yes")
 GIT_VERSION:=$(shell git show --pretty=format:"%h" --stat HEAD 2>/dev/null|head -1)
@@ -13,13 +24,17 @@ ifndef SSG_VERSION
 SSG_VERSION=$(SSG_MAJOR_VERSION).$(SSG_MINOR_VERSION)
 endif
 
-PKG := scap-security-guide-$(SSG_VERSION)
+PKG := $(PKGNAME)-$(SSG_VERSION)
+TARBALL = $(RPMBUILD)/SOURCES/$(PKG).tar.gz
 
 PREFIX=$(DESTDIR)/usr
 DATADIR=share
 MANDIR=$(DATADIR)/man
 DOCDIR=$(DATADIR)/doc
 
+# Define custom canned sequences / macros below
+
+# Define Makefile targets below
 
 all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 wrlinux
 dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist wrlinux-dist
@@ -200,6 +215,15 @@ tarball:
 	cd tarball && tar -czf $(PKG).tar.gz $(PKG)
 	@echo "Tarball is ready at tarball/$(PKG).tar.gz"
 
+rpmroot:
+	mkdir -p $(RPMBUILD)/BUILD
+	mkdir -p $(RPMBUILD)/RPMS
+	mkdir -p $(RPMBUILD)/SOURCES
+	mkdir -p $(RPMBUILD)/SPECS
+	mkdir -p $(RPMBUILD)/SRPMS
+	mkdir -p $(RPMBUILD)/ZIPS
+	mkdir -p $(RPMBUILD)/BUILDROOT
+
 zipfile: dist
 	@# ZIP only contains source datastreams and kickstarts, people who
 	@# want sources to build from should get the tarball instead.
@@ -216,8 +240,53 @@ zipfile: dist
 	(cd zipfile && zip -r $(PKG).zip $(PKG)/)
 	@echo "ZIP file is ready at zipfile/$(PKG).zip"
 
+version-update:
+	@echo -e "\nUpdating $(RPM_SPEC) version, release, and changelog..."
+	sed -e s/__NAME__/$(PKGNAME)/ \
+		$(RPM_SPEC).in > $(RPM_SPEC)
+	sed -i s/__VERSION__/$(SSG_VERSION)/ \
+		$(RPM_SPEC)
+	sed -i s/__RELEASE__/$(SSG_RELEASE_VERSION)/ \
+		$(RPM_SPEC)
+	sed -i 's/__DATE__/$(SSG_RELEASE_DATE)/' \
+		$(RPM_SPEC)
+	sed -i 's/__REL_MANAGER__/$(SSG_REL_MANAGER)/' \
+		$(RPM_SPEC)
+	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
+		$(RPM_SPEC)
+
+srpm: tarball version-update rpmroot
+	cat $(RPM_SPEC) > $(RPMBUILD)/SPECS/$(notdir $(RPM_SPEC))
+	cp tarball/$(PKG).tar.gz $(RPMBUILD)/SOURCES/
+	@echo -e "\nBuilding $(PKGNAME) SRPM..."
+	cd $(RPMBUILD) && rpmbuild $(RPMBUILD_ARGS) --target=$(ARCH) -bs SPECS/$(notdir $(RPM_SPEC)) --nodeps
+
+rpm: srpm
+	@echo -e "\nBuilding $(PKGNAME) RPM..."
+	cd $(RPMBUILD)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPMBUILD)/BUILDROOT -bb $(PKG)-$(SSG_RELEASE_VERSION)$(OS_DIST).src.rpm
+
+git-tag:
+	@echo -e "\nUpdating $(RPM_SPEC) changelog to reflect new release"
+	sed -i '/\%changelog/{n;s/__DATE__/$(RPM_DATESTR)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__REL_MANAGER__/$(SSG_REL_MANAGER)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__VERSION__/$(SSG_VERSION)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/{n;s/__RELEASE__/$(SSG_RELEASE_VERSION)/}' $(RPM_SPEC).in
+	sed -i '/new/{s/__VERSION__/$(SSG_VERSION)/}' $(RPM_SPEC).in
+	sed -i '/\%changelog/a\* __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__\n- Make new __VERSION__ release\n' $(RPM_SPEC).in
+	@echo -e "\nTagging $(PKGNAME) to new release $(NEW_RELEASE)"
+	$(eval NEW_RELEASE:=$(shell git describe $(git rev-list --tags --max-count=1) | awk -F . '{printf "%s.%i.%i", $$1, $$2, $$3 + 1}' | sed 's/^.//'))
+	$(eval NEW_MINOR_RELEASE:=$(shell echo $(NEW_RELEASE) | awk -F . '{printf "%i", $$3}'))
+	@echo -e "\nUpdating VERSION to new minor release $(NEW_RELEASE)"
+	sed -i 's/SSG_MINOR_VERSION.*/SSG_MINOR_VERSION = $(NEW_MINOR_RELEASE)/' $(ROOT_DIR)/VERSION
+	sed -i 's/SSG_RELEASE_DATE.*/SSG_RELEASE_DATE = $(RPM_DATESTR)/' $(ROOT_DIR)/VERSION
+	@echo -e "\nTagging to new release $(NEW_RELEASE)"
+	git add $(RPM_SPEC).in $(ROOT_DIR)/VERSION
+	git commit -m "Make new $(NEW_RELEASE) release"
+	git tag -a -m "Version $(NEW_RELEASE)" v$(NEW_RELEASE)
+
 clean:
-	rm -rf tarball/
+	rm -rf $(RPMBUILD)
 	rm -rf shared/output
 	cd RHEL/5 && $(MAKE) clean
 	cd RHEL/6 && $(MAKE) clean
@@ -231,6 +300,7 @@ clean:
 	cd Firefox && $(MAKE) clean
 	cd Webmin && $(MAKE) clean
 	cd Chromium && $(MAKE) clean
+	rm -f scap-security-guide.spec
 
 install: dist
 	install -d $(PREFIX)/$(DATADIR)/scap/ssg
@@ -265,4 +335,5 @@ install: dist
 	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg
 	ln -sf $(PREFIX)/$(DATADIR)/scap/ssg $(PREFIX)/$(DATADIR)/xml/scap/ssg/content
 
-.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball zipfile clean all
+.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball srpm rpm clean all
+	rm -f scap-security-guide.spec
