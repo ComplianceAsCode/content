@@ -183,21 +183,26 @@ tarball:
 	@# Copy in the source trees for both RHEL
 	@# and JBossEAP5 content
 	mkdir -p tarball/$(PKG)
-	cp BUILD.md Contributors.md LICENSE VERSION README.md  tarball/$(PKG)/
+	cp Makefile tarball/$(PKG)/
+	cp BUILD.md Contributors.md LICENSE VERSION README.md tarball/$(PKG)/
 	cp -r config/ tarball/$(PKG)
 	cp -r docs/ tarball/$(PKG)
 	cp -r shared/ tarball/$(PKG)
-	cp -r --preserve=links --parents RHEL/5/ tarball/$(PKG)
-	cp -r --preserve=links --parents RHEL/6/ tarball/$(PKG)
-	cp -r --preserve=links --parents RHEL/7/ tarball/$(PKG)
-	cp -r --preserve=links --parents Debian/8/ tarball/$(PKG)
-	cp -r --preserve=links --parents WRLinux/ tarball/$(PKG)
+	cp -r --preserve=links --parents Chromium/ tarball/$(PKG)
+	cp -r --preserve=links --parents Debian/ tarball/$(PKG)
 	cp -r --preserve=links --parents Fedora/ tarball/$(PKG)
-	cp -r --preserve=links --parents JRE/ tarball/$(PKG)
 	cp -r --preserve=links --parents Firefox/ tarball/$(PKG)
+	cp -r --preserve=links --parents JBoss/ tarball/$(PKG)
+	cp -r --preserve=links --parents JBossEAP5/ tarball/$(PKG)
+	cp -r --preserve=links --parents JBossFuse6/ tarball/$(PKG)
+	cp -r --preserve=links --parents JRE/ tarball/$(PKG)
+	cp -r --preserve=links --parents OpenStack/ tarball/$(PKG)
+	cp -r --preserve=links --parents OpenSUSE/ tarball/$(PKG)
+	cp -r --preserve=links --parents RHEL/ tarball/$(PKG)
+	cp -r --preserve=links --parents RHEVM3/ tarball/$(PKG)
+	cp -r --preserve=links --parents SUSE/ tarball/$(PKG)
 	cp -r --preserve=links --parents Webmin/ tarball/$(PKG)
-	cp -r --preserve=links --parents Chromium tarball/$(PKG)
-	cp -r JBossEAP5 tarball/$(PKG)
+	cp -r --preserve=links --parents WRLinux/ tarball/$(PKG)
 
 	@# Don't trust the developers, clean out the build
 	@# environment before packaging
@@ -308,14 +313,17 @@ install: dist
 	install -d $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -d $(PREFIX)/$(MANDIR)/en/man8/
 	install -d $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -d $(PREFIX)/$(DOCDIR)/scap-security-guide/tables
 	install -m 0644 Fedora/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 Fedora/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 RHEL/6/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 RHEL/6/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
-	install -m 0644 RHEL/7/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -m 0644 RHEL/6/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 RHEL/6/dist/tables/* $(PREFIX)/$(DOCDIR)/scap-security-guide/tables
+	install -m 0644 RHEL/7/kickstart/*-ks.cfg $(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	install -m 0644 RHEL/7/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 RHEL/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 RHEL/7/dist/tables/* $(PREFIX)/$(DOCDIR)/scap-security-guide/tables
 	install -m 0644 OpenStack/RHEL-OSP/7/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 OpenStack/RHEL-OSP/7/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 Chromium/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
@@ -333,7 +341,7 @@ install: dist
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
 	@# install a symlink in the old content location for compatibility
 	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg
-	ln -sf $(PREFIX)/$(DATADIR)/scap/ssg $(PREFIX)/$(DATADIR)/xml/scap/ssg/content
+	ln -sf ../../../scap/ssg $(PREFIX)/$(DATADIR)/xml/scap/ssg/content
 
 .PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
