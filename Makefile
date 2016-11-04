@@ -263,6 +263,6 @@ install: dist
 	install -m 0644 README.md $(PREFIX)/$(DOCDIR)/scap-security-guide
 	@# install a symlink in the old content location for compatibility
 	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg
-	ln -s $(PREFIX)/$(DATADIR)/scap/ssg $(PREFIX)/$(DATADIR)/xml/scap/ssg/content
+	ln -sf $(PREFIX)/$(DATADIR)/scap/ssg $(PREFIX)/$(DATADIR)/xml/scap/ssg/content
 
 .PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball zipfile clean all
