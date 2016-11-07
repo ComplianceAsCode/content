@@ -292,6 +292,8 @@ git-tag:
 
 clean:
 	rm -rf $(RPMBUILD)
+	rm -rf tarball/
+	rm -rf zipfile/
 	rm -rf shared/output
 	cd RHEL/5 && $(MAKE) clean
 	cd RHEL/6 && $(MAKE) clean
