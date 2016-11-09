@@ -125,13 +125,13 @@ macro(ssg_build_oval_unlinked PRODUCT)
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             # TODO: config
-            COMMAND RUNTIME_OVAL_VERSION=5.11 ${SSG_SHARED_TRANSFORMS}/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS_DIR} ${OVAL_511_DEPS_DIR} ${SHARED_OVAL_DEPS_DIR} ${SHARED_OVAL_511_DEPS_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+            COMMAND RUNTIME_OVAL_VERSION=5.11 ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS_DIR} ${OVAL_511_DEPS_DIR} ${SHARED_OVAL_DEPS_DIR} ${SHARED_OVAL_511_DEPS_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${OVAL_511_DEPS}
             DEPENDS ${SHARED_OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_511_DEPS}
-            DEPENDS ${SSG_SHARED_TRANSFORMS}/combineovals.py
+            DEPENDS ${SSG_SHARED_UTILS}/combine-ovals.py
             VERBATIM
             COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks enabled)"
         )
@@ -139,11 +139,11 @@ macro(ssg_build_oval_unlinked PRODUCT)
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             # TODO: config
-            COMMAND ${SSG_SHARED_TRANSFORMS}/combineovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS_DIR} ${SHARED_OVAL_DEPS_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+            COMMAND ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS_DIR} ${SHARED_OVAL_DEPS_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_DEPS}
-            DEPENDS ${SSG_SHARED_TRANSFORMS}/combineovals.py
+            DEPENDS ${SSG_SHARED_UTILS}/combine-ovals.py
             VERBATIM
             COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
         )
