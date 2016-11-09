@@ -153,11 +153,11 @@ endmacro()
 macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml ${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml
-        COMMAND ${SSG_SHARED_TRANSFORMS}/relabelids.py ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ssg
+        COMMAND ${SSG_SHARED_UTILS}/relabel-ids.py ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ssg
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
-        DEPENDS ${SSG_SHARED_TRANSFORMS}/relabelids.py
+        DEPENDS ${SSG_SHARED_UTILS}/relabel-ids.py
         COMMENT "[${PRODUCT}] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
     )
 endmacro()
