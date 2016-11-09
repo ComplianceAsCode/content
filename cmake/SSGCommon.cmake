@@ -78,9 +78,9 @@ macro(ssg_build_remediations PRODUCT)
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} bash ${SSG_SHARED}/templates/output/bash ${CMAKE_CURRENT_SOURCE_DIR}/templates/output/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} bash ${SSG_SHARED}/templates/output/bash ${CMAKE_CURRENT_SOURCE_DIR}/templates/output/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
-        DEPENDS ${SSG_SHARED_TRANSFORMS}/combineremediations.py
+        DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating bash-remediations.xml"
     )
 
@@ -90,9 +90,9 @@ macro(ssg_build_remediations PRODUCT)
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_TRANSFORMS}/combineremediations.py ${PRODUCT} ansible ${SSG_SHARED}/templates/output/ansible ${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} ansible ${SSG_SHARED}/templates/output/ansible ${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
         DEPENDS ${ANSIBLE_REMEDIATION_DEPS} ${SHARED_ANSIBLE_REMEDIATION_DEPS}
-        DEPENDS ${SSG_SHARED_TRANSFORMS}/combineremediations.py
+        DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
     )
 endmacro()
