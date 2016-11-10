@@ -6,7 +6,7 @@
         <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
       <description>File permissions for the SSH Server's private keys should be
-set to 0600 (or stronger). By default, these files are located at /etc/ssh.</description>
+set to 0640 (or stronger). By default, these files are located at /etc/ssh.</description>
     </metadata>
     <criteria>
       <criterion test_ref="test_file_permissions_sshd_private_key" />
@@ -25,7 +25,6 @@ set to 0600 (or stronger). By default, these files are located at /etc/ssh.</des
 
   <unix:file_state id="state_file_permissions_sshd_private_key" version="1">
     <unix:uexec datatype="boolean">false</unix:uexec>
-    <unix:gread datatype="boolean">false</unix:gread>
     <unix:gwrite datatype="boolean">false</unix:gwrite>
     <unix:gexec datatype="boolean">false</unix:gexec>
     <unix:oread datatype="boolean">false</unix:oread>
