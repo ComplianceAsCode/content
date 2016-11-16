@@ -1,0 +1,10 @@
+# This file contains list of packages in the format of "daemon,pkgname" to
+# create "package_pkgname_installed" OVAL 5.10 checks for.
+#
+# If the corresponding "package_pkgname_installed" OVAL is not standalone
+# OVAL-5.10, but only a prerequisite in order to the corresponding
+# "service_daemon_enabled" OVAL-5.11 to work properly, such a package
+# SHOULD NOT be listed here, but rather in the 'packages_installed.csv'
+# file under oval_5.11/templates directory!!!
+#
+ntp,

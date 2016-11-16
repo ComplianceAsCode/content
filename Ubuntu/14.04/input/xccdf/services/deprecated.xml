@@ -1,0 +1,84 @@
+<Group id="deprecated">
+<title>Deprecated services</title>
+<description>
+Some deprecated software services impact the overall system security due to their behavior (leak of
+confidentiality in network exchange, usage as uncontrolled communication channel, risk associated with the service due to its old age, etc.
+</description>
+
+<Rule id="package_telnetd_removed" severity="high">
+<title>Uninstall the telnet server</title>
+<description>
+The telnet daemon should be uninstalled.
+</description>
+<rationale>
+telnet allows clear text communications, and does not protect any data transmission between client and server. Any confidential data can be listened and no integrity checking is made. 
+</rationale>
+<ident cce="" />
+<oval id="package_telnetd_removed" />
+<ref nist="AC-17(8),CM-7" disa="" anssi="NT007(R03)" />
+</Rule>
+
+<Rule id="package_inetutils-telnetd_removed" severity="high">
+<title>Uninstall the inet-based telnet server</title>
+<description>
+The inet-based telnet daemon should be uninstalled.
+</description>
+<rationale>
+telnet allows clear text communications, and does not protect any data transmission between client and server. Any confidential data can be listened and no integrity checking is made. 
+</rationale>
+<ident cce="" />
+<oval id="package_inetutils-telnetd_removed" />
+<ref nist="AC-17(8),CM-7" disa="" anssi="NT007(R03)"/>
+</Rule>
+
+<Rule id="package_telnetd-ssl_removed" severity="high">
+<title>Uninstall the ssl compliant telnet server</title>
+<description>
+The telnet daemon, even with ssl support, should be uninstalled.
+</description>
+<rationale>
+telnet, even with ssl support, should not be installed. When remote shell is required, up-to-date ssh daemon can be used.
+</rationale>
+<ident cce="" />
+<oval id="package_telnetd-ssl_removed" />
+<ref nist="AC-17(8),CM-7" anssi="NT007(R02)"/>
+</Rule>
+
+
+<Rule id="package_nis_removed" severity="low">
+<title>Uninstall the nis package</title>
+<description>
+The support for Yellowpages should not be installed unless it is required.
+</description>
+<rationale>
+NIS is the historical SUN service for central account management, more and more replaced by LDAP.
+NIS does not support efficiently security constraints, ACL, etc. and should not be used.
+</rationale>
+<ident cce="" />
+<oval id="package_nis_removed" />
+<!-- <ref nist="AC-17(8),CM-7" disa=""/> -->
+</Rule>
+
+<Rule id="package_ntpdate_removed" severity="low">
+<title>Uninstall the ntpdate package</title>
+<description>
+ntpdate is a historical ntp synchronization client for unixes. It sould be uninstalled.
+</description>
+<rationale>
+ntpdate is an old not security-compliant ntp client. It should be replaced by modern ntp clients such as ntpd, able to use cryptographic mechanisms integrated in NTP.
+</rationale>
+<ident cce="" />
+<oval id="package_ntpdate_removed" />
+<!-- <ref nist="AC-17(8),CM-7" disa=""/> -->
+</Rule>
+
+<!--
+TODO: 
+prelink
+rsh-client
+rsh-server
+talk
+talkd
+-->
+
+</Group>

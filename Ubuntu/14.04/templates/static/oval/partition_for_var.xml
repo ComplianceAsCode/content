@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="partition_for_var" version="1">
+    <metadata>
+      <title>Ensure /var Located On Separate Partition</title>
+      <affected family="unix">
+        <platform>Ubuntu 1404</platform>
+      </affected>
+      <description>Ensuring that /var is mounted on its own partition enables
+      the setting of more restrictive mount options, which is used as temporary
+      storage by many program, particularly system services such as daemons. It
+      is not uncommon for the /var directory to contain world-writable
+      directories, installed by other software packages.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_var_partition" comment="/var on own partition" />
+    </criteria>
+  </definition>
+  <linux:partition_test check="all" check_existence="all_exist"
+  id="test_var_partition" version="1" comment="/var on own partition">
+    <linux:object object_ref="object_mount_var_own_partition" />
+  </linux:partition_test>
+  <linux:partition_object id="object_mount_var_own_partition" version="1">
+    <linux:mount_point>/var</linux:mount_point>
+  </linux:partition_object>
+</def-group>
