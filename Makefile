@@ -67,6 +67,12 @@ debian8:
 debian8-dist:
 	cd Debian/8/ && $(MAKE) dist
 
+ubuntu1604:
+	cd Ubuntu/16.04/ && $(MAKE)
+
+ubuntu1604-dist:
+	cd Ubuntu/16.04/ && $(MAKE) dist
+
 wrlinux:
 	cd WRLinux/ && $(MAKE)
 
@@ -146,6 +152,8 @@ validate-rhel7: rhel7
 	cd RHEL/7/ && $(MAKE) validate
 
 validate-debian8: debian8
+
+validate-ubuntu1604: ubuntu1604
 	# Enable below when content validates correctly
 	#cd Debian/8/ && $(MAKE) validate
 
@@ -177,7 +185,7 @@ validate-suse12: suse12
 	# Enable below when content validates correctly
 	#cd SUSE/12 && $(MAKE) validate
 
-validate: validate-fedora validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-wrlinux validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
+validate: validate-fedora validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-ubuntu1604 validate-wrlinux validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
 
 tarball:
 	@# Copy in the source trees for both RHEL

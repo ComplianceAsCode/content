@@ -1,0 +1,351 @@
+<Group id="logging">
+<title>Configure Syslog</title>
+<description>The syslog service has been the default Unix logging mechanism for
+many years. It has a number of downsides, including inconsistent log format,
+lack of authentication for received messages, and lack of authentication,
+encryption, or reliable transport for messages sent over a network. However,
+due to its long history, syslog is a de facto standard which is supported by
+almost all Unix applications.
+<br/>
+<br/>
+In Ubuntu 1604, rsyslog has replaced syslog as the syslog daemon of choice,
+and it includes some additional security features such as reliable,
+connection-oriented (i.e. TCP) transmission of logs, the option to log to
+database formats, and the encryption of log data en route to
+a central logging server. This section discusses how to configure rsyslog for
+best effect, and how to use tools provided with the system to maintain and
+monitor logs.</description>
+
+<Rule id="package_rsyslog_installed" severity="medium">
+<title>Ensure rsyslog is Installed</title>
+<description>
+Rsyslog is installed by default. 
+<apt-get-macro install="true" package="rsyslog" />
+</description>
+<ocil clause="the package is not installed">
+<package-check-macro package="rsyslog" />
+</ocil>
+<rationale>
+The rsyslog package provides the rsyslog daemon, which provides
+system logging services.
+</rationale>
+<oval id="package_rsyslog_installed" />
+<ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" anssi="NT28(R46)" />
+</Rule>
+
+
+<Rule id="service_rsyslog_enabled" severity="medium">
+<title>Enable rsyslog Service</title>
+<description>The <tt>rsyslog</tt> service provides syslog-style logging by default on Ubuntu 1604.
+<chkconfig-service-macro enable="true" service="rsyslog" />
+</description>
+<ocil>
+<service-check-macro enable="true" service="rsyslog" />
+</ocil>
+<rationale>The <tt>rsyslog</tt> service must be running in order to provide
+logging services, which are essential to system administration.
+</rationale>
+<oval id="service_rsyslog_enabled" />
+<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" anssi="NT28(R46)" />
+</Rule>
+
+
+<Group id="ensure_rsyslog_log_file_configuration">
+<title>Ensure Proper Configuration of Log Files</title>
+<description>
+The file <tt>/etc/rsyslog.conf</tt> controls where log message are written.
+These are controlled by lines called <i>rules</i>, which consist of a
+<i>selector</i> and an <i>action</i>.
+These rules are often customized depending on the role of the system, the
+requirements of the environment, and whatever may enable
+the administrator to most effectively make use of log data.
+The default rules in Ubuntu 1604 are:
+<pre>auth,authpriv.*			/var/log/auth.log
+*.*;auth,authpriv.none          -/var/log/syslog
+daemon.*                        -/var/log/daemon.log
+kern.*                          -/var/log/kern.log
+lpr.*                           -/var/log/lpr.log
+mail.*                          -/var/log/mail.log
+user.*                          -/var/log/user.log
+mail.info                       -/var/log/mail.info
+mail.warn                       -/var/log/mail.warn
+mail.err                        /var/log/mail.err
+news.crit                       /var/log/news/news.crit
+news.err                        /var/log/news/news.err
+news.notice                     -/var/log/news/news.notice
+</pre>
+See the man page <tt>rsyslog.conf(5)</tt> for more information.
+<i>Note that the <tt>rsyslog</tt> daemon is configured to use traditional timestamping
+to be understood by any log processing program. For high precision timestamping,
+comment the following line in <tt>/etc/rsyslog.conf</tt>:
+<pre>$ ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat</pre>
+</i>
+</description>
+
+<!-- These values are not currently used. -->
+<Value id="file_owner_logfiles_value" type="string"
+operator="equals" interactive="0">
+<title>User who owns log files</title>
+<description>Specify user owner of all logfiles specified in
+<tt>/etc/rsyslog.conf</tt>.</description>
+<value selector="root">root</value>
+</Value>
+
+<Value id="file_groupowner_logfiles_value" type="string"
+operator="equals" interactive="0">
+<title>group who owns log files</title>
+<description>Specify group owner of all logfiles specified in
+<tt>/etc/rsyslog.conf.</tt></description>
+<value selector="adm">adm</value>
+</Value>
+
+<Rule id="rsyslog_files_ownership" severity="medium">
+<title>Ensure Log Files Are Owned By Appropriate User</title>
+<description>The owner of all log files written by
+<tt>rsyslog</tt> should be root.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
+For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
+run the following command to inspect the file's owner:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+If the owner is not <tt>root</tt>, run the following command to
+correct this:
+<pre>$ sudo chown root <i>LOGFILE</i></pre>
+</description>
+<ocil clause="the owner is not root">
+The owner of all log files written by <tt>rsyslog</tt> should be root.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
+To see the owner of a given log file, run the following command:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+</ocil>
+<rationale>The log files generated by rsyslog contain valuable information regarding system
+configuration, user authentication, and other such information. Log files should be
+protected from unauthorized access.</rationale>
+<oval id="rsyslog_files_ownership" />
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2"  anssi="NT28(R46)"/>
+</Rule>
+
+<Rule id="rsyslog_files_groupownership" severity="medium">
+<title>Ensure Log Files Are Owned By Appropriate Group</title>
+<description>The group-owner of all log files written by
+<tt>rsyslog</tt> should be root.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
+For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
+run the following command to inspect the file's group owner:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+If the owner is not <tt>adm</tt>, run the following command to
+correct this:
+<pre>$ sudo chgrp adm <i>LOGFILE</i></pre>
+</description>
+<ocil clause="the group-owner is not adm">
+The group-owner of all log files written by <tt>rsyslog</tt> should be adm.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
+To see the group-owner of a given log file, run the following command:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+</ocil>
+<rationale>The log files generated by rsyslog contain valuable information regarding system
+configuration, user authentication, and other such information. Log files should be
+protected from unauthorized access.</rationale>
+<oval id="rsyslog_files_groupownership" />
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" anssi="NT28(R46)" />
+</Rule>
+
+
+<Rule id="rsyslog_files_permissions" severity="medium">
+<title>Ensure System Log Files Have Correct Permissions</title>
+<description>The file permissions for all log files written by
+<tt>rsyslog</tt> should be set to 640, or more restrictive.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. 
+For each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,
+run the following command to inspect the file's permissions:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+If the permissions are not 640 or more restrictive,
+run the following command to correct this:
+<pre>$ sudo chmod 0640 <i>LOGFILE</i></pre>
+</description>
+<ocil clause="the permissions are not correct">
+The file permissions for all log files written by <tt>rsyslog</tt> 
+should be set to 640, or more restrictive.
+These log files are determined by the second part of each Rule line in
+<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
+To see the permissions of a given log file, run the following command:
+<pre>$ ls -l <i>LOGFILE</i></pre>
+The permissions should be 640, or more restrictive.
+</ocil>
+<rationale>Log files can contain valuable information regarding system
+configuration. If the system log files are not protected unauthorized
+users could change the logged data, eliminating their forensic value.
+</rationale>
+<oval id="rsyslog_files_permissions" />
+<ref nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" cis="5.1.4"  anssi="NT28(R36)"/>
+</Rule>
+</Group>
+
+<Group id="rsyslog_sending_messages">
+<title>Rsyslog Logs Sent To Remote Host</title>
+<description>
+If system logs are to be useful in detecting malicious
+activities, it is necessary to send logs to a remote server. An
+intruder who has compromised the root account on a machine may
+delete the log entries which indicate that the system was attacked
+before they are seen by an administrator.
+<br /><br />
+However, it is recommended that logs be stored on the local
+host in addition to being sent to the loghost, especially if
+<tt>rsyslog</tt> has been configured to use the UDP protocol to send
+messages over a network. UDP does not guarantee reliable delivery,
+and moderately busy sites will lose log messages occasionally,
+especially in periods of high traffic which may be the result of an
+attack. In addition, remote <tt>rsyslog</tt> messages are not
+authenticated in any way by default, so it is easy for an attacker to
+introduce spurious messages to the central log server. Also, some
+problems cause loss of network connectivity, which will prevent the
+sending of messages to the central server. For all of these reasons, it is
+better to store log messages both centrally and on each host, so
+that they can be correlated if necessary.</description>
+
+<Rule id="rsyslog_remote_loghost">
+<title>Ensure Logs Sent To Remote Host</title>
+<description>
+To configure rsyslog to send logs to a remote log server,
+open <tt>/etc/rsyslog.conf</tt> and read and understand the last section of the file,
+which describes the multiple directives necessary to activate remote
+logging.
+Along with these other directives, the system can be configured
+to forward its logs to a particular log server by
+adding or correcting one of the following lines,
+substituting <tt><i>loghost.example.com</i></tt> appropriately.
+The choice of protocol depends on the environment of the system; 
+although TCP and RELP provide more reliable message delivery, 
+they may not be supported in all environments.
+<br/>
+To use UDP for log message delivery:
+<pre>*.* @<i>loghost.example.com</i></pre>
+<br/>
+To use TCP for log message delivery:
+<pre>*.* @@<i>loghost.example.com</i></pre>
+<br/>
+To use RELP for log message delivery:
+<pre>*.* :omrelp:<i>loghost.example.com</i></pre>
+</description>
+<ocil clause="none of these are present">
+To ensure logs are sent to a remote host, examine the file
+<tt>/etc/rsyslog.conf</tt>.
+If using UDP, a line similar to the following should be present:
+<pre> *.* @<i>loghost.example.com</i></pre>
+If using TCP, a line similar to the following should be present:
+<pre> *.* @@<i>loghost.example.com</i></pre>
+If using RELP, a line similar to the following should be present:
+<pre> *.* :omrelp:<i>loghost.example.com</i></pre>
+</ocil>
+<rationale>A log server (loghost) receives syslog messages from one or more
+systems. This data can be used as an additional log source in the event a
+system is compromised and its local logs are suspect. Forwarding log messages
+to a remote loghost also provides system administrators with a centralized
+place to view the status of multiple hosts within the enterprise.
+</rationale>
+<oval id="rsyslog_remote_loghost" />
+<ref nist="AU-3(2),AU-4(1),AU-9" disa="1348,136,1851" cis="5.1.5" />
+</Rule>
+</Group>
+
+<Group id="rsyslog_accepting_remote_messages">
+<title>Configure <tt>rsyslogd</tt> to Accept Remote Messages If Acting as a Log Server</title>
+<description>
+By default, <tt>rsyslog</tt> does not listen over the network
+for log messages. If needed, modules can be enabled to allow
+the rsyslog daemon to receive messages from other systems and for the system
+thus to act as a log server.
+If the machine is not a log server, then lines concerning these modules
+should remain commented out.
+<br /><br />
+</description>
+
+<Rule id="rsyslog_accept_remote_messages_tcp">
+<title>Enable rsyslog to Accept Messages via TCP, if Acting As Log Server</title>
+<description>The <tt>rsyslog</tt> daemon should not accept remote messages
+unless the system acts as a log server.
+If the system needs to act as a central log server, add the following lines to
+<tt>/etc/rsyslog.conf</tt> to enable reception of messages over TCP:
+<pre>$ModLoad imtcp
+$InputTCPServerRun 514</pre>
+</description>
+<rationale>
+If the system needs to act as a log server, this ensures that it can receive
+messages over a reliable TCP connection.
+</rationale>
+<!--<oval id="rsyslog_listen_tcp" />-->
+<ref nist="AU-9" cis="5.1.6" />
+</Rule>
+
+<Rule id="rsyslog_accept_remote_messages_udp">
+<title>Enable rsyslog to Accept Messages via UDP, if Acting As Log Server</title>
+<description>The <tt>rsyslog</tt> daemon should not accept remote messages
+unless the system acts as a log server.
+If the system needs to act as a central log server, add the following lines to
+<tt>/etc/rsyslog.conf</tt> to enable reception of messages over UDP:
+<pre>$ModLoad imudp
+$UDPServerRun 514</pre>
+</description>
+<rationale>
+Many devices, such as switches, routers, and other Unix-like systems, may only support
+the traditional syslog transmission over UDP. If the system must act as a log server,
+this enables it to receive their messages as well.
+</rationale>
+<ref nist="AU-9" cis="5.1.6" />
+</Rule>
+
+</Group>
+
+<Group id="log_rotation">
+<title>Ensure All Logs are Rotated by <tt>logrotate</tt></title>
+<description>Edit the file <tt>/etc/logrotate.d/rsyslog</tt>. Find the first
+line, which should look like this (wrapped for clarity):
+<pre>/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler \
+  /var/log/boot.log /var/log/cron {</pre>
+Edit this line so that it contains a one-space-separated
+listing of each log file referenced in <tt>/etc/rsyslog.conf</tt>.
+<br /><br />
+All logs in use on a system must be rotated regularly, or the
+log files will consume disk space over time, eventually interfering
+with system operation. The file <tt>/etc/logrotate.d/syslog</tt> is the
+configuration file used by the <tt>logrotate</tt> program to maintain all
+log files written by <tt>syslog</tt>. By default, it rotates logs weekly and
+stores four archival copies of each log. These settings can be
+modified by editing <tt>/etc/logrotate.conf</tt>, but the defaults are
+sufficient for purposes of this guide.
+<br /><br />
+Note that <tt>logrotate</tt> is run nightly by the cron job
+<tt>/etc/cron.daily/logrotate</tt>. If particularly active logs need to be
+rotated more often than once a day, some other mechanism must be
+used.</description>
+
+
+<Rule id="ensure_logrotate_activated">
+<title>Ensure Logrotate Runs Periodically</title>
+<description>The <tt>logrotate</tt> utility allows for the automatic rotation of 
+log files.  The frequency of rotation is specified in <tt>/etc/logrotate.conf</tt>, 
+which triggers a cron task.  To configure logrotate to run daily, add or correct 
+the following line in <tt>/etc/logrotate.conf</tt>:
+<pre># rotate log files <i>frequency</i>
+daily</pre>
+</description>
+<rationale>Log files that are not properly rotated run the risk of growing so large
+that they fill up the /var/log partition. Valuable logging information could be lost
+if the /var/log partition becomes full.</rationale>
+<ocil clause="logrotate is not configured to run daily">
+To determine the status and frequency of logrotate, run the following command:
+<pre>$ sudo grep logrotate /var/log/cron*</pre>
+If logrotate is configured properly, output should include references to 
+<tt>/etc/cron.daily</tt>.
+</ocil>
+<oval id="ensure_logrotate_activated" />
+<ref nist="AU-9" disa="366" pcidss="Req-10.7" />
+</Rule>
+</Group>
+
+</Group>

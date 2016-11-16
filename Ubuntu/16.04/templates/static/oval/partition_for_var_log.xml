@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="partition_for_var_log" version="1">
+    <metadata>
+      <title>Ensure /var/log Located On Separate Partition</title>
+      <affected family="unix">
+        <platform>Ubuntu 1604</platform>
+      </affected>
+      <description>System logs are stored in the /var/log directory. Ensure
+      that it has its own partition or logical volume.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_var_log_partition" comment="/var/log on own partition" />
+    </criteria>
+  </definition>
+  <linux:partition_test check="all" check_existence="all_exist"
+  id="test_var_log_partition" version="1" comment="/var/log on own partition">
+    <linux:object object_ref="object_mount_var_log_own_partition" />
+  </linux:partition_test>
+  <linux:partition_object id="object_mount_var_log_own_partition" version="1">
+    <linux:mount_point>/var/log</linux:mount_point>
+  </linux:partition_object>
+</def-group>

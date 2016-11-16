@@ -1,0 +1,169 @@
+<Group id="ssh">
+<title>SSH Server</title>
+<description>The SSH protocol is recommended for remote access (remote login and secure remote file transfer).
+SSH provides both confidentiality and integrity for exchanged data but needs to be configured properly in term of:<br />
+Cryptography usage, according to the current CVEs associated to the various cryptographic modes<br />
+Authentication and autorization, depending on your needs but requiring some specific initial generic security<br />
+consideration in the OpenSSH configuration writing
+More detailed information is available from the OpenSSH project's website <weblink-macro link="http://www.openssh.org"/>. The Ubuntu package for
+server side implementation is called <tt>openssh-server</tt>.
+</description>
+
+<Value id="sshd_idle_timeout_value" type="number"
+operator="equals" interactive="0">
+<title>SSH session Idle time</title>
+<description>Specify duration of allowed idle time.</description>
+<value selector="">300</value>
+<value selector="5_minutes">300</value>
+<value selector="10_minutes">600</value>
+<value selector="15_minutes">900</value>
+<value selector="60_minutes">3600</value>
+<value selector="120_minutes">7200</value>
+</Value>
+
+<Rule id="service_sshd_disabled">
+<title>Disable SSH Server if possible (unusual cases)</title>
+<description>Most of the time, the SSH server is needed. However, it can be disabled, do so.
+<chkconfig-service-macro enable="false" service="ssh" />
+This is unusual, as SSH is a common method for encrypted and authenticated
+remote access.
+</description>
+<oval id="service_sshd_disabled" />
+</Rule>
+
+<Group id="ssh_server">
+<title>Configure OpenSSH Server if deployed</title>
+<description>If the system needs to act as an SSH server, then
+certain changes should be made to the OpenSSH daemon configuration
+file <tt>/etc/ssh/sshd_config</tt>. The following recommendations can be
+applied to this file. See the <tt>sshd_config(5)</tt> man page for more
+detailed information.</description>
+
+<Rule id="sshd_allow_only_protocol2" severity="high">
+<title>Allow Only SSH Protocol 2</title>
+<description>Only SSH protocol version 2 connections should be
+permitted. The default setting in
+<tt>/etc/ssh/sshd_config</tt> is correct, and can be
+verified by ensuring that the following
+line appears:
+<pre>Protocol 2</pre>
+</description>
+<ocil clause="it is not">
+To check which SSH protocol version is allowed, run the following command:
+<pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>Protocol 2</pre>
+</ocil>
+<rationale>
+SSH protocol version 1 suffers from design flaws that
+result in security vulnerabilities and
+should not be used.
+</rationale>
+<ident cce="" />
+<oval id="sshd_allow_only_protocol2" />
+<ref nist="AC-17(7),IA-5(1)(c)" anssi="NT007(R1)" />
+</Rule>
+
+<Rule id="sshd_set_idle_timeout">
+<title>Set SSH Idle Timeout Interval</title>
+<description>SSH allows administrators to set an idle timeout interval.
+After this interval has passed, the idle user will be automatically logged out.
+<br /><br />
+To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
+follows:
+<pre>ClientAliveInterval <b>interval</b></pre>
+The timeout <b>interval</b> is given in seconds. To have a timeout
+of 15 minutes, set <b>interval</b> to 900.
+<br /><br />
+If a shorter timeout has already been set for the login
+shell, that value will preempt any SSH
+setting made here. Keep in mind that some processes may stop SSH
+from correctly detecting that the user is idle.
+</description>
+<ocil clause="it is not">
+Run the following command to see what the timeout interval is:
+<pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
+If properly configured, the output should be:
+<pre>ClientAliveInterval 900</pre>
+</ocil>
+<rationale>
+Causing idle users to be automatically logged out
+guards against compromises one system leading trivially
+to compromises on another.
+</rationale>
+<ident cce="" />
+<oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
+<ref nist="AC-2(5),SA-8" pcidss="Req-8.1.8" />
+</Rule>
+
+
+<Rule id="sshd_set_keepalive">
+<title>Set SSH Client Alive Count</title>
+<description>To ensure the SSH idle timeout occurs precisely when the <tt>ClientAliveCountMax</tt> is set,
+edit <tt>/etc/ssh/sshd_config</tt> as
+follows:
+<pre>ClientAliveCountMax 0</pre>
+</description>
+<ocil clause="it is not">
+To ensure the SSH idle timeout will occur when the <tt>ClientAliveCountMax</tt> is set, run the following command:
+<pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+If properly configured, output should be:
+<pre>ClientAliveCountMax 0</pre>
+</ocil>
+<rationale>
+This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
+is reached.
+</rationale>
+<ident cce="" />
+<oval id="sshd_set_keepalive" />
+<ref nist="AC-2(5),SA-8"  />
+</Rule>
+
+<Rule id="sshd_disable_root_login" severity="medium">
+<title>Disable SSH Root Login</title>
+<description>The root user should never be allowed to login to a
+system directly over a network.
+To disable root login via SSH, add or correct the following line
+in <tt>/etc/ssh/sshd_config</tt>:
+<pre>PermitRootLogin no</pre>
+</description>
+<ocil>
+<sshd-check-macro option="PermitRootLogin" value="no" default="no" />
+</ocil>
+<rationale>
+Permitting direct root login reduces auditable information about who ran
+privileged commands on the system
+and also allows direct attack attempts on root's password.
+</rationale>
+<ident cce="" />
+<oval id="sshd_disable_root_login" />
+<ref nist="AC-3,AC-6(2),IA-2(1)" anssi="NT007(R21)"  />
+</Rule>
+
+
+<Rule id="sshd_disable_empty_passwords" severity="high">
+<title>Disable SSH Access via Empty Passwords</title>
+<description>To explicitly disallow remote login from accounts with
+empty passwords, add or correct the following line in
+<tt>/etc/ssh/sshd_config</tt>:
+<pre>PermitEmptyPasswords no</pre>
+Any accounts with empty passwords should be disabled immediately, and PAM configuration
+should prevent users from being able to assign themselves empty passwords.
+</description>
+<ocil>
+<sshd-check-macro option="PermitEmptyPasswords" value="no" default="yes" />
+</ocil>
+<rationale>
+Configuring this setting for the SSH daemon provides additional assurance that
+remote login via SSH will require a password,
+even in the event of misconfiguration elsewhere.
+</rationale>
+<ident cce="" />
+<oval id="sshd_disable_empty_passwords" />
+<ref nist="AC-3" anssi="NT007(R17)" />
+</Rule>
+
+</Group>
+</Group>
+
+
+

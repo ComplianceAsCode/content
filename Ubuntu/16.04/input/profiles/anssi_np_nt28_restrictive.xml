@@ -1,0 +1,19 @@
+<Profile id="anssi_np_nt28_restrictive" extends="anssi_np_nt28_average">
+<title override="true">Profile for ANSSI DAT-NT28 Restrictive Level</title>
+<description override="true">This profile contains items for GNU/Linux installations exposed to unauthenticated flows or multiple sources.</description>
+
+<!-- partitioning -->
+<select idref="partition_for_tmp" selected="true"/>
+<select idref="partition_for_var" selected="true"/>
+<select idref="partition_for_var_log" selected="true"/>
+<select idref="partition_for_var_log_audit" selected="true"/>
+<select idref="partition_for_home" selected="true"/>
+
+<!-- services -->
+<select idref="package_auditd_installed" selected="true"/>
+<select idref="package_cron_installed" selected="true"/>
+
+<select idref="service_auditd_enabled" selected="true"/>
+<select idref="service_ntpd_enabled" selected="true"/>
+
+</Profile>
