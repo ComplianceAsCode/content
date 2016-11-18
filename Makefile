@@ -80,7 +80,7 @@ ubuntu1604-dist:
 	cd Ubuntu/16.04/ && $(MAKE) dist
 
 ubuntu1404:
-	cd Ubuntu/16.04/ && $(MAKE)
+	cd Ubuntu/14.04/ && $(MAKE)
 
 ubuntu1404-dist:
 	cd Ubuntu/16.04/ && $(MAKE) dist
