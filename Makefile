@@ -83,7 +83,7 @@ ubuntu1404:
 	cd Ubuntu/14.04/ && $(MAKE)
 
 ubuntu1404-dist:
-	cd Ubuntu/16.04/ && $(MAKE) dist
+	cd Ubuntu/14.04/ && $(MAKE) dist
 
 wrlinux:
 	cd WRLinux/ && $(MAKE)
