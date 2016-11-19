@@ -1,0 +1,89 @@
+<Group id="restriction">
+<title>Restrict Programs from Dangerous Execution Patterns</title>
+<description>The recommendations in this section are designed to
+ensure that the system's features to protect against potentially
+dangerous program execution are activated.
+These protections are applied at the system initialization or
+kernel level, and defend against certain types of badly-configured
+or compromised programs.</description>
+
+<Group id="coredumps">
+<title>Disable Core Dumps</title>
+<description>A core dump file is the memory image of an executable
+program when it was terminated by the operating system due to
+errant behavior. In most cases, only software developers
+legitimately need to access these files. The core dump files may
+also contain sensitive information, or unnecessarily occupy large
+amounts of disk space.
+<br /><br />
+Once a hard limit is set in <tt>/etc/security/limits.conf</tt>, a
+user cannot increase that limit within his or her own session. If access
+to core dumps is required, consider restricting them to only
+certain users or groups. See the <tt>limits.conf</tt> man page for more
+information.
+<br /><br />
+The core dumps of setuid programs are further protected. The
+<tt>sysctl</tt> variable <tt>fs.suid_dumpable</tt> controls whether
+the kernel allows core dumps from these programs at all. The default
+value of 0 is recommended.</description>
+
+<Rule id="sysctl_fs_suid_dumpable">
+<title>Disable Core Dumps for SUID programs</title>
+<description><sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" /></description>
+<ocil><sysctl-check-macro sysctl="fs.suid_dumpable" value="0" /></ocil>
+<rationale>The core dump of a setuid program is more likely to contain
+wve data, as the program itself runs with greater privileges than the
+user who initiated execution of the program.  Disabling the ability for any
+setuid program to write a core file decreases the risk of unauthorized access
+of such data.</rationale>
+<oval id="sysctl_fs_suid_dumpable" />
+<ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
+</Group>
+
+<Group id="enable_execshield_settings">
+<title>Enable ExecShield</title>
+<description>ExecShield describes kernel features that provide
+protection against exploitation of memory corruption errors such as buffer
+overflows. These features include random placement of the stack and other
+memory regions, prevention of execution in memory that should only hold data,
+and special handling of text buffers. These protections are enabled by default
+on 32-bit systems and controlled through <tt>sysctl</tt> variables 
+<tt>kernel.exec-shield</tt> and <tt>kernel.randomize_va_space</tt>. On the latest
+64-bit systems, <tt>kernel.exec-shield</tt> cannot be enabled or disabled with 
+<tt>sysctl</tt>.
+</description>
+
+<Rule id="sysctl_kernel_randomize_va_space" severity="medium">
+<title>Enable Randomized Layout of Virtual Address Space</title>
+<description><sysctl-desc-macro sysctl="kernel.randomize_va_space" value="2" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.randomize_va_space" value="2" /></ocil>
+<rationale> Address space layout randomization (ASLR) makes it more difficult
+for an attacker to predict the location of attack code they have introduced
+into a process's address space during an attempt at exploitation.  Additionally, ASLR 
+makes it more difficult for an attacker to know the location of existing code
+in order to re-purpose it using return oriented programming (ROP) techniques.
+</rationale>
+<oval id="sysctl_kernel_randomize_va_space" />
+<ref nist="SC-30(2)" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
+<Rule id="sysctl_kernel_kptr_restrict" severity="low">
+<title>Restrict exposed kernel pointers addresses access</title>
+<description><sysctl-desc-macro sysctl="kernel.kptr_restrict" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.kptr_restrict" value="1" /></ocil>
+<rationale>Exposing kernel pointers (through procfs or <tt>seq_printf()</tt>) exposes
+kernel writeable structures that can contain functions pointers. If a write vulnereability occurs
+in the kernel allowing a write access to any of this structure, the kernel can be compromise. This
+option disallow any program withtout the CAP_SYSLOG capability from getting the kernel pointers addresses,
+replacing them with 0.
+</rationale>
+<oval id="sysctl_kernel_kptr_restrict" />
+<ref anssi="NT28(R23)" />
+</Rule>
+
+
+</Group>
+
+</Group>

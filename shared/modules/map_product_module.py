@@ -8,6 +8,7 @@ JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
+UBUNTU = 'Ubuntu'
 RHEVM = 'Red Hat Enterprise Virtualization Manager'
 EAP = 'JBoss EAP'
 FUSE = 'JBoss Fuse'
@@ -15,7 +16,7 @@ OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 
-multi_product_list = ['rhel', 'fedora', 'rhel-osp', 'debian', 'wrlinux', 'sle']
+multi_product_list = ['rhel', 'fedora', 'rhel-osp', 'debian', 'ubuntu', 'wrlinux', 'sle']
 
 
 def parse_product_name(product):
@@ -51,6 +52,8 @@ def map_product(version):
         product_name = WEBMIN
     if re.findall('debian', version):
         product_name = DEBIAN
+    if re.findall('ubuntu', version):
+        product_name = UBUNTU
     if re.findall('rhevm', version):
         product_name = RHEVM
     if re.findall('eap', version):

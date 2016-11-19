@@ -1,0 +1,126 @@
+<Group id="files">
+<title>Verify Permissions on Important Files and
+Directories</title>
+<description>Permissions for many files on a system must be set
+restrictively to ensure sensitive information is properly protected.
+This section discusses important
+permission restrictions which can be verified
+to ensure that no harmful discrepancies have
+arisen.</description>
+
+<Group id="permission_important_state_files">
+<title>Verify permissions on files containing sensitive informations about the system</title>
+<description>Various files contains sensitive informations that can leads to specific weaknesses or
+give structural informations for local exploits.</description>
+
+<Rule id="file_permissions_systemmap">
+  <title>Verify that local System.map file (if exists) is readable only by root</title>
+  <description>Files containing sensitive informations should be protected by restrictive
+  permissions. Most of the time, there is no need that these files need to be read by any non-root user
+    <fileperms-desc-macro file="/boot/System.map-*" perms="0600"/>
+    <fileowner-desc-macro file="/boot/System.map-*" owner="root"/>
+  </description>
+  <ocil>
+    <fileperms-check-macro file="/boot/Sysem.map-*" perms="-rw-------"/>
+    <fileowner-check-macro file="/boot/System.map-*" owner="root"/>
+  </ocil>
+  <rationale>The <tt>System.map</tt> file contains information about kernel symbols and
+  can give some hints to generate local exploitation.
+  </rationale>
+  <oval id="file_permissions_systemmap" />
+  <ref anssi="NT28(R13)" />
+</Rule>
+
+</Group>
+
+<Group id="permissions_important_account_files">
+<title>Verify Permissions on Files with Local Account Information and Credentials</title>
+<description>The default restrictive permissions for files which act as
+important security databases such as <tt>passwd</tt>, <tt>shadow</tt>,
+<tt>group</tt>, and <tt>gshadow</tt> files must be maintained.  Many utilities
+need read access to the <tt>passwd</tt> file in order to function properly, but
+read access to the <tt>shadow</tt> file allows malicious attacks against system
+passwords, and should never be enabled.</description>
+
+<Rule id="file_permissions_etc_shadow" severity="medium">
+<title>Verify Permissions and ownership on <tt>shadow</tt> File</title>
+<description>
+  <fileperms-desc-macro file="/etc/shadow" perms="0640"/>
+  <fileowner-desc-macro file="/etc/shadow" owner="root"/>
+  <filegroupowner-desc-macro file="/etc/shadow" group="shadow"/>
+</description>
+<ocil>
+  <fileperms-check-macro file="/etc/shadow" perms="-rw-r-----"/>
+  <fileowner-check-macro file="/etc/shadow" owner="root"/>
+  <filegroupowner-check-macro file="/etc/shadow" group="shadow"/>
+</ocil>
+<rationale>The <tt>/etc/shadow</tt> file contains the list of local
+system accounts and stores password hashes. Protection of this file is
+critical for system security. Failure to give ownership of this file
+to root provides the designated owner with access to sensitive information
+which could weaken the system security posture.</rationale>
+<oval id="file_permissions_etc_shadow" />
+<ref nist="AC-6" disa="" pcidss="Req-8.7.c" anssi="NT28(R36)" />
+</Rule>
+
+<Rule id="file_permissions_etc_gshadow" severity="medium">
+<title>Verify Permissions and ownership on <tt>gshadow</tt> File</title>
+<description>
+  <fileperms-desc-macro file="/etc/gshadow" perms="0640"/>
+  <fileowner-desc-macro file="/etc/gshadow" owner="root"/>
+  <filegroupowner-desc-macro file="/etc/gshadow" group="shadow"/>
+</description>
+<ocil>
+  <fileperms-check-macro file="/etc/gshadow" perms="-rw-r-----"/>
+  <fileowner-check-macro file="/etc/gshadow" owner="root"/>
+  <filegroupowner-check-macro file="/etc/gshadow" group="shadow"/>
+</ocil>
+<rationale>The <tt>/etc/shadow</tt> file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
+<oval id="file_permissions_etc_gshadow" />
+<ref nist="AC-6" disa="" anssi="NT28(R36)"/>
+</Rule>
+
+<Rule id="file_permissions_etc_passwd" severity="medium">
+<title>Verify Permissions and ownership on <tt>passwd</tt> File</title>
+<description>
+  <fileperms-desc-macro file="/etc/passwd" perms="0644"/>
+  <fileowner-desc-macro file="/etc/passwd" owner="root"/>
+  <filegroupowner-desc-macro file="/etc/passwd" group="root"/>
+</description>
+<ocil>
+  <fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/>
+  <fileowner-check-macro file="/etc/passwd" owner="root"/>
+  <filegroupowner-check-macro file="/etc/passwd" group="root"/>
+</ocil>
+<rationale>The <tt>/etc/shadow</tt> file contains information about the users that are configured on
+the system. Protection of this file is critical for system security.</rationale>
+<oval id="file_permissions_etc_passwd" />
+<ref nist="AC-6" disa=""/>
+</Rule>
+
+<Rule id="file_permissions_etc_group" severity="medium">
+<title>Verify Permissions and ownership on <tt>group</tt> File</title>
+<description>
+  <fileperms-desc-macro file="/etc/passwd" perms="0644"/>
+  <fileowner-desc-macro file="/etc/passwd" owner="root"/>
+  <filegroupowner-desc-macro file="/etc/passwd" group="root"/>
+</description>
+<ocil>
+  <fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/>
+  <fileowner-check-macro file="/etc/passwd" owner="root"/>
+  <filegroupowner-check-macro file="/etc/passwd" group="root"/>
+</ocil>
+<rationale>The <tt>/etc/shadow</tt> file contains information about the groups that are configured on
+the system. Protection of this file is critical for system security.</rationale>
+<oval id="file_permissions_etc_group" />
+<ref nist="AC-6" disa=""/>
+</Rule>
+
+
+
+
+
+</Group>
+</Group>
+

@@ -1,0 +1,20 @@
+<Profile id="anssi_np_nt28_minimal">
+<title>Profile for ANSSI DAT-NT28 Minimal Level</title>
+<description>This profile contains items to be applied systematically.</description>
+
+<!-- partitioning -->
+<!-- services -->
+<select idref="package_telnetd_removed" selected="true"/>
+<select idref="package_inetutils-telnetd_removed" selected="true"/>
+<select idref="package_telnetd-ssl_removed" selected="true"/>
+<select idref="package_nis_removed" selected="true"/>
+
+<!-- System Logging Requirements -->
+<!-- critical files -->
+<select idref="file_permissions_etc_shadow" selected="true"/>
+<select idref="file_permissions_etc_gshadow" selected="true"/>
+<select idref="file_permissions_etc_passwd" selected="true"/>
+<select idref="file_permissions_etc_group" selected="true"/>
+
+<!-- sysctl -->
+</Profile>
