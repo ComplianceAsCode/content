@@ -179,6 +179,32 @@ users could change the logged data, eliminating their forensic value.
 <oval id="rsyslog_files_permissions" />
 <ref prodtype="rhel7" nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" cis="5.1.4" />
 </Rule>
+
+<Rule id="rsyslog_cron_logging" severity="medium" prodtype="rhel7">
+<title>Ensure <tt>cron</tt> Is Logging To Rsyslog</title>
+<description>Cron logging must be implemented to spot intrusions or trace
+cron job status. If <tt>cron</tt> is not logging to <tt>rsyslog</tt>, it
+can be implemented by adding the following to the <i>RULES</i> section of
+<tt>/etc/rsyslog.conf</tt>:
+<pre>cron.*                                                  /var/log/cron</pre>
+</description>
+<ocil clause="cron is not logging to rsyslog">
+To verify that <tt>cron</tt> is logging to <tt>rsyslog</tt>,
+run the following command:
+<pre>grep -rni "cron\.\*" /etc/rsyslog.*</pre>
+The output should return some similar to:
+<pre>cron.*                                                  /var/log/cron</pre>
+</ocil>
+<rationale>
+Cron logging can be used to trace the successful or unsuccessful execution
+of cron jobs. It can also be used to spot intrusions into the use of the cron
+facility by unauthorized and malicious users.
+</rationale>
+<ident prodtype="rhel7" cce="CCE-TBD" />
+<oval id="rsyslog_cron_logging" />
+<ref prodtype="rhel7" nist="AU-2(d)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021160" />
+</Rule>
+
 </Group>
 
 <Group id="rsyslog_sending_messages">
