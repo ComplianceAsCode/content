@@ -465,6 +465,53 @@ can allow an attacker to move trivially to other hosts.
 ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
+<Rule id="sshd_disable_user_known_hosts" severity="medium" prodtype="rhel7">
+<title>Disable SSH Support for User Known Hosts</title>
+<description>SSH can allow system users user host-based authentication to connect
+to systems if a cache of the remote systems public keys are available.
+This should be disabled.
+<br /><br />
+To ensure this behavior is disabled, add or correct the
+following line in <tt>/etc/ssh/sshd_config</tt>:
+<pre>IgnoreUserKnownHosts yes</pre>
+</description>
+<ocil>
+<sshd-check-macro option="IgnoreUserKnownHosts" value="yes" default="no" />
+</ocil>
+<rationale>
+Configuring this setting for the SSH daemon provides additional
+assurance that remove login via SSH will require a password, even
+in the event of misconfiguration elsewhere.
+</rationale>
+<ident prodtype="rhel7" cce="80372-6" />
+<oval id="sshd_disable_user_known_hosts" />
+<ref prodtype="rhel7" nist="CM-6(a)" disa="366" stigid="040332"
+ossrg="SRG-OS-000480-GPOS-00227" />
+</Rule>
+
+<Rule id="sshd_disable_rhosts_rsa" severity="medium" prodtype="rhel7">
+<title>Disable SSH Support for Rhosts RSA Authentication</title>
+<description>SSH can allow authentication through the obsolete rsh
+command through the use of the authenticating user's SSH keys. This should be disabled.
+<br /><br />
+To ensure this behavior is disabled, add or correct the
+following line in <tt>/etc/ssh/sshd_config</tt>:
+<pre>RhostsRSAAuthentication no</pre>
+</description>
+<ocil>
+<sshd-check-macro option="RhostsRSAAuthentication" value="no" default="yes" />
+</ocil>
+<rationale>
+Configuring this setting for the SSH daemon provides additional
+assurance that remove login via SSH will require a password, even
+in the event of misconfiguration elsewhere.
+</rationale>
+<ident prodtype="rhel7" cce="80373-4" />
+<oval id="sshd_disable_rhosts_rsa" />
+<ref prodtype="rhel7" nist="CM-6(a)" disa="366" stigid="040333"
+ossrg="SRG-OS-000480-GPOS-00227" />
+</Rule>
+
 <Rule id="disable_host_auth" severity="medium" prodtype="rhel7">
 <title>Disable Host-Based Authentication</title>
 <description>SSH's cryptographic host-based authentication is
