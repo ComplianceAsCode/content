@@ -63,7 +63,7 @@ The following people have contributed to the SCAP Security Guide project
 * Kevin Spargur <kspargur@redhat.com>
 * Kenneth Stailey <kstailey.lists@gmail.com>
 * Leland Steinke <leland.j.steinke.ctr@mail.mil>
-* Philippe Thierry <phil@internal.reseau-libre.net>
+* Philippe Thierry <phil@reseau-libre.net>
 * Paul Tittle <ptittle@cmf.nrl.navy.mil>
 * Jeb Trayer <jeb.d.trayer@uscg.mil>
 * Shawn Wells <shawn@redhat.com>
