@@ -18,9 +18,9 @@ email_mappings = {
     # Martin Preisler
     "martin@preisler.me": "mpreisle@redhat.com",
     # Philippe Thierry
-    "phil@reseau-libre.net": "phil@internal.reseau-libre.net",
-    "philippe.thierry@reseau-libre.net": "phil@internal.reseau-libre.net",
-    "philippe.thierry@thalesgroup.com": "phil@internal.reseau-libre.net",
+    "phil@internal.reseau-libre.net": "phil@reseau-libre.net",
+    "philippe.thierry@reseau-libre.net": "phil@reseau-libre.net",
+    "philippe.thierry@thalesgroup.com": "phil@reseau-libre.net",
     # Robin Price II
     "rprice@users.noreply.github.com": "robin@redhat.com",
     "rprice@redhat.com": "robin@redhat.com",
