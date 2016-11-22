@@ -39,6 +39,13 @@ def output_checkfile(target, package_info):
                 "./ansible/package_{0}_installed.yml", pkgname
             )
 
+        elif target == "anaconda":
+            file_from_template(
+                "./template_ANACONDA_package_installed",
+                { "PKGNAME" : pkgname },
+                "./anaconda/package_{0}_installed.anaconda", pkgname
+            )
+
         else:
             raise UnknownTargetError(target)
 
@@ -47,7 +54,7 @@ def output_checkfile(target, package_info):
         print "ERROR: input violation: the package name must be defined"
 
 def help():
-    print("Usage:\n\t" + __file__ + " <bash/oval/ansible> <csv file>")
+    print("Usage:\n\t" + __file__ + " <bash/oval/ansible/anaconda> <csv file>")
     print("CSV should contains lines of the format: " +
                "PACKAGE_NAME")
 
