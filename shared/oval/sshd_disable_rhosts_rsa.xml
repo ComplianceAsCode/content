@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="sshd_disable_rhosts_rsa" version="1">
+    <metadata>
+      <title>Disable SSH Support for Rhosts RSA Authentication</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>SSH can allow authentication through the obsolete rsh command
+      through the use of the authenticating user's SSH keys. This should be disabled.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+      <criterion comment="Check RhostsRSAAuthentication in /etc/ssh/sshd_config"
+      negate="true" test_ref="test_sshd_disable_rhosts_rsa" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Tests the value of the RhostsRSAAuthentication[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_disable_rhosts_rsa" version="1">
+    <ind:object object_ref="obj_sshd_disable_rhosts_rsa" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sshd_disable_rhosts_rsa"
+  version="2">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)RhostsRSAAuthentication(?-i)[\s]+no[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
