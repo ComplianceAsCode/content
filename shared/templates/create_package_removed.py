@@ -33,6 +33,12 @@ def output_checkfile(target, package_info):
                 "./ansible/package_{0}_removed.yml", pkgname
             )
 
+        elif target == "anaconda":
+            file_from_template(
+                "./template_ANACONDA_package_removed",
+                { "PKGNAME" : pkgname },
+                "./anaconda/package_{0}_removed.anaconda", pkgname
+            )
         else:
             raise UnknownTargetError(target)
     else:

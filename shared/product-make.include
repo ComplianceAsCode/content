@@ -20,8 +20,10 @@ SHARED_OVAL = $(SHARED)/oval
 SHARED_OVAL_5_11 = $(SHARED_OVAL)/oval_5.11
 SHARED_BASH_REMEDIATIONS =    $(BUILD)/shared/output/bash       $(SHARED)/templates/static/bash # Currently we cannot build shared remediations only once
 SHARED_ANSIBLE_REMEDIATIONS = $(BUILD)/shared/output/ansible    $(SHARED)/templates/static/ansible # Currently we cannot build shared remediations only once
+SHARED_ANACONDA_REMEDIATIONS = $(BUILD)/shared/output/anaconda  $(SHARED)/templates/static/anaconda # Currently we cannot build shared remediations only once
 PRODUCT_BASH_REMEDIATIONS = $(OUT)/bash
 PRODUCT_ANSIBLE_REMEDIATIONS = $(OUT)/ansible
+PRODUCT_ANACONDA_REMEDIATIONS = $(OUT)/anaconda
 STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
@@ -91,11 +93,17 @@ $(OUT)/ocil-unlinked.xml: $(OUT)/xccdf-unlinked-resolved.xml $(SHARED)/$(TRANS)/
 $(OUT)/xccdf-unlinked-ocilrefs.xml: $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/ocil-unlinked.xml $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $(SHARED)/$(TRANS)/shared_constants.xslt
 	xsltproc -stringparam product "$(PROD)" -o $@ $(SHARED)/$(TRANS)/xccdf-ocilcheck2ref.xslt $<
 
+$(PRODUCT_ANACONDA_REMEDIATIONS):
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language anaconda build
+
 $(PRODUCT_ANSIBLE_REMEDIATIONS):
 	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language ansible build
 
 $(PRODUCT_BASH_REMEDIATIONS):
 	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language bash build
+
+$(BUILD)/shared/output/anaconda:
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input $(SHARED)/templates --output $(BUILD)/shared/output --language anaconda build
 
 $(BUILD)/shared/output/ansible:
 	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input $(SHARED)/templates --output $(BUILD)/shared/output --language ansible build
@@ -112,6 +120,9 @@ templates/static/bash:
 templates/static/ansible:
 	mkdir -p $@
 
+templates/static/anaconda:
+	mkdir -p $@
+
 # Common build targets - a catalogue of XCCDF remediations
 product_bash_remediations_deps=$(wildcard templates/static/bash/*.sh)
 shared_bash_remediations_deps= $(wildcard $(SHARED_BASH_REMEDIATIONS)/*.sh)
@@ -119,6 +130,12 @@ bash_remediations_deps= $(product_bash_remediations_deps) $(shared_bash_remediat
 $(OUT)/bash-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(bash_remediations_deps) $(PRODUCT_BASH_REMEDIATIONS) $(BUILD)/shared/output/bash templates/static/bash
 	$(SHARED)/$(UTILS)/combine-remediations.py $(PROD) bash $(SHARED_BASH_REMEDIATIONS) $(PRODUCT_BASH_REMEDIATIONS) templates/static/bash $(OUT)/bash-remediations.xml
 
+# Common build targets - a catalogue of XCCDF remediations
+product_anaconda_remediations_deps=$(wildcard templates/static/anaconda/*.anaconda)
+shared_anaconda_remediations_deps= $(wildcard $(SHARED_ANACONDA_REMEDIATIONS)/*.anaconda)
+anaconda_remediations_deps= $(product_anaconda_remediations_deps) $(shared_anaconda_remediations_deps)
+$(OUT)/anaconda-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(anaconda_remediations_deps) $(PRODUCT_ANACONDA_REMEDIATIONS) $(BUILD)/shared/output/anaconda templates/static/anaconda
+	$(SHARED)/$(UTILS)/combine-remediations.py $(PROD) anaconda $(SHARED_ANACONDA_REMEDIATIONS) $(PRODUCT_ANACONDA_REMEDIATIONS) templates/static/anaconda $(OUT)/anaconda-remediations.xml
 
 # Common build targets - a catalogue of XCCDF remediations
 product_ansible_remediations_deps=$(wildcard templates/static/ansible/*.sh)
@@ -131,10 +148,11 @@ $(OUT)/ansible-remediations.xml: $(SHARED)/$(UTILS)/combine-remediations.py $(an
 # Prefer "$(OUT)/xccdf-unlinked-ocilrefs.xml" document below since it contains OCIL expanded to official OCIL-2.0 syntax
 # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1037
 # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1038
-$(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/bash-remediations.xml $(OUT)/ansible-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
+$(OUT)/xccdf-unlinked-withremediations.xml: $(OUT)/xccdf-unlinked-ocilrefs.xml $(OUT)/xccdf-unlinked-resolved.xml $(OUT)/bash-remediations.xml $(OUT)/ansible-remediations.xml $(OUT)/anaconda-remediations.xml $(SHARED)/$(TRANS)/xccdf-addremediations.xslt
 	xsltproc \
 		-stringparam bash_remediations "$(realpath $(OUT)/bash-remediations.xml)" \
 		-stringparam ansible_remediations "$(realpath $(OUT)/ansible-remediations.xml)" \
+		-stringparam anaconda_remediations "$(realpath $(OUT)/anaconda-remediations.xml)" \
 		-o $@ $(SHARED)/$(TRANS)/xccdf-addremediations.xslt $(OUT)/xccdf-unlinked-ocilrefs.xml
 	xmllint --format --output $@ $@
 

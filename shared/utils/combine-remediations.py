@@ -84,6 +84,11 @@ def get_available_remediation_functions():
 
 def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
 
+    if remediation_type == 'anaconda':
+        return etree.SubElement(fixcontent, "fix-group", id="anaconda",
+                                system="urn:redhat:anaconda:pre",
+                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+
     if remediation_type == 'ansible':
         return etree.SubElement(fixcontent, "fix-group", id="ansible",
                                 system="urn:xccdf:fix:script:ansible",
@@ -100,6 +105,9 @@ def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
 
 
 def is_supported_filename(remediation_type, filename):
+
+    if remediation_type == 'anaconda':
+        return filename.endswith('.anaconda')
 
     if remediation_type == 'ansible':
         return filename.endswith('.yml')
@@ -178,6 +186,13 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             # so text is in ".tail" of element
             xccdfvarsub = etree.SubElement(fix, "sub", idref=varname)
             xccdfvarsub.tail = text_between_vars
+        return
+
+    elif remediation_type == "anaconda":
+        pattern = r'\(anaconda-populate\s*(\S+)\)'
+        parts = re.split(pattern, fix.text)
+        fix.text = parts[0]
+        
         return
 
     elif remediation_type == "bash":
