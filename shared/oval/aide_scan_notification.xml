@@ -1,0 +1,49 @@
+<def-group>
+  <definition class="compliance" id="aide_scan_notification" version="1">
+    <metadata>
+      <title>Configure Notification of Post-AIDE Scan Details</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>AIDE should notify appropriate personnel of the details
+      of a scan after the scan has been run.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
+      <criteria operator="OR">
+        <criterion comment="notify personnel when aide completes" test_ref="test_aide_scan_notification" />
+        <criterion comment="notify personnel when aide completes" test_ref="test_aide_var_cron_notification" />
+        <criterion comment="notify personnel when aide completes in cron.(d|daily|weekly|monthly)" test_ref="test_aide_crontabs_notification" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="notify personnel when aide completes" id="test_aide_scan_notification" version="1">
+    <ind:object object_ref="object_test_aide_scan_notification" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="notify personnel when aide completes" id="object_test_aide_scan_notification" version="1">
+    <ind:filepath>/etc/crontab</ind:filepath>
+    <ind:pattern operation="pattern match">^.*/usr/sbin/aide[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*root@.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="notify personnel when aide completes" id="test_aide_var_cron_notification" version="1">
+    <ind:object object_ref="object_aide_var_cron_notification" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="notify personnel when aide completes" id="object_aide_var_cron_notification" version="1">
+    <ind:filepath>/var/spool/cron/root</ind:filepath>
+    <ind:pattern operation="pattern match">^.*/usr/sbin/aide[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*root@.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="notify personnel when aide completes in cron.(daily|weekly|monthly)" id="test_aide_crontabs_notification" version="1">
+    <ind:object object_ref="object_aide_crontabs_notification" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="notify personnel when aide completes in cron.(d|daily|weekly|monthly)" id="object_aide_crontabs_notification" version="1">
+    <ind:path operation="pattern match">/etc/cron.(d|daily|weekly|monthly)</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^.*/usr/sbin/aide[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*root@.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+   
+</def-group>
