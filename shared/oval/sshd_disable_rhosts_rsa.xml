@@ -1,12 +1,12 @@
 <def-group>
   <definition class="compliance" id="sshd_disable_rhosts_rsa" version="1">
     <metadata>
-      <title>Disable Empty Passwords</title>
+      <title>Disable SSH Support for Rhosts RSA Authentication</title>
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <description>Remote connections from accounts with empty passwords should
-      be disabled (and dependencies are met)</description>
+      <description>SSH can allow authentication through the obsolete rsh command
+      through the use of the authenticating user's SSH keys. This should be disabled.</description>
     </metadata>
     <criteria comment="SSH is not being used or conditions are met"
     operator="OR">
