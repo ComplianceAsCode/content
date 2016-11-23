@@ -39,13 +39,21 @@ def output_checkfile(target, package_info):
                 { "PKGNAME" : pkgname },
                 "./anaconda/package_{0}_removed.anaconda", pkgname
             )
+
+        elif target == "puppet":
+            file_from_template(
+                "./template_PUPPET_package_removed",
+                { "PKGNAME" : pkgname },
+                "./puppet/package_{0}_removed.pp", pkgname
+            )
+
         else:
             raise UnknownTargetError(target)
     else:
         print "ERROR: input violation: the package name must be defined"
 
 def help():
-    print("Usage:\n\t" + __file__ + " <bash/oval/ansible> <csv file>")
+    print("Usage:\n\t" + __file__ + " <bash/oval/ansible/anaconda/puppet> <csv file>")
     print("CSV should contains lines of the format: " +
                "PACKAGE_NAME")
 

@@ -21,7 +21,7 @@ class Builder(object):
             "accounts_password.csv":        "create_accounts_password.py",
         }
         self.supported_ovals = ["oval_5.10"]
-        self.langs = ["bash", "ansible", "oval", "anaconda"]
+        self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
         utils_dir = os.path.dirname(os.path.realpath(__file__))
         root_dir = os.path.join(utils_dir, "..", "..")
         self.shared_templates_dir = \

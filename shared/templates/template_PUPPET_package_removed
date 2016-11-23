@@ -1,0 +1,12 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+include remove_PKGNAME
+
+class remove_PKGNAME {
+  package { 'PKGNAME':
+    ensure => 'purged',
+  }
+}
