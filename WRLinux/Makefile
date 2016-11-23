@@ -4,7 +4,7 @@ SHARED = ../shared
 include $(SHARED)/product-make.include
 
 PROD = wrlinux
-VENDOR = ssgproject
+VENDOR = windriver
 
 checks: standard-oval-build
 
