@@ -4,6 +4,13 @@ import subprocess
 import re
 import os.path
 import codecs
+import datetime
+
+MANUAL_EDIT_WARNING = \
+"""
+This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
+Last Modified: %s
+""" % (os.path.basename(__file__), datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
 
 email_mappings = {
     # Dave / David Smith
@@ -78,11 +85,13 @@ def main():
 
         contributors[name] = email
 
-    contributors_md = \
+    contributors_md = "<!---%s--->\n\n" % MANUAL_EDIT_WARNING
+    contributors_md += \
         "The following people have contributed to the SCAP Security Guide project\n"
     contributors_md += "(listed in alphabetical order):\n\n"
-
-    contributors_xml = "<text>\n"
+    
+    contributors_xml = "<!--%s-->\n\n" % MANUAL_EDIT_WARNING 
+    contributors_xml += "<text>\n"
 
     for name in sorted(contributors.keys(), key=lambda x: x.split(" ")[-1].upper()):
         email = contributors[name]
