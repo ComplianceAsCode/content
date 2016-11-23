@@ -26,6 +26,108 @@ https://www.open-scap.org/security-policies/scap-security-guide
 The Red Hat Enterprise Linux 6 SSG content is broken into 'profiles,' groupings
 of security settings that correlate to a known policy. Available profiles are:
 
+.I C2S
+.RS
+The C2S profile demonstrates compliance against the
+U.S. Government Commercial Cloud Services (C2S) baseline.
+
+This baseline was inspired by the Center for Internet Security
+(CIS) Red Hat Enterprise Linux 7 Benchmark, v1.1.0 - 04-02-2015.
+For the SCAP Security Guide project to remain in compliance with
+CIS' terms and conditions, specifically Restrictions(8), note
+there is no representation or claim that the C2S profile will
+ensure a system is in compliance or consistency with the CIS
+baseline.
+.RE
+
+.I CS2
+.RS
+The CS2 is an example of a customized server profile.
+.RE
+
+.I CSCF-RHEL6-MLS
+.RS
+The CSCF RHEL6 MLS Core Baseline profile reflects the Centralized Super
+Computing Facility (CSCF) baseline for Red Hat Enterprise Linux 6. This baseline
+has received government ATO through the ICD 503 process, utilizing the CNSSI 1253
+cross domain overlay. This profile should be considered in active development.
+Additional tailoring will be needed, such as the creation of RBAC roles
+for production deployment.
+.RE
+
+.I common
+.RS
+The Common Profile for General-Purpose Systems profile contains items common to general-purpose desktop and server installations.
+.RE
+
+.I desktop
+.RS
+The Desktop Baseline profile is for a desktop installation of Red Hat Enterprise Linux 6.
+.RE
+
+.I fisma-medium-rhel6-server
+.RS
+A FISMA Medium profile for Red Hat Enterprise Linux 6
+.RE
+
+.I ftp
+.RS
+A profile for FTP servers
+.RE
+
+.I nist-cl-il-al
+.RS
+The CNSSI 1253 Low/Low/Low Control Baseline for Red Hat Enterprise Linux 6 Profile
+follows the Committee on National Security Systems Instruction (CNSSI) No. 1253,
+"Security Categorization and Control Selection for National Security Systems"
+on security controls to meet low confidentiality, low integrity, and low assurance."
+.RE
+
+.I pci-dss
+.RS
+The PCI-DSS v3 Control Baseline Profile for Red Hat Enterprise Linux 6 is a *draft*
+profile for PCI-DSS v3
+.RE
+
+.I rht-ccp
+.RS
+The Red Hat Corporate Profile for Certified Cloud Providers (RH CCP) profile is a
+*draft* SCAP profile for Red Hat Certified Cloud Providers.
+.RE
+
+.I server
+.RS
+The Server Baseline profile is for Red Hat Enterprise Linux 6 acting as a server.
+.RE
+
+.I standard
+.RS
+The Standard System Security Profile contains rules to ensure standard security baseline of Red Hat Enterprise Linux 6 system.
+Regardless of your system's workload all of these checks should pass.
+.RE
+
+.I stig-rhel6-server-gui-upstream
+.RS
+The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
+configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
+DISA Field Security Operations (FSO) has played a critical role enhancing the
+security posture of DoD's security systems by providing the Security Technical
+Implementation Guides (STIGs). This profile was created as a collaboration
+effort between the National Security Agency, DISA FSO, and Red Hat.
+
+As a result of the upstream/downstream relationship between the SCAP Security
+Guide project and the official DISA FSO STIG baseline, users should expect
+variance between SSG and DISA FSO content. For additional information relating
+to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide
+package, please note that commercial support of this SCAP content is NOT
+available. This profile is provided as example SCAP content with no
+endorsement for suitability or production readiness. Support for this profile
+is provided by the upstream SCAP Security Guide community on a best-effort
+basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
+.RE
+
 .I stig-rhel6-server-upstream
 .RS
 The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
@@ -47,7 +149,33 @@ endorsement for suitability or production readiness. Support for this profile
 is provided by the upstream SCAP Security Guide community on a best-effort
 basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
 
+This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
 .RE
+
+.I stig-rhel6-workstation-upstream
+.RS
+The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
+configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
+DISA Field Security Operations (FSO) has played a critical role enhancing the
+security posture of DoD's security systems by providing the Security Technical
+Implementation Guides (STIGs). This profile was created as a collaboration
+effort between the National Security Agency, DISA FSO, and Red Hat.
+
+As a result of the upstream/downstream relationship between the SCAP Security
+Guide project and the official DISA FSO STIG baseline, users should expect
+variance between SSG and DISA FSO content. For additional information relating
+to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide
+package, please note that commercial support of this SCAP content is NOT
+available. This profile is provided as example SCAP content with no
+endorsement for suitability or production readiness. Support for this profile
+is provided by the upstream SCAP Security Guide community on a best-effort
+basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
+
+This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
+.RE
+
 .I usgcb-rhel6-server
 .RS
 The purpose of the United States Government Configuration Baseline (USGCB)
@@ -70,8 +198,78 @@ webpage at http://usgcb.nist.gov/usgcb_content.html.
 .SH Red Hat Enterprise Linux 7 PROFILES
 The Red Hat Enterprise Linux 7 SSG content is broken into 'profiles,' groupings of security settings that correlate to a known policy. Available profiles are:
 
-.I stig-rhel7-server-upstream
+.I C2S
 .RS
+The C2S profile demonstrates compliance against the
+U.S. Government Commercial Cloud Services (C2S) baseline.
+
+This baseline was inspired by the Center for Internet Security
+(CIS) Red Hat Enterprise Linux 7 Benchmark, v1.1.0 - 04-02-2015.
+For the SCAP Security Guide project to remain in compliance with
+CIS' terms and conditions, specifically Restrictions(8), note
+there is no representation or claim that the C2S profile will
+ensure a system is in compliance or consistency with the CIS
+baseline.
+.RE
+
+.I cjis-rhel7-server
+.RS
+The Criminal Justice Information Services Security Policy is a *draft* profile for CJIS v5.4. The scope of this profile is to configure Red Hat Enteprise Linux 7 against the U. S. Department of Justice, FBI CJIS Security Policy.
+.RE
+
+.I common
+.RS
+The common  profile is intended to be used as a base, universal profile for
+scanning of general-purpose Red Hat Enterprise Linux systems.
+.RE
+
+.I docker-host
+.RS
+The Standard Docker Host Security Profile contains rules to ensure standard
+security baseline of Red Hat Enterprise Linux 7 system running the docker daemon.
+This discussion is currently being held on open-scap-list@redhat.com and
+scap-security-guide@lists.fedorahosted.org.
+.RE
+
+.I nist-cl-il-al
+.RS
+The CNSSI 1253 Low/Low/Low Control Baseline for Red Hat Enterprise Linux 7 Profile
+follows the Committee on National Security Systems Instruction (CNSSI) No. 1253,
+"Security Categorization and Control Selection for National Security Systems"
+on security controls to meet low confidentiality, low integrity, and low assurance."
+.RE
+
+.I ospp-rhel7-server
+.RS
+This is a *draft* profile for NIAP OSPP v4.0. This profile is being developed
+under the National Information Assurance Partnership. The scope of this profile
+is to configure Red Hat Enteprise Linux 7 against the NIAP Protection Profile for
+General Purpose Operating Systems v4.0. The NIAP OSPP profile also serves as a
+working draft for USGCB submission against RHEL7 Server.
+.RE
+
+.I pci-dss
+.RS
+The PCI-DSS v3 Control Baseline Profile for Red Hat Enterprise Linux 7 is a *draft*
+profile for PCI-DSS v3
+.RE
+
+.I rht-ccp
+.RS
+The Red Hat Corporate Profile for Certified Cloud Providers (RH CCP) profile is a
+*draft* SCAP profile for Red Hat Certified Cloud Providers.
+.RE
+
+.I standard
+.RS
+The Standard System Security Profile contains rules to ensure standard security baseline of Red Hat Enterprise Linux 7 system.
+Regardless of your system's workload all of these checks should pass.
+.RE
+
+.I stig-rhel7-server-gui-upstream
+.RS
+The STIG for Red Hat Enterprise Linux 7 Server Running GUIs is a *draft* profile for STIG.
+
 The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
 configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
 DISA Field Security Operations (FSO) has played a critical role enhancing the
@@ -91,18 +289,59 @@ endorsement for suitability or production readiness. Support for this profile
 is provided by the upstream SCAP Security Guide community on a best-effort
 basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
 
+This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
 .RE
 
-.I rht-cpp
+.I stig-rhel7-server-upstream
 .RS
-Red Hat Corporate Profile for Certified Cloud Providers (RH CCP). This is a
-*draft* SCAP profile for Red Hat Certified Cloud Providers.
+The STIG for Red Hat Enterprise Linux 7 Server is a *draft* profile for STIG.
+
+The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
+configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
+DISA Field Security Operations (FSO) has played a critical role enhancing the
+security posture of DoD's security systems by providing the Security Technical
+Implementation Guides (STIGs). This profile was created as a collaboration
+effort between the National Security Agency, DISA FSO, and Red Hat.
+
+As a result of the upstream/downstream relationship between the SCAP Security
+Guide project and the official DISA FSO STIG baseline, users should expect
+variance between SSG and DISA FSO content. For additional information relating
+to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide
+package, please note that commercial support of this SCAP content is NOT
+available. This profile is provided as example SCAP content with no
+endorsement for suitability or production readiness. Support for this profile
+is provided by the upstream SCAP Security Guide community on a best-effort
+basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
+
+This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
 .RE
 
-.I common
-.RS 
-The  common  profile is intended to be used as a base, universal profile for
-scanning of general-purpose Red Hat Enterprise Linux systems.
+.I stig-rhel7-workstation-upstream
+.RS
+The STIG for Red Hat Enterprise Linux 7 Workstation is a *draft* profile for STIG.
+
+The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
+configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
+DISA Field Security Operations (FSO) has played a critical role enhancing the
+security posture of DoD's security systems by providing the Security Technical
+Implementation Guides (STIGs). This profile was created as a collaboration
+effort between the National Security Agency, DISA FSO, and Red Hat.
+
+As a result of the upstream/downstream relationship between the SCAP Security
+Guide project and the official DISA FSO STIG baseline, users should expect
+variance between SSG and DISA FSO content. For additional information relating
+to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
+
+While this profile is packaged by Red Hat as part of the SCAP Security Guide
+package, please note that commercial support of this SCAP content is NOT
+available. This profile is provided as example SCAP content with no
+endorsement for suitability or production readiness. Support for this profile
+is provided by the upstream SCAP Security Guide community on a best-effort
+basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
+
+This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
 .RE
 
 .SH Fedora PROFILES
@@ -115,6 +354,12 @@ The common profile is intended to be used as a base, universal profile for
 scanning of general-purpose Fedora systems.
 .RE
 
+.I standard
+.RS
+The Standard System Security Profile contains rules to ensure standard security
+baseline of a Fedora system.
+Regardless of your system's workload all of these checks should pass.
+.RE
 
 .SH EXAMPLES
 To scan your system utilizing the OpenSCAP utility against the
