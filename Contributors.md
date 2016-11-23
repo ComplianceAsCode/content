@@ -1,3 +1,8 @@
+<!---
+This file is generated using the generate-contributors.py script. DO NOT MANUALLY EDIT!!!!
+Last Modified: 2016-11-23 08:32
+--->
+
 The following people have contributed to the SCAP Security Guide project
 (listed in alphabetical order):
 
@@ -56,6 +61,7 @@ The following people have contributed to the SCAP Security Guide project
 * Ray Shaw (Cont ARL/CISD) rvshaw <rvshaw@esme.arl.army.mil>
 * Willy Santos <wsantos@redhat.com>
 * Gautam Satish <gautams@hpe.com>
+* Watson Sato <wsato@redhat.com>
 * Satoru SATOH <satoru.satoh@gmail.com>
 * Spencer Shimko <sshimko@tresys.com>
 * Francisco Slavin <fslavin@tresys.com>
