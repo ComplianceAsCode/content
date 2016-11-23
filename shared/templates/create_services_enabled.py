@@ -61,13 +61,23 @@ def output_checkfile(target, serviceinfo):
             "./ansible/service_{0}_enabled.yml", servicename
         )
 
+    elif target == "puppet":
+
+        file_from_template(
+            "./template_PUPPET_service_enabled",
+            {
+                "SERVICENAME": servicename
+            },
+            "./puppet/service_{0}_enabled.yml", servicename
+        )
+
     else:
 
         raise UnknownTargetError(target)
 
 
 def help():
-    print("Usage:\n\t" + __file__ + " <bash/oval> <csv file>")
+    print("Usage:\n\t" + __file__ + " <bash/oval/ansible/puppet> <csv file>")
     print("CSV should contains lines of the format: " +
                "servicename,packagename")
 

@@ -1,0 +1,13 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+include enable_SERVICENAME
+
+class enable_SERVICENAME {
+  service {'SERVICENAME':
+    enable => true,
+    ensure => 'running',
+  }
+}

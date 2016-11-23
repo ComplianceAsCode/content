@@ -99,6 +99,11 @@ def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
+    if remediation_type == 'puppet':
+        return etree.SubElement(fixcontent, "fix-group", id="puppet",
+                                system="urn:xccdf:fix:script:puppet",
+                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
                      % (remediation_type))
     sys.exit(1)
@@ -114,6 +119,9 @@ def is_supported_filename(remediation_type, filename):
 
     if remediation_type == 'bash':
         return filename.endswith('.sh')
+
+    if remediation_type == 'puppet':
+        return filename.endswith('.pp')
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
                      % (remediation_type))
@@ -172,6 +180,25 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     if remediation_type == "ansible":
 
         pattern = r'\(ansible-populate\s*(\S+)\)'
+
+        # we will get list what looks like
+        # [text, varname, text, varname, ..., text]
+        parts = re.split(pattern, fix.text)
+
+        fix.text = parts[0] # add first "text"
+        for index in range(1, len(parts), 2):
+            varname = parts[index]
+            text_between_vars = parts[index + 1]
+
+            # we cannot combine elements and text easily
+            # so text is in ".tail" of element
+            xccdfvarsub = etree.SubElement(fix, "sub", idref=varname)
+            xccdfvarsub.tail = text_between_vars
+        return
+
+    if remediation_type == "puppet":
+
+        pattern = r'\(puppet-populate\s*(\S+)\)'
 
         # we will get list what looks like
         # [text, varname, text, varname, ..., text]
