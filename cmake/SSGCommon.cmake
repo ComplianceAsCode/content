@@ -95,16 +95,29 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
     )
+
+    file(GLOB PUPPET_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/puppet/*")
+    file(GLOB SHARED_PUPPET_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/puppet/*")
+
+    # TODO: The environment variable is not very portable
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} puppet ${SSG_SHARED}/templates/output/puppet ${CMAKE_CURRENT_SOURCE_DIR}/templates/output/puppet ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
+        DEPENDS ${PUPPET_REMEDIATION_DEPS} ${SHARED_PUPPET_REMEDIATION_DEPS}
+        DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
+        COMMENT "[${PRODUCT}] generating puppet-remediations.xml"
+    )
 endmacro()
 
 macro(ssg_build_xccdf_with_remediations PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
-        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam bash_remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --stringparam ansible_remediations ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam bash_remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --stringparam ansible_remediations ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml --stringparam puppet_remediations ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
         DEPENDS ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt
         COMMENT "[${PRODUCT}] generating xccdf-unlinked.xml"
     )
