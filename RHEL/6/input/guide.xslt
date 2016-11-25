@@ -19,9 +19,9 @@
        <xsl:apply-templates select="document('profiles/standard.xml')" />
        <xsl:apply-templates select="document('profiles/CS2.xml')" />
        <xsl:apply-templates select="document('profiles/common.xml')" />
-       <!-- <xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
+       <xsl:apply-templates select="document('profiles/desktop.xml')" />
        <xsl:apply-templates select="document('profiles/server.xml')" />
-       <!-- <xsl:apply-templates select="document('profiles/ftp.xml')" /> -->
+       <xsl:apply-templates select="document('profiles/ftp.xml')" />
        <xsl:apply-templates select="document('profiles/stig-rhel6-workstation-upstream.xml')" />
        <xsl:apply-templates select="document('profiles/stig-rhel6-server-gui-upstream.xml')" />
        <xsl:apply-templates select="document('profiles/stig-rhel6-server-upstream.xml')" />
@@ -31,6 +31,8 @@
        <xsl:apply-templates select="document('profiles/C2S.xml')" />
        <xsl:apply-templates select="document('profiles/pci-dss.xml')" />
        <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
+       <!-- The fisma profile contains some errors -->
+       <!-- <xsl:apply-templates select="document('profiles/fisma-medium-rhel6-server.xml')" /> -->
 
        <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
        <Value id="conditional_clause" type="string" operator="equals">
