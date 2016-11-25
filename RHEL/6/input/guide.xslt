@@ -31,7 +31,6 @@
        <xsl:apply-templates select="document('profiles/C2S.xml')" />
        <xsl:apply-templates select="document('profiles/pci-dss.xml')" />
        <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
-       <!-- The fisma profile contains some errors -->
        <xsl:apply-templates select="document('profiles/fisma-medium-rhel6-server.xml')" />
 
        <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
