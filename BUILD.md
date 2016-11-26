@@ -4,6 +4,10 @@
 
  `# yum -y install git openscap-utils openscap-python python-lxml`
 
+ On Ubuntu make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `python-lxml`, `python-openscap`, and `xsltproc` and their dependencies are installed.  
+
+ `$ sudo apt -y install expat libopenscap8 libxml2-utils python-lxml python-openscap xsltproc`
+
 1a. FEDORA ONLY: Install the ShellCheck package.
 
  `# dnf -y install ShellCheck`
