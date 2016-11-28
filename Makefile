@@ -202,7 +202,6 @@ tarball:
 	cp -r --preserve=links --parents Firefox/ tarball/$(PKG)
 	cp -r --preserve=links --parents JBoss/ tarball/$(PKG)
 	cp -r --preserve=links --parents JBossEAP5/ tarball/$(PKG)
-	cp -r --preserve=links --parents JBossFuse6/ tarball/$(PKG)
 	cp -r --preserve=links --parents JRE/ tarball/$(PKG)
 	cp -r --preserve=links --parents OpenStack/ tarball/$(PKG)
 	cp -r --preserve=links --parents OpenSUSE/ tarball/$(PKG)
