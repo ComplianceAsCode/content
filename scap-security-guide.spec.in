@@ -50,17 +50,17 @@ present in %{name} package.
 %make_install
 
 %files
-%{_datadir}/scap
-%{_datadir}/xml/scap
+%{_datadir}/scap/ssg
 %{_datadir}/%{name}/kickstart
 %lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
 %doc %{_docdir}/%{name}/LICENSE
 %doc %{_docdir}/%{name}/README.md
-%doc %{_docdir}/%{name}/tables/*.html
-%doc %{_docdir}/%{name}/tables/*.xhtml
+# compatibility symlink
+%{_datadir}/xml/scap/ssg/content
 
 %files doc
 %doc %{_docdir}/%{name}/guides/*.html
+%doc %{_docdir}/%{name}/tables/*.{,x}html
 
 %changelog
 * __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__
