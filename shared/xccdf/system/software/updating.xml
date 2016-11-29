@@ -126,11 +126,8 @@ NOTE: U.S. Defense systems are required to be patched within 30 days or sooner a
 dictates.
 </description>
 <!-- Directly define remotely located OVAL to be executed when scanning this rule -->
-<!-- Since OpenSCAP for now supports only "http://" protocol being specified when
-     fetching remote resources (see https://fedorahosted.org/openscap/ticket/213
-     for further details) use "http://" version of the remotely located OVAL below -->
 <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
-  <check-content-ref href="http://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2" />
+  <check-content-ref href="https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2" />
 </check>
 <ocil clause="updates are not installed">
 If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
