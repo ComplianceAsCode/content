@@ -4,6 +4,7 @@ import datetime
 import lxml.etree as ET
 import os
 import os.path
+import errno
 import platform
 import re
 import sys
@@ -253,21 +254,28 @@ def checks(product, oval_dirs):
     already_loaded = set()
 
     for oval_dir in reversed_dirs:
-        # sort the files to make output deterministic
-        for filename in sorted(os.listdir(oval_dir)):
-            if filename.endswith(".xml"):
+        try:
+            # sort the files to make output deterministic
+            for filename in sorted(os.listdir(oval_dir)):
+                if filename.endswith(".xml"):
 
-                # skip file if we already have one with better priority
-                if filename in already_loaded:
-                    continue
+                    # skip file if we already have one with better priority
+                    if filename in already_loaded:
+                        continue
 
-                with open(os.path.join(oval_dir, filename), 'r') as xml_file:
-                    xml_content = xml_file.read()
-                    if check_is_applicable_for_product(xml_content, product):
-                        body += xml_content
-                        included_checks_count += 1
-                        already_loaded.add(filename)
-
+                    with open(os.path.join(oval_dir, filename), 'r') as xml_file:
+                        xml_content = xml_file.read()
+                        if check_is_applicable_for_product(xml_content, product):
+                            body += xml_content
+                            included_checks_count += 1
+                            already_loaded.add(filename)
+        except OSError as e:
+            if e.errno != errno.ENOENT:
+                raise
+            else:
+                sys.stderr.write("Not merging OVAL content from the "
+                          "'%s' directory as the directory does not "
+                          "exist" % (oval_dir))
     sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
     return body
