@@ -82,13 +82,14 @@ endmacro()
 macro(ssg_build_remediations PRODUCT)
     file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/bash/*")
     file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/bash/*")
+    set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/remediations")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build --language bash build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build/shared/ --language bash build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} bash ${CMAKE_CURRENT_BINARY_DIR}/build/shared/bash ${SSG_SHARED}/templates/static/bash ${CMAKE_CURRENT_BINARY_DIR}/build/bash ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language bash build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language bash build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} bash ${BUILD_REMEDIATIONS_DIR}/shared/bash ${SSG_SHARED}/templates/static/bash ${BUILD_REMEDIATIONS_DIR}/bash ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
         DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating bash-remediations.xml"
@@ -100,9 +101,9 @@ macro(ssg_build_remediations PRODUCT)
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build --language ansible build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build/shared/ --language ansible build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} ansible ${CMAKE_CURRENT_BINARY_DIR}/build/shared/ansible ${SSG_SHARED}/templates/static/ansible ${CMAKE_CURRENT_BINARY_DIR}/build/ansible ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/ansible ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language ansible build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language ansible build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} ansible ${BUILD_REMEDIATIONS_DIR}/shared/ansible ${SSG_SHARED}/templates/static/ansible ${BUILD_REMEDIATIONS_DIR}/ansible ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/ansible ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
         DEPENDS ${ANSIBLE_REMEDIATION_DEPS} ${SHARED_ANSIBLE_REMEDIATION_DEPS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
@@ -114,9 +115,9 @@ macro(ssg_build_remediations PRODUCT)
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build --language puppet build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build/shared/ --language puppet build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} puppet ${CMAKE_CURRENT_BINARY_DIR}/build/shared/puppet ${SSG_SHARED}/templates/static/puppet ${CMAKE_CURRENT_BINARY_DIR}/build/puppet ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/puppet ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language puppet build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language puppet build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} puppet ${BUILD_REMEDIATIONS_DIR}/shared/puppet ${SSG_SHARED}/templates/static/puppet ${BUILD_REMEDIATIONS_DIR}/puppet ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/puppet ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
         DEPENDS ${PUPPET_REMEDIATION_DEPS} ${SHARED_PUPPET_REMEDIATION_DEPS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating puppet-remediations.xml"
@@ -128,9 +129,9 @@ macro(ssg_build_remediations PRODUCT)
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build --language anaconda build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build/shared/ --language anaconda build
-        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} anaconda ${CMAKE_CURRENT_BINARY_DIR}/build/shared/anaconda ${SSG_SHARED}/templates/static/anaconda ${CMAKE_CURRENT_BINARY_DIR}/build/anaconda ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/anaconda ${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language anaconda build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language anaconda build
+        COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} anaconda ${BUILD_REMEDIATIONS_DIR}/shared/anaconda ${SSG_SHARED}/templates/static/anaconda ${BUILD_REMEDIATIONS_DIR}/anaconda ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/anaconda ${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml
         DEPENDS ${ANACONDA_REMEDIATION_DEPS} ${SHARED_ANACONDA_REMEDIATION_DEPS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating anaconda-remediations.xml"
@@ -157,7 +158,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
     file(GLOB OVAL_DEPS "${OVAL_DEPS_DIR}/*.xml")
     set(SHARED_OVAL_DEPS_DIR "${SSG_SHARED}/oval")
     file(GLOB SHARED_OVAL_DEPS "${SHARED_OVAL_DEPS_DIR}/*.xml")
-    set(OVAL_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/build/oval")
+    set(OVAL_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/oval")
 
     if(OSCAP_OVAL_511_SUPPORT EQUAL 0)
         set(OVAL_511_DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/input/oval/${OSCAP_OVAL_VERSION}")
@@ -168,7 +169,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             # TODO: config
-            COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build --language oval build
+            COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/ --language oval build
             COMMAND RUNTIME_OVAL_VERSION=5.11 ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${SHARED_OVAL_DEPS_DIR} ${OVAL_DEPS_DIR} ${SHARED_OVAL_511_DEPS_DIR} ${OVAL_511_DEPS_DIR} ${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             DEPENDS ${OVAL_DEPS}
@@ -183,7 +184,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             # TODO: config
-            COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/build --language oval build
+            COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/ --language oval build
             COMMAND ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS_DIR} ${SHARED_OVAL_DEPS_DIR} ${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             DEPENDS ${OVAL_DEPS}
