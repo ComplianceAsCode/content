@@ -1,1 +1,1 @@
-ssg_build_product("Webmin")
+ssg_build_product("webmin")
