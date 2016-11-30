@@ -4,6 +4,7 @@ import sys
 import os
 import os.path
 import re
+import errno
 import lxml.etree as etree
 
 # Put shared python modules in path
@@ -375,79 +376,87 @@ def main():
     config = {}
     included_fixes_count = 0
     for fixdir in sys.argv[3:-1]:
-        for filename in os.listdir(fixdir):
-            if not is_supported_filename(remediation_type, filename):
-                continue
+        try:
+            for filename in os.listdir(fixdir):
+                if not is_supported_filename(remediation_type, filename):
+                    continue
 
-            # Create and populate new fix element based on shell file
-            fixname = os.path.splitext(filename)[0]
+                # Create and populate new fix element based on shell file
+                fixname = os.path.splitext(filename)[0]
 
-            mod_file = ""
-            with open(os.path.join(fixdir, filename), 'r') as fix_file:
-                # Assignment automatically escapes shell characters for XML
-                for line in fix_file.readlines():
-                    if line.startswith('#'):
-                        try:
-                            (key, value) = line.strip('#').split('=')
-                            if key.strip() in ['complexity', 'disruption', \
-                                             'platform', 'reboot', 'strategy']:
-                                config[key.strip()] = value.strip()
-                            else:
+                mod_file = ""
+                with open(os.path.join(fixdir, filename), 'r') as fix_file:
+                    # Assignment automatically escapes shell characters for XML
+                    for line in fix_file.readlines():
+                        if line.startswith('#'):
+                            try:
+                                (key, value) = line.strip('#').split('=')
+                                if key.strip() in ['complexity', 'disruption', \
+                                                 'platform', 'reboot', 'strategy']:
+                                    config[key.strip()] = value.strip()
+                                else:
+                                    if not line.startswith(FILE_GENERATED):
+                                        mod_file += line
+                            except ValueError:
                                 if not line.startswith(FILE_GENERATED):
                                     mod_file += line
-                        except ValueError:
-                            if not line.startswith(FILE_GENERATED):
-                                mod_file += line
-                    else:
-                        mod_file += line
-
-                complexity = None
-                disruption = None
-                reboot = None
-                script_platform = None
-                strategy = None
-
-                if 'complexity' in config:
-                    complexity = config['complexity']
-                if 'disruption' in config:
-                    disruption = config['disruption']
-                if 'platform' in config:
-                    script_platform = config['platform']
-                if 'complexity' in config:
-                   reboot = config['reboot']
-                if 'complexity' in config:
-                   strategy = config['strategy']
-
-                if script_platform:
-                    product_name, result = fix_is_applicable_for_product(script_platform, product)
-                    if result:
-                        if fixname in fixes:
-                            fix = fixes[fixname]
-                            for child in list(fix):
-                                fix.remove(child)
                         else:
-                            fix = etree.SubElement(fixgroup, "fix")
-                            fix.set("rule", fixname)
-                            if complexity is not None:
-                                fix.set("complexity", complexity)
-                            if disruption is not None:
-                                fix.set("disruption", disruption)
-                            if reboot is not None:
-                                fix.set("reboot", reboot)
-                            if strategy is not None:
-                                fix.set("strategy", strategy)
-                            fixes[fixname] = fix
-                            included_fixes_count += 1
+                            mod_file += line
 
-                        fix.text = mod_file
+                    complexity = None
+                    disruption = None
+                    reboot = None
+                    script_platform = None
+                    strategy = None
 
-                        # Expand shell variables and remediation functions into
-                        # corresponding XCCDF <sub> elements
-                        expand_xccdf_subs(fix, remediation_type, remediation_functions)
-                else:
-                    sys.stderr.write("Skipping '%s' remediation script. "
-                                     "The platform identifier in the script is "
-                                     "missing!\n" % (filename))
+                    if 'complexity' in config:
+                        complexity = config['complexity']
+                    if 'disruption' in config:
+                        disruption = config['disruption']
+                    if 'platform' in config:
+                        script_platform = config['platform']
+                    if 'complexity' in config:
+                        reboot = config['reboot']
+                    if 'complexity' in config:
+                        strategy = config['strategy']
+
+                    if script_platform:
+                        product_name, result = fix_is_applicable_for_product(script_platform, product)
+                        if result:
+                            if fixname in fixes:
+                                fix = fixes[fixname]
+                                for child in list(fix):
+                                    fix.remove(child)
+                            else:
+                                fix = etree.SubElement(fixgroup, "fix")
+                                fix.set("rule", fixname)
+                                if complexity is not None:
+                                    fix.set("complexity", complexity)
+                                if disruption is not None:
+                                    fix.set("disruption", disruption)
+                                if reboot is not None:
+                                    fix.set("reboot", reboot)
+                                if strategy is not None:
+                                    fix.set("strategy", strategy)
+                                fixes[fixname] = fix
+                                included_fixes_count += 1
+
+                            fix.text = mod_file
+
+                            # Expand shell variables and remediation functions into
+                            # corresponding XCCDF <sub> elements
+                            expand_xccdf_subs(fix, remediation_type, remediation_functions)
+                    else:
+                        sys.stderr.write("Skipping '%s' remediation script. "
+                                         "The platform identifier in the script is "
+                                         "missing!\n" % (filename))
+        except OSError as e:
+            if e.errno != errno.ENOENT:
+                raise
+            else:
+                print("Not merging remediation scripts from the "
+                      "'%s' directory as the directory does not "
+                      "exist" % (fixdir))
 
     sys.stderr.write("Merged %d remediation scripts.\n"
                      % (included_fixes_count))
