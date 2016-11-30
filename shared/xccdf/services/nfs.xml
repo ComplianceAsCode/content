@@ -231,6 +231,7 @@ is not designated as a NFS server then this service should be disabled.
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident prodtype="rhel7" cce="80237-1" />
+<ref prodtype="rhel7" nist="AC-3" />
 <oval id="service_nfs_disabled" />
 </Rule>
 
@@ -405,6 +406,7 @@ To ensure that the default has not been changed, ensure no line in
 user to initiate an NFS connection. If the unprivileged user account has been compromised, an
 attacker could gain access to data on the NFS server.</rationale>
 <ident prodtype="rhel7" cce="80242-1" />
+<ref prodtype="rhel7" nist="AC-3" />
 </Rule>
 
 <Rule id="no_insecure_locks_exports" severity="medium" prodtype="rhel7">
