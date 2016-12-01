@@ -140,7 +140,7 @@ endmacro()
 
 macro(ssg_build_xccdf_with_remediations PRODUCT)
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/remediations
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam bash_remediations ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml --stringparam ansible_remediations ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml --stringparam puppet_remediations ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml --stringparam anaconda_remediations ${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml
         MAIN_DEPENDENCY ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
@@ -167,7 +167,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
         file(GLOB SHARED_OVAL_511_DEPS "${SHARED_OVAL_511_DEPS_DIR}/*.xml")
 
         add_custom_command(
-            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval
             # TODO: config
             COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/ --language oval build
             COMMAND RUNTIME_OVAL_VERSION=5.11 ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${SHARED_OVAL_DEPS_DIR} ${OVAL_DEPS_DIR} ${SHARED_OVAL_511_DEPS_DIR} ${OVAL_511_DEPS_DIR} ${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
@@ -182,7 +182,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
         )
     else()
         add_custom_command(
-            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval
             # TODO: config
             COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/ --language oval build
             COMMAND ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS_DIR} ${SHARED_OVAL_DEPS_DIR} ${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
@@ -194,6 +194,18 @@ macro(ssg_build_oval_unlinked PRODUCT)
             COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
         )
     endif()
+endmacro()
+
+macro(ssg_build_cpe_dictionary PRODUCT)
+    set(SSG_CPE_DICTIONARY "${CMAKE_CURRENT_SOURCE_DIR}/input/oval/platform/${PRODUCT}-cpe-dictionary.xml")
+
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml
+        COMMAND ${SSG_SHARED_UTILS}/cpe-generate.py ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${SSG_CPE_DICTIONARY} ssg ${CMAKE_BINARY_DIR}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+        DEPENDS ${SSG_SHARED_UTILS}/cpe-generate.py
+        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-cpe-dictionary.xml, ssg-${PRODUCT}-cpe-oval.xml"
+    )
 endmacro()
 
 macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
@@ -297,8 +309,10 @@ macro(ssg_build_sds PRODUCT)
 endmacro()
 
 macro(ssg_build_html_guides PRODUCT)
+    FILE(GLOB SSG_PROD_GUIDES ${CMAKE_BINARY_DIR}/*.html)
+
     add_custom_command(
-        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html ${SSG_PROD_GUIDES}
         COMMAND ${SSG_SHARED_UTILS}/build-all-guides.py --input ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
@@ -314,6 +328,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_remediations(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
+    ssg_build_cpe_dictionary(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
@@ -327,6 +342,8 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html
     )
@@ -336,6 +353,8 @@ macro(ssg_build_product PRODUCT)
         #DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
         #DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] validating outputs"
     )
@@ -348,6 +367,10 @@ macro(ssg_build_product PRODUCT)
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
     # This is a common cmake trick, we need the globbing to happen at build time
