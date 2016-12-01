@@ -149,6 +149,15 @@ install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
 install(FILES "docs/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
 
+if (UNIX)
+    install(CODE "
+        file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/)
+    ")
+    install(CODE "
+        execute_process(COMMAND ln -sf ../../../scap/ssg ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content)
+    ")
+endif()
+
 # only CPack should follow
 set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
