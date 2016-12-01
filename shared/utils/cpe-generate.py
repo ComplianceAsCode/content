@@ -75,9 +75,11 @@ def main():
                " to STDOUT.")
         sys.exit(1)
 
-    ovalfile = sys.argv[1]
-    cpedictfile = sys.argv[2]
-    idname = sys.argv[3]
+    product = sys.argv[1]
+    idname = sys.argv[2]
+    cpeoutdir = sys.argv[3]
+    ovalfile = sys.argv[4]
+    cpedictfile = sys.argv[5]
 
     # parse oval file
     ovaltree = parse_xml_file(ovalfile)
@@ -136,9 +138,9 @@ def main():
     translator = idtranslate.idtranslator(idname)
     ovaltree = translator.translate(ovaltree)
 
-    newovalfile = ovalfile.replace("oval", "cpe-oval")
-    newovalfile = newovalfile.replace("unlinked", idname)
-    ET.ElementTree(ovaltree).write(newovalfile)
+    newovalfile = idname + "-" + product + "-" + os.path.basename(ovalfile)
+    newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
+    ET.ElementTree(ovaltree).write(cpeoutdir + "/" + newovalfile)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
     cpedicttree = parse_xml_file(cpedictfile)
@@ -205,7 +207,7 @@ def main():
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
 
-    ET.ElementTree(cpedicttree).write("./output/"+newcpedictfile)
+    ET.ElementTree(cpedicttree).write(cpeoutdir + '/' + newcpedictfile)
 
     sys.exit(0)
 

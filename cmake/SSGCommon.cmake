@@ -201,7 +201,7 @@ macro(ssg_build_cpe_dictionary PRODUCT)
 
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml
-        COMMAND ${SSG_SHARED_UTILS}/cpe-generate.py ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${SSG_CPE_DICTIONARY} ssg ${CMAKE_BINARY_DIR}
+        COMMAND ${SSG_SHARED_UTILS}/cpe-generate.py ${PRODUCT} ssg ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${SSG_CPE_DICTIONARY}
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
         DEPENDS ${SSG_SHARED_UTILS}/cpe-generate.py
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-cpe-dictionary.xml, ssg-${PRODUCT}-cpe-oval.xml"
