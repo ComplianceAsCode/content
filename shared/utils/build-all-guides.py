@@ -201,8 +201,8 @@ def main():
 
     p.add_argument("-i", "--input", action="store", required=True,
                    help="input file, can be XCCDF or Source DataStream")
-    #p.add_argument("-o", "--output", action="store", required=True,
-    #               help="output directory")
+    p.add_argument("-o", "--output", action="store", required=True,
+                   help="output directory")
 
     args, unknown = p.parse_known_args()
     if unknown:
@@ -211,7 +211,7 @@ def main():
         )
         sys.exit(1)
 
-    parent_dir = os.path.dirname(os.path.abspath(args.input))
+    output_dir = os.path.abspath(args.output)
     input_basename = os.path.basename(args.input)
     path_base, _ = os.path.splitext(input_basename)
     # avoid -ds and -xccdf suffices in guide filenames
@@ -306,7 +306,7 @@ def main():
                 "%s-%s-guide-%s.html" % \
                 (path_base, benchmark_id_for_path,
                  get_profile_short_id(profile_id_for_path))
-        guide_path = os.path.join(parent_dir, guide_filename)
+        guide_path = os.path.join(output_dir, guide_filename)
 
         index_links.append(
             "<a target=\"guide\" href=\"%s\">%s</a>" %
@@ -425,7 +425,7 @@ def main():
     index_source += "\t</body>\n"
     index_source += "</html>\n"
 
-    index_path = os.path.join(parent_dir, "%s-guide-index.html" % (path_base))
+    index_path = os.path.join(output_dir, "%s-guide-index.html" % (path_base))
     with open(index_path, "w") as f:
         f.write(index_source.encode("utf-8"))
 
