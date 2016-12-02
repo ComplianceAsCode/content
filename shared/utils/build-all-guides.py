@@ -14,7 +14,7 @@ except ImportError:
     import cElementTree as ElementTree
 
 import os.path
-from optparse import OptionParser
+import argparse
 import subprocess
 
 import threading
@@ -182,28 +182,37 @@ def get_cpu_count():
 
 
 def main():
-    usage = "usage: %prog [options]"
-    parser = OptionParser(usage=usage)
-    parser.add_option(
-        "-i", "--input", dest="input_content", type="string",
-        action="store", help="INPUT can be XCCDF or Source DataStream. XCCDF "
-        "is supported with all OpenSCAP versions. You need OpenSCAP 1.1.0 or "
-        "higher to generate guides from Source DataStream!"
-    )
-    parser.add_option(
-        "-j", "--jobs", dest="parallel_jobs", type="int",
-        action="store", help="How many workers should generate guides in "
-        "parallel. Defaults to the number of available CPUs.",
-        default=get_cpu_count()
-    )
-    (options, args) = parser.parse_args()
+    p = argparse.ArgumentParser()
 
-    if options.input_content is None:
-        parser.print_help()
-        raise RuntimeError("No INPUT file provided, please use --input.")
+    sp = p.add_subparsers(dest="cmd", help="actions")
 
-    parent_dir = os.path.dirname(os.path.abspath(options.input_content))
-    input_basename = os.path.basename(options.input_content)
+    make_sp = sp.add_parser("build", help="Build all the HTML guides")
+    make_sp.set_defaults(cmd="build")
+
+    #input_sp = sp.add_parser("list-inputs", help="Generate input list")
+    #input_sp.set_defaults(cmd="list_inputs")
+
+    #output_sp = sp.add_parser("list-outputs", help="Generate output list")
+    #output_sp.set_defaults(cmd="list_outputs")
+
+    p.add_argument("-j", "--jobs", type=int, action="store",
+                   default=get_cpu_count(),
+                   help="how many jobs should be processed in parallel")
+
+    p.add_argument("-i", "--input", action="store", required=True,
+                   help="input file, can be XCCDF or Source DataStream")
+    #p.add_argument("-o", "--output", action="store", required=True,
+    #               help="output directory")
+
+    args, unknown = p.parse_known_args()
+    if unknown:
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
+        sys.exit(1)
+
+    parent_dir = os.path.dirname(os.path.abspath(args.input))
+    input_basename = os.path.basename(args.input)
     path_base, _ = os.path.splitext(input_basename)
     # avoid -ds and -xccdf suffices in guide filenames
     if path_base.endswith("-ds"):
@@ -211,13 +220,13 @@ def main():
     elif path_base.endswith("-xccdf"):
         path_base = path_base[:-6]
 
-    input_tree = ElementTree.parse(options.input_content)
+    input_tree = ElementTree.parse(args.input)
     benchmarks = get_benchmark_ids_titles_for_input(input_tree)
     if len(benchmarks) == 0:
         raise RuntimeError(
             "Expected input file '%s' to contain at least 1 xccdf:Benchmark. "
             "No Benchmarks were found!" %
-            (options.input_content)
+            (args.input)
         )
 
     benchmark_profile_pairs = []
@@ -229,15 +238,13 @@ def main():
         if not profiles:
             raise RuntimeError(
                 "No profiles were found in '%s' in xccdf:Benchmark of id='%s'."
-                % (options.input_content, benchmark_id)
+                % (args.input, benchmark_id)
             )
 
         for profile_id in profiles.keys():
             benchmark_profile_pairs.append(
                 (benchmark_id, profile_id, profiles[profile_id])
             )
-
-    queue = Queue.Queue()
 
     # TODO: Make the index file nicer
 
@@ -259,6 +266,8 @@ def main():
             profile_title = "zzz(default)"
 
         return (benchmark_id, profile_title)
+
+    queue = Queue.Queue()
 
     for benchmark_id, profile_id, profile_title in \
             sorted(benchmark_profile_pairs,
@@ -321,7 +330,7 @@ def main():
                     queue.get(False)
 
                 guide_html = generate_guide_for_input_content(
-                    options.input_content, benchmark_id, profile_id
+                    args.input, benchmark_id, profile_id
                 )
                 with open(guide_path, "w") as f:
                     f.write(guide_html.encode("utf-8"))
@@ -344,7 +353,7 @@ def main():
                 queue.task_done()
 
     workers = []
-    for worker_id in range(options.parallel_jobs):
+    for worker_id in range(args.jobs):
         worker = threading.Thread(
             name="Guide generate worker #%i" % (worker_id),
             target=builder
