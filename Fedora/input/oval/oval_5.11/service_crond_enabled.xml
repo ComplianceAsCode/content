@@ -20,10 +20,10 @@
   <linux:systemdunitdependency_test check="all" check_existence="any_exist"
   comment="systemd test" id="test_multi_user_wants_crond"
   version="1">
-    <linux:object object_ref="obj_multi_user_wants" />
+    <linux:object object_ref="obj_multi_user_wants_crond" />
     <linux:state state_ref="state_systemd_crond_on"/>
   </linux:systemdunitdependency_test>
-  <linux:systemdunitdependency_object id="obj_multi_user_wants" comment="list of dependencies of multi-user.target" version="1">
+  <linux:systemdunitdependency_object id="obj_multi_user_wants_crond" comment="list of dependencies of multi-user.target" version="1">
     <linux:unit>multi-user.target</linux:unit>
   </linux:systemdunitdependency_object>
   <linux:systemdunitdependency_state id="state_systemd_crond_on" comment="is crond listed at least once in the dependencies" version="1">
