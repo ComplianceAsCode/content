@@ -62,11 +62,11 @@ class Builder(object):
                 )
                 self._run_script(script, csv_filepath)
 
-    def input(self):
+    def list_inputs(self):
         for file_ in self.get_input_list():
             print(file_)
 
-    def output(self):
+    def list_outputs(self):
         for file_ in self.get_output_list():
             print(file_)
 
@@ -234,11 +234,11 @@ if __name__ == "__main__":
     make_sp = sp.add_parser('build', help="Build remediations")
     make_sp.set_defaults(cmd="build")
 
-    input_sp = sp.add_parser('input', help="Generate input list")
-    input_sp.set_defaults(cmd="input")
+    input_sp = sp.add_parser('list-inputs', help="Generate input list")
+    input_sp.set_defaults(cmd="list_inputs")
 
-    output_sp = sp.add_parser('output', help="Generate output list")
-    output_sp.set_defaults(cmd="output")
+    output_sp = sp.add_parser('list-outputs', help="Generate output list")
+    output_sp.set_defaults(cmd="list_outputs")
 
     p.add_argument('--language', metavar="LANG", default=None,
                    help="Scripts of which language should we generate? "
