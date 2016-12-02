@@ -243,9 +243,9 @@ if __name__ == "__main__":
     p.add_argument('--language', metavar="LANG", default=None,
                    help="Scripts of which language should we generate? "
                    "Default: all.")
-    p.add_argument('--input', action="store", required=True,
+    p.add_argument("-i", "--input", action="store", required=True,
                    help="input directory")
-    p.add_argument('--output', action="store", required=True,
+    p.add_argument("-o", "--output", action="store", required=True,
                    help="output directory")
     p.add_argument('--oval_version', action="store", default="oval_5.10",
                    help="oval version")
