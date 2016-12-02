@@ -203,8 +203,10 @@ class Builder(object):
             return self._get_list_from_subprocess(sp)
 
         finally:
-            del os.environ["GENERATE_INPUT_LIST"]
-            del os.environ["GENERATE_OUTPUT_LIST"]
+            if gen_input:
+                del os.environ["GENERATE_INPUT_LIST"]
+            else:
+                del os.environ["GENERATE_OUTPUT_LIST"]
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
