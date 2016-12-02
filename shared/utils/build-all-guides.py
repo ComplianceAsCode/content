@@ -189,11 +189,11 @@ def main():
     make_sp = sp.add_parser("build", help="Build all the HTML guides")
     make_sp.set_defaults(cmd="build")
 
-    #input_sp = sp.add_parser("list-inputs", help="Generate input list")
-    #input_sp.set_defaults(cmd="list_inputs")
+    input_sp = sp.add_parser("list-inputs", help="Generate input list")
+    input_sp.set_defaults(cmd="list_inputs")
 
-    #output_sp = sp.add_parser("list-outputs", help="Generate output list")
-    #output_sp.set_defaults(cmd="list_outputs")
+    output_sp = sp.add_parser("list-outputs", help="Generate output list")
+    output_sp.set_defaults(cmd="list_outputs")
 
     p.add_argument("-j", "--jobs", type=int, action="store",
                    default=get_cpu_count(),
@@ -211,8 +211,11 @@ def main():
         )
         sys.exit(1)
 
+    input_path = os.path.abspath(args.input)
+    if args.cmd == "list_inputs":
+        print(input_path)
     output_dir = os.path.abspath(args.output)
-    input_basename = os.path.basename(args.input)
+    input_basename = os.path.basename(input_path)
     path_base, _ = os.path.splitext(input_basename)
     # avoid -ds and -xccdf suffices in guide filenames
     if path_base.endswith("-ds"):
@@ -220,13 +223,13 @@ def main():
     elif path_base.endswith("-xccdf"):
         path_base = path_base[:-6]
 
-    input_tree = ElementTree.parse(args.input)
+    input_tree = ElementTree.parse(input_path)
     benchmarks = get_benchmark_ids_titles_for_input(input_tree)
     if len(benchmarks) == 0:
         raise RuntimeError(
             "Expected input file '%s' to contain at least 1 xccdf:Benchmark. "
             "No Benchmarks were found!" %
-            (args.input)
+            (input_path)
         )
 
     benchmark_profile_pairs = []
@@ -238,7 +241,7 @@ def main():
         if not profiles:
             raise RuntimeError(
                 "No profiles were found in '%s' in xccdf:Benchmark of id='%s'."
-                % (args.input, benchmark_id)
+                % (input_path, benchmark_id)
             )
 
         for profile_id in profiles.keys():
@@ -308,20 +311,25 @@ def main():
                  get_profile_short_id(profile_id_for_path))
         guide_path = os.path.join(output_dir, guide_filename)
 
-        index_links.append(
-            "<a target=\"guide\" href=\"%s\">%s</a>" %
-            (guide_filename, "%s in %s" % (profile_title, benchmark_id))
-        )
-        index_options.append(
-            "<option value=\"%s\" data-benchmark-id=\"%s\" data-profile-id=\"%s\">%s</option>" %
-            (guide_filename,
-             "" if len(benchmarks) == 1 else benchmark_id, profile_id,
-             "%s in %s" % (profile_title, benchmark_id))
-        )
-        if index_initial_src is None:
-            index_initial_src = guide_filename
+        if args.cmd == "list_inputs":
+            pass  # noop
+        elif args.cmd == "list_outputs":
+            print(guide_path)
+        elif args.cmd == "build":
+            index_links.append(
+                "<a target=\"guide\" href=\"%s\">%s</a>" %
+                (guide_filename, "%s in %s" % (profile_title, benchmark_id))
+            )
+            index_options.append(
+                "<option value=\"%s\" data-benchmark-id=\"%s\" data-profile-id=\"%s\">%s</option>" %
+                (guide_filename,
+                 "" if len(benchmarks) == 1 else benchmark_id, profile_id,
+                 "%s in %s" % (profile_title, benchmark_id))
+            )
+            if index_initial_src is None:
+                index_initial_src = guide_filename
 
-        queue.put((benchmark_id, profile_id, profile_title, guide_path))
+            queue.put((benchmark_id, profile_id, profile_title, guide_path))
 
     def builder():
         while True:
@@ -330,7 +338,7 @@ def main():
                     queue.get(False)
 
                 guide_html = generate_guide_for_input_content(
-                    args.input, benchmark_id, profile_id
+                    input_path, benchmark_id, profile_id
                 )
                 with open(guide_path, "w") as f:
                     f.write(guide_html.encode("utf-8"))
@@ -352,82 +360,88 @@ def main():
                 )
                 queue.task_done()
 
-    workers = []
-    for worker_id in range(args.jobs):
-        worker = threading.Thread(
-            name="Guide generate worker #%i" % (worker_id),
-            target=builder
-        )
-        workers.append(worker)
-        worker.daemon = True
-        worker.start()
+    if args.cmd == "build":
+        workers = []
+        for worker_id in range(args.jobs):
+            worker = threading.Thread(
+                name="Guide generate worker #%i" % (worker_id),
+                target=builder
+            )
+            workers.append(worker)
+            worker.daemon = True
+            worker.start()
 
-    queue.join()
+        queue.join()
 
-    index_source = "<!DOCTYPE html>\n"
-    index_source += "<html lang=\"en\">\n"
-    index_source += "\t<head>\n"
-    index_source += "\t\t<meta charset=\"utf-8\">\n"
-    index_source += "\t\t<title>%s</title>\n" % \
-                    (benchmarks.itervalues().next())
-    index_source += "\t\t<script>\n"
-    index_source += "\t\t\tfunction change_profile(option_element)\n"
-    index_source += "\t\t\t{\n"
-    index_source += "\t\t\t\tvar benchmark_id=option_element.getAttribute('data-benchmark-id');\n"
-    index_source += "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n"
-    index_source += "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n"
-    index_source += "\t\t\t\tvar input_path='/usr/share/scap/ssg/%s';\n" % (input_basename)
-    index_source += "\t\t\t\tif (profile_id == '')\n"
-    index_source += "\t\t\t\t{\n"
-    index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
-    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n"
-    index_source += "\t\t\t\t\telse\n"
-    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' ' + input_path;\n"
-    index_source += "\t\t\t\t}\n"
-    index_source += "\t\t\t\telse\n"
-    index_source += "\t\t\t\t{\n"
-    index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
-    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n"
-    index_source += "\t\t\t\t\telse\n"
-    index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' --profile ' + profile_id + ' ' + input_path;\n"
-    index_source += "\t\t\t\t}\n"
-    index_source += "\t\t\t\twindow.open(option_element.value, 'guide');\n"
-    index_source += "\t\t\t}\n"
-    index_source += "\t\t</script>\n"
-    index_source += "\t\t<style>\n"
-    index_source += "\t\t\thtml, body { margin: 0; height: 100% }\n"
-    index_source += "\t\t\t#js_switcher { position: fixed; right: 30px; top: 10px; padding: 2px; background: #ddd; border: 1px solid #999 }\n"
-    index_source += "\t\t\t#guide_div { margin: auto; width: 99%; height: 99% }\n"
-    index_source += "\t\t</style>\n"
-    index_source += "\t</head>\n"
-    index_source += "\t<body onload=\"document.getElementById('js_switcher').style.display = 'block'\">\n"
-    index_source += "\t\t<noscript>\n"
-    index_source += "Profiles: "
-    index_source += ", ".join(index_links) + "\n"
-    index_source += "\t\t</noscript>\n"
-    index_source += "\t\t<div id=\"js_switcher\" style=\"display: none\">\n"
-    index_source += "\t\t\tProfile: \n"
-    index_source += "\t\t\t<select style=\"margin-bottom: 5px\" "
-    index_source += "onchange=\"change_profile(this.options[this.selectedIndex]);\""
-    index_source += ">\n"
-    index_source += "\n".join(index_options) + "\n"
-    index_source += "\t\t\t</select>\n"
-    index_source += "\t\t\t<div id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
-    index_source += "select a profile to display its guide and a command line snippet needed to use it"
-    index_source += "</div>\n"
-    index_source += "\t\t</div>\n"
-    index_source += "\t\t<div id=\"guide_div\">\n"
-    index_source += \
-        "\t\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
-    index_source += "width=\"100%\" height=\"100%\">\n"
-    index_source += "\t\t\t</iframe>\n"
-    index_source += "\t\t</div>\n"
-    index_source += "\t</body>\n"
-    index_source += "</html>\n"
+        index_source = "<!DOCTYPE html>\n"
+        index_source += "<html lang=\"en\">\n"
+        index_source += "\t<head>\n"
+        index_source += "\t\t<meta charset=\"utf-8\">\n"
+        index_source += "\t\t<title>%s</title>\n" % \
+                        (benchmarks.itervalues().next())
+        index_source += "\t\t<script>\n"
+        index_source += "\t\t\tfunction change_profile(option_element)\n"
+        index_source += "\t\t\t{\n"
+        index_source += "\t\t\t\tvar benchmark_id=option_element.getAttribute('data-benchmark-id');\n"
+        index_source += "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n"
+        index_source += "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n"
+        index_source += "\t\t\t\tvar input_path='/usr/share/scap/ssg/%s';\n" % (input_basename)
+        index_source += "\t\t\t\tif (profile_id == '')\n"
+        index_source += "\t\t\t\t{\n"
+        index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
+        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n"
+        index_source += "\t\t\t\t\telse\n"
+        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' ' + input_path;\n"
+        index_source += "\t\t\t\t}\n"
+        index_source += "\t\t\t\telse\n"
+        index_source += "\t\t\t\t{\n"
+        index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
+        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n"
+        index_source += "\t\t\t\t\telse\n"
+        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' --profile ' + profile_id + ' ' + input_path;\n"
+        index_source += "\t\t\t\t}\n"
+        index_source += "\t\t\t\twindow.open(option_element.value, 'guide');\n"
+        index_source += "\t\t\t}\n"
+        index_source += "\t\t</script>\n"
+        index_source += "\t\t<style>\n"
+        index_source += "\t\t\thtml, body { margin: 0; height: 100% }\n"
+        index_source += "\t\t\t#js_switcher { position: fixed; right: 30px; top: 10px; padding: 2px; background: #ddd; border: 1px solid #999 }\n"
+        index_source += "\t\t\t#guide_div { margin: auto; width: 99%; height: 99% }\n"
+        index_source += "\t\t</style>\n"
+        index_source += "\t</head>\n"
+        index_source += "\t<body onload=\"document.getElementById('js_switcher').style.display = 'block'\">\n"
+        index_source += "\t\t<noscript>\n"
+        index_source += "Profiles: "
+        index_source += ", ".join(index_links) + "\n"
+        index_source += "\t\t</noscript>\n"
+        index_source += "\t\t<div id=\"js_switcher\" style=\"display: none\">\n"
+        index_source += "\t\t\tProfile: \n"
+        index_source += "\t\t\t<select style=\"margin-bottom: 5px\" "
+        index_source += "onchange=\"change_profile(this.options[this.selectedIndex]);\""
+        index_source += ">\n"
+        index_source += "\n".join(index_options) + "\n"
+        index_source += "\t\t\t</select>\n"
+        index_source += "\t\t\t<div id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
+        index_source += "select a profile to display its guide and a command line snippet needed to use it"
+        index_source += "</div>\n"
+        index_source += "\t\t</div>\n"
+        index_source += "\t\t<div id=\"guide_div\">\n"
+        index_source += \
+            "\t\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
+        index_source += "width=\"100%\" height=\"100%\">\n"
+        index_source += "\t\t\t</iframe>\n"
+        index_source += "\t\t</div>\n"
+        index_source += "\t</body>\n"
+        index_source += "</html>\n"
 
     index_path = os.path.join(output_dir, "%s-guide-index.html" % (path_base))
-    with open(index_path, "w") as f:
-        f.write(index_source.encode("utf-8"))
+    if args.cmd == "list_inputs":
+        pass  # noop
+    elif args.cmd == "list_outputs":
+        print(index_path)
+    elif args.cmd == "build":
+        with open(index_path, "w") as f:
+            f.write(index_source.encode("utf-8"))
 
 if __name__ == "__main__":
     main()
