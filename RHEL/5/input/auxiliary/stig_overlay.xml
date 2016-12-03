@@ -544,7 +544,7 @@
 		<VMSinfo VKey="22338" SVKey="37357" VRelease="1" />
 		<title>The /etc/group file must not have an extended ACL.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="file_owner_etc_shadow" ownerid="GEN001400" disa="225" severity="medium">
+	<overlay owner="disastig" ruleid="userowner_shadow_file" ownerid="GEN001400" disa="225" severity="medium">
 		<VMSinfo VKey="797" SVKey="37361" VRelease="1" />
 		<title>The /etc/shadow (or equivalent) file must be owned by root.</title>
 	</overlay>
@@ -808,11 +808,11 @@
 		<VMSinfo VKey="803" SVKey="37592" VRelease="2" />
 		<title>The system must be checked weekly for unauthorized setuid files as well as unauthorized modification to authorized setuid files.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="mount_option_nosuid_removable_filesystems" ownerid="GEN002420" disa="225" severity="medium">
+	<overlay owner="disastig" ruleid="mount_option_nosuid_removable_partitions" ownerid="GEN002420" disa="225" severity="medium">
 		<VMSinfo VKey="805" SVKey="37607" VRelease="1" />
 		<title>Removable media, remote file systems, and any file system not containing approved setuid files must be mounted with the "nosuid" option.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="mount_option_nodev_removable_filesystems" ownerid="GEN002430" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="mount_option_nodev_removable_partitions" ownerid="GEN002430" disa="366" severity="medium">
 		<VMSinfo VKey="22368" SVKey="37623" VRelease="1" />
 		<title>Removable media, remote file systems, and any file system not containing approved device files must be mounted with the "nodev" option.</title>
 	</overlay>
@@ -2040,7 +2040,7 @@
 		<VMSinfo VKey="12765" SVKey="37760" VRelease="2" />
 		<title>The system must use and update a DoD-approved virus scan program.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_disable_post_pw_expiration" ownerid="GEN006660" disa="17" severity="low">
+	<overlay owner="disastig" ruleid="account_disable_post_pw_expiration" ownerid="GEN006660" disa="17" severity="low">
 		<VMSinfo VKey="38692" SVKey="50927" VRelease="1" />
 		<title>Accounts must be locked upon 35 days of inactivity.</title>
 	</overlay>

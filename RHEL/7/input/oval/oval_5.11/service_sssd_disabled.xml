@@ -26,11 +26,11 @@
   </definition>
 
   <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_sssd_not_wanted_by_multi_user_target" version="1">
-    <linux:object object_ref="object_multi_user_target_for_sssd" />
+    <linux:object object_ref="object_multi_user_target_for_sssd_off" />
     <linux:state state_ref="state_systemd_sssd_off"/>
   </linux:systemdunitdependency_test>
 
-  <linux:systemdunitdependency_object id="object_multi_user_target_for_sssd" comment="list of dependencies of multi-user.target" version="1">
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_sssd_off" comment="list of dependencies of multi-user.target" version="1">
     <linux:unit>multi-user.target</linux:unit>
   </linux:systemdunitdependency_object>
 

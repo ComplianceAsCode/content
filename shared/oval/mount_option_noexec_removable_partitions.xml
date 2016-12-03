@@ -40,7 +40,7 @@
 
   <!-- If specified removable partition represents CD / DVD drive, create a variable
        holding also alternative names for CD / DVD block special device as used by udev -->
-  <constant_variable id="variable_cd_dvd_drive_alternative_names" datatype="string" comment="CD/DVD drive alternative names whitelist" version="1">
+  <constant_variable id="variable_cd_dvd_drive_alternative_names_noexec" datatype="string" comment="CD/DVD drive alternative names whitelist" version="1">
     <value>/dev/cdrom</value>
     <value>/dev/dvd</value>
     <value>/dev/scd0</value>
@@ -49,10 +49,10 @@
 
   <!-- For each of the CD / DVD drive alternative names create regular expression pattern
        to be used in textfilecontent54_object below -->
-  <local_variable id="variable_cd_dvd_drive_regex_pattern" datatype="string" comment="Regular expression pattern for CD / DVD drive alternative names" version="1">
+  <local_variable id="variable_cd_dvd_drive_regex_pattern_noexec" datatype="string" comment="Regular expression pattern for CD / DVD drive alternative names" version="1">
     <concat>
       <literal_component>^[\s]*</literal_component>
-      <variable_component var_ref="variable_cd_dvd_drive_alternative_names" />
+      <variable_component var_ref="variable_cd_dvd_drive_alternative_names_noexec" />
       <!-- Capture the mount options field (4-th column of /etc/fstab) -->
       <literal_component>[\s]+[/\w]+[\s]+[\w]+[\s]+([^\s]+)(?:[\s]+[\d]+){2}$</literal_component>
     </concat>
@@ -67,7 +67,7 @@
 
   <ind:textfilecontent54_object id="object_noexec_etc_fstab_cd_dvd_drive" version="1">
     <ind:filepath>/etc/fstab</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_cd_dvd_drive_regex_pattern" var_check="at least one" />
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_cd_dvd_drive_regex_pattern_noexec" var_check="at least one" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -90,7 +90,7 @@
   </linux:partition_object>
 
   <linux:partition_state id="state_noexec_runtime_cd_dvd_drive" version="1">
-    <linux:device datatype="string" operation="equals" var_ref="variable_cd_dvd_drive_alternative_names" var_check="at least one" />
+    <linux:device datatype="string" operation="equals" var_ref="variable_cd_dvd_drive_alternative_names_noexec" var_check="at least one" />
     <linux:mount_options datatype="string" entity_check="at least one" operation="equals">noexec</linux:mount_options>
   </linux:partition_state>
 
@@ -103,7 +103,7 @@
 
   <!-- Create regular expression pattern for the device to be used in the
        textfilecontent54_object below -->
-  <local_variable id="variable_not_cd_dvd_drive_regex_pattern" datatype="string" comment="Regular expression pattern for removable block special device other than CD / DVD drive" version="1">
+  <local_variable id="variable_not_cd_dvd_drive_regex_pattern_noexec" datatype="string" comment="Regular expression pattern for removable block special device other than CD / DVD drive" version="1">
     <concat>
       <literal_component>^[\s]*</literal_component>
       <variable_component var_ref="var_removable_partition" />
@@ -114,7 +114,7 @@
 
   <ind:textfilecontent54_object id="object_noexec_etc_fstab_not_cd_dvd_drive" version="1">
     <ind:filepath>/etc/fstab</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_not_cd_dvd_drive_regex_pattern" var_check="at least one" />
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_not_cd_dvd_drive_regex_pattern_noexec" var_check="at least one" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
