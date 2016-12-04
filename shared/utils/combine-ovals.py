@@ -212,12 +212,13 @@ def append(element, newchild):
                 # If OVAL entity is identical, but not external_variable, the
                 # implementation should be rewritten each entity to be present
                 # just once
-                sys.stderr.write("WARNING: OVAL ID '%s' is used multiple times "
+                sys.stderr.write("ERROR: OVAL ID '%s' is used multiple times "
                                  "and should represent the same elements.\n"
                                  % (newid))
                 sys.stderr.write("Rewrite the OVAL checks. Place the identical "
                                  "IDs into their own definition and extend "
                                  "this definition by it.\n")
+                sys.exit(1)
         # ID is identical, but OVAL entities are semantically difference =>
         # report and error and exit with failure
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1275

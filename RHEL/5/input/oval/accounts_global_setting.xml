@@ -22,9 +22,9 @@
   </definition>
 
    <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="system-auth-ac is not included in /etc/pam.d/*" id="test_accounts_global_setting_not_included" version="1">
-    <ind:object object_ref="object_systemauthac_not_included" />
+    <ind:object object_ref="object_pamd_systemauthac_not_included" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_systemauthac_not_included" version="1">
+  <ind:textfilecontent54_object id="object_pamd_systemauthac_not_included" version="1">
     <ind:path>/etc/pam.d</ind:path>
     <ind:filename operation="pattern match">.*</ind:filename>
     <ind:pattern operation="pattern match">.*(system-auth-ac)</ind:pattern>

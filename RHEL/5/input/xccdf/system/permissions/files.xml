@@ -17,7 +17,7 @@ need read access to the <tt>passwd</tt> file in order to function properly, but
 read access to the <tt>shadow</tt> file allows malicious attacks against system
 passwords, and should never be enabled.</description>
 
-<Rule id="file_owner_etc_shadow" severity="medium">
+<Rule id="userowner_shadow_file" severity="medium">
 <title>Verify User Who Owns <tt>shadow</tt> File</title>
 <description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
@@ -27,7 +27,7 @@ critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
 <ident stig="GEN001400" />
-<oval id="file_owner_etc_shadow" />
+<oval id="userowner_shadow_file" />
 <ref nist="ECLP-1" disa="225" />
 </Rule>
 
