@@ -3,7 +3,7 @@
 import sys
 
 # always use shared/testoval_module.py version
-SHARED_MODULE_PATH = "../modules/"
+SHARED_MODULE_PATH = "../../shared/modules/"
 sys.path.insert(0, SHARED_MODULE_PATH)
 import testoval_module
 
